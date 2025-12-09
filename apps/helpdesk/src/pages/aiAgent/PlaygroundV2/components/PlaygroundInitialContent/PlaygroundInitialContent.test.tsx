@@ -1,11 +1,25 @@
 import '@testing-library/jest-dom'
 
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { PlaygroundInitialContent } from './PlaygroundInitialContent'
 
+const mockUseCoreContext = {
+    useCoreContext: jest.fn(),
+}
+
+jest.mock('pages/aiAgent/PlaygroundV2/contexts/CoreContext', () => ({
+    useCoreContext: () => mockUseCoreContext.useCoreContext(),
+}))
+
 describe('PlaygroundInitialContent', () => {
+    beforeEach(() => {
+        mockUseCoreContext.useCoreContext.mockReturnValue({
+            areActionsEnabled: false,
+        })
+    })
+
     describe('Rendering', () => {
         it('should render with correct title', () => {
             render(<PlaygroundInitialContent />)
@@ -15,7 +29,11 @@ describe('PlaygroundInitialContent', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render with correct description', () => {
+        it('should render with correct description when actions are disabled', () => {
+            mockUseCoreContext.useCoreContext.mockReturnValue({
+                areActionsEnabled: false,
+            })
+
             render(<PlaygroundInitialContent />)
 
             expect(
@@ -30,10 +48,28 @@ describe('PlaygroundInitialContent', () => {
             ).toBeInTheDocument()
         })
 
+        it('should render with correct description when actions are enabled', () => {
+            mockUseCoreContext.useCoreContext.mockReturnValue({
+                areActionsEnabled: true,
+            })
+
+            render(<PlaygroundInitialContent />)
+
+            expect(
+                screen.getByText(
+                    /AI Agent will use your stores' resources and order history to respond/i,
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /Preview conversations won't send messages, but the actions will affect real customer data/i,
+                ),
+            ).toBeInTheDocument()
+        })
+
         it('should render AI icon', () => {
             const { container } = render(<PlaygroundInitialContent />)
 
-            // Icon is rendered by Axiom Icon component
             const iconContainer = container.querySelector('[class*="icon"]')
             expect(iconContainer).toBeInTheDocument()
         })
@@ -62,7 +98,7 @@ describe('PlaygroundInitialContent', () => {
             const button = screen.getByRole('button', {
                 name: /start conversation/i,
             })
-            await user.click(button)
+            await act(() => user.click(button))
 
             expect(mockOnStartClick).toHaveBeenCalledTimes(1)
         })

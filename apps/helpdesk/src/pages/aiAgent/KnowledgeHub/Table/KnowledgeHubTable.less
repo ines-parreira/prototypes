@@ -15,6 +15,12 @@
         flex-direction: column;
         flex-grow: 1;
         margin-top: var(--spacing-md);
+
+        > [data-name='table-toolbar']:first-child
+            > [data-name='box']:first-child {
+            justify-content: flex-start !important;
+        }
+
         button[slot='button'][aria-label='Items per page'] {
             color: var(--color-neutral-700) !important;
 
@@ -58,10 +64,6 @@
         }
     }
 
-    .tableToolbars {
-        margin-left: var(--spacing-lg);
-    }
-
     .source {
         display: flex;
         color: var(--content-neutral-tertiary);
@@ -79,6 +81,14 @@
 
     .titleCell {
         cursor: pointer;
+    }
+
+    .clickableCell {
+        cursor: pointer;
+    }
+
+    .nonClickableCell {
+        cursor: default;
     }
 
     .quantity {

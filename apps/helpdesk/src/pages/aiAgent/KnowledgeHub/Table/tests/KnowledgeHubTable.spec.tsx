@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -117,6 +119,12 @@ describe('KnowledgeHubTable', () => {
         onRowClick: jest.fn(),
         selectedFolder: null,
         shopType: 'shopify',
+        searchTerm: '',
+        onSearchChange: jest.fn(),
+        dateRange: { startDate: null, endDate: null },
+        onDateRangeChange: jest.fn(),
+        inUseByAIFilter: null,
+        onInUseByAIChange: jest.fn(),
     }
 
     beforeEach(() => {
@@ -135,10 +143,37 @@ describe('KnowledgeHubTable', () => {
         })
     })
 
+    const KnowledgeHubTableWithState = (props: any) => {
+        const [searchTerm, setSearchTerm] = React.useState(
+            props.searchTerm || '',
+        )
+        const [dateRange, setDateRange] = React.useState(
+            props.dateRange || { startDate: null, endDate: null },
+        )
+        const [inUseByAIFilter, setInUseByAIFilter] = React.useState<
+            boolean | null
+        >(props.inUseByAIFilter ?? null)
+
+        return (
+            <KnowledgeHubTable
+                {...defaultProps}
+                {...props}
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                dateRange={dateRange}
+                onDateRangeChange={(startDate, endDate) =>
+                    setDateRange({ startDate, endDate })
+                }
+                inUseByAIFilter={inUseByAIFilter}
+                onInUseByAIChange={setInUseByAIFilter}
+            />
+        )
+    }
+
     const renderComponent = (props = {}) => {
         return render(
             <QueryClientProvider client={queryClient}>
-                <KnowledgeHubTable {...defaultProps} {...props} />
+                <KnowledgeHubTableWithState {...props} />
             </QueryClientProvider>,
         )
     }
@@ -1080,6 +1115,257 @@ describe('KnowledgeHubTable', () => {
 
             expect(screen.getByText('Return Policy')).toBeInTheDocument()
             expect(screen.queryByAltText('action logo')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('filter clearing', () => {
+        it('renders date range filter with clear handler when dates are set', () => {
+            const mockOnDateRangeChange = jest.fn()
+
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <KnowledgeHubTable
+                        {...defaultProps}
+                        dateRange={{
+                            startDate: '2024-01-01T00:00:00.000Z',
+                            endDate: '2024-01-07T23:59:59.999Z',
+                        }}
+                        onDateRangeChange={mockOnDateRangeChange}
+                    />
+                </QueryClientProvider>,
+            )
+
+            // Verify the filter is rendered
+            expect(screen.getByText('Last updated date')).toBeInTheDocument()
+        })
+
+        it('renders AI filter with clear handler when value is set', () => {
+            const mockOnInUseByAIChange = jest.fn()
+
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <KnowledgeHubTable
+                        {...defaultProps}
+                        inUseByAIFilter={true}
+                        onInUseByAIChange={mockOnInUseByAIChange}
+                    />
+                </QueryClientProvider>,
+            )
+
+            // Verify the filter is rendered
+            expect(screen.getByText('In use by AI Agent')).toBeInTheDocument()
+        })
+
+        it('renders both filters when both are active', () => {
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <KnowledgeHubTable
+                        {...defaultProps}
+                        dateRange={{
+                            startDate: '2024-01-01T00:00:00.000Z',
+                            endDate: '2024-01-07T23:59:59.999Z',
+                        }}
+                        inUseByAIFilter={true}
+                    />
+                </QueryClientProvider>,
+            )
+
+            // Verify both filters are rendered
+            expect(screen.getByText('Last updated date')).toBeInTheDocument()
+            expect(screen.getByText('In use by AI Agent')).toBeInTheDocument()
+        })
+
+        it('does not render date filter when no dates are set', () => {
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <KnowledgeHubTable
+                        {...defaultProps}
+                        dateRange={{ startDate: null, endDate: null }}
+                    />
+                </QueryClientProvider>,
+            )
+
+            // Verify date filter is not rendered
+            expect(
+                screen.queryByText('Last updated date'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render AI filter when value is null', () => {
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <KnowledgeHubTable
+                        {...defaultProps}
+                        inUseByAIFilter={null}
+                    />
+                </QueryClientProvider>,
+            )
+
+            // Verify AI filter is not rendered
+            expect(
+                screen.queryByText('In use by AI Agent'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('shows Add Filter button when filters are available', () => {
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <KnowledgeHubTable {...defaultProps} />
+                </QueryClientProvider>,
+            )
+
+            // Verify Add Filter button is present
+            expect(
+                screen.getByRole('button', { name: /add filter/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('InUseByAI filter', () => {
+        const mixedVisibilityData = [
+            {
+                type: KnowledgeType.Document,
+                title: 'Public Doc 1',
+                lastUpdatedAt: '2024-01-15T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                source: 'docs.example.com',
+                id: '1',
+            },
+            {
+                type: KnowledgeType.FAQ,
+                title: 'Unlisted FAQ',
+                lastUpdatedAt: '2024-01-10T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.UNLISTED,
+                source: 'docs.example.com',
+                id: '2',
+            },
+            {
+                type: KnowledgeType.Document,
+                title: 'Public Doc 2',
+                lastUpdatedAt: '2024-01-20T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                source: 'help.example.com',
+                id: '3',
+            },
+            {
+                type: KnowledgeType.Guidance,
+                title: 'Unlisted Guidance',
+                lastUpdatedAt: '2024-01-25T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.UNLISTED,
+                id: '4',
+            },
+        ]
+
+        it('shows items as flat list when InUseByAI filter is applied', async () => {
+            const user = userEvent.setup()
+            renderComponent({ data: mixedVisibilityData })
+
+            const addFilterButton = screen.getByRole('button', {
+                name: /add filter/i,
+            })
+            await user.click(addFilterButton)
+
+            const inUseByAIOptions =
+                await screen.findAllByText('In Use by AI Agent')
+            await user.click(inUseByAIOptions[1])
+
+            const trueOption = await screen.findByText('True')
+            await user.click(trueOption)
+
+            await waitFor(() => {
+                expect(screen.getByText('Public Doc 1')).toBeInTheDocument()
+                expect(screen.getByText('Public Doc 2')).toBeInTheDocument()
+                expect(screen.queryByText('snippets')).not.toBeInTheDocument()
+            })
+        })
+
+        it('filters correctly for PUBLIC items in flat list', async () => {
+            const user = userEvent.setup()
+            renderComponent({ data: mixedVisibilityData })
+
+            const addFilterButton = screen.getByRole('button', {
+                name: /add filter/i,
+            })
+            await user.click(addFilterButton)
+
+            const inUseByAIOptions =
+                await screen.findAllByText('In Use by AI Agent')
+            await user.click(inUseByAIOptions[1])
+
+            const trueOption = await screen.findByText('True')
+            await user.click(trueOption)
+
+            await waitFor(() => {
+                expect(screen.getByText('Public Doc 1')).toBeInTheDocument()
+                expect(screen.getByText('Public Doc 2')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('Unlisted FAQ'),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByText('Unlisted Guidance'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('filters correctly for UNLISTED items in flat list', async () => {
+            const user = userEvent.setup()
+            renderComponent({ data: mixedVisibilityData })
+
+            const addFilterButton = screen.getByRole('button', {
+                name: /add filter/i,
+            })
+            await user.click(addFilterButton)
+
+            const inUseByAIOptions =
+                await screen.findAllByText('In Use by AI Agent')
+            await user.click(inUseByAIOptions[1])
+
+            const falseOption = await screen.findByText('False')
+            await user.click(falseOption)
+
+            await waitFor(() => {
+                expect(screen.getByText('Unlisted FAQ')).toBeInTheDocument()
+                expect(
+                    screen.getByText('Unlisted Guidance'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByText('Public Doc 1'),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByText('Public Doc 2'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('works correctly with type filter', async () => {
+            const user = userEvent.setup()
+            renderComponent({
+                data: mixedVisibilityData,
+                selectedTypeFilter: KnowledgeType.Document,
+            })
+
+            const addFilterButton = screen.getByRole('button', {
+                name: /add filter/i,
+            })
+            await user.click(addFilterButton)
+
+            const inUseByAIOptions =
+                await screen.findAllByText('In Use by AI Agent')
+            await user.click(inUseByAIOptions[1])
+
+            const trueOption = await screen.findByText('True')
+            await user.click(trueOption)
+
+            await waitFor(() => {
+                expect(screen.getByText('Public Doc 1')).toBeInTheDocument()
+                expect(screen.getByText('Public Doc 2')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('Unlisted FAQ'),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByText('Unlisted Guidance'),
+                ).not.toBeInTheDocument()
+            })
         })
     })
 })

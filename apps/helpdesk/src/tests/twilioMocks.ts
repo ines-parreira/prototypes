@@ -68,6 +68,7 @@ export const mockMonitoringCall = (
     inCallAgentId = 123,
     customerId = 456,
     customerPhoneNumber = '+14158880101',
+    callSid = 'CA123',
 ): Partial<Call> => {
     return {
         ...mockCall(),
@@ -81,5 +82,6 @@ export const mockMonitoringCall = (
             ['customer_id', customerId.toString()],
             ['customer_phone_number', customerPhoneNumber],
         ]),
+        parameters: { CallSid: callSid },
     }
 }

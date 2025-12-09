@@ -86,6 +86,30 @@ export function useKnowledgeHubUrlParams(
             return null
         })
 
+    const [searchTerm, setSearchTerm] = useState<string>(() => {
+        const params = new URLSearchParams(location.search)
+        return params.get('search') || ''
+    })
+
+    const [dateRange, setDateRange] = useState<{
+        startDate: string | null
+        endDate: string | null
+    }>(() => {
+        const params = new URLSearchParams(location.search)
+        return {
+            startDate: params.get('startDate'),
+            endDate: params.get('endDate'),
+        }
+    })
+
+    const [inUseByAIFilter, setInUseByAIFilter] = useState<boolean | null>(
+        () => {
+            const params = new URLSearchParams(location.search)
+            const value = params.get('inUseByAI')
+            return value === 'true' ? true : value === 'false' ? false : null
+        },
+    )
+
     const buildUrlWithParams = useCallback(
         (basePath: string) => {
             const params = new URLSearchParams()
@@ -95,10 +119,28 @@ export function useKnowledgeHubUrlParams(
             if (selectedFolder?.source) {
                 params.set('folder', encodeURIComponent(selectedFolder.source))
             }
+            if (searchTerm) {
+                params.set('search', searchTerm)
+            }
+            if (dateRange.startDate) {
+                params.set('startDate', dateRange.startDate)
+            }
+            if (dateRange.endDate) {
+                params.set('endDate', dateRange.endDate)
+            }
+            if (inUseByAIFilter !== null) {
+                params.set('inUseByAI', String(inUseByAIFilter))
+            }
             const queryString = params.toString()
             return queryString ? `${basePath}?${queryString}` : basePath
         },
-        [selectedFilter, selectedFolder],
+        [
+            selectedFilter,
+            selectedFolder,
+            searchTerm,
+            dateRange,
+            inUseByAIFilter,
+        ],
     )
 
     // Sync filter state with URL when URL changes
@@ -156,6 +198,39 @@ export function useKnowledgeHubUrlParams(
         }
     }, [location.search, selectedFolder, tableData])
 
+    // Sync search term with URL
+    useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const searchParam = params.get('search') || ''
+        if (searchParam !== searchTerm) {
+            setSearchTerm(searchParam)
+        }
+    }, [location.search, searchTerm])
+
+    // Sync date range with URL
+    useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const startDate = params.get('startDate')
+        const endDate = params.get('endDate')
+        if (
+            startDate !== dateRange.startDate ||
+            endDate !== dateRange.endDate
+        ) {
+            setDateRange({ startDate, endDate })
+        }
+    }, [location.search, dateRange])
+
+    // Sync AI filter with URL
+    useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const value = params.get('inUseByAI')
+        const paramValue =
+            value === 'true' ? true : value === 'false' ? false : null
+        if (paramValue !== inUseByAIFilter) {
+            setInUseByAIFilter(paramValue)
+        }
+    }, [location.search, inUseByAIFilter])
+
     const handleDocumentFilterChange = useCallback(
         (value: KnowledgeType | null) => {
             const shouldClearFolder =
@@ -212,6 +287,62 @@ export function useKnowledgeHubUrlParams(
         history.replace(newUrl)
     }, [history, location.search])
 
+    const handleSearchChange = useCallback(
+        (value: string) => {
+            setSearchTerm(value)
+            const params = new URLSearchParams(location.search)
+            if (value) {
+                params.set('search', value)
+            } else {
+                params.delete('search')
+            }
+            const newUrl = params.toString()
+                ? `${history.location.pathname}?${params.toString()}`
+                : history.location.pathname
+            history.replace(newUrl)
+        },
+        [history, location.search],
+    )
+
+    const handleDateRangeChange = useCallback(
+        (startDate: string | null, endDate: string | null) => {
+            setDateRange({ startDate, endDate })
+            const params = new URLSearchParams(location.search)
+            if (startDate) {
+                params.set('startDate', startDate)
+            } else {
+                params.delete('startDate')
+            }
+            if (endDate) {
+                params.set('endDate', endDate)
+            } else {
+                params.delete('endDate')
+            }
+            const newUrl = params.toString()
+                ? `${history.location.pathname}?${params.toString()}`
+                : history.location.pathname
+            history.replace(newUrl)
+        },
+        [history, location.search],
+    )
+
+    const handleInUseByAIChange = useCallback(
+        (value: boolean | null) => {
+            setInUseByAIFilter(value)
+            const params = new URLSearchParams(location.search)
+            if (value !== null) {
+                params.set('inUseByAI', String(value))
+            } else {
+                params.delete('inUseByAI')
+            }
+            const newUrl = params.toString()
+                ? `${history.location.pathname}?${params.toString()}`
+                : history.location.pathname
+            history.replace(newUrl)
+        },
+        [history, location.search],
+    )
+
     const handleCloseEditorPath = useCallback(() => {
         const basePath = routes.knowledgeSources
         const targetPath = buildUrlWithParams(basePath)
@@ -223,6 +354,12 @@ export function useKnowledgeHubUrlParams(
         setSelectedFilter,
         selectedFolder,
         setSelectedFolder,
+        searchTerm,
+        setSearchTerm: handleSearchChange,
+        dateRange,
+        setDateRange: handleDateRangeChange,
+        inUseByAIFilter,
+        setInUseByAIFilter: handleInUseByAIChange,
         buildUrlWithParams,
         handleDocumentFilterChange,
         updateUrlWithFolderParam,

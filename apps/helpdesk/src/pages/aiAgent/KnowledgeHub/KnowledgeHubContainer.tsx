@@ -90,6 +90,12 @@ export const KnowledgeHubContainer = () => {
         selectedFilter,
         selectedFolder,
         setSelectedFolder,
+        searchTerm,
+        setSearchTerm,
+        dateRange,
+        setDateRange,
+        inUseByAIFilter,
+        setInUseByAIFilter,
         buildUrlWithParams,
         handleDocumentFilterChange,
         updateUrlWithFolderParam,
@@ -412,6 +418,12 @@ export const KnowledgeHubContainer = () => {
                 onSnippetRowClick={handleOpenSnippetEditor}
                 selectedFolder={selectedFolder}
                 selectedTypeFilter={selectedFilter}
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                dateRange={dateRange}
+                onDateRangeChange={setDateRange}
+                inUseByAIFilter={inUseByAIFilter}
+                onInUseByAIChange={setInUseByAIFilter}
                 faqHelpCenterId={faqHelpCenterId}
                 shopName={shopName}
                 shopType={shopType}

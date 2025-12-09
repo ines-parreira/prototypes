@@ -1,5 +1,10 @@
+import moment from 'moment-timezone'
+
 import { KnowledgeType, KnowledgeVisibility } from '../../types'
+import type { KnowledgeItem } from '../../types'
 import {
+    filterKnowledgeItemsByDateRange,
+    filterKnowledgeItemsByInUseByAI,
     filterKnowledgeItemsBySearchTerm,
     filterKnowledgeItemsBySource,
     groupKnowledgeItemsBySource,
@@ -272,6 +277,286 @@ describe('KnowledgeHub Table Utils', () => {
 
             expect(result).toHaveLength(1)
             expect(result[0].title).toBe('Shipping FAQ')
+        })
+    })
+
+    describe('filterKnowledgeItemsByDateRange', () => {
+        const items: KnowledgeItem[] = [
+            {
+                type: KnowledgeType.Document,
+                title: 'Item 1',
+                lastUpdatedAt: '2025-01-15T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                id: '1',
+            },
+            {
+                type: KnowledgeType.FAQ,
+                title: 'Item 2',
+                lastUpdatedAt: '2025-02-10T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.UNLISTED,
+                id: '2',
+            },
+            {
+                type: KnowledgeType.Guidance,
+                title: 'Item 3',
+                lastUpdatedAt: '2025-03-05T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                id: '3',
+            },
+            {
+                type: KnowledgeType.Document,
+                title: 'Item 4',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                id: '4',
+            } as KnowledgeItem,
+        ]
+
+        it('returns all items when no date range is provided', () => {
+            const result = filterKnowledgeItemsByDateRange(items, null, null)
+
+            expect(result).toEqual(items)
+        })
+
+        it('filters out items before start date', () => {
+            const startDate = moment('2025-02-01')
+            const result = filterKnowledgeItemsByDateRange(
+                items,
+                startDate,
+                null,
+            )
+
+            expect(result).toHaveLength(3)
+            expect(result.find((item) => item.id === '1')).toBeUndefined()
+            expect(result.find((item) => item.id === '2')).toBeDefined()
+            expect(result.find((item) => item.id === '3')).toBeDefined()
+        })
+
+        it('filters out items after end date', () => {
+            const endDate = moment('2025-02-15')
+            const result = filterKnowledgeItemsByDateRange(items, null, endDate)
+
+            expect(result).toHaveLength(3)
+            expect(result.find((item) => item.id === '1')).toBeDefined()
+            expect(result.find((item) => item.id === '2')).toBeDefined()
+            expect(result.find((item) => item.id === '3')).toBeUndefined()
+        })
+
+        it('filters items within date range', () => {
+            const startDate = moment('2025-02-01')
+            const endDate = moment('2025-02-28')
+            const result = filterKnowledgeItemsByDateRange(
+                items,
+                startDate,
+                endDate,
+            )
+
+            expect(result).toHaveLength(2)
+            expect(result.find((item) => item.id === '2')).toBeDefined()
+            expect(result.find((item) => item.id === '4')).toBeDefined()
+        })
+
+        it('includes items without lastUpdatedAt field', () => {
+            const startDate = moment('2025-02-01')
+            const endDate = moment('2025-02-28')
+            const result = filterKnowledgeItemsByDateRange(
+                items,
+                startDate,
+                endDate,
+            )
+
+            const itemWithoutDate = result.find((item) => item.id === '4')
+            expect(itemWithoutDate).toBeDefined()
+            expect(itemWithoutDate?.lastUpdatedAt).toBeUndefined()
+        })
+
+        it('handles items on boundary dates correctly', () => {
+            const startDate = moment('2025-01-15')
+            const endDate = moment('2025-03-05')
+            const result = filterKnowledgeItemsByDateRange(
+                items,
+                startDate,
+                endDate,
+            )
+
+            expect(result).toHaveLength(4)
+            expect(result.find((item) => item.id === '1')).toBeDefined()
+            expect(result.find((item) => item.id === '3')).toBeDefined()
+        })
+
+        it('returns empty array when no items match date range', () => {
+            const startDate = moment('2025-04-01')
+            const endDate = moment('2025-04-30')
+            const result = filterKnowledgeItemsByDateRange(
+                items,
+                startDate,
+                endDate,
+            )
+
+            expect(result).toHaveLength(1)
+            expect(result[0].id).toBe('4')
+        })
+
+        it('handles empty array', () => {
+            const startDate = moment('2025-01-01')
+            const endDate = moment('2025-12-31')
+            const result = filterKnowledgeItemsByDateRange(
+                [],
+                startDate,
+                endDate,
+            )
+
+            expect(result).toEqual([])
+        })
+
+        it('compares dates at day level not time level', () => {
+            const itemsWithTimes = [
+                {
+                    type: KnowledgeType.Document,
+                    title: 'Morning Item',
+                    lastUpdatedAt: '2025-01-15T08:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    id: '1',
+                },
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'Evening Item',
+                    lastUpdatedAt: '2025-01-15T20:00:00Z',
+                    inUseByAI: KnowledgeVisibility.UNLISTED,
+                    id: '2',
+                },
+            ]
+
+            const startDate = moment('2025-01-15')
+            const endDate = moment('2025-01-15')
+            const result = filterKnowledgeItemsByDateRange(
+                itemsWithTimes,
+                startDate,
+                endDate,
+            )
+
+            expect(result).toHaveLength(2)
+        })
+    })
+
+    describe('filterKnowledgeItemsByInUseByAI', () => {
+        const items = [
+            {
+                type: KnowledgeType.Document,
+                title: 'Public Item 1',
+                lastUpdatedAt: '2025-01-01T00:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                id: '1',
+            },
+            {
+                type: KnowledgeType.FAQ,
+                title: 'Unlisted Item',
+                lastUpdatedAt: '2025-01-02T00:00:00Z',
+                inUseByAI: KnowledgeVisibility.UNLISTED,
+                id: '2',
+            },
+            {
+                type: KnowledgeType.Guidance,
+                title: 'Public Item 2',
+                lastUpdatedAt: '2025-01-03T00:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                id: '3',
+            },
+            {
+                type: KnowledgeType.Document,
+                title: 'Item Without Status',
+                lastUpdatedAt: '2025-01-04T00:00:00Z',
+                id: '4',
+            },
+        ]
+
+        it('returns all items when filter is null', () => {
+            const result = filterKnowledgeItemsByInUseByAI(items, null)
+
+            expect(result).toEqual(items)
+            expect(result).toHaveLength(4)
+        })
+
+        it('returns only PUBLIC items when filter is true', () => {
+            const result = filterKnowledgeItemsByInUseByAI(items, true)
+
+            expect(result).toHaveLength(2)
+            expect(result[0].id).toBe('1')
+            expect(result[0].inUseByAI).toBe(KnowledgeVisibility.PUBLIC)
+            expect(result[1].id).toBe('3')
+            expect(result[1].inUseByAI).toBe(KnowledgeVisibility.PUBLIC)
+        })
+
+        it('returns only UNLISTED items when filter is false', () => {
+            const result = filterKnowledgeItemsByInUseByAI(items, false)
+
+            expect(result).toHaveLength(1)
+            expect(result[0].id).toBe('2')
+            expect(result[0].inUseByAI).toBe(KnowledgeVisibility.UNLISTED)
+        })
+
+        it('excludes items without inUseByAI property when filtering', () => {
+            const result = filterKnowledgeItemsByInUseByAI(items, true)
+
+            expect(result.find((item) => item.id === '4')).toBeUndefined()
+        })
+
+        it('handles empty array', () => {
+            const result = filterKnowledgeItemsByInUseByAI([], true)
+
+            expect(result).toEqual([])
+        })
+
+        it('returns empty array when no items match filter', () => {
+            const publicOnlyItems = [
+                {
+                    type: KnowledgeType.Document,
+                    title: 'Public Item',
+                    lastUpdatedAt: '2025-01-01T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    id: '1',
+                },
+            ]
+
+            const result = filterKnowledgeItemsByInUseByAI(
+                publicOnlyItems,
+                false,
+            )
+
+            expect(result).toEqual([])
+        })
+
+        it('correctly identifies visibility enum values', () => {
+            const mixedItems = [
+                {
+                    type: KnowledgeType.Document,
+                    title: 'Item 1',
+                    lastUpdatedAt: '2025-01-01T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    id: '1',
+                },
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'Item 2',
+                    lastUpdatedAt: '2025-01-02T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.UNLISTED,
+                    id: '2',
+                },
+            ]
+
+            const publicResult = filterKnowledgeItemsByInUseByAI(
+                mixedItems,
+                true,
+            )
+            const unlistedResult = filterKnowledgeItemsByInUseByAI(
+                mixedItems,
+                false,
+            )
+
+            expect(publicResult).toHaveLength(1)
+            expect(publicResult[0].inUseByAI).toBe('public')
+
+            expect(unlistedResult).toHaveLength(1)
+            expect(unlistedResult[0].inUseByAI).toBe('unlisted')
         })
     })
 })

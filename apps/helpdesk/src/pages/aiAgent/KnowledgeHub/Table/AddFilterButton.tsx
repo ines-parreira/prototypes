@@ -13,16 +13,18 @@ export type FilterOption = {
 
 type Props = {
     options: FilterOption[]
+    onOptionSelect: (value: string) => void
 }
 
 export const ADD_FILTER_BUTTON_LABEL = 'Add Filter'
 
-export const AddFilterButton = ({ options }: Props) => {
+export const AddFilterButton = ({ options, onOptionSelect }: Props) => {
     const buttonRef = useRef(null)
     const [isOpen, setIsOpen] = useState(false)
 
     const onToggle = () => setIsOpen(!isOpen)
-    const handleOnClick = () => {
+    const handleOnClick = (value: string) => {
+        onOptionSelect(value)
         setIsOpen(false)
     }
 
@@ -44,7 +46,7 @@ export const AddFilterButton = ({ options }: Props) => {
                         <DropdownItem
                             key={option.value}
                             option={option}
-                            onClick={handleOnClick}
+                            onClick={() => handleOnClick(option.value)}
                         >
                             {option.label}
                         </DropdownItem>

@@ -34,6 +34,7 @@ export const getValidator = (
         case FilterKey.Campaigns:
         case FilterKey.CampaignStatuses:
         case FilterKey.Channels:
+        case FilterKey.Journeys:
         case FilterKey.CommunicationSkills:
         case FilterKey.Efficiency:
         case FilterKey.HelpCenters:

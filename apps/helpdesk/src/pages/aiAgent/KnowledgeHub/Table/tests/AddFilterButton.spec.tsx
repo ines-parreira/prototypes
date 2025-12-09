@@ -10,9 +10,19 @@ describe('AddFilterButton', () => {
         { label: 'In Use by AI Agent', value: 'inUseByAI' },
         { label: 'Knowledge Type', value: 'type' },
     ]
+    const mockOnOptionSelect = jest.fn()
+
+    beforeEach(() => {
+        mockOnOptionSelect.mockClear()
+    })
 
     it('renders button with label', () => {
-        render(<AddFilterButton options={mockOptions} />)
+        render(
+            <AddFilterButton
+                options={mockOptions}
+                onOptionSelect={mockOnOptionSelect}
+            />,
+        )
 
         expect(
             screen.getByRole('button', { name: /add filter/i }),
@@ -20,14 +30,24 @@ describe('AddFilterButton', () => {
     })
 
     it('renders button with correct size', () => {
-        render(<AddFilterButton options={mockOptions} />)
+        render(
+            <AddFilterButton
+                options={mockOptions}
+                onOptionSelect={mockOnOptionSelect}
+            />,
+        )
 
         const button = screen.getByRole('button', { name: /add filter/i })
         expect(button).toBeInTheDocument()
     })
 
     it('opens dropdown when button is clicked', async () => {
-        render(<AddFilterButton options={mockOptions} />)
+        render(
+            <AddFilterButton
+                options={mockOptions}
+                onOptionSelect={mockOnOptionSelect}
+            />,
+        )
 
         const button = screen.getByRole('button', { name: /add filter/i })
         await userEvent.click(button)
@@ -40,7 +60,12 @@ describe('AddFilterButton', () => {
     })
 
     it('closes dropdown when option is clicked', async () => {
-        render(<AddFilterButton options={mockOptions} />)
+        render(
+            <AddFilterButton
+                options={mockOptions}
+                onOptionSelect={mockOnOptionSelect}
+            />,
+        )
 
         const button = screen.getByRole('button', { name: /add filter/i })
         await userEvent.click(button)
@@ -59,8 +84,35 @@ describe('AddFilterButton', () => {
         })
     })
 
+    it('calls onOptionSelect with correct value when option is clicked', async () => {
+        render(
+            <AddFilterButton
+                options={mockOptions}
+                onOptionSelect={mockOnOptionSelect}
+            />,
+        )
+
+        const button = screen.getByRole('button', { name: /add filter/i })
+        await userEvent.click(button)
+
+        await waitFor(() => {
+            expect(screen.getByText('Last Updated Date')).toBeInTheDocument()
+        })
+
+        const option = screen.getByText('Last Updated Date')
+        await userEvent.click(option)
+
+        expect(mockOnOptionSelect).toHaveBeenCalledWith('lastUpdatedAt')
+        expect(mockOnOptionSelect).toHaveBeenCalledTimes(1)
+    })
+
     it('closes dropdown when button is clicked again', async () => {
-        render(<AddFilterButton options={mockOptions} />)
+        render(
+            <AddFilterButton
+                options={mockOptions}
+                onOptionSelect={mockOnOptionSelect}
+            />,
+        )
 
         const button = screen.getByRole('button', { name: /add filter/i })
 
@@ -78,7 +130,12 @@ describe('AddFilterButton', () => {
     })
 
     it('renders all provided options', async () => {
-        render(<AddFilterButton options={mockOptions} />)
+        render(
+            <AddFilterButton
+                options={mockOptions}
+                onOptionSelect={mockOnOptionSelect}
+            />,
+        )
 
         const button = screen.getByRole('button', { name: /add filter/i })
         await userEvent.click(button)
@@ -91,7 +148,12 @@ describe('AddFilterButton', () => {
     })
 
     it('handles empty options array', async () => {
-        render(<AddFilterButton options={[]} />)
+        render(
+            <AddFilterButton
+                options={[]}
+                onOptionSelect={mockOnOptionSelect}
+            />,
+        )
 
         const button = screen.getByRole('button', { name: /add filter/i })
         expect(button).toBeInTheDocument()

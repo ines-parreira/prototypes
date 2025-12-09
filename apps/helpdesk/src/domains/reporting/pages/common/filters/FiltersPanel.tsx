@@ -110,6 +110,7 @@ const getActiveFilters = (
             filterKey !== FilterKey.CustomFields &&
             filterKey !== FilterKey.Tags &&
             filterKey !== FilterKey.AggregationWindow &&
+            filterKey !== FilterKey.Journeys &&
             filterKey !== FilterKey.Period
         ) {
             const filter =

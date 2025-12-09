@@ -90,6 +90,8 @@ import {
     CampaignStatusesFilterFromSavedContext,
 } from 'domains/reporting/pages/convert/components/CampaignStatusesFilter/CampaignStatusesFilter'
 
+import { JourneysFilterWithState } from './JourneysFilter'
+
 export const FilterComponentMap: Record<
     FilterKey | FilterComponentKey,
     ComponentType<any>
@@ -106,6 +108,7 @@ export const FilterComponentMap: Record<
     [FilterKey.Campaigns]: CampaignsFilterFromContext,
     [FilterKey.CampaignStatuses]: CampaignStatusesFilterFromContext,
     [FilterKey.Channels]: ChannelsFilterWithState,
+    [FilterKey.Journeys]: JourneysFilterWithState,
     [FilterKey.CommunicationSkills]: CommunicationSkillsFilterWithState,
     [FilterKey.CustomFields]: CustomFieldsFilterWithState,
     [FilterKey.Efficiency]: EfficiencyFilterWithState,
@@ -147,6 +150,7 @@ export const SavedFilterComponentMap: Record<
     [FilterKey.Score]: ScoreFiltersWithSavedState,
     [FilterKey.Tags]: TagsFilterWithSavedState,
     [FilterKey.AggregationWindow]: () => null,
+    [FilterKey.Journeys]: () => null,
     [FilterKey.HelpCenters]: () => null,
     [FilterKey.LocaleCodes]: () => null,
     [FilterKey.Period]: () => null,

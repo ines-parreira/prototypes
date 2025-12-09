@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
+import moment from 'moment-timezone'
 
 import {
     HeaderRowGroup,
@@ -19,9 +20,13 @@ import {
 import type { FilterOption } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
 import { AddFilterButton } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
 import { getColumns } from 'pages/aiAgent/KnowledgeHub/Table/columns'
+import { InUseByAIFilter } from 'pages/aiAgent/KnowledgeHub/Table/InUseByAIFilter'
 import { ItemCount } from 'pages/aiAgent/KnowledgeHub/Table/ItemCount'
+import { LastUpdatedDateFilter } from 'pages/aiAgent/KnowledgeHub/Table/LastUpdatedDateFilter'
 import { SearchInput } from 'pages/aiAgent/KnowledgeHub/Table/SearchInput'
 import {
+    filterKnowledgeItemsByDateRange,
+    filterKnowledgeItemsByInUseByAI,
     filterKnowledgeItemsBySearchTerm,
     filterKnowledgeItemsBySource,
     groupKnowledgeItemsBySource,
@@ -51,6 +56,15 @@ type KnowledgeHubTableProps = {
     onFaqEditorOpen?: () => void
     selectedFolder: GroupedKnowledgeItem | null
     selectedTypeFilter?: KnowledgeType | null
+    searchTerm: string
+    onSearchChange: (value: string) => void
+    dateRange: { startDate: string | null; endDate: string | null }
+    onDateRangeChange: (
+        startDate: string | null,
+        endDate: string | null,
+    ) => void
+    inUseByAIFilter: boolean | null
+    onInUseByAIChange: (value: boolean | null) => void
     faqHelpCenterId?: number | null
     shopName?: string
     shopType: string
@@ -67,12 +81,30 @@ export const KnowledgeHubTable = ({
     onFaqEditorOpen,
     selectedFolder,
     selectedTypeFilter = null,
+    searchTerm,
+    onSearchChange,
+    dateRange,
+    onDateRangeChange,
+    inUseByAIFilter,
+    onInUseByAIChange,
     faqHelpCenterId,
     shopName = '',
     shopType,
     guidanceHelpCenterId,
 }: KnowledgeHubTableProps) => {
-    const [searchTerm, setSearchTerm] = useState('')
+    // Initialize activeFilterTypes from URL params - if filters have values, show their UI
+    const [activeFilterTypes, setActiveFilterTypes] = useState<Set<string>>(
+        () => {
+            const active = new Set<string>()
+            if (dateRange.startDate || dateRange.endDate) {
+                active.add('lastUpdatedAt')
+            }
+            if (inUseByAIFilter !== null) {
+                active.add('inUseByAI')
+            }
+            return active
+        },
+    )
 
     const { guidanceActions: availableActions } =
         useGetGuidancesAvailableActions(shopName, shopType)
@@ -88,6 +120,27 @@ export const KnowledgeHubTable = ({
             )
         }
 
+        if (inUseByAIFilter !== null) {
+            filtered = filterKnowledgeItemsByInUseByAI(
+                filtered,
+                inUseByAIFilter,
+            )
+        }
+
+        if (dateRange.startDate || dateRange.endDate) {
+            const startMoment = dateRange.startDate
+                ? moment(dateRange.startDate)
+                : null
+            const endMoment = dateRange.endDate
+                ? moment(dateRange.endDate)
+                : null
+            filtered = filterKnowledgeItemsByDateRange(
+                filtered,
+                startMoment,
+                endMoment,
+            )
+        }
+
         if (!searchTerm) {
             return filtered
         }
@@ -99,10 +152,20 @@ export const KnowledgeHubTable = ({
                 item.source?.toLowerCase().includes(searchLower)
             )
         })
-    }, [data, searchTerm, selectedTypeFilter])
+    }, [
+        data,
+        searchTerm,
+        selectedTypeFilter,
+        inUseByAIFilter,
+        dateRange.startDate,
+        dateRange.endDate,
+    ])
 
     const displayData = useMemo(() => {
-        const shouldGroupData = isSearchActive || Boolean(selectedFolder)
+        const shouldGroupData =
+            isSearchActive ||
+            Boolean(selectedFolder) ||
+            inUseByAIFilter !== null
         const groupedData = groupKnowledgeItemsBySource(
             filteredData,
             !shouldGroupData,
@@ -119,7 +182,13 @@ export const KnowledgeHubTable = ({
         )
 
         return filteredBySearchTerm
-    }, [filteredData, isSearchActive, selectedFolder, searchTerm])
+    }, [
+        filteredData,
+        isSearchActive,
+        selectedFolder,
+        searchTerm,
+        inUseByAIFilter,
+    ])
 
     const handleRowClick = useCallback(
         (row: GroupedKnowledgeItem) => {
@@ -187,7 +256,15 @@ export const KnowledgeHubTable = ({
         },
     })
 
-    if (!searchTerm && displayData.length === 0 && !isLoading) {
+    const isSearchEmptyPage =
+        !isLoading &&
+        (searchTerm ||
+            dateRange.startDate ||
+            dateRange.endDate ||
+            inUseByAIFilter !== null) &&
+        displayData.length === 0
+
+    if (!isSearchEmptyPage && displayData.length === 0 && !isLoading) {
         return (
             <div className={css.emptyTable}>
                 <EmptyStateWrapper
@@ -200,11 +277,30 @@ export const KnowledgeHubTable = ({
         )
     }
 
-    const isSearchEmptyPage =
-        !isLoading && searchTerm && displayData.length === 0
-
     const clearSearch = () => {
-        setSearchTerm('')
+        onSearchChange('')
+    }
+
+    const handleFilterSelect = (filterValue: string) => {
+        setActiveFilterTypes((prev) => new Set(prev).add(filterValue))
+    }
+
+    const handleDateRangeClear = () => {
+        onDateRangeChange(null, null)
+        setActiveFilterTypes((prev) => {
+            const next = new Set(prev)
+            next.delete('lastUpdatedAt')
+            return next
+        })
+    }
+
+    const handleInUseByAIClear = () => {
+        onInUseByAIChange(null)
+        setActiveFilterTypes((prev) => {
+            const next = new Set(prev)
+            next.delete('inUseByAI')
+            return next
+        })
     }
 
     return (
@@ -213,47 +309,85 @@ export const KnowledgeHubTable = ({
                 [css.searchEmptyTable]: isSearchEmptyPage,
             })}
         >
-            <div className={css.tableToolbars}>
-                <TableToolbar<GroupedKnowledgeItem>
-                    table={table}
-                    bottomRow={{
-                        left: [
-                            {
-                                key: 'mySearch',
-                                content: (
-                                    <SearchInput
-                                        value={searchTerm}
-                                        onChange={setSearchTerm}
-                                        placeholder="Search..."
-                                    />
-                                ),
-                            },
-                            {
-                                key: 'addFilter',
-                                content: (
-                                    <AddFilterButton options={FILTER_OPTIONS} />
-                                ),
-                            },
-                        ],
-                    }}
-                />
-                <TableToolbar<GroupedKnowledgeItem>
-                    table={table}
-                    bottomRow={{
-                        left: [
-                            {
-                                key: 'itemSelected',
-                                content: (
-                                    <ItemCount
-                                        table={table}
-                                        isSearchActive={isSearchActive}
-                                    />
-                                ),
-                            },
-                        ],
-                    }}
-                />
-            </div>
+            <TableToolbar<GroupedKnowledgeItem>
+                table={table}
+                topRow={{
+                    left: [
+                        {
+                            key: 'mySearch',
+                            content: (
+                                <SearchInput
+                                    value={searchTerm}
+                                    onChange={onSearchChange}
+                                    placeholder="Search..."
+                                />
+                            ),
+                        },
+                        ...(activeFilterTypes.has('lastUpdatedAt')
+                            ? [
+                                  {
+                                      key: 'dateFilter',
+                                      content: (
+                                          <LastUpdatedDateFilter
+                                              startDate={dateRange.startDate}
+                                              endDate={dateRange.endDate}
+                                              onChange={onDateRangeChange}
+                                              onClear={handleDateRangeClear}
+                                          />
+                                      ),
+                                  },
+                              ]
+                            : []),
+                        ...(activeFilterTypes.has('inUseByAI')
+                            ? [
+                                  {
+                                      key: 'inUseByAIFilter',
+                                      content: (
+                                          <InUseByAIFilter
+                                              value={inUseByAIFilter}
+                                              onChange={onInUseByAIChange}
+                                              onClear={handleInUseByAIClear}
+                                          />
+                                      ),
+                                  },
+                              ]
+                            : []),
+                        ...(activeFilterTypes.size < FILTER_OPTIONS.length
+                            ? [
+                                  {
+                                      key: 'addFilter',
+                                      content: (
+                                          <AddFilterButton
+                                              options={FILTER_OPTIONS.filter(
+                                                  (option) =>
+                                                      !activeFilterTypes.has(
+                                                          option.value,
+                                                      ),
+                                              )}
+                                              onOptionSelect={
+                                                  handleFilterSelect
+                                              }
+                                          />
+                                      ),
+                                  },
+                              ]
+                            : []),
+                    ],
+                }}
+                bottomRow={{
+                    left: [
+                        {
+                            key: 'itemSelected',
+                            content: (
+                                <ItemCount
+                                    table={table}
+                                    isSearchActive={isSearchActive}
+                                />
+                            ),
+                        },
+                    ],
+                }}
+            />
             <TableRoot withBorder={false}>
                 {!isSearchEmptyPage && (
                     <TableHeader>

@@ -1,5 +1,7 @@
 import { TextField } from '@gorgias/axiom'
 
+import css from './SearchInput.less'
+
 type SearchInputProps = {
     value: string
     onChange: (value: string) => void
@@ -12,13 +14,15 @@ export const SearchInput = ({
     placeholder = 'Search...',
 }: SearchInputProps) => {
     return (
-        <TextField
-            type="text"
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder}
-            leadingSlot="search-magnifying-glass"
-            aria-label="Search knowledge items"
-        />
+        <div className={css.searchInput}>
+            <TextField
+                type="text"
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder}
+                leadingSlot="search-magnifying-glass"
+                aria-label="Search knowledge items"
+            />
+        </div>
     )
 }

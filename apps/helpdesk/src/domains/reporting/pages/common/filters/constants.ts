@@ -35,6 +35,7 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.HelpCenters]: 'Help Center',
     [FilterKey.LocaleCodes]: 'Language',
     [FilterKey.Channels]: 'Channel',
+    [FilterKey.Journeys]: 'Journeys',
     [FilterKey.Campaigns]: 'Campaign',
     [FilterKey.CampaignStatuses]: 'Campaign Status',
     [FilterKey.CustomFields]: 'Custom Field',

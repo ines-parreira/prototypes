@@ -1,12 +1,18 @@
 import { useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import type { Call } from '@twilio/voice-sdk'
 
-import { Button } from '@gorgias/axiom'
+import { Box, Button } from '@gorgias/axiom'
+import { useHandleCallWhispering } from '@gorgias/helpdesk-queries'
 
+import { useFlag } from 'core/flags'
 import { extractMonitoringCallParams } from 'hooks/integrations/phone/monitoring.utils'
 import { useCallMessageListener } from 'hooks/integrations/phone/useCallMessageListener'
+import { useNotify } from 'hooks/useNotify'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
+import { DynamicSoundWaveIcon } from 'pages/common/components/PhoneIntegrationBar/DynamicSoundWaveIcon/DynamicSoundWaveIcon'
+import { useAudioLevel } from 'pages/common/components/PhoneIntegrationBar/hooks'
 import PhoneBarCallerDetailsContainer from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
 import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
@@ -23,6 +29,8 @@ type Props = {
 }
 
 export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
+    const isCallWhisperingEnabled = useFlag(FeatureFlagKey.CallWhispering)
+
     const {
         integrationId,
         inCallAgentId: startingInCallAgentId,
@@ -30,13 +38,36 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
         customerPhoneNumber,
     } = extractMonitoringCallParams(call)
 
+    const monitoringCallSid = call.parameters.CallSid
+
     const [inCallAgentId, setInCallAgentId] = useState(startingInCallAgentId)
+    const [isWhispering, setIsWhispering] = useState(false)
+
+    const notify = useNotify()
+
+    const { mutate: handleCallWhispering, isLoading } = useHandleCallWhispering(
+        {
+            mutation: {
+                onSuccess: (_response, { data }) => {
+                    setIsWhispering(data.whisper)
+                },
+                onError: () => {
+                    const verb = isWhispering ? 'stop' : 'start'
+                    notify.error(
+                        `Failed to ${verb} whispering. Please try again.`,
+                    )
+                },
+            },
+        },
+    )
 
     useCallMessageListener(call, (twilioMessage) => {
         if (twilioMessage.type === TwilioMessageType.InCallAgentChanged) {
             setInCallAgentId(parseInt(twilioMessage.data.agent_id, 10))
         }
     })
+
+    const audioLevel = useAudioLevel(call)
 
     return (
         <PhoneBarContainer>
@@ -67,13 +98,39 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
                         <span>unknown agent</span>
                     )}
                 </PhoneBarCallerDetailsContainer>
-                <Button
-                    intent="destructive"
-                    leadingSlot="headset_mic"
-                    onClick={() => call.disconnect()}
-                >
-                    Stop Listening
-                </Button>
+                <Box display="flex" alignItems="center" gap="sm">
+                    {isCallWhisperingEnabled && (
+                        <DynamicSoundWaveIcon
+                            audioLevel={isWhispering ? audioLevel : 0}
+                        >
+                            <Button
+                                variant="secondary"
+                                icon={isWhispering ? 'user-mute' : 'user-voice'}
+                                onClick={() => {
+                                    handleCallWhispering({
+                                        data: {
+                                            monitoring_call_sid:
+                                                monitoringCallSid,
+                                            whisper: !isWhispering,
+                                        },
+                                    })
+                                }}
+                                isLoading={isLoading}
+                            >
+                                {isWhispering
+                                    ? 'Stop Whispering'
+                                    : 'Start Whispering'}
+                            </Button>
+                        </DynamicSoundWaveIcon>
+                    )}
+                    <Button
+                        intent="destructive"
+                        leadingSlot="headset_mic"
+                        onClick={() => call.disconnect()}
+                    >
+                        Stop Listening
+                    </Button>
+                </Box>
             </PhoneBarInnerContent>
             <PhoneInfobarWrapper>
                 <span>Connected</span>

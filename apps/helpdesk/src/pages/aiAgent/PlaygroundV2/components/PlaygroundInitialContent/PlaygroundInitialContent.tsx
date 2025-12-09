@@ -1,4 +1,8 @@
+import { useMemo } from 'react'
+
 import { Button, Heading, Icon, Text } from '@gorgias/axiom'
+
+import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 
 import css from './PlaygroundInitialContent.less'
 
@@ -11,6 +15,16 @@ export const PlaygroundInitialContent = ({
     onStartClick,
     isLoading,
 }: PlaygroundInitialContentProps) => {
+    const { areActionsEnabled } = useCoreContext()
+
+    const actionsSnippet = useMemo(
+        () =>
+            areActionsEnabled
+                ? ', but the actions will affect real customer data'
+                : ' or take any real actions',
+        [areActionsEnabled],
+    )
+
     return (
         <div className={css.container}>
             <div className={css.icon}>
@@ -23,7 +37,7 @@ export const PlaygroundInitialContent = ({
                 <Text as="p" align="center" className={css.text}>
                     AI Agent will use your stores&apos; resources and order
                     history to respond. <br /> Preview conversations won&apos;t
-                    send messages or take any real actions.
+                    send messages{actionsSnippet}.
                 </Text>
             </div>
             {onStartClick && (

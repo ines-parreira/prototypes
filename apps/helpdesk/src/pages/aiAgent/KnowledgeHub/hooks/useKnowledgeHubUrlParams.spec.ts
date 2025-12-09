@@ -62,6 +62,12 @@ describe('useKnowledgeHubUrlParams', () => {
 
             expect(result.current.selectedFilter).toBeNull()
             expect(result.current.selectedFolder).toBeNull()
+            expect(result.current.searchTerm).toBe('')
+            expect(result.current.dateRange).toEqual({
+                startDate: null,
+                endDate: null,
+            })
+            expect(result.current.inUseByAIFilter).toBeNull()
         })
 
         it('initializes filter from URL parameter', () => {
@@ -122,6 +128,112 @@ describe('useKnowledgeHubUrlParams', () => {
                 source: folderUrl,
                 title: folderUrl,
             })
+        })
+
+        it('initializes search term from URL parameter', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?search=test%20query'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.searchTerm).toBe('test query')
+        })
+
+        it('initializes date range from URL parameters', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge?startDate=2024-01-01&endDate=2024-12-31',
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.dateRange).toEqual({
+                startDate: '2024-01-01',
+                endDate: '2024-12-31',
+            })
+        })
+
+        it('initializes partial date range (only startDate)', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?startDate=2024-01-01'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.dateRange).toEqual({
+                startDate: '2024-01-01',
+                endDate: null,
+            })
+        })
+
+        it('initializes inUseByAI filter from URL parameter (true)', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?inUseByAI=true'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.inUseByAIFilter).toBe(true)
+        })
+
+        it('initializes inUseByAI filter from URL parameter (false)', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?inUseByAI=false'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.inUseByAIFilter).toBe(false)
+        })
+
+        it('initializes all filters from URL parameters', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge?filter=url&search=test&startDate=2024-01-01&endDate=2024-12-31&inUseByAI=true',
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFilter).toBe(KnowledgeType.URL)
+            expect(result.current.searchTerm).toBe('test')
+            expect(result.current.dateRange).toEqual({
+                startDate: '2024-01-01',
+                endDate: '2024-12-31',
+            })
+            expect(result.current.inUseByAIFilter).toBe(true)
         })
     })
 
@@ -306,6 +418,84 @@ describe('useKnowledgeHubUrlParams', () => {
             // buildUrlWithParams encodes with encodeURIComponent, then URLSearchParams.toString() encodes again
             expect(url).toBe(
                 `/knowledge?filter=url&folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+            )
+        })
+
+        it('includes search parameter when search term is set', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?search=test%20query'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const url = result.current.buildUrlWithParams('/knowledge')
+            expect(url).toBe('/knowledge?search=test+query')
+        })
+
+        it('includes date range parameters when dates are set', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge?startDate=2024-01-01&endDate=2024-12-31',
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const url = result.current.buildUrlWithParams('/knowledge')
+            expect(url).toBe(
+                '/knowledge?startDate=2024-01-01&endDate=2024-12-31',
+            )
+        })
+
+        it('includes inUseByAI parameter when filter is set', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?inUseByAI=true'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const url = result.current.buildUrlWithParams('/knowledge')
+            expect(url).toBe('/knowledge?inUseByAI=true')
+        })
+
+        it('includes all parameters when all filters are set', () => {
+            const folderUrl = 'https://example.com/folder'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?filter=url&folder=${encodeURIComponent(encodeURIComponent(folderUrl))}&search=test&startDate=2024-01-01&endDate=2024-12-31&inUseByAI=true`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const url = result.current.buildUrlWithParams('/knowledge')
+            expect(url).toContain('filter=url')
+            expect(url).toContain('search=test')
+            expect(url).toContain('startDate=2024-01-01')
+            expect(url).toContain('endDate=2024-12-31')
+            expect(url).toContain('inUseByAI=true')
+            expect(url).toContain(
+                `folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
             )
         })
     })
@@ -696,6 +886,317 @@ describe('useKnowledgeHubUrlParams', () => {
         })
     })
 
+    describe('search term management', () => {
+        it('syncs search term when URL changes', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.searchTerm).toBe('')
+
+            act(() => {
+                history.push('/knowledge?search=test')
+            })
+
+            expect(result.current.searchTerm).toBe('test')
+        })
+
+        it('updates search term and URL using setSearchTerm', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setSearchTerm('new search')
+            })
+
+            expect(result.current.searchTerm).toBe('new search')
+            expect(history.location.search).toContain('search=new+search')
+        })
+
+        it('clears search term and URL param when setting to empty string', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?search=test'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setSearchTerm('')
+            })
+
+            expect(result.current.searchTerm).toBe('')
+            expect(history.location.search).toBe('')
+        })
+
+        it('preserves other params when updating search', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setSearchTerm('test')
+            })
+
+            expect(history.location.search).toContain('filter=url')
+            expect(history.location.search).toContain('search=test')
+        })
+    })
+
+    describe('date range management', () => {
+        it('syncs date range when URL changes', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.dateRange).toEqual({
+                startDate: null,
+                endDate: null,
+            })
+
+            act(() => {
+                history.push(
+                    '/knowledge?startDate=2024-01-01&endDate=2024-12-31',
+                )
+            })
+
+            expect(result.current.dateRange).toEqual({
+                startDate: '2024-01-01',
+                endDate: '2024-12-31',
+            })
+        })
+
+        it('updates date range and URL using setDateRange', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setDateRange('2024-01-01', '2024-12-31')
+            })
+
+            expect(result.current.dateRange).toEqual({
+                startDate: '2024-01-01',
+                endDate: '2024-12-31',
+            })
+            expect(history.location.search).toBe(
+                '?startDate=2024-01-01&endDate=2024-12-31',
+            )
+        })
+
+        it('clears date range and URL params when setting to null', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge?startDate=2024-01-01&endDate=2024-12-31',
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setDateRange(null, null)
+            })
+
+            expect(result.current.dateRange).toEqual({
+                startDate: null,
+                endDate: null,
+            })
+            expect(history.location.search).toBe('')
+        })
+
+        it('handles partial date range (only startDate)', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setDateRange('2024-01-01', null)
+            })
+
+            expect(result.current.dateRange).toEqual({
+                startDate: '2024-01-01',
+                endDate: null,
+            })
+            expect(history.location.search).toBe('?startDate=2024-01-01')
+        })
+
+        it('preserves other params when updating date range', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setDateRange('2024-01-01', '2024-12-31')
+            })
+
+            expect(history.location.search).toContain('filter=url')
+            expect(history.location.search).toContain('startDate=2024-01-01')
+            expect(history.location.search).toContain('endDate=2024-12-31')
+        })
+    })
+
+    describe('inUseByAI filter management', () => {
+        it('syncs inUseByAI filter when URL changes', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.inUseByAIFilter).toBeNull()
+
+            act(() => {
+                history.push('/knowledge?inUseByAI=true')
+            })
+
+            expect(result.current.inUseByAIFilter).toBe(true)
+        })
+
+        it('updates inUseByAI filter and URL using setInUseByAIFilter', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setInUseByAIFilter(true)
+            })
+
+            expect(result.current.inUseByAIFilter).toBe(true)
+            expect(history.location.search).toBe('?inUseByAI=true')
+        })
+
+        it('handles false value for inUseByAI filter', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setInUseByAIFilter(false)
+            })
+
+            expect(result.current.inUseByAIFilter).toBe(false)
+            expect(history.location.search).toBe('?inUseByAI=false')
+        })
+
+        it('clears inUseByAI filter and URL param when setting to null', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?inUseByAI=true'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setInUseByAIFilter(null)
+            })
+
+            expect(result.current.inUseByAIFilter).toBeNull()
+            expect(history.location.search).toBe('')
+        })
+
+        it('preserves other params when updating inUseByAI filter', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setInUseByAIFilter(true)
+            })
+
+            expect(history.location.search).toContain('filter=url')
+            expect(history.location.search).toContain('inUseByAI=true')
+        })
+    })
+
     describe('handleCloseEditorPath', () => {
         it('navigates to knowledge sources base path with no params', () => {
             const history = createMemoryHistory({
@@ -811,6 +1312,34 @@ describe('useKnowledgeHubUrlParams', () => {
             expect(history.location.search).toBe(
                 `?filter=url&folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
             )
+        })
+
+        it('navigates to knowledge sources with all filters preserved', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge/edit?filter=url&search=test&startDate=2024-01-01&endDate=2024-12-31&inUseByAI=true',
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.handleCloseEditorPath()
+            })
+
+            expect(history.location.pathname).toBe(
+                '/app/shop/test-shop/ai-agent/knowledge',
+            )
+            expect(history.location.search).toContain('filter=url')
+            expect(history.location.search).toContain('search=test')
+            expect(history.location.search).toContain('startDate=2024-01-01')
+            expect(history.location.search).toContain('endDate=2024-12-31')
+            expect(history.location.search).toContain('inUseByAI=true')
         })
 
         it('uses history.push to navigate', () => {

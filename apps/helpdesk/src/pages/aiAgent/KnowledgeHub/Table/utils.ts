@@ -1,7 +1,11 @@
+import type { Moment } from 'moment-timezone'
+import moment from 'moment-timezone'
+
 import type {
     GroupedKnowledgeItem,
     KnowledgeItem,
 } from 'pages/aiAgent/KnowledgeHub/types'
+import { KnowledgeVisibility } from 'pages/aiAgent/KnowledgeHub/types'
 
 export const groupKnowledgeItemsBySource = (
     items: KnowledgeItem[],
@@ -64,4 +68,47 @@ export const filterKnowledgeItemsBySearchTerm = (
     return items.filter((item) =>
         item.title?.toLowerCase().includes(searchTerm.toLowerCase()),
     )
+}
+
+export const filterKnowledgeItemsByDateRange = (
+    items: KnowledgeItem[],
+    startDate: Moment | null,
+    endDate: Moment | null,
+): KnowledgeItem[] => {
+    if (!startDate && !endDate) {
+        return items
+    }
+
+    return items.filter((item) => {
+        if (!item.lastUpdatedAt) {
+            return true
+        }
+
+        const itemDate = moment(item.lastUpdatedAt)
+
+        if (startDate && itemDate.isBefore(startDate, 'day')) {
+            return false
+        }
+
+        if (endDate && itemDate.isAfter(endDate, 'day')) {
+            return false
+        }
+
+        return true
+    })
+}
+
+export const filterKnowledgeItemsByInUseByAI = (
+    items: KnowledgeItem[],
+    inUseByAIValue: boolean | null,
+): KnowledgeItem[] => {
+    if (inUseByAIValue === null) {
+        return items
+    }
+
+    const targetVisibility = inUseByAIValue
+        ? KnowledgeVisibility.PUBLIC
+        : KnowledgeVisibility.UNLISTED
+
+    return items.filter((item) => item.inUseByAI === targetVisibility)
 }

@@ -22,6 +22,7 @@ import { useAIJourneyConversionRate } from 'AIJourney/hooks/useAIJourneyConversi
 import { useAIJourneyGmvInfluenced } from 'AIJourney/hooks/useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced'
 import { useJourneyContext } from 'AIJourney/providers'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import { JOURNEYS_FILTER_VALUES } from 'domains/reporting/pages/common/filters/JourneysFilter'
 
 import { useStatsFilters } from '../../../domains/reporting/hooks/support-performance/useStatsFilters'
 import { FilterKey } from '../../../domains/reporting/models/stat/types'
@@ -39,7 +40,8 @@ export const Analytics = () => {
         userTimezone,
         granularity,
     } = useStatsFilters()
-    const { isLoading, currentIntegration } = useJourneyContext()
+    const { journeys, campaigns, isLoading, currentIntegration } =
+        useJourneyContext()
     const integrationId = useMemo(() => {
         return (currentIntegration?.id || 0).toString()
     }, [currentIntegration])
@@ -49,19 +51,41 @@ export const Analytics = () => {
 
     const filters = {
         period: statsFilters.period,
+        journeys: statsFilters.journeys,
     }
+
+    const journeysIdsToFilter = useMemo(() => {
+        const includeCampaigns = statsFilters.journeys?.values.includes(
+            JOURNEYS_FILTER_VALUES.CAMPAIGN,
+        )
+        const includeJourneys = statsFilters.journeys?.values.includes(
+            JOURNEYS_FILTER_VALUES.JOURNEY,
+        )
+
+        if (includeCampaigns && !includeJourneys && campaigns) {
+            return campaigns.map((campaign) => campaign.id)
+        }
+
+        if (includeJourneys && !includeCampaigns && journeys) {
+            return journeys.map((journey) => journey.id)
+        }
+
+        return []
+    }, [campaigns, journeys, statsFilters.journeys])
 
     const gmvInfluenced = useAIJourneyGmvInfluenced(
         integrationId,
         userTimezone,
         filters,
         granularity,
+        journeysIdsToFilter,
     )
     const conversionRate = useAIJourneyConversionRate(
         integrationId,
         userTimezone,
         filters,
         granularity,
+        journeysIdsToFilter,
     )
 
     const optOutRate = useAIJourneyOptOutRate(
@@ -70,6 +94,7 @@ export const Analytics = () => {
         filters,
         granularity,
         shopName,
+        journeysIdsToFilter,
     )
     const clickThroughRate = useClickThroughRate(
         integrationId,
@@ -77,6 +102,7 @@ export const Analytics = () => {
         filters,
         granularity,
         shopName,
+        journeysIdsToFilter,
     )
 
     const responseRate = useAIJourneyResponseRate(
@@ -84,6 +110,7 @@ export const Analytics = () => {
         userTimezone,
         filters,
         granularity,
+        journeysIdsToFilter,
     )
 
     const totalRecipients = useAIJourneyTotalConversations(
@@ -91,6 +118,7 @@ export const Analytics = () => {
         userTimezone,
         filters,
         granularity,
+        journeysIdsToFilter,
     )
 
     const averageOrderValue = useAverageOrderValue(
@@ -98,12 +126,14 @@ export const Analytics = () => {
         userTimezone,
         filters,
         granularity,
+        journeysIdsToFilter,
     )
     const revenuePerRecipient = useRevenuePerRecipient(
         integrationId,
         userTimezone,
         filters,
         granularity,
+        journeysIdsToFilter,
     )
 
     const seriesBaseOptions = {
@@ -293,6 +323,7 @@ export const Analytics = () => {
                     persistentFilters={[
                         FilterKey.Period,
                         FilterKey.AggregationWindow,
+                        FilterKey.Journeys,
                     ]}
                     withSavedFilters={false}
                     filterSettingsOverrides={{
