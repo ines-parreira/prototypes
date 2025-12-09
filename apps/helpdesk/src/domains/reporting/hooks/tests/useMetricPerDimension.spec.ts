@@ -144,6 +144,12 @@ describe('MetricPerDimension', () => {
                 data: {
                     value: metricValue,
                     allData: mockedResponse.data,
+                    allValues: expect.arrayContaining([
+                        expect.objectContaining({
+                            dimension: expect.any(String),
+                            value: expect.any(Number),
+                        }),
+                    ]),
                     decile: null,
                     dimensions: query.dimensions,
                     measures: query.measures,
@@ -185,6 +191,7 @@ describe('MetricPerDimension', () => {
                 value: null,
                 decile: null,
                 allData: [],
+                allValues: [],
                 dimensions: query.dimensions,
                 measures: query.measures,
             })
@@ -477,6 +484,13 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: decileValue,
                     allData: testData,
+                    allValues: [
+                        {
+                            dimension: String(agentId),
+                            value: metricValue,
+                            decile: decileValue,
+                        },
+                    ],
                     dimensions: query.dimensions,
                     measures: query.measures,
                 })
@@ -522,6 +536,13 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: decileValue,
                     allData: testData,
+                    allValues: [
+                        {
+                            dimension: String(agentId),
+                            value: metricValue,
+                            decile: decileValue,
+                        },
+                    ],
                     dimensions: queryV2.dimensions,
                     measures: queryV2.measures,
                 })
@@ -567,6 +588,13 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: decileValue,
                     allData: testData,
+                    allValues: [
+                        {
+                            dimension: String(agentId),
+                            value: metricValue,
+                            decile: decileValue,
+                        },
+                    ],
                     dimensions: queryV2.dimensions,
                     measures: queryV2.measures,
                 })
@@ -615,6 +643,18 @@ describe('MetricPerDimension', () => {
                     value: 200,
                     decile: 2,
                     allData: testData,
+                    allValues: [
+                        {
+                            dimension: '123',
+                            value: 100,
+                            decile: 1,
+                        },
+                        {
+                            dimension: '456',
+                            value: 200,
+                            decile: 2,
+                        },
+                    ],
                     dimensions: query.dimensions,
                     measures: query.measures,
                 })
@@ -636,6 +676,12 @@ describe('MetricPerDimension', () => {
                 data: {
                     value: metricValue,
                     allData: mockedResponse.data,
+                    allValues: expect.arrayContaining([
+                        expect.objectContaining({
+                            dimension: expect.any(String),
+                            value: expect.any(Number),
+                        }),
+                    ]),
                     decile: null,
                     dimensions: query.dimensions,
                     measures: query.measures,
@@ -733,6 +779,13 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: decileValue,
                     allData: mockedResponseWithDeciles.data,
+                    allValues: expect.arrayContaining([
+                        expect.objectContaining({
+                            dimension: expect.any(String),
+                            value: expect.any(Number),
+                            decile: expect.any(Number),
+                        }),
+                    ]),
                     dimensions: queryV2.dimensions,
                     measures: queryV2.measures,
                 },
@@ -757,6 +810,12 @@ describe('MetricPerDimension', () => {
                     value: metricValue,
                     decile: null,
                     allData: mockedResponse.data,
+                    allValues: expect.arrayContaining([
+                        expect.objectContaining({
+                            dimension: expect.any(String),
+                            value: expect.any(Number),
+                        }),
+                    ]),
                     dimensions: query.dimensions,
                     measures: query.measures,
                 },
@@ -810,9 +869,7 @@ describe('MetricPerDimension', () => {
 describe('useMetricPerDimensionWithEnrichment', () => {
     function mockUseEnrichedPostReporting(response: any) {
         const mockedClientResponse = {
-            data: {
-                data: response.data,
-            },
+            data: response.data,
         } as any
 
         useEnrichedPostReportingMock.mockImplementation((_, overrides) => ({
@@ -898,7 +955,7 @@ describe('useMetricPerDimensionWithEnrichment', () => {
                 isError: mockedResponse.isError,
                 data: {
                     value: null,
-                    allData: mockedResponse.data,
+                    allData: results,
                 },
             })
             expect(withEnrichmentMock).toHaveBeenCalledWith(
@@ -1029,6 +1086,7 @@ describe('selectMeasurePerDimension', () => {
             value: null,
             decile: null,
             allData: [],
+            allValues: [],
             dimensions: query.dimensions,
             measures: query.measures,
         })
@@ -1055,6 +1113,13 @@ describe('selectMeasurePerDimension', () => {
             value: null,
             decile: null,
             allData: data,
+            allValues: [
+                {
+                    dimension: '123',
+                    value: 456,
+                    decile: 5,
+                },
+            ],
             dimensions: query.dimensions,
             measures: query.measures,
         })
@@ -1086,6 +1151,7 @@ describe('selectMeasurePerDimension', () => {
             value: null,
             decile: null,
             allData: data,
+            allValues: [],
             dimensions: queryWithoutMeasure.dimensions,
             measures: queryWithoutMeasure.measures,
         })
@@ -1117,6 +1183,7 @@ describe('selectMeasurePerDimension', () => {
             value: null,
             decile: null,
             allData: data,
+            allValues: [],
             dimensions: queryWithoutDimension.dimensions,
             measures: queryWithoutDimension.measures,
         })
@@ -1148,6 +1215,18 @@ describe('selectMeasurePerDimension', () => {
             value: 456,
             decile: 5,
             allData: data,
+            allValues: [
+                {
+                    dimension: '123',
+                    value: 456,
+                    decile: 5,
+                },
+                {
+                    dimension: '456',
+                    value: 789,
+                    decile: 7,
+                },
+            ],
             dimensions: query.dimensions,
             measures: query.measures,
         })
@@ -1174,6 +1253,13 @@ describe('selectMeasurePerDimension', () => {
             value: 123.45,
             decile: 8.5,
             allData: data,
+            allValues: [
+                {
+                    dimension: '123',
+                    value: 123.45,
+                    decile: 8.5,
+                },
+            ],
             dimensions: query.dimensions,
             measures: query.measures,
         })
@@ -1200,6 +1286,13 @@ describe('selectMeasurePerDimension', () => {
             value: null,
             decile: 5,
             allData: data,
+            allValues: [
+                {
+                    dimension: '123',
+                    value: null,
+                    decile: 5,
+                },
+            ],
             dimensions: query.dimensions,
             measures: query.measures,
         })
@@ -1226,6 +1319,13 @@ describe('selectMeasurePerDimension', () => {
             value: 456,
             decile: 5,
             allData: data,
+            allValues: [
+                {
+                    dimension: '123',
+                    value: 456,
+                    decile: 5,
+                },
+            ],
             dimensions: queryV2.dimensions || query.dimensions,
             measures: queryV2.measures || query.measures,
         })
@@ -1252,6 +1352,13 @@ describe('selectMeasurePerDimension', () => {
             value: 456,
             decile: 5,
             allData: data,
+            allValues: [
+                {
+                    dimension: '123',
+                    value: 456,
+                    decile: 5,
+                },
+            ],
             dimensions: query.dimensions,
             measures: query.measures,
         })
@@ -1278,6 +1385,13 @@ describe('selectMeasurePerDimension', () => {
             value: 456,
             decile: 5,
             allData: data,
+            allValues: [
+                {
+                    dimension: '123',
+                    value: 456,
+                    decile: 5,
+                },
+            ],
             dimensions: query.dimensions,
             measures: query.measures,
         })
@@ -1304,6 +1418,13 @@ describe('selectMeasurePerDimension', () => {
             value: 456,
             decile: 5,
             allData: data,
+            allValues: [
+                {
+                    dimension: '123',
+                    value: 456,
+                    decile: 5,
+                },
+            ],
             dimensions: query.dimensions,
             measures: query.measures,
         })
@@ -1333,5 +1454,260 @@ describe('selectMeasurePerDimension', () => {
 
         expect(result?.allData).toEqual(data)
         expect(result?.allData).toHaveLength(2)
+    })
+
+    it('should populate allValues array with all data rows when dimensionId is not provided', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: '456',
+                decile: '5',
+            },
+            {
+                [dimensionKey]: '789',
+                [measureKey]: '101',
+                decile: '2',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            undefined,
+            false,
+            undefined,
+        )
+
+        expect(result?.allValues).toEqual([
+            {
+                dimension: '123',
+                value: 456,
+                decile: 5,
+            },
+            {
+                dimension: '789',
+                value: 101,
+                decile: 2,
+            },
+        ])
+    })
+
+    it('should populate allValues array with all data rows when dimensionId is provided', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: '456',
+                decile: '5',
+            },
+            {
+                [dimensionKey]: '789',
+                [measureKey]: '101',
+                decile: '2',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            undefined,
+            false,
+            '123',
+        )
+
+        expect(result?.allValues).toEqual([
+            {
+                dimension: '123',
+                value: 456,
+                decile: 5,
+            },
+            {
+                dimension: '789',
+                value: 101,
+                decile: 2,
+            },
+        ])
+    })
+
+    it('should handle null or missing values in allValues array gracefully', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: null,
+                decile: null,
+            },
+            {
+                [dimensionKey]: null,
+                [measureKey]: '456',
+                decile: '5',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            undefined,
+            false,
+            '123',
+        )
+
+        expect(result?.allValues).toEqual([
+            {
+                dimension: '123',
+                value: null,
+                decile: null,
+            },
+            {
+                dimension: '',
+                value: 456,
+                decile: 5,
+            },
+        ])
+    })
+
+    it('should return empty allValues array when data is null', () => {
+        const result = selectMeasurePerDimension(
+            null,
+            query,
+            undefined,
+            false,
+            '123',
+        )
+
+        expect(result?.allValues).toEqual([])
+    })
+
+    it('should return empty allValues array when data is undefined', () => {
+        const result = selectMeasurePerDimension(
+            undefined,
+            query,
+            undefined,
+            false,
+            '123',
+        )
+
+        expect(result?.allValues).toEqual([])
+    })
+
+    it('should handle numeric dimension values in allValues', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: '456',
+                decile: '5',
+            },
+            {
+                [dimensionKey]: '789',
+                [measureKey]: '101',
+                decile: '2',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            undefined,
+            false,
+            undefined,
+        )
+
+        expect(result?.allValues).toEqual([
+            {
+                dimension: '123',
+                value: 456,
+                decile: 5,
+            },
+            {
+                dimension: '789',
+                value: 101,
+                decile: 2,
+            },
+        ])
+    })
+
+    it('should use empty string for missing dimension values in allValues', () => {
+        const data = [
+            {
+                [measureKey]: '456',
+                decile: '5',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            undefined,
+            false,
+            undefined,
+        )
+
+        expect(result?.allValues).toEqual([
+            {
+                dimension: '',
+                value: 456,
+                decile: 5,
+            },
+        ])
+    })
+
+    it('should use null for non-numeric measure values in allValues', () => {
+        const data = [
+            {
+                [dimensionKey]: '123',
+                [measureKey]: 'invalid',
+                decile: '5',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            undefined,
+            false,
+            '123',
+        )
+
+        expect(result?.allValues).toEqual([
+            {
+                dimension: '123',
+                value: null,
+                decile: 5,
+            },
+        ])
+    })
+
+    it('should populate allValues with V2 query dimensions when isV2 is true', () => {
+        const data = [
+            {
+                agentId: '123',
+                medianFirstResponseTime: '456',
+                decile: '5',
+            },
+            {
+                agentId: '789',
+                medianFirstResponseTime: '101',
+                decile: '2',
+            },
+        ]
+
+        const result = selectMeasurePerDimension(
+            data,
+            query,
+            queryV2,
+            true,
+            '123',
+        )
+
+        expect(result?.allValues).toEqual([
+            {
+                dimension: '123',
+                value: 456,
+                decile: 5,
+            },
+            {
+                dimension: '789',
+                value: 101,
+                decile: 2,
+            },
+        ])
     })
 })

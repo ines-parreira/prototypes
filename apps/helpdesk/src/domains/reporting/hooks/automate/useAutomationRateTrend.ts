@@ -10,8 +10,17 @@ import {
     fetchFilteredAutomatedInteractions,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { type MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import {
+    fetchMetricTrend,
+    type MetricTrend,
+} from 'domains/reporting/hooks/useMetricTrend'
+import {
+    overallAutomationRate,
+    overallAutomationRateQueryV2Factory,
+} from 'domains/reporting/models/scopes/automationRate'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
+import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 export const useAutomationRateTrend = (
     filters: StatsFilters,
@@ -35,6 +44,28 @@ export const fetchAutomationRateTrend = async (
     timezone: string,
     aiAgentUserId: number | undefined,
 ) => {
+    // We don't support double-reads for this metric as the V1 implementation doesn't use a single Cube
+    const stage = await getNewStatsFeatureFlagMigration(
+        overallAutomationRate.name,
+    )
+    if (stage === 'live' || stage === 'complete') {
+        return fetchMetricTrend(
+            undefined,
+            undefined,
+            overallAutomationRateQueryV2Factory({
+                filters,
+                timezone,
+            }),
+            overallAutomationRateQueryV2Factory({
+                filters: {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                },
+                timezone,
+            }),
+        )
+    }
+
     return Promise.all([
         fetchFilteredAutomatedInteractions(filters, timezone),
         fetchAllAutomatedInteractionsByAutoResponders(filters, timezone),

@@ -63,8 +63,11 @@ const PaywallWrapper = ({ children }: PaywallWrapperProps) => {
     )
 }
 
+export type Props = {}
+
 export const SalesPaywallMiddleware =
-    (ChildComponent: React.ComponentType<any>) => (): React.ReactElement => {
+    (ChildComponent: React.ComponentType<any>) =>
+    (__props: Props): React.ReactElement => {
         const hasAutomate = useAppSelector(getHasAutomate)
         const { storeActivations } = useStoreActivations({
             withChatIntegrationsStatus: true,

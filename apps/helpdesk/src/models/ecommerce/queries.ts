@@ -156,7 +156,7 @@ export const useGetEcommerceProductCollections = (
     })
 }
 
-type UpdateProductAdditionalInfoParams = {
+export type UpdateProductAdditionalInfoParams = {
     objectType: AdditionalInfoObjectType
     sourceType: AdditionalInfoSourceType
     integrationId: number

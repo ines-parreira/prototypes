@@ -115,6 +115,7 @@ export const ChannelColumnConfig: Record<
                 value: null,
                 decile: null,
                 allData: [],
+                allValues: [],
                 dimensions: [],
                 measures: [],
             },

@@ -11,6 +11,13 @@ import {
     billableTicketDatasetQueryFactory,
     billableTicketDatasetResolvedByAIAgentQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
+import { automatedInteractionsQueryV2Factory } from 'domains/reporting/models/scopes/automatedInteractions'
+import type {
+    BuiltQuery,
+    Context,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
+import type { MeasureName } from 'domains/reporting/models/scopes/types'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -18,6 +25,7 @@ import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 export const useTrendFromMultipleMetricsTrend = <
     Metric extends Cubes['measures'],
     TCube extends Cubes,
+    TMeta extends ScopeMeta,
 >(
     filters: StatsFilters,
     timezone: string,
@@ -26,6 +34,8 @@ export const useTrendFromMultipleMetricsTrend = <
         timezone: string,
     ) => ReportingQuery<TCube>,
     metric: Metric,
+    queryFactoryV2?: (ctx: Context) => BuiltQuery<TMeta>,
+    metricV2?: MeasureName,
 ) => {
     const trendData = useMultipleMetricsTrends(
         queryFactory(filters, timezone),
@@ -33,10 +43,20 @@ export const useTrendFromMultipleMetricsTrend = <
             { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
         ),
+        queryFactoryV2?.({ filters, timezone }),
+        queryFactoryV2?.({
+            filters: { ...filters, period: getPreviousPeriod(filters.period) },
+            timezone,
+        }),
     )
 
+    const data =
+        metricV2 && metricV2 in trendData.data
+            ? trendData.data?.[metricV2 as Metric]
+            : trendData.data?.[metric]
+
     return {
-        data: trendData.data?.[metric],
+        data,
         isFetching: trendData.isFetching,
         isError: trendData.isError,
     }
@@ -45,6 +65,7 @@ export const useTrendFromMultipleMetricsTrend = <
 export const fetchTrendFromMultipleMetricsTrend = async <
     Metric extends Cubes['measures'],
     TCube extends Cubes,
+    TMeta extends ScopeMeta,
 >(
     filters: StatsFilters,
     timezone: string,
@@ -53,6 +74,8 @@ export const fetchTrendFromMultipleMetricsTrend = async <
         timezone: string,
     ) => ReportingQuery<TCube>,
     metric: Metric,
+    queryFactoryV2?: (ctx: Context) => BuiltQuery<TMeta>,
+    metricV2?: MeasureName,
 ) =>
     fetchMultipleMetricsTrends(
         queryFactory(filters, timezone),
@@ -60,9 +83,19 @@ export const fetchTrendFromMultipleMetricsTrend = async <
             { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
         ),
+        queryFactoryV2?.({ filters, timezone }),
+        queryFactoryV2?.({
+            filters: { ...filters, period: getPreviousPeriod(filters.period) },
+            timezone,
+        }),
     ).then((result) => {
+        const data =
+            metricV2 && metricV2 in result.data
+                ? result.data?.[metricV2 as Metric]
+                : result.data?.[metric]
+
         return {
-            data: result.data?.[metric],
+            data,
             isFetching: result.isFetching,
             isError: result.isError,
         }
@@ -137,6 +170,8 @@ export const useFilteredAutomatedInteractions = (
         timezone,
         automationDatasetQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
+        automatedInteractionsQueryV2Factory,
+        'automatedInteractions',
     )
 
 export const fetchFilteredAutomatedInteractions = (
@@ -148,6 +183,8 @@ export const fetchFilteredAutomatedInteractions = (
         timezone,
         automationDatasetQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
+        automatedInteractionsQueryV2Factory,
+        'automatedInteractions',
     )
 
 export const useFilteredAutomatedInteractionsByAutoResponders = (
@@ -159,6 +196,8 @@ export const useFilteredAutomatedInteractionsByAutoResponders = (
         timezone,
         automationDatasetQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+        automatedInteractionsQueryV2Factory,
+        'automatedInteractionsByAutoResponders',
     )
 
 export const fetchFilteredAutomatedInteractionsByAutoResponders = (
@@ -170,6 +209,8 @@ export const fetchFilteredAutomatedInteractionsByAutoResponders = (
         timezone,
         automationDatasetQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+        automatedInteractionsQueryV2Factory,
+        'automatedInteractionsByAutoResponders',
     )
 
 export const useAllAutomatedInteractions = (
@@ -181,6 +222,8 @@ export const useAllAutomatedInteractions = (
         timezone,
         automationDatasetQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
+        automatedInteractionsQueryV2Factory,
+        'automatedInteractions',
     )
 
 export const fetchAllAutomatedInteractions = (
@@ -192,6 +235,8 @@ export const fetchAllAutomatedInteractions = (
         timezone,
         automationDatasetQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
+        automatedInteractionsQueryV2Factory,
+        'automatedInteractions',
     )
 
 export const useAllAutomatedInteractionsByAutoResponders = (
@@ -203,6 +248,8 @@ export const useAllAutomatedInteractionsByAutoResponders = (
         timezone,
         automationDatasetQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+        automatedInteractionsQueryV2Factory,
+        'automatedInteractionsByAutoResponders',
     )
 
 export const fetchAllAutomatedInteractionsByAutoResponders = (
@@ -214,6 +261,8 @@ export const fetchAllAutomatedInteractionsByAutoResponders = (
         timezone,
         automationDatasetQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+        automatedInteractionsQueryV2Factory,
+        'automatedInteractionsByAutoResponders',
     )
 
 export const useBillableTicketsExcludingAIAgent = (

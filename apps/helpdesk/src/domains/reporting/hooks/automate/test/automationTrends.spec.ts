@@ -30,6 +30,7 @@ import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automat
 import { BillableTicketDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import { automationDatasetQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import { automatedInteractionsQueryV2Factory } from 'domains/reporting/models/scopes/automatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
@@ -83,6 +84,29 @@ describe('automationTrends', () => {
                 })
             })
 
+            it('should hook with V2 data', () => {
+                useMultipleMetricsTrendsMock.mockReturnValue({
+                    data: {
+                        automatedInteractions:
+                            filteredAutomatedInteractionsTrend,
+                        automatedInteractionsByAutoResponders:
+                            automatedInteractionsByAutoRespondersTrend,
+                    } as unknown as MultipleMetricsData<Cubes>,
+                    isFetching: false,
+                    isError: false,
+                })
+
+                const { result } = renderHook(() =>
+                    useFilteredAutomatedInteractions(statsFilters, timezone),
+                )
+
+                expect(result.current).toEqual({
+                    data: filteredAutomatedInteractionsTrend,
+                    isFetching: false,
+                    isError: false,
+                })
+            })
+
             it('should fetch query and return data for AutomatedInteractions with fetch', async () => {
                 fetchMultipleMetricsTrendsMock.mockResolvedValue({
                     data: {
@@ -109,6 +133,62 @@ describe('automationTrends', () => {
                         },
                         timezone,
                     ),
+                    automatedInteractionsQueryV2Factory({
+                        filters: statsFilters,
+                        timezone,
+                    }),
+                    automatedInteractionsQueryV2Factory({
+                        filters: {
+                            ...statsFilters,
+                            period: getPreviousPeriod(statsFilters.period),
+                        },
+                        timezone,
+                    }),
+                )
+                expect(result).toEqual({
+                    data: filteredAutomatedInteractionsTrend,
+                    isFetching: false,
+                    isError: false,
+                })
+            })
+
+            it('should fetch with V2 data', async () => {
+                fetchMultipleMetricsTrendsMock.mockResolvedValue({
+                    data: {
+                        automatedInteractions:
+                            filteredAutomatedInteractionsTrend,
+                        automatedInteractionsByAutoResponders:
+                            automatedInteractionsByAutoRespondersTrend,
+                    } as unknown as MultipleMetricsData<Cubes>,
+                    isFetching: false,
+                    isError: false,
+                })
+
+                const result = await fetchFilteredAutomatedInteractions(
+                    statsFilters,
+                    timezone,
+                )
+
+                expect(fetchMultipleMetricsTrendsMock).toHaveBeenCalledWith(
+                    automationDatasetQueryFactory(statsFilters, timezone),
+                    automationDatasetQueryFactory(
+                        {
+                            ...statsFilters,
+                            period: getPreviousPeriod(statsFilters.period),
+                        },
+                        timezone,
+                    ),
+                    automatedInteractionsQueryV2Factory({
+                        filters: statsFilters,
+                        timezone,
+                    }),
+                    automatedInteractionsQueryV2Factory({
+                        filters: {
+                            ...statsFilters,
+                            period: getPreviousPeriod(statsFilters.period),
+                        },
+                        timezone,
+                    }),
                 )
                 expect(result).toEqual({
                     data: filteredAutomatedInteractionsTrend,
@@ -145,6 +225,17 @@ describe('automationTrends', () => {
                         },
                         timezone,
                     ),
+                    automatedInteractionsQueryV2Factory({
+                        filters: statsFilters,
+                        timezone,
+                    }),
+                    automatedInteractionsQueryV2Factory({
+                        filters: {
+                            ...statsFilters,
+                            period: getPreviousPeriod(statsFilters.period),
+                        },
+                        timezone,
+                    }),
                 )
                 expect(result.current).toEqual({
                     data: automatedInteractionsByAutoRespondersTrend,
@@ -180,6 +271,17 @@ describe('automationTrends', () => {
                         },
                         timezone,
                     ),
+                    automatedInteractionsQueryV2Factory({
+                        filters: statsFilters,
+                        timezone,
+                    }),
+                    automatedInteractionsQueryV2Factory({
+                        filters: {
+                            ...statsFilters,
+                            period: getPreviousPeriod(statsFilters.period),
+                        },
+                        timezone,
+                    }),
                 )
                 expect(result).toEqual({
                     data: automatedInteractionsByAutoRespondersTrend,
@@ -237,6 +339,17 @@ describe('automationTrends', () => {
                         { period: getPreviousPeriod(statsFilters.period) },
                         timezone,
                     ),
+                    automatedInteractionsQueryV2Factory({
+                        filters: statsFilters,
+                        timezone,
+                    }),
+                    automatedInteractionsQueryV2Factory({
+                        filters: {
+                            ...statsFilters,
+                            period: getPreviousPeriod(statsFilters.period),
+                        },
+                        timezone,
+                    }),
                 )
                 expect(result).toEqual({
                     data: filteredAutomatedInteractionsTrend,
@@ -273,6 +386,17 @@ describe('automationTrends', () => {
                         { period: getPreviousPeriod(statsFilters.period) },
                         timezone,
                     ),
+                    automatedInteractionsQueryV2Factory({
+                        filters: statsFilters,
+                        timezone,
+                    }),
+                    automatedInteractionsQueryV2Factory({
+                        filters: {
+                            ...statsFilters,
+                            period: getPreviousPeriod(statsFilters.period),
+                        },
+                        timezone,
+                    }),
                 )
                 expect(result.current).toEqual({
                     data: automatedInteractionsByAutoRespondersTrend,
@@ -308,6 +432,17 @@ describe('automationTrends', () => {
                         { period: getPreviousPeriod(statsFilters.period) },
                         timezone,
                     ),
+                    automatedInteractionsQueryV2Factory({
+                        filters: statsFilters,
+                        timezone,
+                    }),
+                    automatedInteractionsQueryV2Factory({
+                        filters: {
+                            ...statsFilters,
+                            period: getPreviousPeriod(statsFilters.period),
+                        },
+                        timezone,
+                    }),
                 )
                 expect(result).toEqual({
                     data: automatedInteractionsByAutoRespondersTrend,

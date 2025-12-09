@@ -1,10 +1,15 @@
 import type { Cubes } from 'domains/reporting/models/cubes'
 import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
 import {
-    fetchPostReporting,
-    usePostReporting,
+    fetchPostReportingV2,
+    usePostReportingV2,
 } from 'domains/reporting/models/queries'
+import type {
+    BuiltQuery,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
 import type { ReportingQuery } from 'domains/reporting/models/types'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 export type MultipleMetricsData<TCube extends Cubes> = Record<
     TCube['measures'],
@@ -25,27 +30,46 @@ const multipleMetricsSelect = <TCube extends Cubes>(
     data: UsePostReportingQueryData<Record<TCube['measures'], string>[]>,
 ) => data.data.data[0]
 
-export const useMultipleMetricsTrends = <TCube extends Cubes>(
+export const useMultipleMetricsTrends = <
+    TCube extends Cubes,
+    TMeta extends ScopeMeta,
+>(
     currentPeriodQuery: ReportingQuery<TCube>,
     previousPeriodQuery: ReportingQuery<TCube>,
+    currentPeriodQueryV2?: BuiltQuery<TMeta>,
+    previousPeriodQueryV2?: BuiltQuery<TMeta>,
     enabled?: boolean,
 ): MultipleMetricsTrend<TCube> => {
-    const currentMetrics = usePostReporting<
+    const migrationStage = useGetNewStatsFeatureFlagMigration(
+        currentPeriodQuery.metricName,
+    )
+    const isV2 = migrationStage === 'complete' || migrationStage === 'live'
+
+    const currentMetrics = usePostReportingV2<
         Record<TCube['measures'], string>[],
         Record<TCube['measures'], string>,
-        TCube
-    >([currentPeriodQuery], {
+        TCube,
+        TMeta
+    >([currentPeriodQuery], currentPeriodQueryV2, {
         select: multipleMetricsSelect,
         enabled,
     })
 
-    const previousMetrics = usePostReporting<
+    const previousMetrics = usePostReportingV2<
         Record<TCube['measures'], string>[],
         Record<TCube['measures'], string>,
-        TCube
-    >([previousPeriodQuery], { select: multipleMetricsSelect, enabled })
+        TCube,
+        TMeta
+    >([previousPeriodQuery], previousPeriodQueryV2, {
+        select: multipleMetricsSelect,
+        enabled,
+    })
 
-    const data = currentPeriodQuery.measures.reduce((acc, measure) => {
+    const measures =
+        isV2 && currentPeriodQueryV2
+            ? (currentPeriodQueryV2.measures as unknown as TCube['measures'][])
+            : currentPeriodQuery.measures
+    const data = measures.reduce((acc, measure) => {
         acc[measure] = {
             value: currentMetrics.data?.[measure]
                 ? parseFloat(currentMetrics.data[measure])
@@ -65,21 +89,28 @@ export const useMultipleMetricsTrends = <TCube extends Cubes>(
     }
 }
 
-export const fetchMultipleMetricsTrends = async <TCube extends Cubes>(
+export const fetchMultipleMetricsTrends = async <
+    TCube extends Cubes,
+    TMeta extends ScopeMeta,
+>(
     currentPeriodQuery: ReportingQuery<TCube>,
     previousPeriodQuery: ReportingQuery<TCube>,
+    currentPeriodQueryV2?: BuiltQuery<TMeta>,
+    previousPeriodQueryV2?: BuiltQuery<TMeta>,
 ): Promise<MultipleMetricsTrend<TCube>> => {
-    const currentMetrics = fetchPostReporting<
+    const currentMetrics = fetchPostReportingV2<
         Record<TCube['measures'], string>[],
         Record<TCube['measures'], string>,
-        TCube
-    >([currentPeriodQuery])
+        TCube,
+        TMeta
+    >([currentPeriodQuery], currentPeriodQueryV2)
 
-    const previousMetrics = fetchPostReporting<
+    const previousMetrics = fetchPostReportingV2<
         Record<TCube['measures'], string>[],
         Record<TCube['measures'], string>,
-        TCube
-    >([previousPeriodQuery])
+        TCube,
+        TMeta
+    >([previousPeriodQuery], previousPeriodQueryV2)
 
     return Promise.all([currentMetrics, previousMetrics])
         .then(([currentMetricsResult, previousMetricsResult]) => {

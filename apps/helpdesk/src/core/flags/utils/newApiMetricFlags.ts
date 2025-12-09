@@ -22,8 +22,11 @@ export const P1_SCOPES: MetricScope[] = [
 ]
 
 export const P2_SCOPES: MetricScope[] = [
+    MetricScope.AutomatedInteractions,
+    MetricScope.AutomationRate,
     MetricScope.MessagesReceived,
     MetricScope.HumanFirstResponseTime,
+    MetricScope.WorkloadTickets,
 ]
 
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()

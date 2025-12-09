@@ -34,6 +34,8 @@ export enum SegmentEvent {
     AiAgentFeedbackKnowledgeResourceEditClicked = 'ai-agent-feedback-knowledge-resource-edit-clicked',
     AiAgentFeedbackKnowledgeResourceCreateClicked = 'ai-agent-feedback-knowledge-resource-create-clicked',
     AiAgentFeedbackKnowledgeResourceSaved = 'ai-agent-feedback-knowledge-resource-saved',
+    AiAgentProductAdditionalInfoSaved = 'ai-agent-product-additional-info-saved',
+    AiAgentProductAdditionalInfoSaveFailed = 'ai-agent-product-additional-info-save-failed',
     AiAgentGoToGuidanceLinkClicked = 'ai-agent-go-to-guidance-link-clicked',
     AiAgentGuidanceCardClicked = 'ai-agent-guidance-card-clicked',
     AiAgentGuidanceCreated = 'ai-agent-guidance-created',

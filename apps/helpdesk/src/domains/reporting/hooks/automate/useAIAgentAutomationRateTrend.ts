@@ -10,10 +10,20 @@ import {
     fetchTrendFromMultipleMetricsTrend,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { type MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import {
+    fetchMetricTrend,
+    type MetricTrend,
+} from 'domains/reporting/hooks/useMetricTrend'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { aiAgentAutomatedInteractionsQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
+import { aiAgentAutomatedInteractionsQueryV2Factory } from 'domains/reporting/models/scopes/automatedInteractions'
+import {
+    aiAgentAutomationRate,
+    aiAgentAutomationRateQueryV2Factory,
+} from 'domains/reporting/models/scopes/automationRate'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
+import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 export const useAIAgentAutomationRateTrend = (
     filters: StatsFilters,
@@ -39,12 +49,36 @@ export const fetchAIAgentAutomationRateTrend = async (
     timezone: string,
     aiAgentUserId: number | undefined,
 ) => {
+    // We don't support double-reads for this metric as the V1 implementation doesn't use a single Cube
+    const stage = await getNewStatsFeatureFlagMigration(
+        aiAgentAutomationRate.name,
+    )
+    if (stage === 'live' || stage === 'complete') {
+        return fetchMetricTrend(
+            undefined,
+            undefined,
+            aiAgentAutomationRateQueryV2Factory({
+                filters,
+                timezone,
+            }),
+            aiAgentAutomationRateQueryV2Factory({
+                filters: {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                },
+                timezone,
+            }),
+        )
+    }
+
     return Promise.all([
         fetchTrendFromMultipleMetricsTrend(
             filters,
             timezone,
             aiAgentAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
+            aiAgentAutomatedInteractionsQueryV2Factory,
+            'automatedInteractions',
         ),
         fetchAllAutomatedInteractionsByAutoResponders(filters, timezone),
         fetchAllAutomatedInteractions(filters, timezone),

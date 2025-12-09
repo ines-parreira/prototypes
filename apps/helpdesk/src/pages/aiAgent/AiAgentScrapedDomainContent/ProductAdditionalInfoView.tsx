@@ -7,7 +7,7 @@ import { Prompt } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useUpdateProductAdditionalInfo } from 'models/ecommerce/queries'
+import { useUpdateProductAdditionalInfoWithTracking } from 'models/ecommerce/hooks/useUpdateProductAdditionalInfoWithTracking'
 import type { ProductAdditionalInfo } from 'models/ecommerce/types'
 import {
     AdditionalInfoKey,
@@ -75,7 +75,10 @@ const ProductAdditionalInfoView = ({
     } = useUnsavedChangesPrompt({ when: isDirty })
 
     const { mutateAsync: updateAdditionalInfo } =
-        useUpdateProductAdditionalInfo()
+        useUpdateProductAdditionalInfoWithTracking({
+            integrationId,
+            initialValue,
+        })
 
     useEffect(() => {
         let newEditorState: EditorState

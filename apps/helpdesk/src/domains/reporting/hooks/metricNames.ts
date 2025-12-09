@@ -16,6 +16,8 @@ export const METRIC_NAMES = {
     AI_AGENT_TICKETS_WITH_INTENT: 'ai-agent-tickets-with-intent',
     AI_AGENT_TOUCHED_TICKET: 'ai-agent-touched-ticket',
     AI_AGENT_TOUCHED_TICKET_TOTAL_COUNT: 'ai-agent-touched-ticket-total-count',
+    AI_AGENT_AUTOMATION_RATE: 'ai-agent-automation-rate',
+    AI_AGENT_OVERALL_AUTOMATION_RATE: 'ai-agent-overall-automation-rate',
 
     // AI Journey
     AI_JOURNEY_GMV_INFLUENCED: 'ai-journey-gmv-influenced',
@@ -579,13 +581,15 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_TIME_SERIES,
     ],
     [MetricScope.AutomationRate]: [
-        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4832/implement-the-automation-rate-v2-metric
+        METRIC_NAMES.AI_AGENT_AUTOMATION_RATE,
+        METRIC_NAMES.AI_AGENT_OVERALL_AUTOMATION_RATE,
     ],
     [MetricScope.TicketFields]: [
         // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4833/implement-the-ticket-fields-v2-metric
     ],
     [MetricScope.AutomatedInteractions]: [
-        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4834/implement-the-automated-interactions-v2-metric
+        METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+        METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS,
     ],
     [MetricScope.VoiceCalls]: [
         // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4835/implement-the-voice-calls-v2-metric
@@ -600,6 +604,6 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4838/implement-the-sla-v2-metric
     ],
     [MetricScope.WorkloadTickets]: [
-        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4839/implement-the-workload-tickets-v2-metric
+        METRIC_NAMES.SUPPORT_PERFORMANCE_WORKLOAD_PER_CHANNEL,
     ],
 }

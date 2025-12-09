@@ -56,6 +56,7 @@ export type DimensionName =
     | 'messagesCount'
     | 'resolutionTime'
     | 'handleTime'
+    | 'eventType'
 
 export type MeasureName =
     | 'ticketCount'
@@ -69,6 +70,10 @@ export type MeasureName =
     | 'messagesAverage'
     | 'medianFirstResponseTime'
     | 'medianFirstResponseTimeInSeconds'
+    | 'automationRate'
+    | 'aiAgentAutomationRate'
+    | 'automatedInteractions'
+    | 'automatedInteractionsByAutoResponders'
 
 export type TimeDimensionName =
     | 'createdDatetime'
@@ -100,6 +105,7 @@ export type StringFilterName =
     | 'efficiencyScore'
     | 'internalComplianceScore'
     | 'brandVoiceScore'
+    | 'eventType'
 
 export type NumberFilterName =
     | 'agentId'

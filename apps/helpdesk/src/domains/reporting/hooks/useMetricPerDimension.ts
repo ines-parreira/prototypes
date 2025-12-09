@@ -55,6 +55,11 @@ export type MetricWithDecileData<
     value: number | null
     decile: number | null
     allData: ReportingMetricItem<TValue, TCube>[]
+    allValues?: {
+        dimension: string | number
+        value: number | null
+        decile: number | null
+    }[]
     dimensions?: readonly DimensionName[] | TCube['dimensions'][]
     measures?: readonly MeasureName[] | TCube['measures'][]
 } | null
@@ -147,7 +152,6 @@ export const selectMeasurePerDimension = <
             : (query.dimensions as TCube['dimensions'][])
 
     if (
-        !dimensionId ||
         !measures.length ||
         !dimensions.length ||
         data === null ||
@@ -157,6 +161,7 @@ export const selectMeasurePerDimension = <
             value: null,
             decile: null,
             allData: data ?? [],
+            allValues: [],
             dimensions,
             measures,
         }
@@ -182,6 +187,11 @@ export const selectMeasurePerDimension = <
         value: parseNumber(metric),
         decile: parseNumber(decile),
         allData: data,
+        allValues: data.map((row) => ({
+            dimension: row[dimensions[0]] ?? '',
+            value: parseNumber(row[measures[0]] ?? null),
+            decile: parseNumber(row['decile'] ?? null),
+        })),
         dimensions,
         measures,
     }

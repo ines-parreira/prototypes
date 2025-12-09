@@ -10,6 +10,7 @@ import {
 } from 'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { aiAgentAutomatedInteractionsQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
+import { aiAgentAutomatedInteractionsQueryV2Factory } from 'domains/reporting/models/scopes/automatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')
@@ -38,6 +39,8 @@ describe('useAIAgentAutomatedInteractionsTrend', () => {
             mockTimezone,
             aiAgentAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
+            aiAgentAutomatedInteractionsQueryV2Factory,
+            'automatedInteractions',
         )
     })
 
@@ -86,6 +89,8 @@ describe('fetchAIAgentAutomatedInteractionsTrend', () => {
             mockTimezone,
             aiAgentAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
+            aiAgentAutomatedInteractionsQueryV2Factory,
+            'automatedInteractions',
         )
 
         expect(result).toBe(mockReturnValue)

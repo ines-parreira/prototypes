@@ -4,6 +4,7 @@ import {
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { aiAgentAutomatedInteractionsQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
+import { aiAgentAutomatedInteractionsQueryV2Factory } from 'domains/reporting/models/scopes/automatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 export const useAIAgentAutomatedInteractionsTrend = (
@@ -15,6 +16,8 @@ export const useAIAgentAutomatedInteractionsTrend = (
         timezone,
         aiAgentAutomatedInteractionsQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
+        aiAgentAutomatedInteractionsQueryV2Factory,
+        'automatedInteractions',
     )
 
 export const fetchAIAgentAutomatedInteractionsTrend = (
@@ -26,4 +29,6 @@ export const fetchAIAgentAutomatedInteractionsTrend = (
         timezone,
         aiAgentAutomatedInteractionsQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
+        aiAgentAutomatedInteractionsQueryV2Factory,
+        'automatedInteractions',
     )

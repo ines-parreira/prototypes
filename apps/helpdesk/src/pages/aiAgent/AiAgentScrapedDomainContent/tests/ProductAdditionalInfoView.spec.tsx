@@ -3,7 +3,7 @@ import { ContentState, EditorState } from 'draft-js'
 import { MemoryRouter } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useUpdateProductAdditionalInfo } from 'models/ecommerce/queries'
+import { useUpdateProductAdditionalInfoWithTracking } from 'models/ecommerce/hooks/useUpdateProductAdditionalInfoWithTracking'
 import useUnsavedChangesPrompt from 'pages/common/components/useUnsavedChangesPrompt'
 
 import ProductAdditionalInfoView from '../ProductAdditionalInfoView'
@@ -13,9 +13,12 @@ const useAppDispatchMock = useAppDispatch as jest.Mock
 const mockDispatch = jest.fn()
 useAppDispatchMock.mockReturnValue(mockDispatch)
 
-jest.mock('models/ecommerce/queries', () => ({
-    useUpdateProductAdditionalInfo: jest.fn(),
-}))
+jest.mock(
+    'models/ecommerce/hooks/useUpdateProductAdditionalInfoWithTracking',
+    () => ({
+        useUpdateProductAdditionalInfoWithTracking: jest.fn(),
+    }),
+)
 
 jest.mock('pages/common/components/useUnsavedChangesPrompt')
 const mockUseUnsavedChangesPrompt =
@@ -77,9 +80,9 @@ jest.mock('utils/editor', () => ({
 }))
 
 const mockMutateAsync = jest.fn()
-const mockUseUpdateProductAdditionalInfo =
-    useUpdateProductAdditionalInfo as jest.MockedFunction<
-        typeof useUpdateProductAdditionalInfo
+const mockUseUpdateProductAdditionalInfoWithTracking =
+    useUpdateProductAdditionalInfoWithTracking as jest.MockedFunction<
+        typeof useUpdateProductAdditionalInfoWithTracking
     >
 
 const renderWithRouter = (component: React.ReactElement) => {
@@ -88,7 +91,7 @@ const renderWithRouter = (component: React.ReactElement) => {
 
 describe('ProductAdditionalInfoView', () => {
     beforeEach(() => {
-        mockUseUpdateProductAdditionalInfo.mockReturnValue({
+        mockUseUpdateProductAdditionalInfoWithTracking.mockReturnValue({
             mutateAsync: mockMutateAsync,
         } as any)
         mockMutateAsync.mockResolvedValue({})

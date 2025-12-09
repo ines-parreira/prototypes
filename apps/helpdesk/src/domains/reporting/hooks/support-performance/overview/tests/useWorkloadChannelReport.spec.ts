@@ -45,30 +45,44 @@ describe.skip('useWorkloadChannelReport', () => {
     const workloadDistribution = {
         data: [
             {
+                dimension: 'email',
                 value: 200,
                 label: TicketChannel.Email,
+                decile: 0,
             },
             {
+                dimension: 'chat',
                 value: 34,
                 label: TicketChannel.Chat,
+                decile: 0,
             },
             {
+                dimension: 'api',
                 value: 16,
                 label: TicketChannel.Api,
+                decile: 0,
             },
         ],
+        isFetching: false,
+        isError: false,
     }
     const workloadDistributionPrevious = {
         data: [
             {
                 value: 200,
                 label: TicketChannel.Email,
+                dimension: 'email',
+                decile: 0,
             },
             {
                 value: 34,
                 label: TicketChannel.Chat,
+                dimension: 'chat',
+                decile: 0,
             },
         ],
+        isFetching: false,
+        isError: false,
     }
 
     beforeEach(() => {

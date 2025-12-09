@@ -9,14 +9,14 @@ import {
 import type { AutomationDatasetCube } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import {
-    fetchPostReporting,
-    usePostReporting,
+    fetchPostReportingV2,
+    usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 
 jest.mock('domains/reporting/models/queries')
-const usePostReportingMock = assumeMock(usePostReporting)
-const fetchPostReportingMock = assumeMock(fetchPostReporting)
+const usePostReportingV2Mock = assumeMock(usePostReportingV2)
+const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
 
 describe('MultipleMetricTrend', () => {
     const defaultReporting = {
@@ -36,7 +36,7 @@ describe('MultipleMetricTrend', () => {
 
     describe('useMultipleMetricTrend', () => {
         beforeEach(() => {
-            usePostReportingMock.mockReturnValue(defaultReporting)
+            usePostReportingV2Mock.mockReturnValue(defaultReporting)
         })
 
         it('should return isFetching=false when no queries are fetching', () => {
@@ -48,7 +48,7 @@ describe('MultipleMetricTrend', () => {
         })
 
         it('should return isFetching=true when one the queries is fetching', () => {
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 isFetching: true,
             })
@@ -69,7 +69,7 @@ describe('MultipleMetricTrend', () => {
         })
 
         it('should return isError=true when one the queries errored', () => {
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 isError: true,
             } as UseQueryResult)
@@ -100,14 +100,14 @@ describe('MultipleMetricTrend', () => {
         })
 
         it('should return data value', () => {
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 data: {
                     [AutomationDatasetMeasure.AutomatedInteractions]: 10,
                     [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
                 },
             } as UseQueryResult)
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 data: null,
             } as UseQueryResult)
@@ -137,14 +137,14 @@ describe('MultipleMetricTrend', () => {
             })
         })
         it('should return data value and prevValue', () => {
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 data: {
                     [AutomationDatasetMeasure.AutomatedInteractions]: 10,
                     [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
                 },
             } as UseQueryResult)
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 data: {
                     [AutomationDatasetMeasure.AutomatedInteractions]: 20,
@@ -200,14 +200,14 @@ describe('MultipleMetricTrend', () => {
                     AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
                 ],
             }
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 data: {
                     [AutomationDatasetMeasure.AutomatedInteractions]: 10,
                     [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 11,
                 },
             } as UseQueryResult)
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 data: {
                     [AutomationDatasetMeasure.AutomatedInteractions]: 20,
@@ -219,11 +219,14 @@ describe('MultipleMetricTrend', () => {
                 useMultipleMetricsTrends(defaultQuery, prevPeriodQuery),
             )
 
-            const defaultSelect = usePostReportingMock.mock.calls[0][1]?.select
-            const previousSelect = usePostReportingMock.mock.calls[1][1]?.select
+            const defaultSelect =
+                usePostReportingV2Mock.mock.calls[0][2]?.select
+            const previousSelect =
+                usePostReportingV2Mock.mock.calls[1][2]?.select
 
-            expect(usePostReportingMock).toHaveBeenCalledWith(
+            expect(usePostReportingV2Mock).toHaveBeenCalledWith(
                 [defaultQuery],
+                undefined,
                 expect.objectContaining({
                     select: defaultSelect,
                 }),
@@ -237,10 +240,11 @@ describe('MultipleMetricTrend', () => {
                 },
             })
 
-            expect(usePostReportingMock).toHaveBeenCalledWith(
+            expect(usePostReportingV2Mock).toHaveBeenCalledWith(
                 [prevPeriodQuery],
+                undefined,
                 expect.objectContaining({
-                    select: usePostReportingMock.mock.calls[1][1]?.select,
+                    select: usePostReportingV2Mock.mock.calls[1][2]?.select,
                 }),
             )
             expect(previousSelect?.(data)).toEqual({
@@ -256,7 +260,7 @@ describe('MultipleMetricTrend', () => {
 
     describe('fetchMultipleMetricTrend', () => {
         beforeEach(() => {
-            fetchPostReportingMock.mockReturnValue({
+            fetchPostReportingV2Mock.mockReturnValue({
                 ...defaultReporting,
                 data: {
                     data: [],
@@ -274,7 +278,7 @@ describe('MultipleMetricTrend', () => {
         })
 
         it('should return isError=true when one the queries errored', async () => {
-            fetchPostReportingMock.mockRejectedValue({
+            fetchPostReportingV2Mock.mockRejectedValue({
                 ...defaultReporting,
                 isError: true,
             } as any)
@@ -309,7 +313,7 @@ describe('MultipleMetricTrend', () => {
         })
 
         it('should return data value', async () => {
-            fetchPostReportingMock.mockResolvedValueOnce({
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
                 ...defaultReporting,
                 data: {
                     data: [
@@ -324,7 +328,7 @@ describe('MultipleMetricTrend', () => {
                     ],
                 },
             } as any)
-            fetchPostReportingMock.mockResolvedValueOnce({
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
                 ...defaultReporting,
                 data: {
                     data: [],
@@ -366,7 +370,7 @@ describe('MultipleMetricTrend', () => {
         })
 
         it('should return data value and prevValue', async () => {
-            fetchPostReportingMock.mockResolvedValueOnce({
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
                 ...defaultReporting,
                 data: {
                     data: [
@@ -377,7 +381,7 @@ describe('MultipleMetricTrend', () => {
                     ],
                 },
             } as any)
-            fetchPostReportingMock.mockResolvedValueOnce({
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
                 ...defaultReporting,
                 data: {
                     data: [
@@ -423,7 +427,7 @@ describe('MultipleMetricTrend', () => {
                     AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
                 ],
             }
-            fetchPostReportingMock.mockResolvedValueOnce({
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
                 ...defaultReporting,
                 data: {
                     [AutomationDatasetMeasure.AutomatedInteractions]: 10,
@@ -434,7 +438,7 @@ describe('MultipleMetricTrend', () => {
                     },
                 },
             } as any)
-            fetchPostReportingMock.mockResolvedValueOnce({
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
                 ...defaultReporting,
                 data: {
                     [AutomationDatasetMeasure.AutomatedInteractions]: 20,
@@ -444,10 +448,14 @@ describe('MultipleMetricTrend', () => {
 
             await fetchMultipleMetricsTrends(defaultQuery, prevPeriodQuery)
 
-            expect(fetchPostReportingMock).toHaveBeenCalledWith([defaultQuery])
-            expect(fetchPostReportingMock).toHaveBeenCalledWith([
-                prevPeriodQuery,
-            ])
+            expect(fetchPostReportingV2Mock).toHaveBeenCalledWith(
+                [defaultQuery],
+                undefined,
+            )
+            expect(fetchPostReportingV2Mock).toHaveBeenCalledWith(
+                [prevPeriodQuery],
+                undefined,
+            )
         })
     })
 })

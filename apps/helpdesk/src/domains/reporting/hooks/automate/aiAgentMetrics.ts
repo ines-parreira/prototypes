@@ -26,6 +26,7 @@ import {
     aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory,
     aiAgentTicketsPerIntentCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
+import { aiAgentAutomatedInteractionsQueryV2Factory } from 'domains/reporting/models/scopes/automatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import {
@@ -358,6 +359,8 @@ export const useAiAgentAutomatedTicketsCountTrends = ({
             ticketIds: prevTicketIds,
             sorting,
         }),
+        undefined,
+        undefined,
         enabled,
     )
 
@@ -392,6 +395,14 @@ export const useAiAgentAutomatedInteractionsCountTrends = ({
             },
             timezone,
         ),
+        aiAgentAutomatedInteractionsQueryV2Factory({ filters, timezone }),
+        aiAgentAutomatedInteractionsQueryV2Factory({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
         enabled,
     )
 }
