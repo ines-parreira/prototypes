@@ -1,10 +1,15 @@
+import { useCallback } from 'react'
+
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
+import { useFlag } from 'core/flags'
 import {
     helpCenterKeys,
     useDeleteArticleIngestionLog,
     useStartArticleIngestion,
+    useStartIngestion,
 } from 'models/helpCenter/queries'
 import { reportError } from 'utils/errors'
 
@@ -15,35 +20,55 @@ export const usePublicResourceMutation = ({
 }) => {
     const queryClient = useQueryClient()
 
+    const isNewEndpointEnabled = useFlag(
+        FeatureFlagKey.EnableNewEndpointForIndividualUrlIngestion,
+    )
+
+    const onIngestionSuccess = useCallback(async () => {
+        await queryClient.invalidateQueries({
+            queryKey: helpCenterKeys.articleIngestionLogs(helpCenterId),
+        })
+        await queryClient.invalidateQueries({
+            queryKey: helpCenterKeys.articleIngestionLogsListRoot(),
+        })
+        await queryClient.invalidateQueries({
+            queryKey: helpCenterKeys.knowledgeStatus(),
+        })
+    }, [queryClient, helpCenterId])
+
+    const { mutateAsync: startIngestionAsync } = useStartIngestion({
+        onSuccess: onIngestionSuccess,
+    })
+
     const { mutateAsync: startArticleIngestionAsync } =
         useStartArticleIngestion({
-            onSuccess: async () => {
-                await queryClient.invalidateQueries({
-                    queryKey: helpCenterKeys.articleIngestionLogs(helpCenterId),
-                })
-                await queryClient.invalidateQueries({
-                    queryKey: helpCenterKeys.articleIngestionLogsListRoot(),
-                })
-                await queryClient.invalidateQueries({
-                    queryKey: helpCenterKeys.knowledgeStatus(),
-                })
-            },
+            onSuccess: onIngestionSuccess,
         })
 
-    const addPublicResource = async (urls: string[]) => {
-        const links = urls.map((url) => ({ url }))
+    const addPublicResource = async (url: string) => {
         try {
-            await startArticleIngestionAsync([
-                undefined,
-                { help_center_id: helpCenterId },
-                { links },
-            ])
+            if (isNewEndpointEnabled) {
+                // New endpoint: /ingestions/start
+                await startIngestionAsync([
+                    undefined,
+                    { help_center_id: helpCenterId },
+                    { url, type: 'url' },
+                ])
+            } else {
+                // Old endpoint: /article-ingestion/start
+                await startArticleIngestionAsync([
+                    undefined,
+                    { help_center_id: helpCenterId },
+                    { links: [{ url }] },
+                ])
+            }
         } catch (error) {
             reportError(error, {
                 tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
                 extra: {
-                    context: 'Error during article ingestion start',
-                    links,
+                    context: 'Error during ingestion start',
+                    url,
+                    usedNewEndpoint: isNewEndpointEnabled,
                 },
             })
 

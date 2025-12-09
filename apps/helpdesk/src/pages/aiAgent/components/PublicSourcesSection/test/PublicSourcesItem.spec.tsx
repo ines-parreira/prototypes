@@ -276,4 +276,57 @@ describe('PublicSourcesItem', () => {
             })
         })
     })
+
+    describe('24-hour sync restriction', () => {
+        it('should disable sync button when URL was synced less than 24h ago', () => {
+            const recentSync = new Date()
+            recentSync.setHours(recentSync.getHours() - 12) // 12 hours ago
+
+            renderComponent({
+                source: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: 'idle',
+                    createdDatetime: '2024-01-01T00:00:00.000Z',
+                    latestSync: recentSync.toISOString(),
+                } as SourceItem,
+            })
+
+            const syncButton = screen.getByRole('button', { name: 'Sync URL' })
+            expect(syncButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should enable sync button when URL was synced more than 24h ago', () => {
+            const oldSync = new Date()
+            oldSync.setHours(oldSync.getHours() - 48) // 48 hours ago
+
+            renderComponent({
+                source: {
+                    id: 1,
+                    url: 'https://example.com/page',
+                    status: 'idle',
+                    createdDatetime: '2024-01-01T00:00:00.000Z',
+                    latestSync: oldSync.toISOString(),
+                } as SourceItem,
+            })
+
+            const syncButton = screen.getByRole('button', { name: 'Sync URL' })
+            expect(syncButton).not.toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should enable sync button when no latestSync is provided', () => {
+            renderComponent({
+                source: {
+                    id: 1,
+                    url: 'https://example.com/page',
+                    status: 'idle',
+                    createdDatetime: '2024-01-01T00:00:00.000Z',
+                    latestSync: undefined,
+                } as SourceItem,
+            })
+
+            const syncButton = screen.getByRole('button', { name: 'Sync URL' })
+            expect(syncButton).not.toHaveAttribute('aria-disabled', 'true')
+        })
+    })
 })

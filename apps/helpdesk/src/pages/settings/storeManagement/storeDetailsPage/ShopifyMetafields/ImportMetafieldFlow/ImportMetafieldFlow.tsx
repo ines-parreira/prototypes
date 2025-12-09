@@ -77,7 +77,7 @@ export default function ImportMetafieldFlow({
         <Modal
             isOpen={isOpen}
             onClose={handleClose}
-            size="medium"
+            size="large"
             classNameContent={styles.categoriesModalContent}
         >
             <ModalHeader

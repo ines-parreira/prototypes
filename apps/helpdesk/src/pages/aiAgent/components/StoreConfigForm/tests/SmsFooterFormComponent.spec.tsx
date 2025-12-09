@@ -118,7 +118,7 @@ describe('SmsFooterFormComponent', () => {
     })
 
     describe('Checkbox interactions', () => {
-        it('should enable textarea when checking the checkbox', async () => {
+        it('should enable textarea and set initial value when checking the checkbox', async () => {
             const user = userEvent.setup()
             renderWithProvider()
 
@@ -129,7 +129,10 @@ describe('SmsFooterFormComponent', () => {
             await act(() => user.click(checkbox))
 
             expect(mockSetIsPristine).toHaveBeenCalledWith(false)
-            expect(mockUpdateValue).not.toHaveBeenCalled()
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'smsDisclaimer',
+                'Powered by AI',
+            )
         })
 
         it('should clear disclaimer when unchecking the checkbox', async () => {
@@ -163,6 +166,27 @@ describe('SmsFooterFormComponent', () => {
             await act(() => user.click(checkbox))
 
             expect(mockUpdateValue).toHaveBeenCalledWith('smsDisclaimer', null)
+        })
+
+        it('should set initial value when checking the checkbox if smsDisclaimer is empty string', async () => {
+            const user = userEvent.setup()
+            renderWithProvider({
+                ...defaultProps,
+                smsDisclaimer: '',
+            })
+
+            // First enable the checkbox
+            const checkbox = screen.getByRole('checkbox', {
+                name: /Use initial message footer/i,
+            })
+
+            await act(() => user.click(checkbox))
+
+            // Should set initial value when smsDisclaimer is empty string
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'smsDisclaimer',
+                'Powered by AI',
+            )
         })
     })
 
@@ -275,10 +299,14 @@ describe('SmsFooterFormComponent', () => {
 
             await act(() => user.click(checkbox))
 
-            expect(mockUpdateValue).not.toHaveBeenCalled()
+            // Should still call updateValue with the initial value even without setIsPristine
+            expect(mockUpdateValue).toHaveBeenCalledWith(
+                'smsDisclaimer',
+                'Powered by AI',
+            )
         })
 
-        it('should update isFooterEnabled when smsDisclaimer prop changes', () => {
+        it('should not reactively update checkbox when smsDisclaimer prop changes', () => {
             const { rerender } = renderWithProvider({
                 ...defaultProps,
                 smsDisclaimer: null,
@@ -289,6 +317,8 @@ describe('SmsFooterFormComponent', () => {
             })
             expect(checkbox).not.toBeChecked()
 
+            // Rerendering with a new prop value should NOT automatically check the checkbox
+            // The checkbox state is only set on initial mount, not on prop changes
             rerender(
                 <QueryClientProvider client={mockQueryClient()}>
                     <Provider store={mockStore(defaultState)}>
@@ -303,7 +333,7 @@ describe('SmsFooterFormComponent', () => {
             checkbox = screen.getByRole('checkbox', {
                 name: /Use initial message footer/i,
             })
-            expect(checkbox).toBeChecked()
+            expect(checkbox).not.toBeChecked()
         })
 
         it('should display the correct initial value in textarea', () => {
@@ -316,11 +346,88 @@ describe('SmsFooterFormComponent', () => {
             expect(textarea).toHaveValue('Custom initial value')
         })
 
-        it('should display default value in textarea when smsDisclaimer is null', () => {
+        it('should display initial value in textarea when smsDisclaimer is null', () => {
             renderWithProvider({ ...defaultProps, smsDisclaimer: null })
 
             const textarea = screen.getByRole('textbox')
             expect(textarea).toHaveValue('Powered by AI')
+        })
+
+        it('should not disable checkbox when clearing textarea while focused', async () => {
+            const user = userEvent.setup()
+            renderWithProvider({
+                ...defaultProps,
+                smsDisclaimer: 'Powered by AI',
+            })
+
+            const checkbox = screen.getByRole('checkbox', {
+                name: /Use initial message footer/i,
+            })
+            const textarea = screen.getByRole('textbox')
+
+            expect(checkbox).toBeChecked()
+
+            await act(() => user.clear(textarea))
+
+            expect(checkbox).toBeChecked()
+        })
+
+        it('should disable checkbox when blurring empty textarea', async () => {
+            const user = userEvent.setup()
+            const { rerender } = renderWithProvider({
+                ...defaultProps,
+                smsDisclaimer: 'Powered by AI',
+            })
+
+            const checkbox = screen.getByRole('checkbox', {
+                name: /Use initial message footer/i,
+            })
+            let textarea = screen.getByRole('textbox')
+
+            expect(checkbox).toBeChecked()
+
+            // Clear the textarea
+            await act(() => user.clear(textarea))
+
+            // Simulate the parent component updating the prop after the onChange
+            rerender(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <SmsFooterFormComponent
+                            {...defaultProps}
+                            smsDisclaimer=""
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            textarea = screen.getByRole('textbox')
+
+            // Now blur the textarea
+            await act(() => user.click(textarea))
+            await act(() => user.tab())
+
+            expect(checkbox).not.toBeChecked()
+        })
+
+        it('should keep checkbox enabled when blurring textarea with content', async () => {
+            const user = userEvent.setup()
+            renderWithProvider({
+                ...defaultProps,
+                smsDisclaimer: 'Powered by AI',
+            })
+
+            const checkbox = screen.getByRole('checkbox', {
+                name: /Use initial message footer/i,
+            })
+            const textarea = screen.getByRole('textbox')
+
+            expect(checkbox).toBeChecked()
+
+            await act(() => user.type(textarea, ' - Updated'))
+            await act(() => user.tab())
+
+            expect(checkbox).toBeChecked()
         })
     })
 })

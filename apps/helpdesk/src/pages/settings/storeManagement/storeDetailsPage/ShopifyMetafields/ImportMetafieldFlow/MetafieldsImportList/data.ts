@@ -11,7 +11,7 @@ export const mockImportableFields: Field[] = [
     {
         id: '_2',
         name: 'New Integer field',
-        type: 'integer',
+        type: 'single_line_text',
         category: 'customer',
         isVisible: false,
     },

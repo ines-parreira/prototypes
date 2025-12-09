@@ -206,6 +206,7 @@ export enum FeatureFlagKey {
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     EnableShopifyMetafieldsIngestionUI = 'linear.project_shopify-metafields_enable_ingestion-ui',
+    EnableNewEndpointForIndividualUrlIngestion = 'linear.project_unify_ingestion_system.enable_new_endpoint_for_individual_url_ingestion',
     TriggerOnSearchKillSwitch = 'linear.task_AIORC-6090.kill-switch-for-trigger-on-search',
     KnowledgeHubEnabled = 'liner.project_allow-merchants-to-view-all-knowledge-from-a-single-place',
     PerformanceStatsOnIndividualKnowledge = 'linear.project_add-performance-stats-to-knowledge.show-stats',

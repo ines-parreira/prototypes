@@ -194,7 +194,7 @@ export const PublicSourcesSection = ({
             if (logConnectedPublicUrl) {
                 logConnectedPublicUrl(url)
             }
-            await addPublicResource([url])
+            await addPublicResource(url)
             resetAllBanner()
 
             onKnowledgeContentCreated({

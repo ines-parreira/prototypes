@@ -1,4 +1,6 @@
-import { Icon } from '@gorgias/axiom'
+import { Link } from 'react-router-dom'
+
+import { Breadcrumb, Breadcrumbs } from '@gorgias/axiom'
 
 import { getCustomerName } from '../helpers/getCustomerName'
 import { useTicket } from '../hooks/useTicket'
@@ -30,13 +32,14 @@ export function TicketHeader({ ticketId }: Props) {
     return (
         <div className={css.container}>
             <div className={css.left}>
-                <span className={css.customer}>
-                    {getCustomerName(ticket.customer)}
-                </span>
-                <span className={css.separator}>
-                    <Icon name="arrow-chevron-right" size="sm" />
-                </span>
-                <span className={css.subject}>{ticket.subject}</span>
+                <Breadcrumbs>
+                    <Breadcrumb>
+                        <Link to={`/app/customer/${ticket.customer.id}`}>
+                            {getCustomerName(ticket.customer)}
+                        </Link>
+                    </Breadcrumb>
+                    <Breadcrumb>{ticket.subject}</Breadcrumb>
+                </Breadcrumbs>
             </div>
             <div className={css.right}>
                 <TrashedTicket trashedDatetime={trashed_datetime} />

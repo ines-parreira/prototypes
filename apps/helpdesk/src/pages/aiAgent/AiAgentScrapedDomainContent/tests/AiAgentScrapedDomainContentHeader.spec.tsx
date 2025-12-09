@@ -118,4 +118,63 @@ describe('AiAgentScrapedDomainContentHeader', () => {
         setup({ pageType: HeaderType.ExternalDocument })
         expect(screen.queryByText('Sync')).not.toBeInTheDocument()
     })
+
+    describe('24-hour sync restriction', () => {
+        it('disables sync button for Domain when synced less than 24h ago', () => {
+            const recentSync = new Date()
+            recentSync.setHours(recentSync.getHours() - 12) // 12 hours ago
+            setup({
+                pageType: HeaderType.Domain,
+                latestSync: recentSync.toISOString(),
+            })
+            const syncButton = screen.getByRole('button', { name: 'Sync' })
+            expect(syncButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('disables sync button for URL when synced less than 24h ago', () => {
+            const recentSync = new Date()
+            recentSync.setHours(recentSync.getHours() - 12) // 12 hours ago
+            setup({
+                pageType: HeaderType.URL,
+                latestSync: recentSync.toISOString(),
+            })
+            const syncButton = screen.getByRole('button', { name: 'Sync' })
+            expect(syncButton).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('enables sync button for Domain when synced more than 24h ago', () => {
+            const oldSync = new Date()
+            oldSync.setHours(oldSync.getHours() - 48) // 48 hours ago
+            setup({
+                pageType: HeaderType.Domain,
+                latestSync: oldSync.toISOString(),
+            })
+            const syncButton = screen.getByRole('button', { name: 'Sync' })
+            expect(syncButton).not.toHaveAttribute('aria-disabled', 'true')
+
+            expect(
+                screen.queryByText(/synced less than 24h ago/),
+            ).not.toBeInTheDocument()
+        })
+
+        it('enables sync button for URL when synced more than 24h ago', () => {
+            const oldSync = new Date()
+            oldSync.setHours(oldSync.getHours() - 48) // 48 hours ago
+            setup({
+                pageType: HeaderType.URL,
+                latestSync: oldSync.toISOString(),
+            })
+            const syncButton = screen.getByRole('button', { name: 'Sync' })
+            expect(syncButton).not.toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('enables sync button when no latestSync provided', () => {
+            setup({
+                pageType: HeaderType.Domain,
+                latestSync: null,
+            })
+            const syncButton = screen.getByRole('button', { name: 'Sync' })
+            expect(syncButton).not.toHaveAttribute('aria-disabled', 'true')
+        })
+    })
 })

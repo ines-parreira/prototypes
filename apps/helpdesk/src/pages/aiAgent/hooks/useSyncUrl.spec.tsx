@@ -1,9 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
+import { useFlag } from 'core/flags'
 import {
     useGetIngestionLogs,
     useStartArticleIngestion,
+    useStartIngestion,
 } from 'models/helpCenter/queries'
 import * as errorsModule from 'utils/errors'
 
@@ -20,6 +22,10 @@ import {
     useSyncUrl,
 } from './useSyncUrl'
 
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(),
+}))
+
 jest.mock('models/helpCenter/queries', () => ({
     helpCenterKeys: {
         articleIngestionLogs: jest.fn((id) => ['articleIngestionLogs', id]),
@@ -28,6 +34,7 @@ jest.mock('models/helpCenter/queries', () => ({
         ]),
     },
     useGetIngestionLogs: jest.fn(),
+    useStartIngestion: jest.fn(),
     useStartArticleIngestion: jest.fn(),
 }))
 
@@ -483,6 +490,7 @@ describe('useSyncUrl', () => {
             },
         ]
 
+        const mockStartIngestion = jest.fn()
         const mockStartArticleIngestion = jest.fn()
         const mockInvalidateQueries = jest.fn()
 
@@ -504,10 +512,14 @@ describe('useSyncUrl', () => {
 
         beforeEach(() => {
             jest.clearAllMocks()
+            ;(useFlag as jest.Mock).mockReturnValue(true) // Default to new endpoint
             ;(useGetIngestionLogs as jest.Mock).mockReturnValue({
                 data: mockIngestionLogs,
                 error: null,
                 isLoading: false,
+            })
+            ;(useStartIngestion as jest.Mock).mockReturnValue({
+                mutateAsync: mockStartIngestion,
             })
             ;(useStartArticleIngestion as jest.Mock).mockReturnValue({
                 mutateAsync: mockStartArticleIngestion,
@@ -618,10 +630,63 @@ describe('useSyncUrl', () => {
                 result.current.syncUrl('https://existing.com/page'),
             ).rejects.toThrow('This URL has already been added')
 
+            expect(mockStartIngestion).not.toHaveBeenCalled()
+        })
+
+        it('syncUrl calls startIngestion with correct params', async () => {
+            mockStartIngestion.mockResolvedValue({})
+
+            const { result } = renderHook(
+                () =>
+                    useSyncUrl({
+                        helpCenterId: mockHelpCenterId,
+                        existingUrls: mockExistingUrls,
+                        helpCenterCustomDomains: mockCustomDomains,
+                        storeUrl: mockStoreUrl,
+                    }),
+                { wrapper: createWrapper() },
+            )
+
+            await act(async () => {
+                await result.current.syncUrl('https://valid.com/page')
+            })
+
+            expect(mockStartIngestion).toHaveBeenCalledWith([
+                undefined,
+                { help_center_id: mockHelpCenterId },
+                { url: 'https://valid.com/page', type: 'url' },
+            ])
+        })
+
+        it('syncUrl calls new endpoint when feature flag is ON', async () => {
+            ;(useFlag as jest.Mock).mockReturnValue(true)
+            mockStartIngestion.mockResolvedValue({})
+
+            const { result } = renderHook(
+                () =>
+                    useSyncUrl({
+                        helpCenterId: mockHelpCenterId,
+                        existingUrls: mockExistingUrls,
+                        helpCenterCustomDomains: mockCustomDomains,
+                        storeUrl: mockStoreUrl,
+                    }),
+                { wrapper: createWrapper() },
+            )
+
+            await act(async () => {
+                await result.current.syncUrl('https://valid.com/page')
+            })
+
+            expect(mockStartIngestion).toHaveBeenCalledWith([
+                undefined,
+                { help_center_id: mockHelpCenterId },
+                { url: 'https://valid.com/page', type: 'url' },
+            ])
             expect(mockStartArticleIngestion).not.toHaveBeenCalled()
         })
 
-        it('syncUrl calls startArticleIngestion with correct params', async () => {
+        it('syncUrl calls old endpoint when feature flag is OFF', async () => {
+            ;(useFlag as jest.Mock).mockReturnValue(false)
             mockStartArticleIngestion.mockResolvedValue({})
 
             const { result } = renderHook(
@@ -644,11 +709,12 @@ describe('useSyncUrl', () => {
                 { help_center_id: mockHelpCenterId },
                 { links: [{ url: 'https://valid.com/page' }] },
             ])
+            expect(mockStartIngestion).not.toHaveBeenCalled()
         })
 
         it('syncUrl reports error to Sentry on failure', async () => {
             const mockError = new Error('API Error')
-            mockStartArticleIngestion.mockRejectedValue(mockError)
+            mockStartIngestion.mockRejectedValue(mockError)
             const reportErrorSpy = jest.spyOn(errorsModule, 'reportError')
 
             const { result } = renderHook(
@@ -671,6 +737,7 @@ describe('useSyncUrl', () => {
                 extra: {
                     context: 'Error during URL sync',
                     url: 'https://valid.com/page',
+                    usedNewEndpoint: true,
                 },
             })
         })
@@ -799,7 +866,7 @@ describe('useSyncUrl', () => {
         })
 
         it('invalidates queries on success', async () => {
-            mockStartArticleIngestion.mockResolvedValue({})
+            mockStartIngestion.mockResolvedValue({})
 
             renderHook(
                 () =>
@@ -812,9 +879,9 @@ describe('useSyncUrl', () => {
                 { wrapper: createWrapper() },
             )
 
-            // Get the onSuccess callback from useStartArticleIngestion
-            const onSuccessCallback = (useStartArticleIngestion as jest.Mock)
-                .mock.calls[0][0].onSuccess
+            // Get the onSuccess callback from useStartIngestion
+            const onSuccessCallback = (useStartIngestion as jest.Mock).mock
+                .calls[0][0].onSuccess
 
             await act(async () => {
                 await onSuccessCallback()

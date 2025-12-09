@@ -33,12 +33,45 @@ export type MetafieldType =
     | 'meta_object'
     | 'mixed_reference'
 
+export enum MetafieldEnum {
+    SingleLineText = 'single_line_text',
+    MultiLineText = 'multi_line_text',
+    DateTime = 'date_time',
+    Date = 'date',
+    Dimension = 'dimension',
+    Volume = 'volume',
+    Weight = 'weight',
+    Decimal = 'decimal',
+    Integer = 'integer',
+    Company = 'company',
+    Customer = 'customer',
+    Product = 'product',
+    Collection = 'collection',
+    ProductVariant = 'product_variant',
+    Boolean = 'boolean',
+    Color = 'color',
+    Id = 'id',
+    Rating = 'rating',
+    Url = 'url',
+    Money = 'money',
+    Link = 'link',
+    Json = 'json',
+    File = 'file',
+    RichText = 'rich_text',
+    Page = 'page',
+    MetaObject = 'meta_object',
+    MixedReference = 'mixed_reference',
+}
+
 export interface MetafieldTypeItemProps {
     type: MetafieldType
     disabled?: boolean
 }
 
-const typeConfig: Record<MetafieldType, { icon: IconName; label: string }> = {
+export const typeConfig: Record<
+    MetafieldType,
+    { icon: IconName; label: string }
+> = {
     single_line_text: { icon: 'font', label: 'Single-line text' },
     multi_line_text: { icon: 'text-align-left', label: 'Multi-line text' },
     date_time: { icon: 'calendar-event', label: 'Date and time' },

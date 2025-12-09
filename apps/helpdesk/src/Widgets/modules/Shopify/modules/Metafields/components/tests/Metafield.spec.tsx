@@ -597,5 +597,101 @@ describe('<MetaField/>', () => {
             expect(screen.getByText('4.2 out of 5.0'))
             expect(screen.getAllByRole('button').length).toBe(2)
         })
+
+        it('should render null when IntegrationContext is missing for reference metafield', () => {
+            const { container } = render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyProductReference()} />
+                </Provider>,
+            )
+            expect(screen.queryByRole('button')).not.toBeInTheDocument()
+            expect(container.querySelector('a')).not.toBeInTheDocument()
+        })
+
+        it('should render null when gid cannot be extracted from reference value', () => {
+            const metafield = shopifyProductReference()
+            metafield.value = 'invalid-gid-format'
+            const { container } = render(
+                <Provider store={store}>
+                    <IntegrationContext.Provider value={integrationContext}>
+                        <Metafield metafield={metafield} />
+                    </IntegrationContext.Provider>
+                </Provider>,
+            )
+            expect(screen.queryByRole('button')).not.toBeInTheDocument()
+            expect(container.querySelector('a')).not.toBeInTheDocument()
+        })
+
+        it('should render null when gid value is empty for reference metafield', () => {
+            const metafield = shopifyProductReference()
+            metafield.value = ''
+            const { container } = render(
+                <Provider store={store}>
+                    <IntegrationContext.Provider value={integrationContext}>
+                        <Metafield metafield={metafield} />
+                    </IntegrationContext.Provider>
+                </Provider>,
+            )
+            expect(screen.queryByRole('button')).not.toBeInTheDocument()
+            expect(container.querySelector('a')).not.toBeInTheDocument()
+        })
+
+        it('should render null when integration is null in IntegrationContext', () => {
+            const contextWithNullIntegration: IntegrationContextType = {
+                integration: null as any,
+                integrationId: 1,
+            }
+            const { container } = render(
+                <Provider store={store}>
+                    <IntegrationContext.Provider
+                        value={contextWithNullIntegration}
+                    >
+                        <Metafield metafield={shopifyProductReference()} />
+                    </IntegrationContext.Provider>
+                </Provider>,
+            )
+            expect(screen.queryByRole('button')).not.toBeInTheDocument()
+            expect(container.querySelector('a')).not.toBeInTheDocument()
+        })
+
+        it('should render null when integration.get returns null for name', () => {
+            const contextWithNullName: IntegrationContextType = {
+                integration: Map<string, unknown>(
+                    fromJS({
+                        name: null,
+                    }),
+                ),
+                integrationId: 1,
+            }
+            const { container } = render(
+                <Provider store={store}>
+                    <IntegrationContext.Provider value={contextWithNullName}>
+                        <Metafield metafield={shopifyProductReference()} />
+                    </IntegrationContext.Provider>
+                </Provider>,
+            )
+            expect(screen.queryByRole('button')).not.toBeInTheDocument()
+            expect(container.querySelector('a')).not.toBeInTheDocument()
+        })
+
+        it('should render null when integration.get returns empty string for name', () => {
+            const contextWithEmptyName: IntegrationContextType = {
+                integration: Map<string, unknown>(
+                    fromJS({
+                        name: '',
+                    }),
+                ),
+                integrationId: 1,
+            }
+            const { container } = render(
+                <Provider store={store}>
+                    <IntegrationContext.Provider value={contextWithEmptyName}>
+                        <Metafield metafield={shopifyProductReference()} />
+                    </IntegrationContext.Provider>
+                </Provider>,
+            )
+            expect(screen.queryByRole('button')).not.toBeInTheDocument()
+            expect(container.querySelector('a')).not.toBeInTheDocument()
+        })
     })
 })

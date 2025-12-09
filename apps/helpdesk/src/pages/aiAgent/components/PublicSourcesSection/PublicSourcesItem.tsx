@@ -6,10 +6,15 @@ import { useParams } from 'react-router-dom'
 import {
     LegacyButton as Button,
     LegacyIconButton as IconButton,
+    LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
 import { HeaderType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import SyncDomainConfirmationModal from 'pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal'
+import {
+    getNextSyncDate,
+    isSyncLessThan24Hours,
+} from 'pages/aiAgent/AiAgentScrapedDomainContent/utils'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
@@ -155,9 +160,9 @@ export const PublicSourcesItem = ({
 }: Props) => {
     const [value, setValue] = useState(source.url ?? '')
     const [showSyncModal, setShowSyncModal] = useState(false)
-    const history = useHistory()
-
     const [isCurrentUrlPristine, setIsCurrentUrlPristine] = useState(true)
+    const history = useHistory()
+    const syncButtonId = `sync-button-${source.id}`
 
     const { shopName } = useParams<{ shopName: string }>()
     const { routes } = useAiAgentNavigation({ shopName })
@@ -238,8 +243,13 @@ export const PublicSourcesItem = ({
     const isEditingDisabled =
         source.status !== 'idle' && source.status !== 'error'
 
+    const isSyncLessThan24h = isSyncLessThan24Hours(source.latestSync)
+    const nextSyncDate = getNextSyncDate(source.latestSync)
+
     const isSyncDisabled =
-        (source.status !== 'idle' && source.status !== 'done') || !isValid
+        (source.status !== 'idle' && source.status !== 'done') ||
+        !isValid ||
+        isSyncLessThan24h
 
     const inputError = getInputError(
         !isValidUrl && isNotEmpty,
@@ -287,14 +297,21 @@ export const PublicSourcesItem = ({
                 error={inputError}
             />
             <Button
+                id={syncButtonId}
                 intent="secondary"
-                isDisabled={!isValid}
+                isDisabled={isSyncDisabled}
                 onClick={handleSyncButtonClick}
                 isLoading={source.status === 'loading'}
                 leadingIcon="sync"
             >
                 Sync URL
             </Button>
+
+            {isSyncLessThan24h && (
+                <Tooltip target={syncButtonId}>
+                    {`This URL was synced less than 24h ago. You can sync again on ${nextSyncDate}.`}
+                </Tooltip>
+            )}
 
             <div className={css.buttonGroup}>
                 <IconButton

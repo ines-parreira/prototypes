@@ -322,7 +322,7 @@ const AiAgentExternalSourceArticlesView = ({
         if (fileUrl) {
             setIsLocalSyncing(true)
             try {
-                await addPublicResource([fileUrl])
+                await addPublicResource(fileUrl)
                 await queryClient.invalidateQueries({
                     queryKey: helpCenterKeys.articleIngestionLogs(helpCenterId),
                 })

@@ -3,11 +3,23 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 
-import { Box, Button, Heading, Modal, Text, TextField } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    Heading,
+    Modal,
+    Text,
+    TextField,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { PAGE_NAME } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedDomainContent/hooks/useIngestionDomainBannerDismissed'
+import {
+    getNextSyncDate,
+    isSyncLessThan24Hours,
+} from 'pages/aiAgent/AiAgentScrapedDomainContent/utils'
 import { useSyncUrl } from 'pages/aiAgent/hooks/useSyncUrl'
 import { OPEN_SYNC_URL_MODAL } from 'pages/aiAgent/KnowledgeHub/constants'
 import {
@@ -51,12 +63,18 @@ export const SyncUrlModal = ({
         return existingUrls.filter((existingUrl) => existingUrl !== originalUrl)
     }, [existingUrls, originalUrl])
 
-    const { syncUrl, validateUrl } = useSyncUrl({
+    const { syncUrl, validateUrl, latestUrlIngestionLog } = useSyncUrl({
         helpCenterId,
         existingUrls: filteredExistingUrls,
         helpCenterCustomDomains,
         storeUrl,
     })
+
+    const isSyncLessThan24h = isSyncLessThan24Hours(
+        latestUrlIngestionLog?.latest_sync,
+    )
+    const nextSyncDate = getNextSyncDate(latestUrlIngestionLog?.latest_sync)
+    const syncButtonId = 'sync-url-modal-button'
 
     const { resetBanner } = useIngestionDomainBannerDismissed({
         shopName,
@@ -216,13 +234,19 @@ export const SyncUrlModal = ({
                     Cancel
                 </Button>
                 <Button
+                    id={syncButtonId}
                     variant="primary"
                     onClick={handleSync}
-                    isDisabled={isLoading || !url}
+                    isDisabled={isLoading || !url || isSyncLessThan24h}
                     leadingSlot="arrows-reload-alt-1"
                 >
                     Sync
                 </Button>
+                {isSyncLessThan24h && (
+                    <Tooltip target={syncButtonId}>
+                        {`This URL was synced less than 24h ago. You can sync again on ${nextSyncDate}.`}
+                    </Tooltip>
+                )}
             </Box>
         </Modal>
     )

@@ -38,6 +38,21 @@ Object.defineProperty(window, 'ResizeObserver', {
     writable: true,
 })
 
+Object.defineProperty(window, 'IntersectionObserver', {
+    value: function () {
+        return {
+            observe: () => null,
+            disconnect: () => null,
+            unobserve: () => null,
+            takeRecords: () => [],
+            root: null,
+            rootMargin: '',
+            thresholds: [],
+        }
+    },
+    writable: true,
+})
+
 // jsdom does not support matchMedia
 Object.defineProperty(window, 'matchMedia', {
     value: jest.fn(() => {

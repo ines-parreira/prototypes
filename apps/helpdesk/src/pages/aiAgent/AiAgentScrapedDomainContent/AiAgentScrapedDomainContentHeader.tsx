@@ -56,7 +56,8 @@ const AiAgentScrapedDomainContentHeader = ({
     const isSyncLessThan24h = isSyncLessThan24Hours(latestSync)
     const nextSyncDate = getNextSyncDate(latestSync)
 
-    const isDomainScrapedPage = pageType === HeaderType.Domain
+    const hasSyncRestriction =
+        pageType === HeaderType.Domain || pageType === HeaderType.URL
 
     const getTitleIcon = useMemo(() => {
         switch (pageType) {
@@ -124,9 +125,11 @@ const AiAgentScrapedDomainContentHeader = ({
                                 IngestionLogStatus.Pending
                             }
                             isDisabled={
-                                isDomainScrapedPage &&
-                                (!storeDomain ||
-                                    isFetchLoading ||
+                                (pageType === HeaderType.Domain &&
+                                    (!storeDomain ||
+                                        isFetchLoading ||
+                                        isSyncLessThan24h)) ||
+                                (pageType === HeaderType.URL &&
                                     isSyncLessThan24h)
                             }
                         >
@@ -134,9 +137,11 @@ const AiAgentScrapedDomainContentHeader = ({
                         </Button>
                     )}
 
-                    {isSyncLessThan24h && isDomainScrapedPage && (
+                    {isSyncLessThan24h && hasSyncRestriction && (
                         <Tooltip target={syncButtonId}>
-                            {`Your store website was synced less than 24h ago. You can sync again on ${nextSyncDate}.`}
+                            {pageType === HeaderType.Domain
+                                ? `Your store website was synced less than 24h ago. You can sync again on ${nextSyncDate}.`
+                                : `This URL was synced less than 24h ago. You can sync again on ${nextSyncDate}.`}
                         </Tooltip>
                     )}
                 </div>

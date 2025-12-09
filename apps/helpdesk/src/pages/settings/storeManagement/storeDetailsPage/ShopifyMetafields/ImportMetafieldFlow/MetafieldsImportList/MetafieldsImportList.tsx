@@ -6,8 +6,11 @@ import type { RowSelectionState } from '@gorgias/axiom'
 import {
     Box,
     Button,
+    Filters,
     HeaderRowGroup,
     Heading,
+    ListItem,
+    SelectFilter,
     TableBodyContent,
     TableHeader,
     TableRoot,
@@ -17,9 +20,13 @@ import {
 } from '@gorgias/axiom'
 
 import type { Field } from '../../MetafieldsTable/types'
+import { MetafieldEnum } from '../../MetafieldTypeItem/MetafieldTypeItem'
 import type { MetafieldCategory } from '../../types'
 import { getCategoryLabel } from '../../utils/getCategoryLabel'
+import { getMetafieldTypeLabel } from '../../utils/getMetafieldTypeLabel'
 import { isSupportedMetafieldType } from '../../utils/isSupportedMetafieldType'
+import { useFilteredMetafields } from '../hooks/useFilteredMetafields'
+import { useMetafieldsFiltersHandler } from '../hooks/useMetafieldsFiltersHandler'
 import MaxFieldsImportedBanner from '../MaxMetafieldsImportedBanner/MaxFieldsImportedBanner'
 import { columns } from './Columns'
 import { mockImportableFields } from './data'
@@ -35,6 +42,12 @@ type MetafieldsImportListProps = {
     maxFieldsImported?: boolean
 }
 
+const metafieldTypeOptions = Object.values(MetafieldEnum).map((type) => ({
+    id: type,
+    type,
+    label: getMetafieldTypeLabel(type),
+}))
+
 export default function MetafieldsImportList({
     category,
     selectedMetafields,
@@ -43,11 +56,10 @@ export default function MetafieldsImportList({
     onContinue,
     maxFieldsImported,
 }: MetafieldsImportListProps) {
-    const filteredData = useMemo(
-        () =>
-            mockImportableFields.filter((field) => field.category === category),
-        [category],
-    )
+    const filteredData = useFilteredMetafields({
+        data: mockImportableFields,
+        category,
+    })
 
     const initialRowSelection = useMemo(() => {
         return selectedMetafields.reduce((acc, field) => {
@@ -89,6 +101,8 @@ export default function MetafieldsImportList({
         },
     })
 
+    const handleFiltersChange = useMetafieldsFiltersHandler({ table })
+
     return (
         <div>
             <Heading>{getCategoryLabel(category)}</Heading>
@@ -103,13 +117,39 @@ export default function MetafieldsImportList({
                 {maxFieldsImported ? <MaxFieldsImportedBanner /> : null}
             </Box>
             <div
-                className={cn({
+                className={cn(styles.toolbarContainer, {
                     [styles.maxFieldsImported]: !!maxFieldsImported,
                 })}
             >
                 <TableToolbar
                     table={table}
-                    bottomRow={{ left: ['search'], right: ['selectCount'] }}
+                    bottomRow={{
+                        left: [
+                            'search',
+                            {
+                                key: 'filters',
+                                content: (
+                                    <div>
+                                        <Filters onChange={handleFiltersChange}>
+                                            <SelectFilter
+                                                id="type"
+                                                label="Type"
+                                                items={metafieldTypeOptions}
+                                                keyName="id"
+                                            >
+                                                {(option) => (
+                                                    <ListItem
+                                                        label={option.label}
+                                                    />
+                                                )}
+                                            </SelectFilter>
+                                        </Filters>
+                                    </div>
+                                ),
+                            },
+                        ],
+                        right: ['selectCount'],
+                    }}
                 />
                 <TableRoot withBorder>
                     <TableHeader>

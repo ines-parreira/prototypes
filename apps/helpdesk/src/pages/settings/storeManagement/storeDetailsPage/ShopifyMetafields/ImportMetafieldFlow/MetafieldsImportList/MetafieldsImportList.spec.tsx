@@ -276,4 +276,40 @@ describe('MetafieldsImportList', () => {
         const callArgs = mockOnSelectionChange.mock.calls[0][0]
         expect(callArgs.length).toBe(0)
     })
+
+    describe('Filters', () => {
+        it('should render the Type filter component', () => {
+            render(
+                <MetafieldsImportList
+                    category="draft_order"
+                    selectedMetafields={[]}
+                    onSelectionChange={mockOnSelectionChange}
+                    onBack={mockOnBack}
+                    onContinue={mockOnContinue}
+                />,
+            )
+
+            expect(screen.getByText('Type')).toBeInTheDocument()
+        })
+
+        it('should render filter with correct metafield type options', () => {
+            render(
+                <MetafieldsImportList
+                    category="draft_order"
+                    selectedMetafields={[]}
+                    onSelectionChange={mockOnSelectionChange}
+                    onBack={mockOnBack}
+                    onContinue={mockOnContinue}
+                />,
+            )
+
+            expect(screen.getByText('Type')).toBeInTheDocument()
+            const draftOrderFields = mockImportableFields.filter(
+                (field) => field.category === 'draft_order',
+            )
+            draftOrderFields.forEach((field) => {
+                expect(screen.getByText(field.name)).toBeInTheDocument()
+            })
+        })
+    })
 })

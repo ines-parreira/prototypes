@@ -339,9 +339,9 @@ describe('AiAgentExternalSourceArticlesView', () => {
 
             // Wait for async operations
             await waitFor(() => {
-                expect(mockAddPublicResource).toHaveBeenCalledWith([
+                expect(mockAddPublicResource).toHaveBeenCalledWith(
                     'https://example.com/test.pdf',
-                ])
+                )
             })
         })
 

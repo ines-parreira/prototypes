@@ -22,7 +22,7 @@ const mockGetCurrentUser = mockGetCurrentUserHandler()
 
 const defaultMockTicket = mockTicket({
     id: 1234,
-    customer: mockTicketCustomer({ name: 'John Doe' }),
+    customer: mockTicketCustomer({ name: 'John Doe', id: 1234 }),
     subject: 'Test ticket',
     trashed_datetime: null,
 })
@@ -59,12 +59,15 @@ describe('TicketHeader', () => {
     })
 
     it('should render the customer name and ticket subject', async () => {
-        render(<TicketHeader ticketId={defaultMockTicket.id} />)
+        render(<TicketHeader ticketId={1234} />)
 
         await waitFor(() => {
             expect(screen.getByText('John Doe')).toBeInTheDocument()
-            expect(screen.getByText('Test ticket')).toBeInTheDocument()
+            expect(
+                screen.getByRole('link', { name: 'John Doe' }),
+            ).toHaveAttribute('href', '/app/customer/1234')
         })
+        expect(screen.getByText('Test ticket')).toBeInTheDocument()
     })
 
     describe('TrashedTicket', () => {

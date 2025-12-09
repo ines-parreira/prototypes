@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import {
     LegacyCheckBoxField as CheckBoxField,
@@ -34,16 +34,14 @@ export const SmsFooterFormComponent = ({
     isRequired,
 }: SmsFooterFormComponentProps) => {
     const initialValue = smsDisclaimer ?? INITIAL_FORM_VALUES.smsDisclaimer
-    const [isFooterEnabled, setIsFooterEnabled] = useState<boolean>(false)
-
-    useEffect(() => {
-        // Enable checkbox if there's a value in smsDisclaimer
-        setIsFooterEnabled(
+    const [isFooterEnabled, setIsFooterEnabled] = useState<boolean>(() => {
+        // Initialize checkbox state based on whether there's a value
+        return (
             smsDisclaimer !== null &&
-                smsDisclaimer !== '' &&
-                smsDisclaimer.trim().length > 0,
+            smsDisclaimer !== '' &&
+            smsDisclaimer.trim().length > 0
         )
-    }, [smsDisclaimer])
+    })
 
     const [isBlurred, setIsBlurred] = useState<boolean | null>(null)
     const isSmsDisclaimerValid =
@@ -61,11 +59,25 @@ export const SmsFooterFormComponent = ({
         setIsBlurred(false)
     }
 
+    const handleBlur = () => {
+        setIsBlurred(true)
+        // Disable checkbox only when leaving the text area with empty content
+        if (!smsDisclaimer || smsDisclaimer.trim().length === 0) {
+            setIsFooterEnabled(false)
+        }
+    }
+
     const handleCheckboxChange = (value: boolean) => {
         if (setIsPristine) setIsPristine(false)
         setIsFooterEnabled(value)
-        // Clear the disclaimer when unchecking
-        if (!value) {
+
+        if (value) {
+            // Set the initial value when enabling the checkbox if smsDisclaimer is null
+            if (!smsDisclaimer) {
+                updateValue('smsDisclaimer', INITIAL_FORM_VALUES.smsDisclaimer)
+            }
+        } else {
+            // Clear the disclaimer when unchecking
             updateValue('smsDisclaimer', null)
         }
     }
@@ -108,7 +120,7 @@ export const SmsFooterFormComponent = ({
                         onChange={(value) =>
                             handleChange('smsDisclaimer', value)
                         }
-                        onBlur={() => setIsBlurred(true)}
+                        onBlur={handleBlur}
                         maxLength={SMS_DISCLAIMER_MAX_LENGTH}
                         error={
                             !isSmsDisclaimerValid
