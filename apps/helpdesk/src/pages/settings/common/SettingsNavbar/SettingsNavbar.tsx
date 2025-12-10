@@ -1,12 +1,15 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { ActiveContent, Navbar } from 'common/navigation'
 import type { AccordionValues } from 'components/Accordion/utils/types'
 import { Navigation } from 'components/Navigation/Navigation'
+import { UserRole } from 'config/types/user'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
+import { useFlag } from 'core/flags'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
@@ -62,6 +65,10 @@ const SettingsNavbar = () => {
     // for any of stores, we will not show the them in the settings navbar.
     const { enabled: isArticleRecEnabledWhileSunset } =
         useIsArticleRecommendationsEnabledWhileSunset()
+
+    const isAgentUnavailabilityEnabled = useFlag(
+        FeatureFlagKey.CustomAgentUnavailableStatuses,
+    )
 
     return (
         <Navbar activeContent={ActiveContent.Settings} title="Settings">
@@ -256,6 +263,13 @@ const SettingsNavbar = () => {
                             text="Teams"
                             requiredRole={ADMIN_ROLE}
                         />
+                        {isAgentUnavailabilityEnabled && (
+                            <Item
+                                to="agent-statuses"
+                                text="Agent Statuses"
+                                requiredRole={UserRole.Admin}
+                            />
+                        )}
                         <Item
                             to="access"
                             text="Access management"

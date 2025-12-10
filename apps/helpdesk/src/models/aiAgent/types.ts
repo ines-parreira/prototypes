@@ -19,6 +19,7 @@ export type AccountConfiguration = {
     }
     views?: { [key: string]: { id: number } }
     helpdeskOAuth: { accessToken: string } | null
+    customFieldIds: number[]
 }
 
 export type AccountConfigurationWithHttpIntegration = AccountConfiguration & {

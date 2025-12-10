@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+import type { AxiosResponse } from 'axios'
 import { cloneDeep, pick, set } from 'lodash'
 
 import {
@@ -9,23 +11,31 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
+import { useFlag } from 'core/flags'
 import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
 import { getUIDataType } from 'custom-fields/helpers/getUIDataType'
+import { useUpdateAiAutofill } from 'custom-fields/hooks/queries/useUpdateAiAutofill'
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import type { CustomField, CustomFieldInput } from 'custom-fields/types'
 import { isCustomField, isCustomFieldSystemReadOnly } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import { useGetAccountConfiguration } from 'models/aiAgent/queries'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
 import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
+import AIAutofill from 'pages/settings/customFields/components/AIAutofill'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
 import css from 'pages/settings/customFields/components/FieldForm.less'
 import RequirementTypeInput from 'pages/settings/customFields/components/RequirementTypeInput'
 import TypeSelectInput from 'pages/settings/customFields/components/TypeSelectInput'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
 
 const SAVE_BUTTON_ID = 'custom-fields-form-save-button'
 const TOOLTIP_MESSAGE =
@@ -33,7 +43,7 @@ const TOOLTIP_MESSAGE =
 
 interface FieldFormProps {
     field: CustomField | CustomFieldInput
-    onSubmit: (field: CustomFieldInput) => Promise<unknown>
+    onSubmit: (field: CustomFieldInput) => Promise<AxiosResponse<CustomField>>
     onClose: () => void
     submitLabel?: string
 }
@@ -73,6 +83,14 @@ function pickDefinitionFields(
 
 export default function FieldForm(props: FieldFormProps) {
     const dispatch = useAppDispatch()
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+    const isAiAutofillEnabled = useFlag(
+        FeatureFlagKey.AiAgentTicketFieldAutofillOnFieldDefinitionPage,
+    )
+
+    const { data: accountConfigData } =
+        useGetAccountConfiguration(accountDomain)
 
     const objectTypeSettings = OBJECT_TYPE_SETTINGS[props.field.object_type]
     const customFieldTitleLabel = objectTypeSettings.TITLE_LABEL
@@ -91,8 +109,25 @@ export default function FieldForm(props: FieldFormProps) {
     const [isLoading, setIsLoading] = useState(false)
     const [isFormValid, setIsFormValid] = useState(false)
     const [isFormDirty, setIsFormDirty] = useState(false)
+    const [aiAutofillEnabled, setAiAutofillEnabled] = useState(false)
 
     const [form, setForm] = useState(pickDefinitionFields(props.field))
+    const { mutateAsync: updateAiAutofill } = useUpdateAiAutofill()
+
+    // Initialize AI Autofill enabled state based on account configuration
+    useEffect(() => {
+        if (
+            isAiAutofillEnabled &&
+            accountConfigData?.data?.accountConfiguration &&
+            isCustomField(props.field)
+        ) {
+            const isEnabled =
+                accountConfigData.data.accountConfiguration.customFieldIds.includes(
+                    props.field.id,
+                )
+            setAiAutofillEnabled(isEnabled)
+        }
+    }, [accountConfigData, isAiAutofillEnabled, props.field])
 
     // Use an effect since useRef() does not notify when the value is set
     useEffect(() => {
@@ -115,7 +150,35 @@ export default function FieldForm(props: FieldFormProps) {
     const save = async () => {
         setIsLoading(true)
         try {
-            await props.onSubmit(sanitizeInput(form))
+            const savedField = await props.onSubmit(sanitizeInput(form))
+
+            // Update AI autofill setting for the saved field (works for both create and edit)
+            if (isAiAutofillEnabled) {
+                try {
+                    await updateAiAutofill({
+                        customFieldId: savedField.data.id,
+                        enabled: aiAutofillEnabled,
+                    })
+                } catch (aiError) {
+                    reportError(aiError, {
+                        tags: { team: SentryTeam.AI_AGENT },
+                        extra: {
+                            context:
+                                'Error updating AI Autofill settings for custom field',
+                            accountId: currentAccount.get('id'),
+                            customFieldId: savedField.data.id,
+                            enabled: aiAutofillEnabled,
+                        },
+                    })
+                    dispatch(
+                        notify({
+                            title: 'Failed to update AI Autofill settings',
+                            status: NotificationStatus.Error,
+                        }),
+                    )
+                }
+            }
+
             setIsFormDirty(false)
             return true
         } catch (e) {
@@ -275,6 +338,17 @@ export default function FieldForm(props: FieldFormProps) {
                     </div>
                 )}
 
+            {isAiAutofillEnabled &&
+                form.requirement_type !== 'conditional' &&
+                !form.managed_type && (
+                    <AIAutofill
+                        value={aiAutofillEnabled}
+                        onChange={(value) => {
+                            setIsFormDirty(true)
+                            setAiAutofillEnabled(value)
+                        }}
+                    />
+                )}
             <div className={css.buttons}>
                 <div className={css.leftGroup}>
                     {isReadOnly ? (

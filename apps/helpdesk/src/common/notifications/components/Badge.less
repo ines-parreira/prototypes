@@ -3,10 +3,17 @@
         padding: 0 2px;
         min-width: 16px;
         border-radius: 4px;
-        background: #d6384d; // design token for this will follow
-        color: var(--neutral-grey-0);
+        background: #d6384d; // legacy - design token for this will follow
+        color: var(--neutral-grey-0); // legacy
         font-size: 10px;
         font-weight: 600;
         line-height: 16px;
+    }
+}
+
+.axiom :local {
+    .badge {
+        background: var(--static-error);
+        color: var(--content-inverted-default);
     }
 }

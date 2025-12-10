@@ -125,12 +125,6 @@ describe('TicketVoiceCallContainer', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useFlagMock.mockImplementation((flagKey: FeatureFlagKey) => {
-            if (flagKey === FeatureFlagKey.CallListening) {
-                return true
-            }
-            return false
-        })
         canMonitorCallMock.mockReturnValue(true)
         getCallMonitorabilityMock.mockReturnValue({
             isMonitorable: true,
@@ -171,9 +165,6 @@ describe('TicketVoiceCallContainer', () => {
     it('should render the new avatar if the ticket thread revamp is enabled', () => {
         useFlagMock.mockImplementation((flagKey: FeatureFlagKey) => {
             if (flagKey === FeatureFlagKey.TicketThreadRevamp) {
-                return true
-            }
-            if (flagKey === FeatureFlagKey.CallListening) {
                 return true
             }
             return false
@@ -356,26 +347,6 @@ describe('TicketVoiceCallContainer', () => {
             )
 
             expect(screen.getByText('MonitorCallButton')).toBeInTheDocument()
-        })
-
-        it('should not render MonitorCallButton when feature flag is disabled', () => {
-            useFlagMock.mockImplementation((flagKey: FeatureFlagKey) => {
-                if (flagKey === FeatureFlagKey.CallListening) {
-                    return false
-                }
-                return false
-            })
-
-            renderComponent({
-                voiceCall: {
-                    ...voiceCall,
-                    status: VoiceCallStatus.Answered,
-                },
-            })
-
-            expect(
-                screen.queryByText('MonitorCallButton'),
-            ).not.toBeInTheDocument()
         })
     })
 })

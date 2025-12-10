@@ -194,6 +194,7 @@ const defaultPlaygroundResources = {
         gorgiasDomain: 'test-domain',
         accountId: 123,
         httpIntegration: { id: 456 },
+        customFieldIds: [],
     },
     snippetHelpCenterId: 789,
     isLoading: false,

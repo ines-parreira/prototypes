@@ -25,7 +25,7 @@
         right: -(@iconSize / 2);
         border-radius: (@iconSize / 2);
         border: 1px solid var(--neutral-grey-0); // legacy
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
         background-color: var(--main-primary); // legacy
 
         :global {
@@ -51,7 +51,7 @@
     .type {
         .body-semibold();
         margin: 0;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .systemIconWrapper {
@@ -65,18 +65,27 @@
     }
 
     .systemIcon {
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
         width: unset !important;
     }
 }
 
 .axiom :local {
     .subIcon {
-        border-color: var(--border-neutral-default);
+        border-color: var(--elevation-neutral-default);
+        color: var(--content-inverted-default);
         background-color: var(--static-additional-blue);
+    }
+
+    .type {
+        color: var(--content-neutral-default);
     }
 
     .systemIconWrapper {
         background-color: var(--static-additional-blue);
+    }
+
+    .systemIcon {
+        color: var(--content-inverted-default);
     }
 }

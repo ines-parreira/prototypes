@@ -16,7 +16,7 @@
         }
 
         &:hover {
-            background-color: var(--navigation-selected);
+            background-color: var(--navigation-selected); // legacy
         }
     }
 
@@ -27,10 +27,22 @@
         bottom: -2px;
         width: 11px;
         height: 11px;
-        border-color: var(--navigation-background);
+        border-color: var(--navigation-background); // legacy
     }
 
     .dropdown {
         width: 220px;
+    }
+}
+
+.axiom :local {
+    .container {
+        &:hover {
+            background-color: var(--surface-accent-default);
+        }
+    }
+
+    .badge.badge.badge {
+        border-color: var(--elevation-neutral-default);
     }
 }

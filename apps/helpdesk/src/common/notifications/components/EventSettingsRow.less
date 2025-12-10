@@ -5,7 +5,7 @@
 
     .ticketChannelIcon {
         font-size: 20px !important;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         margin-right: 16px;
 
         &:global(.icon-facebook-feed) {
@@ -18,5 +18,11 @@
     .soundSelectCell {
         padding-top: 0;
         padding-bottom: 0;
+    }
+}
+
+.axiom :local {
+    .ticketChannelIcon {
+        color: var(--content-neutral-secondary);
     }
 }

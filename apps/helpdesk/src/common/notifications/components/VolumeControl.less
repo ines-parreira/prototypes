@@ -8,11 +8,17 @@
 
     .icon {
         display: block;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .input {
         display: block;
         flex-grow: 1;
+    }
+}
+
+.axiom :local {
+    .icon {
+        color: var(--content-neutral-secondary);
     }
 }

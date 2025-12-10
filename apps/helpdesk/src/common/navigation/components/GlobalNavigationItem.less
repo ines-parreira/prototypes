@@ -19,7 +19,7 @@
             color 0.2s ease-out;
 
         &:hover {
-            background: var(--navigation-background-accent);
+            background: var(--navigation-background-accent); // legacy
             color: var(--navigation-title-item); // legacy
             box-shadow: 0px 1px 2px 0px rgba(22, 22, 22, 0.16);
         }
@@ -30,14 +30,14 @@
     }
 
     .active {
-        background: var(--navigation-border);
-        border: 1px solid var(--navigation-selected);
-        color: var(--navigation-title-item);
+        background: var(--navigation-border); // legacy
+        border: 1px solid var(--navigation-selected); // legacy
+        color: var(--navigation-title-item); // legacy
     }
 
     .active:hover {
-        background: var(--navigation-background-accent);
-        color: var(--navigation-title-item);
+        background: var(--navigation-background-accent); // legacy
+        color: var(--navigation-title-item); // legacy
         border: 1px solid transparent;
         box-shadow: 0px 1px 2px 0px rgba(22, 22, 22, 0.16);
     }
@@ -45,10 +45,22 @@
 
 .axiom :local {
     .icon {
-        color: var(--content-neutral-default);
+        color: var(--content-neutral-secondary);
 
         &:hover {
+            background: var(--hover-default);
             color: var(--content-neutral-default);
         }
+    }
+
+    .active {
+        background: var(--surface-neutral-secondary);
+        border: 1px solid var(--border-accent-default);
+        color: var(--content-neutral-default);
+    }
+
+    .active:hover {
+        background: var(--hover-default);
+        color: var(--content-neutral-default);
     }
 }

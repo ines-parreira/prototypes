@@ -51,7 +51,7 @@
                 top: 0px;
                 bottom: 0px;
                 width: 3px;
-                background-color: var(--main-primary-1);
+                background-color: var(--main-primary-1); // legacy
                 opacity: 1;
                 transition-property: opacity;
                 transition-duration: 0.25s;
@@ -88,7 +88,7 @@
         width: inherit;
         min-width: 200px;
         max-width: 350px;
-        background: var(--navigation-background);
+        background: var(--navigation-background); // legacy
     }
 
     .nav-dropdown-wrapper {
@@ -99,12 +99,12 @@
                 var(--navigation-title-item-s),
                 var(--navigation-title-item-l),
                 0.08
-            );
+            ); // legacy
     }
 
     .title {
         .heading-subsection-semibold();
-        color: var(--navigation-title-item);
+        color: var(--navigation-title-item); // legacy
         padding: var(--layout-spacing-s) 20px;
     }
 
@@ -116,16 +116,16 @@
         display: flex;
         flex-direction: column;
 
-        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); // legacy
         scrollbar-width: thin;
 
         &::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb);
+            background: var(--scrollbar-thumb); // legacy
             visibility: initial;
         }
 
         &::-webkit-scrollbar-track {
-            background-color: var(--scrollbar-track);
+            background-color: var(--scrollbar-track); // legacy
         }
     }
 
@@ -136,7 +136,7 @@
     }
 
     .check {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 20px;
     }
 }
@@ -144,7 +144,7 @@
 :global(.globalNav) :local {
     .sidebar {
         border-right: 0;
-        border-left: 1px solid var(--navigation-border);
+        border-left: 1px solid var(--navigation-border); // legacy
 
         .sidebar-resizer {
             right: -4px;
@@ -178,12 +178,53 @@
 
 .axiom :local {
     .sidebar {
+        border-right: 1px solid var(--border-neutral-default);
         border-left: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
         color: var(--content-neutral-default);
-        background: var(--elevation-neutral-bg);
+    }
+
+    .sidebar .sidebar-resizer {
+        &:hover,
+        &.isTouched {
+            &::after {
+                background-color: var(--surface-additional-blue);
+            }
+        }
     }
 
     .nav-primary {
-        background: var(--elevation-neutral-bg);
+        background: var(--elevation-neutral-default);
+    }
+
+    .nav-dropdown-wrapper {
+        border-bottom: 1px solid var(--border-neutral-tertiary);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .navbar-content {
+        scrollbar-color: var(--surface-neutral-tertiary)
+            var(--elevation-neutral-default);
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--surface-neutral-tertiary);
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: var(--elevation-neutral-default);
+        }
+    }
+
+    .check {
+        color: var(--content-neutral-secondary);
+    }
+}
+
+.axiom :global(.globalNav) :local {
+    .sidebar {
+        border-left: 1px solid var(--border-neutral-default);
     }
 }

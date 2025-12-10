@@ -17,14 +17,14 @@
         text-align: left;
         padding: 8px;
         transition: background-color 0.2s linear;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         .body-regular();
 
         &:hover,
         &:focus {
             outline: none;
-            background: var(--neutral-grey-2);
-            color: var(--neutral-grey-6);
+            background: var(--neutral-grey-2); // legacy
+            color: var(--neutral-grey-6); // legacy
         }
 
         &.availabilityToggle {
@@ -47,7 +47,7 @@
     }
 
     .sub-menu-chevron {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         vertical-align: -14% !important;
     }
 
@@ -73,7 +73,7 @@
         display: flex;
         padding: 8px 16px;
         align-items: center;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: normal;
         outline: none;
 
@@ -82,12 +82,12 @@
         }
 
         &:global:hover {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
         }
     }
 
     .check {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 20px;
     }
 }
@@ -95,5 +95,31 @@
 .axiom :local {
     .separator {
         border-top: 1px solid var(--border-neutral-default);
+    }
+
+    .dropdown-item-user-menu {
+        color: var(--content-neutral-default);
+
+        &:hover,
+        &:focus {
+            background: var(--hover-default);
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .sub-menu-chevron {
+        color: var(--content-neutral-secondary);
+    }
+
+    .dropdown-item {
+        color: var(--content-neutral-default);
+
+        &:global:hover {
+            background-color: var(--hover-default);
+        }
+    }
+
+    .check {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -8,7 +7,6 @@ import { fromJS } from 'immutable'
 import type { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import LiveVoiceCallTable from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallTable'
 import { LiveVoiceStatusFilterOption } from 'domains/reporting/pages/voice/components/LiveVoice/types'
 import {
@@ -40,7 +38,6 @@ jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils', () => {
         orderLiveVoiceCallsByOngoingTime: jest.fn(),
     }
 })
-jest.mock('core/flags')
 jest.mock('hooks/useAppSelector')
 
 const VoiceCallTableContentMock = assumeMock(VoiceCallTableContent)
@@ -50,7 +47,6 @@ const orderLiveVoiceCallsByOngoingTimeMock = assumeMock(
     orderLiveVoiceCallsByOngoingTime,
 )
 const formatVoiceCallsDataMock = assumeMock(formatVoiceCallsData)
-const useFlagMock = assumeMock(useFlag)
 const useAppSelectorMock = assumeMock(useAppSelector)
 
 describe('LiveVoiceCallTable', () => {
@@ -61,7 +57,6 @@ describe('LiveVoiceCallTable', () => {
         filterLiveCallsByStatusMock.mockReturnValue([])
         orderLiveVoiceCallsByOngoingTimeMock.mockReturnValue([])
         formatVoiceCallsDataMock.mockReturnValue([])
-        useFlagMock.mockReturnValue(false)
         useAppSelectorMock.mockReturnValue(
             fromJS({ role: { name: UserRole.Admin } }),
         )
@@ -166,15 +161,6 @@ describe('LiveVoiceCallTable', () => {
     })
 
     describe('Monitor column', () => {
-        beforeEach(() => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.CallListening) {
-                    return true
-                }
-                return false
-            })
-        })
-
         it.each([UserRole.Admin, UserRole.Agent])(
             'should include Monitor column when user has permission',
             (role) => {
@@ -198,29 +184,6 @@ describe('LiveVoiceCallTable', () => {
         it('should not include Monitor column when user does not have permission', () => {
             useAppSelectorMock.mockReturnValue(
                 fromJS({ role: { name: UserRole.LiteAgent } }),
-            )
-
-            renderComponent()
-
-            expect(VoiceCallTableContentMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    columns: expect.not.arrayContaining([
-                        VoiceCallTableColumn.Monitor,
-                    ]),
-                }),
-                {},
-            )
-        })
-
-        it('should not include Monitor column when feature flag is disabled', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.CallListening) {
-                    return false
-                }
-                return false
-            })
-            useAppSelectorMock.mockReturnValue(
-                fromJS({ role: { name: UserRole.Admin } }),
             )
 
             renderComponent()

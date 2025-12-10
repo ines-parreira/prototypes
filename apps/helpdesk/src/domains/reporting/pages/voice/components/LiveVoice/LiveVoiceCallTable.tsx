@@ -1,10 +1,7 @@
-import React, { useMemo, useState } from 'react'
-
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { useMemo, useState } from 'react'
 
 import type { LiveCallQueueVoiceCall } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
@@ -32,8 +29,6 @@ type Props = {
 }
 
 export default function LiveVoiceCallTable({ voiceCalls, isLoading }: Props) {
-    const isCallListeningEnabled = useFlag(FeatureFlagKey.CallListening)
-
     const [statusFilter, setStatusFilter] = useState(
         LiveVoiceStatusFilterOption.ALL,
     )
@@ -70,10 +65,9 @@ export default function LiveVoiceCallTable({ voiceCalls, isLoading }: Props) {
     }
 
     const currentUser = useAppSelector(getCurrentUser)
-    const columns =
-        isCallListeningEnabled && canMonitorCall(currentUser)
-            ? liveVoiceCallTableColumnsWithMonitor
-            : liveVoiceCallTableColumns
+    const columns = canMonitorCall(currentUser)
+        ? liveVoiceCallTableColumnsWithMonitor
+        : liveVoiceCallTableColumns
 
     return (
         <DashboardSection>

@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent } from '@repo/logging'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -7,6 +8,7 @@ import { useLocation } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
+import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { renderWithRouter } from 'utils/testing'
@@ -52,6 +54,7 @@ const scrollToMock = jest.fn()
 const mockUseLocation = useLocation as jest.Mock
 const mockLogEvent = logEvent as jest.Mock
 const mockUseAiAgentAccess = useAiAgentAccess as jest.Mock
+const mockUseFlag = useFlag as jest.Mock
 
 describe('SettingsNavbar', () => {
     const mockCurrentUser = fromJS({
@@ -84,6 +87,7 @@ describe('SettingsNavbar', () => {
         mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
             enabled: true,
         })
+        mockUseFlag.mockImplementation(() => false)
     })
 
     const renderComponent = (
@@ -279,6 +283,71 @@ describe('SettingsNavbar', () => {
             })
 
             expect(billingLink).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Agent Statuses menu item', () => {
+        it('should show Agent Statuses menu item when CustomAgentUnavailableStatuses flag is enabled', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
+                    return true
+                }
+                return false
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('Agent Statuses')).toBeInTheDocument()
+        })
+
+        it('should hide Agent Statuses menu item when CustomAgentUnavailableStatuses flag is disabled', () => {
+            mockUseFlag.mockImplementation(() => false)
+
+            renderComponent()
+
+            expect(screen.queryByText('Agent Statuses')).not.toBeInTheDocument()
+        })
+
+        it('should render Agent Statuses link with correct href', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
+                    return true
+                }
+                return false
+            })
+
+            renderComponent()
+
+            const agentStatusesLink = screen.getByRole('link', {
+                name: /agent statuses/i,
+            })
+
+            expect(agentStatusesLink).toHaveAttribute(
+                'href',
+                '/app/settings/agent-statuses',
+            )
+        })
+
+        it('should not render Agent Statuses for non-admin users', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
+                    return true
+                }
+                return false
+            })
+
+            const nonAdminStore = mockStore({
+                currentAccount: mockAccount,
+                currentUser: fromJS({
+                    has_password: true,
+                    role: { name: 'agent' },
+                }),
+                billing: fromJS(billingState),
+            })
+
+            renderComponent(nonAdminStore)
+
+            expect(screen.queryByText('Agent Statuses')).not.toBeInTheDocument()
         })
     })
 })

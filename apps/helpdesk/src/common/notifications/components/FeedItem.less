@@ -25,16 +25,16 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: var(--feedback-error);
+        background: var(--feedback-error); // legacy
     }
 
     .time {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .markUnreadIcon {
-        background-color: var(--neutral-grey-5);
+        background-color: var(--neutral-grey-5); // legacy
         display: block;
         mask: url(../assets/mark_as_unread.svg);
         -webkit-mask: url(../assets/mark_as_unread.svg);
@@ -63,7 +63,7 @@
     }
 
     .icon {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 }
 
@@ -74,7 +74,23 @@
         }
     }
 
+    .unread {
+        background: var(--content-error-primary);
+    }
+
+    .time {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .markUnreadIcon {
+        background-color: var(--content-neutral-tertiary);
+    }
+
     .toggleButton {
         background-color: var(--elevation-neutral-default) !important;
+    }
+
+    .icon {
+        color: var(--content-neutral-tertiary);
     }
 }

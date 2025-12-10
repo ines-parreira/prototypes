@@ -6,11 +6,17 @@
         white-space: break-spaces;
         flex-wrap: wrap;
         margin: 0;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         .caption-regular();
 
         strong {
             .caption-semibold();
         }
+    }
+}
+
+.axiom :local {
+    .subtitle {
+        color: var(--content-neutral-tertiary);
     }
 }

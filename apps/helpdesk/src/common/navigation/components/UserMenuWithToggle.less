@@ -9,7 +9,7 @@
         border: 0;
         border-radius: 0;
 
-        color: var(--navigation-title-item);
+        color: var(--navigation-title-item); // legacy
         .heading-subsection-semibold();
 
         > div {
@@ -26,8 +26,8 @@
                 var(--navigation-background-h),
                 var(--navigation-background-s),
                 calc(var(--navigation-background-l) - 4%)
-            );
-            color: var(--navigation-title-item);
+            ); // legacy
+            color: var(--navigation-title-item); // legacy
         }
 
         &:active {
@@ -35,12 +35,12 @@
                 var(--navigation-background-h),
                 var(--navigation-background-s),
                 calc(var(--navigation-background-l) - 8%)
-            );
+            ); // legacy
         }
     }
 
     .dropdown-toggle-dropup {
-        background: var(--navigation-background);
+        background: var(--navigation-background); // legacy
         border-width: 1px 0 0;
         padding-top: 12px;
         padding-bottom: 12px;
@@ -48,7 +48,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: var(--navigation-title-item);
+        color: var(--navigation-title-item); // legacy
 
         .body-semibold();
 
@@ -57,7 +57,7 @@
                 var(--navigation-background-h),
                 var(--navigation-background-s),
                 calc(var(--navigation-background-l) - 8%)
-            );
+            ); // legacy
         }
 
         &:focus {
@@ -66,8 +66,36 @@
     }
 
     .menuContent {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
+    }
+}
+
+.axiom :local {
+    .dropdown-toggle {
+        color: var(--content-neutral-default);
+
+        &:hover {
+            background-color: var(--hover-default);
+            color: var(--content-neutral-default);
+        }
+
+        &:active {
+            background-color: var(--pressed-default);
+        }
+    }
+
+    .dropdown-toggle-dropup {
+        background: var(--elevation-neutral-default);
+        color: var(--content-neutral-default);
+
+        &.active {
+            background-color: var(--pressed-default);
+        }
+    }
+
+    .menuContent {
+        color: var(--content-neutral-default);
     }
 }

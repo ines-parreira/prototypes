@@ -11,7 +11,7 @@
 
     .heading {
         .heading-subsection-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         margin-right: var(--layout-spacing-xs);
     }
 
@@ -43,5 +43,9 @@
 .axiom :local {
     .container {
         border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .heading {
+        color: var(--content-neutral-default);
     }
 }

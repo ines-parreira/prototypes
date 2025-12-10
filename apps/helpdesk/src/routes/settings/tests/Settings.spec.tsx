@@ -6,6 +6,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 
 import { NotificationsSettings } from 'common/notifications'
 import Access from 'pages/settings/access/Access'
+import AgentStatuses from 'pages/settings/agentUnavailability/AgentStatuses'
 import APIView from 'pages/settings/api/APIView'
 import UserAuditList from 'pages/settings/audit/UserAuditList'
 import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
@@ -239,48 +240,54 @@ const testingMap = [
     },
     {
         callOrder: 25,
+        exact: true,
+        path: `${basePath}/agent-statuses`,
+        component: AgentStatuses,
+    },
+    {
+        callOrder: 26,
         exact: false,
         path: `${basePath}/business-hours`,
         component: BusinessHoursPage,
     },
     {
-        callOrder: 26,
+        callOrder: 27,
         exact: undefined,
         path: `${basePath}/sidebar`,
         component: SidebarSettings,
     },
     {
-        callOrder: 27,
+        callOrder: 28,
         exact: true,
         path: `${basePath}/ticket-assignment`,
         component: TicketAssignment,
     },
     {
-        callOrder: 28,
+        callOrder: 29,
         exact: true,
         path: `${basePath}/auto-merge`,
         component: AutoMergeSettings,
     },
     {
-        callOrder: 29,
+        callOrder: 30,
         exact: undefined,
         path: `${basePath}/automate`,
         component: PaywalledAutomate,
     },
     {
-        callOrder: 30,
+        callOrder: 31,
         exact: undefined,
         path: `${basePath}/article-recommendations/:shopType?/:shopName?`,
         component: PaywalledArticleRecommendations,
     },
     {
-        callOrder: 31,
+        callOrder: 32,
         exact: undefined,
         path: `${basePath}/flows/:shopType?/:shopName?`,
         component: PaywalledFlows,
     },
     {
-        callOrder: 32,
+        callOrder: 33,
         exact: undefined,
         path: `${basePath}/order-management/:shopType?/:shopName?`,
         component: PaywalledOrderManagement,

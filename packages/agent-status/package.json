@@ -1,0 +1,46 @@
+{
+    "name": "@repo/agent-status",
+    "version": "1.0.0",
+    "description": "Agent status types, utilities, and helpers",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "test": "vitest run --configLoader=runner --passWithNoTests",
+        "test:ci:cover": "vitest run --configLoader=runner --coverage --passWithNoTests",
+        "test:watch": "vitest watch --configLoader=runner",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+    },
+    "peerDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
+        "@gorgias/design-tokens": "catalog:axiom",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+        "classnames": "catalog:styles"
+    },
+    "devDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
+        "@gorgias/design-tokens": "catalog:axiom",
+        "@repo/config": "workspace:*",
+        "@testing-library/dom": "catalog:test",
+        "@testing-library/jest-dom": "catalog:test",
+        "@testing-library/react": "catalog:test",
+        "@testing-library/user-event": "catalog:test",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@types/classnames": "catalog:styles",
+        "@types/react": "catalog:react",
+        "@types/react-dom": "catalog:react",
+        "@vitest/coverage-v8": "catalog:test",
+        "classnames": "catalog:styles",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+        "typescript": "catalog:typescript",
+        "vitest": "catalog:test"
+    }
+}

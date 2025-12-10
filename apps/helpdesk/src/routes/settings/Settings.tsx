@@ -7,6 +7,7 @@ import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import Access from 'pages/settings/access/Access'
+import AgentStatuses from 'pages/settings/agentUnavailability/AgentStatuses'
 import APIView from 'pages/settings/api/APIView'
 import UserAuditList from 'pages/settings/audit/UserAuditList'
 import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
@@ -170,6 +171,11 @@ export function SettingRoutes() {
                 </Route>
                 <Route path={`${path}/access`} exact>
                     {renderAppSettings(Access, {
+                        roleParams: [ADMIN_ROLE, PageSection.Access],
+                    })}
+                </Route>
+                <Route path={`${path}/agent-statuses`} exact>
+                    {renderAppSettings(AgentStatuses, {
                         roleParams: [ADMIN_ROLE, PageSection.Access],
                     })}
                 </Route>

@@ -9,6 +9,7 @@ export const getAccountConfigurationFixture = (
     accountId: 1,
     gorgiasDomain: 'acme',
     helpdeskOAuth: { accessToken: 'token' },
+    customFieldIds: props?.customFieldIds ?? [],
     ...props,
 })
 
@@ -21,5 +22,6 @@ export const getAccountConfigurationWithHttpIntegrationFixture = (
         id: 1,
     },
     helpdeskOAuth: { accessToken: 'token' },
+    customFieldIds: props?.customFieldIds ?? [],
     ...props,
 })

@@ -56,7 +56,6 @@ export default function TicketVoiceCallContainer({
     source,
 }: Props) {
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
-    const isCallListeningEnabled = useFlag(FeatureFlagKey.CallListening)
 
     const { isRecordingOpened, toggleRecordingOpened } =
         useVoiceRecordingsContext()
@@ -102,8 +101,7 @@ export default function TicketVoiceCallContainer({
                 </div>
                 <div className={css.row}>
                     <div className={css.callStatus}>{callStatus}</div>
-                    {isCallListeningEnabled &&
-                        canMonitorCall(currentUser) &&
+                    {canMonitorCall(currentUser) &&
                         !isFinalVoiceCallStatus(voiceCall.status) && (
                             <MonitorCallButton
                                 voiceCallToMonitor={voiceCall}

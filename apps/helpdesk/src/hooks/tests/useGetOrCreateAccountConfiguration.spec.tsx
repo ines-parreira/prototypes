@@ -107,6 +107,7 @@ describe('useGetOrCreateAccountConfiguration', () => {
                 gorgiasDomain: ACCOUNT_DOMAIN,
                 storeNames: STORE_NAMES,
                 helpdeskOAuth: null,
+                customFieldIds: [],
             })
             expect(result.current.data).toEqual({
                 data: { accountConfiguration: mockData },

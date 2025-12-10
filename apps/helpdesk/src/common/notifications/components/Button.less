@@ -7,11 +7,18 @@
         min-width: 20px;
         padding: 0 var(--layout-spacing-xxs);
         border-radius: 4px;
-        background: var(--feedback-error-3);
-        color: var(--neutral-grey-0);
+        background: var(--feedback-error-3); // legacy
+        color: var(--neutral-grey-0); // legacy
     }
 
     .dropdown {
         height: 100%;
+    }
+}
+
+.axiom :local {
+    .count {
+        background: var(--surface-error-primary);
+        color: var(--content-inverted-default);
     }
 }

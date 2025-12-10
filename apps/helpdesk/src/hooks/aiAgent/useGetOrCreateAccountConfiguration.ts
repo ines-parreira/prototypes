@@ -67,6 +67,7 @@ export function useGetOrCreateAccountConfiguration(
                     gorgiasDomain: accountDomain,
                     storeNames,
                     helpdeskOAuth: null,
+                    customFieldIds: [],
                 })
             }
         },
