@@ -5,10 +5,6 @@ import type {
     ArticleWithLocalTranslation,
 } from 'models/helpCenter/types'
 import type { GuidanceVariableGroup } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
-import { KnowledgeEditorGuidanceCreateView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceCreateView'
-import { KnowledgeEditorGuidanceEditView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceEditView'
-import { KnowledgeEditorGuidanceReadView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceReadView'
-import { KnowledgeEditorGuidanceUnsavedChangesModal } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/modals/KnowledgeEditorGuidanceUnsavedChangesModal'
 import type { GuidanceFormFields } from 'pages/aiAgent/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
@@ -16,8 +12,12 @@ import { KnowledgeEditorSidePanelGuidance } from '../KnowledgeEditorSidePanel/Kn
 import { KnowledgeEditorTopBar } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBar'
 import type { GuidanceMode } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
 import { KnowledgeEditorTopBarGuidanceControls } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
+import { KnowledgeEditorGuidanceCreateView } from './create/KnowledgeEditorGuidanceCreateView'
+import { KnowledgeEditorGuidanceEditView } from './edit/KnowledgeEditorGuidanceEditView'
 import { useKnowledgeEditorGuidanceModal } from './hooks/useKnowledgeEditorGuidanceModal'
 import { ModalState } from './modals/KnowledgeEditorGuidanceModal.types'
+import { KnowledgeEditorGuidanceUnsavedChangesModal } from './modals/KnowledgeEditorGuidanceUnsavedChangesModal'
+import { KnowledgeEditorGuidanceReadView } from './read'
 
 import css from './KnowledgeEditorGuidanceView.less'
 

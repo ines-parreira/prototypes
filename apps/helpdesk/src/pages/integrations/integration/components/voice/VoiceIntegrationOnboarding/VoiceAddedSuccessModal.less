@@ -15,7 +15,7 @@
 
     .flowPreview {
         border-radius: 10px;
-        border: 1px solid var(--neutral-grey-3, #ddd);
+        border: 1px solid var(--neutral-grey-3, #ddd); // legacy
     }
 
     .body {
@@ -47,5 +47,11 @@
 
     .content {
         padding: var(--layout-spacing-m) 0;
+    }
+}
+
+.axiom :local {
+    .flowPreview {
+        border: 1px solid var(--border-neutral-default);
     }
 }

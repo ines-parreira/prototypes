@@ -16,21 +16,21 @@
     .title {
         .heading-subsection-semibold();
 
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         margin-bottom: 8px;
     }
 
     .description {
         .heading-subsection-regular();
 
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-bottom: 38px;
     }
 
     .preview {
         display: flex;
         align-items: center;
-        background: var(---main-latte);
+        background: var(---main-latte); // legacy
         border-radius: 4px;
 
         @media @mobiles, @tablets {
@@ -68,5 +68,19 @@
     .aiBanner {
         margin: var(--layout-spacing-xs) var(--layout-spacing-m) 0
             var(--layout-spacing-m);
+    }
+}
+
+.axiom :local {
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .description {
+        color: var(--content-neutral-default);
+    }
+
+    .preview {
+        background: var(--surface-additional-yellow);
     }
 }

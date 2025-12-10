@@ -3,12 +3,12 @@
 :local {
     .workflowTriggerName {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 12px;
     }
 
     .dragIcon {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         cursor: grab;
         font-size: 20px !important;
     }
@@ -20,7 +20,7 @@
         &:not(:last-child) {
             padding-bottom: 12px;
             margin-bottom: 12px;
-            border-bottom: 1px solid var(--neutral-grey-2);
+            border-bottom: 1px solid var(--neutral-grey-2); // legacy
         }
     }
 
@@ -44,7 +44,27 @@
     }
 
     .warningIcon {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
         font-size: 16px !important;
+    }
+}
+
+.axiom :local {
+    .workflowTriggerName {
+        color: var(--content-neutral-default);
+    }
+
+    .dragIcon {
+        color: var(--content-neutral-default);
+    }
+
+    .container {
+        &:not(:last-child) {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
+    }
+
+    .warningIcon {
+        color: var(--content-warning-primary);
     }
 }

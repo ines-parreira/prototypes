@@ -22,7 +22,7 @@
                 border: 1px solid transparent;
                 border-radius: 3px;
 
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
                 letter-spacing: 0.14px;
                 font-size: 1em;
                 -webkit-font-smoothing: antialiased;
@@ -39,24 +39,24 @@
                 }
 
                 &.loading {
-                    background: var(--neutral-grey-1);
+                    background: var(--neutral-grey-1); // legacy
                 }
 
                 &.error {
-                    border-color: var(--feedback-error) !important;
-                    background-color: var(--ultraLightRed);
+                    border-color: var(--feedback-error) !important; // legacy
+                    background-color: var(--ultraLightRed); // legacy
                 }
 
                 &:hover,
                 &:focus,
                 &.loading,
                 &.error {
-                    border-color: var(--neutral-grey-3);
+                    border-color: var(--neutral-grey-3); // legacy
                     padding-left: 5px;
                 }
 
                 &::placeholder {
-                    color: var(--neutral-grey-4);
+                    color: var(--neutral-grey-4); // legacy
                 }
             }
 
@@ -71,6 +71,36 @@
         .errorMessage {
             font-size: 12px;
             margin-bottom: 0;
+        }
+    }
+}
+
+.axiom :local {
+    .customerNote {
+        .noteInputContainer {
+            .noteInput {
+                color: var(--content-neutral-default);
+
+                &.loading {
+                    background: var(--surface-neutral-secondary);
+                }
+
+                &.error {
+                    border-color: var(--content-error-primary) !important;
+                    background-color: var(--surface-error-primary);
+                }
+
+                &:hover,
+                &:focus,
+                &.loading,
+                &.error {
+                    border-color: var(--border-neutral-secondary);
+                }
+
+                &::placeholder {
+                    color: var(--content-neutral-tertiary);
+                }
+            }
         }
     }
 }

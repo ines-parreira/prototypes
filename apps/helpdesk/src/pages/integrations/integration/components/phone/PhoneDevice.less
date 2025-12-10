@@ -38,7 +38,7 @@
 
         &.noResults {
             padding: var(--layout-spacing-xs);
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             text-align: center;
         }
 
@@ -50,7 +50,7 @@
         .address {
             .caption-regular();
 
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
@@ -62,7 +62,7 @@
 
         &:hover,
         &.highlighted {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
         }
 
         .resultDetails {
@@ -72,8 +72,8 @@
     }
 
     .prefixIcon {
-        color: var(--neutral-grey-0);
-        background-color: var(--neutral-grey-6);
+        color: var(--neutral-grey-0); // legacy
+        background-color: var(--neutral-grey-6); // legacy
         border-radius: 3px;
     }
 
@@ -99,5 +99,29 @@
     .integrationSelectorItem {
         display: flex;
         gap: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .results {
+        &.noResults {
+            color: var(--content-neutral-secondary);
+        }
+
+        .address {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .result {
+        &:hover,
+        &.highlighted {
+            background-color: var(--hover-default);
+        }
+    }
+
+    .prefixIcon {
+        color: var(--content-inverted-default);
+        background-color: var(--content-neutral-default);
     }
 }

@@ -9,7 +9,7 @@
     }
 
     .noTimeline {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .mr {
@@ -31,6 +31,16 @@
         align-items: center;
         width: 100%;
         gap: var(--spacing-xs);
+    }
+
+    .fieldContentDisabled {
+        color: var(--content-neutral-secondary); // legacy (already axiom)
+    }
+}
+
+.axiom :local {
+    .noTimeline {
+        color: var(--content-neutral-secondary);
     }
 
     .fieldContentDisabled {

@@ -27,17 +27,17 @@
 
     .channelTypeSettingsLink,
     .channelTypeSettingsLink:hover {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .channelIcon {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 20px !important;
     }
 
     .arrowDown,
     .dropDownLabel {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .dropdownGroup {
@@ -48,7 +48,7 @@
 
     .dropdownGroupLabel {
         .caption-allcaps();
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .dropdownGroupSeparator {
@@ -57,10 +57,10 @@
     }
 
     .dropdownGroupLink {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         text-decoration: none;
         &:hover {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
@@ -78,12 +78,47 @@
         display: flex;
         gap: var(--layout-spacing-xs);
         align-items: center;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         .body-regular();
     }
 
     .chatCtaIcon {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         font-size: 20px;
+    }
+}
+
+.axiom :local {
+    .channelTypeSettingsLink,
+    .channelTypeSettingsLink:hover {
+        color: var(--content-neutral-default);
+    }
+
+    .channelIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .arrowDown,
+    .dropDownLabel {
+        color: var(--content-neutral-default);
+    }
+
+    .dropdownGroupLabel {
+        color: var(--content-accent-default);
+    }
+
+    .dropdownGroupLink {
+        color: var(--content-neutral-default);
+        &:hover {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .dropdownCtaItem {
+        color: var(--content-accent-default);
+    }
+
+    .chatCtaIcon {
+        color: var(--content-accent-default);
     }
 }

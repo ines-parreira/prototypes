@@ -13,8 +13,16 @@
             }
 
             &:not(:global(.active)) {
-                color: var(--neutral-grey-4) !important;
+                color: var(--neutral-grey-4) !important; // legacy
             }
+        }
+    }
+}
+
+.axiom :local {
+    .binaryChoiceOption {
+        &:not(:global(.active)) {
+            color: var(--content-neutral-tertiary) !important;
         }
     }
 }

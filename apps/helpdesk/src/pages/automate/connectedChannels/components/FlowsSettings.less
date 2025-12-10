@@ -22,7 +22,7 @@
 
     .icon {
         font-size: 16px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .flowsDropdown {
@@ -37,18 +37,18 @@
 
     .workflowTriggerName {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 12px;
     }
 
     .dragIcon {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         cursor: grab;
         font-size: 20px;
     }
     .workflowName {
         .body-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .enabledWorkflowList {
@@ -65,7 +65,7 @@
         &:not(:last-child) {
             padding-bottom: var(--layout-spacing-xs);
             margin-bottom: var(--layout-spacing-xs);
-            border-bottom: 1px solid var(--neutral-grey-2);
+            border-bottom: 1px solid var(--neutral-grey-2); // legacy
         }
     }
 
@@ -82,5 +82,29 @@
         display: flex;
         justify-content: flex-end;
         gap: var(--layout-spacing-xxs);
+    }
+}
+
+.axiom :local {
+    .icon {
+        color: var(--content-neutral-default);
+    }
+
+    .workflowTriggerName {
+        color: var(--content-neutral-default);
+    }
+
+    .dragIcon {
+        color: var(--content-neutral-default);
+    }
+
+    .workflowName {
+        color: var(--content-neutral-default);
+    }
+
+    .workflowListItem {
+        &:not(:last-child) {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
     }
 }

@@ -25,13 +25,25 @@
         user-select: none;
 
         &:hover {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
         }
     }
 
     .details {
         font-size: 8px;
         line-height: 10px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .digit {
+        &:hover {
+            background-color: var(--hover-default);
+        }
+    }
+
+    .details {
+        color: var(--content-neutral-secondary);
     }
 }

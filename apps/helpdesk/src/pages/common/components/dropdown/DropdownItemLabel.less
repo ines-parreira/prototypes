@@ -10,10 +10,10 @@
     }
 
     .caption {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
 
         &.disabled {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
@@ -32,5 +32,15 @@
 
     .suffix {
         margin-left: 8px;
+    }
+}
+
+.axiom :local {
+    .caption {
+        color: var(--content-neutral-secondary);
+
+        &.disabled {
+            color: var(--content-neutral-tertiary);
+        }
     }
 }

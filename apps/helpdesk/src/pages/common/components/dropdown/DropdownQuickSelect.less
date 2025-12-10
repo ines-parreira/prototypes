@@ -1,6 +1,6 @@
 :local {
     .wrapper {
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
         width: 100%;
         min-height: 36px;
         display: flex;
@@ -14,11 +14,11 @@
         user-select: none;
 
         &:hover {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
         }
 
         &:focus {
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
         }
     }
 
@@ -31,16 +31,39 @@
     }
 
     .count {
-        background-color: var(--neutral-grey-4);
+        background-color: var(--neutral-grey-4); // legacy
         border-radius: 9px;
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
         font-size: 11px;
         height: 18px;
         line-height: 18px;
         padding: 0 8px;
 
         &.isHighlighted {
-            background-color: var(--main-primary);
+            background-color: var(--main-primary); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        border-bottom: 1px solid var(--border-neutral-secondary);
+
+        &:hover {
+            background: var(--surface-neutral-secondary);
+        }
+
+        &:focus {
+            background: var(--border-neutral-default);
+        }
+    }
+
+    .count {
+        background-color: var(--content-neutral-tertiary);
+        color: var(--elevation-neutral-default);
+
+        &.isHighlighted {
+            background-color: var(--content-accent-default);
         }
     }
 }

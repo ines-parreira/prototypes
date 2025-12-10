@@ -3,7 +3,7 @@
         .header {
             height: unset;
             .headerCell {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
             }
         }
 
@@ -18,14 +18,14 @@
                         max-width: 70px !important;
 
                         a {
-                            color: var(--neutral-grey-4);
+                            color: var(--neutral-grey-4); // legacy
                         }
                     }
                 }
 
                 &:hover {
                     a {
-                        color: var(--main-primary) !important;
+                        color: var(--main-primary) !important; // legacy
                     }
                 }
             }
@@ -40,5 +40,33 @@
 
     .footer {
         padding: 0 24px 24px;
+    }
+}
+
+.axiom :local {
+    .table {
+        .header {
+            .headerCell {
+                color: var(--content-neutral-secondary);
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    &:last-child {
+                        a {
+                            color: var(--content-neutral-secondary);
+                        }
+                    }
+                }
+
+                &:hover {
+                    a {
+                        color: var(--content-accent-default) !important;
+                    }
+                }
+            }
+        }
     }
 }

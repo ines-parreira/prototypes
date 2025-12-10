@@ -1,8 +1,8 @@
 :local {
     .digit {
         display: block;
-        background-color: var(--neutral-grey-2);
-        border: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-2); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         width: 32px;
         height: 32px;
@@ -33,7 +33,7 @@
     }
 
     .drawerContent {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
 
         .headerWithDetails {
             margin-top: var(--layout-spacing-l);
@@ -62,5 +62,16 @@
             font-size: 16px;
             margin-right: var(--layout-spacing-xs);
         }
+    }
+}
+
+.axiom :local {
+    .digit {
+        background-color: var(--elevation-neutral-mid);
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .drawerContent {
+        background-color: var(--elevation-neutral-default);
     }
 }

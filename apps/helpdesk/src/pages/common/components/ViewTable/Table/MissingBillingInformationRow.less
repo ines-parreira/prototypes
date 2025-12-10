@@ -6,18 +6,36 @@
     .modalFooter {
         justify-content: flex-end;
         padding: var(--layout-spacing-s);
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .alert a {
-        color: var(--main-primary) !important;
+        color: var(--main-primary) !important; // legacy
 
         &:hover {
-            color: var(--main-primary-3) !important;
+            color: var(--main-primary-3) !important; // legacy
         }
 
         &:active {
-            color: var(--main-primary-2) !important;
+            color: var(--main-primary-2) !important; // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .modalFooter {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .alert a {
+        color: var(--content-accent-default) !important;
+
+        &:hover {
+            color: var(--pressed-default) !important;
+        }
+
+        &:active {
+            color: var(--border-accent-default) !important;
         }
     }
 }

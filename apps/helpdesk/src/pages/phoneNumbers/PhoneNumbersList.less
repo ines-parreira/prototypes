@@ -11,15 +11,15 @@
 
                 > div {
                     span {
-                        color: var(--neutral-grey-4);
+                        color: var(--neutral-grey-4); // legacy
                     }
 
                     :global(.badge-tag) {
-                        color: var(--neutral-grey-6) !important;
+                        color: var(--neutral-grey-6) !important; // legacy
                     }
 
                     a {
-                        color: var(--neutral-grey-4);
+                        color: var(--neutral-grey-4); // legacy
                     }
                 }
 
@@ -31,7 +31,35 @@
 
             &:hover {
                 a {
-                    color: var(--main-primary) !important;
+                    color: var(--main-primary) !important; // legacy
+                }
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .table {
+        tr {
+            td {
+                > div {
+                    span {
+                        color: var(--content-neutral-secondary);
+                    }
+
+                    :global(.badge-tag) {
+                        color: var(--content-neutral-default) !important;
+                    }
+
+                    a {
+                        color: var(--content-neutral-secondary);
+                    }
+                }
+            }
+
+            &:hover {
+                a {
+                    color: var(--content-accent-default) !important;
                 }
             }
         }

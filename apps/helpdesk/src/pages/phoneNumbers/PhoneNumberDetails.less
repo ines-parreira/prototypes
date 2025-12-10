@@ -3,7 +3,7 @@
         display: flex;
         align-items: center;
         height: 56px;
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
     .appLink {
         text-align: right;
@@ -11,11 +11,21 @@
     }
 
     .disabledApp {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .copyButton {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
+    }
+}
+
+.axiom :local {
+    .appRow {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .disabledApp {
+        color: var(--content-neutral-secondary);
     }
 }

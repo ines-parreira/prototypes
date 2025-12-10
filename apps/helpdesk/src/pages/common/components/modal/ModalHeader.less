@@ -17,9 +17,15 @@
     }
 
     .wrapper {
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
         display: flex;
         justify-content: space-between;
         padding: 16px;
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        border-bottom: 1px solid var(--border-neutral-secondary);
     }
 }

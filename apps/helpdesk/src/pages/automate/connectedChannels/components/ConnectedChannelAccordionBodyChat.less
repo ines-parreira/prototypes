@@ -1,8 +1,17 @@
 :local {
     .connectHelpCenterWarning {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
     }
     .AIIcon {
-        color: var(--accessory-magenta-3);
+        color: var(--accessory-magenta-3); // legacy
+    }
+}
+
+.axiom :local {
+    .connectHelpCenterWarning {
+        color: var(--content-warning-primary);
+    }
+    .AIIcon {
+        color: var(--content-additional-fuchsia);
     }
 }

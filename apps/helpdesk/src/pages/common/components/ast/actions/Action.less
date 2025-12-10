@@ -13,6 +13,12 @@
     }
 
     .warningIcon {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
+    }
+}
+
+.axiom :local {
+    .warningIcon {
+        color: var(--content-warning-primary);
     }
 }

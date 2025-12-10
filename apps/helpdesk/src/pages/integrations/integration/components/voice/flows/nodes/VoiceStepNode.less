@@ -3,7 +3,7 @@
 :local {
     .drawer {
         right: 0 !important;
-        background-color: var(--neutral-grey-0) !important;
+        background-color: var(--neutral-grey-0) !important; // legacy
         max-width: 612px !important;
         width: 612px !important;
 
@@ -14,7 +14,7 @@
     }
 
     .drawerHeader {
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .learnMoreLink {
@@ -53,7 +53,7 @@
 
         & > *:not(:last-child) {
             padding-bottom: var(--layout-spacing-m);
-            border-bottom: 1px solid var(--neutral-grey-2);
+            border-bottom: 1px solid var(--neutral-grey-2); // legacy
         }
     }
 
@@ -74,16 +74,36 @@
         }
 
         .sectionDescription {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
     .deleteIcon {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 }
 
 .axiom :local {
+    .drawer {
+        background-color: var(--elevation-neutral-default) !important;
+    }
+
+    .drawerHeader {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .formWithSeparator {
+        & > *:not(:last-child) {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
+    }
+
+    .formSection {
+        .sectionDescription {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
     .deleteIcon {
         color: var(--content-error-primary);
     }

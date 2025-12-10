@@ -38,7 +38,13 @@
 
     .section {
         .body-semibold();
-        color: var(--navigation-text-item);
+        color: var(--navigation-text-item); // legacy
         cursor: pointer;
+    }
+}
+
+.axiom :local {
+    .section {
+        color: var(--content-neutral-default);
     }
 }

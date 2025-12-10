@@ -11,7 +11,7 @@
 
     &:hover {
         .viewItemName {
-            color: var(--neutral-grey-0) !important;
+            color: var(--neutral-grey-0) !important; // legacy
         }
     }
 
@@ -20,19 +20,47 @@
         &:hover:not(.chosen) {
             border-color: hsla(
                 var(--neutral-grey-0-h),
+                // legacy
                 var(--neutral-grey-0-s),
+                // legacy
                 var(--neutral-grey-0-l),
+                // legacy
                 0.5
             ) !important;
         }
         &.chosen {
             background: #1c4969 !important;
             & .viewItemName {
-                color: var(--neutral-grey-0) !important;
+                color: var(--neutral-grey-0) !important; // legacy
             }
         }
         &.ghost {
             opacity: 0;
+        }
+    }
+}
+
+.axiom :local {
+    .viewItem {
+        &:hover {
+            .viewItemName {
+                color: var(--elevation-neutral-default) !important;
+            }
+        }
+
+        &.draggable {
+            &:hover:not(.chosen) {
+                border-color: color-mix(
+                    in srgb,
+                    var(--elevation-neutral-default) 50%,
+                    transparent
+                ) !important;
+            }
+            &.chosen {
+                & .viewItemName {
+                    color: var(--elevation-neutral-default) !important;
+                }
+            }
         }
     }
 }

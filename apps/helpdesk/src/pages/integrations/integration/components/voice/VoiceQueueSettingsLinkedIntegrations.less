@@ -7,7 +7,7 @@
     }
 
     .phoneNumber {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .manageButton {
@@ -16,5 +16,11 @@
 
     .showIntegrationsButton {
         padding-left: 0 !important;
+    }
+}
+
+.axiom :local {
+    .phoneNumber {
+        color: var(--content-neutral-secondary);
     }
 }

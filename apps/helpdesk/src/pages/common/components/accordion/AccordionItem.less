@@ -1,16 +1,32 @@
 :local {
     .container {
         border-radius: 4px;
-        border: 1px solid var(--neutral-grey-3);
-        background-color: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-3); // legacy
+        background-color: var(--neutral-grey-0); // legacy
 
         &:not(.isDisabled):not(.isExpanded):hover {
-            outline: 1px solid var(--neutral-grey-3);
+            outline: 1px solid var(--neutral-grey-3); // legacy
         }
 
         &.isExpanded {
-            border-color: var(--main-primary);
-            outline: 1px solid var(--main-primary);
+            border-color: var(--main-primary); // legacy
+            outline: 1px solid var(--main-primary); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-secondary);
+        background-color: var(--elevation-neutral-default);
+
+        &:not(.isDisabled):not(.isExpanded):hover {
+            outline: 1px solid var(--border-neutral-secondary);
+        }
+
+        &.isExpanded {
+            border-color: var(--content-accent-default);
+            outline: 1px solid var(--content-accent-default);
         }
     }
 }

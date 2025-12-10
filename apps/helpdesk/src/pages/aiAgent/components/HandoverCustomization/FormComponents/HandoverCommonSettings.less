@@ -10,11 +10,18 @@
     .sectionContainer {
         display: flex;
         flex-direction: column;
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         border-radius: 12px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         padding: var(--layout-spacing-s);
         gap: 0;
         box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
+    }
+}
+
+.axiom :local {
+    .sectionContainer {
+        border: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-default);
     }
 }

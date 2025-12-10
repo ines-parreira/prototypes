@@ -15,7 +15,7 @@
     }
 
     .error {
-        color: var(--feedback-error-2);
+        color: var(--feedback-error-2); // legacy
         margin-bottom: var(--layout-spacing-xs);
     }
 
@@ -25,14 +25,14 @@
 
     .createNewButton {
         width: 100%;
-        color: var(--main-primary) !important;
+        color: var(--main-primary) !important; // legacy
         padding-top: 18px;
         padding-bottom: 18px;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
 
         &:hover {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
         }
     }
 
@@ -54,6 +54,20 @@
         .button {
             width: fit-content;
             padding: 0;
+        }
+    }
+}
+
+.axiom :local {
+    .error {
+        color: var(--content-error-primary);
+    }
+
+    .createNewButton {
+        color: var(--content-accent-default) !important;
+
+        &:hover {
+            background-color: var(--hover-default);
         }
     }
 }

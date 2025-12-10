@@ -22,8 +22,17 @@
         }
 
         &:not(.transparent) {
-            background: var(--neutral-grey-1);
-            border: 1px solid var(--neutral-grey-2);
+            background: var(--neutral-grey-1); // legacy
+            border: 1px solid var(--neutral-grey-2); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        &:not(.transparent) {
+            background: var(--surface-neutral-secondary);
+            border: 1px solid var(--border-neutral-default);
         }
     }
 }

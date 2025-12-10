@@ -9,8 +9,11 @@
             position: relative;
             color: hsla(
                 var(--neutral-grey-0-h),
+                // legacy
                 var(--neutral-grey-0-s),
+                // legacy
                 var(--neutral-grey-0-l),
+                // legacy
                 0.5
             );
             transition:
@@ -20,7 +23,24 @@
         }
         &:hover,
         &.active {
-            color: var(--neutral-grey-0);
+            color: var(--neutral-grey-0); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .settingButton {
+        &,
+        &:focus {
+            color: color-mix(
+                in srgb,
+                var(--elevation-neutral-default) 50%,
+                transparent
+            );
+        }
+        &:hover,
+        &.active {
+            color: var(--elevation-neutral-default);
         }
     }
 }

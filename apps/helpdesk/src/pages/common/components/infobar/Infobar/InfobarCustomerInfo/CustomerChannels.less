@@ -24,7 +24,13 @@
     }
 
     .disabledChannel {
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
+    }
+}
+
+.axiom :local {
+    .disabledChannel {
+        color: var(--border-neutral-secondary);
     }
 
     .channelIcon {

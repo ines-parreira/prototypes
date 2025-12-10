@@ -3,11 +3,17 @@
         display: flex;
         flex-grow: 0;
         padding: 20px 4px 20px 20px;
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
         margin-right: 12px;
 
         &:not(.isDisabled) {
             cursor: grab;
         }
+    }
+}
+
+.axiom :local {
+    .dragHandle {
+        color: var(--border-neutral-secondary);
     }
 }

@@ -9,7 +9,7 @@
         }
 
         .headerCellPropertyTitle {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 }
@@ -17,5 +17,9 @@
 .axiom :local {
     .tableHead {
         background-color: var(--elevation-neutral-default);
+
+        .headerCellPropertyTitle {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

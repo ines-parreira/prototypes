@@ -12,16 +12,26 @@
     }
 
     .membersCount {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 12px;
     }
 
     .error {
-        color: var(--feedback-error-2);
+        color: var(--feedback-error-2); // legacy
         margin-bottom: var(--layout-spacing-xs);
     }
 
     i.icon {
         font-size: 20px;
+    }
+}
+
+.axiom :local {
+    .membersCount {
+        color: var(--content-neutral-secondary);
+    }
+
+    .error {
+        color: var(--content-error-primary);
     }
 }

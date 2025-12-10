@@ -2,7 +2,7 @@
     .dragIndicator {
         width: 22px;
         text-align: center;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         &:hover {
             cursor: grab;
         }
@@ -12,7 +12,7 @@
     }
 
     .dragIndicatorDisabled {
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
         &:hover {
             cursor: not-allowed;
         }
@@ -21,5 +21,15 @@
     .bodyCell {
         width: var(--layout-spacing-m);
         padding: 0;
+    }
+}
+
+.axiom :local {
+    .dragIndicator {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .dragIndicatorDisabled {
+        color: var(--border-neutral-secondary);
     }
 }

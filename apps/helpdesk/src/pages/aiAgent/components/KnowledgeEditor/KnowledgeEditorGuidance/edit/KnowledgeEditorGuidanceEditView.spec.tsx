@@ -1,8 +1,9 @@
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
-import { KnowledgeEditorGuidanceEditView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceEditView'
 import { mockStore } from 'utils/testing'
+
+import { KnowledgeEditorGuidanceEditView } from './KnowledgeEditorGuidanceEditView'
 
 describe('KnowledgeEditorGuidanceEditView', () => {
     it('renders', () => {

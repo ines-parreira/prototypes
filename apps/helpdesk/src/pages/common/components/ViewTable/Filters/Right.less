@@ -12,19 +12,31 @@
         &:not(div, p) {
             width: auto;
             height: 32px;
-            border: 1px solid var(--neutral-grey-3);
+            border: 1px solid var(--neutral-grey-3); // legacy
             border-radius: 4px;
             .body-regular();
         }
 
         &[class*='valid'] {
-            border: 1px solid var(--main-primary);
+            border: 1px solid var(--main-primary); // legacy
         }
     }
 
     .customFieldValueInput > span {
         input {
             .customFieldValueInput();
+        }
+    }
+}
+
+.axiom :local {
+    .customFieldValueInput {
+        &:not(div, p) {
+            border: 1px solid var(--border-neutral-secondary);
+        }
+
+        &[class*='valid'] {
+            border: 1px solid var(--content-accent-default);
         }
     }
 }

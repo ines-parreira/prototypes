@@ -8,7 +8,7 @@
     text-align: center;
 
     .icon {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: @fontSize;
         line-height: 1;
         transition:
@@ -19,7 +19,7 @@
 
         &.empty:hover {
             transform: scale(1);
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 }
@@ -30,5 +30,17 @@
 
     .clearButton {
         margin: 0 auto;
+    }
+}
+
+.axiom :local {
+    .picker {
+        .icon {
+            color: var(--content-neutral-tertiary);
+
+            &.empty:hover {
+                color: var(--content-neutral-default);
+            }
+        }
     }
 }

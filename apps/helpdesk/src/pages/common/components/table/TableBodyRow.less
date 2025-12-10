@@ -1,9 +1,19 @@
 :local {
     .row {
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
 
         &.isClickable:hover {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .row {
+        border-bottom: 1px solid var(--border-neutral-secondary);
+
+        &.isClickable:hover {
+            background: var(--surface-neutral-secondary);
         }
     }
 }

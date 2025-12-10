@@ -4,27 +4,54 @@
         width: 100%;
 
         .header {
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
             z-index: 1;
             top: 0;
             position: sticky;
-            border-bottom: 1px solid var(--neutral-grey-3);
+            border-bottom: 1px solid var(--neutral-grey-3); // legacy
         }
 
         .headerCell {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
 
         tr {
             td :last-child {
                 a {
-                    color: var(--neutral-grey-4);
+                    color: var(--neutral-grey-4); // legacy
                 }
             }
 
             &:hover {
                 a {
-                    color: var(--main-primary) !important;
+                    color: var(--main-primary) !important; // legacy
+                }
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .body {
+        .header {
+            background-color: var(--elevation-neutral-default);
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
+
+        .headerCell {
+            color: var(--content-neutral-secondary);
+        }
+
+        tr {
+            td :last-child {
+                a {
+                    color: var(--content-neutral-secondary);
+                }
+            }
+
+            &:hover {
+                a {
+                    color: var(--content-accent-default) !important;
                 }
             }
         }

@@ -15,7 +15,7 @@
         }
 
         &.isDisabled {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
@@ -24,10 +24,22 @@
         flex-grow: 0;
         padding: 20px 20px 20px 4px;
         margin-left: 12px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
 
         &:not(.isDisabled) {
             cursor: pointer;
         }
+    }
+}
+
+.axiom :local {
+    .contentContainer {
+        &.isDisabled {
+            color: var(--content-neutral-tertiary);
+        }
+    }
+
+    .toggleContainer {
+        color: var(--content-neutral-tertiary);
     }
 }

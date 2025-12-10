@@ -4,9 +4,9 @@ import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/Guidance
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import InputField from 'pages/common/forms/input/InputField'
 
-import type { GuidanceVariableGroup } from '../../GuidanceEditor/variables.types'
+import type { GuidanceVariableGroup } from '../../../GuidanceEditor/variables.types'
 
-import css from './KnowledgeEditorGuidanceEditView.less'
+import css from '../edit/KnowledgeEditorGuidanceEditView.less'
 
 type Props = {
     content: string
@@ -19,7 +19,7 @@ type Props = {
     availableVariables?: GuidanceVariableGroup[]
 }
 
-export const KnowledgeEditorGuidanceEditView = ({
+export const KnowledgeEditorGuidanceCreateView = ({
     content,
     onChangeContent,
     title,

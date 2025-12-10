@@ -1,6 +1,6 @@
 :local {
     .title {
-        color: var(--navigation-text-item);
+        color: var(--navigation-text-item); // legacy
         flex-grow: 1;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -10,7 +10,7 @@
 
     .toggle {
         border: none;
-        color: var(--navigation-text-item) !important;
+        color: var(--navigation-text-item) !important; // legacy
         font-size: 14px;
         line-height: 20px;
         padding: 3px 6px;
@@ -18,16 +18,18 @@
 
         &:hover,
         &:focus {
-            background-color: var(--navbar-block-toggle-hover-background-color);
-            color: var(--navbar-block-toggle-hover-color) !important;
+            background-color: var(
+                --navbar-block-toggle-hover-background-color
+            ); // legacy
+            color: var(--navbar-block-toggle-hover-color) !important; // legacy
             box-shadow: unset;
         }
 
         &:active {
             background-color: var(
                 --navbar-block-toggle-active-background-color
-            ) !important;
-            color: var(--navbar-block-toggle-active-color);
+            ) !important; // legacy
+            color: var(--navbar-block-toggle-active-color); // legacy
         }
     }
 
@@ -44,5 +46,24 @@
 
     .isDragged {
         opacity: 0.5;
+    }
+}
+
+.axiom :local {
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .toggle {
+        color: var(--content-neutral-default) !important;
+
+        &:hover,
+        &:focus {
+            background-color: var(--hover-default);
+        }
+
+        &:active {
+            background-color: var(--pressed-default) !important;
+        }
     }
 }

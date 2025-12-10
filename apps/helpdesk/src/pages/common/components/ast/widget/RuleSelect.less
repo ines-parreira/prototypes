@@ -18,16 +18,16 @@
     }
 
     .label {
-        color: var(--main-primary-3) !important;
+        color: var(--main-primary-3) !important; // legacy
         font-weight: 500;
 
         .btn-group.show & {
-            color: var(--neutral-grey-0) !important;
+            color: var(--neutral-grey-0) !important; // legacy
         }
     }
 
     .options {
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         overflow-y: auto;
         max-height: 400px;
         max-width: 350px;
@@ -49,5 +49,19 @@
             line-height: inherit !important;
             vertical-align: initial;
         }
+    }
+}
+
+.axiom :local {
+    .label {
+        color: var(--pressed-default) !important;
+
+        .btn-group.show & {
+            color: var(--elevation-neutral-default) !important;
+        }
+    }
+
+    .options {
+        background: var(--elevation-neutral-default);
     }
 }

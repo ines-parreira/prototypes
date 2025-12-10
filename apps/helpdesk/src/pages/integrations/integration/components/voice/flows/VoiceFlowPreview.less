@@ -1,8 +1,14 @@
 :local {
     .previewBox {
         border-radius: 10px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         overflow: hidden;
         text-align: left;
+    }
+}
+
+.axiom :local {
+    .previewBox {
+        border: 1px solid var(--border-neutral-default);
     }
 }
