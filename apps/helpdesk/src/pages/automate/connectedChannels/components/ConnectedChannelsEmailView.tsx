@@ -26,7 +26,6 @@ export const ConnectedChannelsEmailView = () => {
     const isAiAgentOnboardingWizardEnabled = useFlag(
         FeatureFlagKey.AiAgentOnboardingWizard,
     )
-    const isTrialModeAvailable = useFlag(FeatureFlagKey.AiAgentTrialMode)
 
     const { shopName } = useParams<{
         shopType: string
@@ -94,20 +93,16 @@ export const ConnectedChannelsEmailView = () => {
 
     const hasPreviewModeActivated = isPreviewModeActivated({
         isPreviewModeActive: storeConfiguration?.isPreviewModeActive,
-        isTrialModeAvailable: isTrialModeAvailable,
         emailChannelDeactivatedDatetime:
             storeConfiguration?.emailChannelDeactivatedDatetime,
         chatChannelDeactivatedDatetime:
             storeConfiguration?.chatChannelDeactivatedDatetime,
-        trialModeActivatedDatetime:
-            storeConfiguration?.trialModeActivatedDatetime,
         previewModeValidUntilDatetime:
             storeConfiguration?.previewModeValidUntilDatetime,
     })
 
     const previewModeDeactivationPayload = hasPreviewModeActivated
         ? {
-              trialModeActivatedDatetime: null,
               previewModeActivatedDatetime: null,
               previewModeValidUntilDatetime: null,
           }

@@ -39,12 +39,12 @@
 
         .icon {
             i {
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
             }
         }
         .toggleInput {
             .caption {
-                color: var(--neutral-grey-5) !important;
+                color: var(--neutral-grey-5) !important; // legacy
             }
         }
 
@@ -86,11 +86,11 @@
         }
         .formInputFooterInfo {
             .caption-regular();
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             margin-top: var(--layout-spacing-xxs);
 
             &.error {
-                color: var(--feedback-error);
+                color: var(--feedback-error); // legacy
             }
         }
         .featureToggle {
@@ -110,7 +110,7 @@
     }
 
     .warningIcon {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
         margin-left: 5px;
     }
 
@@ -124,14 +124,14 @@
 
     .legalDisclaimer {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .taggingTooltip {
         display: inline;
 
         i {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
@@ -149,18 +149,64 @@
     }
 
     .handoverTopicsLink {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         text-decoration: underline;
         cursor: pointer;
     }
 
     .ticketPreviewContainer {
         padding: var(--layout-spacing-l);
-        background-color: var(--neutral-grey-1);
-        border-left: 1px solid var(--neutral-grey-2);
+        background-color: var(--neutral-grey-1); // legacy
+        border-left: 1px solid var(--neutral-grey-2); // legacy
         min-width: calc(
             428px + var(--layout-spacing-l) + var(--layout-spacing-l)
         ); // 428px is the width of the ticket preview, 2x var(--layout-spacing-l) is for the padding
         flex-shrink: 0;
+    }
+}
+
+.axiom :local {
+    .automateView {
+        .icon {
+            i {
+                color: var(--content-neutral-secondary);
+            }
+        }
+        .toggleInput {
+            .caption {
+                color: var(--content-neutral-secondary) !important;
+            }
+        }
+
+        .formInputFooterInfo {
+            color: var(--content-neutral-secondary);
+
+            &.error {
+                color: var(--content-error-primary);
+            }
+        }
+    }
+
+    .warningIcon {
+        color: var(--content-warning-primary);
+    }
+
+    .legalDisclaimer {
+        color: var(--content-neutral-secondary);
+    }
+
+    .taggingTooltip {
+        i {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .handoverTopicsLink {
+        color: var(--content-accent-default);
+    }
+
+    .ticketPreviewContainer {
+        background-color: var(--surface-neutral-secondary);
+        border-left: 1px solid var(--border-neutral-default);
     }
 }

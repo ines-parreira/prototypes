@@ -5,11 +5,11 @@
         align-items: flex-start;
 
         padding: 12px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         margin: -14px;
 
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .icon {
@@ -23,7 +23,7 @@
     }
 
     .title {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         font-size: 14px;
         font-weight: 500;
@@ -33,10 +33,25 @@
     .summary {
         margin-top: 4px;
 
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
 
         font-size: 12px;
         font-weight: 400;
         line-height: 16px;
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .summary {
+        color: var(--content-neutral-secondary);
     }
 }

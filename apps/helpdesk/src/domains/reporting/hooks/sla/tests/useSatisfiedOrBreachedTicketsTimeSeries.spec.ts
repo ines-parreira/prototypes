@@ -9,6 +9,7 @@ import {
     useTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
 import { satisfiedOrBreachedTicketsTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/sla/satisfiedOrBreachedTickets'
+import { satisfiedOrBreachedTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketSLA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 
@@ -44,6 +45,11 @@ describe('satisfiedOrBreachedTicketsTimeSeries', () => {
                     timeZone,
                     granularity,
                 ),
+                satisfiedOrBreachedTicketsTimeseriesQueryV2Factory({
+                    filters,
+                    timezone: timeZone,
+                    granularity,
+                }),
             )
         })
     })
@@ -73,6 +79,11 @@ describe('satisfiedOrBreachedTicketsTimeSeries', () => {
                     timeZone,
                     granularity,
                 ),
+                satisfiedOrBreachedTicketsTimeseriesQueryV2Factory({
+                    filters,
+                    timezone: timeZone,
+                    granularity,
+                }),
             )
         })
     })

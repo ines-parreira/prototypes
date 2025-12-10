@@ -2,7 +2,7 @@
     .wrapper {
         position: relative;
 
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 14px;
         font-weight: 500;
         line-height: 20px;
@@ -18,7 +18,7 @@
     }
 
     .label {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .dropdown {
@@ -30,7 +30,7 @@
 
         min-width: 254px;
         padding: 8px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
 
         background: var(--neutral-grey-0); // legacy
@@ -74,7 +74,16 @@
 }
 
 .axiom :local {
+    .wrapper {
+        color: var(--content-neutral-default);
+    }
+
+    .label {
+        color: var(--content-neutral-default);
+    }
+
     .dropdown {
+        border: 1px solid var(--border-neutral-default);
         background: var(--elevation-neutral-default);
 
         li:hover {

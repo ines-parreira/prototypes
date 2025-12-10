@@ -3,7 +3,7 @@
 
 :local {
     .container {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         justify-content: center;
         padding: var(--layout-spacing-xl);
         width: 100%;
@@ -24,5 +24,11 @@
     .description {
         .body-regular();
         margin-bottom: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--elevation-neutral-mid);
     }
 }

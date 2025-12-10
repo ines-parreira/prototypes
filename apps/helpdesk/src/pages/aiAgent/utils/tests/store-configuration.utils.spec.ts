@@ -14,7 +14,6 @@ describe('isAiAgentEnabledForStore', () => {
         smsChannelDeactivatedDatetime: null,
         storeName: 'test-store',
         shopType: 'shopify',
-        trialModeActivatedDatetime: null,
         previewModeActivatedDatetime: null,
         helpCenterId: null,
         snippetHelpCenterId: 1,

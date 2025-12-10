@@ -13,8 +13,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { getEntitiesTags } from 'state/entities/tags/selectors'
 
-const ticketCountField = TicketTagsEnrichedMeasure.TicketCount
-const tagsDimension = TicketTagsEnrichedDimension.TagId
+const ticketCountFieldV1 = TicketTagsEnrichedMeasure.TicketCount
+const ticketCountFieldV2 = 'ticketCount'
+const tagsDimensionV1 = TicketTagsEnrichedDimension.TagId
+const tagsDimensionV2 = 'tagId'
 
 type ItemType = {
     [key: string]: ReportingMetricItemValue
@@ -29,10 +31,18 @@ function getValuesUptoTopAmount(
 }
 
 function getTotalCount(value: Array<ItemType>) {
+    const ticketCountField =
+        value?.length > 0 && ticketCountFieldV2 in value[0]
+            ? ticketCountFieldV2
+            : ticketCountFieldV1
     return value?.reduce((acc, cur) => acc + Number(cur[ticketCountField]), 0)
 }
 
 function getTicketCount(value?: ItemType) {
+    const ticketCountField =
+        value && ticketCountFieldV2 in value
+            ? ticketCountFieldV2
+            : ticketCountFieldV1
     return value && value[ticketCountField]
         ? Number(value[ticketCountField])
         : 0
@@ -50,12 +60,20 @@ export const useTagsDistribution = (topAmount = 10) => {
 
     const currentTopData = getValuesUptoTopAmount(data.value, 0, topAmount)
 
+    const ticketCountField = useMemo(
+        () =>
+            currentTopData?.length > 0 &&
+            ticketCountFieldV2 in currentTopData[0]
+                ? ticketCountFieldV2
+                : ticketCountFieldV1,
+        [currentTopData],
+    )
     const topDataMaxValue = useMemo(
         () =>
             Math.max(
                 ...currentTopData.map((item) => Number(item[ticketCountField])),
             ),
-        [currentTopData],
+        [currentTopData, ticketCountField],
     )
 
     if (!currentTopData.length) {
@@ -76,6 +94,8 @@ export const useTagsDistribution = (topAmount = 10) => {
     return {
         isFetching,
         data: currentTopData.map((item) => {
+            const tagsDimension =
+                tagsDimensionV2 in item ? tagsDimensionV2 : tagsDimensionV1
             const previousItem = previousTopData.find(
                 (ptd) => ptd[tagsDimension] === item[tagsDimension],
             )

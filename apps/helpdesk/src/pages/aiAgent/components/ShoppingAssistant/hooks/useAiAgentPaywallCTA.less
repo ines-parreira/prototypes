@@ -1,12 +1,12 @@
 :local {
     .upgradeButton {
-        background-color: var(--neutral-grey-6) !important;
-        color: var(--neutral-grey-0) !important;
-        border-color: var(--neutral-grey-6) !important;
+        background-color: var(--neutral-grey-6) !important; // legacy
+        color: var(--neutral-grey-0) !important; // legacy
+        border-color: var(--neutral-grey-6) !important; // legacy
     }
 
     .learnMoreButton {
-        color: var(--neutral-grey-5) !important;
+        color: var(--neutral-grey-5) !important; // legacy
     }
 
     .bookDemoButton {
@@ -18,5 +18,17 @@
     .welcomePageButtons {
         display: flex;
         gap: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .upgradeButton {
+        background-color: var(--content-neutral-default) !important;
+        color: var(--static-default-white) !important;
+        border-color: var(--content-neutral-default) !important;
+    }
+
+    .learnMoreButton {
+        color: var(--content-neutral-secondary) !important;
     }
 }

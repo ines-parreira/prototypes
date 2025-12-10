@@ -4,7 +4,7 @@
     .articlePreviewContainer {
         max-width: 426px;
         max-height: 796px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         border-radius: 4px;
         padding: var(--layout-spacing-xl);
 
@@ -28,5 +28,11 @@
         > p {
             margin: 0;
         }
+    }
+}
+
+.axiom :local {
+    .articlePreviewContainer {
+        background-color: var(--elevation-neutral-default);
     }
 }

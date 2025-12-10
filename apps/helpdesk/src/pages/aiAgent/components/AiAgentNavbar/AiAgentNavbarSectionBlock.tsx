@@ -1,12 +1,10 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { NavLink } from 'react-router-dom'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { Navigation } from 'components/Navigation/Navigation'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import type { ShopType } from 'models/selfServiceConfiguration/types'
 import { OPPORTUNITIES, SALES, SETTINGS } from 'pages/aiAgent/constants'
@@ -48,17 +46,13 @@ export const AiAgentNavbarSectionBlock = ({
         shopName,
         accountDomain,
     })
-    const isTrialModeAvailable = useFlag(FeatureFlagKey.AiAgentTrialMode)
 
     const hasAiAgentTrialEnabled = isPreviewModeActivated({
         isPreviewModeActive: storeConfiguration?.isPreviewModeActive,
-        isTrialModeAvailable: isTrialModeAvailable,
         emailChannelDeactivatedDatetime:
             storeConfiguration?.emailChannelDeactivatedDatetime,
         chatChannelDeactivatedDatetime:
             storeConfiguration?.chatChannelDeactivatedDatetime,
-        trialModeActivatedDatetime:
-            storeConfiguration?.trialModeActivatedDatetime,
         previewModeValidUntilDatetime:
             storeConfiguration?.previewModeValidUntilDatetime,
     })

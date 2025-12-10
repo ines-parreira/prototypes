@@ -9,7 +9,7 @@
         font-size: 2rem;
         height: 3.75rem;
         font-weight: 600;
-        color: var(--main-primary-3);
+        color: var(--main-primary-3); // legacy
         text-align: center;
         white-space: nowrap;
         overflow: hidden;
@@ -20,5 +20,11 @@
 
     .dialpad {
         padding-bottom: var(--layout-spacing-m);
+    }
+}
+
+.axiom :local {
+    .output {
+        color: var(--content-accent-default);
     }
 }

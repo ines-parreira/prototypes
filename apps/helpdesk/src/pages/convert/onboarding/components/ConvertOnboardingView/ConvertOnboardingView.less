@@ -12,7 +12,7 @@
     }
 
     .preview {
-        background: var(--main-latte);
+        background: var(--main-latte); // legacy
         height: 100%;
         text-align: center;
 
@@ -31,10 +31,20 @@
     }
 
     .text {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .content {
         padding: 0 48px;
+    }
+}
+
+.axiom :local {
+    .preview {
+        background: var(--surface-additional-yellow);
+    }
+
+    .text {
+        color: var(--content-neutral-secondary);
     }
 }

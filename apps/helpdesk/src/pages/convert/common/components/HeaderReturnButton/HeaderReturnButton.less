@@ -8,11 +8,19 @@
         a {
             .body-medium();
 
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
 
             img {
                 margin-right: var(--layout-spacing-xs);
             }
+        }
+    }
+}
+
+.axiom :local {
+    .backWrapper {
+        a {
+            color: var(--content-neutral-secondary);
         }
     }
 }

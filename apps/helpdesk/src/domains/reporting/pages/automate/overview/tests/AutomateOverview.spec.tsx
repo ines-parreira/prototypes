@@ -148,6 +148,11 @@ const BarChartMock = assumeMock(BarChart)
 jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
 const useAiAgentTypeForAccountMock = assumeMock(useAiAgentTypeForAccount)
 
+jest.mock('pages/aiAgent/analyticsOverview/hooks/useAutomationRateByFeature')
+const useAutomationRateByFeatureMock = jest.requireMock(
+    'pages/aiAgent/analyticsOverview/hooks/useAutomationRateByFeature',
+).useAutomationRateByFeature
+
 jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
@@ -390,6 +395,17 @@ describe('<AutomateOverview />', () => {
             filteredData: [],
             colors: [],
             isArticleRecommendationsEnabled: true,
+        })
+
+        useAutomationRateByFeatureMock.mockReturnValue({
+            data: [
+                { name: 'AI Agent', value: 18 },
+                { name: 'Flows', value: 7 },
+                { name: 'Article Recommendation', value: 4 },
+                { name: 'Order Management', value: 3 },
+            ],
+            isLoading: false,
+            isError: false,
         })
     })
 

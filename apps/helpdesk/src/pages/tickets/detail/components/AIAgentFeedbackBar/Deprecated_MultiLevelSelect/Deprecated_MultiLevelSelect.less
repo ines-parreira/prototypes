@@ -11,7 +11,7 @@
         height: auto;
         padding: 0 !important;
         font-weight: 600;
-        color: var(--neutral-grey-5) !important;
+        color: var(--neutral-grey-5) !important; // legacy
     }
 
     .backIcon {
@@ -46,9 +46,9 @@
         justify-content: center;
         align-items: center;
         align-self: stretch;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
 
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         background: var(--neutral-grey-2); // legacy
     }
 
@@ -63,18 +63,32 @@
     .checkIcon {
         margin-left: var(--layout-spacing-xxs);
         font-size: 1.2rem !important;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .noResults {
         padding: var(--layout-spacing-xs);
         padding-bottom: 0;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 }
 
 .axiom :local {
+    .backButton {
+        color: var(--content-neutral-secondary) !important;
+    }
+
     .applyButtonContainer {
+        color: var(--content-accent-default);
+        border: 1px solid var(--border-neutral-default);
         background: var(--elevation-neutral-mid);
+    }
+
+    .checkIcon {
+        color: var(--content-accent-default);
+    }
+
+    .noResults {
+        color: var(--content-neutral-secondary);
     }
 }

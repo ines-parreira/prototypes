@@ -7,7 +7,7 @@
 
     .articleCategory {
         .caption-allcaps();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         padding: 20px var(--layout-spacing-m);
         display: flex;
         align-items: center;
@@ -15,7 +15,7 @@
     }
 
     .articleDelimiter {
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .article {
@@ -49,7 +49,7 @@
 
     .articleTicketsCount {
         .body-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .articleEditButton {
@@ -57,13 +57,13 @@
         font-size: 16px !important;
 
         i {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
     .infoIcon {
         font-size: 16px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .tooltipContainer {
@@ -90,5 +90,29 @@
 
     .showMoreContainer {
         margin-top: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .articleCategory {
+        color: var(--content-neutral-secondary);
+    }
+
+    .articleDelimiter {
+        border-top: 1px solid var(--border-neutral-default);
+    }
+
+    .articleTicketsCount {
+        color: var(--content-neutral-secondary);
+    }
+
+    .articleEditButton {
+        i {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .infoIcon {
+        color: var(--content-neutral-secondary);
     }
 }

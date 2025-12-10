@@ -24,7 +24,13 @@
 
     .error {
         .caption-regular();
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         margin-top: var(--layout-spacing-xxs);
+    }
+}
+
+.axiom :local {
+    .error {
+        color: var(--content-error-primary);
     }
 }

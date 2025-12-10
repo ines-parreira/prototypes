@@ -6,13 +6,13 @@
     }
 
     .selector-button {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         width: 100%;
     }
 
     .selector-button-inner {
         text-align: left;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         box-sizing: border-box;
         display: inline-block;
@@ -36,11 +36,29 @@
     }
 
     .placeholder {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .selected-mark {
         float: right;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .selector-button {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .selector-button-inner {
+        color: var(--content-neutral-default);
+    }
+
+    .placeholder {
+        color: var(--content-neutral-secondary);
+    }
+
+    .selected-mark {
+        color: var(--content-neutral-secondary);
     }
 }

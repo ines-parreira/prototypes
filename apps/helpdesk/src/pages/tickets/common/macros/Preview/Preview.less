@@ -40,7 +40,7 @@
 
     .internalNote {
         text-align: left;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
     }
 
@@ -50,6 +50,18 @@
     }
 
     .internalNoteIcon {
-        color: var(--yellow);
+        color: var(--yellow); // legacy
+    }
+}
+
+.axiom :local {
+    .component {
+        .internalNote {
+            color: var(--content-neutral-default);
+        }
+
+        .internalNoteIcon {
+            color: var(--content-additional-yellow);
+        }
     }
 }

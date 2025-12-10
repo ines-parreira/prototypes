@@ -1,7 +1,7 @@
 :local {
     .wrapper {
         background: var(--neutral-grey-0); // legacy
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         border-bottom: none;
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
@@ -22,7 +22,7 @@
         border: 0;
         padding: 0;
         background-color: transparent; // legacy
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 20px;
 
         &::after {
@@ -32,7 +32,7 @@
         }
 
         &:hover {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
@@ -48,7 +48,7 @@
 
     .menu {
         padding: 6px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         background: var(--neutral-grey-0); // legacy
         box-shadow: 0 2px 4px
             hsla(
@@ -79,7 +79,7 @@
             }
 
             &:last-child {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
             }
         }
     }
@@ -91,7 +91,7 @@
 
         * {
             cursor: not-allowed;
-            color: var(--neutral-grey-4) !important;
+            color: var(--neutral-grey-4) !important; // legacy
         }
     }
 }
@@ -99,13 +99,34 @@
 .axiom :local {
     .wrapper {
         background: var(--surface-neutral-secondary);
+        border-color: var(--border-neutral-default);
     }
 
     .dropdownToggle {
         background: transparent;
+        color: var(--content-neutral-default);
+
+        &:hover {
+            color: var(--content-neutral-default);
+        }
     }
 
     .menu {
         background: var(--surface-neutral-secondary);
+        border-color: var(--border-neutral-default);
+    }
+
+    .dropdownItem {
+        i {
+            &:last-child {
+                color: var(--content-neutral-secondary);
+            }
+        }
+    }
+
+    .dropdownItemDisabled {
+        * {
+            color: var(--content-neutral-secondary) !important;
+        }
     }
 }

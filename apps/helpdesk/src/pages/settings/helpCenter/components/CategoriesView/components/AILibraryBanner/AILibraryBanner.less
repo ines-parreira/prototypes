@@ -4,7 +4,7 @@
 :local {
     .container {
         border-radius: 4px;
-        background-color: var(--main-latte);
+        background-color: var(--main-latte); // legacy
     }
 
     .wrapper {
@@ -37,11 +37,11 @@
         max-width: 320px;
         font-size: @heading-section-medium-font-size;
         font-weight: 600;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .bannerDescription {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-weight: 400;
     }
 
@@ -65,5 +65,19 @@
 
     .actionButton {
         padding-top: 32px;
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--surface-additional-yellow);
+    }
+
+    .bannerTitle {
+        color: var(--content-neutral-default);
+    }
+
+    .bannerDescription {
+        color: var(--content-neutral-secondary);
     }
 }

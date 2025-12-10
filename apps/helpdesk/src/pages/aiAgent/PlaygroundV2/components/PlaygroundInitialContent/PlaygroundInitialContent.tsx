@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { Button, Heading, Icon, Text } from '@gorgias/axiom'
 
+import { LoadingDraftKnowledge } from 'pages/aiAgent/PlaygroundV2/components/LoadingDraftKnowledge/LoadingDraftKnowledge'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 
 import css from './PlaygroundInitialContent.less'
@@ -15,7 +16,7 @@ export const PlaygroundInitialContent = ({
     onStartClick,
     isLoading,
 }: PlaygroundInitialContentProps) => {
-    const { areActionsEnabled } = useCoreContext()
+    const { areActionsEnabled, isDraftKnowledgeReady } = useCoreContext()
 
     const actionsSnippet = useMemo(
         () =>
@@ -24,6 +25,15 @@ export const PlaygroundInitialContent = ({
                 : ' or take any real actions',
         [areActionsEnabled],
     )
+
+    if (!isDraftKnowledgeReady) {
+        return (
+            <LoadingDraftKnowledge
+                title="Syncing draft..."
+                subtitle="Syncing your latest updates for testing"
+            />
+        )
+    }
 
     return (
         <div className={css.container}>

@@ -6,9 +6,9 @@
 
         border-radius: 8px;
 
-        color: var(--neutral-grey-6);
-        border: 1px solid var(--neutral-grey-3);
-        background-color: var(--neutral-grey-1);
+        color: var(--neutral-grey-6); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
+        background-color: var(--neutral-grey-1); // legacy
     }
 
     .header {
@@ -20,7 +20,7 @@
         cursor: pointer;
 
         &.open {
-            border-bottom: 1px solid var(--neutral-grey-3);
+            border-bottom: 1px solid var(--neutral-grey-3); // legacy
         }
     }
 
@@ -49,7 +49,7 @@
     }
 
     .separator {
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
         margin: 0;
 
         &:first-child {
@@ -71,7 +71,7 @@
 
         td,
         th {
-            border-bottom: 1px solid var(--neutral-grey-3);
+            border-bottom: 1px solid var(--neutral-grey-3); // legacy
             padding: 4px 16px 4px 0;
 
             &:last-child {
@@ -90,5 +90,30 @@
     .sectionMessage {
         white-space-collapse: break-spaces;
         text-wrap: nowrap;
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        color: var(--content-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .header {
+        &.open {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
+    }
+
+    .separator {
+        background-color: var(--border-neutral-default);
+    }
+
+    .section {
+        td,
+        th {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
     }
 }

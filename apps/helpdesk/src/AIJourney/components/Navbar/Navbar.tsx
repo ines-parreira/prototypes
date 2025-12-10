@@ -102,7 +102,9 @@ export const AiJourneyNavbar = () => {
                     {shouldAccessCampaigns && (
                         <Navigation.SectionItem
                             as={NavLink}
-                            exact
+                            isActive={(_, location) => {
+                                return location.pathname.includes('campaign')
+                            }}
                             to={`/app/ai-journey/${shopName}/campaigns`}
                         >
                             Campaigns

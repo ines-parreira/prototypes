@@ -10,7 +10,7 @@
         display: flex;
         flex-direction: column;
 
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
 
         @media only screen and (min-width: 1024px) {
             flex-direction: row;
@@ -30,7 +30,7 @@
 
         padding: var(--layout-spacing-l);
 
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
 
         .section {
             margin-top: var(--layout-spacing-l);
@@ -57,5 +57,15 @@
 
             margin-left: var(--layout-spacing-l);
         }
+    }
+}
+
+.axiom :local {
+    .pageContainer {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .formWrapper {
+        background-color: var(--elevation-neutral-default);
     }
 }

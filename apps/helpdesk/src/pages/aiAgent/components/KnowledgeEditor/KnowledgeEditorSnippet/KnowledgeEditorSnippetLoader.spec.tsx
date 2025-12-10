@@ -1,14 +1,22 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 
+import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import * as helpCenterQueries from 'models/helpCenter/queries'
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorSnippetLoader } from './KnowledgeEditorSnippetLoader'
 
 jest.mock('hooks/useNotify', () => ({
     useNotify: () => ({ error: jest.fn() }),
+}))
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(() => false),
 }))
 
 jest.mock('./KnowledgeEditorSnippetView', () => ({
@@ -19,9 +27,22 @@ jest.mock('./KnowledgeEditorSnippetView', () => ({
     }) => <div data-testid="snippet-view">{snippet.title}</div>,
 }))
 
+jest.mock('domains/reporting/models/queryFactories/knowledge/resourceMetrics')
+const mockedFetchResourceMetrics = jest.mocked(useResourceMetrics)
+
 const queryClient = mockQueryClient()
+const store = mockStore({
+    currentUser: fromJS({
+        timezone: 'America/New_York',
+    }),
+})
+
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    </Provider>
 )
 
 describe('KnowledgeEditorSnippetLoader', () => {
@@ -97,6 +118,30 @@ describe('KnowledgeEditorSnippetLoader', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
+
+        mockedFetchResourceMetrics.mockReturnValue({
+            isLoading: false,
+            isError: false,
+            data: {
+                tickets: {
+                    value: 156,
+                    onClick: undefined,
+                },
+                handoverTickets: {
+                    value: 12,
+                    onClick: undefined,
+                },
+                csat: {
+                    value: 4.53,
+                    onClick: undefined,
+                },
+                intents: [
+                    'Order/Status',
+                    'Shipping/Inquiry',
+                    'Product/Question',
+                ],
+            },
+        })
     })
 
     describe('URL Snippet', () => {
@@ -462,6 +507,101 @@ describe('KnowledgeEditorSnippetLoader', () => {
             )
 
             expect(screen.getByRole('status')).toBeInTheDocument()
+        })
+    })
+
+    describe('Impact Metrics', () => {
+        beforeEach(() => {
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetHelpCenterArticle',
+            ).mockReturnValue({
+                data: mockArticleData,
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof helpCenterQueries.useGetHelpCenterArticle
+            >)
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetArticleIngestionLogs',
+            ).mockReturnValue({
+                data: [mockArticleIngestionLog],
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof helpCenterQueries.useGetArticleIngestionLogs
+            >)
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetIngestedResource',
+            ).mockReturnValue({
+                data: null,
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof helpCenterQueries.useGetIngestedResource
+            >)
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetFileIngestion',
+            ).mockReturnValue({
+                data: null,
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof helpCenterQueries.useGetFileIngestion
+            >)
+        })
+
+        it('calls useResourceMetrics with correct parameters', async () => {
+            render(
+                <KnowledgeEditorSnippetLoader
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                />,
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('Test Snippet')).toBeInTheDocument()
+            })
+
+            expect(mockedFetchResourceMetrics).toHaveBeenCalledWith({
+                resourceSourceId: 123,
+                resourceSourceSetId: 1,
+                timezone: 'America/New_York',
+                enabled: false,
+            })
+        })
+
+        it('displays impact section with loading state when data is not available', async () => {
+            const { useFlag } = require('core/flags')
+            useFlag.mockReturnValue(true)
+
+            mockedFetchResourceMetrics.mockReturnValue({
+                isLoading: true,
+                isError: false,
+                data: undefined,
+            })
+
+            render(
+                <KnowledgeEditorSnippetLoader
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                />,
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('Test Snippet')).toBeInTheDocument()
+            })
+
+            expect(mockedFetchResourceMetrics).toHaveBeenCalledWith({
+                resourceSourceId: 123,
+                resourceSourceSetId: 1,
+                timezone: 'America/New_York',
+                enabled: true,
+            })
         })
     })
 })

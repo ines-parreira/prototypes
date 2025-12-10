@@ -70,6 +70,10 @@ import {
     oneTouchTicketsTimeseriesQueryV2Factory,
 } from 'domains/reporting/models/scopes/oneTouchTickets'
 import {
+    taggedTicketCountTimeseriesQueryV2Factory,
+    tagsTicketCountTimeseriesQueryV2Factory,
+} from 'domains/reporting/models/scopes/tags'
+import {
     ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory,
     withCustomFieldIdAndProductFilter,
 } from 'domains/reporting/models/scopes/ticketFields'
@@ -319,6 +323,11 @@ describe('time series', () => {
                     timezone,
                     granularity,
                 ),
+                tagsTicketCountTimeseriesQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                    granularity,
+                }),
             )
         })
 
@@ -347,6 +356,14 @@ describe('time series', () => {
                     timezone,
                     granularity,
                 ),
+                tagsTicketCountTimeseriesQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        [APIOnlyFilterKey.CreatedDatetime]: statsFilters.period,
+                    },
+                    timezone,
+                    granularity,
+                }),
             )
         })
 
@@ -374,6 +391,11 @@ describe('time series', () => {
                     timezone,
                     granularity,
                 ),
+                tagsTicketCountTimeseriesQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                    granularity,
+                }),
             )
         })
 
@@ -402,6 +424,14 @@ describe('time series', () => {
                     timezone,
                     granularity,
                 ),
+                tagsTicketCountTimeseriesQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        [APIOnlyFilterKey.CreatedDatetime]: statsFilters.period,
+                    },
+                    timezone,
+                    granularity,
+                }),
             )
         })
     })
@@ -622,6 +652,11 @@ describe('time series', () => {
                     timezone,
                     granularity,
                 ),
+                taggedTicketCountTimeseriesQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                    granularity,
+                }),
             )
         })
 
@@ -642,6 +677,14 @@ describe('time series', () => {
                     timezone,
                     granularity,
                 ),
+                taggedTicketCountTimeseriesQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        [APIOnlyFilterKey.CreatedDatetime]: statsFilters.period,
+                    },
+                    timezone,
+                    granularity,
+                }),
             )
         })
 
@@ -660,6 +703,11 @@ describe('time series', () => {
                     timezone,
                     granularity,
                 ),
+                taggedTicketCountTimeseriesQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                    granularity,
+                }),
             )
         })
 
@@ -680,6 +728,14 @@ describe('time series', () => {
                     timezone,
                     granularity,
                 ),
+                taggedTicketCountTimeseriesQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        [APIOnlyFilterKey.CreatedDatetime]: statsFilters.period,
+                    },
+                    timezone,
+                    granularity,
+                }),
             )
         })
     })

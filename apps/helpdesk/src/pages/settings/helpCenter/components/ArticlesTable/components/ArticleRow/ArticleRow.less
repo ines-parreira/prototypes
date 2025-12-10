@@ -9,7 +9,7 @@
 
 :local {
     .drag-handler {
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
         font-size: 22px;
     }
 
@@ -27,7 +27,7 @@
 
     .row {
         &:hover {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
 
             .actions {
                 opacity: 1;
@@ -63,4 +63,16 @@
     }
 
     .mixin-level-loop(0);
+}
+
+.axiom :local {
+    .drag-handler {
+        color: var(--border-neutral-default);
+    }
+
+    .row {
+        &:hover {
+            background-color: var(--hover-default);
+        }
+    }
 }

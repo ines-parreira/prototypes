@@ -26,7 +26,7 @@
         flex-grow: 1;
         width: 100%;
         min-width: 0;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         cursor: pointer;
 
         padding: var(--layout-spacing-xxs) var(--layout-spacing-m);
@@ -48,8 +48,10 @@
     }
 
     .selectorOption {
+        color: var(--content-neutral-default);
+
         &--selected {
-            background-color: var(--elevation-neutral-mid);
+            background-color: var(--elevation-neutral-default);
         }
 
         &:not(&--selected):hover {

@@ -14,6 +14,7 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
+import { METAFIELD_CATEGORIES } from '../constants'
 import EmptyMetafieldsState from '../EmptyMetafieldsState'
 import { useDeleteMetafield } from '../hooks/useDeleteMetafield'
 import { useMetafieldsFiltersHandler } from '../hooks/useMetafieldsFiltersHandler'
@@ -31,6 +32,12 @@ const metafieldTypeOptions = Object.values(MetafieldEnum).map((type) => ({
     id: type,
     type,
     label: getMetafieldTypeLabel(type),
+}))
+
+const categoryOptions = METAFIELD_CATEGORIES.map((cat) => ({
+    id: cat.value,
+    category: cat.value,
+    label: cat.label,
 }))
 
 type MetafieldsTableProps<TData, TValue> = {
@@ -106,7 +113,10 @@ export default function MetafieldsTable<TData, TValue>({
         },
     })
 
-    const handleFiltersChange = useMetafieldsFiltersHandler({ table })
+    const handleFiltersChange = useMetafieldsFiltersHandler({
+        table,
+        filterColumns: ['type', 'category'],
+    })
 
     return (
         <>
@@ -125,6 +135,18 @@ export default function MetafieldsTable<TData, TValue>({
                                                 id="type"
                                                 label="Type"
                                                 items={metafieldTypeOptions}
+                                                keyName="id"
+                                            >
+                                                {(option) => (
+                                                    <ListItem
+                                                        label={option.label}
+                                                    />
+                                                )}
+                                            </SelectFilter>
+                                            <SelectFilter
+                                                id="category"
+                                                label="Category"
+                                                items={categoryOptions}
                                                 keyName="id"
                                             >
                                                 {(option) => (
@@ -172,10 +194,12 @@ export default function MetafieldsTable<TData, TValue>({
                         )}
                     />
                 </TableRoot>
-                <TableToolbar
-                    table={table}
-                    bottomRow={{ right: ['pagination'] }}
-                />
+                <div className={styles.toolbarWrapper}>
+                    <TableToolbar
+                        table={table}
+                        bottomRow={{ right: ['pagination'] }}
+                    />
+                </div>
             </div>
             <RemoveMetafieldConfirmation
                 isOpen={isRemoveModalOpen}

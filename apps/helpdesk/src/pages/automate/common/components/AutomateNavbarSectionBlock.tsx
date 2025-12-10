@@ -63,18 +63,14 @@ const AutomateNavbarSectionBlock = ({
 
     const { routes: aiAgentRoutes } = useAiAgentNavigation({ shopName })
 
-    const isTrialModeAvailable = useFlag(FeatureFlagKey.AiAgentTrialMode)
     const hasAiAgentPreview = useFlag(FeatureFlagKey.AIAgentPreviewModeAllowed)
 
     const hasAiAgentTrialEnabled = isPreviewModeActivated({
         isPreviewModeActive: storeConfiguration?.isPreviewModeActive,
-        isTrialModeAvailable: isTrialModeAvailable,
         emailChannelDeactivatedDatetime:
             storeConfiguration?.emailChannelDeactivatedDatetime,
         chatChannelDeactivatedDatetime:
             storeConfiguration?.chatChannelDeactivatedDatetime,
-        trialModeActivatedDatetime:
-            storeConfiguration?.trialModeActivatedDatetime,
         previewModeValidUntilDatetime:
             storeConfiguration?.previewModeValidUntilDatetime,
     })

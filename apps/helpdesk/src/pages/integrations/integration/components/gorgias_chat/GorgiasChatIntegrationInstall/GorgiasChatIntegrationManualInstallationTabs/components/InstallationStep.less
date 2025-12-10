@@ -15,8 +15,15 @@
         width: 24px;
         height: 24px;
         border-radius: 50%;
-        background-color: var(--neutral-grey-6);
-        color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-6); // legacy
+        color: var(--neutral-grey-0); // legacy
         flex-shrink: 0;
+    }
+}
+
+.axiom :local {
+    .bullet {
+        background-color: var(--content-neutral-default);
+        color: var(--elevation-neutral-default);
     }
 }

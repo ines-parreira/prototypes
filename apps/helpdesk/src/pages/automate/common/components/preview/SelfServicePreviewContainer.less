@@ -1,6 +1,6 @@
 :local {
     .container {
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         padding: var(--layout-spacing-m);
         flex-grow: 1;
         height: 100%;
@@ -32,5 +32,11 @@
 
     .alert {
         padding: 12px;
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--surface-neutral-secondary);
     }
 }

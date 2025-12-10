@@ -18,11 +18,11 @@
                     flex-direction: column;
                     gap: var(--layout-spacing-xxs);
                     .subTitle {
-                        color: var(--neutral-grey-5);
+                        color: var(--neutral-grey-5); // legacy
                         .caption-allcaps();
                     }
                     .title {
-                        color: var(--neutral-grey-6);
+                        color: var(--neutral-grey-6); // legacy
                         .heading-section-semibold();
                     }
                 }
@@ -31,7 +31,7 @@
                     display: flex;
                     gap: var(--layout-spacing-xxs);
                     i {
-                        color: var(--neutral-grey-5);
+                        color: var(--neutral-grey-5); // legacy
                         padding: 6px;
                         font-size: 20px;
                         align-self: center;
@@ -41,7 +41,7 @@
             }
             .contentContainer {
                 border-radius: 4px;
-                background: var(--neutral-grey-1);
+                background: var(--neutral-grey-1); // legacy
                 padding: var(--layout-spacing-xl);
                 overflow: auto;
 
@@ -54,11 +54,53 @@
                 h5,
                 h6,
                 span {
-                    background: var(--neutral-grey-1, #f9f9f9) !important;
+                    background: var(
+                        --neutral-grey-1,
+                        #f9f9f9
+                    ) !important; // legacy
                     color: var(
                         --modern-neutral-grey-6,
                         var(--neutral-grey-6, #222)
-                    ) !important;
+                    ) !important; // legacy
+                }
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        .articleContainer {
+            .infoContainer {
+                .titleContainer {
+                    .subTitle {
+                        color: var(--content-neutral-secondary);
+                    }
+                    .title {
+                        color: var(--content-neutral-default);
+                    }
+                }
+
+                .editContainer {
+                    i {
+                        color: var(--content-neutral-secondary);
+                    }
+                }
+            }
+            .contentContainer {
+                background: var(--elevation-neutral-mid);
+
+                div,
+                p,
+                h1,
+                h2,
+                h3,
+                h4,
+                h5,
+                h6,
+                span {
+                    background: var(--elevation-neutral-mid) !important;
+                    color: var(--content-neutral-default) !important;
                 }
             }
         }

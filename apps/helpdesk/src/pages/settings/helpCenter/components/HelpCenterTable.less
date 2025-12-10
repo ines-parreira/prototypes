@@ -33,7 +33,7 @@
     }
 
     .forwardIcon {
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
         font-size: 22px;
         margin-left: 25px;
     }
@@ -44,7 +44,17 @@
     }
 
     .chevronRight {
-        color: var(--neutral-grey-4) !important;
+        color: var(--neutral-grey-4) !important; // legacy
         font-size: 24px;
+    }
+}
+
+.axiom :local {
+    .forwardIcon {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .chevronRight {
+        color: var(--content-neutral-secondary) !important;
     }
 }

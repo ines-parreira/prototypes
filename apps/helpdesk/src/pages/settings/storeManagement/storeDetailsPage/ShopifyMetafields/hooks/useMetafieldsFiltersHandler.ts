@@ -4,18 +4,30 @@ import type { Table } from '@gorgias/axiom'
 
 type UseMetafieldsFiltersHandlerParams<T> = {
     table: Table<T>
+    filterColumns: string[]
+}
+
+type FilterOption = Record<string, unknown> & {
+    id: string
+    label: string
 }
 
 export function useMetafieldsFiltersHandler<T>({
     table,
+    filterColumns,
 }: UseMetafieldsFiltersHandlerParams<T>) {
     return useCallback(
         (filters: Record<string, unknown>) => {
-            const typeFilter = filters.type as
-                | { id: string; type: string; label: string }
-                | undefined
-            table.getColumn('type')?.setFilterValue(typeFilter?.type)
+            filterColumns.forEach((columnName) => {
+                const filterValue = filters[columnName] as
+                    | FilterOption
+                    | undefined
+                const column = table.getColumn(columnName)
+                column?.setFilterValue(
+                    filterValue?.[columnName] ?? filterValue?.id,
+                )
+            })
         },
-        [table],
+        [table, filterColumns],
     )
 }

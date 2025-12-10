@@ -9,7 +9,7 @@
     }
 
     .description {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .domain {
@@ -20,12 +20,12 @@
 
     .icon {
         font-size: 20px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-right: var(--layout-spacing-xs);
     }
 
     .storeDomain {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         border-radius: var(--layout-spacing-xxs);
         padding: var(--layout-spacing-xs);
         display: flex;
@@ -36,7 +36,7 @@
 
     .actions {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         display: flex;
         align-items: center;
         gap: var(--layout-spacing-s);
@@ -46,5 +46,23 @@
         display: flex;
         align-items: center;
         gap: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .description {
+        color: var(--content-neutral-secondary);
+    }
+
+    .icon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .storeDomain {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .actions {
+        color: var(--content-neutral-secondary);
     }
 }

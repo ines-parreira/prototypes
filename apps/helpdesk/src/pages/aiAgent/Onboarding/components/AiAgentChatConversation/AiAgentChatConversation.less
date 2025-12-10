@@ -41,7 +41,7 @@
 
         [class*='ChatIntegrationPreview--automatedTimestamp--'] {
             .caption-regular();
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             position: absolute;
             bottom: -20px;
             left: 40px;
@@ -81,5 +81,11 @@
     .active {
         opacity: 1;
         transform: translateY(0) scale(1);
+    }
+}
+
+.axiom :local {
+    [class*='ChatIntegrationPreview--automatedTimestamp--'] {
+        color: var(--content-neutral-secondary);
     }
 }

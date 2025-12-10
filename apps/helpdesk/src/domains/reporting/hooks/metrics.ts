@@ -20,6 +20,7 @@ import { sentMessagesCountQueryV2Factory } from 'domains/reporting/models/scopes
 import { oneTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
 import { onlineTimeQueryV2Factory } from 'domains/reporting/models/scopes/onlineTime'
 import { medianResolutionTimeQueryV2Factory } from 'domains/reporting/models/scopes/resolutionTime'
+import { medianResponseTimeQueryV2Factory } from 'domains/reporting/models/scopes/responseTime'
 import { ticketAverageHandleTimeQueryV2Factory } from 'domains/reporting/models/scopes/ticketHandleTime'
 import { closedTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
@@ -123,13 +124,20 @@ export const fetchMedianFirstResponseTimeMetric = async (
 export const useMedianResponseTimeMetric = (
     statsFilters: StatsFilters,
     timezone: string,
-): Metric => useMetric(medianResponseTimeQueryFactory(statsFilters, timezone))
+): Metric =>
+    useMetric(
+        medianResponseTimeQueryFactory(statsFilters, timezone),
+        medianResponseTimeQueryV2Factory({ filters: statsFilters, timezone }),
+    )
 
 export const fetchMedianResponseTimeMetric = async (
     statsFilters: StatsFilters,
     timezone: string,
 ): Promise<Metric> =>
-    fetchMetric(medianResponseTimeQueryFactory(statsFilters, timezone))
+    fetchMetric(
+        medianResponseTimeQueryFactory(statsFilters, timezone),
+        medianResponseTimeQueryV2Factory({ filters: statsFilters, timezone }),
+    )
 // P2/P3
 export const useHumanResponseTimeAfterAiHandoffMetric = (
     statsFilters: StatsFilters,

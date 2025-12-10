@@ -14,12 +14,22 @@
     }
 
     .deleteIcon {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         cursor: pointer;
     }
 
     .dragIndicator {
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
         cursor: move;
+    }
+}
+
+.axiom :local {
+    .deleteIcon {
+        color: var(--content-error-primary);
+    }
+
+    .dragIndicator {
+        color: var(--content-neutral-tertiary);
     }
 }

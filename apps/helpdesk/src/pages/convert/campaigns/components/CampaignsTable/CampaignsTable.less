@@ -5,7 +5,7 @@
             width: 80%;
             padding: var(--layout-spacing-s) var(--layout-spacing-xs);
 
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
 
         .anchorCell {
@@ -13,7 +13,7 @@
         }
 
         .headerCellTitle {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
 
         .lightBadge {
@@ -29,7 +29,7 @@
     .tableRow {
         transition: background-color 0.2s ease-in-out;
         &:hover {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
         }
     }
 
@@ -42,8 +42,8 @@
 
     .languageBadge {
         margin-bottom: 0;
-        background-color: var(--neutral-grey-1);
-        color: var(--neutral-grey-5);
+        background-color: var(--neutral-grey-1); // legacy
+        color: var(--neutral-grey-5); // legacy
     }
 
     .toggleBtn {
@@ -52,5 +52,28 @@
         &:hover {
             background-color: transparent !important;
         }
+    }
+}
+
+.axiom :local {
+    .campaignsTable {
+        .anchor {
+            color: var(--content-neutral-default);
+        }
+
+        .headerCellTitle {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .tableRow {
+        &:hover {
+            background-color: var(--hover-default);
+        }
+    }
+
+    .languageBadge {
+        background-color: var(--surface-neutral-secondary);
+        color: var(--content-neutral-secondary);
     }
 }

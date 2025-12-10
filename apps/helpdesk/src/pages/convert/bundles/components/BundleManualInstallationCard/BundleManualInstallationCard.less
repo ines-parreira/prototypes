@@ -9,7 +9,7 @@
             align-items: center;
 
             .toggleCollapseButton {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
                 font-size: var(--layout-spacing-m);
                 width: var(--layout-spacing-m);
                 height: var(--layout-spacing-m);
@@ -31,25 +31,25 @@
 
     .tabs {
         display: flex;
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .tabItem {
         .component-button-medium();
         padding: var(--layout-spacing-s);
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         cursor: pointer;
         position: relative;
 
         &.isActive {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
 
             &::after {
                 content: '';
                 display: block;
                 height: 2px;
                 border-radius: 50%;
-                background-color: var(--main-primary);
+                background-color: var(--main-primary); // legacy
                 width: calc(~'100% - 32px');
                 bottom: -1px;
                 position: absolute;
@@ -58,7 +58,7 @@
     }
 
     .isBordered {
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
 
         .content {
@@ -68,5 +68,35 @@
         .header {
             padding: 20px;
         }
+    }
+}
+
+.axiom :local {
+    .container {
+        .header {
+            .toggleCollapseButton {
+                color: var(--content-neutral-secondary);
+            }
+        }
+    }
+
+    .tabs {
+        border-bottom-color: var(--border-neutral-default);
+    }
+
+    .tabItem {
+        color: var(--content-neutral-secondary);
+
+        &.isActive {
+            color: var(--content-neutral-default);
+
+            &::after {
+                background-color: var(--content-accent-default);
+            }
+        }
+    }
+
+    .isBordered {
+        border-color: var(--border-neutral-default);
     }
 }

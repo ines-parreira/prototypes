@@ -14,12 +14,12 @@
         padding: 7px 12px;
 
         &:not([aria-disabled='true']) {
-            color: var(--feedback-success-4) !important;
+            color: var(--feedback-success-4) !important; // legacy
         }
     }
 
     .decline {
-        color: var(--feedback-error) !important;
+        color: var(--feedback-error) !important; // legacy
         font-size: 14px;
         line-height: 17px;
         padding: 7px 12px;
@@ -35,5 +35,17 @@
         align-items: center;
         gap: var(--layout-spacing-xs);
         flex-wrap: wrap;
+    }
+}
+
+.axiom :local {
+    .accept {
+        &:not([aria-disabled='true']) {
+            color: var(--content-success-primary) !important;
+        }
+    }
+
+    .decline {
+        color: var(--content-error-primary) !important;
     }
 }

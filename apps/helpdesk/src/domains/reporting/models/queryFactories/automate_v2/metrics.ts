@@ -124,3 +124,65 @@ export const billableTicketDatasetResolvedByAIAgentQueryFactory = (
     metricName:
         METRIC_NAMES.AUTOMATE_BILLABLE_TICKET_DATASET_RESOLVED_BY_AI_AGENT,
 })
+
+export const flowsAutomatedInteractionsQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AutomationDatasetCube> => ({
+    metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+    measures: [AutomationDatasetMeasure.AutomatedInteractions],
+    dimensions: [],
+    timezone,
+    filters: [
+        ...automationDatasetDefaultFilters(filters),
+        {
+            member: AutomationDatasetFilterMember.EventType,
+            operator: ReportingFilterOperator.Equals,
+            values: [
+                AutomateEventType.FLOW_STARTED,
+                AutomateEventType.FLOW_PROMPT_STARTED,
+                AutomateEventType.FLOW_ENDED_WITHOUT_ACTION,
+            ],
+        },
+    ],
+})
+
+export const articleRecommendationAutomatedInteractionsQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AutomationDatasetCube> => ({
+    metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+    measures: [AutomationDatasetMeasure.AutomatedInteractions],
+    dimensions: [],
+    timezone,
+    filters: [
+        ...automationDatasetDefaultFilters(filters),
+        {
+            member: AutomationDatasetFilterMember.EventType,
+            operator: ReportingFilterOperator.Equals,
+            values: [AutomateEventType.ARTICLE_RECOMMENDATION_STARTED],
+        },
+    ],
+})
+
+export const orderManagementAutomatedInteractionsQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AutomationDatasetCube> => ({
+    metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+    measures: [AutomationDatasetMeasure.AutomatedInteractions],
+    dimensions: [],
+    timezone,
+    filters: [
+        ...automationDatasetDefaultFilters(filters),
+        {
+            member: AutomationDatasetFilterMember.EventType,
+            operator: ReportingFilterOperator.Equals,
+            values: [
+                AutomateEventType.TRACK_ORDER,
+                AutomateEventType.LOOP_RETURNS_STARTED,
+                AutomateEventType.AUTOMATED_RESPONSE_STARTED,
+            ],
+        },
+    ],
+})

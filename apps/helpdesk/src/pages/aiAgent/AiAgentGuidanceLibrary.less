@@ -13,7 +13,7 @@
     }
 
     .icon {
-        color: var(--accessory-magenta-3);
+        color: var(--accessory-magenta-3); // legacy
         font-size: 24px;
         margin-right: var(--layout-spacing-xs);
     }
@@ -23,5 +23,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+}
+
+.axiom :local {
+    .icon {
+        color: var(--surface-additional-purple);
     }
 }

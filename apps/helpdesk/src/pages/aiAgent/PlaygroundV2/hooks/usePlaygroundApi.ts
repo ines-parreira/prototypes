@@ -7,6 +7,7 @@ import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { PlaygroundMessage } from 'models/aiAgentPlayground/types'
 import { isApiEligiblePlaygroundMessage } from 'models/aiAgentPlayground/types'
 import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
+import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { reportError } from 'utils/errors'
 
 import { PLAYGROUND_CUSTOMER_MOCK } from '../../constants'
@@ -48,6 +49,8 @@ export const usePlaygroundApi = ({
         }
         actionSerializedStateRef.current = undefined
     }, [])
+
+    const { draftKnowledge } = useCoreContext()
 
     const submitMessage = useCallback(
         async ({
@@ -137,6 +140,20 @@ export const usePlaygroundApi = ({
                     _playground_options: {
                         shopName: storeData.storeName,
                     },
+                    _knowledge_override_rules: draftKnowledge
+                        ? [
+                              {
+                                  name: 'overridesLiveKnowledgeWithDraftKnowledge',
+                                  knowledge: [
+                                      {
+                                          sourceId: draftKnowledge.sourceId,
+                                          sourceSetId:
+                                              draftKnowledge.sourceSetId,
+                                      },
+                                  ],
+                              },
+                          ]
+                        : [],
                     channel_integration_id: channelIntegrationId,
                 },
                 testSessionIdToUse ?? '',
@@ -156,6 +173,7 @@ export const usePlaygroundApi = ({
             channelIntegrationId,
             isNewAgenticArchitectureEnabled,
             baseUrl,
+            draftKnowledge,
         ],
     )
 

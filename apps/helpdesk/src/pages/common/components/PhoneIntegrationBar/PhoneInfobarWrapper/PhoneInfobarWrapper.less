@@ -1,9 +1,9 @@
 :local {
     .container {
-        border-left: 1px solid var(--neutral-grey-2);
+        border-left: 1px solid var(--neutral-grey-2); // legacy
 
         &.primary {
-            border-left: 1px solid #0c7e5a;
+            border-left: 1px solid #0c7e5a; // legacy - success green
         }
 
         .inner {
@@ -15,6 +15,16 @@
             :first-child {
                 flex: 1;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        border-left: 1px solid var(--border-neutral-default);
+
+        &.primary {
+            border-left: 1px solid var(--border-success-default);
         }
     }
 }

@@ -13,10 +13,23 @@ jest.mock('pages/aiAgent/PlaygroundV2/contexts/CoreContext', () => ({
     useCoreContext: () => mockUseCoreContext.useCoreContext(),
 }))
 
+jest.mock(
+    'pages/aiAgent/PlaygroundV2/components/LoadingDraftKnowledge/LoadingDraftKnowledge',
+    () => ({
+        LoadingDraftKnowledge: ({ title, subtitle }: any) => (
+            <div role="status" aria-live="polite">
+                <div data-testid="loading-title">{title}</div>
+                <div data-testid="loading-subtitle">{subtitle}</div>
+            </div>
+        ),
+    }),
+)
+
 describe('PlaygroundInitialContent', () => {
     beforeEach(() => {
         mockUseCoreContext.useCoreContext.mockReturnValue({
             areActionsEnabled: false,
+            isDraftKnowledgeReady: true,
         })
     })
 
@@ -32,6 +45,7 @@ describe('PlaygroundInitialContent', () => {
         it('should render with correct description when actions are disabled', () => {
             mockUseCoreContext.useCoreContext.mockReturnValue({
                 areActionsEnabled: false,
+                isDraftKnowledgeReady: true,
             })
 
             render(<PlaygroundInitialContent />)
@@ -51,6 +65,7 @@ describe('PlaygroundInitialContent', () => {
         it('should render with correct description when actions are enabled', () => {
             mockUseCoreContext.useCoreContext.mockReturnValue({
                 areActionsEnabled: true,
+                isDraftKnowledgeReady: true,
             })
 
             render(<PlaygroundInitialContent />)
@@ -143,6 +158,52 @@ describe('PlaygroundInitialContent', () => {
             ).toBeInTheDocument()
             const iconContainer = container.querySelector('[class*="icon"]')
             expect(iconContainer).toBeInTheDocument()
+        })
+    })
+
+    describe('Draft Knowledge Readiness', () => {
+        it('should render LoadingDraftKnowledge when draft knowledge is not ready', () => {
+            mockUseCoreContext.useCoreContext.mockReturnValue({
+                areActionsEnabled: false,
+                isDraftKnowledgeReady: false,
+            })
+
+            render(<PlaygroundInitialContent />)
+
+            expect(screen.getByRole('status')).toBeInTheDocument()
+            expect(screen.getByTestId('loading-title')).toHaveTextContent(
+                'Syncing draft...',
+            )
+            expect(screen.getByTestId('loading-subtitle')).toHaveTextContent(
+                'Syncing your latest updates for testing',
+            )
+        })
+
+        it('should not render regular content when draft knowledge is not ready', () => {
+            mockUseCoreContext.useCoreContext.mockReturnValue({
+                areActionsEnabled: false,
+                isDraftKnowledgeReady: false,
+            })
+
+            render(<PlaygroundInitialContent />)
+
+            expect(
+                screen.queryByText('Preview shopper experience'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render preview content when draft knowledge is ready', () => {
+            mockUseCoreContext.useCoreContext.mockReturnValue({
+                areActionsEnabled: false,
+                isDraftKnowledgeReady: true,
+            })
+
+            render(<PlaygroundInitialContent />)
+
+            expect(
+                screen.getByText('Preview shopper experience'),
+            ).toBeInTheDocument()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
         })
     })
 })

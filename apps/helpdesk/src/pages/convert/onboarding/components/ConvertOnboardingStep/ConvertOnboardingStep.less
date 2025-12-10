@@ -3,7 +3,7 @@
 
 :local {
     .box {
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         padding: 20px;
         border-radius: 4px;
         margin-top: 20px;
@@ -14,8 +14,8 @@
         align-items: center;
 
         .number {
-            color: var(--neutral-grey-5);
-            background: var(--neutral-grey-2);
+            color: var(--neutral-grey-5); // legacy
+            background: var(--neutral-grey-2); // legacy
             font-weight: bold;
             width: 24px;
             height: 24px;
@@ -34,20 +34,41 @@
             h3 {
                 font-weight: @body-semibold-font-weight;
                 font-size: @body-semibold-font-size;
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
                 margin-bottom: 5px;
             }
 
             p {
                 font-weight: @caption-regular-font-weight;
                 font-size: @caption-regular-font-size;
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
                 margin-bottom: 0px;
             }
         }
 
         .action {
             text-align: right;
+        }
+    }
+}
+
+.axiom :local {
+    .box {
+        border-color: var(--border-neutral-default);
+
+        .number {
+            color: var(--content-neutral-secondary);
+            background: var(--surface-neutral-tertiary);
+        }
+
+        .title {
+            h3 {
+                color: var(--content-neutral-default);
+            }
+
+            p {
+                color: var(--content-neutral-secondary);
+            }
         }
     }
 }

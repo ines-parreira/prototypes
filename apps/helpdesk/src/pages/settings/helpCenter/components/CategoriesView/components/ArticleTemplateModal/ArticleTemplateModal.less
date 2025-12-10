@@ -14,7 +14,7 @@
         padding: 64px;
         margin: var(--layout-spacing-s);
         border-radius: 10px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
 
         h3 {
             margin: 0;
@@ -25,5 +25,11 @@
         font-size: @heading-page-semibold-line-height;
         font-weight: @heading-page-semibold-font-weight;
         margin-bottom: var(--layout-spacing-m);
+    }
+}
+
+.axiom :local {
+    .preview {
+        border: 1px solid var(--border-neutral-default);
     }
 }

@@ -6,9 +6,9 @@
     .container {
         display: flex;
         padding: var(--layout-spacing-s);
-        border: 1px solid var(--accessory-magenta-2);
+        border: 1px solid var(--accessory-magenta-2); // legacy
         border-radius: 12px;
-        background-color: var(--accessory-magenta-1);
+        background-color: var(--accessory-magenta-1); // legacy
     }
 
     .contentContainer {
@@ -28,5 +28,12 @@
 
     .buttonContainer {
         margin-left: auto;
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-additional-purple);
+        background-color: var(--surface-additional-fuchsia);
     }
 }

@@ -6,13 +6,13 @@
     }
 
     .successMessage {
-        color: var(--accessory-green-3);
+        color: var(--accessory-green-3); // legacy
         margin-bottom: var(--layout-spacing-s);
         font-weight: 600;
     }
 
     .successOutput {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         padding: var(--layout-spacing-s);
         border-radius: var(--layout-radius-s);
         white-space: pre-wrap;
@@ -21,14 +21,14 @@
     }
 
     .errorTitle {
-        color: var(--accessory-red-3);
+        color: var(--accessory-red-3); // legacy
         margin-bottom: var(--layout-spacing-s);
         font-weight: 600;
     }
 
     .errorContainer {
-        background-color: var(--accessory-red-1);
-        border: 1px solid var(--accessory-red-3);
+        background-color: var(--accessory-red-1); // legacy
+        border: 1px solid var(--accessory-red-3); // legacy
         padding: var(--layout-spacing-m);
         border-radius: var(--layout-radius-m);
         margin-bottom: var(--layout-spacing-s);
@@ -37,7 +37,7 @@
     .errorContent {
         white-space: pre-wrap;
         word-break: break-word;
-        color: var(--accessory-red-3);
+        color: var(--accessory-red-3); // legacy
         margin: 0;
         font-size: 14px;
         line-height: 1.4;
@@ -46,11 +46,42 @@
 
     .errorHelpText {
         font-size: 12px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin: 0;
     }
 
     .noVariablesMessage {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .successMessage {
+        color: var(--content-success-primary);
+    }
+
+    .successOutput {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .errorTitle {
+        color: var(--content-error-primary);
+    }
+
+    .errorContainer {
+        background-color: var(--surface-error-primary);
+        border: 1px solid var(--content-error-primary);
+    }
+
+    .errorContent {
+        color: var(--content-error-primary);
+    }
+
+    .errorHelpText {
+        color: var(--content-neutral-secondary);
+    }
+
+    .noVariablesMessage {
+        color: var(--content-neutral-secondary);
     }
 }

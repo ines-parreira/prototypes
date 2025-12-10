@@ -25,13 +25,13 @@
     }
 
     .upgradeButton {
-        background-color: var(--neutral-grey-6) !important;
-        color: var(--neutral-grey-0) !important;
-        border-color: var(--neutral-grey-6) !important;
+        background-color: var(--neutral-grey-6) !important; // legacy
+        color: var(--neutral-grey-0) !important; // legacy
+        border-color: var(--neutral-grey-6) !important; // legacy
     }
 
     .trialButton {
-        color: var(--neutral-grey-5) !important;
+        color: var(--neutral-grey-5) !important; // legacy
     }
 
     .bookDemoButton {
@@ -42,6 +42,22 @@
 
     .bookDemoButtonText {
         margin-left: var(--layout-spacing-xxs);
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
+    }
+}
+
+.axiom :local {
+    .upgradeButton {
+        background-color: var(--surface-neutral-primary) !important;
+        color: var(--elevation-neutral-default) !important;
+        border-color: var(--surface-neutral-primary) !important;
+    }
+
+    .trialButton {
+        color: var(--content-neutral-secondary) !important;
+    }
+
+    .bookDemoButtonText {
+        color: var(--content-neutral-default);
     }
 }

@@ -11,7 +11,7 @@
     .description {
         text-align: center;
         padding-bottom: var(--layout-spacing-xl);
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .templatesContainer {
@@ -20,5 +20,11 @@
         gap: var(--layout-spacing-s);
         max-width: 1032px;
         margin: 0 auto var(--layout-spacing-l);
+    }
+}
+
+.axiom :local {
+    .description {
+        color: var(--content-neutral-secondary);
     }
 }

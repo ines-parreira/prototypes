@@ -5,7 +5,7 @@
         margin-left: -30px;
         margin-right: -30px;
         padding: 1rem 30px;
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
 
         &:last-child {
             border-bottom: 0;
@@ -27,7 +27,7 @@
     .name {
         display: inline;
 
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 17px;
         font-weight: 500;
     }
@@ -50,5 +50,15 @@
         :global(label) {
             font-weight: 500;
         }
+    }
+}
+
+.axiom :local {
+    .page {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .name {
+        color: var(--content-neutral-default);
     }
 }

@@ -6,7 +6,7 @@
 
         i.icon {
             font-size: 16px;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
@@ -31,5 +31,13 @@
 
     .singleSenderVerifiedCard {
         padding: 20px;
+    }
+}
+
+.axiom :local {
+    .title {
+        i.icon {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

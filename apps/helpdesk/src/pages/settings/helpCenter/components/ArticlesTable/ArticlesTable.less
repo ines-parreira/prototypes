@@ -3,7 +3,7 @@
         margin-bottom: 0;
 
         .row {
-            border-color: var(--neutral-grey-3);
+            border-color: var(--neutral-grey-3); // legacy
             &:last-child {
                 border-bottom: 0;
             }
@@ -17,6 +17,14 @@
 
         td {
             padding: 0;
+        }
+    }
+}
+
+.axiom :local {
+    .nested-table {
+        .row {
+            border-color: var(--border-neutral-default);
         }
     }
 }

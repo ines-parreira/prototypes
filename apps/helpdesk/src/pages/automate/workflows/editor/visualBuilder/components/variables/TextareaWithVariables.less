@@ -14,12 +14,12 @@
 
     .editor {
         min-height: 150px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         padding: 6px 8px;
 
         &.hasError {
-            border-color: var(--feedback-error);
+            border-color: var(--feedback-error); // legacy
         }
 
         :global {
@@ -35,7 +35,21 @@
 
     .error {
         .caption-regular();
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         margin-top: 4px;
+    }
+}
+
+.axiom :local {
+    .editor {
+        border: 1px solid var(--border-neutral-default);
+
+        &.hasError {
+            border-color: var(--content-error-primary);
+        }
+    }
+
+    .error {
+        color: var(--content-error-primary);
     }
 }

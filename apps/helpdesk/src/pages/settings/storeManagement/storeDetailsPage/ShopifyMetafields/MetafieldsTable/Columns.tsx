@@ -29,13 +29,20 @@ export const columns: ColumnDef<Field>[] = [
     {
         accessorKey: 'type',
         header: 'Type',
+        enableSorting: false,
         cell: (info) => (
             <MetafieldTypeItem type={info.getValue() as MetafieldType} />
         ),
     },
-    createSortableColumn<Field>('category', 'Category', (info) => (
-        <CategoryChip category={info.getValue() as MetafieldCategory} />
-    )),
+    {
+        accessorKey: 'category',
+        header: 'Category',
+        enableSorting: false,
+        cell: (info) => (
+            <CategoryChip category={info.getValue() as MetafieldCategory} />
+        ),
+        filterFn: 'equalsString',
+    },
     {
         id: 'actions',
         cell: (info) => {

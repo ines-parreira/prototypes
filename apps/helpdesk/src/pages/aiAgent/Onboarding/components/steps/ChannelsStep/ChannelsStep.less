@@ -9,7 +9,7 @@
 
     .link {
         .caption-regular();
-        color: var(--main-primary) !important;
+        color: var(--main-primary) !important; // legacy
         cursor: pointer;
         margin-top: var(--layout-spacing-s);
     }
@@ -30,7 +30,19 @@
         cursor: not-allowed !important;
 
         [class*='CheckBox--input'] {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .link {
+        color: var(--content-accent-default) !important;
+    }
+
+    [class*='DropdownItem--disabled'] {
+        [class*='CheckBox--input'] {
+            background-color: var(--surface-neutral-secondary);
         }
     }
 }

@@ -12,7 +12,7 @@ import {
 } from 'domains/reporting/hooks/tags/useTagResultsSelection'
 import { useTicketTimeReference } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
 import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import { TicketTagsEnrichedDimension } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import {
@@ -20,6 +20,7 @@ import {
     tagsTicketCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import { tagsTicketCountQueryV2Factory } from 'domains/reporting/models/scopes/tags'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     TagFilterInstanceId,
@@ -53,7 +54,7 @@ const timezone = 'someTimeZone'
 const sorting = OrderDirection.Asc
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
-const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
 jest.mock('domains/reporting/hooks/tags/useTagResultsSelection')
 const useTagResultsSelectionMock = assumeMock(useTagResultsSelection)
 
@@ -81,15 +82,20 @@ describe('useTagsTicketCount', () => {
             isFetching: false,
             isError: false,
         }
-        useMetricPerDimensionMock.mockReturnValue(mockResponse)
+        useMetricPerDimensionV2Mock.mockReturnValue(mockResponse)
 
         renderHook(() => useTagsTicketCount(statsFilters, timezone, sorting))
 
-        expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+        expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
             tagsTicketCountQueryFactory(statsFilters, timezone, sorting),
+            tagsTicketCountQueryV2Factory({
+                filters: statsFilters,
+                timezone,
+                sortDirection: sorting,
+            }),
         )
 
-        expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+        expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
             tagsTicketCountQueryFactory(
                 {
                     ...statsFilters,
@@ -98,6 +104,14 @@ describe('useTagsTicketCount', () => {
                 timezone,
                 sorting,
             ),
+            tagsTicketCountQueryV2Factory({
+                filters: {
+                    ...statsFilters,
+                    period: getPreviousPeriod(statsFilters.period),
+                },
+                timezone,
+                sortDirection: sorting,
+            }),
         )
     })
 
@@ -112,19 +126,27 @@ describe('useTagsTicketCount', () => {
             isFetching: false,
             isError: false,
         }
-        useMetricPerDimensionMock.mockReturnValue(mockResponse)
+        useMetricPerDimensionV2Mock.mockReturnValue(mockResponse)
 
         renderHook(() => useTagsTicketCount(statsFilters, timezone, sorting))
 
-        expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+        expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
             tagsTicketCountOnCreatedDatetimeQueryFactory(
                 statsFilters,
                 timezone,
                 sorting,
             ),
+            tagsTicketCountQueryV2Factory({
+                filters: {
+                    ...statsFilters,
+                    createdDatetime: statsFilters.period,
+                },
+                timezone,
+                sortDirection: sorting,
+            }),
         )
 
-        expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+        expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
             tagsTicketCountOnCreatedDatetimeQueryFactory(
                 {
                     ...statsFilters,
@@ -133,6 +155,15 @@ describe('useTagsTicketCount', () => {
                 timezone,
                 sorting,
             ),
+            tagsTicketCountQueryV2Factory({
+                filters: {
+                    ...statsFilters,
+                    period: getPreviousPeriod(statsFilters.period),
+                    createdDatetime: getPreviousPeriod(statsFilters.period),
+                },
+                timezone,
+                sortDirection: sorting,
+            }),
         )
     })
 
@@ -143,8 +174,8 @@ describe('useTagsTicketCount', () => {
             isError: false,
         }
 
-        useMetricPerDimensionMock.mockReturnValueOnce(responseMock)
-        useMetricPerDimensionMock.mockReturnValueOnce(responseMock)
+        useMetricPerDimensionV2Mock.mockReturnValueOnce(responseMock)
+        useMetricPerDimensionV2Mock.mockReturnValueOnce(responseMock)
 
         const { result } = renderHook(() =>
             useTagsTicketCount(statsFilters, timezone, sorting),
@@ -184,8 +215,8 @@ describe('useTagsTicketCount', () => {
             isError: false,
         }
 
-        useMetricPerDimensionMock.mockReturnValueOnce(responseMock)
-        useMetricPerDimensionMock.mockReturnValueOnce(responseMock)
+        useMetricPerDimensionV2Mock.mockReturnValueOnce(responseMock)
+        useMetricPerDimensionV2Mock.mockReturnValueOnce(responseMock)
 
         const { result } = renderHook(() =>
             useTagsTicketCount(statsFilters, timezone, sorting),
@@ -208,8 +239,8 @@ describe('useTagsTicketCount', () => {
             isError: true,
         }
 
-        useMetricPerDimensionMock.mockReturnValueOnce(errorMock)
-        useMetricPerDimensionMock.mockReturnValueOnce(errorMock)
+        useMetricPerDimensionV2Mock.mockReturnValueOnce(errorMock)
+        useMetricPerDimensionV2Mock.mockReturnValueOnce(errorMock)
 
         const { result } = renderHook(() =>
             useTagsTicketCount(statsFilters, timezone, sorting),

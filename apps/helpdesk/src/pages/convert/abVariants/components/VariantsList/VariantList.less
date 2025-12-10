@@ -15,7 +15,7 @@
 
     .variantTable {
         .headerCellTitle {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
@@ -24,11 +24,11 @@
         flex-direction: column;
 
         .nameLink {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             font-weight: @body-link-font-weight;
 
             &:hover {
-                color: var(--main-primary-2);
+                color: var(--main-primary-2); // legacy
             }
         }
     }
@@ -43,5 +43,23 @@
         width: 100%;
         display: block;
         margin-top: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .variantTable {
+        .headerCellTitle {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .nameWrapper {
+        .nameLink {
+            color: var(--content-neutral-default);
+
+            &:hover {
+                color: var(--surface-accent-default);
+            }
+        }
     }
 }

@@ -14,7 +14,15 @@
         }
 
         .selected {
-            border-color: var(--main-primary);
+            border-color: var(--main-primary); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .menu {
+        .selected {
+            border-color: var(--border-accent-default);
         }
     }
 }

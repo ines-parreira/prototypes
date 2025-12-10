@@ -43,7 +43,6 @@ export const ToneOfVoiceFormComponent = ({
     aiAgentPreviewTicketViewId,
     ...props
 }: ToneOfVoiceFormComponentProps) => {
-    const trialModeAvailable = useFlag(FeatureFlagKey.AiAgentTrialMode)
     const isFollowUpAiAgentPreviewModeEnabled = useFlag(
         FeatureFlagKey.FollowUpAiAgentPreviewMode,
     )
@@ -124,8 +123,7 @@ export const ToneOfVoiceFormComponent = ({
                             </a>
                             .
                         </p>
-                        {(trialModeAvailable ||
-                            isFollowUpAiAgentPreviewModeEnabled) &&
+                        {isFollowUpAiAgentPreviewModeEnabled &&
                             aiAgentMode &&
                             aiAgentPreviewTicketViewId && (
                                 <AiAgentPreviewModeSection

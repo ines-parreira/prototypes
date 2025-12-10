@@ -13,12 +13,12 @@
     }
 
     .flowItem {
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         display: flex;
         padding: var(--layout-spacing-s);
         align-items: center;
         border-radius: var(--layout-spacing-xs);
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         transition: border-color 0.4s;
 
         &:hover {
@@ -35,7 +35,7 @@
     }
 
     .flowName {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         width: 100%;
         .heading-subsection-semibold();
         padding-right: var(--layout-spacing-xs); //safe zone
@@ -48,6 +48,21 @@
 
     .flowIcon {
         font-size: @heading-page-regular-font-size;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .flowItem {
+        background: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .flowName {
+        color: var(--content-neutral-default);
+    }
+
+    .flowIcon {
+        color: var(--content-neutral-secondary);
     }
 }

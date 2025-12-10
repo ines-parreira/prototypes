@@ -12,16 +12,33 @@
 
     .icon {
         &.pending {
-            color: var(--feedback-warning);
+            color: var(--feedback-warning); // legacy
         }
 
         &.failed,
         &.unverified {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
 
         &.success {
-            color: var(--feedback-success);
+            color: var(--feedback-success); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .icon {
+        &.pending {
+            color: var(--static-warning);
+        }
+
+        &.failed,
+        &.unverified {
+            color: var(--static-error);
+        }
+
+        &.success {
+            color: var(--static-success);
         }
     }
 }

@@ -6,7 +6,7 @@
 
     .wrapper {
         & > div {
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
             border: 0 !important;
             box-shadow: none !important;
             height: 24px;
@@ -21,6 +21,14 @@
             & > i {
                 padding-top: 3px;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        & > div {
+            background: var(--elevation-neutral-mid);
         }
     }
 }

@@ -51,7 +51,7 @@
         display: inline-flex;
         align-items: center;
         font-weight: 500;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
 
         i {
             margin-left: 6px;
@@ -64,7 +64,7 @@
         gap: var(--layout-spacing-xs);
         align-items: center;
         font-weight: 500;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 }
 
@@ -77,5 +77,13 @@
 
     .separator {
         background-color: var(--border-neutral-default);
+    }
+
+    .label {
+        color: var(--content-accent-default);
+    }
+
+    .tag {
+        color: var(--content-accent-default);
     }
 }

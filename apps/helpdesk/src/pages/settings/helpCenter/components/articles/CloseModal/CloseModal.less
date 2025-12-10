@@ -13,7 +13,7 @@
     }
 
     .discardBtn {
-        color: var(--feedback-error) !important;
+        color: var(--feedback-error) !important; // legacy
     }
 
     .confirmBtn {
@@ -43,5 +43,9 @@
 .axiom :local {
     .actions {
         background: var(--surface-neutral-secondary);
+    }
+
+    .discardBtn {
+        color: var(--content-error-primary) !important;
     }
 }

@@ -19,13 +19,13 @@
         height: 32px;
         font-size: 20px;
         line-height: 32px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
         border: 0;
         background-color: var(--neutral-grey-0); // legacy
         margin-right: 8px;
         padding: 0 8px;
-        outline-color: var(--main-primary);
+        outline-color: var(--main-primary); // legacy
     }
 
     span.titleInput {
@@ -48,7 +48,7 @@
     .languageSelect > div > select {
         width: 110px;
         border: 0;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 14px;
         line-height: 20px;
     }
@@ -82,7 +82,7 @@
     .lastUpdateTime {
         padding-top: 4px;
         padding-left: 8px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 12px;
         line-height: 16px;
 
@@ -97,7 +97,7 @@
         width: 100%;
         line-height: 1.25;
         padding: 0 6px 0 14px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 0.25rem;
         background-clip: padding-box;
         -webkit-background-clip: padding-box;
@@ -124,7 +124,7 @@
             }
 
             :global(.material-icons) {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
                 font-size: 20px;
             }
         }
@@ -134,10 +134,27 @@
 .axiom :local {
     .titleInput,
     .titleInput:disabled {
+        color: var(--content-neutral-default);
         background-color: var(--elevation-neutral-default);
+        outline-color: var(--border-accent-default);
+    }
+
+    .languageSelect > div > select {
+        color: var(--content-neutral-default);
+    }
+
+    .lastUpdateTime {
+        color: var(--content-neutral-secondary);
     }
 
     .inlineLanguageSelect {
+        border: 1px solid var(--border-neutral-default);
         background-color: var(--elevation-neutral-default);
+
+        button {
+            :global(.material-icons) {
+                color: var(--content-neutral-secondary);
+            }
+        }
     }
 }

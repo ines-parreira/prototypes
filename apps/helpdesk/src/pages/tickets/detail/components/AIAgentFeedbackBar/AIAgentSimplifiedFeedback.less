@@ -48,7 +48,7 @@
         .badge {
             background-color: transparent; // legacy
             font-size: 14px;
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             padding: var(--layout-spacing-xxs);
         }
 
@@ -72,25 +72,25 @@
                     cursor: pointer;
                     background-color: var(--neutral-grey-2); // legacy
                     span {
-                        color: var(--main-primary);
+                        color: var(--main-primary); // legacy
                     }
 
                     .openInNewTabIcon {
                         opacity: 1;
                         width: 16px;
                         padding-inline: 2px;
-                        color: var(--main-primary);
+                        color: var(--main-primary); // legacy
                     }
                 }
 
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
                 cursor: default;
 
                 .deleted {
                     background-color: var(--neutral-grey-0); // legacy
                     cursor: not-allowed;
                     span {
-                        color: var(--neutral-grey-4) !important;
+                        color: var(--neutral-grey-4) !important; // legacy
                     }
 
                     .openInNewTabIcon {
@@ -110,7 +110,7 @@
         gap: var(--layout-spacing-xxs);
         overflow: hidden;
         cursor: pointer;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         span {
             white-space: nowrap;
@@ -126,7 +126,7 @@
 
         .deleted {
             span {
-                color: var(--neutral-grey-4) !important;
+                color: var(--neutral-grey-4) !important; // legacy
             }
         }
     }
@@ -135,7 +135,7 @@
         display: flex;
         align-items: center;
         width: 100%;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         text-decoration: none;
 
         .iconSkeleton {
@@ -145,14 +145,14 @@
         }
 
         &:visited {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
     .negativeFeedback,
     .positiveFeedback {
         cursor: default !important;
-        border-color: var(--neutral-grey-4) !important;
+        border-color: var(--neutral-grey-4) !important; // legacy
     }
 
     .positiveFeedback {
@@ -160,7 +160,7 @@
     }
 
     .negativeFeedback {
-        color: var(--feedback-error) !important;
+        color: var(--feedback-error) !important; // legacy
     }
 
     .button {
@@ -176,7 +176,7 @@
 
     .info {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-bottom: var(--layout-spacing-xs);
     }
 
@@ -203,8 +203,8 @@
 
         textarea {
             background-color: var(--neutral-grey-0); // legacy
-            border-color: var(--neutral-grey-3);
-            color: var(--neutral-grey-6);
+            border-color: var(--neutral-grey-3); // legacy
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
@@ -235,10 +235,10 @@
                 display: flex;
                 gap: var(--layout-spacing-xxs);
                 align-items: center;
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
 
                 &:hover {
-                    color: var(--main-primary);
+                    color: var(--main-primary); // legacy
                     cursor: pointer;
                 }
             }
@@ -265,9 +265,9 @@
         flex-grow: 1;
         align-items: center;
         .body-regular();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         &:hover {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
@@ -287,7 +287,7 @@
 
     .autoSaveBadge {
         background: var(--neutral-grey-2); // legacy
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         max-width: 100%;
         min-width: 28px;
         height: 20px;
@@ -331,28 +331,96 @@
     .source {
         .badge {
             background: transparent;
+            color: var(--content-neutral-secondary);
         }
 
         &:hover {
             .sourceName {
                 .hasLink {
                     background: var(--surface-neutral-tertiary);
+
+                    span {
+                        color: var(--content-accent-default);
+                    }
+
+                    .openInNewTabIcon {
+                        color: var(--content-accent-default);
+                    }
                 }
+
+                color: var(--content-neutral-default);
 
                 .deleted {
                     background: var(--surface-neutral-secondary);
+
+                    span {
+                        color: var(--content-neutral-secondary) !important;
+                    }
                 }
             }
         }
+    }
+
+    .sourceName {
+        color: var(--content-neutral-default);
+
+        .deleted {
+            span {
+                color: var(--content-neutral-secondary) !important;
+            }
+        }
+    }
+
+    .sourceLink {
+        color: var(--content-neutral-default);
+
+        &:visited {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .negativeFeedback,
+    .positiveFeedback {
+        border-color: var(--border-neutral-default) !important;
+    }
+
+    .negativeFeedback {
+        color: var(--content-error-primary) !important;
     }
 
     .button {
         background: var(--surface-neutral-primary) !important;
     }
 
-    .feedbackTextAreaContainer {
+    .info {
+        color: var(--content-neutral-secondary);
+    }
+
+    .internalNote {
         textarea {
             background: var(--surface-neutral-secondary);
+            border-color: var(--border-neutral-default);
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .missingKnowledgeSelect {
+        .tag {
+            .tagLink {
+                color: var(--content-neutral-default);
+
+                &:hover {
+                    color: var(--content-accent-default);
+                }
+            }
+        }
+    }
+
+    .dropdownLink {
+        color: var(--content-neutral-default);
+
+        &:hover {
+            color: var(--content-neutral-default);
         }
     }
 
@@ -362,5 +430,6 @@
 
     .autoSaveBadge {
         background: var(--surface-neutral-tertiary);
+        color: var(--content-neutral-secondary);
     }
 }

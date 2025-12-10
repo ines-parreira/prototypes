@@ -24,7 +24,7 @@
 
         &.previewWithBackground {
             width: 432px;
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
             padding: 24px;
             min-height: 802px;
         }
@@ -48,7 +48,7 @@
             padding: 0.6em 1.6em;
             background: @primary;
 
-            color: var(--neutral-grey-0);
+            color: var(--neutral-grey-0); // legacy
             text-align: center;
 
             .icon.times {
@@ -68,7 +68,7 @@
         }
 
         .details {
-            color: var(--neutral-grey-0);
+            color: var(--neutral-grey-0); // legacy
             overflow: hidden;
             flex: 1;
             text-align: left;
@@ -91,7 +91,7 @@
                 font-size: 13px;
                 border-radius: 50px;
                 background: #959ca6;
-                color: var(--neutral-grey-0);
+                color: var(--neutral-grey-0); // legacy
                 padding: 0 10px;
                 width: auto;
                 margin-top: 5px;
@@ -109,7 +109,7 @@
             flex-direction: column;
 
             .conversationTimestamp {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
                 font-size: 11px;
                 font-weight: 600;
                 margin-bottom: var(--layout-spacing-m);
@@ -178,7 +178,7 @@
     .conversationContentWrapper {
         display: flex;
         flex-direction: column;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         border-radius: 16px;
         z-index: 2;
         height: 100%;
@@ -233,8 +233,8 @@
             width: 40px;
 
             border-radius: 100px;
-            background-color: var(--neutral-grey-2);
-            color: var(--neutral-grey-4);
+            background-color: var(--neutral-grey-2); // legacy
+            color: var(--neutral-grey-4); // legacy
             background-size: cover;
             background-position: center;
 
@@ -250,7 +250,7 @@
 
             &.hasIcon {
                 font-size: 19px;
-                background-color: var(--neutral-grey-0);
+                background-color: var(--neutral-grey-0); // legacy
                 color: @textColor;
 
                 &.first,
@@ -318,7 +318,7 @@
             }
 
             .offlineMarker {
-                background: var(--feedback-warning);
+                background: var(--feedback-warning); // legacy
             }
         }
     }
@@ -330,7 +330,7 @@
         background-size: cover;
 
         &.attachmentIcon {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             font-size: 24px;
         }
     }
@@ -357,7 +357,7 @@
         &.primary {
             margin: 0 0 4px auto;
             background: @primary;
-            color: var(--neutral-grey-0);
+            color: var(--neutral-grey-0); // legacy
             max-width: calc(100% - 32px - 8px); // icon size + gap size
         }
 
@@ -427,7 +427,7 @@
 
     .automatedTimestamp {
         margin-top: 10px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 12px;
     }
 
@@ -458,12 +458,83 @@
     }
 
     .asterisk {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         font-weight: 600;
         font-size: 14px;
     }
 
     .productCarousel {
         margin: var(--layout-spacing-s) 0 var(--layout-spacing-s) -38px;
+    }
+}
+
+.axiom :local {
+    .preview {
+        &.previewWithBackground {
+            background: var(--surface-neutral-secondary);
+        }
+    }
+
+    .dialog {
+        .titlebar {
+            color: var(--elevation-neutral-default);
+        }
+
+        .details {
+            color: var(--elevation-neutral-default);
+
+            .business-hours-back-badge {
+                color: var(--elevation-neutral-default);
+            }
+        }
+
+        .content {
+            .conversationTimestamp {
+                color: var(--content-neutral-tertiary);
+            }
+        }
+    }
+
+    .conversationContentWrapper {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .agents,
+    .team-picture-wrapper {
+        .agent {
+            background-color: var(--surface-neutral-tertiary);
+            color: var(--content-neutral-tertiary);
+
+            &.hasIcon {
+                background-color: var(--elevation-neutral-default);
+            }
+        }
+
+        .agent,
+        .team-picture {
+            .offlineMarker {
+                background: var(--content-warning-primary);
+            }
+        }
+    }
+
+    .icon {
+        &.attachmentIcon {
+            color: var(--content-neutral-tertiary);
+        }
+    }
+
+    .bubble {
+        &.primary {
+            color: var(--elevation-neutral-default);
+        }
+    }
+
+    .automatedTimestamp {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .asterisk {
+        color: var(--content-error-primary);
     }
 }

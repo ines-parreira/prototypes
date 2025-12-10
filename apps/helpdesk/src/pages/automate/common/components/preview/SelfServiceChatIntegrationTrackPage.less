@@ -7,7 +7,7 @@
         padding: var(--layout-spacing-m) 0;
         overflow: auto;
         pointer-events: initial;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         :global {
             animation: fadeIn 0.3s ease-in;
@@ -33,7 +33,7 @@
     }
 
     .separator {
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
         margin: var(--layout-spacing-m) 0;
     }
 
@@ -42,11 +42,11 @@
     }
 
     .description {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .descriptionSeeItems {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .etaContainer {
@@ -58,7 +58,7 @@
 
     .etaCaption {
         .caption-allcaps();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .eta {
@@ -68,7 +68,7 @@
     }
 
     .etaIcon {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         margin-left: var(--layout-spacing-xs);
         font-size: 16px;
         width: 16px;
@@ -105,19 +105,19 @@
         height: 8px;
         border-radius: 50%;
         margin: 6px;
-        background-color: var(--main-primary);
+        background-color: var(--main-primary); // legacy
         z-index: 1;
 
         &.isCurrent {
             width: 16px;
             height: 16px;
             margin: 4px 2px 2px;
-            border: 3px solid var(--neutral-grey-0);
+            border: 3px solid var(--neutral-grey-0); // legacy
             box-shadow: 0 2px 4px rgba(22, 22, 22, 0.16);
         }
 
         &.isUpcoming {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
         }
     }
 
@@ -129,10 +129,10 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
 
         &.isCompleted {
-            background-color: var(--main-primary);
+            background-color: var(--main-primary); // legacy
         }
     }
 
@@ -151,23 +151,23 @@
         }
 
         &.isUpcoming {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
     .timelineItemTimestamp {
         .caption-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         margin-top: var(--layout-spacing-xxs);
     }
 
     .timelineItemDescription {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .timelineLastUpdated {
         .caption-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .shippingContainer {
@@ -184,7 +184,7 @@
     .shippingAddressContainer {
         display: flex;
         flex-direction: column;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         gap: var(--layout-spacing-xxs);
     }
 
@@ -217,10 +217,86 @@
     .shippingCarrierSubtitle {
         display: flex;
         justify-content: space-between;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .shippingCarrierTrackingNumber {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-neutral-default);
+    }
+
+    .separator {
+        border-top-color: var(--border-neutral-default);
+    }
+
+    .description {
+        color: var(--content-neutral-secondary);
+    }
+
+    .descriptionSeeItems {
+        color: var(--content-accent-default);
+    }
+
+    .etaCaption {
+        color: var(--content-neutral-secondary);
+    }
+
+    .etaIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .timelineDot {
+        background-color: var(--content-accent-default);
+
+        &.isCurrent {
+            border-color: var(--elevation-neutral-default);
+        }
+
+        &.isUpcoming {
+            background-color: var(--border-neutral-default);
+        }
+    }
+
+    .timelineLine {
+        background-color: var(--border-neutral-default);
+
+        &.isCompleted {
+            background-color: var(--content-accent-default);
+        }
+    }
+
+    .timelineItemStatus {
+        &.isUpcoming {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .timelineItemTimestamp {
+        color: var(--content-neutral-secondary);
+    }
+
+    .timelineItemDescription {
+        color: var(--content-neutral-secondary);
+    }
+
+    .timelineLastUpdated {
+        color: var(--content-neutral-secondary);
+    }
+
+    .shippingAddressContainer {
+        color: var(--content-neutral-secondary);
+    }
+
+    .shippingCarrierSubtitle {
+        color: var(--content-neutral-secondary);
+    }
+
+    .shippingCarrierTrackingNumber {
+        color: var(--content-accent-default);
     }
 }

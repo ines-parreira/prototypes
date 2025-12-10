@@ -10,7 +10,7 @@
         gap: var(--layout-spacing-xxs);
         padding: var(--layout-spacing-m);
         padding-bottom: 0;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
     .title {
         all: unset;
@@ -23,5 +23,11 @@
         flex-direction: column;
         margin-bottom: var(--layout-spacing-s);
         row-gap: 2px;
+    }
+}
+
+.axiom :local {
+    .header {
+        background-color: var(--elevation-neutral-default);
     }
 }

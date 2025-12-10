@@ -29,6 +29,7 @@ import { messagesReceivedPerChannelQueryV2Factory } from 'domains/reporting/mode
 import { sentMessagesPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
 import { medianResolutionTimePerChannelQueryV2Factory } from 'domains/reporting/models/scopes/resolutionTime'
+import { medianResponseTimePerChannelQueryV2Factory } from 'domains/reporting/models/scopes/responseTime'
 import { ticketAverageHandleTimePerAgentPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketHandleTime'
 import { closedTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
@@ -88,10 +89,14 @@ export const fetchMedianFirstResponseTimeMetricPerChannel = async (
 }
 // P2/P3
 export const useMedianResponseTimeMetricPerChannel =
-    createMetricPerDimensionHook(medianResponseTimeMetricPerChannelQueryFactory)
+    createMetricPerDimensionHook(
+        medianResponseTimeMetricPerChannelQueryFactory,
+        medianResponseTimePerChannelQueryV2Factory,
+    )
 
 export const fetchMedianResponseTimeMetricPerChannel = createFetchPerDimension(
     medianResponseTimeMetricPerChannelQueryFactory,
+    medianResponseTimePerChannelQueryV2Factory,
 )
 // P2/P3
 export const useHumanResponseTimeAfterAiHandoffPerChannel =

@@ -5,7 +5,8 @@ import css from '../DonutChart.less'
 type LegendItem = {
     name: string
     color: string
-    percentage: string
+    percentage: string | number
+    legendValue: string
 }
 
 type DonutChartLegendProps = {
@@ -66,7 +67,7 @@ export const DonutChartLegend = ({
                                     variant="regular"
                                     className={css.legendValue}
                                 >
-                                    {item.percentage}
+                                    {item.legendValue}
                                 </Text>
                             </span>
                         </Box>

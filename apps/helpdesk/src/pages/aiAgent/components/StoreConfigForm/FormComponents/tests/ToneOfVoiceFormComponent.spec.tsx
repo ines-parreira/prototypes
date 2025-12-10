@@ -22,7 +22,6 @@ const defaultProps = {
         id: 1,
         name: 'Test Store',
         language: 'en',
-        trialModeActivatedDatetime: null,
         previewModeActivatedDatetime: null,
         storeName: 'Test Store',
         shopType: 'shopify',

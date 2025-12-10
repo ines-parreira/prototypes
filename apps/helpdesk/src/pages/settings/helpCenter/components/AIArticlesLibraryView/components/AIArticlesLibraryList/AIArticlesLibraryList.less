@@ -36,10 +36,10 @@
 
     .listHeader {
         display: flex;
-        border-bottom: 1px solid var(--neutral-grey-4);
+        border-bottom: 1px solid var(--neutral-grey-4); // legacy
         padding: var(--layout-spacing-xs) var(--layout-spacing-s);
         margin-bottom: var(--layout-spacing-s);
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         text-transform: uppercase;
         font-size: 11px;
         font-weight: 600;
@@ -72,7 +72,7 @@
 
     .message {
         .body-semibold();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         text-align: center;
         padding-bottom: var(--layout-spacing-xxs);
     }
@@ -84,5 +84,16 @@
 
     .hooray {
         font-size: 100px;
+    }
+}
+
+.axiom :local {
+    .listHeader {
+        border-bottom: 1px solid var(--border-neutral-default);
+        color: var(--content-neutral-secondary);
+    }
+
+    .message {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -1,13 +1,13 @@
 :local {
     .modalCloudIcon {
         font-size: 32px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         display: block;
     }
 
     .fileDropArea {
-        border: 2px dashed var(--neutral-grey-3);
-        background: var(--neutral-grey-2);
+        border: 2px dashed var(--neutral-grey-3); // legacy
+        background: var(--neutral-grey-2); // legacy
         padding: 14px;
         cursor: pointer;
         text-align: center;
@@ -27,13 +27,13 @@
         }
 
         &.disabled {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
             border-color: transparent;
             cursor: not-allowed;
         }
 
         &.dragOver {
-            background: var(--neutral-grey-3);
+            background: var(--neutral-grey-3); // legacy
         }
     }
 
@@ -51,7 +51,7 @@
         }
 
         & i {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
@@ -62,7 +62,7 @@
     .supportedProvidersText {
         display: block;
         font-size: 12px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         margin-bottom: 8px;
     }
 
@@ -83,5 +83,34 @@
     .dropAreaText {
         font-weight: 600;
         font-size: 16px;
+    }
+}
+
+.axiom :local {
+    .modalCloudIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .fileDropArea {
+        border: 2px dashed var(--border-neutral-default);
+        background: var(--surface-neutral-secondary);
+
+        &.disabled {
+            background: var(--surface-neutral-tertiary);
+        }
+
+        &.dragOver {
+            background: var(--surface-neutral-tertiary);
+        }
+    }
+
+    .fileSelectedArea {
+        & i {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .supportedProvidersText {
+        color: var(--content-neutral-secondary);
     }
 }

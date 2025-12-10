@@ -4,8 +4,8 @@
     .wrapper {
         > div {
             padding: 3px 7px;
-            border: 1px solid var(--neutral-grey-4);
-            box-shadow: var(--neutral-grey-3 0 1px 2px);
+            border: 1px solid var(--neutral-grey-4); // legacy
+            box-shadow: var(--neutral-grey-3 0 1px 2px); // legacy
             font-size: 13px;
         }
     }
@@ -28,5 +28,14 @@
 
     .delete {
         margin-left: 2px;
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        > div {
+            border: 1px solid var(--border-neutral-default);
+            box-shadow: 0 1px 2px var(--surface-neutral-primary);
+        }
     }
 }

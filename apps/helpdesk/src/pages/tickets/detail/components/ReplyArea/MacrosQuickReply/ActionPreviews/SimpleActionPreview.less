@@ -5,10 +5,10 @@
         text-overflow: ellipsis;
     }
     .assign {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
     .setSubject {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
     }
     .smallTag {
@@ -18,18 +18,31 @@
     .badge {
         text-align: left;
         line-height: 16px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         background-color: var(--neutral-grey-2); // legacy
         font-weight: 400;
     }
 
     .internalNoteIcon {
-        color: var(--yellow);
+        color: var(--yellow); // legacy
     }
 }
 
 .axiom :local {
+    .assign {
+        color: var(--content-neutral-default);
+    }
+
+    .setSubject {
+        color: var(--content-neutral-default);
+    }
+
     .badge {
+        color: var(--content-neutral-default);
         background-color: var(--elevation-neutral-mid);
+    }
+
+    .internalNoteIcon {
+        color: var(--static-additional-yellow);
     }
 }

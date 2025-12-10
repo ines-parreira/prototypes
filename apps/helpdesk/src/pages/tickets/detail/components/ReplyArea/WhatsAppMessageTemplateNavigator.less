@@ -28,11 +28,11 @@
         flex-direction: column;
         flex-shrink: 0;
         width: 40%;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 13px;
         font-weight: 500;
         padding: var(--layout-spacing-xs);
-        border-right: 1px solid var(--neutral-grey-3);
+        border-right: 1px solid var(--neutral-grey-3); // legacy
 
         @media @mobiles {
             width: 100%;
@@ -49,7 +49,7 @@
 
             &.active {
                 background-color: var(--neutral-grey-2); // legacy
-                color: var(--main-primary);
+                color: var(--main-primary); // legacy
             }
 
             &.disabled {
@@ -73,9 +73,15 @@
         background-color: var(--elevation-neutral-mid);
     }
 
+    .list {
+        color: var(--content-neutral-default);
+        border-right: 1px solid var(--border-neutral-default);
+    }
+
     .item {
         &.active {
             background-color: var(--hover-default);
+            color: var(--content-accent-default);
         }
     }
 }

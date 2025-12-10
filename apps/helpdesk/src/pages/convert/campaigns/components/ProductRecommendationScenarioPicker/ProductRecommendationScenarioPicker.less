@@ -4,11 +4,21 @@
 :local {
     .scenarioTitle {
         .body-medium();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .scenarioDescription {
         .body-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .scenarioTitle {
+        color: var(--content-neutral-default);
+    }
+
+    .scenarioDescription {
+        color: var(--content-neutral-secondary);
     }
 }

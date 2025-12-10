@@ -154,7 +154,7 @@ describe('AnalyticsOverviewTimeSavedCard', () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText('2%')).toBeInTheDocument()
+            expect(screen.getByText('6m')).toBeInTheDocument()
         })
     })
 })

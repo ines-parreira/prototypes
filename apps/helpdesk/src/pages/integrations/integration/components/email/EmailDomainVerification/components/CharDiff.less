@@ -1,11 +1,23 @@
 :local {
     .added {
-        color: var(--accessory-green-3);
-        background-color: var(--accessory-green-1);
+        color: var(--accessory-green-3); // legacy
+        background-color: var(--accessory-green-1); // legacy
     }
 
     .removed {
-        color: var(--accessory-red-3);
-        background-color: var(--accessory-red-1);
+        color: var(--accessory-red-3); // legacy
+        background-color: var(--accessory-red-1); // legacy
+    }
+}
+
+.axiom :local {
+    .added {
+        color: var(--content-success-primary);
+        background-color: var(--surface-success-primary);
+    }
+
+    .removed {
+        color: var(--content-error-primary);
+        background-color: var(--surface-error-primary);
     }
 }

@@ -18,7 +18,7 @@
         left: 0;
         top: 0;
         height: 100%;
-        border-left: 1px solid var(--neutral-grey-3);
+        border-left: 1px solid var(--neutral-grey-3); // legacy
     }
 
     &.last::before {
@@ -46,12 +46,12 @@
                 margin-left: -25px;
                 margin-right: var(--layout-spacing-xs);
                 border-radius: 50%;
-                background-color: var(--neutral-grey-6);
+                background-color: var(--neutral-grey-6); // legacy
                 font-size: 14px;
-                color: var(--neutral-grey-0);
+                color: var(--neutral-grey-0); // legacy
 
                 &.danger {
-                    background-color: var(--feedback-error);
+                    background-color: var(--feedback-error); // legacy
                 }
             }
 
@@ -80,11 +80,11 @@
             .separator {
                 margin-left: 5px;
                 margin-right: 5px;
-                color: var(--main-primary);
+                color: var(--main-primary); // legacy
             }
 
             .ticketLink {
-                color: var(--main-primary);
+                color: var(--main-primary); // legacy
                 text-decoration: underline;
             }
         }
@@ -103,5 +103,32 @@
     .errorDetails {
         margin-top: 12px;
         margin-left: 3px;
+    }
+}
+
+.axiom :local .component {
+    &::before {
+        border-left: 1px solid var(--border-neutral-default);
+    }
+
+    .event {
+        .content {
+            .icon {
+                background-color: var(--elevation-neutral-inverse);
+                color: var(--content-inverted-default);
+
+                &.danger {
+                    background-color: var(--surface-error-primary);
+                }
+            }
+
+            .separator {
+                color: var(--content-accent-default);
+            }
+
+            .ticketLink {
+                color: var(--content-accent-default);
+            }
+        }
     }
 }

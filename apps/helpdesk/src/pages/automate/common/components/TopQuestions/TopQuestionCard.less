@@ -17,12 +17,12 @@
     }
 
     .card {
-        background: var(--neutral-grey-0);
-        border: 1px solid var(--neutral-grey-3);
+        background: var(--neutral-grey-0); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
 
         &:hover {
-            border-color: var(--neutral-grey-4);
+            border-color: var(--neutral-grey-4); // legacy
         }
     }
 
@@ -50,12 +50,12 @@
         align-items: center;
         text-align: center;
 
-        color: var(--accessory-blue-3);
+        color: var(--accessory-blue-3); // legacy
     }
 
     .title {
         .heading-subsection-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         .line-clamp(3);
         height: 72px;
 
@@ -70,12 +70,12 @@
         line-height: 32px;
         cursor: pointer;
 
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .creatingArticle {
         .component-button-medium();
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
         height: 32px;
         line-height: 32px;
 
@@ -89,7 +89,7 @@
         cursor: pointer;
         height: 24px;
 
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
 
         i {
             font-size: 24px;
@@ -98,5 +98,36 @@
 
     .container:hover .dismiss {
         display: block;
+    }
+}
+
+.axiom :local {
+    .card {
+        background: var(--elevation-neutral-default);
+        border-color: var(--border-neutral-default);
+
+        &:hover {
+            border-color: var(--content-neutral-secondary);
+        }
+    }
+
+    .ticketsCount {
+        color: var(--content-additional-blue);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .createArticle {
+        color: var(--content-accent-default);
+    }
+
+    .creatingArticle {
+        color: var(--content-neutral-secondary);
+    }
+
+    .dismiss {
+        color: var(--content-neutral-secondary);
     }
 }

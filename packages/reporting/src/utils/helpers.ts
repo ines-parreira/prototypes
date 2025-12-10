@@ -105,7 +105,11 @@ const formatMetricTrend = (
         formattedDiff = formatDuration(absDiff, 1)
     } else if (format === 'decimal-to-percent') {
         formattedDiff = formatTrendAsPercent(prevValue * 100, absDiff * 100)
-    } else if (format === 'percent') {
+    } else if (
+        format === 'percent' ||
+        format === 'currency' ||
+        format === 'currency-precision-1'
+    ) {
         formattedDiff = formatTrendAsPercent(prevValue, absDiff)
     } else {
         formattedDiff = Intl.NumberFormat(DEFAULT_LOCALE, {

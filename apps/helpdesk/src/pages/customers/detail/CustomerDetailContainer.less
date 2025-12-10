@@ -5,7 +5,7 @@
         width: 100%;
         padding: var(--layout-spacing-m);
         overflow-y: auto;
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
     }
 
     .header {
@@ -23,5 +23,11 @@
     .buttons {
         display: flex;
         gap: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .customerDetailContainer {
+        background: var(--surface-neutral-secondary);
     }
 }

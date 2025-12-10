@@ -1,13 +1,27 @@
 :local {
     .greenStatus {
-        color: var(--feedback-success-4);
+        color: var(--feedback-success-4); // legacy
     }
 
     .redStatus {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 
     .greyStatus {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .greenStatus {
+        color: var(--content-success-primary);
+    }
+
+    .redStatus {
+        color: var(--content-error-primary);
+    }
+
+    .greyStatus {
+        color: var(--content-neutral-secondary);
     }
 }

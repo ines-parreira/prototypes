@@ -6,6 +6,7 @@ import {
     useTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
 import type { Cubes } from 'domains/reporting/models/cubes'
+import { TicketProductsEnrichedDimension } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
 import { closedTicketsTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { messagesReceivedTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
 import { messagesSentTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
@@ -38,6 +39,11 @@ import type {
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
 import {
+    taggedTicketCountTimeseriesQueryV2Factory,
+    tagsTicketCountTimeseriesQueryV2Factory,
+    withCreatedDatetimeFilter,
+} from 'domains/reporting/models/scopes/tags'
+import {
     ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory,
     withCustomFieldIdAndProductFilter,
 } from 'domains/reporting/models/scopes/ticketFields'
@@ -60,8 +66,6 @@ import type {
 } from 'domains/reporting/models/types'
 import { ApiOnlyOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import type { OrderDirection } from 'models/api/types'
-
-import { TicketProductsEnrichedDimension } from '../models/cubes/core/TicketProductsEnrichedCube'
 
 type TimeSeriesQueryFactory<TCube extends Cubes> = (
     filters: StatsFilters,
@@ -375,6 +379,12 @@ export const useTagsTicketCountTimeSeries = (
 
     return useTimeSeriesPerDimension(
         queryFactory(filters, timezone, granularity, sorting),
+        tagsTicketCountTimeseriesQueryV2Factory({
+            filters: withCreatedDatetimeFilter(filters, timeReference),
+            timezone,
+            granularity,
+            sortDirection: sorting,
+        }),
     )
 }
 
@@ -392,6 +402,12 @@ export const fetchTagsTicketCountTimeSeries = (
 
     return fetchTimeSeriesPerDimension(
         queryFactory(filters, timezone, granularity, sorting),
+        tagsTicketCountTimeseriesQueryV2Factory({
+            filters: withCreatedDatetimeFilter(filters, timeReference),
+            timezone,
+            granularity,
+            sortDirection: sorting,
+        }),
     )
 }
 
@@ -407,7 +423,15 @@ export const useTotalTaggedTicketCountTimeSeries = (
             ? totalTaggedTicketCountTimeSeriesFactory
             : totalTaggedTicketCountOnCreatedDatetimeTimeSeriesFactory
 
-    return useTimeSeries(queryFactory(filters, timezone, granularity, sorting))
+    return useTimeSeries(
+        queryFactory(filters, timezone, granularity, sorting),
+        taggedTicketCountTimeseriesQueryV2Factory({
+            filters: withCreatedDatetimeFilter(filters, timeReference),
+            timezone,
+            granularity,
+            sortDirection: sorting,
+        }),
+    )
 }
 
 export const fetchTotalTaggedTicketCountTimeSeries = (
@@ -424,5 +448,11 @@ export const fetchTotalTaggedTicketCountTimeSeries = (
 
     return fetchTimeSeries(
         queryFactory(filters, timezone, granularity, sorting),
+        taggedTicketCountTimeseriesQueryV2Factory({
+            filters: withCreatedDatetimeFilter(filters, timeReference),
+            timezone,
+            granularity,
+            sortDirection: sorting,
+        }),
     )
 }

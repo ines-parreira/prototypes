@@ -15,7 +15,7 @@
         align-items: center;
     }
     .emptyState {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-weight: normal !important;
     }
     .list {
@@ -30,7 +30,7 @@
         gap: var(--layout-spacing-s);
         padding: var(--layout-spacing-s) var(--layout-spacing-m);
 
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
 
         .body-semibold();
     }
@@ -42,5 +42,14 @@
         margin-top: var(
             --layout-spacing-l
         ); // sectionContainer-gap + layout-spacing-l = 48px from Design
+    }
+}
+
+.axiom :local {
+    .emptyState {
+        color: var(--content-neutral-secondary);
+    }
+    .item {
+        border-bottom: 1px solid var(--border-neutral-default);
     }
 }

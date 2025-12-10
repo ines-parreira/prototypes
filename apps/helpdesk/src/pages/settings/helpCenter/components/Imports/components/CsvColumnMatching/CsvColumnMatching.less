@@ -2,10 +2,10 @@
     th.table-language-header-cell {
         position: sticky;
         top: 0;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         padding: 16px;
         font-weight: bold;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         z-index: 50;
     }
 
@@ -38,5 +38,12 @@
 
     .cancel-button {
         margin-right: 8px;
+    }
+}
+
+.axiom :local {
+    th.table-language-header-cell {
+        background-color: var(--surface-neutral-secondary);
+        color: var(--content-neutral-default);
     }
 }

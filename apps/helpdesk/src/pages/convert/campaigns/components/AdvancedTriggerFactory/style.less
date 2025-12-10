@@ -5,7 +5,7 @@
 
     .customerTag {
         min-height: 32px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 0.25rem;
         width: 100%;
 
@@ -36,7 +36,7 @@
         bottom: 0;
         left: 0;
 
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
 
         opacity: 0.7;
     }
@@ -64,7 +64,7 @@
             font-weight: 600;
             font-size: 14px;
             line-height: 32px;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             white-space: nowrap;
         }
 
@@ -125,5 +125,21 @@
     .buttonContainer {
         display: flex;
         align-items: flex-start;
+    }
+}
+
+.axiom :local {
+    .customerTag {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .triggerPaywall {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .triggerWrapper {
+        .fixedOperator {
+            color: var(--content-neutral-default);
+        }
     }
 }

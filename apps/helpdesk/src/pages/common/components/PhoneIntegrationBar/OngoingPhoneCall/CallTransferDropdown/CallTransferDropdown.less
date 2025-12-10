@@ -40,7 +40,7 @@
         }
 
         .enabledStatus {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
@@ -61,5 +61,13 @@
 
     .cta {
         width: 100%;
+    }
+}
+
+.axiom :local {
+    .queueItem {
+        .enabledStatus {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

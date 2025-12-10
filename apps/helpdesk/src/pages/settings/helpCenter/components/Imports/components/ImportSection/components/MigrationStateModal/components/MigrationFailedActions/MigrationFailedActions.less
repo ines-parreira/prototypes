@@ -6,7 +6,7 @@
         font-weight: bold;
     }
     .warningIcon {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         font-size: 20px;
     }
     .actions {
@@ -15,5 +15,11 @@
     }
     .actionsButton {
         flex: 1;
+    }
+}
+
+.axiom :local {
+    .warningIcon {
+        color: var(--content-error-primary);
     }
 }

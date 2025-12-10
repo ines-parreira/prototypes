@@ -65,7 +65,7 @@
         padding: 8px;
         font-weight: 500;
         display: flex;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         cursor: pointer;
 
         i {
@@ -104,7 +104,7 @@
 
     .embedPreviewDisabled {
         pointer-events: none;
-        color: var(--neutral-grey-3) !important;
+        color: var(--neutral-grey-3) !important; // legacy
     }
 
     .copied {
@@ -113,5 +113,15 @@
             font-size: 18px;
             padding-right: 4px;
         }
+    }
+}
+
+.axiom :local {
+    .embedPreview {
+        color: var(--content-neutral-secondary);
+    }
+
+    .embedPreviewDisabled {
+        color: var(--border-neutral-default) !important;
     }
 }

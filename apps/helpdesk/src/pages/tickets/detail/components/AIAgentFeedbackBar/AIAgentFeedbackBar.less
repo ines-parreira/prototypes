@@ -18,7 +18,7 @@
 
     .subtitle {
         .body-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .subsectionTitle {
@@ -62,16 +62,16 @@
 
     .metadataTitle {
         .body-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .metadataText {
         .body-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .orderTitle {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .summary {
@@ -84,7 +84,7 @@
         display: flex;
         gap: var(--layout-spacing-xxs);
         align-items: center;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
 
         i {
             font-size: 16px !important;
@@ -93,7 +93,7 @@
         &:hover {
             cursor: pointer;
             background-color: var(--neutral-grey-1); // legacy
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
         }
 
         &.noHref {
@@ -141,7 +141,7 @@
                 cursor: pointer;
 
                 .sectionText {
-                    color: var(--main-primary);
+                    color: var(--main-primary); // legacy
                     .openIcon {
                         visibility: visible;
                     }
@@ -160,7 +160,7 @@
         display: flex;
         gap: var(--layout-spacing-xxs);
         align-items: center;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         .leadIcon {
             font-size: 20px !important;
@@ -173,7 +173,7 @@
             -webkit-line-clamp: 3;
             line-clamp: 3;
             -webkit-box-orient: vertical;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
@@ -192,7 +192,7 @@
     }
 
     .negativeFeedback {
-        color: var(--feedback-error) !important;
+        color: var(--feedback-error) !important; // legacy
     }
 
     .otherResources {
@@ -211,10 +211,10 @@
         margin-top: var(--layout-spacing-xs);
         margin-bottom: var(--layout-spacing-s);
         font-size: 12px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
 
         a:hover {
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
             text-decoration: underline !important;
         }
     }
@@ -246,9 +246,28 @@
 }
 
 .axiom :local {
+    .subtitle {
+        color: var(--content-neutral-default);
+    }
+
+    .metadataTitle {
+        color: var(--content-neutral-secondary);
+    }
+
+    .metadataText {
+        color: var(--content-neutral-default);
+    }
+
+    .orderTitle {
+        color: var(--content-accent-default);
+    }
+
     .order {
+        color: var(--content-accent-default);
+
         &:hover {
             background: var(--surface-neutral-primary);
+            color: var(--content-accent-default);
         }
     }
 
@@ -256,7 +275,31 @@
         &.clickable {
             &:hover:not(:has(.feedback:hover)) {
                 background: var(--surface-neutral-primary);
+
+                .sectionText {
+                    color: var(--content-accent-default);
+                }
             }
+        }
+    }
+
+    .sectionText {
+        color: var(--content-neutral-default);
+
+        .text {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .negativeFeedback {
+        color: var(--content-error-primary) !important;
+    }
+
+    .ticketImproveInfo {
+        color: var(--content-neutral-secondary);
+
+        a:hover {
+            color: var(--content-accent-default);
         }
     }
 }

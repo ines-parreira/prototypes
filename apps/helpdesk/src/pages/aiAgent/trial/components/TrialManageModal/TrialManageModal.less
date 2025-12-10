@@ -29,7 +29,7 @@
         align-items: center;
         margin-top: var(--layout-spacing-s);
         gap: var(--layout-spacing-xs);
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .modalBody {
@@ -79,7 +79,7 @@
                 rgba(252, 138, 233, 0.1) 50%,
                 rgba(255, 154, 87, 0.1) 80%
             ),
-            var(--neutral-grey-0);
+            var(--neutral-grey-0); // legacy
     }
 
     .advantagesCenter {
@@ -93,12 +93,12 @@
     }
 
     .icon {
-        color: var(--feedback-success);
+        color: var(--feedback-success); // legacy
         font-size: 24px;
     }
 
     .advantageValue {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 20px;
         font-weight: 600;
         line-height: 28px;
@@ -107,9 +107,9 @@
     }
 
     .primaryActionButton {
-        background-color: var(--neutral-grey-6) !important;
-        color: var(--neutral-grey-0) !important;
-        border-color: var(--neutral-grey-6) !important;
+        background-color: var(--neutral-grey-6) !important; // legacy
+        color: var(--neutral-grey-0) !important; // legacy
+        border-color: var(--neutral-grey-6) !important; // legacy
         height: 36px;
         padding: var(--layout-spacing-xs) 12px;
     }
@@ -133,7 +133,42 @@
         font-size: 12px;
         font-weight: 400;
         line-height: 16px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         text-align: end;
+    }
+}
+
+.axiom :local {
+    .footer {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .advantagesInner {
+        background:
+            linear-gradient(
+                315deg,
+                rgba(160, 132, 225, 0.1) 20.19%,
+                rgba(252, 138, 233, 0.1) 50%,
+                rgba(255, 154, 87, 0.1) 80%
+            ),
+            var(--elevation-neutral-default);
+    }
+
+    .icon {
+        color: var(--content-success-primary);
+    }
+
+    .advantageValue {
+        color: var(--content-neutral-default);
+    }
+
+    .primaryActionButton {
+        background-color: var(--content-neutral-default) !important;
+        color: var(--elevation-neutral-default) !important;
+        border-color: var(--content-neutral-default) !important;
+    }
+
+    .secondaryDescription {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -12,7 +12,7 @@
     }
 
     .description {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .fileList {
@@ -25,7 +25,7 @@
     }
 
     .fileListItem {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         border-radius: var(--layout-spacing-xxs);
         padding: var(--layout-spacing-xs) var(--layout-spacing-xs)
             var(--layout-spacing-xs) var(--layout-spacing-s);
@@ -40,11 +40,25 @@
 
     .buttonInfo {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-top: var(--layout-spacing-xs);
     }
 
     .articlesIcons {
         margin-left: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .description {
+        color: var(--content-neutral-secondary);
+    }
+
+    .fileListItem {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .buttonInfo {
+        color: var(--content-neutral-secondary);
     }
 }

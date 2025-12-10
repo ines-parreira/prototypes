@@ -13,7 +13,7 @@
         padding-left: 4px;
         padding-top: 8px;
         display: block;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .backButton {
@@ -31,7 +31,7 @@
     .header {
         .caption-allcaps();
         padding: 8px 4px 8px;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .categoryName {
@@ -65,6 +65,20 @@
     }
 
     .itemTrailIcon {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .noVariablesMessage {
+        color: var(--content-neutral-secondary);
+    }
+
+    .header {
+        color: var(--content-accent-default);
+    }
+
+    .itemTrailIcon {
+        color: var(--content-neutral-secondary);
     }
 }

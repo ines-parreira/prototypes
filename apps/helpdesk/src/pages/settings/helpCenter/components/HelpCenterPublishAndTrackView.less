@@ -26,7 +26,7 @@
 
     .delete-btn {
         i {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
             font-size: 15px;
             margin-right: 4px;
         }
@@ -35,13 +35,13 @@
             cursor: default;
 
             i {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
             }
         }
     }
 
     .delete-modal-help-center {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 
     .delete-modal-input {
@@ -83,7 +83,7 @@
     }
 
     .tabNavigator {
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
 
         & :global(.activeTab)::before {
             position: absolute;
@@ -93,7 +93,7 @@
             height: 1px;
             content: '';
 
-            border-bottom: 2px solid var(--main-primary);
+            border-bottom: 2px solid var(--main-primary); // legacy
         }
     }
 
@@ -102,5 +102,31 @@
         flex-direction: column;
         gap: 24px;
         margin: 24px 0;
+    }
+}
+
+.axiom :local {
+    .delete-btn {
+        i {
+            color: var(--content-error-primary);
+        }
+
+        &:disabled {
+            i {
+                color: var(--content-neutral-secondary);
+            }
+        }
+    }
+
+    .delete-modal-help-center {
+        color: var(--content-error-primary);
+    }
+
+    .tabNavigator {
+        border-bottom: 1px solid var(--border-neutral-default);
+
+        & :global(.activeTab)::before {
+            border-bottom: 2px solid var(--surface-accent-default);
+        }
     }
 }

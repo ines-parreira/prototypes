@@ -367,7 +367,6 @@ describe('<StoreConfigForm />', () => {
         shopType: 'shopify',
         chatChannelDeactivatedDatetime: null,
         emailChannelDeactivatedDatetime: null,
-        trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
         previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
         previewModeValidUntilDatetime: '2024-08-06T12:33:02.750Z',
         storeName: 'test-shop',
@@ -421,7 +420,6 @@ describe('<StoreConfigForm />', () => {
         chatChannelDeactivatedDatetime: null,
         emailChannelDeactivatedDatetime: null,
         smsChannelDeactivatedDatetime: null,
-        trialModeActivatedDatetime: '2024-07-30T12:55:07.585Z',
         previewModeActivatedDatetime: '2024-07-30T12:55:07.585Z',
         ticketSampleRate: null,
         silentHandover: false,
@@ -571,16 +569,6 @@ describe('<StoreConfigForm />', () => {
                 'AI Agent will also respond to any contact forms linked to these email addresses.',
             ),
         ).toBeInTheDocument()
-    })
-
-    it('should not deactivate AI agent if agentMode is in trial and AiAgentTrialMode flag is true', () => {
-        useFlagMock.mockImplementation(
-            (key) => FeatureFlagKey.AiAgentTrialMode === key || false,
-        )
-
-        renderComponent()
-
-        expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
     })
 
     it('should call reportError when upsertStoreConfiguration throws an error', async () => {
@@ -900,120 +888,6 @@ describe('<StoreConfigForm />', () => {
         expect(mockSetSearchParam).toHaveBeenCalledWith(null)
     })
 
-    it('should handle enabled mode correctly', async () => {
-        useFlagMock.mockImplementation(
-            (key) =>
-                FeatureFlagKey.AiAgentTrialMode === key ||
-                FeatureFlagKey.AiAgentChat === key ||
-                false,
-        )
-        mockedUseConfigurationForm.mockReturnValue({
-            ...defaultUseConfigurationFormValues,
-            formValues: {
-                ...initialFormValues,
-                chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                trialModeActivatedDatetime: null,
-                previewModeActivatedDatetime: null,
-            },
-        })
-
-        renderComponent({})
-
-        // Simulate the user selecting 'enabled' mode
-        const radioButton = screen.getByLabelText(
-            'Directly respond to customers',
-        )
-        userEvent.click(radioButton)
-
-        // Check that updateValue was called with the correct arguments
-        // emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
-
-        await waitFor(() => {
-            expect(updateValueMocked).toHaveBeenCalledTimes(4)
-            expect(updateValueMocked).toHaveBeenCalledWith(
-                'emailChannelDeactivatedDatetime',
-                null,
-            )
-            expect(updateValueMocked).toHaveBeenCalledWith(
-                'trialModeActivatedDatetime',
-                null,
-            )
-            expect(updateValueMocked).toHaveBeenCalledWith(
-                'previewModeActivatedDatetime',
-                null,
-            )
-        })
-    })
-
-    it('should handle trial mode correctly', async () => {
-        useFlagMock.mockImplementation(
-            (key) => FeatureFlagKey.AiAgentTrialMode === key || false,
-        )
-        mockedUseConfigurationForm.mockReturnValue({
-            ...defaultUseConfigurationFormValues,
-            formValues: {
-                ...initialFormValues,
-                trialModeActivatedDatetime: null,
-                previewModeActivatedDatetime: null,
-            },
-        })
-
-        renderComponent({})
-
-        const radioButton = screen.getByLabelText(
-            'Draft responses for agents to review before sending',
-        )
-        userEvent.click(radioButton)
-
-        // Check that updateValue was called with the correct arguments
-        // emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
-        await waitFor(() => {
-            expect(updateValueMocked).toHaveBeenCalledTimes(4)
-            expect(updateValueMocked).toHaveBeenCalledWith(
-                'emailChannelDeactivatedDatetime',
-                expect.any(String),
-            )
-            expect(updateValueMocked).toHaveBeenCalledWith(
-                'trialModeActivatedDatetime',
-                expect.any(String),
-            )
-            expect(updateValueMocked).toHaveBeenCalledWith(
-                'previewModeActivatedDatetime',
-                expect.any(String),
-            )
-        })
-    })
-
-    it('should handle disabled mode correctly', async () => {
-        useFlagMock.mockImplementation(
-            (key) => FeatureFlagKey.AiAgentTrialMode === key || false,
-        )
-        renderComponent({})
-
-        // Simulate the user selecting 'disabled' mode
-        const radioButton = screen.getByLabelText('Disabled')
-        userEvent.click(radioButton)
-
-        // Check that updateValue was called with the correct arguments
-        // emailChannelDeactivatedDatetime + chatChannelDeactivatedDatetime + trialModeActivatedDatetime + previewModeActivatedDatetime
-        await waitFor(() => {
-            expect(updateValueMocked).toHaveBeenCalledTimes(4)
-            expect(updateValueMocked).toHaveBeenCalledWith(
-                'emailChannelDeactivatedDatetime',
-                expect.any(String),
-            )
-            expect(updateValueMocked).toHaveBeenCalledWith(
-                'trialModeActivatedDatetime',
-                null,
-            )
-            expect(updateValueMocked).toHaveBeenCalledWith(
-                'previewModeActivatedDatetime',
-                null,
-            )
-        })
-    })
-
     it('should deactivate email channel', () => {
         mockUseParams.mockReturnValue({ tab: 'channels' })
         mockedUseConfigurationForm.mockReturnValue({
@@ -1065,7 +939,6 @@ describe('<StoreConfigForm />', () => {
             ...defaultUseConfigurationFormValues,
             formValues: {
                 ...initialFormValues,
-                trialModeActivatedDatetime: null,
                 previewModeActivatedDatetime: null,
                 chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
             },
@@ -1137,7 +1010,6 @@ describe('<StoreConfigForm />', () => {
             ...defaultUseConfigurationFormValues,
             formValues: {
                 ...initialFormValues,
-                trialModeActivatedDatetime: null,
                 previewModeActivatedDatetime: null,
                 emailChannelDeactivatedDatetime: null,
             },
@@ -1172,7 +1044,6 @@ describe('<StoreConfigForm />', () => {
             ...defaultUseConfigurationFormValues,
             formValues: {
                 ...initialFormValues,
-                trialModeActivatedDatetime: null,
                 previewModeActivatedDatetime: null,
                 chatChannelDeactivatedDatetime: null,
             },
@@ -1700,7 +1571,6 @@ describe('<StoreConfigForm />', () => {
                     ...storeConfiguration,
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    trialModeActivatedDatetime: null,
                 },
                 isLoading: false,
                 updateStoreConfiguration: mockUpdateStoreConfiguration,
@@ -1713,7 +1583,6 @@ describe('<StoreConfigForm />', () => {
                 isFormDirty: true,
                 formValues: {
                     ...initialFormValues,
-                    trialModeActivatedDatetime: null,
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: null,
                 },
@@ -1758,7 +1627,6 @@ describe('<StoreConfigForm />', () => {
                 isFormDirty: true,
                 formValues: {
                     ...initialFormValues,
-                    trialModeActivatedDatetime: null,
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: null,
                 },
@@ -1804,7 +1672,6 @@ describe('<StoreConfigForm />', () => {
                 isFormDirty: true,
                 formValues: {
                     ...initialFormValues,
-                    trialModeActivatedDatetime: null,
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                 },
@@ -1837,7 +1704,6 @@ describe('<StoreConfigForm />', () => {
                     ...storeConfiguration,
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    trialModeActivatedDatetime: null,
                 },
                 isLoading: false,
                 updateStoreConfiguration: mockUpdateStoreConfiguration,
@@ -1850,7 +1716,6 @@ describe('<StoreConfigForm />', () => {
                 isFormDirty: true,
                 formValues: {
                     ...initialFormValues,
-                    trialModeActivatedDatetime: null,
                     chatChannelDeactivatedDatetime: null,
                     emailChannelDeactivatedDatetime: null,
                 },
@@ -1916,121 +1781,6 @@ describe('<StoreConfigForm />', () => {
             ).toBeInvalid()
         })
 
-        it('should not show modal when trial mode is enabled', async () => {
-            useFlagMock.mockImplementation(
-                (key) => FeatureFlagKey.AiAgentTrialMode === key || false,
-            )
-            mockedUseAccountStoreConfiguration.mockReturnValue({
-                accountConfiguration: undefined,
-                aiAgentTicketViewId: 1,
-                aiAgentPreviewTicketViewId: 2,
-            })
-
-            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration: {
-                    ...storeConfiguration,
-                    chatChannelDeactivatedDatetime: null,
-                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    trialModeActivatedDatetime: null,
-                },
-                isLoading: false,
-                updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
-                isPendingCreateOrUpdate: false,
-            })
-
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                isFormDirty: true,
-                formValues: {
-                    ...initialFormValues,
-                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    chatChannelDeactivatedDatetime: null,
-                    emailChannelDeactivatedDatetime: null,
-                },
-            })
-
-            renderComponent({})
-
-            const saveButton = screen.getAllByText(/Save Changes/i)[0]
-            fireEvent.click(saveButton)
-
-            await waitFor(() => {
-                expect(mockHandleOnSave).toHaveBeenCalled()
-
-                const ticketViewButton = screen.queryByRole('button', {
-                    name: 'Show Me',
-                })
-                expect(ticketViewButton).not.toBeInTheDocument()
-            })
-        })
-
-        it('should show modal when switching form trial mode to live mode', async () => {
-            useFlagMock.mockImplementation(
-                (key) => FeatureFlagKey.AiAgentTrialMode === key || false,
-            )
-            mockedUseAccountStoreConfiguration.mockReturnValue({
-                accountConfiguration: undefined,
-                aiAgentTicketViewId: 1,
-                aiAgentPreviewTicketViewId: 2,
-            })
-
-            mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration: {
-                    ...storeConfiguration,
-                    chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
-                },
-                isLoading: false,
-                updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
-                isPendingCreateOrUpdate: false,
-            })
-
-            mockedUseConfigurationForm.mockReturnValue({
-                ...defaultUseConfigurationFormValues,
-                isFormDirty: true,
-                formValues: {
-                    ...initialFormValues,
-                    trialModeActivatedDatetime: null,
-                    chatChannelDeactivatedDatetime: null,
-                    emailChannelDeactivatedDatetime: null,
-                },
-            })
-
-            // Clear localStorage to ensure modal hasn't been viewed
-            localStorage.removeItem('ai-settings-ticket-view-modal-viewed')
-
-            renderComponent({})
-
-            const saveButton = screen.getAllByText(/Save Changes/i)[0]
-            fireEvent.click(saveButton)
-
-            await waitFor(() => {
-                expect(mockHandleOnSave).toHaveBeenCalled()
-            })
-
-            // Verify that handleOnSave was called with expected parameters
-            // When switching from trial to live mode, the modal display logic
-            // is handled internally based on the configuration state
-            expect(mockHandleOnSave).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    aiAgentMode: 'enabled',
-                    shopName: 'test-shop',
-                    onSuccess: expect.any(Function),
-                }),
-            )
-
-            // Verify the callback is present and can be called
-            const onSuccessCallback =
-                mockHandleOnSave.mock.calls[0][0].onSuccess
-            expect(onSuccessCallback).toBeDefined()
-
-            // Call the callback to ensure it doesn't throw
-            onSuccessCallback()
-        })
-
         it('should display banner if AI Agent on Preview mode', () => {
             useFlagMock.mockImplementation(
                 (key) =>
@@ -2041,7 +1791,6 @@ describe('<StoreConfigForm />', () => {
                     ...storeConfiguration,
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                     previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                     previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
                     isPreviewModeActive: true,
@@ -2068,7 +1817,6 @@ describe('<StoreConfigForm />', () => {
             mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
                     ...storeConfiguration,
-                    trialModeActivatedDatetime: null,
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
@@ -2104,7 +1852,6 @@ describe('<StoreConfigForm />', () => {
                     ...storeConfiguration,
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                     previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                     isPreviewModeActive: true,
                 },
@@ -2142,7 +1889,6 @@ describe('<StoreConfigForm />', () => {
                     ...storeConfiguration,
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                     previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                 },
                 isLoading: false,
@@ -2191,7 +1937,6 @@ describe('<StoreConfigForm />', () => {
                     ...storeConfiguration,
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                     previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                     previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
                     isPreviewModeActive: true,
@@ -2225,7 +1970,6 @@ describe('<StoreConfigForm />', () => {
                     ...storeConfiguration,
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                     previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                 },
                 isLoading: false,
@@ -2266,7 +2010,6 @@ describe('<StoreConfigForm />', () => {
                     ...initialFormValues,
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                     previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
                 },
             })
@@ -2276,7 +2019,6 @@ describe('<StoreConfigForm />', () => {
                     ...storeConfiguration,
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                     previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
                     isPreviewModeActive: true,
                 },
@@ -2293,7 +2035,6 @@ describe('<StoreConfigForm />', () => {
                     expect.objectContaining({
                         emailChannelDeactivatedDatetime: expect.any(String),
                         chatChannelDeactivatedDatetime: expect.any(String),
-                        trialModeActivatedDatetime: null,
                         previewModeActivatedDatetime: null,
                         previewModeValidUntilDatetime: null,
                     }),
@@ -2310,7 +2051,6 @@ describe('<StoreConfigForm />', () => {
                     ...initialFormValues,
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                     previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
                 },
             })
@@ -2320,7 +2060,6 @@ describe('<StoreConfigForm />', () => {
                     ...storeConfiguration,
                     chatChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
                     emailChannelDeactivatedDatetime: '2024-07-30T12:33:02.750Z',
-                    trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
                     previewModeValidUntilDatetime: '2024-07-30T12:33:02.750Z',
                     isPreviewModeActive: true,
                 },

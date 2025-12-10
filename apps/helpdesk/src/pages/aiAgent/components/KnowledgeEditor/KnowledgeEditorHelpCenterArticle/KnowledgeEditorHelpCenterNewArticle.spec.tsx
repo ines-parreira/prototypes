@@ -1,4 +1,5 @@
 import { assumeMock } from '@repo/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
@@ -10,6 +11,7 @@ import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/Current
 import { getCategoriesResponseEnglish } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorHelpCenterNewArticle } from './KnowledgeEditorHelpCenterNewArticle'
@@ -36,42 +38,45 @@ const mockedUseCreateArticle = jest.mocked(useCreateArticle)
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
 const categories = flattenCategories(getCategoriesResponseEnglish)
+const queryClient = mockQueryClient()
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
-    <Provider
-        store={mockStore({
-            entities: {
-                helpCenter: {
-                    helpCenters: {
-                        helpCentersById: {
-                            [helpCenter.id]: helpCenter,
+    <QueryClientProvider client={queryClient}>
+        <Provider
+            store={mockStore({
+                entities: {
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: {
+                                [helpCenter.id]: helpCenter,
+                            },
+                        },
+                        articles: {
+                            articlesById: {},
+                        },
+                        categories: {
+                            categoriesById: Object.fromEntries(
+                                categories.map((category) => [
+                                    category.id,
+                                    category,
+                                ]),
+                            ),
                         },
                     },
-                    articles: {
-                        articlesById: {},
-                    },
-                    categories: {
-                        categoriesById: Object.fromEntries(
-                            categories.map((category) => [
-                                category.id,
-                                category,
-                            ]),
-                        ),
+                },
+                ui: {
+                    helpCenter: {
+                        currentId: helpCenter.id,
+                        currentLanguage: 'en-US',
                     },
                 },
-            },
-            ui: {
-                helpCenter: {
-                    currentId: helpCenter.id,
-                    currentLanguage: 'en-US',
-                },
-            },
-        })}
-    >
-        <CurrentHelpCenterContext.Provider value={helpCenter}>
-            {children}
-        </CurrentHelpCenterContext.Provider>
-    </Provider>
+            })}
+        >
+            <CurrentHelpCenterContext.Provider value={helpCenter}>
+                {children}
+            </CurrentHelpCenterContext.Provider>
+        </Provider>
+    </QueryClientProvider>
 )
 
 describe('KnowledgeEditorHelpCenterNewArticle', () => {
@@ -87,6 +92,7 @@ describe('KnowledgeEditorHelpCenterNewArticle', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        queryClient.clear()
 
         mockedUseCreateArticle.mockReturnValue({
             mutateAsync: mutateAsyncMock,

@@ -14,7 +14,7 @@
         pointer-events: initial;
         display: flex;
         flex-direction: column;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         padding: 32px 20px 0;
         justify-content: space-between;
     }
@@ -65,5 +65,11 @@
         path {
             fill: white;
         }
+    }
+}
+
+.axiom :local {
+    .contentContainer {
+        color: var(--content-neutral-default);
     }
 }

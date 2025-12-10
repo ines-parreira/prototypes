@@ -6,14 +6,24 @@
         padding: 0;
         border: 0;
 
-        background: var(--neutral-grey-2);
-        color: var(--neutral-grey-6);
+        background: var(--neutral-grey-2); // legacy
+        color: var(--neutral-grey-6); // legacy
         font-weight: bold;
     }
     .dropdown-header {
         position: sticky;
         top: 0;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         padding-top: 7px;
+    }
+}
+
+.axiom :local {
+    .add-btn {
+        background: var(--surface-neutral-secondary);
+        color: var(--content-neutral-default);
+    }
+    .dropdown-header {
+        background: var(--elevation-neutral-default);
     }
 }

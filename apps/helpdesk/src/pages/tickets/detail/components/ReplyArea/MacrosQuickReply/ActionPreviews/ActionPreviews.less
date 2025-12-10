@@ -6,7 +6,7 @@
     }
 
     .leftBorder {
-        border-left: var(--neutral-grey-3) 1px solid;
+        border-left: var(--neutral-grey-3) 1px solid; // legacy
         padding-left: 16px;
         margin-left: 8px;
     }
@@ -16,5 +16,11 @@
         flex-direction: column;
         flex: 1;
         max-width: 300px;
+    }
+}
+
+.axiom :local {
+    .leftBorder {
+        border-left: var(--border-neutral-default) 1px solid;
     }
 }

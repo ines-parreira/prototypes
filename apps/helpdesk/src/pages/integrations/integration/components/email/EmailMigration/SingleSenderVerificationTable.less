@@ -21,7 +21,7 @@
         padding-right: var(--layout-spacing-m);
 
         &.error {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
             font-weight: 600;
         }
     }
@@ -41,5 +41,13 @@
         justify-content: space-between;
         margin-top: var(--layout-spacing-m);
         margin-bottom: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .emailAddress {
+        &.error {
+            color: var(--content-error-primary);
+        }
     }
 }

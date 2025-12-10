@@ -15,7 +15,7 @@
 
     .icon {
         i {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
@@ -25,15 +25,30 @@
 
     .formInputFooterInfo {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-top: -20px;
         &.error {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
     .checkbox {
         border-bottom: none !important;
         margin-bottom: -24px !important;
+    }
+}
+
+.axiom :local {
+    .icon {
+        i {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .formInputFooterInfo {
+        color: var(--content-neutral-secondary);
+        &.error {
+            color: var(--content-error-primary);
+        }
     }
 }

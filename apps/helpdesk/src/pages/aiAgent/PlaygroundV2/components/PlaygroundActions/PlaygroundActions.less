@@ -13,8 +13,14 @@
     }
 
     .title {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         padding-bottom: var(--layout-spacing-xs);
         display: block;
+    }
+}
+
+.axiom :local {
+    .title {
+        color: var(--content-neutral-secondary);
     }
 }

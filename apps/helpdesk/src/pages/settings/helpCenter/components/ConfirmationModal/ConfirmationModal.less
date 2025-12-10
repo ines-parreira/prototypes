@@ -8,7 +8,7 @@
         display: flex;
         flex-grow: 1;
         justify-content: flex-end;
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
     }
 
     .confirmBtn {
@@ -16,5 +16,11 @@
             font-size: 15px;
             margin-right: 4px;
         }
+    }
+}
+
+.axiom :local {
+    .actions {
+        background: var(--elevation-neutral-mid);
     }
 }

@@ -9,7 +9,7 @@
 
     .info {
         font-size: 12px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .dropdownItem {
@@ -20,7 +20,7 @@
 
     .openIcon {
         font-size: 20px !important;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .createResourceButton {
@@ -32,5 +32,15 @@
 
     .arrowDownIcon {
         font-size: 20px !important;
+    }
+}
+
+.axiom :local {
+    .info {
+        color: var(--content-neutral-secondary);
+    }
+
+    .openIcon {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -11,7 +11,7 @@
 
         &:hover,
         &:focus {
-            background: var(--neutral-grey-3);
+            background: var(--neutral-grey-3); // legacy
 
             /* reset for :focus */
             outline: 0;
@@ -27,14 +27,17 @@
         padding: 9px 4px;
         min-width: 220px;
         max-width: 440px;
-        background: var(--neutral-grey-0);
-        border: 1px solid var(--neutral-grey-3);
+        background: var(--neutral-grey-0); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 2px;
         box-shadow: 0 2px 3px 0
             hsla(
                 var(--neutral-grey-6-h),
+                // legacy
                 var(--neutral-grey-6-s),
+                // legacy
                 var(--neutral-grey-6-l),
+                // legacy
                 0.2
             );
         transform: scale(0.8);
@@ -53,15 +56,41 @@
         font-weight: 500;
 
         &:active {
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
         }
     }
 
     .mentionSuggestionsEntryFocused {
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
 
     .mentionSuggestionsEntryText {
         max-width: 368px;
+    }
+}
+
+.axiom :local {
+    .mention,
+    .mention:visited {
+        &:hover,
+        &:focus {
+            background: var(--surface-neutral-primary);
+        }
+    }
+
+    .mentionSuggestions {
+        background: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .mentionSuggestionsEntry {
+        &:active {
+            background-color: var(--elevation-neutral-default);
+        }
+    }
+
+    .mentionSuggestionsEntryFocused {
+        background-color: var(--surface-neutral-tertiary);
     }
 }

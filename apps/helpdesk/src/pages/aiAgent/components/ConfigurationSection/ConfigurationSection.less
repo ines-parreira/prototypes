@@ -2,7 +2,7 @@
 
 :local {
     .abbr[title] {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         margin-left: 4px;
         text-decoration: none;
     }
@@ -25,5 +25,11 @@
     .betaBadge {
         margin-left: 5px;
         margin-top: 3px;
+    }
+}
+
+.axiom :local {
+    .abbr[title] {
+        color: var(--content-error-primary);
     }
 }

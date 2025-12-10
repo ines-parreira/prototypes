@@ -46,7 +46,6 @@ describe('useAiAgentOverviewModeEnabled', () => {
     } as RootState
 
     const defaultStoreConfig = {
-        trialModeActivatedDatetime: null,
         previewModeActivatedDatetime: null,
         storeName: 'test-store',
         shopType: 'shopify',

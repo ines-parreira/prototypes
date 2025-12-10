@@ -13,25 +13,25 @@
     }
 
     .selectInput {
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         text-overflow: ellipsis;
 
         & > div:only-child {
             height: 24px;
-            border-color: var(--neutral-grey-3);
+            border-color: var(--neutral-grey-3); // legacy
             box-shadow: none;
             padding: 2px 7px;
 
             gap: 4px;
             div:first-child {
                 .component-button-small();
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
                 padding: 0;
                 text-transform: inherit;
             }
 
             i {
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
                 padding: 0;
             }
         }
@@ -54,5 +54,55 @@
         align-items: center;
         gap: var(--layout-spacing-xs);
         .body-regular();
+    }
+}
+
+.axiom :local {
+    .selectInput {
+        background-color: var(--elevation-neutral-mid);
+
+        & > div:only-child {
+            border-color: var(--border-neutral-default);
+
+            div:first-child {
+                color: var(--content-neutral-default);
+            }
+
+            i {
+                color: var(--content-neutral-default);
+            }
+        }
+    }
+
+    .feedbackSelectInput {
+        background-color: var(--elevation-neutral-mid);
+
+        & > div:only-child {
+            border-color: var(--border-neutral-default);
+
+            div:first-child {
+                color: var(--content-neutral-default);
+            }
+
+            i {
+                color: var(--content-neutral-default);
+            }
+        }
+    }
+
+    .articleSelectInput {
+        background-color: var(--elevation-neutral-mid);
+
+        & > div:only-child {
+            border-color: var(--border-neutral-default);
+
+            div:first-child {
+                color: var(--content-neutral-default);
+            }
+
+            i {
+                color: var(--content-neutral-default);
+            }
+        }
     }
 }

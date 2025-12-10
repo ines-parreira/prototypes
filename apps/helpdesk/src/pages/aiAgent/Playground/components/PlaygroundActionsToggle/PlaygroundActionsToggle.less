@@ -25,12 +25,20 @@
         }
 
         .infoIcon {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             margin-top: 2px;
 
             [class*='IconTooltip--icon--'] {
                 margin-left: 0;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .playgroundActionsToggle {
+        .infoIcon {
+            color: var(--content-neutral-secondary);
         }
     }
 }

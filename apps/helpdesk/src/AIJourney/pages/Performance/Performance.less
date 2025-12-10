@@ -36,13 +36,13 @@
 
     .filterPrimaryText {
         font-size: 20px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
     }
 
     .filterSecondaryText {
         font-size: 20px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-weight: 600;
     }
 
@@ -68,5 +68,15 @@
             grid-template-columns: 1fr;
             gap: var(--layout-spacing-s);
         }
+    }
+}
+
+.axiom :local {
+    .filterPrimaryText {
+        color: var(--content-neutral-default);
+    }
+
+    .filterSecondaryText {
+        color: var(--content-neutral-secondary);
     }
 }

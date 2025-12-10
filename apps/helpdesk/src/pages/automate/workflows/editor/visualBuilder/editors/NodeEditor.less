@@ -3,22 +3,22 @@
 
 :local {
     .labelDisabled {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .textInput {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .selectInput {
         & > div {
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
         }
     }
 
     .description {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .container {
@@ -109,8 +109,32 @@
 
     .separator {
         height: 1px;
-        background: var(--neutral-grey-3);
+        background: var(--neutral-grey-3); // legacy
         margin-top: var(--layout-spacing-s);
         margin-bottom: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .labelDisabled {
+        color: var(--content-neutral-secondary);
+    }
+
+    .textInput {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .selectInput {
+        & > div {
+            background-color: var(--elevation-neutral-default);
+        }
+    }
+
+    .description {
+        color: var(--content-neutral-secondary);
+    }
+
+    .separator {
+        background: var(--border-neutral-default);
     }
 }

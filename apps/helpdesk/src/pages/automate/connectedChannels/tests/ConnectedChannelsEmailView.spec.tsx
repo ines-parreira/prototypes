@@ -145,7 +145,6 @@ describe('ConnectedChannelsEmailView', () => {
 
         expect(handleUpsertStoreConfiguration).toHaveBeenCalledWith({
             ...storeConfiguration,
-            trialModeActivatedDatetime: null,
             previewModeActivatedDatetime: null,
             previewModeValidUntilDatetime: null,
             emailChannelDeactivatedDatetime: null,
@@ -181,7 +180,6 @@ describe('ConnectedChannelsEmailView', () => {
         expect(handleUpsertStoreConfiguration).toHaveBeenCalledWith(
             expect.objectContaining({
                 ...storeConfiguration,
-                trialModeActivatedDatetime: null,
                 previewModeActivatedDatetime: null,
                 emailChannelDeactivatedDatetime: expect.any(String),
             }),
@@ -251,7 +249,6 @@ describe('ConnectedChannelsEmailView', () => {
 
         expect(handleUpsertStoreConfiguration).toHaveBeenCalledWith({
             ...storeConfiguration,
-            trialModeActivatedDatetime: null,
             previewModeActivatedDatetime: null,
             previewModeValidUntilDatetime: null,
             emailChannelDeactivatedDatetime: null,
@@ -287,7 +284,6 @@ describe('ConnectedChannelsEmailView', () => {
         expect(handleUpsertStoreConfiguration).toHaveBeenCalledWith(
             expect.objectContaining({
                 ...storeConfiguration,
-                trialModeActivatedDatetime: null,
                 previewModeActivatedDatetime: null,
                 emailChannelDeactivatedDatetime: expect.any(String),
             }),
@@ -343,7 +339,6 @@ describe('ConnectedChannelsEmailView', () => {
 
         expect(handleUpsertStoreConfiguration).toHaveBeenCalledWith(
             expect.objectContaining({
-                trialModeActivatedDatetime: null,
                 emailChannelDeactivatedDatetime: null,
             }),
         )

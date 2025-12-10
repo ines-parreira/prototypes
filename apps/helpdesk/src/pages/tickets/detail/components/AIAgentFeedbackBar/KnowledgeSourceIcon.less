@@ -8,8 +8,8 @@
                 font-size: 14px;
             }
         }
-        background-color: transparent;
-        color: var(--neutral-grey-5);
+        background-color: transparent; // legacy
+        color: var(--neutral-grey-5); // legacy
         padding: var(--layout-spacing-xxs);
         span {
             text-transform: none;
@@ -23,13 +23,25 @@
                 font-size: @caption-regular-font-size;
             }
         }
-        background-color: transparent;
-        color: var(--neutral-grey-5);
+        background-color: transparent; // legacy
+        color: var(--neutral-grey-5); // legacy
         padding: 0;
     }
 
     .imageLogo {
         width: 14px;
         height: 14px;
+    }
+}
+
+.axiom :local {
+    .badge {
+        background-color: transparent;
+        color: var(--content-neutral-secondary);
+    }
+
+    .reasoningBadge {
+        background-color: transparent;
+        color: var(--content-neutral-secondary);
     }
 }

@@ -36,15 +36,42 @@ describe('ChartCard', () => {
             expect(screen.getByText('AI Agent')).toBeInTheDocument()
         })
 
-        it('should render with value and trend', () => {
+        it('should render with value and prevValue', () => {
             render(
-                <ChartCard title="Automation Rate" value="32%" trend={2}>
+                <ChartCard
+                    title="Automation Rate"
+                    value={0.32}
+                    prevValue={0.3}
+                    metricFormat="decimal-to-percent"
+                >
                     <DonutChart data={mockData} />
                 </ChartCard>,
             )
 
             expect(screen.getByText('Automation Rate')).toBeInTheDocument()
             expect(screen.getByText('32%')).toBeInTheDocument()
+        })
+
+        it('should render with string value', () => {
+            render(
+                <ChartCard title="Total Count" value={1234}>
+                    <DonutChart data={mockData} />
+                </ChartCard>,
+            )
+
+            expect(screen.getByText('Total Count')).toBeInTheDocument()
+            expect(screen.getByText('1,234')).toBeInTheDocument()
+        })
+
+        it('should render with numeric value', () => {
+            render(
+                <ChartCard title="Score" value={95}>
+                    <DonutChart data={mockData} />
+                </ChartCard>,
+            )
+
+            expect(screen.getByText('Score')).toBeInTheDocument()
+            expect(screen.getByText('95')).toBeInTheDocument()
         })
 
         it('should render children (chart component)', () => {
@@ -161,13 +188,14 @@ describe('ChartCard', () => {
         })
     })
 
-    describe('trend props', () => {
+    describe('props passed to header', () => {
         it('should pass interpretAs prop to header', () => {
             render(
                 <ChartCard
                     title="My Chart"
+                    value={100}
+                    prevValue={90}
                     interpretAs="more-is-better"
-                    trend={5}
                 >
                     <DonutChart data={mockData} />
                 </ChartCard>,
@@ -178,7 +206,12 @@ describe('ChartCard', () => {
 
         it('should pass metricFormat prop to header', () => {
             render(
-                <ChartCard title="My Chart" metricFormat="decimal" trend={5}>
+                <ChartCard
+                    title="My Chart"
+                    value={95}
+                    prevValue={90}
+                    metricFormat="decimal"
+                >
                     <DonutChart data={mockData} />
                 </ChartCard>,
             )
@@ -188,12 +221,111 @@ describe('ChartCard', () => {
 
         it('should pass currency prop to header', () => {
             render(
-                <ChartCard title="My Chart" currency="USD" trend={5}>
+                <ChartCard
+                    title="My Chart"
+                    value={100}
+                    prevValue={90}
+                    currency="USD"
+                    metricFormat="currency"
+                >
                     <DonutChart data={mockData} />
                 </ChartCard>,
             )
 
             expect(screen.getByText('My Chart')).toBeInTheDocument()
+        })
+
+        it('should pass tooltipData prop to header', () => {
+            render(
+                <ChartCard
+                    title="My Chart"
+                    value={100}
+                    prevValue={90}
+                    tooltipData={{ period: 'Jan 1 - Jan 31' }}
+                >
+                    <DonutChart data={mockData} />
+                </ChartCard>,
+            )
+
+            expect(screen.getByText('My Chart')).toBeInTheDocument()
+        })
+    })
+
+    describe('prop combinations', () => {
+        it('should handle all props together', () => {
+            const mockOnMetricChange = vi.fn()
+            const mockMetrics = [
+                { id: '1', label: 'Metric 1' },
+                { id: '2', label: 'Metric 2' },
+            ]
+            const controls = <button>Toggle View</button>
+
+            render(
+                <ChartCard
+                    title="Complete Chart"
+                    value={150}
+                    prevValue={120}
+                    metricFormat="decimal"
+                    currency="USD"
+                    interpretAs="more-is-better"
+                    metrics={mockMetrics}
+                    onMetricChange={mockOnMetricChange}
+                    chartControls={controls}
+                    tooltipData={{ period: 'Last 7 days' }}
+                >
+                    <DonutChart data={mockData} />
+                </ChartCard>,
+            )
+
+            expect(screen.getByText('Complete Chart')).toBeInTheDocument()
+            expect(screen.getByText('150')).toBeInTheDocument()
+            expect(screen.getByText('Toggle View')).toBeInTheDocument()
+        })
+
+        it('should render with minimal props', () => {
+            render(
+                <ChartCard title="Minimal Chart">
+                    <div>Chart Content</div>
+                </ChartCard>,
+            )
+
+            expect(screen.getByText('Minimal Chart')).toBeInTheDocument()
+            expect(screen.getByText('Chart Content')).toBeInTheDocument()
+        })
+
+        it('should render without value but with prevValue', () => {
+            render(
+                <ChartCard title="My Chart" prevValue={90}>
+                    <DonutChart data={mockData} />
+                </ChartCard>,
+            )
+
+            expect(screen.getByText('My Chart')).toBeInTheDocument()
+        })
+
+        it('should render with interpretAs as neutral (default)', () => {
+            render(
+                <ChartCard title="My Chart" value={100} prevValue={100}>
+                    <DonutChart data={mockData} />
+                </ChartCard>,
+            )
+
+            expect(screen.getByText('My Chart')).toBeInTheDocument()
+        })
+
+        it('should render with interpretAs as less-is-better', () => {
+            render(
+                <ChartCard
+                    title="Response Time"
+                    value={50}
+                    prevValue={60}
+                    interpretAs="less-is-better"
+                >
+                    <DonutChart data={mockData} />
+                </ChartCard>,
+            )
+
+            expect(screen.getByText('Response Time')).toBeInTheDocument()
         })
     })
 })

@@ -9,7 +9,13 @@
 
     .emailAddress {
         .heading-subsection-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         margin-left: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .emailAddress {
+        color: var(--content-neutral-secondary);
     }
 }

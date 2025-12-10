@@ -13,14 +13,17 @@ import {
 import type {
     MetricPerDimensionTrend,
     QueryReturnType,
-    StringWhichShouldBeNumber,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import {
     tagsTicketCountOnCreatedDatetimeQueryFactory,
     tagsTicketCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount'
+import {
+    tagsTicketCountQueryV2Factory,
+    withCreatedDatetimeFilter,
+} from 'domains/reporting/models/scopes/tags'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -66,11 +69,19 @@ export const useTagsTicketCount = (
             ? tagsTicketCountOnCreatedDatetimeQueryFactory
             : tagsTicketCountQueryFactory
 
-    const currentPeriod = useMetricPerDimension<StringWhichShouldBeNumber>(
+    const currentPeriod = useMetricPerDimensionV2(
         queryFactory(statsFilters, timezone, sorting),
+        tagsTicketCountQueryV2Factory({
+            filters: withCreatedDatetimeFilter(
+                statsFilters,
+                tagTicketTimeReference,
+            ),
+            timezone,
+            sortDirection: sorting,
+        }),
     )
 
-    const previousPeriod = useMetricPerDimension<StringWhichShouldBeNumber>(
+    const previousPeriod = useMetricPerDimensionV2(
         queryFactory(
             {
                 ...statsFilters,
@@ -79,6 +90,17 @@ export const useTagsTicketCount = (
             timezone,
             sorting,
         ),
+        tagsTicketCountQueryV2Factory({
+            filters: withCreatedDatetimeFilter(
+                {
+                    ...statsFilters,
+                    period: getPreviousPeriod(statsFilters.period),
+                },
+                tagTicketTimeReference,
+            ),
+            timezone,
+            sortDirection: sorting,
+        }),
     )
 
     return {

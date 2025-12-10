@@ -48,12 +48,12 @@
         }
 
         .headerLeftDescription {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             margin-top: var(--layout-spacing-xs);
             line-height: normal;
 
             &.isErrored {
-                color: var(--feedback-error);
+                color: var(--feedback-error); // legacy
             }
         }
     }
@@ -84,6 +84,22 @@
         margin-top: var(--layout-spacing-xs);
         display: flex;
         justify-content: flex-end;
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
+    }
+}
+
+.axiom :local {
+    .headerLeft {
+        .headerLeftDescription {
+            color: var(--content-neutral-secondary);
+
+            &.isErrored {
+                color: var(--content-error-primary);
+            }
+        }
+    }
+
+    .error {
+        color: var(--content-error-primary);
     }
 }

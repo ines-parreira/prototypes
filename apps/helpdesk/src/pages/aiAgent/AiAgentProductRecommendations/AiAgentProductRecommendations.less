@@ -32,12 +32,12 @@
 
         .title {
             .heading-subsection-semibold();
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
 
         .text {
             .body-regular();
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
@@ -54,5 +54,15 @@
     .card {
         border: 1px solid var(--border-neutral-default);
         background-color: var(--elevation-neutral-default);
+    }
+
+    .description {
+        .title {
+            color: var(--content-neutral-default);
+        }
+
+        .text {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

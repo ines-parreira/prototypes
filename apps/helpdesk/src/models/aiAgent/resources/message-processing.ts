@@ -67,6 +67,7 @@ const mockTicket = (body: CreatePlaygroundBody) => {
         }),
         _action_serialized_state: body._action_serialized_state,
         _playground_options: body._playground_options,
+        _knowledge_override_rules: body._knowledge_override_rules,
     }
 }
 

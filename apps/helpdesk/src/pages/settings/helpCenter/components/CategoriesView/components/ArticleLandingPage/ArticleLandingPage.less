@@ -22,7 +22,7 @@
 
     .backLink {
         cursor: pointer;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         display: flex;
         align-items: center;
         gap: var(--layout-spacing-xxs);
@@ -61,5 +61,11 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         gap: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .backLink {
+        color: var(--content-neutral-secondary);
     }
 }

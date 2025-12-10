@@ -265,7 +265,6 @@ describe('ChannelsStep', () => {
                         helpCenterId: 123,
                         chatChannelDeactivatedDatetime: '2024-01-01',
                         emailChannelDeactivatedDatetime: '2024-01-01',
-                        trialModeActivatedDatetime: '2024-02-01',
                         previewModeActivatedDatetime: '2024-02-01',
                         previewModeValidUntilDatetime: '2024-02-08',
                         monitoredEmailIntegrations: [
@@ -1148,7 +1147,6 @@ describe('ChannelsStep', () => {
                         helpCenterId: 123,
                         chatChannelDeactivatedDatetime: '2024-01-01',
                         emailChannelDeactivatedDatetime: '2024-01-01',
-                        trialModeActivatedDatetime: '2024-02-01',
                         previewModeActivatedDatetime: '2024-02-01',
                         previewModeValidUntilDatetime: '2024-02-08',
                         monitoredEmailIntegrations: [
@@ -1256,7 +1254,6 @@ describe('ChannelsStep', () => {
                         helpCenterId: 123,
                         chatChannelDeactivatedDatetime: '2024-01-01',
                         emailChannelDeactivatedDatetime: '2024-01-01',
-                        trialModeActivatedDatetime: '2024-02-01',
                         previewModeActivatedDatetime: '2024-02-01',
                         previewModeValidUntilDatetime: '2024-02-08',
                         monitoredEmailIntegrations: [

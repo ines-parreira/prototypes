@@ -1,7 +1,7 @@
 :local {
     .container {
         border-radius: var(--xs, 8px);
-        border: 1px solid var(--Border-border-neutral-default, #ebecef);
+        border: 1px solid var(--Border-border-neutral-default, #ebecef); // legacy
         width: 100%;
     }
 
@@ -108,7 +108,7 @@
 
             .fr-box.fr-basic .fr-element,
             .fr-toolbar .fr-command.fr-btn {
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
             }
 
             [data-title='Emoticons'],
@@ -138,7 +138,7 @@
     }
 
     .section:not(:last-child) {
-        border-bottom: 1px solid var(--Border-border-neutral-default, #ebecef);
+        border-bottom: 1px solid var(--Border-border-neutral-default, #ebecef); // legacy
     }
 
     .subjectInput {
@@ -151,12 +151,39 @@
     .footer {
         display: flex;
         gap: var(--layout-spacing-s);
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         justify-content: space-between;
     }
 
     .disabled {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         display: none;
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .section:not(:last-child) {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .froalaEditor {
+        :global {
+            .fr-box.fr-basic .fr-element,
+            .fr-toolbar .fr-command.fr-btn {
+                color: var(--content-neutral-default);
+            }
+        }
+    }
+
+    .footer {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .disabled {
+        color: var(--content-neutral-secondary);
     }
 }

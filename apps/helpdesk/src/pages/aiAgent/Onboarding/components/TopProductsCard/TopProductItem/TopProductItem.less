@@ -18,7 +18,7 @@
                 height: 80px;
                 margin-right: var(--layout-spacing-s);
                 border-radius: 8px;
-                border: 1px solid var(--neutral-grey-0);
+                border: 1px solid var(--neutral-grey-0); // legacy
                 filter: drop-shadow(0px 1px 4px rgba(0, 0, 0, 0.08));
             }
         }
@@ -40,11 +40,25 @@
         }
 
         .subtitle {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
     .marginRight {
         margin-right: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .itemContainer {
+        .infoContainer {
+            & > img {
+                border: 1px solid var(--elevation-neutral-default);
+            }
+        }
+
+        .subtitle {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

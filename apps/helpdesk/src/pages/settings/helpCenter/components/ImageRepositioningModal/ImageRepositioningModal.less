@@ -8,7 +8,7 @@
     .footerWrapper {
         display: flex;
         justify-content: space-between;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
 
         .actionButtonsContainer {
             display: flex;
@@ -27,9 +27,9 @@
         .container {
             position: relative;
             width: 768px;
-            border: 2px dashed var(--neutral-grey-3);
+            border: 2px dashed var(--neutral-grey-3); // legacy
             border-radius: 10px;
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
             height: 169px;
             cursor: row-resize;
         }
@@ -62,5 +62,18 @@
         object-fit: cover;
         border-radius: 10px;
         height: 165px;
+    }
+}
+
+.axiom :local {
+    .footerWrapper {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .modalBody {
+        .container {
+            border: 2px dashed var(--border-neutral-default);
+            background-color: var(--surface-neutral-secondary);
+        }
     }
 }

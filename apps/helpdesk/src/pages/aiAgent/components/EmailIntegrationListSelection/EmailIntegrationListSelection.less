@@ -16,7 +16,7 @@
     }
 
     .used-email {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-variant-numeric: lining-nums tabular-nums;
         font-feature-settings:
             'ss01' on,
@@ -30,7 +30,7 @@
     }
 
     .email-label {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-variant-numeric: lining-nums tabular-nums;
         font-feature-settings:
             'ss01' on,
@@ -52,6 +52,14 @@
 
 .axiom :local {
     .badge-container {
-        background: var(--surface-brand-secondary);
+        background: var(--surface-additional-blue);
+    }
+
+    .used-email {
+        color: var(--content-neutral-secondary);
+    }
+
+    .email-label {
+        color: var(--content-neutral-default);
     }
 }

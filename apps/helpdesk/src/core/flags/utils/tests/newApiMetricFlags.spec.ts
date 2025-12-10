@@ -36,9 +36,11 @@ describe('resolveMetricFlag', () => {
         ).toBe(FeatureFlagKey.ReportingP2MetricMigration)
     })
 
-    it('should return the correct flag for P2 metrics', () => {
+    it('should return the correct flag for non-migrated metrics', () => {
         expect(
-            resolveMetricFlag(METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT),
+            resolveMetricFlag(
+                METRIC_NAMES.CONVERT_CAMPAIGN_ORDER_PERFORMANCE_DRILL_DOWN,
+            ),
         ).toBe(FeatureFlagKey.ReportingUnsortedMetricMigration)
     })
 })

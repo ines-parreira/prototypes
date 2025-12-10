@@ -2,7 +2,7 @@
 
 :local {
     .container {
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         overflow: hidden;
         border-radius: 5px;
         width: 384px;
@@ -38,11 +38,22 @@
 
     .titleBar {
         .heading-section-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         padding: 24px 16px;
         height: 72px;
         text-align: center;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         margin-bottom: 11px;
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--surface-neutral-secondary);
+    }
+
+    .titleBar {
+        color: var(--content-neutral-default);
+        background: var(--elevation-neutral-default);
     }
 }

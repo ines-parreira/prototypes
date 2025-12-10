@@ -19,19 +19,37 @@
         & > span {
             padding: var(--layout-spacing-s);
         }
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .columnTitles {
         .caption-allcaps();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .link {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         &:hover {
-            color: var(--neutral-grey-6);
-            background-color: var(--neutral-grey-1);
+            color: var(--neutral-grey-6); // legacy
+            background-color: var(--neutral-grey-1); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .inlineGrid {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .columnTitles {
+        color: var(--content-neutral-secondary);
+    }
+
+    .link {
+        color: var(--content-neutral-default);
+        &:hover {
+            color: var(--content-neutral-default);
+            background-color: var(--hover-default);
         }
     }
 }

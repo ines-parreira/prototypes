@@ -7,7 +7,7 @@
     }
 
     .title {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         overflow: hidden;
         text-overflow: ellipsis;
         padding-right: var(--layout-spacing-xs);
@@ -22,5 +22,11 @@
         &.regular {
             .body-regular();
         }
+    }
+}
+
+.axiom :local {
+    .title {
+        color: var(--content-neutral-default);
     }
 }

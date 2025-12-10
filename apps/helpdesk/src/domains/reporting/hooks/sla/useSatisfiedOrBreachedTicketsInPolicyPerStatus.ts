@@ -1,10 +1,11 @@
 import {
-    fetchMetricPerDimension,
-    useMetricPerDimension,
+    fetchMetricPerDimensionV2,
+    useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { SatisfiedOrBreachedTicketSLAStatus } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import { satisfiedOrBreachedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/sla/satisfiedOrBreachedTickets'
+import { satisfiedOrBreachedTicketsQueryV2Factory } from 'domains/reporting/models/scopes/ticketSLA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
@@ -15,8 +16,13 @@ export const useSatisfiedOrBreachedTicketsInPolicyPerStatus = (
     sorting?: OrderDirection,
     slaStatus?: SatisfiedOrBreachedTicketSLAStatus,
 ) =>
-    useMetricPerDimension(
+    useMetricPerDimensionV2(
         satisfiedOrBreachedTicketsQueryFactory(statsFilters, timezone, sorting),
+        satisfiedOrBreachedTicketsQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+            sortDirection: sorting,
+        }),
         slaStatus,
     )
 
@@ -26,11 +32,16 @@ export const useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend = (
     sorting?: OrderDirection,
     slaStatus?: SatisfiedOrBreachedTicketSLAStatus,
 ): MetricTrend => {
-    const currentPeriod = useMetricPerDimension(
+    const currentPeriod = useMetricPerDimensionV2(
         satisfiedOrBreachedTicketsQueryFactory(statsFilters, timezone, sorting),
+        satisfiedOrBreachedTicketsQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+            sortDirection: sorting,
+        }),
         slaStatus,
     )
-    const previousPeriod = useMetricPerDimension(
+    const previousPeriod = useMetricPerDimensionV2(
         satisfiedOrBreachedTicketsQueryFactory(
             {
                 ...statsFilters,
@@ -39,6 +50,14 @@ export const useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend = (
             timezone,
             sorting,
         ),
+        satisfiedOrBreachedTicketsQueryV2Factory({
+            filters: {
+                ...statsFilters,
+                period: getPreviousPeriod(statsFilters.period),
+            },
+            timezone,
+            sortDirection: sorting,
+        }),
         slaStatus,
     )
 
@@ -58,11 +77,16 @@ export const fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend = async (
     sorting?: OrderDirection,
     slaStatus?: SatisfiedOrBreachedTicketSLAStatus,
 ): Promise<MetricTrend> => {
-    const currentPeriod = await fetchMetricPerDimension(
+    const currentPeriod = await fetchMetricPerDimensionV2(
         satisfiedOrBreachedTicketsQueryFactory(statsFilters, timezone, sorting),
+        satisfiedOrBreachedTicketsQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+            sortDirection: sorting,
+        }),
         slaStatus,
     )
-    const previousPeriod = await fetchMetricPerDimension(
+    const previousPeriod = await fetchMetricPerDimensionV2(
         satisfiedOrBreachedTicketsQueryFactory(
             {
                 ...statsFilters,
@@ -71,6 +95,14 @@ export const fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend = async (
             timezone,
             sorting,
         ),
+        satisfiedOrBreachedTicketsQueryV2Factory({
+            filters: {
+                ...statsFilters,
+                period: getPreviousPeriod(statsFilters.period),
+            },
+            timezone,
+            sortDirection: sorting,
+        }),
         slaStatus,
     )
 

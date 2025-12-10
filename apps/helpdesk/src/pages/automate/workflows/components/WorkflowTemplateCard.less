@@ -2,7 +2,7 @@
 
 :local {
     .container {
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         padding: var(--layout-spacing-s);
         cursor: pointer;
@@ -23,7 +23,7 @@
     }
 
     .description {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         max-height: 50px;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -45,5 +45,15 @@
         font-size: 12px;
         font-weight: 600;
         line-height: 16px;
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .description {
+        color: var(--content-neutral-default);
     }
 }

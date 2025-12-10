@@ -67,13 +67,13 @@
 
         i {
             font-size: var(--layout-spacing-s);
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
     .articleStatus {
         .component-button-small();
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         cursor: pointer;
     }
 
@@ -82,16 +82,16 @@
         align-items: center;
         gap: var(--layout-spacing-xxs);
         .component-button-small();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         i {
             font-size: var(--layout-spacing-s);
-            color: var(--feedback-success);
+            color: var(--feedback-success); // legacy
         }
     }
 
     .creatingArticle {
         .component-button-small();
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
 
         display: flex;
         flex-direction: row;
@@ -100,6 +100,33 @@
 
     .pagination {
         padding: var(--layout-spacing-m);
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
+    }
+}
+
+.axiom :local {
+    .createdArticleIcon {
+        i {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .articleStatus {
+        color: var(--content-accent-default);
+    }
+
+    .articleStatusWithIcon {
+        color: var(--content-neutral-secondary);
+        i {
+            color: var(--content-positive-default);
+        }
+    }
+
+    .creatingArticle {
+        color: var(--content-neutral-secondary);
+    }
+
+    .pagination {
+        border-top-color: var(--border-neutral-default);
     }
 }

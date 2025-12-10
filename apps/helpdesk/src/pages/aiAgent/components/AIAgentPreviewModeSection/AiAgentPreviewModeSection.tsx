@@ -1,10 +1,8 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
@@ -33,7 +31,6 @@ export const AiAgentPreviewModeSection = ({
     className,
 }: Props) => {
     const { hasAccess } = useAiAgentAccess(storeConfiguration?.storeName)
-    const isTrialModeAvailable = useFlag(FeatureFlagKey.AiAgentTrialMode)
 
     const handleAiAgentTrialModeChange = (value: string) => {
         const date = new Date().toISOString()
@@ -41,7 +38,6 @@ export const AiAgentPreviewModeSection = ({
             case 'enabled':
                 updateValue('chatChannelDeactivatedDatetime', null)
                 updateValue('emailChannelDeactivatedDatetime', null)
-                updateValue('trialModeActivatedDatetime', null)
                 updateValue('previewModeActivatedDatetime', null)
                 break
 
@@ -50,14 +46,12 @@ export const AiAgentPreviewModeSection = ({
                 updateValue('chatChannelDeactivatedDatetime', date)
                 updateValue('emailChannelDeactivatedDatetime', date)
 
-                updateValue('trialModeActivatedDatetime', date)
                 updateValue('previewModeActivatedDatetime', date)
                 break
 
             case 'disabled':
                 updateValue('chatChannelDeactivatedDatetime', date)
                 updateValue('emailChannelDeactivatedDatetime', date)
-                updateValue('trialModeActivatedDatetime', null)
                 updateValue('previewModeActivatedDatetime', null)
                 break
         }
@@ -100,13 +94,10 @@ export const AiAgentPreviewModeSection = ({
 
     const hasAiAgentTrialEnabled = isPreviewModeActivated({
         isPreviewModeActive: storeConfiguration?.isPreviewModeActive,
-        isTrialModeAvailable: isTrialModeAvailable,
         emailChannelDeactivatedDatetime:
             storeConfiguration?.emailChannelDeactivatedDatetime,
         chatChannelDeactivatedDatetime:
             storeConfiguration?.chatChannelDeactivatedDatetime,
-        trialModeActivatedDatetime:
-            storeConfiguration?.trialModeActivatedDatetime,
         previewModeValidUntilDatetime:
             storeConfiguration?.previewModeValidUntilDatetime,
     })

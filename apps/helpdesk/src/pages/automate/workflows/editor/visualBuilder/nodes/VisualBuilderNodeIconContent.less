@@ -9,14 +9,26 @@
         justify-content: center;
         align-items: center;
         gap: 4px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .icon {
         font-size: 16px !important;
 
         &.warning {
-            color: var(--feedback-warning);
+            color: var(--feedback-warning); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-neutral-secondary);
+    }
+
+    .icon {
+        &.warning {
+            color: var(--content-warning-primary);
         }
     }
 }

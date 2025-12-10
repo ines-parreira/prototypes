@@ -1,16 +1,16 @@
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
+import type { Props as ImpactProps } from '../KnowledgeEditorSidePanelSectionImpact'
+import { KnowledgeEditorSidePanelSectionImpact } from '../KnowledgeEditorSidePanelSectionImpact'
 import type { Props as HelpCenterArticleRelatedTicketsProps } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
 import { KnowledgeEditorSidePanelSectionRelatedTickets } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
 import type { Props as HelpCenterArticleDetailsProps } from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleDetails } from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
-import type { Props as HelpCenterArticleImpactProps } from './KnowledgeEditorSidePanelSectionHelpCenterArticleImpact'
-import { KnowledgeEditorSidePanelSectionHelpCenterArticleImpact } from './KnowledgeEditorSidePanelSectionHelpCenterArticleImpact'
 import type { Props as HelpCenterArticleSettingsProps } from './KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleSettings } from './KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
 
 type Props = {
     details: Omit<HelpCenterArticleDetailsProps, 'sectionId'>
-    impact?: Omit<HelpCenterArticleImpactProps, 'sectionId'>
+    impact?: Omit<ImpactProps, 'sectionId'>
     relatedTickets?: Omit<HelpCenterArticleRelatedTicketsProps, 'sectionId'>
     settings: Omit<HelpCenterArticleSettingsProps, 'sectionId'>
 }
@@ -38,7 +38,7 @@ export const KnowledgeEditorSidePanelHelpCenterArticle = ({
             />
 
             {impact && (
-                <KnowledgeEditorSidePanelSectionHelpCenterArticleImpact
+                <KnowledgeEditorSidePanelSectionImpact
                     {...impact}
                     sectionId="impact"
                 />

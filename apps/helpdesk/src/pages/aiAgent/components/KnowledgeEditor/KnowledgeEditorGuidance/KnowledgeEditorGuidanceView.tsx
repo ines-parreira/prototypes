@@ -9,6 +9,7 @@ import type { GuidanceFormFields } from 'pages/aiAgent/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { KnowledgeEditorSidePanelGuidance } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelGuidance'
+import type { Props as ImpactProps } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
 import { KnowledgeEditorTopBar } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBar'
 import type { GuidanceMode } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
 import { KnowledgeEditorTopBarGuidanceControls } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
@@ -55,6 +56,7 @@ type Props = BaseProps & {
     isFullscreen: boolean
     onToggleFullscreen: () => void
     closeHandlerRef: React.MutableRefObject<(() => void) | null>
+    impact?: Omit<ImpactProps, 'sectionId'>
 }
 
 export const KnowledgeEditorGuidanceView = ({
@@ -80,6 +82,7 @@ export const KnowledgeEditorGuidanceView = ({
     onToggleFullscreen,
     onTest,
     closeHandlerRef,
+    impact,
 }: Props) => {
     // Local state ONLY for editing
     const [editTitle, setEditTitle] = useState(titleProp)
@@ -300,6 +303,7 @@ export const KnowledgeEditorGuidanceView = ({
                                 lastUpdatedDatetime,
                                 isUpdating: isGuidanceArticleUpdating,
                             }}
+                            impact={impact}
                         />
                     )}
                 </div>

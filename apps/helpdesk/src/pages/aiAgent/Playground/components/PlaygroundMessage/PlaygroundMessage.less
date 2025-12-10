@@ -22,7 +22,7 @@
             var(--layout-spacing-s);
 
         .messageAvatar {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
         }
 
         .messageHeader {
@@ -33,7 +33,7 @@
         }
 
         .messageSenderCommon {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             .body-semibold();
         }
 
@@ -42,15 +42,15 @@
         }
 
         .shopperTypeSender {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
 
         .aiAgentTypeSender {
-            color: var(--ai-magenta-3);
+            color: var(--ai-magenta-3); // legacy
         }
 
         .aiAgentInternalNoteTypeSender {
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
         }
 
         .messageContentContainer {
@@ -81,18 +81,18 @@
 
         .messageErrorContainer {
             padding: var(--layout-spacing-xs);
-            border: 1px solid var(--feedback-error);
+            border: 1px solid var(--feedback-error); // legacy
             border-radius: 4px;
         }
 
         .errorMessageLink {
-            color: var(--primary);
+            color: var(--primary); // legacy
             cursor: pointer;
         }
 
         .messageTypeIcon {
             margin-left: var(--layout-spacing-xs);
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
 
         .messageContent {
@@ -104,12 +104,12 @@
         }
 
         .aiAgentErrorIcon {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
 
         .avatarIcon {
             margin-right: var(--layout-spacing-xxs);
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
         }
 
         .aiAgentProcessingIcon {
@@ -117,7 +117,7 @@
         }
 
         .aiAgentProcessingIcon {
-            color: var(--ai-magenta-3);
+            color: var(--ai-magenta-3); // legacy
         }
 
         .aiAgentProcessingStatus {
@@ -126,9 +126,62 @@
     }
 
     .internalNoteContainer {
-        background-color: var(--accessory-orange-1);
-        border-left: 5px solid var(--feedback-warning-2);
+        background-color: var(--accessory-orange-1); // legacy
+        border-left: 5px solid var(--feedback-warning-2); // legacy
         padding-left: calc(var(--layout-spacing-m) - 5px);
+    }
+}
+
+.axiom :local {
+    .messageContainer {
+        .messageAvatar {
+            background-color: var(--surface-neutral-tertiary);
+        }
+
+        .messageSenderCommon {
+            color: var(--content-neutral-default);
+        }
+
+        .shopperTypeSender {
+            color: var(--content-neutral-default);
+        }
+
+        .aiAgentTypeSender {
+            color: var(--content-additional-fuchsia);
+        }
+
+        .aiAgentInternalNoteTypeSender {
+            color: var(--content-accent-default);
+        }
+
+        .messageErrorContainer {
+            border: 1px solid var(--border-error-primary);
+        }
+
+        .errorMessageLink {
+            color: var(--content-accent-default);
+        }
+
+        .messageTypeIcon {
+            color: var(--content-neutral-secondary);
+        }
+
+        .aiAgentErrorIcon {
+            color: var(--content-error-primary);
+        }
+
+        .avatarIcon {
+            color: var(--content-accent-default);
+        }
+
+        .aiAgentProcessingIcon {
+            color: var(--content-additional-fuchsia);
+        }
+    }
+
+    .internalNoteContainer {
+        background-color: var(--surface-warning-primary);
+        border-left: 5px solid var(--border-warning-primary);
     }
 }
 

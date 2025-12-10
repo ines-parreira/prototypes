@@ -5,12 +5,24 @@
         border-radius: 3px;
         padding: 0.36rem 0.75rem;
         margin-right: 20px;
-        background: var(--feedback-success-0);
-        border: 1px solid var(--feedback-success-2);
+        background: var(--feedback-success-0); // legacy
+        border: 1px solid var(--feedback-success-2); // legacy
 
         &.primary {
-            background: var(--feedback-success-2);
-            border: 1px solid var(--feedback-success-1);
+            background: var(--feedback-success-2); // legacy
+            border: 1px solid var(--feedback-success-1); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--surface-success-secondary);
+        border: 1px solid var(--border-success-default);
+
+        &.primary {
+            background: var(--surface-success-primary);
+            border: 1px solid var(--border-success-default);
         }
     }
 }

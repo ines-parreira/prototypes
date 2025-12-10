@@ -53,6 +53,7 @@ import { sentMessagesCount } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTickets } from 'domains/reporting/models/scopes/oneTouchTickets'
 import { onlineTime } from 'domains/reporting/models/scopes/onlineTime'
 import { medianResolutionTime } from 'domains/reporting/models/scopes/resolutionTime'
+import { medianResponseTime } from 'domains/reporting/models/scopes/responseTime'
 import { ticketAverageHandleTime } from 'domains/reporting/models/scopes/ticketHandleTime'
 import { closedTicketsCount } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsCount } from 'domains/reporting/models/scopes/ticketsCreated'
@@ -104,6 +105,7 @@ describe('metrics', () => {
             'useMedianResponseTimeMetric',
             useMedianResponseTimeMetric,
             medianResponseTimeQueryFactory,
+            medianResponseTime,
         ],
         [
             'useHumanResponseTimeAfterAiHandoffMetric',
@@ -225,6 +227,12 @@ describe('metrics', () => {
             medianResolutionTime,
         ],
         [
+            'fetchMedianResponseTimeMetric',
+            fetchMedianResponseTimeMetric,
+            medianResponseTimeQueryFactory,
+            medianResponseTime,
+        ],
+        [
             'fetchHumanResponseTimeAfterAiHandoffMetric',
             fetchHumanResponseTimeAfterAiHandoffMetric,
             humanResponseTimeAfterAiHandoffQueryFactory,
@@ -273,11 +281,6 @@ describe('metrics', () => {
             'fetchCustomerSatisfactionMetric',
             fetchCustomerSatisfactionMetric,
             customerSatisfactionQueryFactory,
-        ],
-        [
-            'fetchMedianResponseTimeMetric',
-            fetchMedianResponseTimeMetric,
-            medianResponseTimeQueryFactory,
         ],
         [
             'fetchZeroTouchTicketsMetric',

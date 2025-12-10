@@ -78,7 +78,7 @@ export function useOptionsTree({
                 result.unshift(backButton)
             }
 
-            if (!!selectedValue) {
+            if (selectedValue !== undefined) {
                 const clearButton: ClearButtonOption = {
                     type: OptionEnum.Clear,
                     id: CLEAR_BUTTON_ID,

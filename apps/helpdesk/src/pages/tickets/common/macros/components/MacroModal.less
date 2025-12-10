@@ -34,7 +34,7 @@
             bottom: 0;
             top: 0;
             position: absolute;
-            background: var(--neutral-grey-3);
+            background: var(--neutral-grey-3); // legacy
         }
     }
 
@@ -48,5 +48,12 @@
     .list,
     .footer {
         background: var(--surface-neutral-primary);
+    }
+
+    .list,
+    .primaryAction {
+        &::after {
+            background: var(--border-neutral-default);
+        }
     }
 }

@@ -24,12 +24,12 @@
     .item {
         position: relative;
         padding: 0.25em 24px 0.25em 0.76em;
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
         margin: 0 4px 2px 0;
         cursor: pointer;
         outline: none !important; // prevent outline from focus
 
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
         font-size: 12px;
         white-space: nowrap;
@@ -63,7 +63,7 @@
         width: 100%;
         border-radius: 3px;
         overflow: hidden;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         box-shadow: 0 2px 3px
             hsla(
                 var(--neutral-grey-6-h),
@@ -71,7 +71,7 @@
                 var(--neutral-grey-6-l),
                 0.2
             );
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         padding: 8px;
 
         text-overflow: ellipsis;
@@ -84,21 +84,46 @@
             padding: 8px 8px;
             cursor: pointer;
 
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             font-weight: 500;
             white-space: nowrap;
 
             &.suggestion--focused {
-                background-color: var(--neutral-grey-1);
+                background-color: var(--neutral-grey-1); // legacy
 
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
             }
         }
     }
 
     .emptySuggestions {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 14px;
         padding: 8px;
+    }
+}
+
+.axiom :local {
+    .item {
+        background: var(--elevation-neutral-mid);
+        color: var(--content-neutral-default);
+    }
+
+    .suggestions {
+        background: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+
+        & > .suggestion {
+            color: var(--content-neutral-default);
+
+            &.suggestion--focused {
+                background-color: var(--elevation-neutral-mid);
+                color: var(--content-neutral-default);
+            }
+        }
+    }
+
+    .emptySuggestions {
+        color: var(--content-neutral-secondary);
     }
 }

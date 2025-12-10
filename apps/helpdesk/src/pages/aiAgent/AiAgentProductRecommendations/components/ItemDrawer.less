@@ -20,13 +20,13 @@
     .noItemsFound {
         padding: var(--layout-spacing-s) var(--layout-spacing-m);
         .body-regular();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .items {
         flex-grow: 1;
         overflow-y: auto;
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
 
         .loading {
             height: 100%;
@@ -68,12 +68,12 @@
 
         .itemTitle {
             .body-medium();
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
 
         .itemDescription {
             .caption-regular();
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
 
         .badges {
@@ -84,7 +84,7 @@
 
     .itemHover {
         &:hover {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
             cursor: pointer;
         }
     }
@@ -112,17 +112,35 @@
         border-bottom: 1px solid var(--border-neutral-default);
     }
 
+    .noItemsFound {
+        color: var(--content-neutral-default);
+    }
+
+    .items {
+        border-top: 1px solid var(--border-neutral-default);
+    }
+
     .item {
         &:not(:first-child) {
             border-top: 1px solid var(--border-neutral-default);
         }
 
-        &:hover {
-            background-color: var(--surface-neutral-secondary);
+        .itemTitle {
+            color: var(--content-neutral-default);
+        }
+
+        .itemDescription {
+            color: var(--content-neutral-default);
         }
 
         .itemImagePlaceholder {
             background-color: var(--surface-neutral-primary);
+        }
+    }
+
+    .itemHover {
+        &:hover {
+            background-color: var(--surface-neutral-secondary);
         }
     }
 

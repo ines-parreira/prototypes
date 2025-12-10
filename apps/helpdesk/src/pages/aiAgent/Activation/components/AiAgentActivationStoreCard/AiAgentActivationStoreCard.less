@@ -3,7 +3,7 @@
 :local {
     .storeCard {
         border-radius: 12px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         box-shadow: 0 3px 20px 0 #0000000a;
     }
 
@@ -15,7 +15,7 @@
         }
 
         &:not(:last-child) {
-            border-bottom: 1px solid var(--neutral-grey-3);
+            border-bottom: 1px solid var(--neutral-grey-3); // legacy
         }
     }
 
@@ -37,13 +37,13 @@
     .alertCta {
         font-size: 12px;
         font-weight: 500;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .title {
         font-size: 16px;
         font-weight: 600;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .channelsList {
@@ -74,7 +74,7 @@
     }
 
     .channelCaption {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
 
         a {
             font-weight: 500;
@@ -100,5 +100,29 @@
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-m);
+    }
+}
+
+.axiom :local {
+    .storeCard {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .section {
+        &:not(:last-child) {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
+    }
+
+    .alertCta {
+        color: var(--content-accent-default);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .channelCaption {
+        color: var(--content-neutral-secondary);
     }
 }

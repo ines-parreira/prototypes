@@ -25,6 +25,11 @@ type DonutChartProps = {
     containerWidth?: SizeValue
     data: ChartDataItem[]
     isLoading?: boolean
+    valueFormatter?: (value: number) => string
+    period?: {
+        start_datetime: string
+        end_datetime: string
+    }
 }
 
 const INNER_RADIUS = 60
@@ -60,25 +65,38 @@ export const renderActiveShape = (props: any) => {
     )
 }
 
-export const renderTooltipContent = ({ payload }: any) => {
-    if (!payload?.[0]) return null
-    const data = payload[0].payload
-    return (
-        <DonutChartTooltip
-            name={data.name}
-            value={data.value}
-            color={data.color}
-        />
-    )
-}
+export const renderTooltipContent =
+    (
+        valueFormatter?: (value: number) => string,
+        period?: {
+            start_datetime: string
+            end_datetime: string
+        },
+    ) =>
+    ({ payload }: any) => {
+        if (!payload?.[0]) return null
+        const data = payload[0].payload
+        return (
+            <DonutChartTooltip
+                name={data.name}
+                value={data.value}
+                color={data.color}
+                period={period}
+                valueFormatter={valueFormatter}
+            />
+        )
+    }
 
 export const DonutChart = ({
     containerHeight,
     containerWidth,
     data,
+    period,
     isLoading = false,
+    valueFormatter,
 }: DonutChartProps) => {
     const [hiddenSegments, setHiddenSegments] = useState<Set<string>>(new Set())
+    const [activeIndex, setActiveIndex] = useState<number | null>(null)
     const onPieMouseMove = useTooltipPosition()
 
     const dataWithColors = assignColorsToData(data)
@@ -159,10 +177,8 @@ export const DonutChart = ({
 
     const dataWithPercentages = dataWithColors.map((item) => ({
         ...item,
-        percentage:
-            totalValue > 0 && !hiddenSegments.has(item.name)
-                ? `${Math.round((item.value / totalValue) * 100)}%`
-                : '0%',
+        legendValue: `${((item.value / totalValue) * 100).toFixed(2)}%`,
+        percentage: valueFormatter ? valueFormatter(item.value) : item.value,
     }))
 
     return (
@@ -191,15 +207,31 @@ export const DonutChart = ({
                                 dataKey="value"
                                 cornerRadius={CORNER_RADIUS}
                                 activeShape={renderActiveShape}
+                                onMouseEnter={(_, index) =>
+                                    setActiveIndex(index)
+                                }
+                                onMouseLeave={() => setActiveIndex(null)}
                             >
                                 {visibleData.map((entry, index) => (
                                     <Cell
                                         key={`cell-${index}`}
                                         fill={entry.color}
+                                        opacity={
+                                            activeIndex === null ||
+                                            activeIndex === index
+                                                ? 1
+                                                : 0.3
+                                        }
+                                        stroke="transparent"
                                     />
                                 ))}
                             </Pie>
-                            <Tooltip content={renderTooltipContent} />
+                            <Tooltip
+                                content={renderTooltipContent(
+                                    valueFormatter,
+                                    period,
+                                )}
+                            />
                         </PieChart>
                     </ResponsiveContainer>
                 </Box>

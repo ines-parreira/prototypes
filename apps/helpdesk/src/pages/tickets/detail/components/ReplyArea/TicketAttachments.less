@@ -43,8 +43,8 @@
 
         &:hover,
         &:active {
-            background: var(--neutral-grey-6);
-            color: var(--neutral-grey-0);
+            background: var(--neutral-grey-6); // legacy
+            color: var(--neutral-grey-0); // legacy
         }
     }
 
@@ -54,10 +54,10 @@
         width: 120px;
         height: 80px;
         margin-right: 0.8em;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         background-size: cover;
         border-radius: 3px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
 
         vertical-align: top;
 
@@ -76,7 +76,7 @@
     }
 
     .productImageContainer {
-        border-right: 1px solid var(--neutral-grey-3);
+        border-right: 1px solid var(--neutral-grey-3); // legacy
         display: flex;
         width: 81px;
         height: 80px;
@@ -88,7 +88,7 @@
         position: relative;
         overflow: hidden;
         border-radius: 4px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         vertical-align: top;
 
         .productMeta {
@@ -101,7 +101,7 @@
                 0.9
             );
             opacity: 0;
-            color: var(--neutral-grey-0);
+            color: var(--neutral-grey-0); // legacy
             height: 100%;
             width: 100%;
             padding: 0.8em;
@@ -127,7 +127,7 @@
         display: flex;
         flex-flow: column;
         justify-content: space-between;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
 
         .productName {
             font-size: 10pt;
@@ -141,7 +141,7 @@
         }
 
         .variantName {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             width: 120px;
             font-size: 8pt;
             white-space: nowrap;
@@ -160,7 +160,7 @@
 
         .compareAtPrice {
             text-decoration: line-through;
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
@@ -171,7 +171,7 @@
         padding: 0.8em;
         transition: all 0.3s;
 
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 10px;
 
         @media @mobiles {
@@ -188,7 +188,7 @@
         );
         opacity: 0;
 
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
     }
 
     .metaName {
@@ -207,7 +207,7 @@
         position: relative;
         overflow: hidden;
         border-radius: 4px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         vertical-align: top;
         margin-right: 0.8em;
 
@@ -216,7 +216,7 @@
             height: 80px;
             width: 80px;
             min-width: 80px;
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
 
             i {
                 font-size: 48px;
@@ -231,7 +231,7 @@
             display: flex;
             flex-flow: column;
             justify-content: space-between;
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
 
             p {
                 margin: 0;
@@ -239,7 +239,7 @@
 
             .productRecommendationTitle {
                 .body-medium();
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
                 padding-bottom: var(--layout-spacing-xxs);
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -248,11 +248,11 @@
 
             .productRecommendationDescription {
                 .caption-regular();
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
             }
 
             .productRecommendationCloseIcon {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
 
                 &:hover {
                     cursor: pointer;
@@ -264,7 +264,7 @@
     .contactForm {
         width: fit-content;
         height: 80px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         display: flex;
         flex-direction: row;
@@ -275,14 +275,14 @@
             width: 80px;
             border-top-left-radius: 4px;
             border-bottom-left-radius: 4px;
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
             display: flex;
             align-items: center;
             justify-content: center;
 
             i {
                 font-size: 32px;
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
             }
         }
 
@@ -298,7 +298,7 @@
 
             .contactFormDataContainerBody {
                 .caption-regular();
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
                 text-transform: capitalize;
             }
         }
@@ -316,13 +316,114 @@
 
             i {
                 cursor: pointer;
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
                 padding: 4px;
 
                 &:hover,
                 &:active {
-                    background: var(--neutral-grey-6);
-                    color: var(--neutral-grey-0);
+                    background: var(--neutral-grey-6); // legacy
+                    color: var(--neutral-grey-0); // legacy
+                }
+            }
+        }
+    }
+}
+
+.axiom :local .component {
+    .itemRemove {
+        &:hover,
+        &:active {
+            background: var(--content-neutral-default);
+            color: var(--elevation-neutral-default);
+        }
+    }
+
+    .item {
+        background-color: var(--elevation-neutral-mid);
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .productImageContainer {
+        border-right: 1px solid var(--border-neutral-default);
+    }
+
+    .productCard {
+        border: 1px solid var(--border-neutral-default);
+
+        .productMeta {
+            color: var(--elevation-neutral-default);
+        }
+    }
+
+    .productDetail {
+        background-color: var(--elevation-neutral-default);
+
+        .variantName {
+            color: var(--content-neutral-secondary);
+        }
+
+        .compareAtPrice {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .itemMeta {
+        color: var(--content-neutral-default);
+    }
+
+    .hasPreview .itemMeta {
+        color: var(--elevation-neutral-default);
+    }
+
+    .productRecommendation {
+        border: 1px solid var(--border-neutral-default);
+
+        .productRecommendationImageContainer {
+            background-color: var(--elevation-neutral-mid);
+        }
+
+        .productRecommendationDetail {
+            background-color: var(--elevation-neutral-default);
+
+            .productRecommendationTitle {
+                color: var(--content-neutral-default);
+            }
+
+            .productRecommendationDescription {
+                color: var(--content-neutral-secondary);
+            }
+
+            .productRecommendationCloseIcon {
+                color: var(--content-neutral-secondary);
+            }
+        }
+    }
+
+    .contactForm {
+        border: 1px solid var(--border-neutral-default);
+
+        .contactFormIconContainer {
+            background-color: var(--elevation-neutral-mid);
+
+            i {
+                color: var(--content-neutral-secondary);
+            }
+        }
+
+        .contactFormDataContainer {
+            .contactFormDataContainerBody {
+                color: var(--content-neutral-secondary);
+            }
+        }
+
+        .contactFormDataActionButtons {
+            i {
+                color: var(--content-neutral-secondary);
+
+                &:hover,
+                &:active {
+                    background: var(--content-neutral-default);
+                    color: var(--elevation-neutral-default);
                 }
             }
         }

@@ -13,7 +13,7 @@
 
         span {
             .caption-regular;
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
@@ -26,6 +26,18 @@
     }
 
     .calendarIcon {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
+    }
+}
+
+.axiom :local {
+    .inputWrapper {
+        span {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .calendarIcon {
+        color: var(--content-neutral-default);
     }
 }

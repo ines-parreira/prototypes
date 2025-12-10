@@ -7,7 +7,7 @@
         padding: var(--layout-spacing-s);
         border-radius: var(--layout-spacing-xs);
         border: 1px solid transparent;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         gap: var(--layout-spacing-xxs);
     }
 
@@ -32,5 +32,11 @@
         div {
             width: 100% !important;
         }
+    }
+}
+
+.axiom :local {
+    .card {
+        background: var(--elevation-neutral-default);
     }
 }

@@ -117,7 +117,7 @@
         width: 100%;
         max-width: 156px;
         height: 40px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         border-radius: var(--layout-spacing-s);
         border: 1px solid #080b20;
         font-weight: 500;
@@ -136,11 +136,13 @@
 
 .axiom :local {
     .primaryButton {
-        color: var(--content-inverse-primary);
+        color: var(--content-inverted-default);
         background: var(--surface-additional-blue);
     }
 
     .linkButton {
+        color: var(--content-neutral-default);
+
         &:hover {
             background: var(--surface-neutral-secondary);
             color: var(--content-neutral-default);

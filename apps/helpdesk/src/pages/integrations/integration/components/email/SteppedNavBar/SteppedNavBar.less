@@ -10,13 +10,13 @@
         width: 100%;
         height: 1px;
         position: absolute;
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
         z-index: -1;
     }
 
     .stepContainer {
         padding: 0 var(--layout-spacing-xs);
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
 
         &:nth-child(2) {
             padding-left: 0;
@@ -36,12 +36,29 @@
         font-weight: 500;
 
         &.active {
-            background-color: var(--main-primary-0);
-            color: var(--main-primary-3);
+            background-color: var(--main-primary-0); // legacy
+            color: var(--main-primary-3); // legacy
         }
 
         .number {
             width: 14px;
+        }
+    }
+}
+
+.axiom :local {
+    .line {
+        background-color: var(--border-neutral-default);
+    }
+
+    .stepContainer {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .step {
+        &.active {
+            background-color: var(--surface-accent-default);
+            color: var(--content-accent-default);
         }
     }
 }

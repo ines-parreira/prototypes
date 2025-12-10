@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 
-import { Box, Heading } from '@gorgias/axiom'
+import { Box, Heading, Text } from '@gorgias/axiom'
 
+import { formatMetricValueOrString } from '../../../utils/helpers'
 import { TrendBadge } from '../../TrendBadge/TrendBadge'
 import type { MetricTrendFormat, TrendDirection } from '../types'
 import { ChartMetricSelect } from './ChartMetricSelect'
@@ -15,8 +16,7 @@ type MetricOption = {
 
 type ChartHeaderProps = {
     title: string
-    value?: string | number
-    trend?: number
+    value?: number
     prevValue?: number
     metrics?: MetricOption[]
     metricFormat?: MetricTrendFormat
@@ -24,12 +24,14 @@ type ChartHeaderProps = {
     interpretAs?: TrendDirection
     onMetricChange?: (metric: string) => void
     chartControls?: ReactNode
+    tooltipData?: {
+        period: string
+    }
 }
 
 export const ChartHeader = ({
     title,
     value,
-    trend,
     prevValue,
     metrics,
     metricFormat,
@@ -37,8 +39,12 @@ export const ChartHeader = ({
     interpretAs = 'neutral',
     onMetricChange,
     chartControls,
+    tooltipData,
 }: ChartHeaderProps) => {
     const showMetricsDropdown = metrics && metrics.length > 1 && onMetricChange
+
+    const formatValue = formatMetricValueOrString({ metricFormat, currency })
+    const formattedValue = value !== undefined ? formatValue(value) : undefined
 
     return (
         <Box flexDirection="column" gap="xxxs" className={css.header}>
@@ -55,7 +61,9 @@ export const ChartHeader = ({
                             onMetricChange={onMetricChange}
                         />
                     ) : (
-                        <Heading size="md">{title}</Heading>
+                        <Text size="md" variant="bold">
+                            {title}
+                        </Text>
                     )}
                 </Box>
                 {chartControls && (
@@ -64,18 +72,19 @@ export const ChartHeader = ({
                     </Box>
                 )}
             </Box>
-            {value !== undefined && (
+            {formattedValue !== undefined && (
                 <Box alignItems="center" gap="xxxs">
                     <Heading size="xl" className={css.value}>
-                        {value}
+                        {formattedValue}
                     </Heading>
-                    {trend !== undefined && (
+                    {prevValue !== undefined && (
                         <TrendBadge
-                            value={trend}
-                            prevValue={prevValue ?? 0}
+                            value={value}
+                            prevValue={prevValue}
                             metricFormat={metricFormat}
                             currency={currency}
                             interpretAs={interpretAs}
+                            tooltipData={tooltipData}
                             size="md"
                         />
                     )}

@@ -6,7 +6,7 @@
         align-items: center;
         justify-content: space-between;
         align-self: stretch;
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .input,
@@ -18,11 +18,21 @@
     .closeButton {
         cursor: pointer;
         font-size: 20px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .filters {
         display: flex;
         align-items: center;
+    }
+}
+
+.axiom :local {
+    .container {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .closeButton {
+        color: var(--content-neutral-secondary);
     }
 }

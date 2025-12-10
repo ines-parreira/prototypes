@@ -2,14 +2,14 @@
     .select {
         min-width: 140px;
         border-radius: 4px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         display: flex;
         align-items: center;
         padding: 0 8px;
         gap: 8px;
         cursor: pointer;
         .arrowDown {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             font-size: 20px;
         }
     }
@@ -39,5 +39,14 @@
 
     .modalBody {
         height: 106px;
+    }
+}
+
+.axiom :local {
+    .select {
+        border: 1px solid var(--border-neutral-default);
+        .arrowDown {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

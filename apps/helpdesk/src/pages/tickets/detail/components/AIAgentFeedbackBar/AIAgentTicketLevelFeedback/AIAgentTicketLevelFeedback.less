@@ -23,7 +23,7 @@
             }
 
             .selectInputBoxWithValues {
-                color: var(--neutral-grey-6) !important;
+                color: var(--neutral-grey-6) !important; // legacy
             }
         }
 
@@ -53,13 +53,13 @@
                     display: flex;
                     flex: 1;
                     background-color: var(--neutral-grey-0); // legacy
-                    border-color: var(--neutral-grey-3);
-                    color: var(--neutral-grey-5);
+                    border-color: var(--neutral-grey-3); // legacy
+                    color: var(--neutral-grey-5); // legacy
 
                     &:hover {
                         background-color: var(--neutral-grey-0); // legacy
-                        border-color: var(--neutral-grey-3);
-                        color: var(--neutral-grey-5);
+                        border-color: var(--neutral-grey-3); // legacy
+                        color: var(--neutral-grey-5); // legacy
 
                         box-shadow: 0px 1px 2px 0px rgba(22, 22, 22, 0.16);
                     }
@@ -70,13 +70,13 @@
 
                 .buttonPressed {
                     background-color: var(--main-primary-0); // legacy
-                    border-color: var(--main-primary-1);
-                    color: var(--neutral-grey-6);
+                    border-color: var(--main-primary-1); // legacy
+                    color: var(--neutral-grey-6); // legacy
 
                     &:hover {
                         background-color: var(--main-primary-0); // legacy
-                        border-color: var(--main-primary-1);
-                        color: var(--neutral-grey-6);
+                        border-color: var(--main-primary-1); // legacy
+                        color: var(--neutral-grey-6); // legacy
                     }
                 }
             }
@@ -144,20 +144,32 @@
 }
 
 .axiom :local {
+    .selectInputBoxWithValues {
+        color: var(--content-neutral-default) !important;
+    }
+
     .ratingButtons {
         .ratingButton {
-            background-color: var(--elevation-overlay-default);
+            background-color: var(--elevation-neutral-default);
+            border-color: var(--border-neutral-default);
+            color: var(--content-neutral-secondary);
 
             &:hover {
-                background-color: var(--elevation-overlay-default);
+                background-color: var(--elevation-neutral-default);
+                border-color: var(--border-neutral-default);
+                color: var(--content-neutral-secondary);
             }
         }
 
         .buttonPressed {
-            background-color: var(--elevation-accent-subtle);
+            background-color: var(--surface-accent-subtle);
+            border-color: var(--border-accent-default);
+            color: var(--content-neutral-default);
 
             &:hover {
-                background-color: var(--elevation-accent-subtle);
+                background-color: var(--surface-accent-subtle);
+                border-color: var(--border-accent-default);
+                color: var(--content-neutral-default);
             }
         }
     }

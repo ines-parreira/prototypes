@@ -4,7 +4,7 @@
     .card {
         height: 100%;
         width: 100%;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         border-radius: 8px;
     }
 
@@ -20,5 +20,11 @@
         flex-direction: row;
         flex-wrap: wrap;
         row-gap: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .card {
+        background: var(--elevation-neutral-default);
     }
 }

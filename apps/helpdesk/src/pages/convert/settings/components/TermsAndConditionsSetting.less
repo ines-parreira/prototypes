@@ -1,7 +1,7 @@
 :local {
     .richField {
         &.onError {
-            border-color: var(--feedback-error);
+            border-color: var(--feedback-error); // legacy
         }
     }
 
@@ -20,12 +20,12 @@
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-m);
-        border: 2px solid var(--main-primary);
+        border: 2px solid var(--main-primary); // legacy
         border-radius: 4px;
         padding: 20px;
 
         &.disabled {
-            border: 2px solid var(--neutral-grey-3);
+            border: 2px solid var(--neutral-grey-3); // legacy
         }
     }
 
@@ -38,5 +38,21 @@
     .tabsDisabled {
         pointer-events: none;
         opacity: 0.4;
+    }
+}
+
+.axiom :local {
+    .richField {
+        &.onError {
+            border-color: var(--border-error-primary);
+        }
+    }
+
+    .bodySection {
+        border-color: var(--border-accent-default);
+
+        &.disabled {
+            border-color: var(--border-neutral-default);
+        }
     }
 }

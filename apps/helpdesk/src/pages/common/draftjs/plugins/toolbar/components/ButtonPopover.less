@@ -1,12 +1,19 @@
 :local {
     .popover {
         border-radius: 4px;
-        border: 1px solid var(--neutral-grey-4);
-        background-color: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-4); // legacy
+        background-color: var(--neutral-grey-0); // legacy
         :global {
             .popover {
                 max-width: none;
             }
         }
+    }
+}
+
+.axiom :local {
+    .popover {
+        border: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-default);
     }
 }

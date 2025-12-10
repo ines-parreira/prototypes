@@ -9,7 +9,7 @@
     .integrationRow {
         width: 100%;
         display: flex;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 500;
     }
 
@@ -26,7 +26,7 @@
     .arrowIcon {
         font-size: 15px !important;
         margin-top: 4px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .shopifyLogo {
@@ -35,5 +35,15 @@
         height: 21px;
         pointer-events: none;
         margin-right: 5px;
+    }
+}
+
+.axiom :local {
+    .integrationRow {
+        color: var(--content-neutral-default);
+    }
+
+    .arrowIcon {
+        color: var(--content-neutral-tertiary);
     }
 }

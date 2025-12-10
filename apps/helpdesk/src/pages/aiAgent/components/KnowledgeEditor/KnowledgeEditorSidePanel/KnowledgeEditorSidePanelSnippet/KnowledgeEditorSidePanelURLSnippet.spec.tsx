@@ -19,9 +19,10 @@ describe('KnowledgeEditorSidePanelURLSnippet', () => {
                     url: 'https://www.google.com',
                 }}
                 impact={{
-                    successRate: 0.28,
-                    csat: 3.2,
-                    gmvInfluenced: { value: 1200, currency: 'USD' },
+                    tickets: { value: 150 },
+                    handoverTickets: { value: 42 },
+                    csat: { value: 3.2 },
+                    intents: ['Billing/Payment', 'Shipping/Inquiry'],
                 }}
                 relatedTickets={{
                     tickets: [

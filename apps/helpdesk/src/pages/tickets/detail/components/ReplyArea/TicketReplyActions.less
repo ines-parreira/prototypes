@@ -5,8 +5,8 @@
         flex-direction: row;
         align-items: center;
         padding: 16px;
-        background: var(--neutral-grey-2);
-        border-top: 1px solid var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
+        border-top: 1px solid var(--neutral-grey-2); // legacy
         cursor: pointer;
 
         .title {
@@ -22,12 +22,23 @@
             position: absolute;
             font-size: 20px;
             right: 10px;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
     .scrollable {
         overflow-y: auto;
         max-height: 325px;
+    }
+}
+
+.axiom :local {
+    .actions {
+        background: var(--elevation-neutral-mid);
+        border-top: 1px solid var(--border-neutral-default);
+
+        .collapseIcon {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

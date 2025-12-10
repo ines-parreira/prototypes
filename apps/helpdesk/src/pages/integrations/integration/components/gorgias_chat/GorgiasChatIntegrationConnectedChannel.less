@@ -4,6 +4,12 @@
     }
 
     .connectStoreWarning {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
+    }
+}
+
+.axiom :local {
+    .connectStoreWarning {
+        color: var(--content-warning-primary);
     }
 }

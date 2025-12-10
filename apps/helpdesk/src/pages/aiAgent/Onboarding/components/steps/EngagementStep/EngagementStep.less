@@ -31,14 +31,24 @@
     }
 
     .closeButton {
-        background-color: var(--neutral-grey-1) !important;
+        background-color: var(--neutral-grey-1) !important; // legacy
         border: none;
         box-shadow: none;
 
         &:hover {
-            background-color: var(--neutral-grey-1) !important;
+            background-color: var(--neutral-grey-1) !important; // legacy
             border: none;
             box-shadow: none;
+        }
+    }
+}
+
+.axiom :local {
+    .closeButton {
+        background-color: var(--elevation-neutral-mid) !important;
+
+        &:hover {
+            background-color: var(--elevation-neutral-mid) !important;
         }
     }
 }

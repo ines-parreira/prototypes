@@ -47,6 +47,12 @@
         display: grid;
         grid-template-columns: 1fr 216px;
         gap: var(--layout-spacing-xs);
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .helper {
+        color: var(--content-neutral-secondary);
     }
 }

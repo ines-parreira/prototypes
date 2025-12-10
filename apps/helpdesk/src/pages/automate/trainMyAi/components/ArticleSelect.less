@@ -6,7 +6,7 @@
             cursor: pointer;
         }
         .selectInput > div:only-child {
-            border-color: var(--neutral-grey-3);
+            border-color: var(--neutral-grey-3); // legacy
             box-shadow: none;
         }
     }
@@ -22,8 +22,20 @@
     }
 
     .chevron {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         margin-left: auto;
         font-size: 20px;
+    }
+}
+
+.axiom :local {
+    .container {
+        .selectInput > div:only-child {
+            border-color: var(--border-neutral-default);
+        }
+    }
+
+    .chevron {
+        color: var(--content-neutral-secondary);
     }
 }

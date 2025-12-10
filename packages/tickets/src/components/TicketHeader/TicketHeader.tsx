@@ -5,6 +5,7 @@ import { Breadcrumb, Breadcrumbs } from '@gorgias/axiom'
 import { getCustomerName } from '../../helpers/getCustomerName'
 import { useTicket } from '../../hooks/useTicket'
 import { EditableBreadcrumb } from '../EditableBreadcrumb'
+import { SpamTicket } from '../SpamTicket'
 import { TicketActions } from '../TicketActions/TicketActions'
 import { TeamAssignee, UserAssignee } from '../TicketAssignee'
 import { TicketPriority } from '../TicketPriority'
@@ -51,6 +52,7 @@ export function TicketHeader({ ticketId }: Props) {
                 </Breadcrumbs>
             </div>
             <div className={css.right}>
+                {ticket.spam && <SpamTicket />}
                 <TrashedTicket trashedDatetime={trashed_datetime} />
                 <TicketPriority
                     ticketId={ticketId}

@@ -34,7 +34,7 @@
     .labelDescription {
         .caption-regular();
 
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .settings {
@@ -49,11 +49,21 @@
     }
 
     .error {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         margin-top: var(--layout-spacing-xxs);
     }
 
     .selectUnit {
         width: 160px;
+    }
+}
+
+.axiom :local {
+    .labelDescription {
+        color: var(--content-neutral-secondary);
+    }
+
+    .error {
+        color: var(--content-error-primary);
     }
 }

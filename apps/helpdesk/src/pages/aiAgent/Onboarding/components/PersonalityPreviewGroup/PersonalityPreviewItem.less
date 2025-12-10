@@ -41,7 +41,7 @@
 
     .container {
         display: flex;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         p,
         h3 {
@@ -85,7 +85,20 @@
 
         p,
         h3 {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-neutral-default);
+    }
+
+    .selected {
+        p,
+        h3 {
+            color: var(--content-neutral-default);
         }
     }
 }

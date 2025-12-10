@@ -127,7 +127,6 @@ describe('useTrialAccess', () => {
     const mockBaseStoreConfiguration = getStoreConfigurationFixture({
         storeName: 'Test Store',
         shopType: 'shopify',
-        trialModeActivatedDatetime: null,
         monitoredChatIntegrations: [1, 2],
         sales: undefined, // No sales trial data
     })

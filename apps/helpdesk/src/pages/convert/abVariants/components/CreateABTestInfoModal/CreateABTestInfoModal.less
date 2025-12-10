@@ -1,11 +1,17 @@
 :local {
     .dontShow {
-        color: var(--neutral-grey-5) !important;
+        color: var(--neutral-grey-5) !important; // legacy
         margin-right: auto;
     }
 
     .modalInfoImage {
         width: 100%;
         margin: 0 0 var(--layout-spacing-s) 0;
+    }
+}
+
+.axiom :local {
+    .dontShow {
+        color: var(--content-neutral-secondary) !important;
     }
 }

@@ -90,7 +90,6 @@ export const StoreConfigForm = ({
     faqHelpCenters,
     section,
 }: Props) => {
-    const trialModeAvailable = useFlag(FeatureFlagKey.AiAgentTrialMode)
     const isFollowUpAiAgentPreviewModeEnabled = useFlag(
         FeatureFlagKey.FollowUpAiAgentPreviewMode,
     )
@@ -242,11 +241,8 @@ export const StoreConfigForm = ({
                     formValues?.emailChannelDeactivatedDatetime,
                 chatChannelDeactivatedDatetime:
                     formValues?.chatChannelDeactivatedDatetime,
-                trialModeActivatedDatetime:
-                    formValues?.trialModeActivatedDatetime,
                 previewModeValidUntilDatetime:
                     formValues?.previewModeValidUntilDatetime,
-                isTrialModeAvailable: trialModeAvailable,
             })
 
         if (isTrialMode) {
@@ -261,7 +257,6 @@ export const StoreConfigForm = ({
     }, [
         storeConfiguration,
         formValues,
-        trialModeAvailable,
         isEmailChannelEnabled,
         isChatChannelEnabled,
     ])
@@ -273,7 +268,6 @@ export const StoreConfigForm = ({
             const deactivatedDatetime = new Date().toISOString()
             updateValue('emailChannelDeactivatedDatetime', deactivatedDatetime)
             updateValue('chatChannelDeactivatedDatetime', deactivatedDatetime)
-            updateValue('trialModeActivatedDatetime', null)
             updateValue('previewModeActivatedDatetime', null)
             updateValue('previewModeValidUntilDatetime', null)
 
@@ -282,7 +276,6 @@ export const StoreConfigForm = ({
                     ...storeConfiguration,
                     chatChannelDeactivatedDatetime: deactivatedDatetime,
                     emailChannelDeactivatedDatetime: deactivatedDatetime,
-                    trialModeActivatedDatetime: null,
                     previewModeActivatedDatetime: null,
                     previewModeValidUntilDatetime: null,
                 })
@@ -367,32 +360,16 @@ export const StoreConfigForm = ({
             formValues.emailChannelDeactivatedDatetime === null ||
             formValues.chatChannelDeactivatedDatetime === null
 
-        const isTrialModeActivated = !!formValues.trialModeActivatedDatetime
-        const isTrialModeActive = trialModeAvailable && isTrialModeActivated
-
-        // if user has enabled trial mode, we should not show the modal
-        // if trial mode feature flag is false, and we have trialModeActivatedDatetime in store config -> user was in trial mode and is switching to live
-        // if trial mode is false, and we don't have trialModeActivatedDatetime in store config -> check if user activated ai agent before
-        const isAiAgentDeactivatedWithTrialMode = isTrialModeActive
-            ? false
-            : !!storeConfiguration?.trialModeActivatedDatetime ||
-              isAiAgentDeactivated
-
         return (
-            !hasViewedModal &&
-            isFormPendingActivation &&
-            isAiAgentDeactivatedWithTrialMode
+            !hasViewedModal && isFormPendingActivation && isAiAgentDeactivated
         )
     }, [
         formValues.chatChannelDeactivatedDatetime,
         formValues.emailChannelDeactivatedDatetime,
-        formValues.trialModeActivatedDatetime,
         shopName,
         storeConfiguration?.chatChannelDeactivatedDatetime,
         storeConfiguration?.emailChannelDeactivatedDatetime,
-        storeConfiguration?.trialModeActivatedDatetime,
         ticketModalViewed,
-        trialModeAvailable,
     ])
 
     const {
@@ -479,10 +456,7 @@ export const StoreConfigForm = ({
     useEffect(() => {
         // Used as protection for the case when we disable AI agent feature flag Can be removed after the feature flag is removed
         let isAIAgentDeactivationRequired
-        if (trialModeAvailable) {
-            // If trial mode is available, we don't want to deactivate AI Agent
-            isAIAgentDeactivationRequired = false
-        } else if (isFollowUpAiAgentPreviewModeEnabled) {
+        if (isFollowUpAiAgentPreviewModeEnabled) {
             // if preview mode is on we want to deactivate AI Agent only for users that are not migrated to preview mode
             isAIAgentDeactivationRequired =
                 !formValues.previewModeValidUntilDatetime
@@ -495,18 +469,13 @@ export const StoreConfigForm = ({
     }, [
         aiAgentMode,
         deactivateAiAgent,
-        trialModeAvailable,
-        formValues.trialModeActivatedDatetime,
         formValues.previewModeActivatedDatetime,
         isFollowUpAiAgentPreviewModeEnabled,
         formValues.previewModeValidUntilDatetime,
     ])
 
     const shouldDisablePreviewMode = useMemo(() => {
-        if (
-            formValues.trialModeActivatedDatetime === null &&
-            formValues.previewModeActivatedDatetime === null
-        ) {
+        if (formValues.previewModeActivatedDatetime === null) {
             return false
         }
         if (
@@ -523,7 +492,6 @@ export const StoreConfigForm = ({
 
     useEffect(() => {
         if (shouldDisablePreviewMode) {
-            updateValue('trialModeActivatedDatetime', null)
             updateValue('previewModeActivatedDatetime', null)
             updateValue('previewModeValidUntilDatetime', null)
         }

@@ -19,7 +19,7 @@
 
     .preview {
         flex-grow: 1;
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         padding: var(--layout-spacing-m);
 
         @media (min-width: 1280px) {
@@ -32,5 +32,11 @@
         justify-content: center;
         width: 100%;
         max-width: 684px;
+    }
+}
+
+.axiom :local {
+    .preview {
+        background: var(--surface-neutral-secondary);
     }
 }

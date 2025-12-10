@@ -36,7 +36,7 @@
                 border: none !important;
                 border-radius: 0 !important;
                 box-shadow: none !important;
-                background: var(--navigation-background) !important;
+                background: var(--navigation-background) !important; // legacy
                 // Removed overflow: visible to allow proper scrolling
             }
 
@@ -47,12 +47,12 @@
             }
 
             [class*='App--content'] {
-                background: var(--navigation-background) !important;
+                background: var(--navigation-background) !important; // legacy
             }
 
             [class*='App--container'] {
                 padding: 0 !important;
-                background: var(--navigation-background) !important;
+                background: var(--navigation-background) !important; // legacy
             }
 
             [class*='Toolbar--actions--'] {
@@ -63,6 +63,24 @@
             }
             [class*='Toolbar--rightSection--'] {
                 padding-left: var(--layout-spacing-s) !important;
+            }
+        }
+    }
+}
+
+@supports (selector(:has(*))) {
+    .axiom :global {
+        html body:has([data-ai-opportunities]) {
+            [class*='contentInfobar'] {
+                background: var(--elevation-neutral-bg) !important;
+            }
+
+            [class*='App--content'] {
+                background: var(--elevation-neutral-bg) !important;
+            }
+
+            [class*='App--container'] {
+                background: var(--elevation-neutral-bg) !important;
             }
         }
     }

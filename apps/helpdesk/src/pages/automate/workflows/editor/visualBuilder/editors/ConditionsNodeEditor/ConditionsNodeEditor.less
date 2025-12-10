@@ -28,7 +28,7 @@
         flex-direction: column;
         gap: 8px;
         padding: var(--layout-spacing-m);
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: var(--layout-spacing-xxs);
 
         h4 {
@@ -44,7 +44,7 @@
     .header {
         display: flex;
         align-items: center;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         gap: var(--layout-spacing-xs);
         .title {
             .caption-allcaps();
@@ -96,6 +96,20 @@
     .error {
         .caption-regular();
 
-        color: var(--feedback-error-2);
+        color: var(--feedback-error-2); // legacy
+    }
+}
+
+.axiom :local {
+    .fallback {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .header {
+        color: var(--content-neutral-secondary);
+    }
+
+    .error {
+        color: var(--content-error-primary);
     }
 }

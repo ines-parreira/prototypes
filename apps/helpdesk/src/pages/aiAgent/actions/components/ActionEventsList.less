@@ -24,7 +24,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: var(--neutral-grey-5, #6a6a6a);
+            color: var(--neutral-grey-5, #6a6a6a); // legacy
             & > p:first-child {
                 .body-semibold();
                 width: 100%;
@@ -41,5 +41,13 @@
     }
     .noData {
         height: 100%;
+    }
+}
+
+.axiom :local {
+    .container {
+        .noData {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

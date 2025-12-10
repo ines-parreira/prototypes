@@ -10,17 +10,18 @@
         align-self: stretch;
 
         border-radius: var(--border-radius-xl, 12px);
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
 
         background-image:
             linear-gradient(var(--neutral-grey-0), var(--neutral-grey-0)),
+            // legacy
             linear-gradient(
-                315deg,
-                var(--Purple-purple-500, #a084e1) 20.19%,
-                var(--Fuchsia-fuchsia-300, #fc8ae9) 50%,
-                var(--Orange-orange-500, #ff9a57) 80%
-            );
+                    315deg,
+                    var(--purple-500, #a084e1) 20.19%,
+                    var(--fuchsia-300, #fc8ae9) 50%,
+                    var(--orange-500, #ff9a57) 80%
+                );
         background-origin: border-box;
         background-clip: padding-box, border-box;
         border: 1px solid transparent;
@@ -53,13 +54,13 @@
     }
 
     .title {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 16px;
         font-weight: 600;
     }
 
     .description {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 14px;
         font-weight: 400;
         letter-spacing: -0.14px;
@@ -67,9 +68,9 @@
     }
 
     .primaryActionButton {
-        background-color: var(--neutral-grey-6) !important;
-        color: var(--neutral-grey-0) !important;
-        border-color: var(--neutral-grey-6) !important;
+        background-color: var(--neutral-grey-6) !important; // legacy
+        color: var(--neutral-grey-0) !important; // legacy
+        border-color: var(--neutral-grey-6) !important; // legacy
         height: 24px;
         padding: 0 var(--layout-spacing-xs);
     }
@@ -77,5 +78,36 @@
     .secondaryActionButton {
         height: 24px;
         padding: 0px 12px !important;
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--elevation-neutral-default);
+        background-image:
+            linear-gradient(
+                var(--elevation-neutral-default),
+                var(--elevation-neutral-default)
+            ),
+            linear-gradient(
+                315deg,
+                var(--purple-500, #a084e1) 20.19%,
+                var(--fuchsia-300, #fc8ae9) 50%,
+                var(--orange-500, #ff9a57) 80%
+            );
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .description {
+        color: var(--content-neutral-secondary);
+    }
+
+    .primaryActionButton {
+        background-color: var(--content-neutral-default) !important;
+        color: var(--elevation-neutral-default) !important;
+        border-color: var(--content-neutral-default) !important;
     }
 }

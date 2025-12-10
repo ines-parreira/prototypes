@@ -19,11 +19,18 @@
         margin-right: var(--layout-spacing-xs);
         margin-bottom: var(--layout-spacing-xs);
 
-        background-color: var(--neutral-grey-3);
-        color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-3); // legacy
+        color: var(--neutral-grey-6); // legacy
 
         &:last-child {
             margin-right: 0;
         }
+    }
+}
+
+.axiom :local {
+    .triggerItem {
+        background-color: var(--surface-neutral-tertiary);
+        color: var(--content-neutral-default);
     }
 }

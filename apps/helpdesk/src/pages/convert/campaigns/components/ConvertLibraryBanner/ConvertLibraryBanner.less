@@ -4,7 +4,7 @@
 
 :local {
     .container {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         padding: 24px 88px 0 64px;
         position: sticky;
         bottom: 0;
@@ -36,7 +36,7 @@
 
     .content {
         .body-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-bottom: var(--layout-spacing-l);
         max-width: 480px;
     }
@@ -57,5 +57,15 @@
             max-width: 428px;
             width: 100%;
         }
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .content {
+        color: var(--content-neutral-secondary);
     }
 }

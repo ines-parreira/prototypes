@@ -3,7 +3,7 @@
         display: inline-flex;
         gap: var(--layout-spacing-xxs);
         padding: var(--layout-spacing-xxs);
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         border-radius: var(--layout-spacing-xs);
         width: fit-content;
 
@@ -15,11 +15,25 @@
     .channelButton {
         border: none !important;
         height: 24px !important;
-        background-color: var(--neutral-grey-0) !important;
+        background-color: var(--neutral-grey-0) !important; // legacy
 
         &Active {
             border: none !important;
-            background-color: var(--neutral-grey-2) !important;
+            background-color: var(--neutral-grey-2) !important; // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .channelButton {
+        background-color: var(--elevation-neutral-default) !important;
+
+        &Active {
+            background-color: var(--elevation-neutral-mid) !important;
         }
     }
 }

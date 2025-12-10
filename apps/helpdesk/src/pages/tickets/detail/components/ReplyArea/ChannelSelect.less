@@ -9,8 +9,8 @@
         display: flex;
         align-items: center;
         padding: 0;
-        background: transparent;
-        color: var(--neutral-grey-6);
+        background: transparent; // legacy
+        color: var(--neutral-grey-6); // legacy
         &:after {
             margin-left: 4px;
         }
@@ -19,5 +19,12 @@
     .newChannelIcon {
         width: 17px;
         height: 17px;
+    }
+}
+
+.axiom :local {
+    .dropdownToggle {
+        background: transparent;
+        color: var(--content-neutral-default);
     }
 }

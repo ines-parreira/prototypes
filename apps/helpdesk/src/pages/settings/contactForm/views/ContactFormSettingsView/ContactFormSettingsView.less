@@ -15,7 +15,7 @@
     }
 
     .connectStoreWarning {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
     }
 
     .header {
@@ -26,5 +26,11 @@
     .redDot {
         margin-left: var(--layout-spacing-xs);
         margin-bottom: 1px;
+    }
+}
+
+.axiom :local {
+    .connectStoreWarning {
+        color: var(--content-warning-primary);
     }
 }

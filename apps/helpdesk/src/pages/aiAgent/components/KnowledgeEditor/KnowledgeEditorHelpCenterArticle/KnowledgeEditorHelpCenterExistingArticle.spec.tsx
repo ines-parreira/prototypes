@@ -1,5 +1,5 @@
 import { assumeMock } from '@repo/testing'
-import { useQueryClient } from '@tanstack/react-query'
+import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import {
     act,
     fireEvent,
@@ -12,7 +12,8 @@ import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 
-import useFlag from 'core/flags/hooks/useFlag'
+import { useFlag } from 'core/flags'
+import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import { useNotify } from 'hooks/useNotify'
 import {
     useCreateArticleTranslation,
@@ -29,6 +30,7 @@ import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getA
 import { getCategoriesResponseEnglish } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
 import {
@@ -41,7 +43,7 @@ let onChangeCallback: (value: string) => void = jest.fn()
 jest.mock('hooks/useNotify')
 const useNotifyMock = assumeMock(useNotify)
 
-jest.mock('core/flags/hooks/useFlag')
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('@tanstack/react-query', () => ({
@@ -72,6 +74,8 @@ jest.mock('models/helpCenter/queries', () => ({
     useUpdateArticleTranslation: jest.fn(),
 }))
 
+jest.mock('domains/reporting/models/queryFactories/knowledge/resourceMetrics')
+
 const mockedUseCreateArticleTranslation = jest.mocked(
     useCreateArticleTranslation,
 )
@@ -83,6 +87,7 @@ const mockedUseGetHelpCenterArticle = jest.mocked(useGetHelpCenterArticle)
 const mockedUseUpdateArticleTranslation = jest.mocked(
     useUpdateArticleTranslation,
 )
+const mockedFetchResourceMetrics = jest.mocked(useResourceMetrics)
 
 const helpCenter = {
     ...getHelpCentersResponseFixture.data[0],
@@ -98,43 +103,47 @@ const article = {
     },
 }
 
+const queryClient = mockQueryClient()
+
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
-    <MemoryRouter>
-        <Provider
-            store={mockStore({
-                entities: {
-                    helpCenter: {
-                        helpCenters: {
-                            helpCentersById: {
-                                [helpCenter.id]: helpCenter,
+    <QueryClientProvider client={queryClient}>
+        <MemoryRouter>
+            <Provider
+                store={mockStore({
+                    entities: {
+                        helpCenter: {
+                            helpCenters: {
+                                helpCentersById: {
+                                    [helpCenter.id]: helpCenter,
+                                },
+                            },
+                            articles: {
+                                articlesById: {},
+                            },
+                            categories: {
+                                categoriesById: Object.fromEntries(
+                                    categories.map((category) => [
+                                        category.id,
+                                        category,
+                                    ]),
+                                ),
                             },
                         },
-                        articles: {
-                            articlesById: {},
-                        },
-                        categories: {
-                            categoriesById: Object.fromEntries(
-                                categories.map((category) => [
-                                    category.id,
-                                    category,
-                                ]),
-                            ),
+                    },
+                    ui: {
+                        helpCenter: {
+                            currentId: helpCenter.id,
+                            currentLanguage: 'en-US',
                         },
                     },
-                },
-                ui: {
-                    helpCenter: {
-                        currentId: helpCenter.id,
-                        currentLanguage: 'en-US',
-                    },
-                },
-            })}
-        >
-            <CurrentHelpCenterContext.Provider value={helpCenter}>
-                {children}
-            </CurrentHelpCenterContext.Provider>
-        </Provider>
-    </MemoryRouter>
+                })}
+            >
+                <CurrentHelpCenterContext.Provider value={helpCenter}>
+                    {children}
+                </CurrentHelpCenterContext.Provider>
+            </Provider>
+        </MemoryRouter>
+    </QueryClientProvider>
 )
 
 describe('KnowledgeEditorHelpCenterExistingArticle', () => {
@@ -151,6 +160,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        queryClient.clear()
 
         useNotifyMock.mockReturnValue({ error: notifyMock } as any)
         useFlagMock.mockReturnValue(false)
@@ -189,6 +199,30 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
             mutateAsync: updateArticleTranslationMock,
             isLoading: false,
         } as any)
+
+        mockedFetchResourceMetrics.mockReturnValue({
+            isLoading: false,
+            isError: false,
+            data: {
+                tickets: {
+                    value: 156,
+                    onClick: undefined,
+                },
+                handoverTickets: {
+                    value: 12,
+                    onClick: undefined,
+                },
+                csat: {
+                    value: 4.53,
+                    onClick: undefined,
+                },
+                intents: [
+                    'Order/Status',
+                    'Shipping/Inquiry',
+                    'Product/Question',
+                ],
+            },
+        })
     })
 
     it('renders the read view', async () => {
@@ -1136,5 +1170,92 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
         expect(screen.queryByText('Impact')).not.toBeInTheDocument()
         expect(screen.getByText('Details')).toBeInTheDocument()
         expect(screen.getByText('Settings')).toBeInTheDocument()
+    })
+
+    it('displays resource impact metrics when performance stats flag is enabled', async () => {
+        useFlagMock.mockReturnValue(true)
+
+        render(
+            <Wrapper>
+                <KnowledgeEditorHelpCenterExistingArticle
+                    helpCenter={helpCenter}
+                    supportedLocales={getLocalesResponseFixture}
+                    categories={categories}
+                    onClickPrevious={() => {}}
+                    onClickNext={() => {}}
+                    onClose={onClose}
+                    initialArticleMode={InitialArticleMode.READ}
+                    articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
+                    onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
+                />
+            </Wrapper>,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Impact')).toBeInTheDocument()
+        })
+
+        expect(screen.getByText('Tickets')).toBeInTheDocument()
+        expect(screen.getByText('156')).toBeInTheDocument()
+
+        expect(screen.getByText('Handover tickets')).toBeInTheDocument()
+        expect(screen.getByText('12')).toBeInTheDocument()
+
+        expect(screen.getByText('CSAT')).toBeInTheDocument()
+        expect(screen.getByText('4.53')).toBeInTheDocument()
+
+        expect(screen.getByText('Intents')).toBeInTheDocument()
+        expect(screen.getByText('order/status')).toBeInTheDocument()
+        expect(screen.getByText('shipping/inquiry')).toBeInTheDocument()
+        expect(screen.getByText('product/question')).toBeInTheDocument()
+
+        expect(mockedFetchResourceMetrics).toHaveBeenCalledWith({
+            resourceSourceId: article.id,
+            resourceSourceSetId: helpCenter.id,
+            timezone: 'UTC',
+            enabled: true,
+        })
+    })
+
+    it('displays impact section with loading state when data is not available', async () => {
+        useFlagMock.mockReturnValue(true)
+        mockedFetchResourceMetrics.mockReturnValue({
+            isLoading: true,
+            isError: false,
+            data: undefined,
+        })
+
+        render(
+            <Wrapper>
+                <KnowledgeEditorHelpCenterExistingArticle
+                    helpCenter={helpCenter}
+                    supportedLocales={getLocalesResponseFixture}
+                    categories={categories}
+                    onClickPrevious={() => {}}
+                    onClickNext={() => {}}
+                    onClose={onClose}
+                    initialArticleMode={InitialArticleMode.READ}
+                    articleId={1}
+                    isFullscreen={false}
+                    onToggleFullscreen={() => {}}
+                    onTest={() => {}}
+                    closeHandlerRef={closeHandlerRef}
+                />
+            </Wrapper>,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Impact')).toBeInTheDocument()
+        })
+
+        expect(mockedFetchResourceMetrics).toHaveBeenCalledWith({
+            resourceSourceId: article.id,
+            resourceSourceSetId: helpCenter.id,
+            timezone: 'UTC',
+            enabled: true,
+        })
     })
 })

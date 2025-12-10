@@ -59,7 +59,6 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     emailChannelDeactivatedDatetime: undefined,
     chatChannelDeactivatedDatetime: undefined,
     smsChannelDeactivatedDatetime: undefined,
-    trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
     ticketSampleRate: null,
@@ -167,7 +166,6 @@ export enum WIZARD_BUTTON_ACTIONS {
 }
 
 export const INITIAL_FORM_VALUES = {
-    trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
     emailChannelDeactivatedDatetime: new Date().toISOString(),

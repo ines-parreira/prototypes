@@ -5,7 +5,7 @@
         position: sticky;
         top: 0;
         z-index: 10;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .container {
@@ -16,5 +16,11 @@
     .wizardProgressHeader {
         max-width: 680px;
         margin: var(--layout-spacing-m) auto;
+    }
+}
+
+.axiom :local {
+    .pageHeaderContainer {
+        background-color: var(--elevation-neutral-default);
     }
 }

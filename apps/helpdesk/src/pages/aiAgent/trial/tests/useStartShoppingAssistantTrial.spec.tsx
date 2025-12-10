@@ -112,7 +112,6 @@ describe('useStartShoppingAssistantTrial', () => {
             chatChannelDeactivatedDatetime: null,
             emailChannelDeactivatedDatetime: null,
             previewModeValidUntilDatetime: null,
-            trialModeActivatedDatetime: null,
             previewModeActivatedDatetime: null,
             scopes: [AiAgentScope.Support],
             createdDatetime: '2023-01-01T00:00:00Z',

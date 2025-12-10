@@ -1,7 +1,7 @@
 :local {
     .container {
         padding: var(--layout-spacing-m);
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
 
         ul {
             margin-block-start: 0;
@@ -40,9 +40,9 @@
     }
 
     .instructionIndex {
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
         font-weight: 600;
-        background-color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-6); // legacy
         width: 24px;
         height: 24px;
         border-radius: 100%;
@@ -50,5 +50,16 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .instructionIndex {
+        color: var(--content-inverted-default);
+        background-color: var(--surface-inverted-default);
     }
 }

@@ -27,7 +27,7 @@
     }
 
     .redStar {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 
     .launcherTypes {
@@ -40,8 +40,8 @@
     .launcherPreview {
         height: 120px;
         border-radius: 4px;
-        border: 1px var(--neutral-grey-3) solid;
-        background-color: var(--neutral-grey-2);
+        border: 1px var(--neutral-grey-3) solid; // legacy
+        background-color: var(--neutral-grey-2); // legacy
         display: flex;
         align-items: center;
         justify-content: center;
@@ -123,5 +123,16 @@
         cursor: default;
         vertical-align: middle;
         font-size: 20px;
+    }
+}
+
+.axiom :local {
+    .redStar {
+        color: var(--content-error-primary);
+    }
+
+    .launcherPreview {
+        border: 1px var(--border-neutral-default) solid;
+        background-color: var(--surface-neutral-tertiary);
     }
 }

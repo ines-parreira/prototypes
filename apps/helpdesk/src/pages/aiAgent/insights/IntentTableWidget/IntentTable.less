@@ -14,7 +14,7 @@
     }
 
     .missing {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 
     .skeletonWrapper {
@@ -34,11 +34,11 @@
         align-items: center;
         height: 100%;
         min-height: 400px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
 
         .noDataText {
             .body-semibold();
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
@@ -56,7 +56,7 @@
 
     .clickableCell {
         cursor: pointer;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .intentNameCell {
@@ -78,5 +78,23 @@
 
     .loadingRow {
         margin-left: var(--layout-spacing-l);
+    }
+}
+
+.axiom :local {
+    .missing {
+        color: var(--content-error-primary);
+    }
+
+    .noData {
+        color: var(--content-neutral-secondary);
+
+        .noDataText {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .clickableCell {
+        color: var(--content-accent-default);
     }
 }

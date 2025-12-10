@@ -10,7 +10,7 @@
     }
 
     .info {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         line-height: 24px;
         margin-bottom: 4px;
         font-size: 12px;
@@ -22,5 +22,11 @@
         text-align: left;
         padding: 5px;
         text-overflow: ellipsis;
+    }
+}
+
+.axiom :local {
+    .info {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -9,7 +9,7 @@
 
     .description {
         padding-bottom: var(--layout-spacing-xl);
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .layout {
@@ -19,7 +19,17 @@
 
     .headless {
         text-align: center;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin: var(--layout-spacing-xl) 0;
+    }
+}
+
+.axiom :local {
+    .description {
+        color: var(--content-neutral-secondary);
+    }
+
+    .headless {
+        color: var(--content-neutral-secondary);
     }
 }

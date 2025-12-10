@@ -1,6 +1,6 @@
 :local {
     .icon {
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
         font-size: 28px;
     }
 
@@ -21,13 +21,21 @@
 
     .text {
         text-align: center;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-top: 16px;
     }
 }
 
 .axiom :local {
+    .icon {
+        color: var(--content-neutral-tertiary);
+    }
+
     .circle {
         background-color: var(--surface-neutral-secondary);
+    }
+
+    .text {
+        color: var(--content-neutral-secondary);
     }
 }

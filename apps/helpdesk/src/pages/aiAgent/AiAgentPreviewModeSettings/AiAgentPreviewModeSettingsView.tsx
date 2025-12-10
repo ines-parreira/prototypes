@@ -127,7 +127,6 @@ const AiAgentPreviewModeSettingsView: React.FC<
         const additionalPayload = isToggled
             ? {
                   previewModeActivatedDatetime: currentDate,
-                  trialModeActivatedDatetime: currentDate,
                   deactivatedDatetime: currentDate,
                   chatChannelDeactivatedDatetime: currentDate,
                   emailChannelDeactivatedDatetime: currentDate,
@@ -135,7 +134,6 @@ const AiAgentPreviewModeSettingsView: React.FC<
               }
             : {
                   previewModeActivatedDatetime: null,
-                  trialModeActivatedDatetime: null,
                   previewModeValidUntilDatetime: null,
               }
 

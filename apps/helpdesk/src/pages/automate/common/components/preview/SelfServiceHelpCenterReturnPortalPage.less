@@ -2,8 +2,8 @@
 
 :local {
     .container {
-        background-color: var(--neutral-grey-0);
-        color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-0); // legacy
+        color: var(--neutral-grey-6); // legacy
         overflow: auto;
         pointer-events: initial;
     }
@@ -13,7 +13,7 @@
         flex-direction: column;
         padding: var(--layout-spacing-m) var(--layout-spacing-s);
         gap: var(--layout-spacing-xs);
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .orderNumber {
@@ -22,7 +22,7 @@
 
     .orderDate {
         .heading-subsection-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .returnPortal {
@@ -33,5 +33,20 @@
         align-items: center;
         padding: 90px var(--layout-spacing-m);
         gap: var(--layout-spacing-m);
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--elevation-neutral-default);
+        color: var(--content-neutral-default);
+    }
+
+    .header {
+        border-bottom-color: var(--border-neutral-default);
+    }
+
+    .orderDate {
+        color: var(--content-neutral-secondary);
     }
 }

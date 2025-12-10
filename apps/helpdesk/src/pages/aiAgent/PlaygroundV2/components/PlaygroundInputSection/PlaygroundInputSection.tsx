@@ -45,6 +45,9 @@ import css from './PlaygroundInputSection.less'
 
 const TOOLBAR_CONTAINER_ID = 'froalaToolbarContainer'
 
+const DISABLED_MESSAGE_DRAFT_KNOWLEDGE =
+    'Your draft updates are being synced for testing.'
+
 FroalaEditor.DefineIcon('emoticons', {
     NAME: 'sentiment_satisfied',
     template: 'material_design',
@@ -111,6 +114,7 @@ export const PlaygroundInputSection = ({ withResetButton }: Props) => {
         channelAvailability,
         onChannelChange,
         onChannelAvailabilityChange,
+        isDraftKnowledgeReady,
     } = useCoreContext()
 
     const { onMessageSend, isMessageSending, messages } = useMessagesContext()
@@ -271,7 +275,19 @@ export const PlaygroundInputSection = ({ withResetButton }: Props) => {
         }
     }, [isDisabled, isMessageSending, handleSendMessage])
 
-    const isFormDisabled = isDisabled || isMessageSending
+    const isFormDisabled =
+        isDisabled || isMessageSending || !isDraftKnowledgeReady
+
+    const sendMessageTooltip = useMemo(() => {
+        if (!isDraftKnowledgeReady) {
+            return DISABLED_MESSAGE_DRAFT_KNOWLEDGE
+        }
+        if (isFormDisabled && disabledMessage) {
+            return disabledMessage
+        }
+
+        return null
+    }, [isDraftKnowledgeReady, disabledMessage, isFormDisabled])
 
     const shouldRenderSettingsPanel = useFlag(
         FeatureFlagKey.AiJourneyPlayground,
@@ -359,9 +375,9 @@ export const PlaygroundInputSection = ({ withResetButton }: Props) => {
                         />
                     )}
                     <div id={TOOLBAR_CONTAINER_ID}>
-                        {isFormDisabled && disabledMessage && (
+                        {sendMessageTooltip && (
                             <Tooltip target="send-button">
-                                {disabledMessage}
+                                {sendMessageTooltip}
                             </Tooltip>
                         )}
                         <Button

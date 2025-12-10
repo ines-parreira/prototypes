@@ -30,7 +30,7 @@
         margin-left: 8px;
         font-size: 18px;
         vertical-align: -18%;
-        color: var(--accessory-magenta-25);
+        color: var(--accessory-magenta-25); // legacy
     }
 
     .expanderIcon {
@@ -61,7 +61,7 @@
     }
 
     .expander {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         .body-medium();
         text-align: center;
         background: none;
@@ -75,7 +75,7 @@
 
     .completed {
         border-radius: 12px;
-        background-color: var(--neutral-grey-1, #f9f9f9);
+        background-color: var(--neutral-grey-1, #f9f9f9); // legacy
         padding: 32px 80px;
         display: flex;
         flex-direction: column;
@@ -86,5 +86,19 @@
 
     .completedText {
         .heading-subsection-regular();
+    }
+}
+
+.axiom :local {
+    .titleIcon {
+        color: var(--border-additional-fuchsia);
+    }
+
+    .expander {
+        color: var(--content-accent-default);
+    }
+
+    .completed {
+        background-color: var(--elevation-neutral-mid);
     }
 }

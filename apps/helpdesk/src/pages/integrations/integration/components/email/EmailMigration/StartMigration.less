@@ -4,7 +4,7 @@
         flex-direction: column;
         align-items: center;
         height: 100%;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
     }
 
     .content {
@@ -19,7 +19,7 @@
 
     .description {
         text-align: center;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-bottom: var(--layout-spacing-m);
         margin-top: var(--layout-spacing-xxs);
     }
@@ -28,5 +28,15 @@
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .description {
+        color: var(--content-neutral-secondary);
     }
 }

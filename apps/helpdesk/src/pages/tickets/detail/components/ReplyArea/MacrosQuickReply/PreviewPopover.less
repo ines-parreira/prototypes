@@ -6,8 +6,8 @@
     pointer-events: none;
     border-style: none;
     margin-left: 16px;
-    border: 1px solid var(--neutral-grey-3);
-    background: var(--neutral-grey-0);
+    border: 1px solid var(--neutral-grey-3); // legacy
+    background: var(--neutral-grey-0); // legacy
 
     @media @large-desktops {
         & {
@@ -21,4 +21,9 @@
         flex-direction: row;
         overflow: hidden;
     }
+}
+
+.axiom :local .previewPopover {
+    border: 1px solid var(--border-neutral-default);
+    background: var(--elevation-neutral-default);
 }

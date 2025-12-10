@@ -4,7 +4,7 @@
     .container {
         display: flex;
         flex-direction: column;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         padding: var(--layout-spacing-m) var(--layout-spacing-m) 0
             var(--layout-spacing-m);
         position: sticky;
@@ -13,13 +13,13 @@
 
         .messageContainer {
             display: flex;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             .heading-section-semibold();
             gap: var(--layout-spacing-xs);
             padding-bottom: var(--layout-spacing-m);
 
             i {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
                 font-size: 28px;
             }
         }
@@ -31,19 +31,19 @@
             padding-bottom: var(--layout-spacing-m);
 
             .aiBanner {
-                background-color: var(--accessory-magenta-1, #faeaff);
+                background-color: var(--accessory-magenta-1, #faeaff); // legacy
                 padding: var(--layout-spacing-xs);
                 display: flex;
                 gap: var(--layout-spacing-xs);
                 border-radius: 4px;
 
                 i {
-                    color: var(--accessory-magenta-3, #6f0c86);
+                    color: var(--accessory-magenta-3, #6f0c86); // legacy
                     font-size: 20px;
                 }
 
                 .content {
-                    color: var(--neutral-grey-6);
+                    color: var(--neutral-grey-6); // legacy
                     font-size: 14px;
                     font-weight: 400;
                     line-height: 20px;
@@ -58,26 +58,26 @@
             .customerFeedback {
                 display: flex;
                 .caption-allcaps();
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
 
                 i {
                     padding-inline: var(--layout-spacing-xxs);
                 }
 
                 .helpful {
-                    color: var(--feedback-success-4);
+                    color: var(--feedback-success-4); // legacy
                 }
             }
         }
     }
 
     .feedback {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         min-height: calc(2 * var(--layout-spacing-l));
 
         .question {
             padding-bottom: 12px;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             .body-semibold();
         }
 
@@ -94,10 +94,10 @@
                 display: flex;
                 align-items: center;
                 gap: var(--layout-spacing-xxs);
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
                 .body-regular();
                 i {
-                    color: var(--neutral-grey-5);
+                    color: var(--neutral-grey-5); // legacy
                     padding: var(--layout-spacing-xxs);
                     font-size: 16px;
                     cursor: pointer;
@@ -115,6 +115,64 @@
         margin-top: var(--layout-spacing-m);
         width: 100%;
         height: 1px;
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--elevation-neutral-default);
+
+        .messageContainer {
+            color: var(--content-neutral-default);
+
+            i {
+                color: var(--content-neutral-secondary);
+            }
+        }
+
+        .banner {
+            .aiBanner {
+                background-color: var(--surface-additional-fuchsia);
+
+                i {
+                    color: var(--content-additional-fuchsia);
+                }
+
+                .content {
+                    color: var(--content-neutral-default);
+                }
+            }
+
+            .customerFeedback {
+                color: var(--content-neutral-secondary);
+
+                .helpful {
+                    color: var(--content-success-primary);
+                }
+            }
+        }
+    }
+
+    .feedback {
+        background-color: var(--elevation-neutral-default);
+
+        .question {
+            color: var(--content-neutral-default);
+        }
+
+        .editor {
+            .edit {
+                color: var(--content-neutral-default);
+
+                i {
+                    color: var(--content-neutral-secondary);
+                }
+            }
+        }
+    }
+
+    .divider {
+        background-color: var(--border-neutral-default);
     }
 }

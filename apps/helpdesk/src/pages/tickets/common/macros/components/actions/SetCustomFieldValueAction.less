@@ -7,10 +7,10 @@
         :global .dropdown-toggle {
             font-weight: 500;
             background-color: var(--neutral-grey-2); // legacy
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
 
             i {
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
             }
         }
     }
@@ -24,7 +24,7 @@
         }
 
         &:global(.custom-field-input--dropdown) > span {
-            border: 1px solid var(--neutral-grey-3);
+            border: 1px solid var(--neutral-grey-3); // legacy
             border-radius: 4px;
             display: flex;
             line-height: 30px;
@@ -36,6 +36,17 @@
     .select {
         :global .dropdown-toggle {
             background: var(--surface-neutral-tertiary);
+            color: var(--content-neutral-default);
+
+            i {
+                color: var(--content-neutral-default);
+            }
+        }
+    }
+
+    .input {
+        &:global(.custom-field-input--dropdown) > span {
+            border-color: var(--border-neutral-default);
         }
     }
 }

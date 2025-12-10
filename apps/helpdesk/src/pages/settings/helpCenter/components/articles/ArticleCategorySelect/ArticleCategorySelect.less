@@ -1,13 +1,13 @@
 :local {
     .select {
         & div {
-            color: var(--neutral-grey-6);
-            border-color: var(--neutral-grey-3);
+            color: var(--neutral-grey-6); // legacy
+            border-color: var(--neutral-grey-3); // legacy
         }
 
         &.noCategory {
             & div {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
             }
         }
     }
@@ -22,6 +22,21 @@
 
         &.filteredCategories button:first-child {
             display: none;
+        }
+    }
+}
+
+.axiom :local {
+    .select {
+        & div {
+            color: var(--content-neutral-default);
+            border-color: var(--border-neutral-default);
+        }
+
+        &.noCategory {
+            & div {
+                color: var(--content-neutral-secondary);
+            }
         }
     }
 }

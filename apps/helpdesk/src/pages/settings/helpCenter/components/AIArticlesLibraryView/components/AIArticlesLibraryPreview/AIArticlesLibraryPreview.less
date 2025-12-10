@@ -15,7 +15,7 @@
     }
 
     .title {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         text-transform: uppercase;
         font-size: 11px;
         font-weight: 600;
@@ -29,13 +29,13 @@
     }
 
     .iconEdit {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 20px;
         cursor: pointer;
     }
 
     .descriptionContainer {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         padding: var(--layout-spacing-xl);
         border-radius: var(--layout-spacing-xxs);
 
@@ -46,5 +46,19 @@
 
     .alert {
         min-height: auto;
+    }
+}
+
+.axiom :local {
+    .title {
+        color: var(--content-neutral-secondary);
+    }
+
+    .iconEdit {
+        color: var(--content-neutral-secondary);
+    }
+
+    .descriptionContainer {
+        background-color: var(--elevation-neutral-mid);
     }
 }

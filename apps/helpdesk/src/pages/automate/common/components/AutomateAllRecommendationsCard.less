@@ -26,7 +26,7 @@
         align-items: center;
         height: 108px;
         .heading-subsection-semibold();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .noDataWrapper {
@@ -38,5 +38,11 @@
 
     .dropdownMenu {
         width: 160px;
+    }
+}
+
+.axiom :local {
+    .noRecommendations {
+        color: var(--content-neutral-secondary);
     }
 }

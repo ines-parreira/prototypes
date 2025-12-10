@@ -46,7 +46,6 @@ const createMockStoreConfig = (
     helpCenterId: 456,
     guidanceHelpCenterId: 789,
     snippetHelpCenterId: 101,
-    trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     storeName: 'Test Store',
     shopType: 'test',

@@ -4,9 +4,15 @@
     .container {
         display: flex;
         flex-direction: column;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 12px;
         box-shadow: 1px 1px 8px 0 rgba(22, 22, 22, 0.05);
         padding: 64px 80px;
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
     }
 }

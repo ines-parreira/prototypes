@@ -7,7 +7,7 @@
         flex-direction: column;
         flex: 1;
         margin-bottom: -20px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         border-radius: 16px;
 
         &:not(.isInitialEntry) {
@@ -24,7 +24,7 @@
         pointer-events: initial;
         display: flex;
         flex-direction: column;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         padding: 20px;
     }
 
@@ -60,13 +60,13 @@
     }
 
     .orderTotalPrice {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         margin-left: auto;
     }
 
     .collapseIcon {
         padding: 0 9px;
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
     }
 
     .fulfillment {
@@ -83,7 +83,7 @@
 
     .shipment {
         .body-semibold();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .actions {
@@ -93,7 +93,7 @@
 
     .flowButton {
         &.isHovered {
-            border-color: var(--neutral-grey-3);
+            border-color: var(--neutral-grey-3); // legacy
             box-shadow: 0 1px 2px
                 hsla(
                     var(--neutral-grey-6-h),
@@ -104,7 +104,7 @@
         }
 
         &.isActive {
-            border-color: var(--neutral-grey-4);
+            border-color: var(--neutral-grey-4); // legacy
             box-shadow: inset 0 1px 2px
                 hsla(
                     var(--neutral-grey-6-h),
@@ -142,11 +142,47 @@
     }
 
     .lineItemPrice {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-right: var(--layout-spacing-xxs);
     }
 
     .lineItemQuantity {
         color: #9fa9b9;
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .contentContainer {
+        color: var(--content-neutral-default);
+    }
+
+    .orderTotalPrice {
+        color: var(--content-neutral-default);
+    }
+
+    .collapseIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .shipment {
+        color: var(--content-neutral-secondary);
+    }
+
+    .flowButton {
+        &.isHovered {
+            border-color: var(--border-neutral-default);
+        }
+
+        &.isActive {
+            border-color: var(--content-neutral-secondary);
+        }
+    }
+
+    .lineItemPrice {
+        color: var(--content-neutral-secondary);
     }
 }

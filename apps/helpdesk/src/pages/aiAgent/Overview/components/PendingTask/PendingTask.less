@@ -11,12 +11,12 @@
 
         &:hover:not(.isLoading) {
             .card {
-                border-color: var(--main-primary-1);
-                background-color: var(--main-primary-0);
+                border-color: var(--main-primary-1); // legacy
+                background-color: var(--main-primary-0); // legacy
             }
 
             .pendingTaskType {
-                background-color: var(--accessory-blue-1);
+                background-color: var(--accessory-blue-1); // legacy
             }
         }
 
@@ -33,7 +33,7 @@
         // The style below overrides Card default style because we have divervence in the design
         // we must sync to see if you need to align the styles or not
         border-radius: 8px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         padding: 16px;
         box-shadow: 0px 2px 4px 0px rgba(22, 22, 22, 0) !important;
     }
@@ -66,12 +66,36 @@
         height: @footerHeight;
         width: 100%;
 
-        color: var(--neutral-grey-6);
-        background: var(--neutral-grey-1);
+        color: var(--neutral-grey-6); // legacy
+        background: var(--neutral-grey-1); // legacy
 
         text-align: center;
         transition: ease-in-out 0.2s;
 
         .caption-allcaps();
+    }
+}
+
+.axiom :local {
+    .wrapperA {
+        &:hover:not(.isLoading) {
+            .card {
+                border-color: var(--border-accent-default);
+                background-color: var(--surface-accent-default);
+            }
+
+            .pendingTaskType {
+                background-color: var(--surface-additional-blue);
+            }
+        }
+    }
+
+    .card {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .pendingTaskType {
+        color: var(--content-neutral-default);
+        background: var(--elevation-neutral-mid);
     }
 }

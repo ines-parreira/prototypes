@@ -9,7 +9,17 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         cursor: pointer;
+    }
+}
+
+.axiom :local {
+    .selection {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .placeholder {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -1,6 +1,6 @@
 :local {
     .one-click-installation {
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         border-radius: 4px;
         display: flex;
         align-items: center;
@@ -26,7 +26,7 @@
             margin-left: 18px;
         }
         .disconnected-store {
-            color: var(--feedback-warning);
+            color: var(--feedback-warning); // legacy
             margin-left: 16px;
             font-size: 12px;
         }
@@ -35,6 +35,16 @@
             .disconnect-button {
                 margin-left: 8px;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .one-click-installation {
+        background-color: var(--surface-neutral-tertiary);
+
+        .disconnected-store {
+            color: var(--content-warning-primary);
         }
     }
 }

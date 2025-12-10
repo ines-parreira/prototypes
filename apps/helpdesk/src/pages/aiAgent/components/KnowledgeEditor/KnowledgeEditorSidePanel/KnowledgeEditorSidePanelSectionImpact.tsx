@@ -1,64 +1,96 @@
-import { formatCurrency } from 'domains/reporting/pages/common/utils'
+import { Skeleton, Tag } from '@gorgias/axiom'
 
-import {
-    KnowledgeEditorSidePanelFieldDescription,
-    KnowledgeEditorSidePanelFieldPercentage,
-} from './KnowledgeEditorSidePanelCommonFields'
 import { KnowledgeEditorSidePanelSection } from './KnowledgeEditorSidePanelSection'
 import { KnowledgeEditorSidePanelTwoColumnsContent } from './KnowledgeEditorSidePanelTwoColumnsContent'
 
 import css from './KnowledgeEditorSidePanelSectionImpact.less'
 
+export type MetricProps = {
+    value?: number
+    onClick?: () => void
+}
+
 export type Props = {
-    successRate?: number // 0.0 to 1.0
-    csat?: number
-    gmvInfluenced?: {
-        value: number
-        currency: string
-    }
+    tickets?: MetricProps | null
+    handoverTickets?: MetricProps | null
+    csat?: MetricProps | null
+    intents?: string[] | null
+    isLoading?: boolean
     sectionId: string
 }
 
 export const KnowledgeEditorSidePanelSectionImpact = ({
-    successRate,
+    tickets,
+    handoverTickets,
     csat,
-    gmvInfluenced,
+    intents,
+    isLoading,
     sectionId,
-}: Props) => (
-    <KnowledgeEditorSidePanelSection
-        header={{ title: 'Impact', subtitle: 'Last 28 days' }}
-        sectionId={sectionId}
-    >
-        <div className={css.container}>
-            <KnowledgeEditorSidePanelFieldDescription description="AI Agent performance in tickets where this knowledge was used." />
+}: Props) => {
+    const renderValue = (metric: MetricProps | null | undefined) => {
+        if (isLoading) {
+            return <Skeleton key="loading" width={100} height={20} />
+        }
+        if (!metric || metric.value === undefined) return '-'
+        if (!metric.onClick) return metric.value
 
+        return (
+            <a
+                href="#"
+                className={css.clickableValue}
+                onClick={(e) => {
+                    e.preventDefault()
+                    metric.onClick?.()
+                }}
+            >
+                {metric.value}
+            </a>
+        )
+    }
+
+    return (
+        <KnowledgeEditorSidePanelSection
+            header={{
+                title: 'Impact',
+                subtitle: 'Last 28 days',
+                tooltip:
+                    'Performance in tickets where this knowledge was used by AI Agent.',
+            }}
+            sectionId={sectionId}
+        >
             <KnowledgeEditorSidePanelTwoColumnsContent
                 columns={[
+                    { left: 'Tickets', right: renderValue(tickets) },
                     {
-                        left: 'Success rate',
-                        right: (
-                            <KnowledgeEditorSidePanelFieldPercentage
-                                key="success-rate"
-                                percentage={successRate}
+                        left: 'Handover tickets',
+                        right: renderValue(handoverTickets),
+                    },
+                    { left: 'CSAT', right: renderValue(csat) },
+                    {
+                        left: 'Intents',
+                        right: isLoading ? (
+                            <Skeleton
+                                key="intents-loading"
+                                width={100}
+                                height={20}
                             />
+                        ) : intents && intents.length > 0 ? (
+                            <div key="intents" className={css.intentsContainer}>
+                                {intents.map((intent) => (
+                                    <Tag key={intent}>
+                                        {intent
+                                            .replace(/::/g, '/')
+                                            .toLowerCase()}
+                                    </Tag>
+                                ))}
+                            </div>
+                        ) : (
+                            '-'
                         ),
-                    },
-                    {
-                        left: 'CSAT',
-                        right: csat ? csat : '-',
-                    },
-                    {
-                        left: 'GMV influenced',
-                        right: gmvInfluenced
-                            ? formatCurrency(
-                                  gmvInfluenced.value,
-                                  gmvInfluenced.currency,
-                                  { notation: 'compact' },
-                              )
-                            : '-',
+                        fullWidth: !!(intents && intents.length > 0),
                     },
                 ]}
             />
-        </div>
-    </KnowledgeEditorSidePanelSection>
-)
+        </KnowledgeEditorSidePanelSection>
+    )
+}

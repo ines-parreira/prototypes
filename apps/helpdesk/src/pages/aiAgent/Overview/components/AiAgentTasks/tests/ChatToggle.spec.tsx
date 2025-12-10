@@ -41,7 +41,6 @@ describe('ChatToggle', () => {
     const defaultStoreConfig = {
         monitoredChatIntegrations: [],
         chatChannelDeactivatedDatetime: 'some-date',
-        trialModeActivatedDatetime: null,
         previewModeActivatedDatetime: null,
         storeName: 'test-store',
         shopType: 'shopify',

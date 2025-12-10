@@ -3,7 +3,7 @@
         padding: 24px;
 
         &:not(:last-child) {
-            border-bottom: 1px solid var(--neutral-grey-3);
+            border-bottom: 1px solid var(--neutral-grey-3); // legacy
         }
         &:last-child {
             border-bottom-left-radius: inherit;
@@ -13,11 +13,26 @@
         cursor: pointer;
         transition: 0.2s;
         &:hover {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
         }
 
         &:active {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .provider {
+        &:not(:last-child) {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
+        &:hover {
+            background-color: var(--hover-default);
+        }
+
+        &:active {
+            background-color: var(--surface-neutral-secondary);
         }
     }
 }

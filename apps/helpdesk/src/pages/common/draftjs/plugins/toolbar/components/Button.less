@@ -5,18 +5,18 @@
     }
 
     .button {
-        color: var(--neutral-grey-5) !important;
+        color: var(--neutral-grey-5) !important; // legacy
 
         &.isActive {
-            color: var(--neutral-grey-6) !important;
-            background: var(--neutral-grey-3) !important;
+            color: var(--neutral-grey-6) !important; // legacy
+            background: var(--neutral-grey-3) !important; // legacy
         }
 
         &.isDisabled {
-            color: var(--neutral-grey-3) !important;
+            color: var(--neutral-grey-3) !important; // legacy
 
             &:hover {
-                color: var(--neutral-grey-3) !important;
+                color: var(--neutral-grey-3) !important; // legacy
                 border-color: var(--neutral-grey-3) !important; // legacy
             }
         }
@@ -25,8 +25,18 @@
 
 .axiom :local {
     .button {
+        color: var(--content-neutral-tertiary) !important;
+
+        &.isActive {
+            color: var(--content-neutral-default) !important;
+            background: var(--surface-neutral-primary) !important;
+        }
+
         &.isDisabled {
+            color: var(--border-neutral-default) !important;
+
             &:hover {
+                color: var(--border-neutral-default) !important;
                 border-color: var(--border-neutral-default) !important;
             }
         }

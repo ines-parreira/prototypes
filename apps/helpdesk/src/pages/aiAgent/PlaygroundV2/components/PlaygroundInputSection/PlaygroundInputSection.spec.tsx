@@ -37,6 +37,7 @@ const mockUseCoreContext = jest.fn(() => ({
     isPolling: false,
     startPolling: jest.fn(),
     stopPolling: jest.fn(),
+    isDraftKnowledgeReady: true,
 }))
 
 jest.mock('../../contexts/CoreContext', () => ({
@@ -287,7 +288,11 @@ const renderComponent = (props: any = {}) => {
     }
 
     // Update CoreContext mock with channel overrides
-    if (Object.keys(mappedChannelOverrides).length > 0) {
+    const shouldOverrideContext =
+        Object.keys(mappedChannelOverrides).length > 0 ||
+        props.isDraftKnowledgeReady !== undefined
+
+    if (shouldOverrideContext) {
         mockUseCoreContext.mockReturnValueOnce({
             channel: mappedChannelOverrides.channel || 'email',
             channelAvailability:
@@ -303,6 +308,10 @@ const renderComponent = (props: any = {}) => {
             isPolling: false,
             startPolling: jest.fn(),
             stopPolling: jest.fn(),
+            isDraftKnowledgeReady:
+                props.isDraftKnowledgeReady !== undefined
+                    ? props.isDraftKnowledgeReady
+                    : true,
         } as any)
     }
 
@@ -753,6 +762,84 @@ describe('PlaygroundInputSection', () => {
             expect(
                 screen.queryByText('Predefined Messages'),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Draft knowledge readiness', () => {
+        it('should disable send button when draft knowledge is not ready', () => {
+            renderComponent({
+                isDraftKnowledgeReady: false,
+                isDisabled: false,
+            })
+
+            const sendButton = screen.getByRole('button', {
+                name: 'Send message',
+            })
+            expect(sendButton).toBeDisabled()
+        })
+
+        it('should enable send button when draft knowledge is ready', () => {
+            renderComponent({
+                isDraftKnowledgeReady: true,
+                isDisabled: false,
+            })
+
+            const sendButton = screen.getByRole('button', {
+                name: 'Send message',
+            })
+            expect(sendButton).toBeEnabled()
+        })
+
+        it('should show tooltip when draft knowledge is not ready', () => {
+            renderComponent({
+                isDraftKnowledgeReady: false,
+                isDisabled: false,
+            })
+
+            const tooltip = screen.getByTestId('tooltip-send-button')
+            expect(tooltip).toBeInTheDocument()
+            expect(tooltip).toHaveTextContent(
+                'Your draft updates are being synced for testing.',
+            )
+        })
+
+        it('should prioritize draft knowledge tooltip over disabled message', () => {
+            renderComponent({
+                isDraftKnowledgeReady: false,
+                isDisabled: true,
+                formOverrides: {
+                    disabledMessage: 'Form is invalid',
+                },
+            })
+
+            const tooltip = screen.getByTestId('tooltip-send-button')
+            expect(tooltip).toHaveTextContent(
+                'Your draft updates are being synced for testing.',
+            )
+            expect(tooltip).not.toHaveTextContent('Form is invalid')
+        })
+
+        it('should still send message when draft knowledge is not ready and Cmd+Enter is pressed (keyboard shortcut does not check isDraftKnowledgeReady)', async () => {
+            const onSendMessage = jest.fn()
+            renderComponent({
+                formValues: {
+                    ...defaultProps.formValues,
+                    message: 'Test message',
+                },
+                onSendMessage,
+                isDisabled: false,
+                isMessageSending: false,
+                isDraftKnowledgeReady: false,
+            })
+
+            const editor = screen.getByTestId('playground-editor')
+            editor.focus()
+
+            await act(async () => {
+                await userEvent.keyboard('{Meta>}{Enter}{/Meta}')
+            })
+
+            expect(onSendMessage).toHaveBeenCalled()
         })
     })
 })

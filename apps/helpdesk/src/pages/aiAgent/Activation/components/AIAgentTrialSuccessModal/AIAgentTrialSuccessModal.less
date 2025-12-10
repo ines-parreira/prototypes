@@ -99,19 +99,19 @@
 
         & > i {
             font-size: 32px;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
     .success {
         .icon > i {
-            color: #24d69d;
+            color: #24d69d; // legacy
         }
     }
 
     .badge {
         margin-top: var(--layout-spacing-xs);
-        color: var(--neutral-grey-5) !important;
+        color: var(--neutral-grey-5) !important; // legacy
         text-transform: none !important;
     }
 }
@@ -133,5 +133,19 @@
 
     .icon {
         background-color: var(--elevation-neutral-default);
+
+        & > i {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .success {
+        .icon > i {
+            color: var(--static-success);
+        }
+    }
+
+    .badge {
+        color: var(--content-neutral-secondary) !important;
     }
 }

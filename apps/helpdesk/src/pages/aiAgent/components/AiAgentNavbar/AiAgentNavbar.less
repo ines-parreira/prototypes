@@ -28,7 +28,7 @@
     }
 
     .sectionTrigger {
-        color: var(--neutral-grey-5, #6a6a6a) !important;
+        color: var(--neutral-grey-5, #6a6a6a) !important; // legacy
     }
 
     .stickyPromoCard {
@@ -136,7 +136,19 @@
 
         .navItemCount {
             .body-regular();
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .sectionTrigger {
+        color: var(--content-neutral-secondary) !important;
+    }
+
+    .navItemWithBadge {
+        .navItemCount {
+            color: var(--content-neutral-default);
         }
     }
 }

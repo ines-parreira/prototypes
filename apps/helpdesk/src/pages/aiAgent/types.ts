@@ -36,7 +36,6 @@ export type FormValues = {
     emailChannelDeactivatedDatetime: string | null | undefined
     chatChannelDeactivatedDatetime: string | null | undefined
     smsChannelDeactivatedDatetime: string | null | undefined
-    trialModeActivatedDatetime: string | null
     previewModeActivatedDatetime: string | null
     previewModeValidUntilDatetime: string | null
     ticketSampleRate: number | null

@@ -14,9 +14,9 @@
 
             .actionButton {
                 padding: 2px 8px;
-                background-color: var(--neutral-grey-2);
-                color: var(--neutral-grey-6);
-                border: 1px solid var(--neutral-grey-3);
+                background-color: var(--neutral-grey-2); // legacy
+                color: var(--neutral-grey-6); // legacy
+                border: 1px solid var(--neutral-grey-3); // legacy
                 border-radius: 4px;
             }
         }
@@ -38,12 +38,29 @@
     .repositioning {
         cursor: row-resize;
         margin-bottom: 0.5rem;
-        border: 2px dashed var(--neutral-grey-3);
+        border: 2px dashed var(--neutral-grey-3); // legacy
         border-radius: 10px;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
 
     .helpText {
         width: 100%;
+    }
+}
+
+.axiom :local {
+    .imageContainer {
+        .actionButtonContainer {
+            .actionButton {
+                background-color: var(--surface-neutral-secondary);
+                color: var(--content-neutral-default);
+                border: 1px solid var(--border-neutral-default);
+            }
+        }
+    }
+
+    .repositioning {
+        border: 2px dashed var(--border-neutral-default);
+        background-color: var(--surface-neutral-secondary);
     }
 }

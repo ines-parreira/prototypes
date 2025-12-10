@@ -36,12 +36,12 @@
         height: 32px;
         padding: 8px;
         font-size: 16px;
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         cursor: pointer;
         transition: color 0.2s;
 
         &.disabled {
-            color: var(--neutral-grey-3);
+            color: var(--neutral-grey-3); // legacy
             cursor: default;
         }
     }
@@ -56,6 +56,16 @@
             .cardPhoneNumber {
                 font-weight: 600;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .deleteIcon {
+        color: var(--static-error);
+
+        &.disabled {
+            color: var(--border-neutral-default);
         }
     }
 }

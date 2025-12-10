@@ -21,9 +21,11 @@ type ChartCardProps = {
     metricFormat?: MetricTrendFormat
     onMetricChange?: (metric: string) => void
     title: string
-    value?: string | number
-    trend?: number
+    value?: number
     prevValue?: number
+    tooltipData?: {
+        period: string
+    }
 }
 
 export const ChartCard = ({
@@ -36,15 +38,14 @@ export const ChartCard = ({
     onMetricChange,
     title,
     value,
-    trend,
     prevValue,
+    tooltipData,
 }: ChartCardProps) => {
     return (
         <Card flex={1} p="lg" className={css.cardContainer}>
             <ChartHeader
                 title={title}
                 value={value}
-                trend={trend}
                 prevValue={prevValue}
                 metrics={metrics}
                 metricFormat={metricFormat}
@@ -52,6 +53,7 @@ export const ChartCard = ({
                 interpretAs={interpretAs}
                 onMetricChange={onMetricChange}
                 chartControls={chartControls}
+                tooltipData={tooltipData}
             />
             {children}
         </Card>

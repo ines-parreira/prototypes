@@ -69,7 +69,7 @@
     }
 
     .icon {
-        color: var(--feedback-success-3);
+        color: var(--feedback-success-3); // legacy
         margin-right: var(--layout-spacing-xs);
         font-size: 24px !important;
     }
@@ -98,5 +98,11 @@
     .roiButton {
         margin-top: var(--layout-spacing-xs);
         padding: 0 var(--layout-spacing-xxs) !important;
+    }
+}
+
+.axiom :local {
+    .icon {
+        color: var(--content-success-primary);
     }
 }

@@ -7,7 +7,7 @@
 
         .deleteButtonDisabled:not(:disabled) {
             cursor: not-allowed;
-            color: var(--neutral-grey-3);
+            color: var(--neutral-grey-3); // legacy
         }
     }
 
@@ -26,5 +26,13 @@
 
     .helpIcon {
         display: inline-block;
+    }
+}
+
+.axiom :local {
+    .condition {
+        .deleteButtonDisabled:not(:disabled) {
+            color: var(--border-neutral-default);
+        }
     }
 }

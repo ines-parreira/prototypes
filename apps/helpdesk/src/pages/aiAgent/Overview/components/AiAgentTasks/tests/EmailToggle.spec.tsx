@@ -20,7 +20,6 @@ describe('EmailToggle', () => {
     const defaultStoreConfig = {
         monitoredEmailIntegrations: [],
         emailChannelDeactivatedDatetime: 'some-date',
-        trialModeActivatedDatetime: null,
         previewModeActivatedDatetime: null,
         storeName: 'test-store',
         shopType: 'shopify',

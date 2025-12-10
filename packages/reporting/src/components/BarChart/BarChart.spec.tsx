@@ -102,18 +102,21 @@ describe('BarChart', () => {
 
     describe('renderBarTooltipContent', () => {
         it('should return null when payload is empty', () => {
-            const result = renderBarTooltipContent({ payload: [] })
+            const tooltipRenderer = renderBarTooltipContent()
+            const result = tooltipRenderer({ payload: [] })
 
             expect(result).toBeNull()
         })
 
         it('should return null when payload is undefined', () => {
-            const result = renderBarTooltipContent({ payload: undefined })
+            const tooltipRenderer = renderBarTooltipContent()
+            const result = tooltipRenderer({ payload: undefined })
 
             expect(result).toBeNull()
         })
 
         it('should render BarChartTooltip when payload has data', () => {
+            const tooltipRenderer = renderBarTooltipContent()
             const payload = [
                 {
                     payload: {
@@ -124,12 +127,53 @@ describe('BarChart', () => {
                 },
             ]
 
-            const result = renderBarTooltipContent({ payload })
+            const result = tooltipRenderer({ payload })
 
             expect(result).toBeTruthy()
             expect(result?.props.name).toBe('Support')
             expect(result?.props.value).toBe(1800)
             expect(result?.props.color).toBe('#A084E1')
+        })
+
+        it('should use valueFormatter when provided', () => {
+            const valueFormatter = (value: number) => `$${value}`
+            const tooltipRenderer = renderBarTooltipContent(valueFormatter)
+            const payload = [
+                {
+                    payload: {
+                        name: 'Support',
+                        value: 1800,
+                        color: '#A084E1',
+                    },
+                },
+            ]
+
+            const result = tooltipRenderer({ payload })
+
+            expect(result).toBeTruthy()
+            expect(result?.props.valueFormatter).toBe(valueFormatter)
+        })
+
+        it('should include period when provided', () => {
+            const period = {
+                start_datetime: '2024-01-01',
+                end_datetime: '2024-01-31',
+            }
+            const tooltipRenderer = renderBarTooltipContent(undefined, period)
+            const payload = [
+                {
+                    payload: {
+                        name: 'Support',
+                        value: 1800,
+                        color: '#A084E1',
+                    },
+                },
+            ]
+
+            const result = tooltipRenderer({ payload })
+
+            expect(result).toBeTruthy()
+            expect(result?.props.period).toEqual(period)
         })
     })
 })

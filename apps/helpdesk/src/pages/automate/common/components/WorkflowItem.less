@@ -6,13 +6,23 @@
     }
 
     .icon {
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
         cursor: grab;
         font-size: 20px;
     }
 
     .warningIcon {
         font-size: 16px;
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
+    }
+}
+
+.axiom :local {
+    .icon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .warningIcon {
+        color: var(--content-warning-primary);
     }
 }

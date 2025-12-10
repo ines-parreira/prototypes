@@ -17,7 +17,7 @@
         .testModeCell {
             & div {
                 & span {
-                    color: var(--neutral-grey-5) !important;
+                    color: var(--neutral-grey-5) !important; // legacy
                     .caption-regular();
                 }
             }
@@ -25,7 +25,7 @@
 
         .flowChevron {
             font-size: 24px;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 }
@@ -34,6 +34,18 @@
     .container {
         &.isSelected {
             background: var(--surface-neutral-secondary);
+        }
+
+        .testModeCell {
+            & div {
+                & span {
+                    color: var(--content-neutral-secondary) !important;
+                }
+            }
+        }
+
+        .flowChevron {
+            color: var(--content-neutral-default);
         }
     }
 }

@@ -15,12 +15,18 @@
 
     .helpIcon {
         font-size: 16px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         margin-left: var(--layout-spacing-xxs);
     }
 
     .settings {
         display: grid;
         gap: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .helpIcon {
+        color: var(--content-neutral-secondary);
     }
 }

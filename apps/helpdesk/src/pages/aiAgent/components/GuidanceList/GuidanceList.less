@@ -2,7 +2,7 @@
 
 :local {
     .deleteButton {
-        color: var(--feedback-error) !important;
+        color: var(--feedback-error) !important; // legacy
     }
 
     .itemTitle {
@@ -14,7 +14,7 @@
     }
 
     .titleCell {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .spinner {
@@ -35,7 +35,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-top: var(--layout-spacing-l);
     }
 
@@ -51,5 +51,19 @@
 
     .emptyTableBody {
         border-bottom: 2px solid #fff;
+    }
+}
+
+.axiom :local {
+    .deleteButton {
+        color: var(--content-error-primary) !important;
+    }
+
+    .titleCell {
+        color: var(--content-neutral-secondary);
+    }
+
+    .noResultsContainer {
+        color: var(--content-neutral-secondary);
     }
 }

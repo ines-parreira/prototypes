@@ -10,10 +10,8 @@ import {
     fetchTrendFromMultipleMetricsTrend,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import {
-    fetchMetricTrend,
-    type MetricTrend,
-} from 'domains/reporting/hooks/useMetricTrend'
+import { fetchMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { aiAgentAutomatedInteractionsQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
 import { aiAgentAutomatedInteractionsQueryV2Factory } from 'domains/reporting/models/scopes/automatedInteractions'

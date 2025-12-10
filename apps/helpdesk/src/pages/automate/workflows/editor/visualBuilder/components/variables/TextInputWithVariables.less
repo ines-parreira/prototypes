@@ -17,8 +17,8 @@
         justify-content: center;
         align-items: center;
         gap: 4px;
-        background-color: var(--neutral-grey-2);
-        color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-2); // legacy
+        color: var(--neutral-grey-6); // legacy
         cursor: pointer;
         height: 30px;
         border-radius: 0 4px 4px 0;
@@ -33,7 +33,7 @@
         flex: 1;
         min-width: 0;
         height: 30px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         border-radius: 4px 0 0 4px;
         padding: 2px 8px;
 
@@ -43,7 +43,7 @@
             }
 
             .public-DraftEditorPlaceholder-root {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
             }
 
             .public-DraftEditorPlaceholder-inner {
@@ -79,7 +79,28 @@
     .error {
         .caption-regular();
 
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         margin-top: 4px;
+    }
+}
+
+.axiom :local {
+    .button {
+        background-color: var(--elevation-neutral-mid);
+        color: var(--content-neutral-default);
+    }
+
+    .editor {
+        background-color: var(--elevation-neutral-default);
+
+        :global {
+            .public-DraftEditorPlaceholder-root {
+                color: var(--content-neutral-secondary);
+            }
+        }
+    }
+
+    .error {
+        color: var(--content-error-primary);
     }
 }

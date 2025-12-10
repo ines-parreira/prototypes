@@ -15,7 +15,13 @@
 
     .caption {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-top: var(--layout-spacing-xxs);
+    }
+}
+
+.axiom :local {
+    .caption {
+        color: var(--content-neutral-secondary);
     }
 }

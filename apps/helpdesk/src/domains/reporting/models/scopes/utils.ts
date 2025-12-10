@@ -247,6 +247,20 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                     }
                 }
                 break
+            case 'slaPolicyUuid':
+                if (
+                    statFilters.slaPolicies &&
+                    hasFilter(statFilters.slaPolicies)
+                ) {
+                    filters.push(
+                        createStandardFilter(
+                            'slaPolicyUuid',
+                            statFilters.slaPolicies.operator,
+                            statFilters.slaPolicies.values,
+                        ),
+                    )
+                }
+                break
             case 'teamId':
                 if (statFilters.teams && hasFilter(statFilters.teams)) {
                     filters.push(
@@ -273,6 +287,36 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                             ),
                         ],
                     })
+                }
+                break
+
+            case 'resourceSourceId':
+                if (
+                    statFilters.resourceSourceId &&
+                    hasFilter(statFilters.resourceSourceId)
+                ) {
+                    filters.push(
+                        createStandardFilter(
+                            'resourceSourceId',
+                            statFilters.resourceSourceId.operator,
+                            statFilters.resourceSourceId.values,
+                        ),
+                    )
+                }
+                break
+
+            case 'resourceSourceSetId':
+                if (
+                    statFilters.resourceSourceSetId &&
+                    hasFilter(statFilters.resourceSourceSetId)
+                ) {
+                    filters.push(
+                        createStandardFilter(
+                            'resourceSourceSetId',
+                            statFilters.resourceSourceSetId.operator,
+                            statFilters.resourceSourceSetId.values,
+                        ),
+                    )
                 }
                 break
         }

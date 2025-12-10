@@ -8,14 +8,24 @@
         display: flex;
         align-items: center;
         gap: var(--layout-spacing-xxs);
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
 
         &.active {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
 
         i {
             font-size: 20px;
+        }
+    }
+}
+
+.axiom :local {
+    .option {
+        color: var(--content-neutral-secondary);
+
+        &.active {
+            color: var(--content-neutral-default);
         }
     }
 }

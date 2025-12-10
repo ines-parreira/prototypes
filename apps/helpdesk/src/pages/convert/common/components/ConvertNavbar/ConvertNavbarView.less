@@ -5,7 +5,7 @@
         .skeletonTitle {
             height: 26px;
             width: 100%;
-            background-color: var(--navigation-selected);
+            background-color: var(--navigation-selected); // legacy
             border-radius: 4px;
             :global {
                 animation: animate-pulse 2s infinite;
@@ -21,11 +21,25 @@
             margin-bottom: 8px;
             height: 22px;
             width: 100%;
-            background-color: var(--navigation-selected);
+            background-color: var(--navigation-selected); // legacy
             border-radius: 4px;
             :global {
                 animation: animate-pulse 2s infinite;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .skeleton {
+        .skeletonTitle {
+            background-color: var(--surface-accent-default);
+        }
+    }
+
+    .subSkeleton {
+        .skeletonItem {
+            background-color: var(--surface-accent-default);
         }
     }
 }

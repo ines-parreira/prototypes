@@ -1,15 +1,28 @@
 :local {
     .previewField {
         min-height: 35px;
-        border: 1px solid var(--neutral-grey-3);
-        background-color: var(--neutral-grey-1);
+        border: 1px solid var(--neutral-grey-3); // legacy
+        background-color: var(--neutral-grey-1); // legacy
         border-radius: 4px;
         padding: 6px 8px;
 
         :global {
             .public-DraftEditor-content {
                 min-height: inherit;
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .previewField {
+        border: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-mid);
+
+        :global {
+            .public-DraftEditor-content {
+                color: var(--content-neutral-secondary);
             }
         }
     }

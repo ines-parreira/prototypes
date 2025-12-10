@@ -36,7 +36,6 @@ const dummyStoreActivation: StoreActivation = {
         emailChannelDeactivatedDatetime: null,
         chatChannelDeactivatedDatetime: null,
         smsChannelDeactivatedDatetime: null,
-        trialModeActivatedDatetime: null,
         previewModeActivatedDatetime: null,
         previewModeValidUntilDatetime: null,
         isPreviewModeActive: false,

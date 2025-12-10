@@ -8,6 +8,14 @@ export type CreatePlaygroundMessage = {
     meta?: Record<string, string>
 }
 
+export type KnowledgeOverrideRule = {
+    name: string
+    knowledge: {
+        sourceId: number
+        sourceSetId: number
+    }[]
+}
+
 export type CreatePlaygroundOptions = {
     shopName: string
     customToneOfVoice?: string
@@ -28,6 +36,7 @@ export type CreatePlaygroundBody = {
     channel: PlaygroundChannels
     meta?: Record<string, string>
     _playground_options: CreatePlaygroundOptions
+    _knowledge_override_rules?: KnowledgeOverrideRule[]
     // Property for AI Agent to identify actions
     _action_serialized_state?: unknown
     channel_integration_id?: number

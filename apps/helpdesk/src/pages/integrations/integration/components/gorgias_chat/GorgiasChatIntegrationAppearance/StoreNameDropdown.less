@@ -6,35 +6,35 @@
     }
     .wrapper > .dropdown > button {
         width: 100%;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         display: flex;
         align-items: center;
         justify-content: space-between;
         font-weight: 400;
         &:hover {
             box-shadow: none;
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
         }
         &:focus,
         &:active {
-            background-color: var(--neutral-grey-0) !important;
+            background-color: var(--neutral-grey-0) !important; // legacy
             box-shadow: 0 0 0 0.2rem
                 hsla(
                     var(--main-primary-h),
                     var(--main-primary-s),
                     var(--main-primary-l),
                     0.1
-                ) !important;
-            border: 1px solid var(--main-primary-1) !important;
+                ) !important; // legacy
+            border: 1px solid var(--main-primary-1) !important; // legacy
             border-radius: 3px !important;
         }
         &::after {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
     .hasError {
-        border: 1px solid var(--feedback-error);
+        border: 1px solid var(--feedback-error); // legacy
     }
 
     .dropdownMenu {
@@ -49,28 +49,69 @@
         font-weight: 600;
     }
     .dropdownValue {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         display: flex;
         align-items: center;
     }
     .dropdownPlaceholder {
         display: flex;
         align-items: center;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
     .dropdownInfo {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 12px;
         font-weight: 400;
         margin-left: auto;
     }
     .dropdownDisconnectedInfo {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
         margin-left: 9.65px;
     }
     .dropdownLogo {
         height: 16px;
         width: 16px;
         margin-right: 8px;
+    }
+}
+
+.axiom :local {
+    .wrapper > .dropdown > button {
+        background-color: var(--elevation-neutral-default);
+
+        &:hover {
+            background-color: var(--elevation-neutral-default);
+        }
+
+        &:focus,
+        &:active {
+            background-color: var(--elevation-neutral-default) !important;
+            box-shadow: 0 0 0 0.2rem var(--border-accent-secondary) !important;
+            border: 1px solid var(--border-accent-default) !important;
+        }
+
+        &::after {
+            color: var(--content-neutral-tertiary);
+        }
+    }
+
+    .hasError {
+        border: 1px solid var(--border-error-default);
+    }
+
+    .dropdownValue {
+        color: var(--content-neutral-default);
+    }
+
+    .dropdownPlaceholder {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .dropdownInfo {
+        color: var(--content-neutral-secondary);
+    }
+
+    .dropdownDisconnectedInfo {
+        color: var(--content-warning-primary);
     }
 }

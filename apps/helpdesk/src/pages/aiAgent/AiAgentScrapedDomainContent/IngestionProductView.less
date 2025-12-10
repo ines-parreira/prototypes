@@ -8,7 +8,7 @@
     }
 
     .collapsibleWebPagesTitle {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 500;
     }
 
@@ -19,10 +19,20 @@
 
     .webPageItem {
         margin-top: var(--layout-spacing-xs);
-        border-bottom: 1px solid var(--neutral-grey-4);
+        border-bottom: 1px solid var(--neutral-grey-4); // legacy
 
         &:last-child {
             border-bottom: none;
         }
+    }
+}
+
+.axiom :local {
+    .collapsibleWebPagesTitle {
+        color: var(--content-neutral-default);
+    }
+
+    .webPageItem {
+        border-bottom: 1px solid var(--border-neutral-default);
     }
 }

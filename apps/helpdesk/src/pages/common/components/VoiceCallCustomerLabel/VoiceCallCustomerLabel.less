@@ -6,6 +6,12 @@
     }
 
     .interactable {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
+    }
+}
+
+.axiom :local {
+    .interactable {
+        color: var(--content-accent-default);
     }
 }

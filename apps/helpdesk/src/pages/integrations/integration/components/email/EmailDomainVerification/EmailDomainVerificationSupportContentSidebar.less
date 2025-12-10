@@ -2,7 +2,7 @@
 
 :local {
     .sidebar {
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
     }
 
     .container {
@@ -24,5 +24,11 @@
             gap: var(--layout-spacing-xs);
             list-style: none;
         }
+    }
+}
+
+.axiom :local {
+    .sidebar {
+        background: var(--surface-neutral-secondary);
     }
 }

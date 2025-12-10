@@ -4,7 +4,7 @@
             width: 80%;
             padding: var(--layout-spacing-s) var(--layout-spacing-xs);
 
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
 
         .nameCell {
@@ -16,11 +16,23 @@
         }
 
         .headerCellTitle {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
 
         .loader {
             padding: 0 var(--layout-spacing-m);
+        }
+    }
+}
+
+.axiom :local {
+    .campaignsTable {
+        .anchor {
+            color: var(--content-neutral-default);
+        }
+
+        .headerCellTitle {
+            color: var(--content-neutral-secondary);
         }
     }
 }

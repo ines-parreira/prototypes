@@ -3,7 +3,7 @@
         top: 50%;
         transform: translateY(-50%) !important;
         max-width: 600px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .select-option {
@@ -17,32 +17,32 @@
     }
 
     .select-default {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .select-connected-chats {
         margin-left: auto;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .connected-store {
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         padding: 8px;
         display: flex;
         align-items: center;
     }
 
     .disconnect-button {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         cursor: pointer;
 
         &:hover {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
     .store-name {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: bold;
     }
 
@@ -74,5 +74,35 @@
         :global(.dropdown-item)
         > span:first-child {
         width: 100%;
+    }
+}
+
+.axiom :local {
+    .modal-centered {
+        color: var(--content-neutral-default);
+    }
+
+    .select-default {
+        color: var(--content-neutral-secondary);
+    }
+
+    .select-connected-chats {
+        color: var(--content-neutral-secondary);
+    }
+
+    .connected-store {
+        background: var(--elevation-neutral-mid);
+    }
+
+    .disconnect-button {
+        color: var(--content-neutral-secondary);
+
+        &:hover {
+            color: var(--static-error);
+        }
+    }
+
+    .store-name {
+        color: var(--content-neutral-default);
     }
 }

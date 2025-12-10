@@ -13,7 +13,7 @@
     }
 
     .helpContainer {
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         box-sizing: border-box;
         border-radius: 4px;
         padding: 16px;
@@ -38,7 +38,7 @@
         width: 33px;
         margin-top: -4px;
 
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         font-size: 16px;
 
         cursor: pointer;
@@ -52,5 +52,15 @@
 
     .infoIcon {
         font-weight: bold;
+    }
+}
+
+.axiom :local {
+    .helpContainer {
+        border-color: var(--border-neutral-default);
+    }
+
+    .deleteDomain {
+        color: var(--content-error-primary);
     }
 }

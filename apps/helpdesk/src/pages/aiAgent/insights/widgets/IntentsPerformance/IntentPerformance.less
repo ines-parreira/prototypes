@@ -2,7 +2,7 @@
 
 :local {
     .noDataTip {
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         border-radius: 4px;
         padding: var(--layout-spacing-s);
         display: flex;
@@ -23,5 +23,11 @@
     .intentPerformanceBigNumberMetric {
         display: flex;
         flex-wrap: wrap;
+    }
+}
+
+.axiom :local {
+    .noDataTip {
+        background: var(--elevation-neutral-mid);
     }
 }

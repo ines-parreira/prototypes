@@ -20,11 +20,17 @@
     }
 
     .createLoopReturnsItem {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .createLoopReturnsItemIcon {
         font-size: 20px;
         margin-right: 7px;
+    }
+}
+
+.axiom :local {
+    .createLoopReturnsItem {
+        color: var(--content-accent-default);
     }
 }

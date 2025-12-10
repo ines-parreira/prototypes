@@ -44,7 +44,18 @@
 
             .fr-box.fr-basic .fr-element,
             .fr-toolbar .fr-command.fr-btn {
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .editor {
+        :global {
+            .fr-box.fr-basic .fr-element,
+            .fr-toolbar .fr-command.fr-btn {
+                color: var(--content-neutral-default);
             }
         }
     }

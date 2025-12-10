@@ -3,7 +3,7 @@
 :local {
     .container {
         .heading-subsection-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -14,5 +14,11 @@
 
     .icon {
         margin-right: var(--layout-spacing-xxs);
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-neutral-default);
     }
 }

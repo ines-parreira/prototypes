@@ -1,12 +1,12 @@
 :local {
     .container {
-        background-color: var(--feedback-success-0);
+        background-color: var(--feedback-success-0); // legacy
         border-radius: 4px;
         display: flex;
         align-items: center;
         padding: var(--layout-spacing-xxs) var(--layout-spacing-xs)
             var(--layout-spacing-xxs) var(--layout-spacing-xxs);
-        color: #25d366;
+        color: #25d366; // WhatsApp brand color
         gap: var(--layout-spacing-xxs);
     }
 
@@ -16,5 +16,11 @@
 
     .logo {
         width: 16px;
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--surface-success-secondary);
     }
 }

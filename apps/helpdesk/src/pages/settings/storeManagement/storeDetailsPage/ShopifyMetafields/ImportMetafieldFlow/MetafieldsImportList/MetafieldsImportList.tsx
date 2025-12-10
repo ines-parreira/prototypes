@@ -151,7 +151,10 @@ export default function MetafieldsImportList({
         },
     })
 
-    const handleFiltersChange = useMetafieldsFiltersHandler({ table })
+    const handleFiltersChange = useMetafieldsFiltersHandler({
+        table,
+        filterColumns: ['type'],
+    })
 
     return (
         <div>
@@ -214,10 +217,12 @@ export default function MetafieldsImportList({
                         table={table}
                     />
                 </TableRoot>
-                <TableToolbar
-                    table={table}
-                    bottomRow={{ right: ['pagination'] }}
-                />
+                <div className={styles.toolbarWrapper}>
+                    <TableToolbar
+                        table={table}
+                        bottomRow={{ right: ['pagination'] }}
+                    />
+                </div>
             </div>
             <Box gap="xs" justifyContent="flex-end" p="sm">
                 <Button variant="secondary" onClick={onBack}>

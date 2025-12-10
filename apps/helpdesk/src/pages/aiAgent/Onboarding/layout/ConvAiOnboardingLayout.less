@@ -9,7 +9,7 @@
     .onboardingLayout {
         width: 100vw;
         overflow-y: auto;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
 
         @media @tablets-up {
             display: flex;
@@ -25,7 +25,7 @@
         padding: var(--layout-spacing-s) 0;
         width: 100%;
         top: 0;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         padding: var(--layout-spacing-s) var(--layout-spacing-m);
 
         @media @tablets-up {
@@ -103,6 +103,7 @@
                 linear-gradient(
                     166deg,
                     var(--neutral-grey-2) 30.85%,
+                    // legacy
                     var(--accessory-magenta-25) 145.54%
                 )
             );
@@ -144,7 +145,7 @@
     }
 
     .caption {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         width: 67%;
         text-align: center;
@@ -219,10 +220,41 @@
     .logo {
         height: 26px;
         width: 100px;
-        background-color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-6); // legacy
         -webkit-mask-image: url('@gorgias/branding-assets/logos/extended/Black.svg');
         mask-image: url('@gorgias/branding-assets/logos/extended/Black.svg');
         mask-repeat: no-repeat;
         mask-size: cover;
+    }
+}
+
+.axiom :local {
+    .onboardingLayout {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .onboardingHeader {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .onboardingPreviewContainer {
+        @media @tablets-up {
+            background: var(
+                --linear-grey-magenta,
+                linear-gradient(
+                    166deg,
+                    var(--elevation-neutral-mid) 30.85%,
+                    var(--accessory-magenta-25) 145.54%
+                )
+            );
+        }
+    }
+
+    .caption {
+        color: var(--content-neutral-default);
+    }
+
+    .logo {
+        background-color: var(--content-neutral-default);
     }
 }

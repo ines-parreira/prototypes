@@ -1,14 +1,12 @@
+import colors from '@gorgias/axiom/tokens/colors/semantic/light.json'
+
 import type { ChartDataItem } from '../types'
 
 export const CHART_COLORS = [
-    '#A084E1',
-    '#BDA9EA',
-    '#D0C2F0',
-    '#E3DAF6',
-    '#8B6FD9',
-    '#9881E0',
-    '#C4B3ED',
-    '#F0EBF9',
+    colors['heat-8'].$value,
+    colors['heat-6'].$value,
+    colors['heat-4'].$value,
+    colors['heat-2'].$value,
 ] as const
 
 export type ChartDataItemWithColor = ChartDataItem & { color: string }

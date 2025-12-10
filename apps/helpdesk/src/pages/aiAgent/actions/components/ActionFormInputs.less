@@ -11,9 +11,15 @@
     .footer {
         .caption-regular();
 
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         display: grid;
         grid-template-columns: 110px 160px 1fr 64px;
         gap: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .footer {
+        color: var(--content-neutral-secondary);
     }
 }

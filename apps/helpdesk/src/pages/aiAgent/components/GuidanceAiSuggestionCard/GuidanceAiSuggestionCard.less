@@ -7,8 +7,8 @@
     }
 
     .tag {
-        background-color: var(--accessory-magenta-1);
-        color: var(--accessory-magenta-3);
+        background-color: var(--accessory-magenta-1); // legacy
+        color: var(--accessory-magenta-3); // legacy
         padding: var(--layout-spacing-xxs) var(--layout-spacing-xs);
         border-radius: var(--layout-spacing-xxs);
     }
@@ -17,5 +17,12 @@
         font-size: 16px !important;
         margin-top: 0 !important;
         display: flex;
+    }
+}
+
+.axiom :local {
+    .tag {
+        background-color: var(--surface-additional-fuchsia);
+        color: var(--content-additional-purple);
     }
 }

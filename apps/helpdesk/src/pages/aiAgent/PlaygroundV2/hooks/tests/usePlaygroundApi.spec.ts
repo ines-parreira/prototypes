@@ -8,6 +8,7 @@ import {
 } from 'pages/aiAgent/constants'
 import { playgroundCustomerMessage } from 'pages/aiAgent/fixtures/playgroundMessages.fixture'
 
+import { useCoreContext } from '../../contexts/CoreContext'
 import { getTicketCustomer } from '../../utils/playground-ticket.util'
 import { usePlaygroundApi } from '../usePlaygroundApi'
 
@@ -24,9 +25,14 @@ jest.mock('utils/errors', () => ({
     reportError: jest.fn(),
 }))
 
+jest.mock('../../contexts/CoreContext', () => ({
+    useCoreContext: jest.fn(),
+}))
+
 const mockSubmitPlaygroundTicket = jest.fn()
 const mockedUseSubmitPlaygroundTicket = jest.mocked(useSubmitPlaygroundTicket)
 const mockedGetTicketCustomer = jest.mocked(getTicketCustomer)
+const mockedUseCoreContext = jest.mocked(useCoreContext)
 
 let abortControllerMock = jest.fn()
 
@@ -52,6 +58,10 @@ describe('usePlaygroundApi', () => {
         })
 
         mockedGetTicketCustomer.mockResolvedValue(PLAYGROUND_CUSTOMER_MOCK)
+
+        mockedUseCoreContext.mockReturnValue({
+            draftKnowledge: undefined,
+        } as any)
 
         // Mock AbortController
         global.AbortController = jest.fn().mockImplementation(() => ({
@@ -233,6 +243,71 @@ describe('usePlaygroundApi', () => {
         expect(mockSubmitPlaygroundTicket).toHaveBeenCalledWith([
             expect.objectContaining({
                 _action_serialized_state: 'updated_state_value',
+            }),
+            '',
+            expect.any(Object),
+        ])
+    })
+
+    it('should include empty _knowledge_override_rules when draftKnowledge is undefined', async () => {
+        mockedUseCoreContext.mockReturnValue({
+            draftKnowledge: undefined,
+        } as any)
+
+        const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+        await result.current.submitMessage({
+            messages: [playgroundCustomerMessage],
+            customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            channel: 'email',
+            storeData: { storeName: 'Test Store' } as StoreConfiguration,
+            testSessionId: '',
+            createTestSession: jest.fn(),
+        })
+
+        expect(mockSubmitPlaygroundTicket).toHaveBeenCalledWith([
+            expect.objectContaining({
+                _knowledge_override_rules: [],
+            }),
+            '',
+            expect.any(Object),
+        ])
+    })
+
+    it('should include _knowledge_override_rules when draftKnowledge is provided', async () => {
+        const draftKnowledge = {
+            sourceId: 123,
+            sourceSetId: 456,
+        }
+
+        mockedUseCoreContext.mockReturnValue({
+            draftKnowledge,
+        } as any)
+
+        const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+        await result.current.submitMessage({
+            messages: [playgroundCustomerMessage],
+            customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            channel: 'email',
+            storeData: { storeName: 'Test Store' } as StoreConfiguration,
+            testSessionId: '',
+            createTestSession: jest.fn(),
+        })
+
+        expect(mockSubmitPlaygroundTicket).toHaveBeenCalledWith([
+            expect.objectContaining({
+                _knowledge_override_rules: [
+                    {
+                        name: 'overridesLiveKnowledgeWithDraftKnowledge',
+                        knowledge: [
+                            {
+                                sourceId: 123,
+                                sourceSetId: 456,
+                            },
+                        ],
+                    },
+                ],
             }),
             '',
             expect.any(Object),

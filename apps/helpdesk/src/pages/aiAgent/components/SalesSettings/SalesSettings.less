@@ -4,9 +4,9 @@
 :local {
     .salesSettingsTitle {
         .heading-page-regular();
-        color: var(--neutral-grey-6, #222);
+        color: var(--neutral-grey-6, #222); // legacy
         padding: 12px var(--layout-spacing-m);
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
         margin-bottom: 0;
     }
 
@@ -30,8 +30,8 @@
         padding: var(--layout-spacing-s);
         gap: var(--layout-spacing-m);
         border-radius: 12px;
-        border: 1px solid var(--neutral-grey-2);
-        background: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-2); // legacy
+        background: var(--neutral-grey-0); // legacy
         box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
 
         .titleContainer {
@@ -45,8 +45,8 @@
         }
 
         .description {
-            color: var(--neutral-grey-6) !important;
-            border-color: var(--accessory-magenta-2);
+            color: var(--neutral-grey-6) !important; // legacy
+            border-color: var(--accessory-magenta-2); // legacy
             max-width: 100%;
         }
     }
@@ -60,9 +60,9 @@
 
     // Override Alert banner to fit onboarding design
     .info {
-        border-color: var(--neutral-grey-3) !important;
+        border-color: var(--neutral-grey-3) !important; // legacy
         border-radius: var(--layout-spacing-xs);
-        background-color: var(--main-primary-0);
+        background-color: var(--main-primary-0); // legacy
         padding: var(--layout-spacing-s);
 
         & > :first-child {
@@ -78,5 +78,27 @@
     .maxDiscountInput {
         max-width: 128px;
         width: 100%;
+    }
+}
+
+.axiom :local {
+    .salesSettingsTitle {
+        color: var(--content-neutral-default);
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .card {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+
+        .description {
+            color: var(--content-neutral-default) !important;
+            border-color: var(--surface-additional-purple);
+        }
+    }
+
+    .info {
+        border-color: var(--border-neutral-default) !important;
+        background-color: var(--surface-accent-default);
     }
 }

@@ -3,7 +3,7 @@
         display: inline;
         background-color: transparent;
         outline: none;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         font-weight: bold;
         padding: 0;
         border: 0;
@@ -11,5 +11,11 @@
     }
     .button:focus:not(:focus-visible) {
         outline: none;
+    }
+}
+
+.axiom :local {
+    .button {
+        color: var(--content-accent-default);
     }
 }

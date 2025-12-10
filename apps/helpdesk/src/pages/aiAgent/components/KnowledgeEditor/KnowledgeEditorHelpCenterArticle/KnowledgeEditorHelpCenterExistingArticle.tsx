@@ -5,8 +5,10 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
-import useFlag from 'core/flags/hooks/useFlag'
+import { useFlag } from 'core/flags'
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
+import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import {
     helpCenterArticleKeys,
@@ -29,6 +31,7 @@ import type {
     OptionItem,
 } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect'
 import { slugify } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import { getTimezone } from 'state/currentUser/selectors'
 
 import { KnowledgeEditorSidePanelHelpCenterArticle } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelHelpCenterArticle/KnowledgeEditorSidePanelHelpCenterArticle'
 import {
@@ -87,6 +90,15 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
     const isPerformanceStatsEnabled = useFlag(
         FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
     )
+    const timezone = useAppSelector(getTimezone)
+
+    // Fetch article metrics for the Impact section
+    const resourceImpact = useResourceMetrics({
+        resourceSourceId: props.article.id,
+        resourceSourceSetId: props.helpCenter.id,
+        timezone: timezone ?? 'UTC',
+        enabled: isPerformanceStatsEnabled,
+    })
 
     const { modal, openUnsavedChangesModal, openConfirmDeleteModal } =
         useKnowledgeEditorHelpCenterArticleModal()
@@ -610,22 +622,13 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                             impact={
                                 isPerformanceStatsEnabled
                                     ? {
-                                          tickets: {
-                                              value: 40,
-                                              onClick: () => {},
-                                          },
-                                          handoverTickets: {
-                                              value: 3,
-                                              onClick: () => {},
-                                          },
-                                          csat: {
-                                              value: 4.1,
-                                              onClick: () => {},
-                                          },
-                                          intents: [
-                                              'Orders/Returns',
-                                              'Product/Issues',
-                                          ],
+                                          tickets: resourceImpact.data?.tickets,
+                                          handoverTickets:
+                                              resourceImpact.data
+                                                  ?.handoverTickets,
+                                          csat: resourceImpact.data?.csat,
+                                          intents: resourceImpact.data?.intents,
+                                          isLoading: resourceImpact.isLoading,
                                       }
                                     : undefined
                             }

@@ -14,12 +14,18 @@
     }
 
     .dragIcon {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         cursor: grab;
         font-size: 20px !important;
     }
 
     .deleteButton {
         grid-column: 4;
+    }
+}
+
+.axiom :local {
+    .dragIcon {
+        color: var(--content-neutral-secondary);
     }
 }

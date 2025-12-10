@@ -211,6 +211,12 @@ export const METRIC_NAMES = {
     HELP_CENTER_UNIQUE_SEARCH_WITH_NO_RESULT:
         'help-center-unique-search-with-no-result',
 
+    // Knowledge Statistics
+    KNOWLEDGE_TICKETS: 'knowledge-tickets',
+    KNOWLEDGE_HANDOVER_TICKETS: 'knowledge-handover-tickets',
+    KNOWLEDGE_CSAT: 'knowledge-csat',
+    KNOWLEDGE_INTENTS: 'knowledge-intents',
+
     // Satisfaction
     SATISFACTION_AVERAGE_CSAT_SCORE_PER_AGENT_TIME_SERIES:
         'satisfaction-average-csat-score-per-agent-time-series',
@@ -486,6 +492,7 @@ export enum MetricScope {
     TicketsOpen = 'tickets-open',
     TicketHandleTime = 'ticket-handle-time',
     OnlineTime = 'online-time',
+    Knowledge = 'knowledge',
 
     // P2
     AutoQA = 'auto-qa',
@@ -497,7 +504,7 @@ export enum MetricScope {
     VoiceCalls = 'voice-calls',
     Tags = 'tags',
     ResponseTime = 'response-time',
-    ServiceLevelAgreement = 'sla',
+    TicketServiceLevelAgreement = 'ticket-sla',
     WorkloadTickets = 'workload-tickets',
 }
 
@@ -563,6 +570,12 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AGENTXP_ONLINE_TIME,
         METRIC_NAMES.AGENTXP_ONLINE_TIME_PER_AGENT,
     ],
+    [MetricScope.Knowledge]: [
+        METRIC_NAMES.KNOWLEDGE_TICKETS,
+        METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
+        METRIC_NAMES.KNOWLEDGE_CSAT,
+        METRIC_NAMES.KNOWLEDGE_INTENTS,
+    ],
 
     // P2
     [MetricScope.AutoQA]: [
@@ -614,13 +627,23 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4835/implement-the-voice-calls-v2-metric
     ],
     [MetricScope.Tags]: [
-        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4836/implement-the-tags-v2-metric
+        METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT,
+        METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_TIME_SERIES,
+        METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT_TIME_SERIES,
+        // Below queries do not exist as a P2 implementation, they are merged with the ones above
+        METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_ON_CREATED_DATETIME,
+        METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_ON_CREATED_DATETIME_TIME_SERIES,
+        METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT,
+        METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT_ON_CREATED_DATETIME_TIME_SERIES,
     ],
     [MetricScope.ResponseTime]: [
-        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4837/implement-the-reponse-time-v2-metric
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_AGENT,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME_PER_CHANNEL,
     ],
-    [MetricScope.ServiceLevelAgreement]: [
-        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4838/implement-the-sla-v2-metric
+    [MetricScope.TicketServiceLevelAgreement]: [
+        METRIC_NAMES.SLA_SATISFIED_OR_BREACHED_TICKETS,
+        METRIC_NAMES.SLA_SATISFIED_OR_BREACHED_TICKETS_TIME_SERIES,
     ],
     [MetricScope.WorkloadTickets]: [
         METRIC_NAMES.SUPPORT_PERFORMANCE_WORKLOAD_PER_CHANNEL,

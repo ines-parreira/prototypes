@@ -5,8 +5,8 @@
 :local {
     .skeletonCard {
         border-radius: var(--layout-spacing-xs);
-        border: 1px solid var(--neutral-grey-2);
-        background: var(--neutral-grey-1);
+        border: 1px solid var(--neutral-grey-2); // legacy
+        background: var(--neutral-grey-1); // legacy
     }
 
     .sidebar {
@@ -17,8 +17,8 @@
         align-items: center;
         flex-shrink: 0;
         border-radius: var(--sm-12, 12px);
-        border: 1px solid var(--neutral-grey-2);
-        background: var(--neutral-grey-0) !important;
+        border: 1px solid var(--neutral-grey-2); // legacy
+        background: var(--neutral-grey-0) !important; // legacy
         overflow: hidden;
     }
 
@@ -39,18 +39,18 @@
         text-align: center;
         h3 {
             .body-semibold();
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
         p {
             .body-regular();
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
     .header {
         width: 100%;
         padding: var(--layout-spacing-s);
-        border-bottom: 1px solid var(--neutral-grey-2);
+        border-bottom: 1px solid var(--neutral-grey-2); // legacy
         flex-shrink: 0; // Prevent header from shrinking
         display: flex;
         align-items: center;
@@ -70,18 +70,18 @@
         width: 100%;
         display: flex;
         flex-direction: column;
-        background: var(--neutral-grey-0) !important;
+        background: var(--neutral-grey-0) !important; // legacy
         overflow: hidden;
     }
 
     .emptyState {
         .caption-regular();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .itemCount {
         .caption-regular();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         padding-left: var(--layout-spacing-s);
         padding-right: 10px;
         padding-top: var(--layout-spacing-xs);
@@ -105,7 +105,7 @@
         padding-right: var(--layout-spacing-xs);
 
         :global([data-virtuoso-scroller]) {
-            scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-0);
+            scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-0); // legacy
             scrollbar-width: thin;
 
             &::-webkit-scrollbar-thumb {
@@ -113,7 +113,55 @@
             }
 
             &::-webkit-scrollbar-track {
-                background-color: var(--neutral-grey-0);
+                background-color: var(--neutral-grey-0); // legacy
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .skeletonCard {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-mid);
+    }
+
+    .sidebar {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default) !important;
+    }
+
+    .emptyState {
+        h3 {
+            color: var(--content-neutral-default);
+        }
+        p {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .header {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .containerContent {
+        background: var(--elevation-neutral-default) !important;
+    }
+
+    .emptyState {
+        color: var(--content-neutral-default);
+    }
+
+    .itemCount {
+        color: var(--content-neutral-default);
+    }
+
+    .virtuosoContainer {
+        :global([data-virtuoso-scroller]) {
+            scrollbar-color: var(--surface-neutral-tertiary)
+                var(--elevation-neutral-default);
+
+            &::-webkit-scrollbar-track {
+                background-color: var(--elevation-neutral-default);
             }
         }
     }

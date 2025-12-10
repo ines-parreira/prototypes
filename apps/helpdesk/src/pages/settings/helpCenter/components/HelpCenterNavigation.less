@@ -1,10 +1,10 @@
 :local {
     .connectStoreWarning {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
     }
 
     .autoAwesome {
-        color: var(--accessory-magenta-3);
+        color: var(--accessory-magenta-3); // legacy
         font-size: 16px;
         padding-right: 4px;
     }
@@ -12,5 +12,15 @@
     .redDot {
         margin-left: var(--layout-spacing-xs);
         margin-bottom: 1px;
+    }
+}
+
+.axiom :local {
+    .connectStoreWarning {
+        color: var(--content-warning-primary);
+    }
+
+    .autoAwesome {
+        color: var(--static-additional-purple);
     }
 }

@@ -42,7 +42,6 @@ describe('useGetAiAgentIntegrations', () => {
                 monitoredEmailIntegrations: [],
                 monitoredChatIntegrations: [],
                 monitoredSmsIntegrations: [],
-                trialModeActivatedDatetime: null,
                 previewModeActivatedDatetime: null,
                 storeName: 'test',
                 helpCenterId: 1,

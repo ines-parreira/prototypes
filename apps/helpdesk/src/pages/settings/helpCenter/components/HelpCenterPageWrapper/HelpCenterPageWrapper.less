@@ -22,10 +22,16 @@
     }
 
     .connectStoreWarning {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
     }
 
     .tooltipContainer {
         max-width: 170px;
+    }
+}
+
+.axiom :local {
+    .connectStoreWarning {
+        color: var(--content-warning-primary);
     }
 }

@@ -18,7 +18,7 @@
 
     .infoIcon {
         font-size: 16px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         margin-left: var(--layout-spacing-xxs);
     }
 
@@ -28,5 +28,11 @@
 
     .selectFieldDropdown {
         width: 279px;
+    }
+}
+
+.axiom :local {
+    .infoIcon {
+        color: var(--content-neutral-secondary);
     }
 }

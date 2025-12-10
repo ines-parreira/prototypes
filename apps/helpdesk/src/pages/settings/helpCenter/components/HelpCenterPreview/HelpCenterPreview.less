@@ -2,7 +2,7 @@
 
 :local {
     .container {
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         width: 384px;
         overflow: hidden;
         height: 680px;
@@ -19,17 +19,17 @@
         justify-content: space-between;
         align-items: center;
         padding: var(--layout-spacing-m) var(--layout-spacing-s);
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
     }
 
     .name {
         .heading-section-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         text-align: center;
     }
 
     .browserHeader {
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
         display: flex;
         align-items: center;
         padding: var(--layout-spacing-xs);
@@ -40,7 +40,7 @@
         width: 14px;
         height: 14px;
         border-radius: 50%;
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
     }
 
     .menu {
@@ -51,5 +51,27 @@
         height: 32px; // this value from help center front project
         max-width: 100%;
         padding-right: var(--layout-spacing-xs); // safe zone
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--elevation-neutral-default);
+    }
+
+    .header {
+        background: var(--elevation-neutral-default);
+    }
+
+    .name {
+        color: var(--content-neutral-default);
+    }
+
+    .browserHeader {
+        background: var(--surface-neutral-secondary);
+    }
+
+    .browserHeaderButton {
+        background: var(--surface-neutral-tertiary);
     }
 }

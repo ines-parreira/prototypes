@@ -6,9 +6,24 @@ import { DonutChartLegend } from './DonutChartLegend'
 
 describe('DonutChartLegend', () => {
     const mockItems = [
-        { name: 'Item 1', color: '#ff0000', percentage: '50%' },
-        { name: 'Item 2', color: '#00ff00', percentage: '30%' },
-        { name: 'Item 3', color: '#0000ff', percentage: '20%' },
+        {
+            name: 'Item 1',
+            color: '#ff0000',
+            percentage: '50%',
+            legendValue: '50%',
+        },
+        {
+            name: 'Item 2',
+            color: '#00ff00',
+            percentage: '30%',
+            legendValue: '30%',
+        },
+        {
+            name: 'Item 3',
+            color: '#0000ff',
+            percentage: '20%',
+            legendValue: '20%',
+        },
     ]
 
     it('should render all legend items', () => {

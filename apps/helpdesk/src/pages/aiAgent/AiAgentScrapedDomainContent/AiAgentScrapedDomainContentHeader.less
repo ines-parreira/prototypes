@@ -27,17 +27,29 @@
 
         .icon {
             font-size: 20px;
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             margin-right: var(--layout-spacing-xs);
         }
     }
 
     .actions {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         display: flex;
         flex-direction: row;
         align-items: center;
         gap: var(--layout-spacing-m);
+    }
+}
+
+.axiom :local {
+    .header {
+        .icon {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .actions {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -9,18 +9,32 @@
 
     .characterCount {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         text-align: right;
 
         &.characterCountWarning {
-            color: var(--feedback-warning);
+            color: var(--feedback-warning); // legacy
         }
     }
 
     .textArea {
         border-radius: 16px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         padding: var(--layout-spacing-s) var(--layout-spacing-m)
             var(--layout-spacing-s) var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .characterCount {
+        color: var(--content-neutral-secondary);
+
+        &.characterCountWarning {
+            color: var(--content-warning-primary);
+        }
+    }
+
+    .textArea {
+        border: 1px solid var(--border-neutral-default);
     }
 }

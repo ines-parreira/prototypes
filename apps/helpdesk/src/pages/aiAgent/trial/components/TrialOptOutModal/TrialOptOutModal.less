@@ -2,7 +2,7 @@
 
 :local {
     .featuresList {
-        background-color: var(--feedback-error-0);
+        background-color: var(--feedback-error-0); // legacy
         border-radius: 12px;
         padding: var(--layout-spacing-m);
         gap: var(--layout-spacing-s);
@@ -25,9 +25,19 @@
     }
 
     .listIcon {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         font-size: 18px;
         margin-top: 2px;
         flex-shrink: 0;
+    }
+}
+
+.axiom :local {
+    .featuresList {
+        background-color: var(--surface-error-primary);
+    }
+
+    .listIcon {
+        color: var(--content-error-primary);
     }
 }

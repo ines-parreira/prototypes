@@ -1,8 +1,8 @@
 @import '~@gorgias/design-tokens/dist/css/typographyMixins.less';
 
 :local {
-    @grey: var(--neutral-grey-3);
-    @darker-grey: var(--neutral-grey-4);
+    @grey: var(--neutral-grey-3); // legacy
+    @darker-grey: var(--neutral-grey-4); // legacy
 
     .shopifyLogo {
         width: 50px;
@@ -26,7 +26,7 @@
         padding: var(--layout-spacing-s) var(--layout-spacing-m);
         border-radius: 4px;
         border: solid;
-        border-color: @grey;
+        border-color: @grey; // legacy
         border-width: 1px;
         gap: var(--layout-spacing-l);
         align-items: center;
@@ -46,7 +46,7 @@
     }
 
     .infoIcon {
-        color: @darker-grey;
+        color: @darker-grey; // legacy
     }
 
     .tagsContainer {
@@ -58,7 +58,24 @@
     .fieldOnError {
         padding: 2px;
         border: 1px solid;
-        border-color: var(--feedback-error) !important;
+        border-color: var(--feedback-error) !important; // legacy
         border-radius: 4px;
+    }
+}
+
+.axiom :local {
+    @grey-axiom: var(--border-neutral-default);
+    @darker-grey-axiom: var(--content-neutral-secondary);
+
+    .cardContainer {
+        border-color: @grey-axiom;
+    }
+
+    .infoIcon {
+        color: @darker-grey-axiom;
+    }
+
+    .fieldOnError {
+        border-color: var(--content-error-primary) !important;
     }
 }

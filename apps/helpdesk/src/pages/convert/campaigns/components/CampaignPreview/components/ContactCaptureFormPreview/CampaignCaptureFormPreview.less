@@ -1,5 +1,11 @@
 :local {
     .errorState {
-        border-color: var(--feedback-error) !important;
+        border-color: var(--feedback-error) !important; // legacy
+    }
+}
+
+.axiom :local {
+    .errorState {
+        border-color: var(--content-error-primary) !important;
     }
 }

@@ -7,7 +7,7 @@
         display: flex;
         flex-shrink: 0;
         flex-direction: column;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         border-radius: 16px;
         box-shadow: 4px 4px 16px 0px rgba(22, 22, 22, 0.1);
 
@@ -33,13 +33,13 @@
 
                 .authorName {
                     font-size: 14px;
-                    color: var(--neutral-grey-6);
+                    color: var(--neutral-grey-6); // legacy
                 }
 
                 .messageText {
                     overflow-wrap: break-word;
                     font-size: 14px;
-                    color: var(--neutral-grey-6);
+                    color: var(--neutral-grey-6); // legacy
                 }
 
                 img {
@@ -80,13 +80,35 @@
             padding: 12px;
 
             border-radius: 4px;
-            background: var(--neutral-grey-2);
+            background: var(--neutral-grey-2); // legacy
         }
 
         .author {
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+    }
+}
+
+.axiom :local {
+    .campaign {
+        background: var(--elevation-neutral-default);
+
+        .header {
+            .message {
+                .authorName {
+                    color: var(--content-neutral-default);
+                }
+
+                .messageText {
+                    color: var(--content-neutral-default);
+                }
+            }
+        }
+
+        .footer {
+            background: var(--elevation-neutral-mid);
         }
     }
 }

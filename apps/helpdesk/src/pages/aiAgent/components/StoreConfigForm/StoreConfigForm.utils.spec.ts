@@ -21,7 +21,6 @@ describe('getStoreConfigurationFromFormValues', () => {
         chatChannelDeactivatedDatetime: '2024-01-01',
         emailChannelDeactivatedDatetime: '2024-01-01',
         smsChannelDeactivatedDatetime: '2024-01-01',
-        trialModeActivatedDatetime: '2024-02-01',
         previewModeActivatedDatetime: '2024-02-01',
         previewModeValidUntilDatetime: '2024-02-08',
         monitoredEmailIntegrations: [
@@ -106,151 +105,82 @@ describe('getStoreConfigurationFromFormValues', () => {
 
     describe('isPreviewModeActivated', () => {
         const aiAgentDisabledFormValues = {
-            trialModeActivatedDatetime: '2023-10-01T00:00:00Z',
             emailChannelDeactivatedDatetime: '2023-10-01T00:00:00Z',
             chatChannelDeactivatedDatetime: '2023-10-01T00:00:00Z',
         }
 
-        it('returns true if trial mode is available and trialModeActivatedDatetime is set', () => {
-            const isTrialModeAvailable = true
-
-            const isPreviewModeActive = false
-
-            expect(
-                isPreviewModeActivated({
-                    ...aiAgentDisabledFormValues,
-                    previewModeValidUntilDatetime: null,
-                    isPreviewModeActive: isPreviewModeActive,
-                    isTrialModeAvailable,
-                }),
-            ).toBe(true)
-        })
-
-        it('returns false if trial mode is available but trialModeActivatedDatetime is not set', () => {
-            const isTrialModeAvailable = true
-            const isPreviewModeActive = false
-
-            expect(
-                isPreviewModeActivated({
-                    ...aiAgentDisabledFormValues,
-                    trialModeActivatedDatetime: null,
-                    previewModeValidUntilDatetime: null,
-                    isPreviewModeActive: isPreviewModeActive,
-                    isTrialModeAvailable,
-                }),
-            ).toBe(false)
-        })
-
-        it('returns true if preview mode is available and isPreviewModeActive is true', () => {
-            const isTrialModeAvailable = false
-
+        it('returns true if preview mode is active and isPreviewModeActive is true', () => {
             const isPreviewModeActive = true
 
             expect(
                 isPreviewModeActivated({
                     ...aiAgentDisabledFormValues,
-                    trialModeActivatedDatetime: null,
                     previewModeValidUntilDatetime: '2023-10-01T00:00:00Z',
                     isPreviewModeActive: isPreviewModeActive,
-                    isTrialModeAvailable,
                 }),
             ).toBe(true)
         })
 
-        it('returns false if preview mode is available but isPreviewModeActive is not set', () => {
-            const isTrialModeAvailable = false
+        it('returns false if preview mode is not active', () => {
             const isPreviewModeActive = false
 
             expect(
                 isPreviewModeActivated({
                     ...aiAgentDisabledFormValues,
-                    trialModeActivatedDatetime: null,
                     previewModeValidUntilDatetime: '2023-10-01T00:00:00Z',
                     isPreviewModeActive: isPreviewModeActive,
-                    isTrialModeAvailable,
                 }),
             ).toBe(false)
         })
 
-        it('returns false if neither trial mode nor preview mode is available', () => {
-            const isTrialModeAvailable = false
-
+        it('returns false if previewModeValidUntilDatetime is not set', () => {
             const isPreviewModeActive = false
 
             expect(
                 isPreviewModeActivated({
                     ...aiAgentDisabledFormValues,
-                    trialModeActivatedDatetime: null,
                     previewModeValidUntilDatetime: null,
                     isPreviewModeActive: isPreviewModeActive,
-                    isTrialModeAvailable,
-                }),
-            ).toBe(false)
-        })
-
-        it('return false if AI Agent email is enabled and trial mode is set', () => {
-            const isTrialModeAvailable = true
-
-            const isPreviewModeActive = false
-
-            expect(
-                isPreviewModeActivated({
-                    ...aiAgentDisabledFormValues,
-                    emailChannelDeactivatedDatetime: null,
-                    trialModeActivatedDatetime: '2023-10-01T00:00:00Z',
-                    previewModeValidUntilDatetime: null,
-                    isPreviewModeActive: isPreviewModeActive,
-                    isTrialModeAvailable,
-                }),
-            ).toBe(false)
-        })
-
-        it('return false if AI Agent chat is enabled and trial mode is set', () => {
-            const isTrialModeAvailable = true
-            const isPreviewModeActive = false
-
-            expect(
-                isPreviewModeActivated({
-                    ...aiAgentDisabledFormValues,
-                    chatChannelDeactivatedDatetime: null,
-                    trialModeActivatedDatetime: '2023-10-01T00:00:00Z',
-                    previewModeValidUntilDatetime: null,
-                    isPreviewModeActive: isPreviewModeActive,
-                    isTrialModeAvailable,
-                }),
-            ).toBe(false)
-        })
-
-        it('return false if AI agent global toggle is enabled and trial mode is set', () => {
-            const isTrialModeAvailable = true
-            const isPreviewModeActive = false
-
-            expect(
-                isPreviewModeActivated({
-                    ...aiAgentDisabledFormValues,
-                    trialModeActivatedDatetime: '2023-10-01T00:00:00Z',
-                    emailChannelDeactivatedDatetime: null,
-                    chatChannelDeactivatedDatetime: null,
-                    previewModeValidUntilDatetime: null,
-                    isPreviewModeActive: isPreviewModeActive,
-                    isTrialModeAvailable,
                 }),
             ).toBe(false)
         })
 
         it('return false if AI Agent email is enabled and preview mode is set', () => {
-            const isTrialModeAvailable = false
-
             const isPreviewModeActive = true
 
             expect(
                 isPreviewModeActivated({
                     ...aiAgentDisabledFormValues,
                     emailChannelDeactivatedDatetime: null,
-                    trialModeActivatedDatetime: '2023-10-01T00:00:00Z',
                     previewModeValidUntilDatetime: '2023-10-01T00:00:00Z',
                     isPreviewModeActive: isPreviewModeActive,
-                    isTrialModeAvailable,
+                }),
+            ).toBe(false)
+        })
+
+        it('return false if AI Agent chat is enabled and preview mode is set', () => {
+            const isPreviewModeActive = true
+
+            expect(
+                isPreviewModeActivated({
+                    ...aiAgentDisabledFormValues,
+                    chatChannelDeactivatedDatetime: null,
+                    previewModeValidUntilDatetime: '2023-10-01T00:00:00Z',
+                    isPreviewModeActive: isPreviewModeActive,
+                }),
+            ).toBe(false)
+        })
+
+        it('return false if both AI Agent channels are enabled and preview mode is set', () => {
+            const isPreviewModeActive = true
+
+            expect(
+                isPreviewModeActivated({
+                    ...aiAgentDisabledFormValues,
+                    emailChannelDeactivatedDatetime: null,
+                    chatChannelDeactivatedDatetime: null,
+                    previewModeValidUntilDatetime: '2023-10-01T00:00:00Z',
+                    isPreviewModeActive: isPreviewModeActive,
                 }),
             ).toBe(false)
         })

@@ -1,6 +1,6 @@
 :local {
     .metric {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-weight: 600;
     }
 
@@ -12,8 +12,18 @@
     }
 
     .metricValue {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
         font-size: 20px;
+    }
+}
+
+.axiom :local {
+    .metric {
+        color: var(--content-neutral-secondary);
+    }
+
+    .metricValue {
+        color: var(--content-neutral-default);
     }
 }

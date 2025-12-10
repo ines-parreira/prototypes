@@ -151,10 +151,69 @@ describe('AnalyticsOverviewAutomatedInteractionsCard', () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText('4%')).toBeInTheDocument()
+            expect(screen.getByText('200')).toBeInTheDocument()
         })
 
         const trendingIcon = container.querySelector('[aria-label*="trending"]')
         expect(trendingIcon).toBeInTheDocument()
+    })
+
+    it('should render without action menu when chartId is not provided', async () => {
+        renderWithQueryClientProvider(
+            <AnalyticsOverviewAutomatedInteractionsCard />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('4,800')).toBeInTheDocument()
+        })
+    })
+
+    it('should handle different period for tooltip', async () => {
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                ...mockFilters,
+                period: {
+                    start_datetime: '2024-01-01T00:00:00.000Z',
+                    end_datetime: '2024-01-01T23:59:59.999Z',
+                },
+            },
+            granularity: 'day',
+            userTimezone: 'UTC',
+        } as any)
+
+        renderWithQueryClientProvider(
+            <AnalyticsOverviewAutomatedInteractionsCard />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should render with chartId and dashboard props', async () => {
+        renderWithQueryClientProvider(
+            <AnalyticsOverviewAutomatedInteractionsCard
+                chartId="test-chart-id"
+                dashboard={{
+                    id: 1,
+                    name: 'Test Dashboard',
+                    analytics_filter_id: 1,
+                    children: [],
+                    emoji: '🚀',
+                }}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('4,800')).toBeInTheDocument()
+        })
     })
 })

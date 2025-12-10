@@ -22,12 +22,12 @@
 
             .title {
                 .heading-subsection-semibold();
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
             }
 
             .text {
                 .body-regular();
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
             }
         }
     }
@@ -56,7 +56,7 @@
         .itemTitle {
             flex-grow: 1;
             .body-semibold();
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
 
         .buttons {
@@ -103,11 +103,27 @@
         background-color: var(--elevation-neutral-default);
     }
 
+    .top {
+        .left {
+            .title {
+                color: var(--content-neutral-default);
+            }
+
+            .text {
+                color: var(--content-neutral-secondary);
+            }
+        }
+    }
+
     .item {
         border-top: 1px solid var(--border-neutral-default);
 
         .itemImagePlaceholder {
             background-color: var(--surface-neutral-primary);
+        }
+
+        .itemTitle {
+            color: var(--content-neutral-default);
         }
     }
 

@@ -6,17 +6,17 @@
     }
 
     .checkIcon {
-        color: var(--feedback-success);
+        color: var(--feedback-success); // legacy
     }
 
     .errorIcon {
-        color: var(--feedback-error-3);
+        color: var(--feedback-error-3); // legacy
         font-size: 20px;
     }
 
     .loadingWrapper {
         align-items: flex-end;
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         border-radius: var(--layout-spacing-xxs);
         display: flex;
         flex-direction: row;
@@ -38,9 +38,9 @@
     }
 
     .forwardInstructionsWrapper {
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         border-radius: 4px;
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -50,8 +50,8 @@
 
         .bolds {
             font-weight: 600;
-            background: var(--accessory-blue-1);
-            color: var(--accessory-blue-3);
+            background: var(--accessory-blue-1); // legacy
+            color: var(--accessory-blue-3); // legacy
             padding: 6px 12px;
             border-radius: 40px;
             margin-right: 2px;
@@ -68,7 +68,7 @@
             li {
                 .body-regular();
                 padding-bottom: var(--layout-spacing-s);
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
                 counter-increment: step-counter;
                 position: relative;
                 padding-left: var(--layout-spacing-l);
@@ -81,13 +81,48 @@
                     width: 24px;
                     height: 20px;
                     border-radius: 100px;
-                    background: var(--accessory-blue-1);
-                    color: var(--accessory-blue-3);
+                    background: var(--accessory-blue-1); // legacy
+                    color: var(--accessory-blue-3); // legacy
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     font-weight: 600;
                     font-size: 12px;
+                }
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .checkIcon {
+        color: var(--static-success);
+    }
+
+    .errorIcon {
+        color: var(--content-error-primary);
+    }
+
+    .loadingWrapper {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .forwardInstructionsWrapper {
+        background: var(--surface-neutral-secondary);
+        border: 1px solid var(--border-neutral-default);
+
+        .bolds {
+            background: var(--surface-additional-blue);
+            color: var(--content-additional-blue);
+        }
+
+        ol {
+            li {
+                color: var(--content-neutral-default);
+
+                &::before {
+                    background: var(--surface-additional-blue);
+                    color: var(--content-additional-blue);
                 }
             }
         }

@@ -39,7 +39,7 @@
 
     .description {
         .heading-section-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         margin-bottom: var(--layout-spacing-s);
     }
 
@@ -56,16 +56,16 @@
     }
 
     .staticList {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .checkIcon {
-        color: var(--feedback-success-3);
+        color: var(--feedback-success-3); // legacy
         font-size: 24px;
     }
 
     .dynamicList {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .itemNumber {
@@ -78,7 +78,7 @@
             width: 20px;
             height: 20px;
             border-radius: 100px;
-            color: var(--neutral-grey-0);
+            color: var(--neutral-grey-0); // legacy
 
             &.number {
                 .body-medium();
@@ -103,12 +103,12 @@
         line-height: 24px;
         font-size: 20px;
         margin-left: var(--layout-spacing-xxs);
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         &:hover,
         &:active,
         &:focus {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
@@ -126,8 +126,26 @@
 }
 
 .axiom :local {
+    .description {
+        color: var(--content-neutral-default);
+    }
+
+    .staticList {
+        color: var(--content-neutral-secondary);
+    }
+
+    .checkIcon {
+        color: var(--content-success-primary);
+    }
+
+    .dynamicList {
+        color: var(--content-neutral-default);
+    }
+
     .itemNumber {
         .inner {
+            color: var(--static-default-white);
+
             &.number {
                 background: var(--surface-neutral-primary);
             }
@@ -135,6 +153,16 @@
             &.checked {
                 background: var(--surface-success-primary);
             }
+        }
+    }
+
+    .openInNewIcon {
+        color: var(--content-neutral-default);
+
+        &:hover,
+        &:active,
+        &:focus {
+            color: var(--content-neutral-secondary);
         }
     }
 }

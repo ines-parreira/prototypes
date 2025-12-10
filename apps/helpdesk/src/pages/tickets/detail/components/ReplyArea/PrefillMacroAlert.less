@@ -10,7 +10,7 @@
     }
 
     .content {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         display: grid;
         align-items: center;
         @media (min-width: @break-point-1) {
@@ -41,5 +41,11 @@
         @media (min-width: @break-point-1) {
             justify-self: flex-end;
         }
+    }
+}
+
+.axiom :local .component {
+    .content {
+        color: var(--content-neutral-default);
     }
 }

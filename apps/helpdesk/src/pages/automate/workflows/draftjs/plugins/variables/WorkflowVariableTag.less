@@ -12,9 +12,9 @@
         vertical-align: top;
         padding: 4px 8px;
         border-radius: 4px;
-        background: var(--neutral-grey-3);
+        background: var(--neutral-grey-3); // legacy
         .caption-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         margin: 1px;
     }
 
@@ -47,12 +47,24 @@
     }
 
     .invalid {
-        background: var(--accessory-red-1);
+        background: var(--accessory-red-1); // legacy
         .caption-semibold();
-        color: var(--feedback-variations-error-4);
+        color: var(--feedback-variations-error-4); // legacy
     }
 
     .children {
         display: none;
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--surface-neutral-tertiary);
+        color: var(--content-neutral-default);
+    }
+
+    .invalid {
+        background: var(--surface-error-primary);
+        color: var(--content-error-primary);
     }
 }

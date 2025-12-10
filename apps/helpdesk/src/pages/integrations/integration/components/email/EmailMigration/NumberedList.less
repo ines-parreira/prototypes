@@ -14,9 +14,9 @@
             gap: var(--layout-spacing-s);
 
             .number {
-                color: var(--neutral-grey-0);
+                color: var(--neutral-grey-0); // legacy
                 font-weight: 600;
-                background-color: var(--neutral-grey-6);
+                background-color: var(--neutral-grey-6); // legacy
                 width: 24px;
                 height: 24px;
                 border-radius: 100%;
@@ -24,6 +24,17 @@
                 align-items: center;
                 justify-content: center;
                 flex-shrink: 0;
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .list {
+        li {
+            .number {
+                color: var(--content-inverted-default);
+                background-color: var(--surface-inverted-default);
             }
         }
     }

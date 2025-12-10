@@ -15,7 +15,7 @@
 
         .title {
             .heading-section-semibold;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             user-select: text;
             -webkit-user-select: text;
             -moz-user-select: text;
@@ -33,7 +33,19 @@
 
     .lastUpdatedAt {
         .caption-regular;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-bottom: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .previewContent {
+        .title {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .lastUpdatedAt {
+        color: var(--content-neutral-secondary);
     }
 }

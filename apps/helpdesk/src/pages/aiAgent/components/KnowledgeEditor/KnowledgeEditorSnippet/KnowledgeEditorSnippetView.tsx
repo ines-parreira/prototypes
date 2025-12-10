@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 
+import type { Props as ImpactProps } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
 import { KnowledgeEditorSidePanelDocumentSnippet } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelDocumentSnippet'
 import { KnowledgeEditorSidePanelStoreSnippet } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelStoreSnippet'
 import { KnowledgeEditorSidePanelURLSnippet } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelURLSnippet'
@@ -48,6 +49,7 @@ type Props = {
 
     isFullscreen: boolean
     snippet: Snippet
+    impact?: Omit<ImpactProps, 'sectionId'>
 }
 
 export const KnowledgeEditorSnippetView = ({
@@ -59,6 +61,7 @@ export const KnowledgeEditorSnippetView = ({
     onToggleAIAgentEnabled,
     snippet,
     isFullscreen,
+    impact,
 }: Props) => {
     const [isDetailsView, setIsDetailsView] = useState(true)
     const onToggleDetailsView = () => {
@@ -98,6 +101,7 @@ export const KnowledgeEditorSnippetView = ({
                             ...baseDetails,
                             url: snippet.source,
                         }}
+                        impact={impact}
                     />
                 )
             case SnippetType.Document:
@@ -108,6 +112,7 @@ export const KnowledgeEditorSnippetView = ({
                             sourceDocument: snippet.source,
                             googleStorageUrl: snippet.googleStorageUrl,
                         }}
+                        impact={impact}
                     />
                 )
             case SnippetType.Store:
@@ -117,6 +122,7 @@ export const KnowledgeEditorSnippetView = ({
                             ...baseDetails,
                             urls: snippet.sources,
                         }}
+                        impact={impact}
                     />
                 )
         }

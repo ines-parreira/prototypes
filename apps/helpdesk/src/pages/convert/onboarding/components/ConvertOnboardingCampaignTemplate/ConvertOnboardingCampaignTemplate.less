@@ -2,7 +2,7 @@
 
 :local {
     .container {
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 8px;
         transition: ease-in-out 0.2s;
         background: #fff9f4;
@@ -35,8 +35,8 @@
 
     .estimation {
         text-align: center;
-        background: var(--accessory-green-1);
-        color: var(--accessory-green-3);
+        background: var(--accessory-green-1); // legacy
+        color: var(--accessory-green-3); // legacy
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
         padding: var(--layout-spacing-xxs) var(--layout-spacing-xs);
@@ -60,5 +60,16 @@
 
     .button {
         text-align: center;
+    }
+}
+
+.axiom :local {
+    .container {
+        border-color: var(--border-neutral-default);
+    }
+
+    .estimation {
+        background: var(--surface-success-primary);
+        color: var(--content-success-primary);
     }
 }

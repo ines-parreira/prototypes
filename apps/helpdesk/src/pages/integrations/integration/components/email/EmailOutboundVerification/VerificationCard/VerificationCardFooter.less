@@ -1,6 +1,6 @@
 :local {
     .container {
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         border-radius: 4px;
         display: flex;
         align-items: center;
@@ -20,6 +20,16 @@
 
     i.icon {
         font-size: 16px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--surface-neutral-tertiary);
+    }
+
+    i.icon {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -14,12 +14,22 @@
     .date {
         font-size: 12px;
         font-weight: 600;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .info {
         font-size: 16px;
         font-weight: 600;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
+    }
+}
+
+.axiom :local {
+    .date {
+        color: var(--content-neutral-secondary);
+    }
+
+    .info {
+        color: var(--content-neutral-default);
     }
 }

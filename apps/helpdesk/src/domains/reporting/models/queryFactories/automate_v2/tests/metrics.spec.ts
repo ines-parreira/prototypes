@@ -4,10 +4,16 @@ import {
     AutomationDatasetFilterMember,
     AutomationDatasetMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
+import { BillableTicketDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import {
     aiAgentAutomatedInteractionsQueryFactory,
+    articleRecommendationAutomatedInteractionsQueryFactory,
+    automationDatasetQueryFactory,
     billableTicketDatasetExcludingAIAgentQueryFactory,
+    billableTicketDatasetQueryFactory,
     billableTicketDatasetResolvedByAIAgentQueryFactory,
+    flowsAutomatedInteractionsQueryFactory,
+    orderManagementAutomatedInteractionsQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -203,6 +209,173 @@ describe('Automate metrics', () => {
                     AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
                 ],
                 timezone: timezone,
+            })
+        })
+    })
+
+    describe('automationDatasetQueryFactory', () => {
+        it('creates a query for automation dataset', () => {
+            const result = automationDatasetQueryFactory(filters, timezone)
+            expect(result).toEqual({
+                metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+                dimensions: [],
+                filters: [
+                    {
+                        member: AutomationDatasetFilterMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: ['2021-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: ['2021-01-02T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.Channel,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['chat'],
+                    },
+                ],
+                measures: [
+                    AutomationDatasetMeasure.AutomatedInteractions,
+                    AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+                ],
+                timezone: 'UTC',
+            })
+        })
+    })
+
+    describe('billableTicketDatasetQueryFactory', () => {
+        it('creates a query for billable ticket dataset', () => {
+            const result = billableTicketDatasetQueryFactory(filters, timezone)
+            expect(result).toEqual({
+                metricName: METRIC_NAMES.AUTOMATE_BILLABLE_TICKET_DATASET,
+                dimensions: [],
+                filters: [
+                    {
+                        member: 'BillableTicketDataset.periodStart',
+                        operator: 'afterDate',
+                        values: ['2021-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'BillableTicketDataset.periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2021-01-02T00:00:00.000'],
+                    },
+                ],
+                measures: [
+                    BillableTicketDatasetMeasure.BillableTicketCount,
+                    BillableTicketDatasetMeasure.TotalFirstResponseTime,
+                    BillableTicketDatasetMeasure.TotalResolutionTime,
+                ],
+                timezone: 'UTC',
+            })
+        })
+    })
+
+    describe('flowsAutomatedInteractionsQueryFactory', () => {
+        it('creates a query for flows automated interactions', () => {
+            const result = flowsAutomatedInteractionsQueryFactory(
+                filters,
+                timezone,
+            )
+            expect(result).toEqual({
+                metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+                dimensions: [],
+                filters: [
+                    {
+                        member: AutomationDatasetFilterMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: ['2021-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: ['2021-01-02T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.EventType,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [
+                            AutomateEventType.FLOW_STARTED,
+                            AutomateEventType.FLOW_PROMPT_STARTED,
+                            AutomateEventType.FLOW_ENDED_WITHOUT_ACTION,
+                        ],
+                    },
+                ],
+                measures: [AutomationDatasetMeasure.AutomatedInteractions],
+                timezone: 'UTC',
+            })
+        })
+    })
+
+    describe('articleRecommendationAutomatedInteractionsQueryFactory', () => {
+        it('creates a query for article recommendation automated interactions', () => {
+            const result =
+                articleRecommendationAutomatedInteractionsQueryFactory(
+                    filters,
+                    timezone,
+                )
+            expect(result).toEqual({
+                metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+                dimensions: [],
+                filters: [
+                    {
+                        member: AutomationDatasetFilterMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: ['2021-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: ['2021-01-02T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.EventType,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [
+                            AutomateEventType.ARTICLE_RECOMMENDATION_STARTED,
+                        ],
+                    },
+                ],
+                measures: [AutomationDatasetMeasure.AutomatedInteractions],
+                timezone: 'UTC',
+            })
+        })
+    })
+
+    describe('orderManagementAutomatedInteractionsQueryFactory', () => {
+        it('creates a query for order management automated interactions', () => {
+            const result = orderManagementAutomatedInteractionsQueryFactory(
+                filters,
+                timezone,
+            )
+            expect(result).toEqual({
+                metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+                dimensions: [],
+                filters: [
+                    {
+                        member: AutomationDatasetFilterMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: ['2021-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: ['2021-01-02T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.EventType,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [
+                            AutomateEventType.TRACK_ORDER,
+                            AutomateEventType.LOOP_RETURNS_STARTED,
+                            AutomateEventType.AUTOMATED_RESPONSE_STARTED,
+                        ],
+                    },
+                ],
+                measures: [AutomationDatasetMeasure.AutomatedInteractions],
+                timezone: 'UTC',
             })
         })
     })

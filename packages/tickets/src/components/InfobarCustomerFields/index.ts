@@ -1,0 +1,1 @@
+export { InfobarCustomerFields } from './InfobarCustomerFields'

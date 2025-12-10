@@ -37,14 +37,14 @@
     }
 
     .warning-no-chat {
-        border: 1px solid var(--feedback-warning);
+        border: 1px solid var(--feedback-warning); // legacy
         border-radius: 4px;
         padding: 16px;
         font-size: 14px;
     }
 
     .warning-icon {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
     }
 
     .alert {
@@ -68,6 +68,20 @@
     .tooltipIcon {
         margin-left: 4px;
         font-size: 16px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .warning-no-chat {
+        border: 1px solid var(--border-warning-primary);
+    }
+
+    .warning-icon {
+        color: var(--content-warning-primary);
+    }
+
+    .tooltipIcon {
+        color: var(--content-neutral-secondary);
     }
 }

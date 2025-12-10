@@ -9,7 +9,7 @@
     }
 
     .description {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .contentLabel {
@@ -20,17 +20,31 @@
 
     .icon {
         font-size: 20px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-right: var(--layout-spacing-xs);
     }
 
     .content {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         border-radius: var(--layout-spacing-xxs);
         padding: var(--layout-spacing-xs);
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-top: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .description {
+        color: var(--content-neutral-secondary);
+    }
+
+    .icon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .content {
+        background-color: var(--elevation-neutral-mid);
     }
 }

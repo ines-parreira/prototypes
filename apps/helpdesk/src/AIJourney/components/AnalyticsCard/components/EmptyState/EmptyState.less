@@ -7,7 +7,7 @@
         gap: var(--layout-spacing-xxs);
         width: 100%;
         height: 100%;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .noData {
@@ -19,5 +19,11 @@
             'ss01' on,
             'cv10' on;
         font-weight: 400;
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-neutral-default);
     }
 }

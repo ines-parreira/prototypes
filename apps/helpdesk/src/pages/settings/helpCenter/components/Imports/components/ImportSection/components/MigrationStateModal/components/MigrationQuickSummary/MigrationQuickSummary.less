@@ -3,7 +3,7 @@
 :local {
     .wrapper {
         .caption-regular();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
     .title {
         font-weight: bold;
@@ -16,7 +16,7 @@
         gap: 16px;
 
         &:not(:first-child) {
-            border-top: 1px solid var(--neutral-grey-3);
+            border-top: 1px solid var(--neutral-grey-3); // legacy
         }
 
         i {
@@ -29,5 +29,16 @@
     .entryStats {
         display: flex;
         gap: 8px;
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        color: var(--content-neutral-default);
+    }
+    .entry {
+        &:not(:first-child) {
+            border-top: 1px solid var(--border-neutral-default);
+        }
     }
 }

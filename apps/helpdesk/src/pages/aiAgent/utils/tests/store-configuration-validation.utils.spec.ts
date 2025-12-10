@@ -21,7 +21,6 @@ const VALID_FORM_VALUES: ValidFormValues = {
     chatChannelDeactivatedDatetime: undefined,
     emailChannelDeactivatedDatetime: undefined,
     smsChannelDeactivatedDatetime: undefined,
-    trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
     ticketSampleRate: null,

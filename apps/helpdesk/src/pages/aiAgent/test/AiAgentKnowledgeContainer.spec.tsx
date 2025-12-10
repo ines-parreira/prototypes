@@ -453,7 +453,6 @@ describe('AiAgentKnowledgeContainer', () => {
             emailChannelDeactivatedDatetime: new Date(
                 '2024-10-16',
             ).toISOString(),
-            trialModeActivatedDatetime: null,
             previewModeActivatedDatetime: null,
             previewModeValidUntilDatetime: null,
         })

@@ -10,11 +10,21 @@
 
     .link {
         .caption-regular();
-        color: var(--main-primary) !important;
+        color: var(--main-primary) !important; // legacy
         cursor: pointer;
     }
 
     .noStoreContent {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
+    }
+}
+
+.axiom :local {
+    .link {
+        color: var(--content-accent-default) !important;
+    }
+
+    .noStoreContent {
+        color: var(--content-error-primary);
     }
 }

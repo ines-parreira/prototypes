@@ -5,11 +5,11 @@
     }
 
     .dropdownContainer {
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         position: absolute;
         z-index: 10;
         width: 100%;
-        background-color: white;
+        background-color: white; // legacy
         padding: var(--layout-spacing-xs);
     }
     .dropdown {
@@ -21,15 +21,34 @@
         cursor: pointer;
     }
     .dropdownItem:hover {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
     }
     .focusedDropdownItem {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
     }
     .dropdownSkeleton {
         margin-bottom: var(--layout-spacing-xxs);
     }
     .noResults {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .dropdownContainer {
+        border: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .dropdownItem:hover {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .focusedDropdownItem {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .noResults {
+        color: var(--content-neutral-secondary);
     }
 }

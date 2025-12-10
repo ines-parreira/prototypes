@@ -11,7 +11,7 @@
         @media (max-width: 768px) {
             padding: 54px 16px 16px 64px;
         }
-        background: var(--main-latte);
+        background: var(--main-latte); // legacy
         overflow: hidden;
     }
 
@@ -33,7 +33,7 @@
     }
 
     .pageTitle {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 20px;
         font-weight: 600;
         line-height: 28px;
@@ -41,7 +41,7 @@
     }
 
     .pageDescription {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 14px;
         font-weight: 400;
         line-height: 20px;
@@ -107,5 +107,19 @@
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .pageHeaderContainer {
+        background: var(--surface-additional-yellow);
+    }
+
+    .pageTitle {
+        color: var(--content-neutral-default);
+    }
+
+    .pageDescription {
+        color: var(--content-neutral-secondary);
     }
 }

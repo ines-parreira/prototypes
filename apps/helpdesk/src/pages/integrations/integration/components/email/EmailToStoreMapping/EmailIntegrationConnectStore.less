@@ -18,7 +18,7 @@
         align-items: center;
         padding: var(--layout-spacing-xs);
         gap: var(--layout-spacing-xs);
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         border-radius: 4px;
     }
 
@@ -33,5 +33,11 @@
         flex-direction: column;
         row-gap: var(--layout-spacing-s);
         font-weight: 600;
+    }
+}
+
+.axiom :local {
+    .store {
+        background-color: var(--surface-neutral-secondary);
     }
 }

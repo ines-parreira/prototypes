@@ -1,10 +1,14 @@
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
+import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorGuidance } from './KnowledgeEditorGuidance'
@@ -98,15 +102,60 @@ jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
     ),
 }))
 
+jest.mock('domains/reporting/models/queryFactories/knowledge/resourceMetrics')
+const mockedFetchResourceMetrics = jest.mocked(useResourceMetrics)
+
+jest.mock('core/flags', () => ({
+    useFlag: jest.fn(() => false),
+}))
+
+const queryClient = mockQueryClient()
+const store = mockStore({
+    currentUser: fromJS({
+        timezone: 'America/New_York',
+    }),
+})
+
+const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={queryClient}>
+        <Provider store={store}>{children}</Provider>
+    </QueryClientProvider>
+)
+
 describe('KnowledgeEditorGuidance', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        queryClient.clear()
         mockUseGuidanceArticle.mockReturnValue({
             guidanceArticle,
             isGuidanceArticleLoading: false,
         })
         updateGuidanceArticle.mockResolvedValue(guidanceArticle)
         createGuidanceArticle.mockResolvedValue(guidanceArticle)
+
+        mockedFetchResourceMetrics.mockReturnValue({
+            isLoading: false,
+            isError: false,
+            data: {
+                tickets: {
+                    value: 156,
+                    onClick: undefined,
+                },
+                handoverTickets: {
+                    value: 12,
+                    onClick: undefined,
+                },
+                csat: {
+                    value: 4.53,
+                    onClick: undefined,
+                },
+                intents: [
+                    'Order/Status',
+                    'Shipping/Inquiry',
+                    'Product/Question',
+                ],
+            },
+        })
     })
 
     it('renders in edit mode and allows editing', () => {
@@ -858,6 +907,73 @@ describe('KnowledgeEditorGuidance', () => {
             )
 
             expect(onClose).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('Impact Metrics', () => {
+        it('calls useResourceMetrics with correct parameters', () => {
+            render(
+                <Wrapper>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        onClickPrevious={jest.fn()}
+                        onClickNext={jest.fn()}
+                        guidanceMode="read"
+                        isOpen
+                        onDelete={jest.fn()}
+                    />
+                </Wrapper>,
+            )
+
+            expect(mockedFetchResourceMetrics).toHaveBeenCalledWith({
+                resourceSourceId: 1,
+                resourceSourceSetId: 1,
+                timezone: 'America/New_York',
+                enabled: false,
+            })
+        })
+
+        it('displays impact section with loading state when data is not available', async () => {
+            const useFlag = require('core/flags').useFlag
+            useFlag.mockReturnValue(true)
+
+            mockedFetchResourceMetrics.mockReturnValue({
+                isLoading: true,
+                isError: false,
+                data: undefined,
+            })
+
+            render(
+                <Wrapper>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        onClickPrevious={jest.fn()}
+                        onClickNext={jest.fn()}
+                        guidanceMode="read"
+                        isOpen
+                        onDelete={jest.fn()}
+                    />
+                </Wrapper>,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(guidanceArticle.title),
+                ).toBeInTheDocument()
+            })
+
+            expect(mockedFetchResourceMetrics).toHaveBeenCalledWith({
+                resourceSourceId: 1,
+                resourceSourceSetId: 1,
+                timezone: 'America/New_York',
+                enabled: true,
+            })
         })
     })
 })

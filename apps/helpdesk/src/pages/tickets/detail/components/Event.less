@@ -11,7 +11,7 @@
             left: 0;
             top: 0;
             height: 100%;
-            border-left: 1px solid var(--neutral-grey-3);
+            border-left: 1px solid var(--neutral-grey-3); // legacy
         }
     }
 
@@ -33,7 +33,7 @@
             left: 0;
             top: 0;
             height: 100%;
-            border-left: 1px solid var(--neutral-grey-3);
+            border-left: 1px solid var(--neutral-grey-3); // legacy
         }
 
         &.last::before {
@@ -71,7 +71,7 @@
         border-radius: 50%;
         background-color: var(--neutral-grey-6); // legacy
         font-size: 14px;
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
 
         &.success {
             background-color: var(--feedback-success); // legacy
@@ -110,7 +110,7 @@
         margin-right: 28px;
 
         font-size: 14px;
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
     }
 
     .actionName {
@@ -159,14 +159,14 @@
     }
 
     .failureReasonWarning {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
         font-weight: bold;
         margin-left: 3px;
         margin-right: 3px;
     }
 
     .failureReasonError {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         font-weight: bold;
         margin-left: 3px;
         margin-right: 3px;
@@ -174,7 +174,7 @@
 
     .eventDetailsGreyIcon {
         margin-left: 2px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 }
 
@@ -191,7 +191,7 @@
     }
 
     .icon {
-        outline: 2px solid var(--neutral-grey-0);
+        outline: 2px solid var(--neutral-grey-0); // legacy
     }
 
     .icon.success {
@@ -204,29 +204,62 @@
 }
 
 .axiom :local {
+    .placeholder {
+        &::before {
+            border-left: 1px solid var(--border-neutral-default);
+        }
+    }
+
+    .component {
+        &::before {
+            border-left: 1px solid var(--border-neutral-default);
+        }
+    }
+
     .icon {
         background-color: var(--elevation-neutral-inverse);
+        color: var(--content-inverted-default);
 
         &.success {
-            background-color: var(--elevation-status-success-default);
+            background-color: var(--surface-success-primary);
         }
 
         &.danger {
-            background-color: var(--elevation-status-error-default);
+            background-color: var(--surface-error-primary);
         }
 
         &.warning {
-            background-color: var(--elevation-status-warning-default);
+            background-color: var(--surface-warning-primary);
         }
     }
 
     .logo {
-        background-color: var(--elevation-overlay-default);
+        background-color: var(--content-inverted-default);
+    }
+
+    .privateReplyEventIcon {
+        color: var(--content-inverted-default);
+    }
+
+    .failureReasonWarning {
+        color: var(--content-warning-primary);
+    }
+
+    .failureReasonError {
+        color: var(--content-error-primary);
+    }
+
+    .eventDetailsGreyIcon {
+        color: var(--content-neutral-secondary);
     }
 }
 
 .axiom.ticket-thread-revamp :local {
+    .icon {
+        outline: 2px solid var(--elevation-neutral-default);
+    }
+
     .icon.success {
-        background-color: var(--elevation-accent-default);
+        background-color: var(--surface-accent-default);
     }
 }

@@ -20,7 +20,7 @@
 
     .sourceHeader {
         .component-button-medium();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         padding: 6px 0;
     }
 
@@ -32,5 +32,11 @@
 
     .toggleInput {
         margin-right: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .sourceHeader {
+        color: var(--content-neutral-default);
     }
 }

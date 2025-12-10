@@ -3,7 +3,7 @@
 
 :local {
     .orderManagementContainer {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         flex: 1;
 
         &:not(.isInitialEntry) {
@@ -16,7 +16,7 @@
     .orderManagementTitle {
         .heading-page-semibold();
         padding: var(--layout-spacing-m);
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .orderManagementItemsContainer {
@@ -29,15 +29,15 @@
         .heading-subsection-semibold();
         display: flex;
         align-items: center;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         column-gap: var(--layout-spacing-s);
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 8px;
         padding: var(--layout-spacing-s);
         text-transform: capitalize;
 
         &.isHighlighted {
-            border-color: var(--main-primary);
+            border-color: var(--main-primary); // legacy
         }
     }
 
@@ -46,8 +46,8 @@
         display: flex;
         align-items: center;
         column-gap: var(--layout-spacing-s);
-        background-color: var(--neutral-grey-0);
-        border: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-0); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 8px;
         padding: var(--layout-spacing-m) var(--layout-spacing-s);
         text-transform: capitalize;
@@ -59,12 +59,12 @@
 
     .flowChevron {
         font-size: 24px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .container {
-        background-color: var(--neutral-grey-1);
-        color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-1); // legacy
+        color: var(--neutral-grey-6); // legacy
         flex: 1;
         overflow: auto;
         pointer-events: initial;
@@ -85,9 +85,9 @@
         gap: var(--layout-spacing-xs);
         filter: drop-shadow(0px 2px 4px rgba(22, 22, 22, 0.16));
         border-radius: 4px;
-        background-color: var(--neutral-grey-0);
-        border: 1px solid var(--neutral-grey-3);
-        color: var(--neutral-grey-4);
+        background-color: var(--neutral-grey-0); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
+        color: var(--neutral-grey-4); // legacy
     }
 
     .searchBarIcon {
@@ -126,11 +126,11 @@
     .article {
         display: flex;
         border-radius: var(--layout-spacing-xs);
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         flex-direction: column;
         padding: var(--layout-spacing-m);
         gap: var(--layout-spacing-xxs);
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .articleTitle {
@@ -143,7 +143,7 @@
         font-weight: 400;
         font-size: 16px;
         line-height: 24px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .footer {
@@ -154,7 +154,59 @@
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         gap: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .orderManagementContainer {
+        color: var(--content-neutral-default);
+    }
+
+    .orderManagementTitle {
+        border-bottom-color: var(--border-neutral-default);
+    }
+
+    .orderManagementItem {
+        background-color: var(--elevation-neutral-default);
+        border-color: var(--border-neutral-default);
+
+        &.isHighlighted {
+            border-color: var(--content-accent-default);
+        }
+    }
+
+    .workflowItem {
+        background-color: var(--elevation-neutral-default);
+        border-color: var(--border-neutral-default);
+    }
+
+    .flowChevron {
+        color: var(--content-neutral-secondary);
+    }
+
+    .container {
+        background-color: var(--surface-neutral-secondary);
+        color: var(--content-neutral-default);
+    }
+
+    .searchBar {
+        background-color: var(--elevation-neutral-default);
+        border-color: var(--border-neutral-default);
+        color: var(--content-neutral-secondary);
+    }
+
+    .article {
+        border-color: var(--border-neutral-default);
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .articleDescription {
+        color: var(--content-neutral-secondary);
+    }
+
+    .footer {
+        color: var(--content-neutral-secondary);
     }
 }

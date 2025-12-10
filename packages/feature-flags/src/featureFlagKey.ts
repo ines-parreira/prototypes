@@ -42,7 +42,6 @@ export enum FeatureFlagKey {
     AIAgentStatsPage = 'ai-agent-stats-page',
     AiAgentSupportActionInGuidance = 'ai-agent-support-action-in-guidance',
     AiAgentTicketFieldAutofillOnFieldDefinitionPage = 'ai-agent-ticket-field-autofill-on-field-definition-page',
-    AiAgentTrialMode = 'ai-agent-trial-mode-allowed',
     AiAgentUseNewAgenticArchitecture = 'ai-agent-use-new-agentic-architecture',
     AiAgentUsesStoreConfigurationCustomFields = 'ai-agent-uses-store-configuration-custom-fields',
     AiAgentSmsChannel = 'ai-agent-sms-channel',

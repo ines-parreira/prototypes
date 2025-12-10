@@ -21,19 +21,19 @@
         text-overflow: ellipsis;
         width: 100%;
         max-width: 100%;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
         border: 0;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         padding: 6px var(--layout-spacing-xs);
-        outline-color: var(--main-primary);
+        outline-color: var(--main-primary); // legacy
     }
 
     .footer {
         width: 100%;
         display: flex;
         justify-content: space-between;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         padding: var(--layout-spacing-s);
         align-items: center;
     }
@@ -45,10 +45,26 @@
 
     .counter {
         .body-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .editor {
         height: calc(100% - 135px);
+    }
+}
+
+.axiom :local {
+    .titleInput {
+        color: var(--content-neutral-default);
+        background-color: var(--elevation-neutral-default);
+        outline-color: var(--border-accent-default);
+    }
+
+    .footer {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .counter {
+        color: var(--content-neutral-secondary);
     }
 }

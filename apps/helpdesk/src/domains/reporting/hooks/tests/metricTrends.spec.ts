@@ -65,6 +65,7 @@ import { sentMessagesCountQueryV2Factory } from 'domains/reporting/models/scopes
 import { oneTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
 import { onlineTimeQueryV2Factory } from 'domains/reporting/models/scopes/onlineTime'
 import { medianResolutionTimeQueryV2Factory } from 'domains/reporting/models/scopes/resolutionTime'
+import { medianResponseTimeQueryV2Factory } from 'domains/reporting/models/scopes/responseTime'
 import { ticketAverageHandleTimeQueryV2Factory } from 'domains/reporting/models/scopes/ticketHandleTime'
 import { closedTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
@@ -259,7 +260,7 @@ describe('metric trends', () => {
             'useMedianResponseTimeTrend',
             useMedianResponseTimeTrend,
             medianResponseTimeQueryFactory,
-            undefined,
+            medianResponseTimeQueryV2Factory,
         ],
     ])('%s', (_testName, useTrendFn, queryFactory, scopeQuery) => {
         it('should create reporting filters', () => {
@@ -362,6 +363,7 @@ describe('metric trends', () => {
             'fetchMedianResponseTimeTrend',
             fetchMedianResponseTimeTrend,
             medianResponseTimeQueryFactory,
+            medianResponseTimeQueryV2Factory,
         ],
     ])('%s', (_testName, fetchTrendFn, queryFactory, queryV2Factory?: any) => {
         it('should create reporting filters', async () => {

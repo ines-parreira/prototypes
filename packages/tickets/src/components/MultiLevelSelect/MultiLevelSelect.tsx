@@ -1,7 +1,14 @@
 import { useCallback, useRef, useState } from 'react'
 import type { RefObject } from 'react'
 
-import { Icon, IconName, ListItem, Select, StatusButton } from '@gorgias/axiom'
+import {
+    Icon,
+    IconName,
+    ListItem,
+    Select,
+    SelectTrigger,
+    TextField,
+} from '@gorgias/axiom'
 
 import { getDisplayLabel, isBackButton, isClearButton } from './helpers/tree'
 import { useOptionsTree } from './hooks/useOptionsTree'
@@ -96,27 +103,21 @@ export function MultiLevelSelect(props: Props) {
         }) => {
             const label = getDisplayLabel(selectedValue)
 
+            // inspired by Axiom SelectField
+            // migrate to Axiom SelectField once missing props are supported
             return (
-                <StatusButton
-                    ref={ref}
-                    leadingSlot={
-                        label === null ? (
-                            <Icon name={IconName.AddPlus} size="sm" />
-                        ) : undefined
-                    }
-                    trailingSlot={
-                        <Icon
-                            name={
-                                isOpen
-                                    ? IconName.ArrowChevronUp
-                                    : IconName.ArrowChevronDown
-                            }
-                            size="xs"
-                        />
-                    }
-                >
-                    {label || placeholder}
-                </StatusButton>
+                <SelectTrigger>
+                    <TextField
+                        inputRef={ref as RefObject<HTMLInputElement>}
+                        isFocused={isOpen}
+                        trailingSlot={
+                            isOpen ? 'arrow-chevron-up' : 'arrow-chevron-down'
+                        }
+                        variant="secondary"
+                        size="sm"
+                        value={label || placeholder}
+                    />
+                </SelectTrigger>
             )
         },
         [selectedValue, placeholder],
@@ -141,6 +142,7 @@ export function MultiLevelSelect(props: Props) {
             minWidth={139}
             maxWidth={139}
             maxHeight={258}
+            size="sm"
         >
             {(option: Option) => {
                 if (isBackButton(option)) {

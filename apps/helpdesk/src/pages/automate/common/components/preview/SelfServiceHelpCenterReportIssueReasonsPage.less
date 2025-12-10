@@ -2,52 +2,22 @@
 
 :local {
     .container {
-        background-color: var(--neutral-grey-0);
-        color: var(--neutral-grey-6);
+        .body-regular();
+        display: flex;
+        flex-direction: column;
+        color: var(--neutral-grey-6); // legacy
         overflow: auto;
         pointer-events: initial;
+        padding: 32px 20px;
     }
 
     .header {
-        display: flex;
-        flex-direction: column;
-        padding: var(--layout-spacing-m) var(--layout-spacing-s);
-        gap: var(--layout-spacing-xs);
-        border-bottom: 1px solid var(--neutral-grey-3);
-    }
-
-    .title {
         .heading-section-semibold();
     }
+}
 
-    .description {
-        .heading-subsection-regular();
-        color: var(--neutral-grey-4);
-    }
-
-    .item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: var(--layout-spacing-s);
-        gap: var(--layout-spacing-s);
-        border-bottom: 1px solid var(--neutral-grey-3);
-
-        &.isPlaceholder {
-            color: var(--neutral-grey-4);
-        }
-
-        &.isHovered {
-            background-color: var(--neutral-grey-1);
-        }
-    }
-
-    .chevronRightIcon {
-        font-size: 20px;
-        color: var(--neutral-grey-4);
-
-        &.isHovered {
-            color: var(--neutral-grey-5);
-        }
+.axiom :local {
+    .container {
+        color: var(--content-neutral-default);
     }
 }

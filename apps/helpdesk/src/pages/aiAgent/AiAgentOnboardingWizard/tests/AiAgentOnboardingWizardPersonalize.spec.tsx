@@ -94,7 +94,6 @@ const storeFormValues = {
     signature: 'This response was created by AI',
     monitoredEmailIntegrations: [],
     monitoredChatIntegrations: [],
-    trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
     deactivatedDatetime: new Date().toISOString(),

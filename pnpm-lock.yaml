@@ -14,8 +14,8 @@ catalogs:
       specifier: 0.120.0-107afea.0
       version: 0.120.0-107afea.0
     '@gorgias/design-tokens':
-      specifier: 0.11.2
-      version: 0.11.2
+      specifier: 0.11.4
+      version: 0.11.4
   bundler:
     process:
       specifier: ^0.11.10
@@ -412,7 +412,7 @@ importers:
         version: 3.4.7
       '@gorgias/analytics-ui-kit':
         specifier: catalog:analytics-ui-kit
-        version: 0.1.14(@gorgias/design-tokens@0.11.2)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
+        version: 0.1.14(@gorgias/design-tokens@0.11.4)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.120.0-107afea.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
@@ -430,7 +430,7 @@ importers:
         version: 0.2.36(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.11.2
+        version: 0.11.4
       '@gorgias/ecommerce-storage-client':
         specifier: catalog:rest-api-sdk
         version: 0.2.5
@@ -1472,7 +1472,7 @@ importers:
         version: 0.120.0-107afea.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.11.2
+        version: 0.11.4
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -1532,7 +1532,7 @@ importers:
         version: 0.120.0-107afea.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.11.2
+        version: 0.11.4
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -1853,10 +1853,10 @@ importers:
     devDependencies:
       '@gorgias/analytics-ui-kit':
         specifier: catalog:analytics-ui-kit
-        version: 0.1.14(@gorgias/design-tokens@0.11.2)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
+        version: 0.1.14(@gorgias/design-tokens@0.11.4)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.11.2
+        version: 0.11.4
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -3688,9 +3688,6 @@ packages:
 
   '@gorgias/convert-types@0.4.13':
     resolution: {integrity: sha512-b1SByCz/nUiOcqrIDrmk7FLtyEPLEMsTjLnxnayiM5HvYOaxddesIZ50qLmUZUreEWeLy0UzYsfdk60KVivb4Q==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.13/6bbb5ec551cbcab96c977579a52356d96f44237b}
-
-  '@gorgias/design-tokens@0.11.2':
-    resolution: {integrity: sha512-ca/CgV65UotTAiIMTrEGUcbu8jnyhxcxa+qsdMjB/ek9mwBe2R20XKXGV++RlBrKn+ZovQqnY/vV8oY4QzpXRg==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.11.2/f4f5f94e8a336efb75c7259f24ee9cd8c54db525}
 
   '@gorgias/design-tokens@0.11.4':
     resolution: {integrity: sha512-zpJjYuwRU8kaYyug6pRHn4jGi0YCquiIzJS5e4/N2BJTJMTZcUrxmxUQKigDSZ/ppxqSyjLUWmyEZpcAxPf+Xw==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.11.4/44e8e159b3a75f452426c6b2a25758afc0e3f673}
@@ -15427,9 +15424,9 @@ snapshots:
     dependencies:
       emojis-list: 3.0.0
 
-  '@gorgias/analytics-ui-kit@0.1.14(@gorgias/design-tokens@0.11.2)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)':
+  '@gorgias/analytics-ui-kit@0.1.14(@gorgias/design-tokens@0.11.4)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)':
     dependencies:
-      '@gorgias/design-tokens': 0.11.2
+      '@gorgias/design-tokens': 0.11.4
       classnames: 2.2.6
       core-js: 3.42.0
       react: 18.2.0
@@ -15509,8 +15506,6 @@ snapshots:
   '@gorgias/convert-spec@0.2.28': {}
 
   '@gorgias/convert-types@0.4.13': {}
-
-  '@gorgias/design-tokens@0.11.2': {}
 
   '@gorgias/design-tokens@0.11.4': {}
 

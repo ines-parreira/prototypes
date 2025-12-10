@@ -13,13 +13,13 @@
     }
 
     .address {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
         max-width: 250px;
         word-break: break-all;
 
         &.failed {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
@@ -33,6 +33,20 @@
     }
 
     .emptyState {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .address {
+        color: var(--content-neutral-default);
+
+        &.failed {
+            color: var(--content-error-primary);
+        }
+    }
+
+    .emptyState {
+        color: var(--content-neutral-secondary);
     }
 }

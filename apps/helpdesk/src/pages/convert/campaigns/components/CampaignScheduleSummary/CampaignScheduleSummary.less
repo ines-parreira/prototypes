@@ -5,8 +5,14 @@
     .messageWrapper {
         .body-regular();
 
-        border: 1px solid var(--main-primary);
+        border: 1px solid var(--main-primary); // legacy
         border-radius: 4px;
         padding: var(--layout-spacing-s) 20px;
+    }
+}
+
+.axiom :local {
+    .messageWrapper {
+        border: 1px solid var(--content-accent-default);
     }
 }

@@ -22,7 +22,6 @@ export const getFormValuesFromStoreConfiguration = (
     smsChannelDeactivatedDatetime: storeConfig.smsChannelDeactivatedDatetime,
     emailChannelDeactivatedDatetime:
         storeConfig.emailChannelDeactivatedDatetime,
-    trialModeActivatedDatetime: storeConfig.trialModeActivatedDatetime,
     previewModeActivatedDatetime: storeConfig.previewModeActivatedDatetime,
     previewModeValidUntilDatetime: storeConfig.previewModeValidUntilDatetime,
     silentHandover: storeConfig.silentHandover,

@@ -5,7 +5,7 @@
         align-items: center;
         justify-content: center;
         height: 100%;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         text-align: center;
     }
 
@@ -16,7 +16,7 @@
 
     .checkIcon {
         font-size: 17px;
-        color: var(--feedback-success);
+        color: var(--feedback-success); // legacy
     }
 
     .heading {
@@ -32,7 +32,7 @@
     }
 
     .description {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-bottom: var(--layout-spacing-xl);
 
         p {
@@ -42,5 +42,19 @@
         p:last-of-type {
             margin-bottom: 0;
         }
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .checkIcon {
+        color: var(--static-success);
+    }
+
+    .description {
+        color: var(--content-neutral-secondary);
     }
 }

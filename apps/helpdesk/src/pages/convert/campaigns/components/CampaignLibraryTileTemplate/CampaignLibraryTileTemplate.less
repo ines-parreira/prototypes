@@ -2,16 +2,16 @@
 
 :local {
     .link {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         &:hover,
         &:focus,
         &:active {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
     .container {
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 8px;
         transition: ease-in-out 0.2s;
 
@@ -40,5 +40,20 @@
 
     .content {
         padding: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .link {
+        color: var(--content-neutral-default);
+        &:hover,
+        &:focus,
+        &:active {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .container {
+        border: 1px solid var(--border-neutral-default);
     }
 }

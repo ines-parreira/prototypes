@@ -13,7 +13,7 @@
         font-size: 12px;
         font-weight: 500;
         line-height: 20px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
 
         text-transform: capitalize;
 
@@ -35,7 +35,7 @@
         align-items: center;
 
         font-size: 12px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         line-height: 16px;
     }
 
@@ -43,7 +43,7 @@
         border: 0;
         font-size: 12px;
         font-weight: 500;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .visibilityControls {
@@ -67,7 +67,7 @@
         font-size: 12px;
         line-height: 16px;
 
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .tipIcon {
@@ -84,5 +84,23 @@
     .disabled {
         pointer-events: none;
         opacity: 0.7;
+    }
+}
+
+.axiom :local {
+    .visibilityMethodDropdownPlaceholder {
+        color: var(--content-neutral-secondary);
+    }
+
+    .matchConditions {
+        color: var(--content-neutral-secondary);
+    }
+
+    .matchConditionsDropdown :global(.dropdown-toggle) {
+        color: var(--content-neutral-secondary);
+    }
+
+    .tip {
+        color: var(--content-neutral-secondary);
     }
 }

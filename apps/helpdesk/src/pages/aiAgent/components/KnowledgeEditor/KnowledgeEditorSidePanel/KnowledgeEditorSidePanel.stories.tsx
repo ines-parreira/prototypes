@@ -265,9 +265,10 @@ ForGuidance.args = {
                 isUpdating: false,
             }}
             impact={{
-                successRate: 0.28,
-                csat: 3.2,
-                gmvInfluenced: { value: 1200, currency: 'USD' },
+                tickets: { value: 42 },
+                handoverTickets: { value: 5 },
+                csat: { value: 4.2 },
+                intents: ['Order/status', 'Shipping/inquiry'],
             }}
             relatedTickets={relatedTickets}
         />
@@ -304,9 +305,10 @@ ForDocumentSnippet.args = {
                 googleStorageUrl: 'https://storage.googleapis.com/doc.pdf',
             }}
             impact={{
-                successRate: 0.28,
-                csat: 3.2,
-                gmvInfluenced: { value: 1200, currency: 'USD' },
+                tickets: { value: 42 },
+                handoverTickets: { value: 5 },
+                csat: { value: 4.2 },
+                intents: ['Order/status', 'Shipping/inquiry'],
             }}
             relatedTickets={relatedTickets}
         />
@@ -343,9 +345,10 @@ ForURLSnippet.args = {
                 url: 'https://www.google.com',
             }}
             impact={{
-                successRate: 0.28,
-                csat: 3.2,
-                gmvInfluenced: { value: 1200, currency: 'USD' },
+                tickets: { value: 42 },
+                handoverTickets: { value: 5 },
+                csat: { value: 4.2 },
+                intents: ['Order/status', 'Shipping/inquiry'],
             }}
             relatedTickets={relatedTickets}
         />
@@ -388,9 +391,10 @@ ForStoreSnippet.args = {
                 ],
             }}
             impact={{
-                successRate: 0.28,
-                csat: 3.2,
-                gmvInfluenced: { value: 1200, currency: 'USD' },
+                tickets: { value: 42 },
+                handoverTickets: { value: 5 },
+                csat: { value: 4.2 },
+                intents: ['Order/status', 'Shipping/inquiry'],
             }}
             relatedTickets={relatedTickets}
         />

@@ -26,6 +26,7 @@ import { sentMessagesPerAgentQueryV2Factory } from 'domains/reporting/models/sco
 import { oneTouchTicketsPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
 import { onlineTimePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/onlineTime'
 import { medianResolutionTimePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/resolutionTime'
+import { medianResponseTimePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/responseTime'
 import { ticketAverageHandleTimePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/ticketHandleTime'
 import { closedTicketsPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { ticketsRepliedCountPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
@@ -88,10 +89,12 @@ export const fetchHumanResponseTimeAfterAiHandoffPerAgent =
 
 export const useMedianResponseTimeMetricPerAgent = createMetricPerDimensionHook(
     medianResponseTimeMetricPerAgentQueryFactory,
+    medianResponseTimePerAgentQueryV2Factory,
 )
 
 export const fetchMedianResponseTimeMetricPerAgent = createFetchPerDimension(
     medianResponseTimeMetricPerAgentQueryFactory,
+    medianResponseTimePerAgentQueryV2Factory,
 )
 
 export const useTicketsRepliedMetricPerAgent = createMetricPerDimensionHook(

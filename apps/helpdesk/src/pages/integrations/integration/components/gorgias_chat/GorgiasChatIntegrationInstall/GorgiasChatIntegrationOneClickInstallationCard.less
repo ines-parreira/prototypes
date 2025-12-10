@@ -2,7 +2,7 @@
 
 :local {
     .container {
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         padding: 20px;
 
@@ -26,7 +26,7 @@
                 align-items: center;
 
                 .toggleCollapseButton {
-                    color: var(--neutral-grey-4);
+                    color: var(--neutral-grey-4); // legacy
                     font-size: var(--layout-spacing-m);
                     width: var(--layout-spacing-m);
                     height: var(--layout-spacing-m);
@@ -40,5 +40,19 @@
     .title {
         .body-semibold();
         margin-bottom: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
+
+        .header {
+            .rightSection {
+                .toggleCollapseButton {
+                    color: var(--content-neutral-tertiary);
+                }
+            }
+        }
     }
 }

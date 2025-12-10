@@ -311,7 +311,6 @@ describe('AiAgentPreviewModeSettingsView', () => {
                 ...getStoreConfigurationFixture(),
                 previewModeActivatedDatetime: expect.any(String),
                 previewModeValidUntilDatetime: expect.any(String),
-                trialModeActivatedDatetime: expect.any(String),
                 chatChannelDeactivatedDatetime: expect.any(String),
                 emailChannelDeactivatedDatetime: expect.any(String),
                 deactivatedDatetime: expect.any(String),
@@ -401,7 +400,6 @@ describe('AiAgentPreviewModeSettingsView', () => {
             storeConfiguration: getStoreConfigurationFixture({
                 emailChannelDeactivatedDatetime: mockCurrentDate.toISOString(),
                 chatChannelDeactivatedDatetime: mockCurrentDate.toISOString(),
-                trialModeActivatedDatetime: mockCurrentDate.toISOString(),
                 previewModeActivatedDatetime: mockCurrentDate.toISOString(),
                 previewModeValidUntilDatetime: mockExpiryDate.toISOString(),
                 isPreviewModeActive: true,
@@ -477,7 +475,6 @@ describe('AiAgentPreviewModeSettingsView', () => {
             storeConfiguration: getStoreConfigurationFixture({
                 emailChannelDeactivatedDatetime: mockCurrentDate.toISOString(),
                 chatChannelDeactivatedDatetime: mockCurrentDate.toISOString(),
-                trialModeActivatedDatetime: mockCurrentDate.toISOString(),
                 previewModeActivatedDatetime: mockCurrentDate.toISOString(),
                 previewModeValidUntilDatetime: mockExpiryDate.toISOString(),
                 isPreviewModeActive: true,

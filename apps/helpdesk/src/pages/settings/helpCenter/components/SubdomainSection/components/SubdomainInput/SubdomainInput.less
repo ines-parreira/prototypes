@@ -7,7 +7,7 @@
 
         &.error {
             input {
-                border-color: var(--feedback-error);
+                border-color: var(--feedback-error); // legacy
                 box-shadow: 0 0 0 0.2rem
                     hsla(
                         var(--feedback-error-h),
@@ -20,7 +20,7 @@
     }
 
     .error {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
 
         i {
             margin-right: 4px;
@@ -30,5 +30,19 @@
     .policy {
         margin-bottom: 0;
         padding-inline-start: 1.5em;
+    }
+}
+
+.axiom :local {
+    .input {
+        &.error {
+            input {
+                border-color: var(--border-error-primary);
+            }
+        }
+    }
+
+    .error {
+        color: var(--content-error-primary);
     }
 }

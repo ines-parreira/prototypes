@@ -18,13 +18,21 @@
     }
 
     .address {
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         border-radius: var(--layout-spacing-xxs);
-        border: 1px solid var(--neutral-grey-3);
-        color: var(--neutral-grey-6);
+        border: 1px solid var(--neutral-grey-3); // legacy
+        color: var(--neutral-grey-6); // legacy
         height: var(--layout-spacing-l);
         line-height: var(--layout-spacing-l);
         padding: var(--layout-spacing-xs);
         width: 100%;
+    }
+}
+
+.axiom :local {
+    .address {
+        background: var(--surface-neutral-secondary);
+        border: 1px solid var(--border-neutral-default);
+        color: var(--content-neutral-default);
     }
 }

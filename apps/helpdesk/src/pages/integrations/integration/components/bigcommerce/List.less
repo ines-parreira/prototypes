@@ -11,7 +11,7 @@
         display: flex;
         justify-content: stretch;
         align-items: stretch;
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .link {
@@ -20,12 +20,12 @@
         align-items: center;
         flex: 1 0 auto;
         padding: 1.143rem 1.7rem; // ~16px ~24px
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         &:hover {
-            color: var(--neutral-grey-6);
-            background-color: var(--neutral-grey-1);
+            color: var(--neutral-grey-6); // legacy
+            background-color: var(--neutral-grey-1); // legacy
         }
     }
     .actionLink {
@@ -38,5 +38,20 @@
     .wrapper {
         display: flex;
         margin: 1.7rem; // ~24px
+    }
+}
+
+.axiom :local {
+    .listItem {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .link {
+        color: var(--content-neutral-default);
+        background-color: var(--elevation-neutral-default);
+        &:hover {
+            color: var(--content-neutral-default);
+            background-color: var(--hover-default);
+        }
     }
 }

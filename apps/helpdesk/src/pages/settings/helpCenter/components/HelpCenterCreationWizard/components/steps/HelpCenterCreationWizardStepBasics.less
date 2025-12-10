@@ -58,7 +58,7 @@
 
     .error {
         .caption-regular();
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         margin-top: var(--layout-spacing-xxs);
     }
 
@@ -70,5 +70,11 @@
     .storeIcon {
         width: 20px;
         margin-right: 10px;
+    }
+}
+
+.axiom :local {
+    .error {
+        color: var(--content-error-primary);
     }
 }

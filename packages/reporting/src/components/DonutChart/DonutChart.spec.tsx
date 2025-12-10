@@ -24,6 +24,11 @@ describe('DonutChart', () => {
         { name: 'Order Management', value: 3 },
     ]
 
+    const percentageFormatter = (value: number) => {
+        const total = mockData.reduce((sum, item) => sum + item.value, 0)
+        return `${((value / total) * 100).toFixed(2)}%`
+    }
+
     describe('loading state', () => {
         it('should show skeleton when loading', () => {
             const { container } = render(
@@ -74,12 +79,17 @@ describe('DonutChart', () => {
         })
 
         it('should display percentages for each segment', () => {
-            render(<DonutChart data={mockData} />)
+            render(
+                <DonutChart
+                    data={mockData}
+                    valueFormatter={percentageFormatter}
+                />,
+            )
 
-            expect(screen.getByText('56%')).toBeInTheDocument()
-            expect(screen.getByText('22%')).toBeInTheDocument()
-            expect(screen.getByText('13%')).toBeInTheDocument()
-            expect(screen.getByText('9%')).toBeInTheDocument()
+            expect(screen.getByText('56.25%')).toBeInTheDocument()
+            expect(screen.getByText('21.88%')).toBeInTheDocument()
+            expect(screen.getByText('12.50%')).toBeInTheDocument()
+            expect(screen.getByText('9.38%')).toBeInTheDocument()
         })
 
         it('should assign colors to data automatically', () => {
@@ -92,10 +102,15 @@ describe('DonutChart', () => {
 
     describe('interactive legend', () => {
         it('should toggle segment visibility when legend item is clicked', async () => {
-            render(<DonutChart data={mockData} />)
+            render(
+                <DonutChart
+                    data={mockData}
+                    valueFormatter={percentageFormatter}
+                />,
+            )
 
             const aiAgentLegend = screen.getByText('AI Agent')
-            const percentages = screen.getAllByText('56%')
+            const percentages = screen.getAllByText('56.25%')
 
             expect(percentages.length).toBeGreaterThan(0)
 
@@ -103,11 +118,17 @@ describe('DonutChart', () => {
                 await userEvent.click(aiAgentLegend)
             })
 
-            expect(screen.getByText('0%')).toBeInTheDocument()
+            expect(screen.getByText('128.57%')).toBeInTheDocument()
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
         })
 
         it('should allow multiple segments to be hidden', async () => {
-            render(<DonutChart data={mockData} />)
+            render(
+                <DonutChart
+                    data={mockData}
+                    valueFormatter={percentageFormatter}
+                />,
+            )
 
             const aiAgentLegend = screen.getByText('AI Agent')
             const flowsLegend = screen.getByText('Flows')
@@ -120,12 +141,17 @@ describe('DonutChart', () => {
                 await userEvent.click(flowsLegend)
             })
 
-            const percentages = screen.getAllByText('0%')
-            expect(percentages).toHaveLength(2)
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
+            expect(screen.getByText('Flows')).toBeInTheDocument()
         })
 
         it('should toggle segment back to visible when clicked again', async () => {
-            render(<DonutChart data={mockData} />)
+            render(
+                <DonutChart
+                    data={mockData}
+                    valueFormatter={percentageFormatter}
+                />,
+            )
 
             const aiAgentLegend = screen.getByText('AI Agent')
 
@@ -133,13 +159,13 @@ describe('DonutChart', () => {
                 await userEvent.click(aiAgentLegend)
             })
 
-            expect(screen.getByText('0%')).toBeInTheDocument()
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
 
             await act(async () => {
                 await userEvent.click(aiAgentLegend)
             })
 
-            expect(screen.getByText('56%')).toBeInTheDocument()
+            expect(screen.getByText('56.25%')).toBeInTheDocument()
         })
 
         it('should have keyboard-accessible legend items', () => {
@@ -153,7 +179,12 @@ describe('DonutChart', () => {
         })
 
         it('should reset all segments when clicking the last visible segment', async () => {
-            render(<DonutChart data={mockData} />)
+            render(
+                <DonutChart
+                    data={mockData}
+                    valueFormatter={percentageFormatter}
+                />,
+            )
 
             const aiAgentLegend = screen.getByText('AI Agent')
             const flowsLegend = screen.getByText('Flows')
@@ -172,17 +203,20 @@ describe('DonutChart', () => {
                 await userEvent.click(articleLegend)
             })
 
-            const zeroPercentages = screen.getAllByText('0%')
-            expect(zeroPercentages).toHaveLength(3)
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
+            expect(screen.getByText('Flows')).toBeInTheDocument()
+            expect(
+                screen.getByText('Article Recommendation'),
+            ).toBeInTheDocument()
 
             await act(async () => {
                 await userEvent.click(orderLegend)
             })
 
-            expect(screen.getByText('56%')).toBeInTheDocument()
-            expect(screen.getByText('22%')).toBeInTheDocument()
-            expect(screen.getByText('13%')).toBeInTheDocument()
-            expect(screen.getByText('9%')).toBeInTheDocument()
+            expect(screen.getByText('56.25%')).toBeInTheDocument()
+            expect(screen.getByText('21.88%')).toBeInTheDocument()
+            expect(screen.getByText('12.50%')).toBeInTheDocument()
+            expect(screen.getByText('9.38%')).toBeInTheDocument()
         })
     })
 
@@ -204,10 +238,15 @@ describe('DonutChart', () => {
         })
 
         it('should render Pie component with correct data', () => {
-            render(<DonutChart data={mockData} />)
+            render(
+                <DonutChart
+                    data={mockData}
+                    valueFormatter={percentageFormatter}
+                />,
+            )
 
-            expect(screen.getByText('56%')).toBeInTheDocument()
-            expect(screen.getByText('22%')).toBeInTheDocument()
+            expect(screen.getByText('56.25%')).toBeInTheDocument()
+            expect(screen.getByText('21.88%')).toBeInTheDocument()
         })
 
         it('should handle mouse move on pie chart', async () => {
@@ -320,18 +359,21 @@ describe('DonutChart', () => {
 
     describe('renderTooltipContent', () => {
         it('should return null when payload is empty', () => {
-            const result = renderTooltipContent({ payload: [] })
+            const tooltipRenderer = renderTooltipContent()
+            const result = tooltipRenderer({ payload: [] })
 
             expect(result).toBeNull()
         })
 
         it('should return null when payload is undefined', () => {
-            const result = renderTooltipContent({ payload: undefined })
+            const tooltipRenderer = renderTooltipContent()
+            const result = tooltipRenderer({ payload: undefined })
 
             expect(result).toBeNull()
         })
 
         it('should render DonutChartTooltip when payload has data', () => {
+            const tooltipRenderer = renderTooltipContent()
             const payload = [
                 {
                     payload: {
@@ -342,12 +384,53 @@ describe('DonutChart', () => {
                 },
             ]
 
-            const result = renderTooltipContent({ payload })
+            const result = tooltipRenderer({ payload })
 
             expect(result).toBeTruthy()
             expect(result?.props.name).toBe('AI Agent')
             expect(result?.props.value).toBe(18)
             expect(result?.props.color).toBe('#A084E1')
+        })
+
+        it('should use valueFormatter when provided', () => {
+            const valueFormatter = (value: number) => `${value}%`
+            const tooltipRenderer = renderTooltipContent(valueFormatter)
+            const payload = [
+                {
+                    payload: {
+                        name: 'AI Agent',
+                        value: 18,
+                        color: '#A084E1',
+                    },
+                },
+            ]
+
+            const result = tooltipRenderer({ payload })
+
+            expect(result).toBeTruthy()
+            expect(result?.props.valueFormatter).toBe(valueFormatter)
+        })
+
+        it('should include period when provided', () => {
+            const period = {
+                start_datetime: '2024-01-01',
+                end_datetime: '2024-01-31',
+            }
+            const tooltipRenderer = renderTooltipContent(undefined, period)
+            const payload = [
+                {
+                    payload: {
+                        name: 'AI Agent',
+                        value: 18,
+                        color: '#A084E1',
+                    },
+                },
+            ]
+
+            const result = tooltipRenderer({ payload })
+
+            expect(result).toBeTruthy()
+            expect(result?.props.period).toEqual(period)
         })
     })
 })

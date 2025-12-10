@@ -7,7 +7,7 @@
 
     .modalBodyListIcon {
         margin-right: var(--layout-spacing-xs);
-        color: var(--feedback-success-3);
+        color: var(--feedback-success-3); // legacy
     }
 
     .modalBodyContent {
@@ -24,6 +24,16 @@
         gap: var(--layout-spacing-s);
         margin-bottom: 0;
         .heading-subsection-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .modalBodyListIcon {
+        color: var(--content-success-default);
+    }
+
+    .modalBodyList {
+        color: var(--content-neutral-secondary);
     }
 }

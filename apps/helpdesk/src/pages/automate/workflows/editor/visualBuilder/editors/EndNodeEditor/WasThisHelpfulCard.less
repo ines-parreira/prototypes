@@ -4,15 +4,15 @@
     .container {
         padding: 36px 0;
         border-radius: 4px;
-        background: var(--neutral-grey-1);
-        border: 1px solid var(--neutral-grey-3);
+        background: var(--neutral-grey-1); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
         display: flex;
         flex-direction: column;
         gap: 24px;
     }
 
     .question {
-        color: var(--classic-neutral-grey-6);
+        color: var(--classic-neutral-grey-6); // legacy
         text-align: center;
         .body-semibold();
     }
@@ -25,5 +25,16 @@
 
     .button {
         text-transform: none;
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--elevation-neutral-mid);
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .question {
+        color: var(--content-neutral-default);
     }
 }

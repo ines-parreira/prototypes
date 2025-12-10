@@ -26,7 +26,7 @@
 
     .header {
         border: none;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         h1 {
             .heading-section-semibold();
@@ -58,7 +58,7 @@
             border: solid 1px var(--neutral-grey-2); // legacy
             border-radius: 4px;
             box-shadow: none;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             cursor: initial;
             font-size: 12px;
             padding: 12px var(--layout-spacing-s);
@@ -68,7 +68,7 @@
                 font-weight: normal;
 
                 a {
-                    color: var(--neutral-grey-6);
+                    color: var(--neutral-grey-6); // legacy
                     text-decoration: underline !important;
                 }
             }
@@ -137,10 +137,10 @@
 
         .skillStatus {
             margin-right: var(--layout-spacing-xs);
-            color: var(--local-green);
+            color: var(--local-green); // legacy
 
             &.skillStatusDisabled {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
             }
         }
 
@@ -160,7 +160,7 @@
         .newPrice {
             .price,
             .subPrice {
-                color: var(--local-green);
+                color: var(--local-green); // legacy
             }
         }
 
@@ -172,7 +172,7 @@
 
             h3 i {
                 margin-right: var(--layout-spacing-s);
-                color: var(--accessory-magenta-25);
+                color: var(--accessory-magenta-25); // legacy
             }
 
             .tipTitle {
@@ -195,7 +195,7 @@
 
                     i {
                         margin-right: 12px;
-                        color: var(--accessory-magenta-25);
+                        color: var(--accessory-magenta-25); // legacy
                     }
                 }
             }
@@ -208,10 +208,21 @@
 }
 
 .axiom :local {
+    .header {
+        color: var(--content-neutral-default);
+    }
+
     .footer {
         .legalCard {
             background-color: var(--surface-neutral-secondary);
             border: solid 1px var(--border-neutral-default);
+            color: var(--content-neutral-default);
+
+            .checkboxLabel {
+                a {
+                    color: var(--content-neutral-default);
+                }
+            }
         }
     }
 
@@ -221,13 +232,40 @@
     }
 
     .earlyAccessPlanCard {
-        border: solid 1px var(--border-brand-primary);
+        border: solid 1px var(--border-additional-purple);
     }
 
     .content {
+        .skillStatus {
+            color: var(--static-success);
+
+            &.skillStatusDisabled {
+                color: var(--content-neutral-secondary);
+            }
+        }
+
+        .newPrice {
+            .price,
+            .subPrice {
+                color: var(--static-success);
+            }
+        }
+
         .tips {
-            background: var(--surface-brand-secondary);
-            border: solid 1px var(--border-brand-primary);
+            background: var(--surface-additional-yellow);
+            border: solid 1px var(--border-additional-yellow);
+
+            h3 i {
+                color: var(--content-additional-purple);
+            }
+
+            ul {
+                li {
+                    i {
+                        color: var(--content-additional-purple);
+                    }
+                }
+            }
         }
     }
 }

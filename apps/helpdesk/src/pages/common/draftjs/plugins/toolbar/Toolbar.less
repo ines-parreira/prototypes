@@ -44,7 +44,7 @@
 
     .maxLength {
         .caption-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         display: flex;
         align-items: center;
         height: 24px;
@@ -83,16 +83,19 @@
         padding: 0.1em;
         background: hsla(
             var(--neutral-grey-0-h),
+            // legacy
             var(--neutral-grey-0-s),
+            // legacy
             var(--neutral-grey-0-l),
+            // legacy
             0.8
         );
-        border: 3px dashed var(--neutral-grey-4);
+        border: 3px dashed var(--neutral-grey-4); // legacy
         visibility: hidden;
         opacity: 0;
         transition: all 0.1s ease-out;
 
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-weight: 600;
         text-align: center;
         line-height: 1.9;
@@ -102,5 +105,18 @@
         line-height: 24px;
         margin-bottom: 4px;
         overflow: hidden;
+    }
+}
+
+.axiom :local .page {
+    .maxLength {
+        color: var(--content-neutral-secondary);
+    }
+
+    .hoverOverlay {
+        background: var(--elevation-neutral-default);
+        opacity: 0.8;
+        border: 3px dashed var(--border-neutral-default);
+        color: var(--content-neutral-secondary);
     }
 }

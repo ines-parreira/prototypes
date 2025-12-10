@@ -1,7 +1,7 @@
 :local {
     .modalFooter {
         float: right;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
 
     .removeButton {
@@ -18,5 +18,11 @@
 
     .dropdownMenu {
         width: 200px;
+    }
+}
+
+.axiom :local {
+    .modalFooter {
+        background-color: var(--elevation-neutral-mid);
     }
 }

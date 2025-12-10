@@ -6,18 +6,19 @@ import {
     useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
 } from 'domains/reporting/hooks/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
 import {
-    fetchMetricPerDimension,
-    useMetricPerDimension,
+    fetchMetricPerDimensionV2,
+    useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { TicketSLAStatus } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import { satisfiedOrBreachedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/sla/satisfiedOrBreachedTickets'
+import { satisfiedOrBreachedTicketsQueryV2Factory } from 'domains/reporting/models/scopes/ticketSLA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
-const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
-const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
+const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
+const fetchMetricPerDimensionV2Mock = assumeMock(fetchMetricPerDimensionV2)
 
 const mockData = {
     data: {
@@ -43,7 +44,7 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
     const slaStatus = TicketSLAStatus.Breached
 
     beforeEach(() => {
-        useMetricPerDimensionMock.mockReturnValue(mockData)
+        useMetricPerDimensionV2Mock.mockReturnValue(mockData)
     })
 
     describe('useSatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
@@ -56,12 +57,17 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 ),
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 satisfiedOrBreachedTicketsQueryFactory(
                     filters,
                     timeZone,
                     sorting,
                 ),
+                satisfiedOrBreachedTicketsQueryV2Factory({
+                    filters,
+                    timezone: timeZone,
+                    sortDirection: sorting,
+                }),
                 undefined,
             )
         })
@@ -76,12 +82,17 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 ),
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 satisfiedOrBreachedTicketsQueryFactory(
                     filters,
                     timeZone,
                     sorting,
                 ),
+                satisfiedOrBreachedTicketsQueryV2Factory({
+                    filters,
+                    timezone: timeZone,
+                    sortDirection: sorting,
+                }),
                 slaStatus,
             )
         })
@@ -97,16 +108,21 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 ),
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenNthCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenNthCalledWith(
                 1,
                 satisfiedOrBreachedTicketsQueryFactory(
                     filters,
                     timeZone,
                     sorting,
                 ),
+                satisfiedOrBreachedTicketsQueryV2Factory({
+                    filters,
+                    timezone: timeZone,
+                    sortDirection: sorting,
+                }),
                 undefined,
             )
-            expect(useMetricPerDimensionMock).toHaveBeenNthCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenNthCalledWith(
                 2,
                 satisfiedOrBreachedTicketsQueryFactory(
                     {
@@ -116,6 +132,14 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                     timeZone,
                     sorting,
                 ),
+                satisfiedOrBreachedTicketsQueryV2Factory({
+                    filters: {
+                        ...filters,
+                        period: getPreviousPeriod(filters.period),
+                    },
+                    timezone: timeZone,
+                    sortDirection: sorting,
+                }),
                 undefined,
             )
         })
@@ -130,16 +154,21 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 ),
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenNthCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenNthCalledWith(
                 1,
                 satisfiedOrBreachedTicketsQueryFactory(
                     filters,
                     timeZone,
                     sorting,
                 ),
+                satisfiedOrBreachedTicketsQueryV2Factory({
+                    filters,
+                    timezone: timeZone,
+                    sortDirection: sorting,
+                }),
                 slaStatus,
             )
-            expect(useMetricPerDimensionMock).toHaveBeenNthCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenNthCalledWith(
                 2,
                 satisfiedOrBreachedTicketsQueryFactory(
                     {
@@ -149,13 +178,21 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                     timeZone,
                     sorting,
                 ),
+                satisfiedOrBreachedTicketsQueryV2Factory({
+                    filters: {
+                        ...filters,
+                        period: getPreviousPeriod(filters.period),
+                    },
+                    timezone: timeZone,
+                    sortDirection: sorting,
+                }),
                 slaStatus,
             )
         })
 
         it('should return loading state', () => {
             const isFetching = true
-            useMetricPerDimensionMock.mockReturnValue({
+            useMetricPerDimensionV2Mock.mockReturnValue({
                 isFetching,
                 isError: false,
                 data: null,
@@ -175,7 +212,7 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
 
         it('should return error state', () => {
             const isError = true
-            useMetricPerDimensionMock.mockReturnValue({
+            useMetricPerDimensionV2Mock.mockReturnValue({
                 isFetching: false,
                 isError,
                 data: null,
@@ -196,7 +233,7 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
 
     describe('fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend', () => {
         beforeEach(() => {
-            fetchMetricPerDimensionMock.mockResolvedValue({
+            fetchMetricPerDimensionV2Mock.mockResolvedValue({
                 isFetching: false,
                 isError: false,
                 data: null,
@@ -210,16 +247,21 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 sorting,
             )
 
-            expect(fetchMetricPerDimensionMock).toHaveBeenNthCalledWith(
+            expect(fetchMetricPerDimensionV2Mock).toHaveBeenNthCalledWith(
                 1,
                 satisfiedOrBreachedTicketsQueryFactory(
                     filters,
                     timeZone,
                     sorting,
                 ),
+                satisfiedOrBreachedTicketsQueryV2Factory({
+                    filters,
+                    timezone: timeZone,
+                    sortDirection: sorting,
+                }),
                 undefined,
             )
-            expect(fetchMetricPerDimensionMock).toHaveBeenNthCalledWith(
+            expect(fetchMetricPerDimensionV2Mock).toHaveBeenNthCalledWith(
                 2,
                 satisfiedOrBreachedTicketsQueryFactory(
                     {
@@ -229,6 +271,14 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                     timeZone,
                     sorting,
                 ),
+                satisfiedOrBreachedTicketsQueryV2Factory({
+                    filters: {
+                        ...filters,
+                        period: getPreviousPeriod(filters.period),
+                    },
+                    timezone: timeZone,
+                    sortDirection: sorting,
+                }),
                 undefined,
             )
         })
@@ -241,16 +291,21 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 slaStatus,
             )
 
-            expect(fetchMetricPerDimensionMock).toHaveBeenNthCalledWith(
+            expect(fetchMetricPerDimensionV2Mock).toHaveBeenNthCalledWith(
                 1,
                 satisfiedOrBreachedTicketsQueryFactory(
                     filters,
                     timeZone,
                     sorting,
                 ),
+                satisfiedOrBreachedTicketsQueryV2Factory({
+                    filters,
+                    timezone: timeZone,
+                    sortDirection: sorting,
+                }),
                 slaStatus,
             )
-            expect(fetchMetricPerDimensionMock).toHaveBeenNthCalledWith(
+            expect(fetchMetricPerDimensionV2Mock).toHaveBeenNthCalledWith(
                 2,
                 satisfiedOrBreachedTicketsQueryFactory(
                     {
@@ -260,13 +315,21 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                     timeZone,
                     sorting,
                 ),
+                satisfiedOrBreachedTicketsQueryV2Factory({
+                    filters: {
+                        ...filters,
+                        period: getPreviousPeriod(filters.period),
+                    },
+                    timezone: timeZone,
+                    sortDirection: sorting,
+                }),
                 slaStatus,
             )
         })
 
         it('should return loading state', async () => {
             const isFetching = true
-            fetchMetricPerDimensionMock.mockResolvedValue({
+            fetchMetricPerDimensionV2Mock.mockResolvedValue({
                 isFetching,
                 isError: false,
                 data: null,
@@ -285,7 +348,7 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
 
         it('should return error state', async () => {
             const isError = true
-            fetchMetricPerDimensionMock.mockResolvedValue({
+            fetchMetricPerDimensionV2Mock.mockResolvedValue({
                 isFetching: false,
                 isError,
                 data: null,

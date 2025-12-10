@@ -2,7 +2,7 @@
 
 :local {
     .contentWrapper {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         @media @mobiles {
             max-width: inherit;
@@ -29,5 +29,11 @@
     .leftColumn {
         max-width: 680px;
         width: 70%;
+    }
+}
+
+.axiom :local {
+    .contentWrapper {
+        color: var(--content-neutral-default);
     }
 }

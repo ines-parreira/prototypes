@@ -9,7 +9,7 @@
     }
 
     .title {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 16px;
         font-weight: 600;
     }
@@ -44,7 +44,7 @@
     }
 
     .descriptionTitle {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 20px;
         font-weight: 600;
         line-height: 28px;
@@ -52,7 +52,7 @@
     }
 
     .descriptionText {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 16px;
         font-weight: 400;
         line-height: 24px;
@@ -67,12 +67,13 @@
         box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
         background-image:
             linear-gradient(var(--neutral-grey-0), var(--neutral-grey-0)),
+            // legacy
             linear-gradient(
-                315deg,
-                var(--Purple-purple-500, #a084e1) 20.19%,
-                var(--Fuchsia-fuchsia-300, #fc8ae9) 50%,
-                var(--Orange-orange-500, #ff9a57) 80%
-            );
+                    315deg,
+                    var(--purple-500, #a084e1) 20.19%,
+                    var(--fuchsia-300, #fc8ae9) 50%,
+                    var(--orange-500, #ff9a57) 80%
+                );
         background-origin: border-box;
         background-clip: padding-box, border-box;
         border: 1px solid transparent;
@@ -105,18 +106,18 @@
     }
 
     .successCheckOutline {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 32px;
     }
 
     .conditionTextTitle {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 14px;
         font-weight: 600;
     }
 
     .conditionTextSubtitle {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 12px;
         font-weight: 400;
         line-height: 16px;
@@ -147,9 +148,9 @@
         gap: 4px;
         align-self: stretch;
 
-        background-color: var(--neutral-grey-6) !important;
-        color: var(--neutral-grey-0) !important;
-        border-color: var(--neutral-grey-6) !important;
+        background-color: var(--neutral-grey-6) !important; // legacy
+        color: var(--neutral-grey-0) !important; // legacy
+        border-color: var(--neutral-grey-6) !important; // legacy
         height: 36px;
         padding: var(--layout-spacing-xs) 12px;
     }
@@ -158,5 +159,51 @@
         display: flex;
         width: 50%;
         padding: var(--layout-spacing-m);
+    }
+}
+
+.axiom :local {
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .descriptionTitle {
+        color: var(--content-neutral-default);
+    }
+
+    .descriptionText {
+        color: var(--content-neutral-default);
+    }
+
+    .detailsWrapper {
+        background-image:
+            linear-gradient(
+                var(--elevation-neutral-default),
+                var(--elevation-neutral-default)
+            ),
+            linear-gradient(
+                315deg,
+                var(--purple-500, #a084e1) 20.19%,
+                var(--fuchsia-300, #fc8ae9) 50%,
+                var(--orange-500, #ff9a57) 80%
+            );
+    }
+
+    .successCheckOutline {
+        color: var(--content-neutral-secondary);
+    }
+
+    .conditionTextTitle {
+        color: var(--content-neutral-default);
+    }
+
+    .conditionTextSubtitle {
+        color: var(--content-neutral-default);
+    }
+
+    .completeSetUpButton {
+        background-color: var(--content-neutral-default) !important;
+        color: var(--elevation-neutral-default) !important;
+        border-color: var(--content-neutral-default) !important;
     }
 }

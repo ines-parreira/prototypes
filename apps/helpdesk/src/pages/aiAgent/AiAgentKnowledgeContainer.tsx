@@ -168,7 +168,6 @@ export const AiAgentKnowledgeContainer = () => {
         const deactivatedDatetime = new Date().toISOString()
         updateValue('emailChannelDeactivatedDatetime', deactivatedDatetime)
         updateValue('chatChannelDeactivatedDatetime', deactivatedDatetime)
-        updateValue('trialModeActivatedDatetime', null)
         updateValue('previewModeActivatedDatetime', null)
         updateValue('previewModeValidUntilDatetime', null)
 
@@ -177,7 +176,6 @@ export const AiAgentKnowledgeContainer = () => {
                 ...storeConfiguration,
                 chatChannelDeactivatedDatetime: deactivatedDatetime,
                 emailChannelDeactivatedDatetime: deactivatedDatetime,
-                trialModeActivatedDatetime: null,
                 previewModeActivatedDatetime: null,
                 previewModeValidUntilDatetime: null,
             })

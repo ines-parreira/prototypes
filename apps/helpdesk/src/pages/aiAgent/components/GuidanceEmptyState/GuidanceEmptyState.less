@@ -51,7 +51,7 @@
 
     .subtitle {
         margin-bottom: 0;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .img {
@@ -61,7 +61,7 @@
     }
 
     .autoAwesome {
-        color: var(--accessory-magenta-3);
+        color: var(--accessory-magenta-3); // legacy
         font-size: 16px;
         padding-right: 4px;
     }
@@ -171,6 +171,14 @@
 
 .axiom :local {
     .container {
-        background-color: var(--surface-brand-secondary);
+        background-color: var(--surface-additional-yellow);
+    }
+
+    .subtitle {
+        color: var(--content-neutral-secondary);
+    }
+
+    .autoAwesome {
+        color: var(--content-additional-purple);
     }
 }

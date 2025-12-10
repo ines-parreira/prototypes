@@ -5,7 +5,7 @@
         height: 1px;
         margin-top: calc(var(--layout-spacing-m) * -1);
         margin-bottom: var(--layout-spacing-s);
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
         width: 100%;
     }
 
@@ -39,8 +39,8 @@
         .card {
             align-items: flex-start;
             border-radius: 12px;
-            border: 1px solid var(--neutral-grey-3);
-            background: var(--neutral-grey-0);
+            border: 1px solid var(--neutral-grey-3); // legacy
+            background: var(--neutral-grey-0); // legacy
             display: flex;
             gap: var(--spacing-s, 16px);
             flex-direction: column;
@@ -56,9 +56,26 @@
     }
 
     .sidebar {
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         min-height: 100vh;
         display: flex;
         width: 600px;
+    }
+}
+
+.axiom :local {
+    .divider {
+        background-color: var(--border-neutral-default);
+    }
+
+    .formPreview {
+        .card {
+            border: 1px solid var(--border-neutral-default);
+            background: var(--elevation-neutral-default);
+        }
+    }
+
+    .sidebar {
+        background: var(--surface-neutral-secondary);
     }
 }

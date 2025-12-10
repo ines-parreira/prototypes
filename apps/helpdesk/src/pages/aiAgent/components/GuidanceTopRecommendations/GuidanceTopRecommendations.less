@@ -9,11 +9,17 @@
     }
 
     .titleCell {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .spinner {
         display: flex;
         justify-content: center;
+    }
+}
+
+.axiom :local {
+    .titleCell {
+        color: var(--content-neutral-secondary);
     }
 }

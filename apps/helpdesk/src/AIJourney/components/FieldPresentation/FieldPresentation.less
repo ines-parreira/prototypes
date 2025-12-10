@@ -9,13 +9,13 @@
     }
 
     .fieldName {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
         line-height: normal;
     }
 
     .requiredDecorator {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         font-weight: 600;
     }
 
@@ -29,6 +29,20 @@
     }
 
     .fieldDescription {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .fieldName {
+        color: var(--content-neutral-default);
+    }
+
+    .requiredDecorator {
+        color: var(--content-error-primary);
+    }
+
+    .fieldDescription {
+        color: var(--content-neutral-secondary);
     }
 }

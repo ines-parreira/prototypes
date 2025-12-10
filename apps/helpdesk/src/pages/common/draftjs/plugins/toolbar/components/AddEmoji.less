@@ -3,8 +3,8 @@
         border: none !important;
         border-radius: 4px !important;
         width: 300px !important;
-        background-color: var(--neutral-grey-1);
-        color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-1); // legacy
+        color: var(--neutral-grey-6); // legacy
 
         .emoji-mart-search {
             margin-bottom: 6px;
@@ -14,8 +14,8 @@
                 padding: 0.5rem 0.75rem;
                 font-size: 1rem;
                 line-height: 1.25;
-                color: var(--neutral-grey-6);
-                background-color: var(--neutral-grey-0);
+                color: var(--neutral-grey-6); // legacy
+                background-color: var(--neutral-grey-0); // legacy
                 background-image: none;
                 border: 1px solid fade(black, 15%);
                 border-radius: 0.25rem;
@@ -31,14 +31,14 @@
         }
 
         .emoji-mart-anchors {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
 
         .emoji-mart-anchor {
             cursor: pointer;
 
             &:hover {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
             }
         }
 
@@ -60,13 +60,49 @@
 
             span {
                 font-size: 14px;
-                background-color: var(--neutral-grey-1);
+                background-color: var(--neutral-grey-1); // legacy
             }
         }
 
         .emoji-mart-emoji {
             &:hover::before {
-                background-color: var(--neutral-grey-3);
+                background-color: var(--neutral-grey-3); // legacy
+            }
+        }
+    }
+}
+
+.axiom {
+    .emoji-mart {
+        background-color: var(--surface-neutral-secondary);
+        color: var(--content-neutral-default);
+
+        .emoji-mart-search {
+            input {
+                color: var(--content-neutral-default);
+                background-color: var(--elevation-neutral-default);
+            }
+        }
+
+        .emoji-mart-anchors {
+            color: var(--content-neutral-tertiary);
+        }
+
+        .emoji-mart-anchor {
+            &:hover {
+                color: var(--content-neutral-secondary);
+            }
+        }
+
+        .emoji-mart-category-label {
+            span {
+                background-color: var(--surface-neutral-secondary);
+            }
+        }
+
+        .emoji-mart-emoji {
+            &:hover::before {
+                background-color: var(--surface-neutral-primary);
             }
         }
     }

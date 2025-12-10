@@ -252,8 +252,7 @@ export const useConfigurationForm = ({
             if (
                 aiAgentMode === 'enabled' &&
                 initValues &&
-                (initValues.emailChannelDeactivatedDatetime !== null ||
-                    initValues.trialModeActivatedDatetime !== null)
+                initValues.emailChannelDeactivatedDatetime !== null
             ) {
                 logEvent(SegmentEvent.AiAgentEnabled, {
                     store: shopName,

@@ -16,7 +16,6 @@ export const getStoreConfigurationFixture = (
     emailChannelDeactivatedDatetime: null,
     chatChannelDeactivatedDatetime: null,
     smsChannelDeactivatedDatetime: null,
-    trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
     isPreviewModeActive: false,
@@ -90,12 +89,6 @@ export const getStoreWithPreviewMode = (): StoreConfiguration =>
         previewModeActivatedDatetime: '2024-01-01T00:00:00.000Z',
         previewModeValidUntilDatetime: '2024-02-01T00:00:00.000Z',
         isPreviewModeActive: true,
-    })
-
-export const getStoreWithTrialMode = (): StoreConfiguration =>
-    getStoreConfigurationFixture({
-        storeName: 'trial-store',
-        trialModeActivatedDatetime: '2024-01-01T00:00:00.000Z',
     })
 
 export const getStoreWithDisabledChannels = (): StoreConfiguration =>

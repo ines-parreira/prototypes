@@ -62,6 +62,12 @@ export type DimensionName =
     | 'eventType'
     | 'storeId'
     | 'customFieldValue'
+    | 'status'
+    | 'tagId'
+    | 'resourceType'
+    | 'resourceSourceId'
+    | 'resourceSourceSetId'
+    | 'top2LevelsValue'
 
 export type MeasureName =
     | 'ticketCount'
@@ -73,6 +79,7 @@ export type MeasureName =
     | 'onlineTime'
     | 'messagesCount'
     | 'messagesAverage'
+    | 'medianResponseTime'
     | 'medianFirstResponseTime'
     | 'medianFirstResponseTimeInSeconds'
     | 'automationRate'
@@ -93,6 +100,8 @@ export type TimeDimensionName =
     | 'closedDatetime'
     | 'firstAgentMessageDatetime'
     | 'updatedDatetime'
+    | 'anchorDatetime'
+    | 'timestamp'
 
 export type StringFilterName =
     | 'periodStart'
@@ -123,6 +132,9 @@ export type StringFilterName =
     | 'productId'
     | 'createdDatetime'
     | 'customFieldValue'
+    | 'slaPolicyUuid'
+    | 'resourceSourceId'
+    | 'resourceSourceSetId'
 
 export type NumberFilterName =
     | 'agentId'

@@ -9,7 +9,11 @@ import {
 } from '@gorgias/axiom'
 
 import { TREND_BADGE_FORMAT } from '../../constants'
-import type { MetricValueFormat, TrendDirection } from '../../types'
+import type {
+    MetricTrendFormat,
+    MetricValueFormat,
+    TrendDirection,
+} from '../../types'
 import {
     formatMetricTrend,
     formatMetricValue,
@@ -48,7 +52,7 @@ export function TrendBadge({
     const { formattedTrend, sign = 0 } = formatMetricTrend(
         value,
         prevValue,
-        TREND_BADGE_FORMAT,
+        (metricFormat as MetricTrendFormat) || TREND_BADGE_FORMAT,
     )
 
     const trendColor = getTrendColorFromValue(sign, interpretAs)

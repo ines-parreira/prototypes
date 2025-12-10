@@ -13,7 +13,15 @@
 
     .richField {
         &.hasError {
-            border-color: var(--feedback-error);
+            border-color: var(--feedback-error); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .richField {
+        &.hasError {
+            border-color: var(--border-error-primary);
         }
     }
 }

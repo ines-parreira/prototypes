@@ -15,7 +15,6 @@ export const getStoreConfigurationFixture = (
     emailChannelDeactivatedDatetime: null,
     chatChannelDeactivatedDatetime: null,
     smsChannelDeactivatedDatetime: null,
-    trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
     isPreviewModeActive: false,

@@ -7,15 +7,27 @@
         gap: var(--layout-spacing-s);
 
         .title {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             .heading-section-semibold();
         }
 
         .content {
             border-radius: 4px;
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
             .body-regular();
             padding: var(--layout-spacing-m);
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        .title {
+            color: var(--content-neutral-default);
+        }
+
+        .content {
+            background: var(--elevation-neutral-mid);
         }
     }
 }

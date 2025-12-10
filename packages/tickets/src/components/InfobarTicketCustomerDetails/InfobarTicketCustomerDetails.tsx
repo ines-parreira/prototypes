@@ -1,6 +1,6 @@
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
-import { InfobarBaseCustomerFields } from '../InfobarBaseCustomerFields/InfobarBaseCustomerFields'
+import { InfobarCustomerFields } from '../InfobarCustomerFields/InfobarCustomerFields'
 import { InfobarTicketCustomerHeader } from '../InfobarTicketCustomerHeader/InfobarTicketCustomerHeader'
 
 import css from './InfobarTicketCustomerDetails.less'
@@ -29,7 +29,7 @@ export function InfobarTicketCustomerDetails({
                 showMergeButton={showMergeButton}
                 onMergeClick={onMergeClick}
             />
-            <InfobarBaseCustomerFields />
+            <InfobarCustomerFields />
         </div>
     )
 }

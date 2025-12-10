@@ -29,10 +29,20 @@
     }
 
     .footer {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .input {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
+    }
+}
+
+.axiom :local {
+    .footer {
+        color: var(--content-neutral-secondary);
+    }
+
+    .input {
+        background-color: var(--elevation-neutral-default);
     }
 }

@@ -3,11 +3,11 @@
 
 :local {
     .container {
-        background-color: var(--neutral-grey-0);
-        color: var(--neutral-grey-6);
-        flex: 1;
+        .body-regular();
+        padding: var(--layout-spacing-m) 0;
         overflow: auto;
         pointer-events: initial;
+        color: var(--neutral-grey-6); // legacy
 
         :global {
             animation: fadeIn 0.3s ease-in;
@@ -17,38 +17,48 @@
     .header {
         display: flex;
         align-items: center;
-        padding: var(--layout-spacing-m);
-        gap: var(--layout-spacing-xs);
-        border-bottom: 1px dashed var(--neutral-grey-3);
+        gap: var(--layout-spacing-s);
+        padding: 0 var(--layout-spacing-s);
     }
 
-    .orderNumber {
+    .thumbnail {
+        border-radius: 2px;
+    }
+
+    .titleContainer {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-xs);
+        flex: 1;
+    }
+
+    .separator {
+        border-top: 1px solid var(--neutral-grey-3); // legacy
+        margin: var(--layout-spacing-m) 0;
+    }
+
+    .title {
         .heading-section-semibold();
     }
 
-    .orderDate {
-        .heading-subsection-regular();
-        color: var(--neutral-grey-4);
+    .description {
+        color: var(--neutral-grey-5); // legacy
     }
 
-    .etaWithTimelineContainer {
-        display: flex;
-        flex-direction: column;
-        padding: var(--layout-spacing-m);
-        gap: var(--layout-spacing-m);
+    .descriptionSeeItems {
+        color: var(--main-primary); // legacy
     }
 
     .etaContainer {
         display: flex;
         flex-direction: column;
+        padding: 0 var(--layout-spacing-s) var(--layout-spacing-xs);
         gap: var(--layout-spacing-xs);
     }
 
     .etaCaption {
-        .body-medium();
-        color: var(--neutral-grey-4);
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
+        .caption-allcaps();
+        color: var(--neutral-grey-4); // legacy
     }
 
     .eta {
@@ -58,7 +68,7 @@
     }
 
     .etaIcon {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-4); // legacy
         margin-left: var(--layout-spacing-xs);
         font-size: 16px;
         width: 16px;
@@ -67,7 +77,9 @@
     .timelineContainer {
         display: flex;
         flex-direction: column;
-        gap: var(--layout-spacing-xxs);
+        padding: 0 var(--layout-spacing-s);
+        gap: var(--layout-spacing-s);
+        margin-top: var(--layout-spacing-m);
     }
 
     .timelineItems {
@@ -92,20 +104,20 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        margin: var(--layout-spacing-xs) 6px 6px;
-        background-color: var(--main-primary);
+        margin: 6px;
+        background-color: var(--main-primary); // legacy
         z-index: 1;
 
         &.isCurrent {
             width: 16px;
             height: 16px;
-            margin: 6px 2px 2px;
-            border: 3px solid var(--neutral-grey-0);
+            margin: 4px 2px 2px;
+            border: 3px solid var(--neutral-grey-0); // legacy
             box-shadow: 0 2px 4px rgba(22, 22, 22, 0.16);
         }
 
         &.isUpcoming {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
         }
     }
 
@@ -113,73 +125,72 @@
         width: 1px;
         position: absolute;
         height: 100%;
-        margin-top: var(--layout-spacing-xs);
+        margin-top: 6px;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
 
         &.isCompleted {
-            background-color: var(--main-primary);
+            background-color: var(--main-primary); // legacy
         }
     }
 
     .timelineItemContent {
         display: flex;
         flex-direction: column;
-        padding: 0 0 var(--layout-spacing-m);
+        padding: 0 0 var(--layout-spacing-xs);
         gap: 12px;
     }
 
     .timelineItemStatus {
-        .heading-subsection-semibold();
+        .body-semibold();
 
         &.isCurrent {
-            .heading-section-semibold();
+            .heading-subsection-semibold();
         }
 
         &.isUpcoming {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
     .timelineItemTimestamp {
-        .body-regular();
-        color: var(--neutral-grey-4);
-        margin-top: var(--layout-spacing-xs);
+        .caption-regular();
+        color: var(--neutral-grey-4); // legacy
+        margin-top: var(--layout-spacing-xxs);
     }
 
     .timelineItemDescription {
-        .heading-subsection-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .timelineLastUpdated {
-        .body-regular();
-        color: var(--neutral-grey-4);
-    }
-
-    .separator {
-        border-top: 1px solid var(--neutral-grey-3);
+        .caption-regular();
+        color: var(--neutral-grey-4); // legacy
     }
 
     .shippingContainer {
-        .heading-subsection-regular();
         display: flex;
         flex-direction: column;
-        padding: var(--layout-spacing-m);
-        gap: var(--layout-spacing-m);
+        padding: 0 var(--layout-spacing-s);
+        gap: var(--layout-spacing-s);
     }
 
     .shippingHeader {
-        .heading-section-semibold();
+        .heading-subsection-semibold();
     }
 
     .shippingAddressContainer {
         display: flex;
         flex-direction: column;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         gap: var(--layout-spacing-xxs);
+    }
+
+    .shippingCarrier {
+        padding-block: var(--layout-spacing-xxs) var(--layout-spacing-xs);
+        padding-inline: var(--layout-spacing-s);
     }
 
     .shippingCarrierLogo {
@@ -189,12 +200,14 @@
     }
 
     .shippingCarrierCopyIcon {
+        font-size: 1.2em;
         transform: scaleX(-1) rotate(180deg);
     }
 
     .shippingCarrierContent {
         display: flex;
         flex-direction: column;
+        gap: var(--layout-spacing-xxs);
     }
 
     .shippingCarrierTitle {
@@ -202,58 +215,88 @@
     }
 
     .shippingCarrierSubtitle {
-        color: var(--neutral-grey-5);
         display: flex;
-        gap: var(--layout-spacing-xs);
+        justify-content: space-between;
+        color: var(--neutral-grey-5); // legacy
     }
 
     .shippingCarrierTrackingNumber {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-neutral-default);
     }
 
-    .fulfillmentContainer {
-        display: flex;
-        flex-direction: column;
-        padding: var(--layout-spacing-m);
-        gap: var(--layout-spacing-m);
+    .separator {
+        border-top-color: var(--border-neutral-default);
     }
 
-    .fulfillmentTitle {
-        .heading-section-semibold();
+    .description {
+        color: var(--content-neutral-secondary);
     }
 
-    .lineItems {
-        display: flex;
-        flex-direction: column;
-        gap: var(--layout-spacing-s);
+    .descriptionSeeItems {
+        color: var(--content-accent-default);
     }
 
-    .lineItem {
-        display: flex;
-        gap: var(--layout-spacing-s);
+    .etaCaption {
+        color: var(--content-neutral-secondary);
     }
 
-    .lineItemThumbnail {
-        border-radius: 2px;
+    .etaIcon {
+        color: var(--content-neutral-secondary);
     }
 
-    .lineItemDescription {
-        display: flex;
-        flex-direction: column;
-        padding: var(--layout-spacing-xxs) 0;
-        gap: var(--layout-spacing-xxs);
+    .timelineDot {
+        background-color: var(--content-accent-default);
+
+        &.isCurrent {
+            border-color: var(--elevation-neutral-default);
+        }
+
+        &.isUpcoming {
+            background-color: var(--border-neutral-default);
+        }
     }
 
-    .lineItemName {
-        .heading-subsection-semibold();
+    .timelineLine {
+        background-color: var(--border-neutral-default);
+
+        &.isCompleted {
+            background-color: var(--content-accent-default);
+        }
     }
 
-    .lineItemPrice {
-        color: var(--neutral-grey-5);
-        margin-right: var(--layout-spacing-xs);
+    .timelineItemStatus {
+        &.isUpcoming {
+            color: var(--content-neutral-secondary);
+        }
     }
 
-    .lineItemQuantity {
-        color: var(--neutral-grey-4);
+    .timelineItemTimestamp {
+        color: var(--content-neutral-secondary);
+    }
+
+    .timelineItemDescription {
+        color: var(--content-neutral-secondary);
+    }
+
+    .timelineLastUpdated {
+        color: var(--content-neutral-secondary);
+    }
+
+    .shippingAddressContainer {
+        color: var(--content-neutral-secondary);
+    }
+
+    .shippingCarrierSubtitle {
+        color: var(--content-neutral-secondary);
+    }
+
+    .shippingCarrierTrackingNumber {
+        color: var(--content-accent-default);
     }
 }

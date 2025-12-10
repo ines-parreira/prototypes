@@ -48,7 +48,7 @@
     .noActions {
         padding-left: var(--layout-spacing-xxs);
         display: block;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .noActionsSearch {
@@ -72,5 +72,11 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+    }
+}
+
+.axiom :local {
+    .noActions {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -1,7 +1,12 @@
 import { useCallback } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
+import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import type { LocaleCode } from 'models/helpCenter/types'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
@@ -9,6 +14,7 @@ import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import type { GuidanceFormFields } from 'pages/aiAgent/types'
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
+import { getTimezone } from 'state/currentUser/selectors'
 
 import type { BaseProps } from '../KnowledgeEditorGuidanceView'
 import { KnowledgeEditorGuidanceStatefulEdit } from './KnowledgeEditorGuidanceStatefulEdit'
@@ -43,12 +49,24 @@ export const KnowledgeEditorGuidanceLoaderForEdit = ({
     closeHandlerRef,
 }: Props) => {
     const { error: notifyError } = useNotify()
+    const isPerformanceStatsEnabled = useFlag(
+        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
+    )
+    const timezone = useAppSelector(getTimezone)
 
     const { guidanceArticle, isGuidanceArticleLoading } = useGuidanceArticle({
         guidanceHelpCenterId,
         guidanceArticleId,
         locale,
         versionStatus: 'current',
+    })
+
+    // Fetch article metrics for the Impact section
+    const resourceImpact = useResourceMetrics({
+        resourceSourceId: guidanceArticleId,
+        resourceSourceSetId: guidanceHelpCenterId,
+        timezone: timezone ?? 'UTC',
+        enabled: isPerformanceStatsEnabled,
     })
 
     const { guidanceActions, isLoading: isLoadingActions } =
@@ -134,6 +152,17 @@ export const KnowledgeEditorGuidanceLoaderForEdit = ({
             onToggleFullscreen={onToggleFullscreen}
             onTest={onTest}
             closeHandlerRef={closeHandlerRef}
+            impact={
+                isPerformanceStatsEnabled
+                    ? {
+                          tickets: resourceImpact.data?.tickets,
+                          handoverTickets: resourceImpact.data?.handoverTickets,
+                          csat: resourceImpact.data?.csat,
+                          intents: resourceImpact.data?.intents,
+                          isLoading: resourceImpact.isLoading,
+                      }
+                    : undefined
+            }
         />
     )
 }

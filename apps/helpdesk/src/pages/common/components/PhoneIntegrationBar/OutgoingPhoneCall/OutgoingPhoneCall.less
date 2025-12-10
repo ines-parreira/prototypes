@@ -1,9 +1,15 @@
 :local {
     .end {
         margin-left: auto;
-        color: var(--feedback-error) !important;
+        color: var(--feedback-error) !important; // legacy
         font-size: 14px;
         line-height: 17px;
         padding: 7px 12px;
+    }
+}
+
+.axiom :local {
+    .end {
+        color: var(--content-error-primary) !important;
     }
 }

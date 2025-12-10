@@ -7,7 +7,7 @@
 
         .icon {
             max-width: 40px;
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
 
         .resource {
@@ -15,7 +15,7 @@
             margin-left: var(--layout-spacing-xs);
             font-weight: 600;
             font-size: 16px;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
 
         .status {
@@ -32,6 +32,18 @@
 
         .spinner {
             animation-duration: 2.4s;
+        }
+    }
+}
+
+.axiom :local {
+    .line {
+        .icon {
+            color: var(--content-neutral-secondary);
+        }
+
+        .resource {
+            color: var(--content-neutral-default);
         }
     }
 }

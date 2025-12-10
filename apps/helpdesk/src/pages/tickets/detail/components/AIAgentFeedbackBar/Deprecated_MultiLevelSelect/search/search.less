@@ -21,7 +21,13 @@
     }
 
     .searchResultPath {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 0.85rem;
+    }
+}
+
+.axiom :local {
+    .searchResultPath {
+        color: var(--content-neutral-secondary);
     }
 }

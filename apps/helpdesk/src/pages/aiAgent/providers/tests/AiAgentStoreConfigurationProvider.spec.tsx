@@ -146,7 +146,6 @@ describe('AiAgentStoreConfigurationProvider', () => {
             emailChannelDeactivatedDatetime: null,
             chatChannelDeactivatedDatetime: null,
             smsChannelDeactivatedDatetime: null,
-            trialModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
             previewModeActivatedDatetime: '2024-07-30T12:33:02.750Z',
             previewModeValidUntilDatetime: '2024-08-07T12:33:02.750Z',
             storeName: 'test-shop',

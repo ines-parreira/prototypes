@@ -9,8 +9,8 @@
         margin: var(--layout-spacing-m) 0 0 56px;
         padding: var(--layout-spacing-s) 20px;
         gap: var(--layout-spacing-s);
-        color: var(--neutral-grey-6);
-        background-color: var(--neutral-grey-0);
+        color: var(--neutral-grey-6); // legacy
+        background-color: var(--neutral-grey-0); // legacy
         border: 1px solid var(--ai-magenta-3);
         border-radius: 4px;
 
@@ -18,5 +18,12 @@
             color: var(--ai-magenta-3);
             font-size: @heading-section-regular-font-size;
         }
+    }
+}
+
+.axiom :local {
+    .bannerWrapper {
+        color: var(--content-neutral-default);
+        background-color: var(--elevation-neutral-default);
     }
 }

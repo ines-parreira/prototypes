@@ -14,7 +14,7 @@
 
         & > *:not(:last-child) {
             padding-bottom: var(--layout-spacing-s);
-            border-bottom: 1px solid var(--neutral-grey-2);
+            border-bottom: 1px solid var(--neutral-grey-2); // legacy
         }
     }
 
@@ -51,6 +51,14 @@
                     }
                 }
             }
+        }
+    }
+}
+
+.axiom :local {
+    .knowledgeResources {
+        & > *:not(:last-child) {
+            border-bottom: 1px solid var(--border-neutral-default);
         }
     }
 }

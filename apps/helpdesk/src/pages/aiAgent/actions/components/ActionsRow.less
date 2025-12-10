@@ -27,7 +27,7 @@
         margin-right: var(--layout-spacing-xs);
 
         & > i {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
             font-size: 20px;
         }
     }
@@ -36,5 +36,13 @@
         display: flex;
         gap: var(--layout-spacing-xs);
         align-items: center;
+    }
+}
+
+.axiom :local {
+    .icon {
+        & > i {
+            color: var(--content-error-primary);
+        }
     }
 }

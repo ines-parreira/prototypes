@@ -36,7 +36,7 @@
     }
 
     .description {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 0.9rem;
         margin-bottom: 10px;
     }
@@ -47,5 +47,11 @@
             content: ' - detected';
             font-weight: 300;
         }
+    }
+}
+
+.axiom :local {
+    .description {
+        color: var(--content-neutral-secondary);
     }
 }

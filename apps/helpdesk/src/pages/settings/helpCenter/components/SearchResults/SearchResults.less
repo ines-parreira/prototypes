@@ -1,6 +1,6 @@
 :global {
     .search-highlight {
-        background-color: var(--feedback-warning-2);
+        background-color: var(--feedback-warning-2); // legacy
         padding: 2px 0;
     }
 }
@@ -17,8 +17,8 @@
     }
 
     .table-body {
-        border-top: 1px solid var(--neutral-grey-3);
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .row {
@@ -42,17 +42,32 @@
 
     .caret {
         margin-right: 16px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 22px;
     }
 }
 
+.axiom :global {
+    .search-highlight {
+        background-color: var(--surface-warning-primary);
+    }
+}
+
 .axiom :local {
+    .table-body {
+        border-top: 1px solid var(--border-neutral-default);
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
     .row {
         background-color: var(--elevation-neutral-default);
 
         &:hover {
             background-color: var(--elevation-neutral-mid);
         }
+    }
+
+    .caret {
+        color: var(--content-neutral-secondary);
     }
 }

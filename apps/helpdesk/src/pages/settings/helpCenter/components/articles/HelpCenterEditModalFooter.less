@@ -31,16 +31,16 @@
         align-items: center;
         column-gap: var(--layout-spacing-xxs);
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         i {
-            color: var(--feedback-warning);
+            color: var(--feedback-warning); // legacy
             font-size: 12px;
         }
     }
 
     .deleteButton {
         i {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
             font-size: 18px;
             line-height: 20px;
             margin-right: 4px;
@@ -78,5 +78,18 @@
 .axiom :local {
     .footer {
         background-color: var(--surface-neutral-secondary);
+    }
+
+    .counter {
+        color: var(--content-neutral-secondary);
+        i {
+            color: var(--content-warning-primary);
+        }
+    }
+
+    .deleteButton {
+        i {
+            color: var(--content-error-primary);
+        }
     }
 }

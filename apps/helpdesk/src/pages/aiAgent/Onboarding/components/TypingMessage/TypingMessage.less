@@ -13,7 +13,7 @@
         letter-spacing: -0.01em;
         line-height: 20px;
         background: @primary;
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
         max-width: calc(100% - 32px - 8px);
         margin: 0 0 24px auto;
     }
@@ -75,5 +75,11 @@
     }
     100% {
         transform: scale(1);
+    }
+}
+
+.axiom :local {
+    .bubble {
+        color: var(--elevation-neutral-default);
     }
 }

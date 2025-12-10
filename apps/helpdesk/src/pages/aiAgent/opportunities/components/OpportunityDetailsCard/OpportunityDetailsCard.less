@@ -10,8 +10,8 @@
         gap: var(--layout-spacing-xxs);
         padding: var(--layout-spacing-s);
         border-radius: var(--layout-spacing-xs);
-        border: 1px solid var(--neutral-grey-3);
-        background: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-3); // legacy
+        background: var(--neutral-grey-0); // legacy
         box-shadow: 2px 2px 16px 0 rgba(0, 0, 0, 0.05);
     }
 
@@ -25,20 +25,20 @@
     .title {
         .body-semibold();
         margin: 0;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .description {
         .body-regular();
         margin: 0;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .ticketCount {
         .body-regular();
         line-height: 16px;
         font-size: 12px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -47,6 +47,29 @@
 
     .ticketCountIcon {
         font-size: 14px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .contentContainer {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .description {
+        color: var(--content-neutral-default);
+    }
+
+    .ticketCount {
+        color: var(--content-neutral-secondary);
+    }
+
+    .ticketCountIcon {
+        color: var(--content-neutral-secondary);
     }
 }

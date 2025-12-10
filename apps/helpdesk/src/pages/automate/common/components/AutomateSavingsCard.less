@@ -3,7 +3,7 @@
 :local {
     .container {
         display: flex;
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
         border-radius: 4px;
         padding: var(--layout-spacing-s);
         width: 100%;
@@ -46,12 +46,22 @@
         .divider {
             width: 1px;
             height: 56px;
-            background: var(--neutral-grey-3);
+            background: var(--neutral-grey-3); // legacy
             align-self: self-end;
         }
 
         .heading {
             .heading-section-semibold();
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--surface-neutral-secondary);
+
+        .divider {
+            background: var(--border-neutral-default);
         }
     }
 }

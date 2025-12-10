@@ -6,7 +6,7 @@
         flex: 1;
         flex-grow: 1;
         flex-direction: column;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 12px;
         box-shadow: 1px 1px 8px 0 rgba(22, 22, 22, 0.05);
         gap: var(--layout-spacing-m);
@@ -30,5 +30,11 @@
         flex-direction: column;
         gap: var(--layout-spacing-m);
         padding: var(--spacing-lg);
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
     }
 }

@@ -23,7 +23,7 @@ describe('MultiLevelSelect', () => {
             />,
         )
 
-        expect(screen.getByText('Select option')).toBeInTheDocument()
+        expect(screen.getByDisplayValue('Select option')).toBeInTheDocument()
     })
 
     it('should render with selected value', () => {

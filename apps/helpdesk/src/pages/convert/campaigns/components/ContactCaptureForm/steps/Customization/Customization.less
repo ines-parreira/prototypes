@@ -1,7 +1,7 @@
 @import '~css/typography';
 
 :local {
-    @grey: var(--neutral-grey-1);
+    @grey: var(--neutral-grey-1); // legacy
 
     .container {
         display: flex;
@@ -29,7 +29,7 @@
     }
 
     .previewContainer {
-        background-color: @grey;
+        background-color: @grey; // legacy
         border-radius: 4px;
     }
 
@@ -42,7 +42,21 @@
 
     .richField {
         &.onError {
-            border-color: var(--feedback-error);
+            border-color: var(--feedback-error); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    @grey-axiom: var(--elevation-neutral-mid);
+
+    .previewContainer {
+        background-color: @grey-axiom;
+    }
+
+    .richField {
+        &.onError {
+            border-color: var(--content-error-primary);
         }
     }
 }

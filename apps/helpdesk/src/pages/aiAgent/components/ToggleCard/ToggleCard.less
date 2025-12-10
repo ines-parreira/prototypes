@@ -7,13 +7,13 @@
         }
 
         &Active {
-            background-color: var(--neutral-grey-0);
-            border-color: var(--accessory-magenta-25);
+            background-color: var(--neutral-grey-0); // legacy
+            border-color: var(--accessory-magenta-25); // legacy
         }
 
         display: flex;
         flex-direction: column;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: var(--layout-spacing-xs);
     }
 
@@ -30,7 +30,7 @@
         }
 
         &:hover {
-            background-color: var(--accessory-magenta-1);
+            background-color: var(--accessory-magenta-1); // legacy
         }
 
         .headerSectionTextBlock {
@@ -41,12 +41,12 @@
 
             .headerSectionTitle {
                 .heading-subsection-semibold();
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
             }
 
             .headerSectionSubtitle {
                 .body-regular();
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
             }
         }
     }
@@ -56,6 +56,37 @@
     }
 
     .contentSection {
-        border-top: 1px solid var(--neutral-grey-3);
+        border-top: 1px solid var(--neutral-grey-3); // legacy
+    }
+}
+
+.axiom :local {
+    .toggleCard {
+        &Active {
+            background-color: var(--elevation-neutral-default);
+            border-color: var(--border-additional-fuchsia);
+        }
+
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .headerSection {
+        &:hover {
+            background-color: var(--surface-additional-fuchsia);
+        }
+
+        .headerSectionTextBlock {
+            .headerSectionTitle {
+                color: var(--content-neutral-default);
+            }
+
+            .headerSectionSubtitle {
+                color: var(--content-neutral-secondary);
+            }
+        }
+    }
+
+    .contentSection {
+        border-top: 1px solid var(--border-neutral-default);
     }
 }

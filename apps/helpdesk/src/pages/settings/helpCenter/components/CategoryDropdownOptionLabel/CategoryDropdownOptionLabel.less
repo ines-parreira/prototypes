@@ -2,7 +2,7 @@
     .parents {
         font-weight: 400;
         font-size: 12px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         text-align: left;
     }
 
@@ -20,5 +20,11 @@
 
     .tooltip {
         padding: 0 4px;
+    }
+}
+
+.axiom :local {
+    .parents {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -42,6 +42,29 @@ describe('buildTreeFromChoices', () => {
         )
         expect(nodeA.children.get('Delivered')!.value).toBe('Status::Delivered')
     })
+
+    it('should handle boolean choices', () => {
+        const choices = [true, false]
+        const tree = buildTreeFromChoices(choices)
+
+        expect(tree.size).toBe(2)
+        expect(tree.has('boolean.true')).toBe(true)
+        expect(tree.has('boolean.false')).toBe(true)
+        expect(tree.get('boolean.true')!.value).toBe(true)
+        expect(tree.get('boolean.false')!.value).toBe(false)
+    })
+
+    it('should handle other types choices', () => {
+        const choices = [1, 42]
+        //@ts-ignore
+        const tree = buildTreeFromChoices(choices)
+
+        expect(tree.size).toBe(2)
+        expect(tree.has('1')).toBe(true)
+        expect(tree.has('42')).toBe(true)
+        expect(tree.get('1')!.value).toBe(1)
+        expect(tree.get('42')!.value).toBe(42)
+    })
 })
 
 describe('getOptionsAtPath', () => {
@@ -65,6 +88,18 @@ describe('getOptionsAtPath', () => {
         expect(options[0].label).toBe('Open')
         expect(options[0].value).toBe('Status::Open')
         expect(options[0].hasChildren).toBe(false)
+    })
+
+    it('should show "Yes" and "No" labels for boolean choices', () => {
+        const tree = buildTreeFromChoices([true, false])
+
+        const options = getOptionsAtPath(tree, [])
+
+        expect(options).toHaveLength(2)
+        expect(options[0].label).toBe('Yes')
+        expect(options[0].value).toBe(true)
+        expect(options[1].label).toBe('No')
+        expect(options[1].value).toBe(false)
     })
 })
 
@@ -136,6 +171,25 @@ describe('getDisplayLabel', () => {
         const label = getDisplayLabel(undefined)
 
         expect(label).toBe(null)
+    })
+
+    it('should return "Yes" for true', () => {
+        const label = getDisplayLabel(true)
+
+        expect(label).toBe('Yes')
+    })
+
+    it('should return "No" for false', () => {
+        const label = getDisplayLabel(false)
+
+        expect(label).toBe('No')
+    })
+
+    it('should return string representation for numbers', () => {
+        //@ts-ignore
+        expect(getDisplayLabel(42)).toBe('42')
+        //@ts-ignore
+        expect(getDisplayLabel(0)).toBe('0')
     })
 })
 

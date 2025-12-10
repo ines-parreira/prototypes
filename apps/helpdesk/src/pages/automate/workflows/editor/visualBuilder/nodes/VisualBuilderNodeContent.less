@@ -6,7 +6,7 @@
 
         overflow: hidden;
         text-overflow: ellipsis;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         display: -webkit-box;
         -webkit-line-clamp: 2;
         line-clamp: 2;
@@ -15,7 +15,17 @@
         overflow-wrap: anywhere;
 
         &.isFilled {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-neutral-secondary);
+
+        &.isFilled {
+            color: var(--content-neutral-default);
         }
     }
 }

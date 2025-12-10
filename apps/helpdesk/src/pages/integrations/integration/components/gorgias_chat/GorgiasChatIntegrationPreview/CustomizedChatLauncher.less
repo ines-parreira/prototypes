@@ -18,7 +18,7 @@
         font-weight: 400;
         font-size: 12px;
         line-height: 16px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .offsetLine {
@@ -175,5 +175,11 @@
                 right: calc(-1 * var(--layout-spacing-m));
             }
         }
+    }
+}
+
+.axiom :local {
+    .offsetContent {
+        color: var(--content-neutral-tertiary);
     }
 }

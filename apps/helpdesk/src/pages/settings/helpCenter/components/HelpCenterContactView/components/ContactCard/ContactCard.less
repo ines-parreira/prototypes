@@ -12,7 +12,7 @@
         opacity: 1;
         transition: opacity 0.2s;
         min-height: 184px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
 
         &.disabled {
             opacity: 0.25;
@@ -25,11 +25,11 @@
     }
 
     .icon {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .chevron {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .header,
@@ -39,7 +39,7 @@
 
     .header {
         display: flex;
-        border-bottom: 1px solid var(--neutral-grey-2);
+        border-bottom: 1px solid var(--neutral-grey-2); // legacy
 
         &.clickable {
             cursor: pointer;
@@ -58,12 +58,38 @@
         font-family: 'Inter', sans-serif;
         font-size: 14px;
         line-height: 24px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .help {
         font-size: 12px;
         line-height: 16px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .card {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .icon {
+        color: var(--content-accent-default);
+    }
+
+    .chevron {
+        color: var(--content-neutral-secondary);
+    }
+
+    .header {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .content {
+        color: var(--content-neutral-secondary);
+    }
+
+    .help {
+        color: var(--content-neutral-secondary);
     }
 }

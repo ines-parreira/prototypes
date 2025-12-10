@@ -33,13 +33,15 @@ const getSortedData = (
     tags: Tag[],
     topAmount: number,
 ) => {
-    const getTagById = (id: string) =>
-        getTagName({ name: tags.find((t) => String(t.id) === id)?.name, id })
+    const getTagById = (id: string | number) =>
+        getTagName({
+            name: tags.find((t) => String(t.id) === String(id))?.name,
+            id,
+        })
 
-    const sortingOrder = tagsTicketCount.data?.value.map(
-        (v) => v[TicketTagsEnrichedMember.TagId],
+    const sortingOrder = tagsTicketCount.data?.value.map((v) =>
+        String(v['tagId' in v ? 'tagId' : TicketTagsEnrichedMember.TagId]),
     )
-
     const sortedData = _sortBy(Object.entries(data), ([key]) =>
         sortingOrder.indexOf(key),
     )

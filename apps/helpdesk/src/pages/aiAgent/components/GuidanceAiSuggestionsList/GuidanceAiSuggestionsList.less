@@ -29,10 +29,16 @@
 
     .banner {
         .body-semibold();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         display: flex;
         justify-content: center;
         align-items: center;
         height: 80px;
+    }
+}
+
+.axiom :local {
+    .banner {
+        color: var(--content-neutral-secondary);
     }
 }

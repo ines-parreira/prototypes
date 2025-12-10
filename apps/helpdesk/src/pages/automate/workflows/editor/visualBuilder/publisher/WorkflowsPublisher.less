@@ -5,11 +5,11 @@
 :local {
     .channelHeader {
         .heading-subsection-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
     .channelAlertHeader {
         .heading-subsection-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         margin-bottom: var(--layout-spacing-s);
     }
     .headerDescription {
@@ -49,11 +49,26 @@
     }
     .previewDescription {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         text-align: center;
         margin-top: 8px;
     }
     .warningIcon {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
+    }
+}
+
+.axiom :local {
+    .channelHeader {
+        color: var(--content-neutral-default);
+    }
+    .channelAlertHeader {
+        color: var(--content-neutral-default);
+    }
+    .previewDescription {
+        color: var(--content-neutral-secondary);
+    }
+    .warningIcon {
+        color: var(--content-warning-primary);
     }
 }

@@ -15,7 +15,7 @@
         padding: 10px;
         line-height: 1.33;
         max-width: 350px;
-        background-color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-6); // legacy
     }
 
     .tooltipTip::before {
@@ -29,6 +29,16 @@
         border-width: 6px;
         margin-left: -6px;
         top: 100%;
-        border-top-color: var(--neutral-grey-6);
+        border-top-color: var(--neutral-grey-6); // legacy
+    }
+}
+
+.axiom :local {
+    .tooltipTip {
+        background-color: var(--content-neutral-default);
+    }
+
+    .tooltipTip::before {
+        border-top-color: var(--content-neutral-default);
     }
 }

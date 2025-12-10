@@ -15,11 +15,11 @@
 
     .formInputFooterInfo {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-top: var(--layout-spacing-xxs);
 
         &.error {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
@@ -31,13 +31,31 @@
 
     .emptyStateMessage {
         .body-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-top: var(--layout-spacing-xs);
         line-height: 20px;
     }
 
     .learnMoreLink {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         text-decoration: none;
+    }
+}
+
+.axiom :local {
+    .formInputFooterInfo {
+        color: var(--content-neutral-secondary);
+
+        &.error {
+            color: var(--content-error-primary);
+        }
+    }
+
+    .emptyStateMessage {
+        color: var(--content-neutral-secondary);
+    }
+
+    .learnMoreLink {
+        color: var(--content-accent-default);
     }
 }

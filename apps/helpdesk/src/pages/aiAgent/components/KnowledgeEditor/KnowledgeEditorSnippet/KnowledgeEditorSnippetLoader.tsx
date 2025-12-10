@@ -1,9 +1,13 @@
 import { useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
+import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import {
     helpCenterArticleKeys,
@@ -16,6 +20,7 @@ import {
 import type { LocaleCode } from 'models/helpCenter/types'
 import type { IngestedResourceWithArticleId } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
+import { getTimezone } from 'state/currentUser/selectors'
 
 import { KnowledgeEditorSnippetView } from './KnowledgeEditorSnippetView'
 
@@ -54,11 +59,22 @@ export const KnowledgeEditorSnippetLoader = ({
 }: Props) => {
     const { error: notifyError } = useNotify()
     const queryClient = useQueryClient()
+    const isPerformanceStatsEnabled = useFlag(
+        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
+    )
+    const timezone = useAppSelector(getTimezone)
     const { mutateAsync: updateArticleTranslation } =
         useUpdateArticleTranslation()
 
     const { data: articleData, isInitialLoading: isSnippetLoading } =
         useGetHelpCenterArticle(snippetId, helpCenterId, locale)
+
+    const resourceImpact = useResourceMetrics({
+        resourceSourceId: snippetId,
+        resourceSourceSetId: helpCenterId,
+        timezone: timezone ?? 'UTC',
+        enabled: isPerformanceStatsEnabled,
+    })
 
     const {
         data: ingestedResourceData,
@@ -256,6 +272,17 @@ export const KnowledgeEditorSnippetLoader = ({
             onTest={onTest}
             isFullscreen={isFullscreen}
             snippet={snippet}
+            impact={
+                isPerformanceStatsEnabled
+                    ? {
+                          tickets: resourceImpact.data?.tickets,
+                          handoverTickets: resourceImpact.data?.handoverTickets,
+                          csat: resourceImpact.data?.csat,
+                          intents: resourceImpact.data?.intents,
+                          isLoading: resourceImpact.isLoading,
+                      }
+                    : undefined
+            }
         />
     )
 }

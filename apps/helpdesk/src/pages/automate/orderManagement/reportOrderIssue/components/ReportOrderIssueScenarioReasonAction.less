@@ -12,11 +12,19 @@
 
     .richField {
         &.hasError {
-            border-color: var(--feedback-error);
+            border-color: var(--feedback-error); // legacy
         }
     }
 
     .showHelpfulPromptToggleInput {
         margin-top: var(--layout-spacing-m);
+    }
+}
+
+.axiom :local {
+    .richField {
+        &.hasError {
+            border-color: var(--border-error-primary);
+        }
     }
 }

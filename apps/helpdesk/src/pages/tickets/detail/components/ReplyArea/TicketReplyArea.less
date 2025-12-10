@@ -26,7 +26,7 @@
     .search {
         position: relative;
         height: 40px;
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
 
         input {
             height: 100%;
@@ -66,5 +66,11 @@
         &:focus-visible {
             outline: none;
         }
+    }
+}
+
+.axiom :local .component {
+    .search {
+        border-bottom: 1px solid var(--border-neutral-default);
     }
 }

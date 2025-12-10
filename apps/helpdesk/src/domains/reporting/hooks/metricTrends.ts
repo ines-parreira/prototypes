@@ -27,6 +27,7 @@ import { sentMessagesCountQueryV2Factory } from 'domains/reporting/models/scopes
 import { oneTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
 import { onlineTimeQueryV2Factory } from 'domains/reporting/models/scopes/onlineTime'
 import { medianResolutionTimeQueryV2Factory } from 'domains/reporting/models/scopes/resolutionTime'
+import { medianResponseTimeQueryV2Factory } from 'domains/reporting/models/scopes/responseTime'
 import type {
     MetricQueryFactory,
     ScopeMeta,
@@ -178,10 +179,12 @@ export const fetchMedianFirstResponseTimeTrend = async (
 
 export const useMedianResponseTimeTrend = getTrendHook(
     medianResponseTimeQueryFactory,
+    medianResponseTimeQueryV2Factory,
 )
 
 export const fetchMedianResponseTimeTrend = getTrendFetch(
     medianResponseTimeQueryFactory,
+    medianResponseTimeQueryV2Factory,
 )
 
 export const fetchHumanResponseTimeAfterAiHandoffTrend = getTrendFetch(

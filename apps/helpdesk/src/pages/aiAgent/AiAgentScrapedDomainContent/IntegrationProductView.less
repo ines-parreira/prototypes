@@ -10,7 +10,8 @@
     .aiContainer {
         background:
             linear-gradient(var(--neutral-grey-0), var(--neutral-grey-0))
-                padding-box,
+                // legacy
+            padding-box,
             linear-gradient(90deg, #f58d86, #a084e1) border-box; // legacy
 
         border-radius: 8px;
@@ -53,7 +54,7 @@
     }
 
     .collapsibleVariantsTitle {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 500;
     }
 
@@ -64,7 +65,7 @@
 
     .variantItem {
         padding: var(--layout-spacing-xs) 0;
-        border-bottom: 1px solid var(--neutral-grey-4);
+        border-bottom: 1px solid var(--neutral-grey-4); // legacy
 
         &:last-child {
             border-bottom: none;
@@ -80,6 +81,30 @@
 
     .strikethroughPrice {
         text-decoration: line-through;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .aiContainer {
+        background:
+            linear-gradient(
+                    var(--elevation-neutral-default),
+                    var(--elevation-neutral-default)
+                )
+                padding-box,
+            linear-gradient(90deg, #f58d86, #a084e1) border-box;
+    }
+
+    .collapsibleVariantsTitle {
+        color: var(--content-neutral-default);
+    }
+
+    .variantItem {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .strikethroughPrice {
+        color: var(--content-neutral-secondary);
     }
 }

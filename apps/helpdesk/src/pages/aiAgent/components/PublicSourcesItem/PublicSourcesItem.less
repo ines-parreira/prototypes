@@ -1,0 +1,42 @@
+:local {
+    .container {
+        display: flex;
+        gap: var(--layout-spacing-s);
+        align-items: center;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .closeIcon {
+        color: var(--feedback-error) !important; // legacy
+    }
+
+    .input {
+        width: 100%;
+    }
+
+    .warningCaption {
+        color: var(--feedback-warning-4); // legacy
+    }
+
+    .buttonGroup {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+        height: 32px;
+    }
+
+    .arrowIcon {
+        margin-left: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .closeIcon {
+        color: var(--content-error-primary) !important;
+    }
+
+    .warningCaption {
+        color: var(--content-warning-primary);
+    }
+}

@@ -32,7 +32,13 @@
     }
 
     .messageContainer {
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         padding: 18px var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .messageContainer {
+        background-color: var(--elevation-neutral-default);
     }
 }

@@ -27,22 +27,22 @@
 
         .avatar {
             .caption-semibold();
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             background-color: var(--neutral-grey-2); // legacy
         }
 
         .header {
             .body-semibold();
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             margin-bottom: var(--layout-spacing-xxs);
         }
 
         .aiHeader {
-            color: var(--accessory-magenta-3);
+            color: var(--accessory-magenta-3); // legacy
         }
 
         .mailIcon {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             margin-left: var(--layout-spacing-xxs);
         }
     }
@@ -51,7 +51,7 @@
         .caption-regular();
         display: flex;
         justify-content: center;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .footer {
@@ -75,7 +75,7 @@
     }
 
     .errorMessage {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 
     .tovPreview {
@@ -128,12 +128,12 @@
         }
 
         .aiHeader {
-            color: var(--accessory-magenta-3);
+            color: var(--accessory-magenta-3); // legacy
         }
 
         .aiName {
             .body-regular();
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             display: flex;
             align-items: center;
             justify-content: flex-end;
@@ -148,8 +148,29 @@
         background-color: var(--elevation-neutral-default);
 
         .avatar {
+            color: var(--content-neutral-secondary);
             background-color: var(--surface-neutral-tertiary);
         }
+
+        .header {
+            color: var(--content-neutral-default);
+        }
+
+        .aiHeader {
+            color: var(--content-additional-fuchsia);
+        }
+
+        .mailIcon {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .caption {
+        color: var(--content-neutral-secondary);
+    }
+
+    .errorMessage {
+        color: var(--content-error-primary);
     }
 
     .tovPreview {
@@ -160,7 +181,15 @@
         }
 
         .aiMessage {
-            background-color: var(--surface-brand-secondary);
+            background-color: var(--surface-additional-fuchsia);
+        }
+
+        .aiHeader {
+            color: var(--content-additional-fuchsia);
+        }
+
+        .aiName {
+            color: var(--content-neutral-default);
         }
     }
 }

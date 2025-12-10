@@ -15,13 +15,13 @@
 
         .input {
             &.hasError {
-                border-color: var(--feedback-error);
+                border-color: var(--feedback-error); // legacy
             }
         }
 
         .unsupportedWarning {
             .caption-regular();
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
             margin-top: 4px;
         }
     }
@@ -35,5 +35,19 @@
         align-self: center;
         align-content: flex-end;
         margin-left: auto;
+    }
+}
+
+.axiom :local {
+    .inputDiv {
+        .input {
+            &.hasError {
+                border-color: var(--border-error-primary);
+            }
+        }
+
+        .unsupportedWarning {
+            color: var(--content-error-primary);
+        }
     }
 }

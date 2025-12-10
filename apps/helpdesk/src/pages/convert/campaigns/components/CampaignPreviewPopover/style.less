@@ -7,14 +7,14 @@
     top: calc(100% - (@arrow-size / 2));
     border-width: @arrow-size;
     margin-left: -@arrow-size;
-    border-top-color: var(--neutral-grey-1);
+    border-top-color: var(--neutral-grey-1); // legacy
 }
 
 .arrowUp {
     bottom: calc(100% - (@arrow-size / 2));
     border-width: @arrow-size;
     margin-left: -@arrow-size;
-    border-bottom-color: var(--neutral-grey-1);
+    border-bottom-color: var(--neutral-grey-1); // legacy
 }
 
 .baseArrow {
@@ -80,14 +80,14 @@
 
         margin-bottom: var(--layout-spacing-xs);
 
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .message {
         .body-regular();
 
         margin: 0;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -102,7 +102,7 @@
         margin-top: var(--layout-spacing-s);
         margin-bottom: var(--layout-spacing-s);
 
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
     }
 
     .triggersList {
@@ -123,11 +123,40 @@
         margin-right: var(--layout-spacing-xs);
         margin-bottom: var(--layout-spacing-xs);
 
-        background-color: var(--neutral-grey-2);
-        color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-2); // legacy
+        color: var(--neutral-grey-6); // legacy
 
         &:last-child {
             margin-right: 0;
         }
+    }
+}
+
+.axiom {
+    .arrowDown {
+        border-top-color: var(--elevation-neutral-mid);
+    }
+
+    .arrowUp {
+        border-bottom-color: var(--elevation-neutral-mid);
+    }
+}
+
+.axiom :local {
+    .title {
+        color: var(--content-neutral-secondary);
+    }
+
+    .message {
+        color: var(--content-neutral-default);
+    }
+
+    .divider {
+        background-color: var(--border-neutral-default);
+    }
+
+    .triggerItem {
+        background-color: var(--elevation-neutral-mid);
+        color: var(--content-neutral-default);
     }
 }

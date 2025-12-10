@@ -12,11 +12,23 @@
     .required {
         &::after {
             content: ' *';
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
     }
 
     .isDisabled {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .required {
+        &::after {
+            color: var(--border-error-primary);
+        }
+    }
+
+    .isDisabled {
+        color: var(--content-neutral-secondary);
     }
 }

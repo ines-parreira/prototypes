@@ -36,8 +36,8 @@
         text-align: left;
         position: sticky;
         bottom: 0;
-        background: var(--neutral-grey-0);
-        box-shadow: 0px 0px 14px 0px var(--neutral-grey-3);
+        background: var(--neutral-grey-0); // legacy
+        box-shadow: 0px 0px 14px 0px var(--neutral-grey-3); // legacy
         padding-top: 14px;
         padding-bottom: 14px;
         padding-left: 24px;
@@ -87,7 +87,7 @@
             font-weight: 500;
             font-size: 14px;
             line-height: 20px;
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
 
             img {
                 margin-right: 5px;
@@ -102,7 +102,7 @@
         padding-left: 4px;
         padding-top: 4px;
         font-size: 12px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         margin: 0px;
         margin-bottom: -20px;
     }
@@ -129,7 +129,7 @@
         padding: 10px;
     }
     .footer {
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
         display: flex;
         padding: 10px;
         .separateButtonsGroup {
@@ -153,6 +153,31 @@
     }
 
     .hasError {
-        border-color: var(--feedback-error);
+        border-color: var(--feedback-error); // legacy
+    }
+}
+
+.axiom :local {
+    .buttonsContainer {
+        background: var(--elevation-neutral-default);
+        box-shadow: 0px 0px 14px 0px var(--border-neutral-default);
+    }
+
+    .backWrapper {
+        a {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .lengthLeft {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .footer {
+        background-color: var(--surface-neutral-tertiary);
+    }
+
+    .hasError {
+        border-color: var(--border-error-default);
     }
 }

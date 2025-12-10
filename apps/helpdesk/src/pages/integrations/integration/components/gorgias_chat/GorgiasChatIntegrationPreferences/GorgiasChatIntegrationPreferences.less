@@ -41,13 +41,13 @@
         .dynamicDescription {
             font-size: 12px;
             font-weight: 400;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             margin-bottom: 0;
         }
     }
 
     .controlTicketVolumeTag {
-        color: var(--main-primary-3) !important;
+        color: var(--main-primary-3) !important; // legacy
     }
 
     .privacyPolicyDisclaimerHeader {
@@ -56,6 +56,22 @@
     }
 
     .hasError {
-        border-color: var(--feedback-error);
+        border-color: var(--feedback-error); // legacy
+    }
+}
+
+.axiom :local {
+    .radioFieldSet {
+        .dynamicDescription {
+            color: var(--content-neutral-tertiary);
+        }
+    }
+
+    .controlTicketVolumeTag {
+        color: var(--content-accent-default) !important;
+    }
+
+    .hasError {
+        border-color: var(--border-error-default);
     }
 }

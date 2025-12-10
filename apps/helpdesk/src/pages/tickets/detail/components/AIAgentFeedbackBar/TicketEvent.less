@@ -22,7 +22,7 @@
                 top: 0;
                 left: 50%;
                 transform: translateX(-50%);
-                border-left: 1px solid var(--neutral-grey-3);
+                border-left: 1px solid var(--neutral-grey-3); // legacy
             }
 
             .badgeBottomLine {
@@ -32,7 +32,7 @@
                 bottom: calc(-1 * var(--layout-spacing-s));
                 left: 50%;
                 transform: translateX(-50%);
-                border-left: 1px solid var(--neutral-grey-3);
+                border-left: 1px solid var(--neutral-grey-3); // legacy
             }
 
             .badgeIconContainer {
@@ -46,16 +46,16 @@
                 align-items: center;
 
                 .badgeIcon {
-                    color: var(--neutral-grey-0);
+                    color: var(--neutral-grey-0); // legacy
                 }
             }
 
             .badgeIconContainerGreen {
-                background-color: var(--feedback-success);
+                background-color: var(--feedback-success); // legacy
             }
 
             .badgeIconContainerBlack {
-                background-color: var(--neutral-grey-6);
+                background-color: var(--neutral-grey-6); // legacy
             }
         }
 
@@ -71,6 +71,34 @@
             display: flex;
             .body-semibold();
             line-height: 22px;
+        }
+    }
+}
+
+.axiom :local {
+    .ticketEventContainer {
+        .ticketEventBadge {
+            .badgeTopLine {
+                border-left: 1px solid var(--border-neutral-default);
+            }
+
+            .badgeBottomLine {
+                border-left: 1px solid var(--border-neutral-default);
+            }
+
+            .badgeIconContainer {
+                .badgeIcon {
+                    color: var(--content-inverted-default);
+                }
+            }
+
+            .badgeIconContainerGreen {
+                background-color: var(--surface-success-primary);
+            }
+
+            .badgeIconContainerBlack {
+                background-color: var(--elevation-neutral-inverse);
+            }
         }
     }
 }

@@ -11,24 +11,24 @@
         flex-shrink: 0;
         border-radius: var(--layout-spacing-xs);
         border: 1px solid transparent;
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         cursor: pointer;
         transition: all 0.2s ease;
         gap: 6px;
     }
 
     .cardHovered {
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
     }
 
     .cardSelected {
-        border: 1px solid var(--neutral-grey-2);
-        background: var(--neutral-grey-1);
+        border: 1px solid var(--neutral-grey-2); // legacy
+        background: var(--neutral-grey-1); // legacy
     }
 
     .cardSelectedHovered {
-        border: 1px solid var(--neutral-grey-2);
-        background: var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
+        background: var(--neutral-grey-2); // legacy
     }
 
     .header {
@@ -42,7 +42,7 @@
         .body-regular();
         line-height: 16px;
         font-size: 12px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -62,7 +62,7 @@
     }
 
     .infoIcon {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         flex-shrink: 0;
         font-size: 16px;
     }
@@ -77,7 +77,7 @@
         .body-regular();
         line-height: 16px;
         font-size: 12px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -86,6 +86,42 @@
 
     .ticketCountIcon {
         font-size: 14px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .card {
+        background: var(--elevation-neutral-default);
+    }
+
+    .cardHovered {
+        background: var(--elevation-neutral-mid);
+    }
+
+    .cardSelected {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-mid);
+    }
+
+    .cardSelectedHovered {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--hover-default);
+    }
+
+    .title {
+        color: var(--content-neutral-secondary);
+    }
+
+    .infoIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .ticketCount {
+        color: var(--content-neutral-secondary);
+    }
+
+    .ticketCountIcon {
+        color: var(--content-neutral-secondary);
     }
 }

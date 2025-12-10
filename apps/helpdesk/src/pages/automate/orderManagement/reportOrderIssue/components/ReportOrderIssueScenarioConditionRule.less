@@ -32,7 +32,13 @@
     }
 
     .conjunctionButton {
-        background-color: var(--feedback-warning) !important;
+        background-color: var(--feedback-warning) !important; // legacy
         border-color: #ed9154 !important;
+    }
+}
+
+.axiom :local {
+    .conjunctionButton {
+        background-color: var(--surface-warning-primary) !important;
     }
 }

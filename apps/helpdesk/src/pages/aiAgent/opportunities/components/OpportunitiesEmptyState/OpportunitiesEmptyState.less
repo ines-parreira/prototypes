@@ -9,11 +9,22 @@
         justify-content: center;
         align-items: center;
         border-radius: 12px;
-        border: 1px solid var(--neutral-grey-2);
-        background: var(--neutral-grey-1);
+        border: 1px solid var(--neutral-grey-2); // legacy
+        background: var(--neutral-grey-1); // legacy
         box-shadow: 4px 4px 16px 0 rgba(22, 22, 22, 0.1);
         svg {
-            color: var(--neutral-grey-3);
+            color: var(--neutral-grey-3); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .containerContent {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-mid);
+
+        svg {
+            color: var(--surface-neutral-tertiary);
         }
     }
 }

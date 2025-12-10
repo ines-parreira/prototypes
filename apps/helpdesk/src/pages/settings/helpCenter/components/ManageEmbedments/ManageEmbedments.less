@@ -1,7 +1,7 @@
 :local {
     .modalFooter {
         float: right;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
 
     .removeButton {
@@ -14,5 +14,11 @@
         i {
             font-size: 20px;
         }
+    }
+}
+
+.axiom :local {
+    .modalFooter {
+        background-color: var(--surface-neutral-secondary);
     }
 }

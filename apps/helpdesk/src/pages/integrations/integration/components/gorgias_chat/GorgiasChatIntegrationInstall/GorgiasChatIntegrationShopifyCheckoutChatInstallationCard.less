@@ -2,7 +2,7 @@
 
 :local {
     .container {
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         padding: 20px;
 
@@ -30,5 +30,11 @@
     .title {
         .body-semibold();
         margin-bottom: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
     }
 }

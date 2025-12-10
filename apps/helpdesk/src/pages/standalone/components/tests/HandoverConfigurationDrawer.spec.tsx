@@ -97,7 +97,6 @@ describe('<HandoverConfigurationDrawer />', () => {
         emailChannelDeactivatedDatetime: null,
         chatChannelDeactivatedDatetime: null,
         smsChannelDeactivatedDatetime: null,
-        trialModeActivatedDatetime: null,
         previewModeActivatedDatetime: null,
         previewModeValidUntilDatetime: null,
         ticketSampleRate: null,

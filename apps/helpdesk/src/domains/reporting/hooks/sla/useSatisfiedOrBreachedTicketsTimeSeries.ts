@@ -3,6 +3,7 @@ import {
     useTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
 import { satisfiedOrBreachedTicketsTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/sla/satisfiedOrBreachedTickets'
+import { satisfiedOrBreachedTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketSLA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 
@@ -18,6 +19,11 @@ export const useSatisfiedOrBreachedTicketsTimeSeries = (
             timezone,
             granularity,
         ),
+        satisfiedOrBreachedTicketsTimeseriesQueryV2Factory({
+            filters,
+            timezone,
+            granularity,
+        }),
     )
 
 export const fetchSatisfiedOrBreachedTicketsTimeSeries = (
@@ -31,4 +37,9 @@ export const fetchSatisfiedOrBreachedTicketsTimeSeries = (
             timezone,
             granularity,
         ),
+        satisfiedOrBreachedTicketsTimeseriesQueryV2Factory({
+            filters,
+            timezone,
+            granularity,
+        }),
     )

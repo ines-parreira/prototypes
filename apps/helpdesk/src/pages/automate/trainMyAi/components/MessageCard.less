@@ -11,13 +11,13 @@
         padding: var(--layout-spacing-s);
         padding-left: calc(var(--layout-spacing-s) - 4px);
         gap: var(--layout-spacing-s);
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         border-radius: 4px;
         border-left: 4px solid transparent;
         box-sizing: border-box;
 
         &:hover {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
             cursor: pointer;
         }
         &:focus {
@@ -27,27 +27,27 @@
             outline: none;
             padding: calc(var(--layout-spacing-s) - 1px);
             padding-left: calc(var(--layout-spacing-s) - 1px);
-            border: 1px solid var(--main-primary);
+            border: 1px solid var(--main-primary); // legacy
             box-shadow: 0 0 0 2px
                 hsla(
                     var(--main-primary-h),
                     var(--main-primary-s),
                     var(--main-primary-l),
                     0.2
-                );
+                ); // legacy
         }
         &.selected:focus-visible {
             padding-left: calc(var(--layout-spacing-s) - 4px);
-            border-left: 4px solid var(--main-primary);
+            border-left: 4px solid var(--main-primary); // legacy
         }
 
         &.selected {
-            border-color: var(--main-primary);
-            background: var(--main-primary-0);
+            border-color: var(--main-primary); // legacy
+            background: var(--main-primary-0); // legacy
 
             .iconContainer {
-                background: var(--main-primary);
-                color: var(--neutral-grey-0);
+                background: var(--main-primary); // legacy
+                color: var(--neutral-grey-0); // legacy
             }
         }
 
@@ -58,7 +58,7 @@
 
             .message,
             .articleTitle {
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
             }
         }
         .iconContainer {
@@ -68,22 +68,22 @@
             flex: 0 0 24px;
             height: 24px;
             border-radius: 4px;
-            background: var(--neutral-grey-1);
-            color: var(--neutral-grey-4);
+            background: var(--neutral-grey-1); // legacy
+            color: var(--neutral-grey-4); // legacy
 
             .icon {
                 font-size: 16px;
             }
 
             .successIcon {
-                color: var(--feedback-success);
+                color: var(--feedback-success); // legacy
                 font-size: 24px;
             }
         }
 
         .message {
             .body-regular();
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             flex-grow: 1;
             display: -webkit-box;
             text-overflow: ellipsis;
@@ -96,10 +96,63 @@
             flex: 0 0 160px;
             .body-regular();
             overflow: hidden;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             text-align: right;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--elevation-neutral-default);
+
+        &:hover {
+            background: var(--elevation-neutral-mid);
+        }
+
+        &:focus-visible {
+            border: 1px solid var(--content-accent-default);
+            box-shadow: 0 0 0 2px var(--surface-accent-default);
+        }
+
+        &.selected:focus-visible {
+            border-left: 4px solid var(--content-accent-default);
+        }
+
+        &.selected {
+            border-color: var(--content-accent-default);
+            background: var(--surface-accent-default);
+
+            .iconContainer {
+                background: var(--content-accent-default);
+                color: var(--elevation-neutral-default);
+            }
+        }
+
+        &.success {
+            .message,
+            .articleTitle {
+                color: var(--content-neutral-secondary);
+            }
+        }
+
+        .iconContainer {
+            background: var(--elevation-neutral-mid);
+            color: var(--content-neutral-secondary);
+
+            .successIcon {
+                color: var(--content-success-primary);
+            }
+        }
+
+        .message {
+            color: var(--content-neutral-default);
+        }
+
+        .articleTitle {
+            color: var(--content-neutral-default);
         }
     }
 }

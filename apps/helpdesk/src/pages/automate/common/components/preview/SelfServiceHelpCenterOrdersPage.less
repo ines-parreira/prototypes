@@ -3,8 +3,12 @@
 
 :local {
     .container {
-        background-color: var(--neutral-grey-0);
-        color: var(--neutral-grey-6);
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        margin-bottom: -20px;
+        background-color: var(--neutral-grey-0); // legacy
+        border-radius: 16px;
 
         &:not(.isInitialEntry) {
             :global {
@@ -13,41 +17,73 @@
         }
     }
 
-    .header {
+    .contentContainer {
+        .body-regular();
+        overflow: auto;
+        flex: 1;
+        pointer-events: initial;
         display: flex;
         flex-direction: column;
-        padding: var(--layout-spacing-m) var(--layout-spacing-s);
+        color: var(--neutral-grey-6); // legacy
+        padding: 20px;
+    }
+
+    .title {
+        .heading-section-semibold();
+        padding-top: 12px;
+        padding-bottom: 20px;
+    }
+
+    .orderHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 0 16px;
+        gap: var(--layout-spacing-xxs);
+    }
+
+    .orderDetails {
+        display: flex;
+        align-items: center;
         gap: var(--layout-spacing-xs);
-        border-bottom: 1px solid var(--neutral-grey-3);
+        flex: 1;
     }
 
     .orderNumber {
-        .heading-section-semibold();
+        .heading-subsection-semibold();
+        color: var(--neutralGrey6);
     }
 
     .orderDate {
-        .heading-subsection-regular();
-        color: var(--neutral-grey-4);
+        .caption-regular();
+        color: #9fa9b9;
     }
 
-    .summaryLabel {
-        .heading-section-semibold();
-        padding: var(--layout-spacing-m) var(--layout-spacing-s) 0;
+    .orderTotalPrice {
+        color: var(--neutral-grey-6); // legacy
+        margin-left: auto;
     }
 
-    .fulfillmentContainer {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: var(--layout-spacing-m) var(--layout-spacing-s);
-        gap: var(--layout-spacing-m);
-        border-bottom: 1px solid var(--neutral-grey-3);
+    .collapseIcon {
+        padding: 0 9px;
+        color: var(--neutral-grey-3); // legacy
     }
 
-    .fulfillmentStatus {
+    .fulfillment {
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-s);
+    }
+
+    .fulfillmentShipment {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .shipment {
+        .body-semibold();
+        color: var(--neutral-grey-5); // legacy
     }
 
     .actions {
@@ -55,63 +91,98 @@
         gap: var(--layout-spacing-xs);
     }
 
-    .badge {
-        .body-medium();
-        align-self: flex-start;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-    }
-
-    .actionButton {
-        padding: 6px var(--layout-spacing-s);
-        background-color: rgba(22, 22, 22, 0.08);
-        border-radius: 4px;
-        font-size: var(--layout-spacing-s);
-        font-weight: 500;
-        line-height: 20px;
-        transition: background-color 0.2s linear;
-
+    .flowButton {
         &.isHovered {
-            background-color: rgba(22, 22, 22, 0.16);
+            border-color: var(--neutral-grey-3); // legacy
+            box-shadow: 0 1px 2px
+                hsla(
+                    var(--neutral-grey-6-h),
+                    var(--neutral-grey-6-s),
+                    var(--neutral-grey-6-l),
+                    0.16
+                );
         }
 
         &.isActive {
-            background-color: rgba(22, 22, 22, 0.2);
+            border-color: var(--neutral-grey-4); // legacy
+            box-shadow: inset 0 1px 2px
+                hsla(
+                    var(--neutral-grey-6-h),
+                    var(--neutral-grey-6-s),
+                    var(--neutral-grey-6-l),
+                    0.16
+                );
         }
     }
 
-    .lineItems {
+    .fulfillmentLineItems {
         display: flex;
         flex-direction: column;
-        gap: var(--layout-spacing-s);
+        gap: var(--layout-spacing-xs);
     }
 
     .lineItem {
         display: flex;
+        align-items: center;
         gap: var(--layout-spacing-s);
     }
 
-    .lineItemThumbnail {
+    .thumbnail {
         border-radius: 2px;
     }
 
     .lineItemDescription {
         display: flex;
         flex-direction: column;
-        padding: var(--layout-spacing-xxs) 0;
         gap: var(--layout-spacing-xxs);
     }
 
     .lineItemName {
-        .heading-subsection-semibold();
+        .body-semibold();
     }
 
     .lineItemPrice {
-        color: var(--neutral-grey-5);
-        margin-right: var(--layout-spacing-xs);
+        color: var(--neutral-grey-5); // legacy
+        margin-right: var(--layout-spacing-xxs);
     }
 
     .lineItemQuantity {
-        color: var(--neutral-grey-4);
+        color: #9fa9b9;
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .contentContainer {
+        color: var(--content-neutral-default);
+    }
+
+    .orderTotalPrice {
+        color: var(--content-neutral-default);
+    }
+
+    .collapseIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .shipment {
+        color: var(--content-neutral-secondary);
+    }
+
+    .flowButton {
+        &.isHovered {
+            border-color: var(--border-neutral-default);
+        }
+
+        &.isActive {
+            border-color: var(--content-neutral-secondary);
+        }
+    }
+
+    .lineItemPrice {
+        color: var(--content-neutral-secondary);
     }
 }

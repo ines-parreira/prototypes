@@ -49,7 +49,7 @@
         max-width: 400px;
 
         p {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
@@ -63,5 +63,13 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+}
+
+.axiom :local {
+    .alert {
+        p {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

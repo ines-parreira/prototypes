@@ -4,7 +4,7 @@
     .banner {
         margin-bottom: var(--layout-spacing-s);
         border: none;
-        background-color: var(--accessory-magenta-1);
+        background-color: var(--accessory-magenta-1); // legacy
         align-items: center;
 
         .bannerWrapper {
@@ -14,13 +14,31 @@
             align-items: center;
 
             .bannerButton {
-                background-color: var(--accessory-magenta-3);
-                border-color: var(--accessory-magenta-3);
+                background-color: var(--accessory-magenta-3); // legacy
+                border-color: var(--accessory-magenta-3); // legacy
                 cursor: pointer;
 
                 &:hover {
-                    background-color: var(--accessory-magenta-3);
-                    border-color: var(--accessory-magenta-3);
+                    background-color: var(--accessory-magenta-3); // legacy
+                    border-color: var(--accessory-magenta-3); // legacy
+                }
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .banner {
+        background-color: var(--surface-additional-fuchsia);
+
+        .bannerWrapper {
+            .bannerButton {
+                background-color: var(--surface-additional-purple);
+                border-color: var(--surface-additional-purple);
+
+                &:hover {
+                    background-color: var(--surface-additional-purple);
+                    border-color: var(--surface-additional-purple);
                 }
             }
         }

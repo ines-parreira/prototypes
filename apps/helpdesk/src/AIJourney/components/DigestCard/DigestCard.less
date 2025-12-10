@@ -54,7 +54,7 @@
     }
 
     .metric {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-weight: 600;
     }
 
@@ -66,7 +66,7 @@
     }
 
     .metricValue {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
         font-size: 20px;
     }
@@ -75,5 +75,13 @@
 .axiom :local {
     .digestCard {
         border: 1px solid var(--border-neutral-default);
+    }
+
+    .metric {
+        color: var(--content-neutral-secondary);
+    }
+
+    .metricValue {
+        color: var(--content-neutral-default);
     }
 }

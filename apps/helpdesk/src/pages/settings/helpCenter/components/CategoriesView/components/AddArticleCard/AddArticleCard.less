@@ -3,8 +3,8 @@
 :local {
     .container {
         border-radius: 4px;
-        border: 1px dashed var(--neutral-grey-3);
-        background: var(--neutral-grey-1);
+        border: 1px dashed var(--neutral-grey-3); // legacy
+        background: var(--neutral-grey-1); // legacy
         padding: var(--layout-spacing-s);
         cursor: pointer;
         transition: ease-in-out 0.2s;
@@ -19,6 +19,17 @@
         display: flex;
         margin-bottom: var(--layout-spacing-xs);
         font-size: 32px;
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px dashed var(--border-neutral-default);
+        background: var(--elevation-neutral-mid);
+    }
+
+    .header {
+        color: var(--border-neutral-default);
     }
 }

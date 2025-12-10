@@ -6,7 +6,7 @@ export enum OptionEnum {
     Clear = 'clear',
 }
 
-export type TreeValue = string
+export type TreeValue = string | boolean
 
 export type TreeOption = {
     type: OptionEnum.Option

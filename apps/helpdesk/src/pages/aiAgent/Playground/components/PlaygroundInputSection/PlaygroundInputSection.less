@@ -1,13 +1,13 @@
 :local {
     .container {
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         width: 100%;
         border-radius: 4px;
     }
 
     .section {
         padding: var(--layout-spacing-xs) var(--layout-spacing-s);
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .topSection {
@@ -24,7 +24,7 @@
     }
 
     .section:not(:last-child) {
-        border-bottom: 1px solid var(--neutral-grey-3);
+        border-bottom: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .subjectInput {
@@ -37,12 +37,35 @@
     .footer {
         display: flex;
         gap: var(--layout-spacing-s);
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         justify-content: space-between;
     }
 
     .disabled {
-        background-color: var(--neutral-grey-1);
-        color: var(--neutral-grey-5);
+        background-color: var(--neutral-grey-1); // legacy
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .section {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .section:not(:last-child) {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .footer {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .disabled {
+        background-color: var(--elevation-neutral-mid);
+        color: var(--content-neutral-secondary);
     }
 }

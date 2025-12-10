@@ -12,8 +12,8 @@
         align-items: center;
         justify-content: flex-start;
         border-radius: 12px;
-        border: 1px solid var(--neutral-grey-2);
-        background: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-2); // legacy
+        background: var(--neutral-grey-0); // legacy
         box-shadow:
             74px 82px 31px 0 rgba(0, 0, 0, 0),
             48px 53px 28px 0 rgba(0, 0, 0, 0.01),
@@ -26,7 +26,7 @@
         .header {
             width: 100%;
             padding: 12px var(--layout-spacing-s);
-            border-bottom: 1px solid var(--neutral-grey-2);
+            border-bottom: 1px solid var(--neutral-grey-2); // legacy
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -35,13 +35,13 @@
         }
 
         .approveButton {
-            background-color: var(--main-primary) !important;
+            background-color: var(--main-primary) !important; // legacy
             i {
                 font-size: 20px;
                 padding-right: var(--layout-spacing-xxs);
             }
             &[aria-disabled='true'] {
-                background-color: var(--neutral-grey-1) !important;
+                background-color: var(--neutral-grey-1) !important; // legacy
             }
         }
 
@@ -65,7 +65,7 @@
             flex: 1;
             min-height: 0; // Critical for allowing scroll
             width: 100%;
-            background: var(--neutral-grey-0) !important;
+            background: var(--neutral-grey-0) !important; // legacy
             overflow-y: auto;
             overflow-x: hidden;
         }
@@ -91,12 +91,39 @@
         }
 
         .guidanceLink {
-            color: #6bb5ff;
+            color: #6bb5ff; // legacy
             text-decoration: none;
 
             &:hover {
                 text-decoration: underline;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .containerContent {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+
+        .header {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
+
+        .approveButton {
+            background-color: var(--surface-accent-default) !important;
+
+            &[aria-disabled='true'] {
+                background-color: var(--elevation-neutral-mid) !important;
+            }
+        }
+
+        .contentBody {
+            background: var(--elevation-neutral-default) !important;
+        }
+
+        .guidanceLink {
+            color: var(--content-additional-blue);
         }
     }
 }

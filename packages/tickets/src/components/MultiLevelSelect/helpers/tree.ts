@@ -15,7 +15,7 @@ type TreeNode = {
 
 /**
  * Builds a tree structure from an array of choice values
- * ("Level1::Level2")
+ * ("Level1::Level2" for strings, or flat values for booleans)
  */
 export function buildTreeFromChoices(
     choices: TreeValue[],
@@ -23,7 +23,18 @@ export function buildTreeFromChoices(
     const root = new Map<string, TreeNode>()
 
     choices.forEach((choice) => {
-        const path = choice.split(NESTING_DELIMITER)
+        // For boolean values and other values, treat as flat (no nesting)
+        // fyi: other types are not expected to appear as values in a dropdown scenario
+        const path =
+            typeof choice === 'string'
+                ? choice.split(NESTING_DELIMITER)
+                : [
+                      typeof choice === 'boolean'
+                          ? choice
+                              ? 'boolean.true'
+                              : 'boolean.false'
+                          : String(choice),
+                  ]
         let currentLevel = root
 
         path.forEach((segment, index) => {
@@ -48,6 +59,16 @@ export function buildTreeFromChoices(
 }
 
 /**
+ * Converts a tree key to a display label
+ * Handles boolean string conversion
+ */
+function getOptionLabel(key: string): string {
+    if (key === 'boolean.true') return 'Yes'
+    if (key === 'boolean.false') return 'No'
+    return key
+}
+
+/**
  * Converts a tree level to options for Select component
  */
 function treeToOptions(
@@ -59,7 +80,7 @@ function treeToOptions(
         return {
             type: OptionEnum.Option,
             id: key,
-            label: key,
+            label: getOptionLabel(key),
             value: node.value ?? fullPath.join(NESTING_DELIMITER),
             path: fullPath,
             hasChildren: node.children.size > 0,
@@ -112,7 +133,7 @@ function flattenTreeWithCaptionsRecursively(
                 parentPath.length > 0 ? parentPath.join(' > ') : undefined
             acc.push({
                 type: OptionEnum.Option,
-                id: node.value,
+                id: String(node.value),
                 label: key,
                 value: node.value,
                 path: currentPath,
@@ -143,9 +164,11 @@ export function flattenTreeWithCaptions(
 /**
  * Extracts the current tree path from a full value
  * "Order::Missing" -> ["Order"]
+ * For boolean dropdowns, returns empty array (no path)
  */
 export function getPathFromValue(value: TreeValue | undefined): string[] {
     if (!value) return []
+    if (typeof value !== 'string') return []
 
     const parts = value.split(NESTING_DELIMITER)
     return parts.slice(0, -1)
@@ -154,9 +177,12 @@ export function getPathFromValue(value: TreeValue | undefined): string[] {
 /**
  * Extracts the display label from a hierarchical value
  * Returning the last segment (e.g., "Order::Missing" → "Missing")
+ * For boolean values, returns "Yes" or "No"
  */
 export function getDisplayLabel(value: TreeValue | undefined): string | null {
-    if (!value) return null
+    if (value === null || value === undefined) return null
+    if (typeof value === 'boolean') return value ? 'Yes' : 'No'
+    if (typeof value !== 'string') return String(value)
 
     const parts = value.split(NESTING_DELIMITER)
     return parts[parts.length - 1]

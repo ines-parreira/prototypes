@@ -43,7 +43,7 @@
         padding: var(--layout-spacing-s);
         transition: all 0.3s;
 
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 14px;
 
         @media @mobiles {
@@ -67,7 +67,7 @@
             &:hover,
             &:active {
                 background: var(--neutral-grey-6); // legacy
-                color: var(--neutral-grey-0);
+                color: var(--neutral-grey-0); // legacy
             }
         }
     }
@@ -79,7 +79,7 @@
         font-size: 14px;
         font-weight: 600;
         line-height: 20px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .revealedDetails {
@@ -89,7 +89,11 @@
 
 .axiom :local {
     .item {
-        background-color: var(--elevation-overlay-default);
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .itemMeta {
+        color: var(--content-neutral-secondary);
     }
 
     .actions {
@@ -97,7 +101,12 @@
             &:hover,
             &:active {
                 background: var(--elevation-neutral-inverse);
+                color: var(--content-inverted-default);
             }
         }
+    }
+
+    .metaName {
+        color: var(--content-neutral-default);
     }
 }

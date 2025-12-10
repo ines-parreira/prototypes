@@ -13,9 +13,9 @@
         width: 100%;
         padding: 16px;
         margin: 8px 0;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         border-radius: 4px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .url,
@@ -26,17 +26,17 @@
     }
 
     .url {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         .url-item {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
     .title {
         font-size: 20px;
         line-height: 24px;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .description {
@@ -44,8 +44,31 @@
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         line-height: 22px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         text-overflow: ellipsis;
         overflow: hidden;
+    }
+}
+
+.axiom :local {
+    .preview {
+        background-color: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .url {
+        color: var(--content-neutral-default);
+
+        .url-item {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .title {
+        color: var(--content-accent-default);
+    }
+
+    .description {
+        color: var(--content-neutral-secondary);
     }
 }

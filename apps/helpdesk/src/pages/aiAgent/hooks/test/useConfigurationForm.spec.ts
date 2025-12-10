@@ -37,7 +37,6 @@ const INITIAL_FORM_VALUES: FormValues = {
     chatChannelDeactivatedDatetime: undefined,
     emailChannelDeactivatedDatetime: undefined,
     smsChannelDeactivatedDatetime: undefined,
-    trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
     helpCenterId: null,

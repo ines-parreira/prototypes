@@ -7,14 +7,14 @@
         gap: var(--layout-spacing-s);
         padding: var(--layout-spacing-s);
         border-radius: 8px;
-        border: 1px solid var(--accessory-magenta-2);
-        background: var(--accessory-magenta-1);
+        border: 1px solid var(--accessory-magenta-2); // legacy
+        background: var(--accessory-magenta-1); // legacy
         align-items: center;
         justify-content: space-between;
     }
 
     .icon {
-        color: var(--accessory-magenta-25);
+        color: var(--accessory-magenta-25); // legacy
     }
 
     .title {
@@ -22,5 +22,16 @@
     }
     .description {
         .body-regular();
+    }
+}
+
+.axiom :local {
+    .container {
+        border: 1px solid var(--border-additional-purple);
+        background: var(--surface-additional-fuchsia);
+    }
+
+    .icon {
+        color: var(--content-additional-purple);
     }
 }

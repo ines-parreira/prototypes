@@ -8,8 +8,16 @@
         align-items: baseline;
 
         p {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             .heading-page-semibold();
+        }
+    }
+}
+
+.axiom :local {
+    .container {
+        p {
+            color: var(--content-neutral-default);
         }
     }
 }

@@ -6,10 +6,20 @@
     }
 
     .errorIcon {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 
     .successIcon {
-        color: var(--feedback-success);
+        color: var(--feedback-success); // legacy
+    }
+}
+
+.axiom :local {
+    .errorIcon {
+        color: var(--static-error);
+    }
+
+    .successIcon {
+        color: var(--static-success);
     }
 }

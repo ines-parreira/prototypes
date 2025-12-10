@@ -4,11 +4,11 @@
     }
 
     .error {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 
     .neutral {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .form {
@@ -61,11 +61,29 @@
 
     .tooltipIcon {
         margin-left: 0.3em;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 15px;
 
         &:hover {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .error {
+        color: var(--content-error-primary);
+    }
+
+    .neutral {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .tooltipIcon {
+        color: var(--content-neutral-tertiary);
+
+        &:hover {
+            color: var(--content-neutral-secondary);
         }
     }
 }

@@ -7,13 +7,25 @@
     }
     .dragIcon {
         cursor: grab;
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
     }
     .deleteIcon {
         font-size: 16px;
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
     .isDisabled {
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
+    }
+}
+
+.axiom :local {
+    .dragIcon {
+        color: var(--border-neutral-default);
+    }
+    .deleteIcon {
+        color: var(--content-error-primary);
+    }
+    .isDisabled {
+        color: var(--border-neutral-default);
     }
 }

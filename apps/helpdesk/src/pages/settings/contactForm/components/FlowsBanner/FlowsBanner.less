@@ -2,7 +2,7 @@
 
 :local {
     .container {
-        background-color: var(--main-latte);
+        background-color: var(--main-latte); // legacy
         display: flex;
         justify-content: center;
         align-items: center;
@@ -28,7 +28,7 @@
     }
 
     .title {
-        color: var(--modern-neutral-grey-6);
+        color: var(--modern-neutral-grey-6); // legacy
         font-size: 20px;
         font-style: normal;
         font-weight: 600;
@@ -37,7 +37,7 @@
     }
 
     .description {
-        color: var(--modern-neutral-grey-5);
+        color: var(--modern-neutral-grey-5); // legacy
         .heading-subsection-regular();
     }
 
@@ -50,5 +50,19 @@
     .button {
         display: flex;
         gap: var(--layout-spacing-xxs);
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--surface-additional-yellow);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .description {
+        color: var(--content-neutral-secondary);
     }
 }

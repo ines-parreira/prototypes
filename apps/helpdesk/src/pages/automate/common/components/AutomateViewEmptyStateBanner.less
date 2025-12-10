@@ -7,7 +7,7 @@
         align-items: center;
         gap: var(--layout-spacing-l);
         min-height: 342px;
-        background: var(--main-latte);
+        background: var(--main-latte); // legacy
 
         @media @mobiles {
             padding: 0 var(--layout-spacing-s);
@@ -75,5 +75,11 @@
         top: 0;
         bottom: 0;
         height: 100%;
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--surface-additional-yellow);
     }
 }

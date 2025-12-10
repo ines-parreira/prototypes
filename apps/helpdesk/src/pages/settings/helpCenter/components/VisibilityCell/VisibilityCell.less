@@ -6,25 +6,25 @@
     }
 
     .icon {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 16px;
     }
 
     .title {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 14px;
         line-height: 20px;
         font-weight: 400;
     }
 
     .light {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .dot {
         width: 4px;
         height: 4px;
-        background-color: var(--neutral-grey-4);
+        background-color: var(--neutral-grey-4); // legacy
         margin: 6px;
         border-radius: 4px;
     }
@@ -35,5 +35,23 @@
         font-weight: 400;
         line-height: 16px;
         text-align: left;
+    }
+}
+
+.axiom :local {
+    .icon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .title {
+        color: var(--content-neutral-secondary);
+    }
+
+    .light {
+        color: var(--content-neutral-secondary);
+    }
+
+    .dot {
+        background-color: var(--content-neutral-secondary);
     }
 }

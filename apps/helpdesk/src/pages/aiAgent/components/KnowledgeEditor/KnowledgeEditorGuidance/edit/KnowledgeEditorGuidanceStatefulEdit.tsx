@@ -7,6 +7,7 @@ import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/varia
 import type { GuidanceArticle, GuidanceFormFields } from 'pages/aiAgent/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
+import type { Props as ImpactProps } from '../../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
 import { KnowledgeEditorGuidanceView } from '../KnowledgeEditorGuidanceView'
 import type { BaseProps } from '../KnowledgeEditorGuidanceView'
 
@@ -20,6 +21,7 @@ type Props = BaseProps & {
     onDuplicate: () => Promise<void>
     isGuidanceArticleUpdating: boolean
     closeHandlerRef: React.MutableRefObject<(() => void) | null>
+    impact?: Omit<ImpactProps, 'sectionId'>
 }
 
 export const KnowledgeEditorGuidanceStatefulEdit = ({
@@ -38,6 +40,7 @@ export const KnowledgeEditorGuidanceStatefulEdit = ({
     onToggleFullscreen,
     onTest,
     closeHandlerRef,
+    impact,
 }: Props) => {
     const onSave = useCallback(
         async (guidanceFormFields: GuidanceFormFields) => {
@@ -90,6 +93,7 @@ export const KnowledgeEditorGuidanceStatefulEdit = ({
             onToggleFullscreen={onToggleFullscreen}
             onTest={onTest}
             closeHandlerRef={closeHandlerRef}
+            impact={impact}
         />
     )
 }

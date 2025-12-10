@@ -1,6 +1,6 @@
 :local {
     .forwardIcon {
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
         font-size: 22px;
         margin-left: 25px;
     }
@@ -32,7 +32,7 @@
     }
 
     .noStore {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .chatStatusDot {
@@ -44,7 +44,7 @@
     }
 
     .chatStatusFeedback {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .lastColumn {
@@ -54,7 +54,26 @@
 
     .languageBadge {
         margin-bottom: 0;
-        background-color: var(--neutral-grey-1);
-        color: var(--neutral-grey-5);
+        background-color: var(--neutral-grey-1); // legacy
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .forwardIcon {
+        color: var(--border-neutral-default);
+    }
+
+    .noStore {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .chatStatusFeedback {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .languageBadge {
+        background-color: var(--surface-neutral-secondary);
+        color: var(--content-neutral-secondary);
     }
 }

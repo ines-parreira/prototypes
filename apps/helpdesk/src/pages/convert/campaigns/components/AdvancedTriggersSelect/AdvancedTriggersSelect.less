@@ -9,12 +9,19 @@
         width: 100%;
         height: 40px;
         justify-content: center;
-        background-color: var(--neutral-grey-2);
-        border: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-2); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
         padding: var(--layout-spacing-xxs);
     }
 
     .firstSection {
         padding-top: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .upsellButtonBox {
+        background-color: var(--elevation-neutral-mid);
+        border: 1px solid var(--border-neutral-default);
     }
 }

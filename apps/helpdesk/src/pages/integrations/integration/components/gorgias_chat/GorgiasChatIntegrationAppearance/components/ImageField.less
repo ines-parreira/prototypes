@@ -1,6 +1,6 @@
 :local {
     .imageInfo {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .previewHeaderLogoContainer {
@@ -31,12 +31,12 @@
 
         height: 80px;
 
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
 
-        border: 2px dashed var(--neutral-grey-3);
+        border: 2px dashed var(--neutral-grey-3); // legacy
 
         font-size: 22px;
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
 
         img {
             position: absolute;
@@ -74,5 +74,17 @@
         width: 18px;
         height: 18px;
         z-index: 1;
+    }
+}
+
+.axiom :local {
+    .imageInfo {
+        color: var(--content-neutral-secondary);
+    }
+
+    .imagePreview {
+        background-color: var(--surface-neutral-tertiary);
+        border: 2px dashed var(--border-neutral-default);
+        color: var(--border-neutral-default);
     }
 }

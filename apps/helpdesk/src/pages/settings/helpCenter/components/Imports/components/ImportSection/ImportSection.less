@@ -1,7 +1,7 @@
 :local {
     .importInProgressContainer {
         padding: 16px 24px;
-        border: 1px solid var(--main-primary);
+        border: 1px solid var(--main-primary); // legacy
         border-radius: 4px;
         display: flex;
         margin-bottom: 16px;
@@ -13,11 +13,11 @@
 
     .moreDetails {
         margin-left: auto;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         cursor: pointer;
 
         &:hover {
-            color: var(--main-primary-4);
+            color: var(--main-primary-4); // legacy
         }
     }
 
@@ -30,5 +30,19 @@
 
     .tooltip {
         max-width: 140px !important;
+    }
+}
+
+.axiom :local {
+    .importInProgressContainer {
+        border: 1px solid var(--border-accent-default);
+    }
+
+    .moreDetails {
+        color: var(--content-accent-default);
+
+        &:hover {
+            color: var(--content-additional-blue);
+        }
     }
 }

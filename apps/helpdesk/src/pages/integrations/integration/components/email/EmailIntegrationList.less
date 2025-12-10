@@ -16,7 +16,7 @@
         margin-top: -2px;
         margin-left: -2px;
 
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 26px !important;
     }
 
@@ -33,16 +33,33 @@
         gap: var(--layout-spacing-s);
 
         .addressValue {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
     .store,
     .status {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .store {
         text-wrap-mode: nowrap;
+    }
+}
+
+.axiom :local {
+    .icon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .address {
+        .addressValue {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .store,
+    .status {
+        color: var(--content-neutral-secondary);
     }
 }

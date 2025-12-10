@@ -28,8 +28,8 @@
         box-shadow: 0 2px 4px rgba(22, 22, 22, 0.16);
         border-radius: 4px;
         padding: var(--layout-spacing-xs);
-        background-color: var(--neutral-grey-0);
-        color: var(--neutral-grey-6);
+        background-color: var(--neutral-grey-0); // legacy
+        color: var(--neutral-grey-6); // legacy
         display: flex;
         flex-direction: column;
         margin: 0 var(--layout-spacing-s) var(--layout-spacing-s);
@@ -43,7 +43,7 @@
         padding: var(--layout-spacing-xs);
 
         &.isHighlighted {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
         }
     }
 
@@ -56,12 +56,35 @@
         border-radius: 4px;
 
         &.isHighlighted {
-            background-color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-2); // legacy
         }
     }
 
     .chevronRightIcon {
         font-size: 20px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .listGroup {
+        background-color: var(--elevation-neutral-default);
+        color: var(--content-neutral-default);
+    }
+
+    .listGroupItemHeading {
+        &.isHighlighted {
+            background-color: var(--hover-default);
+        }
+    }
+
+    .listGroupItem {
+        &.isHighlighted {
+            background-color: var(--hover-default);
+        }
+    }
+
+    .chevronRightIcon {
+        color: var(--content-neutral-secondary);
     }
 }

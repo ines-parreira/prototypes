@@ -102,7 +102,6 @@ describe('DeploySection', () => {
     const mockStoreConfiguration = {
         monitoredEmailIntegrations: [],
         monitoredChatIntegrations: [],
-        trialModeActivatedDatetime: null,
         previewModeActivatedDatetime: null,
         storeName: 'test-store',
         shopType: 'shopify',

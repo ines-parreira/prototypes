@@ -3,11 +3,17 @@
 :local {
     .title {
         .body-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         margin-bottom: var(--layout-spacing-xxs);
     }
 
     .description {
         margin-bottom: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .title {
+        color: var(--content-neutral-default);
     }
 }

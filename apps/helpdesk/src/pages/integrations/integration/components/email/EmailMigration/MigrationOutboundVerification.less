@@ -23,7 +23,15 @@
         margin-top: var(--layout-spacing-m);
 
         .verificationDurationValue {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .verificationDurationInfo {
+        .verificationDurationValue {
+            color: var(--content-neutral-secondary);
         }
     }
 }

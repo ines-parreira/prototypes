@@ -27,7 +27,10 @@ export const P2_SCOPES: MetricScope[] = [
     MetricScope.AutoQA,
     MetricScope.MessagesReceived,
     MetricScope.HumanFirstResponseTime,
+    MetricScope.TicketServiceLevelAgreement,
     MetricScope.WorkloadTickets,
+    MetricScope.ResponseTime,
+    MetricScope.Tags,
     MetricScope.TicketFields,
 ]
 

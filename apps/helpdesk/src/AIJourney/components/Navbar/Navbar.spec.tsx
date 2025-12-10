@@ -382,4 +382,161 @@ describe('<AiJourneyNavbar />', () => {
             expect(screen.getByText('Playground')).toBeInTheDocument()
         })
     })
+
+    describe('Campaigns section', () => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneyCampaignsEnabled) {
+                    return true
+                }
+                if (key === FeatureFlagKey.AiJourneyEnabled) {
+                    return true
+                }
+                return false
+            })
+        })
+
+        it('should not render campaigns section when no journey exists', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
+                journeyData: undefined,
+                journeys: [],
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.queryByText('Campaigns')).not.toBeInTheDocument()
+        })
+
+        it('should not render campaigns section when feature flag is disabled', async () => {
+            const mockJourneyContextWithJourney = {
+                ...mockJourneyContext,
+                journeyData: {
+                    type: 'cart_abandoned',
+                    id: 'journey-id',
+                    state: 'paused',
+                },
+            }
+
+            mockUseJourneyContext.mockReturnValue(mockJourneyContextWithJourney)
+
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneyCampaignsEnabled) {
+                    return false
+                }
+                if (key === FeatureFlagKey.AiJourneyEnabled) {
+                    return true
+                }
+                return false
+            })
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.queryByText('Campaigns')).not.toBeInTheDocument()
+        })
+
+        it('should render campaigns section when journey exists', async () => {
+            const mockJourneyContextWithJourney = {
+                ...mockJourneyContext,
+                journeyData: {
+                    type: 'cart_abandoned',
+                    id: 'journey-id',
+                    state: 'paused',
+                },
+                journeys: [{ id: 'journey-id' }],
+            }
+
+            mockUseJourneyContext.mockReturnValue(mockJourneyContextWithJourney)
+
+            renderNavbar()
+
+            expect(screen.getByText('Campaigns')).toBeInTheDocument()
+        })
+
+        it('should highlight campaigns link when pathname contains "campaign"', async () => {
+            const mockJourneyContextWithJourney = {
+                ...mockJourneyContext,
+                journeyData: {
+                    type: 'cart_abandoned',
+                    id: 'journey-id',
+                    state: 'paused',
+                },
+                journeys: [{ id: 'journey-id' }],
+            }
+
+            mockUseJourneyContext.mockReturnValue(mockJourneyContextWithJourney)
+
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider store={mockStore({})}>
+                        <ThemeProvider>
+                            <IntegrationsProvider>
+                                <JourneyProvider>
+                                    <AiJourneyNavbar />
+                                </JourneyProvider>
+                            </IntegrationsProvider>
+                        </ThemeProvider>
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    wrapper: ({ children }: { children: ReactNode }) => (
+                        <StaticRouter location="/app/ai-journey/teststore1/campaigns">
+                            <NavBarProvider>{children}</NavBarProvider>
+                        </StaticRouter>
+                    ),
+                },
+            )
+
+            const campaignsLink = screen.getByText('Campaigns').closest('a')
+            expect(campaignsLink).toHaveClass('active')
+        })
+
+        it('should highlight campaigns link when pathname contains "campaign" (singular)', async () => {
+            const mockJourneyContextWithJourney = {
+                ...mockJourneyContext,
+                journeyData: {
+                    type: 'cart_abandoned',
+                    id: 'journey-id',
+                    state: 'paused',
+                },
+                journeys: [{ id: 'journey-id' }],
+            }
+
+            mockUseJourneyContext.mockReturnValue(mockJourneyContextWithJourney)
+
+            render(
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider store={mockStore({})}>
+                        <ThemeProvider>
+                            <IntegrationsProvider>
+                                <JourneyProvider>
+                                    <AiJourneyNavbar />
+                                </JourneyProvider>
+                            </IntegrationsProvider>
+                        </ThemeProvider>
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    wrapper: ({ children }: { children: ReactNode }) => (
+                        <StaticRouter location="/app/ai-journey/teststore1/campaign/123">
+                            <NavBarProvider>{children}</NavBarProvider>
+                        </StaticRouter>
+                    ),
+                },
+            )
+
+            const campaignsLink = screen.getByText('Campaigns').closest('a')
+            expect(campaignsLink).toHaveClass('active')
+        })
+    })
 })

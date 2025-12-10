@@ -68,7 +68,6 @@ const queryClient = new QueryClient({
 const createMockStoreConfiguration = (
     overrides?: Partial<StoreConfiguration>,
 ): StoreConfiguration => ({
-    trialModeActivatedDatetime: null,
     previewModeActivatedDatetime: null,
     storeName: 'test-store',
     shopType: 'shopify',

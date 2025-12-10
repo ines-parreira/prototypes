@@ -5,8 +5,8 @@
     }
 
     .tableAndHeading {
-        background-color: var(--neutral-grey-0);
-        border: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-0); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
         margin-bottom: var(--layout-spacing-m);
         border-bottom: none;
     }
@@ -28,12 +28,23 @@
     }
 
     .address {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
     }
 
     .deleteButton {
         width: 24px;
         height: 24px;
+    }
+}
+
+.axiom :local {
+    .tableAndHeading {
+        background-color: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .address {
+        color: var(--content-neutral-default);
     }
 }

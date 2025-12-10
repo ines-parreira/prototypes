@@ -9,9 +9,9 @@
         z-index: 3;
         display: inline-flex;
 
-        background-color: var(--neutral-grey-5);
-        border-color: var(--neutral-grey-5);
-        color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-5); // legacy
+        border-color: var(--neutral-grey-5); // legacy
+        color: var(--neutral-grey-0); // legacy
 
         padding: 6px 12px;
         border-radius: 32px;
@@ -22,14 +22,28 @@
         box-shadow: 4px 4px 16px 0px #1616161a;
 
         &:hover {
-            background-color: var(--neutral-grey-4);
-            border-color: var(--neutral-grey-4);
-            color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-4); // legacy
+            border-color: var(--neutral-grey-4); // legacy
+            color: var(--neutral-grey-0); // legacy
         }
 
         i {
             margin-right: 5px;
             line-height: 20px;
+        }
+    }
+}
+
+.axiom :local {
+    .button {
+        background-color: var(--content-neutral-secondary);
+        border-color: var(--content-neutral-secondary);
+        color: var(--elevation-neutral-default);
+
+        &:hover {
+            background-color: var(--content-neutral-default);
+            border-color: var(--content-neutral-default);
+            color: var(--elevation-neutral-default);
         }
     }
 }

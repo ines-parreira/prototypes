@@ -12,11 +12,11 @@
         }
 
         .valid {
-            color: var(--feedback-success);
+            color: var(--feedback-success); // legacy
         }
 
         .invalid {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
         }
 
         .checkIcon {
@@ -26,13 +26,29 @@
 
         .arrow {
             margin-left: auto;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             font-size: 24px;
         }
 
         .title {
             text-transform: capitalize;
             margin-left: var(--layout-spacing-xs);
+        }
+    }
+}
+
+.axiom :local {
+    .extendableSectionHeader {
+        .valid {
+            color: var(--content-positive-default);
+        }
+
+        .invalid {
+            color: var(--content-error-primary);
+        }
+
+        .arrow {
+            color: var(--content-neutral-secondary);
         }
     }
 }

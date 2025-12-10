@@ -5,7 +5,7 @@
     }
 
     .used-sms {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-variant-numeric: lining-nums tabular-nums;
         font-feature-settings:
             'ss01' on,
@@ -19,7 +19,7 @@
     }
 
     .sms-label {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-variant-numeric: lining-nums tabular-nums;
         font-feature-settings:
             'ss01' on,
@@ -40,5 +40,15 @@
 
     .dropdownOverlay {
         z-index: 1049;
+    }
+}
+
+.axiom :local {
+    .used-sms {
+        color: var(--content-neutral-secondary);
+    }
+
+    .sms-label {
+        color: var(--content-neutral-default);
     }
 }

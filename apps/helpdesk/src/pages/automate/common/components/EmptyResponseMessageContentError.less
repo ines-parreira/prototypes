@@ -9,7 +9,7 @@
 
     .icon {
         font-size: 16px;
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
     }
 
     .message {
@@ -17,6 +17,16 @@
         font-weight: 500;
         font-size: 12px;
         line-height: 20px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
+    }
+}
+
+.axiom :local {
+    .icon {
+        color: var(--content-warning-primary);
+    }
+
+    .message {
+        color: var(--content-neutral-default);
     }
 }

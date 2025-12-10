@@ -6,17 +6,28 @@ type DonutChartTooltipProps = {
     name: string
     value: number
     color: string
+    valueFormatter?: (value: number) => string
+    period?: {
+        start_datetime: string
+        end_datetime: string
+    }
 }
 
 export const DonutChartTooltip = ({
     name,
     value,
     color,
+    valueFormatter,
+    period,
 }: DonutChartTooltipProps) => {
     return (
         <Box className={css.tooltip}>
-            <Box alignItems="center" gap="xs" className={css.tooltipContent}>
-                <Box alignItems="center" gap="xs" className={css.legendLabel}>
+            <Text size="sm" variant="regular" className={css.tooltipPeriod}>
+                {period ? period.start_datetime : ''} -{' '}
+                {period ? period.end_datetime : ''}
+            </Text>
+            <Box alignItems="center" gap="lg">
+                <Box alignItems="center" gap="xs" className={css.tooltipText}>
                     <span
                         className={css.legendDot}
                         style={{ backgroundColor: color }}
@@ -24,13 +35,13 @@ export const DonutChartTooltip = ({
                     <Text
                         size="sm"
                         variant="regular"
-                        className={css.legendText}
+                        className={css.tooltipText}
                     >
                         {name}
                     </Text>
                 </Box>
-                <Text size="sm" variant="regular" className={css.legendValue}>
-                    {value}
+                <Text size="sm" variant="regular" className={css.tooltipValue}>
+                    {valueFormatter ? valueFormatter(value) : value}
                 </Text>
             </Box>
         </Box>

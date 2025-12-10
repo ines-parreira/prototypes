@@ -18,7 +18,7 @@
 
     .chevron {
         font-size: 16px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .indicator {
@@ -26,7 +26,7 @@
     }
 
     .trigger {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         padding: 0;
 
         .triggerButton {
@@ -41,5 +41,15 @@
 
     .reference {
         margin-top: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .chevron {
+        color: var(--content-neutral-default);
+    }
+
+    .trigger {
+        color: var(--content-neutral-default);
     }
 }

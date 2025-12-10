@@ -8,8 +8,8 @@
         align-items: center;
         padding: var(--layout-spacing-m);
         gap: var(--layout-spacing-m);
-        background: var(--neutral-grey-0);
-        color: var(--neutral-grey-5);
+        background: var(--neutral-grey-0); // legacy
+        color: var(--neutral-grey-5); // legacy
         text-align: center;
         overflow: auto;
         pointer-events: initial;
@@ -30,6 +30,17 @@
         padding: 6px 16px;
         background: rgba(0, 117, 255, 0.08);
         border-radius: 4px;
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
+    }
+}
+
+.axiom :local {
+    .container {
+        background: var(--elevation-neutral-default);
+        color: var(--content-neutral-secondary);
+    }
+
+    .button {
+        color: var(--content-accent-default);
     }
 }

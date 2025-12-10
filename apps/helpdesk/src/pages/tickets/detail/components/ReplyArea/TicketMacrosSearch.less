@@ -1,7 +1,7 @@
 :local {
     .component {
         height: 40px;
-        border-bottom: 1px solid var(--neutral-grey-2);
+        border-bottom: 1px solid var(--neutral-grey-2); // legacy
         padding-right: 3em;
 
         input:focus {
@@ -34,5 +34,11 @@
         > div:last-of-type {
             max-height: 20vh;
         }
+    }
+}
+
+.axiom :local {
+    .component {
+        border-bottom: 1px solid var(--border-neutral-default);
     }
 }

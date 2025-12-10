@@ -15,7 +15,7 @@
 
     .icon {
         i {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
@@ -25,13 +25,28 @@
 
     .formInputFooterInfo {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-top: -20px;
         padding-right: 24px;
         padding-left: 24px;
         padding-bottom: 24px;
         &.error {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .icon {
+        i {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .formInputFooterInfo {
+        color: var(--content-neutral-secondary);
+        &.error {
+            color: var(--content-error-primary);
         }
     }
 }

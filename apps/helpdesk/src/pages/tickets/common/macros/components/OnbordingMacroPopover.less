@@ -1,3 +1,9 @@
 :local .popoverContent {
-    color: var(--neutral-grey-6);
+    color: var(--neutral-grey-6); // legacy
+}
+
+.axiom :local {
+    .popoverContent {
+        color: var(--content-neutral-default);
+    }
 }
