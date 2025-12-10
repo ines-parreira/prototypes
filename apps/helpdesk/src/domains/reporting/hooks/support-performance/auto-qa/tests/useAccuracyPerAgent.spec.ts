@@ -6,16 +6,17 @@ import {
     useAccuracyPerAgent,
 } from 'domains/reporting/hooks/support-performance/auto-qa/useAccuracyPerAgent'
 import {
-    fetchMetricPerDimension,
-    useMetricPerDimension,
+    fetchMetricPerDimensionV2,
+    useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { accuracyPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/accuracyQueryFactory'
+import { accuracyPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
-const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
-const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
+const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
+const fetchMetricPerDimensionV2Mock = assumeMock(fetchMetricPerDimensionV2)
 
 describe('AccuracyPerAgent', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -35,8 +36,13 @@ describe('AccuracyPerAgent', () => {
                 useAccuracyPerAgent(statsFilters, timezone, undefined, agentId),
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 accuracyPerAgentQueryFactory(statsFilters, timezone, undefined),
+                accuracyPerAgentQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                    sortDirection: undefined,
+                }),
                 agentId,
             )
         })
@@ -51,8 +57,13 @@ describe('AccuracyPerAgent', () => {
                 agentId,
             )
 
-            expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 accuracyPerAgentQueryFactory(statsFilters, timezone, undefined),
+                accuracyPerAgentQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                    sortDirection: undefined,
+                }),
                 agentId,
             )
         })

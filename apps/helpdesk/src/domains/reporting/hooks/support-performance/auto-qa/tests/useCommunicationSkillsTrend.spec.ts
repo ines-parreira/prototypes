@@ -9,6 +9,7 @@ import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { communicationSkillsQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/communicationSkillsQueryFactory'
+import { communicationSkillsQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     formatReportingQueryDate,
@@ -45,6 +46,17 @@ describe('CommunicationSkillsTrend', () => {
                     },
                     timezone,
                 ),
+                communicationSkillsQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                }),
+                communicationSkillsQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
             )
         })
     })
@@ -62,6 +74,17 @@ describe('CommunicationSkillsTrend', () => {
                     },
                     timezone,
                 ),
+                communicationSkillsQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                }),
+                communicationSkillsQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
             )
         })
     })

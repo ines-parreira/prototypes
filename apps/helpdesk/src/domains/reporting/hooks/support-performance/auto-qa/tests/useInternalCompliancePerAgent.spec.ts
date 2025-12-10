@@ -6,16 +6,17 @@ import {
     useInternalCompliancePerAgent,
 } from 'domains/reporting/hooks/support-performance/auto-qa/useInternalCompliancePerAgent'
 import {
-    fetchMetricPerDimension,
-    useMetricPerDimension,
+    fetchMetricPerDimensionV2,
+    useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { internalCompliancePerAgentQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/internalComplianceQueryFactory'
+import { internalCompliancePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
-const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
-const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
+const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
+const fetchMetricPerDimensionV2Mock = assumeMock(fetchMetricPerDimensionV2)
 
 describe('InternalCompliancePerAgent', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -40,12 +41,17 @@ describe('InternalCompliancePerAgent', () => {
                 ),
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 internalCompliancePerAgentQueryFactory(
                     statsFilters,
                     timezone,
                     undefined,
                 ),
+                internalCompliancePerAgentQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                    sortDirection: undefined,
+                }),
                 agentId,
             )
         })
@@ -60,12 +66,17 @@ describe('InternalCompliancePerAgent', () => {
                 agentId,
             )
 
-            expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 internalCompliancePerAgentQueryFactory(
                     statsFilters,
                     timezone,
                     undefined,
                 ),
+                internalCompliancePerAgentQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                    sortDirection: undefined,
+                }),
                 agentId,
             )
         })

@@ -385,9 +385,21 @@ export const getPeriodDateTimesFromFilters = <TMeta extends ScopeMeta>(
     const periodEnd = filters.find(
         (filter) => filter.operator === ReportingFilterOperator.BeforeDate,
     )
-    const dateRange = [
-        periodStart?.values?.[0] || '',
-        periodEnd?.values?.[0] || '',
-    ]
+    const periodInRange = filters.find(
+        (filter) => filter.operator === ReportingFilterOperator.InDateRange,
+    )
+
+    let dateRange = ['', '']
+    if (periodStart && periodEnd) {
+        dateRange = [
+            periodStart?.values?.[0] || '',
+            periodEnd?.values?.[0] || '',
+        ]
+    } else if (periodInRange) {
+        const start = periodInRange.values?.[0] ?? ''
+        const end = periodInRange.values?.[1] ?? ''
+        dateRange = [start, end]
+    }
+
     return getPeriodDateTimes(dateRange, granularity)
 }

@@ -456,6 +456,8 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                         max_discount_percent: 15,
                         sms_sender_number: '+1 555-123-4567',
                         sms_sender_integration_id: 1,
+                        discount_code_message_threshold: 1,
+                        include_image: false,
                     },
                 },
                 currentIntegration: { id: 1, name: 'shopify-store' },
@@ -496,8 +498,32 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
 
             await waitFor(() => {
                 expect(mockHandleUpdate).toHaveBeenCalledWith({
+                    campaignTitle: undefined,
+                    discountCodeThresholdValue: 1,
+                    discountValue: '15',
+                    excludedAudienceListIds: undefined,
+                    followUpValue: 2,
+                    includeImage: false,
+                    includedAudienceListIds: undefined,
+                    isDiscountEnabled: true,
                     journeyMessageInstructions: 'My custom instructions',
                     journeyState: 'active',
+                    phoneNumberValue: {
+                        id: '1',
+                        phone_number: '+15551234567',
+                        phone_number_friendly: '+1 555-123-4567',
+                        name: '[MKT] Phone 1',
+                        capabilities: {
+                            sms: true,
+                            voice: true,
+                        },
+                        integrations: [
+                            {
+                                id: 1,
+                                type: 'sms',
+                            },
+                        ],
+                    },
                 })
             })
         })
@@ -615,6 +641,9 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                         store_integration_id: 1,
                         store_name: 'shopify-store',
                         type: 'cart_abandoned',
+                        campaign: undefined,
+                        excluded_audience_list_ids: undefined,
+                        included_audience_list_ids: undefined,
                     },
                     journeyConfigs: {
                         discount_code_message_threshold: 1,
@@ -623,9 +652,58 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                         max_discount_percent: 10,
                         sms_sender_integration_id: 1,
                         sms_sender_number: '+15551234567',
+                        include_image: false,
                     },
                 })
             })
+        })
+    })
+
+    describe('Loading states', () => {
+        it('should disable continue button when journey update is loading', () => {
+            mockUseJourneyUpdateHandler.mockReturnValue({
+                handleUpdate: jest.fn(),
+                isLoading: true,
+                isSuccess: false,
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup
+                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                            />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const continueButton = screen.getByTestId('ai-journey-button')
+            expect(continueButton).toBeDisabled()
+        })
+
+        it('should disable continue button when journey update is successful', () => {
+            mockUseJourneyUpdateHandler.mockReturnValue({
+                handleUpdate: jest.fn(),
+                isLoading: false,
+                isSuccess: true,
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup
+                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                            />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const continueButton = screen.getByTestId('ai-journey-button')
+            expect(continueButton).toBeDisabled()
         })
     })
 
@@ -647,7 +725,6 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                 error: null,
             })
 
-            // Default mock for useJourneyContext in handleContinue tests
             mockUseJourneyContext.mockReturnValue({
                 journeyData: {
                     id: 'journey-123',
@@ -765,6 +842,9 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
                     type: 'cart_abandoned',
+                    campaign: undefined,
+                    excluded_audience_list_ids: undefined,
+                    included_audience_list_ids: undefined,
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,
@@ -773,6 +853,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     sms_sender_integration_id: 1,
                     discount_code_message_threshold: 2,
                     sms_sender_number: '+15551234567',
+                    include_image: false,
                 },
             })
 
@@ -896,6 +977,9 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
                     type: 'cart_abandoned',
+                    campaign: undefined,
+                    excluded_audience_list_ids: undefined,
+                    included_audience_list_ids: undefined,
                 },
                 journeyConfigs: {
                     max_follow_up_messages: 3,
@@ -904,6 +988,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     sms_sender_integration_id: 1,
                     sms_sender_number: '+15551234567',
                     discount_code_message_threshold: 2,
+                    include_image: false,
                 },
             })
         })
@@ -968,6 +1053,9 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     store_integration_id: 1,
                     store_name: 'shopify-store',
                     type: 'cart_abandoned',
+                    campaign: undefined,
+                    excluded_audience_list_ids: undefined,
+                    included_audience_list_ids: undefined,
                 },
                 journeyConfigs: {
                     discount_code_message_threshold: undefined,
@@ -976,6 +1064,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     max_discount_percent: undefined,
                     sms_sender_integration_id: 1,
                     sms_sender_number: '+15551234567',
+                    include_image: false,
                 },
             })
         })

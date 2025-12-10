@@ -9,6 +9,7 @@ import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { efficiencyQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/efficiencyQueryFactory'
+import { efficiencyQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     formatReportingQueryDate,
@@ -43,6 +44,14 @@ describe('EfficiencyTrend', () => {
                     },
                     timezone,
                 ),
+                efficiencyQueryV2Factory({ filters: statsFilters, timezone }),
+                efficiencyQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
             )
         })
     })
@@ -60,6 +69,14 @@ describe('EfficiencyTrend', () => {
                     },
                     timezone,
                 ),
+                efficiencyQueryV2Factory({ filters: statsFilters, timezone }),
+                efficiencyQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
             )
         })
     })

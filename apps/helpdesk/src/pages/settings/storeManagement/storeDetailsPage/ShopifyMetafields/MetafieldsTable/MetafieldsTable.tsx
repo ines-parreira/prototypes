@@ -3,7 +3,10 @@ import { useState } from 'react'
 import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
+    Filters,
     HeaderRowGroup,
+    ListItem,
+    SelectFilter,
     TableBodyContent,
     TableHeader,
     TableRoot,
@@ -13,13 +16,22 @@ import {
 
 import EmptyMetafieldsState from '../EmptyMetafieldsState'
 import { useDeleteMetafield } from '../hooks/useDeleteMetafield'
+import { useMetafieldsFiltersHandler } from '../hooks/useMetafieldsFiltersHandler'
 import { useToggleMetafieldVisibility } from '../hooks/useToggleMetafieldVisibility'
 import ImportMetafieldFlow from '../ImportMetafieldFlow/ImportMetafieldFlow'
+import { MetafieldEnum } from '../MetafieldTypeItem/MetafieldTypeItem'
 import RemoveMetafieldConfirmation from '../RemoveMetafieldConfirmation/RemoveMetafieldConfirmation'
+import { getMetafieldTypeLabel } from '../utils/getMetafieldTypeLabel'
 import ImportAction from './ImportAction'
 import type { Field, MetafieldsTableMeta } from './types'
 
 import styles from './MetafieldsTable.less'
+
+const metafieldTypeOptions = Object.values(MetafieldEnum).map((type) => ({
+    id: type,
+    type,
+    label: getMetafieldTypeLabel(type),
+}))
 
 type MetafieldsTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[]
@@ -93,13 +105,39 @@ export default function MetafieldsTable<TData, TValue>({
             } as MetafieldsTableMeta,
         },
     })
+
+    const handleFiltersChange = useMetafieldsFiltersHandler({ table })
+
     return (
         <>
             <div className={styles.tableWrapper}>
                 <TableToolbar<TData>
                     table={table}
                     bottomRow={{
-                        left: ['search'],
+                        left: [
+                            'search',
+                            {
+                                key: 'filters',
+                                content: (
+                                    <div>
+                                        <Filters onChange={handleFiltersChange}>
+                                            <SelectFilter
+                                                id="type"
+                                                label="Type"
+                                                items={metafieldTypeOptions}
+                                                keyName="id"
+                                            >
+                                                {(option) => (
+                                                    <ListItem
+                                                        label={option.label}
+                                                    />
+                                                )}
+                                            </SelectFilter>
+                                        </Filters>
+                                    </div>
+                                ),
+                            },
+                        ],
                         right: [
                             'totalCount',
                             {

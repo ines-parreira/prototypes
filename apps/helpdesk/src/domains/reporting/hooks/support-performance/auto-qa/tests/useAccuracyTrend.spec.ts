@@ -9,6 +9,7 @@ import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { accuracyQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/accuracyQueryFactory'
+import { accuracyQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     formatReportingQueryDate,
@@ -43,6 +44,14 @@ describe('AccuracyTrend', () => {
                     },
                     timezone,
                 ),
+                accuracyQueryV2Factory({ filters: statsFilters, timezone }),
+                accuracyQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
             )
         })
     })
@@ -60,6 +69,14 @@ describe('AccuracyTrend', () => {
                     },
                     timezone,
                 ),
+                accuracyQueryV2Factory({ filters: statsFilters, timezone }),
+                accuracyQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
             )
         })
     })

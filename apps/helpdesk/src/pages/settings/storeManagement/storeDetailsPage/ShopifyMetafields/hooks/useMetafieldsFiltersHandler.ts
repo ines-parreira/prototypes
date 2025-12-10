@@ -2,15 +2,13 @@ import { useCallback } from 'react'
 
 import type { Table } from '@gorgias/axiom'
 
-import type { Field } from '../../MetafieldsTable/types'
-
-type UseMetafieldsFiltersHandlerParams = {
-    table: Table<Field>
+type UseMetafieldsFiltersHandlerParams<T> = {
+    table: Table<T>
 }
 
-export function useMetafieldsFiltersHandler({
+export function useMetafieldsFiltersHandler<T>({
     table,
-}: UseMetafieldsFiltersHandlerParams) {
+}: UseMetafieldsFiltersHandlerParams<T>) {
     return useCallback(
         (filters: Record<string, unknown>) => {
             const typeFilter = filters.type as

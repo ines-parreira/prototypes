@@ -9,6 +9,7 @@ import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { internalComplianceQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/internalComplianceQueryFactory'
+import { internalComplianceQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     formatReportingQueryDate,
@@ -43,6 +44,17 @@ describe('InternalComplianceTrend', () => {
                     },
                     timezone,
                 ),
+                internalComplianceQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                }),
+                internalComplianceQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
             )
         })
     })
@@ -62,6 +74,17 @@ describe('InternalComplianceTrend', () => {
                     },
                     timezone,
                 ),
+                internalComplianceQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                }),
+                internalComplianceQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
             )
         })
     })

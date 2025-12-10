@@ -2,8 +2,8 @@ import { act, renderHook } from '@testing-library/react'
 
 import type { Table } from '@gorgias/axiom'
 
+import { useMetafieldsFiltersHandler } from '../../../hooks/useMetafieldsFiltersHandler'
 import type { Field } from '../../../MetafieldsTable/types'
-import { useMetafieldsFiltersHandler } from '../useMetafieldsFiltersHandler'
 
 describe('useMetafieldsFiltersHandler', () => {
     const mockSetFilterValue = jest.fn()

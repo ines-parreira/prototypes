@@ -24,6 +24,7 @@ export const P1_SCOPES: MetricScope[] = [
 export const P2_SCOPES: MetricScope[] = [
     MetricScope.AutomatedInteractions,
     MetricScope.AutomationRate,
+    MetricScope.AutoQA,
     MetricScope.MessagesReceived,
     MetricScope.HumanFirstResponseTime,
     MetricScope.WorkloadTickets,

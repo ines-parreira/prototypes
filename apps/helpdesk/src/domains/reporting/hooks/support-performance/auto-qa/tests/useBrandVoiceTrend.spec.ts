@@ -9,6 +9,7 @@ import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { brandVoiceQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/brandVoiceQueryFactory'
+import { brandVoiceQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     formatReportingQueryDate,
@@ -42,6 +43,14 @@ describe('BrandVoiceTrend', () => {
                     },
                     timezone,
                 ),
+                brandVoiceQueryV2Factory({ filters: statsFilters, timezone }),
+                brandVoiceQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
             )
         })
     })
@@ -59,6 +68,14 @@ describe('BrandVoiceTrend', () => {
                     },
                     timezone,
                 ),
+                brandVoiceQueryV2Factory({ filters: statsFilters, timezone }),
+                brandVoiceQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
+                    },
+                    timezone,
+                }),
             )
         })
     })

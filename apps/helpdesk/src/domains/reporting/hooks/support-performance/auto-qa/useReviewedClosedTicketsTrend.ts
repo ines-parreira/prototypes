@@ -2,6 +2,7 @@ import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { reviewedClosedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
+import { reviewedClosedTicketsQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
@@ -18,6 +19,14 @@ export const useReviewedClosedTicketsTrend = (
             },
             timezone,
         ),
+        reviewedClosedTicketsQueryV2Factory({ filters, timezone }),
+        reviewedClosedTicketsQueryV2Factory({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )
 
 export const fetchReviewedClosedTicketsTrend = (
@@ -33,4 +42,12 @@ export const fetchReviewedClosedTicketsTrend = (
             },
             timezone,
         ),
+        reviewedClosedTicketsQueryV2Factory({ filters, timezone }),
+        reviewedClosedTicketsQueryV2Factory({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )

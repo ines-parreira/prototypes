@@ -2,6 +2,7 @@ import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { resolutionCompletenessQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
+import { resolutionCompletenessQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
@@ -18,6 +19,14 @@ export const useResolutionCompletenessTrend = (
             },
             timezone,
         ),
+        resolutionCompletenessQueryV2Factory({ filters, timezone }),
+        resolutionCompletenessQueryV2Factory({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )
 
 export const fetchResolutionCompletenessTrend = (
@@ -33,4 +42,12 @@ export const fetchResolutionCompletenessTrend = (
             },
             timezone,
         ),
+        resolutionCompletenessQueryV2Factory({ filters, timezone }),
+        resolutionCompletenessQueryV2Factory({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )

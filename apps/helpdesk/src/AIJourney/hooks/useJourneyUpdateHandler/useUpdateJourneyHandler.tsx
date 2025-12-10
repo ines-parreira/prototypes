@@ -16,50 +16,51 @@ import type { CartAbandonedJourneyConfigurationApiDTO } from 'rest_api/revenue_a
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-type UseJourneyActionsParams = {
-    journeyId?: string
+type UseJourneyUpdateHandlerParams = {
     integrationId?: number
-    followUpValue?: number
-    isDiscountEnabled?: boolean
-    discountValue?: string
-    phoneNumberValue?: NewPhoneNumber
+    journeyId?: string
+}
+
+type HandleUpdateParams = {
+    campaignState?: UpdatableJourneyCampaignState
+    campaignTitle?: string
     discountCodeThresholdValue?: number
+    discountValue?: string
+    excludedAudienceListIds?: string[]
+    followUpValue?: number
+    id?: string
     includeImage?: boolean
+    includedAudienceListIds?: string[]
+    isDiscountEnabled?: boolean
+    journeyMessageInstructions?: string | null
+    journeyState?: JourneyStatusEnum
+    phoneNumberValue?: NewPhoneNumber
 }
 
 export const useJourneyUpdateHandler = ({
-    journeyId,
     integrationId,
-    followUpValue,
-    isDiscountEnabled,
-    discountValue,
-    phoneNumberValue,
-    discountCodeThresholdValue,
-    includeImage,
-}: UseJourneyActionsParams) => {
+    journeyId,
+}: UseJourneyUpdateHandlerParams) => {
     const queryClient = useQueryClient()
-
     const dispatch = useAppDispatch()
     const updateJourney = useUpdateJourney()
 
     const handleUpdate = useCallback(
         async ({
-            id,
-            journeyState,
-            journeyMessageInstructions,
-            campaignTitle,
             campaignState,
-            includedAudienceListIds,
+            campaignTitle,
+            discountCodeThresholdValue,
+            discountValue,
             excludedAudienceListIds,
-        }: {
-            id?: string
-            journeyState?: JourneyStatusEnum
-            journeyMessageInstructions?: string | null
-            campaignTitle?: string
-            campaignState?: UpdatableJourneyCampaignState
-            includedAudienceListIds?: string[]
-            excludedAudienceListIds?: string[]
-        }) => {
+            followUpValue,
+            id,
+            includeImage,
+            includedAudienceListIds,
+            isDiscountEnabled,
+            journeyMessageInstructions,
+            journeyState,
+            phoneNumberValue,
+        }: HandleUpdateParams) => {
             try {
                 const entityId = id || journeyId
 
@@ -130,19 +131,7 @@ export const useJourneyUpdateHandler = ({
                 throw error
             }
         },
-        [
-            journeyId,
-            integrationId,
-            followUpValue,
-            isDiscountEnabled,
-            discountValue,
-            phoneNumberValue,
-            discountCodeThresholdValue,
-            includeImage,
-            updateJourney,
-            dispatch,
-            queryClient,
-        ],
+        [dispatch, integrationId, journeyId, queryClient, updateJourney],
     )
 
     return {

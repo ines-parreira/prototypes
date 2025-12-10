@@ -7,15 +7,15 @@ import { useHistory } from 'react-router-dom'
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { Button } from 'AIJourney/components'
-import { JOURNEY_TYPE_MAP_FROM_URL, JOURNEY_TYPES } from 'AIJourney/constants'
-import { useAiJourneyPhoneList, useJourneyUpdateHandler } from 'AIJourney/hooks'
+import { JOURNEY_TYPES } from 'AIJourney/constants'
+import {
+    useAiJourneyPhoneList,
+    useJourneyCreateHandler,
+    useJourneyUpdateHandler,
+} from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
-import { useCreateNewJourney } from 'AIJourney/queries'
 import { useFlag } from 'core/flags'
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     EnableDiscountField,
@@ -57,7 +57,6 @@ type SetupProps = {
 
 export const Setup = ({ journeyType }: SetupProps) => {
     const history = useHistory()
-    const dispatch = useAppDispatch()
     const [isVisible, setIsVisible] = useState(true)
     const smsImagesEnabled = useFlag(FeatureFlagKey.AiJourneySmsImagesEnabled)
 
@@ -85,8 +84,6 @@ export const Setup = ({ journeyType }: SetupProps) => {
                 (integration) => integration.type === 'sms',
             )?.id === journeyParams?.sms_sender_integration_id,
     )
-
-    const createNewJourney = useCreateNewJourney()
 
     const [campaignTitleValue, setCampaignTitleValue] = useState<
         string | undefined
@@ -119,7 +116,6 @@ export const Setup = ({ journeyType }: SetupProps) => {
         string[] | undefined
     >()
 
-    const [isLoadingHandleCreate, setIsLoadingHandleCreate] = useState(false)
     const [showValidationErrors, setShowValidationErrors] = useState(false)
 
     useEffect(() => {
@@ -191,70 +187,15 @@ export const Setup = ({ journeyType }: SetupProps) => {
         setExcludedAudienceListIds(newValue)
     }
 
-    const handleCreate = useCallback(async () => {
-        setIsLoadingHandleCreate(true)
-        try {
-            if (!integrationId || !currentIntegration?.name) {
-                throw new Error(
-                    `Missing integration information: ID: ${integrationId}, name: ${currentIntegration?.name}`,
-                )
-            }
-
-            return await createNewJourney.mutateAsync({
-                params: {
-                    store_integration_id: currentIntegration.id,
-                    store_name: currentIntegration.name,
-                    type: JOURNEY_TYPE_MAP_FROM_URL[journeyType],
-                    campaign: campaignTitleValue
-                        ? {
-                              title: campaignTitleValue,
-                          }
-                        : undefined,
-                    included_audience_list_ids: includedAudienceListIds,
-                    excluded_audience_list_ids: excludedAudienceListIds,
-                },
-                journeyConfigs: {
-                    max_follow_up_messages: numberOfMessageValue - 1,
-                    offer_discount: isDiscountEnabled,
-                    max_discount_percent: isDiscountEnabled
-                        ? Number(discountValue)
-                        : undefined,
-                    sms_sender_integration_id:
-                        phoneNumberValue?.integrations.find(
-                            (integration) => integration.type === 'sms',
-                        )?.id,
-                    sms_sender_number: phoneNumberValue?.phone_number,
-                    discount_code_message_threshold: isDiscountEnabled
-                        ? discountCodeThreshold
-                        : undefined,
-                },
-            })
-        } catch (error) {
-            void dispatch(
-                notify({
-                    message: `Error creating new journey: ${error}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
-            throw error
-        } finally {
-            setIsLoadingHandleCreate(false)
-        }
-    }, [
-        currentIntegration,
-        journeyType,
-        isDiscountEnabled,
-        numberOfMessageValue,
-        createNewJourney,
-        phoneNumberValue,
-        discountValue,
-        campaignTitleValue,
-        includedAudienceListIds,
-        discountCodeThreshold,
-        dispatch,
+    const {
+        handleCreate,
+        isLoading: isLoadingHandleCreate,
+        isSuccess: isSuccessHandleCreate,
+    } = useJourneyCreateHandler({
         integrationId,
-        excludedAudienceListIds,
-    ])
+        integrationName: currentIntegration?.name,
+        journeyType,
+    })
 
     const {
         handleUpdate,
@@ -263,14 +204,6 @@ export const Setup = ({ journeyType }: SetupProps) => {
     } = useJourneyUpdateHandler({
         integrationId,
         journeyId: journeyData?.id,
-        followUpValue: numberOfMessageValue - 1,
-        isDiscountEnabled,
-        discountValue,
-        phoneNumberValue,
-        discountCodeThresholdValue: isDiscountEnabled
-            ? discountCodeThreshold
-            : undefined,
-        includeImage: isImageEnabled,
     })
 
     const shouldDisableButton = useMemo(() => {
@@ -279,7 +212,8 @@ export const Setup = ({ journeyType }: SetupProps) => {
             !phoneNumberValue ||
             isLoadingHandleUpdate ||
             isSuccessHandleUpdate ||
-            isLoadingHandleCreate
+            isLoadingHandleCreate ||
+            isSuccessHandleCreate
         ) {
             return true
         }
@@ -315,6 +249,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
         isLoadingHandleUpdate,
         isSuccessHandleUpdate,
         isLoadingHandleCreate,
+        isSuccessHandleCreate,
         isDiscountEnabled,
         discountValue,
         isDiscountValueValid,
@@ -335,19 +270,39 @@ export const Setup = ({ journeyType }: SetupProps) => {
         try {
             if (journeyData) {
                 await handleUpdate({
+                    campaignTitle: campaignTitleValue,
+                    discountCodeThresholdValue: isDiscountEnabled
+                        ? discountCodeThreshold
+                        : undefined,
+                    discountValue,
+                    excludedAudienceListIds,
+                    followUpValue: numberOfMessageValue - 1,
+                    includeImage: isImageEnabled,
+                    includedAudienceListIds,
+                    isDiscountEnabled,
                     journeyMessageInstructions:
                         journeyData.message_instructions,
                     journeyState: journeyData.state,
-                    campaignTitle: campaignTitleValue,
-                    includedAudienceListIds: includedAudienceListIds,
-                    excludedAudienceListIds: excludedAudienceListIds,
+                    phoneNumberValue,
                 })
                 setIsVisible(false)
                 history.push(
                     `/app/ai-journey/${shopName}/${journeyType}/test/${journeyData.id}`,
                 )
             } else {
-                const createdJourney = await handleCreate()
+                const createdJourney = await handleCreate({
+                    campaignTitle: campaignTitleValue,
+                    discountCodeThresholdValue: isDiscountEnabled
+                        ? discountCodeThreshold
+                        : undefined,
+                    discountValue,
+                    excludedAudienceListIds,
+                    followUpValue: numberOfMessageValue - 1,
+                    includedAudienceListIds,
+                    includeImage: isImageEnabled,
+                    isDiscountEnabled,
+                    phoneNumberValue,
+                })
                 setIsVisible(false)
                 history.push(
                     `/app/ai-journey/${shopName}/${journeyType}/test/${createdJourney.id}`,
@@ -357,18 +312,24 @@ export const Setup = ({ journeyType }: SetupProps) => {
             return // Error handling is done in the handleUpdate and handleCreate functions
         }
     }, [
+        campaignTitleValue,
+        discountCodeThreshold,
+        discountValue,
+        excludedAudienceListIds,
         handleCreate,
-        shouldDisableButton,
-        setShowValidationErrors,
         handleUpdate,
         history,
-        setIsVisible,
-        journeyData,
-        campaignTitleValue,
         includedAudienceListIds,
-        excludedAudienceListIds,
+        isDiscountEnabled,
+        isImageEnabled,
+        journeyData,
         journeyType,
+        numberOfMessageValue,
+        phoneNumberValue,
+        setIsVisible,
+        setShowValidationErrors,
         shopName,
+        shouldDisableButton,
     ])
 
     if (isLoadingJourneyData) {
@@ -468,7 +429,8 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     isDisabled={
                         isLoadingHandleUpdate ||
                         isSuccessHandleUpdate ||
-                        isLoadingHandleCreate
+                        isLoadingHandleCreate ||
+                        isSuccessHandleCreate
                     }
                 />
             </div>

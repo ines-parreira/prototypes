@@ -215,6 +215,8 @@ jest.mock('models/integration/queries')
 const useListProductsMock = assumeMock(useListProducts)
 
 const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
+const mockUseCreateNewJourney = require('AIJourney/queries')
+    .useCreateNewJourney as jest.Mock
 const mockUseJourneyConfiguration = require('AIJourney/queries')
     .useJourneyData as jest.Mock
 const mockUseIntegrations = require('AIJourney/providers')
@@ -1270,6 +1272,13 @@ describe('<Routes/>', () => {
                 data: [{ id: 'journey-123', type: 'cart_abandoned' }],
                 isError: false,
                 isLoading: false,
+            }))
+
+            mockUseCreateNewJourney.mockImplementation(() => ({
+                mutateAsync: jest.fn(),
+                isError: false,
+                isLoading: false,
+                isSuccess: false,
             }))
 
             useListProductsMock.mockReturnValue({

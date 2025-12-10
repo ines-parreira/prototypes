@@ -57,6 +57,7 @@ export type DimensionName =
     | 'resolutionTime'
     | 'handleTime'
     | 'eventType'
+    | 'storeId'
 
 export type MeasureName =
     | 'ticketCount'
@@ -74,6 +75,13 @@ export type MeasureName =
     | 'aiAgentAutomationRate'
     | 'automatedInteractions'
     | 'automatedInteractionsByAutoResponders'
+    | 'averageResolutionCompletenessScore'
+    | 'averageCommunicationSkillsScore'
+    | 'averageLanguageProficiencyScore'
+    | 'averageAccuracyScore'
+    | 'averageEfficiencyScore'
+    | 'averageInternalComplianceScore'
+    | 'averageBrandVoiceScore'
 
 export type TimeDimensionName =
     | 'createdDatetime'
@@ -106,6 +114,7 @@ export type StringFilterName =
     | 'internalComplianceScore'
     | 'brandVoiceScore'
     | 'eventType'
+    | 'status'
 
 export type NumberFilterName =
     | 'agentId'

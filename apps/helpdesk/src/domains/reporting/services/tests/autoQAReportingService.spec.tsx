@@ -9,6 +9,7 @@ import { fetchTableReportData } from 'domains/reporting/hooks/common/useTableRep
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useAutoQAMetrics } from 'domains/reporting/hooks/support-performance/auto-qa/useAutoQAMetrics'
 import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import {
@@ -96,7 +97,7 @@ describe('autoQAReportingService', () => {
         agentId: number,
         metricField: AutoQAReportMetrics,
         value: number,
-    ): MetricWithDecile => ({
+    ): MetricWithDecile<string, Cubes> => ({
         isFetching: false,
         isError: false,
         data: {

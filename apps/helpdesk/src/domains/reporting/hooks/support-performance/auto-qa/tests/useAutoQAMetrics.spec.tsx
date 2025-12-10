@@ -21,6 +21,7 @@ import { useReviewedClosedTicketsTrend } from 'domains/reporting/hooks/support-p
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { getSortedAutoQAAgents } from 'domains/reporting/state/ui/stats/autoQAAgentPerformanceSlice'
@@ -120,7 +121,7 @@ describe('useAutoQAMetrics', () => {
         isFetching: false,
         isError: false,
     }
-    const someMetricData: MetricWithDecile = {
+    const someMetricData: MetricWithDecile<string, Cubes> = {
         isFetching: false,
         isError: false,
         data: {

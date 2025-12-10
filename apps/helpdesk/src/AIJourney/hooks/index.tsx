@@ -1,5 +1,6 @@
 export { useAiJourneyPhoneList } from './useAiJourneyPhoneList/useAiJourneyPhoneList'
 export { useJourneyUpdateHandler } from './useJourneyUpdateHandler/useUpdateJourneyHandler'
+export { useJourneyCreateHandler } from './useJourneyCreateHandler/useJourneyCreateHandler'
 export { useAIJourneyProductList } from './useAIJourneyProductList/useAIJourneyProductList'
 export { useGeneratePlaygroundMessage } from './useGeneratePlaygroundMessage/useGeneratePlaygroundMessage'
 export { useHandleSendTestSMS } from './useHandleSendTestSMS/useHandleSendTestSMS'

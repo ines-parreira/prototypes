@@ -6,16 +6,17 @@ import {
     useEfficiencyPerAgent,
 } from 'domains/reporting/hooks/support-performance/auto-qa/useEfficiencyPerAgent'
 import {
-    fetchMetricPerDimension,
-    useMetricPerDimension,
+    fetchMetricPerDimensionV2,
+    useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { efficiencyPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/auto-qa/efficiencyQueryFactory'
+import { efficiencyPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/autoQA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
-const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
-const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
+const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
+const fetchMetricPerDimensionV2Mock = assumeMock(fetchMetricPerDimensionV2)
 
 describe('EfficiencyPerAgent', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -40,12 +41,17 @@ describe('EfficiencyPerAgent', () => {
                 ),
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 efficiencyPerAgentQueryFactory(
                     statsFilters,
                     timezone,
                     undefined,
                 ),
+                efficiencyPerAgentQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                    sortDirection: undefined,
+                }),
                 agentId,
             )
         })
@@ -60,12 +66,17 @@ describe('EfficiencyPerAgent', () => {
                 agentId,
             )
 
-            expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 efficiencyPerAgentQueryFactory(
                     statsFilters,
                     timezone,
                     undefined,
                 ),
+                efficiencyPerAgentQueryV2Factory({
+                    filters: statsFilters,
+                    timezone,
+                    sortDirection: undefined,
+                }),
                 agentId,
             )
         })
