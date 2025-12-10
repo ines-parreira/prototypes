@@ -2230,7 +2230,6 @@
               "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner.tsx",
               "apps/helpdesk/src/pages/tickets/detail/components/TicketPriorityDropdown.tsx",
               "apps/helpdesk/src/pages/tickets/detail/components/TicketVoiceCall/TranscriptionData.tsx",
-              "apps/helpdesk/src/pages/tickets/list/OnboardingSidePanel.tsx",
               "apps/helpdesk/src/pages/tickets/list/components/TicketListActions.tsx",
               "apps/helpdesk/src/pages/tickets/navbar/DeleteSectionModal.tsx",
               "apps/helpdesk/src/pages/tickets/navbar/SectionFormModal.tsx",

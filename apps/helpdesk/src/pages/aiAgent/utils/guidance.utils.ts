@@ -46,6 +46,7 @@ export const mapUpdateGuidanceArticleToArticleApi = (
         slug: updateGuidanceArticle.title
             ? slugify(updateGuidanceArticle.title)
             : undefined,
+        is_current: updateGuidanceArticle.isCurrent,
     }
 }
 
@@ -61,6 +62,9 @@ export const mapArticleApiToGuidanceArticle = (
         createdDatetime: article.created_datetime,
         lastUpdated: article.translation.updated_datetime,
         templateKey: article.template_key || null,
+        isCurrent: article.translation.is_current,
+        draftVersionId: article.translation.draft_version_id,
+        publishedVersionId: article.translation.published_version_id,
     }
 }
 
@@ -68,6 +72,7 @@ export const mapGuidanceFormFieldsToGuidanceArticle = (
     formValues: GuidanceFormFields,
     locale: GuidanceArticle['locale'],
     templateKey?: string,
+    isCurrent?: boolean,
 ): CreateGuidanceArticle => {
     return {
         title: formValues.name,
@@ -75,6 +80,7 @@ export const mapGuidanceFormFieldsToGuidanceArticle = (
         visibility: formValues.isVisible ? 'PUBLIC' : 'UNLISTED',
         locale,
         templateKey: templateKey || null,
+        isCurrent,
     }
 }
 

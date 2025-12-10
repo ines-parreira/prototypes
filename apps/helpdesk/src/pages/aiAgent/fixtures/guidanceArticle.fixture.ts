@@ -12,5 +12,7 @@ export const getGuidanceArticleFixture = (
     createdDatetime: '2024-04-18T12:21:00.531Z',
     lastUpdated: '2024-04-18T12:21:00.531Z',
     templateKey: null,
+    draftVersionId: null,
+    publishedVersionId: null,
     ...overrides,
 })

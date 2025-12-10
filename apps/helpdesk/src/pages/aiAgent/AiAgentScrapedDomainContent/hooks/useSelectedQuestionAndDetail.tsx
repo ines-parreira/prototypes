@@ -32,9 +32,15 @@ export const useSelectedQuestionAndDetail = ({
         data: articleData,
         isInitialLoading: isFetchingArticleLoading,
         isError: isFetchingArticleError,
-    } = useGetHelpCenterArticle(articleId ?? 0, helpCenterId, defaultLocale, {
-        enabled: !!articleId,
-    })
+    } = useGetHelpCenterArticle(
+        articleId ?? 0,
+        helpCenterId,
+        defaultLocale,
+        'current',
+        {
+            enabled: !!articleId,
+        },
+    )
 
     const {
         data: selectedQuestionData,

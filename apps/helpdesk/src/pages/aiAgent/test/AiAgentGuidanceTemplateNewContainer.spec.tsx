@@ -87,6 +87,8 @@ const defaultGuidanceArticleMutationProps: ReturnType<
     isGuidanceArticleUpdating: false,
     isGuidanceArticleDeleting: false,
     duplicateGuidanceArticle: jest.fn(),
+    discardGuidanceDraft: jest.fn(),
+    isDiscardingDraft: false,
 }
 
 const defaultUseGuidanceAiSuggestions = {

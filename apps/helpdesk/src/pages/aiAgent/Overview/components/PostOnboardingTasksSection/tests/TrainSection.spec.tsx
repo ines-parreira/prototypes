@@ -43,6 +43,8 @@ const mockGuidanceArticles: GuidanceArticle[] = [
         createdDatetime: '2023-01-01T00:00:00Z',
         lastUpdated: '2023-01-01T00:00:00Z',
         templateKey: '',
+        draftVersionId: null,
+        publishedVersionId: null,
     },
     {
         id: 2,
@@ -53,6 +55,8 @@ const mockGuidanceArticles: GuidanceArticle[] = [
         createdDatetime: '2023-01-02T00:00:00Z',
         lastUpdated: '2023-01-02T00:00:00Z',
         templateKey: '',
+        draftVersionId: null,
+        publishedVersionId: null,
     },
 ]
 

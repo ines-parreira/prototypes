@@ -32,6 +32,7 @@ export default function PreviewHeader({
         recommendations.articleId,
         recommendations.helpCenterId,
         recommendations.locale,
+        'current',
         { enabled: !noRelevantArticles },
     )
     const [showDropdown, setShowDropdown] = useState(false)

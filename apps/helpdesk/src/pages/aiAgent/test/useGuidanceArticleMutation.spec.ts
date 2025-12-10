@@ -5,6 +5,7 @@ import {
     useCopyArticle,
     useCreateArticle,
     useDeleteArticle,
+    useDeleteArticleTranslationDraft,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
 import { reportError } from 'utils/errors'
@@ -14,6 +15,7 @@ import { useGuidanceArticleMutation } from '../hooks/useGuidanceArticleMutation'
 jest.mock('models/helpCenter/queries', () => ({
     useCreateArticle: jest.fn(),
     useDeleteArticle: jest.fn(),
+    useDeleteArticleTranslationDraft: jest.fn(),
     useUpdateArticleTranslation: jest.fn(),
     useCopyArticle: jest.fn(),
     helpCenterKeys: {
@@ -33,6 +35,9 @@ jest.mock('@tanstack/react-query', () => ({
 
 const mockedUseCreateArticle = jest.mocked(useCreateArticle)
 const mockedUseDeleteArticle = jest.mocked(useDeleteArticle)
+const mockedUseDeleteArticleTranslationDraft = jest.mocked(
+    useDeleteArticleTranslationDraft,
+)
 const mockedUseUpdateArticleTranslation = jest.mocked(
     useUpdateArticleTranslation,
 )
@@ -52,6 +57,11 @@ describe('useGuidanceArticleMutation', () => {
         } as any)
 
         mockedUseDeleteArticle.mockReturnValue({
+            mutateAsync: mutateAsyncMock,
+            isLoading: false,
+        } as any)
+
+        mockedUseDeleteArticleTranslationDraft.mockReturnValue({
             mutateAsync: mutateAsyncMock,
             isLoading: false,
         } as any)
@@ -331,5 +341,97 @@ describe('useGuidanceArticleMutation', () => {
         })
 
         expect(mutateAsyncMock).not.toHaveBeenCalled()
+    })
+
+    describe('discardGuidanceDraft', () => {
+        it('should call deleteArticleTranslationDraftAsync with correct parameters', async () => {
+            const articleId = 456
+            const locale = 'en' as any
+
+            const { result } = renderHook(() =>
+                useGuidanceArticleMutation({
+                    guidanceHelpCenterId: helpCenterId,
+                }),
+            )
+
+            await act(async () => {
+                await result.current.discardGuidanceDraft(articleId, locale)
+            })
+
+            expect(mutateAsyncMock).toHaveBeenCalledWith([
+                undefined,
+                {
+                    article_id: articleId,
+                    help_center_id: helpCenterId,
+                    locale,
+                },
+            ])
+        })
+
+        it('should handle error when deleteArticleTranslationDraftAsync fails', async () => {
+            const articleId = 456
+            const locale = 'en' as any
+            const error = new Error('Discard draft failed')
+
+            mutateAsyncMock.mockRejectedValueOnce(error)
+
+            const { result } = renderHook(() =>
+                useGuidanceArticleMutation({
+                    guidanceHelpCenterId: helpCenterId,
+                }),
+            )
+
+            await expect(async () => {
+                await act(async () => {
+                    await result.current.discardGuidanceDraft(articleId, locale)
+                })
+            }).rejects.toThrow('Discard draft failed')
+
+            expect(mockedReportError).toHaveBeenCalledWith(error, {
+                tags: { team: 'convai-knowledge' },
+                extra: {
+                    context: 'Error during guidance draft discard',
+                },
+            })
+        })
+
+        it('should return isDiscardingDraft loading state', () => {
+            mockedUseDeleteArticleTranslationDraft.mockReturnValue({
+                mutateAsync: mutateAsyncMock,
+                isLoading: true,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useGuidanceArticleMutation({
+                    guidanceHelpCenterId: helpCenterId,
+                }),
+            )
+
+            expect(result.current.isDiscardingDraft).toBe(true)
+        })
+
+        it('should work with different locales', async () => {
+            const articleId = 789
+            const locale = 'fr' as any
+
+            const { result } = renderHook(() =>
+                useGuidanceArticleMutation({
+                    guidanceHelpCenterId: helpCenterId,
+                }),
+            )
+
+            await act(async () => {
+                await result.current.discardGuidanceDraft(articleId, locale)
+            })
+
+            expect(mutateAsyncMock).toHaveBeenCalledWith([
+                undefined,
+                {
+                    article_id: articleId,
+                    help_center_id: helpCenterId,
+                    locale: 'fr',
+                },
+            ])
+        })
     })
 })

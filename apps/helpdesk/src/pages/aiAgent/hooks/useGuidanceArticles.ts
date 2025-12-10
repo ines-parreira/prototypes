@@ -2,6 +2,8 @@ import { useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
+import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
+
 import { useFlag } from 'core/flags'
 import {
     useGetHelpCenterArticleList,
@@ -17,9 +19,10 @@ import { mapArticleApiToGuidanceArticle } from '../utils/guidance.utils'
 
 export const getGuidanceArticleQueryParams = (
     isIncreaseGuidanceCreationLimit: boolean,
+    versionStatus: GetArticleVersionStatus = 'current',
 ): Paths.ListArticles.QueryParameters => {
     return {
-        version_status: 'latest_draft',
+        version_status: versionStatus,
         per_page: isIncreaseGuidanceCreationLimit // Temp limit until pagination is implemented
             ? NEW_GUIDANCE_ARTICLE_LIMIT
             : GUIDANCE_ARTICLE_LIMIT,

@@ -3,6 +3,8 @@ import { useCallback, useMemo } from 'react'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
 
+import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
+
 import type { BaseArticle } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
 import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 import type { MutationOverrides } from 'types/query'
@@ -22,6 +24,7 @@ import {
     deleteArticle,
     deleteArticleIngestionLog,
     deleteArticleTranslation,
+    deleteArticleTranslationDraft,
     deleteFileIngestion,
     deleteHelpCenterTranslation,
     getArticleIngestionArticleTitlesAndStatus,
@@ -167,7 +170,8 @@ export const helpCenterArticleKeys = (
     helpCenterId: number,
     articleId: number,
     locale: string,
-) => [...helpCenterKeys.article(helpCenterId, articleId), locale]
+    versionStatus?: GetArticleVersionStatus,
+) => [...helpCenterKeys.article(helpCenterId, articleId), locale, versionStatus]
 
 export const useGetHelpCenterArticleList = (
     helpCenterId: Paths.ListArticles.Parameters.HelpCenterId,
@@ -412,6 +416,7 @@ export const useGetHelpCenterArticle = (
     articleId: Paths.GetArticle.Parameters.Id,
     helpCenterId: Paths.GetArticle.Parameters.HelpCenterId,
     locale: Paths.GetArticle.Parameters.Locale,
+    versionStatus: GetArticleVersionStatus = 'current',
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getHelpCenterArticle>>
     >,
@@ -419,7 +424,12 @@ export const useGetHelpCenterArticle = (
     const { client } = useHelpCenterApi()
 
     return useQuery({
-        queryKey: helpCenterArticleKeys(helpCenterId, articleId, locale),
+        queryKey: helpCenterArticleKeys(
+            helpCenterId,
+            articleId,
+            locale,
+            versionStatus,
+        ),
         queryFn: async () =>
             getHelpCenterArticle(
                 client,
@@ -429,6 +439,7 @@ export const useGetHelpCenterArticle = (
                 },
                 {
                     locale: locale,
+                    version_status: versionStatus,
                 },
             ),
         staleTime: STALE_TIME,
@@ -1189,6 +1200,18 @@ export const useBulkUpdateArticleTranslationVisibility = (
             pathParams: Paths.BulkUpdateArticleTranslationsVisibility.PathParameters,
             body: Paths.BulkUpdateArticleTranslationsVisibility.RequestBody,
         ]) => bulkUpdateArticleTranslationVisibility(client, pathParams, body),
+        ...overrides,
+    })
+}
+
+export const useDeleteArticleTranslationDraft = (
+    overrides?: MutationOverrides<typeof deleteArticleTranslationDraft>,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams]) =>
+            deleteArticleTranslationDraft(client, pathParams),
         ...overrides,
     })
 }

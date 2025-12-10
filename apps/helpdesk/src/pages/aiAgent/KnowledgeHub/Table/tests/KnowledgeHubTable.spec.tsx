@@ -1045,6 +1045,7 @@ describe('KnowledgeHubTable', () => {
             mockUseGuidanceArticle.mockReturnValue({
                 guidanceArticle: undefined,
                 isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
             })
         })
 
@@ -1057,6 +1058,7 @@ describe('KnowledgeHubTable', () => {
                     title: 'Return Policy',
                 } as any,
                 isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
             })
             renderComponent({
                 selectedFolder: {
@@ -1166,8 +1168,9 @@ describe('KnowledgeHubTable', () => {
                 </Provider>,
             )
 
-            // Verify the filter is rendered
-            expect(screen.getByText('In use by AI Agent')).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /in use by ai agent/i }),
+            ).toBeInTheDocument()
         })
 
         it('renders both filters when both are active', () => {
@@ -1186,9 +1189,10 @@ describe('KnowledgeHubTable', () => {
                 </Provider>,
             )
 
-            // Verify both filters are rendered
             expect(screen.getByText('Last updated date')).toBeInTheDocument()
-            expect(screen.getByText('In use by AI Agent')).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /in use by ai agent/i }),
+            ).toBeInTheDocument()
         })
 
         it('does not render date filter when no dates are set', () => {
@@ -1221,9 +1225,8 @@ describe('KnowledgeHubTable', () => {
                 </Provider>,
             )
 
-            // Verify AI filter is not rendered
             expect(
-                screen.queryByText('In use by AI Agent'),
+                screen.queryByRole('button', { name: /in use by ai agent/i }),
             ).not.toBeInTheDocument()
         })
 
@@ -1285,10 +1288,12 @@ describe('KnowledgeHubTable', () => {
             const addFilterButton = screen.getByRole('button', {
                 name: /add filter/i,
             })
+
             await user.click(addFilterButton)
 
             const inUseByAIOptions =
-                await screen.findAllByText('In Use by AI Agent')
+                await screen.findAllByText('In use by AI Agent')
+
             await user.click(inUseByAIOptions[1])
 
             const trueOption = await screen.findByText('True')
@@ -1311,7 +1316,7 @@ describe('KnowledgeHubTable', () => {
             await user.click(addFilterButton)
 
             const inUseByAIOptions =
-                await screen.findAllByText('In Use by AI Agent')
+                await screen.findAllByText('In use by AI Agent')
             await user.click(inUseByAIOptions[1])
 
             const trueOption = await screen.findByText('True')
@@ -1339,7 +1344,7 @@ describe('KnowledgeHubTable', () => {
             await user.click(addFilterButton)
 
             const inUseByAIOptions =
-                await screen.findAllByText('In Use by AI Agent')
+                await screen.findAllByText('In use by AI Agent')
             await user.click(inUseByAIOptions[1])
 
             const falseOption = await screen.findByText('False')
@@ -1372,7 +1377,7 @@ describe('KnowledgeHubTable', () => {
             await user.click(addFilterButton)
 
             const inUseByAIOptions =
-                await screen.findAllByText('In Use by AI Agent')
+                await screen.findAllByText('In use by AI Agent')
             await user.click(inUseByAIOptions[1])
 
             const trueOption = await screen.findByText('True')

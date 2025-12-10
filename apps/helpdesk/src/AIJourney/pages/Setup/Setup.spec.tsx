@@ -209,6 +209,68 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
         )
     })
 
+    it('should redirect to landing page when no campaigns exist', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            campaigns: [],
+            journeyData: undefined,
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'campaign',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const cancelButton = screen.getByText('Cancel')
+        expect(cancelButton).toBeInTheDocument()
+        expect(cancelButton).toHaveAttribute(
+            'href',
+            '/app/ai-journey/shopify-store',
+        )
+    })
+
+    it('should redirect to campaigns page when campaigns exist', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            campaigns: [{ id: 'campaign-1', title: 'Existing Campaign' }],
+            journeyData: undefined,
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'campaign',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const cancelButton = screen.getByText('Cancel')
+        expect(cancelButton).toBeInTheDocument()
+        expect(cancelButton).toHaveAttribute(
+            'href',
+            '/app/ai-journey/shopify-store/campaigns',
+        )
+    })
+
     it('should update state when journeyParams is fetched', async () => {
         mockUseJourneyContext.mockReturnValue({
             journeyData: {

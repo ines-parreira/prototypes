@@ -8,7 +8,7 @@ import type { GuidanceVariableGroup } from 'pages/aiAgent/components/GuidanceEdi
 import { KnowledgeEditorGuidanceCreateView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceCreateView'
 import { KnowledgeEditorGuidanceEditView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceEditView'
 import { KnowledgeEditorGuidanceReadView } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceReadView'
-import { KnowledgeEditorGuidanceUnsavedChangesModal } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceUnsavedChangesModal'
+import { KnowledgeEditorGuidanceUnsavedChangesModal } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/modals/KnowledgeEditorGuidanceUnsavedChangesModal'
 import type { GuidanceFormFields } from 'pages/aiAgent/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
@@ -17,7 +17,7 @@ import { KnowledgeEditorTopBar } from '../KnowledgeEditorTopBar/KnowledgeEditorT
 import type { GuidanceMode } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
 import { KnowledgeEditorTopBarGuidanceControls } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
 import { useKnowledgeEditorGuidanceModal } from './hooks/useKnowledgeEditorGuidanceModal'
-import { ModalState } from './KnowledgeEditorGuidanceModal.types'
+import { ModalState } from './modals/KnowledgeEditorGuidanceModal.types'
 
 import css from './KnowledgeEditorGuidanceView.less'
 

@@ -84,6 +84,8 @@ const defaultGuidanceArticleMutationProps: ReturnType<
     isGuidanceArticleUpdating: false,
     isGuidanceArticleDeleting: false,
     duplicateGuidanceArticle: jest.fn(),
+    discardGuidanceDraft: jest.fn(),
+    isDiscardingDraft: false,
 }
 const guidanceArticle = getGuidanceArticleFixture(1)
 
@@ -119,6 +121,7 @@ describe('<AiAgentGuidanceDetail />', () => {
         mockedUseGuidanceArticle.mockReturnValue({
             guidanceArticle: guidanceArticle,
             isGuidanceArticleLoading: false,
+            refetch: jest.fn(),
         })
         mockedUseGuidanceAiSuggestions.mockReturnValue({
             guidanceAISuggestions: [
@@ -151,6 +154,7 @@ describe('<AiAgentGuidanceDetail />', () => {
         mockedUseGuidanceArticle.mockReturnValue({
             guidanceArticle: undefined,
             isGuidanceArticleLoading: true,
+            refetch: jest.fn(),
         })
 
         renderComponent()

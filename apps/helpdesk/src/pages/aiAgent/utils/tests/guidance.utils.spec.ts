@@ -76,6 +76,9 @@ describe('guidance.utils', () => {
                 createdDatetime: article.created_datetime,
                 lastUpdated: article.translation.updated_datetime,
                 templateKey: null,
+                isCurrent: article.translation.is_current,
+                draftVersionId: article.translation.draft_version_id,
+                publishedVersionId: article.translation.published_version_id,
             }
 
             const result = mapArticleApiToGuidanceArticle(article)

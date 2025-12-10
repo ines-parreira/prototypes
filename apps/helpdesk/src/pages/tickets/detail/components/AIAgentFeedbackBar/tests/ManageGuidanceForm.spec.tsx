@@ -175,6 +175,8 @@ describe('ManageGuidanceForm', () => {
         createdDatetime: '2023-10-01T00:00:00Z',
         lastUpdated: '2023-10-01T00:00:00Z',
         templateKey: '',
+        draftVersionId: null,
+        publishedVersionId: null,
     }
 
     const mockGuidanceArticlesList = [

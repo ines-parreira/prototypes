@@ -1,6 +1,7 @@
 export enum ModalState {
     Closed = 'closed',
     UnsavedChanges = 'unsaved-changes',
+    DiscardDraft = 'discard-draft',
 }
 
 export type KnowledgeEditorGuidanceModalState =
@@ -12,4 +13,8 @@ export type KnowledgeEditorGuidanceModalState =
           onDiscard: () => void
           onBackToEditing: () => void
           onSave: () => Promise<void>
+      }
+    | {
+          type: ModalState.DiscardDraft
+          onBackToEditing: () => void
       }

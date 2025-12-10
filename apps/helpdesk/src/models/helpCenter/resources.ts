@@ -387,3 +387,12 @@ export const getKnowledgeHubArticles = async (
 
     return response.data
 }
+
+export const deleteArticleTranslationDraft = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.DeleteArticleTranslationDraft.PathParameters,
+) => {
+    if (!client) return null
+    const response = await client.deleteArticleTranslationDraft(pathParams)
+    return response
+}

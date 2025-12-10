@@ -219,6 +219,7 @@ const KnowledgeEditorGuidanceLoaderForEdit = ({
         guidanceHelpCenterId,
         guidanceArticleId,
         locale,
+        versionStatus: 'latest_draft',
     })
 
     const { guidanceActions, isLoading: isLoadingActions } =

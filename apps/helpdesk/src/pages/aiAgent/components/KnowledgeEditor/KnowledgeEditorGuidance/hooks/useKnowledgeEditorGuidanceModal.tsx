@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 
-import { ModalState } from '../KnowledgeEditorGuidanceModal.types'
-import type { KnowledgeEditorGuidanceModalState } from '../KnowledgeEditorGuidanceModal.types'
+import { ModalState } from '../modals/KnowledgeEditorGuidanceModal.types'
+import type { KnowledgeEditorGuidanceModalState } from '../modals/KnowledgeEditorGuidanceModal.types'
 
 export const useKnowledgeEditorGuidanceModal = () => {
     const [modalState, setModalState] =
@@ -34,8 +34,21 @@ export const useKnowledgeEditorGuidanceModal = () => {
         [],
     )
 
+    const openDiscardDraftModal = useCallback(() => {
+        setModalState({
+            type: ModalState.DiscardDraft,
+            onBackToEditing: () => setModalState({ type: ModalState.Closed }),
+        })
+    }, [])
+
+    const closeDiscardDraftModal = useCallback(() => {
+        setModalState({ type: ModalState.Closed })
+    }, [])
+
     return {
         modal: modalState,
         openUnsavedChangesModal,
+        openDiscardDraftModal,
+        closeDiscardDraftModal,
     }
 }

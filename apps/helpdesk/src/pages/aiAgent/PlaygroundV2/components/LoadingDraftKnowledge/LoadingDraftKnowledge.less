@@ -1,0 +1,93 @@
+@import '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        padding: var(--spacing-md);
+        flex-direction: column;
+        max-width: 300px;
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-xxxs);
+        }
+
+        .title {
+            .body-semibold();
+        }
+
+        .subtitle {
+            .caption-regular();
+            text-align: center;
+            color: var(--content-neutral-secondary, #5c6370);
+            text-align: center;
+            font-kerning: none;
+            font-variant-numeric: lining-nums tabular-nums;
+            letter-spacing: 0.12px;
+        }
+
+        .icon {
+            border-radius: 100%;
+            padding: 2px;
+            background: linear-gradient(
+                90deg,
+                #a084e1 0%,
+                #f58d86 50%,
+                #a084e1 100%
+            );
+            background-size: 200% 100%;
+
+            box-shadow: 1px 4px 4px 0 rgba(255, 255, 255, 0.3) inset;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0;
+
+            :global {
+                animation: loadingPulsateBackground 3s ease-in-out infinite;
+            }
+
+            > :global(*) {
+                color: var(--neutral-grey-0);
+                :global {
+                    animation: loadingPulsateRotate 3s ease-in-out infinite;
+                }
+            }
+        }
+    }
+}
+
+@keyframes loadingPulsateRotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(-540deg);
+    }
+}
+
+@keyframes loadingPulsateBackground {
+    0% {
+        background-position: -25% 50%;
+    }
+    25% {
+        background-position: 25% 50%;
+    }
+    50% {
+        background-position: 75% 50%;
+    }
+    75% {
+        background-position: 125% 50%;
+    }
+    100% {
+        background-position: 175% 50%;
+    }
+}

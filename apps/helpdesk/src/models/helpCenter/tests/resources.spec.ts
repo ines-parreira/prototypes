@@ -3,6 +3,7 @@ import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 
 import {
     createFileIngestion,
+    deleteArticleTranslationDraft,
     deleteFileIngestion,
     getArticleIngestionArticleTitlesAndStatus,
     getArticleIngestionLogs,
@@ -550,6 +551,79 @@ describe('resources', () => {
         it('should return null when client is not set', async () => {
             const result = await getKnowledgeStatus(undefined)
             expect(result).toBeNull()
+        })
+    })
+
+    describe('deleteArticleTranslationDraft', () => {
+        it('should return null when client is not set', async () => {
+            const result = await deleteArticleTranslationDraft(undefined, {
+                help_center_id,
+                article_id: 123,
+                locale: 'en',
+            })
+            expect(result).toBeNull()
+        })
+
+        it('should return correct result from API', async () => {
+            const client = {
+                deleteArticleTranslationDraft: jest
+                    .fn()
+                    .mockReturnValue(Promise.resolve({ data: null })),
+            }
+            const result = await deleteArticleTranslationDraft(
+                client as unknown as HelpCenterClient,
+                {
+                    help_center_id,
+                    article_id: 123,
+                    locale: 'en',
+                },
+            )
+            expect(result).toEqual({ data: null })
+        })
+
+        it('should call API with correct parameters', async () => {
+            const mockDeleteDraft = jest
+                .fn()
+                .mockReturnValue(Promise.resolve({ data: null }))
+            const client = {
+                deleteArticleTranslationDraft: mockDeleteDraft,
+            }
+            const pathParams = {
+                help_center_id,
+                article_id: 456,
+                locale: 'fr' as const,
+            }
+
+            await deleteArticleTranslationDraft(
+                client as unknown as HelpCenterClient,
+                pathParams,
+            )
+
+            expect(mockDeleteDraft).toHaveBeenCalledWith(pathParams)
+        })
+
+        it('should work with different locales', async () => {
+            const mockDeleteDraft = jest
+                .fn()
+                .mockReturnValue(Promise.resolve({ data: null }))
+            const client = {
+                deleteArticleTranslationDraft: mockDeleteDraft,
+            }
+
+            const locales = ['en', 'fr', 'es', 'de']
+
+            for (const locale of locales) {
+                await deleteArticleTranslationDraft(
+                    client as unknown as HelpCenterClient,
+                    {
+                        help_center_id,
+                        article_id: 789,
+                        locale: locale as any,
+                    },
+                )
+            }
+
+            expect(mockDeleteDraft).toHaveBeenCalledTimes(locales.length)
         })
     })
 })

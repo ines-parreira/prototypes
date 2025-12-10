@@ -13,6 +13,7 @@ import {
     useCopyArticle,
     useCreateArticle,
     useDeleteArticle,
+    useDeleteArticleTranslationDraft,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
 import type { LocaleCode } from 'models/helpCenter/types'
@@ -167,6 +168,17 @@ export const useGuidanceArticleMutation = ({
             },
         })
 
+    const {
+        mutateAsync: deleteArticleTranslationDraftAsync,
+        isLoading: isDiscardingDraft,
+    } = useDeleteArticleTranslationDraft({
+        onSettled: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: guidanceArticleKeys,
+            })
+        },
+    })
+
     const createGuidanceArticle = useCallback(
         async (createGuidanceArticle: CreateGuidanceArticle) => {
             if (createGuidanceArticle.content === '') {
@@ -278,6 +290,31 @@ export const useGuidanceArticleMutation = ({
         [copyArticleAsync, guidanceHelpCenterId],
     )
 
+    const discardGuidanceDraft = useCallback(
+        async (articleId: number, locale: LocaleCode) => {
+            try {
+                await deleteArticleTranslationDraftAsync([
+                    undefined,
+                    {
+                        article_id: articleId,
+                        help_center_id: guidanceHelpCenterId,
+                        locale,
+                    },
+                ])
+            } catch (error) {
+                reportError(error, {
+                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
+                    extra: {
+                        context: 'Error during guidance draft discard',
+                    },
+                })
+
+                throw error
+            }
+        },
+        [deleteArticleTranslationDraftAsync, guidanceHelpCenterId],
+    )
+
     return {
         deleteGuidanceArticle,
         isGuidanceArticleDeleting,
@@ -288,5 +325,7 @@ export const useGuidanceArticleMutation = ({
             isUpdateArticleTranslationLoading ||
             isCopyArticleLoading,
         duplicateGuidanceArticle,
+        discardGuidanceDraft,
+        isDiscardingDraft,
     }
 }

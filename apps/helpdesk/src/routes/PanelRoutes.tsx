@@ -3,7 +3,6 @@ import { useWindowSize } from '@repo/hooks'
 import { TicketsLegacyBridgeProvider } from '@repo/tickets'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import { OnboardingPanel } from 'common/onboarding'
 import { useFlag } from 'core/flags'
 import { Handle, PanelGroup, Panels } from 'core/layout/panels'
 import { GlobalNavigationPanel } from 'core/navigation'
@@ -126,23 +125,18 @@ export default function PanelRoutes() {
                     <Switch>
                         <Route exact path="/app">
                             <ViewPanel key="view-panel" />
-                            <OnboardingPanel key="onboarding-panel" />
                         </Route>
                         <Route exact path="/app/tickets">
                             <ViewPanel key="view-panel" />
-                            <OnboardingPanel key="onboarding-panel" />
                         </Route>
                         <Route exact path="/app/tickets/new/:visibility?">
                             <ViewPanel key="view-panel" />
-                            <OnboardingPanel key="onboarding-panel" />
                         </Route>
                         <Route exact path="/app/tickets/search">
                             <ViewPanel key="view-panel" />
-                            <OnboardingPanel key="onboarding-panel" />
                         </Route>
                         <Route exact path="/app/tickets/:viewId/:viewSlug?">
                             <ViewPanel key="view-panel" />
-                            <OnboardingPanel key="onboarding-panel" />
                         </Route>
                         <Route exact path="/app/ticket/:ticketId">
                             <TicketDetailWithInfobar key="ticket-detail-with-infobar" />

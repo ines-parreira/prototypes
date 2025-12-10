@@ -104,6 +104,8 @@ describe('GuidanceList', () => {
             createdDatetime: `2023-01-0${i + 1}T00:00:00Z`,
             lastUpdated: `2023-01-0${i + 1}T00:00:00Z`,
             templateKey: '',
+            draftVersionId: null,
+            publishedVersionId: null,
         }))
 
         render(

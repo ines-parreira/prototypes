@@ -62,6 +62,7 @@ export const TitleCell = ({
             !!guidanceHelpCenterId &&
             type === KnowledgeType.Guidance &&
             !isGrouped,
+        versionStatus: 'latest_draft',
     })
 
     const shouldMakeClickable = !!columnOnClick

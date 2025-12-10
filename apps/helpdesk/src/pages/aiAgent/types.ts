@@ -87,11 +87,19 @@ export type GuidanceArticle = {
     lastUpdated: string
     createdDatetime: string
     templateKey: string | null
+    isCurrent?: boolean
+    draftVersionId: number | null
+    publishedVersionId: number | null
 }
 
 export type CreateGuidanceArticle = Omit<
     GuidanceArticle,
-    'id' | 'lastUpdated' | 'review' | 'createdDatetime'
+    | 'id'
+    | 'lastUpdated'
+    | 'review'
+    | 'createdDatetime'
+    | 'draftVersionId'
+    | 'publishedVersionId'
 >
 export type UpdateGuidanceArticle = Omit<
     Partial<GuidanceArticle>,

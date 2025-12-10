@@ -43,8 +43,8 @@ import { KnowledgeType as KnowledgeTypeEnum } from '../types'
 import css from './KnowledgeHubTable.less'
 
 const FILTER_OPTIONS: FilterOption[] = [
-    { label: 'Last Updated Date', value: 'lastUpdatedAt' },
-    { label: 'In Use by AI Agent', value: 'inUseByAI' },
+    { label: 'Last updated date', value: 'lastUpdatedAt' },
+    { label: 'In use by AI Agent', value: 'inUseByAI' },
 ]
 
 type KnowledgeHubTableProps = {

@@ -35,6 +35,7 @@ const AiAgentSelectedArticleContentWrapper = ({
         article?.id ?? 0,
         helpCenter.id,
         helpCenter.default_locale,
+        'current',
         {
             enabled: !!article?.id,
         },

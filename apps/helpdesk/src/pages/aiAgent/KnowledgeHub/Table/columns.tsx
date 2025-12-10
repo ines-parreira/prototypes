@@ -39,7 +39,7 @@ export const getColumns = (
     {
         ...createSortableColumn<GroupedKnowledgeItem>(
             'lastUpdatedAt',
-            'Last Updated',
+            'Last updated',
             (info) => {
                 const date = info.getValue() as string
                 return <Text>{new Date(date).toLocaleDateString()}</Text>
@@ -49,7 +49,7 @@ export const getColumns = (
     {
         ...createSortableColumn<GroupedKnowledgeItem>(
             'inUseByAI',
-            'In Use by AI Agent',
+            'In use by AI Agent',
             (info) => {
                 const isGrouped = info.row.original.isGrouped
                 const visibility = info.getValue() as

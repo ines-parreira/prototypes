@@ -55,6 +55,7 @@ export default function TrainMyAiPreview({
         previewArticleId,
         recommendations?.helpCenterId,
         recommendations?.locale,
+        'current',
         { enabled: !noRelevantArticles && !!previewArticleId },
     )
 

@@ -139,6 +139,7 @@ describe('useSelectedQuestionAndDetail', () => {
             0,
             mockedHelpCenterId,
             mockedDefaultLocale,
+            'current',
             { enabled: false },
         )
         expect(result.current.selectedQuestion).toBeNull()

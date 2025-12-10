@@ -61,10 +61,11 @@ export const Setup = ({ journeyType }: SetupProps) => {
     const smsImagesEnabled = useFlag(FeatureFlagKey.AiJourneySmsImagesEnabled)
 
     const {
-        journeyData,
+        campaigns,
         currentIntegration,
-        shopName,
         isLoading: isLoadingJourneyData,
+        journeyData,
+        shopName,
         storeConfiguration,
     } = useJourneyContext()
 
@@ -332,6 +333,13 @@ export const Setup = ({ journeyType }: SetupProps) => {
         shouldDisableButton,
     ])
 
+    const getRedirectLinkOnCancel = () => {
+        if (journeyType === JOURNEY_TYPES.CAMPAIGN && campaigns?.length)
+            return `/app/ai-journey/${shopName}/campaigns`
+
+        return `/app/ai-journey/${shopName}`
+    }
+
     if (isLoadingJourneyData) {
         return <LoadingSpinner />
     }
@@ -416,11 +424,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
             <div className={css.buttonsContainer}>
                 <Button
                     variant="link"
-                    redirectLink={
-                        journeyType === JOURNEY_TYPES.CAMPAIGN
-                            ? `/app/ai-journey/${shopName}/campaigns`
-                            : `/app/ai-journey/${shopName}`
-                    }
+                    redirectLink={getRedirectLinkOnCancel()}
                     label="Cancel"
                 />
                 <Button

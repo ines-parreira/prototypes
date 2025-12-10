@@ -16,9 +16,6 @@ import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAnd
 
 import PanelRoutes from '../PanelRoutes'
 
-jest.mock('common/onboarding', () => ({
-    OnboardingPanel: () => <div>OnboardingPanel</div>,
-}))
 jest.mock('core/navigation', () => ({
     GlobalNavigationPanel: () => <div>GlobalNavigationPanel</div>,
 }))
@@ -107,7 +104,6 @@ describe('PanelRoutes', () => {
             { route: '/app', path: '*' },
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
-        expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets', () => {
@@ -117,7 +113,6 @@ describe('PanelRoutes', () => {
             { route: '/app/tickets', path: '*' },
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
-        expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets/new/:visibility?', () => {
@@ -127,7 +122,6 @@ describe('PanelRoutes', () => {
             { route: '/app/tickets/new/private', path: '*' },
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
-        expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets/search', () => {
@@ -137,7 +131,6 @@ describe('PanelRoutes', () => {
             { route: '/app/tickets/search', path: '*' },
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
-        expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/tickets/:viewId/:viewSlug?', () => {
@@ -147,7 +140,6 @@ describe('PanelRoutes', () => {
             { route: '/app/tickets/123456/boop', path: '*' },
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
-        expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
     })
 
     it('should render the correct panels for /app/ticket/:ticketId', () => {
