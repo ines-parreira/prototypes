@@ -1,13 +1,13 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import { fireEvent, render, screen } from '@testing-library/react'
 import moment from 'moment-timezone'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import { PeriodFilter } from 'domains/reporting/pages/common/filters/PeriodFilter'
 import { getNewSetOfRanges } from 'domains/reporting/pages/constants'
 import {
@@ -29,6 +29,7 @@ describe('PeriodStatsFilter', () => {
     } as RootState
 
     beforeEach(() => {
+        jest.clearAllMocks()
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
@@ -170,5 +171,152 @@ describe('PeriodStatsFilter', () => {
         ).map((e) => e.getAttribute(RENDERED_ATTRIBUTE_NAME))
 
         expect(allRangesRenderedAttributes).toEqual(newRangesKeys)
+    })
+
+    describe('Compact mode', () => {
+        it('should render in compact mode with date range', () => {
+            const store = mockStore(defaultState)
+            const value = {
+                start_datetime: '2021-05-02T19:22:43.000Z',
+                end_datetime: '2021-05-03T19:22:43.000Z',
+            }
+
+            const { container } = render(
+                <Provider store={store}>
+                    <PeriodFilter value={value} compact />
+                </Provider>,
+            )
+
+            const compactTrigger = container.querySelector(
+                '#period-filter-compact-trigger',
+            )
+            expect(compactTrigger).toBeInTheDocument()
+            expect(compactTrigger?.textContent).toContain('Date')
+            expect(compactTrigger?.textContent).toContain('May 2, 2021')
+        })
+
+        it('should render compact trigger that is clickable', () => {
+            const store = mockStore(defaultState)
+            const value = {
+                start_datetime: '2021-05-02T19:22:43.000Z',
+                end_datetime: '2021-05-03T19:22:43.000Z',
+            }
+
+            const { container } = render(
+                <Provider store={store}>
+                    <PeriodFilter value={value} compact />
+                </Provider>,
+            )
+
+            const compactTrigger = container.querySelector(
+                '#period-filter-compact-trigger',
+            )
+            expect(compactTrigger).toBeInTheDocument()
+            expect(compactTrigger).toHaveAttribute('data-name', 'button')
+        })
+
+        it('should format date range correctly in compact mode', () => {
+            const store = mockStore(defaultState)
+            const value = {
+                start_datetime: '2021-01-01T00:00:00.000Z',
+                end_datetime: '2021-12-31T23:59:59.000Z',
+            }
+
+            const { container } = render(
+                <Provider store={store}>
+                    <PeriodFilter value={value} compact />
+                </Provider>,
+            )
+
+            const compactValue = container.querySelector('.compactValue')
+            expect(compactValue).toBeInTheDocument()
+            expect(compactValue?.textContent).toContain('Jan 1, 2021')
+            expect(compactValue?.textContent).toContain('Dec 31, 2021')
+        })
+
+        it('should render compact trigger with correct ID', () => {
+            const store = mockStore(defaultState)
+            const value = {
+                start_datetime: '2021-05-02T19:22:43.000Z',
+                end_datetime: '2021-05-03T19:22:43.000Z',
+            }
+
+            const { container } = render(
+                <Provider store={store}>
+                    <PeriodFilter value={value} compact />
+                </Provider>,
+            )
+
+            const trigger = container.querySelector(
+                '#period-filter-compact-trigger',
+            )
+            expect(trigger).toBeInTheDocument()
+            expect(trigger).toHaveAttribute(
+                'id',
+                'period-filter-compact-trigger',
+            )
+        })
+
+        it('should apply correct styles to compact trigger', () => {
+            const store = mockStore(defaultState)
+            const value = {
+                start_datetime: '2021-05-02T19:22:43.000Z',
+                end_datetime: '2021-05-03T19:22:43.000Z',
+            }
+
+            const { container } = render(
+                <Provider store={store}>
+                    <PeriodFilter value={value} compact />
+                </Provider>,
+            )
+
+            const trigger = container.querySelector(
+                '#period-filter-compact-trigger',
+            )
+            expect(trigger).toBeInTheDocument()
+        })
+
+        it('should render with compact styles in compact mode', () => {
+            const store = mockStore(defaultState)
+            const value = {
+                start_datetime: '2021-05-02T19:22:43.000Z',
+                end_datetime: '2021-05-03T19:22:43.000Z',
+            }
+
+            const { container } = render(
+                <Provider store={store}>
+                    <PeriodFilter value={value} compact />
+                </Provider>,
+            )
+
+            const compactTrigger = container.querySelector(
+                '#period-filter-compact-trigger',
+            )
+            expect(compactTrigger).toBeInTheDocument()
+
+            const compactLabel = container.querySelector('.compactLabel')
+            expect(compactLabel).toBeInTheDocument()
+            expect(compactLabel?.textContent).toBe('Date')
+        })
+
+        it('should properly convert moment dates to ZonedDateTime for DateRangePicker', () => {
+            const store = mockStore(defaultState)
+            const value = {
+                start_datetime: '2021-06-15T10:30:00.000Z',
+                end_datetime: '2021-06-20T14:45:00.000Z',
+            }
+
+            const { container } = render(
+                <Provider store={store}>
+                    <PeriodFilter value={value} compact />
+                </Provider>,
+            )
+
+            const trigger = container.querySelector(
+                '#period-filter-compact-trigger',
+            )
+            expect(trigger).toBeInTheDocument()
+            expect(trigger?.textContent).toContain('Jun')
+        })
     })
 })

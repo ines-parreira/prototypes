@@ -3,12 +3,15 @@ import React, { useCallback, useMemo } from 'react'
 import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
+import { ListItem, Select, SelectTrigger } from '@gorgias/axiom'
+
 import type {
     AggregationWindow,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import Filter from 'domains/reporting/pages/common/components/Filter'
+import css from 'domains/reporting/pages/common/filters/AggregationWindowFilter.less'
 import {
     FilterLabels,
     ReportingGranularityLabels,
@@ -27,19 +30,25 @@ type Props = {
     dispatchUpdate: (
         value: StatsFiltersWithLogicalOperator[FilterKey.AggregationWindow],
     ) => void
+    compact?: boolean
 }
 
 export const AggregationWindowFilter = ({
     value,
     period,
     dispatchUpdate,
+    compact = false,
 }: Props) => {
     const allowedAggregationWindows = useMemo(
         () =>
-            getAllowedAggregationWindows(period).map((granularity) => ({
-                value: `${granularity}`,
-                label: ReportingGranularityLabels[granularity],
-            })),
+            getAllowedAggregationWindows(period).map((granularity) => {
+                const value = `${granularity}`
+                return {
+                    id: value,
+                    value,
+                    label: ReportingGranularityLabels[granularity],
+                }
+            }),
         [period],
     )
 
@@ -64,8 +73,53 @@ export const AggregationWindowFilter = ({
         [dispatchUpdate],
     )
 
+    const handleCompactSelectionChange = useCallback(
+        (option: { value: string; label: string }) => {
+            dispatchUpdate(option.value as AggregationWindow)
+            logSegmentEvent(FilterKey.AggregationWindow, null)
+        },
+        [dispatchUpdate],
+    )
+
     const handleDropdownClosed = () => {
         logSegmentEvent(FilterKey.AggregationWindow, null)
+    }
+
+    const selectedItem = useMemo(
+        () =>
+            allowedAggregationWindows.find(
+                (option) => option.value === value,
+            ) || null,
+        [allowedAggregationWindows, value],
+    )
+
+    const selectedLabel = selectedItem?.label || ''
+
+    if (compact) {
+        return (
+            <Select
+                onSelect={handleCompactSelectionChange}
+                aria-label="Aggregation window"
+                items={allowedAggregationWindows}
+                selectedItem={selectedItem}
+                trigger={({ ref }) => (
+                    <SelectTrigger ref={ref}>
+                        <div className={css.compactTrigger}>
+                            <span className={css.compactLabel}>
+                                Aggregation
+                            </span>
+                            <span className={css.compactValue}>
+                                {selectedLabel}
+                            </span>
+                        </div>
+                    </SelectTrigger>
+                )}
+            >
+                {(option) => (
+                    <ListItem textValue={option.label} label={option.label} />
+                )}
+            </Select>
+        )
     }
 
     return (

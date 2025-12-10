@@ -16,6 +16,7 @@ export type FiltersPanelWrapperProps = Omit<
 > & {
     withSavedFilters?: boolean
     pinnedFilter?: SavedFiltersActionsProps['pinnedFilter']
+    compact?: boolean
 }
 
 export const FiltersPanelWrapper = ({
@@ -24,13 +25,14 @@ export const FiltersPanelWrapper = ({
     persistentFilters,
     withSavedFilters = true,
     pinnedFilter,
+    compact = false,
 }: FiltersPanelWrapperProps): ReactElement => {
     const shouldHideFilters = useAppSelector(getHideFiltersPanelOptionalFilters)
     const permittedFilters = usePermittedFilters(optionalFilters)
 
     return (
         <div className={css.outerWrapper}>
-            <div className={css.wrapper}>
+            <div className={compact ? css.wrapperCompact : css.wrapper}>
                 <FiltersPanel
                     filterSettingsOverrides={filterSettingsOverrides}
                     optionalFilters={permittedFilters}
@@ -40,6 +42,7 @@ export const FiltersPanelWrapper = ({
                         ...permittedFilters,
                     ]}
                     shouldHideFilters={shouldHideFilters}
+                    compact={compact}
                 />
                 {withSavedFilters && (
                     <SavedFiltersActions

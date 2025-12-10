@@ -2,4 +2,76 @@
     .filterContainer {
         display: flex;
     }
+
+    .compactLabel {
+        font-weight: 600;
+        letter-spacing: 0.12px;
+    }
+
+    .compactValue {
+        font-weight: 400;
+        letter-spacing: 0.12px;
+    }
+}
+
+#period-filter-compact-trigger {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--spacing-xxxs) !important;
+    height: 24px !important;
+    min-height: 24px !important;
+    max-height: 24px !important;
+    padding: 0 var(--spacing-xs) !important;
+    border-radius: var(--spacing-xxs) !important;
+    background: transparent !important;
+    border: 1px solid var(--border-neutral-default) !important;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 12px !important;
+    line-height: 16px !important;
+    color: var(--content-neutral-default) !important;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: var(--border-neutral-secondary) !important;
+        background: white !important;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--border-primary-default) !important;
+        outline-offset: 1px !important;
+    }
+
+    // Target nested Button component divs
+    > div,
+    [class*='ui-button-surface'],
+    [class*='ui-button-content'],
+    strong,
+    span[class*='ui-text'] {
+        padding: 0 !important;
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: var(--spacing-xxxs) !important;
+        background: transparent !important;
+        font-size: 12px !important;
+        font-weight: inherit !important;
+    }
+
+    // Target our custom label and value spans
+    .compactLabel,
+    .compactValue {
+        font-size: 12px !important;
+        line-height: 16px !important;
+    }
+
+    .compactLabel {
+        font-weight: 600 !important;
+        letter-spacing: 0.12px !important;
+    }
+
+    .compactValue {
+        font-weight: 400 !important;
+        letter-spacing: 0.12px !important;
+    }
 }

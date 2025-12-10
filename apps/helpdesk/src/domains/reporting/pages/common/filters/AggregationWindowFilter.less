@@ -1,0 +1,38 @@
+:local {
+    .compactTrigger {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxxs);
+        height: 24px;
+        padding: 0 var(--spacing-xs);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-xxs);
+        background: white;
+        cursor: pointer;
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--content-neutral-default);
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: var(--border-neutral-hover);
+            background: var(--surface-neutral-subtle);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--border-primary-default);
+            outline-offset: 1px;
+        }
+    }
+
+    .compactLabel {
+        font-weight: 600;
+        letter-spacing: 0.12px;
+    }
+
+    .compactValue {
+        font-weight: 400;
+        letter-spacing: 0.12px;
+    }
+}

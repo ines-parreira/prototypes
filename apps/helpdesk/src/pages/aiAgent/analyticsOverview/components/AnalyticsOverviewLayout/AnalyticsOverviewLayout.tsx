@@ -45,6 +45,7 @@ export const AnalyticsOverviewLayout = () => {
                             },
                         },
                     }}
+                    compact
                 />
             </Box>
             <Box

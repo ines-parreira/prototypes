@@ -70,6 +70,7 @@ export type FiltersPanelProps = {
         FilterKey | FilterComponentKey,
         ComponentType<any>
     >
+    compact?: boolean
 }
 
 export function isFilterTypeWithValues(
@@ -214,6 +215,7 @@ export const FiltersPanelComponent = ({
     cleanStatsFilters,
     filterComponentMap,
     shouldHideFilters,
+    compact = false,
 }: FiltersPanelProps) => {
     const { hasAccess } = useAiAgentAccess()
     const optionalFilters = useMemo(() => {
@@ -424,6 +426,7 @@ export const FiltersPanelComponent = ({
                     filterKey: filter.type,
                     applicableFilters,
                 }),
+                compact,
                 ...getFilterSettings(filter.key, filterSettingsOverrides),
             }),
         [
@@ -432,6 +435,7 @@ export const FiltersPanelComponent = ({
             filterSettingsOverrides,
             setActiveFilters,
             applicableFilters,
+            compact,
         ],
     )
 
@@ -449,7 +453,7 @@ export const FiltersPanelComponent = ({
     )
 
     return (
-        <div className={css.wrapper}>
+        <div className={compact ? css.wrapperCompact : css.wrapper}>
             {persistentFiltersToRender.map(createFilterElement)}
             {persistentFiltersToRender.length > 0 &&
                 optionalFiltersToRender.length > 0 && (
