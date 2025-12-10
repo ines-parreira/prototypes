@@ -507,7 +507,7 @@ describe('<SalesSettings />', () => {
                     flag ===
                     FeatureFlagKey.AiShoppingAssistantAutomaticDiscounts
                 ) {
-                    return true
+                    return 1
                 }
                 return false
             })
@@ -543,7 +543,7 @@ describe('<SalesSettings />', () => {
                     flag ===
                     FeatureFlagKey.AiShoppingAssistantAutomaticDiscounts
                 ) {
-                    return true
+                    return 1
                 }
                 return false
             })

@@ -73,9 +73,9 @@ export const SalesSettings = () => {
     const { storeConfiguration, isLoading, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
 
-    const isAutomaticDiscountsBannerEnabled = useFlag(
+    const isAutomaticDiscountsBannerEnabled = !!useFlag<number>(
         FeatureFlagKey.AiShoppingAssistantAutomaticDiscounts,
-        false,
+        0,
     )
 
     const methods = useForm<SalesSettingsData>({
