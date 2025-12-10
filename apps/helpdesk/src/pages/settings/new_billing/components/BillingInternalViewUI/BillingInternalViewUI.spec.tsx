@@ -119,6 +119,8 @@ useReactivateTrialMock.mockImplementation(() => {
 describe('BillingInternalViewUI', () => {
     beforeEach(() => {
         mockedServer.reset()
+        useExtendTrialMutateMock.mockClear()
+        useReactivateTrialMutateMock.mockClear()
     })
 
     it('When customer has a paying subscription', () => {

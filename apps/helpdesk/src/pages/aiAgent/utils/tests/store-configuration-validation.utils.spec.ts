@@ -137,11 +137,11 @@ describe('store-configuration-validation', () => {
             ).toEqual(expected)
         })
 
-        it('should throw an error if signature is empty and useEmailIntegrationSignature is true', () => {
+        it('should throw an error if signature is empty and useEmailIntegrationSignature is false', () => {
             const formValues: FormValues = {
                 ...VALID_FORM_VALUES,
                 signature: '',
-                useEmailIntegrationSignature: true,
+                useEmailIntegrationSignature: false,
                 emailChannelDeactivatedDatetime: null,
                 wizard: undefined,
             }
@@ -155,6 +155,36 @@ describe('store-configuration-validation', () => {
                     DEFAULT_OPTIONS,
                 ),
             ).toThrow(StoreConfigurationValidationMessage.SignatureEmpty)
+        })
+
+        it('should not throw an error if signature is empty and useEmailIntegrationSignature is true', () => {
+            const formValues: FormValues = {
+                ...VALID_FORM_VALUES,
+                signature: '',
+                useEmailIntegrationSignature: true,
+                emailChannelDeactivatedDatetime: null,
+                wizard: undefined,
+                monitoredEmailIntegrations: [EMAIL_INTEGRATION],
+            }
+            const result = getValidStoreConfigurationFormValues(
+                formValues,
+                [],
+                false,
+                false,
+                undefined,
+                DEFAULT_OPTIONS,
+            )
+            expect(result).toEqual({
+                ...formValues,
+                signature: '',
+                conversationBot: {
+                    name: 'AI Agent',
+                    id: 0,
+                    email: 'bot@gorgias.com',
+                },
+                monitoredChatIntegrations: [],
+                monitoredSmsIntegrations: [],
+            })
         })
 
         it('should return default values for signature and monitored integrations if wizard is not completed', () => {
@@ -215,7 +245,9 @@ describe('store-configuration-validation', () => {
                 ...VALID_FORM_VALUES,
                 signature: '',
                 wizard: undefined,
+                useEmailIntegrationSignature: false,
                 emailChannelDeactivatedDatetime: null,
+                monitoredEmailIntegrations: [EMAIL_INTEGRATION],
             }
             expect(() =>
                 getValidStoreConfigurationFormValues(
@@ -237,7 +269,9 @@ describe('store-configuration-validation', () => {
                     ...WIZARD_FORM_VALUES,
                     completedDatetime: '2021-01-01T00:00:00',
                 },
+                useEmailIntegrationSignature: false,
                 emailChannelDeactivatedDatetime: null,
+                monitoredEmailIntegrations: [EMAIL_INTEGRATION],
             }
             expect(() =>
                 getValidStoreConfigurationFormValues(
@@ -606,7 +640,9 @@ describe('store-configuration-validation', () => {
                 const formValues: FormValues = {
                     ...VALID_FORM_VALUES,
                     signature: '',
+                    useEmailIntegrationSignature: false,
                     emailChannelDeactivatedDatetime: null,
+                    monitoredEmailIntegrations: [EMAIL_INTEGRATION],
                 }
                 expect(() =>
                     getValidStoreConfigurationFormValues(

@@ -97,7 +97,7 @@ export const getValidStoreConfigurationFormValues = (
         }
 
         if (
-            formValues.useEmailIntegrationSignature === true &&
+            formValues.useEmailIntegrationSignature === false &&
             isWizardNotFinished &&
             (formValues.signature === null ||
                 formValues.signature.trim().length === 0)

@@ -48,6 +48,7 @@ export const SignatureFormComponent = ({
     const [isBlurred, setIsBlurred] = useState<boolean | null>(null)
     const isSignatureValid =
         !isRequired ||
+        useEmailIntegrationSignature === true ||
         isBlurred === false ||
         (signature && signature.trim() && signature.length > 0)
 

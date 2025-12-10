@@ -769,6 +769,7 @@ describe('<StoreConfigForm />', () => {
                     ...initialFormValues,
                     monitoredEmailIntegrations: [],
                     signature: '',
+                    useEmailIntegrationSignature: false,
                 },
             })
 

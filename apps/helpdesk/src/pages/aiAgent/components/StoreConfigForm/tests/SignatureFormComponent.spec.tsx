@@ -56,7 +56,14 @@ describe('SignatureFormComponent', () => {
     })
 
     test('displays an error message when the signature is blurred and invalid', () => {
-        renderComponent('')
+        render(
+            <SignatureFormComponent
+                isRequired={true}
+                signature=""
+                useEmailIntegrationSignature={false}
+                updateValue={mockUpdateValue}
+            />,
+        )
 
         const textArea = screen.getByPlaceholderText('AI Agent email signature')
 
@@ -81,7 +88,14 @@ describe('SignatureFormComponent', () => {
     })
 
     test('does not show error if input is modified after an invalid state', () => {
-        renderComponent('')
+        render(
+            <SignatureFormComponent
+                isRequired={true}
+                signature=""
+                useEmailIntegrationSignature={false}
+                updateValue={mockUpdateValue}
+            />,
+        )
 
         const textArea = screen.getByPlaceholderText('AI Agent email signature')
 
@@ -105,6 +119,27 @@ describe('SignatureFormComponent', () => {
     test('does not show error if signature is not required', () => {
         renderComponent('', false)
 
+        expect(
+            screen.queryByText('Email signature is required.'),
+        ).not.toBeInTheDocument()
+    })
+
+    test('does not show error when checkbox is unchecked (useEmailIntegrationSignature is true)', () => {
+        render(
+            <SignatureFormComponent
+                isRequired={true}
+                signature=""
+                useEmailIntegrationSignature={true}
+                updateValue={mockUpdateValue}
+            />,
+        )
+
+        const textArea = screen.getByPlaceholderText('AI Agent email signature')
+
+        // Simulate blur event
+        fireEvent.blur(textArea)
+
+        // Error message should NOT be present because checkbox is unchecked
         expect(
             screen.queryByText('Email signature is required.'),
         ).not.toBeInTheDocument()
