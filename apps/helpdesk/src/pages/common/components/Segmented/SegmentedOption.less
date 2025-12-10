@@ -6,7 +6,7 @@
         border-radius: 4px;
         margin: 0;
 
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 14px;
         font-weight: 500;
         text-align: center;
@@ -15,12 +15,12 @@
         user-select: none;
 
         &.checked {
-            background-color: var(--neutral-grey-3);
-            color: var(--neutral-grey-6);
+            background-color: var(--neutral-grey-3); // legacy
+            color: var(--neutral-grey-6); // legacy
         }
 
         &.disabled {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             cursor: not-allowed;
         }
     }
@@ -37,5 +37,20 @@
         height: 0;
         opacity: 0;
         pointer-events: none;
+    }
+}
+
+.axiom :local {
+    .badge {
+        color: var(--content-neutral-secondary);
+
+        &.checked {
+            background-color: var(--surface-neutral-tertiary);
+            color: var(--content-neutral-default);
+        }
+
+        &.disabled {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

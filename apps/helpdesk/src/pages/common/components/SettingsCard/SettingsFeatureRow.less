@@ -15,10 +15,10 @@
             margin: 0;
         }
         .arrow {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
 
             &:hover {
-                color: var(--main-primary);
+                color: var(--main-primary); // legacy
             }
         }
     }
@@ -35,5 +35,17 @@
 
     .featureRowActions {
         gap: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .featureRow {
+        .arrow {
+            color: var(--content-neutral-secondary);
+
+            &:hover {
+                color: var(--content-accent-default);
+            }
+        }
     }
 }

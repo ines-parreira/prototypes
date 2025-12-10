@@ -29,7 +29,7 @@
     }
 
     .featureContainer {
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         padding: var(--layout-spacing-m);
         border-radius: 6px;
     }
@@ -69,7 +69,7 @@
     }
 
     .infoIcon {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .actionsContainer {
@@ -80,13 +80,13 @@
 
     .primaryActionError {
         .caption-regular;
-        color: var(--feedback-error-3);
+        color: var(--feedback-error-3); // legacy
         margin-top: var(--layout-spacing-xs);
         text-align: left;
     }
 
     .deployLink {
-        color: var(--feedback-error-3);
+        color: var(--feedback-error-3); // legacy
         text-decoration-line: underline !important;
         text-decoration-style: solid !important;
         text-decoration-skip-ink: none !important;
@@ -95,12 +95,12 @@
         text-underline-position: from-font !important;
 
         &:hover {
-            color: var(--feedback-error-3);
+            color: var(--feedback-error-3); // legacy
         }
     }
 
     .primaryActionError a {
-        color: var(--feedback-error-3);
+        color: var(--feedback-error-3); // legacy
         text-decoration-line: underline !important;
         text-decoration-style: solid !important;
         text-decoration-skip-ink: none !important;
@@ -109,18 +109,18 @@
         text-underline-position: from-font !important;
 
         &:hover {
-            color: var(--feedback-error-3);
+            color: var(--feedback-error-3); // legacy
         }
     }
 
     .modalContent .body .primaryActionButton {
-        background-color: var(--neutral-grey-6) !important;
-        color: var(--neutral-grey-0) !important;
-        border-color: var(--neutral-grey-6) !important;
+        background-color: var(--neutral-grey-6) !important; // legacy
+        color: var(--neutral-grey-0) !important; // legacy
+        border-color: var(--neutral-grey-6) !important; // legacy
         &[aria-disabled='true'] {
-            background-color: var(--neutral-grey-1) !important;
-            color: var(--neutral-grey-3) !important;
-            border: 2px solid var(--neutral-grey-3) !important;
+            background-color: var(--neutral-grey-1) !important; // legacy
+            color: var(--neutral-grey-3) !important; // legacy
+            border: 2px solid var(--neutral-grey-3) !important; // legacy
             border-radius: var(--border-radius-l) !important;
         }
     }
@@ -130,24 +130,24 @@
     }
 
     .checkboxField {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
 
         > label {
             align-items: flex-start !important;
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
     .checkboxFieldError {
-        color: var(--feedback-error-3);
+        color: var(--feedback-error-3); // legacy
 
         > label {
             align-items: flex-start !important;
-            color: var(--feedback-error-3);
+            color: var(--feedback-error-3); // legacy
         }
 
         input[type='checkbox'] {
-            border-color: var(--feedback-error-3) !important;
+            border-color: var(--feedback-error-3) !important; // legacy
         }
     }
 
@@ -156,7 +156,7 @@
     }
 
     .termsLink {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         text-decoration-line: underline !important;
         text-decoration-style: solid !important;
         text-decoration-skip-ink: none !important;
@@ -165,12 +165,12 @@
         text-underline-position: from-font !important;
 
         &:hover {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
     .termsLinkError {
-        color: var(--feedback-error-3);
+        color: var(--feedback-error-3); // legacy
         text-decoration-line: underline !important;
         text-decoration-style: solid !important;
         text-decoration-skip-ink: none !important;
@@ -179,7 +179,7 @@
         text-underline-position: from-font !important;
 
         &:hover {
-            color: var(--feedback-error-3);
+            color: var(--feedback-error-3); // legacy
         }
     }
 
@@ -210,7 +210,7 @@
         margin-top: var(--layout-spacing-s);
         margin-bottom: 5px;
         border-radius: 100px;
-        background: var(--neutral-grey-3);
+        background: var(--neutral-grey-3); // legacy
     }
 
     .featureCard:nth-of-type(2) {
@@ -222,13 +222,13 @@
             180deg,
             var(--feedback-success-4) 0%,
             var(--neutral-grey-2) 82.95%
-        );
+        ); // legacy
     }
 
     .featureCard:first-child .icon {
-        background: var(--feedback-success-4);
-        color: var(--neutral-grey-0);
-        border-color: var(--feedback-success-4);
+        background: var(--feedback-success-4); // legacy
+        color: var(--neutral-grey-0); // legacy
+        border-color: var(--feedback-success-4); // legacy
     }
 
     .icon {
@@ -238,10 +238,110 @@
         display: flex;
         align-self: center;
         border-radius: 15px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .contactUsContainer {
         margin-bottom: auto;
+    }
+}
+
+.axiom :local {
+    .featureContainer {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .infoIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .primaryActionError {
+        color: var(--content-error-primary);
+    }
+
+    .deployLink {
+        color: var(--content-error-primary);
+
+        &:hover {
+            color: var(--content-error-primary);
+        }
+    }
+
+    .primaryActionError a {
+        color: var(--content-error-primary);
+
+        &:hover {
+            color: var(--content-error-primary);
+        }
+    }
+
+    .modalContent .body .primaryActionButton {
+        background-color: var(--content-neutral-default) !important;
+        color: var(--content-inverted-default) !important;
+        border-color: var(--content-neutral-default) !important;
+
+        &[aria-disabled='true'] {
+            background-color: var(--elevation-neutral-mid) !important;
+            color: var(--border-neutral-default) !important;
+            border: 2px solid var(--border-neutral-default) !important;
+        }
+    }
+
+    .checkboxField {
+        color: var(--content-neutral-secondary);
+
+        > label {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .checkboxFieldError {
+        color: var(--content-error-primary);
+
+        > label {
+            color: var(--content-error-primary);
+        }
+
+        input[type='checkbox'] {
+            border-color: var(--content-error-primary) !important;
+        }
+    }
+
+    .termsLink {
+        color: var(--content-neutral-secondary);
+
+        &:hover {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .termsLinkError {
+        color: var(--content-error-primary);
+
+        &:hover {
+            color: var(--content-error-primary);
+        }
+    }
+
+    .iconBackground {
+        background: var(--border-neutral-default);
+    }
+
+    .featureCard:first-child .iconBackground {
+        background: linear-gradient(
+            180deg,
+            var(--border-success-primary) 0%,
+            var(--surface-neutral-tertiary) 82.95%
+        );
+    }
+
+    .featureCard:first-child .icon {
+        background: var(--border-success-primary);
+        color: var(--content-inverted-default);
+        border-color: var(--border-success-primary);
+    }
+
+    .icon {
+        border: 1px solid var(--border-neutral-default);
     }
 }

@@ -7,12 +7,12 @@
         flex: 1;
         margin-right: 1rem;
         padding: 0.625rem 0.75rem;
-        border: 1px solid var(--neutral-grey-2);
+        border: 1px solid var(--neutral-grey-2); // legacy
         border-radius: 3px;
         cursor: pointer;
         display: flex;
         align-items: center;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-family: 'Inter', sans-serif;
         font-weight: 500;
         font-size: 14px;
@@ -23,12 +23,24 @@
         }
 
         &.selected {
-            border: 1px solid var(--main-primary);
-            color: var(--neutral-grey-6);
+            border: 1px solid var(--main-primary); // legacy
+            color: var(--neutral-grey-6); // legacy
         }
 
         img {
             margin-right: 0.6875rem;
+        }
+    }
+}
+
+.axiom :local {
+    .choice {
+        border: 1px solid var(--border-neutral-default);
+        color: var(--content-neutral-default);
+
+        &.selected {
+            border: 1px solid var(--border-accent-default);
+            color: var(--content-neutral-default);
         }
     }
 }

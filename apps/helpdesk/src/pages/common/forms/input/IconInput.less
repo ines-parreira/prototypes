@@ -1,10 +1,16 @@
 :local {
     .icon {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
 
         &:global(.material-icons) {
             font-size: 20px;
             vertical-align: initial;
         }
+    }
+}
+
+.axiom :local {
+    .icon {
+        color: var(--content-neutral-secondary);
     }
 }

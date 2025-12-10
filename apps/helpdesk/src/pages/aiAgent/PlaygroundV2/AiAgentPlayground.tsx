@@ -3,10 +3,15 @@ import { useEffect, useRef } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 
-import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+import {
+    LegacyBanner as Banner,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { SyncingSourcesMessage } from 'pages/aiAgent/Playground/components/SyncingSourcesMessage/SyncingSourcesMessage'
+import type { FormattedSyncingMessage } from 'pages/aiAgent/Playground/utils/knowledgeSourcesAnalysis'
 import { PlaygroundSettings } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundSettings/PlaygroundSettings'
 import {
     useEvents,
@@ -106,6 +111,7 @@ type AiAgentPlaygroundContent = {
     hasMultipleModes?: boolean
     withResetButton: boolean
     handleInplaceSettingsClose?: () => void
+    syncingMessage?: FormattedSyncingMessage | null
 }
 
 export const AiAgentPlaygroundContent = ({
@@ -117,6 +123,7 @@ export const AiAgentPlaygroundContent = ({
     withResetButton,
     inplaceSettingsOpen,
     handleInplaceSettingsClose,
+    syncingMessage,
 }: AiAgentPlaygroundContent) => {
     const { messages } = useMessagesContext()
     const mode = useSettingsContext().mode
@@ -131,6 +138,17 @@ export const AiAgentPlaygroundContent = ({
                 />
             ) : (
                 <>
+                    {syncingMessage && (
+                        <Banner
+                            variant="inline"
+                            type="info"
+                            className="mb-3 justify-content-start
+"
+                            icon={null}
+                        >
+                            <SyncingSourcesMessage message={syncingMessage} />
+                        </Banner>
+                    )}
                     {mode === 'inbound' && (
                         <InboundContentView
                             accountId={accountId}
@@ -217,6 +235,7 @@ export const AiAgentPlayground = ({
         hasPrerequisites,
         isCheckingPrerequisites,
         missingKnowledgeSource,
+        syncingMessage,
     } = usePlaygroundPrerequisites({
         storeConfiguration,
         snippetHelpCenterId,
@@ -276,6 +295,7 @@ export const AiAgentPlayground = ({
                     handleInplaceSettingsClose={handleInplaceSettingsClose}
                     inplaceSettingsOpen={inplaceSettingsOpen}
                     onInplaceSettingsOpenChange={onInplaceSettingsOpenChange}
+                    syncingMessage={syncingMessage}
                 />
             </PlaygroundProvider>
         )

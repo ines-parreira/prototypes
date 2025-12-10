@@ -13,7 +13,7 @@
 
     .inputWrapper {
         align-items: stretch;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
         box-sizing: border-box;
         display: flex;
@@ -25,7 +25,7 @@
         width: 100%;
 
         &.hasError {
-            border-color: var(--feedback-error);
+            border-color: var(--feedback-error); // legacy
         }
 
         &.isFocused:not(.isNested) {
@@ -40,7 +40,7 @@
         }
 
         &.isDisabled {
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
         }
 
         &.right,
@@ -71,7 +71,7 @@
 
     .input {
         .body-regular();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         flex-grow: 1;
         min-width: 0;
         overflow: hidden;
@@ -80,7 +80,7 @@
         white-space: nowrap;
 
         &.isGreyed {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
@@ -100,7 +100,33 @@
     }
 
     .toggle {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         cursor: pointer;
+    }
+}
+
+.axiom :local {
+    .inputWrapper {
+        border: 1px solid var(--border-neutral-default);
+
+        &.hasError {
+            border-color: var(--border-error-primary);
+        }
+
+        &.isDisabled {
+            background-color: var(--surface-neutral-secondary);
+        }
+    }
+
+    .input {
+        color: var(--content-neutral-default);
+
+        &.isGreyed {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .toggle {
+        color: var(--content-neutral-secondary);
     }
 }

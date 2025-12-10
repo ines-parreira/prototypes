@@ -22,7 +22,7 @@
         gap: var(--layout-spacing-xs);
 
         .stepDescription {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
@@ -34,6 +34,12 @@
 }
 
 .axiom :local {
+    .stepIndicator {
+        .stepDescription {
+            color: var(--content-neutral-tertiary);
+        }
+    }
+
     .stepContent {
         border-left: 1px solid var(--content-inverted-default);
     }

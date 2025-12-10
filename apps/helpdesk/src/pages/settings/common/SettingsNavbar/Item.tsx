@@ -28,6 +28,7 @@ const Item = ({
     shouldRender,
     extra,
     exact,
+    onClick,
 }: {
     to: string
     text: string
@@ -35,6 +36,7 @@ const Item = ({
     shouldRender?: boolean
     exact?: boolean
     extra?: ReactNode
+    onClick?: () => void
 }) => {
     const currentUser = useAppSelector(getCurrentUser)
     const account = useAppSelector(getCurrentAccountState)
@@ -86,6 +88,7 @@ const Item = ({
                     account_domain: account.get('domain'),
                 })
                 dispatch(closePanels())
+                onClick?.()
             }}
             as={NavLink}
             to={`${rootPath}${to}`}

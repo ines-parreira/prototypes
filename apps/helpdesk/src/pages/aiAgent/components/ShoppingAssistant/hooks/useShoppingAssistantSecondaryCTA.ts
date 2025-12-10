@@ -47,6 +47,8 @@ export const useShoppingAssistantSecondaryCTA = (
         const canShowDemo = isAiAgentExpandingTrialExperienceForAll
             ? trialAccess.canBookDemo
             : trialAccess.canNotifyAdmin
+        const canSeeTrialCTA = trialAccess.canSeeTrialCTA
+        const canNotifyAdmin = trialAccess.canNotifyAdmin
 
         // ===== Button factories =====
         const manageTrialButton = (): ButtonConfig => ({
@@ -92,7 +94,8 @@ export const useShoppingAssistantSecondaryCTA = (
 
         if (isLeadTrialProgress) return undefined
 
-        if (canShowDemo) return bookDemoButton()
+        if (canShowDemo && (canSeeTrialCTA || canNotifyAdmin))
+            return bookDemoButton()
 
         return learnMoreButton()
     }, [
@@ -100,6 +103,7 @@ export const useShoppingAssistantSecondaryCTA = (
         trialAccess.hasCurrentStoreTrialOptedOut,
         trialAccess.canNotifyAdmin,
         trialAccess.canBookDemo,
+        trialAccess.canSeeTrialCTA,
         trialFlow,
         isAiAgentExpandingTrialExperienceForAll,
     ])

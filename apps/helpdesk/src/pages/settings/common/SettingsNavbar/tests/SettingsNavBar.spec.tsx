@@ -1,13 +1,14 @@
 import { logEvent } from '@repo/logging'
-import { fireEvent, screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
+import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { ProductType } from 'models/billing/types'
 import { renderWithRouter } from 'utils/testing'
 
 import SettingsNavbar from '../SettingsNavbar'
@@ -48,6 +49,9 @@ jest.mock(
 
 const mockStore = configureStore([])
 const scrollToMock = jest.fn()
+const mockUseLocation = useLocation as jest.Mock
+const mockLogEvent = logEvent as jest.Mock
+const mockUseAiAgentAccess = useAiAgentAccess as jest.Mock
 
 describe('SettingsNavbar', () => {
     const mockCurrentUser = fromJS({
@@ -71,9 +75,9 @@ describe('SettingsNavbar', () => {
     beforeEach(() => {
         HTMLElement.prototype.scrollTo = jest.fn(scrollToMock)
         jest.clearAllMocks()
-        ;(useLocation as jest.Mock).mockReturnValue(mockLocation)
-        ;(logEvent as jest.Mock).mockImplementation(() => {})
-        ;(useAiAgentAccess as jest.Mock).mockReturnValue({
+        mockUseLocation.mockReturnValue(mockLocation)
+        mockLogEvent.mockImplementation(() => {})
+        mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
             isLoading: false,
         })
@@ -86,20 +90,7 @@ describe('SettingsNavbar', () => {
         store = mockStore({
             currentAccount: mockAccount,
             currentUser: mockCurrentUser,
-            billing: fromJS({
-                products: [
-                    {
-                        id: '111',
-                        type: ProductType.Automation,
-                        prices: [
-                            {
-                                product_id: 'product_111',
-                                price_id: '111',
-                            },
-                        ],
-                    },
-                ],
-            }),
+            billing: fromJS(billingState),
         }),
     ) =>
         renderWithRouter(
@@ -125,7 +116,7 @@ describe('SettingsNavbar', () => {
         const categoryTrigger = screen.getByText('Productivity')
 
         // Click to collapse
-        fireEvent.click(categoryTrigger)
+        await act(() => userEvent.click(categoryTrigger))
 
         expect(categoryTrigger.parentElement).toHaveAttribute(
             'aria-expanded',
@@ -133,7 +124,7 @@ describe('SettingsNavbar', () => {
         )
 
         // Click to expand
-        fireEvent.click(categoryTrigger)
+        await act(() => userEvent.click(categoryTrigger))
 
         expect(categoryTrigger.parentElement).toHaveAttribute(
             'aria-expanded',
@@ -141,11 +132,11 @@ describe('SettingsNavbar', () => {
         )
     })
 
-    it('tracks navigation events when clicking links', () => {
+    it('tracks navigation events when clicking links', async () => {
         renderComponent()
 
         const firstLink = screen.getByText('Macros')
-        fireEvent.click(firstLink)
+        await act(() => userEvent.click(firstLink))
 
         expect(logEvent).toHaveBeenCalledWith(
             expect.any(String),
@@ -171,20 +162,7 @@ describe('SettingsNavbar', () => {
                 has_password: true,
                 role: { name: 'agent' },
             }),
-            billing: fromJS({
-                products: [
-                    {
-                        id: '111',
-                        type: ProductType.Automation,
-                        prices: [
-                            {
-                                product_id: 'product_111',
-                                price_id: '111',
-                            },
-                        ],
-                    },
-                ],
-            }),
+            billing: fromJS(billingState),
         })
 
         renderComponent(nonAdminStore)
@@ -248,20 +226,7 @@ describe('SettingsNavbar', () => {
                     has_password: true,
                     role: { name: 'basic' },
                 }),
-                billing: fromJS({
-                    products: [
-                        {
-                            id: '111',
-                            type: ProductType.Automation,
-                            prices: [
-                                {
-                                    product_id: 'product_111',
-                                    price_id: '111',
-                                },
-                            ],
-                        },
-                    ],
-                }),
+                billing: fromJS(billingState),
             })
 
             renderComponent(basicUserStore)
@@ -269,6 +234,51 @@ describe('SettingsNavbar', () => {
             expect(
                 screen.queryByText('Article Recommendations'),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Billing & Usage navigation tracking', () => {
+        it('should log BillingAndUsageNavigationSideNavClicked event when billing link is clicked', async () => {
+            renderComponent()
+
+            const billingLink = screen.getByRole('link', {
+                name: /billing & usage/i,
+            })
+
+            await act(() => userEvent.click(billingLink))
+
+            expect(logEvent).toHaveBeenCalledWith(
+                'billing-navigation-sidenav-click',
+            )
+        })
+
+        it('should render billing link with correct href', () => {
+            renderComponent()
+
+            const billingLink = screen.getByRole('link', {
+                name: /billing & usage/i,
+            })
+
+            expect(billingLink).toHaveAttribute('href', '/app/settings/billing')
+        })
+
+        it('should not render billing link for non-admin users', () => {
+            const nonAdminStore = mockStore({
+                currentAccount: mockAccount,
+                currentUser: fromJS({
+                    has_password: true,
+                    role: { name: 'agent' },
+                }),
+                billing: fromJS(billingState),
+            })
+
+            renderComponent(nonAdminStore)
+
+            const billingLink = screen.queryByRole('link', {
+                name: /billing & usage/i,
+            })
+
+            expect(billingLink).not.toBeInTheDocument()
         })
     })
 })

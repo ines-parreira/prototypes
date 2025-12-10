@@ -13,6 +13,7 @@ import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fi
 import * as useHelpCenterActions from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
 import * as helpCenterApi from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import type { HelpCenterClient } from 'rest_api/help_center_api/client'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import { mockQueryClient } from '../../../../../../tests/reactQueryTestingUtils'
@@ -94,18 +95,10 @@ describe('HelpCenterPreferencesSettings', () => {
                     updated_datetime: '2024-03-20T00:00:00.000Z',
                     help_center_id: 1,
                     banner_text: null,
-                    banner_url: null,
-                    banner_alt: null,
-                    banner_title: null,
-                    banner_link: null,
-                    banner_link_text: null,
-                    banner_link_target: null,
-                    banner_link_rel: null,
                     banner_image_vertical_offset: 0,
                     contact_info: {
                         email: {
                             email: 'test@example.com',
-                            enabled: true,
                             description: 'Test Email',
                             deactivated_datetime: null,
                         },
@@ -116,12 +109,10 @@ describe('HelpCenterPreferencesSettings', () => {
                                     phone_number: '+1234567890',
                                 },
                             ],
-                            enabled: true,
                             description: 'Test Phone',
                             deactivated_datetime: null,
                         },
                         chat: {
-                            enabled: true,
                             description: 'Test Chat',
                             deactivated_datetime: null,
                         },
@@ -137,7 +128,7 @@ describe('HelpCenterPreferencesSettings', () => {
                     chat_app_key: null,
                     contact_form_id: null,
                 },
-            ],
+            ] as Components.Schemas.GetHelpCenterDto['translations'],
         }
 
         const wrapper = ({ children }: { children?: ReactNode }) => (

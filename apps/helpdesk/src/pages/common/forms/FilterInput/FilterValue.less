@@ -5,22 +5,22 @@
         gap: 4px;
         max-width: 240px;
         padding: 1px var(--layout-spacing-xs);
-        background-color: var(--neutral-grey-0);
-        border: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-0); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 0 var(--layout-spacing-xxs) var(--layout-spacing-xxs) 0;
         cursor: pointer;
 
         &:hover .dropdownIcon {
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
         }
 
         &:hover:not(:has(.trailIcon:hover)) {
-            background-color: var(--main-primary-0);
+            background-color: var(--main-primary-0); // legacy
         }
 
         &.pressedState,
         &:active:not(:has(.trailIcon:hover)) {
-            border-color: var(--main-primary);
+            border-color: var(--main-primary); // legacy
         }
     }
 
@@ -36,18 +36,18 @@
     .trailIcon {
         font-size: 16px;
         font-weight: 500;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         pointer-events: all;
 
         &:hover {
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
         }
     }
 
     .dropdownIcon {
         font-size: 16px;
         font-weight: 500;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .tooltip {
@@ -56,7 +56,43 @@
     }
 
     .disabled {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         cursor: not-allowed;
+    }
+}
+
+.axiom :local {
+    .container {
+        background-color: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+
+        &:hover .dropdownIcon {
+            color: var(--content-accent-default);
+        }
+
+        &:hover:not(:has(.trailIcon:hover)) {
+            background-color: var(--hover-default);
+        }
+
+        &.pressedState,
+        &:active:not(:has(.trailIcon:hover)) {
+            border-color: var(--border-accent-default);
+        }
+    }
+
+    .trailIcon {
+        color: var(--content-neutral-tertiary);
+
+        &:hover {
+            color: var(--content-accent-default);
+        }
+    }
+
+    .dropdownIcon {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .disabled {
+        color: var(--content-neutral-secondary);
     }
 }

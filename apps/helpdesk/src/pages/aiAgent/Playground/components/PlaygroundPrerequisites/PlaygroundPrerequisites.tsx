@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import React from 'react'
+import { useMemo } from 'react'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
@@ -7,6 +7,7 @@ import type { StoreConfiguration } from 'models/aiAgent/types'
 
 import { useFileIngestion } from '../../../hooks/useFileIngestion'
 import { usePublicResources } from '../../../hooks/usePublicResources'
+import { analyzeKnowledgeSources } from '../../utils/knowledgeSourcesAnalysis'
 import { MissingKnowledgeSourceAlert } from './PlaygroundPrerequisitesAlerts'
 
 import css from './PlaygroundPrerequisites.less'
@@ -64,6 +65,17 @@ const CheckExternalKnowledgeSources = ({
             helpCenterId: snippetHelpCenterId,
         })
 
+    const knowledgeSourcesAnalysis = useMemo(
+        () =>
+            analyzeKnowledgeSources({
+                sourceItems,
+                ingestedFiles,
+                helpCenterId: null, // we are checking for help center above in CheckPlaygroundPrerequisites
+                guidanceUsedCount: 0, // same for guidances, they are checked above in CheckPlaygroundPrerequisites
+            }),
+        [sourceItems, ingestedFiles],
+    )
+
     if (isSourceItemsListLoading || isExternalFilesLoading) {
         return (
             <div className={css.spinner}>
@@ -72,16 +84,7 @@ const CheckExternalKnowledgeSources = ({
         )
     }
 
-    const hasPublicUrlSources =
-        sourceItems && sourceItems.some(({ status }) => status === 'done')
-
-    const hasExternalFiles =
-        ingestedFiles &&
-        ingestedFiles.some(
-            (ingestedFile) => ingestedFile.status === 'SUCCESSFUL',
-        )
-
-    if (!hasPublicUrlSources && !hasExternalFiles) {
+    if (!knowledgeSourcesAnalysis.hasAvailableSources) {
         return <MissingKnowledgeSourceAlert shopName={shopName} />
     }
 

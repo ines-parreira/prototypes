@@ -59,6 +59,8 @@ describe('<PreviewArticle />', () => {
                                     category_id: 1,
                                     created_datetime: '',
                                     translation: {
+                                        draft_version_id: null,
+                                        published_version_id: null,
                                         article_id: 1,
                                         article_unlisted_id: '1',
                                         category_id: 1,

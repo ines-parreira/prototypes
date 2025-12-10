@@ -111,9 +111,16 @@ const defaultUsePlaygroundFormProps = {
     isDisabled: false,
     isFormValid: false,
     clearForm: jest.fn(),
-    isPendingResources: false,
-    isKnowledgeBaseEmpty: false,
     disabledMessage: undefined,
+    syncingMessage: null,
+    knowledgeSourcesAnalysis: {
+        availableSources: [],
+        syncingSources: [],
+        failedSources: [],
+        hasAnySources: true,
+        hasAvailableSources: true,
+        hasSyncingSources: false,
+    },
 }
 
 const defaultUseAiAgentOnboardingNotification =
@@ -156,9 +163,16 @@ describe('PlaygroundChat', () => {
             isDisabled: false,
             isFormValid: false,
             clearForm: jest.fn(),
-            isPendingResources: false,
-            isKnowledgeBaseEmpty: false,
             disabledMessage: undefined,
+            syncingMessage: null,
+            knowledgeSourcesAnalysis: {
+                availableSources: [],
+                syncingSources: [],
+                failedSources: [],
+                hasAnySources: true,
+                hasAvailableSources: true,
+                hasSyncingSources: false,
+            },
         })
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             defaultUseAiAgentOnboardingNotification,
@@ -924,6 +938,55 @@ describe('PlaygroundChat', () => {
             expect(mockOnNewConversation).toHaveBeenCalled()
             expect(mockClearForm).toHaveBeenCalled()
             expect(mockStopFn).toHaveBeenCalled()
+        })
+    })
+
+    describe('Syncing Sources Banner', () => {
+        it('should render syncing message when sources are syncing', () => {
+            mockedUsePlaygroundForm.mockReturnValue({
+                ...defaultUsePlaygroundFormProps,
+                formValues: {
+                    message: '',
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                },
+                syncingMessage: {
+                    count: 2,
+                    sources: [
+                        { label: 'Domain', name: 'example.com' },
+                        { label: 'URL', name: 'https://test.com' },
+                    ],
+                },
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('2')).toBeInTheDocument()
+            expect(
+                screen.getByText(/knowledge sources currently syncing/),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(/Domain:.*example\.com/),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(/URL:.*https:\/\/test\.com/),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render syncing message when no sources are syncing', () => {
+            mockedUsePlaygroundForm.mockReturnValue({
+                ...defaultUsePlaygroundFormProps,
+                formValues: {
+                    message: '',
+                    customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                },
+                syncingMessage: null,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText(/knowledge source.* currently syncing/),
+            ).not.toBeInTheDocument()
         })
     })
 

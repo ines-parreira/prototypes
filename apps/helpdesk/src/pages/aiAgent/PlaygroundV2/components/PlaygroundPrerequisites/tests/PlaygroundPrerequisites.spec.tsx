@@ -104,6 +104,7 @@ describe('CheckPlaygroundPrerequisites', () => {
                 {
                     status: 'loading',
                     id: 0,
+                    source: 'url',
                     createdDatetime: '2021-01-01T00:00:00.000Z',
                 },
             ],
@@ -128,6 +129,7 @@ describe('CheckPlaygroundPrerequisites', () => {
                 {
                     status: 'done',
                     id: 0,
+                    source: 'url',
                     createdDatetime: '2021-01-01T00:00:00.000Z',
                 },
             ],

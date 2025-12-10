@@ -126,6 +126,7 @@ export const PublicSourcesSection = ({
         const newResource: SourceItem = {
             id: Math.random(),
             status: 'idle',
+            source: 'url',
             createdDatetime: new Date().toISOString(),
         }
         const newSources = [...sources, newResource]

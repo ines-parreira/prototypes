@@ -35,7 +35,7 @@
 
         .title {
             font-weight: 500;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -43,7 +43,7 @@
 
         .subtitle {
             font-weight: normal;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -56,14 +56,38 @@
         font-weight: normal;
         font-size: 13px;
         line-height: 16px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         &.grey {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
 
         &.disabled {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .legend {
+        .title {
+            color: var(--content-neutral-default);
+        }
+
+        .subtitle {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .stock {
+        color: var(--content-neutral-default);
+
+        &.grey {
+            color: var(--content-neutral-secondary);
+        }
+
+        &.disabled {
+            color: var(--content-neutral-secondary);
         }
     }
 }

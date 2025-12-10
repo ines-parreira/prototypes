@@ -9,6 +9,7 @@ import thunk from 'redux-thunk'
 
 import { useFlag } from 'core/flags'
 import { getContactFormForHelpCenterFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -47,7 +48,7 @@ const helpCenter = {
                 id: 555,
                 contact_form_id: 111,
             }),
-        ),
+        ) as Components.Schemas.GetHelpCenterDto['translations'],
 }
 
 const defaultState: Partial<RootState> = {

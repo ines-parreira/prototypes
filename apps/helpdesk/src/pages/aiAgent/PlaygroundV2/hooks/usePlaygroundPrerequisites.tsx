@@ -2,6 +2,11 @@ import { useMemo } from 'react'
 
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
+import {
+    analyzeKnowledgeSources,
+    formatSyncingSourcesMessage,
+} from 'pages/aiAgent/Playground/utils/knowledgeSourcesAnalysis'
+import type { FormattedSyncingMessage } from 'pages/aiAgent/Playground/utils/knowledgeSourcesAnalysis'
 
 import { useFileIngestion } from '../../hooks/useFileIngestion'
 import { usePublicResources } from '../../hooks/usePublicResources'
@@ -15,6 +20,7 @@ type UsePlaygroundPrerequisitesReturn = {
     hasPrerequisites: boolean
     isCheckingPrerequisites: boolean
     missingKnowledgeSource: boolean
+    syncingMessage?: FormattedSyncingMessage | null
 }
 
 export const usePlaygroundPrerequisites = ({
@@ -23,6 +29,9 @@ export const usePlaygroundPrerequisites = ({
 }: UsePlaygroundPrerequisitesProps): UsePlaygroundPrerequisitesReturn => {
     const { sourceItems, isSourceItemsListLoading } = usePublicResources({
         helpCenterId: snippetHelpCenterId || 0,
+        overrides: {
+            sources: ['domain', 'url'],
+        },
         queryOptionsOverrides: {
             enabled: !!snippetHelpCenterId,
         },
@@ -56,52 +65,35 @@ export const usePlaygroundPrerequisites = ({
         isExternalFilesLoading ||
         isGuidanceArticleListLoading
 
+    const knowledgeSourcesAnalysis = useMemo(() => {
+        return analyzeKnowledgeSources({
+            sourceItems,
+            ingestedFiles,
+            helpCenterId: storeConfiguration?.helpCenterId ?? null,
+            guidanceUsedCount: guidanceUsed?.length ?? 0,
+        })
+    }, [sourceItems, ingestedFiles, storeConfiguration, guidanceUsed])
+
     const hasPrerequisites = useMemo(() => {
         if (isLoading) return false
 
-        // If we have a help center, prerequisites are met
-        if (!!storeConfiguration?.helpCenterId) {
-            return true
-        }
-
-        if (!snippetHelpCenterId) {
-            return false
-        }
-
-        const hasPublicUrlSources =
-            sourceItems && sourceItems.some(({ status }) => status === 'done')
-
-        const hasExternalFiles =
-            ingestedFiles &&
-            ingestedFiles.some(
-                (ingestedFile) => ingestedFile.status === 'SUCCESSFUL',
-            )
-
-        const hasGuidance = guidanceUsed.length > 0
-
-        return hasPublicUrlSources || hasExternalFiles || hasGuidance
-    }, [
-        storeConfiguration,
-        snippetHelpCenterId,
-        sourceItems,
-        ingestedFiles,
-        isLoading,
-        guidanceUsed,
-    ])
+        return knowledgeSourcesAnalysis.hasAvailableSources
+    }, [knowledgeSourcesAnalysis, isLoading])
 
     const missingKnowledgeSource = useMemo(() => {
         if (isLoading) return false
 
-        if (!!storeConfiguration?.helpCenterId) {
-            return false
-        }
+        return !knowledgeSourcesAnalysis.hasAvailableSources
+    }, [knowledgeSourcesAnalysis, isLoading])
 
-        if (!snippetHelpCenterId) {
-            return true
+    const syncingMessage = useMemo(() => {
+        if (knowledgeSourcesAnalysis.hasSyncingSources) {
+            return formatSyncingSourcesMessage(
+                knowledgeSourcesAnalysis.syncingSources,
+            )
         }
-
-        return !hasPrerequisites
-    }, [storeConfiguration, snippetHelpCenterId, hasPrerequisites, isLoading])
+        return null
+    }, [knowledgeSourcesAnalysis])
 
     const isCheckingPrerequisites = useMemo(() => {
         if (!!storeConfiguration?.helpCenterId) {
@@ -119,5 +111,6 @@ export const usePlaygroundPrerequisites = ({
         hasPrerequisites: Boolean(hasPrerequisites),
         isCheckingPrerequisites,
         missingKnowledgeSource,
+        syncingMessage,
     }
 }

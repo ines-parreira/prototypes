@@ -5,7 +5,7 @@
         width: 280px;
         height: 324px;
 
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
         border-radius: 16px;
 
         box-shadow: 4px 4px 16px rgba(22, 22, 22, 0.1);
@@ -28,7 +28,7 @@
         padding: 16px;
         border-radius: 0 0 16px 16px;
 
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
     }
 
     .content {
@@ -36,5 +36,15 @@
         flex-grow: 1;
         flex-direction: column;
         justify-content: space-between;
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        background: var(--surface-neutral-tertiary);
+    }
+
+    .container {
+        background: var(--elevation-neutral-default);
     }
 }

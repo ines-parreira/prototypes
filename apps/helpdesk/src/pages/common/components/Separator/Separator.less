@@ -1,6 +1,6 @@
 :local {
     .component {
-        background-color: var(--neutral-grey-3);
+        background-color: var(--neutral-grey-3); // legacy
         z-index: 10;
 
         &.horizontal {
@@ -16,7 +16,7 @@
         &.dashed {
             background: none;
             border-style: dashed;
-            border-color: var(--neutral-grey-3);
+            border-color: var(--neutral-grey-3); // legacy
 
             &.horizontal {
                 border-width: 0 0 1px 0;
@@ -25,6 +25,16 @@
             &.vertical {
                 border-width: 0 0 0 1px;
             }
+        }
+    }
+}
+
+.axiom :local {
+    .component {
+        background-color: var(--border-neutral-default);
+
+        &.dashed {
+            border-color: var(--border-neutral-default);
         }
     }
 }

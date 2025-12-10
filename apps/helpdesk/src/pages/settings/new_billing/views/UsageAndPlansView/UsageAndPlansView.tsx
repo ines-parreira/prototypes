@@ -1,9 +1,11 @@
 import { useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import moment from 'moment'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { useFlag } from 'core/flags'
@@ -75,6 +77,7 @@ const UsageAndPlansView = ({
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const convertStatus = useGetConvertStatus()
+    const { pathname } = useLocation()
 
     const isSubscribedToHelpdeskStarter =
         currentHelpdeskPlan?.name === 'Starter'
@@ -198,6 +201,10 @@ const UsageAndPlansView = ({
     ])
 
     useMeetAiAgentNotifications()
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.BillingUsageAndPlansVisited, { url: pathname })
+    })
 
     return (
         <div className={css.container}>

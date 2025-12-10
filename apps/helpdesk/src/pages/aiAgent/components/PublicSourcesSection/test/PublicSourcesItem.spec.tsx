@@ -21,6 +21,7 @@ const renderComponent = ({
         id: 1,
         url: 'https://example.com',
         status: 'idle' as const,
+        source: 'url' as const,
         createdDatetime: '2024-01-01T00:00:00.000Z',
     } as SourceItem,
     onDelete = jest.fn(),
@@ -63,6 +64,7 @@ describe('PublicSourcesItem', () => {
                 id: 1,
                 url: 'https://example.com',
                 status: 'idle' as const,
+                source: 'url' as const,
                 createdDatetime: '2024-01-01T00:00:00.000Z',
                 articleIds: [1, 2, 3],
             }
@@ -92,6 +94,7 @@ describe('PublicSourcesItem', () => {
                     id: 1,
                     url: 'https://example.com',
                     status: 'loading',
+                    source: 'url',
                     createdDatetime: oneMinuteAgo.toISOString(),
                 } as SourceItem,
             })
@@ -111,6 +114,7 @@ describe('PublicSourcesItem', () => {
                     id: 1,
                     url: 'https://example.com',
                     status: 'loading',
+                    source: 'url',
                     createdDatetime: twoHoursAgo.toISOString(),
                 } as SourceItem,
             })
@@ -132,6 +136,7 @@ describe('PublicSourcesItem', () => {
                         id: 1,
                         url: 'https://example.com',
                         status,
+                        source: 'url',
                         createdDatetime: oneMinuteAgo.toISOString(),
                     } as SourceItem,
                 })
@@ -155,6 +160,7 @@ describe('PublicSourcesItem', () => {
                     id: 1,
                     url: 'https://example.com',
                     status: 'loading',
+                    source: 'url',
                     createdDatetime: twoHoursAgo.toISOString(),
                     latestSync: oneMinuteAgo.toISOString(),
                 } as SourceItem,
@@ -177,6 +183,7 @@ describe('PublicSourcesItem', () => {
                     id: 1,
                     url: 'https://example.com',
                     status: 'loading',
+                    source: 'url',
                     createdDatetime: threeHoursAgo.toISOString(),
                     latestSync: twoHoursAgo.toISOString(),
                 } as SourceItem,
@@ -196,6 +203,7 @@ describe('PublicSourcesItem', () => {
                     id: 1,
                     url: '',
                     status: 'idle',
+                    source: 'url',
                     createdDatetime: '2024-01-01T00:00:00.000Z',
                 } as SourceItem,
             })
@@ -218,6 +226,7 @@ describe('PublicSourcesItem', () => {
                     id: 1,
                     url: '',
                     status: 'idle',
+                    source: 'url',
                     createdDatetime: '2024-01-01T00:00:00.000Z',
                 } as SourceItem,
             })
@@ -239,6 +248,7 @@ describe('PublicSourcesItem', () => {
                     id: 1,
                     url: '',
                     status: 'idle',
+                    source: 'url',
                     createdDatetime: '2024-01-01T00:00:00.000Z',
                 } as SourceItem,
             })
@@ -261,6 +271,7 @@ describe('PublicSourcesItem', () => {
                     id: 1,
                     url: '',
                     status: 'idle',
+                    source: 'url',
                     createdDatetime: '2024-01-01T00:00:00.000Z',
                 } as SourceItem,
             })

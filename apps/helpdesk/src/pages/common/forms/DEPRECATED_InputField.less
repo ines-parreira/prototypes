@@ -3,7 +3,7 @@
         label {
             &::after {
                 content: ' *';
-                color: var(--feedback-error);
+                color: var(--feedback-error); // legacy
             }
         }
     }
@@ -17,7 +17,7 @@
             margin-left: 4px;
             margin-top: 4px;
             line-height: 16px;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 
@@ -39,7 +39,7 @@
             }
             .suffix {
                 margin-left: 4px;
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
             }
         }
     }
@@ -71,7 +71,35 @@
     }
 
     span.inputGroupText {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 500;
+    }
+}
+
+.axiom :local {
+    .required {
+        label {
+            &::after {
+                color: var(--content-error-primary);
+            }
+        }
+    }
+
+    .label-wrapper {
+        .tooltip {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .with-suffix {
+        .input-suffix-wrapper {
+            .suffix {
+                color: var(--content-neutral-secondary);
+            }
+        }
+    }
+
+    span.inputGroupText {
+        color: var(--content-neutral-default);
     }
 }

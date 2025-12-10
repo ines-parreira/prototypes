@@ -84,7 +84,7 @@
         .body-regular();
         border-radius: 4px;
         box-sizing: border-box;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         flex-grow: 1;
         min-width: 0;
         padding: 0 7px;
@@ -102,7 +102,7 @@
 
         &:disabled,
         &[readonly] {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
 
         &:focus-visible {
@@ -110,7 +110,7 @@
         }
 
         ::placeholder {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
 
         &.isResizable {
@@ -155,6 +155,19 @@
 
         &.isDisabled {
             background-color: transparent;
+        }
+    }
+
+    .input {
+        color: var(--content-neutral-default);
+
+        &:disabled,
+        &[readonly] {
+            color: var(--content-neutral-secondary);
+        }
+
+        ::placeholder {
+            color: var(--content-neutral-secondary);
         }
     }
 }

@@ -81,6 +81,8 @@ export const ArticlesListFixture: ArticleWithLocalTranslationAndRating[] = [
         },
         template_key: 'shippingPolicy',
         translation: {
+            draft_version_id: null,
+            published_version_id: null,
             locale: 'en-US',
             created_datetime: '2022-03-07T15:23:19.150Z',
             updated_datetime: '2022-03-07T15:24:32.036Z',
@@ -120,6 +122,8 @@ export const ArticlesListFixture: ArticleWithLocalTranslationAndRating[] = [
         },
         template_key: 'ai_Generated_1' as any,
         translation: {
+            draft_version_id: null,
+            published_version_id: null,
             locale: 'en-US',
             created_datetime: '2022-03-07T15:23:19.150Z',
             updated_datetime: '2022-03-07T15:24:32.036Z',

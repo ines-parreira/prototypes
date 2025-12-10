@@ -2056,14 +2056,12 @@ describe('queries', () => {
         })
 
         it('should return article titles on success', async () => {
-            const mockResponse = {
-                data: [
-                    { id: 1, title: 'Article 1', visibilityStatus: 'PUBLIC' },
-                    { id: 2, title: 'Article 2', visibilityStatus: 'PUBLIC' },
-                ],
-            }
+            const mockResponseData = [
+                { id: 1, title: 'Article 1', visibilityStatus: 'PUBLIC' },
+                { id: 2, title: 'Article 2', visibilityStatus: 'PUBLIC' },
+            ]
             getArticleIngestionArticleTitlesAndStatus.mockResolvedValue(
-                mockResponse,
+                mockResponseData,
             )
 
             const { result } = renderHook(
@@ -2072,7 +2070,7 @@ describe('queries', () => {
             )
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
-            expect(result.current.data).toEqual(mockResponse)
+            expect(result.current.data).toEqual(mockResponseData)
             expect(
                 getArticleIngestionArticleTitlesAndStatus,
             ).toHaveBeenCalledWith(expect.any(Object), pathParams)

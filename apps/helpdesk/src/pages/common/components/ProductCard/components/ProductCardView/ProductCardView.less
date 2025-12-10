@@ -34,7 +34,7 @@
     .title {
         margin: 0;
 
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         font-weight: 500;
         font-size: 14px;
@@ -57,7 +57,7 @@
     .cost {
         margin: 0;
 
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         font-weight: 500;
         font-size: 14px;
@@ -67,6 +67,20 @@
 
     .compareAtPrice {
         text-decoration: line-through;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .cost {
+        color: var(--content-neutral-default);
+    }
+
+    .compareAtPrice {
+        color: var(--content-neutral-secondary);
     }
 }

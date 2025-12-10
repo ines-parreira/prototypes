@@ -56,9 +56,9 @@
         box-shadow: 0px 2px 4px rgba(22, 22, 22, 0.16);
         border-radius: 80px;
 
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
 
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 20px;
 
         cursor: pointer;
@@ -79,5 +79,12 @@
             vertical-align: middle;
             font-size: 16px;
         }
+    }
+}
+
+.axiom :local {
+    .buttonBaseControl {
+        background: var(--surface-neutral-tertiary);
+        color: var(--content-neutral-secondary);
     }
 }

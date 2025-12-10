@@ -10,7 +10,7 @@
     }
 
     .link {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-weight: 500;
         line-height: 20px;
         margin: 0 16px;
@@ -18,13 +18,13 @@
         cursor: pointer;
 
         &:hover {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
     .active {
-        border-bottom: 2px solid var(--main-primary);
-        color: var(--neutral-grey-6);
+        border-bottom: 2px solid var(--main-primary); // legacy
+        color: var(--neutral-grey-6); // legacy
         padding: 16px 0 14px 0;
     }
 }
@@ -33,5 +33,18 @@
     :global(.navbar).navbar {
         background-color: var(--elevation-neutral-default);
         border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .link {
+        color: var(--content-neutral-secondary);
+
+        &:hover {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .active {
+        border-bottom: 2px solid var(--border-accent-default);
+        color: var(--content-neutral-default);
     }
 }

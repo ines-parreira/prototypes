@@ -12,7 +12,7 @@
     .input[type='radio'] {
         -webkit-appearance: none;
         appearance: none;
-        border: 2px solid var(--neutral-grey-3);
+        border: 2px solid var(--neutral-grey-3); // legacy
         border-radius: 50%;
         cursor: pointer;
         display: grid;
@@ -28,7 +28,7 @@
 
         &::before {
             border-radius: 50%;
-            box-shadow: inset 1em 1em var(--main-primary);
+            box-shadow: inset 1em 1em var(--main-primary); // legacy
             content: '';
             height: 8px;
             transform: scale(0);
@@ -37,7 +37,7 @@
         }
 
         &:checked {
-            border-color: var(--main-primary);
+            border-color: var(--main-primary); // legacy
 
             &::before {
                 transform: scale(1);
@@ -45,11 +45,34 @@
         }
 
         &:disabled {
-            background-color: var(--neutral-grey-2);
-            border-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-2); // legacy
+            border-color: var(--neutral-grey-3); // legacy
 
             &::before {
-                box-shadow: inset 1em 1em var(--neutral-grey-3);
+                box-shadow: inset 1em 1em var(--neutral-grey-3); // legacy
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .input[type='radio'] {
+        border: 2px solid var(--border-neutral-default);
+
+        &::before {
+            box-shadow: inset 1em 1em var(--surface-accent-default);
+        }
+
+        &:checked {
+            border-color: var(--border-accent-default);
+        }
+
+        &:disabled {
+            background-color: var(--surface-neutral-tertiary);
+            border-color: var(--border-neutral-default);
+
+            &::before {
+                box-shadow: inset 1em 1em var(--content-neutral-tertiary);
             }
         }
     }

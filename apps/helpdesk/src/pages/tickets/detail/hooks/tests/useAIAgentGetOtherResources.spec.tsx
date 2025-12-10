@@ -144,8 +144,8 @@ describe('useAIAgentGetOtherResources', () => {
 
             mockedUsePublicResources.mockReturnValue({
                 sourceItems: [
-                    { id: 5, url: 'test1' },
-                    { id: 6, url: 'test2' },
+                    { id: 5, url: 'test1', source: 'url' },
+                    { id: 6, url: 'test2', source: 'url' },
                 ],
                 isSourceItemsListLoading: false,
             } as unknown as ReturnType<typeof usePublicResources>)

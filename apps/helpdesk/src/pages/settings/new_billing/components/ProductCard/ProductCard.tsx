@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
@@ -127,9 +128,14 @@ const ProductCard = ({
                 <Button
                     intent="primary"
                     isDisabled={isDisabled}
-                    onClick={() =>
-                        history.push(`${BILLING_PROCESS_PATH}/${type}`)
-                    }
+                    onClick={() => {
+                        const url = `${BILLING_PROCESS_PATH}/${type}`
+                        logEvent(
+                            SegmentEvent.BillingUsageAndPlansSubscribeProductClicked,
+                            { url: url },
+                        )
+                        history.push(url)
+                    }}
                     id={`productCardButton_${type}`}
                 >
                     {isDisabled && (
@@ -159,7 +165,14 @@ const ProductCard = ({
         () => (
             <Button
                 intent="secondary"
-                onClick={() => history.push(`${BILLING_PROCESS_PATH}/${type}`)}
+                onClick={() => {
+                    const url = `${BILLING_PROCESS_PATH}/${type}`
+                    logEvent(
+                        SegmentEvent.BillingUsageAndPlansManageProductClicked,
+                        { url: url },
+                    )
+                    history.push(url)
+                }}
                 id={`productCardButton_${type}`}
             >
                 Manage

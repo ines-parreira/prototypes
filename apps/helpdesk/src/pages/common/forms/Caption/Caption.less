@@ -4,12 +4,22 @@
 :local {
     .caption {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-top: 4px;
         min-height: @caption-regular-line-height;
     }
 
     .error {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
+    }
+}
+
+.axiom :local {
+    .caption {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .error {
+        color: var(--content-error-primary);
     }
 }

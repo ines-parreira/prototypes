@@ -1,5 +1,9 @@
 import { useCreateArticle } from 'models/helpCenter/queries'
-import type { AIArticle, LocaleCode } from 'models/helpCenter/types'
+import type {
+    AIArticle,
+    LocaleCode,
+    VisibilityStatus,
+} from 'models/helpCenter/types'
 
 import type { ArticleOrigin } from '../types/articleOrigin.enum'
 import { mapAILibraryArticleItemToArticle } from '../utils/helpCenter.utils'
@@ -15,7 +19,7 @@ export const useCreateAIArticle = (
 
     type createArticleProps = {
         articleTemplate: AIArticle
-        visibilityStatus: 'PUBLIC' | 'UNLISTED'
+        visibilityStatus: VisibilityStatus
         categoryId: number | null
         publish: boolean
         origin?: ArticleOrigin

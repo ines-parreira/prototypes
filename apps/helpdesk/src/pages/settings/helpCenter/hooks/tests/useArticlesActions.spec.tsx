@@ -389,6 +389,8 @@ describe('useArticlesActions()', () => {
                             down: 0,
                         },
                         is_current: false,
+                        draft_version_id: null,
+                        published_version_id: null,
                     },
                     rating: {
                         up: 0,
@@ -447,6 +449,8 @@ describe('useArticlesActions()', () => {
                             down: 0,
                         },
                         is_current: false,
+                        draft_version_id: null,
+                        published_version_id: null,
                     },
                     rating: {
                         up: 0,

@@ -13,7 +13,7 @@
             position: relative;
             height: 48px;
             min-width: 80px;
-            background-color: var(--neutral-grey-1);
+            background-color: var(--neutral-grey-1); // legacy
             padding: 12px;
 
             .badge {
@@ -41,33 +41,59 @@
         text-align: left;
         min-height: 30px;
         padding: var(--layout-spacing-xs) var(--layout-spacing-s);
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         text-transform: uppercase;
         font-family: @caption-all-caps-font-family;
         font-weight: @caption-all-caps-font-weight;
         font-size: @caption-all-caps-font-size;
         line-height: @caption-all-caps-line-height;
-        background-color: var(--neutral-grey-2);
-        border-top: 1px solid var(--neutral-grey-3);
+        background-color: var(--neutral-grey-2); // legacy
+        border-top: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .automationBody {
         font-family: 'Inter', sans-serif;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
 
         .automationTitle {
             font-weight: @body-medium-font-weight;
             font-size: @body-medium-font-size;
             line-height: @body-medium-line-height;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
 
         .automationDescription {
             font-size: @caption-regular-font-size;
             line-height: @caption-regular-line-height;
             font-weight: @caption-regular-font-weight;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             margin-top: var(--layout-spacing-xxs);
+        }
+    }
+}
+
+.axiom :local {
+    .productRecommendationWrapper {
+        .backContainer {
+            background-color: var(--elevation-neutral-mid);
+        }
+    }
+
+    .header {
+        color: var(--content-neutral-secondary);
+        background-color: var(--surface-neutral-tertiary);
+        border-top: 1px solid var(--border-neutral-default);
+    }
+
+    .automationBody {
+        background-color: var(--elevation-neutral-default);
+
+        .automationTitle {
+            color: var(--content-neutral-default);
+        }
+
+        .automationDescription {
+            color: var(--content-neutral-secondary);
         }
     }
 }

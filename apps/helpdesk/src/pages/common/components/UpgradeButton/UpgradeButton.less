@@ -3,13 +3,13 @@
         font-weight: 600;
 
         .upgradeButton {
-            color: var(--main-secondary);
+            color: var(--main-secondary); // legacy
             border-color: hsla(
                 var(--main-secondary-h),
                 var(--main-secondary-s),
                 var(--main-secondary-l),
                 0.5
-            );
+            ); // legacy
 
             &.sm {
                 line-height: inherit;
@@ -19,9 +19,9 @@
 
             &:hover,
             &:not(:disabled):active {
-                color: var(--neutral-grey-0);
-                background-color: var(--main-secondary) !important;
-                border-color: var(--main-secondary) !important;
+                color: var(--neutral-grey-0); // legacy
+                background-color: var(--main-secondary) !important; // legacy
+                border-color: var(--main-secondary) !important; // legacy
             }
 
             &:focus:not(:disabled):active {
@@ -44,27 +44,29 @@
             }
 
             &.invertedColors {
-                background-color: var(--main-secondary);
-                border-color: var(--main-secondary);
-                color: var(--neutral-grey-0);
+                background-color: var(--main-secondary); // legacy
+                border-color: var(--main-secondary); // legacy
+                color: var(--neutral-grey-0); // legacy
 
                 .upgradeIcon {
                     filter: brightness(0) invert(1);
                 }
 
                 &:hover {
-                    background-color: var(--neutral-grey-0) !important;
+                    background-color: var(
+                        --neutral-grey-0
+                    ) !important; // legacy
                     border-color: hsla(
                         var(--main-secondary-h),
                         var(--main-secondary-s),
                         var(--main-secondary-l),
                         0.5
-                    ) !important;
-                    color: var(--main-secondary);
+                    ) !important; // legacy
+                    color: var(--main-secondary); // legacy
 
                     .upgradeIcon {
                         filter: none;
-                        fill: var(--main-secondary);
+                        fill: var(--main-secondary); // legacy
                     }
                 }
             }
@@ -72,11 +74,55 @@
 
         &:hover {
             .upgradeButton {
-                color: var(--neutral-grey-0);
+                color: var(--neutral-grey-0); // legacy
 
                 .upgradeIcon {
                     filter: brightness(0) invert(1);
                 }
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .upgradeLink {
+        .upgradeButton {
+            color: var(--surface-destructive-primary);
+            border-color: hsla(
+                var(--main-secondary-h),
+                var(--main-secondary-s),
+                var(--main-secondary-l),
+                0.5
+            );
+
+            &:hover,
+            &:not(:disabled):active {
+                color: var(--content-inverted-default);
+                background-color: var(--surface-destructive-primary) !important;
+                border-color: var(--surface-destructive-primary) !important;
+            }
+
+            &.invertedColors {
+                background-color: var(--surface-destructive-primary);
+                border-color: var(--surface-destructive-primary);
+                color: var(--content-inverted-default);
+
+                &:hover {
+                    background-color: var(
+                        --elevation-neutral-default
+                    ) !important;
+                    color: var(--surface-destructive-primary);
+
+                    .upgradeIcon {
+                        fill: var(--surface-destructive-primary);
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            .upgradeButton {
+                color: var(--content-inverted-default);
             }
         }
     }

@@ -12,6 +12,7 @@ import type {
     HelpCenter,
     HelpCenterArticleItem,
     LocaleCode,
+    VisibilityStatus,
 } from 'models/helpCenter/types'
 import { ARTICLE_TEMPLATES_KEYS } from 'models/helpCenter/types'
 import type { StoreIntegration } from 'models/integration/types'
@@ -302,7 +303,7 @@ type AILibraryArticleItemParams = {
     article: AIArticle
     locale: LocaleCode
     categoryId?: number | null
-    visibilityStatus?: 'PUBLIC' | 'UNLISTED'
+    visibilityStatus?: VisibilityStatus
     publish: boolean
     origin?: ArticleOrigin
 }

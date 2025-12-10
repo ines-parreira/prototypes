@@ -18,12 +18,12 @@
 
     .disabledLabel {
         .slider {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
             cursor: not-allowed;
         }
 
         .input:checked + .slider {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
         }
     }
 
@@ -75,7 +75,7 @@
     .slider {
         cursor: pointer;
         border-radius: 3px;
-        background-color: var(--neutral-grey-4);
+        background-color: var(--neutral-grey-4); // legacy
         transition: 0.4s;
         width: 42px;
         height: 20px;
@@ -91,7 +91,7 @@
             left: 2px;
             bottom: 2px;
             border-radius: 2px;
-            background-color: var(--neutral-grey-0);
+            background-color: var(--neutral-grey-0); // legacy
             transition: 0.4s;
         }
 
@@ -101,7 +101,7 @@
             font-size: 11px;
             left: 16px;
             bottom: 3px;
-            color: var(--neutral-grey-0);
+            color: var(--neutral-grey-0); // legacy
             transition: 0.4s;
         }
     }
@@ -114,5 +114,29 @@
 
     .spinnerLeft {
         left: 4px;
+    }
+}
+
+.axiom :local {
+    .disabledLabel {
+        .slider {
+            background-color: var(--surface-neutral-tertiary);
+        }
+
+        .input:checked + .slider {
+            background-color: var(--surface-neutral-tertiary);
+        }
+    }
+
+    .slider {
+        background-color: var(--content-neutral-secondary);
+
+        &::before {
+            background-color: var(--elevation-neutral-default);
+        }
+
+        &::after {
+            color: var(--elevation-neutral-default);
+        }
     }
 }

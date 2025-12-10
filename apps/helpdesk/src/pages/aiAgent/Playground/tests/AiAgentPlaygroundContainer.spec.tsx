@@ -242,6 +242,7 @@ describe('AiAgentPlayground', () => {
                 {
                     status: 'done',
                     id: 60,
+                    source: 'url',
                     createdDatetime: '2021-01-01T00:00:00.000Z',
                 },
             ],
@@ -317,6 +318,7 @@ describe('AiAgentPlayground', () => {
                 {
                     status: 'done',
                     id: 60,
+                    source: 'url',
                     createdDatetime: '2021-01-01T00:00:00.000Z',
                 },
             ],
@@ -360,6 +362,7 @@ describe('AiAgentPlayground', () => {
                 {
                     status: 'done',
                     id: 60,
+                    source: 'url',
                     createdDatetime: '2021-01-01T00:00:00.000Z',
                 },
             ],

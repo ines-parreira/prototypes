@@ -9,20 +9,20 @@
         align-items: center;
         align-self: stretch;
         padding: 0 12px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 14px;
         font-weight: 500;
         vertical-align: bottom;
         line-height: 20px;
         white-space: nowrap;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         border-radius: 4px;
         z-index: 1;
 
         &.right,
         &.center {
             padding-left: 8px;
-            border-left: 1px solid var(--neutral-grey-3);
+            border-left: 1px solid var(--neutral-grey-3); // legacy
             border-bottom-left-radius: 0;
             border-top-left-radius: 0;
         }
@@ -30,14 +30,36 @@
         &.left,
         &.center {
             padding-right: 8px;
-            border-right: 1px solid var(--neutral-grey-3);
+            border-right: 1px solid var(--neutral-grey-3); // legacy
             border-bottom-right-radius: 0;
             border-top-right-radius: 0;
         }
 
         &.isDisabled {
-            background-color: var(--neutral-grey-2);
-            color: var(--neutral-grey-4);
+            background-color: var(--neutral-grey-2); // legacy
+            color: var(--neutral-grey-4); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .groupAddon {
+        color: var(--content-neutral-tertiary);
+        background-color: var(--surface-neutral-secondary);
+
+        &.right,
+        &.center {
+            border-left: 1px solid var(--border-neutral-default);
+        }
+
+        &.left,
+        &.center {
+            border-right: 1px solid var(--border-neutral-default);
+        }
+
+        &.isDisabled {
+            background-color: var(--surface-neutral-tertiary);
+            color: var(--content-neutral-secondary);
         }
     }
 }

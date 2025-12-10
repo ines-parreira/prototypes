@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { ActiveContent, Navbar } from 'common/navigation'
 import type { AccordionValues } from 'components/Accordion/utils/types'
@@ -264,6 +265,11 @@ const SettingsNavbar = () => {
                             to="billing"
                             text="Billing & usage"
                             requiredRole={ADMIN_ROLE}
+                            onClick={() =>
+                                logEvent(
+                                    SegmentEvent.BillingAndUsageNavigationSideNavClicked,
+                                )
+                            }
                         />
                     </Navigation.SectionContent>
                 </Section>

@@ -96,7 +96,7 @@
 
     .inlineStoreName {
         font-size: var(--font-size-md);
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -153,5 +153,11 @@
         --neutral-grey-6-h: 0;
         --neutral-grey-6-s: 0%;
         --neutral-grey-6-l: 83.13725490196079%;
+    }
+}
+
+.axiom :local {
+    .inlineStoreName {
+        color: var(--content-neutral-default);
     }
 }

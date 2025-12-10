@@ -61,6 +61,8 @@ export const getArticleFixture = (
         article_id: id,
         article_unlisted_id: `unlisted-${id}`,
         rating: { up: 0, down: 0 },
+        draft_version_id: null,
+        published_version_id: null,
     },
     ...overrides,
 })

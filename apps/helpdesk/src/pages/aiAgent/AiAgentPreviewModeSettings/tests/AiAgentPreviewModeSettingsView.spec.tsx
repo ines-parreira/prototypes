@@ -114,8 +114,18 @@ describe('AiAgentPreviewModeSettingsView', () => {
         })
         mockUsePublicResources.mockReturnValue({
             sourceItems: [
-                { id: 1, url: 'https://test1.com', status: 'done' },
-                { id: 2, url: 'https://test2.com', status: 'done' },
+                {
+                    id: 1,
+                    url: 'https://test1.com',
+                    status: 'done',
+                    source: 'url',
+                },
+                {
+                    id: 2,
+                    url: 'https://test2.com',
+                    status: 'done',
+                    source: 'url',
+                },
             ],
             isSourceItemsListLoading: false,
         } as unknown as ReturnType<typeof usePublicResources>)

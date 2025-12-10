@@ -1,17 +1,35 @@
 :local .option {
     &:hover,
     &.option--focused {
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
 }
 :local .optionDeprecated {
-    color: var(--feedback-warning-4) !important;
+    color: var(--feedback-warning-4) !important; // legacy
     &.option--focused {
-        background: var(--feedback-warning-0) !important;
+        background: var(--feedback-warning-0) !important; // legacy
 
         &:active {
             outline: none;
-            background: var(--feedback-warning-2) !important;
+            background: var(--feedback-warning-2) !important; // legacy
+        }
+    }
+}
+
+.axiom :local .option {
+    &:hover,
+    &.option--focused {
+        background-color: var(--hover-default);
+    }
+}
+.axiom :local .optionDeprecated {
+    color: var(--content-warning-primary) !important;
+    &.option--focused {
+        background: var(--surface-warning-primary) !important;
+
+        &:active {
+            outline: none;
+            background: var(--surface-warning-primary) !important;
         }
     }
 }

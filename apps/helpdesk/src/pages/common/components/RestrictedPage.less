@@ -21,7 +21,13 @@
     }
 
     .description {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-bottom: 0px;
+    }
+}
+
+.axiom :local {
+    .description {
+        color: var(--content-neutral-secondary);
     }
 }

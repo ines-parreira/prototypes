@@ -6,7 +6,7 @@
         flex-direction: column;
         border: 1px solid #ececec;
         border-radius: 12px;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         transition: ease-in-out 0.2s;
         box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
     }
@@ -15,16 +15,16 @@
         display: flex;
         justify-content: space-between;
         .body-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         flex-direction: column;
-        background-color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-1); // legacy
         padding: var(--layout-spacing-m);
         border-radius: var(--vorder-radius-xl, 12px)
             var(--border-radius-xl, 12px) 0px 0px;
         gap: 4px;
 
         a {
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
         }
 
         p {
@@ -40,22 +40,51 @@
 
         & > *:not(:last-child) {
             padding-bottom: var(--layout-spacing-m);
-            border-bottom: 1px solid var(--neutral-grey-2);
+            border-bottom: 1px solid var(--neutral-grey-2); // legacy
         }
     }
 
     .cardTitle {
         .heading-subsection-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         label {
             margin-bottom: 0;
         }
 
         abbr[title] {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
             margin-left: var(--layout-spacing-xxs);
             text-decoration: none;
+        }
+    }
+}
+
+.axiom :local {
+    .cardContainer {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .cardHeader {
+        color: var(--content-neutral-secondary);
+        background-color: var(--elevation-neutral-mid);
+
+        a {
+            color: var(--content-accent-default);
+        }
+    }
+
+    .cardContent {
+        & > *:not(:last-child) {
+            border-bottom: 1px solid var(--surface-neutral-tertiary);
+        }
+    }
+
+    .cardTitle {
+        color: var(--content-neutral-default);
+
+        abbr[title] {
+            color: var(--content-error-primary);
         }
     }
 }

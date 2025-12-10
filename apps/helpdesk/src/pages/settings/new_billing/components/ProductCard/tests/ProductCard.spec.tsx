@@ -1,7 +1,9 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, render, screen, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import {
@@ -20,6 +22,17 @@ import type { RootState, StoreDispatch } from 'state/types'
 import type { ProductCardProps } from '../ProductCard'
 import ProductCard from '../ProductCard'
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: jest.fn(),
+}))
+
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
+    logEvent: jest.fn(),
+    SegmentEvent: jest.requireActual('@repo/logging').SegmentEvent,
+}))
+
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
 const store = mockedStore({
@@ -35,7 +48,19 @@ const store = mockedStore({
     }),
 })
 
+const mockPush = jest.fn()
+const mockUseHistory = useHistory as jest.Mock
+const mockLogEvent = logEvent as jest.Mock
+
 describe('ProductCard', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockUseHistory.mockReturnValue({
+            push: mockPush,
+        })
+        mockLogEvent.mockImplementation(() => {})
+    })
+
     it('should render a Helpdesk ProductCard component', () => {
         const { container } = render(
             <Provider store={store}>
@@ -130,4 +155,99 @@ describe('ProductCard', () => {
             expect(link).toHaveAttribute('href', productInfo.tooltipLink)
         },
     )
+
+    describe('Tracking events', () => {
+        it('should log BillingUsageAndPlansManageProductClicked event when clicking Manage button', async () => {
+            render(
+                <Provider store={store}>
+                    <ProductCard
+                        type={ProductType.Automation}
+                        plan={basicYearlyAutomationPlan}
+                        isDisabled={false}
+                    />
+                </Provider>,
+            )
+
+            const manageButton = screen.getByRole('button', { name: /manage/i })
+            await act(() => userEvent.click(manageButton))
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansManageProductClicked,
+                {
+                    url: `/app/settings/billing/process/${ProductType.Automation}`,
+                },
+            )
+            expect(mockPush).toHaveBeenCalledWith(
+                `/app/settings/billing/process/${ProductType.Automation}`,
+            )
+        })
+
+        it('should log BillingUsageAndPlansSubscribeProductClicked event when clicking Subscribe button', async () => {
+            render(
+                <Provider store={store}>
+                    <ProductCard
+                        type={ProductType.Automation}
+                        isDisabled={false}
+                    />
+                </Provider>,
+            )
+
+            const subscribeButton = screen.getByRole('button', {
+                name: /subscribe/i,
+            })
+            await act(() => userEvent.click(subscribeButton))
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansSubscribeProductClicked,
+                {
+                    url: `/app/settings/billing/process/${ProductType.Automation}`,
+                },
+            )
+            expect(mockPush).toHaveBeenCalledWith(
+                `/app/settings/billing/process/${ProductType.Automation}`,
+            )
+        })
+
+        it('should log correct URL for different product types when clicking Manage', async () => {
+            render(
+                <Provider store={store}>
+                    <ProductCard
+                        type={ProductType.Voice}
+                        plan={voicePlan0}
+                        isDisabled={false}
+                    />
+                </Provider>,
+            )
+
+            const manageButton = screen.getByRole('button', { name: /manage/i })
+            await act(() => userEvent.click(manageButton))
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansManageProductClicked,
+                {
+                    url: `/app/settings/billing/process/${ProductType.Voice}`,
+                },
+            )
+        })
+
+        it('should log correct URL for different product types when clicking Subscribe', async () => {
+            render(
+                <Provider store={store}>
+                    <ProductCard type={ProductType.SMS} isDisabled={false} />
+                </Provider>,
+            )
+
+            const subscribeButton = screen.getByRole('button', {
+                name: /subscribe/i,
+            })
+            await act(() => userEvent.click(subscribeButton))
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansSubscribeProductClicked,
+                {
+                    url: `/app/settings/billing/process/${ProductType.SMS}`,
+                },
+            )
+        })
+    })
 })

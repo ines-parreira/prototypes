@@ -22,7 +22,7 @@
 
         &:hover {
             .tabLabel {
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
             }
         }
 
@@ -32,14 +32,14 @@
 
         &.activeTab {
             .tabLabel {
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
             }
         }
     }
 
     .tabLabel {
         .component-button-medium();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         transition: color 200ms ease;
     }
 
@@ -48,7 +48,31 @@
         bottom: 0;
         height: 2px;
         border-radius: 2px;
-        background-color: var(--main-primary);
+        background-color: var(--main-primary); // legacy
         transition: all 200ms ease-out;
+    }
+}
+
+.axiom :local {
+    .tab {
+        &:hover {
+            .tabLabel {
+                color: var(--content-neutral-default);
+            }
+        }
+
+        &.activeTab {
+            .tabLabel {
+                color: var(--content-neutral-default);
+            }
+        }
+    }
+
+    .tabLabel {
+        color: var(--content-neutral-secondary);
+    }
+
+    .activeIndicator {
+        background-color: var(--surface-accent-default);
     }
 }

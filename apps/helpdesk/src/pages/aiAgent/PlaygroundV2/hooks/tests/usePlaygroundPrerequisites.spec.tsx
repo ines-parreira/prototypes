@@ -151,7 +151,7 @@ describe('usePlaygroundPrerequisites', () => {
             expect(result.current.hasPrerequisites).toBe(false)
         })
 
-        it('should return false when all source items are loading', () => {
+        it('should return false when source items are only syncing (no available sources)', () => {
             mockUsePublicResources.mockReturnValue({
                 sourceItems: [{ id: 1, status: 'loading' }],
                 isSourceItemsListLoading: false,
@@ -172,6 +172,39 @@ describe('usePlaygroundPrerequisites', () => {
             )
 
             expect(result.current.hasPrerequisites).toBe(false)
+            expect(result.current.missingKnowledgeSource).toBe(true)
+            expect(result.current.syncingMessage).toBeTruthy()
+        })
+
+        it('should return true when has available sources even if some are syncing', () => {
+            mockUsePublicResources.mockReturnValue({
+                sourceItems: [
+                    { id: 1, status: 'done' },
+                    { id: 2, status: 'loading' },
+                ],
+                isSourceItemsListLoading: false,
+            })
+            mockUseFileIngestion.mockReturnValue({
+                ingestedFiles: [
+                    { id: 1, status: 'SUCCESSFUL' },
+                    { id: 2, status: 'PENDING' },
+                ],
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                usePlaygroundPrerequisites({
+                    storeConfiguration: {
+                        ...mockStoreConfiguration,
+                        helpCenterId: null,
+                    } as any,
+                    snippetHelpCenterId: 456,
+                }),
+            )
+
+            expect(result.current.hasPrerequisites).toBe(true)
+            expect(result.current.missingKnowledgeSource).toBe(false)
+            expect(result.current.syncingMessage).toBeTruthy()
         })
 
         it('should return true when has both public URLs and external files', () => {
@@ -316,6 +349,64 @@ describe('usePlaygroundPrerequisites', () => {
             )
 
             expect(result.current.hasPrerequisites).toBe(true)
+        })
+
+        it('should return true when help center exists even if external sources are only syncing', () => {
+            mockUsePublicResources.mockReturnValue({
+                sourceItems: [{ id: 1, status: 'loading' }],
+                isSourceItemsListLoading: false,
+            })
+            mockUseFileIngestion.mockReturnValue({
+                ingestedFiles: [{ id: 1, status: 'PENDING' }],
+                isLoading: false,
+            })
+            mockUseGuidanceArticles.mockReturnValue({
+                guidanceArticles: [],
+                isGuidanceArticleListLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                usePlaygroundPrerequisites({
+                    storeConfiguration: mockStoreConfiguration as any,
+                    snippetHelpCenterId: 456,
+                }),
+            )
+
+            expect(result.current.hasPrerequisites).toBe(true)
+            expect(result.current.missingKnowledgeSource).toBe(false)
+            expect(result.current.syncingMessage).toBeTruthy()
+        })
+
+        it('should return true when guidance articles exist even if external sources are only syncing', () => {
+            mockUsePublicResources.mockReturnValue({
+                sourceItems: [{ id: 1, status: 'loading' }],
+                isSourceItemsListLoading: false,
+            })
+            mockUseFileIngestion.mockReturnValue({
+                ingestedFiles: [{ id: 1, status: 'PENDING' }],
+                isLoading: false,
+            })
+            mockUseGuidanceArticles.mockReturnValue({
+                guidanceArticles: [
+                    { id: 1, visibility: 'PUBLIC', title: 'Test Article' },
+                ],
+                isGuidanceArticleListLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                usePlaygroundPrerequisites({
+                    storeConfiguration: {
+                        ...mockStoreConfiguration,
+                        helpCenterId: null,
+                        guidanceHelpCenterId: 789,
+                    } as any,
+                    snippetHelpCenterId: 456,
+                }),
+            )
+
+            expect(result.current.hasPrerequisites).toBe(true)
+            expect(result.current.missingKnowledgeSource).toBe(false)
+            expect(result.current.syncingMessage).toBeTruthy()
         })
     })
 

@@ -8,8 +8,8 @@
         width: 207px;
         height: 148px;
         padding: 8px;
-        background: var(--neutral-grey-1);
-        border: solid 1px var(--neutral-grey-3);
+        background: var(--neutral-grey-1); // legacy
+        border: solid 1px var(--neutral-grey-3); // legacy
         border-radius: 4px;
         cursor: pointer;
         gap: 8px;
@@ -73,16 +73,21 @@
     .preview {
         .screenshotWrapper {
             .screenshot {
-                background: var(--surface-primary-default);
+                background: var(--surface-additional-blue);
             }
 
             .playIcon {
-                background: var(--surface-primary-default);
+                background: var(--surface-additional-blue);
             }
         }
 
         .title {
-            color: var(--content-primary-default);
+            color: var(--content-accent-default);
         }
+    }
+
+    .preview {
+        background: var(--elevation-neutral-mid);
+        border: solid 1px var(--border-neutral-default);
     }
 }

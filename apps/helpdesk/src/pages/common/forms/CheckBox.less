@@ -14,13 +14,13 @@
         color: currentColor;
         width: 16px;
         height: 16px;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 2px;
 
         display: grid;
         place-content: center;
         cursor: pointer;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
         flex-shrink: 0;
 
         &::before {
@@ -33,20 +33,20 @@
             transform: scale(0);
             transform-origin: bottom left;
             transition: transform 120ms ease-in-out;
-            box-shadow: inset 1em 1em var(--neutral-grey-0);
+            box-shadow: inset 1em 1em var(--neutral-grey-0); // legacy
         }
 
         &:indeterminate,
         &:checked {
-            background-color: var(--main-primary);
-            border-color: var(--main-primary);
+            background-color: var(--main-primary); // legacy
+            border-color: var(--main-primary); // legacy
 
             &::before {
                 transform: scale(1);
             }
 
             &:disabled {
-                background-color: var(--neutral-grey-3);
+                background-color: var(--neutral-grey-3); // legacy
             }
         }
 
@@ -60,8 +60,8 @@
             transition:
                 background-color 0.2s linear,
                 border-color 0.2s linear;
-            background-color: var(--neutral-grey-2);
-            border-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-2); // legacy
+            border-color: var(--neutral-grey-3); // legacy
             cursor: not-allowed;
         }
 
@@ -69,11 +69,42 @@
         &[readonly]:indeterminate {
             background: var(
                 --main-primary
-            ) !important; // due to bootstrap rule put to input[readyonly] elements
+            ) !important; // legacy - due to bootstrap rule put to input[readyonly] elements
         }
     }
 
     .label {
         cursor: pointer;
+    }
+}
+
+.axiom :local {
+    .input[type='checkbox'] {
+        border: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-default);
+
+        &::before {
+            box-shadow: inset 1em 1em var(--elevation-neutral-default);
+        }
+
+        &:indeterminate,
+        &:checked {
+            background-color: var(--surface-accent-default);
+            border-color: var(--border-accent-default);
+
+            &:disabled {
+                background-color: var(--surface-neutral-tertiary);
+            }
+        }
+
+        &:disabled {
+            background-color: var(--surface-neutral-secondary);
+            border-color: var(--border-neutral-default);
+        }
+
+        &[readonly]:checked,
+        &[readonly]:indeterminate {
+            background: var(--surface-accent-default) !important;
+        }
     }
 }

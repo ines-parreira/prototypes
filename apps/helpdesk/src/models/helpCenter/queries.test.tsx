@@ -549,35 +549,6 @@ describe('useBulkUpdateArticleTranslationVisibility', () => {
         })
     })
 
-    it('should handle GORGIAS_INTERNAL visibility status', async () => {
-        const mockResponse = { articles: [{ id: 1 }] }
-        mockBulkUpdateArticleTranslationVisibility.mockResolvedValue(
-            mockResponse,
-        )
-
-        const { result } = renderHook(
-            () => useBulkUpdateArticleTranslationVisibility(),
-            { wrapper },
-        )
-
-        await act(async () => {
-            const response = await result.current.mutateAsync([
-                undefined,
-                { help_center_id: 1 },
-                {
-                    article_ids: [1],
-                    locale_code: 'en-US',
-                    visibility_status: 'GORGIAS_INTERNAL',
-                },
-            ])
-            expect(response).toEqual(mockResponse)
-        })
-
-        await waitFor(() => {
-            expect(result.current.isSuccess).toBe(true)
-        })
-    })
-
     it('should handle different locale codes', async () => {
         const mockResponse = { articles: [{ id: 1 }] }
         mockBulkUpdateArticleTranslationVisibility.mockResolvedValue(

@@ -183,7 +183,8 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 dispatch(
                     helpCenterUpdated({
                         ...helpCenter,
-                        translations,
+                        translations:
+                            translations as Components.Schemas.GetHelpCenterDto['translations'],
                     }),
                 )
 
@@ -257,7 +258,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             translation.locale === updatedTranslation.locale
                                 ? updatedTranslation
                                 : translation,
-                    )
+                    ) as Components.Schemas.GetHelpCenterDto['translations']
                 }
 
                 dispatch(

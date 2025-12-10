@@ -3,8 +3,10 @@ import { useCallback, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
+import { analyzeKnowledgeSources } from 'pages/aiAgent/Playground/utils/knowledgeSourcesAnalysis'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
+import { useFileIngestion } from '../../hooks/useFileIngestion'
 import { usePublicResources } from '../../hooks/usePublicResources'
 import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'
 import { useMessagesContext } from '../contexts/MessagesContext'
@@ -39,6 +41,9 @@ export const usePlaygroundForm = ({
 
     const { sourceItems } = usePublicResources({
         helpCenterId: snippetHelpCenterId,
+        overrides: {
+            sources: ['domain', 'url'],
+        },
     })
     usePublicResourcesPooling({
         helpCenterId: snippetHelpCenterId,
@@ -53,21 +58,26 @@ export const usePlaygroundForm = ({
         },
     )
 
+    const { ingestedFiles } = useFileIngestion({
+        helpCenterId: snippetHelpCenterId,
+    })
+
     const guidanceUsed = useMemo(() => {
         return guidanceArticles?.filter(
             (article) => article.visibility === 'PUBLIC',
         )
     }, [guidanceArticles])
 
-    const isPendingResources = sourceItems
-        ? sourceItems.some((item) => item.status === 'loading')
-        : false
-
-    const isKnowledgeBaseEmpty =
-        sourceItems !== undefined &&
-        sourceItems.length === 0 &&
-        helpCenterId === null &&
-        guidanceUsed.length === 0
+    const knowledgeSourcesAnalysis = useMemo(
+        () =>
+            analyzeKnowledgeSources({
+                sourceItems,
+                ingestedFiles,
+                helpCenterId,
+                guidanceUsedCount: guidanceUsed?.length ?? 0,
+            }),
+        [sourceItems, ingestedFiles, helpCenterId, guidanceUsed],
+    )
 
     const isFormValid = useMemo(() => draftMessage.length > 0, [draftMessage])
 
@@ -76,27 +86,37 @@ export const usePlaygroundForm = ({
         setDraftSubject('')
     }, [setDraftMessage, setDraftSubject])
     const isDisabled = useMemo(
-        () => isPendingResources || isKnowledgeBaseEmpty || !isFormValid,
-        [isFormValid, isKnowledgeBaseEmpty, isPendingResources],
+        () => !knowledgeSourcesAnalysis.hasAvailableSources || !isFormValid,
+        [knowledgeSourcesAnalysis.hasAvailableSources, isFormValid],
     )
 
     const disabledMessage = useMemo(() => {
-        if (isPendingResources) {
-            return 'Testing currently disabled. Please wait knowledges sources to sync.'
-        }
-
-        if (isKnowledgeBaseEmpty) {
+        if (!knowledgeSourcesAnalysis.hasAvailableSources) {
+            if (knowledgeSourcesAnalysis.hasSyncingSources) {
+                return (
+                    <div>
+                        Testing currently unavailable. Knowledge sources are
+                        syncing. Please wait for syncing to complete or add
+                        additional sources on the{' '}
+                        <Link to={routes.knowledge}>Knowledge page</Link>.
+                    </div>
+                )
+            }
             return (
                 <div>
                     Testing currently disabled. Please add Help Center or Public
-                    URL on{' '}
-                    <Link to={routes.configuration()}>Settings page</Link>.
+                    URL on the <Link to={routes.knowledge}>Knowledge page</Link>
+                    .
                 </div>
             )
         }
 
         return undefined
-    }, [isKnowledgeBaseEmpty, isPendingResources, routes])
+    }, [
+        knowledgeSourcesAnalysis.hasAvailableSources,
+        knowledgeSourcesAnalysis.hasSyncingSources,
+        routes,
+    ])
 
     const onFormValuesChange = useCallback(
         <Key extends keyof PlaygroundFormValues>(
@@ -115,8 +135,6 @@ export const usePlaygroundForm = ({
     )
 
     return {
-        isPendingResources,
-        isKnowledgeBaseEmpty,
         isFormValid,
         formValues,
         isDisabled,

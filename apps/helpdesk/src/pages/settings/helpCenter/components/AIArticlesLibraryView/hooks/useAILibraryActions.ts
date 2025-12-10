@@ -8,6 +8,7 @@ import type {
     AILibraryArticleItem,
     ArticleTemplateReviewAction,
     HelpCenter,
+    VisibilityStatus,
 } from 'models/helpCenter/types'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { useCreateAIArticle } from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
@@ -28,7 +29,7 @@ export type onEditorSaveProps = {
     content: string
     saveAsDraft: boolean
     categoryId: number | null
-    visibilityStatus: 'PUBLIC' | 'UNLISTED'
+    visibilityStatus: VisibilityStatus
 }
 
 const useAILibraryActions = (
@@ -58,7 +59,7 @@ const useAILibraryActions = (
         content: string
         saveAsDraft: boolean
         categoryId: number | null
-        visibilityStatus: 'PUBLIC' | 'UNLISTED'
+        visibilityStatus: VisibilityStatus
     } | null>(null)
 
     const reviewArticle = useUpsertArticleTemplateReview({

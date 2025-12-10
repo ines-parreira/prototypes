@@ -3,17 +3,17 @@
         max-width: 420px;
     }
     .totalReviews {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
     .productImage {
         width: 70px;
         height: 70px;
         border-style: solid;
         border-width: thin;
-        border-color: var(--neutral-grey-4);
+        border-color: var(--neutral-grey-4); // legacy
     }
     .chevronButton {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         font-size: 20px;
         text-align: right;
     }
@@ -25,5 +25,17 @@
         overflow: hidden;
         display: inline-block;
         white-space: nowrap;
+    }
+}
+
+.axiom :local {
+    .totalReviews {
+        color: var(--content-neutral-secondary);
+    }
+    .productImage {
+        border-color: var(--border-neutral-secondary);
+    }
+    .chevronButton {
+        color: var(--content-neutral-secondary);
     }
 }

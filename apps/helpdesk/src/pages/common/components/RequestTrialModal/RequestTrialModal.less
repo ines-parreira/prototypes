@@ -65,12 +65,24 @@
         align-items: center;
         margin-top: var(--layout-spacing-l);
         gap: var(--layout-spacing-xs);
-        background-color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-0); // legacy
     }
 
     .modalContent .footer .primaryButton {
-        background-color: var(--neutral-grey-6) !important;
-        color: var(--neutral-grey-0) !important;
-        border-color: var(--neutral-grey-6) !important;
+        background-color: var(--neutral-grey-6) !important; // legacy
+        color: var(--neutral-grey-0) !important; // legacy
+        border-color: var(--neutral-grey-6) !important; // legacy
+    }
+}
+
+.axiom :local {
+    .footer {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .modalContent .footer .primaryButton {
+        background-color: var(--content-neutral-default) !important;
+        color: var(--content-inverted-default) !important;
+        border-color: var(--content-neutral-default) !important;
     }
 }

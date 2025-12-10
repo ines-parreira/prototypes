@@ -16,7 +16,11 @@ import {
 } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import type { AILibraryArticleItem, LocaleCode } from 'models/helpCenter/types'
+import type {
+    AILibraryArticleItem,
+    LocaleCode,
+    VisibilityStatus,
+} from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import {
     DRAWER_TRANSITION_DURATION_MS,
@@ -76,9 +80,8 @@ const ArticleEditor: React.FC<Props> = ({
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
         null,
     )
-    const [visibilityStatus, setVisibilityStatus] = useState<
-        'PUBLIC' | 'UNLISTED'
-    >('PUBLIC')
+    const [visibilityStatus, setVisibilityStatus] =
+        useState<VisibilityStatus>('PUBLIC')
     const [showNotification, setShowNotification] = useState(false)
     const [isParentUnlisted, setIsParentUnlisted] = useState(false)
 

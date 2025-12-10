@@ -10,22 +10,38 @@
         height: 18px;
         padding: 2px 4px;
         width: fit-content;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
 
         &.classic {
             .caption-allcaps();
-            background-color: var(--neutral-grey-3);
-            color: var(--neutral-grey-5);
+            background-color: var(--neutral-grey-3); // legacy
+            color: var(--neutral-grey-5); // legacy
         }
 
         &.dark {
             .caption-allcaps();
-            background-color: var(--neutral-grey-5);
-            color: var(--neutral-grey-2);
+            background-color: var(--neutral-grey-5); // legacy
+            color: var(--neutral-grey-2); // legacy
         }
 
         &:not(:first-of-type) {
             margin-left: 2px;
+        }
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        color: var(--content-neutral-secondary);
+
+        &.classic {
+            background-color: var(--surface-neutral-tertiary);
+            color: var(--content-neutral-secondary);
+        }
+
+        &.dark {
+            background-color: var(--surface-button-secondary);
+            color: var(--surface-neutral-tertiary);
         }
     }
 }

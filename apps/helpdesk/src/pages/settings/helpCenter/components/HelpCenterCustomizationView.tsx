@@ -20,6 +20,7 @@ import type {
     NavigationLink,
 } from 'models/helpCenter/types'
 import InputField from 'pages/common/forms/input/InputField'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -274,7 +275,7 @@ export const HelpCenterCustomizationView = () => {
                 translation.locale === updatedTranslation.locale
                     ? updatedTranslation
                     : translation,
-            )
+            ) as Components.Schemas.GetHelpCenterDto['translations']
 
             dispatch(helpCenterUpdated({ ...helpCenter, translations }))
         }

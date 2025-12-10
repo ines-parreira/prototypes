@@ -1,4 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -48,6 +49,12 @@ import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAnd
 
 jest.mock('core/flags')
 const mockUseFlag = useFlag as jest.Mock
+
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
+    logEvent: jest.fn(),
+    SegmentEvent: jest.requireActual('@repo/logging').SegmentEvent,
+}))
 
 // Mock ui-kit as an ES module to enable spying
 jest.mock('@gorgias/axiom', () => {
@@ -154,6 +161,7 @@ describe('UsageAndPlansView', () => {
     }
 
     beforeEach(() => {
+        jest.clearAllMocks()
         mockUseGetOrCreateAccountConfiguration.mockReturnValue({
             status: 'success',
             isLoading: false,
@@ -820,6 +828,51 @@ describe('UsageAndPlansView', () => {
             mockedUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).toHaveBeenCalledWith({
             aiAgentNotificationType: AiAgentNotificationType.MeetAiAgent,
+        })
+    })
+
+    describe('Tracking events', () => {
+        it('should log BillingUsageAndPlansVisited event when component mounts', () => {
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                store,
+            )
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansVisited,
+                {
+                    url: '/',
+                },
+            )
+            expect(logEvent).toHaveBeenCalledTimes(1)
+        })
+
+        it('should log BillingUsageAndPlansVisited event with correct pathname', () => {
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                store,
+                {
+                    route: '/app/settings/billing',
+                    path: '/app/settings/billing',
+                    options: {},
+                },
+            )
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansVisited,
+                {
+                    url: '/app/settings/billing',
+                },
+            )
+            expect(logEvent).toHaveBeenCalledTimes(1)
         })
     })
 })

@@ -1,5 +1,7 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@testing-library/react'
 
+import { useFlag } from 'core/flags'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
@@ -16,9 +18,11 @@ jest.mock('../utils/eventLogger', () => ({
     logTrialBannerEvent: jest.fn(),
     logInTrialEvent: jest.fn(),
 }))
+jest.mock('core/flags')
 
 const mockLogTrialBannerEvent = logTrialBannerEvent as jest.Mock
 const mockLogInTrialEvent = logInTrialEvent as jest.Mock
+const mockUseFlag = useFlag as jest.Mock
 
 beforeEach(() => {
     jest.clearAllMocks()
@@ -96,6 +100,42 @@ describe('useShoppingAssistantSecondaryCTA', () => {
     it('returns "Book a demo" button when user can notify admin and book demo', () => {
         const trialAccess = createMockTrialAccess({
             canNotifyAdmin: true,
+            canBookDemo: true,
+        })
+        const trialFlow = createMockTrialFlow()
+
+        const { result } = renderHook(() =>
+            useSecondaryCTA(
+                PromoCardVariant.AdminTrial,
+                trialAccess,
+                trialFlow,
+            ),
+        )
+
+        expect(result.current).toEqual({
+            label: 'Book a demo',
+            href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_BOOK_DEMO,
+            target: '_blank',
+            onClick: expect.any(Function),
+            disabled: false,
+        })
+
+        result.current?.onClick?.()
+        expect(mockLogTrialBannerEvent).toHaveBeenCalledWith(
+            TrialEventType.Demo,
+            TrialType.ShoppingAssistant,
+        )
+    })
+
+    it('returns "Book a demo" button when user can start a trial and book demo', () => {
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll &&
+                true,
+        )
+        const trialAccess = createMockTrialAccess({
+            isAdmin: true,
+            canSeeTrialCTA: true,
             canBookDemo: true,
         })
         const trialFlow = createMockTrialFlow()

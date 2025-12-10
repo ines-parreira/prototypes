@@ -77,6 +77,71 @@ describe('CheckPlaygroundPrerequisites', () => {
         expect(screen.getByText('Child Component')).toBeInTheDocument()
     })
 
+    it('renders children when help center exists even if external sources are syncing', () => {
+        mockUsePublicResources.mockReturnValue({
+            sourceItems: [
+                {
+                    status: 'loading',
+                    id: 0,
+                    source: 'url',
+                    createdDatetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
+            isSourceItemsListLoading: false,
+        })
+
+        mockUseFileIngestion.mockReturnValue({
+            ingestedFiles: [
+                {
+                    id: 1,
+                    help_center_id: 123,
+                    snippets_article_ids: [],
+                    filename: 'test.pdf',
+                    google_storage_url: 'https://example.com/test.pdf',
+                    status: 'PENDING' as const,
+                    uploaded_datetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
+            isLoading: false,
+        })
+
+        renderComponent({
+            storeConfiguration: getStoreConfigurationFixture({
+                helpCenterId: 456,
+            }),
+        })
+
+        expect(screen.getByText('Child Component')).toBeInTheDocument()
+    })
+
+    it('renders children when guidance articles exist even if external sources are syncing', () => {
+        mockUsePublicResources.mockReturnValue({
+            sourceItems: [
+                {
+                    status: 'loading',
+                    id: 0,
+                    source: 'url',
+                    createdDatetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
+            isSourceItemsListLoading: false,
+        })
+
+        mockUseFileIngestion.mockReturnValue({
+            ingestedFiles: [],
+            isLoading: false,
+        })
+
+        renderComponent({
+            storeConfiguration: getStoreConfigurationFixture({
+                helpCenterId: null,
+            }),
+            guidanceArticlesLength: 5,
+        })
+
+        expect(screen.getByText('Child Component')).toBeInTheDocument()
+    })
+
     it('renders Loader when source items are loading', () => {
         mockUsePublicResources.mockReturnValue({
             sourceItems: [],
@@ -98,12 +163,13 @@ describe('CheckPlaygroundPrerequisites', () => {
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
-    it('renders missing knowledge base alert when no source items and external files are present', () => {
+    it('renders MissingKnowledgeSourceAlert when sources are only syncing (no available sources)', () => {
         mockUsePublicResources.mockReturnValue({
             sourceItems: [
                 {
                     status: 'loading',
                     id: 0,
+                    source: 'url',
                     createdDatetime: '2021-01-01T00:00:00.000Z',
                 },
             ],
@@ -111,7 +177,52 @@ describe('CheckPlaygroundPrerequisites', () => {
         })
 
         mockUseFileIngestion.mockReturnValue({
-            ingestedFiles: [{ status: 'FAILED' }],
+            ingestedFiles: [
+                {
+                    id: 1,
+                    help_center_id: 123,
+                    snippets_article_ids: [],
+                    filename: 'test.pdf',
+                    google_storage_url: 'https://example.com/test.pdf',
+                    status: 'PENDING' as const,
+                    uploaded_datetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
+            isLoading: false,
+        })
+
+        renderComponent({ snippetHelpCenterId: 123 })
+
+        expect(screen.getByRole('alert')).toHaveTextContent(
+            'At least one knowledge source is required to use test mode.Add Knowledge',
+        )
+    })
+
+    it('renders missing knowledge base alert when all sources are failed with none loading', () => {
+        mockUsePublicResources.mockReturnValue({
+            sourceItems: [
+                {
+                    status: 'error',
+                    id: 0,
+                    source: 'url',
+                    createdDatetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
+            isSourceItemsListLoading: false,
+        })
+
+        mockUseFileIngestion.mockReturnValue({
+            ingestedFiles: [
+                {
+                    id: 1,
+                    help_center_id: 123,
+                    snippets_article_ids: [],
+                    filename: 'test.pdf',
+                    google_storage_url: 'https://example.com/test.pdf',
+                    status: 'FAILED' as const,
+                    uploaded_datetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
             isLoading: false,
         })
 
@@ -128,6 +239,7 @@ describe('CheckPlaygroundPrerequisites', () => {
                 {
                     status: 'done',
                     id: 0,
+                    source: 'url',
                     createdDatetime: '2021-01-01T00:00:00.000Z',
                 },
             ],
@@ -140,7 +252,65 @@ describe('CheckPlaygroundPrerequisites', () => {
 
     it('renders children when at least one external file is present', () => {
         mockUseFileIngestion.mockReturnValue({
-            ingestedFiles: [{ status: 'SUCCESSFUL' }],
+            ingestedFiles: [
+                {
+                    id: 1,
+                    help_center_id: 123,
+                    snippets_article_ids: [],
+                    filename: 'test.pdf',
+                    google_storage_url: 'https://example.com/test.pdf',
+                    status: 'SUCCESSFUL' as const,
+                    uploaded_datetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
+            isLoading: false,
+        })
+
+        renderComponent({ snippetHelpCenterId: 123 })
+
+        expect(screen.getByText('Child Component')).toBeInTheDocument()
+    })
+
+    it('renders children when there are available sources even if some are syncing', () => {
+        mockUsePublicResources.mockReturnValue({
+            sourceItems: [
+                {
+                    status: 'done',
+                    id: 0,
+                    source: 'url',
+                    createdDatetime: '2021-01-01T00:00:00.000Z',
+                },
+                {
+                    status: 'loading',
+                    id: 1,
+                    source: 'url',
+                    createdDatetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
+            isSourceItemsListLoading: false,
+        })
+
+        mockUseFileIngestion.mockReturnValue({
+            ingestedFiles: [
+                {
+                    id: 1,
+                    help_center_id: 123,
+                    snippets_article_ids: [],
+                    filename: 'test.pdf',
+                    google_storage_url: 'https://example.com/test.pdf',
+                    status: 'SUCCESSFUL' as const,
+                    uploaded_datetime: '2021-01-01T00:00:00.000Z',
+                },
+                {
+                    id: 2,
+                    help_center_id: 123,
+                    snippets_article_ids: [],
+                    filename: 'test2.pdf',
+                    google_storage_url: 'https://example.com/test2.pdf',
+                    status: 'PENDING' as const,
+                    uploaded_datetime: '2021-01-01T00:00:00.000Z',
+                },
+            ],
             isLoading: false,
         })
 

@@ -44,6 +44,8 @@ describe('KnowledgeEditorHelpCenterExistingArticle.utils', () => {
             },
             visibility_status: 'PUBLIC',
             is_current: true,
+            draft_version_id: null,
+            published_version_id: null,
         },
     }
 
@@ -66,6 +68,8 @@ describe('KnowledgeEditorHelpCenterExistingArticle.utils', () => {
                 article_id: 1,
                 category_id: null,
                 article_unlisted_id: '1',
+                draft_version_id: null,
+                published_version_id: null,
                 seo_meta: {
                     title: null,
                     description: null,

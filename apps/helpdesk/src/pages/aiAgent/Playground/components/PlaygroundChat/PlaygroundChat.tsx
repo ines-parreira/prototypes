@@ -33,6 +33,7 @@ import { PlaygroundInputSection } from '../PlaygroundInputSection/PlaygroundInpu
 import PlaygroundMessageComponent, {
     AI_AGENT_SENDER,
 } from '../PlaygroundMessage/PlaygroundMessage'
+import { SyncingSourcesMessage } from '../SyncingSourcesMessage/SyncingSourcesMessage'
 import type {
     PlaygroundChannelAvailability,
     PlaygroundChannels,
@@ -96,6 +97,7 @@ export const PlaygroundChat = ({
         onFormValuesChange,
         isDisabled,
         disabledMessage,
+        syncingMessage,
         isFormValid,
         clearForm,
     } = usePlaygroundForm({
@@ -268,6 +270,15 @@ export const PlaygroundChat = ({
                         and may update your store data.
                     </Alert>
                 </>
+            )}
+            {syncingMessage && (
+                <Alert
+                    type={AlertType.Info}
+                    icon
+                    className="mb-3 justify-content-start"
+                >
+                    <SyncingSourcesMessage message={syncingMessage} />
+                </Alert>
             )}
             <div className={css.outputContainer}>
                 <div

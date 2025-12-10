@@ -35,7 +35,7 @@
         "serve": "run-s serve:app serve:sharedWorker",
         "serve:app": "NODE_ENV=development rspack serve --config rspack.app.config.mjs",
         "serve:sharedWorker": "NODE_ENV=development rspack -w --config rspack.workers.config.mjs",
-        "helpcenter:fetch-openapi": "curl http://localhost:4001/api/help-center/api-json > ./src/rest_api/help_center_api/help-center.openapi.json && prettier --write --experimental-cli ./src/rest_api/help_center_api/help-center.openapi.json",
+        "helpcenter:fetch-openapi": "curl http://localhost:4002/api/help-center/api-json > ./src/rest_api/help_center_api/help-center.openapi.json && prettier --write --experimental-cli ./src/rest_api/help_center_api/help-center.openapi.json",
         "helpcenter:generate-types": "typegen ./src/rest_api/help_center_api/help-center.openapi.json > ./src/rest_api/help_center_api/client.generated.d.ts",
         "helpcenter:update-client": "pnpm helpcenter:fetch-openapi && pnpm helpcenter:generate-types",
         "migration:fetch-openapi": "curl http://localhost:8001/apidoc/openapi.json > ./src/rest_api/migration_api/migration.openapi.json && prettier --write --experimental-cli ./src/rest_api/migration_api/migration.openapi.json",

@@ -1,5 +1,8 @@
 import { renderHook } from '@repo/testing'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
+
+import { analyzeKnowledgeSources } from 'pages/aiAgent/Playground/utils/knowledgeSourcesAnalysis'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
 import { useMessagesContext } from '../../contexts/MessagesContext'
@@ -38,6 +41,24 @@ jest.mock('../../../hooks/useAiAgentNavigation', () => ({
     })),
 }))
 
+jest.mock('../../../hooks/useFileIngestion', () => ({
+    useFileIngestion: jest.fn(() => ({
+        ingestedFiles: [],
+    })),
+}))
+
+jest.mock('pages/aiAgent/Playground/utils/knowledgeSourcesAnalysis', () => ({
+    analyzeKnowledgeSources: jest.fn(() => ({
+        hasAvailableSources: false,
+        hasSyncingSources: false,
+        hasAnySources: false,
+        availableSources: [],
+        syncingSources: [],
+        failedSources: [],
+    })),
+}))
+
+const mockAnalyzeKnowledgeSources = jest.mocked(analyzeKnowledgeSources)
 const mockUseMessagesContext = jest.mocked(useMessagesContext)
 const mockUseSettingsContext = jest.mocked(useSettingsContext)
 
@@ -72,16 +93,39 @@ const defaultProps = {
     guidanceHelpCenterId: 101,
 }
 
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
+})
+
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+)
+
 describe('usePlaygroundForm', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseMessagesContext.mockReturnValue(defaultMessagesContext as any)
         mockUseSettingsContext.mockReturnValue(defaultSettingsContext as any)
+        mockAnalyzeKnowledgeSources.mockReturnValue({
+            hasAvailableSources: true,
+            hasSyncingSources: false,
+            hasAnySources: true,
+            availableSources: [],
+            syncingSources: [],
+            failedSources: [],
+        })
     })
 
     describe('formValues', () => {
         it('should return form values from contexts', () => {
-            const { result } = renderHook(() => usePlaygroundForm(defaultProps))
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
 
             expect(result.current.formValues).toEqual({
                 message: '',
@@ -100,7 +144,10 @@ describe('usePlaygroundForm', () => {
                 selectedCustomer: DEFAULT_PLAYGROUND_CUSTOMER,
             } as any)
 
-            const { result } = renderHook(() => usePlaygroundForm(defaultProps))
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
 
             expect(result.current.formValues.customer).toEqual(
                 DEFAULT_PLAYGROUND_CUSTOMER,
@@ -108,8 +155,9 @@ describe('usePlaygroundForm', () => {
         })
 
         it('should update form values when context values change', () => {
-            const { result, rerender } = renderHook(() =>
-                usePlaygroundForm(defaultProps),
+            const { result, rerender } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
             )
 
             expect(result.current.formValues.message).toBe('')
@@ -127,8 +175,9 @@ describe('usePlaygroundForm', () => {
         })
 
         it('should update customer when context customer changes', () => {
-            const { result, rerender } = renderHook(() =>
-                usePlaygroundForm(defaultProps),
+            const { result, rerender } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
             )
 
             const newCustomer = {
@@ -156,7 +205,10 @@ describe('usePlaygroundForm', () => {
                 setDraftMessage,
             } as any)
 
-            const { result } = renderHook(() => usePlaygroundForm(defaultProps))
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
 
             act(() => {
                 result.current.onFormValuesChange('message', 'New message')
@@ -172,7 +224,10 @@ describe('usePlaygroundForm', () => {
                 setDraftSubject,
             } as any)
 
-            const { result } = renderHook(() => usePlaygroundForm(defaultProps))
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
 
             act(() => {
                 result.current.onFormValuesChange('subject', 'New subject')
@@ -188,7 +243,10 @@ describe('usePlaygroundForm', () => {
                 setSettings,
             } as any)
 
-            const { result } = renderHook(() => usePlaygroundForm(defaultProps))
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
 
             const newCustomer = {
                 email: 'test@test.com',
@@ -217,13 +275,17 @@ describe('usePlaygroundForm', () => {
                 draftSubject: 'Some subject',
                 setDraftMessage,
                 setDraftSubject,
+                setSettings,
             } as any)
             mockUseSettingsContext.mockReturnValue({
                 ...defaultSettingsContext,
                 setSettings,
             } as any)
 
-            const { result } = renderHook(() => usePlaygroundForm(defaultProps))
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
 
             act(() => {
                 result.current.clearForm()
@@ -242,7 +304,10 @@ describe('usePlaygroundForm', () => {
                 draftMessage: '',
             } as any)
 
-            const { result } = renderHook(() => usePlaygroundForm(defaultProps))
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
 
             expect(result.current.isFormValid).toBe(false)
         })
@@ -253,7 +318,10 @@ describe('usePlaygroundForm', () => {
                 draftMessage: 'Hello',
             } as any)
 
-            const { result } = renderHook(() => usePlaygroundForm(defaultProps))
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
 
             expect(result.current.isFormValid).toBe(true)
         })
@@ -264,8 +332,9 @@ describe('usePlaygroundForm', () => {
                 draftMessage: '',
             } as any)
 
-            const { result, rerender } = renderHook(() =>
-                usePlaygroundForm(defaultProps),
+            const { result, rerender } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
             )
 
             expect(result.current.isFormValid).toBe(false)
@@ -288,20 +357,107 @@ describe('usePlaygroundForm', () => {
                 draftMessage: '',
             } as any)
 
-            const { result } = renderHook(() => usePlaygroundForm(defaultProps))
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
 
             expect(result.current.isDisabled).toBe(true)
         })
 
-        it('should be false when form is valid and resources are loaded', () => {
+        it('should be false when form is valid and resources are available', () => {
             mockUseMessagesContext.mockReturnValue({
                 ...defaultMessagesContext,
                 draftMessage: 'Test message',
             } as any)
+            mockAnalyzeKnowledgeSources.mockReturnValue({
+                hasAvailableSources: true,
+                hasSyncingSources: false,
+                hasAnySources: true,
+                availableSources: [],
+                syncingSources: [],
+                failedSources: [],
+            })
 
-            const { result } = renderHook(() => usePlaygroundForm(defaultProps))
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
 
             expect(result.current.isDisabled).toBe(false)
+        })
+
+        it('should be true when form is valid but resources are only syncing', () => {
+            mockUseMessagesContext.mockReturnValue({
+                ...defaultMessagesContext,
+                draftMessage: 'Test message',
+            } as any)
+            mockAnalyzeKnowledgeSources.mockReturnValue({
+                hasAvailableSources: false,
+                hasSyncingSources: true,
+                hasAnySources: true,
+                availableSources: [],
+                syncingSources: [
+                    { type: 'file', name: 'test.pdf', state: 'syncing' },
+                ],
+                failedSources: [],
+            })
+
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
+
+            expect(result.current.isDisabled).toBe(true)
+            expect(result.current.disabledMessage).not.toBeUndefined()
+        })
+
+        it('should be false when form is valid and has available sources even with some syncing', () => {
+            mockUseMessagesContext.mockReturnValue({
+                ...defaultMessagesContext,
+                draftMessage: 'Test message',
+            } as any)
+            mockAnalyzeKnowledgeSources.mockReturnValue({
+                hasAvailableSources: true,
+                hasSyncingSources: true,
+                hasAnySources: true,
+                availableSources: [
+                    { type: 'file', name: 'available.pdf', state: 'available' },
+                ],
+                syncingSources: [
+                    { type: 'file', name: 'syncing.pdf', state: 'syncing' },
+                ],
+                failedSources: [],
+            })
+
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
+
+            expect(result.current.isDisabled).toBe(false)
+        })
+
+        it('should be true when form is valid but no resources are available or syncing', () => {
+            mockUseMessagesContext.mockReturnValue({
+                ...defaultMessagesContext,
+                draftMessage: 'Test message',
+            } as any)
+            mockAnalyzeKnowledgeSources.mockReturnValue({
+                hasAvailableSources: false,
+                hasSyncingSources: false,
+                hasAnySources: false,
+                availableSources: [],
+                syncingSources: [],
+                failedSources: [],
+            })
+
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
+
+            expect(result.current.isDisabled).toBe(true)
         })
     })
 
@@ -312,9 +468,34 @@ describe('usePlaygroundForm', () => {
                 draftMessage: 'Test message',
             } as any)
 
-            const { result } = renderHook(() => usePlaygroundForm(defaultProps))
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
 
             expect(result.current.disabledMessage).toBeUndefined()
+        })
+
+        it('should return message when no resources available', () => {
+            mockUseMessagesContext.mockReturnValue({
+                ...defaultMessagesContext,
+                draftMessage: 'Test message',
+            } as any)
+            mockAnalyzeKnowledgeSources.mockReturnValue({
+                hasAvailableSources: false,
+                hasSyncingSources: false,
+                hasAnySources: false,
+                availableSources: [],
+                syncingSources: [],
+                failedSources: [],
+            })
+
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
+
+            expect(result.current.disabledMessage).not.toBeUndefined()
         })
     })
 
@@ -326,9 +507,19 @@ describe('usePlaygroundForm', () => {
                 draftMessage: '',
                 setDraftMessage,
             } as any)
+            // Make sure it's disabled due to invalid form initially
+            mockAnalyzeKnowledgeSources.mockReturnValue({
+                hasAvailableSources: true,
+                hasSyncingSources: false,
+                hasAnySources: true,
+                availableSources: [],
+                syncingSources: [],
+                failedSources: [],
+            })
 
-            const { result, rerender } = renderHook(() =>
-                usePlaygroundForm(defaultProps),
+            const { result, rerender } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
             )
 
             expect(result.current.isFormValid).toBe(false)
@@ -368,7 +559,10 @@ describe('usePlaygroundForm', () => {
                 setSettings,
             } as any)
 
-            const { result } = renderHook(() => usePlaygroundForm(defaultProps))
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
 
             act(() => {
                 result.current.clearForm()
@@ -391,7 +585,10 @@ describe('usePlaygroundForm', () => {
                 selectedCustomer: customCustomer,
             } as any)
 
-            const { result } = renderHook(() => usePlaygroundForm(defaultProps))
+            const { result } = renderHook(
+                () => usePlaygroundForm(defaultProps),
+                { wrapper },
+            )
 
             expect(result.current.formValues.customer).toEqual(customCustomer)
         })

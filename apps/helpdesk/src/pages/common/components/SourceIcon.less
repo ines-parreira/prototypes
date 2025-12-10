@@ -1,6 +1,6 @@
 :local {
     .secondary {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .newIcon {
@@ -8,5 +8,11 @@
             opacity: 0.3;
             filter: grayscale();
         }
+    }
+}
+
+.axiom :local {
+    .secondary {
+        color: var(--content-neutral-secondary);
     }
 }

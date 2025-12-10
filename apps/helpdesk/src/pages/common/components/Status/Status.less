@@ -9,14 +9,29 @@
             height: 8px;
             width: 8px;
 
-            --dot-success: var(--feedback-success);
-            --dot-warning: var(--feedback-warning);
-            --dot-error: var(--feedback-error);
-            --dot-info: var(--neutral-grey-4);
+            --dot-success: var(--feedback-success); // legacy
+            --dot-warning: var(--feedback-warning); // legacy
+            --dot-error: var(--feedback-error); // legacy
+            --dot-info: var(--neutral-grey-4); // legacy
         }
 
         .label {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .status {
+        .dot {
+            --dot-success: var(--surface-success-primary);
+            --dot-warning: var(--surface-warning-primary);
+            --dot-error: var(--surface-error-primary);
+            --dot-info: var(--content-neutral-secondary);
+        }
+
+        .label {
+            color: var(--content-neutral-secondary);
         }
     }
 }

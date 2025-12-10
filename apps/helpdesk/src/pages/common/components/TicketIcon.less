@@ -6,35 +6,69 @@
         align-items: center;
         justify-content: center;
         border-radius: 4px;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
 
         &.isOpen {
-            background-color: var(--main-primary);
+            background-color: var(--main-primary); // legacy
 
             &.isAiAgentIcon {
-                background-color: var(--accessory-magenta-3);
+                background-color: var(--accessory-magenta-3); // legacy
             }
 
             &.isWarningIcon {
-                background-color: var(--feedback-warning);
+                background-color: var(--feedback-warning); // legacy
             }
 
             .ticketIcon {
-                color: var(--neutral-grey-0);
+                color: var(--neutral-grey-0); // legacy
             }
         }
 
         &.isErrorIcon {
-            background-color: var(--feedback-error);
+            background-color: var(--feedback-error); // legacy
 
             i {
-                color: var(--neutral-grey-0);
+                color: var(--neutral-grey-0); // legacy
             }
         }
     }
 
     .ticketIcon {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         width: unset !important;
+    }
+}
+
+.axiom :local {
+    .ticketIconWrapper {
+        background-color: var(--surface-neutral-tertiary);
+
+        &.isOpen {
+            background-color: var(--surface-accent-default);
+
+            &.isAiAgentIcon {
+                background-color: var(--surface-additional-fuchsia);
+            }
+
+            &.isWarningIcon {
+                background-color: var(--surface-warning-primary);
+            }
+
+            .ticketIcon {
+                color: var(--content-inverted-default);
+            }
+        }
+
+        &.isErrorIcon {
+            background-color: var(--surface-error-primary);
+
+            i {
+                color: var(--content-inverted-default);
+            }
+        }
+    }
+
+    .ticketIcon {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -28,5 +28,7 @@ export const getArticleTranslationWithRatingFixture = (
         up: 5,
         down: 1,
     },
+    draft_version_id: null,
+    published_version_id: null,
     ...overrides,
 })

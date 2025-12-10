@@ -36,6 +36,8 @@ export const newTranslation = (
         },
         visibility_status: 'PUBLIC',
         is_current: true,
+        draft_version_id: null,
+        published_version_id: null,
     }
 }
 

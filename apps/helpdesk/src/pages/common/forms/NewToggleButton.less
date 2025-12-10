@@ -20,7 +20,7 @@
         width: var(--toggleButtonWidth);
         height: var(--toggleButtonHeight);
         border-radius: 100px;
-        background-color: var(--neutral-grey-5);
+        background-color: var(--neutral-grey-5); // legacy
         cursor: pointer;
         transition: 0.2s;
 
@@ -32,12 +32,12 @@
             background-color: @primary-color;
 
             &.disabled .knob i {
-                color: var(--neutral-grey-3);
+                color: var(--neutral-grey-3); // legacy
             }
         }
 
         &.disabled {
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
             pointer-events: none;
         }
     }
@@ -54,14 +54,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: var(--neutral-grey-0);
-        color: var(--neutral-grey-1);
+        background-color: var(--neutral-grey-0); // legacy
+        color: var(--neutral-grey-1); // legacy
         transition: 0.2s;
 
         i {
             font-size: 11px;
             font-weight: 600;
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             opacity: 0;
             transition: 0.2s;
         }
@@ -81,5 +81,30 @@
 
     .checkboxInput {
         display: none;
+    }
+}
+
+.axiom :local {
+    .toggleButton {
+        background-color: var(--content-neutral-tertiary);
+
+        &.checked {
+            &.disabled .knob i {
+                color: var(--surface-neutral-tertiary);
+            }
+        }
+
+        &.disabled {
+            background-color: var(--surface-neutral-tertiary);
+        }
+    }
+
+    .knob {
+        background-color: var(--elevation-neutral-default);
+        color: var(--surface-neutral-secondary);
+
+        i {
+            color: var(--content-neutral-tertiary);
+        }
     }
 }

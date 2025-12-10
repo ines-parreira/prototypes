@@ -6,28 +6,28 @@
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-xxs);
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
     }
 
     .secondary {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .error {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 
     .warning {
-        color: var(--feedback-warning);
+        color: var(--feedback-warning); // legacy
     }
 
     .success {
-        color: var(--feedback-success);
+        color: var(--feedback-success); // legacy
     }
 
     .label {
         .heading-page-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .barContainer {
@@ -36,7 +36,7 @@
         border-radius: 4px;
         height: 8px;
         overflow: hidden;
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
     }
 
     .bar {
@@ -49,5 +49,35 @@
         transition:
             transform 200ms ease-in-out,
             color 200ms linear;
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-accent-default);
+    }
+
+    .secondary {
+        color: var(--content-neutral-secondary);
+    }
+
+    .error {
+        color: var(--content-error-primary);
+    }
+
+    .warning {
+        color: var(--content-warning-primary);
+    }
+
+    .success {
+        color: var(--content-success-primary);
+    }
+
+    .label {
+        color: var(--content-neutral-default);
+    }
+
+    .barContainer {
+        background: var(--surface-neutral-tertiary);
     }
 }

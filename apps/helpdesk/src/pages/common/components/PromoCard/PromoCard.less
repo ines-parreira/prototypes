@@ -6,8 +6,8 @@
         align-items: center;
         flex-direction: column;
         border-radius: 8px;
-        border: 1px solid var(--neutral-grey-1, #f9f9f9);
-        background: var(--neutral-grey-0, #fff);
+        border: 1px solid var(--neutral-grey-1, #f9f9f9); // legacy
+        background: var(--neutral-grey-0, #fff); // legacy
         width: 240px;
     }
     .closeButton {
@@ -73,7 +73,7 @@
     .title {
         .caption-semibold();
         width: 100%;
-        color: var(--neutral-grey-6, #222);
+        color: var(--neutral-grey-6, #222); // legacy
         margin-bottom: 0;
         display: flex;
         align-items: center;
@@ -81,7 +81,7 @@
     }
     .description {
         .caption-regular();
-        color: var(--Neutral-Grey_5, #6a6a6a);
+        color: var(--Neutral-Grey_5, #6a6a6a); // legacy
         margin-bottom: 0;
         &.collapsed {
             display: none;
@@ -117,14 +117,14 @@
 
     .progressBarTrack {
         width: 100%;
-        background: var(--neutral-grey-2, #e8e8e8);
+        background: var(--neutral-grey-2, #e8e8e8); // legacy
         border-radius: 3px;
         overflow: hidden;
     }
 
     .progressBarFill {
         height: 100%;
-        background: var(--neutral-grey-6, #222);
+        background: var(--neutral-grey-6, #222); // legacy
         border-radius: 3px;
         transition: width 0.4s ease;
         position: relative;
@@ -132,7 +132,7 @@
 
     .text {
         .caption-regular();
-        color: var(--neutral-grey-5, #6a6a6a);
+        color: var(--neutral-grey-5, #6a6a6a); // legacy
         margin: var(--layout-spacing-xs) 0;
 
         &.collapsed {
@@ -165,38 +165,38 @@
         text-align: center;
 
         &.primary:not([disabled]):not([aria-disabled='true']) {
-            background: var(--neutral-grey-6, #222);
-            color: var(--neutral-grey-0, #fff);
-            border-color: var(--neutral-grey-6, #222);
+            background: var(--neutral-grey-6, #222); // legacy
+            color: var(--neutral-grey-0, #fff); // legacy
+            border-color: var(--neutral-grey-6, #222); // legacy
 
             svg {
-                fill: var(--neutral-grey-0, #fff);
+                fill: var(--neutral-grey-0, #fff); // legacy
             }
 
             &:hover:not([aria-disabled='true']) {
-                background: var(--neutral-grey-6, #222);
-                color: var(--neutral-grey-0, #fff);
-                border-color: var(--neutral-grey-6, #222);
+                background: var(--neutral-grey-6, #222); // legacy
+                color: var(--neutral-grey-0, #fff); // legacy
+                border-color: var(--neutral-grey-6, #222); // legacy
             }
         }
 
         &.secondary {
-            background: var(--neutral-grey-0, #fff);
-            color: var(--neutral-grey-6, #222);
-            border-color: var(--neutral-grey-3, #d0d0d0);
+            background: var(--neutral-grey-0, #fff); // legacy
+            color: var(--neutral-grey-6, #222); // legacy
+            border-color: var(--neutral-grey-3, #d0d0d0); // legacy
 
             svg {
-                fill: var(--neutral-grey-6, #222);
+                fill: var(--neutral-grey-6, #222); // legacy
             }
         }
 
         &.ghost {
             background: transparent;
-            color: var(--neutral-grey-5, #6a6a6a);
+            color: var(--neutral-grey-5, #6a6a6a); // legacy
             border-color: transparent;
 
             svg {
-                fill: var(--neutral-grey-5, #6a6a6a);
+                fill: var(--neutral-grey-5, #6a6a6a); // legacy
             }
         }
     }
@@ -226,7 +226,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: var(--Neutral-Grey_6, #222);
+            background: var(--Neutral-Grey_6, #222); // legacy
             opacity: 0.5;
             z-index: -1;
         }
@@ -236,7 +236,7 @@
         position: relative;
         width: 981px;
         height: 553px;
-        background: var(--neutral-grey-100);
+        background: var(--neutral-grey-100); // legacy
         border-radius: 16px;
         overflow: hidden;
         z-index: 1;
@@ -270,5 +270,78 @@
     .video {
         width: 100%;
         height: auto;
+    }
+}
+
+.axiom :local {
+    .promoCard {
+        border: 1px solid var(--elevation-neutral-mid);
+        background: var(--elevation-neutral-default);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .description {
+        color: var(--content-neutral-secondary);
+    }
+
+    .progressBarTrack {
+        background: var(--surface-neutral-tertiary);
+    }
+
+    .progressBarFill {
+        background: var(--content-neutral-default);
+    }
+
+    .text {
+        color: var(--content-neutral-secondary);
+    }
+
+    .ctaButton {
+        &.primary:not([disabled]):not([aria-disabled='true']) {
+            background: var(--content-neutral-default);
+            color: var(--content-inverted-default);
+            border-color: var(--content-neutral-default);
+
+            svg {
+                fill: var(--content-inverted-default);
+            }
+
+            &:hover:not([aria-disabled='true']) {
+                background: var(--content-neutral-default);
+                color: var(--content-inverted-default);
+                border-color: var(--content-neutral-default);
+            }
+        }
+
+        &.secondary {
+            background: var(--elevation-neutral-default);
+            color: var(--content-neutral-default);
+            border-color: var(--border-neutral-default);
+
+            svg {
+                fill: var(--content-neutral-default);
+            }
+        }
+
+        &.ghost {
+            color: var(--content-neutral-secondary);
+
+            svg {
+                fill: var(--content-neutral-secondary);
+            }
+        }
+    }
+
+    .videoModalContainer {
+        &::before {
+            background: var(--content-neutral-default);
+        }
+    }
+
+    .videoModalContent {
+        background: var(--elevation-neutral-bg);
     }
 }

@@ -7,19 +7,23 @@
                 "summary": "Delete article ingestion log",
                 "parameters": [
                     {
-                        "name": "help_center_id",
+                        "name": "article_ingestion_log_id",
                         "required": true,
                         "in": "path",
                         "schema": { "type": "number" }
                     },
                     {
-                        "name": "article_ingestion_log_id",
+                        "name": "help_center_id",
                         "required": true,
                         "in": "path",
                         "schema": { "type": "number" }
                     }
                 ],
-                "responses": { "204": { "description": "" } },
+                "responses": {
+                    "204": {
+                        "description": "Article ingestion log deleted successfully"
+                    }
+                },
                 "tags": ["article-ingestion"]
             }
         },
@@ -29,31 +33,43 @@
                 "summary": "Get article ingestion logs",
                 "parameters": [
                     {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": { "type": "number" }
-                    },
-                    {
-                        "name": "account_id",
+                        "name": "sources",
                         "required": false,
                         "in": "query",
-                        "schema": { "type": "string" }
+                        "description": "Filter by source types. Defaults to [\"url\"] for backwards compatibility.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "enum": ["domain", "url"]
+                            }
+                        }
                     },
                     {
                         "name": "ids",
                         "required": false,
                         "in": "query",
-                        "description": "List of numeric ids in the form ids=1&ids=2...",
                         "schema": {
                             "type": "array",
                             "items": { "type": "number" }
                         }
+                    },
+                    {
+                        "name": "account_id",
+                        "required": false,
+                        "in": "query",
+                        "schema": {}
+                    },
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "List of article ingestion logs",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -91,7 +107,11 @@
                         }
                     }
                 },
-                "responses": { "201": { "description": "" } },
+                "responses": {
+                    "201": {
+                        "description": "Article ingestion started successfully"
+                    }
+                },
                 "tags": ["article-ingestion"]
             }
         },
@@ -110,7 +130,9 @@
                         }
                     }
                 },
-                "responses": { "201": { "description": "" } },
+                "responses": {
+                    "201": { "description": "Webhook processed successfully" }
+                },
                 "tags": ["article-ingestion"]
             }
         },
@@ -120,10 +142,10 @@
                 "summary": "Get article titles and visibility status for an article ingestion log",
                 "parameters": [
                     {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": { "type": "number" }
+                        "name": "account_id",
+                        "required": false,
+                        "in": "query",
+                        "schema": {}
                     },
                     {
                         "name": "article_ingestion_id",
@@ -132,13 +154,34 @@
                         "schema": { "type": "number" }
                     },
                     {
-                        "name": "account_id",
-                        "required": false,
-                        "in": "query",
-                        "schema": { "type": "string" }
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
                     }
                 ],
-                "responses": { "200": { "description": "" } },
+                "responses": {
+                    "200": {
+                        "description": "List of articles with titles and visibility status",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": { "type": "number" },
+                                            "title": { "type": "string" },
+                                            "visibilityStatus": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 "tags": ["article-ingestion"]
             }
         },
@@ -149,7 +192,7 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "Snippet help centers knowledge status",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -600,6 +643,48 @@
                 "tags": ["articles"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/articles/batch": {
+            "post": {
+                "operationId": "batchGetArticlesSourceType",
+                "summary": "Retrieve source types for multiple articles",
+                "description": "Returns the source type for each requested article ID",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "description": "`help_center_id` parameter must be provided and must be a valid number.",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BatchArticlesRequestDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ArticleSourceTypeResponseDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/articles/bulk": {
             "delete": {
                 "operationId": "bulkDeleteArticles",
@@ -990,6 +1075,44 @@
                 "tags": ["article-translations"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/draft": {
+            "delete": {
+                "operationId": "deleteArticleTranslationDraft",
+                "summary": "Delete draft version of article translation",
+                "description": "Discards unpublished draft changes and reverts the translation to the current\n      published version. This operation will delete the article as a whole if there is no published version.\n      Otherwise, it will delete the latest draft version of the translation. It will fail if there is no latest draft version.\n      \n      The endpoint will return the current published version of the translation if it exists, otherwise it will return nothing.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "article_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": { "type": "object" }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-translations"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/articles/translations/bulk/visibility": {
             "put": {
                 "operationId": "bulkUpdateArticleTranslationsVisibility",
@@ -1182,7 +1305,7 @@
                     }
                 },
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "",
                         "content": {
                             "application/json": {
@@ -1201,34 +1324,28 @@
                 "description": "List help centers.\n\nIf authenticated as agent, returns the list of help centers associated with the account domain\nthe agent belongs to.",
                 "parameters": [
                     {
-                        "name": "subdomain",
+                        "name": "page",
                         "required": false,
                         "in": "query",
-                        "schema": { "type": "string" }
-                    },
-                    {
-                        "name": "custom_domain",
-                        "required": false,
-                        "in": "query",
-                        "schema": { "type": "string" }
-                    },
-                    {
-                        "name": "shop_name",
-                        "required": false,
-                        "in": "query",
-                        "schema": { "type": "string" }
-                    },
-                    {
-                        "name": "shop_integration_id",
-                        "required": false,
-                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
                         "schema": { "type": "number" }
                     },
                     {
-                        "name": "account_id",
+                        "name": "per_page",
                         "required": false,
                         "in": "query",
-                        "schema": { "type": "string" }
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "fields",
+                        "required": false,
+                        "in": "query",
+                        "description": "Fields to include in response (translations, redirects)",
+                        "schema": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
                     },
                     {
                         "name": "with_wizard",
@@ -1236,12 +1353,6 @@
                         "in": "query",
                         "description": "Include the wizard in the response",
                         "schema": { "type": "boolean" }
-                    },
-                    {
-                        "name": "name",
-                        "required": false,
-                        "in": "query",
-                        "schema": { "type": "string" }
                     },
                     {
                         "name": "type",
@@ -1259,34 +1370,46 @@
                         "schema": { "type": "boolean" }
                     },
                     {
-                        "name": "fields",
+                        "name": "account_id",
                         "required": false,
                         "in": "query",
-                        "description": "List of field names among `[translations, redirects]` in the form of `fields=name1&fields=name2`. If not provided, the default value will be `\"translations,redirects\"`",
-                        "schema": {
-                            "type": "array",
-                            "items": { "type": "string" }
-                        }
+                        "schema": { "type": "string" }
                     },
                     {
-                        "name": "per_page",
+                        "name": "shop_integration_id",
                         "required": false,
                         "in": "query",
-                        "description": "The number of resources to retrieve per request. E.g: 20",
-                        "schema": {}
-                    },
-                    {
-                        "name": "page",
-                        "required": false,
-                        "in": "query",
-                        "description": "The index of the page to retrieve. E.g: 3",
-                        "schema": {}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "shop_type",
                         "required": false,
                         "in": "query",
-                        "schema": {}
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "name",
+                        "required": false,
+                        "in": "query",
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "shop_name",
+                        "required": false,
+                        "in": "query",
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "custom_domain",
+                        "required": false,
+                        "in": "query",
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "subdomain",
+                        "required": false,
+                        "in": "query",
+                        "schema": { "type": "string" }
                     }
                 ],
                 "responses": {
@@ -1304,6 +1427,45 @@
                 "tags": ["help-centers"]
             }
         },
+        "/api/help-center/help-centers/knowledge-hub-articles": {
+            "get": {
+                "operationId": "getKnowledgeHubArticles",
+                "summary": "Get knowledge hub articles for guidance, FAQ, and snippet help centers",
+                "description": "Retrieves articles from guidance, FAQ, and/or snippet help centers. At least one help center ID must be provided. Agent authentication is restricted to their own account.",
+                "parameters": [
+                    {
+                        "name": "faq_help_center_id",
+                        "required": false,
+                        "in": "query",
+                        "description": "FAQ help center ID for help center articles",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "snippet_help_center_id",
+                        "required": false,
+                        "in": "query",
+                        "description": "Snippet help center ID for website scraping, URL sync, and file upload articles",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "guidance_help_center_id",
+                        "required": false,
+                        "in": "query",
+                        "description": "Guidance help center ID for training/knowledge base articles",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "account_id",
+                        "required": true,
+                        "in": "query",
+                        "description": "Account ID to query articles for",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "responses": { "200": { "description": "" } },
+                "tags": ["help-centers"]
+            }
+        },
         "/api/help-center/help-centers/account": {
             "get": {
                 "operationId": "getAccountInfo",
@@ -1311,13 +1473,13 @@
                 "description": "When both subdomain and custom_domain are provided, the subdomain will be used to search the help center",
                 "parameters": [
                     {
-                        "name": "subdomain",
+                        "name": "custom_domain",
                         "required": false,
                         "in": "query",
                         "schema": { "type": "string" }
                     },
                     {
-                        "name": "custom_domain",
+                        "name": "subdomain",
                         "required": false,
                         "in": "query",
                         "schema": { "type": "string" }
@@ -1360,10 +1522,14 @@
                 "summary": "Retrieve a help center",
                 "parameters": [
                     {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": { "type": "number" }
+                        "name": "fields",
+                        "required": false,
+                        "in": "query",
+                        "description": "Fields to include in response (translations, redirects)",
+                        "schema": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
                     },
                     {
                         "name": "with_wizard",
@@ -1373,14 +1539,11 @@
                         "schema": { "type": "boolean" }
                     },
                     {
-                        "name": "fields",
-                        "required": false,
-                        "in": "query",
-                        "description": "List of field names among `[translations, redirects]` in the form of `fields=name1&fields=name2`. If not provided, the default value will be `\"translations,redirects\"`",
-                        "schema": {
-                            "type": "array",
-                            "items": { "type": "string" }
-                        }
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "description": "Help Center ID",
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -1405,6 +1568,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
+                        "description": "Help Center ID",
                         "schema": { "type": "number" }
                     }
                 ],
@@ -1440,6 +1604,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
+                        "description": "Help Center ID",
                         "schema": { "type": "number" }
                     }
                 ],
@@ -1453,20 +1618,21 @@
                 "summary": "Retrieve a Help Center by uid",
                 "parameters": [
                     {
-                        "name": "uid",
-                        "required": true,
-                        "in": "path",
-                        "schema": { "type": "string" }
-                    },
-                    {
                         "name": "fields",
                         "required": false,
                         "in": "query",
-                        "description": "List of field names among `[translations, redirects]` in the form of `fields=name1&fields=name2`. If not provided, the default value will be `\"translations,redirects\"`",
+                        "description": "Fields to include in response (translations, redirects)",
                         "schema": {
                             "type": "array",
                             "items": { "type": "string" }
                         }
+                    },
+                    {
+                        "name": "uid",
+                        "required": true,
+                        "in": "path",
+                        "description": "Help Center UID",
+                        "schema": { "type": "string" }
                     }
                 ],
                 "responses": {
@@ -1529,11 +1695,12 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
+                        "description": "Help Center ID to duplicate",
                         "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "",
                         "content": {
                             "application/json": {
@@ -1556,6 +1723,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
+                        "description": "Help Center ID",
                         "schema": { "type": "number" }
                     }
                 ],
@@ -1581,6 +1749,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
+                        "description": "Help Center ID",
                         "schema": { "type": "number" }
                     }
                 ],
@@ -4400,17 +4569,17 @@
                 "tags": ["ingestion"]
             }
         },
-        "/api/help-center/ingestions/product-page-ingested": {
+        "/api/help-center/ingestion/done": {
             "post": {
-                "operationId": "ingestEvent",
-                "summary": "Submit product page ingested event",
+                "operationId": "handleArticleIngestionDone",
+                "summary": "Webhook integration with Apify",
                 "parameters": [],
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ProductPageIngestedDto"
+                                "$ref": "#/components/schemas/ApifyWebhookDto"
                             }
                         }
                     }
@@ -4910,7 +5079,7 @@
                         "items": { "type": "number" }
                     },
                     "raw_text": { "type": "string", "nullable": true },
-                    "dataset_id": { "type": "string" },
+                    "dataset_id": { "type": "string", "nullable": true },
                     "scraping_id": { "type": "string", "nullable": true },
                     "latest_sync": {
                         "format": "date-time",
@@ -5169,6 +5338,11 @@
                         "type": "string"
                     },
                     "is_current": { "type": "boolean" },
+                    "draft_version_id": { "type": "number", "nullable": true },
+                    "published_version_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "rating": { "$ref": "#/components/schemas/Rating" },
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
@@ -5190,6 +5364,8 @@
                     "seo_meta",
                     "visibility_status",
                     "is_current",
+                    "draft_version_id",
+                    "published_version_id",
                     "rating"
                 ]
             },
@@ -5218,6 +5394,7 @@
                         "nullable": true,
                         "type": "string",
                         "enum": [
+                            "aiGenerated",
                             "aiLibraryTab",
                             "allRecommendationsPage",
                             "helpCenterWizard",
@@ -5287,6 +5464,55 @@
                 },
                 "required": ["meta", "object", "data"]
             },
+            "BatchArticlesRequestDto": {
+                "type": "object",
+                "properties": {
+                    "article_ids": {
+                        "description": "Array of article IDs to retrieve source types for",
+                        "example": [1, 2, 3],
+                        "maxItems": 300,
+                        "type": "array",
+                        "items": { "type": "number" }
+                    }
+                },
+                "required": ["article_ids"]
+            },
+            "ArticleSourceTypeResponseDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "description": "Article ID",
+                        "example": 1
+                    },
+                    "source_type": {
+                        "nullable": true,
+                        "enum": [
+                            "document",
+                            "faq-helpcenter",
+                            "guidance-helpcenter",
+                            "store-domain",
+                            "url"
+                        ],
+                        "type": "string",
+                        "description": "Source type of the article",
+                        "example": "faq-helpcenter"
+                    }
+                },
+                "required": ["id", "source_type"]
+            },
+            "BatchDeleteArticlesRequestDto": {
+                "type": "object",
+                "properties": {
+                    "article_ids": {
+                        "description": "Array of article IDs to delete",
+                        "example": [1, 2, 3, 100, 250],
+                        "type": "array",
+                        "items": { "type": "number" }
+                    }
+                },
+                "required": ["article_ids"]
+            },
             "LocalArticleTranslation": {
                 "type": "object",
                 "properties": {
@@ -5343,6 +5569,11 @@
                         "type": "string"
                     },
                     "is_current": { "type": "boolean" },
+                    "draft_version_id": { "type": "number", "nullable": true },
+                    "published_version_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
                         "enum": ["available", "default"],
@@ -5362,7 +5593,9 @@
                     "article_unlisted_id",
                     "seo_meta",
                     "visibility_status",
-                    "is_current"
+                    "is_current",
+                    "draft_version_id",
+                    "published_version_id"
                 ]
             },
             "ArticleWithLocalTranslation": {
@@ -5412,6 +5645,7 @@
                         "nullable": true,
                         "type": "string",
                         "enum": [
+                            "aiGenerated",
                             "aiLibraryTab",
                             "allRecommendationsPage",
                             "helpCenterWizard",
@@ -5499,6 +5733,7 @@
                         "nullable": true,
                         "type": "string",
                         "enum": [
+                            "aiGenerated",
                             "aiLibraryTab",
                             "allRecommendationsPage",
                             "helpCenterWizard",
@@ -5647,6 +5882,7 @@
                         "nullable": true,
                         "type": "string",
                         "enum": [
+                            "aiGenerated",
                             "aiLibraryTab",
                             "allRecommendationsPage",
                             "helpCenterWizard",
@@ -5717,6 +5953,11 @@
                         "type": "string"
                     },
                     "is_current": { "type": "boolean" },
+                    "draft_version_id": { "type": "number", "nullable": true },
+                    "published_version_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "rating": { "$ref": "#/components/schemas/Rating" }
                 },
                 "required": [
@@ -5733,65 +5974,10 @@
                     "seo_meta",
                     "visibility_status",
                     "is_current",
+                    "draft_version_id",
+                    "published_version_id",
                     "rating"
                 ]
-            },
-            "BatchDeleteArticlesRequestDto": {
-                "type": "object",
-                "properties": {
-                    "article_ids": {
-                        "description": "Array of article IDs to delete",
-                        "example": [1, 2, 3, 100, 250],
-                        "type": "array",
-                        "items": { "type": "number" }
-                    }
-                },
-                "required": ["article_ids"]
-            },
-            "BatchUpdateArticleTranslationsVisibilityRequestDto": {
-                "type": "object",
-                "properties": {
-                    "article_ids": {
-                        "description": "Array of article IDs to update translations for",
-                        "example": [1, 2, 3, 100, 250],
-                        "type": "array",
-                        "items": { "type": "number" }
-                    },
-                    "locale_code": {
-                        "type": "string",
-                        "description": "Locale code for translations to update (all articles must have translation in this locale)",
-                        "enum": [
-                            "cs-CZ",
-                            "da-DK",
-                            "nl-NL",
-                            "en-GB",
-                            "en-US",
-                            "fi-FI",
-                            "fr-CA",
-                            "fr-FR",
-                            "de-DE",
-                            "it-IT",
-                            "ja-JP",
-                            "no-NO",
-                            "pt-BR",
-                            "es-ES",
-                            "sv-SE"
-                        ],
-                        "example": "en-US"
-                    },
-                    "visibility_status": {
-                        "enum": ["GORGIAS_INTERNAL", "PUBLIC", "UNLISTED"],
-                        "type": "string",
-                        "description": "New visibility status for all translations",
-                        "example": "PUBLIC"
-                    },
-                    "is_current": {
-                        "type": "boolean",
-                        "description": "Publish immediately (true) or save as draft (false)",
-                        "default": true
-                    }
-                },
-                "required": ["article_ids", "locale_code", "visibility_status"]
             },
             "ArticleTranslationsListPageDto": {
                 "type": "object",
@@ -5866,7 +6052,12 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
-                    "is_current": { "type": "boolean" }
+                    "is_current": { "type": "boolean" },
+                    "draft_version_id": { "type": "number", "nullable": true },
+                    "published_version_id": {
+                        "type": "number",
+                        "nullable": true
+                    }
                 },
                 "required": [
                     "created_datetime",
@@ -5881,7 +6072,9 @@
                     "article_unlisted_id",
                     "seo_meta",
                     "visibility_status",
-                    "is_current"
+                    "is_current",
+                    "draft_version_id",
+                    "published_version_id"
                 ]
             },
             "UpdateArticleTranslationDto": {
@@ -5935,6 +6128,51 @@
                         "default": null
                     }
                 }
+            },
+            "BatchUpdateArticleTranslationsVisibilityRequestDto": {
+                "type": "object",
+                "properties": {
+                    "article_ids": {
+                        "description": "Array of article IDs to update translations for",
+                        "example": [1, 2, 3, 100, 250],
+                        "type": "array",
+                        "items": { "type": "number" }
+                    },
+                    "locale_code": {
+                        "type": "string",
+                        "description": "Locale code for translations to update (all articles must have translation in this locale)",
+                        "enum": [
+                            "cs-CZ",
+                            "da-DK",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
+                            "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
+                            "ja-JP",
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
+                        ],
+                        "example": "en-US"
+                    },
+                    "visibility_status": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string",
+                        "description": "New visibility status for all translations",
+                        "example": "PUBLIC"
+                    },
+                    "is_current": {
+                        "type": "boolean",
+                        "description": "Publish immediately (true) or save as draft (false)",
+                        "default": true
+                    }
+                },
+                "required": ["article_ids", "locale_code", "visibility_status"]
             },
             "CreateArticleTranslationRatingDto": {
                 "type": "object",
@@ -7870,6 +8108,7 @@
                         "nullable": true,
                         "type": "string",
                         "enum": [
+                            "aiGenerated",
                             "aiLibraryTab",
                             "allRecommendationsPage",
                             "helpCenterWizard",
@@ -9312,7 +9551,7 @@
                         "items": { "type": "number" }
                     },
                     "raw_text": { "type": "string", "nullable": true },
-                    "dataset_id": { "type": "string" },
+                    "dataset_id": { "type": "string", "nullable": true },
                     "scraping_id": { "type": "string", "nullable": true },
                     "latest_sync": {
                         "format": "date-time",
@@ -9362,25 +9601,6 @@
                 "type": "object",
                 "properties": { "scraping_id": { "type": "string" } },
                 "required": ["scraping_id"]
-            },
-            "ProductPageIngestedDto": {
-                "type": "object",
-                "properties": {
-                    "accountId": { "type": "number" },
-                    "sourceId": { "type": "string" },
-                    "externalId": { "type": "string" },
-                    "url": { "type": "string" },
-                    "title": { "type": "string" },
-                    "content": { "type": "string" }
-                },
-                "required": [
-                    "accountId",
-                    "sourceId",
-                    "externalId",
-                    "url",
-                    "title",
-                    "content"
-                ]
             },
             "ApifyFailedIngestionDto": {
                 "type": "object",

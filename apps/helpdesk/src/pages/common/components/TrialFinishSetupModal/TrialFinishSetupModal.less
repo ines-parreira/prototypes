@@ -56,7 +56,7 @@
 
     .featureContainer {
         border-radius: 12px;
-        background-color: var(--feedback-success-0);
+        background-color: var(--feedback-success-0); // legacy
         padding: var(--layout-spacing-m);
     }
 
@@ -76,7 +76,7 @@
     .featureBenefit {
         .caption-semibold;
         margin-top: 10px;
-        color: var(--accessory-green-3);
+        color: var(--accessory-green-3); // legacy
         display: flex;
         gap: var(--layout-spacing-xxs);
         align-items: flex-start;
@@ -100,7 +100,7 @@
         margin-top: var(--layout-spacing-s);
         margin-bottom: 5px;
         border-radius: 100px;
-        background: var(--neutral-grey-3);
+        background: var(--neutral-grey-3); // legacy
     }
 
     .featureCard:nth-of-type(2) {
@@ -112,7 +112,7 @@
             180deg,
             var(--feedback-success-4) 0%,
             var(--neutral-grey-2) 82.95%
-        );
+        ); // legacy
     }
 
     .featureCard:nth-of-type(2) .iconBackground {
@@ -120,9 +120,9 @@
     }
 
     .featureCompleted .icon {
-        background: var(--feedback-success-4);
-        color: var(--neutral-grey-0);
-        border-color: var(--feedback-success-4);
+        background: var(--feedback-success-4); // legacy
+        color: var(--neutral-grey-0); // legacy
+        border-color: var(--feedback-success-4); // legacy
     }
 
     .icon {
@@ -133,7 +133,7 @@
         align-self: center;
         border-radius: 15px;
         justify-content: center;
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
     }
 }
 
@@ -146,5 +146,35 @@
         background-color: var(--content-neutral-strong) !important;
         color: var(--content-inverse-primary) !important;
         border-color: var(--content-neutral-strong) !important;
+    }
+
+    .featureContainer {
+        background-color: var(--surface-success-primary);
+    }
+
+    .featureBenefit {
+        color: var(--content-success-primary);
+    }
+
+    .iconBackground {
+        background: var(--border-neutral-default);
+    }
+
+    .featureCompleted .iconBackground {
+        background: linear-gradient(
+            180deg,
+            var(--border-success-primary) 0%,
+            var(--surface-neutral-tertiary) 82.95%
+        );
+    }
+
+    .featureCompleted .icon {
+        background: var(--border-success-primary);
+        color: var(--content-inverted-default);
+        border-color: var(--border-success-primary);
+    }
+
+    .icon {
+        border: 1px solid var(--border-neutral-default);
     }
 }

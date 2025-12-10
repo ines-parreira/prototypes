@@ -14,6 +14,7 @@ import {
     HelpCenterTranslationProvider,
     useHelpCenterTranslation,
 } from 'pages/settings/helpCenter/providers/HelpCenterTranslation/HelpCenterTranslation'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -42,7 +43,7 @@ const helpCenter = {
                 id: 555,
                 contact_form_id: 111,
             }),
-        ),
+        ) as Components.Schemas.GetHelpCenterDto['translations'],
 }
 
 const defaultState: Partial<RootState> = {

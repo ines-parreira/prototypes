@@ -27,7 +27,7 @@
     }
 
     .resultTotal {
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         font-weight: 600;
         font-size: 11px;
         letter-spacing: 1.1px;
@@ -58,7 +58,7 @@
         .headerText {
             margin-top: 5px;
             font-weight: 500;
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
@@ -85,6 +85,18 @@
             display: none;
             flex-direction: row;
             gap: 0.5em;
+        }
+    }
+}
+
+.axiom :local {
+    .resultTotal {
+        color: var(--content-accent-default);
+    }
+
+    .headerResult {
+        .headerText {
+            color: var(--content-neutral-default);
         }
     }
 }

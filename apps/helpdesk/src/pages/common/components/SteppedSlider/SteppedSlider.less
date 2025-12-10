@@ -58,7 +58,15 @@
 
     .tooltip {
         :global(.tooltip-inner) {
-            background-color: var(--neutral-grey-6);
+            background-color: var(--neutral-grey-6); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .tooltip {
+        :global(.tooltip-inner) {
+            background-color: var(--content-neutral-default);
         }
     }
 }

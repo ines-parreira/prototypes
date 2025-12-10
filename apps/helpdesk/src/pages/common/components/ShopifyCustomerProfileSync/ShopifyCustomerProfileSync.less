@@ -11,15 +11,15 @@
         height: 48px;
         padding: 12px;
         gap: 10px;
-        background: var(--neutral-grey-0);
-        border: 1px var(--neutral-grey-3);
+        background: var(--neutral-grey-0); // legacy
+        border: 1px var(--neutral-grey-3); // legacy
     }
 
     .customerProfileSyncButtonContainer {
         border-left: 2px;
         padding: 8px 10px 8px 12px;
         gap: 12px;
-        background: var(--neutral-grey-2);
+        background: var(--neutral-grey-2); // legacy
     }
 
     .shopifyLogo {
@@ -28,5 +28,16 @@
         height: 21px;
         pointer-events: none;
         margin-right: 5px;
+    }
+}
+
+.axiom :local {
+    .customerProfileSyncButtonItem {
+        background: var(--elevation-neutral-default);
+        border: 1px var(--border-neutral-default);
+    }
+
+    .customerProfileSyncButtonContainer {
+        background: var(--surface-neutral-tertiary);
     }
 }

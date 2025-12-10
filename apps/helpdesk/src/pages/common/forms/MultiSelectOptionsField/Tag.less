@@ -3,8 +3,8 @@
         display: inline-flex !important;
         max-width: 100%;
         align-items: center;
-        color: var(--main-primary-4);
-        background-color: var(--main-primary-0);
+        color: var(--main-primary-4); // legacy
+        background-color: var(--main-primary-0); // legacy
         margin: 0.25em;
         margin-left: 0 !important;
         .closeIcon {
@@ -23,5 +23,12 @@
             font-size: 11px;
             padding-left: 6px;
         }
+    }
+}
+
+.axiom :local .tag {
+    &.badge {
+        color: var(--content-accent-default);
+        background-color: var(--surface-neutral-secondary);
     }
 }

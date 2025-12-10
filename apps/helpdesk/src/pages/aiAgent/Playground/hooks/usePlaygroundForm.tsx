@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
+import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../constants'
@@ -9,6 +10,14 @@ import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { usePublicResources } from '../../hooks/usePublicResources'
 import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'
 import type { PlaygroundFormValues } from '../components/PlaygroundChat/PlaygroundChat.types'
+import {
+    analyzeKnowledgeSources,
+    formatSyncingSourcesMessage,
+} from '../utils/knowledgeSourcesAnalysis'
+import type {
+    FormattedSyncingMessage,
+    KnowledgeSourcesAnalysis,
+} from '../utils/knowledgeSourcesAnalysis'
 
 const INITIAL_FORM_VALUES: PlaygroundFormValues = {
     message: '',
@@ -46,20 +55,26 @@ export const usePlaygroundForm = ({
         },
     )
 
+    const { ingestedFiles } = useFileIngestion({
+        helpCenterId: snippetHelpCenterId,
+    })
+
     const guidanceUsed = useMemo(() => {
         return guidanceArticles?.filter(
             (article) => article.visibility === 'PUBLIC',
         )
     }, [guidanceArticles])
 
-    const isPendingResources = sourceItems
-        ? sourceItems.some((item) => item.status === 'loading')
-        : false
-    const isKnowledgeBaseEmpty =
-        sourceItems !== undefined &&
-        sourceItems.length === 0 &&
-        helpCenterId === null &&
-        guidanceUsed.length === 0
+    const knowledgeSourcesAnalysis: KnowledgeSourcesAnalysis = useMemo(
+        () =>
+            analyzeKnowledgeSources({
+                sourceItems,
+                ingestedFiles,
+                helpCenterId,
+                guidanceUsedCount: guidanceUsed?.length ?? 0,
+            }),
+        [sourceItems, ingestedFiles, helpCenterId, guidanceUsed],
+    )
 
     const validateFormValues = (formValues: PlaygroundFormValues) => {
         const formValuesValidity: Record<string, boolean> = {
@@ -77,28 +92,48 @@ export const usePlaygroundForm = ({
     const clearForm = useCallback(() => {
         setFormValues(INITIAL_FORM_VALUES)
     }, [])
+
     const isDisabled = useMemo(
-        () => isPendingResources || isKnowledgeBaseEmpty || !isFormValid,
-        [isFormValid, isKnowledgeBaseEmpty, isPendingResources],
+        () => !knowledgeSourcesAnalysis.hasAvailableSources || !isFormValid,
+        [knowledgeSourcesAnalysis.hasAvailableSources, isFormValid],
     )
 
     const disabledMessage = useMemo(() => {
-        if (isPendingResources) {
-            return 'Testing currently disabled. Please wait knowledges sources to sync.'
-        }
-
-        if (isKnowledgeBaseEmpty) {
+        if (!knowledgeSourcesAnalysis.hasAvailableSources) {
+            if (knowledgeSourcesAnalysis.hasSyncingSources) {
+                return (
+                    <div>
+                        Testing currently unavailable. Knowledge sources are
+                        syncing. Please wait for syncing to complete or add
+                        additional sources on the{' '}
+                        <Link to={routes.knowledge}>Knowledge page</Link>.
+                    </div>
+                )
+            }
             return (
                 <div>
-                    Testing currently disabled. Please add Help Center or Public
-                    URL on{' '}
-                    <Link to={routes.configuration()}>Settings page</Link>.
+                    Testing unavailable. Please add at least one knowledge
+                    source on the{' '}
+                    <Link to={routes.knowledge}>Knowledge page</Link>.
                 </div>
             )
         }
 
         return undefined
-    }, [isKnowledgeBaseEmpty, isPendingResources, routes])
+    }, [
+        knowledgeSourcesAnalysis.hasAvailableSources,
+        knowledgeSourcesAnalysis.hasSyncingSources,
+        routes,
+    ])
+
+    const syncingMessage: FormattedSyncingMessage | null = useMemo(() => {
+        if (knowledgeSourcesAnalysis.hasSyncingSources) {
+            return formatSyncingSourcesMessage(
+                knowledgeSourcesAnalysis.syncingSources,
+            )
+        }
+        return null
+    }, [knowledgeSourcesAnalysis])
 
     const onFormValuesChange = useCallback(
         <Key extends keyof PlaygroundFormValues>(
@@ -114,13 +149,13 @@ export const usePlaygroundForm = ({
     )
 
     return {
-        isPendingResources,
-        isKnowledgeBaseEmpty,
         isFormValid,
         formValues,
         isDisabled,
         disabledMessage,
+        syncingMessage,
         onFormValuesChange,
         clearForm,
+        knowledgeSourcesAnalysis,
     }
 }

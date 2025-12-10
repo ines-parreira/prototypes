@@ -12,6 +12,7 @@ describe('PublicSourcesSection utils', () => {
                 id: 1,
                 status: 'SUCCESSFUL',
                 url: 'https://example.com',
+                source: 'url',
             } as Components.Schemas.ArticleIngestionLogDto
             const result =
                 mapArticleIngestionLogsToSourceItem(articleIngestionLog)
@@ -20,6 +21,7 @@ describe('PublicSourcesSection utils', () => {
                 id: 1,
                 status: 'done',
                 url: 'https://example.com',
+                source: 'url',
             })
         })
     })
