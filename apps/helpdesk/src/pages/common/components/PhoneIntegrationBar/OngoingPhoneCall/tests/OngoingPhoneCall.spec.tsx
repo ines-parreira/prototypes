@@ -16,8 +16,10 @@ import { TwilioSocketEventType } from 'business/twilio'
 import { useFlag } from 'core/flags'
 import * as twilioCallUtils from 'hooks/integrations/phone/twilioCall.utils'
 import client from 'models/api/resources'
+import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
 import type { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import { TransferType } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
+import { useCustomSound } from 'pages/common/hooks/useCustomSound'
 import socketManager from 'services/socketManager'
 import type { VoiceCallTransferFailedEvent } from 'services/socketManager/types'
 import { SocketEventType } from 'services/socketManager/types'
@@ -109,8 +111,13 @@ const mockUsePutCallParticipantOnHold = usePutCallParticipantOnHold as jest.Mock
 jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = assumeMock(useFlag)
 
+jest.mock('pages/common/hooks/useCustomSound')
+const useCustomSoundMock = assumeMock(useCustomSound)
+
 describe('<OngoingPhoneCall/>', () => {
     let store: MockStoreEnhanced
+    const playSoundMock = jest.fn()
+
     const mockedServer = new MockAdapter(client)
     const integrationId = 1
     const otherIntegrationId = 2
@@ -165,6 +172,12 @@ describe('<OngoingPhoneCall/>', () => {
             }
             return false
         })
+
+        useCustomSoundMock.mockReturnValue({ playSound: playSoundMock })
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
     })
 
     const renderComponent = (store: Store, call: Call) => {
@@ -574,5 +587,54 @@ describe('<OngoingPhoneCall/>', () => {
         renderComponent(store, call)
 
         expect(screen.getByText('Queue name 1234')).toBeInTheDocument()
+    })
+
+    describe('Whispering warning', () => {
+        it('should show icon warning only when whispering starts', async () => {
+            const call = mockIncomingCall(integrationId) as Call
+
+            renderComponent(store, call)
+
+            // whispering starts
+            await act(() =>
+                call.emit('messageReceived', {
+                    content: {
+                        type: TwilioMessageType.MonitoringUpdate,
+                        data: {
+                            monitored_agent_id: 123,
+                            monitoring_status: 'whispering',
+                        },
+                    },
+                }),
+            )
+
+            expect(
+                await screen.findByRole('img', {
+                    name: 'headset',
+                }),
+            ).toBeInTheDocument()
+            expect(playSoundMock).toHaveBeenCalledWith()
+
+            playSoundMock.mockReset()
+            // whispering ends
+            await act(() =>
+                call.emit('messageReceived', {
+                    content: {
+                        type: TwilioMessageType.MonitoringUpdate,
+                        data: {
+                            monitored_agent_id: 123,
+                            monitoring_status: 'listening',
+                        },
+                    },
+                }),
+            )
+
+            expect(
+                await screen.queryByRole('img', {
+                    name: 'headset',
+                }),
+            ).not.toBeInTheDocument()
+            expect(playSoundMock).not.toHaveBeenCalled()
+        })
     })
 })

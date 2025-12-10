@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import { useCopyToClipboard, useId } from '@repo/hooks'
 import _uniqueId from 'lodash/uniqueId'
 
@@ -88,8 +90,20 @@ export const KnowledgeEditorSidePanelFieldDateField = ({
 }) => <span>{date ? formatDate(date) : '-'}</span>
 
 export const KnowledgeEditorSidePanelFieldURL = ({ url }: { url?: string }) => {
-    const [, copyToClipboard] = useCopyToClipboard()
+    const [copyState, copyToClipboard] = useCopyToClipboard()
+    const [showCheckmark, setShowCheckmark] = useState(false)
     const textId = _uniqueId(`copy-text`)
+
+    useEffect(() => {
+        if (copyState.value) {
+            setShowCheckmark(true)
+            const timer = setTimeout(() => {
+                setShowCheckmark(false)
+            }, 3000)
+
+            return () => clearTimeout(timer)
+        }
+    }, [copyState])
 
     const handleCopyCode = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -111,7 +125,10 @@ export const KnowledgeEditorSidePanelFieldURL = ({ url }: { url?: string }) => {
             </a>
 
             <span onClick={handleCopyCode} className={css.copyButton}>
-                <Icon name="copy" size={IconSize.Xs} />
+                <Icon
+                    name={showCheckmark ? 'check-all' : 'copy'}
+                    size={IconSize.Xs}
+                />
             </span>
         </span>
     ) : (

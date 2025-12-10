@@ -12,10 +12,6 @@ export enum CancellationFlowStep {
     cancellationSummary,
 }
 
-export enum CommonReasonLabel {
-    Other = 'Other',
-}
-
 export enum CancellationPrimaryReasonLabel {
     Pricing = 'Pricing & Subscription',
     DoesNotFitMyNeeds = 'Product Fit, Features & Roadmap',
@@ -91,7 +87,6 @@ export const ProductCancellationReasons: CancellationReason[] = [
             {
                 label: CancellationSecondaryReasonLabel.TaxesCurrencyOrFXFriction,
             },
-            { label: CommonReasonLabel.Other },
         ],
     },
     {
@@ -113,7 +108,6 @@ export const ProductCancellationReasons: CancellationReason[] = [
             {
                 label: CancellationSecondaryReasonLabel.ProductNegativelyImpactedBusiness,
             },
-            { label: CommonReasonLabel.Other },
         ],
     },
     {
@@ -137,7 +131,6 @@ export const ProductCancellationReasons: CancellationReason[] = [
                 label: CancellationSecondaryReasonLabel.InsufficientROIOrUnclearImpact,
             },
             { label: CancellationSecondaryReasonLabel.NotSolvingCoreNeeds },
-            { label: CommonReasonLabel.Other },
         ],
     },
     {
@@ -155,7 +148,6 @@ export const ProductCancellationReasons: CancellationReason[] = [
                 label: CancellationSecondaryReasonLabel.DataQualityAndAccuracyIssues,
             },
             { label: CancellationSecondaryReasonLabel.ScaleLimitations },
-            { label: CommonReasonLabel.Other },
         ],
     },
     {
@@ -174,7 +166,6 @@ export const ProductCancellationReasons: CancellationReason[] = [
             {
                 label: CancellationSecondaryReasonLabel.DocumentationNotSufficient,
             },
-            { label: CommonReasonLabel.Other },
         ],
     },
     {
@@ -190,12 +181,7 @@ export const ProductCancellationReasons: CancellationReason[] = [
             {
                 label: CancellationSecondaryReasonLabel.ContractDPAOrLegalTermsMisalignment,
             },
-            { label: CommonReasonLabel.Other },
         ],
-    },
-    {
-        primaryReason: { label: CommonReasonLabel.Other },
-        secondaryReasons: [],
     },
 ]
 

@@ -13,6 +13,7 @@ import { usePlaygroundPrerequisites } from '../hooks/usePlaygroundPrerequisites'
 import { usePlaygroundResources } from '../hooks/usePlaygroundResources'
 import { usePlaygroundTracking } from '../hooks/usePlaygroundTracking'
 import { useShopNameResolution } from '../hooks/useShopNameResolution'
+import type { SupportedPlaygroundModes } from '../types'
 
 const mockUseMessagesContext = jest.fn(() => ({
     messages: [],
@@ -547,6 +548,329 @@ describe('AiAgentPlayground', () => {
             expect(
                 screen.getByText('PlaygroundInputSection'),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('Prop stabilization', () => {
+        it('should stabilize draftKnowledge prop when values remain the same', () => {
+            const draftKnowledge1 = {
+                sourceId: 123,
+                sourceSetId: 456,
+            }
+            const draftKnowledge2 = {
+                sourceId: 123,
+                sourceSetId: 456,
+            }
+
+            let capturedProps: any = null
+            const PlaygroundProviderMock = jest
+                .fn()
+                .mockImplementation(({ children, ...props }) => {
+                    capturedProps = props
+                    return <div>{children}</div>
+                })
+
+            jest.spyOn(
+                require('../contexts/PlaygroundContext'),
+                'PlaygroundProvider',
+            ).mockImplementation(PlaygroundProviderMock)
+
+            const { rerender } = renderComponent({
+                draftKnowledge: draftKnowledge1,
+            })
+
+            const firstCapturedDraftKnowledge = capturedProps?.draftKnowledge
+
+            rerender(
+                <Provider store={mockStore({})}>
+                    <QueryClientProvider client={mockQueryClient}>
+                        <AiAgentPlayground draftKnowledge={draftKnowledge2} />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const secondCapturedDraftKnowledge = capturedProps?.draftKnowledge
+
+            expect(firstCapturedDraftKnowledge).toBe(
+                secondCapturedDraftKnowledge,
+            )
+        })
+
+        it('should return undefined when draftKnowledge has undefined sourceId', () => {
+            const draftKnowledge = {
+                sourceId: undefined,
+                sourceSetId: 456,
+            }
+
+            renderComponent({ draftKnowledge })
+
+            expect(
+                screen.getByText('PlaygroundInputSection'),
+            ).toBeInTheDocument()
+        })
+
+        it('should return undefined when draftKnowledge has undefined sourceSetId', () => {
+            const draftKnowledge = {
+                sourceId: 123,
+                sourceSetId: undefined,
+            }
+
+            renderComponent({ draftKnowledge })
+
+            expect(
+                screen.getByText('PlaygroundInputSection'),
+            ).toBeInTheDocument()
+        })
+
+        it('should return undefined when draftKnowledge is undefined', () => {
+            renderComponent({ draftKnowledge: undefined })
+
+            expect(
+                screen.getByText('PlaygroundInputSection'),
+            ).toBeInTheDocument()
+        })
+
+        it('should update when draftKnowledge values actually change', () => {
+            const draftKnowledge1 = {
+                sourceId: 123,
+                sourceSetId: 456,
+            }
+            const draftKnowledge2 = {
+                sourceId: 789,
+                sourceSetId: 456,
+            }
+
+            let capturedProps: any = null
+            const PlaygroundProviderMock = jest
+                .fn()
+                .mockImplementation(({ children, ...props }) => {
+                    capturedProps = props
+                    return <div>{children}</div>
+                })
+
+            jest.spyOn(
+                require('../contexts/PlaygroundContext'),
+                'PlaygroundProvider',
+            ).mockImplementation(PlaygroundProviderMock)
+
+            const { rerender } = renderComponent({
+                draftKnowledge: draftKnowledge1,
+            })
+
+            const firstCapturedDraftKnowledge = capturedProps?.draftKnowledge
+
+            rerender(
+                <Provider store={mockStore({})}>
+                    <QueryClientProvider client={mockQueryClient}>
+                        <AiAgentPlayground draftKnowledge={draftKnowledge2} />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const secondCapturedDraftKnowledge = capturedProps?.draftKnowledge
+
+            expect(firstCapturedDraftKnowledge).not.toBe(
+                secondCapturedDraftKnowledge,
+            )
+            expect(secondCapturedDraftKnowledge).toEqual({
+                sourceId: 789,
+                sourceSetId: 456,
+            })
+        })
+
+        it('should stabilize supportedModes prop when array values remain the same', () => {
+            const supportedModes1: SupportedPlaygroundModes = [
+                'inbound',
+                'outbound',
+            ]
+            const supportedModes2: SupportedPlaygroundModes = [
+                'inbound',
+                'outbound',
+            ]
+
+            let capturedProps: any = null
+            const PlaygroundProviderMock = jest
+                .fn()
+                .mockImplementation(({ children, ...props }) => {
+                    capturedProps = props
+                    return <div>{children}</div>
+                })
+
+            jest.spyOn(
+                require('../contexts/PlaygroundContext'),
+                'PlaygroundProvider',
+            ).mockImplementation(PlaygroundProviderMock)
+
+            const { rerender } = renderComponent({
+                supportedModes: supportedModes1,
+            })
+
+            const firstCapturedSupportedModes = capturedProps?.supportedModes
+
+            rerender(
+                <Provider store={mockStore({})}>
+                    <QueryClientProvider client={mockQueryClient}>
+                        <AiAgentPlayground supportedModes={supportedModes2} />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const secondCapturedSupportedModes = capturedProps?.supportedModes
+
+            expect(firstCapturedSupportedModes).toBe(
+                secondCapturedSupportedModes,
+            )
+        })
+
+        it('should update when supportedModes array values actually change', () => {
+            const supportedModes1: SupportedPlaygroundModes = ['inbound']
+            const supportedModes2: SupportedPlaygroundModes = [
+                'inbound',
+                'outbound',
+            ]
+
+            let capturedProps: any = null
+            const PlaygroundProviderMock = jest
+                .fn()
+                .mockImplementation(({ children, ...props }) => {
+                    capturedProps = props
+                    return <div>{children}</div>
+                })
+
+            jest.spyOn(
+                require('../contexts/PlaygroundContext'),
+                'PlaygroundProvider',
+            ).mockImplementation(PlaygroundProviderMock)
+
+            const { rerender } = renderComponent({
+                supportedModes: supportedModes1,
+            })
+
+            const firstCapturedSupportedModes = capturedProps?.supportedModes
+
+            rerender(
+                <Provider store={mockStore({})}>
+                    <QueryClientProvider client={mockQueryClient}>
+                        <AiAgentPlayground supportedModes={supportedModes2} />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const secondCapturedSupportedModes = capturedProps?.supportedModes
+
+            expect(firstCapturedSupportedModes).not.toBe(
+                secondCapturedSupportedModes,
+            )
+            expect(secondCapturedSupportedModes).toEqual([
+                'inbound',
+                'outbound',
+            ])
+        })
+
+        it('should handle undefined supportedModes', () => {
+            renderComponent({ supportedModes: undefined })
+
+            expect(
+                screen.getByText('PlaygroundInputSection'),
+            ).toBeInTheDocument()
+        })
+
+        it('should stabilize empty supportedModes array', () => {
+            const supportedModes1: any[] = []
+            const supportedModes2: any[] = []
+
+            let capturedProps: any = null
+            const PlaygroundProviderMock = jest
+                .fn()
+                .mockImplementation(({ children, ...props }) => {
+                    capturedProps = props
+                    return <div>{children}</div>
+                })
+
+            jest.spyOn(
+                require('../contexts/PlaygroundContext'),
+                'PlaygroundProvider',
+            ).mockImplementation(PlaygroundProviderMock)
+
+            const { rerender } = renderComponent({
+                supportedModes: supportedModes1,
+            })
+
+            const firstCapturedSupportedModes = capturedProps?.supportedModes
+
+            rerender(
+                <Provider store={mockStore({})}>
+                    <QueryClientProvider client={mockQueryClient}>
+                        <AiAgentPlayground supportedModes={supportedModes2} />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const secondCapturedSupportedModes = capturedProps?.supportedModes
+
+            expect(firstCapturedSupportedModes).toBe(
+                secondCapturedSupportedModes,
+            )
+        })
+
+        it('should not cause re-render when both draftKnowledge and supportedModes remain the same', () => {
+            const props1 = {
+                draftKnowledge: {
+                    sourceId: 123,
+                    sourceSetId: 456,
+                },
+                supportedModes: [
+                    'inbound',
+                    'outbound',
+                ] as SupportedPlaygroundModes,
+            }
+
+            const props2 = {
+                draftKnowledge: {
+                    sourceId: 123,
+                    sourceSetId: 456,
+                },
+                supportedModes: [
+                    'inbound',
+                    'outbound',
+                ] as SupportedPlaygroundModes,
+            }
+
+            let capturedProps: any = null
+            const PlaygroundProviderMock = jest
+                .fn()
+                .mockImplementation(({ children, ...props }) => {
+                    capturedProps = props
+                    return <div>{children}</div>
+                })
+
+            jest.spyOn(
+                require('../contexts/PlaygroundContext'),
+                'PlaygroundProvider',
+            ).mockImplementation(PlaygroundProviderMock)
+
+            const { rerender } = renderComponent(props1)
+
+            const firstCapturedDraftKnowledge = capturedProps?.draftKnowledge
+            const firstCapturedSupportedModes = capturedProps?.supportedModes
+
+            rerender(
+                <Provider store={mockStore({})}>
+                    <QueryClientProvider client={mockQueryClient}>
+                        <AiAgentPlayground {...props2} />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const secondCapturedDraftKnowledge = capturedProps?.draftKnowledge
+            const secondCapturedSupportedModes = capturedProps?.supportedModes
+
+            expect(firstCapturedDraftKnowledge).toBe(
+                secondCapturedDraftKnowledge,
+            )
+            expect(firstCapturedSupportedModes).toBe(
+                secondCapturedSupportedModes,
+            )
         })
     })
 })

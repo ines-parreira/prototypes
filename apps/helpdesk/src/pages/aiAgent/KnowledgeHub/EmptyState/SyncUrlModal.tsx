@@ -81,6 +81,8 @@ export const SyncUrlModal = ({
         pageName: PAGE_NAME.URL,
     })
 
+    const isResync = originalUrl !== null
+
     const closeModal = useCallback(() => {
         setIsOpen(false)
         setUrl('')
@@ -144,10 +146,13 @@ export const SyncUrlModal = ({
     }, [url, validateUrl])
 
     const handleSync = useCallback(async () => {
-        const validationError = validateUrl(url)
-        if (validationError) {
-            setError(validationError)
-            return
+        // Skip validation for re-sync since URL is already validated
+        if (!isResync) {
+            const validationError = validateUrl(url)
+            if (validationError) {
+                setError(validationError)
+                return
+            }
         }
 
         setIsLoading(true)
@@ -191,43 +196,61 @@ export const SyncUrlModal = ({
         closeModal,
         queryClient,
         helpCenterId,
+        isResync,
     ])
 
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent) => {
-            if (e.key === 'Enter' && !isLoading) {
+            if (e.key === 'Enter' && !isLoading && !isResync) {
                 void handleSync()
             }
         },
-        [handleSync, isLoading],
+        [handleSync, isLoading, isResync],
     )
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={closeModal} size="lg">
-            <Heading slot="title">Sync URL</Heading>
-            <Box flexDirection="column" gap="md">
-                <Text>
-                    Add a link to a public page AI Agent can learn from like
-                    blog posts or external documentation.
-                </Text>
-                <TextField
-                    label="URL"
-                    value={url}
-                    onChange={handleUrlChange}
-                    onKeyDown={handleKeyDown}
-                    placeholder="https://www.example.com/return-policy"
-                    isDisabled={isLoading}
-                    error={error || undefined}
-                    autoFocus
-                />
-                <Text size="sm" color="secondary">
-                    Gorgias Help Center and store website links are not
-                    supported
-                </Text>
+        <Modal isOpen={isOpen} onOpenChange={closeModal} size="sm">
+            <Heading slot="title">{isResync ? 'Sync URL' : 'Add URL'}</Heading>
+            <Box flexDirection="column" gap="md" marginTop="md">
+                {isResync ? (
+                    <>
+                        <Text color="critical">
+                            Syncing will replace all existing snippets and reset
+                            any disabled snippets from this URL.
+                        </Text>
+                        <Text color="critical">
+                            This action cannot be undone. You will need to
+                            review newly generated snippets after syncing.
+                        </Text>
+                    </>
+                ) : (
+                    <>
+                        <Text>
+                            Add a single-page URL to sync. Only content from the
+                            individual page is used, subpages and media are
+                            excluded.
+                            <br />
+                        </Text>
+                        <Text>
+                            URLs from your Gorgias Help Center are not
+                            supported.
+                        </Text>
+                        <TextField
+                            label="URL"
+                            value={url}
+                            onChange={handleUrlChange}
+                            onKeyDown={handleKeyDown}
+                            placeholder="https://www.example.com/return-policy"
+                            isDisabled={isLoading}
+                            error={error || undefined}
+                            autoFocus
+                        />
+                    </>
+                )}
             </Box>
-            <Box justifyContent="flex-end" gap="sm">
+            <Box justifyContent="flex-end" gap="sm" marginTop="md">
                 <Button
-                    variant="secondary"
+                    variant="tertiary"
                     onClick={closeModal}
                     isDisabled={isLoading}
                 >
@@ -235,7 +258,7 @@ export const SyncUrlModal = ({
                 </Button>
                 <Button
                     id={syncButtonId}
-                    variant="primary"
+                    intent={isResync ? 'destructive' : 'regular'}
                     onClick={handleSync}
                     isDisabled={isLoading || !url || isSyncLessThan24h}
                     leadingSlot="arrows-reload-alt-1"

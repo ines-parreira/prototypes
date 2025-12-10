@@ -33,7 +33,7 @@ export const findCancellationScenarioByProductType = (
 export const formatCancellationReasonsForZapier = (
     primaryReason: Reason | null,
     secondaryReason: Reason | null,
-    otherReason: Reason | null,
+    additionalDetails: Reason | null,
 ): string => {
     const reasons: string[] = []
 
@@ -45,8 +45,8 @@ export const formatCancellationReasonsForZapier = (
         reasons.push(`Secondary: ${secondaryReason.label}`)
     }
 
-    if (otherReason) {
-        reasons.push(`Additional details: ${otherReason.label}`)
+    if (additionalDetails) {
+        reasons.push(`Additional details: ${additionalDetails.label}`)
     }
 
     return reasons.join('\n')

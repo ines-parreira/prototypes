@@ -125,7 +125,7 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
                     )}
                     <Button
                         intent="destructive"
-                        leadingSlot="headset_mic"
+                        leadingSlot="headset"
                         onClick={() => call.disconnect()}
                     >
                         Stop Listening

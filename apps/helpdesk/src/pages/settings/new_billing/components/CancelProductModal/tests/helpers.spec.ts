@@ -50,12 +50,14 @@ describe('formatCancellationReasonsForZapier', () => {
     it('should format all three reasons', () => {
         const primaryReason: Reason = { label: 'Too expensive' }
         const secondaryReason: Reason = { label: 'Not enough features' }
-        const otherReason: Reason = { label: 'I found a better alternative' }
+        const additionalDetails: Reason = {
+            label: 'I found a better alternative',
+        }
 
         const result = formatCancellationReasonsForZapier(
             primaryReason,
             secondaryReason,
-            otherReason,
+            additionalDetails,
         )
 
         expect(result).toBe(
@@ -77,7 +79,7 @@ describe('formatCancellationReasonsForZapier', () => {
         expect(result).toBe('Primary: Too expensive')
     })
 
-    it('should format primary and secondary reasons when other is null', () => {
+    it('should format primary and secondary reasons when additional details is null', () => {
         const primaryReason: Reason = { label: 'Too expensive' }
         const secondaryReason: Reason = { label: 'Not enough features' }
 
@@ -92,14 +94,16 @@ describe('formatCancellationReasonsForZapier', () => {
         )
     })
 
-    it('should format primary and other reasons when secondary is null', () => {
+    it('should format primary and additional details when secondary is null', () => {
         const primaryReason: Reason = { label: 'Too expensive' }
-        const otherReason: Reason = { label: 'I found a better alternative' }
+        const additionalDetails: Reason = {
+            label: 'I found a better alternative',
+        }
 
         const result = formatCancellationReasonsForZapier(
             primaryReason,
             null,
-            otherReason,
+            additionalDetails,
         )
 
         expect(result).toBe(

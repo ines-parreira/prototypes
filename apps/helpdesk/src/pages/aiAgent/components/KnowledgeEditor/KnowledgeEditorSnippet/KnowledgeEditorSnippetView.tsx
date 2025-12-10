@@ -60,7 +60,7 @@ export const KnowledgeEditorSnippetView = ({
     snippet,
     isFullscreen,
 }: Props) => {
-    const [isDetailsView, setIsDetailsView] = useState(false)
+    const [isDetailsView, setIsDetailsView] = useState(true)
     const onToggleDetailsView = () => {
         setIsDetailsView(!isDetailsView)
     }

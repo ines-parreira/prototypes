@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
@@ -59,7 +59,9 @@ describe('KnowledgeEditorSnippetView', () => {
         )
 
         expect(screen.getByText('Test URL Snippet')).toBeInTheDocument()
-        expect(screen.getByText('https://example.com')).toBeInTheDocument()
+        expect(
+            screen.getAllByText('https://example.com').length,
+        ).toBeGreaterThan(0)
         expect(
             container.querySelector('.contentWrapper')?.textContent,
         ).toContain('URL snippet content')
@@ -74,7 +76,7 @@ describe('KnowledgeEditorSnippetView', () => {
         )
 
         expect(screen.getByText('Test Document Snippet')).toBeInTheDocument()
-        expect(screen.getByText('document.pdf')).toBeInTheDocument()
+        expect(screen.getAllByText('document.pdf').length).toBeGreaterThan(0)
         expect(
             container.querySelector('.contentWrapper')?.textContent,
         ).toContain('Document snippet content')
@@ -104,21 +106,22 @@ describe('KnowledgeEditorSnippetView', () => {
             <KnowledgeEditorSnippetView {...baseProps} snippet={urlSnippet} />,
         )
 
-        const detailsButton = screen.getByRole('button', {
-            name: /expand side panel/i,
+        // Side panel is visible by default with collapse button
+        const collapseButton = screen.getByRole('button', {
+            name: /collapse side panel/i,
         })
-        await act(() => userEvent.click(detailsButton))
+        expect(collapseButton).toBeInTheDocument()
 
         expect(screen.getByText('Test URL Snippet')).toBeInTheDocument()
     })
 
-    it('hides side panel by default', () => {
+    it('shows side panel by default', () => {
         render(
             <KnowledgeEditorSnippetView {...baseProps} snippet={urlSnippet} />,
         )
 
         const detailsButton = screen.getByRole('button', {
-            name: /expand side panel/i,
+            name: /collapse side panel/i,
         })
         expect(detailsButton).toBeInTheDocument()
     })

@@ -2,15 +2,10 @@ import React from 'react'
 
 import { fireEvent, render } from '@testing-library/react'
 
-import { CommonReasonLabel } from '../../constants'
 import SecondaryReasons from '../SecondaryReasons'
 
 describe('SecondaryReasons', () => {
-    const secondaryReasons = [
-        'secondary1',
-        'secondary2',
-        CommonReasonLabel.Other,
-    ]
+    const secondaryReasons = ['secondary1', 'secondary2', 'secondary3']
 
     it('renders with selected secondary reason', () => {
         const { container } = render(

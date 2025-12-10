@@ -122,7 +122,7 @@ export default function MonitorCallButton({
                 ref={buttonRef}
                 variant="tertiary"
                 size="sm"
-                leadingSlot="headset_mic"
+                leadingSlot="headset"
                 isDisabled={!isMonitorable}
                 isLoading={isLoading}
                 onClick={handleListenPress}

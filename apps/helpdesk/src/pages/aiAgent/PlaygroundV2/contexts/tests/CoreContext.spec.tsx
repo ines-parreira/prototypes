@@ -41,10 +41,18 @@ jest.mock('../../hooks/usePlaygroundPolling', () => ({
     })),
 }))
 
+const mockIsDraftKnowledgeReady = jest.fn(() => true)
+jest.mock('../../hooks/useDraftKnowledge', () => ({
+    useDraftKnowledgeSync: jest.fn(() => ({
+        isDraftKnowledgeReady: mockIsDraftKnowledgeReady(),
+    })),
+}))
+
 describe('CoreContext (PlaygroundStateContext)', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockResetToDefaultChannel.mockClear()
+        mockIsDraftKnowledgeReady.mockReturnValue(true)
     })
 
     describe('usePlaygroundStateContext', () => {
@@ -374,4 +382,46 @@ describe('CoreContext (PlaygroundStateContext)', () => {
             expect(mockResetToDefaultChannel).toHaveBeenCalledTimes(1)
         })
     })
+
+    it('should include isDraftKnowledgeReady in context value', () => {
+        const { result } = renderHook(() => useCoreContext(), {
+            wrapper: ({ children }) => <CoreProvider>{children}</CoreProvider>,
+        })
+
+        expect(result.current.isDraftKnowledgeReady).toBeDefined()
+        expect(typeof result.current.isDraftKnowledgeReady).toBe('boolean')
+    })
+
+    it.each([
+        {
+            mockValue: true,
+            expected: true,
+            description: 'ready',
+        },
+        {
+            mockValue: false,
+            expected: false,
+            description: 'not ready',
+        },
+    ])(
+        'should return isDraftKnowledgeReady as $expected when $description',
+        ({ mockValue, expected }) => {
+            mockIsDraftKnowledgeReady.mockReturnValue(mockValue)
+
+            const { result } = renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider
+                        draftKnowledge={{
+                            sourceId: 123,
+                            sourceSetId: 456,
+                        }}
+                    >
+                        {children}
+                    </CoreProvider>
+                ),
+            })
+
+            expect(result.current.isDraftKnowledgeReady).toBe(expected)
+        },
+    )
 })

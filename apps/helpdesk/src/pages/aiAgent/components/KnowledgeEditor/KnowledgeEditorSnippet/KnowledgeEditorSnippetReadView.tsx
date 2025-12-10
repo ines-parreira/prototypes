@@ -1,4 +1,4 @@
-import { Heading, Icon } from '@gorgias/axiom'
+import { Box, Heading, Icon } from '@gorgias/axiom'
 
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 
@@ -32,19 +32,20 @@ export const KnowledgeEditorSnippetReadView = ({
 
     return (
         <div className={css.container}>
-            {sourceLabel && (
-                <a
-                    href={sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={css.source}
-                >
-                    {getIcon()}
-                    <span>{sourceLabel}</span>
-                </a>
-            )}
-            <Heading size="xl">{title}</Heading>
-
+            <Box gap="xs" flexDirection="column">
+                {sourceLabel && (
+                    <a
+                        href={sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={css.source}
+                    >
+                        {getIcon()}
+                        <span>{sourceLabel}</span>
+                    </a>
+                )}
+                <Heading size="xl">{title}</Heading>
+            </Box>
             <div className={css.contentWrapper}>{content}</div>
         </div>
     )

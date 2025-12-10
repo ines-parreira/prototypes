@@ -9,11 +9,13 @@ import {
 
 import type { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
 import { useAiAgentHttpIntegration } from 'pages/aiAgent/PlaygroundV2/hooks/useAiAgentHttpIntegration'
+import { useDraftKnowledgeSync } from 'pages/aiAgent/PlaygroundV2/hooks/useDraftKnowledge'
 import { usePlaygroundPolling } from 'pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling'
 import { useTestSession } from 'pages/aiAgent/PlaygroundV2/hooks/useTestSession'
 
 import { usePlaygroundChannel } from '../hooks/usePlaygroundChannel'
 import type {
+    DraftKnowledge,
     PlaygroundChannelAvailability,
     PlaygroundChannels,
 } from '../types'
@@ -40,6 +42,8 @@ type CoreContextValue = {
     areActionsEnabled: boolean
     resetToDefaultChannel: () => void
     resetToDefaultActionsEnabled: () => void
+    isDraftKnowledgeReady: boolean
+    draftKnowledge?: DraftKnowledge
 }
 
 const CoreContext = createContext<CoreContextValue | undefined>(undefined)
@@ -57,11 +61,13 @@ export const useCoreContext = () => {
 type CoreProviderProps = {
     children: ReactNode
     arePlaygroundActionsAllowed?: boolean
+    draftKnowledge?: DraftKnowledge
 }
 
 export const CoreProvider = ({
     children,
     arePlaygroundActionsAllowed,
+    draftKnowledge,
 }: CoreProviderProps) => {
     const [areActionsEnabledInSettings, setAreActionsEnabledInSettings] =
         useState(DEFAULT_ACTIONS_ENABLED)
@@ -76,6 +82,9 @@ export const CoreProvider = ({
         testSessionId: sessionState.testSessionId ?? undefined,
         baseUrl: baseUrl,
     })
+
+    const { isDraftKnowledgeReady } = useDraftKnowledgeSync(draftKnowledge)
+
     const resetToDefaultActionsEnabled = useCallback(() => {
         setAreActionsEnabledInSettings(DEFAULT_ACTIONS_ENABLED)
     }, [])
@@ -85,11 +94,15 @@ export const CoreProvider = ({
             ...sessionState,
             ...pollingState,
             ...channelState,
+            isDraftKnowledgeReady,
+            draftKnowledge,
             areActionsEnabled,
             resetToDefaultActionsEnabled,
             setAreActionsEnabled: setAreActionsEnabledInSettings,
         }),
         [
+            isDraftKnowledgeReady,
+            draftKnowledge,
             sessionState,
             pollingState,
             channelState,

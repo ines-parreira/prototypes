@@ -1,9 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
 
-import {
-    CancellationPrimaryReasonLabel,
-    CommonReasonLabel,
-} from 'pages/settings/new_billing/components/CancelProductModal/constants'
+import { CancellationPrimaryReasonLabel } from 'pages/settings/new_billing/components/CancelProductModal/constants'
 import { DEFAULT_STATE } from 'pages/settings/new_billing/components/CancelProductModal/reducers'
 import { HELPDESK_CANCELLATION_SCENARIO } from 'pages/settings/new_billing/components/CancelProductModal/scenarios'
 import { CancellationReasonsActionType } from 'pages/settings/new_billing/components/CancelProductModal/types'
@@ -12,7 +9,7 @@ import CancellationReasons from '../CancellationReasons'
 
 describe('CancellationReasons - Helpdesk', () => {
     it('renders with no reasons selected', () => {
-        const { container, getByText, getByRole } = render(
+        const { container, getByText, getByRole, queryByText } = render(
             <CancellationReasons
                 reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
                 reasonsState={DEFAULT_STATE}
@@ -33,17 +30,22 @@ describe('CancellationReasons - Helpdesk', () => {
         const selectorElement = getByRole('combobox')
         expect(selectorElement).toBeInTheDocument()
 
-        // No other reason rendered
+        // Additional details should NOT be rendered until primary reason is selected
         expect(container.querySelector('textarea')).toBeNull()
+        expect(queryByText('Please share any additional details')).toBeNull()
     })
 
-    it('renders with all reasons selected', () => {
+    it('renders with all reasons selected including additional details', () => {
+        const secondaryReason =
+            HELPDESK_CANCELLATION_SCENARIO.reasons[1].secondaryReasons[0]
         const state = {
             primaryReason: {
                 label: CancellationPrimaryReasonLabel.DoesNotFitMyNeeds,
             },
-            secondaryReason: { label: CommonReasonLabel.Other },
-            otherReason: { label: 'Other reason provided by agent.' },
+            secondaryReason: secondaryReason,
+            additionalDetails: {
+                label: 'Additional details provided by agent.',
+            },
             completed: true,
         }
 
@@ -76,60 +78,16 @@ describe('CancellationReasons - Helpdesk', () => {
         expect(secondaryReasons).toBeInTheDocument()
         expect(secondaryReasonsValue).toBeChecked()
 
-        const otherReason = screen.getByText(
+        const additionalDetails = screen.getByText(
             'Please share any additional details',
         )
-        const otherReasonValue = screen.getByDisplayValue(
-            state.otherReason.label,
+        const additionalDetailsValue = screen.getByDisplayValue(
+            state.additionalDetails.label,
         )
-        expect(otherReason).toBeInTheDocument()
-        expect(otherReasonValue).toBeInTheDocument()
-    })
-
-    it('renders with Other primary reason', () => {
-        const mockDispatch = jest.fn()
-        const state = {
-            ...DEFAULT_STATE,
-            primaryReason: { label: CommonReasonLabel.Other },
-        }
-
-        render(
-            <div>
-                <CancellationReasons
-                    reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
-                    reasonsState={state}
-                    dispatchCancellationReasonsAction={mockDispatch}
-                />
-            </div>,
-        )
-
-        expect(
-            screen.getByText('Please share any additional details'),
-        ).toBeInTheDocument()
-    })
-
-    it('handles the change of primary reason', () => {
-        const mockDispatch = jest.fn()
-        const { getByText } = render(
-            <div>
-                <CancellationReasons
-                    reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
-                    reasonsState={DEFAULT_STATE}
-                    dispatchCancellationReasonsAction={mockDispatch}
-                />
-            </div>,
-        )
-
-        const selectorElement = getByText('Select reason...')
-        fireEvent.focus(selectorElement as Element)
-        fireEvent.click(getByText(CommonReasonLabel.Other))
-
-        expect(mockDispatch).toHaveBeenCalledWith({
-            type: CancellationReasonsActionType.PrimaryReasonSelected,
-            primaryReason: {
-                label: CommonReasonLabel.Other,
-            },
-        })
+        expect(additionalDetails).toBeInTheDocument()
+        expect(additionalDetailsValue).toBeInTheDocument()
+        // No asterisk shown (not required)
+        expect(within(additionalDetails).queryByText('*')).toBeNull()
     })
 
     it('handles the change of secondary reason', () => {
@@ -159,9 +117,12 @@ describe('CancellationReasons - Helpdesk', () => {
         })
     })
 
-    it('handles the change of other reason', () => {
+    it('handles the change of additional details', () => {
         const mockDispatch = jest.fn()
-        const primaryReason = { label: CommonReasonLabel.Other }
+        const primaryReason =
+            HELPDESK_CANCELLATION_SCENARIO.reasons[0].primaryReason
+        const secondaryReason =
+            HELPDESK_CANCELLATION_SCENARIO.reasons[0].secondaryReasons[0]
 
         const { container } = render(
             <div>
@@ -170,42 +131,49 @@ describe('CancellationReasons - Helpdesk', () => {
                     reasonsState={{
                         ...DEFAULT_STATE,
                         primaryReason: primaryReason,
+                        secondaryReason: secondaryReason,
                     }}
                     dispatchCancellationReasonsAction={mockDispatch}
                 />
             </div>,
         )
 
-        const newOtherReason = { label: 'New reason' }
+        const newDetails = { label: 'New details' }
         const textArea = container.querySelector('textarea') as Element
-        fireEvent.change(textArea, { target: { value: newOtherReason.label } })
+        fireEvent.change(textArea, { target: { value: newDetails.label } })
         expect(mockDispatch).toHaveBeenCalledWith({
-            type: CancellationReasonsActionType.OtherReasonUpdated,
-            otherReason: newOtherReason,
+            type: CancellationReasonsActionType.AdditionalDetailsUpdated,
+            additionalDetails: newDetails,
         })
     })
 
-    it('should show the additional details as required when "Other" is selected as secondary reason', () => {
-        render(
+    it('should show additional details as optional after primary reason is selected', () => {
+        const { queryByText } = render(
             <div>
                 <CancellationReasons
                     reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
                     reasonsState={{
                         ...DEFAULT_STATE,
                         primaryReason: {
-                            label: CancellationPrimaryReasonLabel.DoesNotFitMyNeeds,
+                            label: CancellationPrimaryReasonLabel.Pricing,
                         },
-                        secondaryReason: { label: CommonReasonLabel.Other },
+                        secondaryReason:
+                            HELPDESK_CANCELLATION_SCENARIO.reasons[0]
+                                .secondaryReasons[0],
                     }}
                     dispatchCancellationReasonsAction={jest.fn() as any}
                 />
             </div>,
         )
 
+        const additionalDetailsLabel = queryByText(
+            'Please share any additional details',
+        )
+        expect(additionalDetailsLabel).toBeInTheDocument()
+
+        // Should not have asterisk (not required)
         expect(
-            within(
-                screen.getByText('Please share any additional details'),
-            ).getByText('*'),
-        ).toBeVisible()
+            within(additionalDetailsLabel as HTMLElement).queryByText('*'),
+        ).toBeNull()
     })
 })

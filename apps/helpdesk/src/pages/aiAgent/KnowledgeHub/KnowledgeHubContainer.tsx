@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Modal, OverlayHeader } from '@gorgias/axiom'
+import { Box, Modal, OverlayHeader } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
@@ -375,39 +375,40 @@ export const KnowledgeHubContainer = () => {
 
     return (
         <div className={css.container}>
-            <KnowledgeHubHeader
-                shopName={shopName}
-                data={selectedFolder}
-                onBack={handleBack}
-                onAddKnowledge={onAddKnowledgeClick}
-                onTest={handleOpenPlayground}
-                onSync={onSync}
-                onDelete={onUrlDelete}
-                isSyncButtonDisabled={isSyncLessThan24h}
-                syncTooltipMessage={syncTooltipMessage}
-            />
-            <SyncStoreDomainBanner
-                syncStatus={syncStatus}
-                shopName={shopName}
-                type="domain"
-            />
-            <SyncStoreDomainBanner
-                syncStatus={urlSyncStatus}
-                shopName={shopName}
-                type="url"
-                completedCount={urlPendingCount}
-                totalCount={urlTotalCount}
-            />
-            <SyncStoreDomainBanner
-                syncStatus={fileIngestionStatus}
-                shopName={shopName}
-                type="file"
-                completedCount={filePendingCount}
-            />
-            <DocumentFilters
-                selectedFilter={selectedFilter}
-                onFilterChange={handleDocumentFilterChange}
-            />
+            <Box paddingLeft="lg" paddingRight="lg" flexDirection="column">
+                <KnowledgeHubHeader
+                    data={selectedFolder}
+                    onBack={handleBack}
+                    onAddKnowledge={onAddKnowledgeClick}
+                    onTest={handleOpenPlayground}
+                    onSync={onSync}
+                    onDelete={onUrlDelete}
+                    isSyncButtonDisabled={isSyncLessThan24h}
+                    syncTooltipMessage={syncTooltipMessage}
+                />
+                <SyncStoreDomainBanner
+                    syncStatus={syncStatus}
+                    shopName={shopName}
+                    type="domain"
+                />
+                <SyncStoreDomainBanner
+                    syncStatus={urlSyncStatus}
+                    shopName={shopName}
+                    type="url"
+                    completedCount={urlPendingCount}
+                    totalCount={urlTotalCount}
+                />
+                <SyncStoreDomainBanner
+                    syncStatus={fileIngestionStatus}
+                    shopName={shopName}
+                    type="file"
+                    completedCount={filePendingCount}
+                />
+                <DocumentFilters
+                    selectedFilter={selectedFilter}
+                    onFilterChange={handleDocumentFilterChange}
+                />
+            </Box>
             <KnowledgeHubTable
                 data={tableData}
                 isLoading={isInitialLoading || isUrlFolderSyncing}

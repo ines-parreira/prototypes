@@ -84,7 +84,7 @@ export const KnowledgeEditorGuidanceView = ({
     // Local state ONLY for editing
     const [editTitle, setEditTitle] = useState(titleProp)
     const [editContent, setEditContent] = useState(contentProp)
-    const [isDetailsView, setIsDetailsView] = useState(false)
+    const [isDetailsView, setIsDetailsView] = useState(true)
     const [guidanceMode, setGuidanceMode] =
         useState<GuidanceMode['mode']>(initialGuidanceMode)
     const { modal, openUnsavedChangesModal } = useKnowledgeEditorGuidanceModal()

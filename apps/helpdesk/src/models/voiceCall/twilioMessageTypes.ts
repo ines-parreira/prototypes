@@ -1,8 +1,9 @@
-import type { MonitoringErrorCode } from './types'
+import type { MonitoringErrorCode, VoiceCallMonitoringStatus } from './types'
 
 export enum TwilioMessageType {
     MonitoringValidationFailed = 'monitoring-validation-failed',
     InCallAgentChanged = 'in-call-agent-changed',
+    MonitoringUpdate = 'monitoring-updated',
 }
 
 export type MonitoringValidationFailedTwilioMessage = {
@@ -19,6 +20,15 @@ export type InCallAgentChangedTwilioMessage = {
     }
 }
 
+export type MonitoringUpdateTwilioMessage = {
+    type: TwilioMessageType.MonitoringUpdate
+    data: {
+        monitoring_agent_id: number
+        monitoring_status: VoiceCallMonitoringStatus
+    }
+}
+
 export type TwilioMessage =
     | MonitoringValidationFailedTwilioMessage
     | InCallAgentChangedTwilioMessage
+    | MonitoringUpdateTwilioMessage

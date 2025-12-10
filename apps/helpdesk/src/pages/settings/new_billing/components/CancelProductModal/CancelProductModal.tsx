@@ -120,7 +120,8 @@ const CancelProductModal = ({
                 'No level 1 reason',
             secondaryReason:
                 cancellationReasonsState.secondaryReason?.label || null,
-            otherReason: cancellationReasonsState.otherReason?.label || null,
+            otherReason:
+                cancellationReasonsState.additionalDetails?.label || null,
             correspondingChurnMitigationOfferId:
                 correspondingChurnMitigationOfferId,
         })
@@ -158,7 +159,7 @@ const CancelProductModal = ({
                 secondary_reason:
                     cancellationReasonsState.secondaryReason?.label || null,
                 other_reason:
-                    cancellationReasonsState.otherReason?.label || null,
+                    cancellationReasonsState.additionalDetails?.label || null,
                 accepted: true,
             },
         )
@@ -210,7 +211,7 @@ const CancelProductModal = ({
                 secondary_reason:
                     cancellationReasonsState.secondaryReason?.label || null,
                 other_reason:
-                    cancellationReasonsState.otherReason?.label || null,
+                    cancellationReasonsState.additionalDetails?.label || null,
                 accepted: false,
             },
         )
@@ -222,7 +223,7 @@ const CancelProductModal = ({
             const message = formatCancellationReasonsForZapier(
                 cancellationReasonsState.primaryReason,
                 cancellationReasonsState.secondaryReason,
-                cancellationReasonsState.otherReason,
+                cancellationReasonsState.additionalDetails,
             )
 
             await sendRemoveNotificationZap({

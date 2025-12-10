@@ -18,7 +18,6 @@ const meta: Meta<typeof KnowledgeHubHeader> = {
         ),
     ],
     argTypes: {
-        shopName: { control: 'text' },
         data: { control: 'object' },
         onBack: { action: 'onBack' },
         onAddKnowledge: { action: 'onAddKnowledge' },
@@ -52,7 +51,6 @@ const Template: StoryFn<ComponentProps<typeof KnowledgeHubHeader>> = (args) => {
 export const DefaultListView: Story = Template.bind({})
 DefaultListView.args = {
     data: null,
-    shopName: 'my-store',
     onBack: () => {},
     onTest: () => {},
     onAddKnowledge: () => {},
@@ -61,7 +59,6 @@ DefaultListView.storyName = 'List View (data: null)'
 
 export const StoreWebsite: Story = Template.bind({})
 StoreWebsite.args = {
-    shopName: 'my-store',
     data: {
         type: KnowledgeType.Domain,
         title: 'My Shopify Store',
@@ -75,7 +72,6 @@ StoreWebsite.storyName = 'Type: Store Website'
 
 export const StoreWebsiteDisabled: Story = Template.bind({})
 StoreWebsiteDisabled.args = {
-    shopName: 'my-store',
     data: {
         type: KnowledgeType.Domain,
         title: 'My Shopify Store',
@@ -90,7 +86,6 @@ StoreWebsiteDisabled.storyName = 'Type: Store Website (Disabled)'
 
 export const URLs: Story = Template.bind({})
 URLs.args = {
-    shopName: 'my-store',
     data: {
         type: KnowledgeType.URL,
         title: 'https://example.com/documentation',
@@ -105,7 +100,6 @@ URLs.storyName = 'Type: URLs'
 
 export const URLsDisabled: Story = Template.bind({})
 URLsDisabled.args = {
-    shopName: 'my-store',
     data: {
         type: KnowledgeType.URL,
         title: 'https://example.com/documentation',
@@ -122,7 +116,6 @@ URLsDisabled.storyName = 'Type: URLs (All Disabled)'
 
 export const URLsSyncDisabled: Story = Template.bind({})
 URLsSyncDisabled.args = {
-    shopName: 'my-store',
     data: {
         type: KnowledgeType.URL,
         title: 'https://example.com/documentation',
@@ -138,7 +131,6 @@ URLsSyncDisabled.storyName = 'Type: URLs (Sync Disabled)'
 
 export const URLsLongURL: Story = Template.bind({})
 URLsLongURL.args = {
-    shopName: 'my-store',
     data: {
         type: KnowledgeType.URL,
         title: 'https://very-long-domain-name.example.com/path/to/documentation/with/many/segments',
@@ -153,7 +145,6 @@ URLsLongURL.storyName = 'Type: URLs (Long URL)'
 
 export const Documents: Story = Template.bind({})
 Documents.args = {
-    shopName: 'my-store',
     data: {
         type: KnowledgeType.Document,
         title: 'Product Manual.pdf',
@@ -167,7 +158,6 @@ Documents.storyName = 'Type: Documents'
 
 export const DocumentsDisabled: Story = Template.bind({})
 DocumentsDisabled.args = {
-    shopName: 'my-store',
     data: {
         type: KnowledgeType.Document,
         title: 'Product Manual.pdf',

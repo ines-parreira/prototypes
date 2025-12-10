@@ -125,7 +125,7 @@ describe('MonitorCallButton', () => {
             />,
         )
 
-        const listenButton = screen.getByRole('button', { name: 'Listen' })
+        const listenButton = screen.getByRole('button', { name: /Listen/i })
         expect(listenButton).toBeInTheDocument()
         expect(listenButton).toBeEnabled()
     })
@@ -140,7 +140,7 @@ describe('MonitorCallButton', () => {
             />,
         )
 
-        const listenButton = screen.getByRole('button', { name: 'Listen' })
+        const listenButton = screen.getByRole('button', { name: /Listen/i })
         expect(listenButton).toBeDisabled()
 
         userEvent.hover(listenButton)
@@ -156,7 +156,7 @@ describe('MonitorCallButton', () => {
         )
 
         await act(() =>
-            user.click(screen.getByRole('button', { name: 'Listen' })),
+            user.click(screen.getByRole('button', { name: /Listen/i })),
         )
 
         expect(mockPrepareMonitoringCall).toHaveBeenCalledWith('CA123', false)
@@ -181,7 +181,7 @@ describe('MonitorCallButton', () => {
             <MonitorCallButton voiceCallToMonitor={voiceCall} agentId={42} />,
         )
 
-        const listenButton = screen.getByRole('button', { name: 'Listen' })
+        const listenButton = screen.getByRole('button', { name: /Listen/i })
         expect(listenButton).toBeEnabled()
         expect(listenButton).not.toHaveAttribute('data-pending', 'true')
 
@@ -218,7 +218,7 @@ describe('MonitorCallButton', () => {
             <MonitorCallButton voiceCallToMonitor={voiceCall} agentId={42} />,
         )
 
-        const listenButton = screen.getByRole('button', { name: 'Listen' })
+        const listenButton = screen.getByRole('button', { name: /Listen/i })
         expect(listenButton).toBeEnabled()
 
         await act(() => user.click(listenButton))
@@ -244,7 +244,7 @@ describe('MonitorCallButton', () => {
         )
 
         await act(() =>
-            user.click(screen.getByRole('button', { name: 'Listen' })),
+            user.click(screen.getByRole('button', { name: /Listen/i })),
         )
 
         expect(mockPrepareMonitoringCall).toHaveBeenCalledWith('CA123', false)
@@ -283,7 +283,7 @@ describe('MonitorCallButton', () => {
         )
 
         await act(() =>
-            user.click(screen.getByRole('button', { name: 'Listen' })),
+            user.click(screen.getByRole('button', { name: /Listen/i })),
         )
 
         expect(mockNotifyError).toHaveBeenCalledWith(
@@ -309,7 +309,7 @@ describe('MonitorCallButton', () => {
             )
 
             await act(() =>
-                user.click(screen.getByRole('button', { name: 'Listen' })),
+                user.click(screen.getByRole('button', { name: /Listen/i })),
             )
 
             expect(screen.getByText('Switch call?')).toBeInTheDocument()
@@ -340,7 +340,7 @@ describe('MonitorCallButton', () => {
             )
 
             await act(() =>
-                user.click(screen.getByRole('button', { name: 'Listen' })),
+                user.click(screen.getByRole('button', { name: /Listen/i })),
             )
 
             expect(screen.getByText('Switch call?')).toBeInTheDocument()
@@ -377,7 +377,7 @@ describe('MonitorCallButton', () => {
             )
 
             await act(() =>
-                user.click(screen.getByRole('button', { name: 'Listen' })),
+                user.click(screen.getByRole('button', { name: /Listen/i })),
             )
 
             expect(screen.getByText('Switch call?')).toBeInTheDocument()
@@ -420,7 +420,7 @@ describe('MonitorCallButton', () => {
             )
 
             await act(() =>
-                user.click(screen.getByRole('button', { name: 'Listen' })),
+                user.click(screen.getByRole('button', { name: /Listen/i })),
             )
 
             expect(screen.getByText('Switch call?')).toBeInTheDocument()
@@ -476,7 +476,7 @@ describe('MonitorCallButton', () => {
             )
 
             await act(() =>
-                user.click(screen.getByRole('button', { name: 'Listen' })),
+                user.click(screen.getByRole('button', { name: /Listen/i })),
             )
 
             expect(screen.getByText('Switch call?')).toBeInTheDocument()
@@ -514,7 +514,7 @@ describe('MonitorCallButton', () => {
             )
 
             await act(() =>
-                user.click(screen.getByRole('button', { name: 'Listen' })),
+                user.click(screen.getByRole('button', { name: /Listen/i })),
             )
 
             expect(screen.getByText('Switch call?')).toBeInTheDocument()
@@ -542,7 +542,7 @@ describe('MonitorCallButton', () => {
         )
 
         await act(() =>
-            user.click(screen.getByRole('button', { name: 'Listen' })),
+            user.click(screen.getByRole('button', { name: /Listen/i })),
         )
 
         expect(screen.getByText('Switch call?')).toBeInTheDocument()

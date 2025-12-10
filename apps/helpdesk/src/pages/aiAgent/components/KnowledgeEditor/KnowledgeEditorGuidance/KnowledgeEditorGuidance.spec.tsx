@@ -631,27 +631,7 @@ describe('KnowledgeEditorGuidance', () => {
     })
 
     it('toggles ai agent status', () => {
-        const { rerender } = render(
-            <Provider store={mockStore({})}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceArticleId={1}
-                    onClose={jest.fn()}
-                    onClickPrevious={jest.fn()}
-                    onClickNext={jest.fn()}
-                    guidanceMode="edit"
-                    isOpen
-                    onDelete={jest.fn()}
-                />
-            </Provider>,
-        )
-
-        fireEvent.click(
-            screen.getByRole('button', { name: 'expand side panel' }),
-        )
-
-        rerender(
+        render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"

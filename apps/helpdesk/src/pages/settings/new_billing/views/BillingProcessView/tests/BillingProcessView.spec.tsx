@@ -1,6 +1,5 @@
 import { assumeMock } from '@repo/testing'
-import { screen, waitFor, within } from '@testing-library/react'
-import { userEvent } from '@testing-library/user-event'
+import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 
@@ -11,10 +10,6 @@ import {
     products,
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
-import {
-    CancellationPrimaryReasonLabel,
-    CommonReasonLabel,
-} from 'pages/settings/new_billing/components/CancelProductModal/constants'
 import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
 import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
@@ -169,120 +164,5 @@ describe('UsageAndPlansView', () => {
             },
             {},
         )
-    })
-
-    // TODO(React18): Fix this flaky test
-    it.skip('should be required to add additional details to the cancellation reason when "Other" is selected as secondary reason', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
-        renderWithStoreAndQueryClientAndRouter(
-            <BillingProcessView
-                currentUsage={currentProductsUsage}
-                contactBilling={jest.fn()}
-                dispatchBillingError={jest.fn()}
-                setDefaultMessage={jest.fn()}
-                setIsModalOpen={jest.fn()}
-                periodEnd="2021-01-01"
-                isTrialing={false}
-                isCurrentSubscriptionCanceled={true}
-            />,
-            storeInitialState,
-        )
-
-        await waitFor(() => {
-            screen.getByRole('button', {
-                name: 'Cancel auto-renewal',
-            })
-            expect(
-                screen.queryByText('Cancel Helpdesk auto-renewal'),
-            ).not.toBeInTheDocument()
-        })
-
-        const cancelAutoRenewalButton = screen.getByRole('button', {
-            name: 'Cancel auto-renewal',
-        })
-
-        await userEvent.click(cancelAutoRenewalButton)
-
-        await waitFor(() => {
-            expect(
-                screen.getByText('Cancel Helpdesk auto-renewal'),
-            ).toBeVisible()
-        })
-
-        expect(
-            screen.queryByText(
-                'Your opinion means a lot to us. Please tell us why you are cancelling your plan.',
-            ),
-        ).not.toBeInTheDocument()
-
-        await userEvent.click(screen.getByText('Continue cancelling'))
-
-        await waitFor(() => {
-            expect(
-                screen.getByText(
-                    'Your opinion means a lot to us. Please tell us why you are cancelling your plan.',
-                ),
-            ).toBeVisible()
-        })
-
-        await userEvent.click(
-            within(screen.getByRole('combobox')).getByText('arrow_drop_down'),
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('option', {
-                    name: CancellationPrimaryReasonLabel.DoesNotFitMyNeeds,
-                }),
-            ).toBeVisible()
-        })
-
-        expect(
-            screen.queryByText('Could you please share more?'),
-        ).not.toBeInTheDocument()
-
-        await userEvent.click(
-            screen.getByRole('option', {
-                name: CancellationPrimaryReasonLabel.DoesNotFitMyNeeds,
-            }),
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.getByText('Could you please share more?'),
-            ).toBeVisible()
-        })
-
-        expect(
-            screen.queryByText('Please share any additional details'),
-        ).not.toBeInTheDocument()
-
-        await userEvent.click(
-            screen.getByRole('radio', {
-                name: CommonReasonLabel.Other,
-            }),
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.getByText('Please share any additional details'),
-            ).toBeVisible()
-        })
-
-        expect(
-            screen.getByRole('button', { name: 'Continue cancelling' }),
-        ).toBeAriaDisabled()
-
-        await userEvent.type(
-            screen.getByPlaceholderText("It didn't work out for me because..."),
-            'Some other reason',
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('button', { name: 'Continue cancelling' }),
-            ).toBeAriaEnabled()
-        })
     })
 })

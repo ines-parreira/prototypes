@@ -54,3 +54,8 @@ export type AIJourneySettings = {
     discountCodeMessageIdx: number
     outboundMessageInstructions: string
 }
+
+export type DraftKnowledge = {
+    sourceId: number
+    sourceSetId: number
+}

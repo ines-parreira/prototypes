@@ -80,7 +80,7 @@ export const TitleCell = ({
                 {isGrouped && itemCount && (
                     <div className={css.quantity}>
                         <Icon name="arrow-sub-down-right" size="sm" />
-                        {itemCount} snippets
+                        {itemCount} snippet{itemCount !== 1 ? 's' : ''}
                     </div>
                 )}
                 {!isGrouped &&

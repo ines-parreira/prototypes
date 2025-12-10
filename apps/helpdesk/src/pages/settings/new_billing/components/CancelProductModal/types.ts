@@ -21,7 +21,7 @@ export type CancellationScenario = {
 export enum CancellationReasonsActionType {
     PrimaryReasonSelected,
     SecondaryReasonSelected,
-    OtherReasonUpdated,
+    AdditionalDetailsUpdated,
     Reset,
 }
 export type CANCELLATION_REASONS_ACTION_TYPE =
@@ -34,8 +34,8 @@ export type CANCELLATION_REASONS_ACTION_TYPE =
           secondaryReason: Reason
       }
     | {
-          type: CancellationReasonsActionType.OtherReasonUpdated
-          otherReason: Reason
+          type: CancellationReasonsActionType.AdditionalDetailsUpdated
+          additionalDetails: Reason
       }
     | {
           type: CancellationReasonsActionType.Reset
@@ -44,7 +44,7 @@ export type CANCELLATION_REASONS_ACTION_TYPE =
 export type CancellationReasonsState = {
     primaryReason: Reason | null
     secondaryReason: Reason | null
-    otherReason: Reason | null
+    additionalDetails: Reason | null
     completed: boolean
 }
 

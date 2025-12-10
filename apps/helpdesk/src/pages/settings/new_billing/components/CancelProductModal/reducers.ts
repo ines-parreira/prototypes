@@ -1,6 +1,5 @@
 import type { Reducer } from 'react'
 
-import { CommonReasonLabel } from './constants'
 import type {
     CANCELLATION_REASONS_ACTION_TYPE,
     CancellationReasonsState,
@@ -11,22 +10,14 @@ import { CancellationReasonsActionType } from './types'
 export const DEFAULT_STATE: CancellationReasonsState = {
     primaryReason: null,
     secondaryReason: null,
-    otherReason: null,
+    additionalDetails: null,
     completed: false,
 }
 
 const isReasonsSelectionCompleted = (
     primaryReason: Reason | null,
     secondaryReason: Reason | null,
-    otherReason: Reason | null,
 ): boolean => {
-    if (
-        primaryReason?.label === CommonReasonLabel.Other ||
-        secondaryReason?.label === CommonReasonLabel.Other
-    ) {
-        return !!otherReason?.label
-    }
-
     return !!primaryReason && !!secondaryReason
 }
 export const cancellationReasonsReducer: Reducer<
@@ -39,10 +30,8 @@ export const cancellationReasonsReducer: Reducer<
                 ...state,
                 primaryReason: action.primaryReason,
                 secondaryReason: null,
-                otherReason: null,
                 completed: isReasonsSelectionCompleted(
                     action.primaryReason,
-                    null,
                     null,
                 ),
             }
@@ -50,21 +39,18 @@ export const cancellationReasonsReducer: Reducer<
             return {
                 ...state,
                 secondaryReason: action.secondaryReason,
-                otherReason: null,
                 completed: isReasonsSelectionCompleted(
                     state.primaryReason,
                     action.secondaryReason,
-                    null,
                 ),
             }
-        case CancellationReasonsActionType.OtherReasonUpdated:
+        case CancellationReasonsActionType.AdditionalDetailsUpdated:
             return {
                 ...state,
-                otherReason: action.otherReason,
+                additionalDetails: action.additionalDetails,
                 completed: isReasonsSelectionCompleted(
                     state.primaryReason,
                     state.secondaryReason,
-                    action.otherReason,
                 ),
             }
         case CancellationReasonsActionType.Reset:

@@ -498,7 +498,7 @@ describe('CancelProductModal: step 3', () => {
                 product_type: productType,
                 primary_reason: mockState.primaryReason.label,
                 secondary_reason: mockState.secondaryReason.label,
-                other_reason: mockState.otherReason,
+                other_reason: mockState.additionalDetails?.label || null,
                 accepted: false,
             },
         )
@@ -534,7 +534,7 @@ describe('CancelProductModal: step 3', () => {
             accountDomain: account.domain,
             userEmail: user.email,
             correspondingChurnMitigationOfferId: '5f5e3e3e4f3e4e001f3e4e4f',
-            otherReason: mockState.otherReason,
+            otherReason: mockState.additionalDetails?.label || null,
         })
         expect(mockHandleOnClose).toHaveBeenCalled()
         expect(store.getActions()).toEqual([
@@ -554,7 +554,7 @@ describe('CancelProductModal: step 3', () => {
                 product_type: productType,
                 primary_reason: mockState.primaryReason.label,
                 secondary_reason: mockState.secondaryReason.label,
-                other_reason: mockState.otherReason,
+                other_reason: mockState.additionalDetails?.label || null,
                 accepted: true,
             },
         )

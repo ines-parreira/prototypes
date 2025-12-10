@@ -7,9 +7,16 @@ import classNames from 'classnames'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
-import { LegacyIconButton as IconButton } from '@gorgias/axiom'
+import {
+    Icon,
+    LegacyIconButton as IconButton,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@gorgias/axiom'
 import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 
+import whisperingNotification from 'assets/audio/phone/whispering-notification.mp3'
 import { TwilioSocketEventType } from 'business/twilio'
 import { useFlag } from 'core/flags'
 import {
@@ -17,7 +24,9 @@ import {
     getCallSid,
     sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/twilioCall.utils'
+import { useCallMessageListener } from 'hooks/integrations/phone/useCallMessageListener'
 import client from 'models/api/resources'
+import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {
     CallRecordingStatus,
@@ -33,6 +42,7 @@ import PhoneBarCallerDetailsContainer from 'pages/common/components/PhoneIntegra
 import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
 import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
+import { useCustomSound } from 'pages/common/hooks/useCustomSound'
 import socketManager from 'services/socketManager'
 import type {
     ServerMessage,
@@ -79,6 +89,8 @@ export function OngoingPhoneCall({
         null,
     )
     const [isRecording, setIsRecording] = useState(false)
+    const [isBeingWhispered, setIsBeingWhispered] = useState(false)
+
     const queueId = call.customParameters.get('queue_id')
         ? parseInt(call.customParameters.get('queue_id') as string)
         : null
@@ -185,6 +197,23 @@ export function OngoingPhoneCall({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    const { playSound: playWhisperingNotificationSound } = useCustomSound(
+        whisperingNotification,
+    )
+
+    useCallMessageListener(call, (twilioMessage) => {
+        if (twilioMessage.type === TwilioMessageType.MonitoringUpdate) {
+            switch (twilioMessage.data.monitoring_status) {
+                case 'whispering':
+                    setIsBeingWhispered(true)
+                    playWhisperingNotificationSound()
+                    break
+                default:
+                    setIsBeingWhispered(false)
+            }
+        }
+    })
 
     const audioLevel = useAudioLevel(call)
 
@@ -308,6 +337,14 @@ export function OngoingPhoneCall({
             </PhoneBarInnerContent>
             <PhoneInfobarWrapper>
                 <span>{isTransferring ? 'Transferring...' : 'Connected'}</span>
+                {isBeingWhispered && (
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Icon name="headset" size="md" />
+                        </TooltipTrigger>
+                        <TooltipContent title="This call is currently being monitored." />
+                    </Tooltip>
+                )}
             </PhoneInfobarWrapper>
         </PhoneBarContainer>
     )

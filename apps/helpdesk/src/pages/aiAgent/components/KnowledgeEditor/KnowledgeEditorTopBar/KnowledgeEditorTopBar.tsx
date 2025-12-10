@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Icon } from '@gorgias/axiom'
+import { Button, Icon } from '@gorgias/axiom'
 
 import { KnowledgeEditorTopBarTitle } from './KnowledgeEditorTopBarTitle'
 
@@ -117,7 +117,7 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                         <div className={controlsCss.separator} />
                     </>
                 )}
-                <button
+                <Button
                     className={classNames(
                         controlsCss.icon,
                         controlsCss.secondaryButton,
@@ -126,28 +126,24 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                     aria-label={
                         props.isFullscreen ? 'leave fullscreen' : 'fullscreen'
                     }
-                    disabled={props.disabled}
-                >
-                    <Icon
-                        name={
-                            props.isFullscreen
-                                ? 'arrow-collapse'
-                                : 'arrow-expand'
-                        }
-                    />
-                </button>
+                    isDisabled={props.disabled}
+                    variant="tertiary"
+                    icon={
+                        props.isFullscreen ? 'arrow-collapse' : 'arrow-expand'
+                    }
+                />
 
-                <button
+                <Button
                     className={classNames(
                         controlsCss.icon,
                         controlsCss.secondaryButton,
                     )}
                     onClick={props.onClose}
                     aria-label="close"
-                    disabled={props.disabled}
-                >
-                    <Icon name="close" />
-                </button>
+                    isDisabled={props.disabled}
+                    variant="tertiary"
+                    icon="close"
+                />
             </div>
         </div>
     )

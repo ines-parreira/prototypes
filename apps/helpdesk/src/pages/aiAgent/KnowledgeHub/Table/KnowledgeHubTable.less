@@ -21,6 +21,10 @@
             justify-content: flex-start !important;
         }
 
+        > [data-name='table-toolbar'] {
+            padding-left: var(--spacing-lg);
+        }
+
         button[slot='button'][aria-label='Items per page'] {
             color: var(--color-neutral-700) !important;
 
@@ -34,15 +38,16 @@
         // Force table to use full width
         table {
             table-layout: fixed;
-            width: 100%;
             height: 100%;
         }
 
         // Column widths - checkbox column
         table th:nth-child(1),
         table td:nth-child(1) {
-            width: 80px;
-            padding-left: var(--spacing-lg);
+            width: 51px;
+            box-sizing: border-box;
+            padding-left: 26px;
+            padding-right: 8px;
         }
 
         // Title column - takes remaining space

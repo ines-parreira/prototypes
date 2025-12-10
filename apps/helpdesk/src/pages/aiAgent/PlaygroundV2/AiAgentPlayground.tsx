@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
@@ -32,7 +32,7 @@ import { usePlaygroundPrerequisites } from './hooks/usePlaygroundPrerequisites'
 import { usePlaygroundResources } from './hooks/usePlaygroundResources'
 import { usePlaygroundTracking } from './hooks/usePlaygroundTracking'
 import { useShopNameResolution } from './hooks/useShopNameResolution'
-import type { SupportedPlaygroundModes } from './types'
+import type { DraftKnowledge, SupportedPlaygroundModes } from './types'
 import { PlaygroundEvent } from './types'
 
 import css from './AiAgentPlayground.less'
@@ -191,115 +191,164 @@ type AiagentPlaygroundProps = {
     inplaceSettingsOpen?: boolean
     onInplaceSettingsOpenChange?: (isOpen: boolean) => void
     supportedModes?: SupportedPlaygroundModes
+    draftKnowledge?: DraftKnowledge
 }
 
-export const AiAgentPlayground = ({
-    arePlaygroundActionsAllowed,
-    resetPlayground,
-    resetPlaygroundCallback,
-    shopName: propsShopName,
-    withResetButton = true,
-    withSettingsOnSidePanel = false,
-    inplaceSettingsOpen = false,
-    onGuidanceClick,
-    onInplaceSettingsOpenChange,
-    supportedModes,
-}: AiagentPlaygroundProps) => {
-    const shouldDisplayReasoning = useFlag(
-        FeatureFlagKey.ShowAiReasoningInPlayground,
-    )
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const currentUser = useAppSelector(getCurrentUserState)
-    const accountId = (currentAccount.get('id') as number) ?? 0
-    const userId = (currentUser.get('id') as number) ?? 0
-    const accountDomain = currentAccount.get('domain')
-
-    const { resolvedShopName: shopNameFromIntegration } =
-        useShopNameResolution(propsShopName)
-
-    const {
-        storeConfiguration,
-        accountConfiguration,
-        snippetHelpCenterId,
-        isLoading,
-        storeConfigurationNotInitialized,
-    } = usePlaygroundResources({
-        shopName: shopNameFromIntegration,
-        accountDomain,
-    })
-
-    const shopName =
-        storeConfiguration?.storeName || shopNameFromIntegration || ''
-
-    const {
-        hasPrerequisites,
-        isCheckingPrerequisites,
-        missingKnowledgeSource,
-        syncingMessage,
-    } = usePlaygroundPrerequisites({
-        storeConfiguration,
-        snippetHelpCenterId,
-    })
-
-    const { onTestPageViewed } = usePlaygroundTracking({
-        shopName,
-    })
-
-    useEffectOnce(() => {
-        onTestPageViewed()
-    })
-
-    const handleInplaceSettingsClose = () => {
-        onInplaceSettingsOpenChange?.(false)
-    }
-
-    const hasMultipleModes = supportedModes && supportedModes.length > 1
-
-    if (isLoading || isCheckingPrerequisites) {
-        return (
-            <div className={css.spinner}>
-                <LoadingSpinner size="big" />
-            </div>
+const WrappedAiAgentPlayground = React.memo(
+    ({
+        arePlaygroundActionsAllowed,
+        resetPlayground,
+        resetPlaygroundCallback,
+        shopName: propsShopName,
+        withResetButton = true,
+        withSettingsOnSidePanel = false,
+        inplaceSettingsOpen = false,
+        onGuidanceClick,
+        onInplaceSettingsOpenChange,
+        supportedModes,
+        draftKnowledge,
+    }: AiagentPlaygroundProps) => {
+        const shouldDisplayReasoning = useFlag(
+            FeatureFlagKey.ShowAiReasoningInPlayground,
         )
-    }
+        const currentAccount = useAppSelector(getCurrentAccountState)
+        const currentUser = useAppSelector(getCurrentUserState)
+        const accountId = (currentAccount.get('id') as number) ?? 0
+        const userId = (currentUser.get('id') as number) ?? 0
+        const accountDomain = currentAccount.get('domain')
 
-    if (!accountConfiguration || missingKnowledgeSource) {
-        return <PlaygroundMissingKnowledgeAlert shopName={shopName || ''} />
-    }
+        const { resolvedShopName: shopNameFromIntegration } =
+            useShopNameResolution(propsShopName)
 
-    if (
-        hasPrerequisites &&
-        !storeConfigurationNotInitialized &&
-        storeConfiguration
-    ) {
-        return (
-            <PlaygroundProvider
-                arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
-                shopName={shopName}
-                supportedModes={supportedModes}
-            >
-                <ContextConsumer
+        const {
+            storeConfiguration,
+            accountConfiguration,
+            snippetHelpCenterId,
+            isLoading,
+            storeConfigurationNotInitialized,
+        } = usePlaygroundResources({
+            shopName: shopNameFromIntegration,
+            accountDomain,
+        })
+
+        const shopName =
+            storeConfiguration?.storeName || shopNameFromIntegration || ''
+
+        const {
+            hasPrerequisites,
+            isCheckingPrerequisites,
+            missingKnowledgeSource,
+            syncingMessage,
+        } = usePlaygroundPrerequisites({
+            storeConfiguration,
+            snippetHelpCenterId,
+        })
+
+        const { onTestPageViewed } = usePlaygroundTracking({
+            shopName,
+        })
+
+        useEffectOnce(() => {
+            onTestPageViewed()
+        })
+
+        const handleInplaceSettingsClose = useCallback(() => {
+            onInplaceSettingsOpenChange?.(false)
+        }, [onInplaceSettingsOpenChange])
+
+        const hasMultipleModes = supportedModes && supportedModes.length > 1
+
+        if (isLoading || isCheckingPrerequisites) {
+            return (
+                <div className={css.spinner}>
+                    <LoadingSpinner size="big" />
+                </div>
+            )
+        }
+
+        if (!accountConfiguration || missingKnowledgeSource) {
+            return <PlaygroundMissingKnowledgeAlert shopName={shopName || ''} />
+        }
+
+        if (
+            hasPrerequisites &&
+            !storeConfigurationNotInitialized &&
+            storeConfiguration
+        ) {
+            return (
+                <PlaygroundProvider
                     arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
-                    resetPlayground={resetPlayground}
-                    resetPlaygroundCallback={resetPlaygroundCallback}
                     shopName={shopName}
-                    withSettingsOnSidePanel={withSettingsOnSidePanel}
-                />
-                <AiAgentPlaygroundContent
-                    accountId={accountId}
-                    userId={userId}
-                    onGuidanceClick={onGuidanceClick}
-                    shouldDisplayReasoning={shouldDisplayReasoning}
-                    hasMultipleModes={hasMultipleModes}
-                    withResetButton={withResetButton}
-                    handleInplaceSettingsClose={handleInplaceSettingsClose}
-                    inplaceSettingsOpen={inplaceSettingsOpen}
-                    onInplaceSettingsOpenChange={onInplaceSettingsOpenChange}
-                    syncingMessage={syncingMessage}
-                />
-            </PlaygroundProvider>
-        )
-    }
+                    supportedModes={supportedModes}
+                    draftKnowledge={draftKnowledge}
+                >
+                    <ContextConsumer
+                        arePlaygroundActionsAllowed={
+                            arePlaygroundActionsAllowed
+                        }
+                        resetPlayground={resetPlayground}
+                        resetPlaygroundCallback={resetPlaygroundCallback}
+                        shopName={shopName}
+                        withSettingsOnSidePanel={withSettingsOnSidePanel}
+                    />
+                    <AiAgentPlaygroundContent
+                        accountId={accountId}
+                        userId={userId}
+                        onGuidanceClick={onGuidanceClick}
+                        shouldDisplayReasoning={shouldDisplayReasoning}
+                        hasMultipleModes={hasMultipleModes}
+                        withResetButton={withResetButton}
+                        handleInplaceSettingsClose={handleInplaceSettingsClose}
+                        inplaceSettingsOpen={inplaceSettingsOpen}
+                        onInplaceSettingsOpenChange={
+                            onInplaceSettingsOpenChange
+                        }
+                        syncingMessage={syncingMessage}
+                    />
+                </PlaygroundProvider>
+            )
+        }
 
-    return null
+        return null
+    },
+)
+
+export const AiAgentPlayground = (props: AiagentPlaygroundProps) => {
+    /*
+    This component stabilizes object/array references passed as props to avoid unnecessary re-renders.
+    The actual playground component is WrappedAiAgentPlayground (which is memoized).
+    The naming was kept for compatibility.
+
+    NOTE: Callback props (onGuidanceClick, onInplaceSettingsOpenChange, resetPlaygroundCallback)
+    are NOT stabilized here because we cannot reliably do so without access to their closure metadata.
+    Parents should stabilize these callbacks themselves using useCallback if re-render optimization is needed.
+    */
+
+    const { draftKnowledge, supportedModes } = props
+
+    // Memoize draftKnowledge to avoid unnecessary re-renders
+    const { sourceId, sourceSetId } = draftKnowledge || {}
+    const stableDraftKnowledge = useMemo(() => {
+        if (sourceId === undefined || sourceSetId === undefined)
+            return undefined
+        return {
+            sourceId: sourceId,
+            sourceSetId: sourceSetId,
+        }
+    }, [sourceId, sourceSetId])
+
+    // Memoize supported modes to avoid unnecessary re-renders
+    const stringifiedSupportedModes = JSON.stringify(supportedModes ?? null)
+    const stableSupportedModes = useMemo(() => {
+        const parsed = JSON.parse(stringifiedSupportedModes)
+        return parsed ?? undefined
+    }, [stringifiedSupportedModes])
+
+    return (
+        <WrappedAiAgentPlayground
+            {...props}
+            draftKnowledge={stableDraftKnowledge}
+            supportedModes={stableSupportedModes}
+        />
+    )
 }

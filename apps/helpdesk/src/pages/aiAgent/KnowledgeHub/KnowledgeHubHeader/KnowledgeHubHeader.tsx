@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 
-import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { HeaderActions } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/ActionButtons'
 import { BackButton } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/BackButton'
 import { HeaderTitle } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/HeaderTitle'
@@ -11,7 +10,6 @@ import css from './KnowledgeHubHeader.less'
 
 export type KnowledgeHubHeaderProps = {
     data: GroupedKnowledgeItem | null
-    shopName: string
     onBack: () => void
     onAddKnowledge?: () => void
     onTest?: () => void
@@ -25,7 +23,6 @@ export type KnowledgeHubHeaderProps = {
 }
 
 export const KnowledgeHubHeader = ({
-    shopName,
     data,
     onBack,
     onAddKnowledge,
@@ -38,8 +35,6 @@ export const KnowledgeHubHeader = ({
     isDeleteButtonDisabled,
     syncTooltipMessage,
 }: KnowledgeHubHeaderProps) => {
-    const { routes } = useAiAgentNavigation({ shopName })
-
     const hasLeftSection = !!data
     const hasRightSection = true // Right section always has content
 
@@ -58,7 +53,7 @@ export const KnowledgeHubHeader = ({
                     [css.middleSectionWithRightMargin]: hasRightSection,
                 })}
             >
-                <HeaderTitle data={data} knowledgeRoute={routes.knowledge} />
+                <HeaderTitle data={data} />
                 <LastSyncedDate data={data} />
             </div>
             <div className={css.rightSection}>

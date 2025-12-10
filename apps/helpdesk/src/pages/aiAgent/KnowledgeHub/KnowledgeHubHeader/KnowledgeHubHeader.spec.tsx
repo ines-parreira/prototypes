@@ -16,7 +16,6 @@ const mockUseAiAgentNavigation = useAiAgentNavigation as jest.Mock
 describe('KnowledgeHubHeader', () => {
     const defaultProps: KnowledgeHubHeaderProps = {
         data: null,
-        shopName: 'test-shop',
         onBack: jest.fn(),
     }
 
@@ -49,10 +48,6 @@ describe('KnowledgeHubHeader', () => {
 
             const knowledgeText = screen.getByText('Knowledge')
             expect(knowledgeText).toBeInTheDocument()
-            expect(knowledgeText.closest('a')).toHaveAttribute(
-                'href',
-                mockRoutes.knowledge,
-            )
         })
 
         it('does not render back button', () => {
@@ -365,15 +360,6 @@ describe('KnowledgeHubHeader', () => {
             expect(
                 screen.queryByRole('button', { name: /test/i }),
             ).not.toBeInTheDocument()
-        })
-    })
-
-    describe('shopName prop handling', () => {
-        it('passes shopName to useAiAgentNavigation hook', () => {
-            const shopName = 'custom-shop-name'
-            renderComponent({ shopName })
-
-            expect(mockUseAiAgentNavigation).toHaveBeenCalledWith({ shopName })
         })
     })
 })

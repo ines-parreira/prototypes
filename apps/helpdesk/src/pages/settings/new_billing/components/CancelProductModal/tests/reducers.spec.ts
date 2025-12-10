@@ -1,4 +1,3 @@
-import { CommonReasonLabel } from '../constants'
 import { cancellationReasonsReducer, DEFAULT_STATE } from '../reducers'
 import { CancellationReasonsActionType } from '../types'
 
@@ -12,7 +11,7 @@ describe('cancellationReasonsReducer', () => {
         ).toEqual({
             primaryReason: { label: 'primary' },
             secondaryReason: null,
-            otherReason: null,
+            additionalDetails: null,
             completed: false,
         })
     })
@@ -34,91 +33,33 @@ describe('cancellationReasonsReducer', () => {
         ).toEqual({
             primaryReason: primaryReason,
             secondaryReason: secondaryReason,
-            otherReason: null,
+            additionalDetails: null,
             completed: true,
         })
     })
 
-    it('should update the secondary reason with "Other" and return the state uncompleted', () => {
+    it('should update additional details without affecting completion state', () => {
         const primaryReason = { label: 'primary' }
-        const secondaryReason = { label: CommonReasonLabel.Other }
+        const secondaryReason = { label: 'secondary' }
+        const additionalDetails = { label: 'Some additional context' }
+
         expect(
             cancellationReasonsReducer(
                 {
                     ...DEFAULT_STATE,
                     primaryReason: primaryReason,
+                    secondaryReason: secondaryReason,
+                    completed: true,
                 },
                 {
-                    type: CancellationReasonsActionType.SecondaryReasonSelected,
-                    secondaryReason: secondaryReason,
+                    type: CancellationReasonsActionType.AdditionalDetailsUpdated,
+                    additionalDetails: additionalDetails,
                 },
             ),
         ).toEqual({
             primaryReason: primaryReason,
             secondaryReason: secondaryReason,
-            otherReason: null,
-            completed: false,
-        })
-    })
-
-    it('should update the other reason for existing "Other" primary reason and return a completed state', () => {
-        const primaryReason = { label: CommonReasonLabel.Other }
-        const otherReason = { label: 'other reason' }
-        expect(
-            cancellationReasonsReducer(
-                {
-                    ...DEFAULT_STATE,
-                    primaryReason: primaryReason,
-                },
-                {
-                    type: CancellationReasonsActionType.OtherReasonUpdated,
-                    otherReason: otherReason,
-                },
-            ),
-        ).toEqual({
-            primaryReason: { label: CommonReasonLabel.Other },
-            secondaryReason: null,
-            otherReason: otherReason,
-            completed: true,
-        })
-    })
-
-    it('should update the other reason for existing "Other" primary reason and return a completed state', () => {
-        expect(
-            cancellationReasonsReducer(
-                {
-                    ...DEFAULT_STATE,
-                    primaryReason: { label: CommonReasonLabel.Other },
-                },
-                {
-                    type: CancellationReasonsActionType.OtherReasonUpdated,
-                    otherReason: { label: 'Some other reason' },
-                },
-            ),
-        ).toEqual({
-            primaryReason: { label: CommonReasonLabel.Other },
-            secondaryReason: null,
-            otherReason: { label: 'Some other reason' },
-            completed: true,
-        })
-    })
-
-    it('should update the other reason for existing "Other" primary reason and return a completed state', () => {
-        expect(
-            cancellationReasonsReducer(
-                {
-                    ...DEFAULT_STATE,
-                    primaryReason: { label: CommonReasonLabel.Other },
-                },
-                {
-                    type: CancellationReasonsActionType.OtherReasonUpdated,
-                    otherReason: { label: 'Some other reason' },
-                },
-            ),
-        ).toEqual({
-            primaryReason: { label: CommonReasonLabel.Other },
-            secondaryReason: null,
-            otherReason: { label: 'Some other reason' },
+            additionalDetails: additionalDetails,
             completed: true,
         })
     })
@@ -130,7 +71,7 @@ describe('cancellationReasonsReducer', () => {
                     ...DEFAULT_STATE,
                     primaryReason: { label: 'primary' },
                     secondaryReason: { label: 'secondary' },
-                    otherReason: { label: 'other' },
+                    additionalDetails: { label: 'details' },
                     completed: true,
                 },
                 {
