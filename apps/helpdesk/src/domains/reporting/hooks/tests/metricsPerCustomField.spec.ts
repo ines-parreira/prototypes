@@ -6,15 +6,23 @@ import {
     useCustomFieldsForProductTicketCount,
     useCustomFieldsTicketCount,
 } from 'domains/reporting/hooks/metricsPerCustomField'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory,
     customFieldsTicketCountOnCreatedDatetimeQueryFactory,
     customFieldsTicketCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
-import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import {
+    withDefaultLogicalOperator,
+    withLogicalOperator,
+} from 'domains/reporting/models/queryFactories/utils'
+import {
+    ticketFieldsCountPerFieldValueQueryV2Factory,
+    withCustomFieldIdAndProductFilter,
+} from 'domains/reporting/models/scopes/ticketFields'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
+    APIOnlyFilterKey,
     TagFilterInstanceId,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'
@@ -24,7 +32,7 @@ jest.mock('domains/reporting/hooks/useMetricPerDimension')
 jest.mock(
     'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount',
 )
-const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
 
 describe('metricsPerCustomField', () => {
     const periodStart = moment()
@@ -63,13 +71,23 @@ describe('metricsPerCustomField', () => {
                 {},
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 customFieldsTicketCountQueryFactory(
                     statsFilters,
                     timezone,
                     customFieldId,
                     sorting,
                 ),
+                ticketFieldsCountPerFieldValueQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator([
+                            customFieldId,
+                        ]),
+                    },
+                    timezone,
+                    sortDirection: sorting,
+                }),
             )
         })
         it('should pass the query to useMetricPerDimension hook when time reference is created at', () => {
@@ -85,13 +103,22 @@ describe('metricsPerCustomField', () => {
                 {},
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 customFieldsTicketCountOnCreatedDatetimeQueryFactory(
                     statsFilters,
                     timezone,
                     customFieldId,
                     sorting,
                 ),
+                ticketFieldsCountPerFieldValueQueryV2Factory({
+                    filters: withCustomFieldIdAndProductFilter(
+                        statsFilters,
+                        TicketTimeReference.CreatedAt,
+                        customFieldId,
+                    ),
+                    timezone,
+                    sortDirection: sorting,
+                }),
             )
         })
     })
@@ -112,7 +139,7 @@ describe('metricsPerCustomField', () => {
                 {},
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory(
                     statsFilters,
                     timezone,
@@ -120,6 +147,16 @@ describe('metricsPerCustomField', () => {
                     productId,
                     sorting,
                 ),
+                ticketFieldsCountPerFieldValueQueryV2Factory({
+                    filters: withCustomFieldIdAndProductFilter(
+                        statsFilters,
+                        TicketTimeReference.CreatedAt,
+                        customFieldId,
+                        productId,
+                    ),
+                    timezone,
+                    sortDirection: sorting,
+                }),
             )
         })
         it('should pass the query to useMetricPerDimension hook when time reference is created at', () => {
@@ -135,13 +172,22 @@ describe('metricsPerCustomField', () => {
                 {},
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 customFieldsTicketCountOnCreatedDatetimeQueryFactory(
                     statsFilters,
                     timezone,
                     customFieldId,
                     sorting,
                 ),
+                ticketFieldsCountPerFieldValueQueryV2Factory({
+                    filters: withCustomFieldIdAndProductFilter(
+                        statsFilters,
+                        TicketTimeReference.CreatedAt,
+                        customFieldId,
+                    ),
+                    timezone,
+                    sortDirection: sorting,
+                }),
             )
         })
     })

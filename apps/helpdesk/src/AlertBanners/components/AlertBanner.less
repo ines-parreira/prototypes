@@ -75,10 +75,17 @@
     .AlertBanner {
         &.critical {
             background-color: var(--surface-error-primary);
+            border-bottom-color: var(--content-error-primary);
+        }
+
+        &.warning {
+            background: var(--surface-warning-primary);
+            border-bottom-color: var(--content-warning-primary);
         }
 
         &.info {
             background: var(--surface-neutral-primary);
+            border-bottom-color: var(--content-accent-default);
         }
     }
 

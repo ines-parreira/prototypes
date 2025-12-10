@@ -19,7 +19,7 @@ import type {
     StringStandardFilter,
     TagsFilter,
 } from 'domains/reporting/models/scopes/types'
-import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
 import type {
     Cube,
     ReportingFilter,
@@ -27,7 +27,11 @@ import type {
     ReportingTimeDimension,
 } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type { ExtendedLogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import {
+    ApiOnlyOperatorEnum,
+    LogicalOperatorEnum,
+} from 'domains/reporting/pages/common/components/Filter/constants'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { reportError } from 'utils/errors'
 
@@ -47,18 +51,23 @@ function createDateFilter(
 
 function createStandardFilter(
     member: NumberFilterName,
-    operator: LogicalOperatorEnum,
+    operator: ExtendedLogicalOperatorEnum,
     values: number[],
 ): NumberStandardFilter
 function createStandardFilter(
     member: StringFilterName,
-    operator: LogicalOperatorEnum,
+    operator: ExtendedLogicalOperatorEnum,
     values: string[],
 ): StringStandardFilter
 function createStandardFilter(
     member: FilterName,
-    operator: LogicalOperatorEnum,
+    operator: ExtendedLogicalOperatorEnum,
     values: string[] | number[],
+): StandardFilter
+function createStandardFilter<T>(
+    member: FilterName,
+    operator: ExtendedLogicalOperatorEnum,
+    values: T[],
 ): StandardFilter {
     return {
         member,
@@ -99,7 +108,7 @@ function createCustomFieldsFilter(
  * Only applies filters that are defined in the scope's filter configuration.
  */
 export function createScopeFilters<TMeta extends ScopeMeta>(
-    statFilters: StatsFiltersWithLogicalOperator,
+    statFilters: ApiStatsFilters,
     scopeConfig: TMeta,
 ): ScopeFilters<TMeta> {
     const filters: FilterGroup[] = [
@@ -221,19 +230,23 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'accuracy':
             case 'efficiency':
             case 'internalCompliance':
+            case 'customFieldValue':
             case 'brandVoice':
-                const filter = statFilters[filterKey]
-                if (filter && hasFilter(filter)) {
-                    filters.push(
-                        createStandardFilter(
-                            filterKey,
-                            filter.operator,
-                            filter.values,
-                        ),
-                    )
+            case 'customFieldId':
+            case 'productId':
+                {
+                    const filter = statFilters[filterKey]
+                    if (filter && hasFilter(filter)) {
+                        filters.push(
+                            createStandardFilter(
+                                filterKey,
+                                filter.operator,
+                                filter.values,
+                            ),
+                        )
+                    }
                 }
                 break
-
             case 'teamId':
                 if (statFilters.teams && hasFilter(statFilters.teams)) {
                     filters.push(
@@ -243,6 +256,23 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                             statFilters.teams.values,
                         ),
                     )
+                }
+                break
+            case 'createdDatetime':
+                if (statFilters.createdDatetime) {
+                    // the backend API does not support inDateRange operator, so we convert it to AfterDate and BeforeDate
+                    filters.push({
+                        member: 'createdDatetime',
+                        operator: ApiOnlyOperatorEnum.IN_DATE_RANGE,
+                        values: [
+                            formatReportingQueryDate(
+                                statFilters.createdDatetime.start_datetime,
+                            ),
+                            formatReportingQueryDate(
+                                statFilters.createdDatetime.end_datetime,
+                            ),
+                        ],
+                    })
                 }
                 break
         }

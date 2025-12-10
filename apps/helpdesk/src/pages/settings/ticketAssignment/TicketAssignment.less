@@ -30,11 +30,17 @@
     }
 
     .limitsTooltip {
-        border-bottom: dotted 2px var(--neutral-grey-3);
+        border-bottom: dotted 2px var(--neutral-grey-3); // legacy
     }
 
     .missingTeamAlert {
         margin-bottom: 40px;
         margin-top: 16px;
+    }
+}
+
+.axiom :local {
+    .limitsTooltip {
+        border-bottom-color: var(--border-neutral-default);
     }
 }

@@ -26,12 +26,12 @@
         .code-wrapper {
             border: 0;
             margin: 0;
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
 
             .code {
                 display: flex;
                 height: 160px;
-                color: var(--neutral-grey-6);
+                color: var(--neutral-grey-6); // legacy
             }
         }
 
@@ -40,6 +40,18 @@
             right: 28px;
             bottom: 155px;
             z-index: 1;
+        }
+    }
+}
+
+.axiom :local {
+    .integration-card {
+        .code-wrapper {
+            background: var(--elevation-neutral-mid);
+
+            .code {
+                color: var(--content-neutral-default);
+            }
         }
     }
 }

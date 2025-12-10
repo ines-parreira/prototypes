@@ -9,7 +9,7 @@
         display: flex;
         align-items: flex-end;
         gap: 8px;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
 
     .modalBody {
@@ -20,7 +20,7 @@
 
         .fontExplorer {
             padding: 16px;
-            border-right: 1px solid var(--neutral-grey-3);
+            border-right: 1px solid var(--neutral-grey-3); // legacy
             flex: 2;
             height: 100%;
             display: flex;
@@ -64,7 +64,7 @@
                 cursor: pointer;
 
                 &:hover {
-                    background-color: var(--neutral-grey-2);
+                    background-color: var(--neutral-grey-2); // legacy
                 }
             }
 
@@ -101,6 +101,24 @@
                 align-items: center;
                 line-height: 20px;
                 padding: 8px 0;
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .footerWrapper {
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .modalBody {
+        .fontExplorer {
+            border-right-color: var(--border-neutral-default);
+
+            .availableFont {
+                &:hover {
+                    background-color: var(--hover-default);
+                }
             }
         }
     }

@@ -1,5 +1,8 @@
 import type { ReportingFilterOperator } from 'domains/reporting/models/types'
-import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type {
+    ExtendedLogicalOperatorEnum,
+    LogicalOperatorEnum,
+} from 'domains/reporting/pages/common/components/Filter/constants'
 
 export type DateFilter = {
     member: FilterName
@@ -11,13 +14,13 @@ export type DateFilter = {
 
 export type StringStandardFilter = {
     member: StringFilterName
-    operator: LogicalOperatorEnum
+    operator: LogicalOperatorEnum | ExtendedLogicalOperatorEnum
     values: string[]
 }
 
 export type NumberStandardFilter = {
     member: NumberFilterName
-    operator: LogicalOperatorEnum
+    operator: LogicalOperatorEnum | ExtendedLogicalOperatorEnum
     values: number[]
 }
 
@@ -58,6 +61,7 @@ export type DimensionName =
     | 'handleTime'
     | 'eventType'
     | 'storeId'
+    | 'customFieldValue'
 
 export type MeasureName =
     | 'ticketCount'
@@ -88,6 +92,7 @@ export type TimeDimensionName =
     | 'sentDatetime'
     | 'closedDatetime'
     | 'firstAgentMessageDatetime'
+    | 'updatedDatetime'
 
 export type StringFilterName =
     | 'periodStart'
@@ -115,11 +120,15 @@ export type StringFilterName =
     | 'brandVoiceScore'
     | 'eventType'
     | 'status'
+    | 'productId'
+    | 'createdDatetime'
+    | 'customFieldValue'
 
 export type NumberFilterName =
     | 'agentId'
     | 'integrationId'
     | 'storeId'
     | 'teamId'
+    | 'customFieldId'
 
 export type FilterName = StringFilterName | NumberFilterName

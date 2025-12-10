@@ -1,6 +1,8 @@
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 
 import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
@@ -8,11 +10,15 @@ import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 import Dimension from 'auto_qa/components/Dimension'
 import type { SupportedTicketQAScoreDimension } from 'auto_qa/config'
 import { dimensionConfig } from 'auto_qa/config'
+import { useFlag } from 'core/flags'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { AutoQATicketInteraction: 'auto-qa-ticket-interaction' },
 }))
+
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
 
 describe('Dimension', () => {
     const defaultDimension = {
@@ -26,7 +32,13 @@ describe('Dimension', () => {
         explanation: 'Beepity-boopity',
     } as TicketQAScoreDimension
 
-    beforeEach(() => {})
+    beforeEach(() => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.UIVisionMilestone1) {
+                return true
+            }
+        })
+    })
 
     it('should render the component', () => {
         const onChange = jest.fn()
@@ -195,5 +207,59 @@ describe('Dimension', () => {
 
         expect(expandButton).toHaveAttribute('aria-expanded', 'false')
         expect(logEvent).not.toHaveBeenCalled()
+    })
+
+    describe('UIVisionMilestone1 feature flag', () => {
+        it('should apply hasUIVisionMS1 class to container and explanation when UIVisionMilestone1 is enabled', () => {
+            const onChange = jest.fn()
+
+            const { container } = render(
+                <Dimension
+                    config={dimensionConfig.communication_skills}
+                    dimension={defaultDimension}
+                    onChange={onChange}
+                    ticketId={1}
+                />,
+            )
+
+            const containerDiv = container.querySelector(
+                '[class*="hasUIVisionMS1"]',
+            )
+            expect(containerDiv).toBeInTheDocument()
+
+            const explanationDiv = container.querySelector(
+                '[class*="hasUIVisionMS1"]',
+            )
+            expect(explanationDiv).toBeInTheDocument()
+        })
+
+        it('should not apply hasUIVisionMS1 class to container when UIVisionMilestone1 is disabled', () => {
+            useFlagMock.mockImplementation((flag) => {
+                if (flag === FeatureFlagKey.UIVisionMilestone1) {
+                    return false
+                }
+            })
+
+            const onChange = jest.fn()
+
+            const { container } = render(
+                <Dimension
+                    config={dimensionConfig.communication_skills}
+                    dimension={defaultDimension}
+                    onChange={onChange}
+                    ticketId={1}
+                />,
+            )
+
+            const containerDiv = container.querySelector(
+                '[class*="hasUIVisionMS1"]',
+            )
+            expect(containerDiv).not.toBeInTheDocument()
+
+            const explanationDiv = container.querySelector(
+                '[class*="hasUIVisionMS1"]',
+            )
+            expect(explanationDiv).not.toBeInTheDocument()
+        })
     })
 })

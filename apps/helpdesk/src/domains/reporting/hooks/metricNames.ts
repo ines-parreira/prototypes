@@ -373,10 +373,9 @@ export const METRIC_NAMES = {
         'ticket-insights-custom-fields-ticket-count-on-created-datetime-time-series',
     TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_FOR_PRODUCT_ON_CREATED_DATETIME_TIME_SERIES:
         'ticket-insights-custom-fields-ticket-count-for-product-on-created-datetime-time-series',
+    // TODO(new-report-api): Needs support for IntegrationChannelPair = 'TicketMessagesEnriched.integrationChannelPair' in the new report API
     TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_TOTAL_COUNT:
         'ticket-insights-custom-fields-ticket-total-count',
-    TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_FACTORY:
-        'ticket-insights-custom-fields-ticket-factory',
     TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_FOR_PRODUCT_ON_CREATED_DATETIME:
         'ticket-insights-custom-fields-ticket-count-for-product-on-created-datetime',
     TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_ON_CREATED_DATETIME:
@@ -600,7 +599,12 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_OVERALL_AUTOMATION_RATE,
     ],
     [MetricScope.TicketFields]: [
-        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4833/implement-the-ticket-fields-v2-metric
+        METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT,
+        METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_ON_CREATED_DATETIME,
+        METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_TIME_SERIES,
+        METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_ON_CREATED_DATETIME_TIME_SERIES,
+        METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_FOR_PRODUCT_ON_CREATED_DATETIME,
+        METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT_WITH_SORT,
     ],
     [MetricScope.AutomatedInteractions]: [
         METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,

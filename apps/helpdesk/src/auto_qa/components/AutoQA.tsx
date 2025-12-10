@@ -1,14 +1,20 @@
 import { useMemo, useRef } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import cn from 'classnames'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
-import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    Icon,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import type { SaveState } from 'auto_qa/hooks/useSaveState'
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
@@ -31,6 +37,7 @@ export default function AutoQA() {
         useAutoQA(ticket.id)
     const isAfterFeedbackCollectionPeriod =
         useTicketIsAfterFeedbackCollectionPeriod()
+    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
 
     const lastUpdatedString = useMemo(
         () => moment(lastUpdated).calendar(),
@@ -68,9 +75,14 @@ export default function AutoQA() {
     }
 
     return (
-        <div className={css.container}>
+        <div
+            className={cn(css.container, {
+                [css.hasUIVisionMS1]: hasUIVisionMS1,
+            })}
+        >
             <header className={css.header}>
                 <div className={css.titleWrapper}>
+                    {hasUIVisionMS1 && <Icon name="star" size="md" />}
                     <h2 className={css.title}>Auto QA Score</h2>
                     <i
                         id="auto-qa-score"
@@ -135,16 +147,29 @@ export default function AutoQA() {
                 </div>
             ) : (
                 <>
-                    {dimensions.map((dim) => (
-                        <Dimension
-                            key={dim.name}
-                            config={dimensionConfig[dim.name]}
-                            dimension={dim}
-                            onChange={changeHandlers[dim.name]}
-                            ticketId={ticket.id}
-                        />
-                    ))}
-
+                    {hasUIVisionMS1 ? (
+                        <div>
+                            {dimensions.map((dim) => (
+                                <Dimension
+                                    key={dim.name}
+                                    config={dimensionConfig[dim.name]}
+                                    dimension={dim}
+                                    onChange={changeHandlers[dim.name]}
+                                    ticketId={ticket.id}
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        dimensions.map((dim) => (
+                            <Dimension
+                                key={dim.name}
+                                config={dimensionConfig[dim.name]}
+                                dimension={dim}
+                                onChange={changeHandlers[dim.name]}
+                                ticketId={ticket.id}
+                            />
+                        ))
+                    )}
                     <p className={css.lastUpdated}>
                         Last updated: {lastUpdatedString}
                     </p>

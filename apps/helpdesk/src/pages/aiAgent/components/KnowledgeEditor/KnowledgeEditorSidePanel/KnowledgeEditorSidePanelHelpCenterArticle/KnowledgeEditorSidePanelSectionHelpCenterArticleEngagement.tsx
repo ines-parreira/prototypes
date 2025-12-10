@@ -34,18 +34,23 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement = ({
     >
         <KnowledgeEditorSidePanelTwoColumnsContent
             columns={[
-                ['Views', views ? views.toLocaleString(DEFAULT_LOCALE) : '-'],
-                [
-                    'Rating',
-                    <KnowledgeEditorSidePanelFieldPercentage
-                        key="rating"
-                        percentage={rating}
-                    />,
-                ],
-                [
-                    'Reactions',
-                    <Reactions key="reactions" reactions={reactions} />,
-                ],
+                {
+                    left: 'Views',
+                    right: views ? views.toLocaleString(DEFAULT_LOCALE) : '-',
+                },
+                {
+                    left: 'Rating',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldPercentage
+                            key="rating"
+                            percentage={rating}
+                        />
+                    ),
+                },
+                {
+                    left: 'Reactions',
+                    right: <Reactions key="reactions" reactions={reactions} />,
+                },
             ]}
         />
     </KnowledgeEditorSidePanelSection>

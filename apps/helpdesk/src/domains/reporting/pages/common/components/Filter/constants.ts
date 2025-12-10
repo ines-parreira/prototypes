@@ -17,6 +17,16 @@ export enum LogicalOperatorEnum {
     ALL_OF = 'all-of',
 }
 
+// TODO(reporting): see if we can merge with LogicalOperatorEnum in the future
+export enum ApiOnlyOperatorEnum {
+    SET = 'set',
+    IN_DATE_RANGE = 'inDateRange',
+}
+
+export type ExtendedLogicalOperatorEnum =
+    | LogicalOperatorEnum
+    | ApiOnlyOperatorEnum
+
 export const LogicalOperatorLabel = {
     [LogicalOperatorEnum.ONE_OF]: 'Is one of',
     [LogicalOperatorEnum.NOT_ONE_OF]: 'Is not one of',

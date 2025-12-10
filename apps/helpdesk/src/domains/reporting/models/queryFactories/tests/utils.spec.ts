@@ -4,15 +4,21 @@ import {
     addFieldIdToCustomFieldValues,
     addOptionalFilter,
     countUniquePrefixes,
+    deduplicateCustomFields,
     FilterOperatorMap,
     getCustomFieldValueSerializer,
     hasFilter,
     injectCustomFieldId,
     isAggregationWindowFilter,
     isCustomFieldFilter,
+    isFilterWithLogicalOperator,
     isPeriodFilter,
+    isTagFilter,
     toLowerCaseString,
+    toUpperCaseString,
+    withDefaultCustomFieldAndLogicalOperator,
     withDefaultLogicalOperator,
+    withLogicalOperator,
 } from 'domains/reporting/models/queryFactories/utils'
 import type {
     CustomFieldFilter,
@@ -28,7 +34,10 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'domains/reporting/models/types'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import {
+    ApiOnlyOperatorEnum,
+    LogicalOperatorEnum,
+} from 'domains/reporting/pages/common/components/Filter/constants'
 
 import { AiSalesAgentOrdersFilterMember } from '../../cubes/ai-sales-agent/AiSalesAgentOrders'
 
@@ -428,6 +437,43 @@ describe('utils', () => {
         ])('should return true if there is a value ', (filterWithValues) => {
             expect(hasFilter(filterWithValues)).toBe(true)
         })
+
+        it('should return true for SET operator with empty values', () => {
+            const filter = { values: [], operator: ApiOnlyOperatorEnum.SET }
+            expect(hasFilter(filter)).toBe(true)
+        })
+
+        it('should return false for SET operator with non-empty values', () => {
+            const filter = {
+                values: ['value1'],
+                operator: ApiOnlyOperatorEnum.SET,
+            }
+            expect(hasFilter(filter)).toBe(false)
+        })
+
+        it('should return true for IN_DATE_RANGE operator with exactly 2 values', () => {
+            const filter = {
+                values: ['2024-01-01', '2024-12-31'],
+                operator: ApiOnlyOperatorEnum.IN_DATE_RANGE,
+            }
+            expect(hasFilter(filter)).toBe(true)
+        })
+
+        it('should return false for IN_DATE_RANGE operator with fewer than 2 values', () => {
+            const filter = {
+                values: ['2024-01-01'],
+                operator: ApiOnlyOperatorEnum.IN_DATE_RANGE,
+            }
+            expect(hasFilter(filter)).toBe(false)
+        })
+
+        it('should return false for IN_DATE_RANGE operator with more than 2 values', () => {
+            const filter = {
+                values: ['2024-01-01', '2024-12-31', '2025-01-01'],
+                operator: ApiOnlyOperatorEnum.IN_DATE_RANGE,
+            }
+            expect(hasFilter(filter)).toBe(false)
+        })
     })
 
     describe('withDefaultLogicalOperator', () => {
@@ -590,6 +636,283 @@ describe('utils', () => {
             const array = ['123::value1::value2', '123::value3::value2']
 
             expect(countUniquePrefixes(array)).toBe(1)
+        })
+    })
+
+    describe('isFilterWithLogicalOperator', () => {
+        it('should return true for filter with operator and values', () => {
+            const filter = {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [1, 2, 3],
+            }
+            expect(isFilterWithLogicalOperator(filter)).toBe(true)
+        })
+
+        it('should return false for array', () => {
+            expect(isFilterWithLogicalOperator([1, 2, 3])).toBe(false)
+        })
+
+        it('should return false for undefined', () => {
+            expect(isFilterWithLogicalOperator(undefined)).toBe(false)
+        })
+
+        it('should return false for object without operator', () => {
+            expect(isFilterWithLogicalOperator({ values: [1, 2] } as any)).toBe(
+                false,
+            )
+        })
+
+        it('should return false for object without values', () => {
+            expect(
+                isFilterWithLogicalOperator({
+                    operator: LogicalOperatorEnum.ONE_OF,
+                } as any),
+            ).toBe(false)
+        })
+    })
+
+    describe('isTagFilter', () => {
+        it('should return true for valid tag filter array', () => {
+            const filter: TagFilter[] = [
+                {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [1, 2, 3],
+                    filterInstanceId: TagFilterInstanceId.First,
+                },
+            ]
+            expect(isTagFilter(filter)).toBe(true)
+        })
+
+        it('should return false for undefined', () => {
+            expect(isTagFilter(undefined)).toBe(false)
+        })
+
+        it('should return false for non-array', () => {
+            expect(isTagFilter({ operator: 'one-of' } as any)).toBe(false)
+        })
+
+        it('should return false for array without filterInstanceId', () => {
+            const filter = [
+                {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [1, 2, 3],
+                },
+            ]
+            expect(isTagFilter(filter as any)).toBe(false)
+        })
+
+        it('should return true for empty array', () => {
+            // Empty array satisfies .every() condition (vacuous truth)
+            expect(isTagFilter([])).toBe(true)
+        })
+    })
+
+    describe('toUpperCaseString', () => {
+        it('should convert string to uppercase', () => {
+            expect(toUpperCaseString('test')).toBe('TEST')
+        })
+
+        it('should convert number to uppercase string', () => {
+            expect(toUpperCaseString(123)).toBe('123')
+        })
+
+        it('should handle mixed case', () => {
+            expect(toUpperCaseString('TeSt')).toBe('TEST')
+        })
+    })
+
+    describe('withLogicalOperator', () => {
+        it('should create filter with default ONE_OF operator', () => {
+            const result = withLogicalOperator([1, 2, 3])
+            expect(result).toEqual({
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [1, 2, 3],
+            })
+        })
+
+        it('should create filter with specified operator', () => {
+            const result = withLogicalOperator(
+                ['a', 'b'],
+                LogicalOperatorEnum.NOT_ONE_OF,
+            )
+            expect(result).toEqual({
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+                values: ['a', 'b'],
+            })
+        })
+
+        it('should create filter with ALL_OF operator', () => {
+            const result = withLogicalOperator(
+                [1, 2],
+                LogicalOperatorEnum.ALL_OF,
+            )
+            expect(result).toEqual({
+                operator: LogicalOperatorEnum.ALL_OF,
+                values: [1, 2],
+            })
+        })
+    })
+
+    describe('withExtendedLogicalOperator', () => {
+        it('should create filter with default ONE_OF operator', () => {
+            const result = withLogicalOperator([1, 2, 3])
+            expect(result).toEqual({
+                operator: 'one-of',
+                values: [1, 2, 3],
+            })
+        })
+
+        it('should create filter with specified extended operator', () => {
+            const result = withLogicalOperator(['a', 'b'], 'not-one-of' as any)
+            expect(result).toEqual({
+                operator: 'not-one-of',
+                values: ['a', 'b'],
+            })
+        })
+    })
+
+    describe('withDefaultCustomFieldAndLogicalOperator', () => {
+        it('should create custom field filter with default values', () => {
+            const result = withDefaultCustomFieldAndLogicalOperator({
+                customFieldId: 123,
+            })
+            expect(result).toEqual({
+                customFieldId: 123,
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [],
+            })
+        })
+
+        it('should create custom field filter with provided values', () => {
+            const result = withDefaultCustomFieldAndLogicalOperator({
+                customFieldId: 456,
+                values: ['value1', 'value2'],
+            })
+            expect(result).toEqual({
+                customFieldId: 456,
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['value1', 'value2'],
+            })
+        })
+
+        it('should create custom field filter with specified operator', () => {
+            const result = withDefaultCustomFieldAndLogicalOperator({
+                customFieldId: 789,
+                values: ['test'],
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+            })
+            expect(result).toEqual({
+                customFieldId: 789,
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+                values: ['test'],
+            })
+        })
+    })
+
+    describe('deduplicateCustomFields', () => {
+        it('should add filter when no custom field filter exists', () => {
+            const acc: ReportingFilter[] = []
+            const filter: ReportingFilter = {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.Equals,
+                values: ['123::value1'],
+            }
+            const result = deduplicateCustomFields(acc, filter)
+            expect(result).toEqual([filter])
+        })
+
+        it('should merge values when custom field filter exists', () => {
+            const existingFilter: ReportingFilter = {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.Equals,
+                values: ['123::value1'],
+            }
+            const acc: ReportingFilter[] = [existingFilter]
+            const newFilter: ReportingFilter = {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.Equals,
+                values: ['456::value2'],
+            }
+            const result = deduplicateCustomFields(acc, newFilter)
+            expect(result).toEqual([
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['123::value1', '456::value2'],
+                },
+            ])
+        })
+
+        it('should handle CustomFieldToExclude member', () => {
+            const acc: ReportingFilter[] = []
+            const filter: ReportingFilter = {
+                member: TicketMember.CustomFieldToExclude,
+                operator: ReportingFilterOperator.NotEquals,
+                values: ['123::value1'],
+            }
+            const result = deduplicateCustomFields(acc, filter)
+            expect(result).toEqual([filter])
+        })
+
+        it('should not deduplicate non-custom field filters', () => {
+            const acc: ReportingFilter[] = [
+                {
+                    member: TicketMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['email'],
+                },
+            ]
+            const filter: ReportingFilter = {
+                member: TicketMember.AssigneeUserId,
+                operator: ReportingFilterOperator.Equals,
+                values: ['123'],
+            }
+            const result = deduplicateCustomFields(acc, filter)
+            expect(result).toEqual([
+                {
+                    member: TicketMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['email'],
+                },
+                {
+                    member: TicketMember.AssigneeUserId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['123'],
+                },
+            ])
+        })
+
+        it('should merge multiple custom field filters correctly', () => {
+            const acc: ReportingFilter[] = [
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['123::value1'],
+                },
+                {
+                    member: TicketMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['email'],
+                },
+            ]
+            const filter: ReportingFilter = {
+                member: TicketMember.CustomField,
+                operator: ReportingFilterOperator.Equals,
+                values: ['456::value2', '789::value3'],
+            }
+            const result = deduplicateCustomFields(acc, filter)
+            expect(result).toEqual([
+                {
+                    member: TicketMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['email'],
+                },
+                {
+                    member: TicketMember.CustomField,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['123::value1', '456::value2', '789::value3'],
+                },
+            ])
         })
     })
 })

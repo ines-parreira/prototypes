@@ -19,7 +19,7 @@
     .asterisk {
         display: inline-block;
         margin-right: var(--layout-spacing-xxs);
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         font-weight: @body-semibold-font-weight;
         // revert bootstrap shitty styles
         position: initial;
@@ -31,5 +31,11 @@
     .labelWrapper {
         display: flex;
         max-width: 60%;
+    }
+}
+
+.axiom :local {
+    .asterisk {
+        color: var(--content-error-primary);
     }
 }

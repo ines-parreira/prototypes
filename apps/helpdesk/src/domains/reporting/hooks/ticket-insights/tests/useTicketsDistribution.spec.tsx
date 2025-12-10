@@ -214,4 +214,136 @@ describe('useTicketsDistribution', () => {
                 ),
         })
     })
+
+    it('should use fallback field name "ticketCount" when VALUE_FIELD is not found in measures', () => {
+        const dataWithFallback = [
+            {
+                ticketCount: '10',
+                [BREAKDOWN_FIELD]: 'Level 0',
+            },
+            {
+                ticketCount: '20',
+                [BREAKDOWN_FIELD]: 'Level 1',
+            },
+        ]
+
+        useCustomFieldsTicketCountMock.mockReturnValue({
+            data: {
+                measures: ['ticketCount'],
+                dimensions: [BREAKDOWN_FIELD],
+                allData: dataWithFallback,
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(
+            () => useTicketsDistribution(selectedCustomFieldId),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        expect(result.current).toEqual({
+            isFetching: false,
+            outsideTopTotal: 0,
+            outsideTopTotalPercentage: 0,
+            outsideTopTotalGaugePercentage: 0,
+            ticketsCountTotal: 30,
+            topData: dataWithFallback.map((item) =>
+                transformData(item, 30, 20, 'ticketCount'),
+            ),
+        })
+    })
+
+    it('should use fallback field name "customFieldValue" when BREAKDOWN_FIELD is not found in dimensions', () => {
+        const dataWithFallback = [
+            {
+                [VALUE_FIELD]: '10',
+                customFieldValue: 'Level 0',
+            },
+            {
+                [VALUE_FIELD]: '20',
+                customFieldValue: 'Level 1',
+            },
+        ]
+
+        useCustomFieldsTicketCountMock.mockReturnValue({
+            data: {
+                measures: [VALUE_FIELD],
+                dimensions: ['customFieldValue'],
+                allData: dataWithFallback,
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(
+            () => useTicketsDistribution(selectedCustomFieldId),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        expect(result.current).toEqual({
+            isFetching: false,
+            outsideTopTotal: 0,
+            outsideTopTotalPercentage: 0,
+            outsideTopTotalGaugePercentage: 0,
+            ticketsCountTotal: 30,
+            topData: dataWithFallback.map((item) =>
+                transformData(item, 30, 20, VALUE_FIELD, 'customFieldValue'),
+            ),
+        })
+    })
+
+    it('should use both fallback field names when neither constant is found in measures or dimensions', () => {
+        const dataWithBothFallbacks = [
+            {
+                ticketCount: '10',
+                customFieldValue: 'Level 0',
+            },
+            {
+                ticketCount: '20',
+                customFieldValue: 'Level 1',
+            },
+        ]
+
+        useCustomFieldsTicketCountMock.mockReturnValue({
+            data: {
+                measures: ['ticketCount'],
+                dimensions: ['customFieldValue'],
+                allData: dataWithBothFallbacks,
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(
+            () => useTicketsDistribution(selectedCustomFieldId),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        expect(result.current).toEqual({
+            isFetching: false,
+            outsideTopTotal: 0,
+            outsideTopTotalPercentage: 0,
+            outsideTopTotalGaugePercentage: 0,
+            ticketsCountTotal: 30,
+            topData: dataWithBothFallbacks.map((item) =>
+                transformData(item, 30, 20, 'ticketCount', 'customFieldValue'),
+            ),
+        })
+    })
 })

@@ -7,12 +7,10 @@ import {
     Entity,
     useTicketTimeReference,
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
-import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     BREAKDOWN_FIELD,
     VALUE_FIELD,
 } from 'domains/reporting/hooks/withBreakdown'
-import type { Cubes } from 'domains/reporting/models/cubes'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
@@ -22,9 +20,6 @@ export const useTicketsDistribution = (
     topAmount = 10,
 ) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
-
-    const ticketCountField = VALUE_FIELD
-    const customFieldDimension = BREAKDOWN_FIELD
 
     const [ticketFieldsTicketTimeReference] = useTicketTimeReference(
         Entity.TicketField,
@@ -37,8 +32,16 @@ export const useTicketsDistribution = (
         OrderDirection.Desc,
         ticketFieldsTicketTimeReference,
     )
+    const ticketCountField =
+        data?.measures?.find(
+            (item) => item === VALUE_FIELD || item === 'ticketCount',
+        ) || VALUE_FIELD
+    const customFieldDimension =
+        data?.dimensions?.find(
+            (item) => item === BREAKDOWN_FIELD || item === 'customFieldValue',
+        ) || BREAKDOWN_FIELD
 
-    const topData: QueryReturnType<string | null, Cubes> = useMemo(
+    const topData = useMemo(
         () =>
             data?.allData.slice(0, topAmount).map((item) => ({
                 ...item,
@@ -72,7 +75,8 @@ export const useTicketsDistribution = (
             isFetching,
             topData: topData.map((item) => ({
                 category:
-                    item[customFieldDimension] || NOT_AVAILABLE_PLACEHOLDER,
+                    item[customFieldDimension]?.toString() ||
+                    NOT_AVAILABLE_PLACEHOLDER,
                 value: Number(item[ticketCountField]),
                 valueInPercentage:
                     (100 * Number(item[ticketCountField])) / ticketsCountTotal,

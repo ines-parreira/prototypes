@@ -3,15 +3,31 @@
         font-size: 1.5rem !important;
 
         &.critical {
-            color: var(--accessory-red-3);
+            color: var(--accessory-red-3); // legacy
         }
 
         &.warning {
-            color: var(--feedback-warning-4);
+            color: var(--feedback-warning-4); // legacy
         }
 
         &.info {
-            color: var(--main-primary-4);
+            color: var(--main-primary-4); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .Icon {
+        &.critical {
+            color: var(--content-error-primary);
+        }
+
+        &.warning {
+            color: var(--content-warning-primary);
+        }
+
+        &.info {
+            color: var(--content-accent-default);
         }
     }
 }

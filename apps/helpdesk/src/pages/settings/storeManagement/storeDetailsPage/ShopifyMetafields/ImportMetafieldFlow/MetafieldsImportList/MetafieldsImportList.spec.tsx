@@ -443,9 +443,9 @@ describe('MetafieldsImportList', () => {
             )
 
             expect(screen.getByText('Type')).toBeInTheDocument()
-            const draftOrderFields = mockImportableFields.filter(
-                (field) => field.category === 'draft_order',
-            )
+            const draftOrderFields = mockImportableFields
+                .slice(0, 10)
+                .filter((field) => field.category === 'draft_order')
             draftOrderFields.forEach((field) => {
                 expect(screen.getByText(field.name)).toBeInTheDocument()
             })

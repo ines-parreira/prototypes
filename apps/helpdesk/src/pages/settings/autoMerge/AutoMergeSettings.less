@@ -13,10 +13,20 @@
     }
 
     .isDisabled {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .captionWrapper {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .isDisabled {
+        color: var(--content-neutral-secondary);
+    }
+
+    .captionWrapper {
+        color: var(--content-neutral-secondary);
     }
 }

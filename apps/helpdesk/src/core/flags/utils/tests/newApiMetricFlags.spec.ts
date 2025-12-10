@@ -28,6 +28,14 @@ describe('resolveMetricFlag', () => {
         ).toBe(FeatureFlagKey.ReportingP2MetricMigration)
     })
 
+    it('should return the correct flag for ticket fields P2 metric', () => {
+        expect(
+            resolveMetricFlag(
+                METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT,
+            ),
+        ).toBe(FeatureFlagKey.ReportingP2MetricMigration)
+    })
+
     it('should return the correct flag for P2 metrics', () => {
         expect(
             resolveMetricFlag(METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT),

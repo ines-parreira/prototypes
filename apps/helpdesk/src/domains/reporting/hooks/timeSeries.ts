@@ -6,7 +6,6 @@ import {
     useTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
 import type { Cubes } from 'domains/reporting/models/cubes'
-import { TicketProductsEnrichedDimension } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
 import { closedTicketsTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
 import { messagesReceivedTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
 import { messagesSentTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
@@ -25,6 +24,10 @@ import {
     totalTaggedTicketCountOnCreatedDatetimeTimeSeriesFactory,
     totalTaggedTicketCountTimeSeriesFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount'
+import {
+    injectCustomFieldId,
+    withLogicalOperator,
+} from 'domains/reporting/models/queryFactories/utils'
 import { intentsWithProductsTicketCountTimeseriesQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/intentPerProductQueryFactory'
 import { messagesReceivedTimeSeriesQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
 import { sentMessagesTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
@@ -34,6 +37,10 @@ import type {
     Context,
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
+import {
+    ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory,
+    withCustomFieldIdAndProductFilter,
+} from 'domains/reporting/models/scopes/ticketFields'
 import { closedTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
 import { ticketsRepliedTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
@@ -42,13 +49,19 @@ import type {
     Sentiment,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
-import { TicketTimeReference } from 'domains/reporting/models/stat/types'
+import {
+    APIOnlyFilterKey,
+    TicketTimeReference,
+} from 'domains/reporting/models/stat/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import type {
     ReportingGranularity,
     TimeSeriesQuery,
 } from 'domains/reporting/models/types'
-import { ReportingFilterOperator } from 'domains/reporting/models/types'
+import { ApiOnlyOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import type { OrderDirection } from 'models/api/types'
+
+import { TicketProductsEnrichedDimension } from '../models/cubes/core/TicketProductsEnrichedCube'
 
 type TimeSeriesQueryFactory<TCube extends Cubes> = (
     filters: StatsFilters,
@@ -189,6 +202,16 @@ export const useCustomFieldsTicketCountTimeSeries = (
 
     return useTimeSeriesPerDimension(
         queryFactory(filters, timezone, granularity, customFieldId, sorting),
+        ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory({
+            filters: withCustomFieldIdAndProductFilter(
+                filters,
+                timeReference,
+                customFieldId,
+            ),
+            timezone,
+            granularity,
+            sortDirection: sorting,
+        }),
     )
 }
 // P2/P3
@@ -199,7 +222,7 @@ export const useAIIntentCustomFieldsTicketCountTimeSeries = (
     customFieldId: number,
     sorting?: OrderDirection,
 ) => {
-    const query = customFieldsTicketCountTimeSeriesQueryFactory(
+    const queryBase = customFieldsTicketCountTimeSeriesQueryFactory(
         filters,
         timezone,
         granularity,
@@ -207,17 +230,36 @@ export const useAIIntentCustomFieldsTicketCountTimeSeries = (
         sorting,
     )
 
-    return useTimeSeriesPerDimension({
-        ...query,
+    // NB: this is ugly but it avoids changing the type signature of the existing query factories
+    const query = {
+        ...queryBase,
         filters: [
-            ...query.filters,
+            ...queryBase.filters,
             {
                 member: TicketProductsEnrichedDimension.ProductId,
                 operator: ReportingFilterOperator.NotEquals,
                 values: ['null'],
             },
         ],
+    }
+
+    const queryV2 = ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory({
+        filters: {
+            ...filters,
+            [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator([
+                customFieldId,
+            ]),
+            [APIOnlyFilterKey.ProductId]: withLogicalOperator(
+                [],
+                ApiOnlyOperatorEnum.SET,
+            ),
+        },
+        timezone,
+        granularity,
+        sortDirection: sorting,
     })
+
+    return useTimeSeriesPerDimension(query, queryV2)
 }
 // P2/P3
 export const useSentimentsCustomFieldsTicketCountTimeSeries = (
@@ -237,8 +279,27 @@ export const useSentimentsCustomFieldsTicketCountTimeSeries = (
             sentimentValueStrings,
             sorting,
         ),
+        ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory({
+            filters: {
+                ...injectCustomFieldId(
+                    filters,
+                    sentimentCustomFieldId,
+                    sentimentValueStrings,
+                ),
+                [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator([
+                    sentimentCustomFieldId,
+                ]),
+                [APIOnlyFilterKey.ProductId]: withLogicalOperator(
+                    [],
+                    ApiOnlyOperatorEnum.SET,
+                ),
+            },
+            timezone,
+            granularity,
+            sortDirection: sorting,
+        }),
     )
-// P2/P3
+
 export const useCustomFieldsTicketCountForProductTimeSeries = (
     filters: StatsFilters,
     timezone: string,
@@ -256,6 +317,18 @@ export const useCustomFieldsTicketCountForProductTimeSeries = (
             productId,
             sorting,
         ),
+        ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory({
+            filters: {
+                ...filters,
+                [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator([
+                    customFieldId,
+                ]),
+                [APIOnlyFilterKey.ProductId]: withLogicalOperator([productId]),
+            },
+            timezone,
+            granularity,
+            sortDirection: sorting,
+        }),
     )
 }
 
@@ -274,6 +347,16 @@ export const fetchCustomFieldsTicketCountTimeSeries = (
 
     return fetchTimeSeriesPerDimension(
         queryFactory(filters, timezone, granularity, customFieldId, sorting),
+        ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory({
+            filters: withCustomFieldIdAndProductFilter(
+                filters,
+                timeReference,
+                customFieldId,
+            ),
+            timezone,
+            granularity,
+            sortDirection: sorting,
+        }),
     )
 }
 

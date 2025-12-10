@@ -1,13 +1,13 @@
 :local {
     .headingBold {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 600;
         font-size: 14px;
         line-height: 20px;
     }
 
     .textSection {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: normal;
         font-size: 14px;
         line-height: 20px;
@@ -21,5 +21,15 @@
     .stepImage {
         margin: 24px 0;
         text-align: center;
+    }
+}
+
+.axiom :local {
+    .headingBold {
+        color: var(--content-neutral-default);
+    }
+
+    .textSection {
+        color: var(--content-neutral-default);
     }
 }

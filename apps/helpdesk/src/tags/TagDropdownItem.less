@@ -20,7 +20,13 @@
         mask-repeat: no-repeat;
         width: 12px;
         height: 12px;
-        background-color: var(--tag-dot-color);
+        background-color: var(--tag-dot-color); // legacy
         display: inline-block;
+    }
+}
+
+.axiom :local {
+    .wrapper {
+        --tag-dot-color: var(--content-neutral-default);
     }
 }

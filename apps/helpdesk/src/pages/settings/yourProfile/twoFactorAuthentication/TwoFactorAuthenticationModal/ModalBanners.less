@@ -10,19 +10,19 @@
     }
 
     .bannerInfo {
-        border: 1px solid var(--main-primary);
+        border: 1px solid var(--main-primary); // legacy
     }
 
     .bannerError {
-        border: 1px solid var(--feedback-error);
+        border: 1px solid var(--feedback-error); // legacy
     }
 
     .bannerWarning {
-        border: 1px solid var(--feedback-warning);
+        border: 1px solid var(--feedback-warning); // legacy
     }
 
     .bannerSuccess {
-        border: 1px solid var(--feedback-success);
+        border: 1px solid var(--feedback-success); // legacy
     }
 
     .icon {
@@ -30,7 +30,7 @@
     }
 
     .bannerText {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-size: 14px;
         line-height: 20px;
         text-align: left;
@@ -50,5 +50,25 @@
 .axiom :local {
     .banner {
         background: var(--elevation-neutral-default);
+    }
+
+    .bannerInfo {
+        border-color: var(--border-accent-default);
+    }
+
+    .bannerError {
+        border-color: var(--border-error-primary);
+    }
+
+    .bannerWarning {
+        border-color: var(--border-warning-primary);
+    }
+
+    .bannerSuccess {
+        border-color: var(--border-success-primary);
+    }
+
+    .bannerText {
+        color: var(--content-neutral-default);
     }
 }

@@ -3,7 +3,7 @@
 
 :local {
     .contentWrapper {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         max-width: 680px;
         width: 70%;
 
@@ -27,7 +27,7 @@
 
         :global(.form-text) {
             .caption-regular();
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             margin-top: 4px;
         }
     }
@@ -134,9 +134,25 @@
     }
     .AIIcon {
         margin-right: 4px;
-        color: var(--accessory-magenta-3);
+        color: var(--accessory-magenta-3); // legacy
     }
     .macroDescription {
         margin-left: 48px;
+    }
+}
+
+.axiom :local {
+    .contentWrapper {
+        color: var(--content-neutral-default);
+    }
+
+    .inputField {
+        :global(.form-text) {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .AIIcon {
+        color: var(--content-additional-fuchsia);
     }
 }

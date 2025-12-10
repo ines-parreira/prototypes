@@ -34,24 +34,29 @@ export const KnowledgeEditorSidePanelSectionImpact = ({
 
             <KnowledgeEditorSidePanelTwoColumnsContent
                 columns={[
-                    [
-                        'Success rate',
-                        <KnowledgeEditorSidePanelFieldPercentage
-                            key="success-rate"
-                            percentage={successRate}
-                        />,
-                    ],
-                    ['CSAT', csat ? csat : '-'],
-                    [
-                        'GMV influenced',
-                        gmvInfluenced
+                    {
+                        left: 'Success rate',
+                        right: (
+                            <KnowledgeEditorSidePanelFieldPercentage
+                                key="success-rate"
+                                percentage={successRate}
+                            />
+                        ),
+                    },
+                    {
+                        left: 'CSAT',
+                        right: csat ? csat : '-',
+                    },
+                    {
+                        left: 'GMV influenced',
+                        right: gmvInfluenced
                             ? formatCurrency(
                                   gmvInfluenced.value,
                                   gmvInfluenced.currency,
                                   { notation: 'compact' },
                               )
                             : '-',
-                    ],
+                    },
                 ]}
             />
         </div>

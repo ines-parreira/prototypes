@@ -29,64 +29,75 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = (
     >
         <KnowledgeEditorSidePanelTwoColumnsContent
             columns={[
-                [
-                    'Type',
-                    <KnowledgeEditorSidePanelFieldKnowledgeType
-                        key="type"
-                        type="help-center-article"
-                    />,
-                ],
-                [
-                    'Status',
-                    props.isPublished !== undefined ? (
-                        <span
-                            key="status"
-                            className={classNames(
-                                css.articleStatusBadge,
-                                commonCss.extraLeftMargin,
-                                props.isPublished && css.published,
-                            )}
-                        >
-                            {props.isPublished ? 'Published' : 'Draft'}
-                        </span>
-                    ) : (
-                        '-'
+                {
+                    left: 'Type',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldKnowledgeType
+                            key="type"
+                            type="help-center-article"
+                        />
                     ),
-                ],
-                [
-                    'In use by AI Agent',
-                    <KnowledgeEditorSidePanelFieldAIAgentStatus
-                        key="ai-agent-status"
-                        checked={props.isPublished ?? false}
-                        className={commonCss.extraLeftMargin}
-                        tooltip={
-                            props.isPublished
-                                ? 'Published articles are always available for AI Agent.'
-                                : 'Articles become available for AI Agent when published.'
-                        }
-                    />,
-                ],
-                [
-                    'Created',
-                    <KnowledgeEditorSidePanelFieldDateField
-                        date={props.createdDatetime}
-                        key="created"
-                    />,
-                ],
-                [
-                    'Last updated',
-                    <KnowledgeEditorSidePanelFieldDateField
-                        date={props.lastUpdatedDatetime}
-                        key="last-updated"
-                    />,
-                ],
-                [
-                    'Article URL',
-                    <KnowledgeEditorSidePanelFieldURL
-                        url={props.articleUrl}
-                        key="article-url"
-                    />,
-                ],
+                },
+                {
+                    left: 'Status',
+                    right:
+                        props.isPublished !== undefined ? (
+                            <span
+                                key="status"
+                                className={classNames(
+                                    css.articleStatusBadge,
+                                    commonCss.extraLeftMargin,
+                                    props.isPublished && css.published,
+                                )}
+                            >
+                                {props.isPublished ? 'Published' : 'Draft'}
+                            </span>
+                        ) : (
+                            '-'
+                        ),
+                },
+                {
+                    left: 'In use by AI Agent',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldAIAgentStatus
+                            key="ai-agent-status"
+                            checked={props.isPublished ?? false}
+                            className={commonCss.extraLeftMargin}
+                            tooltip={
+                                props.isPublished
+                                    ? 'Published articles are always available for AI Agent.'
+                                    : 'Articles become available for AI Agent when published.'
+                            }
+                        />
+                    ),
+                },
+                {
+                    left: 'Created',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldDateField
+                            date={props.createdDatetime}
+                            key="created"
+                        />
+                    ),
+                },
+                {
+                    left: 'Last updated',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldDateField
+                            date={props.lastUpdatedDatetime}
+                            key="last-updated"
+                        />
+                    ),
+                },
+                {
+                    left: 'Article URL',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldURL
+                            url={props.articleUrl}
+                            key="article-url"
+                        />
+                    ),
+                },
             ]}
         />
     </KnowledgeEditorSidePanelSection>

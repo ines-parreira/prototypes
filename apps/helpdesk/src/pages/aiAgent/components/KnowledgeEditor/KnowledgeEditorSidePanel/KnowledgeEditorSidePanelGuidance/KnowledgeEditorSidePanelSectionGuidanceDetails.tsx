@@ -28,37 +28,45 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = (
     >
         <KnowledgeEditorSidePanelTwoColumnsContent
             columns={[
-                [
-                    'Type',
-                    <KnowledgeEditorSidePanelFieldKnowledgeType
-                        key="type"
-                        type="guidance"
-                    />,
-                ],
-                [
-                    'In use by AI Agent',
-                    <KnowledgeEditorSidePanelFieldAIAgentStatus
-                        key="ai-agent-status"
-                        checked={props.aiAgentStatus.value}
-                        className={css.extraLeftMargin}
-                        onChange={props.aiAgentStatus.onChange}
-                        isDisabled={props.isUpdating}
-                    />,
-                ],
-                [
-                    'Created',
-                    <KnowledgeEditorSidePanelFieldDateField
-                        date={props.createdDatetime}
-                        key="created"
-                    />,
-                ],
-                [
-                    'Last updated',
-                    <KnowledgeEditorSidePanelFieldDateField
-                        date={props.lastUpdatedDatetime}
-                        key="last-updated"
-                    />,
-                ],
+                {
+                    left: 'Type',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldKnowledgeType
+                            key="type"
+                            type="guidance"
+                        />
+                    ),
+                },
+                {
+                    left: 'In use by AI Agent',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldAIAgentStatus
+                            key="ai-agent-status"
+                            checked={props.aiAgentStatus.value}
+                            className={css.extraLeftMargin}
+                            onChange={props.aiAgentStatus.onChange}
+                            isDisabled={props.isUpdating}
+                        />
+                    ),
+                },
+                {
+                    left: 'Created',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldDateField
+                            date={props.createdDatetime}
+                            key="created"
+                        />
+                    ),
+                },
+                {
+                    left: 'Last updated',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldDateField
+                            date={props.lastUpdatedDatetime}
+                            key="last-updated"
+                        />
+                    ),
+                },
             ]}
         />
     </KnowledgeEditorSidePanelSection>

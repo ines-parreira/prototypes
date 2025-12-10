@@ -20,12 +20,12 @@
 
         p {
             font-size: 12px;
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
     .spinner {
-        color: var(--text-warning) !important;
+        color: var(--text-warning) !important; // legacy
         height: 14px !important;
     }
 
@@ -43,5 +43,21 @@
         div {
             cursor: default;
         }
+    }
+}
+
+.axiom :local {
+    .importStats {
+        p {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .spinner {
+        color: var(--content-warning-primary) !important;
+    }
+
+    .emptyStateWrapper {
+        color: var(--content-neutral-secondary);
     }
 }

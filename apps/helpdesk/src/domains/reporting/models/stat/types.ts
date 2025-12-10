@@ -1,7 +1,10 @@
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import type { ReportingGranularity } from 'domains/reporting/models/types'
-import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type {
+    ExtendedLogicalOperatorEnum,
+    LogicalOperatorEnum,
+} from 'domains/reporting/pages/common/components/Filter/constants'
 import type { ReportIssueReasons } from 'models/selfServiceConfiguration/types'
 
 export enum FilterKey {
@@ -31,6 +34,13 @@ export enum FilterKey {
     VoiceQueues = 'voiceQueues',
     Stores = 'stores',
     AssignedTeam = 'teams',
+}
+
+export enum APIOnlyFilterKey {
+    ProductId = 'productId',
+    CustomFieldId = 'customFieldId',
+    CustomFieldValue = 'customFieldValue',
+    CreatedDatetime = 'createdDatetime',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -84,6 +94,11 @@ export type StaticFilter =
 export interface Period {
     end_datetime: string
     start_datetime: string
+}
+
+export interface WithExtendedLogicalOperator<T extends number | string> {
+    operator: ExtendedLogicalOperatorEnum
+    values: T[]
 }
 
 export interface WithLogicalOperator<T extends number | string> {
@@ -253,7 +268,20 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.VoiceQueues]?: WithLogicalOperator<number>
 }
 
+/** Adding this new mapping to separate filters exposed in the UI from the one only used in the reporting API */
+export type ApiOnlyStatsFiltersWithLogicalOperator = {
+    [APIOnlyFilterKey.CreatedDatetime]?: Period
+    [APIOnlyFilterKey.CustomFieldId]?: WithLogicalOperator<number>
+    [APIOnlyFilterKey.CustomFieldValue]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.ProductId]?:
+        | WithLogicalOperator<string>
+        | WithExtendedLogicalOperator<string>
+}
+
 export type StatsFilters = StatsFiltersWithLogicalOperator
+
+export type ApiStatsFilters = StatsFiltersWithLogicalOperator &
+    ApiOnlyStatsFiltersWithLogicalOperator
 
 export enum StatType {
     ArticleRecommendationAutomationRate = 'article-recommendation-automation-rate',

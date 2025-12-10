@@ -6,9 +6,15 @@ import {
     compareAndReportQueries,
     createScopeFilters,
 } from 'domains/reporting/models/scopes/utils'
-import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type {
+    ApiStatsFilters,
+    StatsFiltersWithLogicalOperator,
+} from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import {
+    ApiOnlyOperatorEnum,
+    LogicalOperatorEnum,
+} from 'domains/reporting/pages/common/components/Filter/constants'
 
 describe('utils', () => {
     describe('createScopeFilters', () => {
@@ -717,6 +723,98 @@ describe('utils', () => {
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: ['professional', 'friendly', 'casual'],
                 })
+            })
+
+            it('should add customFieldValue filter when present', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['customFieldValue'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    customFieldValue: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['value1', 'value2'],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'customFieldValue',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['value1', 'value2'],
+                })
+            })
+
+            it('should add customFieldId filter when present', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['customFieldId'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    customFieldId: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [123, 456],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'customFieldId',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [123, 456],
+                })
+            })
+        })
+
+        describe('createdDatetime filter', () => {
+            it('should add createdDatetime filter with inDateRange operators', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['createdDatetime'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    createdDatetime: {
+                        start_datetime: '2025-10-01T00:00:00.000',
+                        end_datetime: '2025-10-31T23:59:59.000',
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'createdDatetime',
+                    operator: ApiOnlyOperatorEnum.IN_DATE_RANGE,
+                    values: [
+                        '2025-10-01T00:00:00.000',
+                        '2025-10-31T23:59:59.000',
+                    ],
+                })
+            })
+
+            it('should not add createdDatetime filter when not present in statFilters', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['createdDatetime'],
+                }
+
+                const statFilters: StatsFiltersWithLogicalOperator = {
+                    ...basePeriodFilters,
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                const hasCreatedDatetime = result.some(
+                    (filter: any) => filter.member === 'createdDatetime',
+                )
+                expect(hasCreatedDatetime).toBe(false)
             })
         })
 

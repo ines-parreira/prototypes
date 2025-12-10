@@ -1,13 +1,14 @@
-import type {
-    MetricWithDecile,
-    StringWhichShouldBeNumber,
-} from 'domains/reporting/hooks/useMetricPerDimension'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory,
     customFieldsTicketCountOnCreatedDatetimeQueryFactory,
     customFieldsTicketCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
+import {
+    ticketFieldsCountPerFieldValueQueryV2Factory,
+    withCustomFieldIdAndProductFilter,
+} from 'domains/reporting/models/scopes/ticketFields'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
 import type { OrderDirection } from 'models/api/types'
@@ -24,8 +25,17 @@ export const useCustomFieldsTicketCount = (
             ? customFieldsTicketCountQueryFactory
             : customFieldsTicketCountOnCreatedDatetimeQueryFactory
 
-    return useMetricPerDimension<StringWhichShouldBeNumber>(
+    return useMetricPerDimensionV2(
         queryFactory(statsFilters, timezone, customFieldId, sorting),
+        ticketFieldsCountPerFieldValueQueryV2Factory({
+            filters: withCustomFieldIdAndProductFilter(
+                statsFilters,
+                timeReference,
+                customFieldId,
+            ),
+            timezone,
+            sortDirection: sorting,
+        }),
     )
 }
 
@@ -36,7 +46,7 @@ export const useCustomFieldsForProductTicketCount = (
     productId: string,
     sorting?: OrderDirection,
 ): MetricWithDecile => {
-    return useMetricPerDimension(
+    return useMetricPerDimensionV2(
         customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory(
             statsFilters,
             timezone,
@@ -44,5 +54,15 @@ export const useCustomFieldsForProductTicketCount = (
             productId,
             sorting,
         ),
+        ticketFieldsCountPerFieldValueQueryV2Factory({
+            filters: withCustomFieldIdAndProductFilter(
+                statsFilters,
+                TicketTimeReference.CreatedAt,
+                customFieldId,
+                productId,
+            ),
+            timezone,
+            sortDirection: sorting,
+        }),
     )
 }

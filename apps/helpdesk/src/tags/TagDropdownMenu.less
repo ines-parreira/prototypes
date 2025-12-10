@@ -12,7 +12,15 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: var(--neutral-grey-3);
+            background: var(--neutral-grey-3); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .createTag {
+        &:before {
+            background: var(--border-neutral-default);
         }
     }
 }

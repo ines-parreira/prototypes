@@ -7,6 +7,7 @@ import type {
     CustomFieldFilter,
     StatsFilters,
     TagFilter,
+    WithExtendedLogicalOperator,
     WithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
@@ -15,7 +16,11 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'domains/reporting/models/types'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import type { ExtendedLogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import {
+    ApiOnlyOperatorEnum,
+    LogicalOperatorEnum,
+} from 'domains/reporting/pages/common/components/Filter/constants'
 
 import { AiSalesAgentOrdersFilterMember } from '../cubes/ai-sales-agent/AiSalesAgentOrders'
 
@@ -26,6 +31,8 @@ export type OptionalFilter =
     | TagFilter[]
     | WithLogicalOperator<string>
     | WithLogicalOperator<number>
+    | WithExtendedLogicalOperator<string>
+    | WithExtendedLogicalOperator<number>
     | undefined
 
 export const isAggregationWindowFilter = (filter: any) =>
@@ -38,7 +45,11 @@ export const isAggregationWindowFilter = (filter: any) =>
 
 export const isFilterWithLogicalOperator = (
     filter: OptionalFilter,
-): filter is WithLogicalOperator<string> | WithLogicalOperator<number> =>
+): filter is
+    | WithLogicalOperator<string>
+    | WithLogicalOperator<number>
+    | WithExtendedLogicalOperator<number>
+    | WithExtendedLogicalOperator<string> =>
     !Array.isArray(filter) &&
     filter !== undefined &&
     'operator' in filter &&
@@ -79,6 +90,11 @@ export const hasFilter = (filter: OptionalFilter) => {
         return filter.some((subFilter) => subFilter.values.length > 0)
     }
     if (isFilterWithLogicalOperator(filter)) {
+        if (filter.operator === ApiOnlyOperatorEnum.SET) {
+            return filter.values.length === 0
+        } else if (filter.operator === ApiOnlyOperatorEnum.IN_DATE_RANGE) {
+            return filter.values.length === 2
+        }
         return filter.values.length > 0
     }
     return filter.length > 0
@@ -88,6 +104,8 @@ export const FilterOperatorMap = {
     [LogicalOperatorEnum.ONE_OF]: ReportingFilterOperator.Equals,
     [LogicalOperatorEnum.NOT_ONE_OF]: ReportingFilterOperator.NotEquals,
     [LogicalOperatorEnum.ALL_OF]: ReportingFilterOperator.Equals,
+    [ApiOnlyOperatorEnum.IN_DATE_RANGE]: ReportingFilterOperator.InDateRange,
+    [ApiOnlyOperatorEnum.SET]: ReportingFilterOperator.Set,
 }
 
 export const toLowerCaseString = (value: string | number) =>
@@ -298,8 +316,19 @@ export function withDefaultLogicalOperator<T extends number | string>(
 
 export function withLogicalOperator<T extends number | string>(
     values: T[],
-    operator = LogicalOperatorEnum.ONE_OF,
-): WithLogicalOperator<T> {
+): WithLogicalOperator<T>
+export function withLogicalOperator<T extends number | string>(
+    values: T[],
+    operator: LogicalOperatorEnum | undefined,
+): WithLogicalOperator<T>
+export function withLogicalOperator<T extends number | string>(
+    values: T[],
+    operator: ApiOnlyOperatorEnum,
+): WithExtendedLogicalOperator<T>
+export function withLogicalOperator<T extends number | string>(
+    values: T[],
+    operator: ExtendedLogicalOperatorEnum = LogicalOperatorEnum.ONE_OF,
+): WithLogicalOperator<T> | WithExtendedLogicalOperator<T> {
     return {
         operator,
         values: values,

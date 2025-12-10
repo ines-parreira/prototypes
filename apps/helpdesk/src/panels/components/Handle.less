@@ -14,7 +14,7 @@
             left: 3px;
             bottom: 0;
             width: 1px;
-            background-color: var(--neutral-grey-3);
+            background-color: var(--neutral-grey-3); // legacy
         }
 
         &::after {
@@ -40,6 +40,10 @@
 
 .axiom :local {
     .handle {
+        &::before {
+            background-color: var(--border-neutral-default);
+        }
+
         &::after {
             background-color: var(--surface-additional-blue);
         }

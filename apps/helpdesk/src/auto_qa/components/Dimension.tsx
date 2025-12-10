@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
@@ -10,6 +11,7 @@ import {
 import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 
 import { dimensionOrderOfManualDimensions } from 'auto_qa/config'
+import { useFlag } from 'core/flags'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -45,6 +47,7 @@ export default function Dimension({
     const [isSelectOpen, setIsSelectOpen] = useState(false)
     const floatingRef = useRef<HTMLDivElement>(null)
     const selectRef = useRef<HTMLDivElement>(null)
+    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
 
     const predictionLabel = useMemo(
         () =>
@@ -112,7 +115,11 @@ export default function Dimension({
 
     return (
         <>
-            <div className={css.container}>
+            <div
+                className={cn(css.container, {
+                    [css.hasUIVisionMS1]: hasUIVisionMS1,
+                })}
+            >
                 <div className={css.label}>
                     <Button
                         className={css.button}
@@ -179,7 +186,11 @@ export default function Dimension({
                 </SelectInputBox>
             </div>
             {isExpanded && (
-                <div className={css.explanation}>
+                <div
+                    className={cn(css.explanation, {
+                        [css.hasUIVisionMS1]: hasUIVisionMS1,
+                    })}
+                >
                     <div ref={explanationTextAreaRef}>
                         <TextArea
                             autoRowHeight={true}

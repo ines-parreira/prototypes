@@ -1120,33 +1120,6 @@ describe('customFieldsTicketCountWithSortQueryFactory', () => {
         expect(query.order).toEqual([[sortingValue, sortingDirection]])
     })
 
-    it('should handle additional filters', () => {
-        const additionalFilters = [
-            {
-                member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                operator: ReportingFilterOperator.Equals,
-                values: ['test-value'],
-            },
-        ]
-
-        const query = customFieldsTicketCountWithSortQueryFactory(
-            statsFilters,
-            timezone,
-            customFieldId,
-            sortingDirection,
-            sortingValue,
-            additionalFilters,
-        )
-
-        const additionalFilter = query.filters.find(
-            (filter: ReportingFilter) =>
-                filter.member ===
-                    TicketCustomFieldsMember.TicketCustomFieldsValueString &&
-                filter.operator === ReportingFilterOperator.Equals,
-        )
-        expect(additionalFilter?.values).toEqual(['test-value'])
-    })
-
     it('should handle different sorting directions and values', () => {
         const ascendingQuery = customFieldsTicketCountWithSortQueryFactory(
             statsFilters,
@@ -1178,33 +1151,6 @@ describe('customFieldsTicketCountWithSortQueryFactory', () => {
             ],
         ])
         expect(descendingQuery.limit).toBe(TICKET_FIELDS_LIST_LIMIT)
-    })
-
-    it('should handle multiple additional filters', () => {
-        const additionalFilters = [
-            {
-                member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
-                operator: ReportingFilterOperator.Equals,
-                values: ['test-value'],
-            },
-            {
-                member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
-                operator: ReportingFilterOperator.Gt,
-                values: ['2024-01-15T00:00:00Z'],
-            },
-        ]
-
-        const query = customFieldsTicketCountWithSortQueryFactory(
-            statsFilters,
-            timezone,
-            customFieldId,
-            sortingDirection,
-            sortingValue,
-            additionalFilters,
-        )
-
-        expect(query.order).toEqual([[sortingValue, sortingDirection]])
-        expect(query.filters).toEqual(expect.arrayContaining(additionalFilters))
     })
 
     it('should build query with sorting value', () => {

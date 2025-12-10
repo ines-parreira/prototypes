@@ -30,36 +30,44 @@ export const KnowledgeEditorSidePanelSectionStoreSnippetDetails = (
         <div className={css.details}>
             <KnowledgeEditorSidePanelTwoColumnsContent
                 columns={[
-                    [
-                        'Type',
-                        <KnowledgeEditorSidePanelFieldKnowledgeType
-                            key="type"
-                            type="store-snippet"
-                        />,
-                    ],
-                    [
-                        'In use by AI Agent',
-                        <KnowledgeEditorSidePanelFieldAIAgentStatus
-                            key="ai-agent-status"
-                            checked={props.aiAgentStatus.value}
-                            className={css.extraLeftMargin}
-                            onChange={props.aiAgentStatus.onChange}
-                        />,
-                    ],
-                    [
-                        'Created',
-                        <KnowledgeEditorSidePanelFieldDateField
-                            date={props.createdDatetime}
-                            key="created"
-                        />,
-                    ],
-                    [
-                        'Last updated',
-                        <KnowledgeEditorSidePanelFieldDateField
-                            date={props.lastUpdatedDatetime}
-                            key="last-updated"
-                        />,
-                    ],
+                    {
+                        left: 'Type',
+                        right: (
+                            <KnowledgeEditorSidePanelFieldKnowledgeType
+                                key="type"
+                                type="store-snippet"
+                            />
+                        ),
+                    },
+                    {
+                        left: 'In use by AI Agent',
+                        right: (
+                            <KnowledgeEditorSidePanelFieldAIAgentStatus
+                                key="ai-agent-status"
+                                checked={props.aiAgentStatus.value}
+                                className={css.extraLeftMargin}
+                                onChange={props.aiAgentStatus.onChange}
+                            />
+                        ),
+                    },
+                    {
+                        left: 'Created',
+                        right: (
+                            <KnowledgeEditorSidePanelFieldDateField
+                                date={props.createdDatetime}
+                                key="created"
+                            />
+                        ),
+                    },
+                    {
+                        left: 'Last updated',
+                        right: (
+                            <KnowledgeEditorSidePanelFieldDateField
+                                date={props.lastUpdatedDatetime}
+                                key="last-updated"
+                            />
+                        ),
+                    },
                 ]}
             />
             <KnowledgeEditorSidePanelFieldURLsList

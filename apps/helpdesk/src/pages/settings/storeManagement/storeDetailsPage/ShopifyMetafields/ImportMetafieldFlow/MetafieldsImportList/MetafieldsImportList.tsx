@@ -117,6 +117,12 @@ export default function MetafieldsImportList({
             enableSorting: true,
             enableMultiSort: true,
         },
+        paginationConfig: {
+            enablePagination: true,
+            manualPagination: false,
+            pageSize: 10,
+            initialPageIndex: 0,
+        },
         globalFilterConfig: {
             enableGlobalFilter: true,
             globalFilterFn: 'includesString',
@@ -208,6 +214,10 @@ export default function MetafieldsImportList({
                         table={table}
                     />
                 </TableRoot>
+                <TableToolbar
+                    table={table}
+                    bottomRow={{ right: ['pagination'] }}
+                />
             </div>
             <Box gap="xs" justifyContent="flex-end" p="sm">
                 <Button variant="secondary" onClick={onBack}>

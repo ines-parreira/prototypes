@@ -64,6 +64,7 @@ export type CustomFieldsReportingQuery = Omit<
     dimensions: [typeof BREAKDOWN_FIELD]
 }
 
+// new-stats-api: covered by ticketFieldsCountPerFieldValueQueryV2Factory
 export const customFieldsTicketCountQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -106,6 +107,7 @@ export const customFieldsTicketCountQueryFactory = (
         : {}),
 })
 
+// new-stats-api: covered by ticketFieldsCountPerFieldValueQueryV2Factory
 export const customFieldsTicketCountWithSortQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -114,7 +116,6 @@ export const customFieldsTicketCountWithSortQueryFactory = (
     sortingValue:
         | TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
         | TicketCustomFieldsDimension.TicketCustomFieldsValue,
-    additionalFilters?: ReportingFilter[],
 ): CustomFieldsReportingQuery => {
     const { filters: baseQueryFilters, ...baseQuery } =
         customFieldsTicketCountQueryFactory(
@@ -122,7 +123,6 @@ export const customFieldsTicketCountWithSortQueryFactory = (
             timezone,
             customFieldId,
             sortingDirection,
-            additionalFilters,
         )
     return {
         ...baseQuery,
@@ -141,12 +141,12 @@ export const customFieldsTicketCountWithSortQueryFactory = (
     }
 }
 
+// new-stats-api: covered by ticketFieldsCountPerFieldValueQueryV2Factory
 export const customFieldsTicketCountOnCreatedDatetimeQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     customFieldId: number,
     sorting?: OrderDirection,
-    additionalFilters?: ReportingFilter[],
 ): ReportingQuery<TicketCustomFieldsCube> => {
     const { filters: baseQueryFilters, ...baseQuery } =
         customFieldsTicketCountQueryFactory(
@@ -154,7 +154,6 @@ export const customFieldsTicketCountOnCreatedDatetimeQueryFactory = (
             timezone,
             customFieldId,
             sorting,
-            additionalFilters,
         )
 
     return {
@@ -165,13 +164,13 @@ export const customFieldsTicketCountOnCreatedDatetimeQueryFactory = (
     }
 }
 
+// new-stats-api: covered by ticketFieldsCountPerFieldValueQueryV2Factory
 export const customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     customFieldId: number,
     productId: string,
     sorting?: OrderDirection,
-    additionalFilters?: ReportingFilter[],
 ): ReportingQuery<TicketCustomFieldsCube> => {
     const { filters: baseQueryFilters, ...baseQuery } =
         customFieldsTicketCountQueryFactory(
@@ -179,7 +178,6 @@ export const customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory = (
             timezone,
             customFieldId,
             sorting,
-            additionalFilters,
         )
 
     return {
@@ -198,6 +196,8 @@ export const customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory = (
     }
 }
 
+// TODO(new-stats-api): see if this should be covered by a dedicated scope
+// Right now, operator StartsWith is not supported in the new stats api
 export const aiAgentTicketsPerIntentCountQueryFactory = ({
     filters,
     timezone,
@@ -262,6 +262,9 @@ export const aiAgentTicketsPerIntentCountQueryFactory = ({
             : {}),
     }
 }
+
+// TODO(new-stats-api): see if this should be covered by a dedicated scope
+// Right now, operator StartsWith is not supported in the new stats api
 export const aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory = ({
     filters,
     timezone,
@@ -331,6 +334,8 @@ export const aiAgentTicketsFromTicketCustomFieldsPerIntentCountQueryFactory = ({
     }
 }
 
+// TODO(new-stats-api): see if this should be covered by a dedicated scope
+// TODO(new-stats-api): we must refactor frontend code to support enrichment
 export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -372,6 +377,8 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
     }
 }
 
+// TODO(new-stats-api): see if this should be covered by a dedicated scope
+// TODO(new-stats-api): we must refactor frontend code to support enrichment
 export const customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory =
     (
         filters: StatsFilters,
@@ -399,6 +406,8 @@ export const customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFact
         }
     }
 
+// TODO(new-stats-api): see if this should be covered by a dedicated scope
+// TODO(new-stats-api): we must refactor frontend code to support enrichment
 export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory =
     (
         filters: StatsFilters,
@@ -465,6 +474,8 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
     }
 
 // Coverage rate
+// TODO(new-stats-api): see if this should be covered by a dedicated scope
+// TODO(new-stats-api): we must refactor frontend code to support enrichment
 export const coverageRateTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -498,6 +509,8 @@ export const coverageRateTicketDrillDownQueryFactory = (
     }
 }
 
+// TODO(new-stats-api): see if this should be covered by a dedicated scope
+// TODO(new-stats-api): we must refactor frontend code to support enrichment
 export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -656,48 +669,6 @@ export const customFieldsTicketTotalCountQueryFactory = ({
             ],
         },
         ...(additionalFilters ?? []),
-    ],
-    ...(sorting
-        ? {
-              order: [
-                  [
-                      TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-                      sorting,
-                  ],
-              ],
-          }
-        : {}),
-})
-
-export const customFieldsTicketFactory = (
-    filters: StatsFilters,
-    timezone: string,
-    customFieldId: string,
-    additionalFilter?: ReportingFilter,
-    sorting?: OrderDirection,
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    metricName: METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_FACTORY,
-    measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
-    dimensions: [TicketDimension.TicketId],
-    timezone,
-    segments: [],
-    filters: [
-        ...NotSpamNorTrashedTicketsFilter,
-        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
-        {
-            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
-            operator: ReportingFilterOperator.Equals,
-            values: [customFieldId],
-        },
-        {
-            member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
-            operator: ReportingFilterOperator.InDateRange,
-            values: [
-                formatReportingQueryDate(filters.period.start_datetime),
-                formatReportingQueryDate(filters.period.end_datetime),
-            ],
-        },
-        ...(additionalFilter ? [additionalFilter] : []),
     ],
     ...(sorting
         ? {

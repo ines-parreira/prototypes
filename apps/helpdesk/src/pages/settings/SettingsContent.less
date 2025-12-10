@@ -2,7 +2,7 @@
 
 :local {
     .container {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         max-width: 680px;
         width: 100%;
         padding: var(--layout-spacing-m) 0 var(--layout-spacing-m)
@@ -13,5 +13,11 @@
             max-width: inherit;
             width: 100%;
         }
+    }
+}
+
+.axiom :local {
+    .container {
+        color: var(--content-neutral-default);
     }
 }

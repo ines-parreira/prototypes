@@ -79,3 +79,19 @@
         margin-left: 0;
     }
 }
+
+.axiom :local {
+    .AgentLabel,
+    .TeamLabel {
+        .name {
+            &.aiAgent {
+                color: var(--content-additional-fuchsia);
+            }
+        }
+    }
+
+    .recipientLabel {
+        background: var(--elevation-neutral-mid);
+        color: var(--content-neutral-default);
+    }
+}

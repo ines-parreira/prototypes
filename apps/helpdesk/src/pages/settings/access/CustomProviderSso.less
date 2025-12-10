@@ -27,8 +27,8 @@
     }
 
     .setupInstructions {
-        background-color: var(--neutral-grey-1);
-        border: 1px solid var(--neutral-grey-2);
+        background-color: var(--neutral-grey-1); // legacy
+        border: 1px solid var(--neutral-grey-2); // legacy
         border-radius: var(--border-radius-s);
         padding: var(--layout-spacing-xs);
         margin-bottom: var(--layout-spacing-m);
@@ -74,5 +74,12 @@
 
     .fieldContainer {
         margin-bottom: var(--layout-spacing-m);
+    }
+}
+
+.axiom :local {
+    .setupInstructions {
+        background-color: var(--elevation-neutral-mid);
+        border-color: var(--border-neutral-default);
     }
 }

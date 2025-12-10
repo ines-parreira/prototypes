@@ -3,7 +3,9 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { TicketChannel } from 'business/types/ticket'
 import {
     fetchCustomFieldsTicketCountTimeSeries,
+    fetchMessagesReceivedTimeSeries,
     fetchMessagesSentTimeSeries,
+    fetchOneTouchTicketsTimeSeries,
     fetchTagsTicketCountTimeSeries,
     fetchTicketsClosedTimeSeries,
     fetchTicketsCreatedTimeSeries,
@@ -13,13 +15,16 @@ import {
     useAIIntentCustomFieldsTicketCountTimeSeries,
     useCustomFieldsTicketCountForProductTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
+    useMessagesReceivedTimeSeries,
     useMessagesSentTimeSeries,
+    useOneTouchTicketsTimeSeries,
     useSentimentsCustomFieldsTicketCountTimeSeries,
     useTagsTicketCountTimeSeries,
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
     useTotalTaggedTicketCountTimeSeries,
+    useZeroTouchTicketsTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
 import {
     fetchTimeSeries,
@@ -28,9 +33,10 @@ import {
     useTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
 import { TicketProductsEnrichedDimension } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
-import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import { closedTicketsTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
+import { messagesReceivedTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesReceived'
 import { messagesSentTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/messagesSent'
+import { oneTouchTicketsTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/oneTouchTickets'
 import { ticketsCreatedTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
@@ -46,13 +52,27 @@ import {
     totalTaggedTicketCountTimeSeriesFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount'
 import {
-    getCustomFieldValueSerializer,
+    injectCustomFieldId,
     withDefaultLogicalOperator,
+    withLogicalOperator,
 } from 'domains/reporting/models/queryFactories/utils'
+import { intentsWithProductsTicketCountTimeseriesQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/intentPerProductQueryFactory'
+import {
+    messagesReceivedTimeSeries,
+    messagesReceivedTimeSeriesQueryV2Factory,
+} from 'domains/reporting/models/scopes/messagesReceived'
 import {
     sentMessagesTimeseries,
     sentMessagesTimeseriesQueryV2Factory,
 } from 'domains/reporting/models/scopes/messagesSent'
+import {
+    oneTouchTicketsTimeseries,
+    oneTouchTicketsTimeseriesQueryV2Factory,
+} from 'domains/reporting/models/scopes/oneTouchTickets'
+import {
+    ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory,
+    withCustomFieldIdAndProductFilter,
+} from 'domains/reporting/models/scopes/ticketFields'
 import {
     closedTicketsTimeseries,
     closedTicketsTimeseriesQueryV2Factory,
@@ -67,6 +87,7 @@ import {
 } from 'domains/reporting/models/scopes/ticketsReplied'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
+    APIOnlyFilterKey,
     Sentiment,
     TagFilterInstanceId,
     TicketTimeReference,
@@ -75,6 +96,7 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'domains/reporting/models/types'
+import { ApiOnlyOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useTimeSeries')
@@ -120,6 +142,24 @@ describe('time series', () => {
             useMessagesSentTimeSeries,
             messagesSentTimeSeriesQueryFactory,
             sentMessagesTimeseries.build.bind(sentMessagesTimeseries),
+        ],
+        [
+            'useMessagesReceivedTimeSeries',
+            useMessagesReceivedTimeSeries,
+            messagesReceivedTimeSeriesQueryFactory,
+            messagesReceivedTimeSeries.build.bind(messagesReceivedTimeSeries),
+        ],
+        [
+            'useOneTouchTicketsTimeSeries',
+            useOneTouchTicketsTimeSeries,
+            oneTouchTicketsTimeSeriesQueryFactory,
+            oneTouchTicketsTimeseries.build.bind(oneTouchTicketsTimeseries),
+        ],
+        [
+            'useZeroTouchTicketsTimeSeries',
+            useZeroTouchTicketsTimeSeries,
+            zeroTouchTicketsTimeSeriesQueryFactory,
+            undefined,
         ],
     ])('%s', (_, useTrendFn, queryFactory, queryV2Factory) => {
         it('should use query factory for $testName', () => {
@@ -180,6 +220,18 @@ describe('time series', () => {
             'fetchZeroTouchTicketsTimeSeries',
             fetchZeroTouchTicketsTimeSeries,
             zeroTouchTicketsTimeSeriesQueryFactory,
+        ],
+        [
+            'fetchMessagesReceivedTimeSeries',
+            fetchMessagesReceivedTimeSeries,
+            messagesReceivedTimeSeriesQueryFactory,
+            messagesReceivedTimeSeriesQueryV2Factory,
+        ],
+        [
+            'fetchOneTouchTicketsTimeSeries',
+            fetchOneTouchTicketsTimeSeries,
+            oneTouchTicketsTimeSeriesQueryFactory,
+            oneTouchTicketsTimeseriesQueryV2Factory,
         ],
     ])(
         '%s',
@@ -381,6 +433,16 @@ describe('time series', () => {
                     granularity,
                     customFieldId,
                 ),
+                ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory({
+                    filters: withCustomFieldIdAndProductFilter(
+                        statsFilters,
+                        TicketTimeReference.TaggedAt,
+                        customFieldId,
+                    ),
+                    timezone,
+                    granularity,
+                    sortDirection: undefined,
+                }),
             )
         })
 
@@ -412,6 +474,16 @@ describe('time series', () => {
                     granularity,
                     customFieldId,
                 ),
+                ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory({
+                    filters: withCustomFieldIdAndProductFilter(
+                        statsFilters,
+                        TicketTimeReference.CreatedAt,
+                        customFieldId,
+                    ),
+                    timezone,
+                    granularity,
+                    sortDirection: undefined,
+                }),
             )
         })
 
@@ -441,6 +513,16 @@ describe('time series', () => {
                     granularity,
                     customFieldId,
                 ),
+                ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory({
+                    filters: withCustomFieldIdAndProductFilter(
+                        statsFilters,
+                        TicketTimeReference.TaggedAt,
+                        customFieldId,
+                    ),
+                    timezone,
+                    granularity,
+                    sortDirection: undefined,
+                }),
             )
         })
 
@@ -472,6 +554,16 @@ describe('time series', () => {
                     granularity,
                     customFieldId,
                 ),
+                ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory({
+                    filters: withCustomFieldIdAndProductFilter(
+                        statsFilters,
+                        TicketTimeReference.CreatedAt,
+                        customFieldId,
+                    ),
+                    timezone,
+                    granularity,
+                    sortDirection: undefined,
+                }),
             )
         })
     })
@@ -497,6 +589,19 @@ describe('time series', () => {
                     customFieldId,
                     productId,
                 ),
+                ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator([
+                            customFieldId,
+                        ]),
+                        [APIOnlyFilterKey.ProductId]: withLogicalOperator([
+                            productId,
+                        ]),
+                    },
+                    timezone,
+                    granularity,
+                }),
             )
         })
     })
@@ -583,13 +688,6 @@ describe('time series', () => {
         const sentimentCustomFieldId = 123
         const sentimentValueStrings = [Sentiment.Positive, Sentiment.Negative]
         const sorting = OrderDirection.Desc
-        const baseQuery = customFieldsTicketCountTimeSeriesQueryFactory(
-            statsFilters,
-            timezone,
-            granularity,
-            sentimentCustomFieldId,
-            sorting,
-        )
 
         it('should call useTimeSeriesPerDimension with correct query and sentiment filters', () => {
             renderHook(() =>
@@ -603,26 +701,35 @@ describe('time series', () => {
                 ),
             )
 
-            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith({
-                ...baseQuery,
-                filters: expect.arrayContaining([
-                    ...baseQuery.filters,
-                    {
-                        member: TicketMember.CustomField,
-                        operator: ReportingFilterOperator.Equals,
-                        values: sentimentValueStrings.map(
-                            getCustomFieldValueSerializer(
-                                sentimentCustomFieldId,
-                            ),
+            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+                intentsWithProductsTicketCountTimeseriesQueryFactory(
+                    statsFilters,
+                    timezone,
+                    granularity,
+                    sentimentCustomFieldId,
+                    sentimentValueStrings,
+                    sorting,
+                ),
+                ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory({
+                    filters: {
+                        ...injectCustomFieldId(
+                            statsFilters,
+                            sentimentCustomFieldId,
+                            sentimentValueStrings,
+                        ),
+                        [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator([
+                            sentimentCustomFieldId,
+                        ]),
+                        [APIOnlyFilterKey.ProductId]: withLogicalOperator(
+                            [],
+                            ApiOnlyOperatorEnum.SET,
                         ),
                     },
-                    {
-                        member: TicketProductsEnrichedDimension.ProductId,
-                        operator: ReportingFilterOperator.NotEquals,
-                        values: ['null'],
-                    },
-                ]),
-            })
+                    timezone,
+                    granularity,
+                    sortDirection: sorting,
+                }),
+            )
         })
     })
 
@@ -630,14 +737,6 @@ describe('time series', () => {
         const sorting = OrderDirection.Desc
 
         it('should call useTimeSeriesPerDimension with correct query and ProductId filter', () => {
-            const baseQuery = customFieldsTicketCountTimeSeriesQueryFactory(
-                statsFilters,
-                timezone,
-                granularity,
-                customFieldId,
-                sorting,
-            )
-
             renderHook(() =>
                 useAIIntentCustomFieldsTicketCountTimeSeries(
                     statsFilters,
@@ -648,17 +747,44 @@ describe('time series', () => {
                 ),
             )
 
-            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith({
-                ...baseQuery,
+            const v1QueryTmp = customFieldsTicketCountTimeSeriesQueryFactory(
+                statsFilters,
+                timezone,
+                granularity,
+                customFieldId,
+                sorting,
+            )
+
+            const v1Query = {
+                ...v1QueryTmp,
                 filters: [
-                    ...baseQuery.filters,
+                    ...v1QueryTmp.filters,
                     {
                         member: TicketProductsEnrichedDimension.ProductId,
                         operator: ReportingFilterOperator.NotEquals,
                         values: ['null'],
                     },
                 ],
-            })
+            }
+
+            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+                v1Query,
+                ticketFieldsCountPerFieldValueTimeSeriesQueryV2Factory({
+                    filters: {
+                        ...statsFilters,
+                        [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator([
+                            customFieldId,
+                        ]),
+                        [APIOnlyFilterKey.ProductId]: withLogicalOperator(
+                            [],
+                            ApiOnlyOperatorEnum.SET,
+                        ),
+                    },
+                    timezone,
+                    granularity,
+                    sortDirection: sorting,
+                }),
+            )
         })
     })
 })

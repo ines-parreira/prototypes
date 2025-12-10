@@ -15,17 +15,17 @@
             box-shadow 0.2s ease-out;
 
         &:hover {
-            background: var(--navigation-background-accent);
+            background: var(--navigation-background-accent); // legacy
             box-shadow: 0px 1px 2px 0px rgba(22, 22, 22, 0.16);
         }
 
         &:active {
-            background: var(--navigation-border);
-            outline: var(--navigation-selected) 1px solid;
+            background: var(--navigation-border); // legacy
+            outline: var(--navigation-selected) 1px solid; // legacy
         }
 
         &:focus {
-            outline: var(--navigation-selected) 1px solid;
+            outline: var(--navigation-selected) 1px solid; // legacy
         }
     }
 }
@@ -33,5 +33,18 @@
 .axiom :local {
     .trigger {
         color: var(--content-neutral-default);
+
+        &:hover {
+            background: var(--hover-default);
+        }
+
+        &:active {
+            background: var(--surface-accent-default);
+            outline-color: var(--border-accent-default);
+        }
+
+        &:focus {
+            outline-color: var(--border-accent-default);
+        }
     }
 }

@@ -61,7 +61,7 @@
 
             .description {
                 .caption-regular();
-                color: var(--neutral-grey-5);
+                color: var(--neutral-grey-5); // legacy
                 max-width: 200px;
             }
         }
@@ -84,7 +84,7 @@
         }
 
         &.selected {
-            border: 1.5px solid var(--navigation-border);
+            border: 1.5px solid var(--border-neutral-default);
         }
 
         &.withErrors:not(.selected) {
@@ -98,6 +98,12 @@
         &.withErrors {
             .title {
                 color: var(--content-error-primary);
+            }
+        }
+
+        .textContent {
+            .description {
+                color: var(--content-neutral-secondary);
             }
         }
     }

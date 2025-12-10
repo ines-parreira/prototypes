@@ -53,6 +53,7 @@ export const ticketCountPerProductAndIntentQueryFactory = (
     order: [[TicketProductsEnrichedMeasure.TicketCount, OrderDirection.Desc]],
 })
 
+// new-stats-api: covered by ticketFieldsCountTimeSeriesQueryV2Factory
 export const intentsWithProductsTicketCountTimeseriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,

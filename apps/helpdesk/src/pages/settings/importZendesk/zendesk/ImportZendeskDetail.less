@@ -3,6 +3,12 @@
         vertical-align: middle;
     }
     .success {
-        color: var(--feedback-success);
+        color: var(--feedback-success); // legacy
+    }
+}
+
+.axiom :local {
+    .success {
+        color: var(--content-success-primary);
     }
 }

@@ -28,6 +28,7 @@ export const P2_SCOPES: MetricScope[] = [
     MetricScope.MessagesReceived,
     MetricScope.HumanFirstResponseTime,
     MetricScope.WorkloadTickets,
+    MetricScope.TicketFields,
 ]
 
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()

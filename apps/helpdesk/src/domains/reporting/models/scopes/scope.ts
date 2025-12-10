@@ -17,7 +17,7 @@ import type {
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import type {
     AggregationWindow,
-    StatsFiltersWithLogicalOperator,
+    ApiStatsFilters,
 } from 'domains/reporting/models/stat/types'
 
 type Values<T> = T extends readonly (infer U)[] ? U : never
@@ -88,10 +88,11 @@ export type BuiltQuery<
     Prettify<QueryFor<TQuery> & { metricName: TName; scope: TQuery['scope'] }>
 >
 
-export type Context = {
+export type Context<TMeta extends ScopeMeta = ScopeMeta> = {
     timezone: string
-    filters: StatsFiltersWithLogicalOperator
+    filters: ApiStatsFilters
     sortDirection?: OrderDirection
+    sortBy?: Values<TMeta['order']>
     granularity?: AggregationWindow
 }
 
@@ -105,7 +106,7 @@ class MetricQuery<
     TMeta extends ScopeMeta,
     TMetricName extends MetricName,
     TQuery extends QueryFor<TMeta>,
-    TContext extends Context,
+    TContext extends Context<TMeta>,
 > {
     constructor(
         public readonly config: TMeta,
@@ -187,7 +188,7 @@ class ScopeBuilder<TMeta extends ScopeMeta, TContext extends Context> {
 
 export function defineScope<
     const TMeta extends ScopeMeta,
-    TContext extends Context = Context,
+    TContext extends Context = Context<TMeta>,
 >(config: TMeta) {
     return new ScopeBuilder<TMeta, TContext>(config)
 }

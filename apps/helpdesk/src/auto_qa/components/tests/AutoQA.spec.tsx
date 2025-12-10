@@ -2,6 +2,7 @@ import { assumeMock } from '@repo/testing'
 
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
@@ -24,6 +25,9 @@ const useTicketIsAfterFeedbackCollectionPeriodMock = assumeMock(
     useTicketIsAfterFeedbackCollectionPeriod,
 )
 
+jest.mock('core/flags')
+const useFlagMock = assumeMock(useFlag)
+
 jest.mock('../AutoQASkeleton', () => () => <div>Loading...</div>)
 jest.mock('../Dimension', () => () => <p>Dimension</p>)
 jest.mock('../SaveBadge', () => ({ state }: { state: string }) => (
@@ -42,6 +46,7 @@ describe('AutoQA', () => {
         useHasAgentPrivilegesMock.mockReturnValue(true)
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValue(true)
         useAppSelectorMock.mockReturnValue({ id: 1, status: TicketStatus.Open })
+        useFlagMock.mockReturnValue(false)
         useAutoQAMock.mockReturnValue({
             changeHandlers: [],
             dimensions: [],
@@ -240,6 +245,42 @@ describe('AutoQA', () => {
             expect(getByTestId('auto-save-badge').textContent).toBe(
                 AutoSaveState.INITIAL.toString(),
             )
+        })
+    })
+
+    describe('UIVisionMilestone1 feature flag', () => {
+        it('should render star icon', () => {
+            useFlagMock.mockReturnValue(true)
+
+            const { container } = renderWithRouter(<AutoQA />)
+            const titleWrapper = container.querySelector(
+                '[class*="titleWrapper"]',
+            )
+
+            expect(titleWrapper).toBeInTheDocument()
+            expect(titleWrapper?.children.length).toBeGreaterThan(3)
+        })
+
+        it('should apply hasUIVisionMS1 class to container when UIVisionMilestone1 is enabled', () => {
+            useFlagMock.mockReturnValue(true)
+
+            const { container } = renderWithRouter(<AutoQA />)
+            const containerDiv = container.querySelector(
+                '[class*="hasUIVisionMS1"]',
+            )
+
+            expect(containerDiv).toBeInTheDocument()
+        })
+
+        it('should not apply hasUIVisionMS1 class to container when UIVisionMilestone1 is disabled', () => {
+            useFlagMock.mockReturnValue(false)
+
+            const { container } = renderWithRouter(<AutoQA />)
+            const containerDiv = container.querySelector(
+                '[class*="hasUIVisionMS1"]',
+            )
+
+            expect(containerDiv).not.toBeInTheDocument()
         })
     })
 })

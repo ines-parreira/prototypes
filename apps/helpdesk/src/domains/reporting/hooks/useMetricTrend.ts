@@ -1,7 +1,7 @@
 import type { Cubes } from 'domains/reporting/models/cubes'
-import {
-    type BuiltQuery,
-    type ScopeMeta,
+import type {
+    BuiltQuery,
+    ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'

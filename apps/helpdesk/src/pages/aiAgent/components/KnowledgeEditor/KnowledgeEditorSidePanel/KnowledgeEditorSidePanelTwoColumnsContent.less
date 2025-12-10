@@ -14,14 +14,32 @@
         }
     }
 
-    .row {
+    .row,
+    .rowFullWidth {
         display: flex;
         min-height: 24px;
-        justify-content: center;
         align-items: flex-start;
         align-self: stretch;
-
         border-bottom: none !important;
+    }
+
+    .row {
+        justify-content: center;
+    }
+
+    .rowFullWidth {
+        flex-direction: column;
+
+        .left {
+            min-height: auto;
+            width: auto;
+            flex-basis: auto;
+        }
+
+        .right {
+            width: 100%;
+            padding-left: 0;
+        }
     }
 
     .left {

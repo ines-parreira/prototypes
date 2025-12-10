@@ -1,45 +1,103 @@
 @import (reference) '~css/typography';
 
 :local {
-    .container {
+    .container:not(.hasUIVisionMS1) {
         display: flex;
         align-items: center;
         padding: var(--layout-spacing-xxs) 0;
         justify-content: space-between;
-    }
 
-    .arrowIcon.arrowIcon {
-        color: var(--neutral-grey-4);
-        font-size: 20px !important; // overrides ButtonIconLabel
-    }
+        .arrowIcon.arrowIcon {
+            color: var(--neutral-grey-4); // legacy
+            font-size: 20px !important; // overrides ButtonIconLabel
+        }
 
-    .label {
-        display: flex;
-        align-items: center;
-    }
+        .label {
+            display: flex;
+            align-items: center;
+        }
 
-    .button.button.button {
-        padding: 0 6px 0 0;
-        color: var(--neutral-grey-6);
-        .body-regular;
+        .button.button.button {
+            padding: 0 6px 0 0;
+            color: var(--neutral-grey-6); // legacy
+            .body-regular;
 
-        &:hover {
-            background-color: unset;
+            &:hover {
+                background-color: unset;
+            }
+        }
+
+        .icon.icon {
+            color: var(--neutral-grey-5); // legacy
+            font-size: 16px;
+            margin-left: var(--layout-spacing-xxs);
+        }
+
+        .prediction {
+            width: auto;
+        }
+
+        .aiIcon.aiIcon {
+            color: var(--accessory-magenta-3);
+            font-size: 16px;
         }
     }
 
-    .icon.icon {
-        color: var(--neutral-grey-5);
-        font-size: 16px;
-        margin-left: var(--layout-spacing-xxs);
-    }
-
-    .prediction {
-        width: auto;
-    }
-
-    .explanation {
+    .explanation:not(.hasUIVisionMS1) {
         padding: 0 0 var(--layout-spacing-xs) var(--layout-spacing-m);
+    }
+
+    .container.hasUIVisionMS1 {
+        display: flex;
+        align-items: center;
+        padding: var(--layout-spacing-xxs) 0;
+        justify-content: space-between;
+        gap: var(--layout-spacing-xs);
+
+        .arrowIcon.arrowIcon {
+            color: var(--neutral-grey-4); // legacy
+            font-size: 20px !important; // overrides ButtonIconLabel
+        }
+
+        .label {
+            display: flex;
+            align-items: center;
+            gap: var(--layout-spacing-xxs);
+        }
+
+        .button.button.button {
+            padding: 0;
+            color: var(--neutral-grey-6); // legacy
+            .body-regular;
+
+            &:hover {
+                background-color: unset;
+            }
+        }
+
+        .icon.icon {
+            color: var(--neutral-grey-5); // legacy
+            font-size: 16px;
+        }
+
+        .prediction {
+            width: auto;
+        }
+
+        .lastUpdateActor {
+            .caption-regular;
+
+            display: flex;
+            align-items: center;
+            gap: var(--layout-spacing-xxs);
+            margin: var(--layout-spacing-xxs) 0 0;
+            color: var(--neutral-grey-5); // legacy
+        }
+
+        .aiIcon.aiIcon {
+            color: var(--accessory-magenta-3);
+            font-size: 16px;
+        }
     }
 
     .lastUpdateActor {
@@ -49,11 +107,28 @@
         align-items: center;
         gap: var(--layout-spacing-xxs);
         margin: var(--layout-spacing-xxs) 0 0;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .arrowIcon.arrowIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .button.button.button {
+        color: var(--content-neutral-default);
+    }
+
+    .icon.icon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .lastUpdateActor {
+        color: var(--content-neutral-secondary);
     }
 
     .aiIcon.aiIcon {
-        color: var(--accessory-magenta-3);
-        font-size: 16px;
+        color: var(--content-additional-fuchsia);
     }
 }

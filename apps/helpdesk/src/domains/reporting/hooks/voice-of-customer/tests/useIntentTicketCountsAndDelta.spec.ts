@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     formatTicketCountData,
     useIntentTicketCountsAndDelta,
@@ -18,7 +18,7 @@ jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 
 const useStatsFiltersMock = assumeMock(useStatsFilters)
-const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
 
 describe('formatTicketCountData', () => {
     const mockData = {
@@ -90,6 +90,142 @@ describe('formatTicketCountData', () => {
         const result = formatTicketCountData(null, mockPreviousPeriodData)
         expect(result).toEqual([])
     })
+
+    it('should use fallback field name "ticketCount" when constant is not found in measures', () => {
+        const dataWithFallbackField = {
+            value: 100,
+            decile: 1,
+            measures: ['ticketCount'] as const,
+            dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValue],
+            allData: [
+                {
+                    [TicketCustomFieldsDimension.TicketCustomFieldsValue]:
+                        'intent1',
+                    ticketCount: '50',
+                },
+            ],
+        }
+
+        const previousDataWithFallbackField = {
+            value: 90,
+            decile: 1,
+            measures: ['ticketCount'] as const,
+            dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValue],
+            allData: [
+                {
+                    [TicketCustomFieldsDimension.TicketCustomFieldsValue]:
+                        'intent1',
+                    ticketCount: '40',
+                },
+            ],
+        }
+
+        const result = formatTicketCountData(
+            dataWithFallbackField as Parameters<
+                typeof formatTicketCountData
+            >[0],
+            previousDataWithFallbackField as Parameters<
+                typeof formatTicketCountData
+            >[1],
+        )
+
+        expect(result).toHaveLength(1)
+        expect(result[0]).toEqual({
+            category: 'intent1',
+            value: '50',
+            prevValue: '40',
+        })
+    })
+
+    it('should use fallback field name "customFieldValue" when constant is not found in dimensions', () => {
+        const dataWithFallbackField = {
+            value: 100,
+            decile: 1,
+            measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
+            dimensions: ['customFieldValue'] as const,
+            allData: [
+                {
+                    customFieldValue: 'intent1',
+                    [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]:
+                        '50',
+                },
+            ],
+        }
+
+        const previousDataWithFallbackField = {
+            value: 90,
+            decile: 1,
+            measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
+            dimensions: ['customFieldValue'] as const,
+            allData: [
+                {
+                    customFieldValue: 'intent1',
+                    [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]:
+                        '40',
+                },
+            ],
+        }
+
+        const result = formatTicketCountData(
+            dataWithFallbackField as Parameters<
+                typeof formatTicketCountData
+            >[0],
+            previousDataWithFallbackField as Parameters<
+                typeof formatTicketCountData
+            >[1],
+        )
+
+        expect(result).toHaveLength(1)
+        expect(result[0]).toEqual({
+            category: 'intent1',
+            value: '50',
+            prevValue: '40',
+        })
+    })
+
+    it('should use both fallback field names when neither constant is found', () => {
+        const dataWithFallbackFields = {
+            value: 100,
+            decile: 1,
+            measures: ['ticketCount'] as const,
+            dimensions: ['customFieldValue'] as const,
+            allData: [
+                {
+                    customFieldValue: 'intent1',
+                    ticketCount: '50',
+                },
+            ],
+        }
+
+        const previousDataWithFallbackFields = {
+            value: 90,
+            decile: 1,
+            measures: ['ticketCount'] as const,
+            dimensions: ['customFieldValue'] as const,
+            allData: [
+                {
+                    customFieldValue: 'intent1',
+                    ticketCount: '40',
+                },
+            ],
+        }
+
+        const result = formatTicketCountData(
+            dataWithFallbackFields as Parameters<
+                typeof formatTicketCountData
+            >[0],
+            previousDataWithFallbackFields as Parameters<
+                typeof formatTicketCountData
+            >[1],
+        )
+
+        expect(result).toHaveLength(1)
+        expect(result[0]).toEqual({
+            category: 'intent1',
+            value: '50',
+            prevValue: '40',
+        })
+    })
 })
 
 describe('useIntentTicketCountsAndDelta', () => {
@@ -140,7 +276,7 @@ describe('useIntentTicketCountsAndDelta', () => {
             ],
         }
 
-        useMetricPerDimensionMock
+        useMetricPerDimensionV2Mock
             .mockReturnValueOnce({
                 data: mockCurrentData,
                 isError: false,
@@ -171,7 +307,7 @@ describe('useIntentTicketCountsAndDelta', () => {
     })
 
     it('should handle loading state', () => {
-        useMetricPerDimensionMock
+        useMetricPerDimensionV2Mock
             .mockReturnValueOnce({
                 data: null,
                 isError: false,
@@ -196,7 +332,7 @@ describe('useIntentTicketCountsAndDelta', () => {
     })
 
     it('should handle error state', () => {
-        useMetricPerDimensionMock
+        useMetricPerDimensionV2Mock
             .mockReturnValueOnce({
                 data: null,
                 isError: true,
@@ -221,7 +357,7 @@ describe('useIntentTicketCountsAndDelta', () => {
     })
 
     it('should handle empty data', () => {
-        useMetricPerDimensionMock
+        useMetricPerDimensionV2Mock
             .mockReturnValueOnce({
                 data: { value: 0, decile: 0, allData: [] },
                 isError: false,
@@ -244,5 +380,133 @@ describe('useIntentTicketCountsAndDelta', () => {
         expect(result.current.data).toEqual([])
         expect(result.current.isError).toBe(false)
         expect(result.current.isFetching).toBe(false)
+    })
+
+    it('should pass sortBy with customFieldValue when sortingValue is TicketCustomFieldsValue', () => {
+        const mockCurrentData = {
+            value: 100,
+            decile: 1,
+            allData: [
+                {
+                    [TicketCustomFieldsDimension.TicketCustomFieldsValue]:
+                        'intent1',
+                    [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]:
+                        '50',
+                },
+            ],
+        }
+
+        const mockPreviousData = {
+            value: 90,
+            decile: 1,
+            allData: [
+                {
+                    [TicketCustomFieldsDimension.TicketCustomFieldsValue]:
+                        'intent1',
+                    [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]:
+                        '40',
+                },
+            ],
+        }
+
+        useMetricPerDimensionV2Mock
+            .mockReturnValueOnce({
+                data: mockCurrentData,
+                isError: false,
+                isFetching: false,
+            })
+            .mockReturnValueOnce({
+                data: mockPreviousData,
+                isError: false,
+                isFetching: false,
+            })
+
+        renderHook(() =>
+            useIntentTicketCountsAndDelta(
+                mockIntentCustomFieldId,
+                mockOrder.direction,
+                TicketCustomFieldsDimension.TicketCustomFieldsValue,
+            ),
+        )
+
+        // Verify that both calls to useMetricPerDimensionV2 have order with customFieldValue (second argument is the v2 query)
+        expect(useMetricPerDimensionV2Mock).toHaveBeenNthCalledWith(
+            1,
+            expect.anything(),
+            expect.objectContaining({
+                order: [['customFieldValue', 'asc']],
+            }),
+        )
+        expect(useMetricPerDimensionV2Mock).toHaveBeenNthCalledWith(
+            2,
+            expect.anything(),
+            expect.objectContaining({
+                order: [['customFieldValue', 'asc']],
+            }),
+        )
+    })
+
+    it('should pass sortBy with ticketCount when sortingValue is TicketCustomFieldsTicketCount', () => {
+        const mockCurrentData = {
+            value: 100,
+            decile: 1,
+            allData: [
+                {
+                    [TicketCustomFieldsDimension.TicketCustomFieldsValue]:
+                        'intent1',
+                    [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]:
+                        '50',
+                },
+            ],
+        }
+
+        const mockPreviousData = {
+            value: 90,
+            decile: 1,
+            allData: [
+                {
+                    [TicketCustomFieldsDimension.TicketCustomFieldsValue]:
+                        'intent1',
+                    [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]:
+                        '40',
+                },
+            ],
+        }
+
+        useMetricPerDimensionV2Mock
+            .mockReturnValueOnce({
+                data: mockCurrentData,
+                isError: false,
+                isFetching: false,
+            })
+            .mockReturnValueOnce({
+                data: mockPreviousData,
+                isError: false,
+                isFetching: false,
+            })
+
+        renderHook(() =>
+            useIntentTicketCountsAndDelta(
+                mockIntentCustomFieldId,
+                mockOrder.direction,
+                TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
+            ),
+        )
+
+        // Verify that both calls to useMetricPerDimensionV2 have order with ticketCount (second argument is the v2 query)
+        expect(useMetricPerDimensionV2Mock).toHaveBeenNthCalledWith(
+            1,
+            expect.anything(),
+            expect.objectContaining({
+                order: [['ticketCount', 'asc']],
+            }),
+        )
+        expect(useMetricPerDimensionV2Mock).toHaveBeenNthCalledWith(
+            2,
+            expect.anything(),
+            expect.objectContaining({
+                order: [['ticketCount', 'asc']],
+            }),
+        )
     })
 })

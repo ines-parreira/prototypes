@@ -30,46 +30,56 @@ export const KnowledgeEditorSidePanelSectionDocumentSnippetDetails = (
     >
         <KnowledgeEditorSidePanelTwoColumnsContent
             columns={[
-                [
-                    'Type',
-                    <KnowledgeEditorSidePanelFieldKnowledgeType
-                        key="type"
-                        type="document-snippet"
-                    />,
-                ],
-                [
-                    'In use by AI Agent',
-                    <KnowledgeEditorSidePanelFieldAIAgentStatus
-                        key="ai-agent-status"
-                        checked={props.aiAgentStatus.value}
-                        className={css.extraLeftMargin}
-                        onChange={props.aiAgentStatus.onChange}
-                    />,
-                ],
-                [
-                    'Created',
-                    <KnowledgeEditorSidePanelFieldDateField
-                        date={props.createdDatetime}
-                        key="created"
-                    />,
-                ],
-                [
-                    'Last updated',
-                    <KnowledgeEditorSidePanelFieldDateField
-                        date={props.lastUpdatedDatetime}
-                        key="last-updated"
-                    />,
-                ],
-                [
-                    'Source document',
-                    <KnowledgeEditorSidePanelFieldSourceDocument
-                        sourceDocument={{
-                            label: props.sourceDocument,
-                            downloadUrl: props.googleStorageUrl,
-                        }}
-                        key="source-document"
-                    />,
-                ],
+                {
+                    left: 'Type',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldKnowledgeType
+                            key="type"
+                            type="document-snippet"
+                        />
+                    ),
+                },
+                {
+                    left: 'In use by AI Agent',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldAIAgentStatus
+                            key="ai-agent-status"
+                            checked={props.aiAgentStatus.value}
+                            className={css.extraLeftMargin}
+                            onChange={props.aiAgentStatus.onChange}
+                        />
+                    ),
+                },
+                {
+                    left: 'Created',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldDateField
+                            date={props.createdDatetime}
+                            key="created"
+                        />
+                    ),
+                },
+                {
+                    left: 'Last updated',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldDateField
+                            date={props.lastUpdatedDatetime}
+                            key="last-updated"
+                        />
+                    ),
+                },
+                {
+                    left: 'Source document',
+                    right: (
+                        <KnowledgeEditorSidePanelFieldSourceDocument
+                            sourceDocument={{
+                                label: props.sourceDocument,
+                                downloadUrl: props.googleStorageUrl,
+                            }}
+                            key="source-document"
+                        />
+                    ),
+                },
             ]}
         />
     </KnowledgeEditorSidePanelSection>

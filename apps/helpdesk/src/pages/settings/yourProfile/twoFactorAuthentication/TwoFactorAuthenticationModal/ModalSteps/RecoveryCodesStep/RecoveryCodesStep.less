@@ -4,7 +4,7 @@
     .recoveryCodesContainer {
         padding: 20px;
         background: var(--neutral-grey-0); // legacy
-        border: 1px solid var(--neutral-grey-3);
+        border: 1px solid var(--neutral-grey-3); // legacy
         border-radius: 4px;
     }
 
@@ -19,7 +19,7 @@
         font-weight: 600;
         text-align: center;
         margin: 8px;
-        color: var(--accessory-green-3);
+        color: var(--accessory-green-3); // legacy
         background-color: var(--accessory-green-1); // legacy
         border-radius: 4px;
 
@@ -57,9 +57,11 @@
 .axiom :local {
     .recoveryCodesContainer {
         background: var(--elevation-neutral-default);
+        border-color: var(--border-neutral-default);
     }
 
     .recoveryCodesItem {
         background-color: var(--static-success);
+        color: var(--static-success);
     }
 }

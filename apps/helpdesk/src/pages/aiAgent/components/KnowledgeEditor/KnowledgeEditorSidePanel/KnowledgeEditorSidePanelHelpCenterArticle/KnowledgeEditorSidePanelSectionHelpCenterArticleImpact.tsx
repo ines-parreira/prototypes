@@ -55,27 +55,41 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleImpact = ({
         >
             <KnowledgeEditorSidePanelTwoColumnsContent
                 columns={[
-                    ['Tickets', renderValue(tickets)],
-                    ['Handover tickets', renderValue(handoverTickets)],
-                    ['CSAT', renderValue(csat)],
-                    [
-                        'Intents',
-                        intents && intents.length > 0 ? (
-                            <div key="intents" className={css.intentsContainer}>
-                                {intents.map((intent) => (
-                                    <Chip
-                                        key={intent}
-                                        id={intent}
-                                        label={intent}
-                                        isActive={false}
-                                        onClick={() => {}}
-                                    />
-                                ))}
-                            </div>
-                        ) : (
-                            '-'
-                        ),
-                    ],
+                    {
+                        left: 'Tickets',
+                        right: renderValue(tickets),
+                    },
+                    {
+                        left: 'Handover tickets',
+                        right: renderValue(handoverTickets),
+                    },
+                    {
+                        left: 'CSAT',
+                        right: renderValue(csat),
+                    },
+                    {
+                        left: 'Intents',
+                        right:
+                            intents && intents.length > 0 ? (
+                                <div
+                                    key="intents"
+                                    className={css.intentsContainer}
+                                >
+                                    {intents.map((intent) => (
+                                        <Chip
+                                            key={intent}
+                                            id={intent}
+                                            label={intent}
+                                            isActive={false}
+                                            onClick={() => {}}
+                                        />
+                                    ))}
+                                </div>
+                            ) : (
+                                '-'
+                            ),
+                        fullWidth: true,
+                    },
                 ]}
             />
         </KnowledgeEditorSidePanelSection>

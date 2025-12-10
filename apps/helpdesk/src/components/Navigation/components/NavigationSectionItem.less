@@ -24,28 +24,28 @@
 
         &:hover {
             outline: none;
-            background: var(--navigation-background-accent);
-            color: var(--navigation-text-item);
+            background: var(--navigation-background-accent); // legacy
+            color: var(--navigation-text-item); // legacy
             box-shadow: 0px 1px 2px 0px rgba(22, 22, 22, 0.16);
         }
 
         &:focus {
             outline: none;
-            background: var(--navigation-background-accent);
-            color: var(--navigation-text-item);
+            background: var(--navigation-background-accent); // legacy
+            color: var(--navigation-text-item); // legacy
         }
 
         &[aria-current='page'],
         &[data-selected='true'] {
             .body-semibold();
-            background: var(--navigation-border);
-            border: 1px solid var(--navigation-selected);
-            color: var(--navigation-title-item);
+            background: var(--navigation-border); // legacy
+            border: 1px solid var(--navigation-selected); // legacy
+            color: var(--navigation-title-item); // legacy
         }
 
         &[aria-current='page']:hover,
         &[data-selected='true']:hover {
-            background: var(--navigation-background-accent);
+            background: var(--navigation-background-accent); // legacy
             border: 1px solid transparent;
             box-shadow: 0px 1px 2px 0px rgba(22, 22, 22, 0.16);
         }
@@ -60,5 +60,27 @@
 .axiom :local {
     .item {
         color: var(--content-neutral-default);
+
+        &:hover {
+            background: var(--hover-default);
+            color: var(--content-neutral-default);
+        }
+
+        &:focus {
+            background: var(--hover-default);
+            color: var(--content-neutral-default);
+        }
+
+        &[aria-current='page'],
+        &[data-selected='true'] {
+            background: var(--surface-accent-default);
+            border-color: var(--border-accent-default);
+            color: var(--content-neutral-default);
+        }
+
+        &[aria-current='page']:hover,
+        &[data-selected='true']:hover {
+            background: var(--hover-default);
+        }
     }
 }
