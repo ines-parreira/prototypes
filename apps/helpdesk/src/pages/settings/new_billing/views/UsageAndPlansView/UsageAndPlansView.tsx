@@ -44,6 +44,7 @@ import {
     DATE_FORMAT,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
 } from '../../constants'
+import useProductCancellations from '../../hooks/useProductCancellations'
 
 import css from './UsageAndPlansView.less'
 
@@ -121,6 +122,9 @@ const UsageAndPlansView = ({
     const disabledTooltip = isTrialingSubscription
         ? PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP
         : undefined
+
+    const productCancellationsState = useProductCancellations()
+    const cancellationsByPlanId = productCancellationsState.value || new Map()
 
     useEffect(() => {
         if (isTrialingSubscription) {
@@ -262,6 +266,13 @@ const UsageAndPlansView = ({
                             isSubscribedToHelpdeskStarter ||
                             (!currentHelpdeskPlan && !!scheduledToCancelAt)
                         }
+                        scheduledToCancelAt={
+                            currentHelpdeskPlan
+                                ? cancellationsByPlanId.get(
+                                      currentHelpdeskPlan.plan_id,
+                                  ) || null
+                                : null
+                        }
                     />
                     <ProductCard
                         type={ProductType.Automation}
@@ -269,6 +280,13 @@ const UsageAndPlansView = ({
                         usage={currentUsage?.automation}
                         isDisabled={
                             !currentAutomatePlan && !!scheduledToCancelAt
+                        }
+                        scheduledToCancelAt={
+                            currentAutomatePlan
+                                ? cancellationsByPlanId.get(
+                                      currentAutomatePlan.plan_id,
+                                  ) || null
+                                : null
                         }
                     />
                     <ProductCard
@@ -281,6 +299,13 @@ const UsageAndPlansView = ({
                             isTrialingSubscription
                         }
                         disabledTooltip={disabledTooltip}
+                        scheduledToCancelAt={
+                            currentVoicePlan
+                                ? cancellationsByPlanId.get(
+                                      currentVoicePlan.plan_id,
+                                  ) || null
+                                : null
+                        }
                     />
                     <ProductCard
                         type={ProductType.SMS}
@@ -292,6 +317,13 @@ const UsageAndPlansView = ({
                             isTrialingSubscription
                         }
                         disabledTooltip={disabledTooltip}
+                        scheduledToCancelAt={
+                            currentSmsPlan
+                                ? cancellationsByPlanId.get(
+                                      currentSmsPlan.plan_id,
+                                  ) || null
+                                : null
+                        }
                     />
                     <ProductCard
                         type={ProductType.Convert}
@@ -304,6 +336,13 @@ const UsageAndPlansView = ({
                         autoUpgradeEnabled={Boolean(
                             convertStatus && convertStatus.auto_upgrade_enabled,
                         )}
+                        scheduledToCancelAt={
+                            currentConvertPlan
+                                ? cancellationsByPlanId.get(
+                                      currentConvertPlan.plan_id,
+                                  ) || null
+                                : null
+                        }
                     />
                 </div>
             )}

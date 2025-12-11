@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
+import moment from 'moment'
 import { useHistory } from 'react-router-dom'
 
 import {
@@ -28,7 +29,7 @@ import {
 } from 'state/billing/selectors'
 import type { BillingBanner, CurrentUsagePerProduct } from 'state/billing/types'
 
-import { BILLING_PROCESS_PATH } from '../../constants'
+import { BILLING_PROCESS_PATH, DATE_FORMAT } from '../../constants'
 import { formatAmount, formatNumTickets } from '../../utils/formatAmount'
 import Badge, { BadgeType } from '../Badge/Badge'
 
@@ -42,6 +43,7 @@ export type ProductCardProps = {
     isDisabled: boolean
     disabledTooltip?: string
     autoUpgradeEnabled?: boolean | null
+    scheduledToCancelAt?: string | null
 }
 
 const ProductCard = ({
@@ -52,6 +54,7 @@ const ProductCard = ({
     isDisabled,
     disabledTooltip,
     autoUpgradeEnabled = false,
+    scheduledToCancelAt,
 }: ProductCardProps) => {
     const cheapestPlanByProduct = useAppSelector(getCheapestProductPrices)
     const cadence = useAppSelector(getCurrentHelpdeskCadence)
@@ -237,6 +240,25 @@ const ProductCard = ({
         )
     }, [plan, usage])
 
+    const statusBadge = useMemo(() => {
+        if (!plan) {
+            return <Badge text="Inactive" type={BadgeType.Info} />
+        }
+
+        if (scheduledToCancelAt) {
+            const formattedDate =
+                moment(scheduledToCancelAt).format(DATE_FORMAT)
+            return (
+                <Badge
+                    text={`Active until ${formattedDate}`}
+                    type={BadgeType.Warning}
+                />
+            )
+        }
+
+        return <Badge text="Active" type={BadgeType.Success} />
+    }, [plan, scheduledToCancelAt])
+
     return (
         <div className={css.container}>
             <div className={css.header}>
@@ -249,11 +271,7 @@ const ProductCard = ({
                         {productInfo.icon}
                     </i>
                     <div>{productInfo.title}</div>
-                    {!!plan ? (
-                        <Badge text="Active" type={BadgeType.Success} />
-                    ) : (
-                        <Badge text="Inactive" type={BadgeType.Info} />
-                    )}
+                    {statusBadge}
                 </div>
                 <div>{currentStatus}</div>
             </div>

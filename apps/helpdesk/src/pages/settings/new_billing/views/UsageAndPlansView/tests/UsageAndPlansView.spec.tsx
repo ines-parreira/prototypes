@@ -44,6 +44,7 @@ import {
     storeWithCanceledSubscription,
     storeWithTrialingSubscription,
 } from 'pages/settings/new_billing/fixtures'
+import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
 import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
@@ -74,6 +75,7 @@ jest.mock('pages/settings/new_billing/components/ProductCard', () =>
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')
+jest.mock('pages/settings/new_billing/hooks/useProductCancellations')
 
 const mockUseGetOrCreateAccountConfiguration = assumeMock(
     useGetOrCreateAccountConfiguration,
@@ -82,6 +84,7 @@ const mockUseAiAgentOnboardingNotification = assumeMock(
     useAiAgentOnboardingNotification,
 )
 const mockUseStoreConfiguration = assumeMock(useStoreConfiguration)
+const mockUseProductCancellations = assumeMock(useProductCancellations)
 
 const mockedUseAiAgentOnboardingNotification = {
     isAdmin: true,
@@ -176,6 +179,11 @@ describe('UsageAndPlansView', () => {
             isFetched: true,
             error: null,
         })
+        mockUseProductCancellations.mockReturnValue({
+            loading: false,
+            error: undefined,
+            value: new Map(),
+        })
     })
 
     it('should render with active subscription containing Helpdesk and Convert products', () => {
@@ -198,6 +206,7 @@ describe('UsageAndPlansView', () => {
                 usage: mockedUsage[ProductType.Helpdesk],
                 banner: helpdeskBanner,
                 isDisabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -208,6 +217,7 @@ describe('UsageAndPlansView', () => {
                 plan: undefined,
                 usage: null,
                 isDisabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -218,6 +228,7 @@ describe('UsageAndPlansView', () => {
                 plan: undefined,
                 usage: null,
                 isDisabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -228,6 +239,7 @@ describe('UsageAndPlansView', () => {
                 plan: undefined,
                 usage: null,
                 isDisabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -240,6 +252,7 @@ describe('UsageAndPlansView', () => {
                 banner: convertBanner,
                 isDisabled: false,
                 autoUpgradeEnabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -298,6 +311,7 @@ describe('UsageAndPlansView', () => {
                 plan: basicMonthlyHelpdeskPlan,
                 usage: mockedUsage[ProductType.Helpdesk],
                 isDisabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -307,6 +321,7 @@ describe('UsageAndPlansView', () => {
                 type: ProductType.Automation,
                 usage: null,
                 isDisabled: true,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -316,6 +331,7 @@ describe('UsageAndPlansView', () => {
                 type: ProductType.Voice,
                 usage: null,
                 isDisabled: true,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -325,6 +341,7 @@ describe('UsageAndPlansView', () => {
                 type: ProductType.SMS,
                 usage: null,
                 isDisabled: true,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -336,6 +353,7 @@ describe('UsageAndPlansView', () => {
                 usage: mockedUsage[ProductType.Convert],
                 isDisabled: false,
                 autoUpgradeEnabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -412,6 +430,7 @@ describe('UsageAndPlansView', () => {
                 ],
                 banner: helpdeskBanner,
                 isDisabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -422,6 +441,7 @@ describe('UsageAndPlansView', () => {
                 plan: undefined,
                 usage: null,
                 isDisabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -432,6 +452,7 @@ describe('UsageAndPlansView', () => {
                 plan: undefined,
                 usage: null,
                 isDisabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -443,6 +464,7 @@ describe('UsageAndPlansView', () => {
                 usage: alteredBilling.currentProductsUsage[ProductType.SMS],
                 isDisabled: false,
                 banner: smsBanner,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -454,6 +476,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: false,
                 autoUpgradeEnabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -517,6 +540,7 @@ describe('UsageAndPlansView', () => {
                     ProductType.Helpdesk
                 ],
                 isDisabled: true,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -708,6 +732,7 @@ describe('UsageAndPlansView', () => {
                 usage: mockedUsage[ProductType.Helpdesk],
                 banner: helpdeskBanner,
                 isDisabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -718,6 +743,7 @@ describe('UsageAndPlansView', () => {
                 plan: undefined,
                 usage: null,
                 isDisabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -729,6 +755,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: true,
                 disabledTooltip: PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -740,6 +767,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: true,
                 disabledTooltip: PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
+                scheduledToCancelAt: null,
             },
             {},
         )
@@ -752,6 +780,7 @@ describe('UsageAndPlansView', () => {
                 banner: convertBanner,
                 isDisabled: false,
                 autoUpgradeEnabled: false,
+                scheduledToCancelAt: null,
             },
             {},
         )
