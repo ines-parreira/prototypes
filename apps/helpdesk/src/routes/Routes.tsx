@@ -761,10 +761,12 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                 component={AiAgentGuidanceTemplatesContainer}
                             />
 
-                            <Route
-                                path={`${path}/knowledge/guidance/:articleId`}
-                                component={AiAgentGuidanceDetailContainer}
-                            />
+                            {!isKnowledgeHubEnabled && (
+                                <Route
+                                    path={`${path}/knowledge/guidance/:articleId`}
+                                    component={AiAgentGuidanceDetailContainer}
+                                />
+                            )}
                         </Switch>
                     </AiAgentErrorBoundary>
 
