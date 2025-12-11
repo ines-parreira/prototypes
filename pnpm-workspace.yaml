@@ -12,6 +12,7 @@ overrides:
   '@emotion/styled-base': '10.0.31'
   'isomorphic-fetch': '^3.0.0'
   'sha.js': '2.4.12'
+  'node-forge': '1.3.2'
 
 onlyBuiltDependencies:
   - '@sentry/cli'
