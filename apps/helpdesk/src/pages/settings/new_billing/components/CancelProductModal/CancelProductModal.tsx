@@ -21,6 +21,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { trackBillingEvent } from '../../../../../models/billing/resources'
 import { cancelHelpdeskAutoRenewal } from '../../../../../state/currentAccount/actions'
 import { BILLING_SUPPORT_EMAIL, ZAPIER_REMOVE_AAO_HOOK } from '../../constants'
+import { reportCRMGrowthError } from '../../utils/reportCRMGrowthError'
 import { sendRemoveNotificationZap } from '../../utils/sendRemoveNotificationZap'
 import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 import CancellationReasons from './CancellationReasons'
@@ -167,18 +168,27 @@ const CancelProductModal = ({
             setIsSubmitting(false)
         }
 
-        await trackBillingEvent(
-            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
-            {
-                product_type: productType,
-                primary_reason: cancellationReasonsState.primaryReason!.label,
-                secondary_reason:
-                    cancellationReasonsState.secondaryReason?.label || null,
-                other_reason:
-                    cancellationReasonsState.additionalDetails?.label || null,
-                accepted: true,
-            },
-        )
+        try {
+            await trackBillingEvent(
+                SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+                {
+                    product_type: productType,
+                    primary_reason:
+                        cancellationReasonsState.primaryReason!.label,
+                    secondary_reason:
+                        cancellationReasonsState.secondaryReason?.label || null,
+                    other_reason:
+                        cancellationReasonsState.additionalDetails?.label ||
+                        null,
+                    accepted: true,
+                },
+            )
+        } catch (error) {
+            reportCRMGrowthError(
+                error,
+                'Failed to track churn mitigation offer acceptance event',
+            )
+        }
     }
 
     const handleSubmitCancellation = async () => {
@@ -219,18 +229,27 @@ const CancelProductModal = ({
     }
 
     const handleSendCancellationEvents = async () => {
-        await trackBillingEvent(
-            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
-            {
-                product_type: productType,
-                primary_reason: cancellationReasonsState.primaryReason!.label,
-                secondary_reason:
-                    cancellationReasonsState.secondaryReason?.label || null,
-                other_reason:
-                    cancellationReasonsState.additionalDetails?.label || null,
-                accepted: false,
-            },
-        )
+        try {
+            await trackBillingEvent(
+                SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+                {
+                    product_type: productType,
+                    primary_reason:
+                        cancellationReasonsState.primaryReason!.label,
+                    secondary_reason:
+                        cancellationReasonsState.secondaryReason?.label || null,
+                    other_reason:
+                        cancellationReasonsState.additionalDetails?.label ||
+                        null,
+                    accepted: false,
+                },
+            )
+        } catch (error) {
+            reportCRMGrowthError(
+                error,
+                'Failed to track cancellation offer rejection event',
+            )
+        }
 
         if (productType === ProductType.Automation && currentUsage) {
             const domain = currentAccount.get('domain')
@@ -242,17 +261,24 @@ const CancelProductModal = ({
                 cancellationReasonsState.additionalDetails,
             )
 
-            await sendRemoveNotificationZap({
-                zapierHook: ZAPIER_REMOVE_AAO_HOOK,
-                subject,
-                message,
-                from,
-                to: BILLING_SUPPORT_EMAIL,
-                account: domain,
-                freeTrial: currentAccount.get('is_trialing') || false,
-                helpdeskPlan: currentHelpdeskPlan?.name ?? '',
-                automationPlan: currentAutomatePlan?.name ?? '',
-            })
+            try {
+                await sendRemoveNotificationZap({
+                    zapierHook: ZAPIER_REMOVE_AAO_HOOK,
+                    subject,
+                    message,
+                    from,
+                    to: BILLING_SUPPORT_EMAIL,
+                    account: domain,
+                    freeTrial: currentAccount.get('is_trialing') || false,
+                    helpdeskPlan: currentHelpdeskPlan?.name ?? '',
+                    automationPlan: currentAutomatePlan?.name ?? '',
+                })
+            } catch (error) {
+                reportCRMGrowthError(
+                    error,
+                    'Failed to send AI Agent removal notification to support',
+                )
+            }
         }
 
         // Mark the product as removed in pending changes (except for Helpdesk)

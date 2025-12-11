@@ -25,6 +25,7 @@ import { cancelHelpdeskAutoRenewal } from 'state/currentAccount/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+import { reportCRMGrowthError } from '../../../utils/reportCRMGrowthError'
 import { sendRemoveNotificationZap } from '../../../utils/sendRemoveNotificationZap'
 import CancellationReasons from '../CancellationReasons'
 import CancellationSummary from '../CancellationSummary'
@@ -111,6 +112,8 @@ const trackBillingEventMock = assumeMock(trackBillingEvent)
 jest.mock('../../../utils/sendRemoveNotificationZap')
 
 const sendRemoveNotificationZapMock = assumeMock(sendRemoveNotificationZap)
+jest.mock('../../../utils/reportCRMGrowthError')
+const reportCRMGrowthErrorMock = assumeMock(reportCRMGrowthError)
 const mockSwitchToNextStep = jest.fn()
 const mockUpdateSubscription = jest.fn()
 
@@ -126,6 +129,7 @@ beforeEach(() => {
     sendAcceptedChurnMitigationOfferToSupportMock.mockReset()
     sendRemoveNotificationZapMock.mockReset()
     notifyMock.mockReset()
+    reportCRMGrowthErrorMock.mockReset()
 
     // Mock async functions to resolve
     trackBillingEventMock.mockResolvedValue({} as any)
@@ -571,6 +575,186 @@ describe('CancelProductModal: step 3', () => {
         )
     })
 
+    it('should still go to next step when trackBillingEvent fails', async () => {
+        const trackingError = new Error('Failed to track event')
+        trackBillingEventMock.mockRejectedValue(trackingError)
+
+        const { getByRole } = render(
+            <Provider store={store}>
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={true}
+                    productType={productType}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />
+            </Provider>,
+        )
+
+        const continueCancellingButtonElement = getByRole('button', {
+            name: 'Continue cancelling',
+        })
+        await act(() => continueCancellingButtonElement.click())
+
+        expect(mockSwitchToNextStep).toHaveBeenCalled()
+        expect(reportCRMGrowthErrorMock).toHaveBeenCalledWith(
+            trackingError,
+            'Failed to track cancellation offer rejection event',
+        )
+    })
+
+    it('should still go to next step when sendRemoveNotificationZap fails for Automation product', async () => {
+        const zapierError = new Error('Failed to send Zapier notification')
+        sendRemoveNotificationZapMock.mockRejectedValue(zapierError)
+
+        const { getByRole } = render(
+            <Provider store={store}>
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={true}
+                    productType={ProductType.Automation}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    currentUsage={currentProductsUsage}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />
+            </Provider>,
+        )
+
+        const continueCancellingButtonElement = getByRole('button', {
+            name: 'Continue cancelling',
+        })
+        await act(() => continueCancellingButtonElement.click())
+
+        expect(mockSwitchToNextStep).toHaveBeenCalled()
+        expect(trackBillingEventMock).toHaveBeenCalled()
+        expect(reportCRMGrowthErrorMock).toHaveBeenCalledWith(
+            zapierError,
+            'Failed to send AI Agent removal notification to support',
+        )
+    })
+
+    it('should handle both tracking and Zapier failures gracefully for Automation', async () => {
+        const trackingError = new Error('Tracking failed')
+        const zapierError = new Error('Zapier notification failed')
+        trackBillingEventMock.mockRejectedValue(trackingError)
+        sendRemoveNotificationZapMock.mockRejectedValue(zapierError)
+
+        const { getByRole } = render(
+            <Provider store={store}>
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={true}
+                    productType={ProductType.Automation}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    currentUsage={currentProductsUsage}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />
+            </Provider>,
+        )
+
+        const continueCancellingButton = getByRole('button', {
+            name: 'Continue cancelling',
+        })
+        await act(() => continueCancellingButton.click())
+
+        expect(mockSwitchToNextStep).toHaveBeenCalled()
+
+        expect(reportCRMGrowthErrorMock).toHaveBeenCalledTimes(2)
+        expect(reportCRMGrowthErrorMock).toHaveBeenCalledWith(
+            trackingError,
+            'Failed to track cancellation offer rejection event',
+        )
+        expect(reportCRMGrowthErrorMock).toHaveBeenCalledWith(
+            zapierError,
+            'Failed to send AI Agent removal notification to support',
+        )
+    })
+
+    it('should NOT update selectedPlans when continuing with Helpdesk cancellation', async () => {
+        const mockSetSelectedPlansLocal = jest.fn()
+
+        const { getByRole } = render(
+            <Provider store={store}>
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={true}
+                    productType={ProductType.Helpdesk}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlansLocal}
+                    updateSubscription={mockUpdateSubscription}
+                />
+            </Provider>,
+        )
+
+        const continueCancellingButton = getByRole('button', {
+            name: 'Continue cancelling',
+        })
+        await act(() => continueCancellingButton.click())
+
+        expect(mockSetSelectedPlansLocal).not.toHaveBeenCalled()
+
+        expect(mockSwitchToNextStep).toHaveBeenCalled()
+    })
+
+    it('should handle missing secondaryReason and additionalDetails when rejecting offer', async () => {
+        // Mock state with only primaryReason
+        const minimalMockState = {
+            ...DEFAULT_STATE,
+            primaryReason: { label: 'Primary reason only' },
+            secondaryReason: null,
+            additionalDetails: null,
+            completed: true,
+        }
+        cancellationReasonsReducerMock.mockImplementation(
+            () => minimalMockState,
+        )
+
+        const { getByRole } = render(
+            <Provider store={store}>
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={true}
+                    productType={ProductType.Helpdesk}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />
+            </Provider>,
+        )
+
+        const continueCancellingButton = getByRole('button', {
+            name: 'Continue cancelling',
+        })
+        await act(() => continueCancellingButton.click())
+
+        // Verify trackBillingEvent was called with null for optional fields
+        expect(trackBillingEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+            {
+                product_type: productType,
+                primary_reason: 'Primary reason only',
+                secondary_reason: null,
+                other_reason: null,
+                accepted: false,
+            },
+        )
+
+        expect(mockSwitchToNextStep).toHaveBeenCalled()
+    })
+
     it('should close the modal when churn mitigation offer was successfully submitted', async () => {
         sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(true)
         const mockHandleOnClose = jest.fn()
@@ -663,6 +847,158 @@ describe('CancelProductModal: step 3', () => {
                 },
             },
         ])
+    })
+
+    it('should still track acceptance event even when offer submission fails', async () => {
+        sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(false)
+        const mockHandleOnClose = jest.fn()
+
+        const { getByRole } = render(
+            <Provider store={store}>
+                <CancelProductModal
+                    onClose={mockHandleOnClose}
+                    isOpen={true}
+                    productType={productType}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />
+            </Provider>,
+        )
+
+        const acceptOfferButton = getByRole('button', { name: 'Accept offer' })
+        await act(() => fireEvent.click(acceptOfferButton))
+
+        expect(mockHandleOnClose).not.toHaveBeenCalled()
+
+        expect(trackBillingEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+            {
+                product_type: productType,
+                primary_reason: mockState.primaryReason.label,
+                secondary_reason: mockState.secondaryReason.label,
+                other_reason: mockState.additionalDetails?.label || null,
+                accepted: true,
+            },
+        )
+
+        expect(store.getActions()).toContainEqual(
+            expect.objectContaining({
+                type: 'mocked notify action',
+                message: expect.objectContaining({
+                    status: NotificationStatus.Error,
+                }),
+            }),
+        )
+    })
+
+    it('should still close modal when trackBillingEvent fails after accepting offer', async () => {
+        sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(true)
+        const trackingError = new Error('Failed to track acceptance')
+        trackBillingEventMock.mockRejectedValue(trackingError)
+        const mockHandleOnClose = jest.fn()
+
+        const { getByRole } = render(
+            <Provider store={store}>
+                <CancelProductModal
+                    onClose={mockHandleOnClose}
+                    isOpen={true}
+                    productType={productType}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />
+            </Provider>,
+        )
+
+        const acceptOfferButton = getByRole('button', { name: 'Accept offer' })
+        await act(() => fireEvent.click(acceptOfferButton))
+
+        // Modal should close despite tracking failure
+        expect(mockHandleOnClose).toHaveBeenCalled()
+
+        // Success notification should be shown
+        expect(store.getActions()).toContainEqual(
+            expect.objectContaining({
+                type: 'mocked notify action',
+                message: expect.objectContaining({
+                    status: NotificationStatus.Success,
+                }),
+            }),
+        )
+
+        // Error should be reported to Sentry
+        expect(reportCRMGrowthErrorMock).toHaveBeenCalledWith(
+            trackingError,
+            'Failed to track churn mitigation offer acceptance event',
+        )
+    })
+
+    it('should handle missing secondaryReason and additionalDetails when accepting offer', async () => {
+        // Mock state with only primaryReason (no secondary or additional)
+        const minimalMockState = {
+            ...DEFAULT_STATE,
+            primaryReason: { label: 'Primary reason only' },
+            secondaryReason: null,
+            additionalDetails: null,
+            completed: true,
+        }
+        cancellationReasonsReducerMock.mockImplementation(
+            () => minimalMockState,
+        )
+
+        sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(true)
+        const mockHandleOnClose = jest.fn()
+
+        const { getByRole } = render(
+            <Provider store={store}>
+                <CancelProductModal
+                    onClose={mockHandleOnClose}
+                    isOpen={true}
+                    productType={productType}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />
+            </Provider>,
+        )
+
+        const acceptOfferButton = getByRole('button', { name: 'Accept offer' })
+        await act(() => fireEvent.click(acceptOfferButton))
+
+        // Verify modal closed successfully
+        expect(mockHandleOnClose).toHaveBeenCalled()
+
+        // Verify sendAcceptedChurnMitigationOfferToSupport was called with null for optional fields
+        expect(
+            sendAcceptedChurnMitigationOfferToSupportMock,
+        ).toHaveBeenCalledWith({
+            productType: productType.toString(),
+            accountDomain: account.domain,
+            userEmail: user.email,
+            primaryReason: 'Primary reason only',
+            secondaryReason: null,
+            otherReason: null,
+            correspondingChurnMitigationOfferId: expect.any(String),
+        })
+
+        // Verify trackBillingEvent was called with null for optional fields
+        expect(trackBillingEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+            {
+                product_type: productType,
+                primary_reason: 'Primary reason only',
+                secondary_reason: null,
+                other_reason: null,
+                accepted: true,
+            },
+        )
     })
 })
 describe('CancelProductModal: step 4', () => {
@@ -782,6 +1118,57 @@ describe('CancelProductModal: step 4', () => {
         expect(cancelHelpdeskAutoRenewalMock).toHaveBeenCalledTimes(1)
         expect(mockHandleOnClose).toHaveBeenCalledTimes(0)
     })
+
+    it('should handle Automation product cancellation failure gracefully', async () => {
+        useCancellationFlowStepsStateMachineMock.mockImplementation(() => ({
+            cancellationStep: CancellationFlowStep.cancellationSummary,
+            switchToNextStep: mockSwitchToNextStep,
+            resetCancellationFlow: jest.fn(),
+        }))
+
+        const updateError = new Error('Update failed')
+        mockUpdateSubscription.mockRejectedValue(updateError)
+        const mockOnCancellationConfirmed = jest.fn()
+        const mockHandleOnClose = jest.fn()
+
+        const { getByRole } = render(
+            <Provider store={store}>
+                <CancelProductModal
+                    onClose={mockHandleOnClose}
+                    isOpen={true}
+                    productType={ProductType.Automation}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                    onCancellationConfirmed={mockOnCancellationConfirmed}
+                />
+            </Provider>,
+        )
+
+        const confirmButton = getByRole('button', {
+            name: 'Confirm Auto-Renewal Cancellation',
+        })
+        act(() => {
+            getLastMockCall(DisclaimerMock)[0].onChange(true)
+        })
+
+        await act(() => fireEvent.click(confirmButton))
+
+        expect(mockHandleOnClose).not.toHaveBeenCalled()
+        expect(mockOnCancellationConfirmed).not.toHaveBeenCalled()
+
+        expect(store.getActions()).toContainEqual(
+            expect.objectContaining({
+                type: 'mocked notify action',
+                message: expect.objectContaining({
+                    status: NotificationStatus.Error,
+                    message: expect.stringContaining('AI Agent'),
+                }),
+            }),
+        )
+    })
 })
 
 describe('CancelProductModal: AI Agent cancellation flow', () => {
@@ -900,6 +1287,89 @@ describe('CancelProductModal: AI Agent cancellation flow', () => {
 
         expect(sendRemoveNotificationZapMock).toHaveBeenCalled()
         expect(mockSetSelectedPlans).toHaveBeenCalledWith(expect.any(Function))
+    })
+
+    it('should handle missing plan names when sending Zapier notification', async () => {
+        const mockState = {
+            ...DEFAULT_STATE,
+            primaryReason: { label: 'Too expensive' },
+            secondaryReason: { label: 'Not enough features' },
+            completed: true,
+        }
+        cancellationReasonsReducerMock.mockImplementation(() => mockState)
+
+        useCancellationFlowStepsStateMachineMock.mockImplementation(() => ({
+            cancellationStep: CancellationFlowStep.churnMitigationOffer,
+            switchToNextStep: mockSwitchToNextStep,
+            resetCancellationFlow: jest.fn(),
+        }))
+
+        // Mock store with undefined plan names
+        const storeWithNoPlanNames = mockStore({
+            billing: fromJS({
+                ...billingState,
+                subscription_products: {
+                    [ProductType.Helpdesk]: undefined,
+                    [ProductType.Automation]: undefined,
+                },
+            }),
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    products: {},
+                },
+            }),
+            currentUser: fromJS(user),
+        })
+
+        const currentUsageWithAutomation = {
+            ...currentProductsUsage,
+            automation: {
+                data: {
+                    extra_tickets_cost_in_cents: 0,
+                    num_tickets: 50,
+                    num_extra_tickets: 0,
+                },
+                meta: {
+                    subscription_start_datetime: '2017-08-22T00:46:32+00:00',
+                    subscription_end_datetime: '2017-09-05T00:46:32+00:00',
+                },
+            },
+        }
+
+        const { getByRole } = render(
+            <Provider store={storeWithNoPlanNames}>
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={true}
+                    productType={ProductType.Automation}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    currentUsage={currentUsageWithAutomation}
+                    selectedPlans={automationSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />
+            </Provider>,
+        )
+
+        const continueCancellingButton = getByRole('button', {
+            name: 'Continue cancelling',
+        })
+        await act(() => continueCancellingButton.click())
+
+        // Verify Zapier call was made with empty strings for undefined plan names
+        expect(sendRemoveNotificationZapMock).toHaveBeenCalledWith({
+            zapierHook: expect.any(String),
+            subject: expect.any(String),
+            message: expect.any(String),
+            from: user.email,
+            to: expect.any(String),
+            account: account.domain,
+            freeTrial: expect.any(Boolean),
+            helpdeskPlan: '',
+            automationPlan: '',
+        })
     })
 })
 
@@ -1056,6 +1526,63 @@ describe('CancelProductModal: Convert and SMS cancellation flows', () => {
                 expect(mockSwitchToNextStep).toHaveBeenCalled()
                 expect(sendRemoveNotificationZapMock).not.toHaveBeenCalled()
             })
+
+            it('should update selectedPlans state when rejecting offer', async () => {
+                useCancellationFlowStepsStateMachineMock.mockImplementation(
+                    () => ({
+                        cancellationStep:
+                            CancellationFlowStep.churnMitigationOffer,
+                        switchToNextStep: mockSwitchToNextStep,
+                        resetCancellationFlow: jest.fn(),
+                    }),
+                )
+
+                const mockSetSelectedPlansLocal = jest.fn()
+                const productSelectedPlansForTest = {
+                    ...mockSelectedPlans,
+                    [productType]: {
+                        plan,
+                        isSelected: true,
+                    },
+                }
+
+                const { getByRole } = render(
+                    <Provider store={store}>
+                        <CancelProductModal
+                            onClose={jest.fn()}
+                            isOpen={true}
+                            productType={productType}
+                            subscriptionProducts={subscriptionProducts}
+                            periodEnd={periodEnd}
+                            selectedPlans={productSelectedPlansForTest}
+                            setSelectedPlans={mockSetSelectedPlansLocal}
+                            updateSubscription={mockUpdateSubscription}
+                        />
+                    </Provider>,
+                )
+
+                const continueCancellingButton = getByRole('button', {
+                    name: 'Continue cancelling',
+                })
+                await act(() => continueCancellingButton.click())
+
+                // Verify setSelectedPlans was called with callback
+                expect(mockSetSelectedPlansLocal).toHaveBeenCalled()
+
+                // Execute the callback to verify its logic
+                const setSelectedPlansCallback =
+                    mockSetSelectedPlansLocal.mock.calls[0][0]
+                const result = setSelectedPlansCallback(
+                    productSelectedPlansForTest,
+                )
+
+                // Verify the callback updates the product to not selected
+                expect(result[productType]).toEqual({
+                    ...productSelectedPlansForTest[productType],
+                    isSelected: false,
+                    plan: undefined,
+                })
+            })
         },
     )
 })
@@ -1184,5 +1711,64 @@ describe('CancelProductModal: Modal Headers', () => {
                 getByText(`Cancel ${productName} auto-renewal`),
             ).toBeInTheDocument()
         })
+    })
+})
+describe('Modal state management', () => {
+    it('should reset all state when modal is reopened', () => {
+        const resetMock = jest.fn()
+        useCancellationFlowStepsStateMachineMock.mockImplementation(() => ({
+            cancellationStep: CancellationFlowStep.productFeaturesFOMO,
+            switchToNextStep: mockSwitchToNextStep,
+            resetCancellationFlow: resetMock,
+        }))
+
+        const { rerender } = render(
+            <Provider store={store}>
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={true}
+                    productType={productType}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />
+            </Provider>,
+        )
+
+        expect(useCancellationFlowStepsStateMachineMock).toHaveBeenCalled()
+
+        rerender(
+            <Provider store={store}>
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={false}
+                    productType={productType}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />
+            </Provider>,
+        )
+
+        rerender(
+            <Provider store={store}>
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={true}
+                    productType={productType}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />
+            </Provider>,
+        )
+
+        expect(resetMock).toHaveBeenCalled()
     })
 })
