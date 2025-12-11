@@ -7,6 +7,7 @@ import { fromJS, Map } from 'immutable'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import {
@@ -416,18 +417,20 @@ describe('PlaygroundReasoning (Connected Component)', () => {
         props: Partial<React.ComponentProps<typeof PlaygroundReasoning>> = {},
     ) => {
         return render(
-            <Provider store={mockStore(defaultState)}>
-                <QueryClientProvider client={testQueryClient}>
-                    <PlaygroundReasoning
-                        accountId={1}
-                        userId={2}
-                        testSessionId="test-session-123"
-                        messageId="message-456"
-                        storeConfiguration={null}
-                        {...props}
-                    />
-                </QueryClientProvider>
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={testQueryClient}>
+                        <PlaygroundReasoning
+                            accountId={1}
+                            userId={2}
+                            testSessionId="test-session-123"
+                            messageId="message-456"
+                            storeConfiguration={null}
+                            {...props}
+                        />
+                    </QueryClientProvider>
+                </Provider>
+            </MemoryRouter>,
         )
     }
 
@@ -596,17 +599,19 @@ describe('PlaygroundReasoning (Connected Component)', () => {
             )
 
             rerender(
-                <Provider store={mockStore(defaultState)}>
-                    <QueryClientProvider client={testQueryClient}>
-                        <PlaygroundReasoning
-                            accountId={1}
-                            userId={2}
-                            testSessionId="test-session-123"
-                            messageId="message-2"
-                            storeConfiguration={null}
-                        />
-                    </QueryClientProvider>
-                </Provider>,
+                <MemoryRouter>
+                    <Provider store={mockStore(defaultState)}>
+                        <QueryClientProvider client={testQueryClient}>
+                            <PlaygroundReasoning
+                                accountId={1}
+                                userId={2}
+                                testSessionId="test-session-123"
+                                messageId="message-2"
+                                storeConfiguration={null}
+                            />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
             )
 
             expect(

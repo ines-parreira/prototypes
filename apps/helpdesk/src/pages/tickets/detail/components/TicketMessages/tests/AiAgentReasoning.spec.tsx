@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
@@ -255,19 +256,21 @@ const setupMocks = ({
 }
 
 const createComponentWrapper = (children: React.ReactElement) => (
-    <QueryClientProvider
-        client={
-            new QueryClient({
-                defaultOptions: { queries: { retry: false } },
-            })
-        }
-    >
-        <Provider store={mockStore({})}>
-            <KnowledgeSourceSideBarProvider>
-                {children}
-            </KnowledgeSourceSideBarProvider>
-        </Provider>
-    </QueryClientProvider>
+    <MemoryRouter>
+        <QueryClientProvider
+            client={
+                new QueryClient({
+                    defaultOptions: { queries: { retry: false } },
+                })
+            }
+        >
+            <Provider store={mockStore({})}>
+                <KnowledgeSourceSideBarProvider>
+                    {children}
+                </KnowledgeSourceSideBarProvider>
+            </Provider>
+        </QueryClientProvider>
+    </MemoryRouter>
 )
 
 describe('AiAgentReasoning', () => {
@@ -524,15 +527,17 @@ describe('AiAgentReasoning', () => {
             },
         })
         return render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <KnowledgeSourceSideBarProvider>
-                        <AiAgentReasoning
-                            message={createMockMessage(messageOverrides)}
-                        />
-                    </KnowledgeSourceSideBarProvider>
-                </Provider>
-            </QueryClientProvider>,
+            <MemoryRouter>
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <KnowledgeSourceSideBarProvider>
+                            <AiAgentReasoning
+                                message={createMockMessage(messageOverrides)}
+                            />
+                        </KnowledgeSourceSideBarProvider>
+                    </Provider>
+                </QueryClientProvider>
+            </MemoryRouter>,
         )
     }
 
@@ -650,21 +655,25 @@ describe('AiAgentReasoning', () => {
 
             act(() => {
                 rerender(
-                    <QueryClientProvider
-                        client={
-                            new QueryClient({
-                                defaultOptions: { queries: { retry: false } },
-                            })
-                        }
-                    >
-                        <Provider store={mockStore({})}>
-                            <KnowledgeSourceSideBarProvider>
-                                <AiAgentReasoning
-                                    message={createMockMessage()}
-                                />
-                            </KnowledgeSourceSideBarProvider>
-                        </Provider>
-                    </QueryClientProvider>,
+                    <MemoryRouter>
+                        <QueryClientProvider
+                            client={
+                                new QueryClient({
+                                    defaultOptions: {
+                                        queries: { retry: false },
+                                    },
+                                })
+                            }
+                        >
+                            <Provider store={mockStore({})}>
+                                <KnowledgeSourceSideBarProvider>
+                                    <AiAgentReasoning
+                                        message={createMockMessage()}
+                                    />
+                                </KnowledgeSourceSideBarProvider>
+                            </Provider>
+                        </QueryClientProvider>
+                    </MemoryRouter>,
                 )
             })
 
@@ -1592,21 +1601,25 @@ describe('AiAgentReasoning', () => {
 
             act(() => {
                 rerender(
-                    <QueryClientProvider
-                        client={
-                            new QueryClient({
-                                defaultOptions: { queries: { retry: false } },
-                            })
-                        }
-                    >
-                        <Provider store={mockStore({})}>
-                            <KnowledgeSourceSideBarProvider>
-                                <AiAgentReasoning
-                                    message={createMockMessage()}
-                                />
-                            </KnowledgeSourceSideBarProvider>
-                        </Provider>
-                    </QueryClientProvider>,
+                    <MemoryRouter>
+                        <QueryClientProvider
+                            client={
+                                new QueryClient({
+                                    defaultOptions: {
+                                        queries: { retry: false },
+                                    },
+                                })
+                            }
+                        >
+                            <Provider store={mockStore({})}>
+                                <KnowledgeSourceSideBarProvider>
+                                    <AiAgentReasoning
+                                        message={createMockMessage()}
+                                    />
+                                </KnowledgeSourceSideBarProvider>
+                            </Provider>
+                        </QueryClientProvider>
+                    </MemoryRouter>,
                 )
             })
 
@@ -1881,26 +1894,30 @@ describe('AiAgentReasoning', () => {
 
             act(() => {
                 rerender(
-                    <QueryClientProvider
-                        client={
-                            new QueryClient({
-                                defaultOptions: { queries: { retry: false } },
-                            })
-                        }
-                    >
-                        <Provider store={mockStore({})}>
-                            <KnowledgeSourceSideBarProvider>
-                                <AiAgentReasoning
-                                    message={createMockMessage({
-                                        meta: {
-                                            ai_agent_message_type:
-                                                AiAgentMessageType.HANDOVER_TO_AGENT,
-                                        } as any,
-                                    })}
-                                />
-                            </KnowledgeSourceSideBarProvider>
-                        </Provider>
-                    </QueryClientProvider>,
+                    <MemoryRouter>
+                        <QueryClientProvider
+                            client={
+                                new QueryClient({
+                                    defaultOptions: {
+                                        queries: { retry: false },
+                                    },
+                                })
+                            }
+                        >
+                            <Provider store={mockStore({})}>
+                                <KnowledgeSourceSideBarProvider>
+                                    <AiAgentReasoning
+                                        message={createMockMessage({
+                                            meta: {
+                                                ai_agent_message_type:
+                                                    AiAgentMessageType.HANDOVER_TO_AGENT,
+                                            } as any,
+                                        })}
+                                    />
+                                </KnowledgeSourceSideBarProvider>
+                            </Provider>
+                        </QueryClientProvider>
+                    </MemoryRouter>,
                 )
             })
 
@@ -1944,26 +1961,30 @@ describe('AiAgentReasoning', () => {
 
             act(() => {
                 rerender(
-                    <QueryClientProvider
-                        client={
-                            new QueryClient({
-                                defaultOptions: { queries: { retry: false } },
-                            })
-                        }
-                    >
-                        <Provider store={mockStore({})}>
-                            <KnowledgeSourceSideBarProvider>
-                                <AiAgentReasoning
-                                    message={createMockMessage({
-                                        meta: {
-                                            ai_agent_message_type:
-                                                AiAgentMessageType.HANDOVER_TO_AGENT,
-                                        } as any,
-                                    })}
-                                />
-                            </KnowledgeSourceSideBarProvider>
-                        </Provider>
-                    </QueryClientProvider>,
+                    <MemoryRouter>
+                        <QueryClientProvider
+                            client={
+                                new QueryClient({
+                                    defaultOptions: {
+                                        queries: { retry: false },
+                                    },
+                                })
+                            }
+                        >
+                            <Provider store={mockStore({})}>
+                                <KnowledgeSourceSideBarProvider>
+                                    <AiAgentReasoning
+                                        message={createMockMessage({
+                                            meta: {
+                                                ai_agent_message_type:
+                                                    AiAgentMessageType.HANDOVER_TO_AGENT,
+                                            } as any,
+                                        })}
+                                    />
+                                </KnowledgeSourceSideBarProvider>
+                            </Provider>
+                        </QueryClientProvider>
+                    </MemoryRouter>,
                 )
             })
 

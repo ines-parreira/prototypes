@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
+import { useLocation } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -38,8 +39,13 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const ticket = useAppSelector(getTicketState)
     const account = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector((state) => state.currentUser)
+    const { search } = useLocation()
 
     const isImpersonated = useMemo(() => isSessionImpersonated(), [])
+
+    const searchParams = useMemo(() => new URLSearchParams(search), [search])
+    const shouldDisplayExecutionId =
+        isImpersonated || searchParams.get('showAiAgentExecutionIds') === 'true'
 
     const ticketId: number = ticket.get('id')
     const accountId: number = account.get('id')
@@ -221,7 +227,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
         }
 
         const renderExecutionId = () => {
-            if (!isImpersonated) {
+            if (!shouldDisplayExecutionId) {
                 return null
             }
 

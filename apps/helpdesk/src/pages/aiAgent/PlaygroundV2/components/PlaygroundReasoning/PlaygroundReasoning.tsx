@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
+import { useLocation } from 'react-router-dom'
 
 import { Button } from '@gorgias/axiom'
 
@@ -221,6 +222,7 @@ export const PlaygroundReasoning = ({
 }: PlaygroundReasoning) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const [loadingState, setLoadingState] = useState<LoadingState>('loading')
+    const { search } = useLocation()
 
     const {
         reasoningContent,
@@ -298,7 +300,10 @@ export const PlaygroundReasoning = ({
         })
     }, [onReasoningOpened])
 
-    const shouldDisplayExecutionId = isSessionImpersonated()
+    const searchParams = useMemo(() => new URLSearchParams(search), [search])
+    const shouldDisplayExecutionId =
+        isSessionImpersonated() ||
+        searchParams.get('showAiAgentExecutionIds') === 'true'
 
     return (
         <PlaygroundReasoningStateless
