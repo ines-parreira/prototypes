@@ -106,6 +106,135 @@ describe('useUrlSyncStatus', () => {
         })
     })
 
+    describe('syncStatus priority logic', () => {
+        it('returns PENDING when any URL is pending, even if latestUrlIngestionLog is SUCCESSFUL', () => {
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: {
+                    id: 2,
+                    url: 'https://example2.com',
+                    status: IngestionLogStatus.Successful,
+                    created_datetime: '2024-01-01',
+                    latest_sync: '2024-01-01',
+                },
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example1.com',
+                        status: IngestionLogStatus.Pending,
+                        created_datetime: '2024-01-02',
+                        latest_sync: null,
+                    },
+                    {
+                        id: 2,
+                        url: 'https://example2.com',
+                        status: IngestionLogStatus.Successful,
+                        created_datetime: '2024-01-01',
+                        latest_sync: '2024-01-01',
+                    },
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useUrlSyncStatus(defaultParams),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current.syncStatus).toBe(IngestionLogStatus.Pending)
+        })
+
+        it('returns latestUrlIngestionLog status when no URLs are pending', () => {
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: IngestionLogStatus.Successful,
+                    created_datetime: '2024-01-01',
+                },
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Successful,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useUrlSyncStatus(defaultParams),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current.syncStatus).toBe(
+                IngestionLogStatus.Successful,
+            )
+        })
+
+        it('returns FAILED status when no pending URLs and latestUrlIngestionLog is FAILED', () => {
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: IngestionLogStatus.Failed,
+                    created_datetime: '2024-01-01',
+                },
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Failed,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useUrlSyncStatus(defaultParams),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current.syncStatus).toBe(IngestionLogStatus.Failed)
+        })
+
+        it('returns undefined when urlIngestionLogs is undefined and latestUrlIngestionLog is undefined', () => {
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: undefined,
+                urlIngestionLogs: undefined as any,
+            })
+
+            const { result } = renderHook(
+                () => useUrlSyncStatus(defaultParams),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current.syncStatus).toBeUndefined()
+        })
+
+        it('returns undefined when urlIngestionLogs is empty and latestUrlIngestionLog is undefined', () => {
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: undefined,
+                urlIngestionLogs: [],
+            })
+
+            const { result } = renderHook(
+                () => useUrlSyncStatus(defaultParams),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current.syncStatus).toBeUndefined()
+        })
+    })
+
     describe('syncing URLs calculation', () => {
         it('returns URLs with pending status', () => {
             mockUseSyncUrl.mockReturnValue({
@@ -257,7 +386,7 @@ describe('useUrlSyncStatus', () => {
                 },
             )
 
-            expect(result.current.totalCount).toBe(3)
+            expect(result.current.totalCount).toBe(1)
         })
 
         it('includes all URLs created at or after sync round start', () => {
@@ -303,7 +432,7 @@ describe('useUrlSyncStatus', () => {
                 },
             )
 
-            expect(result.current.totalCount).toBe(4)
+            expect(result.current.totalCount).toBe(3)
         })
 
         it('returns empty array when no pending logs', () => {
@@ -382,9 +511,9 @@ describe('useUrlSyncStatus', () => {
                 },
             )
 
-            expect(result.current.totalCount).toBe(2)
-            expect(result.current.completedCount).toBe(1)
-            expect(result.current.successCount).toBe(1)
+            expect(result.current.totalCount).toBe(4)
+            expect(result.current.completedCount).toBe(3)
+            expect(result.current.successCount).toBe(2)
         })
     })
 
@@ -543,7 +672,14 @@ describe('useUrlSyncStatus', () => {
                     status: IngestionLogStatus.Pending,
                     created_datetime: '2024-01-01',
                 },
-                urlIngestionLogs: [],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Pending,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
             })
 
             const { rerender } = renderHook(
@@ -558,7 +694,14 @@ describe('useUrlSyncStatus', () => {
                     status: IngestionLogStatus.Successful,
                     created_datetime: '2024-01-01',
                 },
-                urlIngestionLogs: [],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Successful,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
             })
 
             rerender()
@@ -578,7 +721,14 @@ describe('useUrlSyncStatus', () => {
                     status: IngestionLogStatus.Pending,
                     created_datetime: '2024-01-01',
                 },
-                urlIngestionLogs: [],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Pending,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
             })
 
             const { rerender } = renderHook(
@@ -593,7 +743,14 @@ describe('useUrlSyncStatus', () => {
                     status: IngestionLogStatus.Failed,
                     created_datetime: '2024-01-01',
                 },
-                urlIngestionLogs: [],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Failed,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
             })
 
             rerender()
@@ -609,7 +766,14 @@ describe('useUrlSyncStatus', () => {
                     status: IngestionLogStatus.Pending,
                     created_datetime: '2024-01-01',
                 },
-                urlIngestionLogs: [],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Pending,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
             })
 
             const { rerender } = renderHook(
@@ -630,7 +794,14 @@ describe('useUrlSyncStatus', () => {
                     status: IngestionLogStatus.Successful,
                     created_datetime: '2024-01-01',
                 },
-                urlIngestionLogs: [],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Successful,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
             })
 
             const { rerender } = renderHook(
@@ -651,7 +822,14 @@ describe('useUrlSyncStatus', () => {
                     status: IngestionLogStatus.Pending,
                     created_datetime: '2024-01-01',
                 },
-                urlIngestionLogs: [],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Pending,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
             })
 
             const { rerender } = renderHook(
@@ -666,7 +844,14 @@ describe('useUrlSyncStatus', () => {
                     status: IngestionLogStatus.Successful,
                     created_datetime: '2024-01-01',
                 },
-                urlIngestionLogs: [],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Successful,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
             })
 
             rerender()

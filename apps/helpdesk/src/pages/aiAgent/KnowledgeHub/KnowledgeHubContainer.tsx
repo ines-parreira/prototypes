@@ -8,6 +8,10 @@ import { Box, Modal, OverlayHeader } from '@gorgias/axiom'
 import { useFlag } from 'core/flags'
 import { useAllResourcesMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
+import {
+    getNextSyncDate,
+    isSyncLessThan24Hours,
+} from 'pages/aiAgent/AiAgentScrapedDomainContent/utils'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
     HELP_CENTER_SELECT_MODAL_OPEN,
@@ -314,9 +318,6 @@ export const KnowledgeHubContainer = () => {
     const { isSyncLessThan24h, nextSyncDate } = useGetLastWebsiteSync(
         storeDomainIngestionLog,
     )
-    const syncTooltipMessage = isSyncLessThan24h
-        ? `Your store website was synced less than 24h ago. You can sync again on ${nextSyncDate}.`
-        : undefined
 
     const handleRefetchTable = useCallback(() => {
         void refetchKnowledgeHubArticles()
@@ -392,6 +393,84 @@ export const KnowledgeHubContainer = () => {
         return syncingUrls.includes(selectedFolder.source)
     }, [selectedFolder, syncingUrls])
 
+    const isUrlSyncLessThan24h = useMemo(() => {
+        if (!selectedFolder || selectedFolder.type !== KnowledgeType.URL) {
+            return false
+        }
+        if (!selectedFolder.source) {
+            return false
+        }
+
+        const urlLog = urlIngestionLogs?.find(
+            (log) => log.url === selectedFolder.source,
+        )
+        return isSyncLessThan24Hours(urlLog?.latest_sync)
+    }, [selectedFolder, urlIngestionLogs])
+
+    const nextUrlSyncDate = useMemo(() => {
+        if (!selectedFolder || selectedFolder.type !== KnowledgeType.URL) {
+            return null
+        }
+        if (!selectedFolder.source) {
+            return null
+        }
+
+        const urlLog = urlIngestionLogs?.find(
+            (log) => log.url === selectedFolder.source,
+        )
+        return getNextSyncDate(urlLog?.latest_sync)
+    }, [selectedFolder, urlIngestionLogs])
+
+    const isSyncButtonDisabled = useMemo(() => {
+        if (selectedFolder?.type === KnowledgeType.Domain) {
+            return isSyncLessThan24h
+        }
+        if (selectedFolder?.type === KnowledgeType.URL) {
+            return isUrlFolderSyncing || isUrlSyncLessThan24h
+        }
+        return isSyncLessThan24h
+    }, [
+        selectedFolder,
+        isSyncLessThan24h,
+        isUrlFolderSyncing,
+        isUrlSyncLessThan24h,
+    ])
+
+    const isDeleteButtonDisabled = useMemo(() => {
+        if (selectedFolder?.type === KnowledgeType.URL) {
+            return isUrlFolderSyncing
+        }
+        return false
+    }, [selectedFolder, isUrlFolderSyncing])
+
+    const syncTooltipMessage = useMemo(() => {
+        if (
+            selectedFolder?.type === KnowledgeType.Domain &&
+            isSyncLessThan24h
+        ) {
+            return `Your store website was synced less than 24h ago. You can sync again on ${nextSyncDate}.`
+        }
+        if (selectedFolder?.type === KnowledgeType.URL) {
+            if (isUrlFolderSyncing) {
+                return 'This URL is currently syncing.'
+            }
+            if (isUrlSyncLessThan24h && nextUrlSyncDate) {
+                return `This URL was synced less than 24h ago. You can sync again on ${nextUrlSyncDate}.`
+            }
+        }
+        if (isSyncLessThan24h) {
+            return `Your store website was synced less than 24h ago. You can sync again on ${nextSyncDate}.`
+        }
+        return undefined
+    }, [
+        selectedFolder,
+        isSyncLessThan24h,
+        nextSyncDate,
+        isUrlFolderSyncing,
+        isUrlSyncLessThan24h,
+        nextUrlSyncDate,
+    ])
+
     const handleTemplateSelect = useCallback(
         (template?: GuidanceTemplate) => {
             setIsAddKnowledgeModalOpen(false)
@@ -415,7 +494,8 @@ export const KnowledgeHubContainer = () => {
                     onTest={handleOpenPlayground}
                     onSync={onSync}
                     onDelete={onUrlDelete}
-                    isSyncButtonDisabled={isSyncLessThan24h}
+                    isSyncButtonDisabled={isSyncButtonDisabled}
+                    isDeleteButtonDisabled={isDeleteButtonDisabled}
                     syncTooltipMessage={syncTooltipMessage}
                 />
                 <SyncStoreDomainBanner

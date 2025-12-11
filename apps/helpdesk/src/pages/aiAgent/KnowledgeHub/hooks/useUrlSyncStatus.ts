@@ -30,7 +30,17 @@ export const useUrlSyncStatus = ({
         storeUrl,
     })
 
-    const syncStatus = latestUrlIngestionLog?.status
+    const syncStatus = useMemo(() => {
+        if (
+            urlIngestionLogs?.some(
+                (log) => log.status === IngestionLogStatus.Pending,
+            )
+        ) {
+            return IngestionLogStatus.Pending
+        }
+
+        return latestUrlIngestionLog?.status
+    }, [urlIngestionLogs, latestUrlIngestionLog?.status])
 
     const syncingUrls = useMemo(() => {
         return (
@@ -51,8 +61,10 @@ export const useUrlSyncStatus = ({
         if (pendingLogs.length === 0) return []
 
         const timestamps = pendingLogs
-            .filter((log) => log.latest_sync)
-            .map((log) => new Date(log.latest_sync!).getTime())
+            .filter((log) => log.latest_sync || log.created_datetime)
+            .map((log) =>
+                new Date(log.latest_sync || log.created_datetime).getTime(),
+            )
         const syncRoundStartTime = Math.min(...timestamps)
 
         if (!Number.isFinite(syncRoundStartTime)) {
@@ -60,8 +72,10 @@ export const useUrlSyncStatus = ({
         }
 
         return urlIngestionLogs.filter((log) => {
-            if (!log.latest_sync) return false
-            const createdTime = new Date(log.latest_sync).getTime()
+            if (!log.latest_sync && !log.created_datetime) return false
+            const createdTime = new Date(
+                log.latest_sync || log.created_datetime,
+            ).getTime()
             return createdTime >= syncRoundStartTime
         })
     }, [urlIngestionLogs])

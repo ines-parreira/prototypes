@@ -21,9 +21,11 @@ import {
     REFETCH_KNOWLEDGE_HUB_TABLE,
 } from 'pages/aiAgent/KnowledgeHub/constants'
 import { dispatchDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
+import { useGetLastWebsiteSync } from 'pages/aiAgent/KnowledgeHub/hooks/useGetLastWebsiteSync'
 import { useKnowledgeHubFaqEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor'
 import { useKnowledgeHubGuidanceEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor'
 import { useKnowledgeHubSnippetEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubSnippetEditor'
+import { useUrlSyncStatus } from 'pages/aiAgent/KnowledgeHub/hooks/useUrlSyncStatus'
 import { KnowledgeHubContainer } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubContainer'
 import {
     KnowledgeType,
@@ -97,6 +99,39 @@ jest.mock('pages/aiAgent/hooks/useGetStoreDomainIngestionLog', () => ({
         status: null,
         storeDomainIngestionLog: undefined,
         isGetIngestionLogsLoading: false,
+    })),
+}))
+jest.mock('pages/aiAgent/KnowledgeHub/hooks/useDomainSyncStatus', () => ({
+    useDomainSyncStatus: jest.fn(() => ({
+        syncStatus: null,
+        storeDomainIngestionLog: undefined,
+    })),
+}))
+jest.mock('pages/aiAgent/KnowledgeHub/hooks/useUrlSyncStatus', () => ({
+    useUrlSyncStatus: jest.fn(() => ({
+        syncStatus: null,
+        syncingUrls: [],
+        urlIngestionLogs: [],
+        totalCount: 0,
+        completedCount: 0,
+        successCount: 0,
+        pendingCount: 0,
+    })),
+}))
+jest.mock('pages/aiAgent/KnowledgeHub/hooks/useFileIngestionStatus', () => ({
+    useFileIngestionStatus: jest.fn(() => ({
+        fileIngestionStatus: null,
+        fileIngestionLogs: [],
+        totalCount: 0,
+        completedCount: 0,
+        successCount: 0,
+        pendingCount: 0,
+    })),
+}))
+jest.mock('pages/aiAgent/KnowledgeHub/hooks/useGetLastWebsiteSync', () => ({
+    useGetLastWebsiteSync: jest.fn(() => ({
+        isSyncLessThan24h: false,
+        nextSyncDate: null,
     })),
 }))
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor')
@@ -213,12 +248,32 @@ jest.mock(
             onSync,
             onDelete,
             data,
+            isSyncButtonDisabled,
+            isDeleteButtonDisabled,
+            syncTooltipMessage,
         }: any) => (
             <div>
                 <button onClick={onAddKnowledge}>Add Knowledge</button>
                 {data && <button onClick={onBack}>Back</button>}
-                {data && <button onClick={onSync}>Sync</button>}
-                {data && <button onClick={onDelete}>Delete</button>}
+                {data && (
+                    <button
+                        onClick={onSync}
+                        disabled={isSyncButtonDisabled}
+                        title={syncTooltipMessage}
+                        data-testid="sync-button"
+                    >
+                        Sync
+                    </button>
+                )}
+                {data && (
+                    <button
+                        onClick={onDelete}
+                        disabled={isDeleteButtonDisabled}
+                        data-testid="delete-button"
+                    >
+                        Delete
+                    </button>
+                )}
             </div>
         ),
     }),
@@ -275,6 +330,8 @@ const mockUseAllResourcesMetrics = useAllResourcesMetrics as jest.Mock
 const mockUseStoreIntegrationByShopName =
     useStoreIntegrationByShopName as jest.Mock
 const mockUseFlag = useFlag as jest.Mock
+const mockUseUrlSyncStatus = useUrlSyncStatus as jest.Mock
+const mockUseGetLastWebsiteSync = useGetLastWebsiteSync as jest.Mock
 
 describe('KnowledgeHubContainer', () => {
     const mockShopifyIntegrations = [
@@ -461,6 +518,11 @@ describe('KnowledgeHubContainer', () => {
             isLoading: false,
             isError: false,
             data: [],
+        })
+
+        mockUseGetLastWebsiteSync.mockReturnValue({
+            isSyncLessThan24h: false,
+            nextSyncDate: null,
         })
     })
 
@@ -988,6 +1050,238 @@ describe('KnowledgeHubContainer', () => {
 
             mockDispatchEvent.mockRestore()
         })
+
+        it('disables sync button when URL is currently syncing', async () => {
+            const user = userEvent.setup()
+
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: 'PENDING',
+                syncingUrls: ['https://example.com'],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: 'PENDING',
+                        latest_sync: '2024-01-15T10:00:00Z',
+                    },
+                ],
+                totalCount: 1,
+                completedCount: 0,
+                successCount: 0,
+                pendingCount: 1,
+            })
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Test URL',
+                            type: KnowledgeType.URL,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'https://example.com',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Test URL')))
+
+            await waitFor(() => {
+                const syncButton = screen.getByTestId('sync-button')
+                expect(syncButton).toBeDisabled()
+                expect(syncButton).toHaveAttribute(
+                    'title',
+                    'This URL is currently syncing.',
+                )
+            })
+        })
+
+        it('disables sync button when URL was synced less than 24 hours ago', async () => {
+            const user = userEvent.setup()
+            const now = new Date()
+            const recentSync = new Date(now.getTime() - 12 * 60 * 60 * 1000) // 12 hours ago
+
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: 'SUCCESSFUL',
+                syncingUrls: [],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: 'SUCCESSFUL',
+                        latest_sync: recentSync.toISOString(),
+                    },
+                ],
+                totalCount: 1,
+                completedCount: 1,
+                successCount: 1,
+                pendingCount: 0,
+            })
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Test URL',
+                            type: KnowledgeType.URL,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'https://example.com',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Test URL')))
+
+            await waitFor(() => {
+                const syncButton = screen.getByTestId('sync-button')
+                expect(syncButton).toBeDisabled()
+                expect(syncButton.getAttribute('title')).toContain(
+                    'This URL was synced less than 24h ago',
+                )
+            })
+        })
+
+        it('enables sync button when URL was synced more than 24 hours ago', async () => {
+            const user = userEvent.setup()
+            const now = new Date()
+            const oldSync = new Date(now.getTime() - 25 * 60 * 60 * 1000) // 25 hours ago
+
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: 'SUCCESSFUL',
+                syncingUrls: [],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: 'SUCCESSFUL',
+                        latest_sync: oldSync.toISOString(),
+                    },
+                ],
+                totalCount: 1,
+                completedCount: 1,
+                successCount: 1,
+                pendingCount: 0,
+            })
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Test URL',
+                            type: KnowledgeType.URL,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'https://example.com',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Test URL')))
+
+            await waitFor(() => {
+                const syncButton = screen.getByTestId('sync-button')
+                expect(syncButton).not.toBeDisabled()
+            })
+        })
+
+        it('disables sync button for Domain folder when synced less than 24 hours ago', async () => {
+            const user = userEvent.setup()
+            const nextSync = 'Jan 16, 2024 10:00 AM'
+
+            mockUseGetLastWebsiteSync.mockReturnValue({
+                isSyncLessThan24h: true,
+                nextSyncDate: nextSync,
+            })
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Store Website',
+                            type: KnowledgeType.Domain,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'https://store.example.com',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Store Website')))
+
+            await waitFor(() => {
+                const syncButton = screen.getByTestId('sync-button')
+                expect(syncButton).toBeDisabled()
+                expect(syncButton).toHaveAttribute(
+                    'title',
+                    `Your store website was synced less than 24h ago. You can sync again on ${nextSync}.`,
+                )
+            })
+        })
+
+        it('shows fallback tooltip message when domain synced recently but non-Domain/URL folder selected', async () => {
+            const user = userEvent.setup()
+            const nextSync = 'Jan 16, 2024 10:00 AM'
+
+            mockUseGetLastWebsiteSync.mockReturnValue({
+                isSyncLessThan24h: true,
+                nextSyncDate: nextSync,
+            })
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Test Document',
+                            type: KnowledgeType.Document,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'document.pdf',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Test Document')))
+
+            await waitFor(() => {
+                const syncButton = screen.getByTestId('sync-button')
+                expect(syncButton).toBeDisabled()
+                expect(syncButton).toHaveAttribute(
+                    'title',
+                    `Your store website was synced less than 24h ago. You can sync again on ${nextSync}.`,
+                )
+            })
+        })
     })
 
     describe('delete functionality', () => {
@@ -1025,6 +1319,100 @@ describe('KnowledgeHubContainer', () => {
             expect(mockDispatchEvent).toHaveBeenCalled()
 
             mockDispatchEvent.mockRestore()
+        })
+
+        it('disables delete button when URL is currently syncing', async () => {
+            const user = userEvent.setup()
+
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: 'PENDING',
+                syncingUrls: ['https://example.com'],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: 'PENDING',
+                        latest_sync: '2024-01-15T10:00:00Z',
+                    },
+                ],
+                totalCount: 1,
+                completedCount: 0,
+                successCount: 0,
+                pendingCount: 1,
+            })
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Test URL',
+                            type: KnowledgeType.URL,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'https://example.com',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Test URL')))
+
+            await waitFor(() => {
+                const deleteButton = screen.getByTestId('delete-button')
+                expect(deleteButton).toBeDisabled()
+            })
+        })
+
+        it('enables delete button when URL is not syncing', async () => {
+            const user = userEvent.setup()
+
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: 'SUCCESSFUL',
+                syncingUrls: [],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: 'SUCCESSFUL',
+                        latest_sync: '2024-01-15T10:00:00Z',
+                    },
+                ],
+                totalCount: 1,
+                completedCount: 1,
+                successCount: 1,
+                pendingCount: 0,
+            })
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Test URL',
+                            type: KnowledgeType.URL,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'https://example.com',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Test URL')))
+
+            await waitFor(() => {
+                const deleteButton = screen.getByTestId('delete-button')
+                expect(deleteButton).not.toBeDisabled()
+            })
         })
 
         it('does not open delete modal when folder is not URL type', async () => {

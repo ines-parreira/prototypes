@@ -63,17 +63,25 @@ export const SyncUrlModal = ({
         return existingUrls.filter((existingUrl) => existingUrl !== originalUrl)
     }, [existingUrls, originalUrl])
 
-    const { syncUrl, validateUrl, latestUrlIngestionLog } = useSyncUrl({
+    const { syncUrl, validateUrl, urlIngestionLogs } = useSyncUrl({
         helpCenterId,
         existingUrls: filteredExistingUrls,
         helpCenterCustomDomains,
         storeUrl,
     })
 
+    // Find the ingestion log for the specific URL being synced
+    // This ensures we check the 24h constraint for THIS URL, not all URLs
+    const urlToCheck = originalUrl || url
+    const specificUrlIngestionLog = useMemo(() => {
+        if (!urlToCheck || !urlIngestionLogs?.length) return undefined
+        return urlIngestionLogs.find((log) => log.url === urlToCheck)
+    }, [urlToCheck, urlIngestionLogs])
+
     const isSyncLessThan24h = isSyncLessThan24Hours(
-        latestUrlIngestionLog?.latest_sync,
+        specificUrlIngestionLog?.latest_sync,
     )
-    const nextSyncDate = getNextSyncDate(latestUrlIngestionLog?.latest_sync)
+    const nextSyncDate = getNextSyncDate(specificUrlIngestionLog?.latest_sync)
     const syncButtonId = 'sync-url-modal-button'
 
     const { resetBanner } = useIngestionDomainBannerDismissed({
