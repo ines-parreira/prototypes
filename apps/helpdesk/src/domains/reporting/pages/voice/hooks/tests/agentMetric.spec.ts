@@ -21,6 +21,10 @@ import {
     declinedVoiceCallsCountQueryFactory,
     transferredInboundVoiceCallsCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
+import {
+    declinedVoiceCallsCountQueryV2Factory,
+    transferredInboundVoiceCallsCountQueryV2Factory,
+} from 'domains/reporting/models/scopes/voiceAgentEvents'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchAnsweredCallsMetric,
@@ -224,6 +228,10 @@ describe('metricsPerDimension', () => {
                     ],
                     timezone: userTimezone,
                 },
+                declinedVoiceCallsCountQueryV2Factory({
+                    filters: statsFilters,
+                    timezone: userTimezone,
+                }),
             ])
         })
 
@@ -261,6 +269,10 @@ describe('metricsPerDimension', () => {
                     ],
                     timezone: userTimezone,
                 },
+                transferredInboundVoiceCallsCountQueryV2Factory({
+                    filters: statsFilters,
+                    timezone: userTimezone,
+                }),
             ])
         })
 
@@ -344,6 +356,7 @@ describe('metricsPerDimension', () => {
             {
                 fetch: fetchDeclinedCallsMetric,
                 queryFactory: declinedVoiceCallsCountQueryFactory,
+                queryFactoryV2: declinedVoiceCallsCountQueryV2Factory,
                 segment: undefined,
                 filter: ignoreDeclinedWithNoAgentsFilter,
                 metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT,
@@ -351,29 +364,49 @@ describe('metricsPerDimension', () => {
             {
                 fetch: fetchTransferredInboundCallsMetric,
                 queryFactory: transferredInboundVoiceCallsCountQueryFactory,
+                queryFactoryV2: transferredInboundVoiceCallsCountQueryV2Factory,
                 segment: undefined,
                 filter: ignoreDeclinedWithNoAgentsFilter,
             },
         ])(
             'should use $fetch and $segment',
-            async ({ fetch, queryFactory, segment, filter, metricName }) => {
+            async ({
+                fetch,
+                queryFactory,
+                queryFactoryV2,
+                segment,
+                filter,
+                metricName,
+            }) => {
                 await fetch(statsFilters, userTimezone)
 
-                expect(fetchMetricMock).toHaveBeenCalledWith(
-                    withFilter(
-                        queryFactory === voiceCallCountQueryFactory
-                            ? queryFactory(
-                                  statsFilters,
-                                  userTimezone,
-                                  segment,
-                                  undefined,
-                                  undefined,
-                                  metricName,
-                              )
-                            : queryFactory(statsFilters, userTimezone, segment),
-                        filter,
-                    ),
+                const expectedQueryV1 = withFilter(
+                    queryFactory === voiceCallCountQueryFactory
+                        ? queryFactory(
+                              statsFilters,
+                              userTimezone,
+                              segment,
+                              undefined,
+                              undefined,
+                              metricName,
+                          )
+                        : queryFactory(statsFilters, userTimezone, segment),
+                    filter,
                 )
+
+                if (queryFactoryV2) {
+                    expect(fetchMetricMock).toHaveBeenCalledWith(
+                        expectedQueryV1,
+                        queryFactoryV2?.({
+                            filters: statsFilters,
+                            timezone: userTimezone,
+                        }),
+                    )
+                } else {
+                    expect(fetchMetricMock).toHaveBeenCalledWith(
+                        expectedQueryV1,
+                    )
+                }
             },
         )
 

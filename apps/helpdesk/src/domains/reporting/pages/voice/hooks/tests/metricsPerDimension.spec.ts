@@ -3,7 +3,9 @@ import moment from 'moment/moment'
 
 import {
     fetchMetricPerDimension,
+    fetchMetricPerDimensionV2,
     useMetricPerDimension,
+    useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import {
@@ -14,6 +16,10 @@ import {
     declinedVoiceCallsCountPerAgentQueryFactory,
     transferredInboundVoiceCallsCountPerAgentQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
+import {
+    declinedVoiceCallsCountPerAgentQueryV2Factory,
+    transferredInboundVoiceCallsCountPerAgentQueryV2Factory,
+} from 'domains/reporting/models/scopes/voiceAgentEvents'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchAnsweredCallsMetricPerAgent,
@@ -36,7 +42,9 @@ import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
 const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
+const fetchMetricPerDimensionV2Mock = assumeMock(fetchMetricPerDimensionV2)
 
 describe('metricsPerDimension', () => {
     const statsFilters: StatsFilters = {
@@ -165,12 +173,17 @@ describe('metricsPerDimension', () => {
                 ),
             )
 
-            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+            expect(useMetricPerDimensionV2Mock.mock.calls[0]).toEqual([
                 declinedVoiceCallsCountPerAgentQueryFactory(
                     statsFilters,
                     userTimezone,
                     sorting,
                 ),
+                declinedVoiceCallsCountPerAgentQueryV2Factory({
+                    filters: statsFilters,
+                    timezone: userTimezone,
+                    sortDirection: sorting,
+                }),
                 agentId,
             ])
         })
@@ -185,12 +198,17 @@ describe('metricsPerDimension', () => {
                 ),
             )
 
-            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+            expect(useMetricPerDimensionV2Mock.mock.calls[0]).toEqual([
                 transferredInboundVoiceCallsCountPerAgentQueryFactory(
                     statsFilters,
                     userTimezone,
                     sorting,
                 ),
+                transferredInboundVoiceCallsCountPerAgentQueryV2Factory({
+                    filters: statsFilters,
+                    timezone: userTimezone,
+                    sortDirection: sorting,
+                }),
                 agentId,
             ])
         })
@@ -236,18 +254,29 @@ describe('metricsPerDimension', () => {
             {
                 fetch: fetchDeclinedCallsMetricPerAgent,
                 query: declinedVoiceCallsCountPerAgentQueryFactory,
+                queryV2: declinedVoiceCallsCountPerAgentQueryV2Factory,
             },
             {
                 fetch: fetchTransferredInboundCallsMetricPerAgent,
                 query: transferredInboundVoiceCallsCountPerAgentQueryFactory,
+                queryV2:
+                    transferredInboundVoiceCallsCountPerAgentQueryV2Factory,
             },
-        ])('should use query', async ({ fetch, query }) => {
+        ])('should use query', async ({ fetch, query, queryV2 }) => {
             await fetch(statsFilters, userTimezone, agentId)
 
-            expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
-                query(statsFilters, userTimezone),
-                agentId,
-            )
+            if (queryV2) {
+                expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
+                    query(statsFilters, userTimezone),
+                    queryV2({ filters: statsFilters, timezone: userTimezone }),
+                    agentId,
+                )
+            } else {
+                expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
+                    query(statsFilters, userTimezone),
+                    agentId,
+                )
+            }
         })
     })
 })

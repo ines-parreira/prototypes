@@ -14,6 +14,10 @@ import {
     declinedVoiceCallsCountQueryFactory,
     transferredInboundVoiceCallsCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
+import {
+    declinedVoiceCallsCountQueryV2Factory,
+    transferredInboundVoiceCallsCountQueryV2Factory,
+} from 'domains/reporting/models/scopes/voiceAgentEvents'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingFilter } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
@@ -181,6 +185,10 @@ export const useDeclinedCallsMetric = (
             declinedVoiceCallsCountQueryFactory(statsFilters, timezone),
             ignoreDeclinedWithNoAgentsFilter,
         ),
+        declinedVoiceCallsCountQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 
 export const fetchDeclinedCallsMetric = (
@@ -192,6 +200,10 @@ export const fetchDeclinedCallsMetric = (
             declinedVoiceCallsCountQueryFactory(statsFilters, timezone),
             ignoreDeclinedWithNoAgentsFilter,
         ),
+        declinedVoiceCallsCountQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 // P2/P3
 export const useAverageTalkTimeMetric = (
@@ -233,6 +245,10 @@ export const useTransferredInboundCallsMetric = (
             ),
             ignoreDeclinedWithNoAgentsFilter,
         ),
+        transferredInboundVoiceCallsCountQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 
 export const fetchTransferredInboundCallsMetric = (
@@ -247,4 +263,8 @@ export const fetchTransferredInboundCallsMetric = (
             ),
             ignoreDeclinedWithNoAgentsFilter,
         ),
+        transferredInboundVoiceCallsCountQueryV2Factory({
+            filters: statsFilters,
+            timezone,
+        }),
     )

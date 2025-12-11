@@ -501,6 +501,7 @@ export enum MetricScope {
     AutomationRate = 'automation-rate',
     TicketFields = 'ticket-fields',
     AutomatedInteractions = 'automated-interactions',
+    VoiceAgentEvents = 'voice-agent-events',
     VoiceCalls = 'voice-calls',
     Tags = 'tags',
     ResponseTime = 'response-time',
@@ -622,6 +623,12 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.AutomatedInteractions]: [
         METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
         METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS,
+    ],
+    [MetricScope.VoiceAgentEvents]: [
+        METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT,
+        METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT_PER_AGENT,
+        METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_COUNT,
+        METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_COUNT_PER_AGENT,
     ],
     [MetricScope.VoiceCalls]: [
         // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4835/implement-the-voice-calls-v2-metric

@@ -28,6 +28,7 @@ export const P2_SCOPES: MetricScope[] = [
     MetricScope.MessagesReceived,
     MetricScope.HumanFirstResponseTime,
     MetricScope.TicketServiceLevelAgreement,
+    MetricScope.VoiceAgentEvents,
     MetricScope.WorkloadTickets,
     MetricScope.ResponseTime,
     MetricScope.Tags,

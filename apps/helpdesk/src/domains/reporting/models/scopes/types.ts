@@ -93,6 +93,7 @@ export type MeasureName =
     | 'averageEfficiencyScore'
     | 'averageInternalComplianceScore'
     | 'averageBrandVoiceScore'
+    | 'voiceCallsCount'
 
 export type TimeDimensionName =
     | 'createdDatetime'
@@ -135,6 +136,8 @@ export type StringFilterName =
     | 'slaPolicyUuid'
     | 'resourceSourceId'
     | 'resourceSourceSetId'
+    | 'transferredCalls'
+    | 'declinedCalls'
 
 export type NumberFilterName =
     | 'agentId'
