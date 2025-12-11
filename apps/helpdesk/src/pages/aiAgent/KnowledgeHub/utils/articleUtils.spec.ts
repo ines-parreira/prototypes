@@ -1,0 +1,150 @@
+import { GetArticleVersionStatus } from '@gorgias/help-center-types'
+
+import type { FilteredKnowledgeHubArticle } from '../types'
+import { getVersionStatus, isDraft } from './articleUtils'
+
+describe('articleUtils', () => {
+    describe('isDraft', () => {
+        it('should return false when article is undefined', () => {
+            const result = isDraft(undefined)
+
+            expect(result).toBe(false)
+        })
+
+        it('should return true when article has no publishedVersionId', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                draftVersionId: 1,
+            }
+
+            const result = isDraft(article)
+
+            expect(result).toBe(true)
+        })
+
+        it('should return true when article has only publishedVersionId undefined', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                draftVersionId: 2,
+                publishedVersionId: undefined,
+            }
+
+            const result = isDraft(article)
+
+            expect(result).toBe(true)
+        })
+
+        it('should return false when draftVersionId equals publishedVersionId', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                draftVersionId: 1,
+                publishedVersionId: 1,
+            }
+
+            const result = isDraft(article)
+
+            expect(result).toBe(false)
+        })
+
+        it('should return true when draftVersionId differs from publishedVersionId', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                draftVersionId: 2,
+                publishedVersionId: 1,
+            }
+
+            const result = isDraft(article)
+
+            expect(result).toBe(true)
+        })
+
+        it('should return true when draftVersionId is greater than publishedVersionId', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                draftVersionId: 5,
+                publishedVersionId: 3,
+            }
+
+            const result = isDraft(article)
+
+            expect(result).toBe(true)
+        })
+    })
+
+    describe('getVersionStatus', () => {
+        it('should return Current when article is undefined', () => {
+            const result = getVersionStatus(undefined)
+
+            expect(result).toBe(GetArticleVersionStatus.Current)
+        })
+
+        it('should return LatestDraft when article has never been published', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                draftVersionId: 1,
+            }
+
+            const result = getVersionStatus(article)
+
+            expect(result).toBe(GetArticleVersionStatus.LatestDraft)
+        })
+
+        it('should return Current when article is published with no draft changes', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                draftVersionId: 1,
+                publishedVersionId: 1,
+            }
+
+            const result = getVersionStatus(article)
+
+            expect(result).toBe(GetArticleVersionStatus.Current)
+        })
+
+        it('should return LatestDraft when article has unpublished draft changes', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                draftVersionId: 2,
+                publishedVersionId: 1,
+            }
+
+            const result = getVersionStatus(article)
+
+            expect(result).toBe(GetArticleVersionStatus.LatestDraft)
+        })
+
+        it('should return LatestDraft when draft version is significantly ahead', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                draftVersionId: 10,
+                publishedVersionId: 5,
+            }
+
+            const result = getVersionStatus(article)
+
+            expect(result).toBe(GetArticleVersionStatus.LatestDraft)
+        })
+
+        it('should return LatestDraft when article has only draftVersionId', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                draftVersionId: 1,
+                publishedVersionId: undefined,
+            }
+
+            const result = getVersionStatus(article)
+
+            expect(result).toBe(GetArticleVersionStatus.LatestDraft)
+        })
+    })
+})

@@ -2,12 +2,14 @@ import { useCallback } from 'react'
 
 import { useHistory, useLocation } from 'react-router-dom'
 
+import type { FilteredKnowledgeHubArticle } from '../types'
+import { getVersionStatus } from '../utils/articleUtils'
 import { updateArticleIdInUrl } from './navigationUtils'
 import { useKnowledgeHubEditor } from './useKnowledgeHubEditor'
 
 type UseKnowledgeHubFaqEditorParams = {
     shopName: string
-    filteredFaqArticles: Array<{ id: number; title: string }>
+    filteredFaqArticles: Array<FilteredKnowledgeHubArticle>
 }
 
 export const useKnowledgeHubFaqEditor = ({
@@ -23,6 +25,14 @@ export const useKnowledgeHubFaqEditor = ({
         filteredArticles: filteredFaqArticles,
     })
 
+    const openEditorForEdit = useCallback(
+        (articleId: number) => {
+            const article = filteredFaqArticles.find((a) => a.id === articleId)
+            const versionStatus = getVersionStatus(article)
+            editor.openEditorForEdit(articleId, versionStatus)
+        },
+        [editor, filteredFaqArticles],
+    )
     const handleClickPrevious = useCallback(() => {
         if (editor.hasPrevious && filteredFaqArticles.length > 0) {
             const currentIndex = filteredFaqArticles.findIndex(
@@ -63,7 +73,7 @@ export const useKnowledgeHubFaqEditor = ({
         faqArticleMode: editor.faqArticleMode,
         initialArticleMode: editor.initialArticleMode,
         openEditorForCreate: editor.openEditorForCreate,
-        openEditorForEdit: editor.openEditorForEdit,
+        openEditorForEdit: openEditorForEdit,
         closeEditor: editor.closeEditor,
         handleCreate: editor.handleCreate,
         handleUpdate: editor.handleUpdate,
@@ -72,5 +82,6 @@ export const useKnowledgeHubFaqEditor = ({
         hasNext: editor.hasNext,
         handleClickPrevious,
         handleClickNext,
+        versionStatus: editor.versionStatus,
     }
 }

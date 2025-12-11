@@ -5,7 +5,7 @@ import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixture
 import { useKnowledgeEditorHelpCenterArticleDetails } from './useKnowledgeEditorHelpCenterArticleDetails'
 
 describe('useKnowledgeEditorHelpCenterArticleDetails', () => {
-    it('returns article details', () => {
+    it('returns article details with version IDs', () => {
         const { result } = renderHook(() =>
             useKnowledgeEditorHelpCenterArticleDetails({
                 article: {
@@ -15,6 +15,8 @@ describe('useKnowledgeEditorHelpCenterArticleDetails', () => {
                     slug: 'test-slug',
                     articleId: 1,
                     unlistedId: 'test-unlisted-id',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
                 },
                 locale: 'en-US',
                 helpCenter: getHelpCentersResponseFixture.data[0],
@@ -22,7 +24,12 @@ describe('useKnowledgeEditorHelpCenterArticleDetails', () => {
         )
 
         expect(result.current).toEqual({
-            isPublished: true,
+            article: {
+                id: 1,
+                title: '',
+                draftVersionId: 100,
+                publishedVersionId: 100,
+            },
             createdDatetime: new Date('2024-01-01T00:00:00Z'),
             lastUpdatedDatetime: new Date('2024-01-01T00:00:00Z'),
             articleUrl: 'http://acme.gorgias.docker:4000/en-US/test-slug-1',
@@ -38,6 +45,8 @@ describe('useKnowledgeEditorHelpCenterArticleDetails', () => {
                     lastUpdatedDatetime: '2024-01-01T00:00:00Z',
                     articleId: 1,
                     unlistedId: 'test-unlisted-id',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
                 },
                 locale: 'en-US',
                 helpCenter: getHelpCentersResponseFixture.data[0],
@@ -45,7 +54,12 @@ describe('useKnowledgeEditorHelpCenterArticleDetails', () => {
         )
 
         expect(result.current).toEqual({
-            isPublished: true,
+            article: {
+                id: 1,
+                title: '',
+                draftVersionId: 100,
+                publishedVersionId: 100,
+            },
             createdDatetime: new Date('2024-01-01T00:00:00Z'),
             lastUpdatedDatetime: new Date('2024-01-01T00:00:00Z'),
             articleUrl: undefined,
@@ -61,7 +75,7 @@ describe('useKnowledgeEditorHelpCenterArticleDetails', () => {
         )
 
         expect(result.current).toEqual({
-            isPublished: undefined,
+            article: undefined,
             createdDatetime: undefined,
             lastUpdatedDatetime: undefined,
             articleUrl: undefined,

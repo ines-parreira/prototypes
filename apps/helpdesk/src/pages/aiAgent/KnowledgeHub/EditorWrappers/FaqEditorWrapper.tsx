@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
+
 import {
     useGetHelpCenter,
     useGetHelpCenterCategoryTree,
@@ -20,11 +22,12 @@ type FaqEditorWrapperProps = {
     faqArticleMode: 'new' | 'existing'
     initialArticleMode: InitialArticleMode
     onClose: () => void
-    onCreate: () => void
+    onCreate: (createdArticle?: { id: number }) => void
     onUpdate: () => void
     onDelete: () => void
     onClickPrevious: () => void
     onClickNext: () => void
+    versionStatus?: GetArticleVersionStatus
 }
 
 export const FaqEditorWrapper = ({
@@ -39,6 +42,7 @@ export const FaqEditorWrapper = ({
     onDelete,
     onClickPrevious,
     onClickNext,
+    versionStatus,
 }: FaqEditorWrapperProps) => {
     const { data: faqHelpCenter } = useGetHelpCenter(
         faqHelpCenterId,
@@ -108,6 +112,7 @@ export const FaqEditorWrapper = ({
                                   initialArticleMode,
                                   onUpdated: onUpdate,
                                   onDeleted: onDelete,
+                                  versionStatus,
                               }
                     }
                 />

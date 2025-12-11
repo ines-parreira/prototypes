@@ -9,7 +9,11 @@ import {
 } from '@gorgias/axiom'
 
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
-import { KnowledgeVisibility } from 'pages/aiAgent/KnowledgeHub/types'
+import {
+    KnowledgeType,
+    KnowledgeVisibility,
+} from 'pages/aiAgent/KnowledgeHub/types'
+import { isDraft } from 'pages/aiAgent/KnowledgeHub/utils/articleUtils'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { TitleCell } from './TitleCell'
@@ -52,9 +56,7 @@ export const getColumns = (
             'In use by AI Agent',
             (info) => {
                 const isGrouped = info.row.original.isGrouped
-                const visibility = info.getValue() as
-                    | KnowledgeVisibility
-                    | undefined
+                const row = info.row.original
 
                 if (isGrouped) {
                     return (
@@ -64,11 +66,28 @@ export const getColumns = (
                     )
                 }
 
-                const isPublic = visibility === KnowledgeVisibility.PUBLIC
+                // For FAQ (Help Center articles), use isDraft to determine status
+                // Articles are in use by AI only when published (not draft)
+                let isInUse: boolean
+                if (row.type === KnowledgeType.FAQ) {
+                    const article = {
+                        id: Number(row.id),
+                        title: row.title,
+                        draftVersionId: row.draftVersionId,
+                        publishedVersionId: row.publishedVersionId,
+                    }
+                    isInUse = !isDraft(article)
+                } else {
+                    // For other types, use visibility status
+                    const visibility = info.getValue() as
+                        | KnowledgeVisibility
+                        | undefined
+                    isInUse = visibility === KnowledgeVisibility.PUBLIC
+                }
 
                 return (
                     <Box alignItems="center" justifyContent="flex-start">
-                        {isPublic ? (
+                        {isInUse ? (
                             <Icon name="check" size="md" color={Color.Green} />
                         ) : (
                             <Icon name="close" size="md" color={Color.Grey} />

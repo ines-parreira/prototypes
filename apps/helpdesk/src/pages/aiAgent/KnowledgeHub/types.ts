@@ -2,7 +2,7 @@ import type { History } from 'history'
 
 import type { IconName } from '@gorgias/axiom'
 
-import type { LocaleCode } from 'models/helpCenter/types'
+import type { KnowledgeHubArticle, LocaleCode } from 'models/helpCenter/types'
 
 export enum KnowledgeType {
     Document = 'document',
@@ -27,6 +27,8 @@ export type KnowledgeItem = {
     localeCode?: LocaleCode
     actionsCount?: number
     content?: string
+    draftVersionId?: number | null
+    publishedVersionId?: number | null
 }
 
 export type GroupedKnowledgeItem = KnowledgeItem & {
@@ -90,23 +92,40 @@ export const mapSnippetTypeToKnowledgeType = (
 export type EditorType = 'guidance' | 'faq' | 'snippet'
 export type EditorMode = 'create' | 'read' | 'edit'
 
+/**
+ * Base type for filtered knowledge articles with core properties
+ * Used across guidance, FAQ, and snippet article filtering
+ */
+export type FilteredKnowledgeHubArticle = Pick<
+    KnowledgeHubArticle,
+    'id' | 'title' | 'draftVersionId' | 'publishedVersionId'
+>
+
+/**
+ * Extended type for snippet articles that require a type property
+ * Includes all base filtered properties plus the required KnowledgeType
+ */
+export type FilteredKnowledgeItemArticle = FilteredKnowledgeHubArticle & {
+    type: KnowledgeType
+}
+
 export type GuidanceEditorConfig = {
     type: 'guidance'
     shopName: string
     shopType: string
-    filteredArticles: Array<{ id: number; title: string }>
+    filteredArticles: Array<FilteredKnowledgeHubArticle>
 }
 
 export type FaqEditorConfig = {
     type: 'faq'
     shopName: string
-    filteredArticles: Array<{ id: number; title: string }>
+    filteredArticles: Array<FilteredKnowledgeHubArticle>
 }
 
 export type SnippetEditorConfig = {
     type: 'snippet'
     shopName: string
-    filteredArticles: Array<{ id: number; title: string }>
+    filteredArticles: Array<FilteredKnowledgeHubArticle>
 }
 
 export type KnowledgeEditorConfig =
@@ -116,11 +135,7 @@ export type KnowledgeEditorConfig =
 
 export type UseKnowledgeHubSnippetEditorParams = {
     shopName: string
-    filteredSnippetArticles: Array<{
-        id: number
-        title: string
-        type: KnowledgeType
-    }>
+    filteredSnippetArticles: FilteredKnowledgeItemArticle[]
     history: History
     routes: {
         knowledgeArticle: (type: string, id: number) => string

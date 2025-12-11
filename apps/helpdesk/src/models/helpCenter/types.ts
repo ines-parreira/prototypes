@@ -279,6 +279,8 @@ export type KnowledgeHubArticle = {
     createdDatetime: string
     updatedDatetime: string
     type: KnowledgeHubArticleSourceType
+    draftVersionId?: number | null
+    publishedVersionId?: number | null
 }
 
 export type KnowledgeHubArticlesResponse = {

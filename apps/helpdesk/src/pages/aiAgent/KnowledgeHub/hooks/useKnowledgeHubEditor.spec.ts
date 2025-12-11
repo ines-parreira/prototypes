@@ -1,6 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, renderHook } from '@testing-library/react'
 
+import { GetArticleVersionStatus } from '@gorgias/help-center-types'
+
 import { useNotify } from 'hooks/useNotify'
 import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterExistingArticle'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
@@ -320,6 +322,7 @@ describe('useKnowledgeHubEditor', () => {
                 expect(result.current.initialArticleMode).toBe(
                     InitialArticleMode.READ,
                 )
+                expect(result.current.versionStatus).toBeUndefined()
             })
         })
 
@@ -353,6 +356,66 @@ describe('useKnowledgeHubEditor', () => {
                     InitialArticleMode.READ,
                 )
             })
+
+            it('should set versionStatus when provided', () => {
+                const { result } = renderHook(() =>
+                    useKnowledgeHubEditor(faqConfig),
+                )
+
+                act(() => {
+                    result.current.openEditorForEdit(
+                        1,
+                        GetArticleVersionStatus.LatestDraft,
+                    )
+                })
+
+                expect(result.current.versionStatus).toBe(
+                    GetArticleVersionStatus.LatestDraft,
+                )
+                expect(result.current.currentArticleId).toBe(1)
+                expect(result.current.editorMode).toBe('read')
+            })
+
+            it('should leave versionStatus undefined when not provided', () => {
+                const { result } = renderHook(() =>
+                    useKnowledgeHubEditor(faqConfig),
+                )
+
+                act(() => {
+                    result.current.openEditorForEdit(1)
+                })
+
+                expect(result.current.versionStatus).toBeUndefined()
+            })
+
+            it('should update versionStatus when opening different articles', () => {
+                const { result } = renderHook(() =>
+                    useKnowledgeHubEditor(faqConfig),
+                )
+
+                act(() => {
+                    result.current.openEditorForEdit(
+                        1,
+                        GetArticleVersionStatus.Current,
+                    )
+                })
+
+                expect(result.current.versionStatus).toBe(
+                    GetArticleVersionStatus.Current,
+                )
+
+                act(() => {
+                    result.current.openEditorForEdit(
+                        2,
+                        GetArticleVersionStatus.LatestDraft,
+                    )
+                })
+
+                expect(result.current.versionStatus).toBe(
+                    GetArticleVersionStatus.LatestDraft,
+                )
+                expect(result.current.currentArticleId).toBe(2)
+            })
         })
 
         describe('When FAQ article is created', () => {
@@ -376,6 +439,35 @@ describe('useKnowledgeHubEditor', () => {
                 expect(mockNotifySuccess).toHaveBeenCalledWith(
                     'Help Center article created successfully',
                 )
+            })
+
+            it('should transition to existing mode when article is created', () => {
+                const { result } = renderHook(() =>
+                    useKnowledgeHubEditor(faqConfig),
+                )
+
+                // Open editor in create mode
+                act(() => {
+                    result.current.openEditorForCreate()
+                })
+
+                expect(result.current.faqArticleMode).toBe('new')
+                expect(result.current.currentArticleId).toBeUndefined()
+
+                // Create the article
+                const createdArticle = { id: 123 }
+                act(() => {
+                    result.current.handleCreate(createdArticle)
+                })
+
+                // Should transition to existing mode with the new article
+                expect(result.current.faqArticleMode).toBe('existing')
+                expect(result.current.currentArticleId).toBe(123)
+                expect(result.current.initialArticleMode).toBe(
+                    InitialArticleMode.READ,
+                )
+                expect(result.current.versionStatus).toBe('latest_draft')
+                expect(result.current.isEditorOpen).toBe(true)
             })
         })
 
@@ -431,6 +523,32 @@ describe('useKnowledgeHubEditor', () => {
                 )
                 expect(result.current.currentArticleId).toBe(2)
             })
+
+            it('should not persist versionStatus when navigating between articles', () => {
+                const { result } = renderHook(() =>
+                    useKnowledgeHubEditor(faqConfig),
+                )
+
+                act(() => {
+                    result.current.openEditorForEdit(
+                        1,
+                        GetArticleVersionStatus.LatestDraft,
+                    )
+                })
+
+                expect(result.current.versionStatus).toBe(
+                    GetArticleVersionStatus.LatestDraft,
+                )
+
+                act(() => {
+                    result.current.handleClickNext()
+                })
+
+                expect(result.current.currentArticleId).toBe(2)
+                expect(result.current.versionStatus).toBe(
+                    GetArticleVersionStatus.LatestDraft,
+                )
+            })
         })
 
         describe('When closing FAQ editor', () => {
@@ -453,6 +571,31 @@ describe('useKnowledgeHubEditor', () => {
                 expect(result.current.initialArticleMode).toBe(
                     InitialArticleMode.READ,
                 )
+            })
+
+            it('should reset versionStatus to undefined', () => {
+                const { result } = renderHook(() =>
+                    useKnowledgeHubEditor(faqConfig),
+                )
+
+                act(() => {
+                    result.current.openEditorForEdit(
+                        1,
+                        GetArticleVersionStatus.LatestDraft,
+                    )
+                })
+
+                expect(result.current.versionStatus).toBe(
+                    GetArticleVersionStatus.LatestDraft,
+                )
+
+                act(() => {
+                    result.current.closeEditor()
+                })
+
+                expect(result.current.versionStatus).toBeUndefined()
+                expect(result.current.isEditorOpen).toBe(false)
+                expect(result.current.currentArticleId).toBeUndefined()
             })
         })
     })

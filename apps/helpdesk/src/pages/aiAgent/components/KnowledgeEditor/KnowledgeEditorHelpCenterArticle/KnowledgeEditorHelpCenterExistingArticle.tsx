@@ -4,6 +4,7 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import { useFlag } from 'core/flags'
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
@@ -12,6 +13,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import {
     helpCenterArticleKeys,
+    helpCenterKeys,
     useCreateArticleTranslation,
     useDeleteArticle,
     useDeleteArticleTranslation,
@@ -83,7 +85,10 @@ type Props = {
 }
 
 const KnowledgeEditorHelpCenterExistingArticleLoaded = (
-    props: Props & { article: ArticleWithLocalTranslation },
+    props: Props & {
+        article: ArticleWithLocalTranslation
+        versionStatus?: GetArticleVersionStatus
+    },
 ) => {
     const { error: notifyError } = useNotify()
     const queryClient = useQueryClient()
@@ -115,6 +120,7 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
         props.article.id,
         props.helpCenter.id,
         locale,
+        props.versionStatus,
     )
 
     const [article, setArticle] = useState<ArticleState>({
@@ -186,6 +192,36 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                         }))
                     }
 
+                    // Invalidate BOTH version statuses to ensure consistency
+                    const cacheKeysToInvalidate = [
+                        helpCenterArticleKeys(
+                            props.helpCenter.id,
+                            props.article.id,
+                            locale,
+                            props.versionStatus,
+                        ),
+                        helpCenterArticleKeys(
+                            props.helpCenter.id,
+                            props.article.id,
+                            locale,
+                            props.versionStatus === 'latest_draft'
+                                ? 'current'
+                                : 'latest_draft',
+                        ),
+                    ]
+
+                    await Promise.all([
+                        ...cacheKeysToInvalidate.map((queryKey) =>
+                            queryClient.invalidateQueries({ queryKey }),
+                        ),
+                        queryClient.invalidateQueries({
+                            queryKey: [
+                                ...helpCenterKeys.all(),
+                                'knowledge-hub-articles',
+                            ],
+                        }),
+                    ])
+
                     return response?.data
                 }
 
@@ -199,12 +235,43 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                     {
                         title: article.translation.title,
                         content: article.translation.content,
+                        is_current: publish,
                     },
                 ])
 
                 setArticle(
                     mergeResponseContentAndTitleInArticle(response?.data),
                 )
+
+                // Invalidate BOTH version statuses to ensure consistency
+                const cacheKeysToInvalidate = [
+                    helpCenterArticleKeys(
+                        props.helpCenter.id,
+                        props.article.id,
+                        locale,
+                        props.versionStatus,
+                    ),
+                    helpCenterArticleKeys(
+                        props.helpCenter.id,
+                        props.article.id,
+                        locale,
+                        props.versionStatus === 'latest_draft'
+                            ? 'current'
+                            : 'latest_draft',
+                    ),
+                ]
+
+                await Promise.all([
+                    ...cacheKeysToInvalidate.map((queryKey) =>
+                        queryClient.invalidateQueries({ queryKey }),
+                    ),
+                    queryClient.invalidateQueries({
+                        queryKey: [
+                            ...helpCenterKeys.all(),
+                            'knowledge-hub-articles',
+                        ],
+                    }),
+                ])
 
                 return response?.data
             } catch {
@@ -218,11 +285,13 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
         [
             props.helpCenter.id,
             props.article.id,
+            props.versionStatus,
             locale,
             createArticleTranslation,
             updateArticleTranslation,
             article,
             notifyError,
+            queryClient,
         ],
     )
 
@@ -240,13 +309,35 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
 
             setArticle(mergeResponseSettingsInArticle(response))
 
-            await queryClient.invalidateQueries({
-                queryKey: helpCenterArticleKeys(
+            // Invalidate BOTH version statuses to ensure consistency
+            const cacheKeysToInvalidate = [
+                helpCenterArticleKeys(
                     props.helpCenter.id,
                     props.article.id,
                     locale,
+                    props.versionStatus,
                 ),
-            })
+                helpCenterArticleKeys(
+                    props.helpCenter.id,
+                    props.article.id,
+                    locale,
+                    props.versionStatus === 'latest_draft'
+                        ? 'current'
+                        : 'latest_draft',
+                ),
+            ]
+
+            await Promise.all([
+                ...cacheKeysToInvalidate.map((queryKey) =>
+                    queryClient.invalidateQueries({ queryKey }),
+                ),
+                queryClient.invalidateQueries({
+                    queryKey: [
+                        ...helpCenterKeys.all(),
+                        'knowledge-hub-articles',
+                    ],
+                }),
+            ])
 
             props.onUpdated?.()
         },
@@ -264,6 +355,8 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
                     : article.translation.slug,
             articleId: article.id,
             unlistedId: article.unlisted_id,
+            draftVersionId: article.translation.draft_version_id,
+            publishedVersionId: article.translation.published_version_id,
         },
         locale: locale,
         helpCenter: props.helpCenter,
@@ -648,12 +741,14 @@ const KnowledgeEditorHelpCenterExistingArticleLoaded = (
 
 export const KnowledgeEditorHelpCenterExistingArticle = ({
     articleId,
+    versionStatus,
     ...props
-}: Props & { articleId: number }) => {
+}: Props & { articleId: number; versionStatus?: GetArticleVersionStatus }) => {
     const getArticle = useGetHelpCenterArticle(
         articleId,
         props.helpCenter.id,
         props.helpCenter.default_locale,
+        versionStatus,
     )
 
     if (getArticle.isLoading || !getArticle.data) {
@@ -681,6 +776,7 @@ export const KnowledgeEditorHelpCenterExistingArticle = ({
             key={articleId}
             {...props}
             article={getArticle.data}
+            versionStatus={versionStatus}
         />
     )
 }

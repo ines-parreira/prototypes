@@ -2,6 +2,8 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
+import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
+
 import { useNotify } from 'hooks/useNotify'
 import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterExistingArticle'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
@@ -37,6 +39,7 @@ type FaqEditorState = {
     shopName: string
     hasPrevious: boolean
     hasNext: boolean
+    versionStatus?: GetArticleVersionStatus
 }
 
 type SnippetEditorState = {
@@ -51,9 +54,12 @@ type SnippetEditorState = {
 
 type CommonEditorActions = {
     openEditorForCreate: (template?: GuidanceTemplate) => void
-    openEditorForEdit: (articleId: number) => void
+    openEditorForEdit: (
+        articleId: number,
+        versionStatus?: GetArticleVersionStatus,
+    ) => void
     closeEditor: () => void
-    handleCreate: () => void
+    handleCreate: (createdArticle?: { id: number }) => void
     handleUpdate: () => void
     handleDelete: () => void
     handleClickPrevious: () => void
@@ -117,6 +123,9 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
 ): KnowledgeEditorReturn<T> => {
     const { type, shopName, filteredArticles } = config
     const { success: notifySuccess } = useNotify()
+    const [versionStatus, setVersionStatus] = useState<
+        GetArticleVersionStatus | undefined
+    >(undefined)
     const editorConfig = EDITOR_CONFIG[type]
 
     const [isEditorOpen, setIsEditorOpen] = useState(false)
@@ -166,7 +175,7 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
     )
 
     const openEditorForEdit = useCallback(
-        (articleId: number) => {
+        (articleId: number, versionStatus?: GetArticleVersionStatus) => {
             setCurrentArticleId(articleId)
             setEditorMode('read')
 
@@ -177,6 +186,7 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
             if (type === 'faq') {
                 setFaqArticleMode('existing')
                 setInitialArticleMode(InitialArticleMode.READ)
+                setVersionStatus(versionStatus)
             }
 
             setIsEditorOpen(true)
@@ -191,18 +201,31 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
         setGuidanceTemplate(undefined)
         setFaqArticleMode('new')
         setInitialArticleMode(InitialArticleMode.READ)
+        setVersionStatus(undefined)
     }, [])
 
-    const handleCreate = useCallback(() => {
-        logEvent(editorConfig.events.created, {
-            source: 'knowledge_hub',
-            shop_name: shopName,
-            type,
-        })
+    const handleCreate = useCallback(
+        (createdArticle?: { id: number }) => {
+            logEvent(editorConfig.events.created, {
+                source: 'knowledge_hub',
+                shop_name: shopName,
+                type,
+            })
 
-        notifySuccess(editorConfig.notifications.created)
-        dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
-    }, [editorConfig, shopName, type, notifySuccess])
+            notifySuccess(editorConfig.notifications.created)
+            dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
+
+            // Transition to existing mode after creation for FAQ articles
+            if (type === 'faq' && createdArticle?.id) {
+                setCurrentArticleId(createdArticle.id)
+                setFaqArticleMode('existing')
+                setInitialArticleMode(InitialArticleMode.READ)
+                setVersionStatus('latest_draft')
+                // Keep editor open to show the newly created article
+            }
+        },
+        [editorConfig, shopName, type, notifySuccess],
+    )
 
     const handleUpdate = useCallback(() => {
         logEvent(editorConfig.events.updated, {
@@ -289,6 +312,7 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
             ...commonState,
             faqArticleMode,
             initialArticleMode,
+            versionStatus,
             ...commonActions,
         } as KnowledgeEditorReturn<T>
     }

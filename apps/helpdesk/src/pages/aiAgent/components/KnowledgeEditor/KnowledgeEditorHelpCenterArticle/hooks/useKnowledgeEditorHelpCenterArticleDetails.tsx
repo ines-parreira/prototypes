@@ -20,6 +20,8 @@ type Props = {
         slug?: string
         articleId: number
         unlistedId: string
+        draftVersionId?: number | null
+        publishedVersionId?: number | null
     }
     locale: LocaleCode
     helpCenter: HelpCenter
@@ -30,10 +32,15 @@ export const useKnowledgeEditorHelpCenterArticleDetails = ({
     locale,
     helpCenter,
 }: Props): Omit<HelpCenterArticleDetailsProps, 'sectionId'> => {
-    return useMemo(
-        () => ({
-            isPublished: article
-                ? article.visibilityStatus === 'PUBLIC'
+    return useMemo(() => {
+        return {
+            article: article
+                ? {
+                      id: article.articleId,
+                      title: '', // Title is not available in this context
+                      draftVersionId: article.draftVersionId,
+                      publishedVersionId: article.publishedVersionId,
+                  }
                 : undefined,
             createdDatetime: article
                 ? new Date(article.createdDatetime)
@@ -52,7 +59,6 @@ export const useKnowledgeEditorHelpCenterArticleDetails = ({
                           isUnlisted: article.visibilityStatus === 'UNLISTED',
                       })
                     : undefined,
-        }),
-        [helpCenter, article, locale],
-    )
+        }
+    }, [helpCenter, article, locale])
 }

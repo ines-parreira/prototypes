@@ -117,6 +117,8 @@ export const KnowledgeHubContainer = () => {
             .map((item) => ({
                 id: Number(item.id),
                 title: item.title,
+                draftVersionId: item.draftVersionId,
+                publishedVersionId: item.publishedVersionId,
             }))
     }, [tableData])
 
@@ -126,6 +128,8 @@ export const KnowledgeHubContainer = () => {
             .map((item) => ({
                 id: Number(item.id),
                 title: item.title,
+                draftVersionId: item.draftVersionId,
+                publishedVersionId: item.publishedVersionId,
             }))
     }, [tableData])
 
@@ -141,6 +145,8 @@ export const KnowledgeHubContainer = () => {
                 id: Number(item.id),
                 title: item.title,
                 type: item.type,
+                draftVersionId: item.draftVersionId,
+                publishedVersionId: item.publishedVersionId,
             }))
     }, [tableData])
 
@@ -513,6 +519,7 @@ export const KnowledgeHubContainer = () => {
                 onDelete={faqEditor.handleDelete}
                 onClickPrevious={faqEditor.handleClickPrevious}
                 onClickNext={faqEditor.handleClickNext}
+                versionStatus={faqEditor.versionStatus}
             />
             <SnippetEditorWrapper
                 shopName={shopName}

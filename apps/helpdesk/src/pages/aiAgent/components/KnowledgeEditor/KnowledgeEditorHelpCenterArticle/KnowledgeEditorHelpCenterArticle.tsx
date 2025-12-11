@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 
 import { SidePanel } from '@gorgias/axiom'
+import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import type {
     ArticleWithLocalTranslation,
@@ -31,6 +32,7 @@ type Props = {
               articleId: number
               onUpdated?: () => void
               onDeleted?: () => void
+              versionStatus?: GetArticleVersionStatus
           }
         | {
               type: 'new'
@@ -94,6 +96,7 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
                             onToggleFullscreen={onToggleFullscreen}
                             onTest={onTest}
                             closeHandlerRef={closeHandlerRef}
+                            versionStatus={props.article.versionStatus}
                         />
                     ) : (
                         <KnowledgeEditorHelpCenterNewArticle

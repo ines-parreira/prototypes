@@ -151,7 +151,12 @@ ForHelpCenterArticle.args = {
             return (
                 <KnowledgeEditorSidePanelHelpCenterArticle
                     details={{
-                        isPublished: true,
+                        article: {
+                            id: 123,
+                            title: 'Test Article',
+                            draftVersionId: 100,
+                            publishedVersionId: 100,
+                        },
                         createdDatetime: new Date('2025-06-17'),
                         lastUpdatedDatetime: new Date('2025-06-17'),
                         articleUrl:
@@ -422,7 +427,12 @@ ForHelpCenterArticleWithAutoSaveSaved.args = {
             return (
                 <KnowledgeEditorSidePanelHelpCenterArticle
                     details={{
-                        isPublished: true,
+                        article: {
+                            id: 123,
+                            title: 'Test Article',
+                            draftVersionId: 100,
+                            publishedVersionId: 100,
+                        },
                         createdDatetime: new Date('2025-06-17'),
                         lastUpdatedDatetime: new Date('2025-06-17'),
                         articleUrl:
@@ -493,7 +503,12 @@ ForHelpCenterArticleWithAutoSaveSaving.args = {
             return (
                 <KnowledgeEditorSidePanelHelpCenterArticle
                     details={{
-                        isPublished: true,
+                        article: {
+                            id: 123,
+                            title: 'Test Article',
+                            draftVersionId: 100,
+                            publishedVersionId: 100,
+                        },
                         createdDatetime: new Date('2025-06-17'),
                         lastUpdatedDatetime: new Date('2025-06-17'),
                         articleUrl:
@@ -563,7 +578,12 @@ ForHelpCenterArticleWithAutoSaveStale.args = {
             return (
                 <KnowledgeEditorSidePanelHelpCenterArticle
                     details={{
-                        isPublished: true,
+                        article: {
+                            id: 123,
+                            title: 'Test Article',
+                            draftVersionId: 100,
+                            publishedVersionId: 100,
+                        },
                         createdDatetime: new Date('2025-06-17'),
                         lastUpdatedDatetime: new Date('2025-06-17'),
                         articleUrl:

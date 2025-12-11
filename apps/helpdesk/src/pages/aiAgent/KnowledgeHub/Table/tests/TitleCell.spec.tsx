@@ -32,6 +32,8 @@ describe('TitleCell', () => {
             source: 'docs.example.com',
             isGrouped: false,
             localeCode: 'en-US',
+            draftVersionId: 456,
+            publishedVersionId: 789,
         },
         getValue: () => 'Test Document',
     } as any
@@ -105,6 +107,8 @@ describe('TitleCell', () => {
                 ...mockRow.original,
                 isGrouped: true,
                 itemCount: 5,
+                draftVersionId: null,
+                publishedVersionId: null,
             },
         } as any
 
@@ -128,6 +132,8 @@ describe('TitleCell', () => {
                 ...mockRow.original,
                 isGrouped: true,
                 itemCount: 3,
+                draftVersionId: null,
+                publishedVersionId: null,
             },
         } as any
 
@@ -138,13 +144,15 @@ describe('TitleCell', () => {
         expect(screen.queryByText('docs.example.com')).not.toBeInTheDocument()
     })
 
-    it('renders Public tag for FAQ with PUBLIC visibility', () => {
+    it('renders Public tag for FAQ with published version and no draft changes', () => {
         const faqRow = {
             ...mockRow,
             original: {
                 ...mockRow.original,
                 type: KnowledgeType.FAQ,
                 inUseByAI: KnowledgeVisibility.PUBLIC,
+                draftVersionId: 100,
+                publishedVersionId: 100,
             },
         } as any
 
@@ -153,13 +161,32 @@ describe('TitleCell', () => {
         expect(screen.getByText('Public')).toBeInTheDocument()
     })
 
-    it('renders Draft tag for FAQ with UNLISTED visibility', () => {
+    it('renders Draft tag for FAQ without published version', () => {
         const faqRow = {
             ...mockRow,
             original: {
                 ...mockRow.original,
                 type: KnowledgeType.FAQ,
                 inUseByAI: KnowledgeVisibility.UNLISTED,
+                draftVersionId: 100,
+                publishedVersionId: null,
+            },
+        } as any
+
+        render(<TitleCell row={faqRow} searchTerm="" availableActions={[]} />)
+
+        expect(screen.getByText('Draft')).toBeInTheDocument()
+    })
+
+    it('renders Draft tag for FAQ with only draft version', () => {
+        const faqRow = {
+            ...mockRow,
+            original: {
+                ...mockRow.original,
+                type: KnowledgeType.FAQ,
+                inUseByAI: KnowledgeVisibility.UNLISTED,
+                draftVersionId: 100,
+                publishedVersionId: undefined,
             },
         } as any
 
@@ -186,6 +213,8 @@ describe('TitleCell', () => {
             original: {
                 ...mockRow.original,
                 type: KnowledgeType.Guidance,
+                draftVersionId: 300,
+                publishedVersionId: 400,
             },
         } as any
 
@@ -221,6 +250,8 @@ describe('TitleCell', () => {
                 type: KnowledgeType.Guidance,
                 isGrouped: true,
                 itemCount: 3,
+                draftVersionId: null,
+                publishedVersionId: null,
             },
         } as any
 

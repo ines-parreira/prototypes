@@ -66,13 +66,17 @@ jest.mock(
         },
 )
 
-jest.mock('models/helpCenter/queries', () => ({
-    useCreateArticleTranslation: jest.fn(),
-    useDeleteArticle: jest.fn(),
-    useDeleteArticleTranslation: jest.fn(),
-    useGetHelpCenterArticle: jest.fn(),
-    useUpdateArticleTranslation: jest.fn(),
-}))
+jest.mock('models/helpCenter/queries', () => {
+    const actual = jest.requireActual('models/helpCenter/queries')
+    return {
+        ...actual,
+        useCreateArticleTranslation: jest.fn(),
+        useDeleteArticle: jest.fn(),
+        useDeleteArticleTranslation: jest.fn(),
+        useGetHelpCenterArticle: jest.fn(),
+        useUpdateArticleTranslation: jest.fn(),
+    }
+})
 
 jest.mock('domains/reporting/models/queryFactories/knowledge/resourceMetrics')
 
@@ -168,12 +172,14 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
             invalidateQueries: invalidateQueriesMock,
         } as any)
 
-        updateArticleTranslationMock.mockImplementation((o) =>
-            Promise.resolve({ data: o }),
+        updateArticleTranslationMock.mockImplementation(([, , payload]) =>
+            Promise.resolve({
+                data: { ...article.translation, ...payload },
+            }),
         )
         deleteArticleMock.mockResolvedValue(undefined)
         deleteArticleTranslationMock.mockResolvedValue(undefined)
-        invalidateQueriesMock.mockResolvedValue(undefined)
+        invalidateQueriesMock.mockImplementation(() => Promise.resolve())
 
         mockedUseCreateArticleTranslation.mockReturnValue({
             mutateAsync: createArticleTranslationMock,
@@ -345,6 +351,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
             {
                 title: article.translation.title,
                 content: 'Updated text',
+                is_current: true,
             },
         ])
 
@@ -363,9 +370,9 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
 
         await waitFor(() => {
             expect(notifyMock).not.toHaveBeenCalled()
+            expect(screen.queryByText('EDITOR')).not.toBeInTheDocument()
         })
 
-        expect(screen.queryByText('EDITOR')).not.toBeInTheDocument()
         expect(screen.getByText(article.translation.title)).toBeInTheDocument()
         expect(screen.getByText('Updated text')).toBeInTheDocument()
     })
@@ -455,6 +462,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
             {
                 title: article.translation.title,
                 content: 'Updated text',
+                is_current: false,
             },
         ])
 
@@ -473,9 +481,9 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
 
         await waitFor(() => {
             expect(notifyMock).not.toHaveBeenCalled()
+            expect(screen.queryByText('EDITOR')).not.toBeInTheDocument()
         })
 
-        expect(screen.queryByText('EDITOR')).not.toBeInTheDocument()
         expect(screen.getByText(article.translation.title)).toBeInTheDocument()
         expect(screen.getByText('Updated text')).toBeInTheDocument()
     })
@@ -1110,6 +1118,7 @@ describe('KnowledgeEditorHelpCenterExistingArticle', () => {
             {
                 title: article.translation.title,
                 content: 'Updated text',
+                is_current: false,
             },
         ])
 

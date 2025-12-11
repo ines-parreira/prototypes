@@ -4,13 +4,11 @@ import { Box, Icon, Tag, Text } from '@gorgias/axiom'
 import { GuidanceActionsBadge } from 'pages/aiAgent/components/GuidanceList/GuidanceActionsBadge'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
-import {
-    KnowledgeType,
-    KnowledgeVisibility,
-    typeConfig,
-} from 'pages/aiAgent/KnowledgeHub/types'
+import { KnowledgeType, typeConfig } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+
+import { isDraft } from '../utils/articleUtils'
 
 import css from './KnowledgeHubTable.less'
 
@@ -53,6 +51,7 @@ export const TitleCell = ({
     const isGrouped = row.original.isGrouped
     const itemCount = row.original.itemCount
     const source = row.original.source
+    const id = parseInt(row.original.id, 10)
 
     const { guidanceArticle } = useGuidanceArticle({
         guidanceHelpCenterId: guidanceHelpCenterId || -1,
@@ -67,6 +66,11 @@ export const TitleCell = ({
 
     const shouldMakeClickable = !!columnOnClick
 
+    const isArticleDraft = isDraft({
+        id: id,
+        draftVersionId: row.original.draftVersionId,
+        publishedVersionId: row.original.publishedVersionId,
+    })
     return (
         <div
             onClick={() => shouldMakeClickable && columnOnClick(row.original)}
@@ -93,9 +97,7 @@ export const TitleCell = ({
                     )}
                 {!isGrouped && type === KnowledgeType.FAQ && (
                     <Tag id={row.original.id} className={css.tag}>
-                        {row.original.inUseByAI === KnowledgeVisibility.PUBLIC
-                            ? 'Public'
-                            : 'Draft'}
+                        {isArticleDraft ? 'Draft' : 'Public'}
                     </Tag>
                 )}
                 {!isGrouped && source && (

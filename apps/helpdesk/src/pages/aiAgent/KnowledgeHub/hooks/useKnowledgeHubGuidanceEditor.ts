@@ -2,13 +2,14 @@ import { useCallback } from 'react'
 
 import { useHistory, useLocation } from 'react-router-dom'
 
+import type { FilteredKnowledgeHubArticle } from '../types'
 import { updateArticleIdInUrl } from './navigationUtils'
 import { useKnowledgeHubEditor } from './useKnowledgeHubEditor'
 
 type UseKnowledgeHubGuidanceEditorParams = {
     shopName: string
     shopType: string
-    filteredGuidanceArticles: Array<{ id: number; title: string }>
+    filteredGuidanceArticles: Array<FilteredKnowledgeHubArticle>
 }
 
 export const useKnowledgeHubGuidanceEditor = ({

@@ -2,6 +2,8 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { GetArticleVersionStatus } from '@gorgias/help-center-types'
+
 import { appQueryClient } from 'api/queryClient'
 import {
     useGetHelpCenter,
@@ -38,7 +40,16 @@ jest.mock(
                 <span data-testid="categories-count">{categories.length}</span>
                 <span data-testid="article-type">{article.type}</span>
                 {article.type === 'existing' && (
-                    <span data-testid="article-id">{article.articleId}</span>
+                    <>
+                        <span data-testid="article-id">
+                            {article.articleId}
+                        </span>
+                        {article.versionStatus && (
+                            <span data-testid="version-status">
+                                {article.versionStatus}
+                            </span>
+                        )}
+                    </>
                 )}
                 <button onClick={onClose}>Close</button>
                 <button onClick={onClickPrevious}>Previous</button>
@@ -416,6 +427,54 @@ describe('FaqEditorWrapper', () => {
             })
 
             expect(screen.getByTestId('faq-editor')).toBeInTheDocument()
+        })
+    })
+
+    describe('version status', () => {
+        it('passes versionStatus when provided for existing articles', () => {
+            renderComponent({
+                faqArticleMode: 'existing',
+                currentArticleId: 456,
+                versionStatus: GetArticleVersionStatus.LatestDraft,
+            })
+
+            expect(screen.getByTestId('version-status')).toHaveTextContent(
+                GetArticleVersionStatus.LatestDraft,
+            )
+        })
+
+        it('passes Current version status when provided', () => {
+            renderComponent({
+                faqArticleMode: 'existing',
+                currentArticleId: 456,
+                versionStatus: GetArticleVersionStatus.Current,
+            })
+
+            expect(screen.getByTestId('version-status')).toHaveTextContent(
+                GetArticleVersionStatus.Current,
+            )
+        })
+
+        it('does not render version status when not provided', () => {
+            renderComponent({
+                faqArticleMode: 'existing',
+                currentArticleId: 456,
+            })
+
+            expect(
+                screen.queryByTestId('version-status'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not pass version status for new articles', () => {
+            renderComponent({
+                faqArticleMode: 'new',
+                versionStatus: GetArticleVersionStatus.LatestDraft,
+            })
+
+            expect(
+                screen.queryByTestId('version-status'),
+            ).not.toBeInTheDocument()
         })
     })
 
