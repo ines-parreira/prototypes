@@ -2,7 +2,6 @@ import type React from 'react'
 import { useReducer, useState } from 'react'
 
 import { SegmentEvent } from '@repo/logging'
-import _capitalize from 'lodash/capitalize'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -56,6 +55,23 @@ type CancelProductModelProps = {
     setSelectedPlans: React.Dispatch<React.SetStateAction<SelectedPlans>>
     onCancellationConfirmed?: () => void
     updateSubscription: () => Promise<unknown>
+}
+
+const getModalHeaderTitle = (
+    step: CancellationFlowStep,
+    productDisplayName: string,
+): string => {
+    switch (step) {
+        case CancellationFlowStep.productFeaturesFOMO:
+            return `Are you sure you want to cancel your ${productDisplayName} plan?`
+        case CancellationFlowStep.cancellationReasons:
+        case CancellationFlowStep.cancellationSummary:
+            return `Cancel ${productDisplayName} auto-renewal`
+        case CancellationFlowStep.churnMitigationOffer:
+            return "Before you go—let's find the best option for your business"
+        default:
+            return `Cancel ${productDisplayName} auto-renewal`
+    }
 }
 
 const CancelProductModal = ({
@@ -261,6 +277,10 @@ const CancelProductModal = ({
                             <ProductFeaturesFOMO
                                 periodEnd={periodEnd}
                                 features={productCancellationScenario.features}
+                                productType={productType}
+                                productDisplayName={
+                                    productCancellationScenario.productDisplayName
+                                }
                             />
                         }
                         footer={
@@ -344,7 +364,10 @@ const CancelProductModal = ({
         <>
             <Modal isOpen={isOpen} onClose={handleOnClose} size="medium">
                 <ModalHeader
-                    title={`Cancel ${_capitalize(productType)} auto-renewal`}
+                    title={getModalHeaderTitle(
+                        cancellationStep,
+                        productCancellationScenario.productDisplayName,
+                    )}
                 />
                 {renderStep()}
             </Modal>

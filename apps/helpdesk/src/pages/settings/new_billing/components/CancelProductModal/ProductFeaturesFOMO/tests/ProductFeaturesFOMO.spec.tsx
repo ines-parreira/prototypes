@@ -1,7 +1,7 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
+
+import { ProductType } from 'models/billing/types'
 
 import { HELPDESK_CANCELLATION_SCENARIO } from '../../scenarios'
 import Feature from '../../UI/Feature'
@@ -18,15 +18,21 @@ describe('ProductFeaturesFOMO', () => {
             <ProductFeaturesFOMO
                 periodEnd="February 14, 2024"
                 features={HELPDESK_CANCELLATION_SCENARIO.features}
+                productType={ProductType.Helpdesk}
+                productDisplayName="Helpdesk"
             />,
         )
 
-        expect(container).toHaveTextContent(
-            "Please be aware that by opting out of Helpdesk's auto-renewal, you're also discontinuing it " +
-                "for any other products you're currently using. You'll continue to have full access " +
-                'to all your active products until the end of your billing cycle on February 14, 2024. ' +
-                "Here's what you'll lose after that date:",
+        expect(container.textContent).toContain(
+            'If you cancel now, your Helpdesk plan and all other active product plans',
         )
+        expect(container.textContent).toContain(
+            'renew after your current billing cycle ends on',
+        )
+        expect(container.textContent).toContain(
+            'keep full access to your account',
+        )
+        expect(container.textContent).toContain('After that date')
         const periodEndText = getByText('February 14, 2024')
         expect(periodEndText).toHaveClass('body-semibold')
 
@@ -57,6 +63,8 @@ describe('ProductFeaturesFOMO', () => {
             <ProductFeaturesFOMO
                 periodEnd="February 14, 2024"
                 features={featuresWithIcon}
+                productType={ProductType.Helpdesk}
+                productDisplayName="Helpdesk"
             />,
         )
 
@@ -93,6 +101,8 @@ describe('ProductFeaturesFOMO', () => {
             <ProductFeaturesFOMO
                 periodEnd="February 14, 2024"
                 features={featuresWithIconUrl}
+                productType={ProductType.Helpdesk}
+                productDisplayName="Helpdesk"
             />,
         )
 
@@ -129,6 +139,8 @@ describe('ProductFeaturesFOMO', () => {
             <ProductFeaturesFOMO
                 periodEnd="February 14, 2024"
                 features={mixedFeatures}
+                productType={ProductType.Helpdesk}
+                productDisplayName="Helpdesk"
             />,
         )
 
@@ -158,10 +170,46 @@ describe('ProductFeaturesFOMO', () => {
 
     it('renders empty list when no features are provided', () => {
         const { queryAllByTestId } = render(
-            <ProductFeaturesFOMO periodEnd="February 14, 2024" features={[]} />,
+            <ProductFeaturesFOMO
+                periodEnd="February 14, 2024"
+                productType={ProductType.Helpdesk}
+                productDisplayName="Helpdesk"
+                features={[]}
+            />,
         )
 
         const featureElements = queryAllByTestId('feature')
         expect(featureElements).toHaveLength(0)
+    })
+
+    describe.each([
+        { productType: ProductType.Voice, productName: 'Voice' },
+        { productType: ProductType.SMS, productName: 'SMS' },
+        { productType: ProductType.Convert, productName: 'Convert' },
+        { productType: ProductType.Automation, productName: 'AI Agent' },
+    ])('$productName warning text', ({ productType, productName }) => {
+        it('renders non-Helpdesk warning message with product name', () => {
+            const { container, getByText } = render(
+                <ProductFeaturesFOMO
+                    periodEnd="February 14, 2024"
+                    features={[]}
+                    productType={productType}
+                    productDisplayName={productName}
+                />,
+            )
+
+            expect(container.textContent).toContain(
+                `If you cancel now, your ${productName} plan`,
+            )
+            expect(container.textContent).toContain(
+                'renew after your current billing cycle ends on',
+            )
+            expect(container.textContent).toContain(
+                `keep full access to all ${productName} features`,
+            )
+            expect(container.textContent).toContain('After that date')
+            const periodEndText = getByText('February 14, 2024')
+            expect(periodEndText).toHaveClass('body-semibold')
+        })
     })
 })

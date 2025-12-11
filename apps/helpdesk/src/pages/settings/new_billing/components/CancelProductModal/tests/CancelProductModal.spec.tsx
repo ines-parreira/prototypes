@@ -36,7 +36,13 @@ import useFindChurnMitigationOffer from '../hooks/useFindChurnMitigationOffer'
 import ProductFeaturesFOMO from '../ProductFeaturesFOMO'
 import { cancellationReasonsReducer, DEFAULT_STATE } from '../reducers'
 import { sendAcceptedChurnMitigationOfferToSupport } from '../resources'
-import { HELPDESK_CANCELLATION_SCENARIO } from '../scenarios'
+import {
+    AI_AGENT_CANCELLATION_SCENARIO,
+    CONVERT_CANCELLATION_SCENARIO,
+    HELPDESK_CANCELLATION_SCENARIO,
+    SMS_CANCELLATION_SCENARIO,
+    VOICE_CANCELLATION_SCENARIO,
+} from '../scenarios'
 import Disclaimer from '../UI/Disclaimer'
 
 // components mocks
@@ -213,6 +219,8 @@ describe('CancelProductModal: step 1', () => {
             {
                 periodEnd: periodEnd,
                 features: HELPDESK_CANCELLATION_SCENARIO.features,
+                productType: ProductType.Helpdesk,
+                productDisplayName: 'Helpdesk',
             },
             {},
         )
@@ -273,6 +281,65 @@ describe('CancelProductModal: step 1', () => {
         })
         continueCancellingButtonElement.click()
         expect(mockSwitchToNextStep).toHaveBeenCalled()
+    })
+
+    describe.each([
+        {
+            productType: ProductType.Voice,
+            productName: 'Voice',
+            scenario: VOICE_CANCELLATION_SCENARIO,
+        },
+        {
+            productType: ProductType.SMS,
+            productName: 'SMS',
+            scenario: SMS_CANCELLATION_SCENARIO,
+        },
+        {
+            productType: ProductType.Convert,
+            productName: 'Convert',
+            scenario: CONVERT_CANCELLATION_SCENARIO,
+        },
+        {
+            productType: ProductType.Automation,
+            productName: 'AI Agent',
+            scenario: AI_AGENT_CANCELLATION_SCENARIO,
+        },
+    ])('$productName product', ({ productType, productName, scenario }) => {
+        beforeEach(() => {
+            useCancellationFlowStepsStateMachineMock.mockImplementation(() => ({
+                cancellationStep: CancellationFlowStep.productFeaturesFOMO,
+                switchToNextStep: mockSwitchToNextStep,
+                resetCancellationFlow: jest.fn(),
+            }))
+        })
+
+        it('should render ProductFeaturesFOMO with correct props for non-Helpdesk product', () => {
+            const { getByTestId } = render(
+                <Provider store={store}>
+                    <CancelProductModal
+                        onClose={jest.fn()}
+                        isOpen={true}
+                        productType={productType}
+                        subscriptionProducts={subscriptionProducts}
+                        periodEnd={periodEnd}
+                        selectedPlans={mockSelectedPlans}
+                        setSelectedPlans={mockSetSelectedPlans}
+                        updateSubscription={mockUpdateSubscription}
+                    />
+                </Provider>,
+            )
+
+            expect(getByTestId('product-features-fomo')).toBeInTheDocument()
+            expect(MockProductFeaturesFOMO).toHaveBeenCalledWith(
+                {
+                    periodEnd: periodEnd,
+                    features: scenario.features,
+                    productType: productType,
+                    productDisplayName: productName,
+                },
+                {},
+            )
+        })
     })
 })
 describe('CancelProductModal: step 2', () => {
@@ -991,4 +1058,131 @@ describe('CancelProductModal: Convert and SMS cancellation flows', () => {
             })
         },
     )
+})
+
+describe('CancelProductModal: Modal Headers', () => {
+    describe.each([
+        { productType: ProductType.Helpdesk, productName: 'Helpdesk' },
+        { productType: ProductType.Automation, productName: 'AI Agent' },
+        { productType: ProductType.Voice, productName: 'Voice' },
+        { productType: ProductType.SMS, productName: 'SMS' },
+        { productType: ProductType.Convert, productName: 'Convert' },
+    ])('$productName product', ({ productType, productName }) => {
+        it('should display "Are you sure" header for productFeaturesFOMO step', () => {
+            useCancellationFlowStepsStateMachineMock.mockImplementation(() => ({
+                cancellationStep: CancellationFlowStep.productFeaturesFOMO,
+                switchToNextStep: mockSwitchToNextStep,
+                resetCancellationFlow: jest.fn(),
+            }))
+
+            const { getByText } = render(
+                <Provider store={store}>
+                    <CancelProductModal
+                        onClose={jest.fn()}
+                        isOpen={true}
+                        productType={productType}
+                        subscriptionProducts={subscriptionProducts}
+                        periodEnd={periodEnd}
+                        selectedPlans={mockSelectedPlans}
+                        setSelectedPlans={mockSetSelectedPlans}
+                        updateSubscription={mockUpdateSubscription}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                getByText(
+                    `Are you sure you want to cancel your ${productName} plan?`,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should display "Cancel auto-renewal" header for cancellationReasons step', () => {
+            useCancellationFlowStepsStateMachineMock.mockImplementation(() => ({
+                cancellationStep: CancellationFlowStep.cancellationReasons,
+                switchToNextStep: mockSwitchToNextStep,
+                resetCancellationFlow: jest.fn(),
+            }))
+
+            const { getByText } = render(
+                <Provider store={store}>
+                    <CancelProductModal
+                        onClose={jest.fn()}
+                        isOpen={true}
+                        productType={productType}
+                        subscriptionProducts={subscriptionProducts}
+                        periodEnd={periodEnd}
+                        selectedPlans={mockSelectedPlans}
+                        setSelectedPlans={mockSetSelectedPlans}
+                        updateSubscription={mockUpdateSubscription}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                getByText(`Cancel ${productName} auto-renewal`),
+            ).toBeInTheDocument()
+        })
+
+        it('should display "Before you go" header for churnMitigationOffer step', () => {
+            useCancellationFlowStepsStateMachineMock.mockImplementation(() => ({
+                cancellationStep: CancellationFlowStep.churnMitigationOffer,
+                switchToNextStep: mockSwitchToNextStep,
+                resetCancellationFlow: jest.fn(),
+            }))
+            cancellationReasonsReducerMock.mockImplementation(() => ({
+                ...DEFAULT_STATE,
+                primaryReason: { label: 'some reason' },
+                completed: true,
+            }))
+
+            const { getByText } = render(
+                <Provider store={store}>
+                    <CancelProductModal
+                        onClose={jest.fn()}
+                        isOpen={true}
+                        productType={productType}
+                        subscriptionProducts={subscriptionProducts}
+                        periodEnd={periodEnd}
+                        selectedPlans={mockSelectedPlans}
+                        setSelectedPlans={mockSetSelectedPlans}
+                        updateSubscription={mockUpdateSubscription}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                getByText(
+                    "Before you go—let's find the best option for your business",
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should display "Cancel auto-renewal" header for cancellationSummary step', () => {
+            useCancellationFlowStepsStateMachineMock.mockImplementation(() => ({
+                cancellationStep: CancellationFlowStep.cancellationSummary,
+                switchToNextStep: mockSwitchToNextStep,
+                resetCancellationFlow: jest.fn(),
+            }))
+
+            const { getByText } = render(
+                <Provider store={store}>
+                    <CancelProductModal
+                        onClose={jest.fn()}
+                        isOpen={true}
+                        productType={productType}
+                        subscriptionProducts={subscriptionProducts}
+                        periodEnd={periodEnd}
+                        selectedPlans={mockSelectedPlans}
+                        setSelectedPlans={mockSetSelectedPlans}
+                        updateSubscription={mockUpdateSubscription}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                getByText(`Cancel ${productName} auto-renewal`),
+            ).toBeInTheDocument()
+        })
+    })
 })

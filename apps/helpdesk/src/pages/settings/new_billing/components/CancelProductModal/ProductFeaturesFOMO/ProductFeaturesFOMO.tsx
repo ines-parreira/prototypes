@@ -1,3 +1,5 @@
+import { ProductType } from 'models/billing/types'
+
 import Feature from '../UI/Feature'
 import type { ProductFeature } from './types'
 
@@ -6,20 +8,37 @@ import css from './ProductFeaturesFOMO.less'
 export type ProductFOMOProps = {
     periodEnd: string
     features: ProductFeature[]
+    productType: ProductType
+    productDisplayName: string
 }
 
 const ProductFeaturesFOMO = (props: ProductFOMOProps) => {
-    const { periodEnd, features } = props
+    const { periodEnd, features, productType, productDisplayName } = props
+
+    const isHelpdesk = productType === ProductType.Helpdesk
 
     return (
         <>
             <div className="body-regular">
-                {`Please be aware that by opting out of Helpdesk's auto-renewal,
-                you're also discontinuing it for any other products you're
-                currently using. You'll continue to have full access to all your
-                active products until the end of your billing cycle on `}
-                <span className="body-semibold">{periodEnd}</span>
-                {`. Here's what you'll lose after that date:`}
+                {isHelpdesk ? (
+                    <>
+                        {`If you cancel now, your Helpdesk plan and all other active product plans won't renew after your current billing cycle ends on `}
+                        <span className="body-semibold">{periodEnd}</span>
+                        {`. Until then, you'll keep full access to your account.`}
+                        <br />
+                        <br />
+                        {`After that date, you'll lose:`}
+                    </>
+                ) : (
+                    <>
+                        {`If you cancel now, your ${productDisplayName} plan won't renew after your current billing cycle ends on `}
+                        <span className="body-semibold">{periodEnd}</span>
+                        {`. Until then, you'll keep full access to all ${productDisplayName} features.`}
+                        <br />
+                        <br />
+                        {`After that date, you'll lose:`}
+                    </>
+                )}
             </div>
             <div className={css.features}>
                 {features.map((feature, index) => (
