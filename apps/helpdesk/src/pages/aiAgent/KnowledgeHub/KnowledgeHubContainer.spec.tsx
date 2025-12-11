@@ -7,6 +7,8 @@ import { MemoryRouter, useHistory, useParams } from 'react-router-dom'
 import type { Store } from 'redux'
 
 import { appQueryClient } from 'api/queryClient'
+import { useFlag } from 'core/flags'
+import { useAllResourcesMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     useGetHelpCenterList,
@@ -30,10 +32,12 @@ import {
 import { transformKnowledgeHubArticlesToKnowledgeItems } from 'pages/aiAgent/KnowledgeHub/utils/transformKnowledgeHubArticles'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
+import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 import {
     getCurrentAccountId,
     getCurrentAccountState,
 } from 'state/currentAccount/selectors'
+import { getTimezone } from 'state/currentUser/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 jest.mock('react-router-dom', () => ({
@@ -98,6 +102,9 @@ jest.mock('pages/aiAgent/hooks/useGetStoreDomainIngestionLog', () => ({
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor')
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor')
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubSnippetEditor')
+jest.mock('domains/reporting/models/queryFactories/knowledge/resourceMetrics')
+jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
+jest.mock('core/flags')
 
 // Global variables to capture the onClose callbacks
 let capturedGuidanceEditorOnClose: (() => void) | null = null
@@ -264,6 +271,10 @@ const mockUseKnowledgeHubSnippetEditor =
     useKnowledgeHubSnippetEditor as jest.Mock
 const mockTransformKnowledgeHubArticlesToKnowledgeItems =
     transformKnowledgeHubArticlesToKnowledgeItems as jest.Mock
+const mockUseAllResourcesMetrics = useAllResourcesMetrics as jest.Mock
+const mockUseStoreIntegrationByShopName =
+    useStoreIntegrationByShopName as jest.Mock
+const mockUseFlag = useFlag as jest.Mock
 
 describe('KnowledgeHubContainer', () => {
     const mockShopifyIntegrations = [
@@ -324,6 +335,7 @@ describe('KnowledgeHubContainer', () => {
                         return undefined
                     },
                 }
+            if (selector === getTimezone) return 'America/New_York'
             return fromJS({
                 id: 1,
                 name: 'Store Alpha',
@@ -434,6 +446,21 @@ describe('KnowledgeHubContainer', () => {
             hasNext: false,
             handleClickPrevious: jest.fn(),
             handleClickNext: jest.fn(),
+        })
+
+        mockUseFlag.mockReturnValue(false)
+
+        mockUseStoreIntegrationByShopName.mockReturnValue({
+            id: 1,
+            name: 'Store Alpha',
+            type: 'shopify',
+            meta: { shop_name: 'store-alpha' },
+        })
+
+        mockUseAllResourcesMetrics.mockReturnValue({
+            isLoading: false,
+            isError: false,
+            data: [],
         })
     })
 
@@ -1659,6 +1686,34 @@ describe('KnowledgeHubContainer', () => {
                 expect.stringMatching(/\/ai-agent\/.*\/knowledge/),
             )
             expect(mockCloseEditor).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('resource metrics fetching', () => {
+        it('fetches metrics with correct parameters when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            renderComponent()
+
+            expect(mockUseAllResourcesMetrics).toHaveBeenCalledWith({
+                shopIntegrationId: 1,
+                timezone: 'America/New_York',
+                enabled: true,
+                loadIntents: false,
+            })
+        })
+
+        it('does not fetch metrics when feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            renderComponent()
+
+            expect(mockUseAllResourcesMetrics).toHaveBeenCalledWith({
+                shopIntegrationId: 1,
+                timezone: 'America/New_York',
+                enabled: false,
+                loadIntents: false,
+            })
         })
     })
 })

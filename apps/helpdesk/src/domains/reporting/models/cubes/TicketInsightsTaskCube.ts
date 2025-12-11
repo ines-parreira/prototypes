@@ -1,19 +1,19 @@
 import type { Cube } from 'domains/reporting/models/types'
 
 export enum TicketInsightsTaskMeasure {
-    TicketCount = 'TicketInsightsTaskV3.ticketCount',
-    AvgSurveyScore = 'TicketInsightsTaskV3.avgSurveyScore',
+    TicketCount = 'TicketInsightsTask.ticketCount',
+    AvgSurveyScore = 'TicketInsightsTask.avgSurveyScore',
 }
 
 export enum TicketInsightsTaskDimension {
-    TicketId = 'TicketInsightsTaskV3.ticketId',
-    AccountId = 'TicketInsightsTaskV3.accountId',
-    ShopName = 'TicketInsightsTaskV3.shopName',
-    ShopIntegrationId = 'TicketInsightsTaskV3.shopIntegrationId',
-    ResourceType = 'TicketInsightsTaskV3.resourceType',
-    ResourceSourceId = 'TicketInsightsTaskV3.resourceSourceId',
-    ResourceSourceSetId = 'TicketInsightsTaskV3.resourceSourceSetId',
-    ResourceLocale = 'TicketInsightsTaskV3.resourceLocale',
+    TicketId = 'TicketInsightsTask.ticketId',
+    AccountId = 'TicketInsightsTask.accountId',
+    ShopName = 'TicketInsightsTask.shopName',
+    ShopIntegrationId = 'TicketInsightsTask.shopIntegrationId',
+    ResourceType = 'TicketInsightsTask.resourceType',
+    ResourceSourceId = 'TicketInsightsTask.resourceSourceId',
+    ResourceSourceSetId = 'TicketInsightsTask.resourceSourceSetId',
+    ResourceLocale = 'TicketInsightsTask.resourceLocale',
 }
 
 export type TicketInsightsTaskCube = Cube<

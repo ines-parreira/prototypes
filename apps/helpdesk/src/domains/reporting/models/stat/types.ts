@@ -43,6 +43,7 @@ export enum APIOnlyFilterKey {
     CreatedDatetime = 'createdDatetime',
     ResourceSourceId = 'resourceSourceId',
     ResourceSourceSetId = 'resourceSourceSetId',
+    ShopIntegrationId = 'shopIntegrationId',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -280,6 +281,7 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
         | WithExtendedLogicalOperator<string>
     [APIOnlyFilterKey.ResourceSourceId]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.ResourceSourceSetId]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.ShopIntegrationId]?: WithLogicalOperator<string>
 }
 
 export type StatsFilters = StatsFiltersWithLogicalOperator

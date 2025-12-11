@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Box, Modal, OverlayHeader } from '@gorgias/axiom'
 
+import { useFlag } from 'core/flags'
+import { useAllResourcesMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+import useAppSelector from 'hooks/useAppSelector'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
     HELP_CENTER_SELECT_MODAL_OPEN,
@@ -42,6 +46,8 @@ import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
 import { useKnowledgeHub } from 'pages/aiAgent/KnowledgeHub/useKnowledgeHub'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
+import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
+import { getTimezone } from 'state/currentUser/selectors'
 
 import { usePlaygroundPanel } from '../hooks/usePlaygroundPanel'
 import { SnippetEditorWrapper } from './EditorWrappers/SnippetEditorWrapper'
@@ -160,6 +166,26 @@ export const KnowledgeHubContainer = () => {
         routes,
         buildUrlWithParams,
     })
+
+    // Fetch all resources metrics
+    const isPerformanceStatsEnabled = useFlag(
+        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
+    )
+    const timezone = useAppSelector(getTimezone)
+    const storeIntegration = useStoreIntegrationByShopName(shopName)
+    const shopIntegrationId = storeIntegration?.id
+
+    const allResourcesMetrics = useAllResourcesMetrics({
+        shopIntegrationId: shopIntegrationId || 0,
+        timezone: timezone ?? 'UTC',
+        enabled: isPerformanceStatsEnabled && !!shopIntegrationId,
+        loadIntents: false,
+    })
+
+    if (isPerformanceStatsEnabled) {
+        // eslint-disable-next-line no-console
+        console.log('useAllResourcesMetrics result:', allResourcesMetrics)
+    }
 
     useEffect(() => {
         if (type && id) {

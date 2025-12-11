@@ -492,7 +492,7 @@ export enum MetricScope {
     TicketsOpen = 'tickets-open',
     TicketHandleTime = 'ticket-handle-time',
     OnlineTime = 'online-time',
-    Knowledge = 'knowledge',
+    KnowledgeInsights = 'knowledge-insights',
 
     // P2
     AutoQA = 'auto-qa',
@@ -571,7 +571,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AGENTXP_ONLINE_TIME,
         METRIC_NAMES.AGENTXP_ONLINE_TIME_PER_AGENT,
     ],
-    [MetricScope.Knowledge]: [
+    [MetricScope.KnowledgeInsights]: [
         METRIC_NAMES.KNOWLEDGE_TICKETS,
         METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
         METRIC_NAMES.KNOWLEDGE_CSAT,

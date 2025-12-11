@@ -4,7 +4,7 @@ import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { OrderDirection } from 'models/api/types'
 
 const knowledgeStatisticsScope = defineScope({
-    scope: MetricScope.Knowledge,
+    scope: MetricScope.KnowledgeInsights,
     measures: ['ticketCount', 'averageSurveyScore'],
     dimensions: [
         'resourceType',
@@ -16,10 +16,10 @@ const knowledgeStatisticsScope = defineScope({
     filters: [
         'periodStart',
         'periodEnd',
-        'tags',
-        'customFields',
+        'customFieldId',
         'resourceSourceId',
         'resourceSourceSetId',
+        'storeId',
     ],
     order: [
         'ticketCount',

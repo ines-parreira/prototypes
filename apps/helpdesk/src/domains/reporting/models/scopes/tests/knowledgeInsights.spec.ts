@@ -8,7 +8,7 @@ import {
     knowledgeIntentsQueryV2Factory,
     knowledgeTicketsCount,
     knowledgeTicketsCountQueryV2Factory,
-} from '../knowledgeStatistics'
+} from '../knowledgeInsights'
 import type { Context } from '../scope'
 
 describe('knowledgeTicketsCount', () => {

@@ -136,6 +136,7 @@ export type StringFilterName =
     | 'slaPolicyUuid'
     | 'resourceSourceId'
     | 'resourceSourceSetId'
+    | 'shopIntegrationId'
     | 'transferredCalls'
     | 'declinedCalls'
 

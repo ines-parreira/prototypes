@@ -234,6 +234,9 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'brandVoice':
             case 'customFieldId':
             case 'productId':
+            case 'resourceSourceId':
+            case 'resourceSourceSetId':
+            case 'shopIntegrationId':
                 {
                     const filter = statFilters[filterKey]
                     if (filter && hasFilter(filter)) {
@@ -287,36 +290,6 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                             ),
                         ],
                     })
-                }
-                break
-
-            case 'resourceSourceId':
-                if (
-                    statFilters.resourceSourceId &&
-                    hasFilter(statFilters.resourceSourceId)
-                ) {
-                    filters.push(
-                        createStandardFilter(
-                            'resourceSourceId',
-                            statFilters.resourceSourceId.operator,
-                            statFilters.resourceSourceId.values,
-                        ),
-                    )
-                }
-                break
-
-            case 'resourceSourceSetId':
-                if (
-                    statFilters.resourceSourceSetId &&
-                    hasFilter(statFilters.resourceSourceSetId)
-                ) {
-                    filters.push(
-                        createStandardFilter(
-                            'resourceSourceSetId',
-                            statFilters.resourceSourceSetId.operator,
-                            statFilters.resourceSourceSetId.values,
-                        ),
-                    )
                 }
                 break
         }
