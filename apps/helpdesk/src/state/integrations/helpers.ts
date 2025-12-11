@@ -5,6 +5,7 @@ import moment from 'moment-timezone'
 
 import type { IntegrationConfig } from 'config'
 import { INTEGRATION_TYPE_CONFIG } from 'config'
+import { GORGIAS_CHAT_LIVE_CHAT_OFFLINE } from 'config/integrations/gorgias_chat'
 import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatStatusEnum,
@@ -214,6 +215,13 @@ export const computeChatIntegrationStatus = (
     }
 
     if (installationStatus.installed) {
+        if (
+            chat.getIn(['meta', 'preferences', 'live_chat_availability']) ===
+            GORGIAS_CHAT_LIVE_CHAT_OFFLINE
+        ) {
+            return GorgiasChatStatusEnum.OFFLINE
+        }
+
         return installationStatus.isDuringBusinessHours
             ? GorgiasChatStatusEnum.ONLINE
             : GorgiasChatStatusEnum.OFFLINE

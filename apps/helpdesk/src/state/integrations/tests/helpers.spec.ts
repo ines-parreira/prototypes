@@ -297,6 +297,26 @@ describe('integrations helpers', () => {
                 }),
             ).toEqual(GorgiasChatStatusEnum.ONLINE)
         })
+
+        it('should return `offline` when chat is installed and live_chat_availability is set to offline', () => {
+            const integrationState = fromJS({
+                deactivated_datetime: null,
+                meta: {
+                    preferences: {
+                        hide_outside_business_hours: false,
+                        live_chat_availability: GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
+                    },
+                },
+            })
+
+            expect(
+                helpers.computeChatIntegrationStatus(integrationState, {
+                    ...neutralInstallationStatus,
+                    installed: true,
+                    isDuringBusinessHours: true,
+                }),
+            ).toEqual(GorgiasChatStatusEnum.OFFLINE)
+        })
     })
 
     describe('isAccountDuringBusinessHours()', () => {
