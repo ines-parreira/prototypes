@@ -10,6 +10,11 @@
             .body-medium();
         }
 
+        .axiom,
+        [class*='SelectField--select--'] {
+            border: none !important;
+        }
+
         [class*='PlaygroundCustomerSelection--container--'] {
             display: flex;
             flex-direction: column;
@@ -25,8 +30,6 @@
         [class='dropdown show'] {
             .body-regular();
 
-            border-radius: 6px;
-            border: 1px solid var(--border-neutral-default);
             height: 32px;
             gap: var(--spacing-xxs);
 
@@ -34,6 +37,7 @@
                 background-color: transparent;
                 padding: var(--spacing-xxs) var(--spacing-xs);
                 user-select: none;
+                box-shadow: inset 0 0 0 1px var(--border-neutral-default);
             }
         }
 
