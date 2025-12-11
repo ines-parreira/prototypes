@@ -394,6 +394,7 @@ export enum SegmentEvent {
     ShopifyInsertProductLinkAdded = 'shopify/insert-product-link/product-link-added',
     ShopifyInsertProductLinkOpen = 'shopify/insert-product-link/open',
     ShopifyMetafieldsOpenOrder = 'shopify/metafields/order/open',
+    ShopifyMetafieldsOpenDraftOrder = 'shopify/metafields/draft-order/open',
     ShopifyMetafieldsOpenCustomer = 'shopify/metafields/customer/open',
     ShopifyOrderClicked = 'widget/shopify-order-link/link-clicked',
     ShopifyProfileClicked = 'widget/shopify-profile-link/link-clicked',
