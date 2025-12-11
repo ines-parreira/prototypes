@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
@@ -51,6 +51,7 @@ describe('KnowledgeEditorSnippetView', () => {
             'https://store.example.com/product1',
             'https://store.example.com/product2',
         ],
+        domain: 'https://store.example.com',
     }
 
     it('renders URL snippet with correct title and source', () => {
@@ -82,7 +83,7 @@ describe('KnowledgeEditorSnippetView', () => {
         ).toContain('Document snippet content')
     })
 
-    it('renders store snippet with correct title and sources', () => {
+    it('renders store snippet with correct title and domain', () => {
         const { container } = render(
             <KnowledgeEditorSnippetView
                 {...baseProps}
@@ -92,9 +93,7 @@ describe('KnowledgeEditorSnippetView', () => {
 
         expect(screen.getByText('Test Store Snippet')).toBeInTheDocument()
         expect(
-            screen.getByText(
-                'https://store.example.com/product1, https://store.example.com/product2',
-            ),
+            screen.getByText('https://store.example.com'),
         ).toBeInTheDocument()
         expect(
             container.querySelector('.contentWrapper')?.textContent,
@@ -141,7 +140,7 @@ describe('KnowledgeEditorSnippetView', () => {
         const fullscreenButton = screen.getByRole('button', {
             name: /fullscreen/i,
         })
-        await user.click(fullscreenButton)
+        await act(() => user.click(fullscreenButton))
 
         expect(onToggleFullscreen).toHaveBeenCalledTimes(1)
     })
@@ -159,7 +158,7 @@ describe('KnowledgeEditorSnippetView', () => {
         )
 
         const closeButton = screen.getByRole('button', { name: /close/i })
-        await user.click(closeButton)
+        await act(() => user.click(closeButton))
 
         expect(onClose).toHaveBeenCalledTimes(1)
     })

@@ -385,6 +385,118 @@ describe('KnowledgeEditorSnippetLoader', () => {
                 },
             )
         })
+
+        it('extracts domain from article ingestion logs with source=domain', async () => {
+            const mockDomainIngestionLog = {
+                id: 2,
+                url: 'https://store.example.com',
+                article_ids: [123],
+                help_center_id: 1,
+                status: 'success',
+                source: 'domain',
+            }
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetArticleIngestionLogs',
+            ).mockReturnValue({
+                data: [mockDomainIngestionLog],
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof helpCenterQueries.useGetArticleIngestionLogs
+            >)
+
+            render(
+                <KnowledgeEditorSnippetLoader
+                    {...baseProps}
+                    snippetType={SnippetType.Store}
+                />,
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('Test Snippet')).toBeInTheDocument()
+            })
+
+            expect(
+                helpCenterQueries.useGetArticleIngestionLogs,
+            ).toHaveBeenCalledWith(
+                {
+                    help_center_id: 1,
+                    sources: ['url', 'domain'],
+                },
+                {
+                    enabled: true,
+                },
+            )
+        })
+
+        it('handles store snippet without domain (undefined)', async () => {
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetArticleIngestionLogs',
+            ).mockReturnValue({
+                data: [],
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof helpCenterQueries.useGetArticleIngestionLogs
+            >)
+
+            render(
+                <KnowledgeEditorSnippetLoader
+                    {...baseProps}
+                    snippetType={SnippetType.Store}
+                />,
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('Test Snippet')).toBeInTheDocument()
+            })
+        })
+
+        it('handles store snippet with multiple ingestion logs and extracts correct domain', async () => {
+            const mockIngestionLogs = [
+                {
+                    id: 1,
+                    url: 'https://store.example.com/page1',
+                    article_ids: [123],
+                    help_center_id: 1,
+                    status: 'success',
+                    source: 'url',
+                },
+                {
+                    id: 2,
+                    url: 'https://store.example.com',
+                    article_ids: [123],
+                    help_center_id: 1,
+                    status: 'success',
+                    source: 'domain',
+                },
+            ]
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetArticleIngestionLogs',
+            ).mockReturnValue({
+                data: mockIngestionLogs,
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof helpCenterQueries.useGetArticleIngestionLogs
+            >)
+
+            render(
+                <KnowledgeEditorSnippetLoader
+                    {...baseProps}
+                    snippetType={SnippetType.Store}
+                />,
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('Test Snippet')).toBeInTheDocument()
+            })
+        })
     })
 
     describe('AI Agent Toggle', () => {

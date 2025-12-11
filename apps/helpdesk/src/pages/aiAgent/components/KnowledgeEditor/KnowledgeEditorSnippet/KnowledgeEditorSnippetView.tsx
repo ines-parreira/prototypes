@@ -35,6 +35,7 @@ type DocumentSnippet = BaseSnippet & {
 type StoreWebsiteSnippet = BaseSnippet & {
     type: SnippetType.Store
     sources: string[]
+    domain?: string
 }
 
 type Snippet = URLSnippet | DocumentSnippet | StoreWebsiteSnippet
@@ -70,7 +71,7 @@ export const KnowledgeEditorSnippetView = ({
 
     const getSourceDisplay = (): string => {
         if (snippet.type === SnippetType.Store) {
-            return snippet.sources.join(', ')
+            return snippet.domain ?? ''
         }
         return snippet.source
     }

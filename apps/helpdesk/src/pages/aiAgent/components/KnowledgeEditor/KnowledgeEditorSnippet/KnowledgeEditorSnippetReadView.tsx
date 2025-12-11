@@ -7,7 +7,7 @@ import css from './KnowledgeEditorSnippetReadView.less'
 type Props = {
     title: string
     content: string
-    sourceLabel: string
+    sourceLabel?: string
     sourceUrl: string
     snippetType: SnippetType
 }

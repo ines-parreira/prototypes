@@ -89,7 +89,8 @@ export const KnowledgeEditorSnippetLoader = ({
         },
     )
 
-    const shouldFetchUrlIngestionLogs = snippetType === SnippetType.URL
+    const shouldFetchUrlIngestionLogs =
+        snippetType === SnippetType.URL || snippetType === SnippetType.Store
 
     const {
         data: articleIngestionLogs,
@@ -97,6 +98,7 @@ export const KnowledgeEditorSnippetLoader = ({
     } = useGetArticleIngestionLogs(
         {
             help_center_id: helpCenterId,
+            sources: ['url', 'domain'],
         },
         {
             enabled: shouldFetchUrlIngestionLogs,
@@ -195,15 +197,27 @@ export const KnowledgeEditorSnippetLoader = ({
             const urls =
                 typedIngestedResource?.web_pages.map((page) => page.url) ?? []
 
+            const domainIngestionLog = articleIngestionLogs?.find(
+                (articleIngestionLog) =>
+                    articleIngestionLog.source === 'domain',
+            )
+            const domain = domainIngestionLog?.url
             return {
                 ...baseSnippet,
                 type: SnippetType.Store as const,
                 sources: urls,
+                domain: domain ?? undefined,
             }
         }
 
         throw new Error(`Unknown snippet type: ${snippetType}`)
-    }, [articleData, snippetType, source, ingestedResourceData])
+    }, [
+        articleData,
+        snippetType,
+        source,
+        ingestedResourceData,
+        articleIngestionLogs,
+    ])
 
     const onToggleAIAgentEnabled = useCallback(async () => {
         if (!articleData) return
