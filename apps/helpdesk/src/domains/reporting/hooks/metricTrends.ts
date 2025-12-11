@@ -37,6 +37,7 @@ import { closedTicketsCountQueryV2Factory } from 'domains/reporting/models/scope
 import { createdTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
 import { openTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsOpen'
 import { ticketsRepliedCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
+import { zeroTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/zeroTouchTickets'
 import type {
     StatsFilters,
     StatsFiltersWithLogicalOperator,
@@ -249,10 +250,12 @@ export const fetchOneTouchTicketsTrend = getTrendFetch(
 
 export const useZeroTouchTicketsTrend = getTrendHook(
     zeroTouchTicketsQueryFactory,
+    zeroTouchTicketsQueryV2Factory,
 )
 
 export const fetchZeroTouchTicketsTrend = getTrendFetch(
     zeroTouchTicketsQueryFactory,
+    zeroTouchTicketsQueryV2Factory,
 )
 
 export const useTicketsCreatedTrend = getTrendHook(

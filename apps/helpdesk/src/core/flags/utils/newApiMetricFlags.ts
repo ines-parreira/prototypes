@@ -33,6 +33,7 @@ export const P2_SCOPES: MetricScope[] = [
     MetricScope.ResponseTime,
     MetricScope.Tags,
     MetricScope.TicketFields,
+    MetricScope.ZeroTouchTickets,
 ]
 
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()

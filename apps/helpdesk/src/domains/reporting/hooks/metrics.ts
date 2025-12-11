@@ -25,6 +25,7 @@ import { ticketAverageHandleTimeQueryV2Factory } from 'domains/reporting/models/
 import { closedTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
 import { ticketsRepliedCountQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
+import { zeroTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/zeroTouchTickets'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { OrderDirection } from 'models/api/types'
 
@@ -287,13 +288,20 @@ export const fetchOneTouchTicketsMetric = (
 export const useZeroTouchTicketsMetric = (
     statsFilters: StatsFilters,
     timezone: string,
-): Metric => useMetric(zeroTouchTicketsQueryFactory(statsFilters, timezone))
+): Metric =>
+    useMetric(
+        zeroTouchTicketsQueryFactory(statsFilters, timezone),
+        zeroTouchTicketsQueryV2Factory({ filters: statsFilters, timezone }),
+    )
 
 export const fetchZeroTouchTicketsMetric = (
     statsFilters: StatsFilters,
     timezone: string,
 ): Promise<Metric> =>
-    fetchMetric(zeroTouchTicketsQueryFactory(statsFilters, timezone))
+    fetchMetric(
+        zeroTouchTicketsQueryFactory(statsFilters, timezone),
+        zeroTouchTicketsQueryV2Factory({ filters: statsFilters, timezone }),
+    )
 
 export const useTicketAverageHandleTimeMetric = (
     statsFilters: StatsFilters,

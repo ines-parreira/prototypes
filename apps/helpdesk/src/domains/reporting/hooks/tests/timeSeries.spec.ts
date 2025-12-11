@@ -89,6 +89,10 @@ import {
     ticketsRepliedTimeseries,
     ticketsRepliedTimeseriesQueryV2Factory,
 } from 'domains/reporting/models/scopes/ticketsReplied'
+import {
+    zeroTouchTicketsTimeSeries,
+    zeroTouchTicketsTimeSeriesQueryV2Factory,
+} from 'domains/reporting/models/scopes/zeroTouchTickets'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     APIOnlyFilterKey,
@@ -163,7 +167,7 @@ describe('time series', () => {
             'useZeroTouchTicketsTimeSeries',
             useZeroTouchTicketsTimeSeries,
             zeroTouchTicketsTimeSeriesQueryFactory,
-            undefined,
+            zeroTouchTicketsTimeSeries.build.bind(zeroTouchTicketsTimeSeries),
         ],
     ])('%s', (_, useTrendFn, queryFactory, queryV2Factory) => {
         it('should use query factory for $testName', () => {
@@ -224,6 +228,7 @@ describe('time series', () => {
             'fetchZeroTouchTicketsTimeSeries',
             fetchZeroTouchTicketsTimeSeries,
             zeroTouchTicketsTimeSeriesQueryFactory,
+            zeroTouchTicketsTimeSeriesQueryV2Factory,
         ],
         [
             'fetchMessagesReceivedTimeSeries',

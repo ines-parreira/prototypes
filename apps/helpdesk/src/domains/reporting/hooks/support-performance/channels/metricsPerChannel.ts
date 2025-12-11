@@ -34,6 +34,7 @@ import { ticketAverageHandleTimePerAgentPerChannelQueryV2Factory } from 'domains
 import { closedTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
 import { ticketsRepliedCountPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
+import { zeroTouchTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/zeroTouchTickets'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { OrderDirection } from 'models/api/types'
 
@@ -182,9 +183,11 @@ export const fetchOneTouchTicketsMetricPerChannel = createFetchPerDimension(
 
 export const useZeroTouchTicketsMetricPerChannel = createMetricPerDimensionHook(
     zeroTouchTicketsPerChannelQueryFactory,
+    zeroTouchTicketsPerChannelQueryV2Factory,
 )
 export const fetchZeroTouchTicketsMetricPerChannel = createFetchPerDimension(
     zeroTouchTicketsPerChannelQueryFactory,
+    zeroTouchTicketsPerChannelQueryV2Factory,
 )
 
 export const useTicketAverageHandleTimePerChannel =

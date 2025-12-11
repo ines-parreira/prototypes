@@ -50,6 +50,7 @@ import {
 import { closedTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
 import { ticketsRepliedTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
+import { zeroTouchTicketsTimeSeriesQueryV2Factory } from 'domains/reporting/models/scopes/zeroTouchTickets'
 import type {
     AggregationWindow,
     Sentiment,
@@ -185,10 +186,12 @@ export const fetchOneTouchTicketsTimeSeries = getTimeSeriesFetch(
 
 export const useZeroTouchTicketsTimeSeries = getTimeSeriesHook(
     zeroTouchTicketsTimeSeriesQueryFactory,
+    zeroTouchTicketsTimeSeriesQueryV2Factory,
 )
 
 export const fetchZeroTouchTicketsTimeSeries = getTimeSeriesFetch(
     zeroTouchTicketsTimeSeriesQueryFactory,
+    zeroTouchTicketsTimeSeriesQueryV2Factory,
 )
 // P2/P3
 export const useCustomFieldsTicketCountTimeSeries = (

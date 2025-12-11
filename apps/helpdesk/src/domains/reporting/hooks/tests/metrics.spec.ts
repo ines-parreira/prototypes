@@ -58,6 +58,7 @@ import { ticketAverageHandleTime } from 'domains/reporting/models/scopes/ticketH
 import { closedTicketsCount } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsCount } from 'domains/reporting/models/scopes/ticketsCreated'
 import { ticketsRepliedCount } from 'domains/reporting/models/scopes/ticketsReplied'
+import { zeroTouchTickets } from 'domains/reporting/models/scopes/zeroTouchTickets'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
@@ -129,6 +130,7 @@ describe('metrics', () => {
             'useZeroTouchTicketsMetric',
             useZeroTouchTicketsMetric,
             zeroTouchTicketsQueryFactory,
+            zeroTouchTickets,
         ],
         [
             'useTicketHandleTimeMetric',
@@ -250,6 +252,12 @@ describe('metrics', () => {
             ticketAverageHandleTimeQueryFactory,
             ticketAverageHandleTime,
         ],
+        [
+            'fetchZeroTouchTicketsMetric',
+            fetchZeroTouchTicketsMetric,
+            zeroTouchTicketsQueryFactory,
+            zeroTouchTickets,
+        ],
     ])(
         '%s',
         (
@@ -281,11 +289,6 @@ describe('metrics', () => {
             'fetchCustomerSatisfactionMetric',
             fetchCustomerSatisfactionMetric,
             customerSatisfactionQueryFactory,
-        ],
-        [
-            'fetchZeroTouchTicketsMetric',
-            fetchZeroTouchTicketsMetric,
-            zeroTouchTicketsQueryFactory,
         ],
     ])(
         '%s',

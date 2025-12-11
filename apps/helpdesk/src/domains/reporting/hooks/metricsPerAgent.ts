@@ -30,6 +30,7 @@ import { medianResponseTimePerAgentQueryV2Factory } from 'domains/reporting/mode
 import { ticketAverageHandleTimePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/ticketHandleTime'
 import { closedTicketsPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { ticketsRepliedCountPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
+import { zeroTouchTicketsPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/zeroTouchTickets'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { OrderDirection } from 'models/api/types'
 
@@ -167,10 +168,12 @@ export const fetchOneTouchTicketsMetricPerAgent = createFetchPerDimension(
 
 export const useZeroTouchTicketsMetricPerAgent = createMetricPerDimensionHook(
     zeroTouchTicketsPerAgentQueryFactory,
+    zeroTouchTicketsPerAgentQueryV2Factory,
 )
 
 export const fetchZeroTouchTicketsMetricPerAgent = createFetchPerDimension(
     zeroTouchTicketsPerAgentQueryFactory,
+    zeroTouchTicketsPerAgentQueryV2Factory,
 )
 
 export const useOnlineTimePerAgent = createMetricPerDimensionHook(

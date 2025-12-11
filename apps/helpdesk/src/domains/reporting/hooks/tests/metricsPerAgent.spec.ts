@@ -54,6 +54,7 @@ import { medianResolutionTimePerAgentQueryV2Factory } from 'domains/reporting/mo
 import { ticketAverageHandleTimePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/ticketHandleTime'
 import { closedTicketsPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { ticketsRepliedCountPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
+import { zeroTouchTicketsPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/zeroTouchTickets'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
@@ -198,7 +199,7 @@ describe('metricsPerAgent', () => {
                 'useZeroTouchTicketsMetricPerAgent',
                 useZeroTouchTicketsMetricPerAgent,
                 zeroTouchTicketsPerAgentQueryFactory,
-                undefined,
+                zeroTouchTicketsPerAgentQueryV2Factory,
             ],
         ])(
             '%s should pass the query to useMetricPerDimension hook',
@@ -293,7 +294,7 @@ describe('metricsPerAgent', () => {
                 'fetchZeroTouchTicketsMetricPerAgent',
                 fetchZeroTouchTicketsMetricPerAgent,
                 zeroTouchTicketsPerAgentQueryFactory,
-                undefined,
+                zeroTouchTicketsPerAgentQueryV2Factory,
             ],
         ])(
             '%s should pass the query to useMetricPerDimension hook',

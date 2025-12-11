@@ -47,6 +47,7 @@ import { ticketAverageHandleTimePerAgentPerChannelQueryV2Factory } from 'domains
 import { closedTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import { createdTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsCreated'
 import { ticketsRepliedCountPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
+import { zeroTouchTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/zeroTouchTickets'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
@@ -189,7 +190,7 @@ describe('metricsPerChannel', () => {
                 name: 'useZeroTouchTicketsMetricPerChannel',
                 hook: useZeroTouchTicketsMetricPerChannel,
                 queryFactory: zeroTouchTicketsPerChannelQueryFactory,
-                newQueryFactory: undefined,
+                newQueryFactory: zeroTouchTicketsPerChannelQueryV2Factory,
             },
             {
                 name: 'useTicketAverageHandleTimePerChannel',
@@ -297,6 +298,7 @@ describe('metricsPerChannel', () => {
                 name: 'fetchZeroTouchTicketsMetricPerChannel',
                 fetch: fetchZeroTouchTicketsMetricPerChannel,
                 queryFactory: zeroTouchTicketsPerChannelQueryFactory,
+                newQueryFactory: zeroTouchTicketsPerChannelQueryV2Factory,
             },
             {
                 name: 'fetchTicketAverageHandleTimePerChannel',

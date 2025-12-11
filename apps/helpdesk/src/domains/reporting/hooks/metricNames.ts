@@ -507,6 +507,7 @@ export enum MetricScope {
     ResponseTime = 'response-time',
     TicketServiceLevelAgreement = 'ticket-sla',
     WorkloadTickets = 'workload-tickets',
+    ZeroTouchTickets = 'zero-touch-tickets',
 }
 
 export type MetricName = (typeof METRIC_NAMES)[keyof typeof METRIC_NAMES]
@@ -654,5 +655,11 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.WorkloadTickets]: [
         METRIC_NAMES.SUPPORT_PERFORMANCE_WORKLOAD_PER_CHANNEL,
+    ],
+    [MetricScope.ZeroTouchTickets]: [
+        METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_AGENT,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_CHANNEL,
+        METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_TIME_SERIES,
     ],
 }
