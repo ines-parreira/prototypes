@@ -19,15 +19,7 @@ jest.mock('core/flags', () => ({
     useFlag: jest.fn(() => false),
 }))
 
-const mockAiAgentPlaygroundView = jest.fn()
 const mockAiAgentPlayground = jest.fn()
-
-jest.mock('pages/aiAgent/Playground/AiAgentPlaygroundView', () => ({
-    AiAgentPlaygroundView: (props: any) => {
-        mockAiAgentPlaygroundView(props)
-        return <div>Playground</div>
-    },
-}))
 
 jest.mock('pages/aiAgent/PlaygroundV2/AiAgentPlayground', () => ({
     AiAgentPlayground: (props: any) => {
@@ -281,28 +273,6 @@ describe('TestSection', () => {
             })
 
             expect(screen.getByText('Playground V2')).toBeInTheDocument()
-        })
-    })
-
-    describe('when feature flag is disabled', () => {
-        it('renders original Playground when drawer is opened', async () => {
-            const user = userEvent.setup()
-
-            render(
-                <TestSection
-                    stepMetadata={mockStepMetadata}
-                    step={mockStep}
-                    updateStep={mockUpdateStep}
-                    onEditGuidanceArticle={mockOnEditGuidanceArticle}
-                />,
-            )
-
-            await act(async () => {
-                await user.click(screen.getByRole('button', { name: 'Test' }))
-            })
-
-            expect(screen.getByText('Playground')).toBeInTheDocument()
-            expect(screen.queryByText('Playground V2')).not.toBeInTheDocument()
         })
     })
 })

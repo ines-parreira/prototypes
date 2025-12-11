@@ -79,8 +79,13 @@ describe('TargetSelection', () => {
     })
 
     describe('customer selection', () => {
-        it('calls onChange with customer when customer changes', async () => {
-            renderComponent()
+        it('calls onChange with customer when switching to new customer', async () => {
+            renderComponent({
+                customer: {
+                    ...DEFAULT_PLAYGROUND_CUSTOMER,
+                    email: 'different@example.com',
+                },
+            })
 
             const selectDropdown = screen
                 .getAllByText('New customer')[0]
@@ -93,6 +98,18 @@ describe('TargetSelection', () => {
                 name: /existing customer/i,
             })
             fireEvent.click(existingCustomerOption)
+
+            const selectDropdownAgain = screen
+                .getAllByText('Existing customer')[0]
+                .closest('[data-toggle="dropdown"]')
+            if (selectDropdownAgain) {
+                fireEvent.click(selectDropdownAgain)
+            }
+
+            const newCustomerOption = await screen.findByRole('menuitem', {
+                name: /new customer/i,
+            })
+            fireEvent.click(newCustomerOption)
 
             expect(mockOnChange).toHaveBeenCalledWith({
                 customer: DEFAULT_PLAYGROUND_CUSTOMER,

@@ -13,7 +13,7 @@ import {
     useCreateTestSessionMutation,
     useTriggerAIJourney,
 } from 'models/aiAgent/queries'
-import { usePlaygroundPolling } from 'pages/aiAgent/Playground/hooks/usePlaygroundPolling'
+import { usePlaygroundPolling } from 'pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

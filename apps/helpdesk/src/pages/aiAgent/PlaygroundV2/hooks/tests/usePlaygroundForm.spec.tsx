@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
-import { analyzeKnowledgeSources } from 'pages/aiAgent/Playground/utils/knowledgeSourcesAnalysis'
+import { analyzeKnowledgeSources } from 'pages/aiAgent/PlaygroundV2/utils/knowledgeSourcesAnalysis'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
 import { useMessagesContext } from '../../contexts/MessagesContext'
@@ -47,7 +47,7 @@ jest.mock('../../../hooks/useFileIngestion', () => ({
     })),
 }))
 
-jest.mock('pages/aiAgent/Playground/utils/knowledgeSourcesAnalysis', () => ({
+jest.mock('pages/aiAgent/PlaygroundV2/utils/knowledgeSourcesAnalysis', () => ({
     analyzeKnowledgeSources: jest.fn(() => ({
         hasAvailableSources: false,
         hasSyncingSources: false,

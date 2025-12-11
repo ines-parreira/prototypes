@@ -124,8 +124,7 @@ describe('PlaygroundCustomerSelection', () => {
 
     test('renders with default props', () => {
         renderComponent()
-        const selectButton = screen.getByRole('button', { expanded: false })
-        expect(selectButton).toBeInTheDocument()
+        expect(screen.getByText('Existing customer')).toBeInTheDocument()
     })
 
     test('render empty input when select existing customer', () => {
@@ -138,35 +137,21 @@ describe('PlaygroundCustomerSelection', () => {
         ).toBeInTheDocument()
     })
 
-    test('changes sender type and updates state', async () => {
+    test('changes sender type and updates state', () => {
         renderComponent()
 
-        const selectButton = screen.getByRole('button', { expanded: false })
-        fireEvent.click(selectButton)
-
-        const existingCustomerOption = await screen.findByRole('option', {
-            name: /existing customer/i,
-        })
+        const existingCustomerOption = screen.getByText('Existing customer')
         fireEvent.click(existingCustomerOption)
-
         expect(mockOnSenderTypeChange).toHaveBeenCalledWith(
             SenderTypeValues.EXISTING_CUSTOMER,
         )
     })
 
-    test('calls onCustomerChange with correct parameters for new customer', async () => {
-        renderComponent({
-            senderType: SenderTypeValues.EXISTING_CUSTOMER,
-        })
+    test('calls onCustomerChange with correct parameters for new customer', () => {
+        renderComponent()
 
-        const selectButton = screen.getByRole('button', { expanded: false })
-        fireEvent.click(selectButton)
-
-        const newCustomerOption = await screen.findByRole('option', {
-            name: /new customer/i,
-        })
+        const newCustomerOption = screen.getAllByText('New customer')[1]
         fireEvent.click(newCustomerOption)
-
         expect(mockOnCustomerChange).toHaveBeenCalledWith({
             email: CustomerHttpIntegrationDataMock.address,
             id: CustomerHttpIntegrationDataMock.id,
@@ -174,15 +159,10 @@ describe('PlaygroundCustomerSelection', () => {
         })
     })
 
-    test('shows existing ticket option', async () => {
+    test('shows existing ticket option', () => {
         renderComponent()
 
-        const selectButton = screen.getByRole('button', { expanded: false })
-        fireEvent.click(selectButton)
-
-        expect(
-            await screen.findByRole('option', { name: /existing ticket/i }),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Existing ticket')).toBeInTheDocument()
     })
 
     test('renders ticket search component when existing ticket is selected', () => {

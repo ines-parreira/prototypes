@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
-import { analyzeKnowledgeSources } from 'pages/aiAgent/Playground/utils/knowledgeSourcesAnalysis'
+import { analyzeKnowledgeSources } from 'pages/aiAgent/PlaygroundV2/utils/knowledgeSourcesAnalysis'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import { useFileIngestion } from '../../hooks/useFileIngestion'

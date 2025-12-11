@@ -6,7 +6,7 @@ import { PlaygroundPanel } from './PlaygroundPanel'
 jest.mock('pages/AppContext')
 jest.mock('../../PlaygroundV2/AiAgentPlayground')
 jest.mock(
-    '../../Playground/components/PlaygroundActionsModal/PlaygroundActionsModal',
+    '../../PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal',
 )
 jest.mock('pages/aiAgent/PlaygroundV2/utils/playground.utils', () => ({
     getActionsToggleTooltipContent: jest.fn(
@@ -30,7 +30,7 @@ const mockUseAppContext = require('pages/AppContext').useAppContext as jest.Mock
 const MockAiAgentPlayground = require('../../PlaygroundV2/AiAgentPlayground')
     .AiAgentPlayground as jest.Mock
 const MockPlaygroundActionsModal =
-    require('../../Playground/components/PlaygroundActionsModal/PlaygroundActionsModal')
+    require('../../PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal')
         .default as jest.Mock
 
 describe('PlaygroundPanel', () => {

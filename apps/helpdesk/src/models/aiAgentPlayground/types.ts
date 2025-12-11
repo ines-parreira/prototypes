@@ -1,5 +1,5 @@
-import type { TicketCustomer } from 'pages/aiAgent/Playground/utils/playground-ticket.util'
 import type { PlaygroundChannels } from 'pages/aiAgent/PlaygroundV2/types'
+import type { TicketCustomer } from 'pages/aiAgent/PlaygroundV2/utils/playground-ticket.util'
 
 export type CreatePlaygroundMessage = {
     bodyText: string

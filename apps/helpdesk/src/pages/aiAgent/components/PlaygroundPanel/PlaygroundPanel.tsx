@@ -7,7 +7,7 @@ import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { useFlag } from 'core/flags'
-import PlaygroundActionsModal from 'pages/aiAgent/Playground/components/PlaygroundActionsModal/PlaygroundActionsModal'
+import PlaygroundActionsModal from 'pages/aiAgent/PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal'
 import { getActionsToggleTooltipContent } from 'pages/aiAgent/PlaygroundV2/utils/playground.utils'
 import { useAppContext } from 'pages/AppContext'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'

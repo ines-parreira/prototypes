@@ -70,7 +70,6 @@ import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { AiAgentOpportunities } from 'pages/aiAgent/opportunities/AiAgentOpportunities'
 import { AiAgentOverview } from 'pages/aiAgent/Overview/AiAgentOverview'
 import { SalesPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware'
-import { AiAgentPlaygroundContainer } from 'pages/aiAgent/Playground/AiAgentPlaygroundContainer'
 import { AiAgentPlaygroundPage } from 'pages/aiAgent/PlaygroundV2/AiAgentPlaygroundPage'
 import { AiAgentAccountConfigurationProvider } from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import { AiAgentErrorBoundary } from 'pages/aiAgent/providers/AiAgentErrorBoundary'
@@ -354,11 +353,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         FeatureFlagKey.AiAgentScrapeStoreDomain,
     )
 
-    const isNewPlayground = useFlag(
-        FeatureFlagKey.MakePlaygroundAvailableEverywhere,
-        false,
-    )
-
     const isShoppingAssitantDeactivationEnforced = useFlag(
         FeatureFlagKey.ShoppingAssistantEnforceDeactivation,
     )
@@ -452,11 +446,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Route
                             path={`${path}/test`}
                             exact
-                            component={
-                                isNewPlayground
-                                    ? AiAgentPlaygroundPage
-                                    : AiAgentPlaygroundContainer
-                            }
+                            component={AiAgentPlaygroundPage}
                         />
                     </AiAgentErrorBoundary>
 

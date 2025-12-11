@@ -16,7 +16,7 @@ import {
 } from 'models/aiAgent/queries'
 import type { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
 import { TestSessionLogType } from 'models/aiAgentPlayground/types'
-import { usePlaygroundPolling } from 'pages/aiAgent/Playground/hooks/usePlaygroundPolling'
+import { usePlaygroundPolling } from 'pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -39,7 +39,7 @@ const mockedUseCreateTestSessionMutation = jest.mocked(
 )
 const mockeduUseTriggerAIJourney = jest.mocked(useTriggerAIJourney)
 
-jest.mock('pages/aiAgent/Playground/hooks/usePlaygroundPolling', () => ({
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling', () => ({
     usePlaygroundPolling: jest.fn(),
 }))
 const mockedUsePlaygroundPolling = jest.mocked(usePlaygroundPolling)

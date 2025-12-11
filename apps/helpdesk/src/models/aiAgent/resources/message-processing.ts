@@ -1,7 +1,7 @@
 import { isProduction, isStaging } from '@repo/utils'
 import axios from 'axios'
 
-import { createMockHttpIntegrationPayload } from 'pages/aiAgent/Playground/utils/playground-ticket.util'
+import { createMockHttpIntegrationPayload } from 'pages/aiAgent/PlaygroundV2/utils/playground-ticket.util'
 
 import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 import type {

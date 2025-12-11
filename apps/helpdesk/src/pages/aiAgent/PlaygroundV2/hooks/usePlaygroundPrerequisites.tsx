@@ -5,8 +5,8 @@ import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import {
     analyzeKnowledgeSources,
     formatSyncingSourcesMessage,
-} from 'pages/aiAgent/Playground/utils/knowledgeSourcesAnalysis'
-import type { FormattedSyncingMessage } from 'pages/aiAgent/Playground/utils/knowledgeSourcesAnalysis'
+} from 'pages/aiAgent/PlaygroundV2/utils/knowledgeSourcesAnalysis'
+import type { FormattedSyncingMessage } from 'pages/aiAgent/PlaygroundV2/utils/knowledgeSourcesAnalysis'
 
 import { useFileIngestion } from '../../hooks/useFileIngestion'
 import { usePublicResources } from '../../hooks/usePublicResources'

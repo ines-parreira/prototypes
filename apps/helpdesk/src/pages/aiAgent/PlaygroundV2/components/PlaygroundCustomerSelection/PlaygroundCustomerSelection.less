@@ -3,33 +3,28 @@
         height: 34px;
         flex: 1;
 
-        button {
-            justify-self: flex-end;
-        }
-
-        // Workaround to make the select input take the full height of the container
         > div {
             border: 0;
             height: 100%;
-            display: flex;
-            justify-content: flex-end;
 
-            > button {
-                height: 100%;
-
-                > span {
-                    display: flex;
-                    height: 100%;
-
-                    div > div {
-                        height: 100%;
-                    }
-                }
+            & span {
+                height: auto !important;
             }
         }
     }
 
     .conditionalContent {
-        flex-basis: 100%;
+        width: 0;
+        visibility: hidden;
+        max-height: 0;
+        transition:
+            visibility 0.3s,
+            max-height 0.3s ease-in-out;
+
+        &[data-visible='true'] {
+            visibility: visible;
+            max-height: 200px;
+            width: 100%;
+        }
     }
 }

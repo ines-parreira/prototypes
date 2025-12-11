@@ -5,7 +5,7 @@ import { useSearchCustomer } from 'models/aiAgent/queries'
 import type { Value } from 'pages/common/forms/SelectField/types'
 import { reportError } from 'utils/errors'
 
-import type { PlaygroundCustomer } from '../../Playground/types'
+import type { PlaygroundCustomer } from '../../PlaygroundV2/types'
 import { CustomerSearchDropdownSelectComponent } from './CustomerSearchDropdownSelectComponent'
 
 type Props = {

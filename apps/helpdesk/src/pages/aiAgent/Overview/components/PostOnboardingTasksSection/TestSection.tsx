@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
@@ -12,14 +11,12 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import type { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { PostStoreInstallationStepStatus } from 'models/aiAgentPostStoreInstallationSteps/types'
 import {
     MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT,
     REFRESH_AI_AGENT_PLAYGROUND_EVENT,
 } from 'pages/aiAgent/constants'
-import { AiAgentPlaygroundView } from 'pages/aiAgent/Playground/AiAgentPlaygroundView'
 import { AiAgentPlayground } from 'pages/aiAgent/PlaygroundV2/AiAgentPlayground'
 import { Drawer } from 'pages/common/components/Drawer/Drawer'
 
@@ -117,11 +114,6 @@ export const TestSection = ({
         }
     }, [])
 
-    const isNewPlaygroundEnabled = useFlag(
-        FeatureFlagKey.MakePlaygroundAvailableEverywhere,
-        false,
-    )
-
     return (
         <div className={css.container}>
             <div className={css.leftContent}>
@@ -183,24 +175,15 @@ export const TestSection = ({
                     </Drawer.HeaderActions>
                 </Drawer.Header>
                 <Drawer.Content>
-                    {isNewPlaygroundEnabled ? (
-                        <AiAgentPlayground
-                            arePlaygroundActionsAllowed={false}
-                            resetPlayground={resetPlayground}
-                            resetPlaygroundCallback={() =>
-                                setResetPlayground(false)
-                            }
-                            withResetButton={false}
-                            onGuidanceClick={onGuidanceClick}
-                        />
-                    ) : (
-                        shopName && (
-                            <AiAgentPlaygroundView
-                                shopName={shopName}
-                                onGuidanceClick={onGuidanceClick}
-                            />
-                        )
-                    )}
+                    <AiAgentPlayground
+                        arePlaygroundActionsAllowed={false}
+                        resetPlayground={resetPlayground}
+                        resetPlaygroundCallback={() =>
+                            setResetPlayground(false)
+                        }
+                        withResetButton={false}
+                        onGuidanceClick={onGuidanceClick}
+                    />
                 </Drawer.Content>
             </Drawer>
         </div>

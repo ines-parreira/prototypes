@@ -10,13 +10,13 @@ import {
 
 import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import { SyncingSourcesMessage } from 'pages/aiAgent/Playground/components/SyncingSourcesMessage/SyncingSourcesMessage'
-import type { FormattedSyncingMessage } from 'pages/aiAgent/Playground/utils/knowledgeSourcesAnalysis'
 import { PlaygroundSettings } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundSettings/PlaygroundSettings'
+import { SyncingSourcesMessage } from 'pages/aiAgent/PlaygroundV2/components/SyncingSourcesMessage/SyncingSourcesMessage'
 import {
     useEvents,
     useSubscribeToEvent,
 } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
+import type { FormattedSyncingMessage } from 'pages/aiAgent/PlaygroundV2/utils/knowledgeSourcesAnalysis'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUserState } from 'state/currentUser/selectors'

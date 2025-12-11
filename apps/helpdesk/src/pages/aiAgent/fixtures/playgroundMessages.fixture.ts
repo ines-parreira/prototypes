@@ -12,8 +12,7 @@ import {
     PlaygroundPromptType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
-
-import { AI_AGENT_SENDER } from '../Playground/components/PlaygroundMessage/PlaygroundMessage'
+import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
 
 export const playgroundMessageFixture: PlaygroundTextMessage = {
     id: '00000000-0000-0000-0000-000000000000',

@@ -1,7 +1,7 @@
-import { useMemo } from 'react'
-
-import { ListItem, SelectField } from '@gorgias/axiom'
 import type { Ticket } from '@gorgias/helpdesk-client'
+
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import type { Value } from 'pages/common/forms/SelectField/types'
 
 import { CustomerSearchDropdownSelectView } from '../../../components/CustomerSearchDropdownSelect/CustomerSearchDropdownSelectView'
 import { TicketSearchDropdownSelectView } from '../../../components/TicketSearchDropdownSelect/TicketSearchDropdownSelectView'
@@ -22,20 +22,18 @@ export enum SenderTypeValues {
 
 const senderSelectOptions = [
     {
-        id: SenderTypeValues.NEW_CUSTOMER,
+        value: SenderTypeValues.NEW_CUSTOMER,
         label: 'New customer',
     },
     {
-        id: SenderTypeValues.EXISTING_TICKET,
+        value: SenderTypeValues.EXISTING_TICKET,
         label: 'Existing ticket',
     },
     {
-        id: SenderTypeValues.EXISTING_CUSTOMER,
+        value: SenderTypeValues.EXISTING_CUSTOMER,
         label: 'Existing customer',
     },
 ]
-
-type Option = (typeof senderSelectOptions)[number]
 
 export type TicketData = {
     customer: PlaygroundCustomer
@@ -60,9 +58,12 @@ export const PlaygroundCustomerSelection = ({
     senderType,
     onSenderTypeChange,
 }: Props) => {
-    const handleSenderSelectChange = (value: Option) => {
-        onSenderTypeChange(value.id)
-        if (value.id === SenderTypeValues.NEW_CUSTOMER) {
+    const handleSenderSelectChange = (value: Value) => {
+        if (typeof value !== 'string') {
+            return
+        }
+        onSenderTypeChange(value)
+        if (value === SenderTypeValues.NEW_CUSTOMER) {
             const playgroundCustomer: PlaygroundCustomer = {
                 email: CustomerHttpIntegrationDataMock.address,
                 id: CustomerHttpIntegrationDataMock.id,
@@ -81,56 +82,40 @@ export const PlaygroundCustomerSelection = ({
     const customerEmail =
         customer.id === DEFAULT_PLAYGROUND_CUSTOMER.id ? '' : customer.email
 
-    const displayConditionalContent =
-        senderType === SenderTypeValues.EXISTING_TICKET ||
-        senderType === SenderTypeValues.EXISTING_CUSTOMER
-
-    const selectedOption = useMemo(
-        () => senderSelectOptions.find((option) => option.id === senderType),
-        [senderType],
-    )
-
     return (
         <>
-            <div className={css.senderSelect}>
-                <SelectField
-                    value={selectedOption}
-                    onChange={handleSenderSelectChange}
-                    items={senderSelectOptions}
-                    isDisabled={false}
-                >
-                    {(option: (typeof senderSelectOptions)[number]) => (
-                        <ListItem label={option.label} />
-                    )}
-                </SelectField>
+            <SelectField
+                fullWidth
+                showSelectedOption
+                value={senderType}
+                onChange={handleSenderSelectChange}
+                options={senderSelectOptions}
+                className={css.senderSelect}
+                disabled={isDisabled}
+            />
+            <div
+                className={css.conditionalContent}
+                data-visible={
+                    senderType === SenderTypeValues.EXISTING_TICKET ||
+                    senderType === SenderTypeValues.EXISTING_CUSTOMER
+                }
+            >
+                {senderType === SenderTypeValues.EXISTING_TICKET && (
+                    <TicketSearchDropdownSelectView
+                        className={css.ticketSearch}
+                        onSelect={handleTicketSelect}
+                        isDisabled={isDisabled}
+                    />
+                )}
+                {senderType === SenderTypeValues.EXISTING_CUSTOMER && (
+                    <CustomerSearchDropdownSelectView
+                        className={css.customerSearch}
+                        baseSearchTerm={customerEmail}
+                        onSelect={onCustomerChange}
+                        isDisabled={isDisabled}
+                    />
+                )}
             </div>
-            {displayConditionalContent && (
-                <>
-                    <div
-                        className={css.conditionalContent}
-                        data-visible={
-                            senderType === SenderTypeValues.EXISTING_TICKET ||
-                            senderType === SenderTypeValues.EXISTING_CUSTOMER
-                        }
-                    >
-                        {senderType === SenderTypeValues.EXISTING_TICKET && (
-                            <TicketSearchDropdownSelectView
-                                className={css.ticketSearch}
-                                onSelect={handleTicketSelect}
-                                isDisabled={isDisabled}
-                            />
-                        )}
-                        {senderType === SenderTypeValues.EXISTING_CUSTOMER && (
-                            <CustomerSearchDropdownSelectView
-                                className={css.customerSearch}
-                                baseSearchTerm={customerEmail}
-                                onSelect={onCustomerChange}
-                                isDisabled={isDisabled}
-                            />
-                        )}
-                    </div>
-                </>
-            )}
         </>
     )
 }
