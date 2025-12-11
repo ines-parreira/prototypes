@@ -54,21 +54,23 @@ export const KnowledgeEditorGuidanceDiscardDraftModal = ({
                 </Box>
             </OverlayContent>
             <OverlayFooter hideCancelButton>
-                <Button
-                    variant="secondary"
-                    onClick={onClose}
-                    isDisabled={isDiscardingDraft}
-                >
-                    Back to editing
-                </Button>
-                <Button
-                    variant="primary"
-                    intent="destructive"
-                    onClick={handleDiscard}
-                    isLoading={isDiscardingDraft}
-                >
-                    Discard draft
-                </Button>
+                <Box>
+                    <Button
+                        variant="secondary"
+                        onClick={onClose}
+                        isDisabled={isDiscardingDraft}
+                    >
+                        Back to editing
+                    </Button>
+                    <Button
+                        variant="primary"
+                        intent="destructive"
+                        onClick={handleDiscard}
+                        isLoading={isDiscardingDraft}
+                    >
+                        Discard draft
+                    </Button>
+                </Box>
             </OverlayFooter>
         </Modal>
     )
