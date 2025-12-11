@@ -150,6 +150,16 @@ export const bulkDeleteArticles = async (
     return response.data
 }
 
+export const bulkCopyArticles = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.BulkCopyArticles.PathParameters,
+    body: Paths.BulkCopyArticles.RequestBody,
+) => {
+    if (!client) return null
+    const response = await client.bulkCopyArticles(pathParams, body)
+    return response.data
+}
+
 export const bulkUpdateArticleTranslationVisibility = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.BulkUpdateArticleTranslationsVisibility.PathParameters,

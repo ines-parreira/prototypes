@@ -9,6 +9,37 @@ import { KnowledgeType } from '../../types'
 import { BulkActions } from './BulkActions'
 
 jest.mock('../../hooks/useBulkKnowledgeActions')
+jest.mock('./DuplicateSelect', () => {
+    const { ButtonRenderMode } = jest.requireActual('./types')
+    return {
+        DuplicateSelect: ({
+            shopName,
+            helpCenterId,
+            selectedItems,
+            renderMode,
+        }: {
+            shopName?: string
+            helpCenterId?: number | null
+            selectedItems?: GroupedKnowledgeItem[]
+            renderMode?: any
+        }) => {
+            if (renderMode === ButtonRenderMode.Hidden) {
+                return null
+            }
+            return (
+                <div data-testid="duplicate-select">
+                    <span data-testid="shop-name">{shopName || 'no-shop'}</span>
+                    <span data-testid="help-center-id">
+                        {helpCenterId || 'no-id'}
+                    </span>
+                    <span data-testid="selected-count">
+                        {selectedItems?.length || 0}
+                    </span>
+                </div>
+            )
+        },
+    }
+})
 
 const mockUseBulkKnowledgeActions =
     useBulkKnowledgeActionsModule.useBulkKnowledgeActions as jest.MockedFunction<
@@ -164,7 +195,7 @@ describe('BulkActions', () => {
             />,
         )
 
-        expect(screen.getByText('Duplicate')).toBeInTheDocument()
+        expect(screen.getByTestId('duplicate-select')).toBeInTheDocument()
     })
 
     it('should not render duplicate button when viewing individual FAQ type', () => {
@@ -193,7 +224,7 @@ describe('BulkActions', () => {
             />,
         )
 
-        expect(screen.queryByText('Duplicate')).not.toBeInTheDocument()
+        expect(screen.queryByTestId('duplicate-select')).not.toBeInTheDocument()
     })
 
     it('should render clear search button when search is active and there are rows', () => {
@@ -729,6 +760,139 @@ describe('BulkActions', () => {
 
             expect(enableButton).not.toBeDisabled()
             expect(disableButton).not.toBeDisabled()
+        })
+    })
+
+    describe('DuplicateSelect integration', () => {
+        it('should pass shopName to DuplicateSelect when provided', () => {
+            const selectedItems: GroupedKnowledgeItem[] = [
+                {
+                    id: '1',
+                    type: KnowledgeType.Guidance,
+                    title: 'Test Guidance',
+                    lastUpdatedAt: '2024-01-01',
+                },
+            ]
+            const table = createMockTable(selectedItems)
+
+            render(
+                <BulkActions
+                    table={table}
+                    helpCenterIds={helpCenterIds}
+                    isSearchActive={false}
+                    shopName="test-shop"
+                />,
+            )
+
+            expect(screen.getByTestId('shop-name')).toHaveTextContent(
+                'test-shop',
+            )
+        })
+
+        it('should pass guidanceHelpCenterId to DuplicateSelect', () => {
+            const selectedItems: GroupedKnowledgeItem[] = [
+                {
+                    id: '1',
+                    type: KnowledgeType.Guidance,
+                    title: 'Test Guidance',
+                    lastUpdatedAt: '2024-01-01',
+                },
+            ]
+            const table = createMockTable(selectedItems)
+
+            render(
+                <BulkActions
+                    table={table}
+                    helpCenterIds={{
+                        guidanceHelpCenterId: 123,
+                        faqHelpCenterId: 2,
+                        snippetHelpCenterId: 3,
+                    }}
+                    isSearchActive={false}
+                />,
+            )
+
+            expect(screen.getByTestId('help-center-id')).toHaveTextContent(
+                '123',
+            )
+        })
+
+        it('should pass selected items to DuplicateSelect', () => {
+            const selectedItems: GroupedKnowledgeItem[] = [
+                {
+                    id: '1',
+                    type: KnowledgeType.Guidance,
+                    title: 'Test Guidance 1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+                {
+                    id: '2',
+                    type: KnowledgeType.Guidance,
+                    title: 'Test Guidance 2',
+                    lastUpdatedAt: '2024-01-02',
+                },
+            ]
+            const table = createMockTable(selectedItems)
+
+            render(
+                <BulkActions
+                    table={table}
+                    helpCenterIds={helpCenterIds}
+                    isSearchActive={false}
+                />,
+            )
+
+            expect(screen.getByTestId('selected-count')).toHaveTextContent('2')
+        })
+
+        it('should render default values when shopName is not provided', () => {
+            const selectedItems: GroupedKnowledgeItem[] = [
+                {
+                    id: '1',
+                    type: KnowledgeType.Guidance,
+                    title: 'Test Guidance',
+                    lastUpdatedAt: '2024-01-01',
+                },
+            ]
+            const table = createMockTable(selectedItems)
+
+            render(
+                <BulkActions
+                    table={table}
+                    helpCenterIds={helpCenterIds}
+                    isSearchActive={false}
+                />,
+            )
+
+            expect(screen.getByTestId('shop-name')).toHaveTextContent('no-shop')
+        })
+
+        it('should handle null guidanceHelpCenterId gracefully', () => {
+            const selectedItems: GroupedKnowledgeItem[] = [
+                {
+                    id: '1',
+                    type: KnowledgeType.Guidance,
+                    title: 'Test Guidance',
+                    lastUpdatedAt: '2024-01-01',
+                },
+            ]
+            const table = createMockTable(selectedItems)
+
+            render(
+                <BulkActions
+                    table={table}
+                    helpCenterIds={{
+                        guidanceHelpCenterId: null,
+                        faqHelpCenterId: 2,
+                        snippetHelpCenterId: 3,
+                    }}
+                    isSearchActive={false}
+                />,
+            )
+
+            expect(screen.getByTestId('help-center-id')).toHaveTextContent(
+                'no-id',
+            )
         })
     })
 })

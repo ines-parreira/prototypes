@@ -514,6 +514,31 @@ declare namespace Components {
                 enabled: boolean
             }
         }
+        export interface BulkCopyArticlesRequestDto {
+            /**
+             * Array of article IDs to copy
+             * example:
+             * [
+             *   1,
+             *   2,
+             *   3,
+             *   100,
+             *   250
+             * ]
+             */
+            article_ids: number[]
+            /**
+             * List of shop names where to copy given articles
+             * example:
+             * [
+             *   "shop-1, shop-2",
+             *   [
+             *     "shop-3"
+             *   ]
+             * ]
+             */
+            shop_names: string[]
+        }
         export interface BatchArticlesRequestDto {
             /**
              * Array of article IDs to retrieve source types for
@@ -3688,6 +3713,23 @@ declare namespace Paths {
             export type $200 = Components.Schemas.ArticleSourceTypeResponseDto[]
         }
     }
+    namespace BulkCopyArticles {
+        namespace Parameters {
+            export type HelpCenterId = number
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+        }
+        export type RequestBody = Components.Schemas.BulkCopyArticlesRequestDto
+        namespace Responses {
+            export interface $200 {
+                /**
+                 * Number of articles successfully copied
+                 */
+                copied_count?: number
+            }
+        }
+    }
     namespace BulkDeleteArticles {
         namespace Parameters {
             export type HelpCenterId = number
@@ -5837,6 +5879,16 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.BatchGetArticlesSourceType.Responses.$200>
     /**
+     * bulkCopyArticles - Bulk copy articles
+     *
+     * Copies multiple articles and their translations across multiple help center. This operation is supported only for Help Center type GUIDANCE
+     */
+    'bulkCopyArticles'(
+        parameters: Parameters<Paths.BulkCopyArticles.PathParameters>,
+        data?: Paths.BulkCopyArticles.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.BulkCopyArticles.Responses.$200>
+    /**
      * bulkDeleteArticles - Bulk delete articles
      *
      * Deletes multiple articles and their translations in a single transaction. This operation is supported only for Help Center type GUIDANCE and FAQ
@@ -7095,6 +7147,18 @@ export interface PathsDictionary {
             data?: Paths.BatchGetArticlesSourceType.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.BatchGetArticlesSourceType.Responses.$200>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/articles/bulk-copy']: {
+        /**
+         * bulkCopyArticles - Bulk copy articles
+         *
+         * Copies multiple articles and their translations across multiple help center. This operation is supported only for Help Center type GUIDANCE
+         */
+        'post'(
+            parameters: Parameters<Paths.BulkCopyArticles.PathParameters>,
+            data?: Paths.BulkCopyArticles.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.BulkCopyArticles.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/articles/bulk']: {
         /**

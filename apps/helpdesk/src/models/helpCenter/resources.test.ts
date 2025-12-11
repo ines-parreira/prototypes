@@ -1,6 +1,6 @@
 import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 
-import { getKnowledgeHubArticles } from './resources'
+import { bulkCopyArticles, getKnowledgeHubArticles } from './resources'
 import type {
     KnowledgeHubArticlesQueryParams,
     KnowledgeHubArticlesResponse,
@@ -143,5 +143,127 @@ describe('getKnowledgeHubArticles', () => {
             },
         )
         expect(result).toEqual(mockResponse)
+    })
+})
+
+describe('bulkCopyArticles', () => {
+    const mockPathParams = {
+        help_center_id: 123,
+    }
+
+    const mockBody = {
+        article_ids: [1, 2, 3],
+        shop_names: ['shop-1', 'shop-2'],
+    }
+
+    const mockResponse = {
+        copied_count: 3,
+    }
+
+    it('should return copied count on success', async () => {
+        const mockClient = {
+            bulkCopyArticles: jest.fn().mockResolvedValue({
+                data: mockResponse,
+            }),
+        } as unknown as HelpCenterClient
+
+        const result = await bulkCopyArticles(
+            mockClient,
+            mockPathParams,
+            mockBody,
+        )
+
+        expect(mockClient.bulkCopyArticles).toHaveBeenCalledWith(
+            mockPathParams,
+            mockBody,
+        )
+        expect(result).toEqual(mockResponse)
+    })
+
+    it('should return null when client is undefined', async () => {
+        const result = await bulkCopyArticles(
+            undefined,
+            mockPathParams,
+            mockBody,
+        )
+
+        expect(result).toBeNull()
+    })
+
+    it('should throw error when API call fails', async () => {
+        const mockError = new Error('API Error')
+        const mockClient = {
+            bulkCopyArticles: jest.fn().mockRejectedValue(mockError),
+        } as unknown as HelpCenterClient
+
+        await expect(
+            bulkCopyArticles(mockClient, mockPathParams, mockBody),
+        ).rejects.toThrow('API Error')
+    })
+
+    it('should pass correct path parameters and body', async () => {
+        const mockClient = {
+            bulkCopyArticles: jest.fn().mockResolvedValue({
+                data: mockResponse,
+            }),
+        } as unknown as HelpCenterClient
+
+        const pathParams = {
+            help_center_id: 456,
+        }
+
+        const body = {
+            article_ids: [10, 20, 30, 40],
+            shop_names: ['test-shop-1', 'test-shop-2', 'test-shop-3'],
+        }
+
+        await bulkCopyArticles(mockClient, pathParams, body)
+
+        expect(mockClient.bulkCopyArticles).toHaveBeenCalledWith(
+            pathParams,
+            body,
+        )
+    })
+
+    it('should handle empty shop names array', async () => {
+        const mockClient = {
+            bulkCopyArticles: jest.fn().mockResolvedValue({
+                data: { copied_count: 0 },
+            }),
+        } as unknown as HelpCenterClient
+
+        const body = {
+            article_ids: [1, 2],
+            shop_names: [],
+        }
+
+        const result = await bulkCopyArticles(mockClient, mockPathParams, body)
+
+        expect(mockClient.bulkCopyArticles).toHaveBeenCalledWith(
+            mockPathParams,
+            body,
+        )
+        expect(result).toEqual({ copied_count: 0 })
+    })
+
+    it('should handle single article and single shop', async () => {
+        const mockClient = {
+            bulkCopyArticles: jest.fn().mockResolvedValue({
+                data: { copied_count: 1 },
+            }),
+        } as unknown as HelpCenterClient
+
+        const body = {
+            article_ids: [1],
+            shop_names: ['single-shop'],
+        }
+
+        const result = await bulkCopyArticles(mockClient, mockPathParams, body)
+
+        expect(mockClient.bulkCopyArticles).toHaveBeenCalledWith(
+            mockPathParams,
+            body,
+        )
+        expect(result).toEqual({ copied_count: 1 })
     })
 })

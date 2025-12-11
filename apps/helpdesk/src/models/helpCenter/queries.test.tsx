@@ -6,6 +6,7 @@ import { act, renderHook, waitFor } from '@testing-library/react'
 import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 
 import {
+    useBulkCopyArticles,
     useBulkDeleteArticles,
     useBulkUpdateArticleTranslationVisibility,
     useGetKnowledgeHubArticles,
@@ -579,6 +580,238 @@ describe('useBulkUpdateArticleTranslationVisibility', () => {
                 article_ids: [1],
                 locale_code: 'fr-FR',
                 visibility_status: 'PUBLIC',
+            },
+        )
+    })
+})
+
+describe('useBulkCopyArticles', () => {
+    let queryClient: QueryClient
+    const mockBulkCopyArticles = jest.spyOn(resources, 'bulkCopyArticles')
+
+    beforeEach(() => {
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: { retry: false },
+            },
+        })
+        jest.clearAllMocks()
+    })
+
+    const wrapper = ({ children }: { children: ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+
+    it('should successfully copy articles to multiple shops', async () => {
+        const mockResponse = { copied_count: 6 }
+        mockBulkCopyArticles.mockResolvedValue(mockResponse)
+
+        const { result } = renderHook(() => useBulkCopyArticles(), {
+            wrapper,
+        })
+
+        let response
+        await act(async () => {
+            response = await result.current.mutateAsync([
+                undefined,
+                { help_center_id: 1 },
+                {
+                    article_ids: [1, 2, 3],
+                    shop_names: ['shop-1', 'shop-2'],
+                },
+            ])
+        })
+        expect(response).toEqual(mockResponse)
+
+        expect(mockBulkCopyArticles).toHaveBeenCalledWith(
+            mockClient,
+            { help_center_id: 1 },
+            {
+                article_ids: [1, 2, 3],
+                shop_names: ['shop-1', 'shop-2'],
+            },
+        )
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+    })
+
+    it('should handle error when copy fails', async () => {
+        const mockError = new Error('Failed to copy articles')
+        mockBulkCopyArticles.mockRejectedValue(mockError)
+
+        const { result } = renderHook(() => useBulkCopyArticles(), {
+            wrapper,
+        })
+
+        await act(async () => {
+            try {
+                await result.current.mutateAsync([
+                    undefined,
+                    { help_center_id: 1 },
+                    {
+                        article_ids: [1, 2],
+                        shop_names: ['shop-1'],
+                    },
+                ])
+            } catch (error) {
+                expect(error).toEqual(mockError)
+            }
+        })
+
+        await waitFor(() => {
+            expect(result.current.isError).toBe(true)
+        })
+    })
+
+    it('should call onSuccess callback after successful copy', async () => {
+        const mockResponse = { copied_count: 2 }
+        mockBulkCopyArticles.mockResolvedValue(mockResponse)
+        const onSuccess = jest.fn()
+
+        const { result } = renderHook(
+            () => useBulkCopyArticles({ onSuccess }),
+            { wrapper },
+        )
+
+        await act(async () => {
+            await result.current.mutateAsync([
+                undefined,
+                { help_center_id: 1 },
+                {
+                    article_ids: [1, 2],
+                    shop_names: ['shop-1'],
+                },
+            ])
+        })
+
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                mockResponse,
+                [
+                    undefined,
+                    { help_center_id: 1 },
+                    {
+                        article_ids: [1, 2],
+                        shop_names: ['shop-1'],
+                    },
+                ],
+                undefined,
+            )
+        })
+    })
+
+    it('should call onError callback when copy fails', async () => {
+        const mockError = new Error('Copy failed')
+        mockBulkCopyArticles.mockRejectedValue(mockError)
+        const onError = jest.fn()
+
+        const { result } = renderHook(() => useBulkCopyArticles({ onError }), {
+            wrapper,
+        })
+
+        await act(async () => {
+            try {
+                await result.current.mutateAsync([
+                    undefined,
+                    { help_center_id: 1 },
+                    {
+                        article_ids: [1],
+                        shop_names: ['shop-1'],
+                    },
+                ])
+            } catch {
+                // Expected to throw
+            }
+        })
+
+        await waitFor(() => {
+            expect(onError).toHaveBeenCalledWith(
+                mockError,
+                [
+                    undefined,
+                    { help_center_id: 1 },
+                    {
+                        article_ids: [1],
+                        shop_names: ['shop-1'],
+                    },
+                ],
+                undefined,
+            )
+        })
+    })
+
+    it('should handle empty shop_names array', async () => {
+        const mockResponse = { copied_count: 0 }
+        mockBulkCopyArticles.mockResolvedValue(mockResponse)
+
+        const { result } = renderHook(() => useBulkCopyArticles(), {
+            wrapper,
+        })
+
+        await act(async () => {
+            const response = await result.current.mutateAsync([
+                undefined,
+                { help_center_id: 1 },
+                {
+                    article_ids: [1, 2, 3],
+                    shop_names: [],
+                },
+            ])
+            expect(response).toEqual(mockResponse)
+        })
+    })
+
+    it('should handle single article and single shop', async () => {
+        const mockResponse = { copied_count: 1 }
+        mockBulkCopyArticles.mockResolvedValue(mockResponse)
+
+        const { result } = renderHook(() => useBulkCopyArticles(), {
+            wrapper,
+        })
+
+        await act(async () => {
+            const response = await result.current.mutateAsync([
+                undefined,
+                { help_center_id: 1 },
+                {
+                    article_ids: [1],
+                    shop_names: ['single-shop'],
+                },
+            ])
+            expect(response).toEqual(mockResponse)
+        })
+    })
+
+    it('should handle large batch of articles and shops', async () => {
+        const mockResponse = { copied_count: 15 }
+        mockBulkCopyArticles.mockResolvedValue(mockResponse)
+
+        const { result } = renderHook(() => useBulkCopyArticles(), {
+            wrapper,
+        })
+
+        await act(async () => {
+            const response = await result.current.mutateAsync([
+                undefined,
+                { help_center_id: 1 },
+                {
+                    article_ids: [1, 2, 3, 4, 5],
+                    shop_names: ['shop-1', 'shop-2', 'shop-3'],
+                },
+            ])
+            expect(response).toEqual(mockResponse)
+        })
+
+        expect(mockBulkCopyArticles).toHaveBeenCalledWith(
+            mockClient,
+            { help_center_id: 1 },
+            {
+                article_ids: [1, 2, 3, 4, 5],
+                shop_names: ['shop-1', 'shop-2', 'shop-3'],
             },
         )
     })

@@ -12,6 +12,7 @@ import type { MutationOverrides } from 'types/query'
 import { useHelpCenterApi } from '../../pages/settings/helpCenter/hooks/useHelpCenterApi'
 import type { Paths } from '../../rest_api/help_center_api/client.generated'
 import {
+    bulkCopyArticles,
     bulkDeleteArticles,
     bulkUpdateArticleTranslationVisibility,
     checkHelpCenterWithSubdomainExists,
@@ -1184,6 +1185,20 @@ export const useBulkDeleteArticles = (
             pathParams: { help_center_id: number },
             body: { article_ids: number[] },
         ]) => bulkDeleteArticles(client, pathParams, body),
+        ...overrides,
+    })
+}
+
+export const useBulkCopyArticles = (
+    overrides?: MutationOverrides<typeof bulkCopyArticles>,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, body]: [
+            client: HelpCenterClient | undefined,
+            pathParams: Paths.BulkCopyArticles.PathParameters,
+            body: Paths.BulkCopyArticles.RequestBody,
+        ]) => bulkCopyArticles(client, pathParams, body),
         ...overrides,
     })
 }

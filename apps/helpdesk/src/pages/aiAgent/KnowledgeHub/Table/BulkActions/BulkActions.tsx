@@ -30,6 +30,7 @@ type BulkActionsProps = {
     isSearchActive?: boolean
     onClearSearch?: () => void
     activeContentType?: KnowledgeType | null
+    shopName?: string
 }
 
 export const BulkActions = ({
@@ -38,6 +39,7 @@ export const BulkActions = ({
     isSearchActive = false,
     onClearSearch,
     activeContentType = null,
+    shopName,
 }: BulkActionsProps) => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const selectedRows = table.getFilteredSelectedRowModel().rows || []
@@ -107,6 +109,9 @@ export const BulkActions = ({
                         isDisabled={isDuplicateActionDisabled}
                         renderMode={duplicateMode}
                         tooltipMessage={TOOLTIP_MESSAGES.duplicate}
+                        shopName={shopName}
+                        helpCenterId={helpCenterIds.guidanceHelpCenterId}
+                        selectedItems={selectedItems}
                     />
 
                     <DeleteButton

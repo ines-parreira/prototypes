@@ -685,6 +685,49 @@
                 "tags": ["articles"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/articles/bulk-copy": {
+            "post": {
+                "operationId": "bulkCopyArticles",
+                "summary": "Bulk copy articles",
+                "description": "Copies multiple articles and their translations across multiple help center. This operation is supported only for Help Center type GUIDANCE",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BulkCopyArticlesRequestDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "copied_count": {
+                                            "type": "number",
+                                            "description": "Number of articles successfully copied"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/articles/bulk": {
             "delete": {
                 "operationId": "bulkDeleteArticles",
@@ -5978,6 +6021,81 @@
                     "published_version_id",
                     "rating"
                 ]
+            },
+            "BulkCopyArticlesRequestDto": {
+                "type": "object",
+                "properties": {
+                    "article_ids": {
+                        "description": "Array of article IDs to copy",
+                        "example": [1, 2, 3, 100, 250],
+                        "type": "array",
+                        "items": { "type": "number" }
+                    },
+                    "shop_names": {
+                        "description": "List of shop names where to copy given articles",
+                        "example": ["shop-1, shop-2", ["shop-3"]],
+                        "type": "array",
+                        "items": { "type": "string" }
+                    }
+                },
+                "required": ["article_ids", "shop_names"]
+            },
+            "BatchDeleteArticlesRequestDto": {
+                "type": "object",
+                "properties": {
+                    "article_ids": {
+                        "description": "Array of article IDs to delete",
+                        "example": [1, 2, 3, 100, 250],
+                        "type": "array",
+                        "items": { "type": "number" }
+                    }
+                },
+                "required": ["article_ids"]
+            },
+            "BatchUpdateArticleTranslationsVisibilityRequestDto": {
+                "type": "object",
+                "properties": {
+                    "article_ids": {
+                        "description": "Array of article IDs to update translations for",
+                        "example": [1, 2, 3, 100, 250],
+                        "type": "array",
+                        "items": { "type": "number" }
+                    },
+                    "locale_code": {
+                        "type": "string",
+                        "description": "Locale code for translations to update (all articles must have translation in this locale)",
+                        "enum": [
+                            "cs-CZ",
+                            "da-DK",
+                            "nl-NL",
+                            "en-GB",
+                            "en-US",
+                            "fi-FI",
+                            "fr-CA",
+                            "fr-FR",
+                            "de-DE",
+                            "it-IT",
+                            "ja-JP",
+                            "no-NO",
+                            "pt-BR",
+                            "es-ES",
+                            "sv-SE"
+                        ],
+                        "example": "en-US"
+                    },
+                    "visibility_status": {
+                        "enum": ["GORGIAS_INTERNAL", "PUBLIC", "UNLISTED"],
+                        "type": "string",
+                        "description": "New visibility status for all translations",
+                        "example": "PUBLIC"
+                    },
+                    "is_current": {
+                        "type": "boolean",
+                        "description": "Publish immediately (true) or save as draft (false)",
+                        "default": true
+                    }
+                },
+                "required": ["article_ids", "locale_code", "visibility_status"]
             },
             "ArticleTranslationsListPageDto": {
                 "type": "object",

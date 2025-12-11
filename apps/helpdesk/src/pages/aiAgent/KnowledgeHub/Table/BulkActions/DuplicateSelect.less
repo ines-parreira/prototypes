@@ -1,0 +1,23 @@
+:local {
+    [data-key='apply-action'] {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        // Disable clicking on the ListItem itself - only the button should be clickable
+        pointer-events: none;
+
+        // Re-enable clicking on the Button inside
+        button {
+            pointer-events: auto;
+        }
+
+        // Removes hover effect on ListItem
+        &[data-hovered='true'] > div::before {
+            content: none !important;
+        }
+        &[data-selected='true'] > div {
+            background-color: transparent !important;
+        }
+    }
+}

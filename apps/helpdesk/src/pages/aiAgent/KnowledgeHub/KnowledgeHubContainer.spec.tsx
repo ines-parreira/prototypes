@@ -217,8 +217,14 @@ jest.mock(
     }),
 )
 jest.mock('pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable', () => ({
-    KnowledgeHubTable: ({ data, onRowClick, selectedFolder }: any) => (
+    KnowledgeHubTable: ({
+        data,
+        onRowClick,
+        selectedFolder,
+        shopName,
+    }: any) => (
         <div>
+            <span data-testid="table-shop-name">{shopName || 'no-shop'}</span>
             {!selectedFolder &&
                 data.length > 0 &&
                 data.map((item: any) => (
@@ -516,6 +522,27 @@ describe('KnowledgeHubContainer', () => {
 
             expect(mockExtractShopNameFromUrl).toHaveBeenCalledWith(
                 window.location.href,
+            )
+        })
+
+        it('passes shopName to KnowledgeHubTable when extracted from URL', () => {
+            const routeShopName = 'test-shop-url'
+            mockExtractShopNameFromUrl.mockReturnValue(routeShopName)
+
+            renderComponent()
+
+            expect(screen.getByTestId('table-shop-name')).toHaveTextContent(
+                'test-shop-url',
+            )
+        })
+
+        it('passes shopName to KnowledgeHubTable when using first integration', () => {
+            mockExtractShopNameFromUrl.mockReturnValue(undefined)
+
+            renderComponent()
+
+            expect(screen.getByTestId('table-shop-name')).toHaveTextContent(
+                'store-alpha',
             )
         })
     })

@@ -404,6 +404,7 @@ export const KnowledgeHubTable = ({
                                     isSearchActive={isSearchActive}
                                     onClearSearch={clearSearch}
                                     activeContentType={selectedTypeFilter}
+                                    shopName={shopName}
                                 />
                             ),
                         },

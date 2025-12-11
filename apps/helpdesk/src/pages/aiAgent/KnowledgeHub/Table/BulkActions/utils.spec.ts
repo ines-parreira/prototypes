@@ -2,9 +2,13 @@ import { KnowledgeType } from '../../types'
 import type { GroupedKnowledgeItem } from '../../types'
 import { ButtonRenderMode } from './types'
 import {
+    buildDuplicateNotificationMessage,
+    cleanStoreName,
+    createStoreLink,
     getAIAgentButtonConfig,
     getDeleteButtonMode,
     getDuplicateButtonMode,
+    isCurrentStore,
     TOOLTIP_MESSAGES,
 } from './utils'
 
@@ -428,6 +432,152 @@ describe('BulkActions utils', () => {
 
             expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
             expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.aiAgentMixedFAQ)
+        })
+    })
+
+    describe('DuplicateSelect utils', () => {
+        describe('cleanStoreName', () => {
+            it('removes " (current)" suffix from store name', () => {
+                expect(cleanStoreName('store-1 (current)')).toBe('store-1')
+            })
+
+            it('returns unchanged name when no suffix present', () => {
+                expect(cleanStoreName('store-1')).toBe('store-1')
+            })
+
+            it('handles stores with spaces in name', () => {
+                expect(cleanStoreName('my store (current)')).toBe('my store')
+            })
+
+            it('only removes suffix at the end', () => {
+                expect(cleanStoreName('(current) store-1')).toBe(
+                    '(current) store-1',
+                )
+            })
+        })
+
+        describe('isCurrentStore', () => {
+            it('returns true when store name matches shopName', () => {
+                expect(isCurrentStore('store-1', 'store-1')).toBe(true)
+            })
+
+            it('returns true when store name matches shopName with (current) suffix', () => {
+                expect(isCurrentStore('store-1 (current)', 'store-1')).toBe(
+                    true,
+                )
+            })
+
+            it('returns false when store name does not match shopName', () => {
+                expect(isCurrentStore('store-2', 'store-1')).toBe(false)
+            })
+
+            it('returns false when shopName is undefined', () => {
+                expect(isCurrentStore('store-1', undefined)).toBe(false)
+            })
+
+            it('returns false when store name is different from shopName with (current)', () => {
+                expect(isCurrentStore('store-2 (current)', 'store-1')).toBe(
+                    false,
+                )
+            })
+        })
+
+        describe('createStoreLink', () => {
+            it('creates HTML link with clean store name', () => {
+                const result = createStoreLink('store-1')
+                expect(result).toBe(
+                    '<a href="/app/ai-agent/shopify/store-1/knowledge">store-1</a>',
+                )
+            })
+
+            it('removes (current) suffix from store name in link', () => {
+                const result = createStoreLink('store-1 (current)')
+                expect(result).toBe(
+                    '<a href="/app/ai-agent/shopify/store-1/knowledge">store-1</a>',
+                )
+            })
+
+            it('handles store names with spaces', () => {
+                const result = createStoreLink('my store')
+                expect(result).toBe(
+                    '<a href="/app/ai-agent/shopify/my store/knowledge">my store</a>',
+                )
+            })
+        })
+
+        describe('buildDuplicateNotificationMessage', () => {
+            it('returns simple message when only current store is selected', () => {
+                const stores = [{ name: 'store-1 (current)' }]
+                const result = buildDuplicateNotificationMessage(
+                    stores,
+                    'store-1',
+                )
+                expect(result).toBe('Guidance duplicated')
+            })
+
+            it('returns simple message when only current store without suffix is selected', () => {
+                const stores = [{ name: 'store-1' }]
+                const result = buildDuplicateNotificationMessage(
+                    stores,
+                    'store-1',
+                )
+                expect(result).toBe('Guidance duplicated')
+            })
+
+            it('returns message with links when only other stores are selected', () => {
+                const stores = [{ name: 'store-2' }, { name: 'store-3' }]
+                const result = buildDuplicateNotificationMessage(
+                    stores,
+                    'store-1',
+                )
+                expect(result).toContain('Guidance duplicated to')
+                expect(result).toContain('store-2')
+                expect(result).toContain('store-3')
+                expect(result).toContain(
+                    '/app/ai-agent/shopify/store-2/knowledge',
+                )
+                expect(result).toContain(
+                    '/app/ai-agent/shopify/store-3/knowledge',
+                )
+            })
+
+            it('returns combined message when current and other stores are selected', () => {
+                const stores = [
+                    { name: 'store-1 (current)' },
+                    { name: 'store-2' },
+                ]
+                const result = buildDuplicateNotificationMessage(
+                    stores,
+                    'store-1',
+                )
+                expect(result).toContain('store-1')
+                expect(result).toContain('store-2')
+                expect(result).toContain(
+                    '/app/ai-agent/shopify/store-2/knowledge',
+                )
+            })
+
+            it('handles undefined shopName', () => {
+                const stores = [{ name: 'store-1' }]
+                const result = buildDuplicateNotificationMessage(
+                    stores,
+                    undefined,
+                )
+                expect(result).toContain('Guidance duplicated to')
+                expect(result).toContain('store-1')
+            })
+
+            it('cleans store names in links', () => {
+                const stores = [{ name: 'store-2 (current)' }]
+                const result = buildDuplicateNotificationMessage(
+                    stores,
+                    'store-1',
+                )
+                expect(result).not.toContain('(current)')
+                expect(result).toContain(
+                    '/app/ai-agent/shopify/store-2/knowledge',
+                )
+            })
         })
     })
 })
