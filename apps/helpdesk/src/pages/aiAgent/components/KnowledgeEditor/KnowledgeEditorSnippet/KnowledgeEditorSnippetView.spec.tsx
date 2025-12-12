@@ -1,9 +1,17 @@
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
+import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorSnippetView } from './KnowledgeEditorSnippetView'
+
+const store = mockStore({})
+
+const renderWithProvider = (ui: React.ReactElement) => {
+    return render(<Provider store={store}>{ui}</Provider>)
+}
 
 describe('KnowledgeEditorSnippetView', () => {
     const baseProps = {
@@ -55,7 +63,7 @@ describe('KnowledgeEditorSnippetView', () => {
     }
 
     it('renders URL snippet with correct title and source', () => {
-        const { container } = render(
+        const { container } = renderWithProvider(
             <KnowledgeEditorSnippetView {...baseProps} snippet={urlSnippet} />,
         )
 
@@ -69,7 +77,7 @@ describe('KnowledgeEditorSnippetView', () => {
     })
 
     it('renders document snippet with correct title and source', () => {
-        const { container } = render(
+        const { container } = renderWithProvider(
             <KnowledgeEditorSnippetView
                 {...baseProps}
                 snippet={documentSnippet}
@@ -83,8 +91,8 @@ describe('KnowledgeEditorSnippetView', () => {
         ).toContain('Document snippet content')
     })
 
-    it('renders store snippet with correct title and domain', () => {
-        const { container } = render(
+    it('renders store snippet with correct title and sources', () => {
+        const { container } = renderWithProvider(
             <KnowledgeEditorSnippetView
                 {...baseProps}
                 snippet={storeSnippet}
@@ -101,7 +109,7 @@ describe('KnowledgeEditorSnippetView', () => {
     })
 
     it('passes AI Agent status to side panel when details view is toggled', async () => {
-        render(
+        renderWithProvider(
             <KnowledgeEditorSnippetView {...baseProps} snippet={urlSnippet} />,
         )
 
@@ -115,7 +123,7 @@ describe('KnowledgeEditorSnippetView', () => {
     })
 
     it('shows side panel by default', () => {
-        render(
+        renderWithProvider(
             <KnowledgeEditorSnippetView {...baseProps} snippet={urlSnippet} />,
         )
 
@@ -129,7 +137,7 @@ describe('KnowledgeEditorSnippetView', () => {
         const user = userEvent.setup()
         const onToggleFullscreen = jest.fn()
 
-        render(
+        renderWithProvider(
             <KnowledgeEditorSnippetView
                 {...baseProps}
                 snippet={urlSnippet}
@@ -149,7 +157,7 @@ describe('KnowledgeEditorSnippetView', () => {
         const user = userEvent.setup()
         const onClose = jest.fn()
 
-        render(
+        renderWithProvider(
             <KnowledgeEditorSnippetView
                 {...baseProps}
                 snippet={urlSnippet}
@@ -164,7 +172,7 @@ describe('KnowledgeEditorSnippetView', () => {
     })
 
     it('renders read view with snippet content', () => {
-        render(
+        renderWithProvider(
             <KnowledgeEditorSnippetView {...baseProps} snippet={urlSnippet} />,
         )
 
@@ -172,7 +180,7 @@ describe('KnowledgeEditorSnippetView', () => {
     })
 
     it('renders document snippet with google storage URL', () => {
-        render(
+        renderWithProvider(
             <KnowledgeEditorSnippetView
                 {...baseProps}
                 snippet={documentSnippet}
@@ -183,7 +191,7 @@ describe('KnowledgeEditorSnippetView', () => {
     })
 
     it('renders store snippet with multiple sources', () => {
-        render(
+        renderWithProvider(
             <KnowledgeEditorSnippetView
                 {...baseProps}
                 snippet={storeSnippet}

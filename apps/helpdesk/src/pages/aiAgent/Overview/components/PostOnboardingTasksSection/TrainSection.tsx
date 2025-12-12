@@ -58,9 +58,15 @@ export const TrainSection = ({
     const {
         guidanceArticles,
         isGuidanceArticleListLoading: isLoadingGuidanceArticles,
-    } = useGuidanceArticles(storeConfiguration?.guidanceHelpCenterId ?? 0, {
-        enabled: !!storeConfiguration?.guidanceHelpCenterId,
-    })
+    } = useGuidanceArticles(
+        storeConfiguration?.guidanceHelpCenterId ?? 0,
+        {
+            enabled: !!storeConfiguration?.guidanceHelpCenterId,
+        },
+        {
+            version_status: 'latest_draft',
+        },
+    )
 
     const { deleteGuidanceArticle, isGuidanceArticleDeleting } =
         useGuidanceArticleMutation({

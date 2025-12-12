@@ -95,11 +95,13 @@ export const TitleCell = ({
                             availableActions={availableActions}
                         />
                     )}
-                {!isGrouped && type === KnowledgeType.FAQ && (
-                    <Tag id={row.original.id} className={css.tag}>
-                        {isArticleDraft ? 'Draft' : 'Public'}
-                    </Tag>
-                )}
+                {!isGrouped &&
+                    (type === KnowledgeType.FAQ ||
+                        type === KnowledgeType.Guidance) && (
+                        <Tag id={row.original.id} className={css.tag}>
+                            {isArticleDraft ? 'Draft' : 'Public'}
+                        </Tag>
+                    )}
                 {!isGrouped && source && (
                     <div className={css.source}>
                         <Icon name={typeConfig[type].icon} size="sm" />

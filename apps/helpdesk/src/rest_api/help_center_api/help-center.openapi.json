@@ -1122,7 +1122,7 @@
             "delete": {
                 "operationId": "deleteArticleTranslationDraft",
                 "summary": "Delete draft version of article translation",
-                "description": "Discards unpublished draft changes and reverts the translation to the current\n      published version. This operation will delete the article as a whole if there is no published version.\n      Otherwise, it will delete the latest draft version of the translation. It will fail if there is no latest draft version.\n      \n      The endpoint will return the current published version of the translation if it exists, otherwise it will return nothing.",
+                "description": "Discards unpublished draft changes and reverts the translation to the current\n      published version. This operation will delete the article as a whole if there is no published version.\n      Otherwise, it will delete the latest draft version of the translation. It will fail if there is no latest draft version.\n\n      The endpoint will return the current published version of the translation if it exists, otherwise it will return nothing.",
                 "parameters": [
                     {
                         "name": "help_center_id",
@@ -1145,12 +1145,17 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "Returns the current published version of the translation if it exists.",
                         "content": {
                             "application/json": {
-                                "schema": { "type": "object" }
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleTranslationResponseDto"
+                                }
                             }
                         }
+                    },
+                    "204": {
+                        "description": "No content returned when there is no published version to revert to."
                     }
                 },
                 "tags": ["article-translations"]
@@ -5121,6 +5126,7 @@
                         "type": "array",
                         "items": { "type": "number" }
                     },
+                    "source_name": { "type": "string", "nullable": true },
                     "raw_text": { "type": "string", "nullable": true },
                     "dataset_id": { "type": "string", "nullable": true },
                     "scraping_id": { "type": "string", "nullable": true },
@@ -5543,6 +5549,24 @@
                     }
                 },
                 "required": ["id", "source_type"]
+            },
+            "BulkCopyArticlesRequestDto": {
+                "type": "object",
+                "properties": {
+                    "article_ids": {
+                        "description": "Array of article IDs to copy",
+                        "example": [1, 2, 3, 100, 250],
+                        "type": "array",
+                        "items": { "type": "number" }
+                    },
+                    "shop_names": {
+                        "description": "List of shop names where to copy given articles",
+                        "example": ["shop-1, shop-2", ["shop-3"]],
+                        "type": "array",
+                        "items": { "type": "string" }
+                    }
+                },
+                "required": ["article_ids", "shop_names"]
             },
             "BatchDeleteArticlesRequestDto": {
                 "type": "object",
@@ -9668,6 +9692,7 @@
                         "type": "array",
                         "items": { "type": "number" }
                     },
+                    "source_name": { "type": "string", "nullable": true },
                     "raw_text": { "type": "string", "nullable": true },
                     "dataset_id": { "type": "string", "nullable": true },
                     "scraping_id": { "type": "string", "nullable": true },

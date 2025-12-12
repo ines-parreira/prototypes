@@ -7,7 +7,6 @@ import { Provider } from 'react-redux'
 import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
-import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
@@ -38,9 +37,11 @@ jest.mock('@gorgias/axiom', () => ({
 }))
 
 const mockNotifyError = jest.fn()
+const mockNotifySuccess = jest.fn()
 jest.mock('hooks/useNotify', () => ({
     useNotify: jest.fn(() => ({
         error: mockNotifyError,
+        success: mockNotifySuccess,
     })),
 }))
 
@@ -129,6 +130,7 @@ describe('KnowledgeEditorGuidance', () => {
         mockUseGuidanceArticle.mockReturnValue({
             guidanceArticle,
             isGuidanceArticleLoading: false,
+            refetch: jest.fn(),
         })
         updateGuidanceArticle.mockResolvedValue(guidanceArticle)
         createGuidanceArticle.mockResolvedValue(guidanceArticle)
@@ -158,8 +160,18 @@ describe('KnowledgeEditorGuidance', () => {
         })
     })
 
-    it('renders in edit mode and allows editing', () => {
-        const { getByLabelText } = render(
+    it('renders in edit mode and allows publishing when viewing draft', async () => {
+        // Set up a draft article (isCurrent: false) to enable publish button
+        mockUseGuidanceArticle.mockReturnValue({
+            guidanceArticle: {
+                ...guidanceArticle,
+                isCurrent: false,
+            },
+            isGuidanceArticleLoading: false,
+            refetch: jest.fn(),
+        })
+
+        render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
@@ -175,22 +187,37 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
-        const nameInput = getByLabelText(/Guidance name/i)
-        act(() => {
-            fireEvent.change(nameInput, { target: { value: 'Updated Name' } })
-            fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+        // In edit mode with draft, Publish button should be present
+        const publishButton = screen.getByRole('button', { name: 'Publish' })
+        expect(publishButton).toBeInTheDocument()
+        expect(publishButton).not.toBeDisabled()
+
+        await act(async () => {
+            fireEvent.click(publishButton)
         })
 
+        // Publish sets isCurrent: true
         expect(updateGuidanceArticle).toHaveBeenCalledWith(
-            mapGuidanceFormFieldsToGuidanceArticle(
-                {
-                    name: 'Updated Name',
-                    content: guidanceArticle.content,
-                    isVisible: true,
-                },
-                guidanceArticle.locale,
-            ),
+            { isCurrent: true },
             { articleId: guidanceArticle.id, locale: guidanceArticle.locale },
+        )
+    })
+
+    it('toggles fullscreen mode in edit mode', () => {
+        render(
+            <Provider store={mockStore({})}>
+                <KnowledgeEditorGuidance
+                    shopName="Test Shop"
+                    shopType="Test Shop Type"
+                    guidanceArticleId={1}
+                    onClose={jest.fn()}
+                    onClickPrevious={jest.fn()}
+                    onClickNext={jest.fn()}
+                    guidanceMode="edit"
+                    isOpen
+                    onDelete={jest.fn()}
+                />
+            </Provider>,
         )
 
         fireEvent.click(screen.getByRole('button', { name: 'fullscreen' }))
@@ -231,6 +258,7 @@ describe('KnowledgeEditorGuidance', () => {
         mockUseGuidanceArticle.mockReturnValue({
             guidanceArticle: guidanceArticle2,
             isGuidanceArticleLoading: false,
+            refetch: jest.fn(),
         })
 
         rerender(
@@ -242,7 +270,7 @@ describe('KnowledgeEditorGuidance', () => {
                     onClose={jest.fn()}
                     onClickPrevious={jest.fn()}
                     onClickNext={jest.fn()}
-                    guidanceMode="edit"
+                    guidanceMode="read"
                     isOpen
                     onDelete={jest.fn()}
                 />
@@ -250,20 +278,23 @@ describe('KnowledgeEditorGuidance', () => {
         )
 
         expect(screen.getByText(guidanceArticle2.content)).toBeInTheDocument()
-        // In edit mode, title is in an input field
-        expect(
-            screen.getByRole('textbox', { name: /guidance name/i }),
-        ).toHaveValue(guidanceArticle2.title)
+        expect(screen.getByText(guidanceArticle2.title)).toBeInTheDocument()
         expect(
             screen.queryByText(guidanceArticle.content),
         ).not.toBeInTheDocument()
-        // Old title should not be in the input field
         expect(
-            screen.getByRole('textbox', { name: /guidance name/i }),
-        ).not.toHaveValue(guidanceArticle.title)
+            screen.queryByText(guidanceArticle.title),
+        ).not.toBeInTheDocument()
     })
 
     it('renders in create mode when no guidanceArticleId provided', () => {
+        // In create mode, no guidance article should be loaded
+        mockUseGuidanceArticle.mockReturnValue({
+            guidanceArticle: undefined,
+            isGuidanceArticleLoading: false,
+            refetch: jest.fn(),
+        })
+
         const { getByLabelText } = render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
@@ -281,32 +312,24 @@ describe('KnowledgeEditorGuidance', () => {
 
         const nameInput = getByLabelText(/Guidance name/i)
         expect(nameInput).toHaveValue('')
+        // In create mode, Publish button is disabled (article not yet created)
+        const publishButton = screen.getByRole('button', { name: 'Publish' })
+        expect(publishButton).toBeDisabled()
+        // Discard button is available
         expect(
-            screen.getByRole('button', { name: 'Create' }),
+            screen.getByRole('button', { name: 'discard draft' }),
         ).toBeInTheDocument()
     })
 
-    it('transitions from create mode to edit mode after article creation', async () => {
-        const newArticle = {
-            ...guidanceArticle,
-            id: 999,
-            translation: {
-                title: 'New Article',
-                content: 'New Content',
-                visibility: 'PUBLIC',
-            },
-        }
-
-        createGuidanceArticle.mockResolvedValue(newArticle)
+    it('renders create mode with template values pre-filled', () => {
+        // In create mode with template, no article loaded
         mockUseGuidanceArticle.mockReturnValue({
-            guidanceArticle: getGuidanceArticleFixture(999, {
-                title: 'New Article',
-                content: 'New Content',
-            }),
+            guidanceArticle: undefined,
             isGuidanceArticleLoading: false,
+            refetch: jest.fn(),
         })
 
-        const { getByLabelText } = render(
+        render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
@@ -322,23 +345,25 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
-        const nameInput = getByLabelText(/Guidance name/i)
-        await act(async () => {
-            fireEvent.change(nameInput, { target: { value: 'New Article' } })
-            fireEvent.click(screen.getByRole('button', { name: 'Create' }))
-        })
+        // Template name should be pre-filled
+        const nameInput = screen.getByLabelText(/Guidance name/i)
+        expect(nameInput).toHaveValue(mockGuidanceTemplate.name)
 
-        expect(createGuidanceArticle).toHaveBeenCalled()
-
-        await waitFor(() => {
-            expect(
-                screen.queryByRole('button', { name: 'Create' }),
-            ).not.toBeInTheDocument()
-        })
+        // Template content should be visible in editor
+        expect(
+            screen.getByText(mockGuidanceTemplate.content),
+        ).toBeInTheDocument()
     })
 
-    it('tracks AI Agent enabled state in create mode', () => {
-        const { getByLabelText } = render(
+    it('shows AI agent status toggle is checked by default in create mode', () => {
+        // In create mode, no article loaded
+        mockUseGuidanceArticle.mockReturnValue({
+            guidanceArticle: undefined,
+            isGuidanceArticleLoading: false,
+            refetch: jest.fn(),
+        })
+
+        render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
@@ -352,87 +377,58 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
-        const nameInput = getByLabelText(/Guidance name/i)
-        fireEvent.change(nameInput, { target: { value: 'Test Article' } })
-
-        const createButton = screen.getByRole('button', { name: 'Create' })
-        act(() => {
-            fireEvent.click(createButton)
-        })
-
-        expect(createGuidanceArticle).toHaveBeenCalledWith(
-            expect.objectContaining({
-                title: mockGuidanceTemplate.name,
-                content: mockGuidanceTemplate.content,
-                visibility: 'PUBLIC',
-                locale: 'en-US',
-            }),
-        )
+        // AI Agent status checkbox should be checked by default (visible to AI)
+        expect(
+            screen.getByRole('checkbox', { name: 'ai-agent-status' }),
+        ).toBeChecked()
     })
 
-    it('calls onCreate callback after successful article creation', async () => {
-        const onCreate = jest.fn()
-        const newArticle = {
-            ...guidanceArticle,
-            id: 999,
-            translation: {
-                title: 'New Article',
-                content: 'New Content',
-                visibility: 'PUBLIC',
-            },
-        }
+    it('does not auto-save in create mode when form is invalid', () => {
+        // In create mode, no article loaded
+        mockUseGuidanceArticle.mockReturnValue({
+            guidanceArticle: undefined,
+            isGuidanceArticleLoading: false,
+            refetch: jest.fn(),
+        })
 
-        createGuidanceArticle.mockRejectedValue(
-            new Error('Failed to create article'),
-        )
-
-        const { getByLabelText } = render(
+        render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
                     onClose={jest.fn()}
-                    onCreate={onCreate}
+                    onCreate={jest.fn()}
                     guidanceMode="create"
-                    guidanceTemplate={mockGuidanceTemplate}
                     isOpen={true}
                 />
             </Provider>,
         )
 
-        const nameInput = getByLabelText(/Guidance name/i)
-        await act(async () => {
-            fireEvent.change(nameInput, { target: { value: 'New Article' } })
-            fireEvent.click(screen.getByRole('button', { name: 'Create' }))
-        })
-
-        await waitFor(() => {
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while creating guidance.',
-            )
-            expect(onCreate).not.toHaveBeenCalled()
-        })
-
-        createGuidanceArticle.mockResolvedValue(newArticle)
-        await act(async () => {
-            fireEvent.click(screen.getByRole('button', { name: 'Create' }))
-        })
-
-        await waitFor(() => {
-            expect(onCreate).toHaveBeenCalledTimes(1)
-        })
+        // Title is empty, content is empty - auto-save should not be triggered
+        expect(createGuidanceArticle).not.toHaveBeenCalled()
     })
 
-    it('calls onUpdate callback after successful article update', async () => {
+    it('calls onUpdate callback after successful article publish', async () => {
         const onUpdate = jest.fn()
         const updatedArticle = {
             ...guidanceArticle,
             title: 'Updated Title',
+            isCurrent: true,
         }
 
         updateGuidanceArticle.mockResolvedValue(updatedArticle)
 
-        const { getByLabelText } = render(
+        // Set up a draft article (isCurrent: false) to enable publish button
+        mockUseGuidanceArticle.mockReturnValue({
+            guidanceArticle: {
+                ...guidanceArticle,
+                isCurrent: false,
+            },
+            isGuidanceArticleLoading: false,
+            refetch: jest.fn(),
+        })
+
+        render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
@@ -446,10 +442,8 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
-        const nameInput = getByLabelText(/Guidance name/i)
         await act(async () => {
-            fireEvent.change(nameInput, { target: { value: 'Updated Title' } })
-            fireEvent.click(screen.getByRole('button', { name: 'Save' }))
+            fireEvent.click(screen.getByRole('button', { name: 'Publish' }))
         })
 
         await waitFor(() => {
@@ -457,101 +451,62 @@ describe('KnowledgeEditorGuidance', () => {
         })
     })
 
-    it('calls onDelete callback after successful article deletion', async () => {
-        const onDelete = jest.fn()
-        const deleteGuidanceArticle = jest
-            .fn()
-            .mockRejectedValue(new Error('Failed to delete guidance'))
-
-        jest.mocked(
-            require('pages/aiAgent/hooks/useGuidanceArticleMutation')
-                .useGuidanceArticleMutation,
-        ).mockReturnValue({
-            updateGuidanceArticle,
-            createGuidanceArticle,
-            deleteGuidanceArticle,
-            duplicateGuidanceArticle: jest.fn(),
-            isGuidanceArticleUpdating: false,
-        })
-
-        const { getByRole } = render(
+    it('shows delete and duplicate buttons in read mode', () => {
+        render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
                     guidanceArticleId={1}
                     onClose={jest.fn()}
-                    onDelete={onDelete}
+                    onDelete={jest.fn()}
                     guidanceMode="read"
                     isOpen={true}
                 />
             </Provider>,
         )
 
-        await act(async () => {
-            fireEvent.click(getByRole('button', { name: 'delete' }))
-        })
-
-        await waitFor(() => {
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while deleting guidance.',
-            )
-            expect(onDelete).not.toHaveBeenCalled()
-        })
-
-        mockNotifyError.mockClear()
-
-        deleteGuidanceArticle.mockResolvedValue(undefined)
-
-        await act(async () => {
-            fireEvent.click(getByRole('button', { name: 'delete' }))
-        })
-
-        await waitFor(() => {
-            expect(mockNotifyError).not.toHaveBeenCalled()
-            expect(deleteGuidanceArticle).toHaveBeenCalledWith(1)
-            expect(onDelete).toHaveBeenCalledTimes(1)
-        })
+        // Delete and duplicate buttons should be present in read mode
+        expect(
+            screen.getByRole('button', { name: 'delete' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'duplicate' }),
+        ).toBeInTheDocument()
     })
 
-    it('does not call onCreate when callback is not provided', async () => {
-        const newArticle = {
-            ...guidanceArticle,
-            id: 999,
-            translation: {
-                title: 'New Article',
-                content: 'New Content',
-                visibility: 'PUBLIC',
-            },
-        }
+    it('renders create mode with empty state', () => {
+        // In create mode, no article loaded
+        mockUseGuidanceArticle.mockReturnValue({
+            guidanceArticle: undefined,
+            isGuidanceArticleLoading: false,
+            refetch: jest.fn(),
+        })
 
-        createGuidanceArticle.mockResolvedValue(newArticle)
-
-        const { getByLabelText } = render(
+        render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
                     onClose={jest.fn()}
                     guidanceMode="create"
-                    guidanceTemplate={mockGuidanceTemplate}
                     isOpen={true}
                 />
             </Provider>,
         )
 
-        const nameInput = getByLabelText(/Guidance name/i)
-        await act(async () => {
-            fireEvent.change(nameInput, { target: { value: 'New Article' } })
-            fireEvent.click(screen.getByRole('button', { name: 'Create' }))
-        })
+        // Title field should be empty
+        const nameInput = screen.getByLabelText(/Guidance name/i)
+        expect(nameInput).toHaveValue('')
 
-        expect(createGuidanceArticle).toHaveBeenCalled()
+        // Publish and Test buttons should be disabled in create mode
+        expect(screen.getByRole('button', { name: 'Publish' })).toBeDisabled()
+        expect(screen.getByRole('button', { name: 'test' })).toBeDisabled()
     })
 
     it('calls onCopy callback after successful article duplication', async () => {
+        const user = userEvent.setup()
         const onCopy = jest.fn()
-        let capturedOnDuplicate: (() => Promise<void>) | undefined
 
         const duplicateGuidanceArticle = jest.fn().mockResolvedValue(undefined)
 
@@ -565,16 +520,6 @@ describe('KnowledgeEditorGuidance', () => {
             duplicateGuidanceArticle,
             isGuidanceArticleUpdating: false,
         })
-
-        const mockSpy = jest
-            .spyOn(
-                require('./KnowledgeEditorGuidanceView'),
-                'KnowledgeEditorGuidanceView',
-            )
-            .mockImplementation((props: any) => {
-                capturedOnDuplicate = props.onDuplicate
-                return null
-            })
 
         render(
             <Provider store={mockStore({})}>
@@ -590,55 +535,32 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
+        await act(() =>
+            user.click(screen.getByRole('button', { name: 'duplicate' })),
+        )
+
         await waitFor(() => {
-            expect(capturedOnDuplicate).toBeDefined()
+            expect(duplicateGuidanceArticle).toHaveBeenCalledWith(
+                1,
+                'Test Shop',
+            )
+            expect(onCopy).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    it('disables Publish button when form is invalid in edit mode', () => {
+        // Override the mock to return a draft article with empty content
+        mockUseGuidanceArticle.mockReturnValue({
+            guidanceArticle: {
+                ...guidanceArticle,
+                title: '',
+                content: '',
+                isCurrent: false,
+            },
+            isGuidanceArticleLoading: false,
+            refetch: jest.fn(),
         })
 
-        await act(async () => {
-            await capturedOnDuplicate!()
-        })
-
-        expect(duplicateGuidanceArticle).toHaveBeenCalledWith(1, 'Test Shop')
-        expect(onCopy).toHaveBeenCalledTimes(1)
-
-        mockSpy.mockRestore()
-    })
-
-    it('disables Create button when title is empty', () => {
-        render(
-            <Provider store={mockStore({})}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    onClose={jest.fn()}
-                    guidanceMode="create"
-                    isOpen={true}
-                />
-            </Provider>,
-        )
-
-        const createButton = screen.getByRole('button', { name: 'Create' })
-        expect(createButton).toBeDisabled()
-    })
-
-    it('disables Create button when content is empty', () => {
-        render(
-            <Provider store={mockStore({})}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    onClose={jest.fn()}
-                    guidanceMode="create"
-                    isOpen={true}
-                />
-            </Provider>,
-        )
-
-        const createButton = screen.getByRole('button', { name: 'Create' })
-        expect(createButton).toBeDisabled()
-    })
-
-    it('disables Save button when no changes are made in edit mode', () => {
         render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
@@ -652,11 +574,18 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
-        const saveButton = screen.getByRole('button', { name: 'Save' })
-        expect(saveButton).toBeDisabled()
+        const publishButton = screen.getByRole('button', { name: 'Publish' })
+        expect(publishButton).toBeDisabled()
     })
 
-    it('closes editor when Cancel is clicked with no changes in create mode', () => {
+    it('closes editor when Discard is clicked with no changes in create mode', () => {
+        // In create mode, no article loaded
+        mockUseGuidanceArticle.mockReturnValue({
+            guidanceArticle: undefined,
+            isGuidanceArticleLoading: false,
+            refetch: jest.fn(),
+        })
+
         const onClose = jest.fn()
 
         render(
@@ -671,15 +600,17 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
-        const cancelButton = screen.getByRole('button', { name: 'cancel' })
+        const discardButton = screen.getByRole('button', {
+            name: 'discard draft',
+        })
         act(() => {
-            fireEvent.click(cancelButton)
+            fireEvent.click(discardButton)
         })
 
         expect(onClose).toHaveBeenCalledTimes(1)
     })
 
-    it('toggles ai agent status', () => {
+    it('toggles ai agent status', async () => {
         render(
             <Provider store={mockStore({})}>
                 <KnowledgeEditorGuidance
@@ -696,22 +627,23 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
+        // Side panel is expanded by default (isDetailsView: true)
+        // The AI agent status checkbox should be visible
         expect(
             screen.getByRole('checkbox', { name: 'ai-agent-status' }),
         ).toBeChecked()
 
-        fireEvent.click(
-            screen.getByRole('checkbox', { name: 'ai-agent-status' }),
-        )
+        await act(async () => {
+            fireEvent.click(
+                screen.getByRole('checkbox', { name: 'ai-agent-status' }),
+            )
+        })
 
         expect(updateGuidanceArticle).toHaveBeenCalledWith(
-            expect.objectContaining({
-                content: 'Content 1',
-                locale: 'en-US',
-                templateKey: null,
-                title: 'Title 1',
+            {
                 visibility: 'UNLISTED',
-            }),
+                isCurrent: false,
+            },
             { articleId: 1, locale: 'en-US' },
         )
     })
@@ -974,6 +906,295 @@ describe('KnowledgeEditorGuidance', () => {
                 timezone: 'America/New_York',
                 enabled: true,
             })
+        })
+    })
+
+    describe('isOpen behavior', () => {
+        it('returns null when isOpen is false', () => {
+            const { container } = render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        guidanceMode="read"
+                        isOpen={false}
+                    />
+                </Provider>,
+            )
+
+            expect(container.firstChild).toBeNull()
+        })
+
+        it('renders content when isOpen is true', () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        guidanceMode="read"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByTestId('side-panel')).toBeInTheDocument()
+        })
+    })
+
+    describe('loading states', () => {
+        it('shows loading spinner when guidance article is loading', () => {
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: undefined,
+                isGuidanceArticleLoading: true,
+                refetch: jest.fn(),
+            })
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        guidanceMode="edit"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByRole('status')).toBeInTheDocument()
+            expect(screen.queryByTestId('side-panel')).not.toBeInTheDocument()
+        })
+
+        it('does not show loading spinner in create mode even without article', () => {
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: undefined,
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+            })
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        onClose={jest.fn()}
+                        guidanceMode="create"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
+            expect(screen.getByTestId('side-panel')).toBeInTheDocument()
+        })
+    })
+
+    describe('useGuidanceArticle hook parameters', () => {
+        it('passes correct parameters when editing an article', () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={42}
+                        onClose={jest.fn()}
+                        guidanceMode="edit"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            expect(mockUseGuidanceArticle).toHaveBeenCalledWith({
+                guidanceHelpCenterId: 1,
+                guidanceArticleId: 42,
+                locale: 'en-US',
+                versionStatus: 'latest_draft',
+                enabled: true,
+            })
+        })
+
+        it('disables article fetching in create mode', () => {
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: undefined,
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+            })
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        onClose={jest.fn()}
+                        guidanceMode="create"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            expect(mockUseGuidanceArticle).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    enabled: false,
+                }),
+            )
+        })
+
+        it('disables article fetching when no guidanceArticleId is provided', () => {
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: undefined,
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+            })
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        onClose={jest.fn()}
+                        guidanceMode="edit"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            expect(mockUseGuidanceArticle).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    guidanceArticleId: 0,
+                    enabled: false,
+                }),
+            )
+        })
+    })
+
+    describe('config prop passing', () => {
+        it('passes navigation callback props to config correctly in read mode', async () => {
+            const user = userEvent.setup()
+            const onClickPrevious = jest.fn()
+            const onClickNext = jest.fn()
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        onClickPrevious={onClickPrevious}
+                        onClickNext={onClickNext}
+                        guidanceMode="read"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            const previousButton = screen.getByRole('button', {
+                name: 'previous',
+            })
+            const nextButton = screen.getByRole('button', {
+                name: 'next',
+            })
+
+            await act(() => user.click(previousButton))
+            expect(onClickPrevious).toHaveBeenCalledTimes(1)
+
+            await act(() => user.click(nextButton))
+            expect(onClickNext).toHaveBeenCalledTimes(1)
+        })
+
+        it('hides navigation buttons when callbacks are not provided', () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        guidanceMode="read"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByRole('button', { name: 'previous' }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: 'next' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('hides navigation buttons in edit mode even when callbacks are provided', () => {
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        onClickPrevious={jest.fn()}
+                        onClickNext={jest.fn()}
+                        guidanceMode="edit"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByRole('button', { name: 'previous' }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: 'next' }),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('closeHandlerRef behavior', () => {
+        it('uses closeHandlerRef when available for unsaved changes', async () => {
+            const user = userEvent.setup()
+            const onClose = jest.fn()
+
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: {
+                    ...guidanceArticle,
+                    isCurrent: false,
+                },
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+            })
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={onClose}
+                        guidanceMode="edit"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            const nameInput = screen.getByLabelText(/Guidance name/i)
+            await act(() => user.clear(nameInput))
+            await act(() => user.type(nameInput, 'Modified Title'))
+
+            await waitFor(() => {
+                expect(nameInput).toHaveValue('Modified Title')
+            })
+
+            const closeButton = screen.getByTestId('close-panel-button')
+            await act(() => user.click(closeButton))
+
+            expect(
+                screen.getByRole('heading', { name: /Unsaved changes/i }),
+            ).toBeInTheDocument()
         })
     })
 })

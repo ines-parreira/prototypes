@@ -27,6 +27,8 @@ describe('getKnowledgeHubArticles', () => {
                 source: 'test-source.com',
                 localeCode: 'en-US',
                 shopName: 'test-shop',
+                draftVersionId: null,
+                publishedVersionId: null,
             },
             {
                 id: 2,
@@ -38,6 +40,8 @@ describe('getKnowledgeHubArticles', () => {
                 source: 'another-source.com',
                 localeCode: 'en-US',
                 shopName: 'test-shop',
+                draftVersionId: null,
+                publishedVersionId: null,
             },
         ],
     }

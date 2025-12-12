@@ -1,27 +1,19 @@
-import { useCallback, useRef, useState } from 'react'
+import { useRef } from 'react'
 
-import classNames from 'classnames'
-
-import {
-    LegacyLoadingSpinner as LoadingSpinner,
-    SidePanel,
-} from '@gorgias/axiom'
+import { LegacyLoadingSpinner, SidePanel } from '@gorgias/axiom'
 
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
-import { usePlaygroundPanelInKnowledgeEditor } from 'pages/aiAgent/hooks/usePlaygroundPanelInKnowledgeEditor'
+import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
-import { KnowledgeEditorGuidanceLoaderForCreate } from './create'
-import { KnowledgeEditorGuidanceLoaderForEdit } from './edit'
-import type { BaseProps } from './KnowledgeEditorGuidanceView'
+import { KnowledgeEditorGuidanceProvider, useGuidanceContext } from './context'
+import type { GuidanceContextConfig, GuidanceModeType } from './context'
+import { KnowledgeEditorGuidanceContent } from './KnowledgeEditorGuidanceContent'
 
 import css from '../shared.less'
 
-type Props = Omit<
-    BaseProps,
-    'isFullscreen' | 'onToggleFullscreen' | 'onTest'
-> & {
+type Props = {
     shopName: string
     shopType: string
     guidanceArticleId?: number
@@ -30,10 +22,51 @@ type Props = Omit<
     onCreate?: () => void
     onUpdate?: () => void
     onCopy?: () => void
+    onClose: () => void
+    onClickPrevious?: () => void
+    onClickNext?: () => void
+    guidanceMode: GuidanceModeType
     isOpen: boolean
 }
 
-const KnowledgeEditorGuidanceHelpCenterLoader = ({
+const KnowledgeEditorGuidanceInner = () => {
+    const closeHandlerRef = useRef<(() => void) | null>(null)
+
+    const { playground, config } = useGuidanceContext()
+
+    return (
+        <SidePanel
+            isOpen={true}
+            onOpenChange={(open) => {
+                if (!open) {
+                    if (closeHandlerRef.current) {
+                        closeHandlerRef.current()
+                    } else {
+                        config.onClose()
+                    }
+                }
+            }}
+            isDismissable
+            withoutPadding
+            width={playground.sidePanelWidth}
+        >
+            <div className={css.splitView}>
+                <div className={css.editor}>
+                    <KnowledgeEditorGuidanceContent
+                        closeHandlerRef={closeHandlerRef}
+                    />
+                </div>
+                {playground.isOpen && (
+                    <div className={css.playground}>
+                        <PlaygroundPanel onClose={playground.onClose} />
+                    </div>
+                )}
+            </div>
+        </SidePanel>
+    )
+}
+
+export const KnowledgeEditorGuidance = ({
     shopName,
     shopType,
     guidanceArticleId,
@@ -49,104 +82,50 @@ const KnowledgeEditorGuidanceHelpCenterLoader = ({
     isOpen,
 }: Props) => {
     const guidanceHelpCenter = useAiAgentHelpCenter({
-        shopName,
+        shopName: shopName,
         helpCenterType: 'guidance',
     })
 
-    const [isFullscreen, setIsFullscreen] = useState(false)
+    const { guidanceArticle, isGuidanceArticleLoading } = useGuidanceArticle({
+        guidanceHelpCenterId: guidanceHelpCenter?.id ?? 0,
+        guidanceArticleId: guidanceArticleId ?? 0,
+        locale: guidanceHelpCenter?.default_locale ?? 'en-US',
+        versionStatus: 'latest_draft',
+        enabled:
+            !!guidanceArticleId &&
+            !!guidanceHelpCenter?.id &&
+            guidanceMode !== 'create',
+    })
+    if (!isOpen) {
+        return null
+    }
 
-    const onToggleFullscreen = useCallback(() => {
-        setIsFullscreen(!isFullscreen)
-    }, [isFullscreen])
+    if (
+        (guidanceArticleId && isGuidanceArticleLoading) ||
+        !guidanceHelpCenter
+    ) {
+        return <LegacyLoadingSpinner size="big" />
+    }
 
-    const closeHandlerRef = useRef<(() => void) | null>(null)
-
-    const { isPlaygroundOpen, onTest, onClosePlayground, sidePanelWidth } =
-        usePlaygroundPanelInKnowledgeEditor(isFullscreen)
-
-    const isEditMode = guidanceArticleId && guidanceMode !== 'create'
-
-    const renderContent = () => {
-        if (!guidanceHelpCenter) {
-            return <LoadingSpinner size="big" />
-        }
-
-        if (isEditMode) {
-            return (
-                <KnowledgeEditorGuidanceLoaderForEdit
-                    shopName={shopName}
-                    shopType={shopType}
-                    guidanceArticleId={guidanceArticleId}
-                    guidanceHelpCenterId={guidanceHelpCenter.id}
-                    locale={guidanceHelpCenter.default_locale}
-                    onClose={onClose}
-                    onClickPrevious={onClickPrevious}
-                    onClickNext={onClickNext}
-                    onDeleteFn={onDelete}
-                    onUpdateFn={onUpdate}
-                    onCopyFn={onCopy}
-                    guidanceMode={guidanceMode}
-                    isFullscreen={isFullscreen}
-                    onToggleFullscreen={onToggleFullscreen}
-                    onTest={onTest}
-                    closeHandlerRef={closeHandlerRef}
-                />
-            )
-        }
-
-        return (
-            <KnowledgeEditorGuidanceLoaderForCreate
-                shopName={shopName}
-                shopType={shopType}
-                guidanceTemplate={guidanceTemplate}
-                guidanceHelpCenterId={guidanceHelpCenter.id}
-                locale={guidanceHelpCenter.default_locale}
-                onClose={onClose}
-                onClickPrevious={onClickPrevious}
-                onClickNext={onClickNext}
-                onArticleCreated={() => {}}
-                onCreateFn={onCreate}
-                guidanceMode={guidanceMode}
-                isFullscreen={isFullscreen}
-                onToggleFullscreen={onToggleFullscreen}
-                onTest={onTest}
-                closeHandlerRef={closeHandlerRef}
-            />
-        )
+    const config: GuidanceContextConfig = {
+        shopName,
+        shopType,
+        guidanceTemplate,
+        initialMode: guidanceMode,
+        guidanceArticle,
+        guidanceHelpCenter,
+        onClose,
+        onClickPrevious,
+        onClickNext,
+        onDeleteFn: onDelete,
+        onCreateFn: onCreate,
+        onUpdateFn: onUpdate,
+        onCopyFn: onCopy,
     }
 
     return (
-        <SidePanel
-            isOpen={isOpen}
-            onOpenChange={(open) => {
-                if (!open) {
-                    if (closeHandlerRef.current) {
-                        closeHandlerRef.current()
-                    } else {
-                        onClose()
-                    }
-                }
-            }}
-            isDismissable
-            withoutPadding
-            width={sidePanelWidth}
-        >
-            <div className={css.splitView}>
-                <div
-                    className={classNames(css.editor, {
-                        [css.loader]: !guidanceHelpCenter,
-                    })}
-                >
-                    {renderContent()}
-                </div>
-                {isPlaygroundOpen && (
-                    <div className={css.playground}>
-                        <PlaygroundPanel onClose={onClosePlayground} />
-                    </div>
-                )}
-            </div>
-        </SidePanel>
+        <KnowledgeEditorGuidanceProvider config={config}>
+            <KnowledgeEditorGuidanceInner />
+        </KnowledgeEditorGuidanceProvider>
     )
 }
-
-export const KnowledgeEditorGuidance = KnowledgeEditorGuidanceHelpCenterLoader

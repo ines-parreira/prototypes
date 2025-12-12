@@ -133,4 +133,54 @@ describe('GuidanceList', () => {
         )
         expect(skeletons.length).toBeGreaterThan(0)
     })
+
+    it('displays Draft badge when isCurrent is false', () => {
+        const draftArticle: GuidanceArticle = {
+            id: 1,
+            title: 'Draft Guidance Article',
+            content: 'Content',
+            visibility: 'PUBLIC',
+            locale: 'en-US',
+            lastUpdated: '2023-01-01T00:00:00Z',
+            createdDatetime: '2023-01-01T00:00:00Z',
+            templateKey: '',
+            isCurrent: false,
+            draftVersionId: 1,
+            publishedVersionId: null,
+        }
+
+        render(
+            <GuidanceList
+                {...defaultProps}
+                guidanceArticles={[draftArticle]}
+            />,
+        )
+
+        expect(screen.getByText('Draft')).toBeInTheDocument()
+    })
+
+    it('does not display Draft badge when isCurrent is true', () => {
+        const publishedArticle: GuidanceArticle = {
+            id: 1,
+            title: 'Published Guidance Article',
+            content: 'Content',
+            visibility: 'PUBLIC',
+            locale: 'en-US',
+            lastUpdated: '2023-01-01T00:00:00Z',
+            createdDatetime: '2023-01-01T00:00:00Z',
+            templateKey: '',
+            isCurrent: true,
+            draftVersionId: 1,
+            publishedVersionId: 1,
+        }
+
+        render(
+            <GuidanceList
+                {...defaultProps}
+                guidanceArticles={[publishedArticle]}
+            />,
+        )
+
+        expect(screen.queryByText('Draft')).not.toBeInTheDocument()
+    })
 })

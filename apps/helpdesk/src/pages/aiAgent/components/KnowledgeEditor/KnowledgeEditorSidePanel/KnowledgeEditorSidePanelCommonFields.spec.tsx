@@ -7,6 +7,8 @@ import {
     KnowledgeEditorSidePanelFieldDescription,
     KnowledgeEditorSidePanelFieldKnowledgeType,
     KnowledgeEditorSidePanelFieldPercentage,
+    KnowledgeEditorSidePanelFieldSourceDocument,
+    KnowledgeEditorSidePanelFieldStatus,
     KnowledgeEditorSidePanelFieldURL,
 } from './KnowledgeEditorSidePanelCommonFields'
 
@@ -255,5 +257,118 @@ describe('KnowledgeEditorSidePanelFieldPercentage', () => {
     it('renders percentage', () => {
         render(<KnowledgeEditorSidePanelFieldPercentage percentage={0.5} />)
         expect(screen.getByText('50%')).toBeInTheDocument()
+    })
+
+    it('renders percentage with decimal', () => {
+        render(<KnowledgeEditorSidePanelFieldPercentage percentage={0.123} />)
+        expect(screen.getByText('12.3%')).toBeInTheDocument()
+    })
+
+    it('renders dash when percentage is undefined', () => {
+        const { container } = render(
+            <KnowledgeEditorSidePanelFieldPercentage percentage={undefined} />,
+        )
+        expect(container.textContent).toBe('-')
+    })
+
+    it('renders dash when percentage is 0', () => {
+        const { container } = render(
+            <KnowledgeEditorSidePanelFieldPercentage percentage={0} />,
+        )
+        expect(container.textContent).toBe('-')
+    })
+
+    it('renders 100% correctly', () => {
+        render(<KnowledgeEditorSidePanelFieldPercentage percentage={1} />)
+        expect(screen.getByText('100%')).toBeInTheDocument()
+    })
+})
+
+describe('KnowledgeEditorSidePanelFieldStatus', () => {
+    it('renders Draft status with grey color', () => {
+        render(<KnowledgeEditorSidePanelFieldStatus isDraft={true} />)
+        expect(screen.getByText('Draft')).toBeInTheDocument()
+    })
+
+    it('renders Published status with green color', () => {
+        render(<KnowledgeEditorSidePanelFieldStatus isDraft={false} />)
+        expect(screen.getByText('Published')).toBeInTheDocument()
+    })
+})
+
+describe('KnowledgeEditorSidePanelFieldSourceDocument', () => {
+    it('renders document link with label', () => {
+        const sourceDocument = {
+            label: 'test-document.pdf',
+            downloadUrl: 'https://example.com/test-document.pdf',
+        }
+
+        render(
+            <KnowledgeEditorSidePanelFieldSourceDocument
+                sourceDocument={sourceDocument}
+            />,
+        )
+
+        expect(screen.getByText('test-document.pdf')).toBeInTheDocument()
+        const link = screen.getByRole('link')
+        expect(link).toHaveAttribute(
+            'href',
+            'https://example.com/test-document.pdf',
+        )
+        expect(link).toHaveAttribute('target', '_blank')
+        expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+    })
+
+    it('renders download icon', () => {
+        const sourceDocument = {
+            label: 'test-document.pdf',
+            downloadUrl: 'https://example.com/test-document.pdf',
+        }
+
+        render(
+            <KnowledgeEditorSidePanelFieldSourceDocument
+                sourceDocument={sourceDocument}
+            />,
+        )
+
+        expect(screen.getByTestId('icon-download')).toBeInTheDocument()
+    })
+})
+
+describe('KnowledgeEditorSidePanelFieldDateField', () => {
+    it('renders dash when date is undefined', () => {
+        const { container } = render(
+            <KnowledgeEditorSidePanelFieldDateField date={undefined} />,
+        )
+        expect(container.textContent).toBe('-')
+    })
+})
+
+describe('KnowledgeEditorSidePanelFieldAIAgentStatus extended', () => {
+    it('renders with disabled class when isDisabled is true', () => {
+        render(
+            <KnowledgeEditorSidePanelFieldAIAgentStatus
+                checked={true}
+                onChange={jest.fn()}
+                isDisabled={true}
+            />,
+        )
+        expect(screen.getByRole('switch')).toHaveClass('disabled')
+    })
+
+    it('renders with disabled class when onChange is not provided', () => {
+        render(<KnowledgeEditorSidePanelFieldAIAgentStatus checked={true} />)
+        expect(screen.getByRole('switch')).toHaveClass('disabled')
+    })
+
+    it('renders with className when provided', () => {
+        render(
+            <KnowledgeEditorSidePanelFieldAIAgentStatus
+                checked={true}
+                onChange={jest.fn()}
+                className="custom-class"
+            />,
+        )
+        expect(screen.getByRole('switch')).toBeInTheDocument()
     })
 })

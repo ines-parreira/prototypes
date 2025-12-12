@@ -157,4 +157,30 @@
             box-shadow: 1px 2px 3px 0 rgba(0, 0, 0, 0.06) inset;
         }
     }
+
+    .destructiveButton {
+        border-radius: var(--layout-spacing-xs);
+        border: 0.5px solid var(--border-error-primary);
+        background: var(--surface-button-secondary);
+
+        box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.05);
+
+        color: var(--content-error-primary);
+
+        &:disabled {
+            opacity: 0.5;
+        }
+
+        &:hover:not(:disabled) {
+            background: linear-gradient(
+                0deg,
+                var(--hover-default) 0%,
+                var(--hover-default) 100%
+            );
+        }
+
+        &:active:not(:disabled) {
+            box-shadow: 1px 2px 3px 0 rgba(0, 0, 0, 0.06) inset;
+        }
+    }
 }

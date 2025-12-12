@@ -173,7 +173,7 @@ describe('useKnowledgeHubEditor', () => {
                 )
             })
 
-            it('should show success notification', () => {
+            it('should not show success notification due to autosave', () => {
                 const { result } = renderHook(() =>
                     useKnowledgeHubEditor(guidanceConfig),
                 )
@@ -182,9 +182,7 @@ describe('useKnowledgeHubEditor', () => {
                     result.current.handleCreate()
                 })
 
-                expect(mockNotifySuccess).toHaveBeenCalledWith(
-                    'Guidance created successfully',
-                )
+                expect(mockNotifySuccess).not.toHaveBeenCalled()
             })
 
             it('should trigger table refresh', () => {
@@ -203,7 +201,7 @@ describe('useKnowledgeHubEditor', () => {
         })
 
         describe('When guidance is updated', () => {
-            it('should track analytics event and show success notification', () => {
+            it('should track analytics event', () => {
                 const { result } = renderHook(() =>
                     useKnowledgeHubEditor(guidanceConfig),
                 )
@@ -220,9 +218,29 @@ describe('useKnowledgeHubEditor', () => {
                         type: 'guidance',
                     },
                 )
-                expect(mockNotifySuccess).toHaveBeenCalledWith(
-                    'Guidance updated successfully',
+            })
+
+            it('should not show success notification due to autosave', () => {
+                const { result } = renderHook(() =>
+                    useKnowledgeHubEditor(guidanceConfig),
                 )
+
+                act(() => {
+                    result.current.handleUpdate()
+                })
+
+                expect(mockNotifySuccess).not.toHaveBeenCalled()
+            })
+
+            it('should trigger table refresh', () => {
+                const { result } = renderHook(() =>
+                    useKnowledgeHubEditor(guidanceConfig),
+                )
+
+                act(() => {
+                    result.current.handleUpdate()
+                })
+
                 expect(mockDispatchDocumentEvent).toHaveBeenCalledWith(
                     REFETCH_KNOWLEDGE_HUB_TABLE,
                 )

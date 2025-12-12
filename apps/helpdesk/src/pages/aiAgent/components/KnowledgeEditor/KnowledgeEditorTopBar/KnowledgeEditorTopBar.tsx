@@ -1,7 +1,20 @@
 import classNames from 'classnames'
 
-import { Button, Icon } from '@gorgias/axiom'
+import {
+    Button,
+    Icon,
+    IconSize,
+    LegacyLoadingSpinner as LoadingSpinner,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@gorgias/axiom'
 
+import { DateAndTimeFormatting } from 'constants/datetime'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { formatDatetime } from 'utils'
+
+import type { GuidanceMode } from './KnowledgeEditorTopBarGuidanceControls'
 import { KnowledgeEditorTopBarTitle } from './KnowledgeEditorTopBarTitle'
 
 import css from './KnowledgeEditorTopBar.less'
@@ -25,6 +38,11 @@ type Props = {
     onToggleDetailsView: () => void
 
     disabled?: boolean
+
+    isSaving?: boolean
+    lastUpdatedDatetime?: Date
+
+    guidanceMode?: GuidanceMode['mode']
 }
 
 export const defaultProps: Props = {
@@ -38,6 +56,10 @@ export const defaultProps: Props = {
 }
 
 export const KnowledgeEditorTopBar = (props: Props) => {
+    const datetimeFormat = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.RelativeDateAndTime,
+    )
+
     return (
         <div
             className={css.container}
@@ -86,6 +108,34 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                     }
                     title={props.title}
                 />
+                {props.isSaving && (
+                    <span className={css.savingIndicator}>
+                        <LoadingSpinner size="small" />
+                        Saving
+                    </span>
+                )}
+                {props.guidanceMode === 'edit' &&
+                    !props.isSaving &&
+                    props.lastUpdatedDatetime && (
+                        <span className={css.savingIndicator} tabIndex={0}>
+                            <Tooltip placement="bottom">
+                                <TooltipTrigger>
+                                    <Icon
+                                        name="cloud-check"
+                                        size={IconSize.Md}
+                                    />
+                                </TooltipTrigger>
+                                <TooltipContent
+                                    title={`Last saved: ${formatDatetime(
+                                        props.lastUpdatedDatetime.toISOString(),
+                                        datetimeFormat,
+                                        Intl.DateTimeFormat().resolvedOptions()
+                                            .timeZone,
+                                    )}`}
+                                />
+                            </Tooltip>
+                        </span>
+                    )}
             </div>
 
             <div className={controlsCss.container}>

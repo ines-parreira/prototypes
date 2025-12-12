@@ -1,10 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import {
-    KnowledgeType,
-    KnowledgeVisibility,
-} from 'pages/aiAgent/KnowledgeHub/types'
+import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
 
 import { TitleCell } from '../TitleCell'
 
@@ -28,7 +25,6 @@ describe('TitleCell', () => {
             type: KnowledgeType.Document,
             title: 'Test Document',
             lastUpdatedAt: '2024-01-15T10:00:00Z',
-            inUseByAI: KnowledgeVisibility.PUBLIC,
             source: 'docs.example.com',
             isGrouped: false,
             localeCode: 'en-US',
@@ -150,7 +146,6 @@ describe('TitleCell', () => {
             original: {
                 ...mockRow.original,
                 type: KnowledgeType.FAQ,
-                inUseByAI: KnowledgeVisibility.PUBLIC,
                 draftVersionId: 100,
                 publishedVersionId: 100,
             },
@@ -158,7 +153,42 @@ describe('TitleCell', () => {
 
         render(<TitleCell row={faqRow} searchTerm="" availableActions={[]} />)
 
+        expect(screen.queryByText('Draft')).not.toBeInTheDocument()
         expect(screen.getByText('Public')).toBeInTheDocument()
+    })
+
+    it('renders Draft tag for published FAQ with null draftVersionId', () => {
+        // When draftVersionId is null but publishedVersionId exists,
+        // isDraft returns true because draftVersionId !== publishedVersionId
+        const faqRow = {
+            ...mockRow,
+            original: {
+                ...mockRow.original,
+                type: KnowledgeType.FAQ,
+                publishedVersionId: 1,
+                draftVersionId: null,
+            },
+        } as any
+
+        render(<TitleCell row={faqRow} searchTerm="" availableActions={[]} />)
+
+        expect(screen.getByText('Draft')).toBeInTheDocument()
+    })
+
+    it('renders Draft tag for FAQ with unpublished draft', () => {
+        const faqRow = {
+            ...mockRow,
+            original: {
+                ...mockRow.original,
+                type: KnowledgeType.FAQ,
+                publishedVersionId: 1,
+                draftVersionId: 2,
+            },
+        } as any
+
+        render(<TitleCell row={faqRow} searchTerm="" availableActions={[]} />)
+
+        expect(screen.getByText('Draft')).toBeInTheDocument()
     })
 
     it('renders Draft tag for FAQ without published version', () => {
@@ -167,7 +197,6 @@ describe('TitleCell', () => {
             original: {
                 ...mockRow.original,
                 type: KnowledgeType.FAQ,
-                inUseByAI: KnowledgeVisibility.UNLISTED,
                 draftVersionId: 100,
                 publishedVersionId: null,
             },
@@ -178,13 +207,12 @@ describe('TitleCell', () => {
         expect(screen.getByText('Draft')).toBeInTheDocument()
     })
 
-    it('renders Draft tag for FAQ with only draft version', () => {
+    it('renders Draft tag for FAQ with only draft version (undefined published)', () => {
         const faqRow = {
             ...mockRow,
             original: {
                 ...mockRow.original,
                 type: KnowledgeType.FAQ,
-                inUseByAI: KnowledgeVisibility.UNLISTED,
                 draftVersionId: 100,
                 publishedVersionId: undefined,
             },

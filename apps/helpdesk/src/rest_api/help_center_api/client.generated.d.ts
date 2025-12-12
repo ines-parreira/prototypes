@@ -168,6 +168,7 @@ declare namespace Components {
         export interface ArticleIngestionLogDto {
             help_center_id: number
             article_ids: number[]
+            source_name?: string | null
             raw_text?: string | null
             dataset_id: string | null
             scraping_id?: string | null
@@ -910,6 +911,31 @@ declare namespace Components {
              * Publish immediately (true) or save as draft (false)
              */
             is_current?: boolean
+        }
+        export interface BulkCopyArticlesRequestDto {
+            /**
+             * Array of article IDs to copy
+             * example:
+             * [
+             *   1,
+             *   2,
+             *   3,
+             *   100,
+             *   250
+             * ]
+             */
+            article_ids: number[]
+            /**
+             * List of shop names where to copy given articles
+             * example:
+             * [
+             *   "shop-1, shop-2",
+             *   [
+             *     "shop-3"
+             *   ]
+             * ]
+             */
+            shop_names: string[]
         }
         export interface CategoriesListPageDto {
             meta: PageMetaDto
@@ -2685,6 +2711,7 @@ declare namespace Components {
         export interface IngestionLogDto {
             help_center_id: number
             article_ids: number[]
+            source_name?: string | null
             raw_text?: string | null
             dataset_id: string | null
             scraping_id?: string | null
@@ -4083,7 +4110,8 @@ declare namespace Paths {
             locale: Parameters.Locale
         }
         namespace Responses {
-            export interface $200 {}
+            export type $200 = Components.Schemas.ArticleTranslationResponseDto
+            export interface $204 {}
         }
     }
     namespace DeleteArticleTranslationRating {
@@ -5986,7 +6014,10 @@ export interface OperationMethods {
         parameters: Parameters<Paths.DeleteArticleTranslationDraft.PathParameters>,
         data?: any,
         config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.DeleteArticleTranslationDraft.Responses.$200>
+    ): OperationResponse<
+        | Paths.DeleteArticleTranslationDraft.Responses.$200
+        | Paths.DeleteArticleTranslationDraft.Responses.$204
+    >
     /**
      * bulkUpdateArticleTranslationsVisibility - Bulk update article translations visibility status
      *
@@ -7270,7 +7301,10 @@ export interface PathsDictionary {
             parameters: Parameters<Paths.DeleteArticleTranslationDraft.PathParameters>,
             data?: any,
             config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.DeleteArticleTranslationDraft.Responses.$200>
+        ): OperationResponse<
+            | Paths.DeleteArticleTranslationDraft.Responses.$200
+            | Paths.DeleteArticleTranslationDraft.Responses.$204
+        >
     }
     ['/api/help-center/help-centers/{help_center_id}/articles/translations/bulk/visibility']: {
         /**

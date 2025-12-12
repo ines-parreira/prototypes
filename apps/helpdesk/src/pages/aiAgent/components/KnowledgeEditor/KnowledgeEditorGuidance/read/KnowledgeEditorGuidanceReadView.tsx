@@ -43,6 +43,7 @@ export const KnowledgeEditorGuidanceReadView = ({
                 guidanceActions={availableActions}
             >
                 <RichField
+                    key={content}
                     minHeight={320}
                     maxLength={textLimit}
                     value={richFieldValue}

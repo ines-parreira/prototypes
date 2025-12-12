@@ -8,32 +8,39 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import { useUnsavedChangesModal } from './useUnsavedChangesModal'
+import { useDeleteModal } from './useDeleteModal'
 
-export const KnowledgeEditorGuidanceUnsavedChangesModal = () => {
-    const { isOpen, onClose, onDiscard } = useUnsavedChangesModal()
+export const KnowledgeEditorGuidanceDeleteModal = () => {
+    const { isOpen, isDeleting, onClose, onDelete } = useDeleteModal()
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose}>
-            <OverlayHeader title="Discard unsaved changes?" />
+            <OverlayHeader title="Delete?" />
             <OverlayContent>
                 <Box paddingBottom="md">
                     <Text>
-                        Your changes will be lost if you don&apos;t save them.
+                        Once deleted, this content can’t be restored. Both the
+                        draft and the published version will be permanently
+                        deleted.
                     </Text>
                 </Box>
             </OverlayContent>
             <OverlayFooter hideCancelButton>
                 <Box gap="xs" justifyContent="flex-end" width="100%">
-                    <Button variant="secondary" onClick={onClose}>
+                    <Button
+                        variant="secondary"
+                        onClick={onClose}
+                        isDisabled={isDeleting}
+                    >
                         Back to editing
                     </Button>
                     <Button
                         variant="primary"
                         intent="destructive"
-                        onClick={onDiscard}
+                        onClick={onDelete}
+                        isLoading={isDeleting}
                     >
-                        Discard changes
+                        Delete
                     </Button>
                 </Box>
             </OverlayFooter>

@@ -46,6 +46,20 @@ export const CancelButton = (props: {
     </button>
 )
 
+export const DiscardDraftButton = (props: {
+    onDiscard: () => void
+    disabled?: boolean
+}) => (
+    <button
+        className={classNames(css.button, css.ghostButton)}
+        onClick={props.onDiscard}
+        aria-label="discard draft"
+        disabled={props.disabled}
+    >
+        Discard
+    </button>
+)
+
 export const CopyIconButton = (props: {
     onCopy: () => void
     disabled?: boolean
@@ -57,6 +71,34 @@ export const CopyIconButton = (props: {
         disabled={props.disabled}
     >
         <Icon name="copy" />
+    </button>
+)
+
+export const DuplicateButton = (props: {
+    onDuplicate?: () => void
+    disabled?: boolean
+}) => (
+    <button
+        className={classNames(css.icon, css.secondaryButton)}
+        onClick={props.onDuplicate}
+        aria-label="duplicate"
+        disabled={props.disabled || !props.onDuplicate}
+    >
+        <Icon name="copy" />
+    </button>
+)
+
+export const DeleteButton = (props: {
+    onDelete?: () => void
+    disabled?: boolean
+}) => (
+    <button
+        className={classNames(css.icon, css.destructiveButton)}
+        onClick={props.onDelete}
+        aria-label="delete"
+        disabled={props.disabled || !props.onDelete}
+    >
+        <Icon name="trash-empty" />
     </button>
 )
 

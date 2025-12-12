@@ -1,0 +1,681 @@
+import type { GuidanceArticle } from 'pages/aiAgent/types'
+
+import { guidanceReducer } from '../KnowledgeEditorGuidanceReducer'
+import type { GuidanceState } from '../types'
+
+describe('guidanceReducer', () => {
+    const mockGuidance: GuidanceArticle = {
+        id: 123,
+        title: 'Test Title',
+        content: 'Test Content',
+        locale: 'en-US',
+        visibility: 'PUBLIC',
+        createdDatetime: '2024-01-01T00:00:00Z',
+        lastUpdated: '2024-01-01T00:00:00Z',
+        templateKey: null,
+        isCurrent: false,
+        draftVersionId: 1,
+        publishedVersionId: null,
+    }
+
+    const initialState: GuidanceState = {
+        guidanceMode: 'edit',
+        isFullscreen: false,
+        isDetailsView: true,
+        title: 'Test Title',
+        content: 'Test Content',
+        visibility: true,
+        savedSnapshot: { title: 'Test Title', content: 'Test Content' },
+        guidance: mockGuidance,
+        isAutoSaving: false,
+        isFromTemplate: false,
+        hasTemplateChanges: false,
+        versionStatus: 'latest_draft',
+        activeModal: null,
+        isUpdating: false,
+    }
+
+    describe('SET_MODE', () => {
+        it('should update guidanceMode to create', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_MODE',
+                payload: 'create',
+            })
+
+            expect(result.guidanceMode).toBe('create')
+            expect(result.title).toBe(initialState.title)
+        })
+
+        it('should update guidanceMode to read', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_MODE',
+                payload: 'read',
+            })
+
+            expect(result.guidanceMode).toBe('read')
+        })
+
+        it('should update guidanceMode to edit', () => {
+            const stateInRead = {
+                ...initialState,
+                guidanceMode: 'read' as const,
+            }
+            const result = guidanceReducer(stateInRead, {
+                type: 'SET_MODE',
+                payload: 'edit',
+            })
+
+            expect(result.guidanceMode).toBe('edit')
+        })
+    })
+
+    describe('SET_FULLSCREEN', () => {
+        it('should set isFullscreen to true', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_FULLSCREEN',
+                payload: true,
+            })
+
+            expect(result.isFullscreen).toBe(true)
+        })
+
+        it('should set isFullscreen to false', () => {
+            const stateFullscreen = { ...initialState, isFullscreen: true }
+            const result = guidanceReducer(stateFullscreen, {
+                type: 'SET_FULLSCREEN',
+                payload: false,
+            })
+
+            expect(result.isFullscreen).toBe(false)
+        })
+    })
+
+    describe('TOGGLE_FULLSCREEN', () => {
+        it('should toggle isFullscreen from false to true', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'TOGGLE_FULLSCREEN',
+            })
+
+            expect(result.isFullscreen).toBe(true)
+        })
+
+        it('should toggle isFullscreen from true to false', () => {
+            const stateFullscreen = { ...initialState, isFullscreen: true }
+            const result = guidanceReducer(stateFullscreen, {
+                type: 'TOGGLE_FULLSCREEN',
+            })
+
+            expect(result.isFullscreen).toBe(false)
+        })
+    })
+
+    describe('SET_DETAILS_VIEW', () => {
+        it('should set isDetailsView to true', () => {
+            const stateNoDetails = { ...initialState, isDetailsView: false }
+            const result = guidanceReducer(stateNoDetails, {
+                type: 'SET_DETAILS_VIEW',
+                payload: true,
+            })
+
+            expect(result.isDetailsView).toBe(true)
+        })
+
+        it('should set isDetailsView to false', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_DETAILS_VIEW',
+                payload: false,
+            })
+
+            expect(result.isDetailsView).toBe(false)
+        })
+    })
+
+    describe('TOGGLE_DETAILS_VIEW', () => {
+        it('should toggle isDetailsView from true to false', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'TOGGLE_DETAILS_VIEW',
+            })
+
+            expect(result.isDetailsView).toBe(false)
+        })
+
+        it('should toggle isDetailsView from false to true', () => {
+            const stateNoDetails = { ...initialState, isDetailsView: false }
+            const result = guidanceReducer(stateNoDetails, {
+                type: 'TOGGLE_DETAILS_VIEW',
+            })
+
+            expect(result.isDetailsView).toBe(true)
+        })
+    })
+
+    describe('SET_TITLE', () => {
+        it('should update title', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_TITLE',
+                payload: 'New Title',
+            })
+
+            expect(result.title).toBe('New Title')
+        })
+
+        it('should not update hasTemplateChanges when not from template', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_TITLE',
+                payload: 'New Title',
+            })
+
+            expect(result.hasTemplateChanges).toBe(false)
+        })
+
+        it('should set hasTemplateChanges to true when from template and title differs from snapshot', () => {
+            const stateFromTemplate = { ...initialState, isFromTemplate: true }
+            const result = guidanceReducer(stateFromTemplate, {
+                type: 'SET_TITLE',
+                payload: 'Different Title',
+            })
+
+            expect(result.hasTemplateChanges).toBe(true)
+        })
+
+        it('should keep hasTemplateChanges false when from template but title matches snapshot', () => {
+            const stateFromTemplate = { ...initialState, isFromTemplate: true }
+            const result = guidanceReducer(stateFromTemplate, {
+                type: 'SET_TITLE',
+                payload: 'Test Title',
+            })
+
+            expect(result.hasTemplateChanges).toBe(false)
+        })
+
+        it('should preserve hasTemplateChanges true once set', () => {
+            const stateWithChanges = {
+                ...initialState,
+                isFromTemplate: true,
+                hasTemplateChanges: true,
+            }
+            const result = guidanceReducer(stateWithChanges, {
+                type: 'SET_TITLE',
+                payload: 'Test Title',
+            })
+
+            expect(result.hasTemplateChanges).toBe(true)
+        })
+    })
+
+    describe('SET_CONTENT', () => {
+        it('should update content', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_CONTENT',
+                payload: 'New Content',
+            })
+
+            expect(result.content).toBe('New Content')
+        })
+
+        it('should not update hasTemplateChanges when not from template', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_CONTENT',
+                payload: 'New Content',
+            })
+
+            expect(result.hasTemplateChanges).toBe(false)
+        })
+
+        it('should set hasTemplateChanges to true when from template and content differs from snapshot', () => {
+            const stateFromTemplate = { ...initialState, isFromTemplate: true }
+            const result = guidanceReducer(stateFromTemplate, {
+                type: 'SET_CONTENT',
+                payload: 'Different Content',
+            })
+
+            expect(result.hasTemplateChanges).toBe(true)
+        })
+
+        it('should keep hasTemplateChanges false when from template but content matches snapshot', () => {
+            const stateFromTemplate = { ...initialState, isFromTemplate: true }
+            const result = guidanceReducer(stateFromTemplate, {
+                type: 'SET_CONTENT',
+                payload: 'Test Content',
+            })
+
+            expect(result.hasTemplateChanges).toBe(false)
+        })
+
+        it('should preserve hasTemplateChanges true once set', () => {
+            const stateWithChanges = {
+                ...initialState,
+                isFromTemplate: true,
+                hasTemplateChanges: true,
+            }
+            const result = guidanceReducer(stateWithChanges, {
+                type: 'SET_CONTENT',
+                payload: 'Test Content',
+            })
+
+            expect(result.hasTemplateChanges).toBe(true)
+        })
+    })
+
+    describe('SET_VISIBILITY', () => {
+        it('should set visibility to true', () => {
+            const stateNotVisible = { ...initialState, visibility: false }
+            const result = guidanceReducer(stateNotVisible, {
+                type: 'SET_VISIBILITY',
+                payload: true,
+            })
+
+            expect(result.visibility).toBe(true)
+        })
+
+        it('should set visibility to false', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_VISIBILITY',
+                payload: false,
+            })
+
+            expect(result.visibility).toBe(false)
+        })
+    })
+
+    describe('RESET_FORM', () => {
+        it('should reset form fields with provided values', () => {
+            const stateWithChanges = {
+                ...initialState,
+                title: 'Changed Title',
+                content: 'Changed Content',
+                visibility: false,
+                isAutoSaving: true,
+            }
+
+            const result = guidanceReducer(stateWithChanges, {
+                type: 'RESET_FORM',
+                payload: {
+                    title: 'Reset Title',
+                    content: 'Reset Content',
+                    visibility: true,
+                },
+            })
+
+            expect(result.title).toBe('Reset Title')
+            expect(result.content).toBe('Reset Content')
+            expect(result.visibility).toBe(true)
+            expect(result.savedSnapshot).toEqual({
+                title: 'Reset Title',
+                content: 'Reset Content',
+            })
+            expect(result.isAutoSaving).toBe(false)
+        })
+
+        it('should update savedSnapshot with reset values', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'RESET_FORM',
+                payload: {
+                    title: 'New Title',
+                    content: 'New Content',
+                    visibility: false,
+                },
+            })
+
+            expect(result.savedSnapshot.title).toBe('New Title')
+            expect(result.savedSnapshot.content).toBe('New Content')
+        })
+    })
+
+    describe('MARK_AS_SAVED', () => {
+        it('should update state with provided payload', () => {
+            const newGuidance: GuidanceArticle = {
+                ...mockGuidance,
+                id: 456,
+                title: 'Saved Title',
+                content: 'Saved Content',
+            }
+
+            const result = guidanceReducer(initialState, {
+                type: 'MARK_AS_SAVED',
+                payload: {
+                    title: 'Saved Title',
+                    content: 'Saved Content',
+                    guidance: newGuidance,
+                },
+            })
+
+            expect(result.guidance).toEqual(newGuidance)
+            expect(result.savedSnapshot).toEqual({
+                title: 'Saved Title',
+                content: 'Saved Content',
+            })
+            expect(result.isAutoSaving).toBe(false)
+        })
+
+        it('should use current state values when payload is undefined', () => {
+            const stateWithAutoSaving = { ...initialState, isAutoSaving: true }
+
+            const result = guidanceReducer(stateWithAutoSaving, {
+                type: 'MARK_AS_SAVED',
+            })
+
+            expect(result.title).toBe('Test Title')
+            expect(result.content).toBe('Test Content')
+            expect(result.guidance).toEqual(mockGuidance)
+            expect(result.savedSnapshot).toEqual({
+                title: 'Test Title',
+                content: 'Test Content',
+            })
+            expect(result.isAutoSaving).toBe(false)
+        })
+
+        it('should reset isAutoSaving to false', () => {
+            const stateAutoSaving = { ...initialState, isAutoSaving: true }
+
+            const result = guidanceReducer(stateAutoSaving, {
+                type: 'MARK_AS_SAVED',
+                payload: {
+                    title: 'Title',
+                    content: 'Content',
+                    guidance: mockGuidance,
+                },
+            })
+
+            expect(result.isAutoSaving).toBe(false)
+        })
+    })
+
+    describe('SET_AUTO_SAVING', () => {
+        it('should set isAutoSaving to true', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_AUTO_SAVING',
+                payload: true,
+            })
+
+            expect(result.isAutoSaving).toBe(true)
+        })
+
+        it('should set isAutoSaving to false', () => {
+            const stateAutoSaving = { ...initialState, isAutoSaving: true }
+            const result = guidanceReducer(stateAutoSaving, {
+                type: 'SET_AUTO_SAVING',
+                payload: false,
+            })
+
+            expect(result.isAutoSaving).toBe(false)
+        })
+    })
+
+    describe('SET_VERSION_STATUS', () => {
+        it('should set versionStatus to current', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_VERSION_STATUS',
+                payload: 'current',
+            })
+
+            expect(result.versionStatus).toBe('current')
+        })
+
+        it('should set versionStatus to latest_draft', () => {
+            const stateCurrent = {
+                ...initialState,
+                versionStatus: 'current' as const,
+            }
+            const result = guidanceReducer(stateCurrent, {
+                type: 'SET_VERSION_STATUS',
+                payload: 'latest_draft',
+            })
+
+            expect(result.versionStatus).toBe('latest_draft')
+        })
+    })
+
+    describe('SWITCH_VERSION', () => {
+        const newVersionGuidance: GuidanceArticle = {
+            ...mockGuidance,
+            id: 789,
+            title: 'Version Title',
+            content: 'Version Content',
+            isCurrent: true,
+        }
+
+        it('should switch from latest_draft to current', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SWITCH_VERSION',
+                payload: newVersionGuidance,
+            })
+
+            expect(result.versionStatus).toBe('current')
+            expect(result.guidance).toEqual(newVersionGuidance)
+            expect(result.title).toBe('Version Title')
+            expect(result.content).toBe('Version Content')
+            expect(result.savedSnapshot).toEqual({
+                title: 'Version Title',
+                content: 'Version Content',
+            })
+        })
+
+        it('should switch from current to latest_draft', () => {
+            const stateCurrent = {
+                ...initialState,
+                versionStatus: 'current' as const,
+            }
+            const result = guidanceReducer(stateCurrent, {
+                type: 'SWITCH_VERSION',
+                payload: newVersionGuidance,
+            })
+
+            expect(result.versionStatus).toBe('latest_draft')
+        })
+
+        it('should set guidanceMode to read when switching to current version', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SWITCH_VERSION',
+                payload: newVersionGuidance,
+            })
+
+            expect(result.guidanceMode).toBe('read')
+        })
+
+        it('should preserve guidanceMode when switching to latest_draft', () => {
+            const stateCurrent = {
+                ...initialState,
+                versionStatus: 'current' as const,
+                guidanceMode: 'edit' as const,
+            }
+            const result = guidanceReducer(stateCurrent, {
+                type: 'SWITCH_VERSION',
+                payload: newVersionGuidance,
+            })
+
+            expect(result.guidanceMode).toBe('edit')
+        })
+    })
+
+    describe('SET_MODAL', () => {
+        it('should set activeModal to unsaved', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_MODAL',
+                payload: 'unsaved',
+            })
+
+            expect(result.activeModal).toBe('unsaved')
+        })
+
+        it('should set activeModal to discard', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_MODAL',
+                payload: 'discard',
+            })
+
+            expect(result.activeModal).toBe('discard')
+        })
+
+        it('should set activeModal to delete', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_MODAL',
+                payload: 'delete',
+            })
+
+            expect(result.activeModal).toBe('delete')
+        })
+
+        it('should set activeModal to null', () => {
+            const stateWithModal = {
+                ...initialState,
+                activeModal: 'unsaved' as const,
+            }
+            const result = guidanceReducer(stateWithModal, {
+                type: 'SET_MODAL',
+                payload: null,
+            })
+
+            expect(result.activeModal).toBe(null)
+        })
+    })
+
+    describe('CLOSE_MODAL', () => {
+        it('should set activeModal to null', () => {
+            const stateWithModal = {
+                ...initialState,
+                activeModal: 'unsaved' as const,
+            }
+            const result = guidanceReducer(stateWithModal, {
+                type: 'CLOSE_MODAL',
+            })
+
+            expect(result.activeModal).toBe(null)
+        })
+
+        it('should work when activeModal is already null', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'CLOSE_MODAL',
+            })
+
+            expect(result.activeModal).toBe(null)
+        })
+    })
+
+    describe('SET_UPDATING', () => {
+        it('should set isUpdating to true', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_UPDATING',
+                payload: true,
+            })
+
+            expect(result.isUpdating).toBe(true)
+        })
+
+        it('should set isUpdating to false', () => {
+            const stateUpdating = { ...initialState, isUpdating: true }
+            const result = guidanceReducer(stateUpdating, {
+                type: 'SET_UPDATING',
+                payload: false,
+            })
+
+            expect(result.isUpdating).toBe(false)
+        })
+    })
+
+    describe('SWITCH_GUIDANCE', () => {
+        const newArticle: GuidanceArticle = {
+            id: 999,
+            title: 'New Article Title',
+            content: 'New Article Content',
+            locale: 'fr-FR',
+            visibility: 'UNLISTED',
+            createdDatetime: '2024-02-01T00:00:00Z',
+            lastUpdated: '2024-02-01T00:00:00Z',
+            templateKey: 'template-1',
+            isCurrent: true,
+            draftVersionId: 2,
+            publishedVersionId: 1,
+        }
+
+        it('should reset state with new article in read mode', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SWITCH_GUIDANCE',
+                payload: {
+                    article: newArticle,
+                    mode: 'read',
+                },
+            })
+
+            expect(result.guidanceMode).toBe('read')
+            expect(result.guidance).toEqual(newArticle)
+            expect(result.title).toBe('New Article Title')
+            expect(result.content).toBe('New Article Content')
+        })
+
+        it('should reset state with new article in edit mode', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SWITCH_GUIDANCE',
+                payload: {
+                    article: newArticle,
+                    mode: 'edit',
+                },
+            })
+
+            expect(result.guidanceMode).toBe('edit')
+            expect(result.guidance).toEqual(newArticle)
+        })
+
+        it('should reset all temporary state when switching guidance', () => {
+            const stateWithChanges = {
+                ...initialState,
+                isFullscreen: true,
+                isAutoSaving: true,
+                hasTemplateChanges: true,
+                activeModal: 'unsaved' as const,
+                isUpdating: true,
+            }
+
+            const result = guidanceReducer(stateWithChanges, {
+                type: 'SWITCH_GUIDANCE',
+                payload: {
+                    article: newArticle,
+                    mode: 'read',
+                },
+            })
+
+            expect(result.isFullscreen).toBe(false)
+            expect(result.isAutoSaving).toBe(false)
+            expect(result.hasTemplateChanges).toBe(false)
+            expect(result.activeModal).toBe(null)
+            expect(result.isUpdating).toBe(false)
+        })
+
+        it('should set visibility based on article visibility', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SWITCH_GUIDANCE',
+                payload: {
+                    article: newArticle,
+                    mode: 'read',
+                },
+            })
+
+            expect(result.visibility).toBe(false)
+        })
+
+        it('should set savedSnapshot from new article', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SWITCH_GUIDANCE',
+                payload: {
+                    article: newArticle,
+                    mode: 'read',
+                },
+            })
+
+            expect(result.savedSnapshot).toEqual({
+                title: 'New Article Title',
+                content: 'New Article Content',
+            })
+        })
+    })
+
+    describe('default case', () => {
+        it('should return unchanged state for unknown action', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'UNKNOWN_ACTION' as any,
+            })
+
+            expect(result).toEqual(initialState)
+        })
+    })
+})

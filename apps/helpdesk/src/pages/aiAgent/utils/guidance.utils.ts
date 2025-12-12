@@ -32,6 +32,7 @@ export const mapGuidanceToArticleApi = (
                 description: null,
                 title: null,
             },
+            is_current: guidanceArticle.isCurrent,
         },
     }
 }

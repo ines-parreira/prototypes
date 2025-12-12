@@ -1,0 +1,129 @@
+import type { GuidanceReducerAction, GuidanceState } from './types'
+import { createInitialState } from './types'
+
+export function guidanceReducer(
+    state: GuidanceState,
+    action: GuidanceReducerAction,
+): GuidanceState {
+    switch (action.type) {
+        case 'SET_MODE':
+            return { ...state, guidanceMode: action.payload }
+
+        case 'SET_FULLSCREEN':
+            return { ...state, isFullscreen: action.payload }
+
+        case 'TOGGLE_FULLSCREEN':
+            return { ...state, isFullscreen: !state.isFullscreen }
+
+        case 'SET_DETAILS_VIEW':
+            return { ...state, isDetailsView: action.payload }
+
+        case 'TOGGLE_DETAILS_VIEW':
+            return { ...state, isDetailsView: !state.isDetailsView }
+
+        case 'SET_TITLE':
+            return {
+                ...state,
+                title: action.payload,
+                hasTemplateChanges: state.isFromTemplate
+                    ? action.payload !== state.savedSnapshot.title ||
+                      state.hasTemplateChanges
+                    : state.hasTemplateChanges,
+            }
+
+        case 'SET_CONTENT':
+            return {
+                ...state,
+                content: action.payload,
+                hasTemplateChanges: state.isFromTemplate
+                    ? action.payload !== state.savedSnapshot.content ||
+                      state.hasTemplateChanges
+                    : state.hasTemplateChanges,
+            }
+
+        case 'SET_VISIBILITY':
+            return { ...state, visibility: action.payload }
+
+        case 'RESET_FORM':
+            return {
+                ...state,
+                title: action.payload.title,
+                content: action.payload.content,
+                visibility: action.payload.visibility,
+                savedSnapshot: {
+                    title: action.payload.title,
+                    content: action.payload.content,
+                },
+                isAutoSaving: false,
+            }
+
+        case 'MARK_AS_SAVED': {
+            const newTitle = action.payload?.title ?? state.title
+            const newContent = action.payload?.content ?? state.content
+            const newGuidance = action.payload?.guidance ?? state.guidance
+            return {
+                ...state,
+                savedSnapshot: {
+                    title: newTitle,
+                    content: newContent,
+                },
+                isAutoSaving: false,
+                guidance: newGuidance,
+            }
+        }
+
+        case 'SET_AUTO_SAVING':
+            return { ...state, isAutoSaving: action.payload }
+
+        case 'SET_VERSION_STATUS':
+            return { ...state, versionStatus: action.payload }
+
+        case 'SWITCH_VERSION': {
+            const newVersionStatus =
+                state.versionStatus === 'latest_draft'
+                    ? 'current'
+                    : 'latest_draft'
+
+            return {
+                ...state,
+                versionStatus: newVersionStatus,
+                guidance: action.payload,
+                savedSnapshot: {
+                    title: action.payload.title,
+                    content: action.payload.content,
+                },
+                title: action.payload.title,
+                content: action.payload.content,
+                guidanceMode:
+                    newVersionStatus === 'current'
+                        ? 'read'
+                        : state.guidanceMode,
+            }
+        }
+
+        case 'SET_MODAL':
+            return {
+                ...state,
+                activeModal: action.payload,
+            }
+
+        case 'CLOSE_MODAL':
+            return {
+                ...state,
+                activeModal: null,
+            }
+
+        case 'SET_UPDATING':
+            return { ...state, isUpdating: action.payload }
+
+        case 'SWITCH_GUIDANCE':
+            return createInitialState(
+                undefined,
+                action.payload.article,
+                action.payload.mode,
+            )
+
+        default:
+            return state
+    }
+}

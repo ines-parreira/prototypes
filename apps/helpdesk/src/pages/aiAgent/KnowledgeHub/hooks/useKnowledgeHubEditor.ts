@@ -212,7 +212,9 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
                 type,
             })
 
-            notifySuccess(editorConfig.notifications.created)
+            if (type !== 'guidance') {
+                notifySuccess(editorConfig.notifications.created)
+            }
             dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
 
             // Transition to existing mode after creation for FAQ articles
@@ -234,7 +236,10 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
             type,
         })
 
-        notifySuccess(editorConfig.notifications.updated)
+        // When dealing with autosave, we don't want to show the success notification
+        if (type !== 'guidance') {
+            notifySuccess(editorConfig.notifications.updated)
+        }
         dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
     }, [editorConfig, shopName, type, notifySuccess])
 

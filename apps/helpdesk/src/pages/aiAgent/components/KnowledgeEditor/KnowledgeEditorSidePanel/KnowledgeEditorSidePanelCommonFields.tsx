@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useCopyToClipboard, useId } from '@repo/hooks'
 import _uniqueId from 'lodash/uniqueId'
 
-import { Icon, IconSize, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { Icon, IconSize, Tag, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { DEFAULT_LOCALE } from 'domains/reporting/pages/common/utils'
 import { selectText } from 'pages/common/components/CopyText/utils'
@@ -188,3 +188,13 @@ export const KnowledgeEditorSidePanelFieldPercentage = ({
 
     return `${formattedPercentage}%`
 }
+
+export const KnowledgeEditorSidePanelFieldStatus = ({
+    isDraft,
+}: {
+    isDraft: boolean
+}) => (
+    <Tag color={isDraft ? 'grey' : 'green'}>
+        {isDraft ? 'Draft' : 'Published'}
+    </Tag>
+)

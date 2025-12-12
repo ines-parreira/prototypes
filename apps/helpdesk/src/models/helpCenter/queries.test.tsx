@@ -43,6 +43,8 @@ const mockResponse: KnowledgeHubArticlesResponse = {
             source: 'test-source.com',
             localeCode: 'en-US',
             shopName: 'test-shop',
+            draftVersionId: null,
+            publishedVersionId: null,
         },
         {
             id: 2,
@@ -54,6 +56,8 @@ const mockResponse: KnowledgeHubArticlesResponse = {
             source: 'another-source.com',
             localeCode: 'en-US',
             shopName: 'test-shop',
+            draftVersionId: null,
+            publishedVersionId: null,
         },
     ],
 }

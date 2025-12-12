@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import type { Meta, StoryFn, StoryObj } from '@storybook/react'
 
 import { KnowledgeEditorTopBar } from './KnowledgeEditorTopBar'
-import { KnowledgeEditorTopBarGuidanceControls } from './KnowledgeEditorTopBarGuidanceControls'
 import {
     ArticleModes,
     KnowledgeEditorTopBarHelpCenterArticlesControls,
@@ -50,51 +49,6 @@ const Template: StoryFn<ComponentProps<typeof KnowledgeEditorTopBar>> = (
             />
         </div>
     )
-}
-
-export const ForGuidanceRead: Story = Template.bind({})
-ForGuidanceRead.args = {
-    onClickPrevious: () => {},
-    onClickNext: () => {},
-    title: 'Guidance',
-    children: (
-        <KnowledgeEditorTopBarGuidanceControls
-            disabled={false}
-            mode="read"
-            onCopy={() => {}}
-            onEdit={() => {}}
-            onDelete={() => {}}
-            onTest={() => {}}
-        />
-    ),
-}
-export const ForGuidanceEdit: Story = Template.bind({})
-ForGuidanceEdit.args = {
-    onClickPrevious: () => {},
-    onClickNext: () => {},
-    title: 'Guidance',
-    children: (
-        <KnowledgeEditorTopBarGuidanceControls
-            disabled={false}
-            mode="edit"
-            onSave={undefined}
-            onCancel={() => {}}
-        />
-    ),
-}
-export const ForGuidanceCreate: Story = Template.bind({})
-ForGuidanceCreate.args = {
-    onClickPrevious: () => {},
-    onClickNext: () => {},
-    title: 'Guidance',
-    children: (
-        <KnowledgeEditorTopBarGuidanceControls
-            disabled={false}
-            mode="create"
-            onCancel={() => {}}
-            onCreate={() => {}}
-        />
-    ),
 }
 
 export const ForHelpCenterArticleRead: Story = Template.bind({})

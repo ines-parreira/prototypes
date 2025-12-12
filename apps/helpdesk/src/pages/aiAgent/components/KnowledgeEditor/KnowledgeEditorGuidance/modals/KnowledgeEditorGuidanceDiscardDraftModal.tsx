@@ -8,39 +8,10 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import type { LocaleCode } from 'models/helpCenter/types'
-import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
+import { useDiscardDraftModal } from './useDiscardDraftModal'
 
-type Props = {
-    isOpen: boolean
-    guidanceHelpCenterId: number
-    guidanceArticleId: number
-    locale: LocaleCode
-    onClose: () => void
-    onDiscardSucceeded: () => void
-    onDiscardFailed?: () => void
-}
-
-export const KnowledgeEditorGuidanceDiscardDraftModal = ({
-    isOpen,
-    guidanceHelpCenterId,
-    guidanceArticleId,
-    locale,
-    onClose,
-    onDiscardSucceeded,
-    onDiscardFailed,
-}: Props) => {
-    const { discardGuidanceDraft, isDiscardingDraft } =
-        useGuidanceArticleMutation({ guidanceHelpCenterId })
-
-    const handleDiscard = async () => {
-        try {
-            await discardGuidanceDraft(guidanceArticleId, locale)
-            onDiscardSucceeded()
-        } catch {
-            onDiscardFailed?.()
-        }
-    }
+export const KnowledgeEditorGuidanceDiscardDraftModal = () => {
+    const { isOpen, isDiscarding, onClose, onDiscard } = useDiscardDraftModal()
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose}>
@@ -54,19 +25,19 @@ export const KnowledgeEditorGuidanceDiscardDraftModal = ({
                 </Box>
             </OverlayContent>
             <OverlayFooter hideCancelButton>
-                <Box>
+                <Box gap="xs" justifyContent="flex-end" width="100%">
                     <Button
                         variant="secondary"
                         onClick={onClose}
-                        isDisabled={isDiscardingDraft}
+                        isDisabled={isDiscarding}
                     >
                         Back to editing
                     </Button>
                     <Button
                         variant="primary"
                         intent="destructive"
-                        onClick={handleDiscard}
-                        isLoading={isDiscardingDraft}
+                        onClick={onDiscard}
+                        isLoading={isDiscarding}
                     >
                         Discard draft
                     </Button>

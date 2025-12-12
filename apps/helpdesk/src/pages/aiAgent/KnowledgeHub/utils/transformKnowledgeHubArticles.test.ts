@@ -60,6 +60,8 @@ describe('transformKnowledgeHubArticlesToKnowledgeItems', () => {
         source: 'test-source.com',
         localeCode: 'en-US',
         shopName: 'test-shop',
+        draftVersionId: null,
+        publishedVersionId: null,
     }
 
     it('should transform single article correctly', () => {
@@ -76,6 +78,8 @@ describe('transformKnowledgeHubArticlesToKnowledgeItems', () => {
                 inUseByAI: KnowledgeVisibility.PUBLIC,
                 source: 'test-source.com',
                 localeCode: 'en-US',
+                publishedVersionId: null,
+                draftVersionId: null,
             },
         ])
     })
@@ -152,6 +156,8 @@ describe('transformKnowledgeHubArticlesToKnowledgeItems', () => {
             source: 'https://example.com/article',
             localeCode: 'en-US',
             shopName: 'my-shop',
+            draftVersionId: null,
+            publishedVersionId: null,
         }
 
         const result = transformKnowledgeHubArticlesToKnowledgeItems([article])

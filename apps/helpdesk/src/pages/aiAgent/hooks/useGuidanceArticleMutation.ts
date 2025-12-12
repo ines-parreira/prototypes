@@ -293,7 +293,7 @@ export const useGuidanceArticleMutation = ({
     const discardGuidanceDraft = useCallback(
         async (articleId: number, locale: LocaleCode) => {
             try {
-                await deleteArticleTranslationDraftAsync([
+                const response = await deleteArticleTranslationDraftAsync([
                     undefined,
                     {
                         article_id: articleId,
@@ -301,6 +301,8 @@ export const useGuidanceArticleMutation = ({
                         locale,
                     },
                 ])
+
+                return response?.data
             } catch (error) {
                 reportError(error, {
                     tags: { team: SentryTeam.CONVAI_KNOWLEDGE },

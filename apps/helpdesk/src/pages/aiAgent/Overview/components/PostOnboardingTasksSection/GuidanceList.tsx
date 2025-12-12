@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Icon, IconSize, Skeleton, Text } from '@gorgias/axiom'
+import { Icon, IconSize, Skeleton, Tag, Text } from '@gorgias/axiom'
 
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
@@ -44,9 +44,16 @@ export const GuidanceList = ({
             <div className={css.guidances}>
                 {visibleArticles.map((article) => (
                     <div key={article.id} className={css.listItem}>
-                        <Text size="md" variant="regular">
-                            {article.title}
-                        </Text>
+                        <div className={css.titleContainer}>
+                            <Text size="md" variant="regular">
+                                {article.title}
+                            </Text>
+                            {article.isCurrent === false && (
+                                <Tag color="grey" id={`draft-${article.id}`}>
+                                    Draft
+                                </Tag>
+                            )}
+                        </div>
 
                         <div className={css.actions}>
                             <span
