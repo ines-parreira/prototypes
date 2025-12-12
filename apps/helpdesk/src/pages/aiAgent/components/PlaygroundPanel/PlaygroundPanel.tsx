@@ -8,6 +8,7 @@ import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { useFlag } from 'core/flags'
 import PlaygroundActionsModal from 'pages/aiAgent/PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal'
+import type { DraftKnowledge } from 'pages/aiAgent/PlaygroundV2/types'
 import { getActionsToggleTooltipContent } from 'pages/aiAgent/PlaygroundV2/utils/playground.utils'
 import { useAppContext } from 'pages/AppContext'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
@@ -20,6 +21,7 @@ import css from './PlaygroundPanel.less'
 type Props = {
     shopName?: string
     onClose?: () => void
+    draftKnowledge?: DraftKnowledge
 }
 
 type ActionsSectionProps = {
@@ -52,7 +54,11 @@ const ActionsSection = ({
     )
 }
 
-export const PlaygroundPanel = ({ shopName, onClose }: Props) => {
+export const PlaygroundPanel = ({
+    shopName,
+    onClose,
+    draftKnowledge,
+}: Props) => {
     const { setIsCollapsibleColumnOpen } = useAppContext()
     const [resetPlayground, setResetPlayground] = useState(false)
     const [actionsAllowed, setActionsAllowed] = useState(false)
@@ -159,6 +165,7 @@ export const PlaygroundPanel = ({ shopName, onClose }: Props) => {
                     inplaceSettingsOpen={isSettingsOpen}
                     onInplaceSettingsOpenChange={setIsSettingsOpen}
                     supportedModes={['inbound']}
+                    draftKnowledge={draftKnowledge}
                 />
             </div>
         </div>

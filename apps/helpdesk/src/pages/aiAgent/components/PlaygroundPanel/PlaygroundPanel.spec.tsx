@@ -339,6 +339,29 @@ describe('PlaygroundPanel', () => {
             )
         })
 
+        it('should pass draftKnowledge prop to AiAgentPlayground when provided', () => {
+            const draftKnowledge = { sourceId: 1, sourceSetId: 1 }
+            render(<PlaygroundPanel draftKnowledge={draftKnowledge} />)
+
+            expect(MockAiAgentPlayground).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    draftKnowledge,
+                }),
+                {},
+            )
+        })
+
+        it('should not pass draftKnowledge to AiAgentPlayground when not provided', () => {
+            render(<PlaygroundPanel />)
+
+            expect(MockAiAgentPlayground).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    draftKnowledge: undefined,
+                }),
+                {},
+            )
+        })
+
         it('should pass resetPlaygroundCallback to AiAgentPlayground', () => {
             render(<PlaygroundPanel />)
 

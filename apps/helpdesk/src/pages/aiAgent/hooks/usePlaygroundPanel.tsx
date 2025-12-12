@@ -2,13 +2,18 @@ import { useCallback, useMemo } from 'react'
 
 import { useParams } from 'react-router'
 
+import type { DraftKnowledge } from 'pages/aiAgent/PlaygroundV2/types'
 import { useAppContext } from 'pages/AppContext'
 
 import { PlaygroundPanel } from '../components/PlaygroundPanel/PlaygroundPanel'
 
 const REMOVE_CHILDREN_DELAY = 300
 
-export const usePlaygroundPanel = () => {
+type Props = {
+    draftKnowledge?: DraftKnowledge
+}
+
+export const usePlaygroundPanel = ({ draftKnowledge }: Props = {}) => {
     const { shopName } = useParams<{
         shopName?: string
     }>()
@@ -20,12 +25,20 @@ export const usePlaygroundPanel = () => {
     } = useAppContext()
 
     const playgroundPanel = useMemo(
-        () => <PlaygroundPanel shopName={shopName} />,
-        [shopName],
+        () => (
+            <PlaygroundPanel
+                shopName={shopName}
+                draftKnowledge={draftKnowledge}
+            />
+        ),
+        [shopName, draftKnowledge],
     )
 
     const openPlayground = useCallback(async () => {
+        // Force playground reload when it's opened
+        setCollapsibleColumnChildren(null)
         setCollapsibleColumnChildren(playgroundPanel)
+
         setIsCollapsibleColumnOpen(true)
     }, [
         setCollapsibleColumnChildren,

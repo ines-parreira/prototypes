@@ -37,6 +37,19 @@ describe('usePlaygroundPanel', () => {
     })
 
     describe('openPlayground', () => {
+        it('should force reload playground by clearing children first', async () => {
+            const { result } = renderHook(() => usePlaygroundPanel())
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            expect(mockSetCollapsibleColumnChildren).toHaveBeenCalledWith(null)
+            expect(mockSetCollapsibleColumnChildren).toHaveBeenCalledWith(
+                expect.objectContaining({ type: expect.any(Function) }),
+            )
+        })
+
         it('should set playground panel as collapsible column children', async () => {
             const { result } = renderHook(() => usePlaygroundPanel())
 
@@ -237,6 +250,76 @@ describe('usePlaygroundPanel', () => {
         })
     })
 
+    describe('draftKnowledge parameter', () => {
+        it('should pass draftKnowledge to PlaygroundPanel when provided', async () => {
+            const draftKnowledge = { sourceId: 1, sourceSetId: 1 }
+            const { result } = renderHook(() =>
+                usePlaygroundPanel({ draftKnowledge }),
+            )
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            expect(mockSetCollapsibleColumnChildren).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    props: expect.objectContaining({ draftKnowledge }),
+                }),
+            )
+        })
+
+        it('should not pass draftKnowledge to PlaygroundPanel when not provided', async () => {
+            const { result } = renderHook(() => usePlaygroundPanel())
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            expect(mockSetCollapsibleColumnChildren).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    props: expect.objectContaining({
+                        draftKnowledge: undefined,
+                    }),
+                }),
+            )
+        })
+
+        it('should create new playground panel when draftKnowledge changes', async () => {
+            const draftKnowledge1 = { sourceId: 1, sourceSetId: 1 }
+            const draftKnowledge2 = { sourceId: 1, sourceSetId: 1 }
+
+            const { result, rerender } = renderHook(
+                ({ draftKnowledge }) => usePlaygroundPanel({ draftKnowledge }),
+                { initialProps: { draftKnowledge: draftKnowledge1 } },
+            )
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            const firstCallIndex =
+                mockSetCollapsibleColumnChildren.mock.calls.length - 1
+            const firstPanel =
+                mockSetCollapsibleColumnChildren.mock.calls[firstCallIndex]?.[0]
+
+            rerender({ draftKnowledge: draftKnowledge2 })
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            const secondCallIndex =
+                mockSetCollapsibleColumnChildren.mock.calls.length - 1
+            const secondPanel =
+                mockSetCollapsibleColumnChildren.mock.calls[
+                    secondCallIndex
+                ]?.[0]
+
+            expect(firstPanel).not.toBe(secondPanel)
+            expect(secondPanel.props.draftKnowledge).toEqual(draftKnowledge2)
+        })
+    })
+
     describe('callback stability', () => {
         it('should maintain stable callback references', () => {
             const { result, rerender } = renderHook(() => usePlaygroundPanel())
@@ -259,6 +342,22 @@ describe('usePlaygroundPanel', () => {
 
             mockUseParams.mockReturnValue({ shopName: 'new-shop' })
             rerender()
+
+            expect(result.current.openPlayground).not.toBe(firstOpenPlayground)
+        })
+
+        it('should update callbacks when draftKnowledge changes', () => {
+            const draftKnowledge1 = { sourceId: 1, sourceSetId: 1 }
+            const draftKnowledge2 = { sourceId: 1, sourceSetId: 1 }
+
+            const { result, rerender } = renderHook(
+                ({ draftKnowledge }) => usePlaygroundPanel({ draftKnowledge }),
+                { initialProps: { draftKnowledge: draftKnowledge1 } },
+            )
+
+            const firstOpenPlayground = result.current.openPlayground
+
+            rerender({ draftKnowledge: draftKnowledge2 })
 
             expect(result.current.openPlayground).not.toBe(firstOpenPlayground)
         })
