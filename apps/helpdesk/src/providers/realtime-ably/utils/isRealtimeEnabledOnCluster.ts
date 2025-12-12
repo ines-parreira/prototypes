@@ -1,14 +1,19 @@
 const GORGIAS_CLUSTER = window.GORGIAS_CLUSTER
 
-const US_EAST1_CLUSTER = 'us-east1-635c'
-const US_EAST4_CLUSTER = 'us-east4-65cd'
-const AUS_SOUTHEAST1_CLUSTER = 'aus-southeast1-fcb9'
 const STAGING_CLUSTER = 'us-east1-86cc'
 
-const SUPPORTED_CLUSTERS = [
-    US_EAST1_CLUSTER,
-    US_EAST4_CLUSTER,
-    AUS_SOUTHEAST1_CLUSTER,
+export const SUPPORTED_CLUSTERS = [
+    'aus-southeast1-fcb9',
+    'europe-west1-c511',
+    'europe-west3-86c1',
+    'us-central1-d8ff',
+    'us-central1-c433',
+    'us-east1-2607',
+    'us-east1-635c',
+    'us-east1-c94b',
+    'europe-west4-e7f4',
+    'us-east4-65cd',
+    'us-east4-5f09',
     STAGING_CLUSTER,
 ]
 
