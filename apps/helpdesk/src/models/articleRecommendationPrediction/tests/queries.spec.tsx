@@ -59,8 +59,7 @@ describe('queries', () => {
             )
         })
 
-        // TODO(React18): Fix this flaky test
-        it.skip('should not return data when helpCenterId is not provided', async () => {
+        it('should not return data when helpCenterId is not provided', async () => {
             mockedServer
                 .onPost(/auth/)
                 .reply(200, {})
@@ -73,7 +72,7 @@ describe('queries', () => {
                         page: 1,
                         shopName: 'my-shop',
                         shopType: 'shopify',
-                        helpCenterId: 1,
+                        helpCenterId: undefined,
                     }),
                 {
                     wrapper,
@@ -81,9 +80,11 @@ describe('queries', () => {
             )
 
             await waitFor(() => {
+                expect(result.current.fetchStatus).toBe('idle')
                 expect(result.current.isSuccess).toBe(false)
                 expect(result.current.data).toBe(undefined)
             })
+            expect(mockedServer.history.get.length).toBe(0)
         })
     })
 
