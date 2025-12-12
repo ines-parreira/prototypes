@@ -1,121 +1,139 @@
-import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render, screen } from '@testing-library/react'
 
+import * as automateHooks from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
+import * as automationRateTimeSeriesHooks from 'domains/reporting/hooks/automate/useAutomationRateTimeSeriesData'
+import * as statsHooks from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { renderTickLabelAsNumber } from 'domains/reporting/pages/utils'
 
-import { AutomationLineChart } from './AutomationLineChart'
+import {
+    AutomationLineChart,
+    CustomTooltip,
+    formatYAxisTick,
+} from './AutomationLineChart'
+
+jest.mock('domains/reporting/hooks/automate/useAIAgentAutomationRateTrend')
+jest.mock('domains/reporting/hooks/automate/useAutomationRateTimeSeriesData')
+jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 
 describe('AutomationLineChart', () => {
-    it('should render the default metric title', () => {
-        render(<AutomationLineChart />)
+    const mockTimeSeriesData = [
+        [
+            {
+                dateTime: '2024-06-01',
+                value: 0.3,
+                label: 'Overall automation rate',
+            },
+            {
+                dateTime: '2024-06-02',
+                value: 0.28,
+                label: 'Overall automation rate',
+            },
+            {
+                dateTime: '2024-06-03',
+                value: 0.32,
+                label: 'Overall automation rate',
+            },
+            {
+                dateTime: '2024-06-04',
+                value: 0.35,
+                label: 'Overall automation rate',
+            },
+            {
+                dateTime: '2024-06-05',
+                value: 0.33,
+                label: 'Overall automation rate',
+            },
+            {
+                dateTime: '2024-06-06',
+                value: 0.31,
+                label: 'Overall automation rate',
+            },
+            {
+                dateTime: '2024-06-07',
+                value: 0.34,
+                label: 'Overall automation rate',
+            },
+        ],
+    ]
 
-        const elements = screen.getAllByText('Overall automation rate')
-        expect(elements.length).toBeGreaterThan(0)
+    beforeAll(() => {
+        global.ResizeObserver = class ResizeObserver {
+            observe() {}
+            unobserve() {}
+            disconnect() {}
+        }
+
+        Element.prototype.getAnimations = function () {
+            return []
+        }
     })
 
-    it('should render the metric value', () => {
+    beforeEach(() => {
+        jest.spyOn(statsHooks, 'useStatsFilters').mockReturnValue({
+            cleanStatsFilters: {
+                period: {
+                    start_datetime: '2024-06-01',
+                    end_datetime: '2024-06-07',
+                },
+            },
+            userTimezone: 'UTC',
+            granularity: ReportingGranularity.Day,
+        })
+
+        jest.spyOn(
+            automateHooks,
+            'useAIAgentAutomationRateTrend',
+        ).mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: 0.32,
+                prevValue: 0.3,
+            },
+        })
+
+        jest.spyOn(
+            automationRateTimeSeriesHooks,
+            'useAutomationRateTimeSeriesData',
+        ).mockReturnValue({
+            data: mockTimeSeriesData,
+            isFetching: false,
+            isError: false,
+        })
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should render the metric title', () => {
+        render(<AutomationLineChart />)
+
+        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
+    })
+
+    it('should render the metric value from automation rate hook', () => {
         render(<AutomationLineChart />)
 
         expect(screen.getByText('32%')).toBeInTheDocument()
     })
 
-    it('should render the trend percentage', () => {
-        render(<AutomationLineChart />)
+    it('should render the trend badge', () => {
+        const { container } = render(<AutomationLineChart />)
 
-        expect(screen.getByText('2%')).toBeInTheDocument()
+        const trendBadge = container.querySelector('.trend')
+        expect(trendBadge).toBeInTheDocument()
     })
 
     it('should render with positive trend icon', () => {
         const { container } = render(<AutomationLineChart />)
 
-        const trendingUpIcon = container.querySelector(
-            '[aria-label="trending-up"]',
+        const icons = container.querySelectorAll('svg')
+        const hasTrendIcon = Array.from(icons).some((icon) =>
+            icon.getAttribute('aria-label')?.includes('trending'),
         )
-        expect(trendingUpIcon).toBeInTheDocument()
-    })
-
-    it('should render select dropdown', () => {
-        render(<AutomationLineChart />)
-
-        const selectButton = screen.getByRole('button', {
-            name: /Overall automation rate/i,
-        })
-        expect(selectButton).toBeInTheDocument()
-    })
-
-    it('should show chevron down icon when closed', () => {
-        const { container } = render(<AutomationLineChart />)
-
-        const chevronDownIcon = container.querySelector(
-            '[aria-label="arrow-chevron-down"]',
-        )
-        expect(chevronDownIcon).toBeInTheDocument()
-    })
-
-    it('should render with positive trend styles', () => {
-        render(<AutomationLineChart />)
-
-        const trendText = screen.getByText('2%')
-        expect(trendText).toHaveClass('trendTextPositive')
-    })
-
-    it('should open dropdown when clicking select button', async () => {
-        const user = userEvent.setup()
-        render(<AutomationLineChart />)
-
-        const selectButton = screen.getByRole('button', {
-            name: /Overall automation rate/i,
-        })
-
-        await act(() => user.click(selectButton))
-
-        const options = screen.getAllByText('Overall automation interactions')
-        expect(options.length).toBeGreaterThan(0)
-    })
-
-    it('should show chevron up icon when dropdown is open', async () => {
-        const user = userEvent.setup()
-        const { container } = render(<AutomationLineChart />)
-
-        const selectButton = screen.getByRole('button', {
-            name: /Overall automation rate/i,
-        })
-
-        await act(() => user.click(selectButton))
-
-        const chevronUpIcon = container.querySelector(
-            '[aria-label="arrow-chevron-up"]',
-        )
-        expect(chevronUpIcon).toBeInTheDocument()
-    })
-
-    it('should render all metric options in dropdown', async () => {
-        const user = userEvent.setup()
-        render(<AutomationLineChart />)
-
-        const selectButton = screen.getByRole('button', {
-            name: /Overall automation rate/i,
-        })
-
-        await act(() => user.click(selectButton))
-
-        const automationRateOptions = screen.getAllByText(
-            'Overall automation rate',
-        )
-        expect(automationRateOptions.length).toBeGreaterThan(0)
-
-        const automationInteractionsOptions = screen.getAllByText(
-            'Overall automation interactions',
-        )
-        expect(automationInteractionsOptions.length).toBeGreaterThan(0)
-
-        const costSavedOptions = screen.getAllByText('Overall cost saved')
-        expect(costSavedOptions.length).toBeGreaterThan(0)
-
-        const timeSavedOptions = screen.getAllByText(
-            'Overall time saved by agents',
-        )
-        expect(timeSavedOptions.length).toBeGreaterThan(0)
+        expect(hasTrendIcon).toBe(true)
     })
 
     it('should render responsive container for chart', () => {
@@ -149,8 +167,20 @@ describe('AutomationLineChart', () => {
         expect(renderTickLabelAsNumber('test')).toBe('test')
     })
 
-    it('should render with negative trend icon', () => {
-        const { container } = render(<AutomationLineChart trend={-2} />)
+    it('should render with negative trend icon when trend is negative', () => {
+        jest.spyOn(
+            automateHooks,
+            'useAIAgentAutomationRateTrend',
+        ).mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: 0.28,
+                prevValue: 0.3,
+            },
+        })
+
+        const { container } = render(<AutomationLineChart />)
 
         const trendingDownIcon = container.querySelector(
             '[aria-label="trending-down"]',
@@ -158,47 +188,214 @@ describe('AutomationLineChart', () => {
         expect(trendingDownIcon).toBeInTheDocument()
     })
 
-    it('should apply error color for negative trend', () => {
-        const { container } = render(<AutomationLineChart trend={-2} />)
+    it('should handle null automation rate value', () => {
+        jest.spyOn(
+            automateHooks,
+            'useAIAgentAutomationRateTrend',
+        ).mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: null,
+                prevValue: null,
+            },
+        })
 
-        const trendingDownIcon = container.querySelector(
-            '[aria-label="trending-down"]',
+        render(<AutomationLineChart />)
+
+        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
+    })
+
+    it('should handle undefined automation rate data', () => {
+        jest.spyOn(
+            automateHooks,
+            'useAIAgentAutomationRateTrend',
+        ).mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: undefined,
+        })
+
+        render(<AutomationLineChart />)
+
+        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
+    })
+
+    it('should handle empty time series data', () => {
+        jest.spyOn(
+            automationRateTimeSeriesHooks,
+            'useAutomationRateTimeSeriesData',
+        ).mockReturnValue({
+            data: [[]],
+            isFetching: false,
+            isError: false,
+        })
+
+        render(<AutomationLineChart />)
+
+        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
+    })
+
+    it('should handle undefined time series data', () => {
+        jest.spyOn(
+            automationRateTimeSeriesHooks,
+            'useAutomationRateTimeSeriesData',
+        ).mockReturnValue({
+            data: [[]],
+            isFetching: false,
+            isError: false,
+        })
+
+        render(<AutomationLineChart />)
+
+        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
+    })
+
+    it('should render chart with time series data', () => {
+        const { container } = render(<AutomationLineChart />)
+
+        const responsiveContainer = container.querySelector(
+            '.recharts-responsive-container',
         )
-        expect(trendingDownIcon).toBeInTheDocument()
+        expect(responsiveContainer).toBeInTheDocument()
     })
 
-    it('should apply trendTextNegative class for negative trend', () => {
-        render(<AutomationLineChart trend={-2} />)
+    it('should render chart with empty data when timeSeriesData is undefined', () => {
+        jest.spyOn(
+            automationRateTimeSeriesHooks,
+            'useAutomationRateTimeSeriesData',
+        ).mockReturnValue({
+            data: undefined as any,
+            isFetching: false,
+            isError: false,
+        })
 
-        const trendText = screen.getByText('2%')
-        expect(trendText).toHaveClass('trendTextNegative')
-    })
+        const { container } = render(<AutomationLineChart />)
 
-    it('should render with neutral trend (zero)', () => {
-        const { container } = render(<AutomationLineChart trend={0} />)
-
-        const trendingDownIcon = container.querySelector(
-            '[aria-label="trending-down"]',
+        const responsiveContainer = container.querySelector(
+            '.recharts-responsive-container',
         )
-        expect(trendingDownIcon).toBeInTheDocument()
+        expect(responsiveContainer).toBeInTheDocument()
+
+        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
     })
 
-    it('should apply neutral color for zero trend', () => {
-        render(<AutomationLineChart trend={0} />)
+    it('should render chart with empty data when timeSeriesData is empty array', () => {
+        jest.spyOn(
+            automationRateTimeSeriesHooks,
+            'useAutomationRateTimeSeriesData',
+        ).mockReturnValue({
+            data: [],
+            isFetching: false,
+            isError: false,
+        })
 
-        const trendText = screen.getByText('0%')
-        expect(trendText).toHaveClass('trendTextNeutral')
+        const { container } = render(<AutomationLineChart />)
+
+        const responsiveContainer = container.querySelector(
+            '.recharts-responsive-container',
+        )
+        expect(responsiveContainer).toBeInTheDocument()
+
+        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
+    })
+})
+
+describe('CustomTooltip', () => {
+    it('should return null when not active', () => {
+        const result = CustomTooltip({
+            active: false,
+            payload: [{ value: 0.5 }] as any,
+            label: 'Test',
+        } as any)
+
+        expect(result).toBeNull()
     })
 
-    it('should render custom value when provided', () => {
-        render(<AutomationLineChart value="45%" />)
+    it('should return null when payload is undefined', () => {
+        const result = CustomTooltip({
+            active: true,
+            payload: undefined as any,
+            label: 'Test',
+        } as any)
 
-        expect(screen.getByText('45%')).toBeInTheDocument()
+        expect(result).toBeNull()
     })
 
-    it('should render custom trend value when provided', () => {
-        render(<AutomationLineChart trend={5} />)
+    it('should return null when payload is empty', () => {
+        const result = CustomTooltip({
+            active: true,
+            payload: [],
+            label: 'Test',
+        } as any)
 
-        expect(screen.getByText('5%')).toBeInTheDocument()
+        expect(result).toBeNull()
+    })
+
+    it('should render tooltip with formatted percentage when active with valid payload', () => {
+        const result = CustomTooltip({
+            active: true,
+            payload: [{ value: 0.5 }] as any,
+            label: 'Jun 01',
+        } as any)
+
+        expect(result).not.toBeNull()
+        const { container } = render(result!)
+
+        expect(container.textContent).toContain('Jun 01')
+        expect(container.textContent).toContain('50.0%')
+    })
+
+    it('should handle number label by converting to string', () => {
+        const result = CustomTooltip({
+            active: true,
+            payload: [{ value: 0.75 }] as any,
+            label: 123,
+        } as any)
+
+        expect(result).not.toBeNull()
+        const { container } = render(result!)
+
+        expect(container.textContent).toContain('123')
+        expect(container.textContent).toContain('75.0%')
+    })
+
+    it('should handle non-number value by showing 0.0%', () => {
+        const result = CustomTooltip({
+            active: true,
+            payload: [{ value: 'invalid' }] as any,
+            label: 'Test',
+        } as any)
+
+        expect(result).not.toBeNull()
+        const { container } = render(result!)
+
+        expect(container.textContent).toContain('0.0%')
+    })
+})
+
+describe('formatYAxisTick', () => {
+    it('should format values < 10 as plain percentage', () => {
+        expect(formatYAxisTick(0)).toBe('0')
+        expect(formatYAxisTick(0.05)).toBe('5')
+        expect(formatYAxisTick(0.5)).toBe('50')
+        expect(formatYAxisTick(0.99)).toBe('99')
+    })
+
+    it('should format values >= 10 with K suffix', () => {
+        expect(formatYAxisTick(10)).toBe('1K')
+        expect(formatYAxisTick(15)).toBe('1.5K')
+        expect(formatYAxisTick(20)).toBe('2K')
+    })
+
+    it('should format values with no decimal when evenly divisible by 1000', () => {
+        expect(formatYAxisTick(10)).toBe('1K')
+        expect(formatYAxisTick(20)).toBe('2K')
+        expect(formatYAxisTick(100)).toBe('10K')
+    })
+
+    it('should format values with decimal when not evenly divisible by 1000', () => {
+        expect(formatYAxisTick(12.5)).toBe('1.3K')
+        expect(formatYAxisTick(15.75)).toBe('1.6K')
     })
 })

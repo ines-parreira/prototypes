@@ -42,7 +42,7 @@ export const ChartCard = ({
     tooltipData,
 }: ChartCardProps) => {
     return (
-        <Card flex={1} p="lg" className={css.cardContainer}>
+        <Card flex={1} p="lg" gap="xxl" className={css.cardContainer}>
             <ChartHeader
                 title={title}
                 value={value}

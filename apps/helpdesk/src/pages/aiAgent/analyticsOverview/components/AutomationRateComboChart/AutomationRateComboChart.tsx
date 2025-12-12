@@ -9,9 +9,9 @@ import { ButtonGroup, ButtonGroupItem, Icon } from '@gorgias/axiom'
 
 import { useAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 import { useAutomationRateByFeature } from '../../hooks/useAutomationRateByFeature'
+import { formatPreviousPeriod } from '../../utils/formatPreviousPeriod'
 
 const METRIC_TITLE = 'Overall automation rate'
 
@@ -33,10 +33,7 @@ export const AutomationRateComboChart = () => {
 
     const filteredChartData = chartData?.filter((item) => item.value !== 0)
 
-    const previousPeriod = getPreviousPeriod(cleanStatsFilters?.period)
-    const tooltipPeriod = previousPeriod
-        ? `${moment(previousPeriod.start_datetime).format(DATE_FORMAT)} - ${moment(previousPeriod.end_datetime).format(DATE_FORMAT)}`
-        : ''
+    const tooltipPeriod = formatPreviousPeriod(cleanStatsFilters?.period)
 
     const isLoading =
         automationRateTrend.isFetching ||

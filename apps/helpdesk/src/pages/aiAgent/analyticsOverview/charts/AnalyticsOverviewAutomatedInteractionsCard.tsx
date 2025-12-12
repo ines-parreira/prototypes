@@ -1,25 +1,21 @@
 import { TrendCard } from '@repo/reporting'
-import moment from 'moment'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-import { DATE_FORMAT } from '../constants'
 import { useAutomatedInteractionsMetric } from '../hooks/useAutomatedInteractionsMetric'
+import { formatPreviousPeriod } from '../utils/formatPreviousPeriod'
 
 export const AnalyticsOverviewAutomatedInteractionsCard = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
     const { cleanStatsFilters } = useStatsFilters()
-    const previousPeriod = getPreviousPeriod(cleanStatsFilters?.period)
     const trend = useAutomatedInteractionsMetric()
 
-    const trendTooltipData = previousPeriod
-        ? `${moment(previousPeriod.start_datetime).format(DATE_FORMAT)} - ${moment(previousPeriod.end_datetime).format(DATE_FORMAT)}`
-        : ''
+    const trendTooltipData = formatPreviousPeriod(cleanStatsFilters?.period)
+
     return (
         <TrendCard
             trend={trend}

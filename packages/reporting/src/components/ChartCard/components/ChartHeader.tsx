@@ -52,6 +52,7 @@ export const ChartHeader = ({
                 alignItems="center"
                 justifyContent="space-between"
                 width="100%"
+                height="24px"
             >
                 <Box alignItems="center" gap="xxxs">
                     {showMetricsDropdown ? (
