@@ -25,8 +25,8 @@ type FaqEditorWrapperProps = {
     onCreate: (createdArticle?: { id: number }) => void
     onUpdate: () => void
     onDelete: () => void
-    onClickPrevious: () => void
-    onClickNext: () => void
+    onClickPrevious?: () => void
+    onClickNext?: () => void
     versionStatus?: GetArticleVersionStatus
 }
 

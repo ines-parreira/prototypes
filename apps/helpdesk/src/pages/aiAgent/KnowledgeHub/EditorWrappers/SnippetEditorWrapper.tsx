@@ -8,8 +8,8 @@ type SnippetEditorWrapperProps = {
     snippetType?: SnippetType
     onClose: () => void
     onUpdate: () => void
-    onClickPrevious: () => void
-    onClickNext: () => void
+    onClickPrevious?: () => void
+    onClickNext?: () => void
 }
 
 export const SnippetEditorWrapper = ({

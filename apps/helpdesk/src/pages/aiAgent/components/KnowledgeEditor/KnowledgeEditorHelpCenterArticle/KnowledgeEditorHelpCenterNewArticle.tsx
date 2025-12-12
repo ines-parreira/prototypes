@@ -35,8 +35,8 @@ type Props = {
     helpCenter: HelpCenter
     supportedLocales: Locale[]
     categories: Category[]
-    onClickPrevious: () => void
-    onClickNext: () => void
+    onClickPrevious?: () => void
+    onClickNext?: () => void
     onClose: () => void
     template?: {
         title: string

@@ -42,8 +42,8 @@ type Snippet = URLSnippet | DocumentSnippet | StoreWebsiteSnippet
 
 type Props = {
     onClose: () => void
-    onClickPrevious: () => void
-    onClickNext: () => void
+    onClickPrevious?: () => void
+    onClickNext?: () => void
     onToggleFullscreen: () => void
     onTest: () => void
     onToggleAIAgentEnabled: () => Promise<void>

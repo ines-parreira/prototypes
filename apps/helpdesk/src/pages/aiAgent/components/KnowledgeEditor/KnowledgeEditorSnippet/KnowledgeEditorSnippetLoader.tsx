@@ -279,8 +279,8 @@ export const KnowledgeEditorSnippetLoader = ({
     return (
         <KnowledgeEditorSnippetView
             onClose={onClose}
-            onClickPrevious={onClickPrevious || (() => {})}
-            onClickNext={onClickNext || (() => {})}
+            onClickPrevious={onClickPrevious}
+            onClickNext={onClickNext}
             onToggleFullscreen={onToggleFullscreen}
             onToggleAIAgentEnabled={onToggleAIAgentEnabled}
             onTest={onTest}

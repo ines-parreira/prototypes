@@ -597,8 +597,6 @@ export const KnowledgeHubContainer = () => {
                 onCreate={faqEditor.handleCreate}
                 onUpdate={faqEditor.handleUpdate}
                 onDelete={faqEditor.handleDelete}
-                onClickPrevious={faqEditor.handleClickPrevious}
-                onClickNext={faqEditor.handleClickNext}
                 versionStatus={faqEditor.versionStatus}
             />
             <SnippetEditorWrapper
@@ -606,8 +604,6 @@ export const KnowledgeHubContainer = () => {
                 isOpen={snippetEditor.isEditorOpen}
                 onClose={snippetEditorClose}
                 onUpdate={snippetEditor.handleUpdate}
-                onClickPrevious={snippetEditor.handleClickPrevious}
-                onClickNext={snippetEditor.handleClickNext}
                 currentArticleId={snippetEditor.currentArticleId}
                 snippetType={snippetEditor.currentSnippetType}
             />
