@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -28,7 +29,7 @@ jest.mock('react-router-dom', () => ({
 const mockUseFlag = jest.fn()
 jest.mock('core/flags', () => ({
     ...jest.requireActual('core/flags'),
-    useFlag: (...args: any[]) => mockUseFlag(...args),
+    useFlag: (key: FeatureFlagKey) => mockUseFlag(key),
 }))
 
 jest.mock('hooks/useAllIntegrations', () => ({
@@ -82,7 +83,7 @@ describe('<LandingPage />', () => {
     })
 
     beforeEach(() => {
-        mockUseFlag.mockReturnValue(false)
+        mockUseFlag.mockImplementation(() => false)
 
         mockUseJourneyContext.mockReturnValue({
             journey: undefined,
@@ -112,6 +113,7 @@ describe('<LandingPage />', () => {
 
         expect(screen.getByText('AI Journey Performance')).toBeInTheDocument()
     })
+
     it('should redirect to setup page when button is clicked', async () => {
         renderWithRouter(
             <Provider store={mockStore}>
@@ -216,7 +218,12 @@ describe('<LandingPage />', () => {
     })
 
     it('should not display campaigns option when feature flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
+        mockUseFlag.mockImplementation((key: FeatureFlagKey) => {
+            if (key === FeatureFlagKey.AiJourneyCampaignsEnabled) {
+                return false
+            }
+            return false
+        })
 
         renderWithRouter(
             <Provider store={mockStore}>
@@ -230,14 +237,16 @@ describe('<LandingPage />', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('Abandoned Cart')).toBeInTheDocument()
-        expect(screen.getByText('Browse Abandonment')).toBeInTheDocument()
         expect(screen.queryByText('Campaigns')).not.toBeInTheDocument()
-        expect(screen.queryByText('Customer Win-back')).not.toBeInTheDocument()
     })
 
     it('should display campaigns option when feature flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+        mockUseFlag.mockImplementation((key: FeatureFlagKey) => {
+            if (key === FeatureFlagKey.AiJourneyCampaignsEnabled) {
+                return true
+            }
+            return false
+        })
 
         renderWithRouter(
             <Provider store={mockStore}>
@@ -251,14 +260,113 @@ describe('<LandingPage />', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('Abandoned Cart')).toBeInTheDocument()
-        expect(screen.getByText('Browse Abandonment')).toBeInTheDocument()
         expect(screen.getByText('Campaigns')).toBeInTheDocument()
         expect(
             screen.getByText(
                 'Boost your sales with targeted SMS campaigns, crafted using AI to engage your audience effectively.',
             ),
         ).toBeInTheDocument()
+    })
+
+    it('should not display Welcome customer option when AiJourneyWelcomeFlowEnabled flag is disabled', () => {
+        mockUseFlag.mockImplementation((key: FeatureFlagKey) => {
+            if (key === FeatureFlagKey.AiJourneyWelcomeFlowEnabled) {
+                return false
+            }
+            return false
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <LandingPage />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.queryByText('Welcome customer')).not.toBeInTheDocument()
+    })
+
+    it('should display Welcome customer option when AiJourneyWelcomeFlowEnabled flag is enabled', () => {
+        mockUseFlag.mockImplementation((key: FeatureFlagKey) => {
+            if (key === FeatureFlagKey.AiJourneyWelcomeFlowEnabled) {
+                return true
+            }
+            return false
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <LandingPage />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByText('Welcome customer')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Make a great first impression, let the Welcome Journey turn new subscribers into loyal customers.',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should not display Customer Win-back option when AiJourneyWinBackEnabled flag is disabled', () => {
+        mockUseFlag.mockImplementation((key: FeatureFlagKey) => {
+            if (key === FeatureFlagKey.AiJourneyWinBackEnabled) {
+                return false
+            }
+            return false
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <LandingPage />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.queryByText('Customer Win-back')).not.toBeInTheDocument()
+    })
+
+    it('should display Customer Win-back option when AiJourneyWinBackEnabled flag is enabled', () => {
+        mockUseFlag.mockImplementation((key: FeatureFlagKey) => {
+            if (key === FeatureFlagKey.AiJourneyWinBackEnabled) {
+                return true
+            }
+            return false
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <LandingPage />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
         expect(screen.getByText('Customer Win-back')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Reconnect with inactive customers and revive their interest in your store using personalized AI-driven messages.',
+            ),
+        ).toBeInTheDocument()
     })
 })

@@ -11,6 +11,7 @@ export const JOURNEY_TYPES = {
     SESSION_ABANDONMENT: 'session-abandoned',
     CAMPAIGN: 'campaign',
     WIN_BACK: 'win-back',
+    WELCOME: 'welcome',
 }
 
 export type JOURNEY_TYPES = (typeof JOURNEY_TYPES)[keyof typeof JOURNEY_TYPES]

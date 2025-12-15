@@ -29,8 +29,12 @@ export const LandingPage = () => {
         FeatureFlagKey.AiJourneyWinBackEnabled,
     )
 
-    const availableJourneys = useMemo(() => {
-        const journeys = [
+    const isAiJourneyWelcomeFlowEnabled = useFlag(
+        FeatureFlagKey.AiJourneyWelcomeFlowEnabled,
+    )
+
+    const availableJourneys = useMemo(
+        () => [
             {
                 name: 'Abandoned Cart',
                 description:
@@ -43,28 +47,43 @@ export const LandingPage = () => {
                     'Retain your shoppers, let the Browse Abandonment Journey re-engage visitors who left without converting.',
                 value: JOURNEY_TYPES.SESSION_ABANDONMENT,
             },
-        ]
-
-        if (isAiJourneyWinBackEnabled) {
-            journeys.push({
-                name: 'Customer Win-back',
-                description:
-                    'Reconnect with inactive customers and revive their interest in your store using personalized AI-driven messages.',
-                value: JOURNEY_TYPES.WIN_BACK,
-            })
-        }
-
-        if (isAiJourneyCampaignsEnabled) {
-            journeys.push({
-                name: 'Campaigns',
-                description:
-                    'Boost your sales with targeted SMS campaigns, crafted using AI to engage your audience effectively.',
-                value: JOURNEY_TYPES.CAMPAIGN,
-            })
-        }
-
-        return journeys
-    }, [isAiJourneyCampaignsEnabled, isAiJourneyWinBackEnabled])
+            ...(isAiJourneyWinBackEnabled
+                ? [
+                      {
+                          name: 'Customer Win-back',
+                          description:
+                              'Reconnect with inactive customers and revive their interest in your store using personalized AI-driven messages.',
+                          value: JOURNEY_TYPES.WIN_BACK,
+                      },
+                  ]
+                : []),
+            ...(isAiJourneyWelcomeFlowEnabled
+                ? [
+                      {
+                          name: 'Welcome customer',
+                          description:
+                              'Make a great first impression, let the Welcome Journey turn new subscribers into loyal customers.',
+                          value: JOURNEY_TYPES.WELCOME,
+                      },
+                  ]
+                : []),
+            ...(isAiJourneyCampaignsEnabled
+                ? [
+                      {
+                          name: 'Campaigns',
+                          description:
+                              'Boost your sales with targeted SMS campaigns, crafted using AI to engage your audience effectively.',
+                          value: JOURNEY_TYPES.CAMPAIGN,
+                      },
+                  ]
+                : []),
+        ],
+        [
+            isAiJourneyCampaignsEnabled,
+            isAiJourneyWinBackEnabled,
+            isAiJourneyWelcomeFlowEnabled,
+        ],
+    )
 
     const { journeys, isLoading } = useJourneyContext()
 
