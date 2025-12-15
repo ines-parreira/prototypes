@@ -1,25 +1,27 @@
 import { TrialType } from '../types/ShoppingAssistant'
 
 const TITLES = {
-    AI_AGENT_TRIAL: 'AI Agent trial',
-    AI_AGENT: 'AI Agent',
-    TRY_AI_AGENT: 'Try AI Agent for free',
+    // User isn't yet onboarded
     AI_AGENT_AND_SHOPPING_ASSISTANT: 'AI Agent & Shopping Assistant',
-    SHOPPING_ASSISTANT_TRIAL: 'Shopping Assistant trial',
+
+    // Pre-trial CTAs
+    SEE_AI_AGENT_IN_ACTION: 'See AI Agent in action',
     UNLOCK_AI_AGENT_SKILLS: 'Unlock new AI Agent skills',
+
+    // Trial is active
+    AI_AGENT_TRIAL: 'AI Agent trial',
+    SHOPPING_ASSISTANT_TRIAL: 'Shopping Assistant trial',
 } as const
 
 export const getPromoCardTitle = (
     isExpandingTrialExperienceMilestone2Enabled: boolean,
     trialType: TrialType,
     isTrialProgress: boolean,
-    canSeeTrialCTA: boolean,
     isOnboarded?: boolean,
 ): string => {
     if (trialType === TrialType.AiAgent) {
         if (isTrialProgress) return TITLES.AI_AGENT_TRIAL
-        if (canSeeTrialCTA) return TITLES.AI_AGENT
-        return TITLES.TRY_AI_AGENT
+        return TITLES.SEE_AI_AGENT_IN_ACTION
     }
 
     if (!isExpandingTrialExperienceMilestone2Enabled) {

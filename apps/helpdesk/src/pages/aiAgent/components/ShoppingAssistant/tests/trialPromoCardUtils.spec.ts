@@ -6,7 +6,6 @@ describe('getPromoCardTitle', () => {
         isExpandingTrialExperienceMilestone2Enabled: false,
         trialType: TrialType.AiAgent,
         isTrialProgress: false,
-        canSeeTrialCTA: false,
         isOnboarded: true,
         ...overrides,
     })
@@ -21,41 +20,23 @@ describe('getPromoCardTitle', () => {
                 mockData.isExpandingTrialExperienceMilestone2Enabled,
                 mockData.trialType,
                 mockData.isTrialProgress,
-                mockData.canSeeTrialCTA,
                 mockData.isOnboarded,
             )
 
             expect(result).toBe('AI Agent trial')
         })
 
-        it('should return "AI Agent" when user can see trial CTA and not in progress', () => {
-            const mockData = createMockData({
-                canSeeTrialCTA: true,
-            })
-
-            const result = getPromoCardTitle(
-                mockData.isExpandingTrialExperienceMilestone2Enabled,
-                mockData.trialType,
-                mockData.isTrialProgress,
-                mockData.canSeeTrialCTA,
-                mockData.isOnboarded,
-            )
-
-            expect(result).toBe('AI Agent')
-        })
-
-        it('should return "Try AI Agent for free" when cannot see trial CTA and trial is not in progress', () => {
+        it('should return "See AI Agent in action" when cannot see trial CTA and trial is not in progress', () => {
             const mockData = createMockData()
 
             const result = getPromoCardTitle(
                 mockData.isExpandingTrialExperienceMilestone2Enabled,
                 mockData.trialType,
                 mockData.isTrialProgress,
-                mockData.canSeeTrialCTA,
                 mockData.isOnboarded,
             )
 
-            expect(result).toBe('Try AI Agent for free')
+            expect(result).toBe('See AI Agent in action')
         })
     })
 
@@ -71,7 +52,6 @@ describe('getPromoCardTitle', () => {
                     mockData.isExpandingTrialExperienceMilestone2Enabled,
                     mockData.trialType,
                     mockData.isTrialProgress,
-                    mockData.canSeeTrialCTA,
                     mockData.isOnboarded,
                 )
 
@@ -91,7 +71,6 @@ describe('getPromoCardTitle', () => {
                     mockData.isExpandingTrialExperienceMilestone2Enabled,
                     mockData.trialType,
                     mockData.isTrialProgress,
-                    mockData.canSeeTrialCTA,
                     mockData.isOnboarded,
                 )
 
@@ -109,7 +88,6 @@ describe('getPromoCardTitle', () => {
                     mockData.isExpandingTrialExperienceMilestone2Enabled,
                     mockData.trialType,
                     mockData.isTrialProgress,
-                    mockData.canSeeTrialCTA,
                     mockData.isOnboarded,
                 )
 
@@ -126,7 +104,6 @@ describe('getPromoCardTitle', () => {
                     mockData.isExpandingTrialExperienceMilestone2Enabled,
                     mockData.trialType,
                     mockData.isTrialProgress,
-                    mockData.canSeeTrialCTA,
                     mockData.isOnboarded,
                 )
 
@@ -144,7 +121,6 @@ describe('getPromoCardTitle', () => {
                     mockData.isExpandingTrialExperienceMilestone2Enabled,
                     mockData.trialType,
                     mockData.isTrialProgress,
-                    mockData.canSeeTrialCTA,
                     mockData.isOnboarded,
                 )
 

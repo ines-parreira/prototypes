@@ -508,7 +508,7 @@ const useNewTrialUpgradePlanModal = (
                 ...planModalData.newPlan,
                 priceTooltipText: tooltip,
             },
-            title: 'Try AI Agent for free',
+            title: 'Try AI Agent',
             subtitle:
                 'Unlock powerful automation with Gorgias AI Agent. Resolve 60% of support inquiries, proactively engage shoppers, and convert more visitors with 24/7 assistance in your brand voice.',
             primaryAction: {

@@ -2397,7 +2397,7 @@ describe('useTrialModalProps', () => {
 
                 const modal = result.current.newTrialUpgradePlanModal
 
-                expect(modal.title).toBe('Try AI Agent for free')
+                expect(modal.title).toBe('Try AI Agent')
                 expect(modal.subtitle).toBe(
                     'Unlock powerful automation with Gorgias AI Agent. Resolve 60% of support inquiries, proactively engage shoppers, and convert more visitors with 24/7 assistance in your brand voice.',
                 )

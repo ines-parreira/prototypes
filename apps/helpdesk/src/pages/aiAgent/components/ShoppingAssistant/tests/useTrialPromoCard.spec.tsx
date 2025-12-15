@@ -1928,7 +1928,9 @@ describe('useTrialPromoCard', () => {
                 },
             )
 
-            expect(result.current?.promoCardContent?.title).toBe('AI Agent')
+            expect(result.current?.promoCardContent?.title).toBe(
+                'See AI Agent in action',
+            )
             expect(result.current?.promoCardContent?.variant).toBe(
                 'admin-trial',
             )
@@ -1953,7 +1955,7 @@ describe('useTrialPromoCard', () => {
             )
 
             expect(result.current?.promoCardContent?.title).toBe(
-                'Try AI Agent for free',
+                'See AI Agent in action',
             )
             expect(result.current?.promoCardContent?.variant).toBe(
                 'lead-notify',

@@ -115,7 +115,6 @@ export const useTrialPromoCard = (
             isExpandingTrialExperienceMilestone2Enabled,
             trialAccess.trialType,
             isTrialProgress,
-            trialAccess.canSeeTrialCTA,
             trialAccess.isOnboarded,
         )
         if (trialAccess.trialType === TrialType.AiAgent) {
