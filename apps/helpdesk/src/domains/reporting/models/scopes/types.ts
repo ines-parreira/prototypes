@@ -122,6 +122,14 @@ export type MeasureName =
     | 'averageTalkTimeInSeconds'
     | 'averageWaitTimeInSeconds'
     | 'voiceCallsCount'
+    | 'abandonedVoiceCallsCount'
+    | 'answeredVoiceCallsCount'
+    | 'callbackRequestedVoiceCallsCount'
+    | 'cancelledVoiceCallsCount'
+    | 'inboundVoiceCallsCount'
+    | 'missedVoiceCallsCount'
+    | 'outboundVoiceCallsCount'
+    | 'unansweredVoiceCallsCount'
 
 export type TimeDimensionName =
     | 'createdDatetime'

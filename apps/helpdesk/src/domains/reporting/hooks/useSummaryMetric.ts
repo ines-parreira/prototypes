@@ -2,19 +2,28 @@ import type { UseQueryResult } from '@tanstack/react-query'
 
 import type { QueryReturnType } from 'domains/reporting/hooks/useMetric'
 import type { Cubes } from 'domains/reporting/models/cubes'
-import { usePostReporting } from 'domains/reporting/models/queries'
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
+import type {
+    BuiltQuery,
+    ScopeMeta,
+} from 'domains/reporting/models/scopes/scope'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 
-export function useSummaryMetric<TCube extends Cubes = Cubes>(
+export function useSummaryMetric<
+    TCube extends Cubes = Cubes,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(
     query: ReportingQuery<TCube>,
+    queryV2: BuiltQuery<TMeta>,
     enabled: boolean = true,
     refetchInterval: number | undefined = undefined,
 ): UseQueryResult<Record<TCube['measures'], number | null>, unknown> {
-    const currentPeriodMetric = usePostReporting<
+    const currentPeriodMetric = usePostReportingV2<
         QueryReturnType<TCube['measures']>,
         Record<TCube['measures'], number | null>,
-        TCube
-    >([query], {
+        TCube,
+        TMeta
+    >([query], queryV2, {
         enabled,
         select: (data) => {
             const firstItem = data.data.data?.[0]

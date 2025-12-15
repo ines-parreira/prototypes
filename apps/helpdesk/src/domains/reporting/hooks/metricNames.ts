@@ -433,7 +433,7 @@ export const METRIC_NAMES = {
         'voice-call-count-per-filtering-agent',
     VOICE_CALL_LIST: 'voice-call-list',
 
-    // TODO(new-stats-api): implement in a new scope (voice-call-summary)
+    // VoiceCallsSummary scope
     VOICE_CALL_SUMMARY: 'voice-call-summary',
 
     // TODO(new-stats-api): these 2 are drilldown queries
@@ -504,6 +504,7 @@ export enum MetricScope {
     AutomatedInteractions = 'automated-interactions',
     VoiceAgentEvents = 'voice-agent-events',
     VoiceCalls = 'voice-calls',
+    VoiceCallsSummary = 'voice-calls-summary',
     Tags = 'tags',
     ResponseTime = 'response-time',
     TicketServiceLevelAgreement = 'ticket-sla',
@@ -649,6 +650,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.VOICE_CALL_COUNT_PER_FILTERING_AGENT,
         METRIC_NAMES.VOICE_CALL_LIST,
     ],
+    [MetricScope.VoiceCallsSummary]: [METRIC_NAMES.VOICE_CALL_SUMMARY],
     [MetricScope.Tags]: [
         METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT,
         METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT_TIME_SERIES,

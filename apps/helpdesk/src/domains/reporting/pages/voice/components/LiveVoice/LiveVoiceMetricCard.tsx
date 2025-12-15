@@ -148,12 +148,44 @@ const LiveVoiceMetricCardEmpty = ({ title, hint }: EmptyProps) => {
 }
 
 const getMetricValue = (
-    data?: number | null | Record<VoiceCallSummaryMeasure, number | null>,
+    data?: number | null | Record<string, number | null>,
     measure?: VoiceCallSummaryMeasure,
 ): number | null => {
     if (typeof data === 'object') {
-        return (measure && data?.[measure]) ?? null
+        return (
+            (measure && data?.[measure]) ??
+            (measure && data?.[getV2MeasureFromMetricName(measure!)]) ??
+            null
+        )
     }
 
     return data ?? null
+}
+
+const getV2MeasureFromMetricName = (
+    metricName: VoiceCallSummaryMeasure,
+): string => {
+    switch (metricName) {
+        case VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal:
+            return 'inboundVoiceCallsCount'
+        case VoiceCallSummaryMeasure.VoiceCallSummaryOutboundTotal:
+            return 'outboundVoiceCallsCount'
+        case VoiceCallSummaryMeasure.VoiceCallSummaryAnsweredTotal:
+            return 'answeredVoiceCallsCount'
+        case VoiceCallSummaryMeasure.VoiceCallSummaryCancelledTotal:
+            return 'cancelledVoiceCallsCount'
+        case VoiceCallSummaryMeasure.VoiceCallSummaryAbandonedTotal:
+            return 'abandonedVoiceCallsCount'
+        case VoiceCallSummaryMeasure.VoiceCallSummaryMissedTotal:
+            return 'missedVoiceCallsCount'
+        case VoiceCallSummaryMeasure.VoiceCallSummaryUnansweredTotal:
+            return 'unansweredVoiceCallsCount'
+        case VoiceCallSummaryMeasure.VoiceCallSummaryCallbackRequestedTotal:
+            return 'callbackRequestedVoiceCallsCount'
+        case VoiceCallSummaryMeasure.VoiceCallSummaryAverageTalkTime:
+            return 'averageTalkTimeInSeconds'
+        case VoiceCallSummaryMeasure.VoiceCallSummaryAverageWaitTime:
+            return 'averageWaitTimeInSeconds'
+    }
+    return ''
 }

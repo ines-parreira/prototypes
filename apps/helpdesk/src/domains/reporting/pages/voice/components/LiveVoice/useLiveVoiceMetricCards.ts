@@ -9,9 +9,15 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { isFilterEmpty } from 'domains/reporting/pages/utils'
 import type { LiveVoiceMetricCard } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard'
 import { LiveVoiceStatusFilterOption } from 'domains/reporting/pages/voice/components/LiveVoice/types'
-import { filterLiveCallsByStatus } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
+import {
+    filterLiveCallsByStatus,
+    getLiveVoicePeriodFilter,
+} from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import * as constants from 'domains/reporting/pages/voice/constants/liveVoice'
 import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
+
+import { getAccountBusinessHoursTimezone } from '../../../../models/queryFactories/voice/voiceCall'
+import { voiceCallsSummaryMetricsQueryFactoryV2 } from '../../../../models/scopes/voiceCallsSummary'
 
 type MetricCardProps = ComponentProps<typeof LiveVoiceMetricCard> & {
     size: number
@@ -35,6 +41,15 @@ export default function useLiveVoiceMetricCards(
 
     const summaryMetric = useSummaryMetric(
         liveVoiceCallSummaryQueryFactory(filters),
+        voiceCallsSummaryMetricsQueryFactoryV2({
+            filters: {
+                ...filters,
+                period: getLiveVoicePeriodFilter(
+                    getAccountBusinessHoursTimezone(),
+                ),
+            },
+            timezone: getAccountBusinessHoursTimezone(),
+        }),
         true,
         30 * 1000,
     )

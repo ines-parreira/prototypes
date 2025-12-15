@@ -304,4 +304,459 @@ describe('LiveVoiceMetricCard', () => {
             )
         })
     })
+
+    describe('Loading states', () => {
+        it('shows loading state when metric is loading', () => {
+            const props = {
+                title: 'Test Title',
+                hint: 'Test Hint',
+                metric: {
+                    data: null,
+                    isLoading: true,
+                },
+            }
+
+            renderComponent(props)
+
+            expect(MetricCardMock).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    isLoading: true,
+                }),
+                {},
+            )
+            expect(BigNumberMetricMock).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    isLoading: true,
+                }),
+                {},
+            )
+        })
+
+        it('shows loading state when fetching additional format data', () => {
+            useMetricFormatMock.mockReturnValue({
+                ...mockMetricFormat,
+                isFetching: true,
+            })
+
+            const props = {
+                title: 'Test Title',
+                hint: 'Test Hint',
+                metric: {
+                    data: 100,
+                    isLoading: false,
+                },
+            }
+
+            renderComponent(props)
+
+            expect(MetricCardMock).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    isLoading: true,
+                }),
+                {},
+            )
+            expect(BigNumberMetricMock).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    isLoading: true,
+                }),
+                {},
+            )
+        })
+
+        it('shows loading state when both metric and format are loading', () => {
+            useMetricFormatMock.mockReturnValue({
+                ...mockMetricFormat,
+                isFetching: true,
+            })
+
+            const props = {
+                title: 'Test Title',
+                hint: 'Test Hint',
+                metric: {
+                    data: null,
+                    isLoading: true,
+                },
+            }
+
+            renderComponent(props)
+
+            expect(MetricCardMock).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    isLoading: true,
+                }),
+                {},
+            )
+        })
+    })
+
+    describe('Metric value extraction', () => {
+        describe('V2 measure mapping fallback', () => {
+            it.each([
+                {
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
+                    v2Key: 'inboundVoiceCallsCount',
+                    value: 10,
+                },
+                {
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummaryOutboundTotal,
+                    v2Key: 'outboundVoiceCallsCount',
+                    value: 20,
+                },
+                {
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummaryAnsweredTotal,
+                    v2Key: 'answeredVoiceCallsCount',
+                    value: 30,
+                },
+                {
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummaryCancelledTotal,
+                    v2Key: 'cancelledVoiceCallsCount',
+                    value: 40,
+                },
+                {
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummaryAbandonedTotal,
+                    v2Key: 'abandonedVoiceCallsCount',
+                    value: 50,
+                },
+                {
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummaryMissedTotal,
+                    v2Key: 'missedVoiceCallsCount',
+                    value: 60,
+                },
+                {
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummaryUnansweredTotal,
+                    v2Key: 'unansweredVoiceCallsCount',
+                    value: 70,
+                },
+                {
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummaryCallbackRequestedTotal,
+                    v2Key: 'callbackRequestedVoiceCallsCount',
+                    value: 80,
+                },
+                {
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummaryAverageTalkTime,
+                    v2Key: 'averageTalkTimeInSeconds',
+                    value: 90,
+                },
+                {
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummaryAverageWaitTime,
+                    v2Key: 'averageWaitTimeInSeconds',
+                    value: 100,
+                },
+            ])(
+                'extracts value from V2 format for $measure',
+                ({ measure, v2Key, value }) => {
+                    const props = {
+                        title: 'Test Title',
+                        hint: 'Test Hint',
+                        metric: {
+                            data: {
+                                [v2Key]: value,
+                            },
+                        },
+                        measure,
+                    }
+
+                    renderComponent(props)
+
+                    expect(useMetricFormatMock).toHaveBeenCalledWith(
+                        expect.objectContaining({
+                            value,
+                        }),
+                    )
+                },
+            )
+
+            it('uses direct key when VoiceCallSummaryTotal is provided', () => {
+                const props = {
+                    title: 'Test Title',
+                    hint: 'Test Hint',
+                    metric: {
+                        data: {
+                            [VoiceCallSummaryMeasure.VoiceCallSummaryTotal]: 123,
+                        },
+                    },
+                    measure: VoiceCallSummaryMeasure.VoiceCallSummaryTotal,
+                }
+
+                renderComponent(props)
+
+                expect(useMetricFormatMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        value: 123,
+                    }),
+                )
+            })
+
+            it('returns null for unmapped measure with V2 fallback', () => {
+                const props = {
+                    title: 'Test Title',
+                    hint: 'Test Hint',
+                    metric: {
+                        data: {
+                            someOtherKey: 456,
+                        },
+                    },
+                    measure: VoiceCallSummaryMeasure.VoiceCallSummaryTotal,
+                }
+
+                renderComponent(props)
+
+                expect(useMetricFormatMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        value: null,
+                    }),
+                )
+            })
+        })
+
+        describe('Data type handling', () => {
+            it('falls back to V2 measure key when direct measure key does not exist', () => {
+                const props = {
+                    title: 'Test Title',
+                    hint: 'Test Hint',
+                    metric: {
+                        data: {
+                            inboundVoiceCallsCount: 999,
+                        },
+                    },
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
+                }
+
+                renderComponent(props)
+
+                expect(useMetricFormatMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        value: 999,
+                    }),
+                )
+            })
+
+            it('handles primitive number data directly', () => {
+                const props = {
+                    title: 'Test Title',
+                    hint: 'Test Hint',
+                    metric: {
+                        data: 456,
+                    },
+                }
+
+                renderComponent(props)
+
+                expect(useMetricFormatMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        value: 456,
+                    }),
+                )
+            })
+
+            it('returns null when data is undefined', () => {
+                const props = {
+                    title: 'Test Title',
+                    hint: 'Test Hint',
+                    metric: {
+                        data: undefined,
+                    },
+                }
+
+                renderComponent(props)
+
+                expect(useMetricFormatMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        value: null,
+                    }),
+                )
+            })
+
+            it('returns null when data is object but measure is undefined', () => {
+                const props = {
+                    title: 'Test Title',
+                    hint: 'Test Hint',
+                    metric: {
+                        data: {
+                            someKey: 100,
+                        },
+                    },
+                }
+
+                renderComponent(props)
+
+                expect(useMetricFormatMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        value: null,
+                    }),
+                )
+            })
+
+            it('returns null when neither direct nor V2 measure keys exist in data', () => {
+                const props = {
+                    title: 'Test Title',
+                    hint: 'Test Hint',
+                    metric: {
+                        data: {
+                            otherKey: 100,
+                        },
+                    },
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
+                }
+
+                renderComponent(props)
+
+                expect(useMetricFormatMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        value: null,
+                    }),
+                )
+            })
+
+            it('returns null when data is explicitly null', () => {
+                const props = {
+                    title: 'Test Title',
+                    hint: 'Test Hint',
+                    metric: {
+                        data: null,
+                    },
+                }
+
+                renderComponent(props)
+
+                expect(useMetricFormatMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        value: null,
+                    }),
+                )
+            })
+        })
+    })
+
+    describe('Percentage format', () => {
+        describe('Default value format', () => {
+            it('sets default value format to percent when showPercentage is true', () => {
+                const props = {
+                    title: 'Test Title',
+                    hint: 'Test Hint',
+                    metric: {
+                        data: {
+                            [VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal]: 100,
+                        },
+                    },
+                    showPercentage: true,
+                }
+
+                renderComponent(props)
+
+                expect(useMetricFormatMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        defaultValueFormat: 'percent',
+                        isPercentageEnabled: true,
+                    }),
+                )
+            })
+
+            it('uses metricValueFormat as default when showPercentage is false', () => {
+                const props = {
+                    title: 'Test Title',
+                    hint: 'Test Hint',
+                    metric: {
+                        data: 100,
+                    },
+                    metricValueFormat: 'decimal' as MetricValueFormat,
+                    showPercentage: false,
+                }
+
+                renderComponent(props)
+
+                expect(useMetricFormatMock).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        defaultValueFormat: 'decimal',
+                        isPercentageEnabled: false,
+                    }),
+                )
+            })
+        })
+
+        describe('Toggle visibility edge cases', () => {
+            it('does not render toggle when percentageOfValue is null', () => {
+                const props = {
+                    title: 'Test Title',
+                    hint: 'Test Hint',
+                    metric: {
+                        data: {
+                            [VoiceCallSummaryMeasure.VoiceCallSummaryAnsweredTotal]: 50,
+                        },
+                    },
+                    showPercentage: true,
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummaryAnsweredTotal,
+                }
+
+                renderComponent(props)
+
+                expect(MetricCardMock).toHaveBeenLastCalledWith(
+                    expect.objectContaining({
+                        titleExtra: false,
+                    }),
+                    {},
+                )
+            })
+        })
+    })
+
+    describe('DrillDownModalTrigger enabled state', () => {
+        it('renders DrillDownModalTrigger with enabled=true when value exists', () => {
+            useMetricFormatMock.mockReturnValue({
+                ...mockMetricFormat,
+                metricValue: '150',
+            })
+
+            const props = {
+                title: 'Test Title',
+                hint: 'Test Hint',
+                metric: {
+                    data: 150,
+                },
+                metricName: 'Test Metric',
+            }
+
+            renderComponent(props)
+
+            expect(DrillDownModalTriggerMock).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    enabled: true,
+                }),
+                {},
+            )
+        })
+
+        it('renders DrillDownModalTrigger with enabled=false when value is 0', () => {
+            const props = {
+                title: 'Test Title',
+                hint: 'Test Hint',
+                metric: {
+                    data: 0,
+                },
+                metricName: 'Test Metric',
+            }
+
+            renderComponent(props)
+
+            expect(DrillDownModalTriggerMock).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    enabled: false,
+                }),
+                {},
+            )
+        })
+    })
 })

@@ -6,6 +6,7 @@ import { useFlag } from 'core/flags'
 import { useSummaryMetric } from 'domains/reporting/hooks/useSummaryMetric'
 import { VoiceCallSummaryMeasure } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
 import { liveVoiceCallSummaryQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCallSummary'
+import { voiceCallsSummaryMetricsQueryFactoryV2 } from 'domains/reporting/models/scopes/voiceCallsSummary'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import useLiveVoiceMetricCards from 'domains/reporting/pages/voice/components/LiveVoice/useLiveVoiceMetricCards'
@@ -21,11 +22,15 @@ jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')
 jest.mock('domains/reporting/hooks/useSummaryMetric')
 jest.mock('domains/reporting/models/queryFactories/voice/voiceCall')
 jest.mock('domains/reporting/models/queryFactories/voice/voiceCallSummary')
+jest.mock('domains/reporting/models/scopes/voiceCallsSummary')
 
 const filterLiveCallsByStatusMock = assumeMock(filterLiveCallsByStatus)
 const useSummaryMetricMock = assumeMock(useSummaryMetric)
 const liveVoiceCallSummaryQueryFactoryMock = assumeMock(
     liveVoiceCallSummaryQueryFactory,
+)
+const voiceCallsSummaryMetricsQueryFactoryV2Mock = assumeMock(
+    voiceCallsSummaryMetricsQueryFactoryV2,
 )
 
 const mockSummaryMetric = {
@@ -67,6 +72,13 @@ describe('useLiveVoiceMetricCards', () => {
     beforeEach(() => {
         filterLiveCallsByStatusMock.mockReturnValue(sampleLiveVoiceCalls)
         useFlagMock.mockReturnValue(true)
+        voiceCallsSummaryMetricsQueryFactoryV2Mock.mockReturnValue({
+            metricName: 'voice-call-summary',
+            scope: 'voice-calls-summary',
+            measures: ['inboundVoiceCallsCount'],
+            timezone: 'UTC',
+            filters: [],
+        } as any)
     })
 
     it.each([
@@ -111,6 +123,10 @@ describe('useLiveVoiceMetricCards', () => {
 
         expect(useSummaryMetricMock).toHaveBeenCalledWith(
             liveVoiceCallSummaryQueryFactoryMock(filters),
+            expect.objectContaining({
+                metricName: 'voice-call-summary',
+                scope: 'voice-calls-summary',
+            }),
             true,
             30 * 1000,
         )
@@ -259,7 +275,11 @@ describe('useLiveVoiceMetricCards', () => {
                     [],
                     true,
                     // @ts-ignore: Filters are not accepted but actually valid
-                    { ...filters, ...additionalFilters },
+                    {
+                        ...filters,
+                        ...additionalFilters,
+                        period: filters.period,
+                    },
                 ),
             )
 
