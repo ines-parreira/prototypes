@@ -154,7 +154,6 @@ describe('TitleCell', () => {
         render(<TitleCell row={faqRow} searchTerm="" availableActions={[]} />)
 
         expect(screen.queryByText('Draft')).not.toBeInTheDocument()
-        expect(screen.getByText('Public')).toBeInTheDocument()
     })
 
     it('renders Draft tag for published FAQ with null draftVersionId', () => {

@@ -1,4 +1,12 @@
-import { Button, ButtonGroup, ButtonGroupItem, Icon } from '@gorgias/axiom'
+import { Fragment } from 'react'
+
+import {
+    Button,
+    ButtonGroup,
+    ButtonGroupItem,
+    Icon,
+    Separator,
+} from '@gorgias/axiom'
 
 import { HELP_CENTER_SELECT_MODAL_OPEN } from 'pages/aiAgent/KnowledgeHub/constants'
 import { dispatchDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
@@ -41,17 +49,19 @@ export const DocumentFilters = ({
                         : 'All content'
                 }
             >
-                {filters.map((filter) => {
+                {filters.map((filter, index) => {
                     return (
-                        <ButtonGroupItem
-                            id={filter.label}
-                            key={filter.type || 'all'}
-                            leadingSlot={
-                                filter.icon && <Icon name={filter.icon} />
-                            }
-                        >
-                            {filter.label}
-                        </ButtonGroupItem>
+                        <Fragment key={filter.type || 'all'}>
+                            <ButtonGroupItem
+                                id={filter.label}
+                                leadingSlot={
+                                    filter.icon && <Icon name={filter.icon} />
+                                }
+                            >
+                                {filter.label}
+                            </ButtonGroupItem>
+                            {index === 0 && <Separator direction="vertical" />}
+                        </Fragment>
                     )
                 })}
             </ButtonGroup>

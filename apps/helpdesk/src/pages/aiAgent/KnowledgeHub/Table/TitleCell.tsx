@@ -97,9 +97,10 @@ export const TitleCell = ({
                     )}
                 {!isGrouped &&
                     (type === KnowledgeType.FAQ ||
-                        type === KnowledgeType.Guidance) && (
-                        <Tag id={row.original.id} className={css.tag}>
-                            {isArticleDraft ? 'Draft' : 'Public'}
+                        type === KnowledgeType.Guidance) &&
+                    isArticleDraft && (
+                        <Tag id={row.original.id} color="grey">
+                            Draft
                         </Tag>
                     )}
                 {!isGrouped && source && (
