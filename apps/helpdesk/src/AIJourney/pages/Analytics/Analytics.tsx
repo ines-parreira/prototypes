@@ -371,12 +371,10 @@ export const Analytics = () => {
                                 interpretAs,
                                 isLoading,
                                 trend,
-                                series,
                             } = metricData
 
                             return (
                                 <TrendCard
-                                    trendColor="neutral"
                                     key={`key-metric-${config.id}`}
                                     currency={currency}
                                     withFixedWidth={false}
@@ -386,7 +384,6 @@ export const Analytics = () => {
                                     isLoading={isLoading}
                                     metricFormat={metricFormat}
                                     interpretAs={interpretAs}
-                                    timeSeriesData={series}
                                     trend={{
                                         isError: false,
                                         isFetching: isLoading,

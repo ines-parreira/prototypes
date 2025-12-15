@@ -3,24 +3,12 @@ import { memo, useState } from 'react'
 
 import { Box, Skeleton, Text } from '@gorgias/axiom'
 
-import { TREND_BADGE_FORMAT } from '../../constants'
-import type {
-    MetricTrend,
-    MetricTrendFormat,
-    TooltipData,
-    TrendColor,
-    TwoDimensionalDataItem,
-} from '../../types'
-import {
-    formatMetricTrend,
-    formatMetricValue,
-    getTrendColorFromValue,
-} from '../../utils/helpers'
+import type { MetricTrend, MetricTrendFormat, TooltipData } from '../../types'
+import { formatMetricValue } from '../../utils/helpers'
 import { MetricCard } from '../MetricCard/MetricCard'
 import { MetricCardHeader } from '../MetricCardHeader/MetricCardHeader'
 import type { TrendBadgeProps } from '../TrendBadge/TrendBadge'
 import { TrendBadge } from '../TrendBadge/TrendBadge'
-import { TrendChart } from '../TrendChart/TrendChart'
 
 import css from './TrendCard.less'
 
@@ -31,9 +19,7 @@ export type TrendCardProps = {
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     isLoading?: boolean
     metricFormat?: MetricTrendFormat
-    timeSeriesData?: TwoDimensionalDataItem[]
     trend: MetricTrend
-    trendColor?: TrendColor
     withBorder?: boolean
     withFixedWidth?: boolean
     trendBadgeTooltipData?: TrendBadgeProps['tooltipData']
@@ -47,21 +33,13 @@ export const TrendCard = memo<TrendCardProps>(
         interpretAs,
         isLoading = false,
         metricFormat,
-        timeSeriesData,
         trend,
-        trendColor,
         withBorder,
         withFixedWidth,
         trendBadgeTooltipData,
     }) => {
         const { data } = trend
         const [isHovered, setIsHovered] = useState(false)
-
-        const { sign } = formatMetricTrend(
-            data?.value,
-            data?.prevValue,
-            TREND_BADGE_FORMAT,
-        )
 
         return (
             <div
@@ -123,17 +101,6 @@ export const TrendCard = memo<TrendCardProps>(
                             )}
                         </div>
                     </div>
-                    {!isLoading && !!timeSeriesData?.length && (
-                        <TrendChart
-                            isStrokeSolid
-                            trendColor={
-                                trendColor ??
-                                getTrendColorFromValue(sign, interpretAs)
-                            }
-                            data={timeSeriesData}
-                            areaChartProps={{ width: '100%', height: 25 }}
-                        />
-                    )}
                 </MetricCard>
             </div>
         )

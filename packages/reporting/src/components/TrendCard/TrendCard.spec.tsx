@@ -1,20 +1,9 @@
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import type { MetricTrend, TwoDimensionalDataItem } from '../../types'
+import type { MetricTrend } from '../../types'
 import type { TrendCardProps } from './TrendCard'
 import { TrendCard } from './TrendCard'
-
-const mockTimeSeriesData: TwoDimensionalDataItem[] = [
-    {
-        label: 'Series 1',
-        values: [
-            { x: '2024-01-01', y: 10 },
-            { x: '2024-01-02', y: 20 },
-            { x: '2024-01-03', y: 15 },
-        ],
-    },
-]
 
 const mockTrend: MetricTrend = {
     isFetching: false,
@@ -28,7 +17,6 @@ const mockTrend: MetricTrend = {
 
 const defaultProps: TrendCardProps = {
     trend: mockTrend,
-    timeSeriesData: mockTimeSeriesData,
     interpretAs: 'more-is-better',
 }
 
@@ -95,11 +83,7 @@ describe('TrendCard', () => {
         }
 
         const { container } = render(
-            <TrendCard
-                {...defaultProps}
-                trend={trendWithoutData}
-                timeSeriesData={mockTimeSeriesData}
-            />,
+            <TrendCard {...defaultProps} trend={trendWithoutData} />,
         )
 
         const card = container.querySelector('[class*="card"]')
@@ -117,48 +101,9 @@ describe('TrendCard', () => {
             },
         }
 
-        render(
-            <TrendCard
-                {...defaultProps}
-                trend={trendWithNullValues}
-                timeSeriesData={mockTimeSeriesData}
-            />,
-        )
+        render(<TrendCard {...defaultProps} trend={trendWithNullValues} />)
 
         expect(screen.getByText('Test Metric')).toBeInTheDocument()
-    })
-
-    it('should render with empty timeSeriesData', () => {
-        render(<TrendCard {...defaultProps} timeSeriesData={[]} />)
-
-        expect(screen.getByText('Test Metric')).toBeInTheDocument()
-        expect(screen.getByText('100')).toBeInTheDocument()
-    })
-
-    it('should render with multiple series in timeSeriesData', () => {
-        const multipleSeriesData: TwoDimensionalDataItem[] = [
-            {
-                label: 'Series 1',
-                values: [
-                    { x: '2024-01-01', y: 10 },
-                    { x: '2024-01-02', y: 20 },
-                ],
-            },
-            {
-                label: 'Series 2',
-                values: [
-                    { x: '2024-01-01', y: 15 },
-                    { x: '2024-01-02', y: 25 },
-                ],
-            },
-        ]
-
-        render(
-            <TrendCard {...defaultProps} timeSeriesData={multipleSeriesData} />,
-        )
-
-        expect(screen.getByText('Test Metric')).toBeInTheDocument()
-        expect(screen.getByText('100')).toBeInTheDocument()
     })
 
     it('should render metric value and label together', () => {
