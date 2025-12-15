@@ -81,6 +81,7 @@ export const AutomationRateComboChart = () => {
             interpretAs="more-is-better"
             tooltipData={{ period: tooltipPeriod }}
             chartControls={chartControls}
+            isLoading={isLoading}
         >
             {chartType === 'donut' ? (
                 <DonutChart

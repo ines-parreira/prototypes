@@ -26,6 +26,7 @@ type ChartCardProps = {
     tooltipData?: {
         period: string
     }
+    isLoading?: boolean
 }
 
 export const ChartCard = ({
@@ -40,6 +41,7 @@ export const ChartCard = ({
     value,
     prevValue,
     tooltipData,
+    isLoading,
 }: ChartCardProps) => {
     return (
         <Card flex={1} p="lg" gap="xxl" className={css.cardContainer}>
@@ -54,6 +56,7 @@ export const ChartCard = ({
                 onMetricChange={onMetricChange}
                 chartControls={chartControls}
                 tooltipData={tooltipData}
+                isLoading={isLoading}
             />
             {children}
         </Card>

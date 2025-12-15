@@ -39,7 +39,8 @@ describe('ChartHeader', () => {
             const headings = container.querySelectorAll(
                 'h1, h2, h3, h4, h5, h6',
             )
-            expect(headings.length).toBe(0)
+            expect(headings.length).toBe(1)
+            expect(headings[0].textContent).toBe('')
         })
     })
 
@@ -386,6 +387,56 @@ describe('ChartHeader', () => {
             render(<ChartHeader title="Metric" value={100} prevValue={0} />)
 
             expect(screen.getByText('100')).toBeInTheDocument()
+        })
+    })
+
+    describe('loading state', () => {
+        it('should render skeleton when isLoading is true', () => {
+            const { container } = render(
+                <ChartHeader title="Test Chart" isLoading={true} />,
+            )
+
+            const skeletons = container.querySelectorAll('[class*="skeleton"]')
+            expect(skeletons.length).toBeGreaterThan(0)
+        })
+
+        it('should render skeleton with percentage sign when loading', () => {
+            render(<ChartHeader title="Test Chart" isLoading={true} />)
+
+            expect(screen.getByText('%')).toBeInTheDocument()
+        })
+
+        it('should not render value when loading', () => {
+            const { container } = render(
+                <ChartHeader title="Test Chart" value={42} isLoading={true} />,
+            )
+
+            expect(screen.queryByText('42')).not.toBeInTheDocument()
+            const headings = container.querySelectorAll(
+                'h1, h2, h3, h4, h5, h6',
+            )
+            expect(headings.length).toBe(0)
+        })
+
+        it('should not render trend badge when loading', () => {
+            render(
+                <ChartHeader
+                    title="Test Chart"
+                    value={42}
+                    prevValue={40}
+                    isLoading={true}
+                />,
+            )
+
+            expect(screen.queryByText('42')).not.toBeInTheDocument()
+        })
+
+        it('should render value when isLoading is false', () => {
+            render(
+                <ChartHeader title="Test Chart" value={42} isLoading={false} />,
+            )
+
+            expect(screen.getByText('42')).toBeInTheDocument()
         })
     })
 })

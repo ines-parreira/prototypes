@@ -14,14 +14,15 @@ export const AnalyticsOverviewAutomationRateCard = ({
     return (
         <TrendCard
             trend={trend}
-            metricFormat="percent"
+            metricFormat="decimal-to-percent"
+            isLoading={trend.isFetching}
             interpretAs="more-is-better"
             withBorder
             withFixedWidth={false}
             hint={{
-                title: 'Percentage of customer interactions resolved by AI Agent',
-                link: 'https://help.gorgias.com',
-                linkText: 'Learn more',
+                title: 'Overall automation rate',
+                caption:
+                    'The number of interactions automated by all automation features as a % of total customer interactions.',
             }}
             actionMenu={
                 chartId ? (

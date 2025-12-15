@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { Box, Heading, Text } from '@gorgias/axiom'
+import { Box, Heading, Skeleton, Text } from '@gorgias/axiom'
 
 import { formatMetricValueOrString } from '../../../utils/helpers'
 import { TrendBadge } from '../../TrendBadge/TrendBadge'
@@ -27,6 +27,7 @@ type ChartHeaderProps = {
     tooltipData?: {
         period: string
     }
+    isLoading?: boolean
 }
 
 export const ChartHeader = ({
@@ -40,6 +41,7 @@ export const ChartHeader = ({
     onMetricChange,
     chartControls,
     tooltipData,
+    isLoading,
 }: ChartHeaderProps) => {
     const showMetricsDropdown = metrics && metrics.length > 1 && onMetricChange
 
@@ -73,22 +75,32 @@ export const ChartHeader = ({
                     </Box>
                 )}
             </Box>
-            {formattedValue !== undefined && (
+            {isLoading ? (
+                <Box display="flex" alignItems="center" gap="xxxs">
+                    <Skeleton height={36} width={52} />
+                    <Box display="flex" alignItems="center">
+                        <Skeleton
+                            height={14}
+                            width={14}
+                            style={{ marginTop: '5px' }}
+                        />
+                        <Text size="xs">%</Text>
+                    </Box>
+                </Box>
+            ) : (
                 <Box alignItems="center" gap="xxxs">
                     <Heading size="xl" className={css.value}>
                         {formattedValue}
                     </Heading>
-                    {prevValue !== undefined && (
-                        <TrendBadge
-                            value={value}
-                            prevValue={prevValue}
-                            metricFormat={metricFormat}
-                            currency={currency}
-                            interpretAs={interpretAs}
-                            tooltipData={tooltipData}
-                            size="md"
-                        />
-                    )}
+                    <TrendBadge
+                        value={value}
+                        prevValue={prevValue}
+                        metricFormat={metricFormat}
+                        currency={currency}
+                        interpretAs={interpretAs}
+                        tooltipData={tooltipData}
+                        size="md"
+                    />
                 </Box>
             )}
         </Box>

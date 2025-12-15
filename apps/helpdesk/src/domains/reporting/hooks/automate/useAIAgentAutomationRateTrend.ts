@@ -34,6 +34,7 @@ export const useAIAgentAutomationRateTrend = (
     })
 
     useDeepEffect(() => {
+        setData((prev) => ({ ...prev, isFetching: true }))
         fetchAIAgentAutomationRateTrend(filters, timezone, aiAgentUserId).then(
             setData,
         )

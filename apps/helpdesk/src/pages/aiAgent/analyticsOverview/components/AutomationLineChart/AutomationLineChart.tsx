@@ -143,6 +143,7 @@ export const AutomationLineChart = () => {
             metricFormat="decimal-to-percent"
             interpretAs="more-is-better"
             tooltipData={{ period: tooltipPeriod }}
+            isLoading={automationRateTrend.isFetching}
         >
             <div className={css.chartWrapper}>
                 <ResponsiveContainer width="100%" height={280}>
