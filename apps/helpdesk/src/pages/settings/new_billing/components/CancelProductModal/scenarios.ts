@@ -1,5 +1,3 @@
-import flowsIcon from 'assets/img/icons/flows.svg'
-import orderManagementIcon from 'assets/img/icons/order-management.svg'
 import { ProductType } from 'models/billing/types'
 
 import {
@@ -19,21 +17,19 @@ export const HELPDESK_CANCELLATION_SCENARIO: CancellationScenario = {
     ],
     features: [
         {
-            title: 'All-in-one support inbox',
-            description:
-                'Powerful inbox to respond to customer support tickets from all your channels',
+            title: 'Your all-in-one inbox',
+            description: 'Respond to every customer message from one place.',
             icon: 'all_inbox',
         },
         {
-            title: 'Ecommerce control panel',
+            title: 'Your ecommerce dashboard',
             description:
-                'Ability to refund, cancel, or approve return requests — all from one place',
+                'Process refunds, cancellations, and returns with a click.',
             icon: 'shopping_cart',
         },
         {
-            title: 'Integrations with 100+ ecommerce tools',
-            description:
-                'All customer data at your fingertips in the support ticket sidebar',
+            title: 'Your 100+ ecommerce integrations',
+            description: 'View customer data right next to your tickets.',
             icon: 'widgets',
         },
     ],
@@ -46,29 +42,22 @@ export const AI_AGENT_CANCELLATION_SCENARIO: CancellationScenario = {
     productsToCancel: [ProductType.Automation],
     features: [
         {
-            title: 'AI Agent',
+            title: 'Autonomous ticket resolution',
             icon: 'auto_awesome',
-            description: 'Your virtual agent for automated support',
+            description:
+                'Instantly resolve up to 60% of customer inquiries with AI trained on your brand.',
         },
         {
-            title: 'Flows',
-            iconUrl: flowsIcon,
-            description: 'Build interactive, personalized resolutions',
+            title: 'Actions across 100+ ecommerce tools',
+            icon: 'webhook',
+            description:
+                'Process refunds, edit subscriptions, and send updates automatically.',
         },
         {
-            title: 'Order Management',
-            iconUrl: orderManagementIcon,
-            description: 'Let customers manage and track orders',
-        },
-        {
-            title: 'Article Recommendation',
-            icon: 'menu_book',
-            description: 'Answer customer questions with AI',
-        },
-        {
-            title: 'Automation statistics',
-            icon: 'bar_chart',
-            description: 'Measure and track your automation performance',
+            title: 'Revenue-generating conversations',
+            icon: 'shopping_cart',
+            description:
+                'Turn support chats into personalized, repeat purchase opportunities.',
         },
     ],
     reasonsToCanduContents: [],
@@ -80,30 +69,22 @@ export const CONVERT_CANCELLATION_SCENARIO: CancellationScenario = {
     productsToCancel: [ProductType.Convert],
     features: [
         {
-            title: 'Up to 49% increase in sales on targeted products',
+            title: 'Up to 49% more sales on targeted products',
             icon: 'trending_up',
             description:
-                'Drive revenue with AI-powered product recommendations',
+                'Turn browsers into buyers with personalized offers and education.',
         },
         {
-            title: 'Campaign analytics',
-            icon: 'bar_chart',
-            description: 'Track performance and optimize your campaigns',
+            title: 'Advanced targeting with Shopify data',
+            icon: 'data_usage',
+            description:
+                'Trigger campaigns based on cart value, purchase history, and customer behavior.',
         },
         {
-            title: 'Smart targeting',
-            icon: 'filter_alt',
-            description: 'Reach the right customers at the right time',
-        },
-        {
-            title: 'A/B testing',
-            icon: 'science',
-            description: 'Test and optimize your conversion strategies',
-        },
-        {
-            title: 'Personalized experiences',
-            icon: 'person',
-            description: 'Deliver tailored shopping experiences',
+            title: 'Direct connection to live support',
+            icon: 'record_voice_over',
+            description:
+                'Seamlessly hand off engaged shoppers to agents who can close the sale.',
         },
     ],
     reasonsToCanduContents: [],
@@ -117,19 +98,20 @@ export const SMS_CANCELLATION_SCENARIO: CancellationScenario = {
         {
             title: '98% open rate — 5x higher than email',
             icon: 'auto_awesome',
-            description: 'Reach customers instantly on the channel they prefer',
+            description:
+                'Reach customers instantly on the channel they prefer.',
         },
         {
             title: 'Automated replies powered by Shopify data',
             icon: 'webhook',
             description:
-                'Pull order updates and tracking info to resolve issues fast',
+                'Pull order updates and tracking info to resolve issues fast.',
         },
         {
             title: '73% of shoppers buy after receiving a text',
             icon: 'shopping_cart',
             description:
-                'Drive repeat sales with timely product links and discounts',
+                'Drive repeat sales with timely product links and discounts.',
         },
     ],
     reasonsToCanduContents: [],
@@ -141,22 +123,22 @@ export const VOICE_CANCELLATION_SCENARIO: CancellationScenario = {
     productsToCancel: [ProductType.Voice],
     features: [
         {
-            title: 'Personal connection with customers',
+            title: 'Unified phone support with full customer context',
             icon: 'phone',
             description:
-                'Build trust and loyalty through direct voice communication',
+                'See orders, tickets, and subscriptions before picking up the call.',
         },
         {
-            title: 'Real-time issue resolution',
-            icon: 'support_agent',
+            title: 'Shopify-powered call handling',
+            icon: 'webhook',
             description:
-                'Resolve complex issues faster with immediate back-and-forth conversation',
+                'Create orders, issue refunds, and recommend products without switching tools.',
         },
         {
-            title: 'Integrated call management',
-            icon: 'call',
+            title: 'AI transcripts and call analytics',
+            icon: 'archive',
             description:
-                'Manage all customer calls directly within your helpdesk inbox',
+                'Get auto-summarized calls and insights that improve team performance.',
         },
     ],
     reasonsToCanduContents: [],
