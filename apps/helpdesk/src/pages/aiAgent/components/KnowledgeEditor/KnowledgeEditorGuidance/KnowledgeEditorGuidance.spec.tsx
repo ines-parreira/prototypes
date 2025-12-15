@@ -1155,7 +1155,7 @@ describe('KnowledgeEditorGuidance', () => {
     })
 
     describe('closeHandlerRef behavior', () => {
-        it('uses closeHandlerRef when available for unsaved changes', async () => {
+        it('prevents closing during autosave', async () => {
             const user = userEvent.setup()
             const onClose = jest.fn()
 
@@ -1189,12 +1189,69 @@ describe('KnowledgeEditorGuidance', () => {
                 expect(nameInput).toHaveValue('Modified Title')
             })
 
+            await waitFor(() => {
+                expect(screen.getByText(/Saving/i)).toBeInTheDocument()
+            })
+
             const closeButton = screen.getByTestId('close-panel-button')
             await act(() => user.click(closeButton))
 
+            expect(onClose).not.toHaveBeenCalled()
             expect(
-                screen.getByRole('heading', { name: /Unsaved changes/i }),
-            ).toBeInTheDocument()
+                screen.queryByRole('heading', { name: /Unsaved changes/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('allows closing after autosave completes with no pending changes', async () => {
+            const user = userEvent.setup()
+            const onClose = jest.fn()
+
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: {
+                    ...guidanceArticle,
+                    isCurrent: false,
+                },
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+            })
+
+            render(
+                <Provider store={mockStore({})}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={onClose}
+                        guidanceMode="edit"
+                        isOpen={true}
+                    />
+                </Provider>,
+            )
+
+            const nameInput = screen.getByLabelText(/Guidance name/i)
+            await act(() => user.clear(nameInput))
+            await act(() => user.type(nameInput, 'Modified Title'))
+
+            await waitFor(() => {
+                expect(nameInput).toHaveValue('Modified Title')
+            })
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.queryByText(/Saving/i),
+                    ).not.toBeInTheDocument()
+                },
+                { timeout: 3000 },
+            )
+
+            const closeButton = screen.getByTestId('close-panel-button')
+            await act(() => user.click(closeButton))
+
+            expect(onClose).toHaveBeenCalled()
+            expect(
+                screen.queryByRole('heading', { name: /Unsaved changes/i }),
+            ).not.toBeInTheDocument()
         })
     })
 })

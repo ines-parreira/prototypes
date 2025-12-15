@@ -326,6 +326,78 @@ describe('useDiscardDraftModal', () => {
             expect(mockOnClose).toHaveBeenCalled()
         })
 
+        it('should call config.onUpdateFn when discard is successful and response has title', async () => {
+            const mockOnUpdateFn = jest.fn()
+            const mockResponse = {
+                title: 'Published Title',
+                content: 'Published Content',
+            }
+            const mockTransformed: GuidanceArticle = {
+                ...mockGuidance,
+                title: 'Published Title',
+                content: 'Published Content',
+                isCurrent: true,
+            }
+
+            mockDiscardGuidanceDraft.mockResolvedValue(mockResponse)
+            ;(fromArticleTranslationResponse as jest.Mock).mockReturnValue(
+                mockTransformed,
+            )
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: defaultState,
+                dispatch: mockDispatch,
+                config: { ...defaultConfig, onUpdateFn: mockOnUpdateFn },
+            })
+
+            const { result } = renderHook(() => useDiscardDraftModal())
+
+            await act(async () => {
+                await result.current.onDiscard()
+            })
+
+            expect(mockOnUpdateFn).toHaveBeenCalled()
+        })
+
+        it('should call config.onUpdateFn when discard is successful and response has no title', async () => {
+            const mockOnUpdateFn = jest.fn()
+
+            mockDiscardGuidanceDraft.mockResolvedValue(null)
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: defaultState,
+                dispatch: mockDispatch,
+                config: { ...defaultConfig, onUpdateFn: mockOnUpdateFn },
+            })
+
+            const { result } = renderHook(() => useDiscardDraftModal())
+
+            await act(async () => {
+                await result.current.onDiscard()
+            })
+
+            expect(mockOnUpdateFn).toHaveBeenCalled()
+        })
+
+        it('should not call config.onUpdateFn when it is undefined', async () => {
+            const mockResponse = {
+                title: 'Published Title',
+                content: 'Published Content',
+            }
+
+            mockDiscardGuidanceDraft.mockResolvedValue(mockResponse)
+            ;(fromArticleTranslationResponse as jest.Mock).mockReturnValue(
+                mockGuidance,
+            )
+
+            const { result } = renderHook(() => useDiscardDraftModal())
+
+            await act(async () => {
+                await result.current.onDiscard()
+            })
+
+            // Should not throw error and should complete successfully
+            expect(mockNotifySuccess).toHaveBeenCalledWith('Draft discarded')
+        })
+
         it('should show error notification on failure', async () => {
             mockDiscardGuidanceDraft.mockRejectedValue(new Error('API Error'))
 

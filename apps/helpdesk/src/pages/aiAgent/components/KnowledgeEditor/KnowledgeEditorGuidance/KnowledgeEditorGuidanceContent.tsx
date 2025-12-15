@@ -78,12 +78,15 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
     const isDisabled = state.isUpdating || state.isAutoSaving
 
     const onClickCancel = useCallback(() => {
+        if (state.isAutoSaving) {
+            return
+        }
         if (hasPendingChanges) {
             dispatch({ type: 'SET_MODAL', payload: 'unsaved' })
         } else {
             onClose()
         }
-    }, [hasPendingChanges, dispatch, onClose])
+    }, [state.isAutoSaving, hasPendingChanges, dispatch, onClose])
 
     useEffect(() => {
         closeHandlerRef.current = onClickCancel

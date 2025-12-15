@@ -23,6 +23,7 @@ export const useDiscardDraftModal = () => {
                 state.guidance.id,
                 config.guidanceHelpCenter.default_locale,
             )
+            config.onUpdateFn?.()
             notifySuccess('Draft discarded')
 
             // The API returns the current version if one exists, otherwise the article is deleted entirely.
