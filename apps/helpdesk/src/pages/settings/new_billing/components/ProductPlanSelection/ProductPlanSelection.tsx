@@ -4,6 +4,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
+import moment from 'moment'
 
 import {
     LegacyButton as Button,
@@ -29,6 +30,7 @@ import type { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import {
+    DATE_FORMAT,
     ENTERPRISE_PLAN_ID,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
 } from '../../constants'
@@ -57,6 +59,7 @@ export type ProductPlanSelectionProps = {
     editingAvailable: boolean
     customer?: CustomerSummary | null
     updateSubscription: () => Promise<unknown>
+    scheduledToCancelAt?: string | null
 }
 
 const ProductPlanSelection = ({
@@ -73,6 +76,7 @@ const ProductPlanSelection = ({
     editingAvailable,
     customer,
     updateSubscription,
+    scheduledToCancelAt,
 }: ProductPlanSelectionProps) => {
     const productInfo = getProductInfo(type, currentPlan)
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -232,6 +236,23 @@ const ProductPlanSelection = ({
             (type !== ProductType.Helpdesk && useConsolidatedCancellationModal),
         [type, isCancellationAvailable, useConsolidatedCancellationModal],
     )
+
+    const statusBadge = useMemo(() => {
+        if (!isActive) return null
+
+        if (scheduledToCancelAt) {
+            const formattedDate =
+                moment(scheduledToCancelAt).format(DATE_FORMAT)
+            return (
+                <Badge
+                    text={`Active until ${formattedDate}`}
+                    type={BadgeType.Warning}
+                />
+            )
+        }
+
+        return <Badge text="Active" type={BadgeType.Success} />
+    }, [isActive, scheduledToCancelAt])
 
     const handleOpen = useCallback(() => {
         const initialPlan =
@@ -421,9 +442,7 @@ const ProductPlanSelection = ({
                     <div className="heading-subsection-semibold">
                         {productInfo.title}
                     </div>
-                    {isActive && (
-                        <Badge text="Active" type={BadgeType.Success} />
-                    )}
+                    {statusBadge}
                 </div>
                 {renderHeader()}
             </div>

@@ -41,6 +41,7 @@ import SummaryTotal from '../../components/SummaryTotal'
 import VoiceOrSmsChangeReviewAlert from '../../components/VoiceOrSmsChangeReviewAlert'
 import { PRICING_DETAILS_URL } from '../../constants'
 import { useBillingPlans } from '../../hooks/useBillingPlan'
+import useProductCancellations from '../../hooks/useProductCancellations'
 import { formatNumTickets } from '../../utils/formatAmount'
 
 import css from './BillingProcessView.less'
@@ -152,6 +153,10 @@ const BillingProcessView = ({
     })
 
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
+
+    const productCancellationsState = useProductCancellations()
+    const cancellationsByPlanId =
+        productCancellationsState.value ?? new Map<string, string>()
 
     // on page unload, remove error notification
     useEffect(() => {
@@ -356,6 +361,13 @@ const BillingProcessView = ({
                                 !isCurrentSubscriptionScheduledToCancel
                             }
                             updateSubscription={updateSubscription}
+                            scheduledToCancelAt={
+                                currentHelpdeskPlan
+                                    ? cancellationsByPlanId.get(
+                                          currentHelpdeskPlan.plan_id,
+                                      ) || null
+                                    : null
+                            }
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -373,6 +385,13 @@ const BillingProcessView = ({
                                 !isCurrentSubscriptionScheduledToCancel
                             }
                             updateSubscription={updateSubscription}
+                            scheduledToCancelAt={
+                                currentAutomatePlan
+                                    ? cancellationsByPlanId.get(
+                                          currentAutomatePlan.plan_id,
+                                      ) || null
+                                    : null
+                            }
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -389,6 +408,13 @@ const BillingProcessView = ({
                                 !isCurrentSubscriptionScheduledToCancel
                             }
                             updateSubscription={updateSubscription}
+                            scheduledToCancelAt={
+                                currentVoicePlan
+                                    ? cancellationsByPlanId.get(
+                                          currentVoicePlan.plan_id,
+                                      ) || null
+                                    : null
+                            }
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -405,6 +431,13 @@ const BillingProcessView = ({
                                 !isCurrentSubscriptionScheduledToCancel
                             }
                             updateSubscription={updateSubscription}
+                            scheduledToCancelAt={
+                                currentSmsPlan
+                                    ? cancellationsByPlanId.get(
+                                          currentSmsPlan.plan_id,
+                                      ) || null
+                                    : null
+                            }
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -421,6 +454,13 @@ const BillingProcessView = ({
                                 !isCurrentSubscriptionScheduledToCancel
                             }
                             updateSubscription={updateSubscription}
+                            scheduledToCancelAt={
+                                currentConvertPlan
+                                    ? cancellationsByPlanId.get(
+                                          currentConvertPlan.plan_id,
+                                      ) || null
+                                    : null
+                            }
                         />
                     </div>
                 </Card>

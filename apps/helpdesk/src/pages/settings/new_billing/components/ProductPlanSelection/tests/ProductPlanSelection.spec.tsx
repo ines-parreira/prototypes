@@ -1059,4 +1059,86 @@ describe('ProductPlanSelection', () => {
             },
         )
     })
+
+    describe('Product cancellation badge', () => {
+        it('should show "Active" badge when product is active without cancellation', () => {
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection
+                        {...props}
+                        scheduledToCancelAt={null}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Active')).toBeInTheDocument()
+            expect(screen.queryByText(/Active until/i)).not.toBeInTheDocument()
+        })
+
+        it('should show "Active until <date>" warning badge when product has cancellation scheduled', () => {
+            const cancellationDate = '2025-12-31T23:59:59Z'
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection
+                        {...props}
+                        scheduledToCancelAt={cancellationDate}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.queryByText('Active')).not.toBeInTheDocument()
+            expect(
+                screen.getByText(/Active until December 31, 2025/i),
+            ).toBeInTheDocument()
+        })
+
+        it('should not show any badge when product is inactive', () => {
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection
+                        {...props}
+                        currentPlan={undefined}
+                        selectedPlans={{
+                            ...selectedPlans,
+                            helpdesk: {
+                                isSelected: false,
+                            },
+                        }}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.queryByText('Active')).not.toBeInTheDocument()
+            expect(screen.queryByText(/Active until/i)).not.toBeInTheDocument()
+        })
+
+        it('should format cancellation date correctly', () => {
+            const cancellationDate = '2026-01-15T12:00:00Z'
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection
+                        {...props}
+                        scheduledToCancelAt={cancellationDate}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByText(/Active until January 15, 2026/i),
+            ).toBeInTheDocument()
+        })
+
+        it('should show "Active" badge when scheduledToCancelAt is undefined', () => {
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...props} />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Active')).toBeInTheDocument()
+            expect(screen.queryByText(/Active until/i)).not.toBeInTheDocument()
+        })
+    })
 })

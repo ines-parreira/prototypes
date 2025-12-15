@@ -4,18 +4,28 @@ import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 
 import {
+    AUTOMATION_PRODUCT_ID,
+    basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
+    CONVERT_PRODUCT_ID,
+    convertPlan1,
     currentProductsUsage,
     HELPDESK_PRODUCT_ID,
     products,
+    SMS_PRODUCT_ID,
+    smsPlan1,
+    VOICE_PRODUCT_ID,
+    voicePlan1,
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
+import { ProductType } from 'models/billing/types'
 import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
 import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
+import useProductCancellations from '../../../hooks/useProductCancellations'
 import BillingProcessView from '../BillingProcessView'
 
 const mockedDispatch = jest.fn()
@@ -26,10 +36,12 @@ jest.mock(
     () =>
         jest.fn(() => <div data-testid="scheduled-cancellation-summary"></div>),
 )
+jest.mock('pages/settings/new_billing/hooks/useProductCancellations')
 
 const ScheduledCancellationSummaryMock = assumeMock(
     ScheduledCancellationSummary,
 )
+const mockUseProductCancellations = assumeMock(useProductCancellations)
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useParams: jest.fn().mockReturnValue({
@@ -71,6 +83,18 @@ const storeInitialState = {
 }
 
 describe('UsageAndPlansView', () => {
+    beforeEach(() => {
+        mockUseProductCancellations.mockReturnValue({
+            loading: false,
+            error: undefined,
+            value: new Map(),
+        })
+    })
+
+    afterEach(() => {
+        mockUseProductCancellations.mockReset()
+    })
+
     it('should render', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
@@ -164,5 +188,607 @@ describe('UsageAndPlansView', () => {
             },
             {},
         )
+    })
+
+    describe('Product cancellations hook integration', () => {
+        it('should render correctly while cancellations are loading', async () => {
+            mockUseProductCancellations.mockReturnValue({
+                loading: true,
+                error: undefined,
+                value: undefined,
+            })
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                storeInitialState,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('See Plans Details'),
+                ).toBeInTheDocument()
+            })
+
+            expect(mockUseProductCancellations).toHaveBeenCalled()
+            expect(screen.getAllByText('Helpdesk')[0]).toBeInTheDocument()
+        })
+
+        it('should render correctly when cancellations fetch fails', async () => {
+            mockUseProductCancellations.mockReturnValue({
+                loading: false,
+                error: new Error('Failed to fetch cancellations'),
+                value: undefined,
+            })
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                storeInitialState,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('See Plans Details'),
+                ).toBeInTheDocument()
+            })
+
+            expect(screen.getAllByText('Helpdesk')[0]).toBeInTheDocument()
+        })
+
+        it('should render without cancellation badges when no products are scheduled to cancel', async () => {
+            mockUseProductCancellations.mockReturnValue({
+                loading: false,
+                error: undefined,
+                value: new Map(),
+            })
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                storeInitialState,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('See Plans Details'),
+                ).toBeInTheDocument()
+            })
+
+            expect(screen.queryByText(/Active until/i)).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Product-specific cancellations', () => {
+        describe.each([
+            {
+                productType: ProductType.Helpdesk,
+                productName: 'Helpdesk',
+                plan: basicMonthlyHelpdeskPlan,
+                productId: HELPDESK_PRODUCT_ID,
+                usageKey: 'helpdesk' as const,
+            },
+            {
+                productType: ProductType.Automation,
+                productName: 'Automation',
+                plan: basicMonthlyAutomationPlan,
+                productId: AUTOMATION_PRODUCT_ID,
+                usageKey: 'automation' as const,
+            },
+            {
+                productType: ProductType.SMS,
+                productName: 'SMS',
+                plan: smsPlan1,
+                productId: SMS_PRODUCT_ID,
+                usageKey: 'sms' as const,
+            },
+            {
+                productType: ProductType.Voice,
+                productName: 'Voice',
+                plan: voicePlan1,
+                productId: VOICE_PRODUCT_ID,
+                usageKey: 'voice' as const,
+            },
+            {
+                productType: ProductType.Convert,
+                productName: 'Convert',
+                plan: convertPlan1,
+                productId: CONVERT_PRODUCT_ID,
+                usageKey: 'convert' as const,
+            },
+        ])(
+            '$productName product cancellations',
+            ({ plan, productId, usageKey }) => {
+                it('should display cancellation badge when product has scheduled cancellation', async () => {
+                    const cancellationDate = '2025-12-31T23:59:59Z'
+                    mockUseProductCancellations.mockReturnValue({
+                        loading: false,
+                        error: undefined,
+                        value: new Map([[plan.plan_id, cancellationDate]]),
+                    })
+
+                    const storeForProduct = {
+                        ...storeInitialState,
+                        billing: fromJS({
+                            invoices: [],
+                            products,
+                            currentProductsUsage: {
+                                helpdesk:
+                                    usageKey === 'helpdesk'
+                                        ? currentProductsUsage.helpdesk
+                                        : null,
+                                automation:
+                                    usageKey === 'automation'
+                                        ? currentProductsUsage.automation
+                                        : null,
+                                voice:
+                                    usageKey === 'voice'
+                                        ? currentProductsUsage.voice
+                                        : null,
+                                sms:
+                                    usageKey === 'sms'
+                                        ? currentProductsUsage.sms
+                                        : null,
+                                convert:
+                                    usageKey === 'convert'
+                                        ? currentProductsUsage.convert
+                                        : null,
+                            },
+                        }),
+                        currentAccount: fromJS({
+                            current_subscription: {
+                                products: {
+                                    [productId]: plan.price_id,
+                                },
+                                scheduled_to_cancel_at: null,
+                            },
+                        }),
+                    }
+
+                    mockedServer
+                        .onGet('/billing/state')
+                        .reply(200, payingWithCreditCard)
+
+                    renderWithStoreAndQueryClientAndRouter(
+                        <BillingProcessView
+                            currentUsage={currentProductsUsage}
+                            contactBilling={jest.fn()}
+                            dispatchBillingError={jest.fn()}
+                            setDefaultMessage={jest.fn()}
+                            setIsModalOpen={jest.fn()}
+                            periodEnd="2021-01-01"
+                            isTrialing={false}
+                            isCurrentSubscriptionCanceled={false}
+                        />,
+                        storeForProduct,
+                    )
+
+                    await waitFor(() => {
+                        expect(
+                            screen.queryByText('See Plans Details'),
+                        ).toBeInTheDocument()
+                    })
+
+                    expect(
+                        screen.getByText(/Active until December 31, 2025/i),
+                    ).toBeInTheDocument()
+                })
+
+                it('should pass null when product exists but has no scheduled cancellation', async () => {
+                    mockUseProductCancellations.mockReturnValue({
+                        loading: false,
+                        error: undefined,
+                        value: new Map(),
+                    })
+
+                    const storeForProduct = {
+                        ...storeInitialState,
+                        billing: fromJS({
+                            invoices: [],
+                            products,
+                            currentProductsUsage: {
+                                helpdesk:
+                                    usageKey === 'helpdesk'
+                                        ? currentProductsUsage.helpdesk
+                                        : null,
+                                automation:
+                                    usageKey === 'automation'
+                                        ? currentProductsUsage.automation
+                                        : null,
+                                voice:
+                                    usageKey === 'voice'
+                                        ? currentProductsUsage.voice
+                                        : null,
+                                sms:
+                                    usageKey === 'sms'
+                                        ? currentProductsUsage.sms
+                                        : null,
+                                convert:
+                                    usageKey === 'convert'
+                                        ? currentProductsUsage.convert
+                                        : null,
+                            },
+                        }),
+                        currentAccount: fromJS({
+                            current_subscription: {
+                                products: {
+                                    [productId]: plan.price_id,
+                                },
+                                scheduled_to_cancel_at: null,
+                            },
+                        }),
+                    }
+
+                    mockedServer
+                        .onGet('/billing/state')
+                        .reply(200, payingWithCreditCard)
+
+                    renderWithStoreAndQueryClientAndRouter(
+                        <BillingProcessView
+                            currentUsage={currentProductsUsage}
+                            contactBilling={jest.fn()}
+                            dispatchBillingError={jest.fn()}
+                            setDefaultMessage={jest.fn()}
+                            setIsModalOpen={jest.fn()}
+                            periodEnd="2021-01-01"
+                            isTrialing={false}
+                            isCurrentSubscriptionCanceled={false}
+                        />,
+                        storeForProduct,
+                    )
+
+                    await waitFor(() => {
+                        expect(
+                            screen.queryByText('See Plans Details'),
+                        ).toBeInTheDocument()
+                    })
+
+                    expect(screen.getByText('Active')).toBeInTheDocument()
+                    expect(
+                        screen.queryByText(/Active until/i),
+                    ).not.toBeInTheDocument()
+                })
+            },
+        )
+
+        it('should display cancellation badges for multiple products', async () => {
+            const helpdeskCancellation = '2025-12-31T23:59:59Z'
+            const automationCancellation = '2025-11-30T23:59:59Z'
+
+            mockUseProductCancellations.mockReturnValue({
+                loading: false,
+                error: undefined,
+                value: new Map([
+                    [basicMonthlyHelpdeskPlan.plan_id, helpdeskCancellation],
+                    [
+                        basicMonthlyAutomationPlan.plan_id,
+                        automationCancellation,
+                    ],
+                ]),
+            })
+
+            const storeWithMultipleProducts = {
+                ...storeInitialState,
+                billing: fromJS({
+                    invoices: [],
+                    products,
+                    currentProductsUsage: {
+                        helpdesk: currentProductsUsage.helpdesk,
+                        automation: currentProductsUsage.automation,
+                        voice: null,
+                        sms: null,
+                        convert: null,
+                    },
+                }),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.price_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.price_id,
+                        },
+                        scheduled_to_cancel_at: null,
+                    },
+                }),
+            }
+
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                storeWithMultipleProducts,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('See Plans Details'),
+                ).toBeInTheDocument()
+            })
+
+            expect(
+                screen.getByText(/Active until December 31, 2025/i),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(/Active until November 30, 2025/i),
+            ).toBeInTheDocument()
+        })
+
+        it('should pass null when no current plan exists for product', async () => {
+            mockUseProductCancellations.mockReturnValue({
+                loading: false,
+                error: undefined,
+                value: new Map([
+                    [
+                        basicMonthlyAutomationPlan.plan_id,
+                        '2025-12-31T23:59:59Z',
+                    ],
+                ]),
+            })
+
+            const storeWithoutAutomation = {
+                ...storeInitialState,
+                billing: fromJS({
+                    invoices: [],
+                    products,
+                    currentProductsUsage: {
+                        helpdesk: currentProductsUsage.helpdesk,
+                        automation: null,
+                        voice: null,
+                        sms: null,
+                        convert: null,
+                    },
+                }),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.price_id,
+                        },
+                        scheduled_to_cancel_at: null,
+                    },
+                }),
+            }
+
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                storeWithoutAutomation,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('See Plans Details'),
+                ).toBeInTheDocument()
+            })
+
+            const addProductButtons = screen.getAllByRole('button', {
+                name: /Add Product/i,
+            })
+            expect(addProductButtons.length).toBeGreaterThan(0)
+        })
+    })
+
+    describe('Edge cases', () => {
+        it('should handle undefined value from hook gracefully', async () => {
+            mockUseProductCancellations.mockReturnValue({
+                loading: false,
+                error: undefined,
+                value: undefined,
+            })
+
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                storeInitialState,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('See Plans Details'),
+                ).toBeInTheDocument()
+            })
+
+            expect(screen.queryByText(/Active until/i)).not.toBeInTheDocument()
+        })
+
+        it('should display different cancellation dates for different products', async () => {
+            mockUseProductCancellations.mockReturnValue({
+                loading: false,
+                error: undefined,
+                value: new Map([
+                    [basicMonthlyHelpdeskPlan.plan_id, '2025-12-31T23:59:59Z'],
+                    [
+                        basicMonthlyAutomationPlan.plan_id,
+                        '2025-06-30T23:59:59Z',
+                    ],
+                ]),
+            })
+
+            const storeWithBothProducts = {
+                ...storeInitialState,
+                billing: fromJS({
+                    invoices: [],
+                    products,
+                    currentProductsUsage: {
+                        helpdesk: currentProductsUsage.helpdesk,
+                        automation: currentProductsUsage.automation,
+                        voice: null,
+                        sms: null,
+                        convert: null,
+                    },
+                }),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.price_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.price_id,
+                        },
+                        scheduled_to_cancel_at: null,
+                    },
+                }),
+            }
+
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                storeWithBothProducts,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('See Plans Details'),
+                ).toBeInTheDocument()
+            })
+
+            expect(
+                screen.getByText(/Active until December 31, 2025/i),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(/Active until June 30, 2025/i),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle scenario with no products subscribed', async () => {
+            mockUseProductCancellations.mockReturnValue({
+                loading: false,
+                error: undefined,
+                value: undefined,
+            })
+
+            const storeWithNoProducts = {
+                billing: fromJS({
+                    invoices: [],
+                    products,
+                    currentProductsUsage: {
+                        helpdesk: null,
+                        automation: null,
+                        voice: null,
+                        sms: null,
+                        convert: null,
+                    },
+                }),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {},
+                        scheduled_to_cancel_at: null,
+                    },
+                }),
+            }
+
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                storeWithNoProducts,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('See Plans Details'),
+                ).toBeInTheDocument()
+            })
+
+            const addProductButtons = screen.getAllByRole('button', {
+                name: /Add Product/i,
+            })
+            expect(addProductButtons.length).toBeGreaterThanOrEqual(4)
+
+            expect(screen.queryByText('Active')).not.toBeInTheDocument()
+            expect(screen.queryByText(/Active until/i)).not.toBeInTheDocument()
+        })
     })
 })
