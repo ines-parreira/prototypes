@@ -5,6 +5,9 @@ export const DASHBOARDS_DOCUMENTATION_URL = 'https://link.gorgias.com/lml'
 
 export enum ReportsIDs {
     AiAgentAnalyticsOverview = 'AiAgentAnalyticsOverview',
+    AiAgentAnalyticsAllAgents = 'AiAgentAnalyticsAllAgents',
+    AiAgentAnalyticsSupportAgent = 'AiAgentAnalyticsSupportAgent',
+    AiAgentAnalyticsShoppingAssistant = 'AiAgentShoppingAssistant',
     AiSalesAgentReportConfig = 'AiSalesAgentReportConfig',
     AutomateAiAgentsReportConfig = 'AutomateAiAgentsReportConfig',
     AutomateOverviewReportConfig = 'AutomateOverviewReportConfig',

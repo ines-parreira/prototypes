@@ -5,8 +5,9 @@ import { motion } from 'framer-motion'
 import { Box } from '@gorgias/axiom'
 
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 
-import { AnalyticsOverviewReportConfig } from '../../AnalyticsOverviewReportConfig'
+import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../../config/defaultLayoutConfig'
 import type {
     DashboardLayoutConfig,
     LayoutSection,
@@ -15,11 +16,18 @@ import { validateLayoutConfig } from '../../utils/validateLayoutConfig'
 
 import css from './DashboardLayoutRenderer.less'
 
-type DashboardLayoutRendererProps = {
+type DashboardLayoutRendererProps<TChart extends string> = {
     layoutConfig: DashboardLayoutConfig
+    reportConfig: ReportConfig<TChart>
 }
 
-const KpisSection = ({ section }: { section: LayoutSection }) => {
+const KpisSection = <TChart extends string>({
+    section,
+    reportConfig,
+}: {
+    section: LayoutSection
+    reportConfig: ReportConfig<TChart>
+}) => {
     const [isWrapped, setIsWrapped] = useState(false)
     const containerRef = useRef<HTMLDivElement>(null)
     const [isScrollable, setIsScrollable] = useState(false)
@@ -77,7 +85,7 @@ const KpisSection = ({ section }: { section: LayoutSection }) => {
                 >
                     <DashboardComponent
                         chart={item.chartId}
-                        config={AnalyticsOverviewReportConfig}
+                        config={reportConfig}
                     />
                 </motion.div>
             ))}
@@ -85,50 +93,63 @@ const KpisSection = ({ section }: { section: LayoutSection }) => {
     )
 }
 
-const renderSection = (section: LayoutSection) => {
-    const isChartsSection = section.type === 'charts'
-    const isKpisSection = section.type === 'kpis'
-    const isTableSection = section.type === 'table'
+const renderSection =
+    <TChart extends string>(reportConfig: ReportConfig<TChart>) =>
+    (section: LayoutSection) => {
+        const isChartsSection = section.type === 'charts'
+        const isKpisSection = section.type === 'kpis'
+        const isTableSection = section.type === 'table'
 
-    if (isKpisSection) {
-        return <KpisSection key={section.id} section={section} />
+        if (isKpisSection) {
+            return (
+                <KpisSection
+                    key={section.id}
+                    section={section}
+                    reportConfig={reportConfig}
+                />
+            )
+        }
+
+        return (
+            <Box
+                key={section.id}
+                display="flex"
+                gap="md"
+                width="100%"
+                minWidth="0px"
+                flexWrap={isChartsSection ? 'wrap' : undefined}
+            >
+                {section.items.map((item) => (
+                    <Box
+                        key={item.chartId}
+                        flex={1}
+                        minWidth={
+                            isChartsSection
+                                ? '300px'
+                                : isTableSection
+                                  ? '0px'
+                                  : undefined
+                        }
+                    >
+                        <DashboardComponent
+                            chart={item.chartId}
+                            config={reportConfig}
+                        />
+                    </Box>
+                ))}
+            </Box>
+        )
     }
 
-    return (
-        <Box
-            key={section.id}
-            display="flex"
-            gap="md"
-            width="100%"
-            minWidth="0px"
-            flexWrap={isChartsSection ? 'wrap' : undefined}
-        >
-            {section.items.map((item) => (
-                <Box
-                    key={item.chartId}
-                    flex={1}
-                    minWidth={
-                        isChartsSection
-                            ? '300px'
-                            : isTableSection
-                              ? '0px'
-                              : undefined
-                    }
-                >
-                    <DashboardComponent
-                        chart={item.chartId}
-                        config={AnalyticsOverviewReportConfig}
-                    />
-                </Box>
-            ))}
-        </Box>
-    )
-}
-
-export const DashboardLayoutRenderer = ({
+export const DashboardLayoutRenderer = <TChart extends string>({
     layoutConfig,
-}: DashboardLayoutRendererProps) => {
-    const validatedConfig = validateLayoutConfig(layoutConfig)
+    reportConfig,
+}: DashboardLayoutRendererProps<TChart>) => {
+    const validatedConfig = validateLayoutConfig(
+        layoutConfig,
+        reportConfig,
+        DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+    )
 
     return (
         <Box
@@ -139,7 +160,7 @@ export const DashboardLayoutRenderer = ({
             minWidth="0px"
             className={css.container}
         >
-            {validatedConfig.sections.map(renderSection)}
+            {validatedConfig.sections.map(renderSection(reportConfig))}
         </Box>
     )
 }

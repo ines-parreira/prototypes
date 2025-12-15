@@ -1,9 +1,24 @@
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
+
 import { AnalyticsOverviewChart } from '../AnalyticsOverviewReportConfig'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../config/defaultLayoutConfig'
 import type { DashboardLayoutConfig } from '../types/layoutConfig'
 import { validateLayoutConfig } from './validateLayoutConfig'
 
 describe('validateLayoutConfig', () => {
+    const reportConfigMock = {
+        charts: {
+            ['chart']: {
+                chartComponent: () => <div>Chart 1</div>,
+                label: 'Chart 1 Label',
+                csvProducer: null,
+                description: 'Description for chart 1',
+                chartType: ChartType.Card,
+            },
+        },
+    } as unknown as ReportConfig<string>
+
     it('should return the config when it is valid', () => {
         const validConfig: DashboardLayoutConfig = {
             sections: [
@@ -20,7 +35,11 @@ describe('validateLayoutConfig', () => {
             ],
         }
 
-        const result = validateLayoutConfig(validConfig)
+        const result = validateLayoutConfig(
+            validConfig,
+            reportConfigMock,
+            validConfig,
+        )
 
         expect(result).toEqual(validConfig)
     })
@@ -28,6 +47,8 @@ describe('validateLayoutConfig', () => {
     it('should return default config when input is null', () => {
         const result = validateLayoutConfig(
             null as unknown as DashboardLayoutConfig,
+            reportConfigMock,
+            DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
         )
 
         expect(result).toEqual(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT)
@@ -36,6 +57,8 @@ describe('validateLayoutConfig', () => {
     it('should return default config when input is undefined', () => {
         const result = validateLayoutConfig(
             undefined as unknown as DashboardLayoutConfig,
+            reportConfigMock,
+            DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
         )
 
         expect(result).toEqual(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT)
@@ -44,6 +67,8 @@ describe('validateLayoutConfig', () => {
     it('should return default config when input is not an object', () => {
         const result = validateLayoutConfig(
             'invalid' as unknown as DashboardLayoutConfig,
+            reportConfigMock,
+            DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
         )
 
         expect(result).toEqual(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT)
@@ -54,7 +79,11 @@ describe('validateLayoutConfig', () => {
             sections: 'not an array',
         } as unknown as DashboardLayoutConfig
 
-        const result = validateLayoutConfig(invalidConfig)
+        const result = validateLayoutConfig(
+            invalidConfig,
+            reportConfigMock,
+            DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+        )
 
         expect(result).toEqual(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT)
     })
@@ -70,7 +99,11 @@ describe('validateLayoutConfig', () => {
             ],
         }
 
-        const result = validateLayoutConfig(invalidConfig)
+        const result = validateLayoutConfig(
+            invalidConfig,
+            reportConfigMock,
+            DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+        )
 
         expect(result).toEqual(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT)
     })
@@ -86,7 +119,11 @@ describe('validateLayoutConfig', () => {
             ],
         } as unknown as DashboardLayoutConfig
 
-        const result = validateLayoutConfig(invalidConfig)
+        const result = validateLayoutConfig(
+            invalidConfig,
+            reportConfigMock,
+            DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+        )
 
         expect(result).toEqual(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT)
     })
@@ -102,7 +139,11 @@ describe('validateLayoutConfig', () => {
             ],
         } as unknown as DashboardLayoutConfig
 
-        const result = validateLayoutConfig(invalidConfig)
+        const result = validateLayoutConfig(
+            invalidConfig,
+            reportConfigMock,
+            DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+        )
 
         expect(result).toEqual(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT)
     })
@@ -122,7 +163,11 @@ describe('validateLayoutConfig', () => {
             ],
         } as unknown as DashboardLayoutConfig
 
-        const result = validateLayoutConfig(invalidConfig)
+        const result = validateLayoutConfig(
+            invalidConfig,
+            reportConfigMock,
+            DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+        )
 
         expect(result).toEqual(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT)
     })
@@ -143,7 +188,11 @@ describe('validateLayoutConfig', () => {
             ],
         } as unknown as DashboardLayoutConfig
 
-        const result = validateLayoutConfig(invalidConfig)
+        const result = validateLayoutConfig(
+            invalidConfig,
+            reportConfigMock,
+            DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+        )
 
         expect(result).toEqual(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT)
     })
@@ -164,7 +213,11 @@ describe('validateLayoutConfig', () => {
             ],
         } as unknown as DashboardLayoutConfig
 
-        const result = validateLayoutConfig(invalidConfig)
+        const result = validateLayoutConfig(
+            invalidConfig,
+            reportConfigMock,
+            DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+        )
 
         expect(result).toEqual(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT)
     })
@@ -185,7 +238,11 @@ describe('validateLayoutConfig', () => {
             ],
         }
 
-        const result = validateLayoutConfig(invalidConfig)
+        const result = validateLayoutConfig(
+            invalidConfig,
+            reportConfigMock,
+            DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+        )
 
         expect(result).toEqual(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT)
     })
@@ -206,7 +263,11 @@ describe('validateLayoutConfig', () => {
             ],
         }
 
-        const result = validateLayoutConfig(validConfig)
+        const result = validateLayoutConfig(
+            validConfig,
+            reportConfigMock,
+            validConfig,
+        )
 
         expect(result).toEqual(validConfig)
     })
@@ -227,7 +288,11 @@ describe('validateLayoutConfig', () => {
             ],
         }
 
-        const result = validateLayoutConfig(validConfig)
+        const result = validateLayoutConfig(
+            validConfig,
+            reportConfigMock,
+            validConfig,
+        )
 
         expect(result).toEqual(validConfig)
     })
@@ -248,7 +313,11 @@ describe('validateLayoutConfig', () => {
             ],
         }
 
-        const result = validateLayoutConfig(validConfig)
+        const result = validateLayoutConfig(
+            validConfig,
+            reportConfigMock,
+            validConfig,
+        )
 
         expect(result).toEqual(validConfig)
     })
@@ -289,7 +358,11 @@ describe('validateLayoutConfig', () => {
             ],
         }
 
-        const result = validateLayoutConfig(validConfig)
+        const result = validateLayoutConfig(
+            validConfig,
+            reportConfigMock,
+            validConfig,
+        )
 
         expect(result).toEqual(validConfig)
     })
@@ -320,7 +393,11 @@ describe('validateLayoutConfig', () => {
             ],
         } as unknown as DashboardLayoutConfig
 
-        const result = validateLayoutConfig(invalidConfig)
+        const result = validateLayoutConfig(
+            invalidConfig,
+            reportConfigMock,
+            DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+        )
 
         expect(result).toEqual(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT)
     })

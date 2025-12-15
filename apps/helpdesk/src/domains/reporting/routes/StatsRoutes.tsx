@@ -48,6 +48,7 @@ import VoiceAgents from 'domains/reporting/pages/voice/pages/VoiceAgents'
 import VoiceOverview from 'domains/reporting/pages/voice/pages/VoiceOverview'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
+import AnalyticsAiAgentStatsPaywall from 'pages/aiAgent/analyticsAiAgent/components/AnalyticsAiAgentStatsPaywall'
 import { SalesPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware'
 import App from 'pages/App'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
@@ -444,6 +445,18 @@ export const StatsRoutes = () => {
                             <App
                                 navbar={StatsNavbarContainer}
                                 content={AutomateAiAgentStatsReport}
+                            />
+                        )}
+                    />
+                </ProtectedRoute>
+                <ProtectedRoute path={`${path}/${STATS_ROUTES.AI_AGENT}`}>
+                    <Route
+                        exact
+                        path={`${path}/${STATS_ROUTES.AI_AGENT}`}
+                        render={() => (
+                            <App
+                                navbar={StatsNavbarContainer}
+                                content={AnalyticsAiAgentStatsPaywall}
                             />
                         )}
                     />

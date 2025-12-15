@@ -1,5 +1,8 @@
 import { render, screen } from '@testing-library/react'
 
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
+
 import { AnalyticsOverviewChart } from '../../AnalyticsOverviewReportConfig'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../../config/defaultLayoutConfig'
 import type { DashboardLayoutConfig } from '../../types/layoutConfig'
@@ -12,10 +15,23 @@ jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
 }))
 
 describe('DashboardLayoutRenderer', () => {
+    const reportConfigMock = {
+        charts: {
+            ['chart']: {
+                chartComponent: () => <div>Chart 1</div>,
+                label: 'Chart 1 Label',
+                csvProducer: null,
+                description: 'Description for chart 1',
+                chartType: ChartType.Card,
+            },
+        },
+    } as unknown as ReportConfig<string>
+
     it('should render all charts in the correct order', () => {
         render(
             <DashboardLayoutRenderer
                 layoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
+                reportConfig={reportConfigMock}
             />,
         )
 
@@ -63,7 +79,12 @@ describe('DashboardLayoutRenderer', () => {
             ],
         } as DashboardLayoutConfig
 
-        render(<DashboardLayoutRenderer layoutConfig={invalidConfig} />)
+        render(
+            <DashboardLayoutRenderer
+                layoutConfig={invalidConfig}
+                reportConfig={reportConfigMock}
+            />,
+        )
 
         expect(
             screen.getByTestId(
@@ -92,7 +113,12 @@ describe('DashboardLayoutRenderer', () => {
             ],
         }
 
-        render(<DashboardLayoutRenderer layoutConfig={customConfig} />)
+        render(
+            <DashboardLayoutRenderer
+                layoutConfig={customConfig}
+                reportConfig={reportConfigMock}
+            />,
+        )
 
         expect(
             screen.getByTestId(

@@ -57,6 +57,7 @@ export const AnalyticsOverviewLayout = () => {
             >
                 <DashboardLayoutRenderer
                     layoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
+                    reportConfig={AnalyticsOverviewReportConfig}
                 />
             </Box>
         </Box>

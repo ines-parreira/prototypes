@@ -19,9 +19,10 @@ import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { STATS_ROUTES } from 'routes/constants'
 
 const OVERVIEW_PATH = `/app/stats/${STATS_ROUTES.AI_AGENT_OVERVIEW}`
-const AI_AGENT_PATH = `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
+const AUTOMATE_AI_AGENT_PATH = `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
 const PERFORMANCE_BY_FEATURE_PATH = `/app/stats/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`
 const AI_SALES_AGENT_PATH = `/app/stats/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}`
+const AI_AGENT_PATH = `/app/stats/${STATS_ROUTES.AI_AGENT}`
 
 export function AutomateStatsNavbar() {
     const { hasAccess } = useAiAgentAccess()
@@ -74,14 +75,28 @@ export function AutomateStatsNavbar() {
                             </Navigation.SectionItem>
                         </ProtectedRoute>
 
-                        {isAiAgentStatsPageEnabled && (
+                        {isAiAgentStatsPageEnabled &&
+                            !isAnalyticsDashboardsNewScreensEnabled && (
+                                <ProtectedRoute path={AUTOMATE_AI_AGENT_PATH}>
+                                    <Navigation.SectionItem
+                                        as={NavLink}
+                                        to={AUTOMATE_AI_AGENT_PATH}
+                                        exact
+                                        displayType="indent"
+                                        data-candu-id="statistics-automate-ai-agent"
+                                    >
+                                        {PAGE_TITLE_AI_AGENT}
+                                    </Navigation.SectionItem>
+                                </ProtectedRoute>
+                            )}
+
+                        {isAnalyticsDashboardsNewScreensEnabled && (
                             <ProtectedRoute path={AI_AGENT_PATH}>
                                 <Navigation.SectionItem
                                     as={NavLink}
                                     to={AI_AGENT_PATH}
                                     exact
                                     displayType="indent"
-                                    data-candu-id="statistics-automate-ai-agent"
                                 >
                                     {PAGE_TITLE_AI_AGENT}
                                 </Navigation.SectionItem>

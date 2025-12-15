@@ -1,5 +1,5 @@
-import { AnalyticsOverviewReportConfig } from '../AnalyticsOverviewReportConfig'
-import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../config/defaultLayoutConfig'
+import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
+
 import type {
     DashboardLayoutConfig,
     GridSize,
@@ -13,12 +13,15 @@ const isValidGridSize = (size: number): size is GridSize => {
     return VALID_GRID_SIZES.includes(size as GridSize)
 }
 
-const validateLayoutItem = (item: LayoutItem): boolean => {
+const validateLayoutItem = <TChart extends string>(
+    item: LayoutItem,
+    reportConfig: ReportConfig<TChart>,
+): boolean => {
     if (!item.chartId || typeof item.chartId !== 'string') {
         return false
     }
 
-    if (!AnalyticsOverviewReportConfig.charts[item.chartId]) {
+    if (!(item.chartId in reportConfig.charts)) {
         return false
     }
 
@@ -29,7 +32,10 @@ const validateLayoutItem = (item: LayoutItem): boolean => {
     return true
 }
 
-const validateLayoutSection = (section: LayoutSection): boolean => {
+const validateLayoutSection = <TChart extends string>(
+    section: LayoutSection,
+    reportConfig: ReportConfig<TChart>,
+): boolean => {
     if (!section.id || typeof section.id !== 'string') {
         return false
     }
@@ -42,24 +48,28 @@ const validateLayoutSection = (section: LayoutSection): boolean => {
         return false
     }
 
-    return section.items.every(validateLayoutItem)
+    return section.items.every((item) => validateLayoutItem(item, reportConfig))
 }
 
-export const validateLayoutConfig = (
+export const validateLayoutConfig = <TChart extends string>(
     config: DashboardLayoutConfig,
+    reportConfig: ReportConfig<TChart>,
+    fallbackConfig: DashboardLayoutConfig,
 ): DashboardLayoutConfig => {
     if (!config || typeof config !== 'object') {
-        return DEFAULT_ANALYTICS_OVERVIEW_LAYOUT
+        return fallbackConfig
     }
 
     if (!Array.isArray(config.sections)) {
-        return DEFAULT_ANALYTICS_OVERVIEW_LAYOUT
+        return fallbackConfig
     }
 
-    const isValid = config.sections.every(validateLayoutSection)
+    const isValid = config.sections.every((section) =>
+        validateLayoutSection(section, reportConfig),
+    )
 
     if (!isValid) {
-        return DEFAULT_ANALYTICS_OVERVIEW_LAYOUT
+        return fallbackConfig
     }
 
     return config

@@ -50,6 +50,7 @@ import {
     basicMonthlyAutomationPlan,
 } from 'fixtures/productPrices'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import { AnalyticsAiAgentLayout } from 'pages/aiAgent/analyticsAiAgent/components/AnalyticsAiAgentLayout'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
@@ -235,6 +236,8 @@ const AiSalesAgentSalesOverviewMock = assumeMock(AiSalesAgentSalesOverview)
 jest.mock('pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware', () => ({
     SalesPaywallMiddleware: (Component: ComponentType) => Component,
 }))
+jest.mock('pages/aiAgent/analyticsAiAgent/components/AnalyticsAiAgentLayout')
+const AnalyticsAiAgentLayoutMock = assumeMock(AnalyticsAiAgentLayout)
 
 describe('StatsRoutes', () => {
     beforeEach(() => {
@@ -287,6 +290,7 @@ describe('StatsRoutes', () => {
         SupportedLocalesProviderMock.mockImplementation(({ children }) => (
             <>{children}</>
         ))
+        AnalyticsAiAgentLayoutMock.mockImplementation(() => <div />)
     })
 
     it.each([
