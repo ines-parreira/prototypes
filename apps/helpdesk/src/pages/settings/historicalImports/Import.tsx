@@ -7,7 +7,7 @@ import { TabItem, TabList, TabPanel, Tabs } from '@gorgias/axiom'
 
 import { useFlag } from 'core/flags'
 
-import HeaderImportEmail from './Imports/Email/HeaderImportEmail'
+import { HeaderImport } from './HeaderImport'
 import { ImportEmailTable } from './Imports/Email/ImportEmailTable'
 import { useTableImport } from './Imports/Email/useTableImport'
 import { ZendeskImportTable } from './Imports/Zendesk/ZendeskImportTable'
@@ -28,7 +28,7 @@ const ImportEmails = () => {
 
     return (
         <div className="full-width">
-            <HeaderImportEmail
+            <HeaderImport
                 onOpenCreateImportModal={() => setIsCreateImportModalOpen(true)}
                 showCta={Boolean(tableProps.importList?.length)}
             />
@@ -55,7 +55,7 @@ const ImportEmails = () => {
                     </TabPanel>
                     {historicalImportsEnabled && (
                         <TabPanel id={ZENDESK_IMPORT}>
-                            <ZendeskImportTable isLoading={false} />
+                            <ZendeskImportTable />
                         </TabPanel>
                     )}
                 </Tabs>

@@ -10,8 +10,8 @@ jest.mock('core/flags', () => ({
 }))
 
 // Mock all child components
-jest.mock('./Imports/Email/HeaderImportEmail', () => {
-    return function MockHeaderImportEmail({
+jest.mock('./HeaderImport', () => ({
+    HeaderImport: function MockHeaderImport({
         onOpenCreateImportModal,
         showCta,
     }: any) {
@@ -23,8 +23,8 @@ jest.mock('./Imports/Email/HeaderImportEmail', () => {
                 <div data-testid="show-cta">{showCta ? 'true' : 'false'}</div>
             </div>
         )
-    }
-})
+    },
+}))
 
 jest.mock('./Modal/CreateImportModal', () => {
     return function MockCreateImportModal({

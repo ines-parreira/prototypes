@@ -1,6 +1,9 @@
-import type { DateTimeResultFormatType } from 'constants/datetime'
+import type { ReactNode } from 'react'
+
+import { formatDatetime } from '@repo/utils'
+import type { DateTimeResultFormatType } from '@repo/utils'
+
 import type { ZendeskIntegration } from 'models/integration/types'
-import { formatDatetime } from 'utils'
 
 import { ImportStatus } from './types'
 
@@ -8,7 +11,7 @@ export const getImportCompletionDate = (
     integration: ZendeskIntegration,
     datetimeFormat: DateTimeResultFormatType,
     timezone: string | null,
-): React.ReactChild => {
+): ReactNode => {
     const importStatus = integration.meta.status
 
     if (importStatus === ImportStatus.Pending) {

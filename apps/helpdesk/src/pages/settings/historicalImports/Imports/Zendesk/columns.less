@@ -1,0 +1,25 @@
+@import '~@gorgias/design-tokens/dist/css/typographyMixins.less';
+
+:local {
+    .logo {
+        max-width: 16px;
+        overflow: hidden;
+        margin-right: var(--layout-spacing-s);
+    }
+
+    .status {
+        span {
+            .body-tabular();
+            margin-bottom: 8px;
+        }
+
+        p {
+            .body-regular();
+            font-size: 12px;
+        }
+    }
+
+    .syncStatus {
+        cursor: pointer;
+    }
+}

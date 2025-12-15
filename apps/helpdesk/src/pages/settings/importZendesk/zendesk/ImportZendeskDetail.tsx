@@ -101,6 +101,7 @@ export const ImportZendeskDetail = ({
 
         updateOrCreateIntegration(integrationData)
     }
+
     return (
         <div className="full-width">
             <PageHeader

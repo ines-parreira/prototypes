@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import user from '@testing-library/user-event'
 
-import HeaderImportEmail from '../HeaderImportEmail'
+import { HeaderImport } from './HeaderImport'
 
-describe('HeaderImportEmail', () => {
+describe('HeaderImport', () => {
     const mockOnOpenCreateImportModal = jest.fn()
 
     beforeEach(() => {
@@ -13,7 +13,7 @@ describe('HeaderImportEmail', () => {
     describe('Page Header', () => {
         it('renders the page header with correct title', () => {
             render(
-                <HeaderImportEmail
+                <HeaderImport
                     onOpenCreateImportModal={mockOnOpenCreateImportModal}
                     showCta={false}
                 />,
@@ -27,7 +27,7 @@ describe('HeaderImportEmail', () => {
     describe('Import Button', () => {
         it('renders the Import button when showCta is true', () => {
             render(
-                <HeaderImportEmail
+                <HeaderImport
                     onOpenCreateImportModal={mockOnOpenCreateImportModal}
                     showCta={true}
                 />,
@@ -39,7 +39,7 @@ describe('HeaderImportEmail', () => {
 
         it('does not render the Import button when showCta is false', () => {
             render(
-                <HeaderImportEmail
+                <HeaderImport
                     onOpenCreateImportModal={mockOnOpenCreateImportModal}
                     showCta={false}
                 />,
@@ -52,7 +52,7 @@ describe('HeaderImportEmail', () => {
         it('calls onOpenCreateImportModal when Import button is clicked', async () => {
             const userActions = user.setup()
             render(
-                <HeaderImportEmail
+                <HeaderImport
                     onOpenCreateImportModal={mockOnOpenCreateImportModal}
                     showCta={true}
                 />,
@@ -68,7 +68,7 @@ describe('HeaderImportEmail', () => {
     describe('Content', () => {
         it('renders the informational text about importing data', () => {
             render(
-                <HeaderImportEmail
+                <HeaderImport
                     onOpenCreateImportModal={mockOnOpenCreateImportModal}
                     showCta={false}
                 />,
@@ -80,7 +80,7 @@ describe('HeaderImportEmail', () => {
 
         it('renders the Email integrations FAQs link with correct href', () => {
             render(
-                <HeaderImportEmail
+                <HeaderImport
                     onOpenCreateImportModal={mockOnOpenCreateImportModal}
                     showCta={false}
                 />,

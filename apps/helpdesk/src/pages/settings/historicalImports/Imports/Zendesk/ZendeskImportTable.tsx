@@ -1,23 +1,43 @@
-import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+import {
+    HeaderRowGroup,
+    TableBodyContent,
+    TableHeader,
+    TableRoot,
+    useTable,
+} from '@gorgias/axiom'
+import { useListIntegrations } from '@gorgias/helpdesk-queries'
 
 import { EmptyState } from '../EmptyState'
+import { columns } from './columns'
 
-import css from './ZendeskImportTable.less'
+export const ZendeskImportTable = () => {
+    const { data: zendeskIntegrations, isLoading } = useListIntegrations(
+        {
+            type: 'zendesk',
+        },
+        {
+            query: {
+                enabled: true,
+                staleTime: Infinity,
+                cacheTime: Infinity,
+                select: (resp) => resp?.data?.data,
+            },
+        },
+    )
 
-type TableImportEmailProps = {
-    isLoading: boolean
-}
+    const table = useTable({
+        data: zendeskIntegrations ?? [],
+        columns,
+        sortingConfig: {
+            enableSorting: false,
+            enableMultiSort: false,
+        },
+    })
 
-export const ZendeskImportTable = ({ isLoading }: TableImportEmailProps) => {
-    if (isLoading) {
-        return (
-            <div className={css.emptyStateWrapper}>
-                <LoadingSpinner />
-            </div>
-        )
-    }
-
-    if (!isLoading) {
+    if (
+        !isLoading &&
+        (!zendeskIntegrations || zendeskIntegrations.length < 1)
+    ) {
         return (
             <EmptyState
                 title="No Zendesk data imported"
@@ -27,4 +47,18 @@ export const ZendeskImportTable = ({ isLoading }: TableImportEmailProps) => {
             />
         )
     }
+
+    return (
+        <TableRoot>
+            <TableHeader>
+                <HeaderRowGroup headerGroups={table.getHeaderGroups()} />
+            </TableHeader>
+            <TableBodyContent
+                isLoading={isLoading}
+                rows={table.getRowModel().rows}
+                columnCount={columns.length}
+                table={table}
+            />
+        </TableRoot>
+    )
 }
