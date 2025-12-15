@@ -235,7 +235,6 @@ function useMutations(
     const connectIntegration = useCallback(
         (payload: ConnectIntegrationPayload) => {
             if (integration) {
-                debugger
                 performUpdate({
                     id: integration.id,
                     data: {
