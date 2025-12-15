@@ -4,7 +4,7 @@ import { defineScope } from 'domains/reporting/models/scopes/scope'
 
 const messagesPerTicketScope = defineScope({
     scope: MetricScope.MessagesPerTicket,
-    measures: ['messagesAverage'],
+    measures: ['averageMessagesCount'],
     dimensions: [
         'ticketId',
         'agentId',
@@ -13,7 +13,12 @@ const messagesPerTicketScope = defineScope({
         'messagesCount',
     ],
     timeDimensions: ['createdDatetime'],
-    order: ['ticketId', 'createdDatetime', 'messagesCount'],
+    order: [
+        'ticketId',
+        'createdDatetime',
+        'messagesCount',
+        'averageMessagesCount',
+    ],
     filters: [
         'periodStart',
         'periodEnd',
@@ -38,7 +43,7 @@ const messagesPerTicketScope = defineScope({
 export const messagesPerTicketCount = messagesPerTicketScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_PER_TICKET)
     .defineQuery(() => ({
-        measures: ['messagesAverage'] as const,
+        measures: ['averageMessagesCount'] as const,
     }))
 
 export const messagesPerTicketCountQueryV2Factory = (ctx: Context) =>

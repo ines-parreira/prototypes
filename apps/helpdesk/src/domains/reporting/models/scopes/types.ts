@@ -104,7 +104,7 @@ export type MeasureName =
     | 'medianResolutionTime'
     | 'onlineTime'
     | 'messagesCount'
-    | 'messagesAverage'
+    | 'averageMessagesCount'
     | 'medianResponseTime'
     | 'medianFirstResponseTime'
     | 'medianFirstResponseTimeInSeconds'

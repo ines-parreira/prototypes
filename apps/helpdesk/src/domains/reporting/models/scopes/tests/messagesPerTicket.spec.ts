@@ -29,7 +29,7 @@ describe('messagesPerTicketScope', () => {
             const actual = messagesPerTicketCount.build(context)
 
             const expected = {
-                measures: ['messagesAverage'],
+                measures: ['averageMessagesCount'],
                 timezone: 'utc',
                 filters: [
                     {
