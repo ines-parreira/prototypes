@@ -33,7 +33,7 @@ export const selectMeasure = <
             ? (queryV2.measures[0] as TCube['measures'])
             : query?.measures[0]
     if (!measure) return null
-    const dataMeasure = data.data.data?.[0]?.[measure] || null
+    const dataMeasure = data.data.data?.[0]?.[measure] ?? null
     return dataMeasure !== null ? parseFloat(dataMeasure) : null
 }
 

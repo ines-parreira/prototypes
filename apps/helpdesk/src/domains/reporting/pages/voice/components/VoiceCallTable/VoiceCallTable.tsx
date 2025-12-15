@@ -46,6 +46,8 @@ export const VoiceCallTable = ({
         orderDirection,
         filterOption?.statuses,
     )
+
+    // TODO(new-stats-api): when we fully migrate to V2, refactor to use total from useVoiceCallList
     const { totalPages } = useVoiceCallCount(
         statsFilters,
         userTimezone,

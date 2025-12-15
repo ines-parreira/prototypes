@@ -44,6 +44,11 @@ export enum APIOnlyFilterKey {
     ResourceSourceId = 'resourceSourceId',
     ResourceSourceSetId = 'resourceSourceSetId',
     ShopIntegrationId = 'shopIntegrationId',
+    CallDirection = 'callDirection',
+    CallTerminationStatus = 'callTerminationStatus',
+    IsAnsweredByAgent = 'isAnsweredByAgent',
+    AgentId = 'agentId',
+    DisplayStatus = 'displayStatus',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -99,12 +104,14 @@ export interface Period {
     start_datetime: string
 }
 
-export interface WithExtendedLogicalOperator<T extends number | string> {
+export interface WithExtendedLogicalOperator<
+    T extends number | string | boolean,
+> {
     operator: ExtendedLogicalOperatorEnum
     values: T[]
 }
 
-export interface WithLogicalOperator<T extends number | string> {
+export interface WithLogicalOperator<T extends number | string | boolean> {
     operator: LogicalOperatorEnum
     values: T[]
 }
@@ -276,12 +283,15 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
     [APIOnlyFilterKey.CreatedDatetime]?: Period
     [APIOnlyFilterKey.CustomFieldId]?: WithLogicalOperator<number>
     [APIOnlyFilterKey.CustomFieldValue]?: WithLogicalOperator<string>
-    [APIOnlyFilterKey.ProductId]?:
-        | WithLogicalOperator<string>
-        | WithExtendedLogicalOperator<string>
     [APIOnlyFilterKey.ResourceSourceId]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.ResourceSourceSetId]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.ShopIntegrationId]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.CallDirection]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.CallTerminationStatus]?: WithExtendedLogicalOperator<string>
+    [APIOnlyFilterKey.IsAnsweredByAgent]?: WithLogicalOperator<boolean>
+    [APIOnlyFilterKey.ProductId]?: WithExtendedLogicalOperator<string>
+    [APIOnlyFilterKey.AgentId]?: WithExtendedLogicalOperator<number>
+    [APIOnlyFilterKey.DisplayStatus]?: WithLogicalOperator<string>
 }
 
 export type StatsFilters = StatsFiltersWithLogicalOperator

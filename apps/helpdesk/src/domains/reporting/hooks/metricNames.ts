@@ -421,30 +421,31 @@ export const METRIC_NAMES = {
         'voice-call-average-talk-time-per-agent',
     VOICE_CALL_AVERAGE_WAIT_TIME: 'voice-call-average-wait-time',
     VOICE_CALL_COUNT: 'voice-call-count',
-    VOICE_CALL_COUNT_BY_AGENT: 'voice-call-count-by-agent',
     VOICE_UNANSWERED_CALLS_BY_AGENT: 'voice-unanswered-calls-by-agent',
     VOICE_MISSED_CALLS_BY_AGENT: 'voice-missed-calls-by-agent',
     VOICE_OUTBOUND_CALLS_BY_AGENT: 'voice-outbound-calls-by-agent',
     VOICE_INBOUND_CALL_BY_AGENT: 'voice-inbound-call-by-agent',
-    VOICE_DECLINED_CALLS_BY_AGENT: 'voice-declined-calls-by-agent',
-    VOICE_ANSWERED_CALLS_BY_AGENT: 'voice-answered-calls-by-agent',
     VOICE_CALL_COUNT_TREND: 'voice-call-count-trend',
     VOICE_CALL_COUNT_OUTBOUND_TREND: 'voice-call-count-outbound-trend',
     VOICE_CALL_COUNT_INBOUND_TREND: 'voice-call-count-inbound-trend',
     VOICE_CALL_COUNT_TABLE: 'voice-call-count-table',
-    VOICE_ANSWERED_CALLS_BY_AGENT_DRILL_DOWN:
-        'voice-answered-calls-by-agent-drill-down',
-    VOICE_CALL_COUNT_PER_AGENT: 'voice-call-count-per-agent',
     VOICE_CALL_COUNT_PER_FILTERING_AGENT:
         'voice-call-count-per-filtering-agent',
     VOICE_CALL_LIST: 'voice-call-list',
+
+    // TODO(new-stats-api): implement in a new scope (voice-call-summary)
     VOICE_CALL_SUMMARY: 'voice-call-summary',
+
+    // TODO(new-stats-api): these 2 are drilldown queries
     VOICE_CONNECTED_CALLS_LIST: 'voice-connected-calls-list',
+    VOICE_WAITING_TIME_CALLS_LIST: 'voice-waiting-time-calls-list',
+
+    // TODO(new-stats-api): this is a different scope (voice-agent-events)
     VOICE_DECLINED_CALLS_COUNT: 'voice-declined-calls-count',
     VOICE_DECLINED_CALLS_COUNT_PER_AGENT:
         'voice-declined-calls-count-per-agent',
     VOICE_DECLINED_CALLS_PER_AGENT: 'voice-declined-calls-per-agent',
-    VOICE_WAITING_TIME_CALLS_LIST: 'voice-waiting-time-calls-list',
+
     VOICE_TRANSFERRED_INBOUND_CALLS_COUNT:
         'voice-transferred-inbound-calls-count',
     VOICE_TRANSFERRED_INBOUND_CALLS_COUNT_PER_AGENT:
@@ -632,7 +633,19 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_COUNT_PER_AGENT,
     ],
     [MetricScope.VoiceCalls]: [
-        // TODO(Nicolas): https://linear.app/gorgias/issue/CRMREP-4835/implement-the-voice-calls-v2-metric
+        METRIC_NAMES.VOICE_CALL_AVERAGE_WAIT_TIME,
+        METRIC_NAMES.VOICE_CALL_AVERAGE_TALK_TIME,
+        METRIC_NAMES.VOICE_CALL_COUNT_TREND,
+        METRIC_NAMES.VOICE_CALL_COUNT,
+        METRIC_NAMES.VOICE_CALL_COUNT_TABLE,
+        METRIC_NAMES.VOICE_UNANSWERED_CALLS_BY_AGENT,
+        METRIC_NAMES.VOICE_MISSED_CALLS_BY_AGENT,
+        METRIC_NAMES.VOICE_OUTBOUND_CALLS_BY_AGENT,
+        METRIC_NAMES.VOICE_INBOUND_CALL_BY_AGENT,
+        METRIC_NAMES.VOICE_CALL_COUNT_OUTBOUND_TREND,
+        METRIC_NAMES.VOICE_CALL_COUNT_INBOUND_TREND,
+        METRIC_NAMES.VOICE_CALL_COUNT_PER_FILTERING_AGENT,
+        METRIC_NAMES.VOICE_CALL_LIST,
     ],
     [MetricScope.Tags]: [
         METRIC_NAMES.TICKET_INSIGHTS_TAGS_TICKET_COUNT,

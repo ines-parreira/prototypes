@@ -223,6 +223,34 @@ describe('Reporting resources', () => {
             expect(res.data.data).toEqual([1])
         })
 
+        it('should resolve with the data with offset on success', async () => {
+            mockedAPIClient.reset()
+            mockedAPIClient
+                .onPost(
+                    `${REPORTING_STATS_ENDPOINT}?metric_name=${METRIC_NAMES.TEST_METRIC}&offset=50`,
+                )
+                .reply(200, resFixture)
+
+            const queryWithOffset = { ...query, offset: 50 }
+            const res = await postReportingV2<[number]>(queryWithOffset)
+
+            expect(res.data.data).toEqual([1])
+        })
+
+        it('should resolve with the data with total on success', async () => {
+            mockedAPIClient.reset()
+            mockedAPIClient
+                .onPost(
+                    `${REPORTING_STATS_ENDPOINT}?metric_name=${METRIC_NAMES.TEST_METRIC}&total=true`,
+                )
+                .reply(200, resFixture)
+
+            const queryWithTotal = { ...query, total: true }
+            const res = await postReportingV2<[number]>(queryWithTotal)
+
+            expect(res.data.data).toEqual([1])
+        })
+
         it('should reject with an error on success', async () => {
             const statusCode = 503
             mockedAPIClient.reset()
@@ -335,6 +363,34 @@ describe('Reporting resources', () => {
             expect(res.data).toEqual({ ...queryResFixture, limit: 100 })
         })
 
+        it('should resolve with the data with offset on success', async () => {
+            mockedAPIClient.reset()
+            mockedAPIClient
+                .onPost(
+                    `${REPORTING_STATS_QUERY_ENDPOINT}?metric_name=${METRIC_NAMES.TEST_METRIC}&offset=50`,
+                )
+                .reply(200, queryResFixture)
+
+            const queryWithOffset = { ...query, offset: 50 }
+            const res = await postReportingV2Query(queryWithOffset)
+
+            expect(res.data).toEqual(queryResFixture)
+        })
+
+        it('should resolve with the data with total on success', async () => {
+            mockedAPIClient.reset()
+            mockedAPIClient
+                .onPost(
+                    `${REPORTING_STATS_QUERY_ENDPOINT}?metric_name=${METRIC_NAMES.TEST_METRIC}&total=true`,
+                )
+                .reply(200, queryResFixture)
+
+            const queryWithTotal = { ...query, total: true }
+            const res = await postReportingV2Query(queryWithTotal)
+
+            expect(res.data).toEqual(queryResFixture)
+        })
+
         it('should reject with an error on success', async () => {
             const statusCode = 503
 
@@ -409,6 +465,47 @@ describe('Reporting resources', () => {
                     },
                 },
             })
+        })
+
+        it('should not report errors with undefined status', async () => {
+            mockedAPIClient.reset()
+            mockedAPIClient
+                .onPost(
+                    `${REPORTING_STATS_QUERY_ENDPOINT}?metric_name=${METRIC_NAMES.TEST_METRIC}`,
+                )
+                .networkError()
+
+            const request = postReportingV2Query(query)
+
+            await expect(request).rejects.toThrow()
+            expect(reportErrorMock).not.toHaveBeenCalled()
+        })
+
+        it('should handle errors when reporting to sentry fails', async () => {
+            const consoleErrorSpy = jest
+                .spyOn(console, 'error')
+                .mockImplementation()
+
+            reportErrorMock.mockImplementation(() => {
+                throw new Error('Sentry error')
+            })
+
+            mockedAPIClient.reset()
+            mockedAPIClient
+                .onPost(
+                    `${REPORTING_STATS_QUERY_ENDPOINT}?metric_name=${METRIC_NAMES.TEST_METRIC}`,
+                )
+                .reply(400)
+
+            const request = postReportingV2Query(query)
+
+            await expect(request).rejects.toThrow()
+            expect(consoleErrorSpy).toHaveBeenCalledWith(
+                'reportQueryErrorToSentry:',
+                expect.any(Error),
+            )
+
+            consoleErrorSpy.mockRestore()
         })
     })
 })

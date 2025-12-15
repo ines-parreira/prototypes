@@ -18,7 +18,6 @@ import {
     voiceCallAverageTalkTimePerAgentQueryFactory,
     voiceCallAverageTalkTimeQueryFactory,
     voiceCallAverageWaitTimeQueryFactory,
-    voiceCallCountPerAgentQueryFactory,
     voiceCallCountPerFilteringAgentQueryFactory,
     voiceCallCountQueryFactory,
     voiceCallListQueryFactory,
@@ -147,7 +146,7 @@ describe('voice queries factories', () => {
             )
 
             expect(query).toEqual({
-                metricName: METRIC_NAMES.VOICE_CALL_COUNT,
+                metricName: METRIC_NAMES.VOICE_CALL_COUNT_TREND,
                 measures,
                 dimensions,
                 filters: [
@@ -424,7 +423,6 @@ describe('voice queries factories', () => {
         voiceCallAverageTalkTimeQueryFactory,
         voiceCallAverageWaitTimeQueryFactory,
         voiceCallCountPerFilteringAgentQueryFactory,
-        voiceCallCountPerAgentQueryFactory,
         voiceCallListQueryFactory,
         voiceCallAverageTalkTimePerAgentQueryFactory,
         connectedCallsListQueryFactory,
@@ -500,48 +498,6 @@ describe('voice queries factories', () => {
             expect(query).toEqual({
                 metricName: METRIC_NAMES.VOICE_CALL_COUNT_PER_FILTERING_AGENT,
                 dimensions: [VoiceCallDimension.FilteringAgentId],
-                measures: [VoiceCallMeasure.VoiceCallCount],
-                segments: expectedSegments,
-                timezone,
-                filters: [
-                    {
-                        member: VoiceCallMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterDate,
-                        values: [periodStart],
-                    },
-                    {
-                        member: VoiceCallMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeDate,
-                        values: [periodEnd],
-                    },
-                ],
-            })
-        },
-    )
-
-    it.each([
-        {
-            segment: undefined,
-            expectedSegments: [VoiceCallSegment.callsInFinalStatus],
-        },
-        {
-            segment: VoiceCallSegment.inboundCalls,
-            expectedSegments: [
-                VoiceCallSegment.inboundCalls,
-                VoiceCallSegment.callsInFinalStatus,
-            ],
-        },
-    ])(
-        'voiceCallCountPerAgentQueryFactory should create a query',
-        ({ segment, expectedSegments }) => {
-            const query = voiceCallCountPerAgentQueryFactory(
-                statsFilters,
-                timezone,
-                segment,
-            )
-            expect(query).toEqual({
-                metricName: METRIC_NAMES.VOICE_CALL_COUNT_PER_AGENT,
-                dimensions: [VoiceCallDimension.AgentId],
                 measures: [VoiceCallMeasure.VoiceCallCount],
                 segments: expectedSegments,
                 timezone,

@@ -2,9 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment/moment'
 
 import {
-    fetchMetricPerDimension,
     fetchMetricPerDimensionV2,
-    useMetricPerDimension,
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
@@ -20,6 +18,10 @@ import {
     declinedVoiceCallsCountPerAgentQueryV2Factory,
     transferredInboundVoiceCallsCountPerAgentQueryV2Factory,
 } from 'domains/reporting/models/scopes/voiceAgentEvents'
+import {
+    voiceCallsAverageTalkTimeQueryFactoryV2,
+    voiceCallsCountPerFilteringAgentQueryFactoryV2,
+} from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchAnsweredCallsMetricPerAgent,
@@ -41,9 +43,7 @@ import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
-const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
-const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 const fetchMetricPerDimensionV2Mock = assumeMock(fetchMetricPerDimensionV2)
 
 describe('metricsPerDimension', () => {
@@ -68,15 +68,23 @@ describe('metricsPerDimension', () => {
                 ),
             )
 
-            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 voiceCallCountPerFilteringAgentQueryFactory(
                     statsFilters,
                     userTimezone,
                     undefined,
                     sorting,
                 ),
+                voiceCallsCountPerFilteringAgentQueryFactoryV2(
+                    {
+                        filters: statsFilters,
+                        timezone: userTimezone,
+                        sortDirection: sorting,
+                    },
+                    undefined,
+                ),
                 agentId,
-            ])
+            )
         })
 
         it('useAnsweredCallsMetricPerAgent', () => {
@@ -89,15 +97,23 @@ describe('metricsPerDimension', () => {
                 ),
             )
 
-            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 voiceCallCountPerFilteringAgentQueryFactory(
                     statsFilters,
                     userTimezone,
                     VoiceCallSegment.inboundAnsweredCallsByAgent,
                     sorting,
                 ),
+                voiceCallsCountPerFilteringAgentQueryFactoryV2(
+                    {
+                        filters: statsFilters,
+                        timezone: userTimezone,
+                        sortDirection: sorting,
+                    },
+                    VoiceCallSegment.inboundAnsweredCallsByAgent,
+                ),
                 agentId,
-            ])
+            )
         })
 
         it('useMissedCallsMetricPerAgent', () => {
@@ -110,15 +126,23 @@ describe('metricsPerDimension', () => {
                 ),
             )
 
-            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 voiceCallCountPerFilteringAgentQueryFactory(
                     statsFilters,
                     userTimezone,
                     VoiceCallSegment.inboundUnansweredCallsByAgent,
                     sorting,
                 ),
+                voiceCallsCountPerFilteringAgentQueryFactoryV2(
+                    {
+                        filters: statsFilters,
+                        timezone: userTimezone,
+                        sortDirection: sorting,
+                    },
+                    VoiceCallSegment.inboundUnansweredCallsByAgent,
+                ),
                 agentId,
-            ])
+            )
         })
 
         it('useOutboundCallsMetricPerAgent', () => {
@@ -131,15 +155,23 @@ describe('metricsPerDimension', () => {
                 ),
             )
 
-            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 voiceCallCountPerFilteringAgentQueryFactory(
                     statsFilters,
                     userTimezone,
                     VoiceCallSegment.outboundCalls,
                     sorting,
                 ),
+                voiceCallsCountPerFilteringAgentQueryFactoryV2(
+                    {
+                        filters: statsFilters,
+                        timezone: userTimezone,
+                        sortDirection: sorting,
+                    },
+                    VoiceCallSegment.outboundCalls,
+                ),
                 agentId,
-            ])
+            )
         })
 
         it('useAverageTalkTimeMetricPerAgent', () => {
@@ -152,15 +184,20 @@ describe('metricsPerDimension', () => {
                 ),
             )
 
-            expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 voiceCallAverageTalkTimePerAgentQueryFactory(
                     statsFilters,
                     userTimezone,
                     undefined,
                     sorting,
                 ),
+                voiceCallsAverageTalkTimeQueryFactoryV2({
+                    filters: statsFilters,
+                    timezone: userTimezone,
+                    sortDirection: sorting,
+                }),
                 agentId,
-            ])
+            )
         })
 
         it('useDeclinedCallsMetricPerAgent', () => {
@@ -217,10 +254,20 @@ describe('metricsPerDimension', () => {
     describe('fetch', () => {
         it.each([
             {
+                name: 'fetchTotalCallsMetricPerAgent',
                 fetch: fetchTotalCallsMetricPerAgent,
                 query: voiceCallCountPerFilteringAgentQueryFactory,
+                queryV2: (statsFilters: StatsFilters, timezone: string) =>
+                    voiceCallsCountPerFilteringAgentQueryFactoryV2(
+                        {
+                            filters: statsFilters,
+                            timezone,
+                        },
+                        undefined,
+                    ),
             },
             {
+                name: 'fetchAnsweredCallsMetricPerAgent',
                 fetch: fetchAnsweredCallsMetricPerAgent,
                 query: (statsFilters: StatsFilters, timezone: string) =>
                     voiceCallCountPerFilteringAgentQueryFactory(
@@ -228,8 +275,17 @@ describe('metricsPerDimension', () => {
                         timezone,
                         VoiceCallSegment.inboundAnsweredCallsByAgent,
                     ),
+                queryV2: (statsFilters: StatsFilters, timezone: string) =>
+                    voiceCallsCountPerFilteringAgentQueryFactoryV2(
+                        {
+                            filters: statsFilters,
+                            timezone,
+                        },
+                        VoiceCallSegment.inboundAnsweredCallsByAgent,
+                    ),
             },
             {
+                name: 'fetchMissedCallsMetricPerAgent',
                 fetch: fetchMissedCallsMetricPerAgent,
                 query: (statsFilters: StatsFilters, timezone: string) =>
                     voiceCallCountPerFilteringAgentQueryFactory(
@@ -237,8 +293,17 @@ describe('metricsPerDimension', () => {
                         timezone,
                         VoiceCallSegment.inboundUnansweredCallsByAgent,
                     ),
+                queryV2: (statsFilters: StatsFilters, timezone: string) =>
+                    voiceCallsCountPerFilteringAgentQueryFactoryV2(
+                        {
+                            filters: statsFilters,
+                            timezone,
+                        },
+                        VoiceCallSegment.inboundUnansweredCallsByAgent,
+                    ),
             },
             {
+                name: 'fetchOutboundCallsMetricPerAgent',
                 fetch: fetchOutboundCallsMetricPerAgent,
                 query: (statsFilters: StatsFilters, timezone: string) =>
                     voiceCallCountPerFilteringAgentQueryFactory(
@@ -246,37 +311,53 @@ describe('metricsPerDimension', () => {
                         timezone,
                         VoiceCallSegment.outboundCalls,
                     ),
+                queryV2: (statsFilters: StatsFilters, timezone: string) =>
+                    voiceCallsCountPerFilteringAgentQueryFactoryV2(
+                        {
+                            filters: statsFilters,
+                            timezone,
+                        },
+                        VoiceCallSegment.outboundCalls,
+                    ),
             },
             {
+                name: 'fetchAverageTalkTimeMetricPerAgent',
                 fetch: fetchAverageTalkTimeMetricPerAgent,
                 query: voiceCallAverageTalkTimePerAgentQueryFactory,
+                queryV2: (statsFilters: StatsFilters, timezone: string) =>
+                    voiceCallsAverageTalkTimeQueryFactoryV2({
+                        filters: statsFilters,
+                        timezone,
+                    }),
             },
             {
+                name: 'fetchDeclinedCallsMetricPerAgent',
                 fetch: fetchDeclinedCallsMetricPerAgent,
                 query: declinedVoiceCallsCountPerAgentQueryFactory,
-                queryV2: declinedVoiceCallsCountPerAgentQueryV2Factory,
+                queryV2: (statsFilters: StatsFilters, timezone: string) =>
+                    declinedVoiceCallsCountPerAgentQueryV2Factory({
+                        filters: statsFilters,
+                        timezone,
+                    }),
             },
             {
+                name: 'fetchTransferredInboundCallsMetricPerAgent',
                 fetch: fetchTransferredInboundCallsMetricPerAgent,
                 query: transferredInboundVoiceCallsCountPerAgentQueryFactory,
-                queryV2:
-                    transferredInboundVoiceCallsCountPerAgentQueryV2Factory,
+                queryV2: (statsFilters: StatsFilters, timezone: string) =>
+                    transferredInboundVoiceCallsCountPerAgentQueryV2Factory({
+                        filters: statsFilters,
+                        timezone,
+                    }),
             },
-        ])('should use query', async ({ fetch, query, queryV2 }) => {
+        ])('$name should use query', async ({ fetch, query, queryV2 }) => {
             await fetch(statsFilters, userTimezone, agentId)
 
-            if (queryV2) {
-                expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
-                    query(statsFilters, userTimezone),
-                    queryV2({ filters: statsFilters, timezone: userTimezone }),
-                    agentId,
-                )
-            } else {
-                expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
-                    query(statsFilters, userTimezone),
-                    agentId,
-                )
-            }
+            expect(fetchMetricPerDimensionV2Mock).toHaveBeenCalledWith(
+                query(statsFilters, userTimezone),
+                queryV2?.(statsFilters, userTimezone),
+                agentId,
+            )
         })
     })
 })

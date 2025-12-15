@@ -31,8 +31,10 @@ export type OptionalFilter =
     | TagFilter[]
     | WithLogicalOperator<string>
     | WithLogicalOperator<number>
+    | WithLogicalOperator<boolean>
     | WithExtendedLogicalOperator<string>
     | WithExtendedLogicalOperator<number>
+    | WithExtendedLogicalOperator<boolean>
     | undefined
 
 export const isAggregationWindowFilter = (filter: any) =>
@@ -48,8 +50,10 @@ export const isFilterWithLogicalOperator = (
 ): filter is
     | WithLogicalOperator<string>
     | WithLogicalOperator<number>
+    | WithLogicalOperator<boolean>
     | WithExtendedLogicalOperator<number>
-    | WithExtendedLogicalOperator<string> =>
+    | WithExtendedLogicalOperator<string>
+    | WithExtendedLogicalOperator<boolean> =>
     !Array.isArray(filter) &&
     filter !== undefined &&
     'operator' in filter &&
@@ -108,10 +112,10 @@ export const FilterOperatorMap = {
     [ApiOnlyOperatorEnum.SET]: ReportingFilterOperator.Set,
 }
 
-export const toLowerCaseString = (value: string | number) =>
+export const toLowerCaseString = (value: string | number | boolean) =>
     String(value).toLowerCase()
 
-export const toUpperCaseString = (value: string | number) =>
+export const toUpperCaseString = (value: string | number | boolean) =>
     String(value).toUpperCase()
 
 const NotEqualsMap = {
@@ -314,18 +318,18 @@ export function withDefaultLogicalOperator<T extends number | string>(
     }
 }
 
-export function withLogicalOperator<T extends number | string>(
+export function withLogicalOperator<T extends number | string | boolean>(
     values: T[],
 ): WithLogicalOperator<T>
-export function withLogicalOperator<T extends number | string>(
+export function withLogicalOperator<T extends number | string | boolean>(
     values: T[],
     operator: LogicalOperatorEnum | undefined,
 ): WithLogicalOperator<T>
-export function withLogicalOperator<T extends number | string>(
+export function withLogicalOperator<T extends number | string | boolean>(
     values: T[],
     operator: ApiOnlyOperatorEnum,
 ): WithExtendedLogicalOperator<T>
-export function withLogicalOperator<T extends number | string>(
+export function withLogicalOperator<T extends number | string | boolean>(
     values: T[],
     operator: ExtendedLogicalOperatorEnum = LogicalOperatorEnum.ONE_OF,
 ): WithLogicalOperator<T> | WithExtendedLogicalOperator<T> {

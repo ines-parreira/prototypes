@@ -1,11 +1,14 @@
-import type {
-    VoiceCallCube,
-    VoiceCallSegment,
-} from 'domains/reporting/models/cubes/VoiceCallCube'
+import type { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
 import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
-import { usePostReporting } from 'domains/reporting/models/queries'
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
+import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { voiceCallListQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
+import {
+    mapVoiceCallDirectionToScopeOrder,
+    voiceCallsCountAllDimensionsQueryFactoryV2,
+} from 'domains/reporting/models/scopes/voiceCalls'
+import { APIOnlyFilterKey } from 'domains/reporting/models/stat/types'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { CALL_LIST_PAGE_SIZE } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import type {
@@ -25,11 +28,7 @@ export const useVoiceCallList = (
     sorting?: OrderDirection,
     statusFilter?: VoiceCallDisplayStatus[],
 ) =>
-    usePostReporting<
-        VoiceCallStatListItem[],
-        VoiceCallSummary[],
-        VoiceCallCube
-    >(
+    usePostReportingV2(
         [
             voiceCallListQueryFactory(
                 filters,
@@ -42,6 +41,27 @@ export const useVoiceCallList = (
                 statusFilter,
             ),
         ],
+        voiceCallsCountAllDimensionsQueryFactoryV2(
+            {
+                filters: {
+                    ...filters,
+                    ...(statusFilter
+                        ? {
+                              [APIOnlyFilterKey.DisplayStatus]:
+                                  withLogicalOperator(statusFilter),
+                          }
+                        : {}),
+                },
+                timezone,
+                offset: (page - 1) * perPage,
+                limit: perPage,
+                // TODO(new-stats-api): when we fully migrate to V2, refactor to use total from here
+                total: false,
+                sortDirection: sorting,
+                sortBy: mapVoiceCallDirectionToScopeOrder(order),
+            },
+            segment,
+        ),
         {
             select: selectVoiceCallData,
         },
@@ -54,28 +74,88 @@ export const selectVoiceCallData = (
         value ? parseInt(value) : null
 
     return results.data.data.map((row: VoiceCallStatListItem) => ({
-        agentId: parseNullableInteger(row[VoiceCallDimension.AgentId]),
-        customerId: parseNullableInteger(row[VoiceCallDimension.CustomerId]),
-        direction: row[VoiceCallDimension.Direction],
-        integrationId: parseNullableInteger(
-            row[VoiceCallDimension.IntegrationId],
+        agentId: parseNullableInteger(
+            VoiceCallDimension.AgentId in row
+                ? row[VoiceCallDimension.AgentId]
+                : row['agentId'],
         ),
-        store: row[VoiceCallDimension.Store],
-        createdAt: row[VoiceCallDimension.CreatedAt],
-        status: row[VoiceCallDimension.Status],
-        duration: parseNullableInteger(row[VoiceCallDimension.Duration]),
-        ticketId: parseNullableInteger(row[VoiceCallDimension.TicketId]),
-        phoneNumberDestination: row[VoiceCallDimension.PhoneNumberDestination],
-        phoneNumberSource: row[VoiceCallDimension.PhoneNumberSource],
-        talkTime: parseNullableInteger(row[VoiceCallDimension.TalkTime]),
-        waitTime: parseNullableInteger(row[VoiceCallDimension.WaitTime]),
-        voicemailAvailable: row[VoiceCallDimension.VoicemailAvailable],
-        voicemailUrl: row[VoiceCallDimension.VoicemailUrl],
-        callRecordingAvailable: row[VoiceCallDimension.CallRecordingAvailable],
-        callRecordingUrl: row[VoiceCallDimension.CallRecordingUrl],
-        displayStatus: row[VoiceCallDimension.DisplayStatus],
-        queueId: parseNullableInteger(row[VoiceCallDimension.QueueId]),
-        queueName: row[VoiceCallDimension.QueueName],
+        customerId: parseNullableInteger(
+            VoiceCallDimension.CustomerId in row
+                ? row[VoiceCallDimension.CustomerId]
+                : row['customerId'],
+        ),
+        direction:
+            VoiceCallDimension.Direction in row
+                ? row[VoiceCallDimension.Direction]
+                : row['callDirection'],
+        integrationId: parseNullableInteger(
+            VoiceCallDimension.IntegrationId in row
+                ? row[VoiceCallDimension.IntegrationId]
+                : row['integrationId'],
+        ),
+        createdAt:
+            VoiceCallDimension.CreatedAt in row
+                ? row[VoiceCallDimension.CreatedAt]
+                : row['createdDatetime'],
+        status:
+            VoiceCallDimension.Status in row
+                ? row[VoiceCallDimension.Status]
+                : row['status'],
+        duration:
+            VoiceCallDimension.Duration in row
+                ? parseNullableInteger(row[VoiceCallDimension.Duration])
+                : parseNullableInteger(row['duration']),
+        ticketId:
+            VoiceCallDimension.TicketId in row
+                ? parseNullableInteger(row[VoiceCallDimension.TicketId])
+                : parseNullableInteger(row['ticketId']),
+        phoneNumberDestination:
+            VoiceCallDimension.PhoneNumberDestination in row
+                ? row[VoiceCallDimension.PhoneNumberDestination]
+                : row['destination'],
+        phoneNumberSource:
+            VoiceCallDimension.PhoneNumberSource in row
+                ? row[VoiceCallDimension.PhoneNumberSource]
+                : row['source'],
+        talkTime: parseNullableInteger(
+            VoiceCallDimension.TalkTime in row
+                ? row[VoiceCallDimension.TalkTime]
+                : row['talkTime'],
+        ),
+        waitTime: parseNullableInteger(
+            VoiceCallDimension.WaitTime in row
+                ? row[VoiceCallDimension.WaitTime]
+                : row['waitTime'],
+        ),
+        voicemailAvailable:
+            VoiceCallDimension.VoicemailAvailable in row
+                ? row[VoiceCallDimension.VoicemailAvailable]
+                : row['voicemailAvailable'],
+        voicemailUrl:
+            VoiceCallDimension.VoicemailUrl in row
+                ? row[VoiceCallDimension.VoicemailUrl]
+                : row['voicemailUrl'],
+        callRecordingAvailable:
+            VoiceCallDimension.CallRecordingAvailable in row
+                ? row[VoiceCallDimension.CallRecordingAvailable]
+                : row['callRecordingAvailable'],
+        callRecordingUrl:
+            VoiceCallDimension.CallRecordingUrl in row
+                ? row[VoiceCallDimension.CallRecordingUrl]
+                : row['callRecordingUrl'],
+        displayStatus:
+            VoiceCallDimension.DisplayStatus in row
+                ? row[VoiceCallDimension.DisplayStatus]
+                : row['displayStatus'],
+        queueId: parseNullableInteger(
+            VoiceCallDimension.QueueId in row
+                ? row[VoiceCallDimension.QueueId]
+                : row['queueId'],
+        ),
+        queueName:
+            VoiceCallDimension.QueueName in row
+                ? row[VoiceCallDimension.QueueName]
+                : row['queueName'],
         callSid: 'undefined', // can be filled if we ever need it, by adding it to the dimensions
     }))
 }

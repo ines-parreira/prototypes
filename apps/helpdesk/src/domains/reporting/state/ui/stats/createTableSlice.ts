@@ -172,7 +172,6 @@ export function createTableSlice<
             const { direction, field, lastSortingMetric } = sorting
             const metricName =
                 field !== AgentsTableColumn.AgentName ? field : null
-
             if (metricName && lastSortingMetric) {
                 let sortedAgents: User[] = []
                 const noDataAgents: User[] = []

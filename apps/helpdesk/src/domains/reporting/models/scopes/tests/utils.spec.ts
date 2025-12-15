@@ -10,11 +10,17 @@ import type {
     ApiStatsFilters,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 import {
     ApiOnlyOperatorEnum,
     LogicalOperatorEnum,
 } from 'domains/reporting/pages/common/components/Filter/constants'
+import { reportError } from 'utils/errors'
+
+jest.mock('utils/errors', () => ({
+    reportError: jest.fn(),
+}))
 
 describe('utils', () => {
     describe('createScopeFilters', () => {
@@ -78,6 +84,29 @@ describe('utils', () => {
             const statFilters: StatsFiltersWithLogicalOperator = {
                 ...basePeriodFilters,
                 agents: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [123, 456],
+                },
+            }
+
+            const result = createScopeFilters(statFilters, scopeConfig)
+
+            expect(result).toContainEqual({
+                member: 'agentId',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [123, 456],
+            })
+        })
+
+        it('should add agentId filter when using agentId field instead of agents', () => {
+            const scopeConfig: ScopeMeta = {
+                scope: MetricScope.TicketsOpen,
+                filters: ['agentId'],
+            }
+
+            const statFilters: ApiStatsFilters = {
+                ...basePeriodFilters,
+                agentId: {
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: [123, 456],
                 },
@@ -770,6 +799,234 @@ describe('utils', () => {
                     values: [123, 456],
                 })
             })
+
+            it('should add productId filter when present', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['productId'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    productId: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['1', '2', '3'],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'productId',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['1', '2', '3'],
+                })
+            })
+
+            it('should add resourceSourceId filter when present', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['resourceSourceId'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    resourceSourceId: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['source1', 'source2'],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'resourceSourceId',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['source1', 'source2'],
+                })
+            })
+
+            it('should add resourceSourceSetId filter when present', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['resourceSourceSetId'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    resourceSourceSetId: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['set1', 'set2'],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'resourceSourceSetId',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['set1', 'set2'],
+                })
+            })
+
+            it('should add shopIntegrationId filter when present', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['shopIntegrationId'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    shopIntegrationId: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['111', '222'],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'shopIntegrationId',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['111', '222'],
+                })
+            })
+
+            it('should add callDirection filter when present', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['callDirection'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    callDirection: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['inbound', 'outbound'],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'callDirection',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['inbound', 'outbound'],
+                })
+            })
+
+            it('should add callTerminationStatus filter when present', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['callTerminationStatus'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    callTerminationStatus: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['completed', 'missed'],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'callTerminationStatus',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['completed', 'missed'],
+                })
+            })
+
+            it('should add isAnsweredByAgent filter when present', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['isAnsweredByAgent'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    isAnsweredByAgent: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [true, false],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'isAnsweredByAgent',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [true, false],
+                })
+            })
+
+            it('should add displayStatus filter when present', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['displayStatus'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    displayStatus: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['open', 'closed'],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'displayStatus',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['open', 'closed'],
+                })
+            })
+
+            it('should add slaPolicyUuid filter when present', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['slaPolicyUuid'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    slaPolicies: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['uuid-1', 'uuid-2'],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'slaPolicyUuid',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['uuid-1', 'uuid-2'],
+                })
+            })
+
+            it('should not add slaPolicyUuid filter when slaPolicies has empty values', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['slaPolicyUuid'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    slaPolicies: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).not.toContainEqual(
+                    expect.objectContaining({ member: 'slaPolicyUuid' }),
+                )
+            })
         })
 
         describe('createdDatetime filter', () => {
@@ -1263,6 +1520,8 @@ describe('utils', () => {
             expect(consoleSpy).toHaveBeenCalledWith(
                 'New Stats API and Legacy API queries are different for metric tickets',
                 ['measures: ["tickets.count"] (V1) !== ["orders.count"] (V2)'],
+                baseV1Query,
+                v2Query,
             )
         })
 
@@ -1281,6 +1540,8 @@ describe('utils', () => {
                 [
                     'dimensions: ["tickets.status"] (V1) !== ["orders.status"] (V2)',
                 ],
+                baseV1Query,
+                v2Query,
             )
         })
 
@@ -1294,6 +1555,8 @@ describe('utils', () => {
             expect(consoleSpy).toHaveBeenCalledWith(
                 'New Stats API and Legacy API queries are different for metric tickets',
                 ['timezone: UTC !== EST'],
+                baseV1Query,
+                v2Query,
             )
         })
 
@@ -1318,6 +1581,8 @@ describe('utils', () => {
                 expect.arrayContaining([
                     'V1 filter not found in V2: {"member":"agentId","operator":"one-of","values":["123","456"]}',
                 ]),
+                baseV1Query,
+                v2Query,
             )
         })
 
@@ -1347,6 +1612,8 @@ describe('utils', () => {
             expect(consoleSpy).toHaveBeenCalledWith(
                 'New Stats API and Legacy API queries are different for metric tickets',
                 expect.arrayContaining(['filters length: V1 2 !== V2 1']),
+                v1Query,
+                v2Query,
             )
         })
 
@@ -1391,7 +1658,12 @@ describe('utils', () => {
 
             expect(consoleSpy).toHaveBeenCalledWith(
                 'New Stats API and Legacy API queries are different for metric tickets',
-                ['segments: ["segment1"] (V1) !== ["segment2"] (V2)'],
+                [
+                    'V1 segment not found in V2 segments or filters: segment1',
+                    'V2 segment not found in V1: segment2',
+                ],
+                v1Query,
+                v2Query,
             )
         })
 
@@ -1448,6 +1720,8 @@ describe('utils', () => {
             expect(consoleSpy).toHaveBeenCalledWith(
                 'New Stats API and Legacy API queries are different for metric tickets',
                 ['timeDimensions[0].granularity: day (V1) !== month (V2)'],
+                v1Query,
+                v2Query,
             )
         })
 
@@ -1485,6 +1759,8 @@ describe('utils', () => {
             expect(consoleSpy).toHaveBeenCalledWith(
                 'New Stats API and Legacy API queries are different for metric tickets',
                 ['timeDimensions length: 2 (V1) !== 1 (V2)'],
+                v1Query,
+                v2Query,
             )
         })
 
@@ -1519,6 +1795,8 @@ describe('utils', () => {
                 [
                     'timeDimensions[0].dimension: tickets.created_at (V1) !== tickets.updated_at (V2)',
                 ],
+                v1Query,
+                v2Query,
             )
         })
 
@@ -1558,6 +1836,8 @@ describe('utils', () => {
                 [
                     'order: [{\"id\":\"tickets.count\",\"desc\":true}] (V1) !== [[\"tickets.count\",\"asc\"]] (V2)',
                 ],
+                v1Query,
+                v2Query,
             )
         })
 
@@ -1597,6 +1877,8 @@ describe('utils', () => {
                 [
                     'order: [{\"id\":\"tickets.count\",\"desc\":false}] (V1) !== [[\"tickets.count\",\"desc\"]] (V2)',
                 ],
+                v1Query,
+                v2Query,
             )
         })
 
@@ -1620,6 +1902,518 @@ describe('utils', () => {
 
             // Should not log any errors because metricName, limit, and offset are not compared
             expect(consoleSpy).not.toHaveBeenCalled()
+        })
+
+        it('should handle errors during comparison and return false', () => {
+            const badV1Query = {
+                ...baseV1Query,
+                measures: null,
+            } as any
+
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+            const reportErrorMock = reportError as jest.Mock
+
+            const result = compareAndReportQueries(
+                'tickets' as any,
+                badV1Query,
+                baseV2Query,
+            )
+
+            expect(result).toBe(false)
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.any(TypeError),
+                expect.objectContaining({
+                    tags: expect.any(Object),
+                    extra: expect.objectContaining({
+                        message:
+                            'Error comparing reporting queries in New Stats API',
+                    }),
+                }),
+            )
+
+            consoleSpy.mockRestore()
+        })
+
+        describe('segment-to-filter mappings', () => {
+            it('should recognize V1 segment VoiceCall.outboundCalls converted to V2 filters', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    segments: ['VoiceCall.outboundCalls'],
+                    filters: [],
+                }
+                const v2Query = {
+                    ...baseV2Query,
+                    segments: [],
+                    filters: [
+                        {
+                            member: 'VoiceCall.direction',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['outbound'],
+                        },
+                    ],
+                }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('voiceCalls' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should recognize V1 segment VoiceCall.inboundCalls converted to V2 filters', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    segments: ['VoiceCall.inboundCalls'],
+                    filters: [],
+                }
+                const v2Query = {
+                    ...baseV2Query,
+                    segments: [],
+                    filters: [
+                        {
+                            member: 'VoiceCall.direction',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['inbound'],
+                        },
+                    ],
+                }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('voiceCalls' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should recognize V1 segment VoiceCall.inboundUnansweredCalls converted to V2 filters', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    segments: ['VoiceCall.inboundUnansweredCalls'],
+                    filters: [],
+                }
+                const v2Query = {
+                    ...baseV2Query,
+                    segments: [],
+                    filters: [
+                        {
+                            member: 'VoiceCall.direction',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['inbound'],
+                        },
+                        {
+                            member: 'VoiceCall.terminationStatus',
+                            operator: ReportingFilterOperator.Equals,
+                            values: [
+                                'missed',
+                                'abandoned',
+                                'cancelled',
+                                'callback-requested',
+                            ],
+                        },
+                    ],
+                }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('voiceCalls' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should recognize V1 segment VoiceCall.inboundMissedCalls converted to V2 filters', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    segments: ['VoiceCall.inboundMissedCalls'],
+                    filters: [],
+                }
+                const v2Query = {
+                    ...baseV2Query,
+                    segments: [],
+                    filters: [
+                        {
+                            member: 'VoiceCall.direction',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['inbound'],
+                        },
+                        {
+                            member: 'VoiceCall.terminationStatus',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['missed'],
+                        },
+                    ],
+                }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('voiceCalls' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should recognize V1 segment VoiceCall.inboundAbandonedCalls converted to V2 filters', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    segments: ['VoiceCall.inboundAbandonedCalls'],
+                    filters: [],
+                }
+                const v2Query = {
+                    ...baseV2Query,
+                    segments: [],
+                    filters: [
+                        {
+                            member: 'VoiceCall.direction',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['inbound'],
+                        },
+                        {
+                            member: 'VoiceCall.terminationStatus',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['abandoned'],
+                        },
+                    ],
+                }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('voiceCalls' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should recognize V1 segment VoiceCall.inboundCancelledCalls converted to V2 filters', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    segments: ['VoiceCall.inboundCancelledCalls'],
+                    filters: [],
+                }
+                const v2Query = {
+                    ...baseV2Query,
+                    segments: [],
+                    filters: [
+                        {
+                            member: 'VoiceCall.direction',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['inbound'],
+                        },
+                        {
+                            member: 'VoiceCall.terminationStatus',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['cancelled'],
+                        },
+                    ],
+                }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('voiceCalls' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should recognize V1 segment VoiceCall.inboundCallbackRequestedCalls converted to V2 filters', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    segments: ['VoiceCall.inboundCallbackRequestedCalls'],
+                    filters: [],
+                }
+                const v2Query = {
+                    ...baseV2Query,
+                    segments: [],
+                    filters: [
+                        {
+                            member: 'VoiceCall.direction',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['inbound'],
+                        },
+                        {
+                            member: 'VoiceCall.terminationStatus',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['callback-requested'],
+                        },
+                    ],
+                }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('voiceCalls' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should recognize V1 segment VoiceCall.inboundUnansweredCallsByAgent converted to V2 filters', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    segments: ['VoiceCall.inboundUnansweredCallsByAgent'],
+                    filters: [],
+                }
+                const v2Query = {
+                    ...baseV2Query,
+                    segments: [],
+                    filters: [
+                        {
+                            member: 'VoiceCall.direction',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['inbound'],
+                        },
+                        {
+                            member: 'VoiceCall.unansweredByFilteringAgent',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['1'],
+                        },
+                    ],
+                }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('voiceCalls' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should recognize V1 segment VoiceCall.inboundAnsweredCallsByAgent converted to V2 filters', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    segments: ['VoiceCall.inboundAnsweredCallsByAgent'],
+                    filters: [],
+                }
+                const v2Query = {
+                    ...baseV2Query,
+                    segments: [],
+                    filters: [
+                        {
+                            member: 'VoiceCall.direction',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['inbound'],
+                        },
+                        {
+                            member: 'VoiceCall.answeredByFilteringAgent',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['1'],
+                        },
+                    ],
+                }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('voiceCalls' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should skip undefined segments in V1 array', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    segments: [undefined, 'segment1'],
+                }
+                const v2Query = { ...baseV2Query, segments: ['segment1'] }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('tickets' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should skip undefined segments in V2 array', () => {
+                const v1Query = { ...baseV1Query, segments: ['segment1'] }
+                const v2Query = {
+                    ...baseV2Query,
+                    segments: ['segment1', undefined],
+                }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('tickets' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should not count V2 filters that come from V1 segments in filter length comparison', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    segments: ['VoiceCall.outboundCalls'],
+                    filters: [
+                        {
+                            member: 'agentId',
+                            operator: 'one-of' as any,
+                            values: ['123'],
+                        },
+                    ],
+                }
+                const v2Query = {
+                    ...baseV2Query,
+                    segments: [],
+                    filters: [
+                        {
+                            member: 'agentId',
+                            operator: 'one-of' as any,
+                            values: ['123'],
+                        },
+                        {
+                            member: 'VoiceCall.direction',
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['outbound'],
+                        },
+                    ],
+                }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('voiceCalls' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+        })
+
+        describe('order edge cases', () => {
+            it('should handle empty order arrays', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    order: [],
+                } as any
+                const v2Query = {
+                    ...baseV2Query,
+                    order: [],
+                } as any
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('tickets' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should handle undefined order', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    order: undefined,
+                } as any
+                const v2Query = {
+                    ...baseV2Query,
+                    order: undefined,
+                } as any
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('tickets' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should handle order with empty id in V1', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    order: [{ id: '', desc: false }],
+                } as any
+                const v2Query = {
+                    ...baseV2Query,
+                    order: [['tickets.count', 'asc']],
+                } as any
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('tickets' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should handle order with empty string in V2', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    order: [{ id: 'tickets.count', desc: true }],
+                } as any
+                const v2Query = {
+                    ...baseV2Query,
+                    order: [['', 'desc']],
+                } as any
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('tickets' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+        })
+
+        describe('timeDimensions edge cases', () => {
+            it('should not compare individual time dimensions when lengths differ', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    timeDimensions: [
+                        {
+                            dimension: 'tickets.created_at',
+                            granularity: 'day',
+                            dateRange: ['2023-01-01', '2023-01-31'],
+                        },
+                    ],
+                } as any
+                const v2Query = {
+                    ...baseV2Query,
+                    timeDimensions: [],
+                } as any
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('tickets' as any, v1Query, v2Query)
+
+                expect(consoleSpy).toHaveBeenCalledWith(
+                    'New Stats API and Legacy API queries are different for metric tickets',
+                    ['timeDimensions length: 1 (V1) !== 0 (V2)'],
+                    v1Query,
+                    v2Query,
+                )
+                consoleSpy.mockRestore()
+            })
         })
     })
 })

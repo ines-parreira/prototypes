@@ -7,6 +7,8 @@ import { voiceCallCountQueryFactory } from 'domains/reporting/models/queryFactor
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
+import { voiceCallsCountQueryFactoryV2 } from '../../../models/scopes/voiceCalls'
+
 export const useVoiceCallCountTrend = (
     filters: StatsFilters,
     timezone: string,
@@ -28,6 +30,27 @@ export const useVoiceCallCountTrend = (
             undefined,
             undefined,
             METRIC_NAMES.VOICE_CALL_COUNT_TREND,
+        ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters,
+                timezone,
+            },
+            segment,
+            undefined,
+            false,
+        ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters: {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                },
+                timezone,
+            },
+            segment,
+            undefined,
+            false,
         ),
     )
 
@@ -53,6 +76,23 @@ export const fetchVoiceCallCountTrend = (
             undefined,
             METRIC_NAMES.VOICE_CALL_COUNT_TREND,
         ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters,
+                timezone,
+            },
+            segment,
+        ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters: {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                },
+                timezone,
+            },
+            segment,
+        ),
     )
 
 export const fetchVoiceCallCountOutboundTrend = (
@@ -76,6 +116,23 @@ export const fetchVoiceCallCountOutboundTrend = (
             undefined,
             METRIC_NAMES.VOICE_CALL_COUNT_OUTBOUND_TREND,
         ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters,
+                timezone,
+            },
+            VoiceCallSegment.outboundCalls,
+        ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters: {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                },
+                timezone,
+            },
+            VoiceCallSegment.outboundCalls,
+        ),
     )
 
 export const fetchVoiceCallCountInboundTrend = (
@@ -98,5 +155,22 @@ export const fetchVoiceCallCountInboundTrend = (
             undefined,
             undefined,
             METRIC_NAMES.VOICE_CALL_COUNT_INBOUND_TREND,
+        ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters,
+                timezone,
+            },
+            VoiceCallSegment.inboundCalls,
+        ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters: {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                },
+                timezone,
+            },
+            VoiceCallSegment.inboundCalls,
         ),
     )

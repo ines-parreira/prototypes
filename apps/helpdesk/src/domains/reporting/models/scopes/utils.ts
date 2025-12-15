@@ -8,6 +8,8 @@ import type {
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
 import type {
+    BooleanFilterName,
+    BooleanStandardFilter,
     CustomFieldsFilter,
     DateFilter,
     FilterGroup,
@@ -50,6 +52,11 @@ function createDateFilter(
 }
 
 function createStandardFilter(
+    member: BooleanFilterName,
+    operator: ExtendedLogicalOperatorEnum,
+    values: boolean[],
+): BooleanStandardFilter
+function createStandardFilter(
     member: NumberFilterName,
     operator: ExtendedLogicalOperatorEnum,
     values: number[],
@@ -62,7 +69,7 @@ function createStandardFilter(
 function createStandardFilter(
     member: FilterName,
     operator: ExtendedLogicalOperatorEnum,
-    values: string[] | number[],
+    values: string[] | number[] | boolean[],
 ): StandardFilter
 function createStandardFilter<T>(
     member: FilterName,
@@ -131,6 +138,17 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                             'agentId',
                             statFilters.agents.operator,
                             statFilters.agents.values,
+                        ),
+                    )
+                } else if (
+                    statFilters.agentId &&
+                    hasFilter(statFilters.agentId)
+                ) {
+                    filters.push(
+                        createStandardFilter(
+                            filterKey,
+                            statFilters.agentId.operator,
+                            statFilters.agentId.values,
                         ),
                     )
                 }
@@ -237,6 +255,10 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'resourceSourceId':
             case 'resourceSourceSetId':
             case 'shopIntegrationId':
+            case 'callDirection':
+            case 'callTerminationStatus':
+            case 'isAnsweredByAgent':
+            case 'displayStatus':
                 {
                     const filter = statFilters[filterKey]
                     if (filter && hasFilter(filter)) {
@@ -298,6 +320,151 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
     return filters as ScopeFilters<TMeta>
 }
 
+type SegmentToFilterMapping = {
+    segment: string // V1 segment name (e.g., 'VoiceCall.outboundCalls')
+    filters: ReportingFilter[] // Equivalent V2 filters
+}
+
+/**
+ * Maps V1 segments to their equivalent V2 filters.
+ * When a V1 segment is converted to V2 filters (as done in voiceCalls.ts withVoiceCallSegment),
+ * this mapping allows the query comparison to recognize them as equivalent.
+ */
+const SEGMENT_TO_FILTER_MAPPINGS: SegmentToFilterMapping[] = [
+    {
+        segment: 'VoiceCall.outboundCalls',
+        filters: [
+            {
+                member: 'VoiceCall.direction',
+                operator: ReportingFilterOperator.Equals,
+                values: ['outbound'],
+            },
+        ],
+    },
+    {
+        segment: 'VoiceCall.inboundCalls',
+        filters: [
+            {
+                member: 'VoiceCall.direction',
+                operator: ReportingFilterOperator.Equals,
+                values: ['inbound'],
+            },
+        ],
+    },
+    {
+        segment: 'VoiceCall.inboundUnansweredCalls',
+        filters: [
+            {
+                member: 'VoiceCall.direction',
+                operator: ReportingFilterOperator.Equals,
+                values: ['inbound'],
+            },
+            {
+                member: 'VoiceCall.terminationStatus',
+                operator: ReportingFilterOperator.Equals,
+                values: [
+                    'missed',
+                    'abandoned',
+                    'cancelled',
+                    'callback-requested',
+                ],
+            },
+        ],
+    },
+    {
+        segment: 'VoiceCall.inboundMissedCalls',
+        filters: [
+            {
+                member: 'VoiceCall.direction',
+                operator: ReportingFilterOperator.Equals,
+                values: ['inbound'],
+            },
+            {
+                member: 'VoiceCall.terminationStatus',
+                operator: ReportingFilterOperator.Equals,
+                values: ['missed'],
+            },
+        ],
+    },
+    {
+        segment: 'VoiceCall.inboundAbandonedCalls',
+        filters: [
+            {
+                member: 'VoiceCall.direction',
+                operator: ReportingFilterOperator.Equals,
+                values: ['inbound'],
+            },
+            {
+                member: 'VoiceCall.terminationStatus',
+                operator: ReportingFilterOperator.Equals,
+                values: ['abandoned'],
+            },
+        ],
+    },
+    {
+        segment: 'VoiceCall.inboundCancelledCalls',
+        filters: [
+            {
+                member: 'VoiceCall.direction',
+                operator: ReportingFilterOperator.Equals,
+                values: ['inbound'],
+            },
+            {
+                member: 'VoiceCall.terminationStatus',
+                operator: ReportingFilterOperator.Equals,
+                values: ['cancelled'],
+            },
+        ],
+    },
+    {
+        segment: 'VoiceCall.inboundCallbackRequestedCalls',
+        filters: [
+            {
+                member: 'VoiceCall.direction',
+                operator: ReportingFilterOperator.Equals,
+                values: ['inbound'],
+            },
+            {
+                member: 'VoiceCall.terminationStatus',
+                operator: ReportingFilterOperator.Equals,
+                values: ['callback-requested'],
+            },
+        ],
+    },
+    {
+        segment: 'VoiceCall.inboundUnansweredCallsByAgent',
+        filters: [
+            {
+                member: 'VoiceCall.direction',
+                operator: ReportingFilterOperator.Equals,
+                values: ['inbound'],
+            },
+            {
+                member: 'VoiceCall.unansweredByFilteringAgent',
+                operator: ReportingFilterOperator.Equals,
+                values: ['1'],
+            },
+        ],
+    },
+    {
+        segment: 'VoiceCall.inboundAnsweredCallsByAgent',
+        filters: [
+            {
+                member: 'VoiceCall.direction',
+                operator: ReportingFilterOperator.Equals,
+                values: ['inbound'],
+            },
+            {
+                member: 'VoiceCall.answeredByFilteringAgent',
+                operator: ReportingFilterOperator.Equals,
+                values: ['1'],
+            },
+        ],
+    },
+
+    // VoiceCall.callsInFinalStatus has no additional filters in V2
+]
+
 function compareArrays<T>(
     v1: T[],
     v2: T[],
@@ -336,16 +503,41 @@ const findMatchingFilter = (
     )
 }
 
+/**
+ * Checks if all expected filters exist in the actual filters array
+ */
+const hasEquivalentFilters = (
+    expectedFilters: ReportingFilter[],
+    actualFilters: ReportingFilter[],
+): boolean => {
+    return expectedFilters.every(
+        (expectedFilter) =>
+            findMatchingFilter(expectedFilter, actualFilters) !== undefined,
+    )
+}
+
+/**
+ * Checks if a V2 filter comes from a V1 segment transformation
+ */
+const isFilterFromV1Segment = (
+    filter: ReportingFilter,
+    v1Segments: (string | undefined)[],
+): boolean => {
+    return SEGMENT_TO_FILTER_MAPPINGS.some(
+        (mapping) =>
+            v1Segments.includes(mapping.segment) &&
+            findMatchingFilter(filter, mapping.filters) !== undefined,
+    )
+}
+
 function compareFilters(
     v1Filters: ReportingFilter[],
     v2Filters: ReportingFilter[],
+    v1Segments: (string | undefined)[],
     differences: string[],
 ) {
-    if (v1Filters.length !== v2Filters.length) {
-        differences.push(
-            `filters length: V1 ${v1Filters.length} !== V2 ${v2Filters.length}`,
-        )
-    }
+    let v1FiltersCount = v1Filters.length
+    let v2FiltersCount = v2Filters.length
 
     for (const v1Filter of v1Filters) {
         if (!findMatchingFilter(v1Filter, v2Filters)) {
@@ -357,10 +549,22 @@ function compareFilters(
 
     for (const v2Filter of v2Filters) {
         if (!findMatchingFilter(v2Filter, v1Filters)) {
-            differences.push(
-                `V2 filter not found in V1: ${JSON.stringify(v2Filter)}`,
-            )
+            // Check if this V2 filter comes from a V1 segment transformation
+            if (!isFilterFromV1Segment(v2Filter, v1Segments)) {
+                // Only report if it's truly a new filter, not from a segment
+                differences.push(
+                    `V2 filter not found in V1: ${JSON.stringify(v2Filter)}`,
+                )
+            } else {
+                // Filter comes from a V1 segment, so we don't count it
+                v2FiltersCount--
+            }
         }
+    }
+    if (v1FiltersCount !== v2FiltersCount) {
+        differences.push(
+            `filters length: V1 ${v1FiltersCount} !== V2 ${v2FiltersCount}`,
+        )
     }
 }
 
@@ -389,6 +593,48 @@ function compareTimeDimensions(
             differences.push(
                 `timeDimensions[${i}].granularity: ${v1TimeDim.granularity} (V1) !== ${v2TimeDim.granularity} (V2)`,
             )
+        }
+    }
+}
+
+/**
+ * Compares V1 and V2 segments, accounting for segment-to-filter transformations.
+ * V1 segments may be represented as filters in V2, so we check the mapping.
+ */
+function compareSegments(
+    v1Segments: (string | undefined)[],
+    v2Segments: (string | undefined)[],
+    v2Filters: ReportingFilter[],
+    differences: string[],
+) {
+    // Check V1 segments missing in V2
+    for (const v1Segment of v1Segments) {
+        if (!v1Segment) continue
+        const isInV2Segments = v2Segments.includes(v1Segment)
+
+        if (!isInV2Segments) {
+            // Check if this segment has an equivalent filter mapping
+            const mapping = SEGMENT_TO_FILTER_MAPPINGS.find(
+                (m) => m.segment === v1Segment,
+            )
+
+            if (mapping && hasEquivalentFilters(mapping.filters, v2Filters)) {
+                // Segment is represented as filters in V2 - this is OK
+                continue
+            }
+
+            // No equivalent found - report difference
+            differences.push(
+                `V1 segment not found in V2 segments or filters: ${v1Segment}`,
+            )
+        }
+    }
+
+    // Check V2 segments missing in V1
+    for (const v2Segment of v2Segments) {
+        if (!v2Segment) continue
+        if (!v1Segments.includes(v2Segment)) {
+            differences.push(`V2 segment not found in V1: ${v2Segment}`)
         }
     }
 }
@@ -429,7 +675,12 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
             differences,
         )
 
-        compareFilters(v1query.filters, v2query.filters, differences)
+        compareFilters(
+            v1query.filters,
+            v2query.filters,
+            (v1query.segments || []) as (string | undefined)[],
+            differences,
+        )
 
         type LegacyOrder = { id: string; desc?: boolean; asc?: boolean }
         type NewOrder = [string, string]
@@ -460,10 +711,10 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
             }
         }
 
-        compareArrays(
-            v1query.segments || [],
-            [...(v2query.segments || [])],
-            'segments',
+        compareSegments(
+            (v1query.segments || []) as string[],
+            (v2query.segments || []) as string[],
+            v2query.filters,
             differences,
         )
 
@@ -478,6 +729,8 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
             console.error(
                 `New Stats API and Legacy API queries are different for metric ${metricName}`,
                 differences,
+                v1query,
+                v2query,
             )
 
             reportError(

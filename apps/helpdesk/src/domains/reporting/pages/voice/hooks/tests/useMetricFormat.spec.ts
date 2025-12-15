@@ -6,25 +6,32 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { voiceCallCountQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
-import { FilterKey } from 'domains/reporting/models/stat/types'
+import { voiceCallsCountQueryFactoryV2 } from 'domains/reporting/models/scopes/voiceCalls'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import { useMetricFormat } from 'domains/reporting/pages/voice/hooks/useMetricFormat'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/hooks/useMetric')
 jest.mock('domains/reporting/models/queryFactories/voice/voiceCall')
+jest.mock('domains/reporting/models/scopes/voiceCalls')
 
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 const useMetricMock = assumeMock(useMetric)
 const voiceCallCountQueryFactoryMock = assumeMock(voiceCallCountQueryFactory)
+const voiceCallsCountQueryFactoryV2Mock = assumeMock(
+    voiceCallsCountQueryFactoryV2,
+)
 
 describe('useMetricFormat', () => {
     const defaultQueryFactory = {} as ReturnType<
         typeof voiceCallCountQueryFactory
     >
+    const defaultQueryFactoryV2 = {} as ReturnType<
+        typeof voiceCallsCountQueryFactoryV2
+    >
     const mockCleanStatsFilters = {
         filters: [],
-        [FilterKey.Period]: {
+        period: {
             start_datetime: '2023-01-01T00:00:00Z',
             end_datetime: '2023-01-31T23:59:59Z',
         },
@@ -38,6 +45,7 @@ describe('useMetricFormat', () => {
         } as any)
 
         voiceCallCountQueryFactoryMock.mockReturnValue(defaultQueryFactory)
+        voiceCallsCountQueryFactoryV2Mock.mockReturnValue(defaultQueryFactoryV2)
 
         useMetricMock.mockReturnValue({
             data: { value: 100 },
@@ -65,18 +73,21 @@ describe('useMetricFormat', () => {
             undefined,
             METRIC_NAMES.VOICE_INBOUND_CALL_BY_AGENT,
         )
+        expect(voiceCallsCountQueryFactoryV2Mock).toHaveBeenCalledWith(
+            {
+                filters: mockCleanStatsFilters,
+                timezone: mockUserTimezone,
+            },
+            VoiceCallSegment.inboundCalls,
+        )
         expect(useMetricMock).toHaveBeenCalledWith(
             defaultQueryFactory,
-            undefined,
+            defaultQueryFactoryV2,
             false,
         )
     })
 
     it('should use provided queryFactory when specified', () => {
-        const customQueryFactory = {} as ReturnType<
-            typeof voiceCallCountQueryFactory
-        >
-
         renderHook(() =>
             useMetricFormat({
                 isPercentageEnabled: true,
@@ -85,8 +96,8 @@ describe('useMetricFormat', () => {
         )
 
         expect(useMetricMock).toHaveBeenCalledWith(
-            customQueryFactory,
-            undefined,
+            defaultQueryFactory,
+            defaultQueryFactoryV2,
             true,
         )
     })
@@ -203,5 +214,37 @@ describe('useMetricFormat', () => {
         )
 
         expect(result.current.metricValue).toBe('50')
+    })
+
+    it('should use percentageOfValue when provided for percentage calculation', () => {
+        const { result } = renderHook(() =>
+            useMetricFormat({
+                isPercentageEnabled: true,
+                value: 25,
+                percentageOfValue: 100,
+                defaultValueFormat: 'percent',
+            }),
+        )
+
+        // Should use percentageOfValue (100) instead of allCallsMetric.value
+        // 25 / 100 * 100 = 25%
+        expect(result.current.metricValue).toBe('25%')
+    })
+
+    it('should not fetch allCallsMetric when percentageOfValue is provided', () => {
+        renderHook(() =>
+            useMetricFormat({
+                isPercentageEnabled: true,
+                value: 25,
+                percentageOfValue: 100,
+            }),
+        )
+
+        // When percentageOfValue is provided, hasTotalCount is true, so useMetric should be called with enabled=false
+        expect(useMetricMock).toHaveBeenCalledWith(
+            defaultQueryFactory,
+            defaultQueryFactoryV2,
+            false, // enabled should be false because hasTotalCount is true
+        )
     })
 })

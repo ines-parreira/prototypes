@@ -127,4 +127,6 @@ export const agentIdFields = [
     VoiceCallDimension.AgentId,
     VoiceCallMeasure.VoiceCallAverageTalkTime,
     'agentId',
+    'filteringAgentId',
+    'averageTalkTimeInSeconds',
 ]

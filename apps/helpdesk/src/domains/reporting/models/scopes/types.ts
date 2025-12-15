@@ -24,6 +24,12 @@ export type NumberStandardFilter = {
     values: number[]
 }
 
+export type BooleanStandardFilter = {
+    member: BooleanFilterName
+    operator: LogicalOperatorEnum | ExtendedLogicalOperatorEnum
+    values: boolean[]
+}
+
 export type CustomFieldsFilter = {
     member: FilterName
     values: Array<{
@@ -41,7 +47,10 @@ export type TagsFilter = {
     }>
 }
 
-export type StandardFilter = StringStandardFilter | NumberStandardFilter
+export type StandardFilter =
+    | StringStandardFilter
+    | NumberStandardFilter
+    | BooleanStandardFilter
 
 export type FilterGroup =
     | StandardFilter
@@ -68,6 +77,23 @@ export type DimensionName =
     | 'resourceSourceId'
     | 'resourceSourceSetId'
     | 'top2LevelsValue'
+    | 'callDirection'
+    | 'callRecordingAvailable'
+    | 'callRecordingUrl'
+    | 'createdDatetime'
+    | 'customerId'
+    | 'destination'
+    | 'displayStatus'
+    | 'duration'
+    | 'queueId'
+    | 'queueName'
+    | 'source'
+    | 'status'
+    | 'talkTime'
+    | 'voicemailAvailable'
+    | 'voicemailUrl'
+    | 'waitTime'
+    | 'filteringAgentId'
 
 export type MeasureName =
     | 'ticketCount'
@@ -93,6 +119,8 @@ export type MeasureName =
     | 'averageEfficiencyScore'
     | 'averageInternalComplianceScore'
     | 'averageBrandVoiceScore'
+    | 'averageTalkTimeInSeconds'
+    | 'averageWaitTimeInSeconds'
     | 'voiceCallsCount'
 
 export type TimeDimensionName =
@@ -139,6 +167,9 @@ export type StringFilterName =
     | 'shopIntegrationId'
     | 'transferredCalls'
     | 'declinedCalls'
+    | 'callTerminationStatus'
+    | 'callDirection'
+    | 'displayStatus'
 
 export type NumberFilterName =
     | 'agentId'
@@ -146,5 +177,8 @@ export type NumberFilterName =
     | 'storeId'
     | 'teamId'
     | 'customFieldId'
+    | 'queueId'
 
-export type FilterName = StringFilterName | NumberFilterName
+export type BooleanFilterName = 'isAnsweredByAgent' | 'isDuringBusinessHours'
+
+export type FilterName = StringFilterName | NumberFilterName | BooleanFilterName

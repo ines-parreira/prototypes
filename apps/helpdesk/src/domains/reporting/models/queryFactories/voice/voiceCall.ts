@@ -227,7 +227,7 @@ export const voiceCallCountQueryFactory = (
     segment?: VoiceCallSegment,
     statusFilter?: VoiceCallDisplayStatus[],
     includeLiveData: boolean = false,
-    metricName: MetricName = METRIC_NAMES.VOICE_CALL_COUNT,
+    metricName: MetricName = METRIC_NAMES.VOICE_CALL_COUNT_TREND,
 ) => ({
     metricName,
     measures: [VoiceCallMeasure.VoiceCallCount],
@@ -254,19 +254,6 @@ export const voiceCallCountPerFilteringAgentQueryFactory = (
           }
         : {}),
     metricName: METRIC_NAMES.VOICE_CALL_COUNT_PER_FILTERING_AGENT,
-})
-
-export const voiceCallCountPerAgentQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-    segment?: VoiceCallSegment,
-) => ({
-    measures: [VoiceCallMeasure.VoiceCallCount],
-    dimensions: [VoiceCallDimension.AgentId],
-    timezone,
-    segments: withStatisticsDefaultSegment(segment),
-    filters: voiceCallDefaultFilters(filters),
-    metricName: METRIC_NAMES.VOICE_CALL_COUNT_PER_AGENT,
 })
 
 export const voiceCallListQueryFactory = (

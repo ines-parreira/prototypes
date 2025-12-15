@@ -323,6 +323,302 @@ describe('scope', () => {
         })
     })
 
+    describe('Context-based Defaults', () => {
+        it('should apply time_dimensions from context when granularity is provided', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                timeDimensions: ['createdDatetime'] as const,
+                filters: ['periodStart', 'periodEnd'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            const result = metric.build({
+                ...mockContext,
+                granularity: 'day' as AggregationWindow,
+            })
+
+            expect(result.time_dimensions).toEqual([
+                {
+                    dimension: 'createdDatetime',
+                    granularity: 'day',
+                },
+            ])
+        })
+
+        it('should apply limit from context when not defined in query', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                filters: ['periodStart', 'periodEnd'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            const result = metric.build({
+                ...mockContext,
+                limit: 50,
+            })
+
+            expect(result.limit).toBe(50)
+        })
+
+        it('should apply offset from context when not defined in query', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                filters: ['periodStart', 'periodEnd'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            const result = metric.build({
+                ...mockContext,
+                offset: 100,
+            })
+
+            expect(result.offset).toBe(100)
+        })
+
+        it('should apply total from context when not defined in query', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                filters: ['periodStart', 'periodEnd'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            const result = metric.build({
+                ...mockContext,
+                total: true,
+            })
+
+            expect(result.total).toBe(true)
+        })
+
+        it('should apply order using sortBy from context when provided', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                dimensions: ['agentId'],
+                filters: ['periodStart', 'periodEnd'] as const,
+                order: ['ticketCount', 'agentId'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                    dimensions: ['agentId'],
+                }))
+
+            const result = metric.build({
+                ...mockContext,
+                sortDirection: OrderDirection.Desc,
+                sortBy: 'agentId',
+            })
+
+            expect(result.order).toEqual([['agentId', 'desc']])
+        })
+
+        it('should apply order using first measure when sortBy not provided and measure in config.order', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                filters: ['periodStart', 'periodEnd'] as const,
+                order: ['ticketCount'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            const result = metric.build({
+                ...mockContext,
+                sortDirection: OrderDirection.Asc,
+            })
+
+            expect(result.order).toEqual([['ticketCount', 'asc']])
+        })
+
+        it('should apply order using first dimension when sortBy not provided and dimension in config.order', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                dimensions: ['agentId'],
+                filters: ['periodStart', 'periodEnd'] as const,
+                order: ['agentId'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                    dimensions: ['agentId'],
+                }))
+
+            const result = metric.build({
+                ...mockContext,
+                sortDirection: OrderDirection.Desc,
+            })
+
+            expect(result.order).toEqual([['agentId', 'desc']])
+        })
+
+        it('should not apply order when measure is not in config.order', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                filters: ['periodStart', 'periodEnd'] as const,
+                order: ['otherMeasure'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            const result = metric.build({
+                ...mockContext,
+                sortDirection: OrderDirection.Desc,
+            })
+
+            expect(result.order).toBeUndefined()
+        })
+
+        it('should not apply order when config.order is undefined', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                filters: ['periodStart', 'periodEnd'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            const result = metric.build({
+                ...mockContext,
+                sortDirection: OrderDirection.Desc,
+            })
+
+            expect(result.order).toBeUndefined()
+        })
+
+        it('should not apply order when sortDirection is not provided', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                filters: ['periodStart', 'periodEnd'] as const,
+                order: ['ticketCount'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            const result = metric.build(mockContext)
+
+            expect(result.order).toBeUndefined()
+        })
+
+        it('should use first measure for order when sortBy is undefined and measure is in config.order', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                filters: ['periodStart', 'periodEnd'] as const,
+                order: ['ticketCount'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            const contextWithoutSortBy = {
+                ...mockContext,
+                sortDirection: OrderDirection.Asc as OrderDirection,
+            }
+            const result = metric.build(contextWithoutSortBy)
+
+            expect(result.order).toEqual([['ticketCount', 'asc']])
+        })
+
+        it('should use first dimension for order when sortBy is undefined, no measures, and dimension is in config.order', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                dimensions: ['agentId', 'ticketId'],
+                filters: ['periodStart', 'periodEnd'] as const,
+                order: ['agentId', 'ticketId'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    dimensions: ['agentId'],
+                }))
+
+            const contextWithoutSortBy = {
+                ...mockContext,
+                sortDirection: OrderDirection.Desc as OrderDirection,
+            }
+            const result = metric.build(contextWithoutSortBy)
+
+            expect(result.order).toEqual([['agentId', 'desc']])
+        })
+
+        it('should fallback to dimension when measure exists but is not in config.order', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                dimensions: ['agentId'],
+                filters: ['periodStart', 'periodEnd'] as const,
+                order: ['agentId'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                    dimensions: ['agentId'],
+                }))
+
+            const contextWithoutSortBy = {
+                ...mockContext,
+                sortDirection: OrderDirection.Asc as OrderDirection,
+            }
+            const result = metric.build(contextWithoutSortBy)
+
+            expect(result.order).toEqual([['agentId', 'asc']])
+        })
+    })
+
     describe('Edge Cases', () => {
         it('should handle empty scope configuration', () => {
             const scope = defineScope({

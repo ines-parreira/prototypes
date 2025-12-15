@@ -110,11 +110,13 @@ export const postReportingV1 = <TData, TCube extends Cube = Cube>(
 export const postReportingV2 = <TData, TMeta extends ScopeMeta = ScopeMeta>(
     query: BuiltQuery<TMeta>,
 ): Promise<AxiosResponse<ReportingResponse<TData>>> => {
-    const { metricName, limit, ...baseQuery } = query
+    const { metricName, limit, offset, total, ...baseQuery } = query
 
     const searchParams = new URLSearchParams({
         metric_name: metricName,
         ...(limit ? { limit: limit.toString() } : {}),
+        ...(offset ? { offset: offset.toString() } : {}),
+        ...(total !== undefined ? { total: total.toString() } : {}),
     })
 
     return client
@@ -141,11 +143,13 @@ export const postReportingV2Query = <
 >(
     query: BuiltQuery<TMeta>,
 ): Promise<AxiosResponse<ReportingQuery<TCube>>> => {
-    const { metricName, limit, ...baseQuery } = query
+    const { metricName, limit, offset, total, ...baseQuery } = query
 
     const searchParams = new URLSearchParams({
         metric_name: metricName,
         ...(limit ? { limit: limit.toString() } : {}),
+        ...(offset ? { offset: offset.toString() } : {}),
+        ...(total !== undefined ? { total: total.toString() } : {}),
     })
 
     return client

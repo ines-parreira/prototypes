@@ -25,6 +25,10 @@ import {
     declinedVoiceCallsCountQueryV2Factory,
     transferredInboundVoiceCallsCountQueryV2Factory,
 } from 'domains/reporting/models/scopes/voiceAgentEvents'
+import {
+    voiceCallsAverageTalkTimeQueryFactoryV2,
+    voiceCallsCountQueryFactoryV2,
+} from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchAnsweredCallsMetric,
@@ -35,7 +39,7 @@ import {
     fetchTotalCallsMetric,
     fetchTransferredInboundCallsMetric,
     ignoreCallsWithNoAgentsFilter,
-    ignoreCallsWithNoAssignedAgentFilter,
+    ignoreCallsWithNoFilteringAgentFilter,
     ignoreDeclinedWithNoAgentsFilter,
     useAnsweredCallsMetric,
     useAverageTalkTimeMetric,
@@ -69,7 +73,7 @@ describe('metricsPerDimension', () => {
 
             expect(useMetricMock.mock.calls[0]).toEqual([
                 {
-                    metricName: METRIC_NAMES.VOICE_CALL_COUNT,
+                    metricName: METRIC_NAMES.VOICE_CALL_COUNT_TREND,
                     dimensions: [],
                     filters: [
                         {
@@ -92,6 +96,14 @@ describe('metricsPerDimension', () => {
                     segments: [VoiceCallSegment.callsInFinalStatus],
                     timezone: userTimezone,
                 },
+                voiceCallsCountQueryFactoryV2(
+                    {
+                        filters: { ...statsFilters },
+                        timezone: userTimezone,
+                    },
+                    undefined,
+                    true,
+                ),
             ])
         })
 
@@ -126,6 +138,14 @@ describe('metricsPerDimension', () => {
                     ],
                     timezone: userTimezone,
                 },
+                voiceCallsCountQueryFactoryV2(
+                    {
+                        filters: { ...statsFilters },
+                        timezone: userTimezone,
+                    },
+                    VoiceCallSegment.inboundAnsweredCallsByAgent,
+                    true,
+                ),
             ])
         })
 
@@ -160,6 +180,14 @@ describe('metricsPerDimension', () => {
                     ],
                     timezone: userTimezone,
                 },
+                voiceCallsCountQueryFactoryV2(
+                    {
+                        filters: { ...statsFilters },
+                        timezone: userTimezone,
+                    },
+                    VoiceCallSegment.inboundUnansweredCallsByAgent,
+                    true,
+                ),
             ])
         })
 
@@ -182,7 +210,7 @@ describe('metricsPerDimension', () => {
                             values: [statsFilters.period.end_datetime],
                         },
                         {
-                            member: VoiceCallMember.AssignedAgentId,
+                            member: VoiceCallMember.AgentId,
                             operator: 'set',
                             values: [],
                         },
@@ -194,6 +222,14 @@ describe('metricsPerDimension', () => {
                     ],
                     timezone: userTimezone,
                 },
+                voiceCallsCountQueryFactoryV2(
+                    {
+                        filters: { ...statsFilters },
+                        timezone: userTimezone,
+                    },
+                    VoiceCallSegment.outboundCalls,
+                    true,
+                ),
             ])
         })
 
@@ -309,7 +345,7 @@ describe('metricsPerDimension', () => {
                                 values: [statsFilters.period.end_datetime],
                             },
                             {
-                                member: VoiceCallMember.AssignedAgentId,
+                                member: VoiceCallMember.AgentId,
                                 operator: 'set',
                                 values: [],
                             },
@@ -318,6 +354,13 @@ describe('metricsPerDimension', () => {
                         segments: expectedSegments,
                         timezone: userTimezone,
                     },
+                    voiceCallsAverageTalkTimeQueryFactoryV2(
+                        {
+                            filters: { ...statsFilters },
+                            timezone: userTimezone,
+                        },
+                        true,
+                    ),
                 ])
             },
         )
@@ -330,7 +373,9 @@ describe('metricsPerDimension', () => {
                 queryFactory: voiceCallCountQueryFactory,
                 segment: undefined,
                 filter: ignoreCallsWithNoAgentsFilter,
-                metricName: METRIC_NAMES.VOICE_CALL_COUNT,
+                metricName: undefined,
+                v2QueryFactory: voiceCallsCountQueryFactoryV2,
+                v2Segment: undefined,
             },
             {
                 fetch: fetchAnsweredCallsMetric,
@@ -338,6 +383,8 @@ describe('metricsPerDimension', () => {
                 segment: VoiceCallSegment.inboundAnsweredCallsByAgent,
                 filter: ignoreCallsWithNoAgentsFilter,
                 metricName: METRIC_NAMES.VOICE_UNANSWERED_CALLS_BY_AGENT,
+                v2QueryFactory: voiceCallsCountQueryFactoryV2,
+                v2Segment: VoiceCallSegment.inboundAnsweredCallsByAgent,
             },
             {
                 fetch: fetchMissedCallsMetric,
@@ -345,42 +392,49 @@ describe('metricsPerDimension', () => {
                 segment: VoiceCallSegment.inboundUnansweredCallsByAgent,
                 filter: ignoreCallsWithNoAgentsFilter,
                 metricName: METRIC_NAMES.VOICE_MISSED_CALLS_BY_AGENT,
+                v2QueryFactory: voiceCallsCountQueryFactoryV2,
+                v2Segment: VoiceCallSegment.inboundUnansweredCallsByAgent,
             },
             {
                 fetch: fetchOutboundCallsMetric,
                 queryFactory: voiceCallCountQueryFactory,
                 segment: VoiceCallSegment.outboundCalls,
-                filter: ignoreCallsWithNoAssignedAgentFilter,
+                filter: ignoreCallsWithNoFilteringAgentFilter,
                 metricName: METRIC_NAMES.VOICE_OUTBOUND_CALLS_BY_AGENT,
+                v2QueryFactory: voiceCallsCountQueryFactoryV2,
+                v2Segment: VoiceCallSegment.outboundCalls,
             },
             {
                 fetch: fetchDeclinedCallsMetric,
                 queryFactory: declinedVoiceCallsCountQueryFactory,
-                queryFactoryV2: declinedVoiceCallsCountQueryV2Factory,
                 segment: undefined,
                 filter: ignoreDeclinedWithNoAgentsFilter,
                 metricName: METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT,
+                v2QueryFactory: declinedVoiceCallsCountQueryV2Factory,
+                v2Segment: undefined,
             },
             {
                 fetch: fetchTransferredInboundCallsMetric,
                 queryFactory: transferredInboundVoiceCallsCountQueryFactory,
-                queryFactoryV2: transferredInboundVoiceCallsCountQueryV2Factory,
                 segment: undefined,
                 filter: ignoreDeclinedWithNoAgentsFilter,
+                v2QueryFactory: transferredInboundVoiceCallsCountQueryV2Factory,
+                v2Segment: undefined,
             },
         ])(
             'should use $fetch and $segment',
             async ({
                 fetch,
                 queryFactory,
-                queryFactoryV2,
                 segment,
                 filter,
                 metricName,
+                v2QueryFactory,
+                v2Segment,
             }) => {
                 await fetch(statsFilters, userTimezone)
 
-                const expectedQueryV1 = withFilter(
+                const v1Query = withFilter(
                     queryFactory === voiceCallCountQueryFactory
                         ? queryFactory(
                               statsFilters,
@@ -394,18 +448,20 @@ describe('metricsPerDimension', () => {
                     filter,
                 )
 
-                if (queryFactoryV2) {
+                if (v2QueryFactory) {
                     expect(fetchMetricMock).toHaveBeenCalledWith(
-                        expectedQueryV1,
-                        queryFactoryV2?.({
-                            filters: statsFilters,
-                            timezone: userTimezone,
-                        }),
+                        v1Query,
+                        v2QueryFactory(
+                            {
+                                filters: { ...statsFilters },
+                                timezone: userTimezone,
+                            },
+                            v2Segment,
+                            true,
+                        ),
                     )
                 } else {
-                    expect(fetchMetricMock).toHaveBeenCalledWith(
-                        expectedQueryV1,
-                    )
+                    expect(fetchMetricMock).toHaveBeenCalledWith(v1Query)
                 }
             },
         )
@@ -419,7 +475,14 @@ describe('metricsPerDimension', () => {
                         statsFilters,
                         userTimezone,
                     ),
-                    ignoreCallsWithNoAssignedAgentFilter,
+                    ignoreCallsWithNoFilteringAgentFilter,
+                ),
+                voiceCallsAverageTalkTimeQueryFactoryV2(
+                    {
+                        filters: { ...statsFilters },
+                        timezone: userTimezone,
+                    },
+                    true,
                 ),
             )
         })

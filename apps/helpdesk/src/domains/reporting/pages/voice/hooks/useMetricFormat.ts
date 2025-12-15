@@ -11,6 +11,8 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/utils'
 
+import { voiceCallsCountQueryFactoryV2 } from '../../../models/scopes/voiceCalls'
+
 type Args = {
     isPercentageEnabled: boolean
     percentageOfValue?: number | null
@@ -43,7 +45,13 @@ export const useMetricFormat = ({
     const { data: allCallsMetric, isFetching: isAllCallsMetricFetching } =
         useMetric(
             queryFactory,
-            undefined,
+            voiceCallsCountQueryFactoryV2(
+                {
+                    filters: cleanStatsFilters,
+                    timezone: userTimezone,
+                },
+                VoiceCallSegment.inboundCalls,
+            ),
             isPercentageEnabled && !hasTotalCount,
         )
 

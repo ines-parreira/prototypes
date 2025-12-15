@@ -18,6 +18,10 @@ import {
     declinedVoiceCallsCountQueryV2Factory,
     transferredInboundVoiceCallsCountQueryV2Factory,
 } from 'domains/reporting/models/scopes/voiceAgentEvents'
+import {
+    voiceCallsAverageTalkTimeQueryFactoryV2,
+    voiceCallsCountQueryFactoryV2,
+} from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingFilter } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
@@ -31,6 +35,12 @@ export const ignoreCallsWithNoAgentsFilter: ReportingFilter = {
 
 export const ignoreCallsWithNoAssignedAgentFilter: ReportingFilter = {
     member: VoiceCallMember.AssignedAgentId,
+    operator: ReportingFilterOperator.Set,
+    values: [],
+}
+
+export const ignoreCallsWithNoFilteringAgentFilter: ReportingFilter = {
+    member: VoiceCallMember.AgentId,
     operator: ReportingFilterOperator.Set,
     values: [],
 }
@@ -51,6 +61,14 @@ export const useTotalCallsMetric = (
             voiceCallCountQueryFactory(statsFilters, timezone),
             ignoreCallsWithNoAgentsFilter,
         ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters: statsFilters,
+                timezone,
+            },
+            undefined,
+            true,
+        ),
     )
 
 export const fetchTotalCallsMetric = (
@@ -61,6 +79,14 @@ export const fetchTotalCallsMetric = (
         withFilter(
             voiceCallCountQueryFactory(statsFilters, timezone),
             ignoreCallsWithNoAgentsFilter,
+        ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters: { ...statsFilters },
+                timezone,
+            },
+            undefined,
+            true,
         ),
     )
 
@@ -81,6 +107,14 @@ export const useAnsweredCallsMetric = (
             ),
             ignoreCallsWithNoAgentsFilter,
         ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters: { ...statsFilters },
+                timezone,
+            },
+            VoiceCallSegment.inboundAnsweredCallsByAgent,
+            true,
+        ),
     )
 
 // P2/P3
@@ -100,6 +134,14 @@ export const fetchAnsweredCallsMetric = (
             ),
             ignoreCallsWithNoAgentsFilter,
         ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters: { ...statsFilters },
+                timezone,
+            },
+            VoiceCallSegment.inboundAnsweredCallsByAgent,
+            true,
+        ),
     )
 // P2/P3
 export const useMissedCallsMetric = (
@@ -117,6 +159,14 @@ export const useMissedCallsMetric = (
                 METRIC_NAMES.VOICE_MISSED_CALLS_BY_AGENT,
             ),
             ignoreCallsWithNoAgentsFilter,
+        ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters: { ...statsFilters },
+                timezone,
+            },
+            VoiceCallSegment.inboundUnansweredCallsByAgent,
+            true,
         ),
     )
 
@@ -137,6 +187,14 @@ export const fetchMissedCallsMetric = (
             ),
             ignoreCallsWithNoAgentsFilter,
         ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters: { ...statsFilters },
+                timezone,
+            },
+            VoiceCallSegment.inboundUnansweredCallsByAgent,
+            true,
+        ),
     )
 // P2/P3
 export const useOutboundCallsMetric = (
@@ -153,7 +211,15 @@ export const useOutboundCallsMetric = (
                 undefined,
                 METRIC_NAMES.VOICE_OUTBOUND_CALLS_BY_AGENT,
             ),
-            ignoreCallsWithNoAssignedAgentFilter,
+            ignoreCallsWithNoFilteringAgentFilter,
+        ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters: { ...statsFilters },
+                timezone,
+            },
+            VoiceCallSegment.outboundCalls,
+            true,
         ),
     )
 
@@ -172,7 +238,15 @@ export const fetchOutboundCallsMetric = (
                 undefined,
                 METRIC_NAMES.VOICE_OUTBOUND_CALLS_BY_AGENT,
             ),
-            ignoreCallsWithNoAssignedAgentFilter,
+            ignoreCallsWithNoFilteringAgentFilter,
+        ),
+        voiceCallsCountQueryFactoryV2(
+            {
+                filters: { ...statsFilters },
+                timezone,
+            },
+            VoiceCallSegment.outboundCalls,
+            true,
         ),
     )
 // P2/P3
@@ -218,7 +292,14 @@ export const useAverageTalkTimeMetric = (
                 timezone,
                 includeLiveData,
             ),
-            ignoreCallsWithNoAssignedAgentFilter,
+            ignoreCallsWithNoFilteringAgentFilter,
+        ),
+        voiceCallsAverageTalkTimeQueryFactoryV2(
+            {
+                filters: { ...statsFilters },
+                timezone,
+            },
+            true,
         ),
     )
 
@@ -229,7 +310,14 @@ export const fetchAverageTalkTimeMetric = (
     fetchMetric(
         withFilter(
             voiceCallAverageTalkTimeQueryFactory(statsFilters, timezone),
-            ignoreCallsWithNoAssignedAgentFilter,
+            ignoreCallsWithNoFilteringAgentFilter,
+        ),
+        voiceCallsAverageTalkTimeQueryFactoryV2(
+            {
+                filters: { ...statsFilters },
+                timezone,
+            },
+            true,
         ),
     )
 // P2/P3

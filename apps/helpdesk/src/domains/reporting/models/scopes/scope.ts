@@ -63,6 +63,10 @@ export type QueryFor<TScopeMeta extends ScopeMeta> = {
 
     limit?: number
 
+    offset?: number
+
+    total?: boolean
+
     dimensions?: readonly Values<TScopeMeta['dimensions']>[]
 
     time_dimensions?: readonly {
@@ -88,18 +92,35 @@ export type BuiltQuery<
     Prettify<QueryFor<TQuery> & { metricName: TName; scope: TQuery['scope'] }>
 >
 
+/**
+ * Represents the context configuration for scope-based reporting queries.
+ *
+ * @template TMeta - The scope metadata type that extends {@link ScopeMeta}
+ *
+ * @property {string} timezone - The timezone used for date/time calculations and aggregations
+ * @property {ApiStatsFilters} filters - The filters to apply to the statistics query
+ * @property {OrderDirection} [sortDirection] - Optional sort direction (ascending or descending)
+ * @property {Values<TMeta['order']>} [sortBy] - Optional field to sort results by, derived from the scope's order metadata
+ * @property {AggregationWindow} [granularity] - Optional time window for data aggregation (e.g., hourly, daily)
+ * @property {number} [offset] - Optional pagination offset for results
+ * @property {number} [limit] - Optional maximum number of results to return
+ * @property {boolean} [total] - Optional flag to include total count in the response
+ */
 export type Context<TMeta extends ScopeMeta = ScopeMeta> = {
     timezone: string
     filters: ApiStatsFilters
     sortDirection?: OrderDirection
     sortBy?: Values<TMeta['order']>
     granularity?: AggregationWindow
+    offset?: number
+    limit?: number
+    total?: boolean
 }
 
 export type MetricQueryFactory<
     TMeta extends ScopeMeta = ScopeMeta,
     TMetricName extends MetricName = MetricName,
-    TContext extends Context = Context,
+    TContext extends Context = Context<TMeta>,
 > = (ctx: TContext) => BuiltQuery<TMeta, TMetricName>
 
 class MetricQuery<
@@ -141,6 +162,45 @@ class MetricQuery<
                     granularity: ctx.granularity,
                 },
             ]
+        }
+
+        // If query limit is not defined, use context limit
+        if (query.limit === undefined && ctx.limit !== undefined) {
+            query.limit = ctx.limit
+        }
+
+        // If query offset is not defined, use context offset
+        if (query.offset === undefined && ctx.offset !== undefined) {
+            query.offset = ctx.offset
+        }
+
+        // If query total is not defined, use context total
+        if (query.total === undefined && ctx.total !== undefined) {
+            query.total = ctx.total
+        }
+
+        // If query order is not defined, use context sortDirection and sortBy
+        if (
+            query.order === undefined &&
+            ctx.sortDirection &&
+            this.config.order
+        ) {
+            if (ctx.sortBy) {
+                // Use context sortBy if provided
+                query.order = [[ctx.sortBy, ctx.sortDirection]]
+            } else if (
+                query.measures?.[0] &&
+                this.config.order.includes(query.measures[0])
+            ) {
+                // otherwise, use first measure if it's in config order
+                query.order = [[query.measures[0], ctx.sortDirection]]
+            } else if (
+                query.dimensions?.[0] &&
+                this.config.order.includes(query.dimensions[0])
+            ) {
+                // otherwise, use first dimension if it's in config order
+                query.order = [[query.dimensions[0], ctx.sortDirection]]
+            }
         }
 
         return Object.freeze(
