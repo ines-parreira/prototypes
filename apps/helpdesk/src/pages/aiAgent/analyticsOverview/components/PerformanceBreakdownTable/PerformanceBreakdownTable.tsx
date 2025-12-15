@@ -185,7 +185,12 @@ export const PerformanceBreakdownTable = () => {
                     Order Management
                 </ButtonGroupItem>
             </ButtonGroup>
-            <Box display="flex" flexDirection="column" minWidth="0px">
+            <Box
+                className={css.tableContainer}
+                display="flex"
+                flexDirection="column"
+                minWidth="0px"
+            >
                 <TableToolbar
                     table={table}
                     bottomRow={{
