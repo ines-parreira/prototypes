@@ -288,14 +288,19 @@ const mockAIJourneyContext = (
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
 
-const withProviders = (children: React.ReactNode) => (
+const withProviders = (
+    children: React.ReactNode,
+    supportedModes?: ('inbound' | 'outbound')[],
+) => (
     <Provider store={mockStore({})}>
         <QueryClientProvider client={queryClient}>
             <ConfigurationProvider>
                 <AIJourneyProvider shopName="test-shop">
                     <CoreProvider>
                         <EventsProvider>
-                            <SettingsProvider>{children}</SettingsProvider>
+                            <SettingsProvider supportedModes={supportedModes}>
+                                {children}
+                            </SettingsProvider>
                         </EventsProvider>
                     </CoreProvider>
                 </AIJourneyProvider>
@@ -304,8 +309,8 @@ const withProviders = (children: React.ReactNode) => (
     </Provider>
 )
 
-const renderComponent = () => {
-    return render(withProviders(<PlaygroundSettings />))
+const renderComponent = (supportedModes?: ('inbound' | 'outbound')[]) => {
+    return render(withProviders(<PlaygroundSettings />, supportedModes))
 }
 
 describe('PlaygroundSettings', () => {
@@ -939,6 +944,44 @@ describe('PlaygroundSettings', () => {
             )
 
             expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
+        })
+    })
+
+    describe('Supported Modes', () => {
+        it('should hide segment control when only inbound is supported', () => {
+            render(
+                withProviders(<PlaygroundSettings />, ['inbound'] as (
+                    | 'inbound'
+                    | 'outbound'
+                )[]),
+            )
+
+            expect(
+                screen.queryByTestId('segment-control'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('Inbound')).not.toBeInTheDocument()
+            expect(screen.queryByText('Outbound')).not.toBeInTheDocument()
+        })
+
+        it('should show segment control when both modes are supported', () => {
+            render(
+                withProviders(<PlaygroundSettings />, [
+                    'inbound',
+                    'outbound',
+                ] as ('inbound' | 'outbound')[]),
+            )
+
+            expect(screen.getByTestId('segment-control')).toBeInTheDocument()
+            expect(screen.getByText('Inbound')).toBeInTheDocument()
+            expect(screen.getByText('Outbound')).toBeInTheDocument()
+        })
+
+        it('should show segment control by default when supportedModes is not provided', () => {
+            render(withProviders(<PlaygroundSettings />))
+
+            expect(screen.getByTestId('segment-control')).toBeInTheDocument()
+            expect(screen.getByText('Inbound')).toBeInTheDocument()
+            expect(screen.getByText('Outbound')).toBeInTheDocument()
         })
     })
 })

@@ -31,6 +31,7 @@ type SettingsState = {
 type SettingsContextValue = {
     resetSettings: () => void
     setSettings: (newState: Partial<SettingsState>) => void
+    supportedModes?: SupportedPlaygroundModes
 } & SettingsState
 
 const SettingsContext = createContext<SettingsContextValue | undefined>(
@@ -97,8 +98,9 @@ export const SettingsProvider = ({
             ...settingsState,
             resetSettings,
             setSettings,
+            supportedModes,
         }),
-        [settingsState, resetSettings, setSettings],
+        [settingsState, resetSettings, setSettings, supportedModes],
     )
 
     return (

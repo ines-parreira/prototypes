@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
 
@@ -28,6 +28,16 @@ export const AiAgentPlaygroundPage = () => {
         useCollapsibleColumn()
 
     const sidePanelEnabled = useFlag(FeatureFlagKey.AiJourneyPlayground, false)
+
+    const isAiJourneyEnabled = useFlag(FeatureFlagKey.AiJourneyEnabled, false)
+
+    const supportedModes = useMemo(
+        () =>
+            isAiJourneyEnabled
+                ? ['inbound' as const, 'outbound' as const]
+                : ['inbound' as const],
+        [isAiJourneyEnabled],
+    )
 
     useEffect(() => {
         if (sidePanelEnabled) {
@@ -78,6 +88,7 @@ export const AiAgentPlaygroundPage = () => {
                 withSettingsOnSidePanel
                 resetPlayground={shouldPlaygroundReset}
                 resetPlaygroundCallback={() => setShouldPlaygroundReset(false)}
+                supportedModes={supportedModes}
             />
         </AiAgentLayout>
     )

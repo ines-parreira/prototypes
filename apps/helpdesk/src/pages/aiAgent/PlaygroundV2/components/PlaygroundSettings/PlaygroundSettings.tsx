@@ -246,10 +246,19 @@ export const PlaygroundSettings: React.FC<SettingsProps> = ({
 }) => {
     const settings = useSettingsContext()
 
+    const availableSegments = useMemo(() => {
+        if (!settings.supportedModes) {
+            return SEGMENTS
+        }
+        return SEGMENTS.filter((segment) =>
+            settings.supportedModes!.includes(segment.value),
+        )
+    }, [settings.supportedModes])
+
     return (
         <div className={css.playgroundSettings}>
             <SettingsHeader onClose={onClose} />
-            {withModesSwitcher && (
+            {withModesSwitcher && availableSegments.length > 1 && (
                 <PlaygroundSegmentControl
                     selectedValue={settings.mode}
                     onValueChange={(value) =>
@@ -257,7 +266,7 @@ export const PlaygroundSettings: React.FC<SettingsProps> = ({
                             mode: value as 'inbound' | 'outbound',
                         })
                     }
-                    segments={SEGMENTS}
+                    segments={availableSegments}
                 />
             )}
             <div className={css.settingsContent}>
