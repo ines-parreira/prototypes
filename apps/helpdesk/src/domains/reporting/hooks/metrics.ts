@@ -13,6 +13,7 @@ import { oneTouchTicketsQueryFactory } from 'domains/reporting/models/queryFacto
 import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import { customerSatisfactionQueryV2Factory } from 'domains/reporting/models/scopes/customerSatisfaction'
 import { medianFirstResponseTimeQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
 import { humanResponseTimeAfterAiHandoffQueryV2Factory } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { messagesReceivedCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
@@ -88,13 +89,20 @@ export const fetchClosedTicketsMetric = (
 export const useCustomerSatisfactionMetric = (
     statsFilters: StatsFilters,
     timezone: string,
-): Metric => useMetric(customerSatisfactionQueryFactory(statsFilters, timezone))
+): Metric =>
+    useMetric(
+        customerSatisfactionQueryFactory(statsFilters, timezone),
+        customerSatisfactionQueryV2Factory({ filters: statsFilters, timezone }),
+    )
 // P2/P3
 export const fetchCustomerSatisfactionMetric = (
     statsFilters: StatsFilters,
     timezone: string,
 ): Promise<Metric> =>
-    fetchMetric(customerSatisfactionQueryFactory(statsFilters, timezone))
+    fetchMetric(
+        customerSatisfactionQueryFactory(statsFilters, timezone),
+        customerSatisfactionQueryV2Factory({ filters: statsFilters, timezone }),
+    )
 
 export const useMedianFirstResponseTimeMetric = (
     statsFilters: StatsFilters,

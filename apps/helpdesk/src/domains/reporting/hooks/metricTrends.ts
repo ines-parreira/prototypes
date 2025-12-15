@@ -19,6 +19,7 @@ import { openTicketsQueryFactory } from 'domains/reporting/models/queryFactories
 import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import { customerSatisfactionQueryV2Factory } from 'domains/reporting/models/scopes/customerSatisfaction'
 import { medianFirstResponseTimeQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
 import { humanResponseTimeAfterAiHandoffQueryV2Factory } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { messagesPerTicketCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesPerTicket'
@@ -119,9 +120,11 @@ export const getTrendHook =
 
 export const useCustomerSatisfactionTrend = getTrendHook(
     customerSatisfactionQueryFactory,
+    customerSatisfactionQueryV2Factory,
 )
 export const fetchCustomerSatisfactionTrend = getTrendFetch(
     customerSatisfactionQueryFactory,
+    customerSatisfactionQueryV2Factory,
 )
 
 export const useMedianFirstResponseTimeTrend = (

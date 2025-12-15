@@ -44,6 +44,7 @@ import { oneTouchTicketsPerAgentQueryFactory } from 'domains/reporting/models/qu
 import { ticketsRepliedMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import { customerSatisfactionPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/customerSatisfaction'
 import { medianFirstResponseTimePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
 import { humanResponseTimeAfterAiHandoffPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { messagesReceivedPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
@@ -175,7 +176,7 @@ describe('metricsPerAgent', () => {
                 'useCustomerSatisfactionMetricPerAgent',
                 useCustomerSatisfactionMetricPerAgent,
                 customerSatisfactionMetricPerAgentQueryFactory,
-                undefined,
+                customerSatisfactionPerAgentQueryV2Factory,
             ],
             [
                 'useOnlineTimePerAgent',
@@ -270,7 +271,7 @@ describe('metricsPerAgent', () => {
                 'fetchCustomerSatisfactionMetricPerAgent',
                 fetchCustomerSatisfactionMetricPerAgent,
                 customerSatisfactionMetricPerAgentQueryFactory,
-                undefined,
+                customerSatisfactionPerAgentQueryV2Factory,
             ],
             [
                 'fetchOnlineTimePerAgent',

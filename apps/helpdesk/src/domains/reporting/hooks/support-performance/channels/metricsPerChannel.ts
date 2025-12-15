@@ -23,6 +23,7 @@ import { oneTouchTicketsPerChannelQueryFactory } from 'domains/reporting/models/
 import { ticketsCreatedPerChannelPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import { customerSatisfactionPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/customerSatisfaction'
 import { medianFirstResponseTimePerChannelQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
 import { humanResponseTimeAfterAiHandoffPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { messagesReceivedPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
@@ -168,9 +169,13 @@ export const fetchMedianResolutionTimeMetricPerChannel =
 export const useCustomerSatisfactionMetricPerChannel =
     createMetricPerDimensionHook(
         customerSatisfactionMetricPerChannelQueryFactory,
+        customerSatisfactionPerChannelQueryV2Factory,
     )
 export const fetchCustomerSatisfactionMetricPerChannel =
-    createFetchPerDimension(customerSatisfactionMetricPerChannelQueryFactory)
+    createFetchPerDimension(
+        customerSatisfactionMetricPerChannelQueryFactory,
+        customerSatisfactionPerChannelQueryV2Factory,
+    )
 
 export const useOneTouchTicketsMetricPerChannel = createMetricPerDimensionHook(
     oneTouchTicketsPerChannelQueryFactory,

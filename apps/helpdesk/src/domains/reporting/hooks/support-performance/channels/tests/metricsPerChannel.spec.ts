@@ -39,6 +39,7 @@ import { ticketsCreatedPerChannelPerChannelQueryFactory } from 'domains/reportin
 import { ticketsRepliedMetricPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerChannelQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import { customerSatisfactionPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/customerSatisfaction'
 import { medianFirstResponseTimePerChannelQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
 import { sentMessagesPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/messagesSent'
 import { oneTouchTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/oneTouchTickets'
@@ -178,7 +179,7 @@ describe('metricsPerChannel', () => {
                 name: 'useCustomerSatisfactionMetricPerChannel',
                 hook: useCustomerSatisfactionMetricPerChannel,
                 queryFactory: customerSatisfactionMetricPerChannelQueryFactory,
-                newQueryFactory: undefined,
+                newQueryFactory: customerSatisfactionPerChannelQueryV2Factory,
             },
             {
                 name: 'useOneTouchTicketsMetricPerChannel',
@@ -287,6 +288,7 @@ describe('metricsPerChannel', () => {
                 name: 'fetchCustomerSatisfactionMetricPerChannel',
                 fetch: fetchCustomerSatisfactionMetricPerChannel,
                 queryFactory: customerSatisfactionMetricPerChannelQueryFactory,
+                newQueryFactory: customerSatisfactionPerChannelQueryV2Factory,
             },
             {
                 name: 'fetchOneTouchTicketsMetricPerChannel',

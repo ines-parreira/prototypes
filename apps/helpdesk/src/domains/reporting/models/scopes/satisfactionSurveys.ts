@@ -12,7 +12,7 @@ export type SatisfactionSurveysDimension =
     | 'integrationId'
     | 'surveyScore'
 
-const satisfactionSurveysScope = defineScope({
+export const satisfactionSurveysScope = defineScope({
     scope: MetricScope.SatisfactionSurveys,
     measures: ['averageSurveyScore', 'scoredSurveysCount'],
     dimensions: [
@@ -42,7 +42,13 @@ const satisfactionSurveysScope = defineScope({
         'customFields',
         'tags',
     ],
-    order: ['tickets', 'createdDatetime', 'surveyScore', 'scoredSurveysCount'],
+    order: [
+        'tickets',
+        'createdDatetime',
+        'averageSurveyScore',
+        'surveyScore',
+        'scoredSurveysCount',
+    ],
 })
 
 export const averageScore = satisfactionSurveysScope

@@ -46,6 +46,7 @@ import { oneTouchTicketsQueryFactory } from 'domains/reporting/models/queryFacto
 import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import { customerSatisfaction } from 'domains/reporting/models/scopes/customerSatisfaction'
 import { medianFirstResponseTime } from 'domains/reporting/models/scopes/firstResponseTime'
 import { humanResponseTimeAfterAiHandoff } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { messagesReceivedCount } from 'domains/reporting/models/scopes/messagesReceived'
@@ -101,6 +102,7 @@ describe('metrics', () => {
             'useCustomerSatisfactionMetric',
             useCustomerSatisfactionMetric,
             customerSatisfactionQueryFactory,
+            customerSatisfaction,
         ],
         [
             'useMedianResponseTimeMetric',
@@ -241,6 +243,12 @@ describe('metrics', () => {
             humanResponseTimeAfterAiHandoff,
         ],
         [
+            'fetchCustomerSatisfactionMetric',
+            fetchCustomerSatisfactionMetric,
+            customerSatisfactionQueryFactory,
+            customerSatisfaction,
+        ],
+        [
             'fetchOneTouchTicketsMetric',
             fetchOneTouchTicketsMetric,
             oneTouchTicketsQueryFactory,
@@ -278,33 +286,6 @@ describe('metrics', () => {
                         filters: statsFilters,
                         timezone,
                     }),
-                )
-                expect(result).toBe(defaultMetricValue)
-            })
-        },
-    )
-
-    describe.each([
-        [
-            'fetchCustomerSatisfactionMetric',
-            fetchCustomerSatisfactionMetric,
-            customerSatisfactionQueryFactory,
-        ],
-    ])(
-        '%s',
-        (
-            _,
-            fetchTrendFn,
-            queryFactory: (
-                statsFilters: StatsFilters,
-                timezone: string,
-            ) => ReportingQuery,
-        ) => {
-            it('should fetch reporting metric with assigned tickets only', async () => {
-                const result = await fetchTrendFn(statsFilters, timezone)
-
-                expect(fetchMetricMock).toHaveBeenCalledWith(
-                    queryFactory(statsFilters, timezone),
                 )
                 expect(result).toBe(defaultMetricValue)
             })

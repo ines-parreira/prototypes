@@ -54,6 +54,7 @@ import { openTicketsQueryFactory } from 'domains/reporting/models/queryFactories
 import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsCreated'
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import { customerSatisfactionQueryV2Factory } from 'domains/reporting/models/scopes/customerSatisfaction'
 import {
     medianFirstResponseTime,
     medianFirstResponseTimeQueryV2Factory,
@@ -170,7 +171,7 @@ describe('metric trends', () => {
             'useCustomerSatisfactionTrend',
             useCustomerSatisfactionTrend,
             customerSatisfactionQueryFactory,
-            undefined,
+            customerSatisfactionQueryV2Factory,
         ],
         [
             'useMedianFirstResponseTimeTrend',
@@ -290,6 +291,7 @@ describe('metric trends', () => {
             'fetchCustomerSatisfactionTrend',
             fetchCustomerSatisfactionTrend,
             customerSatisfactionQueryFactory,
+            customerSatisfactionQueryV2Factory,
         ],
         [
             'fetchHumanResponseTimeAfterAiHandoffTrend',

@@ -462,6 +462,12 @@ const SEGMENT_TO_FILTER_MAPPINGS: SegmentToFilterMapping[] = [
         ],
     },
 
+    // The "survey scored" segment is redundant
+    {
+        segment: 'TicketSatisfactionSurveyEnriched.surveyScored',
+        filters: [],
+    },
+
     // VoiceCall.callsInFinalStatus has no additional filters in V2
 ]
 

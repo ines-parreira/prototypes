@@ -19,6 +19,7 @@ import { messagesSentMetricPerAgentQueryFactory } from 'domains/reporting/models
 import { oneTouchTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/oneTouchTickets'
 import { ticketsRepliedMetricPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsPerAgentQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import { customerSatisfactionPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/customerSatisfaction'
 import { medianFirstResponseTimePerAgentQueryV2Factory } from 'domains/reporting/models/scopes/firstResponseTime'
 import { humanResponseTimeAfterAiHandoffPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { messagesReceivedPerAgentQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
@@ -150,10 +151,14 @@ export const fetchMedianResolutionTimeMetricPerAgent = createFetchPerDimension(
 )
 
 export const useCustomerSatisfactionMetricPerAgent =
-    createMetricPerDimensionHook(customerSatisfactionMetricPerAgentQueryFactory)
+    createMetricPerDimensionHook(
+        customerSatisfactionMetricPerAgentQueryFactory,
+        customerSatisfactionPerAgentQueryV2Factory,
+    )
 
 export const fetchCustomerSatisfactionMetricPerAgent = createFetchPerDimension(
     customerSatisfactionMetricPerAgentQueryFactory,
+    customerSatisfactionPerAgentQueryV2Factory,
 )
 
 export const useOneTouchTicketsMetricPerAgent = createMetricPerDimensionHook(
