@@ -1,29 +1,30 @@
 import { TrendCard } from '@repo/reporting'
 
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
+
+import { useAiAgentAutomationRateMetric } from '../hooks/useAiAgentAutomationRateMetric'
 
 export const AnalyticsAiAgentAutomationRateCard = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const trend = {
-        isFetching: false,
-        isError: false,
-        data: {
-            label: 'Automation rate',
-            value: 28,
-            prevValue: 27.5,
-        },
-    }
+    const { cleanStatsFilters } = useStatsFilters()
+    const trend = useAiAgentAutomationRateMetric()
+
+    const trendTooltipData = formatPreviousPeriod(cleanStatsFilters?.period)
 
     return (
         <TrendCard
             trend={trend}
-            metricFormat="percent"
+            metricFormat="decimal-to-percent"
             interpretAs="more-is-better"
+            isLoading={trend.isFetching}
             withBorder
             withFixedWidth={false}
+            trendBadgeTooltipData={{ period: trendTooltipData }}
             hint={{
                 title: 'Automation rate',
                 caption:

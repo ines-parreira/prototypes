@@ -1,5 +1,6 @@
 import { fetchFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import { fetchAutomationCostSavedTrend } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
+import { fetchAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import { fetchTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useTimeSavedByAgentsTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
@@ -19,8 +20,6 @@ import { AnalyticsOverviewPerformanceTable } from './charts/AnalyticsOverviewPer
 import { AnalyticsOverviewTimeSavedCard } from './charts/AnalyticsOverviewTimeSavedCard'
 
 // Mock fetch functions - these will be replaced with real data fetchers later
-const fetchAutomationRateTrend = async () =>
-    ({ value: 0.32, trend: -0.02 }) as any
 const fetchAutomationBreakdown = async () =>
     ({
         isLoading: false,

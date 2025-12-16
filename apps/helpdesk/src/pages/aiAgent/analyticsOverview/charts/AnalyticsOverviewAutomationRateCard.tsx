@@ -1,15 +1,19 @@
 import { TrendCard } from '@repo/reporting'
 
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
 import { useAutomationRateMetric } from '../hooks/useAutomationRateMetric'
+import { formatPreviousPeriod } from '../utils/formatPreviousPeriod'
 
 export const AnalyticsOverviewAutomationRateCard = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
     const trend = useAutomationRateMetric()
+    const { cleanStatsFilters } = useStatsFilters()
+    const trendTooltipData = formatPreviousPeriod(cleanStatsFilters?.period)
 
     return (
         <TrendCard
@@ -19,6 +23,7 @@ export const AnalyticsOverviewAutomationRateCard = ({
             interpretAs="more-is-better"
             withBorder
             withFixedWidth={false}
+            trendBadgeTooltipData={{ period: trendTooltipData }}
             hint={{
                 title: 'Overall automation rate',
                 caption:
