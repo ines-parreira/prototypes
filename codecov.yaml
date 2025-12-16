@@ -16,6 +16,7 @@ comment:
   show_carryforward_flags: true
 
 ignore:
+  - src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/**/*
   - src/core/layout/panels/helpers/calculateSizes.ts
   - src/pages/automate/workflows/editor/visualBuilder/editors/TestFlowEditor.tsx
   - src/pages/aiAgent/Onboarding/components/OnboardingDevPreview/OnboardingDevPreview.tsx

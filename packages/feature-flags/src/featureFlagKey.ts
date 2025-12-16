@@ -89,6 +89,7 @@ export enum FeatureFlagKey {
     ChatEnableTranslationEdit = 'enable-translations-edit',
     ChatHeaderPictureStyle = 'chat-header-picture-style',
     ChatLauncherCustomization = 'chat-launcher-customization',
+    ChatCreationWizardRevamp = 'linear.project_expansion-chat-settings-revamp',
     ChatMultiLanguages = 'chat-multi-languages',
     ChatPrivacyPolicyDisclaimer = 'chat-privacy-policy-disclaimer',
     ChatQuickRepliesSunset = 'chat-quick-replies-sunset',
