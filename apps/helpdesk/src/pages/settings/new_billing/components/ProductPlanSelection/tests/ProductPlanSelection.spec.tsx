@@ -1141,4 +1141,170 @@ describe('ProductPlanSelection', () => {
             expect(screen.queryByText(/Active until/i)).not.toBeInTheDocument()
         })
     })
+
+    describe('BillingUsageAndPlansRemoveProductClicked tracking', () => {
+        it('should track event when Cancel auto-renewal button is clicked for Helpdesk', async () => {
+            useAutomatedHelpdeskCancellationFlowAvailableMock.mockReturnValue(
+                true,
+            )
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...props} />
+                </Provider>,
+            )
+
+            logEventMock.mockClear()
+
+            const cancelButton = screen.getByRole('button', {
+                name: /Cancel auto-renewal/i,
+            })
+            await act(() => userEvent.click(cancelButton))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
+                { product: 'helpdesk' },
+            )
+        })
+
+        it('should track event when Remove product button is clicked for Automation', async () => {
+            const automationProps = {
+                ...props,
+                type: ProductType.Automation,
+                currentPlan: basicMonthlyAutomationPlan,
+                availablePlans: [basicMonthlyAutomationPlan],
+                selectedPlans: {
+                    ...selectedPlans,
+                    automation: {
+                        plan: basicMonthlyAutomationPlan,
+                        isSelected: true,
+                    },
+                },
+            }
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...automationProps} />
+                </Provider>,
+            )
+
+            logEventMock.mockClear()
+
+            const removeButton = screen.getByRole('button', {
+                name: /Remove product/i,
+            })
+            await act(() => userEvent.click(removeButton))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
+                { product: 'ai_agent' },
+            )
+        })
+
+        it('should track event when Remove product button is clicked for Convert', async () => {
+            const convertProps = {
+                ...props,
+                type: ProductType.Convert,
+                currentPlan: convertPlan1,
+                availablePlans: [convertPlan1],
+                selectedPlans: {
+                    ...selectedPlans,
+                    convert: {
+                        plan: convertPlan1,
+                        isSelected: true,
+                    },
+                },
+            }
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...convertProps} />
+                </Provider>,
+            )
+
+            logEventMock.mockClear()
+
+            const removeButton = screen.getByRole('button', {
+                name: /Remove product/i,
+            })
+            await act(() => userEvent.click(removeButton))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
+                { product: 'convert' },
+            )
+        })
+
+        it('should track event when Remove product button is clicked for SMS', async () => {
+            useFlagMock.mockReturnValue(true)
+
+            const smsProps = {
+                ...props,
+                type: ProductType.SMS,
+                currentPlan: smsPlan1,
+                availablePlans: [smsPlan1],
+                selectedPlans: {
+                    ...selectedPlans,
+                    sms: {
+                        plan: smsPlan1,
+                        isSelected: true,
+                    },
+                },
+            }
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...smsProps} />
+                </Provider>,
+            )
+
+            logEventMock.mockClear()
+
+            const removeButton = screen.getByRole('button', {
+                name: /Remove product/i,
+            })
+            await act(() => userEvent.click(removeButton))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
+                { product: 'sms' },
+            )
+        })
+
+        it('should track event when Remove product button is clicked for Voice', async () => {
+            useFlagMock.mockReturnValue(true)
+
+            const voiceProps = {
+                ...props,
+                type: ProductType.Voice,
+                currentPlan: voicePlan1,
+                availablePlans: [voicePlan1],
+                selectedPlans: {
+                    ...selectedPlans,
+                    voice: {
+                        plan: voicePlan1,
+                        isSelected: true,
+                    },
+                },
+            }
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...voiceProps} />
+                </Provider>,
+            )
+
+            logEventMock.mockClear()
+
+            const removeButton = screen.getByRole('button', {
+                name: /Remove product/i,
+            })
+            await act(() => userEvent.click(removeButton))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
+                { product: 'voice' },
+            )
+        })
+    })
 })

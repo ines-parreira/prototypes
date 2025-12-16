@@ -6,6 +6,7 @@ export type CardProps = {
     link?: {
         text: string
         url: string
+        onClick?: () => void
     }
 }
 
@@ -20,6 +21,7 @@ const Card = ({ children, title, link }: CardProps) => {
                         href={link.url}
                         target="_blank"
                         rel="noreferrer noopener"
+                        onClick={link.onClick}
                     >
                         {link.text}
                         <i className="material-icons">open_in_new</i>

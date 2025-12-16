@@ -1,3 +1,5 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
+import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
@@ -40,6 +42,9 @@ jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(() => () => undefined),
 }))
+
+jest.mock('@repo/logging')
+const logEventMock = assumeMock(logEvent)
 
 const notify = actions.notify as jest.Mock
 
@@ -212,5 +217,76 @@ describe('ContactSupportModal', () => {
         })
 
         expect(mockHandleClose).toHaveBeenCalledTimes(1)
+    })
+
+    it('should track event when Cancel button is clicked', async () => {
+        const props = {
+            isOpen: true,
+            domain: 'acme',
+            handleOnClose: mockHandleClose,
+            ticketPurpose: TicketPurpose.CONTACT_US,
+            subject: 'Support Request',
+            zapierHook: 'https://example.com',
+            to: 'support@example.com',
+            from: 'user@example.com',
+        }
+
+        render(
+            <Provider store={store}>
+                <ContactSupportModal {...props} />
+            </Provider>,
+        )
+
+        logEventMock.mockClear()
+
+        const cancelButton = screen.getByText('Cancel')
+        await act(() => userEvent.click(cancelButton))
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsValidation,
+            { action: 'cancel' },
+        )
+        expect(logEventMock).toHaveBeenCalledTimes(1)
+        expect(mockHandleClose).toHaveBeenCalledTimes(1)
+    })
+
+    it('should track event when Send button is clicked', async () => {
+        mockedServer.onGet().reply(200)
+
+        const props = {
+            isOpen: true,
+            domain: 'acme',
+            handleOnClose: mockHandleClose,
+            ticketPurpose: TicketPurpose.CONTACT_US,
+            subject: 'Support Request',
+            zapierHook: 'https://example.com',
+            to: 'support@example.com',
+            from: 'user@example.com',
+        }
+
+        render(
+            <Provider store={store}>
+                <ContactSupportModal {...props} />
+            </Provider>,
+        )
+
+        const messageInput = screen.getByPlaceholderText(
+            'Write your message here',
+        )
+        const sendButton = screen.getByText('Send')
+
+        await act(() =>
+            userEvent.type(messageInput, 'This is my support ticket'),
+        )
+
+        logEventMock.mockClear()
+
+        await act(() => userEvent.click(sendButton))
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsValidation,
+            { action: 'send' },
+        )
+        expect(logEventMock).toHaveBeenCalledTimes(1)
     })
 })

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -140,10 +141,28 @@ const ContactSupportModal = ({
             <ModalActionsFooter
                 extra={<div>Our team will send you a reply to {from}</div>}
             >
-                <Button intent="secondary" onClick={handleOnClose}>
+                <Button
+                    intent="secondary"
+                    onClick={() => {
+                        logEvent(
+                            SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsValidation,
+                            { action: 'cancel' },
+                        )
+                        handleOnClose()
+                    }}
+                >
                     Cancel
                 </Button>
-                <Button onClick={handleSendTicket} isLoading={isSubmitting}>
+                <Button
+                    onClick={() => {
+                        logEvent(
+                            SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsValidation,
+                            { action: 'send' },
+                        )
+                        handleSendTicket()
+                    }}
+                    isLoading={isSubmitting}
+                >
                     Send
                 </Button>
             </ModalActionsFooter>

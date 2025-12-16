@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useMemo, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 
@@ -241,7 +242,12 @@ const SummaryFooter = ({
                         }
                         className={css.button}
                         id="update-subscription"
-                        onClick={handleUpdateSubscription}
+                        onClick={() => {
+                            logEvent(
+                                SegmentEvent.BillingUsageAndPlansUpdateSubscriptionClicked,
+                            )
+                            handleUpdateSubscription()
+                        }}
                         isLoading={isSubscriptionUpdating}
                     >
                         {ctaText}

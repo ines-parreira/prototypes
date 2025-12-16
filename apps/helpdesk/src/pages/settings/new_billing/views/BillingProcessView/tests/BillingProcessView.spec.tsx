@@ -1,5 +1,7 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 
@@ -22,7 +24,6 @@ import { ProductType } from 'models/billing/types'
 import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
 import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
 import useProductCancellations from '../../../hooks/useProductCancellations'
@@ -31,6 +32,8 @@ import BillingProcessView from '../BillingProcessView'
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
+jest.mock('@repo/logging')
+const logEventMock = assumeMock(logEvent)
 jest.mock(
     '../../../components/ScheduledCancellationSummary/ScheduledCancellationSummary',
     () =>
@@ -89,10 +92,12 @@ describe('UsageAndPlansView', () => {
             error: undefined,
             value: new Map(),
         })
+        logEventMock.mockClear()
     })
 
     afterEach(() => {
         mockUseProductCancellations.mockReset()
+        logEventMock.mockReset()
     })
 
     it('should render', async () => {
@@ -116,6 +121,35 @@ describe('UsageAndPlansView', () => {
         })
 
         expect(container).toMatchSnapshot()
+    })
+
+    it('should log BillingProductManagementVisited event on component mount', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState,
+            { route: '/app/settings/billing/manage/helpdesk' },
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingProductManagementVisited,
+            { url: '/app/settings/billing/manage/helpdesk' },
+        )
+        expect(logEventMock).toHaveBeenCalledTimes(1)
     })
 
     it('should NOT render if subscription has been canceled', async () => {
@@ -160,7 +194,7 @@ describe('UsageAndPlansView', () => {
             }),
         } as Partial<RootState>
 
-        renderWithStoreAndQueryClientProvider(
+        renderWithStoreAndQueryClientAndRouter(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -188,6 +222,92 @@ describe('UsageAndPlansView', () => {
             },
             {},
         )
+    })
+
+    it('should track event when clicking See Plans Details link', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState,
+            { route: '/app/settings/billing/manage/helpdesk' },
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
+
+        logEventMock.mockClear()
+
+        const link = screen.getByRole('link', { name: /See Plans Details/i })
+        await act(() => userEvent.click(link))
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingUsageAndPlansSeePlansDetailsClicked,
+            { url: expect.any(String) },
+        )
+        expect(logEventMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should track event when clicking Contact Us button for Enterprise plan', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        const setDefaultMessageMock = jest.fn()
+        const setIsModalOpenMock = jest.fn()
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={setDefaultMessageMock}
+                setIsModalOpen={setIsModalOpenMock}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState,
+            { route: '/app/settings/billing/manage/helpdesk' },
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
+
+        const priceSelector = screen.getByLabelText('Price value')
+        await act(() => userEvent.click(priceSelector))
+
+        const menuitems = screen.getAllByRole('menuitem')
+        const enterpriseItem = menuitems[menuitems.length - 1]
+        await act(() => userEvent.click(enterpriseItem))
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: /Contact Us/i }),
+            ).toBeInTheDocument()
+        })
+
+        logEventMock.mockClear()
+
+        const contactButton = screen.getByRole('button', {
+            name: /Contact Us/i,
+        })
+        await act(() => userEvent.click(contactButton))
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsClicked,
+        )
+        expect(logEventMock).toHaveBeenCalledTimes(1)
+        expect(setIsModalOpenMock).toHaveBeenCalledWith(true)
     })
 
     describe('Product cancellations hook integration', () => {

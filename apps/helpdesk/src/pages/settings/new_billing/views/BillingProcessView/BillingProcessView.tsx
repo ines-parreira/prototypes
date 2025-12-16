@@ -1,8 +1,10 @@
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import _capitalize from 'lodash/capitalize'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { dismissNotification } from 'reapop'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -107,6 +109,7 @@ const BillingProcessView = ({
     const [showPendingChangesModal, setShowPendingChangesModal] =
         useState(false)
     const [updateProcessStarted, setUpdateProcessStarted] = useState(false)
+    const { pathname } = useLocation()
 
     // Current subscription state
     const currentSubscriptionScheduledToCancelAt = useAppSelector(
@@ -165,6 +168,12 @@ const BillingProcessView = ({
         }
     }, [dispatch])
 
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.BillingProductManagementVisited, {
+            url: pathname,
+        })
+    })
+
     const messageForEnterprise = useMemo(() => {
         let message =
             "Hey Gorgias, I'd like to get a quote for the following bundle of products:\n"
@@ -210,6 +219,9 @@ const BillingProcessView = ({
                         <Button
                             intent="primary"
                             onClick={() => {
+                                logEvent(
+                                    SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsClicked,
+                                )
                                 setDefaultMessage(messageForEnterprise)
                                 setIsModalOpen(true)
                             }}
@@ -344,6 +356,12 @@ const BillingProcessView = ({
                     link={{
                         url: PRICING_DETAILS_URL,
                         text: 'See Plans Details',
+                        onClick: () => {
+                            logEvent(
+                                SegmentEvent.BillingUsageAndPlansSeePlansDetailsClicked,
+                                { url: PRICING_DETAILS_URL },
+                            )
+                        },
                     }}
                 >
                     <div className={css.products}>

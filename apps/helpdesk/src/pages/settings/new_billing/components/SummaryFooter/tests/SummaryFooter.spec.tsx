@@ -1,6 +1,7 @@
-import React from 'react'
-
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { logEvent, SegmentEvent } from '@repo/logging'
+import { assumeMock } from '@repo/testing'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -45,6 +46,9 @@ jest.mock(
             }),
         }) as Record<string, unknown>,
 )
+
+jest.mock('@repo/logging')
+const logEventMock = assumeMock(logEvent)
 
 describe('SummaryFooter', () => {
     const mockUpdateSubscription = jest.fn()
@@ -174,5 +178,23 @@ describe('SummaryFooter', () => {
                 selectedPlans,
             )
         })
+    })
+
+    it('should track event when Update Subscription button is clicked', async () => {
+        render(
+            <Provider store={store}>
+                <SummaryFooter {...props} anyNewProductSelected={false} />
+            </Provider>,
+        )
+
+        logEventMock.mockClear()
+
+        const button = screen.getByText('Update Subscription')
+        await act(() => userEvent.click(button))
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingUsageAndPlansUpdateSubscriptionClicked,
+        )
+        expect(logEventMock).toHaveBeenCalledTimes(1)
     })
 })

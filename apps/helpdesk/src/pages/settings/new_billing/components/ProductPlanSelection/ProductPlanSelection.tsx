@@ -358,7 +358,13 @@ const ProductPlanSelection = ({
                     fillStyle="ghost"
                     intent="destructive"
                     size="small"
-                    onClick={handleOnCancelAutoRenewal}
+                    onClick={() => {
+                        logEvent(
+                            SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
+                            { product: 'helpdesk' },
+                        )
+                        handleOnCancelAutoRenewal()
+                    }}
                 >
                     Cancel auto-renewal
                 </Button>
@@ -370,6 +376,10 @@ const ProductPlanSelection = ({
                     intent="secondary"
                     size="small"
                     onClick={() => {
+                        logEvent(
+                            SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
+                            { product: 'ai_agent' },
+                        )
                         if (useConsolidatedCancellationModal) {
                             setIsCancellationFlowOpen(true)
                         } else {
@@ -386,7 +396,13 @@ const ProductPlanSelection = ({
                     fillStyle="ghost"
                     intent="secondary"
                     size="small"
-                    onClick={handleConvertClose}
+                    onClick={() => {
+                        logEvent(
+                            SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
+                            { product: 'convert' },
+                        )
+                        handleConvertClose()
+                    }}
                 >
                     Remove product
                 </Button>
@@ -401,6 +417,10 @@ const ProductPlanSelection = ({
                     intent="secondary"
                     size="small"
                     onClick={() => {
+                        logEvent(
+                            SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
+                            { product: 'sms' },
+                        )
                         setIsCancellationFlowOpen(true)
                     }}
                 >
@@ -417,6 +437,10 @@ const ProductPlanSelection = ({
                     intent="secondary"
                     size="small"
                     onClick={() => {
+                        logEvent(
+                            SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
+                            { product: 'voice' },
+                        )
                         setIsCancellationFlowOpen(true)
                     }}
                 >

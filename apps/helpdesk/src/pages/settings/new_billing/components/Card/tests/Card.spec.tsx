@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 
 import Card from '../Card'
@@ -24,5 +22,27 @@ describe('<Card />', () => {
             'href',
             'https://gorgias.com',
         )
+    })
+
+    it('should call onClick when link is clicked', () => {
+        const onClick = jest.fn()
+
+        render(
+            <Card
+                title="Test"
+                link={{
+                    url: 'https://gorgias.com',
+                    text: 'See Plans Details',
+                    onClick,
+                }}
+            >
+                Test
+            </Card>,
+        )
+
+        const link = screen.getByText('See Plans Details')
+        link.click()
+
+        expect(onClick).toHaveBeenCalledTimes(1)
     })
 })
