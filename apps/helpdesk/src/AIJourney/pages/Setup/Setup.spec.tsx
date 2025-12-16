@@ -1288,3 +1288,196 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
         })
     })
 })
+
+describe('<Setup journeyType={JOURNEY_TYPES.WIN_BACK} />', () => {
+    const mockHandleUpdate = jest.fn()
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+
+        mockUseJourneyUpdateHandler.mockImplementation(() => ({
+            handleUpdate: mockHandleUpdate,
+        }))
+        const mockCreateJourneyMutateAsync = jest.fn().mockResolvedValue({})
+        const mockUpdateMutateAsync = jest.fn().mockResolvedValue({})
+
+        // Default mock for useJourneyContext
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: undefined,
+            currentIntegration: undefined,
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'win_back',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector.name === 'getCurrentAccountState') {
+                return fromJS(account)
+            }
+            // Default to phone numbers for getNewPhoneNumbers selector
+            return {
+                '1': mockPhoneNumbers['1'],
+                '2': {
+                    ...mockPhoneNumbers['2'],
+                    name: 'Regular Phone 2',
+                },
+            }
+        })
+
+        mockUseSmsIntegrations.mockReturnValue({
+            data: [
+                { sms_integration_id: 1, store_integration_id: 1 },
+                { sms_integration_id: 2, store_integration_id: 2 },
+            ],
+            isLoading: false,
+            error: null,
+        })
+
+        mockUseCreateNewJourney.mockImplementation(() => ({
+            mutateAsync: mockCreateJourneyMutateAsync,
+            isError: false,
+            isLoading: false,
+        }))
+
+        mockUseUpdateJourney.mockImplementation(() => ({
+            mutateAsync: mockUpdateMutateAsync,
+            isError: false,
+            isLoading: false,
+        }))
+
+        // Default audience mocks - return empty lists with nested data structure
+        mockUseAudienceLists.mockReturnValue({
+            data: { data: [] },
+            isLoading: false,
+        })
+        mockUseAudienceSegments.mockReturnValue({
+            data: { data: [] },
+            isLoading: false,
+        })
+    })
+    const mockStore = configureMockStore([thunk])({
+        currentAccount: fromJS(account),
+    })
+
+    describe('cooldown_days and inactive_days parameters', () => {
+        it.each([
+            {
+                cooldownValue: null,
+                expectedValue: 30,
+            },
+            {
+                cooldownValue: undefined,
+                expectedValue: 30,
+            },
+            {
+                cooldownValue: 60,
+                expectedValue: 60,
+            },
+        ])(
+            'should set cooldownDays to 30 when cooldown_days is undefined in journeyParams',
+            ({ cooldownValue, expectedValue }) => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyData: {
+                        configuration: {
+                            sms_sender_integration_id: 1,
+                            max_follow_up_messages: 2,
+                            offer_discount: false,
+                            include_image: false,
+                            cooldown_days: cooldownValue,
+                        },
+                    },
+                    currentIntegration: { id: 1, name: 'shopify-store' },
+                    shopName: 'shopify-store',
+                    isLoading: false,
+                    journeyType: 'win_back',
+                    storeConfiguration: {
+                        monitoredSmsIntegrations: [1, 2],
+                    },
+                })
+
+                renderWithRouter(
+                    <Provider store={mockStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <IntegrationsProvider>
+                                <Setup journeyType={JOURNEY_TYPES.WIN_BACK} />
+                            </IntegrationsProvider>
+                        </QueryClientProvider>
+                    </Provider>,
+                )
+
+                const cooldownSection = screen
+                    .getByText('Cooldown Period')
+                    .closest('[class*="wrapper"]')
+                const selectedButton = cooldownSection?.querySelector(
+                    '[class*="selectorOption--selected"]',
+                )
+                expect(selectedButton).toBeInTheDocument()
+                expect(selectedButton).toHaveTextContent(
+                    expectedValue.toString(),
+                )
+            },
+        )
+
+        it.each([
+            {
+                inactiveDaysValue: null,
+                expectedValue: 30,
+            },
+            {
+                inactiveDaysValue: undefined,
+                expectedValue: 30,
+            },
+            {
+                inactiveDaysValue: 60,
+                expectedValue: 60,
+            },
+        ])(
+            'should set inactiveDays to $inactiveDaysValue when inactive_days is undefined in journeyParams',
+            async ({ inactiveDaysValue, expectedValue }) => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyData: {
+                        configuration: {
+                            sms_sender_integration_id: 1,
+                            max_follow_up_messages: 2,
+                            offer_discount: false,
+                            include_image: false,
+                            inactive_days: inactiveDaysValue,
+                        },
+                    },
+                    currentIntegration: { id: 1, name: 'shopify-store' },
+                    shopName: 'shopify-store',
+                    isLoading: false,
+                    journeyType: 'win_back',
+                    storeConfiguration: {
+                        monitoredSmsIntegrations: [1, 2],
+                    },
+                })
+
+                renderWithRouter(
+                    <Provider store={mockStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <IntegrationsProvider>
+                                <Setup journeyType={JOURNEY_TYPES.WIN_BACK} />
+                            </IntegrationsProvider>
+                        </QueryClientProvider>
+                    </Provider>,
+                )
+
+                const inactiveDaysSection = screen
+                    .getByText('Inactive Days')
+                    .closest('[class*="wrapper"]')
+                const selectedButton = inactiveDaysSection?.querySelector(
+                    '[class*="selectorOption--selected"]',
+                )
+
+                expect(selectedButton).toBeInTheDocument()
+                expect(selectedButton).toHaveTextContent(
+                    expectedValue.toString(),
+                )
+            },
+        )
+    })
+})

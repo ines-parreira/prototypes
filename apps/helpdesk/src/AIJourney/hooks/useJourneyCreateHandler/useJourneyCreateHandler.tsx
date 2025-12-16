@@ -27,6 +27,8 @@ type HandleCreateParams = {
     includeImage?: boolean
     isDiscountEnabled?: boolean
     phoneNumberValue?: NewPhoneNumber
+    inactiveDays?: number | null
+    cooldownDays?: number | null
 }
 
 export const useJourneyCreateHandler = ({
@@ -49,6 +51,8 @@ export const useJourneyCreateHandler = ({
             includeImage,
             isDiscountEnabled,
             phoneNumberValue,
+            inactiveDays,
+            cooldownDays,
         }: HandleCreateParams) => {
             try {
                 if (!integrationId || !integrationName) {
@@ -85,6 +89,8 @@ export const useJourneyCreateHandler = ({
                             ? discountCodeThresholdValue
                             : undefined,
                         include_image: includeImage,
+                        inactive_days: inactiveDays,
+                        cooldown_days: cooldownDays,
                     },
                 })
 

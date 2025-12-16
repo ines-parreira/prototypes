@@ -2,7 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import type {
     JourneyConfigurationApiDTO,
-    UpdateJourneyApiDTO,
+    PatchJourneyBody,
+    WinbackJourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
 import { patchJourney } from '@gorgias/convert-client'
 
@@ -11,8 +12,10 @@ import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/cli
 
 const updateJourney = async (
     journeyId: string,
-    params: UpdateJourneyApiDTO,
-    journeyConfigs?: JourneyConfigurationApiDTO,
+    params: PatchJourneyBody,
+    journeyConfigs?:
+        | JourneyConfigurationApiDTO
+        | WinbackJourneyConfigurationApiDTO,
 ) => {
     const requestBody = {
         ...params,
@@ -39,11 +42,10 @@ export const useUpdateJourney = () => {
             journeyConfigs,
         }: {
             journeyId: string
-            params: Omit<
-                UpdateJourneyApiDTO,
-                'type' | 'store_type' | 'account_id'
-            >
-            journeyConfigs?: JourneyConfigurationApiDTO
+            params: Omit<PatchJourneyBody, 'type' | 'store_type' | 'account_id'>
+            journeyConfigs?:
+                | JourneyConfigurationApiDTO
+                | WinbackJourneyConfigurationApiDTO
         }) => {
             return updateJourney(journeyId, params, journeyConfigs)
         },

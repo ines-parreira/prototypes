@@ -3,8 +3,10 @@ import { useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 
 import type {
-    CampaignUpdateApiDTO,
+    JourneyConfigurationApiDTO,
     JourneyStatusEnum,
+    PatchJourneyBody,
+    WinbackJourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
 
 import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
@@ -12,7 +14,6 @@ import { useUpdateJourney } from 'AIJourney/queries'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
-import type { CartAbandonedJourneyConfigurationApiDTO } from 'rest_api/revenue_addon_api/client'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -35,6 +36,8 @@ type HandleUpdateParams = {
     journeyMessageInstructions?: string | null
     journeyState?: JourneyStatusEnum
     phoneNumberValue?: NewPhoneNumber
+    inactiveDays?: number | null
+    cooldownDays?: number | null
 }
 
 export const useJourneyUpdateHandler = ({
@@ -60,6 +63,8 @@ export const useJourneyUpdateHandler = ({
             journeyMessageInstructions,
             journeyState,
             phoneNumberValue,
+            inactiveDays,
+            cooldownDays,
         }: HandleUpdateParams) => {
             try {
                 const entityId = id || journeyId
@@ -76,20 +81,22 @@ export const useJourneyUpdateHandler = ({
                     (integration) => integration.type === 'sms',
                 )?.id
 
-                const journeyConfigs: CartAbandonedJourneyConfigurationApiDTO =
-                    {
-                        max_follow_up_messages: followUpValue,
-                        offer_discount: isDiscountEnabled,
-                        max_discount_percent:
-                            isDiscountEnabled && discountValue
-                                ? Number(discountValue)
-                                : 0,
-                        sms_sender_integration_id: smsIntegrationId,
-                        sms_sender_number: phoneNumberValue?.phone_number,
-                        discount_code_message_threshold:
-                            discountCodeThresholdValue,
-                        include_image: includeImage,
-                    }
+                const journeyConfigs:
+                    | JourneyConfigurationApiDTO
+                    | WinbackJourneyConfigurationApiDTO = {
+                    max_follow_up_messages: followUpValue,
+                    offer_discount: isDiscountEnabled,
+                    max_discount_percent:
+                        isDiscountEnabled && discountValue
+                            ? Number(discountValue)
+                            : 0,
+                    sms_sender_integration_id: smsIntegrationId,
+                    sms_sender_number: phoneNumberValue?.phone_number,
+                    discount_code_message_threshold: discountCodeThresholdValue,
+                    include_image: includeImage,
+                    inactive_days: inactiveDays,
+                    cooldown_days: cooldownDays,
+                }
 
                 const shouldUpdateConfigs = Object.values(journeyConfigs).some(
                     (value) => value !== undefined && value !== null,
@@ -107,7 +114,7 @@ export const useJourneyUpdateHandler = ({
                                 ? ({
                                       title: campaignTitle,
                                       state: campaignState,
-                                  } as CampaignUpdateApiDTO)
+                                  } as PatchJourneyBody)
                                 : undefined,
                     },
                     ...(shouldUpdateConfigs && { journeyConfigs }),

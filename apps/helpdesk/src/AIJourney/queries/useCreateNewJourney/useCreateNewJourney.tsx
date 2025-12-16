@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import type {
-    CreateJourneyApiDTO,
+    CreateJourneyBody,
     JourneyConfigurationApiDTO,
+    WinbackJourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
 import { createJourney } from '@gorgias/convert-client'
 
@@ -10,8 +11,10 @@ import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 const createNewJourney = async (
-    params: CreateJourneyApiDTO,
-    journeyConfigs: JourneyConfigurationApiDTO,
+    params: CreateJourneyBody,
+    journeyConfigs:
+        | JourneyConfigurationApiDTO
+        | WinbackJourneyConfigurationApiDTO,
 ) => {
     return createJourney(
         {
@@ -37,8 +40,10 @@ export const useCreateNewJourney = () => {
             params,
             journeyConfigs,
         }: {
-            params: Omit<CreateJourneyApiDTO, 'store_type' | 'account_id'>
-            journeyConfigs: JourneyConfigurationApiDTO
+            params: Omit<CreateJourneyBody, 'store_type' | 'account_id'>
+            journeyConfigs:
+                | JourneyConfigurationApiDTO
+                | WinbackJourneyConfigurationApiDTO
         }) => {
             return createNewJourney(
                 { ...params, store_type: 'shopify' },

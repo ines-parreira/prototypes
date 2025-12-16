@@ -27,6 +27,7 @@ import {
 } from './fields'
 import { AudienceSelect } from './fields/AudienceSelect/AudienceSelect'
 import { CampaignTitle } from './fields/CampaignTitle/CampaignTitle'
+import { WinbackReengagementRulesField } from './fields/WinbackReengagementRules/WinbackReengagementRules'
 
 import css from './Setup.less'
 
@@ -36,6 +37,8 @@ const Fields = {
     SendImage: 'send_image',
     IncludeAudience: 'include_audience',
     ExcludeAudience: 'exclude_audience',
+    InactiveDays: 'inactive_days',
+    CoolDownDays: 'cooldown_days',
 }
 
 type Fields = (typeof Fields)[keyof typeof Fields]
@@ -43,7 +46,12 @@ type Fields = (typeof Fields)[keyof typeof Fields]
 export const JOURNEY_TYPES_TO_FIELDS: Record<JOURNEY_TYPES, Fields[]> = {
     [JOURNEY_TYPES.SESSION_ABANDONMENT]: [Fields.FollowUps, Fields.SendImage],
     [JOURNEY_TYPES.CART_ABANDONMENT]: [Fields.FollowUps, Fields.SendImage],
-    [JOURNEY_TYPES.WIN_BACK]: [Fields.FollowUps, Fields.SendImage],
+    [JOURNEY_TYPES.WIN_BACK]: [
+        Fields.FollowUps,
+        Fields.SendImage,
+        Fields.CoolDownDays,
+        Fields.InactiveDays,
+    ],
     [JOURNEY_TYPES.CAMPAIGN]: [
         Fields.CampaignTitle,
         Fields.IncludeAudience,
@@ -116,7 +124,8 @@ export const Setup = ({ journeyType }: SetupProps) => {
     const [excludedAudienceListIds, setExcludedAudienceListIds] = useState<
         string[] | undefined
     >()
-
+    const [inactiveDays, setInactiveDays] = useState<number>()
+    const [cooldownDays, setCooldownDays] = useState<number | null>()
     const [showValidationErrors, setShowValidationErrors] = useState(false)
 
     useEffect(() => {
@@ -132,6 +141,13 @@ export const Setup = ({ journeyType }: SetupProps) => {
                 journeyParams.discount_code_message_threshold ?? 1,
             )
             setIsImageEnabled(journeyParams.include_image || false)
+
+            if ('cooldown_days' in journeyParams) {
+                setCooldownDays(journeyParams.cooldown_days ?? 30)
+            }
+            if ('inactive_days' in journeyParams) {
+                setInactiveDays(journeyParams.inactive_days ?? 30)
+            }
         }
     }, [journeyParams])
 
@@ -186,6 +202,14 @@ export const Setup = ({ journeyType }: SetupProps) => {
 
     const handleExcludedAudienceListIds = (newValue: string[]) => {
         setExcludedAudienceListIds(newValue)
+    }
+
+    const handleUpdateInactiveDays = (newValue: number) => {
+        setInactiveDays(newValue)
+    }
+
+    const handleUpdateCooldownDays = (newValue: number | null) => {
+        setCooldownDays(newValue)
     }
 
     const {
@@ -285,6 +309,8 @@ export const Setup = ({ journeyType }: SetupProps) => {
                         journeyData.message_instructions,
                     journeyState: journeyData.state,
                     phoneNumberValue,
+                    inactiveDays,
+                    cooldownDays,
                 })
                 setIsVisible(false)
                 history.push(
@@ -303,6 +329,8 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     includeImage: isImageEnabled,
                     isDiscountEnabled,
                     phoneNumberValue,
+                    inactiveDays,
+                    cooldownDays,
                 })
                 setIsVisible(false)
                 history.push(
@@ -331,6 +359,8 @@ export const Setup = ({ journeyType }: SetupProps) => {
         setShowValidationErrors,
         shopName,
         shouldDisableButton,
+        inactiveDays,
+        cooldownDays,
     ])
 
     const getRedirectLinkOnCancel = () => {
@@ -418,6 +448,22 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     value={excludedAudienceListIds ?? []}
                     exclude={includedAudienceListIds ?? []}
                     onChange={handleExcludedAudienceListIds}
+                />
+            )}
+
+            {fields.includes(Fields.InactiveDays) && (
+                <WinbackReengagementRulesField
+                    type="inactive_days"
+                    value={inactiveDays}
+                    onChange={handleUpdateInactiveDays}
+                />
+            )}
+
+            {fields.includes(Fields.CoolDownDays) && (
+                <WinbackReengagementRulesField
+                    type="cooldown_days"
+                    value={cooldownDays}
+                    onChange={handleUpdateCooldownDays}
                 />
             )}
 
