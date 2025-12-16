@@ -312,7 +312,9 @@ const CancelProductModal = ({
                         footer={
                             <ProductFeaturesFOMOFooter
                                 onClose={handleOnClose}
-                                productType={productType}
+                                productDisplayName={
+                                    productCancellationScenario.productDisplayName
+                                }
                                 onContinue={switchToNextStep}
                             />
                         }
@@ -333,7 +335,9 @@ const CancelProductModal = ({
                         footer={
                             <CancellationReasonsFooter
                                 onClose={handleOnClose}
-                                productType={productType}
+                                productDisplayName={
+                                    productCancellationScenario.productDisplayName
+                                }
                                 onContinue={switchToNextStep}
                                 continueDisabled={
                                     !cancellationReasonsState.completed

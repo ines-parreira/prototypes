@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, render } from '@testing-library/react'
 
 import ProductFeaturesFOMOFooter from '../ProductFeaturesFOMOFooter'
@@ -7,7 +5,7 @@ import ProductFeaturesFOMOFooter from '../ProductFeaturesFOMOFooter'
 describe('ProductFeaturesFOMOFooter', () => {
     const onCloseMock = jest.fn()
     const onContinueMock = jest.fn()
-    const productType = 'Helpdesk'
+    const productDisplayName = 'Helpdesk'
 
     afterEach(() => {
         onCloseMock.mockClear()
@@ -19,12 +17,14 @@ describe('ProductFeaturesFOMOFooter', () => {
             <ProductFeaturesFOMOFooter
                 onClose={onCloseMock}
                 onContinue={onContinueMock}
-                productType={productType}
+                productDisplayName={productDisplayName}
             />,
         )
 
-        expect(getByText(`Keep using ${productType}`)).toBeInTheDocument()
-        expect(getByText('Continue cancelling')).toBeInTheDocument()
+        expect(
+            getByText(`Keep My ${productDisplayName} Plan`),
+        ).toBeInTheDocument()
+        expect(getByText('Continue To Cancel')).toBeInTheDocument()
     })
 
     it('calls onClose when "Keep using" button is clicked', () => {
@@ -32,11 +32,11 @@ describe('ProductFeaturesFOMOFooter', () => {
             <ProductFeaturesFOMOFooter
                 onClose={onCloseMock}
                 onContinue={onContinueMock}
-                productType={productType}
+                productDisplayName={productDisplayName}
             />,
         )
 
-        fireEvent.click(getByText(`Keep using ${productType}`))
+        fireEvent.click(getByText(`Keep My ${productDisplayName} Plan`))
         expect(onCloseMock).toHaveBeenCalledTimes(1)
     })
 
@@ -45,11 +45,11 @@ describe('ProductFeaturesFOMOFooter', () => {
             <ProductFeaturesFOMOFooter
                 onClose={onCloseMock}
                 onContinue={onContinueMock}
-                productType={productType}
+                productDisplayName={productDisplayName}
             />,
         )
 
-        fireEvent.click(getByText('Continue cancelling'))
+        fireEvent.click(getByText('Continue To Cancel'))
         expect(onContinueMock).toHaveBeenCalledTimes(1)
     })
 })

@@ -3,21 +3,21 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 type ProductFeaturesFOMOFooterProps = {
     onClose: () => void
     onContinue: () => void
-    productType: string
+    productDisplayName: string
 }
 
 const ProductFeaturesFOMOFooter = ({
     onClose,
     onContinue,
-    productType,
+    productDisplayName: productType,
 }: ProductFeaturesFOMOFooterProps) => {
     return (
         <>
-            <Button intent="secondary" onClick={onClose}>
-                Keep using {productType}
-            </Button>
             <Button intent="destructive" fillStyle="ghost" onClick={onContinue}>
-                Continue cancelling
+                Continue To Cancel
+            </Button>
+            <Button intent="primary" onClick={onClose}>
+                Keep My {productType} Plan
             </Button>
         </>
     )

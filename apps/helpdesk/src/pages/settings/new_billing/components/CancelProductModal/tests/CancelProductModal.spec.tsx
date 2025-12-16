@@ -230,12 +230,12 @@ describe('CancelProductModal: step 1', () => {
         )
 
         const keepUsingHelpdeskButtonElement = getByRole('button', {
-            name: 'Keep using helpdesk',
+            name: 'Keep My Helpdesk Plan',
         })
         expect(keepUsingHelpdeskButtonElement).toBeInTheDocument()
 
         const continueCancellingButtonElement = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
         expect(continueCancellingButtonElement).toBeInTheDocument()
         expect(continueCancellingButtonElement).toBeEnabled()
@@ -259,7 +259,7 @@ describe('CancelProductModal: step 1', () => {
             </Provider>,
         )
         const keepUsingHelpdeskButtonElement = getByRole('button', {
-            name: 'Keep using helpdesk',
+            name: 'Keep My Helpdesk Plan',
         })
         keepUsingHelpdeskButtonElement.click()
         expect(mockHandleOnClose).toHaveBeenCalled()
@@ -281,7 +281,7 @@ describe('CancelProductModal: step 1', () => {
             </Provider>,
         )
         const continueCancellingButtonElement = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
         continueCancellingButtonElement.click()
         expect(mockSwitchToNextStep).toHaveBeenCalled()
@@ -381,12 +381,12 @@ describe('CancelProductModal: step 2', () => {
         )
 
         const keepUsingHelpdeskButtonElement = getByRole('button', {
-            name: 'Keep using helpdesk',
+            name: 'Keep My Helpdesk Plan',
         })
         expect(keepUsingHelpdeskButtonElement).toBeInTheDocument()
 
         const continueCancellingButtonElement = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
         expect(continueCancellingButtonElement).toBeInTheDocument()
         expect(continueCancellingButtonElement).toBeAriaDisabled()
@@ -417,12 +417,12 @@ describe('CancelProductModal: step 2', () => {
         )
 
         const keepUsingHelpdeskButtonElement = getByRole('button', {
-            name: 'Keep using helpdesk',
+            name: 'Keep My Helpdesk Plan',
         })
         expect(keepUsingHelpdeskButtonElement).toBeInTheDocument()
 
         const continueCancellingButtonElement = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
         expect(continueCancellingButtonElement).toBeInTheDocument()
         expect(continueCancellingButtonElement).toBeAriaDisabled()
@@ -446,7 +446,7 @@ describe('CancelProductModal: step 2', () => {
             </Provider>,
         )
         const keepUsingHelpdeskButtonElement = getByRole('button', {
-            name: 'Keep using helpdesk',
+            name: 'Keep My Helpdesk Plan',
         })
         keepUsingHelpdeskButtonElement.click()
         expect(mockHandleOnClose).toHaveBeenCalled()
@@ -476,7 +476,7 @@ describe('CancelProductModal: step 2', () => {
             </Provider>,
         )
         const continueCancellingButtonElement = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
         expect(continueCancellingButtonElement).toBeAriaEnabled()
 
@@ -534,10 +534,10 @@ describe('CancelProductModal: step 3', () => {
         )
         expect(getByTestId('churn-mitigation-offer')).toBeInTheDocument()
         expect(
-            getByRole('button', { name: 'Accept offer' }),
+            getByRole('button', { name: 'Get My Offer' }),
         ).toBeInTheDocument()
         expect(
-            getByRole('button', { name: 'Continue cancelling' }),
+            getByRole('button', { name: 'Continue To Cancel' }),
         ).toBeInTheDocument()
     })
 
@@ -557,7 +557,7 @@ describe('CancelProductModal: step 3', () => {
             </Provider>,
         )
         const continueCancellingButtonElement = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
         await act(() => continueCancellingButtonElement.click())
 
@@ -595,7 +595,7 @@ describe('CancelProductModal: step 3', () => {
         )
 
         const continueCancellingButtonElement = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
         await act(() => continueCancellingButtonElement.click())
 
@@ -627,7 +627,7 @@ describe('CancelProductModal: step 3', () => {
         )
 
         const continueCancellingButtonElement = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
         await act(() => continueCancellingButtonElement.click())
 
@@ -662,7 +662,7 @@ describe('CancelProductModal: step 3', () => {
         )
 
         const continueCancellingButton = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
         await act(() => continueCancellingButton.click())
 
@@ -698,7 +698,7 @@ describe('CancelProductModal: step 3', () => {
         )
 
         const continueCancellingButton = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
         await act(() => continueCancellingButton.click())
 
@@ -736,7 +736,7 @@ describe('CancelProductModal: step 3', () => {
         )
 
         const continueCancellingButton = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
         await act(() => continueCancellingButton.click())
 
@@ -773,7 +773,7 @@ describe('CancelProductModal: step 3', () => {
             </Provider>,
         )
         const acceptOfferButtonElement = getByRole('button', {
-            name: 'Accept offer',
+            name: 'Get My Offer',
         })
         await act(() => fireEvent.click(acceptOfferButtonElement))
         expect(
@@ -829,7 +829,7 @@ describe('CancelProductModal: step 3', () => {
             </Provider>,
         )
         const acceptOfferButtonElement = getByRole('button', {
-            name: 'Accept offer',
+            name: 'Get My Offer',
         })
         await act(() => fireEvent.click(acceptOfferButtonElement))
         expect(sendAcceptedChurnMitigationOfferToSupportMock).toHaveBeenCalled()
@@ -868,7 +868,7 @@ describe('CancelProductModal: step 3', () => {
             </Provider>,
         )
 
-        const acceptOfferButton = getByRole('button', { name: 'Accept offer' })
+        const acceptOfferButton = getByRole('button', { name: 'Get My Offer' })
         await act(() => fireEvent.click(acceptOfferButton))
 
         expect(mockHandleOnClose).not.toHaveBeenCalled()
@@ -915,7 +915,7 @@ describe('CancelProductModal: step 3', () => {
             </Provider>,
         )
 
-        const acceptOfferButton = getByRole('button', { name: 'Accept offer' })
+        const acceptOfferButton = getByRole('button', { name: 'Get My Offer' })
         await act(() => fireEvent.click(acceptOfferButton))
 
         // Modal should close despite tracking failure
@@ -969,7 +969,7 @@ describe('CancelProductModal: step 3', () => {
             </Provider>,
         )
 
-        const acceptOfferButton = getByRole('button', { name: 'Accept offer' })
+        const acceptOfferButton = getByRole('button', { name: 'Get My Offer' })
         await act(() => fireEvent.click(acceptOfferButton))
 
         // Verify modal closed successfully
@@ -1280,7 +1280,7 @@ describe('CancelProductModal: AI Agent cancellation flow', () => {
         )
 
         const continueCancellingButtonElement = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
 
         await act(() => continueCancellingButtonElement.click())
@@ -1354,7 +1354,7 @@ describe('CancelProductModal: AI Agent cancellation flow', () => {
         )
 
         const continueCancellingButton = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
         await act(() => continueCancellingButton.click())
 
@@ -1482,7 +1482,7 @@ describe('CancelProductModal: Convert and SMS cancellation flows', () => {
                 )
 
                 const continueCancellingButtonElement = getByRole('button', {
-                    name: 'Continue cancelling',
+                    name: 'Continue To Cancel',
                 })
 
                 await act(() => continueCancellingButtonElement.click())
@@ -1518,7 +1518,7 @@ describe('CancelProductModal: Convert and SMS cancellation flows', () => {
                 )
 
                 const continueCancellingButtonElement = getByRole('button', {
-                    name: 'Continue cancelling',
+                    name: 'Continue To Cancel',
                 })
 
                 await act(() => continueCancellingButtonElement.click())
@@ -1562,7 +1562,7 @@ describe('CancelProductModal: Convert and SMS cancellation flows', () => {
                 )
 
                 const continueCancellingButton = getByRole('button', {
-                    name: 'Continue cancelling',
+                    name: 'Continue To Cancel',
                 })
                 await act(() => continueCancellingButton.click())
 

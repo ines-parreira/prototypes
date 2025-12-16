@@ -12,16 +12,16 @@ const ChurnMitigationOfferFooter = ({
 }: ChurnMitigationOfferFooterProps) => {
     return (
         <>
-            <Button intent="secondary" onClick={onAccept} isLoading={isLoading}>
-                Accept offer
-            </Button>
             <Button
                 intent="destructive"
                 fillStyle="ghost"
                 isDisabled={isLoading}
                 onClick={onContinue}
             >
-                Continue cancelling
+                Continue To Cancel
+            </Button>
+            <Button intent="primary" onClick={onAccept} isLoading={isLoading}>
+                Get My Offer
             </Button>
         </>
     )

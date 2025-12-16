@@ -7,7 +7,7 @@ import CancellationReasonsFooter from '../CancellationReasonsFooter'
 describe('CancellationReasonsFooter', () => {
     const onCloseMock = jest.fn()
     const onContinueMock = jest.fn()
-    const productType = 'Example Product'
+    const productDisplayName = 'Example Product'
     const continueDisabled = false
 
     afterEach(() => {
@@ -19,27 +19,29 @@ describe('CancellationReasonsFooter', () => {
         const { getByText } = render(
             <CancellationReasonsFooter
                 onClose={onCloseMock}
-                productType={productType}
+                productDisplayName={productDisplayName}
                 onContinue={onContinueMock}
                 continueDisabled={continueDisabled}
             />,
         )
 
-        expect(getByText(`Keep using ${productType}`)).toBeInTheDocument()
-        expect(getByText('Continue cancelling')).toBeInTheDocument()
+        expect(
+            getByText(`Keep My ${productDisplayName} Plan`),
+        ).toBeInTheDocument()
+        expect(getByText('Continue To Cancel')).toBeInTheDocument()
     })
 
     it('calls onClose when "Keep using" button is clicked', () => {
         const { getByText } = render(
             <CancellationReasonsFooter
                 onClose={onCloseMock}
-                productType={productType}
+                productDisplayName={productDisplayName}
                 onContinue={onContinueMock}
                 continueDisabled={continueDisabled}
             />,
         )
 
-        fireEvent.click(getByText(`Keep using ${productType}`))
+        fireEvent.click(getByText(`Keep My ${productDisplayName} Plan`))
         expect(onCloseMock).toHaveBeenCalledTimes(1)
     })
 
@@ -47,13 +49,13 @@ describe('CancellationReasonsFooter', () => {
         const { getByText } = render(
             <CancellationReasonsFooter
                 onClose={onCloseMock}
-                productType={productType}
+                productDisplayName={productDisplayName}
                 onContinue={onContinueMock}
                 continueDisabled={continueDisabled}
             />,
         )
 
-        fireEvent.click(getByText('Continue cancelling'))
+        fireEvent.click(getByText('Continue To Cancel'))
         expect(onContinueMock).toHaveBeenCalledTimes(1)
     })
 
@@ -61,14 +63,14 @@ describe('CancellationReasonsFooter', () => {
         const { getByRole } = render(
             <CancellationReasonsFooter
                 onClose={onCloseMock}
-                productType={productType}
+                productDisplayName={productDisplayName}
                 onContinue={onContinueMock}
                 continueDisabled={true}
             />,
         )
 
         const continueButton = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
         expect(continueButton).toBeAriaDisabled()
     })

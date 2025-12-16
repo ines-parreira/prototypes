@@ -2,29 +2,29 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 type CancellationReasonsFooterProps = {
     onClose: () => void
-    productType: string
+    productDisplayName: string
     onContinue: () => void
     continueDisabled: boolean
 }
 
 const CancellationReasonsFooter = ({
     onClose,
-    productType,
+    productDisplayName,
     onContinue,
     continueDisabled,
 }: CancellationReasonsFooterProps) => {
     return (
         <>
-            <Button intent="secondary" onClick={onClose}>
-                Keep using {productType}
-            </Button>
             <Button
                 intent="destructive"
                 fillStyle="ghost"
                 isDisabled={continueDisabled}
                 onClick={onContinue}
             >
-                Continue cancelling
+                Continue To Cancel
+            </Button>
+            <Button intent="primary" onClick={onClose}>
+                Keep My {productDisplayName} Plan
             </Button>
         </>
     )

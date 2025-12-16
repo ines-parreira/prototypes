@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { fireEvent, render, waitFor } from '@testing-library/react'
 
 import ChurnMitigationOfferFooter from '../ChurnMitigationOfferFooter'
@@ -23,8 +21,8 @@ describe('ChurnMitigationOfferFooter', () => {
             />,
         )
 
-        expect(getByText('Accept offer')).toBeInTheDocument()
-        expect(getByText('Continue cancelling')).toBeInTheDocument()
+        expect(getByText('Get My Offer')).toBeInTheDocument()
+        expect(getByText('Continue To Cancel')).toBeInTheDocument()
     })
 
     it('calls onAccept when "Accept offer" button is clicked', async () => {
@@ -36,7 +34,7 @@ describe('ChurnMitigationOfferFooter', () => {
             />,
         )
 
-        fireEvent.click(getByText('Accept offer'))
+        fireEvent.click(getByText('Get My Offer'))
         await waitFor(() => {
             expect(onAcceptMock).toHaveBeenCalledTimes(1)
         })
@@ -51,7 +49,7 @@ describe('ChurnMitigationOfferFooter', () => {
             />,
         )
 
-        fireEvent.click(getByText('Continue cancelling'))
+        fireEvent.click(getByText('Continue To Cancel'))
         await waitFor(() => {
             expect(onContinueMock).toHaveBeenCalledTimes(1)
         })
@@ -67,10 +65,10 @@ describe('ChurnMitigationOfferFooter', () => {
         )
 
         const acceptButton = getByRole('button', {
-            name: /Accept offer/,
+            name: /Get My Offer/,
         })
         const continueButton = getByRole('button', {
-            name: 'Continue cancelling',
+            name: 'Continue To Cancel',
         })
 
         expect(acceptButton).toBeAriaDisabled()
