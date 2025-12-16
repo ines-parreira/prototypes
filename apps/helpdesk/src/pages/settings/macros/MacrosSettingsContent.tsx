@@ -220,7 +220,7 @@ export function MacrosSettingsContent() {
                 </div>
                 <Video
                     videoURL="https://fast.wistia.net/embed/iframe/6s8saw4177"
-                    previewURL="https://embed-ssl.wistia.com/deliveries/a8df3940377f558e8a34511eba0e2770.jpg"
+                    previewURL="https://embed-ssl.wistia.com/deliveries/eaa9fb3f7bdad2088ca501fd4d6e913b.jpg"
                     legend="Creating Macros in Gorgias"
                 />
             </div>

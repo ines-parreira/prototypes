@@ -164,7 +164,7 @@ export function RulesList() {
                         <Video
                             legend="Creating Rules in Gorgias"
                             videoURL="https://fast.wistia.net/embed/iframe/762b0nk1i6"
-                            previewURL="https://embed-ssl.wistia.com/deliveries/7436e6362e322c3cba098340519adc2d.jpg"
+                            previewURL="https://embed-ssl.wistia.com/deliveries/020b846c6639824e2745f87ba724708d.jpg"
                         />
                         <CourseCard />
                     </div>

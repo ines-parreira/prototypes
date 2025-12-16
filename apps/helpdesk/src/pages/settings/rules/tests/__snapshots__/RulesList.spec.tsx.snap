@@ -110,7 +110,7 @@ exports[`<RulesList/> should render the rules list 1`] = `
             >
               <img
                 alt="video preview"
-                src="https://embed-ssl.wistia.com/deliveries/7436e6362e322c3cba098340519adc2d.jpg"
+                src="https://embed-ssl.wistia.com/deliveries/020b846c6639824e2745f87ba724708d.jpg"
               />
               <div
                 class="playIcon"
