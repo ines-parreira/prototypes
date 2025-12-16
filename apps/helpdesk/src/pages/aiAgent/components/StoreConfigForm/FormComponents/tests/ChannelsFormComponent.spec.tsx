@@ -21,6 +21,13 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
 
+jest.mock(
+    'pages/aiAgent/components/StoreConfigForm/hooks/useSmsPhoneNumbers',
+    () => ({
+        useSmsPhoneNumbers: jest.fn(() => [{ id: 1, name: 'Test Phone' }]),
+    }),
+)
+
 // Mock state selectors
 jest.mock('state/integrations/selectors', () => ({
     getIntegrationsByTypes: () => () => [],
@@ -717,6 +724,30 @@ describe('ChannelsFormComponent', () => {
             )
             expect(smsBanner).toBeDefined()
             expect(screen.getByText('settings banner sms')).toBeInTheDocument()
+        })
+
+        it('should disable SMS toggle when no SMS integrations are selected', () => {
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiAgentChat ||
+                    key === FeatureFlagKey.AiAgentSmsChannel ||
+                    false,
+            )
+
+            const propsWithNoSmsSelected = {
+                ...mockProps,
+                monitoredSmsIntegrations: [],
+                isSmsChannelEnabled: true,
+            }
+
+            render(
+                <BrowserRouter>
+                    <ChannelsFormComponent {...propsWithNoSmsSelected} />
+                </BrowserRouter>,
+            )
+
+            const smsToggle = screen.getByTestId('channel-toggle-sms')
+            expect(smsToggle).toHaveAttribute('data-disabled', 'true')
         })
     })
 

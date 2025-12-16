@@ -117,7 +117,7 @@ export const SmsSettingsFormComponent = ({
                                 onSelectionChange={handleSelectSmsIntegration}
                                 smsItems={smsPhoneNumbers}
                                 hasError={hasError}
-                                isDisabled={isDisabled || hasNoSmsIntegrations}
+                                isDisabled={hasNoSmsIntegrations}
                             />
                             {hasNoSmsIntegrations && (
                                 <div className={css.emptyStateMessage}>
@@ -155,6 +155,7 @@ export const SmsSettingsFormComponent = ({
                     updateValue={updateValue}
                     setIsPristine={setIsPristine}
                     isRequired={false}
+                    isDisabled={isDisabled}
                 />
             </section>
         </div>

@@ -1,11 +1,14 @@
-import { useMemo } from 'react'
+import { useMemo, useRef } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import _upperFirst from 'lodash/upperFirst'
 import { Link } from 'react-router-dom'
 
-import { LegacyBanner as Banner } from '@gorgias/axiom'
+import {
+    LegacyBanner as Banner,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import {
     BannerText,
@@ -25,6 +28,7 @@ type Props = {
     onUpdate: (value: boolean) => void
     channel: 'email' | 'chat' | 'sms'
     isDisabled?: boolean
+    disabledTooltip?: string
     deactivatedDatetime?: string | null
     type: SettingsBannerType
     orderManagementRoute?: string
@@ -37,12 +41,14 @@ export const ChannelToggleInput = ({
     onUpdate,
     channel,
     isDisabled,
+    disabledTooltip,
     deactivatedDatetime,
     type,
     orderManagementRoute,
     flowsRoute,
     warningText,
 }: Props) => {
+    const toggleRef = useRef<HTMLDivElement>(null)
     const [bannerAcknowledged, setBannerAcknowledged] =
         useLocalStorage<boolean>(
             `ai-settings-${type}-banner-acknowledged`,
@@ -141,9 +147,14 @@ export const ChannelToggleInput = ({
                     type="toggle"
                     isChecked={isToggled}
                     isDisabled={isDisabled}
+                    disableRowStyling={!!disabledTooltip}
+                    toggleRef={toggleRef}
                     onChange={handleClick}
                     toggleName={`toggle-ai-agent-${type}`}
-                ></SettingsFeatureRow>
+                />
+                {isDisabled && disabledTooltip && (
+                    <Tooltip target={toggleRef}>{disabledTooltip}</Tooltip>
+                )}
             </SettingsCardContent>
         </SettingsCard>
     )

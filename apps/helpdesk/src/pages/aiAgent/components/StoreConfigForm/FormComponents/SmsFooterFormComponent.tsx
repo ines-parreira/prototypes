@@ -24,6 +24,7 @@ type SmsFooterFormComponentProps = {
     smsDisclaimer: string | null
     updateValue: UpdateValue<FormValues>
     isRequired: boolean
+    isDisabled?: boolean
     setIsPristine?: (isPristine: boolean) => void
 }
 
@@ -32,6 +33,7 @@ export const SmsFooterFormComponent = ({
     updateValue,
     setIsPristine,
     isRequired,
+    isDisabled,
 }: SmsFooterFormComponentProps) => {
     const initialValue = smsDisclaimer ?? INITIAL_FORM_VALUES.smsDisclaimer
     const [isFooterEnabled, setIsFooterEnabled] = useState<boolean>(() => {
@@ -109,6 +111,7 @@ export const SmsFooterFormComponent = ({
                         value={isFooterEnabled}
                         label="Use initial message footer"
                         onChange={handleCheckboxChange}
+                        isDisabled={isDisabled}
                         caption="When enabled, the text below will appear at the end of the first SMS sent to customers by AI Agent."
                     />
                     <TextArea
@@ -116,7 +119,7 @@ export const SmsFooterFormComponent = ({
                         innerClassName={css.formInputEditor}
                         placeholder="Powered by AI"
                         value={initialValue}
-                        isDisabled={!isFooterEnabled}
+                        isDisabled={isDisabled || !isFooterEnabled}
                         onChange={(value) =>
                             handleChange('smsDisclaimer', value)
                         }

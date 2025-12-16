@@ -12,6 +12,9 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
         hasAccess: true,
     }),
 }))
+jest.mock('../hooks/useSmsPhoneNumbers', () => ({
+    useSmsPhoneNumbers: () => [{ id: 1, name: 'Test Phone' }],
+}))
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
     __esModule: true,
     default: () => [],

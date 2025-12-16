@@ -21,6 +21,8 @@ type SettingsFeatureRowProps = {
     toggleName?: string
     isChecked?: boolean
     isDisabled?: boolean
+    disableRowStyling?: boolean
+    toggleRef?: React.RefObject<HTMLDivElement>
     onChange?: (value: boolean) => void
     onClick?: () => void
 }
@@ -33,6 +35,8 @@ export const SettingsFeatureRow = ({
     type = 'badge',
     isChecked = false,
     isDisabled = false,
+    disableRowStyling = false,
+    toggleRef,
     onClick = () => {},
     onChange = () => {},
     link = '',
@@ -41,7 +45,7 @@ export const SettingsFeatureRow = ({
     return (
         <div
             className={classNames(css.featureRow, {
-                [css.disabled]: isDisabled,
+                [css.disabled]: isDisabled && !disableRowStyling,
             })}
             onClick={onClick}
             data-testid={`settings-feature-row-${title.toLowerCase().replace(/\s+/g, '-')}`}
@@ -86,7 +90,7 @@ export const SettingsFeatureRow = ({
                 </Link>
             )}
             {type === 'toggle' && (
-                <div className={css.featureRowActions}>
+                <div className={css.featureRowActions} ref={toggleRef}>
                     <NewToggleButton
                         isDisabled={isDisabled}
                         checked={isChecked}

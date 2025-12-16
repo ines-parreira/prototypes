@@ -18,6 +18,7 @@ import { useFetchChatIntegrationsStatusData } from 'pages/aiAgent/Overview/hooks
 import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
+import { useSmsPhoneNumbers } from '../hooks/useSmsPhoneNumbers'
 import { SmsSettingsFormComponent } from './SmsSettingsFormComponent'
 
 import css from '../StoreConfigForm.less'
@@ -91,6 +92,13 @@ export const ChannelsFormComponent = ({
     const showToggles = !isAiAgentActivationEnabled || hasAiAgentNewActivationXp
 
     const { hasAccess } = useAiAgentAccess(shopName)
+    const smsPhoneNumbers = useSmsPhoneNumbers()
+    const hasNoSmsIntegrations = smsPhoneNumbers.length === 0
+    const hasNoSmsSelected =
+        !monitoredSmsIntegrations ||
+        monitoredSmsIntegrations.length === 0 ||
+        hasNoSmsIntegrations
+
     const chatChannels: InstallationStatusInjectedChatItem[] =
         useSelfServiceChatChannels(shopType, shopName)
 
@@ -247,6 +255,11 @@ export const ChannelsFormComponent = ({
                                             ? 'Disabling AI Agent on SMS will deactivate AI Journey. Keep AI Agent on SMS enabled to avoid disruptions.'
                                             : undefined
                                     }
+                                    disabledTooltip={
+                                        hasNoSmsSelected
+                                            ? 'Select at least one phone number or integration to enable AI Agent on SMS.'
+                                            : undefined
+                                    }
                                     onUpdate={(isToggled) => {
                                         updateSmsChannelDeactivatedDatetime(
                                             isToggled
@@ -255,7 +268,7 @@ export const ChannelsFormComponent = ({
                                         )
                                     }}
                                     channel="sms"
-                                    isDisabled={!hasAccess}
+                                    isDisabled={!hasAccess || hasNoSmsSelected}
                                     deactivatedDatetime={
                                         smsChannelDeactivatedDatetime
                                     }
@@ -274,6 +287,7 @@ export const ChannelsFormComponent = ({
                                 isRequired={
                                     smsChannelDeactivatedDatetime === null
                                 }
+                                isDisabled={hasNoSmsSelected}
                             />
                         </div>
                     </ConfigurationSection>
