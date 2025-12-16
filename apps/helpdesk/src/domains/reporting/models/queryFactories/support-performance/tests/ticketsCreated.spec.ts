@@ -190,6 +190,11 @@ describe('ticketsCreatedTimeSeriesQueryFactory', () => {
                     values: [periodEnd],
                 },
                 ...NotSpamNorTrashedTicketsFilter,
+                {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [periodStart, periodEnd],
+                },
             ],
             segments: [],
             timeDimensions: [
@@ -242,6 +247,11 @@ describe('ticketsCreatedTimeSeriesQueryFactory', () => {
                     member: TicketMessagesMember.PeriodStart,
                     operator: ReportingFilterOperator.AfterDate,
                     values: [periodStart],
+                },
+                {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [periodStart, periodEnd],
                 },
             ],
             segments: [TicketMessagesSegment.TicketCreatedByAgent],

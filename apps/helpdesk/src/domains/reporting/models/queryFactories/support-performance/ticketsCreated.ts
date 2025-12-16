@@ -132,6 +132,14 @@ export const ticketsCreatedTimeSeriesQueryFactory = (
                 statFiltersWithoutAgents,
             ),
             ...commonFilters,
+            {
+                member: TicketMember.CreatedDatetime,
+                operator: ReportingFilterOperator.InDateRange,
+                values: [
+                    formatReportingQueryDate(filters.period.start_datetime),
+                    formatReportingQueryDate(filters.period.end_datetime),
+                ],
+            },
         ],
         metricName:
             METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED_TIME_SERIES,
