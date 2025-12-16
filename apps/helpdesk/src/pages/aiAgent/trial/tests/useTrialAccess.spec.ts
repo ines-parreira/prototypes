@@ -29,10 +29,16 @@ import {
     getCurrentAccountState,
     isTrialing,
 } from 'state/currentAccount/selectors'
+import { CompanyTier } from 'state/currentCompany/currentCompanySlice'
+import { getCompanyFixedGmvBandTier } from 'state/currentCompany/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import { createMockTrialAccess } from '../hooks/fixtures'
-import { useTrialAccess } from '../hooks/useTrialAccess'
+import {
+    gmvBandsAllowedToBookDemo,
+    gmvBandsAllowedToSelfServe,
+    useTrialAccess,
+} from '../hooks/useTrialAccess'
 
 // Mock dependencies
 jest.mock('hooks/useAppSelector')
@@ -167,6 +173,9 @@ describe('useTrialAccess', () => {
         if (selector === isTrialing) {
             return false
         }
+        if (selector === getCompanyFixedGmvBandTier) {
+            return CompanyTier.Tier1 // SMB 1
+        }
         return undefined
     }
 
@@ -215,6 +224,94 @@ describe('useTrialAccess', () => {
         mockIsTeamLead.mockReturnValue(false)
         mockUseAiAgentOnboardingState.mockReturnValue(
             OnboardingState.OnboardingWizard,
+        )
+    })
+
+    describe('gmv segmentation', () => {
+        beforeEach(() => {
+            mockUseFlag.mockClear() // Clear the default
+            mockUseFlag.mockImplementation(() => false) // Don't forcibly allow user be in trial
+        })
+
+        it.each(Object.values(CompanyTier))(
+            'should only allow SMB and Commerical GMV tiers to see the trial CTA (tier: %s)',
+            (tier: CompanyTier) => {
+                mockUseAppSelector.mockClear() // Clear the default
+                mockUseAppSelector.mockImplementation((selector) => {
+                    if (selector === getCompanyFixedGmvBandTier) {
+                        return tier
+                    }
+                    return defaulUseAppSelectorMockImplementation(selector)
+                })
+
+                const { result } = renderUseTrialAccess()
+
+                expect(result.current.canSeeTrialCTA).toEqual(
+                    gmvBandsAllowedToSelfServe.includes(tier),
+                )
+            },
+        )
+
+        it.each(Object.values(CompanyTier))(
+            'should only allow SMB and Commerical GMV tiers to see the subscribe now CTA (tier: %s)',
+            (tier: CompanyTier) => {
+                const expiredTrial = createMockTrial({
+                    trial: {
+                        startDatetime: '2023-11-01T00:00:00.000Z',
+                        endDatetime: '2023-12-01T00:00:00.000Z', // Trial ended
+                        account: {
+                            plannedUpgradeDatetime: null,
+                            optInDatetime: '2023-11-01T00:00:00.000Z',
+                            optOutDatetime: null,
+                            actualUpgradeDatetime: null,
+                            actualTerminationDatetime:
+                                '2023-12-01T00:00:00.000Z',
+                        },
+                    },
+                })
+
+                mockUseGetTrials.mockReturnValue({
+                    data: [expiredTrial],
+                    isLoading: false,
+                    error: null,
+                    isError: false,
+                    isSuccess: true,
+                    status: 'success',
+                } as any)
+
+                mockUseAppSelector.mockClear() // Clear the default
+                mockUseAppSelector.mockImplementation((selector) => {
+                    if (selector === getCompanyFixedGmvBandTier) {
+                        return tier
+                    }
+                    return defaulUseAppSelectorMockImplementation(selector)
+                })
+
+                const { result } = renderUseTrialAccess('Test Store')
+
+                expect(result.current.canSeeSubscribeNowCTA).toEqual(
+                    gmvBandsAllowedToSelfServe.includes(tier),
+                )
+            },
+        )
+
+        it.each(Object.values(CompanyTier))(
+            'should only allow Commerical and Enterprise GMV tiers to book demos (tier: %s)',
+            (tier: CompanyTier) => {
+                mockUseAppSelector.mockClear() // Clear the default
+                mockUseAppSelector.mockImplementation((selector) => {
+                    if (selector === getCompanyFixedGmvBandTier) {
+                        return tier
+                    }
+                    return defaulUseAppSelectorMockImplementation(selector)
+                })
+
+                const { result } = renderUseTrialAccess()
+
+                expect(result.current.canBookDemo).toEqual(
+                    gmvBandsAllowedToBookDemo.includes(tier),
+                )
+            },
         )
     })
 
@@ -295,6 +392,53 @@ describe('useTrialAccess', () => {
             })
         })
 
+        it('should not show subscribe now CTA while data is loading', () => {
+            // Enable feature flags
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key === FeatureFlagKey.AiShoppingAssistantTrialMerchants ||
+                    false,
+            )
+
+            // Set loading state for useGetTrials
+            mockUseGetTrials.mockReturnValue({
+                data: [],
+                isLoading: true,
+                error: null,
+                isError: false,
+            } as any)
+
+            // Set loading state for store activations
+            mockUseStoreActivations.mockReturnValue({
+                storeActivations: {}, // Empty while loading
+                progressPercentage: 0,
+                isFetchLoading: true,
+                isSaveLoading: false,
+                changeSales: jest.fn(),
+                changeSupport: jest.fn(),
+                changeSupportChat: jest.fn(),
+                changeSupportEmail: jest.fn(),
+                saveStoreConfigurations: jest.fn(),
+                migrateToNewPricing: jest.fn(),
+                endTrial: jest.fn(),
+                activation: jest.fn(),
+            })
+
+            // Set admin role
+            mockIsAdmin.mockReturnValue(true)
+            mockIsTeamLead.mockReturnValue(false)
+
+            const { result } = renderUseTrialAccess()
+
+            expect(result.current).toEqual({
+                ...defaultExpectedValues,
+                canSeeSystemBanner: true,
+                canSeeSubscribeNowCTA: false,
+                isLoading: true,
+                isTrialingSubscription: false,
+            })
+        })
+
         it('should return correct access values for team lead user', () => {
             mockIsAdmin.mockReturnValue(false)
             mockIsTeamLead.mockReturnValue(true)
@@ -350,7 +494,7 @@ describe('useTrialAccess', () => {
     })
 
     describe('when trial history exists', () => {
-        it('should not show trial CTA when current store trial has expired', () => {
+        it('should subscribe now CTA when current store trial has expired', () => {
             const expiredTrial = createMockTrial({
                 trial: {
                     startDatetime: '2023-11-01T00:00:00.000Z',
@@ -378,7 +522,7 @@ describe('useTrialAccess', () => {
 
             expect(result.current).toEqual({
                 ...defaultExpectedValues,
-                canSeeTrialCTA: false, // Trial CTA should not be shown
+                canSeeSubscribeNowCTA: true, // Subscribe should now be shown
                 hasAnyTrialExpired: true, // Trial has expired
                 hasAnyTrialStarted: true,
                 hasAnyTrialOptedIn: true,
@@ -724,26 +868,9 @@ describe('useTrialAccess', () => {
             const { result } = renderUseTrialAccess()
 
             expect(result.current).toEqual({
-                canNotifyAdmin: false,
-                canBookDemo: false,
-                canSeeSystemBanner: false,
-                canSeeTrialCTA: false,
-                hasCurrentStoreTrialStarted: false,
-                hasAnyTrialStarted: false,
-                hasCurrentStoreTrialExpired: false,
-                hasAnyTrialExpired: false,
-                hasCurrentStoreTrialOptedOut: false,
-                hasAnyTrialOptedOut: false,
-                hasAnyTrialOptedIn: false,
-                hasCurrentStoreTrialActive: false,
-                hasAnyTrialActive: false,
-                isAdminUser: true,
-                isLoading: false,
-                trialType: TrialType.ShoppingAssistant,
-                currentAutomatePlan: { generation: 5 },
-                isInAiAgentTrial: false,
-                isOnboarded: false,
+                ...defaultExpectedValues,
                 isTrialingSubscription: true,
+                isError: undefined,
             })
         })
     })

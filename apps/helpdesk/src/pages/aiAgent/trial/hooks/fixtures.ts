@@ -5,6 +5,7 @@ export const createMockTrialAccess = (overrides = {}) => ({
     canBookDemo: false,
     canSeeSystemBanner: false,
     canSeeTrialCTA: false,
+    canSeeSubscribeNowCTA: false,
     hasCurrentStoreTrialStarted: false,
     hasAnyTrialStarted: false,
     hasCurrentStoreTrialOptedOut: false,

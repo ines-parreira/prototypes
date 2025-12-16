@@ -27,8 +27,24 @@ import {
     getCurrentAccountState,
     isTrialing,
 } from 'state/currentAccount/selectors'
+import { CompanyTier } from 'state/currentCompany/currentCompanySlice'
+import { getCompanyFixedGmvBandTier } from 'state/currentCompany/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin, isTeamLead } from 'utils'
+
+export const gmvBandsAllowedToSelfServe = [
+    CompanyTier.Tier1, // SMB 1
+    CompanyTier.Tier2, // SMB 2
+    CompanyTier.Tier3, // Commercial 1
+    CompanyTier.Tier4, // Commerical 2
+]
+
+export const gmvBandsAllowedToBookDemo = [
+    CompanyTier.Tier3, // Commercial 1
+    CompanyTier.Tier4, // Commerical 2
+    CompanyTier.Tier5, // Enterprise 1
+    CompanyTier.Tier6, // Enterprise 2
+]
 
 /**
  * Creates a restricted trial access object for early return scenarios.
@@ -44,6 +60,7 @@ const createRestrictedTrialAccess = (
     canBookDemo: false,
     canSeeSystemBanner: false,
     canSeeTrialCTA: false,
+    canSeeSubscribeNowCTA: false,
     hasCurrentStoreTrialStarted: false,
     hasAnyTrialStarted: false,
     hasCurrentStoreTrialExpired: false,
@@ -71,6 +88,8 @@ export type TrialAccess = {
     canSeeSystemBanner: boolean
     /** Whether the user can see the trial CTA (only for Admins) */
     canSeeTrialCTA: boolean
+    /** Whether the user can see the subscribe now CTA (only for Admins) */
+    canSeeSubscribeNowCTA: boolean
 
     hasCurrentStoreTrialStarted: boolean
     hasAnyTrialStarted: boolean
@@ -116,6 +135,8 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const onboardingState = useAiAgentOnboardingState(currentStoreName ?? '')
+    const gmvBandTier =
+        useAppSelector(getCompanyFixedGmvBandTier) ?? CompanyTier.Tier1 // Default to SMB 1
 
     const isTrialingSubscription = useAppSelector(isTrialing)
 
@@ -230,9 +251,17 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
             isAdminUser &&
             !hasCurrentStoreTrialStarted &&
             !hasCurrentStoreTrialExpired &&
-            (isOnStarterOrBasicPlan ||
-                isAiShoppingAssistantTrialMerchantsEnabled ||
-                isOnProPlusPlan),
+            (isAiShoppingAssistantTrialMerchantsEnabled ||
+                gmvBandsAllowedToSelfServe.includes(gmvBandTier)),
+    )
+
+    // Subscribe Now Banner/CTA
+    const canSeeSubscribeNowCTA = Boolean(
+        !isLoading &&
+            isAdminUser &&
+            (hasCurrentStoreTrialStarted || hasCurrentStoreTrialExpired) &&
+            (isAiShoppingAssistantTrialMerchantsEnabled ||
+                gmvBandsAllowedToSelfServe.includes(gmvBandTier)),
     )
 
     // Team leads can notify admin if trial CTA conditions are met (except admin check)
@@ -253,7 +282,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
      */
     const canBookDemo = Boolean(
         (isAdminUser || isTeamLeadUser) &&
-            isOnProPlusPlan &&
+            gmvBandsAllowedToBookDemo.includes(gmvBandTier) &&
             // Explicit check to false because the FF is undefined while loading
             isAiShoppingAssistantTrialMerchantsEnabled === false,
     )
@@ -273,6 +302,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         canBookDemo,
         canSeeSystemBanner,
         canSeeTrialCTA,
+        canSeeSubscribeNowCTA,
 
         hasCurrentStoreTrialStarted,
         hasAnyTrialStarted,
