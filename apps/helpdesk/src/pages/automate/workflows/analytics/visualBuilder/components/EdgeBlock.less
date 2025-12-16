@@ -27,7 +27,14 @@
         .caption-semibold();
         .base();
 
-        color: var(--neutral-grey-5);
-        background: var(--neutral-grey-2);
+        color: var(--neutral-grey-5); // legacy
+        background: var(--neutral-grey-2); // legacy
+    }
+}
+
+.axiom :local {
+    .edgeLabel {
+        color: var(--content-neutral-secondary);
+        background: var(--surface-neutral-secondary);
     }
 }

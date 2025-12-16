@@ -11,7 +11,7 @@
     }
 
     .asterisk {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         margin-left: var(--layout-spacing-xxs);
     }
 
@@ -20,5 +20,11 @@
             margin-bottom: unset;
             padding-inline-start: 20px;
         }
+    }
+}
+
+.axiom :local {
+    .asterisk {
+        color: var(--content-error-primary);
     }
 }

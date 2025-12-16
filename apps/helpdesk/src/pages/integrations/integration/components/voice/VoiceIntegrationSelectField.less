@@ -15,11 +15,17 @@
     }
 
     .error {
-        color: var(--feedback-error-2);
+        color: var(--feedback-error-2); // legacy
         margin-bottom: var(--layout-spacing-xs);
     }
 
     .caption {
         .caption-regular();
+    }
+}
+
+.axiom :local {
+    .error {
+        color: var(--content-error-primary);
     }
 }

@@ -11,8 +11,8 @@
         height: 156px;
         padding: var(--layout-spacing-s);
         border-radius: var(--layout-spacing-xxs);
-        background: var(--neutral-grey-0);
-        border: 1px solid var(--neutral-grey-3);
+        background: var(--neutral-grey-0); // legacy
+        border: 1px solid var(--neutral-grey-3); // legacy
 
         display: flex;
         flex-direction: column;
@@ -21,7 +21,7 @@
 
     .firstMetrics {
         padding: var(--layout-spacing-xs) var(--layout-spacing-s);
-        background: var(--neutral-grey-1);
+        background: var(--neutral-grey-1); // legacy
 
         display: flex;
         flex-direction: row;
@@ -50,15 +50,15 @@
     }
 
     .metricLabelAutomated {
-        color: var(--accessory-green-3);
+        color: var(--accessory-green-3); // legacy
     }
 
     .metricLabelDropoff {
-        color: var(--feedback-error-4);
+        color: var(--feedback-error-4); // legacy
     }
 
     .metricLabelTicket {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .metricValue {
@@ -72,5 +72,28 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+    }
+}
+
+.axiom :local {
+    .metricsContainer {
+        background: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .firstMetrics {
+        background: var(--surface-neutral-secondary);
+    }
+
+    .metricLabelAutomated {
+        color: var(--content-success-primary);
+    }
+
+    .metricLabelDropoff {
+        color: var(--content-error-primary);
+    }
+
+    .metricLabelTicket {
+        color: var(--content-neutral-secondary);
     }
 }

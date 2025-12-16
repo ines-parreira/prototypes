@@ -5,12 +5,22 @@
     }
 
     .circleBackground {
-        stroke: var(--neutral-grey-4);
+        stroke: var(--neutral-grey-4); // legacy
     }
 
     .circleForeground {
         transform: rotate(-90deg);
         transform-origin: 50% 50%;
-        stroke: var(--main-primary);
+        stroke: var(--main-primary); // legacy
+    }
+}
+
+.axiom :local {
+    .circleBackground {
+        stroke: var(--border-neutral-default);
+    }
+
+    .circleForeground {
+        stroke: var(--border-accent-default);
     }
 }
