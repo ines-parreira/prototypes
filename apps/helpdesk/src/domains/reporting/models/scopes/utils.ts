@@ -467,6 +467,27 @@ const SEGMENT_TO_FILTER_MAPPINGS: SegmentToFilterMapping[] = [
         segment: 'TicketSatisfactionSurveyEnriched.surveyScored',
         filters: [],
     },
+    // Voice events agents segments
+    {
+        segment: 'VoiceEventsByAgent.transferredInboundCalls',
+        filters: [
+            {
+                member: 'VoiceEventsByAgent.transferredCalls',
+                operator: ReportingFilterOperator.Equals,
+                values: ['1'],
+            },
+        ],
+    },
+    {
+        segment: 'VoiceEventsByAgent.declinedInboundCalls',
+        filters: [
+            {
+                member: 'VoiceEventsByAgent.declinedCalls',
+                operator: ReportingFilterOperator.Equals,
+                values: ['1'],
+            },
+        ],
+    },
 
     // VoiceCall.callsInFinalStatus has no additional filters in V2
 ]
