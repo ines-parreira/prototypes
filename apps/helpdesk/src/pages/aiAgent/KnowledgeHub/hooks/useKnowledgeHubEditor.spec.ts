@@ -9,7 +9,10 @@ import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { REFETCH_KNOWLEDGE_HUB_TABLE } from '../constants'
 import { dispatchDocumentEvent } from '../EmptyState/utils'
-import type { KnowledgeEditorConfig } from '../types'
+import type {
+    FilteredKnowledgeHubArticle,
+    KnowledgeEditorConfig,
+} from '../types'
 import { useKnowledgeHubEditor } from './useKnowledgeHubEditor'
 
 jest.mock('@repo/logging')
@@ -26,10 +29,10 @@ describe('useKnowledgeHubEditor', () => {
     let mockNotifySuccess: jest.Mock
 
     const mockFilteredArticles = [
-        { id: 1, title: 'Article 1' },
-        { id: 2, title: 'Article 2' },
-        { id: 3, title: 'Article 3' },
-    ]
+        { id: 1, title: 'Article 1', visibility: 'PUBLIC' },
+        { id: 2, title: 'Article 2', visibility: 'PUBLIC' },
+        { id: 3, title: 'Article 3', visibility: 'PUBLIC' },
+    ] as unknown as FilteredKnowledgeHubArticle[]
 
     beforeEach(() => {
         mockNotifySuccess = jest.fn()
@@ -837,7 +840,13 @@ describe('useKnowledgeHubEditor', () => {
                 const singleConfig: KnowledgeEditorConfig = {
                     type: 'snippet',
                     shopName: 'Test Shop',
-                    filteredArticles: [{ id: 1, title: 'Single Article' }],
+                    filteredArticles: [
+                        {
+                            id: 1,
+                            title: 'Single Article',
+                            visibility: 'PUBLIC',
+                        },
+                    ],
                 }
 
                 const { result } = renderHook(() =>
@@ -871,9 +880,9 @@ describe('useKnowledgeHubEditor', () => {
         describe('When filtered article list changes', () => {
             it('should recalculate navigation availability', () => {
                 const initialArticles = [
-                    { id: 1, title: 'Article 1' },
-                    { id: 2, title: 'Article 2' },
-                ]
+                    { id: 1, title: 'Article 1', visibility: 'PUBLIC' },
+                    { id: 2, title: 'Article 2', visibility: 'PUBLIC' },
+                ] as unknown as FilteredKnowledgeHubArticle[]
 
                 const { result, rerender } = renderHook(
                     ({ articles }) =>
@@ -891,7 +900,9 @@ describe('useKnowledgeHubEditor', () => {
 
                 expect(result.current.hasNext).toBe(true)
 
-                const updatedArticles = [{ id: 1, title: 'Article 1' }]
+                const updatedArticles = [
+                    { id: 1, title: 'Article 1', visibility: 'PUBLIC' },
+                ] as unknown as FilteredKnowledgeHubArticle[]
 
                 rerender({ articles: updatedArticles })
 

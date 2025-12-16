@@ -1,7 +1,10 @@
 import { act, renderHook } from '@testing-library/react'
 import type { History, Location } from 'history'
 
-import type { GuidanceEditorConfig } from '../types'
+import type {
+    FilteredKnowledgeHubArticle,
+    GuidanceEditorConfig,
+} from '../types'
 import type { KnowledgeEditorReturn } from './useKnowledgeHubEditor'
 import { useKnowledgeHubGuidanceEditor } from './useKnowledgeHubGuidanceEditor'
 
@@ -44,10 +47,10 @@ describe('useKnowledgeHubGuidanceEditor', () => {
     }
 
     const filteredGuidanceArticles = [
-        { id: 1, title: 'First Guidance Article' },
-        { id: 2, title: 'Second Guidance Article' },
-        { id: 3, title: 'Third Guidance Article' },
-    ]
+        { id: 1, title: 'First Guidance Article', visibility: 'PUBLIC' },
+        { id: 2, title: 'Second Guidance Article', visibility: 'PUBLIC' },
+        { id: 3, title: 'Third Guidance Article', visibility: 'PUBLIC' },
+    ] as unknown as FilteredKnowledgeHubArticle[]
 
     const mockHistory = {
         replace: jest.fn(),

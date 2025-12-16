@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useLocation, useParams } from 'react-router-dom'
 
 import { Heading, Icon, Text } from '@gorgias/axiom'
 
 import { KnowledgeEditor } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor'
+import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
+import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
@@ -38,6 +41,29 @@ export const PostOnboardingTasksSection = () => {
         firstUncompletedStepName,
     } = usePostOnboardingTasksSection({ shopName, shopType })
 
+    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
+    const { guidanceArticles: rawGuidanceArticles } = useGuidanceArticles(
+        storeConfiguration?.guidanceHelpCenterId ?? 0,
+        {
+            enabled: !!storeConfiguration?.guidanceHelpCenterId,
+        },
+        {
+            version_status: 'latest_draft',
+        },
+    )
+
+    const filteredGuidanceArticles = useMemo<
+        FilteredKnowledgeHubArticle[]
+    >(() => {
+        return rawGuidanceArticles.map((article) => ({
+            id: article.id,
+            title: article.title,
+            draftVersionId: article.draftVersionId,
+            publishedVersionId: article.publishedVersionId,
+            visibility: article.visibility ?? 'UNLISTED',
+        }))
+    }, [rawGuidanceArticles])
+
     const {
         openEditorForCreate,
         openEditorForEdit,
@@ -46,6 +72,7 @@ export const PostOnboardingTasksSection = () => {
     } = usePostOnboardingKnowledgeEditor({
         shopName,
         shopType,
+        guidanceArticles: filteredGuidanceArticles,
     })
 
     const [expandedStep, setExpandedStep] = useState<string | null>(

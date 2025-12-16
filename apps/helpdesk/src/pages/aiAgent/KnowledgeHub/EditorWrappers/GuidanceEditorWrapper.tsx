@@ -1,5 +1,6 @@
 import { KnowledgeEditor } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor'
 import type { GuidanceMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
+import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 type GuidanceEditorWrapperProps = {
@@ -7,6 +8,7 @@ type GuidanceEditorWrapperProps = {
     shopType: string
     guidanceArticleId?: number
     guidanceTemplate?: GuidanceTemplate
+    guidanceArticles: FilteredKnowledgeHubArticle[]
     guidanceMode: GuidanceMode['mode']
     isOpen: boolean
     onClose: () => void
@@ -22,6 +24,7 @@ export const GuidanceEditorWrapper = ({
     shopType,
     guidanceArticleId,
     guidanceTemplate,
+    guidanceArticles,
     guidanceMode,
     isOpen,
     onClose,
@@ -41,6 +44,7 @@ export const GuidanceEditorWrapper = ({
             shopType={shopType}
             guidanceArticleId={guidanceArticleId}
             guidanceTemplate={guidanceTemplate}
+            guidanceArticles={guidanceArticles}
             guidanceMode={guidanceMode}
             isOpen={isOpen}
             onClose={onClose}

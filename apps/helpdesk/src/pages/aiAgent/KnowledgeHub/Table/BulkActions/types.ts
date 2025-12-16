@@ -1,8 +1,11 @@
+import type { FilteredKnowledgeHubArticle } from '../../types'
+
 export type BulkActionButtonProps = {
     onClick: () => void
     isDisabled: boolean
     renderMode?: ButtonRenderMode
     tooltipMessage?: string
+    guidanceArticles?: FilteredKnowledgeHubArticle[]
 }
 
 export enum ButtonRenderMode {

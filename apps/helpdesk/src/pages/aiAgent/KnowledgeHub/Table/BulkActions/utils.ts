@@ -1,4 +1,8 @@
-import type { GroupedKnowledgeItem } from '../../types'
+import { calculateGuidanceLimit } from '../../../components/KnowledgeEditor/KnowledgeEditorGuidance/context/guidanceLimitUtils'
+import type {
+    FilteredKnowledgeHubArticle,
+    GroupedKnowledgeItem,
+} from '../../types'
 import { KnowledgeType } from '../../types'
 import { ButtonRenderMode } from './types'
 import type { TooltipConfig } from './types'
@@ -66,6 +70,24 @@ export function getAIAgentButtonConfig(selectedItems: GroupedKnowledgeItem[]): {
         return {
             mode: ButtonRenderMode.DisabledWithTooltip,
             tooltipMessage: TOOLTIP_MESSAGES.aiAgentMixedFAQ,
+        }
+    }
+
+    return { mode: ButtonRenderMode.Visible }
+}
+
+export function getBulkEnableButtonConfig(
+    guidanceArticles: FilteredKnowledgeHubArticle[],
+): {
+    mode: ButtonRenderMode
+    tooltipMessage?: string
+} {
+    const { isAtLimit, limitMessage } = calculateGuidanceLimit(guidanceArticles)
+
+    if (isAtLimit) {
+        return {
+            mode: ButtonRenderMode.DisabledWithTooltip,
+            tooltipMessage: limitMessage,
         }
     }
 

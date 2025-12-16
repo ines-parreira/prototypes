@@ -16,6 +16,7 @@ describe('articleUtils', () => {
                 id: 123,
                 title: '',
                 draftVersionId: 1,
+                visibility: 'PUBLIC',
             }
 
             const result = isDraft(article)
@@ -29,6 +30,7 @@ describe('articleUtils', () => {
                 title: '',
                 draftVersionId: 2,
                 publishedVersionId: undefined,
+                visibility: 'PUBLIC',
             }
 
             const result = isDraft(article)
@@ -42,6 +44,7 @@ describe('articleUtils', () => {
                 title: '',
                 draftVersionId: 1,
                 publishedVersionId: 1,
+                visibility: 'PUBLIC',
             }
 
             const result = isDraft(article)
@@ -55,6 +58,7 @@ describe('articleUtils', () => {
                 title: '',
                 draftVersionId: 2,
                 publishedVersionId: 1,
+                visibility: 'PUBLIC',
             }
 
             const result = isDraft(article)
@@ -68,6 +72,7 @@ describe('articleUtils', () => {
                 title: '',
                 draftVersionId: 5,
                 publishedVersionId: 3,
+                visibility: 'PUBLIC',
             }
 
             const result = isDraft(article)
@@ -88,6 +93,7 @@ describe('articleUtils', () => {
                 id: 123,
                 title: '',
                 draftVersionId: 1,
+                visibility: 'PUBLIC',
             }
 
             const result = getVersionStatus(article)
@@ -101,6 +107,7 @@ describe('articleUtils', () => {
                 title: '',
                 draftVersionId: 1,
                 publishedVersionId: 1,
+                visibility: 'PUBLIC',
             }
 
             const result = getVersionStatus(article)
@@ -114,6 +121,7 @@ describe('articleUtils', () => {
                 title: '',
                 draftVersionId: 2,
                 publishedVersionId: 1,
+                visibility: 'PUBLIC',
             }
 
             const result = getVersionStatus(article)
@@ -127,6 +135,7 @@ describe('articleUtils', () => {
                 title: '',
                 draftVersionId: 10,
                 publishedVersionId: 5,
+                visibility: 'PUBLIC',
             }
 
             const result = getVersionStatus(article)
@@ -140,6 +149,7 @@ describe('articleUtils', () => {
                 title: '',
                 draftVersionId: 1,
                 publishedVersionId: undefined,
+                visibility: 'PUBLIC',
             }
 
             const result = getVersionStatus(article)

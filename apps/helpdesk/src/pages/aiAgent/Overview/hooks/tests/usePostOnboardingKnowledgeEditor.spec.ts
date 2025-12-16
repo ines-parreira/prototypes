@@ -40,6 +40,7 @@ describe('usePostOnboardingKnowledgeEditor', () => {
     it('should initialize with default state', () => {
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
+                guidanceArticles: [],
                 shopName: mockShopName,
                 shopType: mockShopType,
             }),
@@ -53,6 +54,7 @@ describe('usePostOnboardingKnowledgeEditor', () => {
     it('should open editor in create mode', () => {
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
+                guidanceArticles: [],
                 shopName: mockShopName,
                 shopType: mockShopType,
             }),
@@ -74,6 +76,7 @@ describe('usePostOnboardingKnowledgeEditor', () => {
         } as GuidanceTemplate
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
+                guidanceArticles: [],
                 shopName: mockShopName,
                 shopType: mockShopType,
             }),
@@ -94,6 +97,7 @@ describe('usePostOnboardingKnowledgeEditor', () => {
         const mockArticleId = 123
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
+                guidanceArticles: [],
                 shopName: mockShopName,
                 shopType: mockShopType,
             }),
@@ -111,6 +115,7 @@ describe('usePostOnboardingKnowledgeEditor', () => {
     it('should close editor and reset state', () => {
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
+                guidanceArticles: [],
                 shopName: mockShopName,
                 shopType: mockShopType,
             }),
@@ -134,6 +139,7 @@ describe('usePostOnboardingKnowledgeEditor', () => {
         const { logEvent } = require('@repo/logging')
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
+                guidanceArticles: [],
                 shopName: mockShopName,
                 shopType: mockShopType,
             }),
@@ -156,6 +162,7 @@ describe('usePostOnboardingKnowledgeEditor', () => {
     it('should dispatch notification when guidance is updated', () => {
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
+                guidanceArticles: [],
                 shopName: mockShopName,
                 shopType: mockShopType,
             }),
@@ -171,6 +178,7 @@ describe('usePostOnboardingKnowledgeEditor', () => {
     it('should close editor and dispatch notification when guidance is deleted', () => {
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
+                guidanceArticles: [],
                 shopName: mockShopName,
                 shopType: mockShopType,
             }),
@@ -193,6 +201,7 @@ describe('usePostOnboardingKnowledgeEditor', () => {
     it('should dispatch notification when guidance is duplicated', () => {
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
+                guidanceArticles: [],
                 shopName: mockShopName,
                 shopType: mockShopType,
             }),
@@ -208,6 +217,7 @@ describe('usePostOnboardingKnowledgeEditor', () => {
     it('should return knowledgeEditorProps with correct values', () => {
         const { result } = renderHook(() =>
             usePostOnboardingKnowledgeEditor({
+                guidanceArticles: [],
                 shopName: mockShopName,
                 shopType: mockShopType,
             }),

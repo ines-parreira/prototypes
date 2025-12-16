@@ -13,6 +13,7 @@ describe('KnowledgeEditor', () => {
                 shopName="Test Shop"
                 shopType="Test Shop Type"
                 guidanceArticleId={1}
+                guidanceArticles={[]}
                 onClose={jest.fn()}
                 onClickPrevious={jest.fn()}
                 onClickNext={jest.fn()}

@@ -24,6 +24,7 @@ export const useKnowledgeHubGuidanceEditor = ({
         shopType: editor.shopType,
         guidanceArticleId: editor.currentArticleId,
         guidanceTemplate: editor.guidanceTemplate,
+        guidanceArticles: filteredGuidanceArticles,
         guidanceMode: editor.guidanceMode,
         isOpen: editor.isEditorOpen,
         onClose: editor.closeEditor,

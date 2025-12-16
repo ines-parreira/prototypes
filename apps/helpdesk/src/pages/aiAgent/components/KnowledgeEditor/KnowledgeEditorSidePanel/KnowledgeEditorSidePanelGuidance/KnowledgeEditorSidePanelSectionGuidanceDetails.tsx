@@ -13,6 +13,7 @@ export type Props = {
     aiAgentStatus: {
         value: boolean
         onChange: (value: boolean) => void
+        tooltip?: string
     }
     createdDatetime?: Date
     lastUpdatedDatetime?: Date
@@ -56,6 +57,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = (
                     className={css.extraLeftMargin}
                     onChange={props.aiAgentStatus.onChange}
                     isDisabled={props.isUpdating}
+                    tooltip={props.aiAgentStatus.tooltip}
                 />
             ),
         },

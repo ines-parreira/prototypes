@@ -2,7 +2,7 @@ import type { History } from 'history'
 
 import type { IconName } from '@gorgias/axiom'
 
-import type { KnowledgeHubArticle, LocaleCode } from 'models/helpCenter/types'
+import type { LocaleCode } from 'models/helpCenter/types'
 
 export enum KnowledgeType {
     Document = 'document',
@@ -89,6 +89,15 @@ export const mapSnippetTypeToKnowledgeType = (
     }
 }
 
+/**
+ * Maps KnowledgeVisibility enum value to FilteredKnowledgeHubArticle visibility type
+ */
+export const mapKnowledgeVisibilityToArticleVisibility = (
+    visibility?: KnowledgeVisibility,
+): 'PUBLIC' | 'UNLISTED' => {
+    return visibility === KnowledgeVisibility.PUBLIC ? 'PUBLIC' : 'UNLISTED'
+}
+
 export type EditorType = 'guidance' | 'faq' | 'snippet'
 export type EditorMode = 'create' | 'read' | 'edit'
 
@@ -96,10 +105,13 @@ export type EditorMode = 'create' | 'read' | 'edit'
  * Base type for filtered knowledge articles with core properties
  * Used across guidance, FAQ, and snippet article filtering
  */
-export type FilteredKnowledgeHubArticle = Pick<
-    KnowledgeHubArticle,
-    'id' | 'title' | 'draftVersionId' | 'publishedVersionId'
->
+export type FilteredKnowledgeHubArticle = {
+    id: number
+    title: string
+    draftVersionId?: number | null
+    publishedVersionId?: number | null
+    visibility: 'PUBLIC' | 'UNLISTED'
+}
 
 /**
  * Extended type for snippet articles that require a type property

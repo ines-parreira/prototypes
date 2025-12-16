@@ -183,6 +183,7 @@ describe('KnowledgeEditorGuidance', () => {
                     guidanceMode="edit"
                     isOpen
                     onDelete={jest.fn()}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -216,6 +217,7 @@ describe('KnowledgeEditorGuidance', () => {
                     guidanceMode="edit"
                     isOpen
                     onDelete={jest.fn()}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -248,6 +250,7 @@ describe('KnowledgeEditorGuidance', () => {
                     guidanceMode="read"
                     isOpen
                     onDelete={jest.fn()}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -273,6 +276,7 @@ describe('KnowledgeEditorGuidance', () => {
                     guidanceMode="read"
                     isOpen
                     onDelete={jest.fn()}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -306,6 +310,7 @@ describe('KnowledgeEditorGuidance', () => {
                     onDelete={jest.fn()}
                     guidanceMode="create"
                     isOpen={true}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -341,6 +346,7 @@ describe('KnowledgeEditorGuidance', () => {
                     guidanceMode="create"
                     guidanceTemplate={mockGuidanceTemplate}
                     isOpen={true}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -373,6 +379,7 @@ describe('KnowledgeEditorGuidance', () => {
                     guidanceMode="create"
                     guidanceTemplate={mockGuidanceTemplate}
                     isOpen={true}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -400,6 +407,7 @@ describe('KnowledgeEditorGuidance', () => {
                     onCreate={jest.fn()}
                     guidanceMode="create"
                     isOpen={true}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -438,6 +446,7 @@ describe('KnowledgeEditorGuidance', () => {
                     onUpdate={onUpdate}
                     guidanceMode="edit"
                     isOpen={true}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -462,6 +471,7 @@ describe('KnowledgeEditorGuidance', () => {
                     onDelete={jest.fn()}
                     guidanceMode="read"
                     isOpen={true}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -491,6 +501,7 @@ describe('KnowledgeEditorGuidance', () => {
                     onClose={jest.fn()}
                     guidanceMode="create"
                     isOpen={true}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -531,6 +542,7 @@ describe('KnowledgeEditorGuidance', () => {
                     onCopy={onCopy}
                     guidanceMode="read"
                     isOpen={true}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -570,6 +582,7 @@ describe('KnowledgeEditorGuidance', () => {
                     onClose={jest.fn()}
                     guidanceMode="edit"
                     isOpen={true}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -596,6 +609,7 @@ describe('KnowledgeEditorGuidance', () => {
                     onClose={onClose}
                     guidanceMode="create"
                     isOpen={true}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -623,6 +637,7 @@ describe('KnowledgeEditorGuidance', () => {
                     guidanceMode="edit"
                     isOpen
                     onDelete={jest.fn()}
+                    guidanceArticles={[]}
                 />
             </Provider>,
         )
@@ -659,6 +674,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={jest.fn()}
                         guidanceMode="read"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -695,6 +711,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={jest.fn()}
                         guidanceMode="read"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -728,6 +745,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={jest.fn()}
                         guidanceMode="read"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -759,6 +777,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={jest.fn()}
                         guidanceMode="read"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -809,6 +828,7 @@ describe('KnowledgeEditorGuidance', () => {
                         guidanceMode="read"
                         isOpen
                         onDelete={jest.fn()}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -834,6 +854,7 @@ describe('KnowledgeEditorGuidance', () => {
                         guidanceMode="read"
                         isOpen
                         onDelete={jest.fn()}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -856,6 +877,7 @@ describe('KnowledgeEditorGuidance', () => {
                         guidanceMode="read"
                         isOpen
                         onDelete={jest.fn()}
+                        guidanceArticles={[]}
                     />
                 </Wrapper>,
             )
@@ -890,6 +912,7 @@ describe('KnowledgeEditorGuidance', () => {
                         guidanceMode="read"
                         isOpen
                         onDelete={jest.fn()}
+                        guidanceArticles={[]}
                     />
                 </Wrapper>,
             )
@@ -920,6 +943,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={jest.fn()}
                         guidanceMode="read"
                         isOpen={false}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -937,6 +961,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={jest.fn()}
                         guidanceMode="read"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -962,6 +987,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={jest.fn()}
                         guidanceMode="edit"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -985,6 +1011,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={jest.fn()}
                         guidanceMode="create"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -1005,6 +1032,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={jest.fn()}
                         guidanceMode="edit"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -1033,6 +1061,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={jest.fn()}
                         guidanceMode="create"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -1059,6 +1088,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={jest.fn()}
                         guidanceMode="edit"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -1089,6 +1119,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClickNext={onClickNext}
                         guidanceMode="read"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -1117,6 +1148,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={jest.fn()}
                         guidanceMode="read"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -1141,6 +1173,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClickNext={jest.fn()}
                         guidanceMode="edit"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
@@ -1177,6 +1210,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={onClose}
                         guidanceMode="edit"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )

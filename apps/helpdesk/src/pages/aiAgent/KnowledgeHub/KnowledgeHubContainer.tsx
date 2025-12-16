@@ -47,7 +47,10 @@ import { KnowledgeHubHeader } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeade
 import { SyncStoreDomainBanner } from 'pages/aiAgent/KnowledgeHub/SyncStoreDomainBanner'
 import { KnowledgeHubTable } from 'pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable'
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
-import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
+import {
+    KnowledgeType,
+    mapKnowledgeVisibilityToArticleVisibility,
+} from 'pages/aiAgent/KnowledgeHub/types'
 import { useKnowledgeHub } from 'pages/aiAgent/KnowledgeHub/useKnowledgeHub'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
@@ -123,6 +126,9 @@ export const KnowledgeHubContainer = () => {
                 title: item.title,
                 draftVersionId: item.draftVersionId,
                 publishedVersionId: item.publishedVersionId,
+                visibility: mapKnowledgeVisibilityToArticleVisibility(
+                    item.inUseByAI,
+                ),
             }))
     }, [tableData])
 
@@ -134,6 +140,9 @@ export const KnowledgeHubContainer = () => {
                 title: item.title,
                 draftVersionId: item.draftVersionId,
                 publishedVersionId: item.publishedVersionId,
+                visibility: mapKnowledgeVisibilityToArticleVisibility(
+                    item.inUseByAI,
+                ),
             }))
     }, [tableData])
 
@@ -151,6 +160,9 @@ export const KnowledgeHubContainer = () => {
                 type: item.type,
                 draftVersionId: item.draftVersionId,
                 publishedVersionId: item.publishedVersionId,
+                visibility: mapKnowledgeVisibilityToArticleVisibility(
+                    item.inUseByAI,
+                ),
             }))
     }, [tableData])
 

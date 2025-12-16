@@ -1,11 +1,15 @@
+import type {
+    FilteredKnowledgeHubArticle,
+    GroupedKnowledgeItem,
+} from '../../types'
 import { KnowledgeType } from '../../types'
-import type { GroupedKnowledgeItem } from '../../types'
 import { ButtonRenderMode } from './types'
 import {
     buildDuplicateNotificationMessage,
     cleanStoreName,
     createStoreLink,
     getAIAgentButtonConfig,
+    getBulkEnableButtonConfig,
     getDeleteButtonMode,
     getDuplicateButtonMode,
     isCurrentStore,
@@ -578,6 +582,157 @@ describe('BulkActions utils', () => {
                     '/app/ai-agent/shopify/store-2/knowledge',
                 )
             })
+        })
+    })
+
+    describe('getBulkEnableButtonConfig', () => {
+        const createMockGuidanceArticle = (
+            id: number,
+            visibility: 'PUBLIC' | 'UNLISTED',
+        ): FilteredKnowledgeHubArticle => ({
+            id,
+            title: `Guidance ${id}`,
+            visibility,
+            draftVersionId: null,
+            publishedVersionId: null,
+        })
+
+        it('returns Visible when no guidance items selected', () => {
+            const guidanceArticles: FilteredKnowledgeHubArticle[] = []
+
+            const result = getBulkEnableButtonConfig(guidanceArticles)
+
+            expect(result.mode).toBe(ButtonRenderMode.Visible)
+            expect(result.tooltipMessage).toBeUndefined()
+        })
+
+        it('returns Visible when selected guidance are already PUBLIC', () => {
+            const guidanceArticles = [
+                createMockGuidanceArticle(1, 'PUBLIC'),
+                createMockGuidanceArticle(2, 'PUBLIC'),
+            ]
+
+            const result = getBulkEnableButtonConfig(guidanceArticles)
+
+            expect(result.mode).toBe(ButtonRenderMode.Visible)
+            expect(result.tooltipMessage).toBeUndefined()
+        })
+
+        it('returns Visible when enabling would not exceed limit', () => {
+            // 95 active guidance articles
+            const guidanceArticles = Array.from({ length: 95 }, (_, i) =>
+                createMockGuidanceArticle(i + 10, 'PUBLIC'),
+            )
+
+            const result = getBulkEnableButtonConfig(guidanceArticles)
+
+            expect(result.mode).toBe(ButtonRenderMode.Visible)
+            expect(result.tooltipMessage).toBeUndefined()
+        })
+
+        it('returns Visible when at exactly 100 after enabling', () => {
+            // 99 active guidance articles
+            const guidanceArticles = Array.from({ length: 99 }, (_, i) =>
+                createMockGuidanceArticle(i + 10, 'PUBLIC'),
+            )
+
+            const result = getBulkEnableButtonConfig(guidanceArticles)
+
+            expect(result.mode).toBe(ButtonRenderMode.Visible)
+            expect(result.tooltipMessage).toBeUndefined()
+        })
+
+        it('returns DisabledWithTooltip when enabling would exceed limit by 1', () => {
+            // 100 active guidance articles
+            const guidanceArticles = Array.from({ length: 100 }, (_, i) =>
+                createMockGuidanceArticle(i + 10, 'PUBLIC'),
+            )
+
+            const result = getBulkEnableButtonConfig(guidanceArticles)
+
+            expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
+            expect(result.tooltipMessage).toBe(
+                "You've reached the limit of 100 enabled Guidances. To enable this one, disable another.",
+            )
+        })
+
+        it('returns DisabledWithTooltip when enabling would exceed limit by multiple', () => {
+            // 100 active guidance articles (at limit)
+            const guidanceArticles = Array.from({ length: 100 }, (_, i) =>
+                createMockGuidanceArticle(i + 10, 'PUBLIC'),
+            )
+
+            const result = getBulkEnableButtonConfig(guidanceArticles)
+
+            expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
+            expect(result.tooltipMessage).toBe(
+                "You've reached the limit of 100 enabled Guidances. To enable this one, disable another.",
+            )
+        })
+
+        it('returns correct limit message', () => {
+            // 100 active guidance articles (at limit)
+            const guidanceArticles = Array.from({ length: 100 }, (_, i) =>
+                createMockGuidanceArticle(i + 10, 'PUBLIC'),
+            )
+
+            const result = getBulkEnableButtonConfig(guidanceArticles)
+
+            expect(result.tooltipMessage).toBe(
+                "You've reached the limit of 100 enabled Guidances. To enable this one, disable another.",
+            )
+        })
+
+        it('only counts PUBLIC guidance items for limit check', () => {
+            // 99 PUBLIC + 1 UNLISTED = 100 total, but only 99 are active (should not be at limit)
+            const guidanceArticles = [
+                ...Array.from({ length: 99 }, (_, i) =>
+                    createMockGuidanceArticle(i + 10, 'PUBLIC'),
+                ),
+                createMockGuidanceArticle(200, 'UNLISTED'),
+            ]
+
+            const result = getBulkEnableButtonConfig(guidanceArticles)
+
+            expect(result.mode).toBe(ButtonRenderMode.Visible)
+            expect(result.tooltipMessage).toBeUndefined()
+        })
+
+        it('returns disabled when at exactly the limit', () => {
+            // Exactly 100 active guidance articles (at limit)
+            const guidanceArticles = Array.from({ length: 100 }, (_, i) =>
+                createMockGuidanceArticle(i + 10, 'PUBLIC'),
+            )
+
+            const result = getBulkEnableButtonConfig(guidanceArticles)
+
+            expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
+            expect(result.tooltipMessage).toBe(
+                "You've reached the limit of 100 enabled Guidances. To enable this one, disable another.",
+            )
+        })
+
+        it('handles empty guidance articles array', () => {
+            const guidanceArticles: FilteredKnowledgeHubArticle[] = []
+
+            const result = getBulkEnableButtonConfig(guidanceArticles)
+
+            expect(result.mode).toBe(ButtonRenderMode.Visible)
+            expect(result.tooltipMessage).toBeUndefined()
+        })
+
+        it('returns disabled when over the limit', () => {
+            // 101 active guidance articles (over limit)
+            const guidanceArticles = Array.from({ length: 101 }, (_, i) =>
+                createMockGuidanceArticle(i + 10, 'PUBLIC'),
+            )
+
+            const result = getBulkEnableButtonConfig(guidanceArticles)
+
+            expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
+            expect(result.tooltipMessage).toBe(
+                "You've reached the limit of 100 enabled Guidances. To enable this one, disable another.",
+            )
         })
     })
 })

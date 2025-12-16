@@ -4,6 +4,7 @@ import { useNotify } from 'hooks/useNotify'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 
 import { useGuidanceContext } from './KnowledgeEditorGuidanceContext'
+import { useGuidanceLimit } from './useGuidanceLimit'
 import { fromArticleTranslationResponse } from './utils'
 
 export const useToggleVisibility = () => {
@@ -11,16 +12,24 @@ export const useToggleVisibility = () => {
 
     const { state, dispatch, config } = useGuidanceContext()
 
-    const { onUpdateFn, guidanceHelpCenter } = config
+    const { onUpdateFn, guidanceHelpCenter, guidanceArticles } = config
 
     const { updateGuidanceArticle } = useGuidanceArticleMutation({
         guidanceHelpCenterId: guidanceHelpCenter.id ?? 0,
     })
 
+    const { isAtLimit, limitMessage } = useGuidanceLimit(guidanceArticles)
+
     const toggleVisibility = useCallback(async () => {
         if (!state.guidance?.id || !guidanceHelpCenter.default_locale) return
 
         const newVisibility = state.visibility ? 'UNLISTED' : 'PUBLIC'
+
+        // Prevent enabling if at limit
+        if (newVisibility === 'PUBLIC' && isAtLimit) {
+            notifyError(limitMessage)
+            return
+        }
 
         dispatch({ type: 'SET_UPDATING', payload: true })
         try {
@@ -62,7 +71,13 @@ export const useToggleVisibility = () => {
         updateGuidanceArticle,
         notifyError,
         onUpdateFn,
+        isAtLimit,
+        limitMessage,
     ])
 
-    return { toggleVisibility }
+    return {
+        toggleVisibility,
+        isAtLimit,
+        limitMessage,
+    }
 }

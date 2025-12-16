@@ -5,7 +5,7 @@ import { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterExistingArticle'
 
-import type { FaqEditorConfig } from '../types'
+import type { FaqEditorConfig, FilteredKnowledgeHubArticle } from '../types'
 import type { KnowledgeEditorReturn } from './useKnowledgeHubEditor'
 import { useKnowledgeHubFaqEditor } from './useKnowledgeHubFaqEditor'
 
@@ -58,20 +58,23 @@ describe('useKnowledgeHubFaqEditor', () => {
             title: 'First FAQ Article',
             draftVersionId: 1,
             publishedVersionId: 1,
+            visibility: 'PUBLIC',
         },
         {
             id: 2,
             title: 'Second FAQ Article',
             draftVersionId: 2,
             publishedVersionId: 1,
+            visibility: 'PUBLIC',
         },
         {
             id: 3,
             title: 'Third FAQ Article',
             draftVersionId: 1,
             publishedVersionId: 1,
+            visibility: 'PUBLIC',
         },
-    ]
+    ] as unknown as FilteredKnowledgeHubArticle[]
 
     const mockHistory = {
         replace: jest.fn(),

@@ -1,3 +1,4 @@
+import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { KnowledgeEditorGuidance } from './KnowledgeEditorGuidance/KnowledgeEditorGuidance'
@@ -8,6 +9,7 @@ type Props = {
     shopType: string
     guidanceArticleId?: number
     guidanceTemplate?: GuidanceTemplate
+    guidanceArticles: FilteredKnowledgeHubArticle[]
     onClose: () => void
     onClickPrevious?: () => void
     onClickNext?: () => void
@@ -23,6 +25,7 @@ export const KnowledgeEditor = ({
     shopType,
     guidanceArticleId,
     guidanceTemplate,
+    guidanceArticles,
     onClose,
     onClickPrevious,
     onClickNext,
@@ -38,6 +41,7 @@ export const KnowledgeEditor = ({
             shopType={shopType}
             guidanceArticleId={guidanceArticleId}
             guidanceTemplate={guidanceTemplate}
+            guidanceArticles={guidanceArticles}
             onClose={onClose}
             onClickPrevious={onClickPrevious}
             onClickNext={onClickNext}

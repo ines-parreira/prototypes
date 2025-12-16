@@ -61,7 +61,12 @@ export function getVersionStatus(
  * ```
  */
 export function isDraft(
-    article: Omit<FilteredKnowledgeHubArticle, 'title'> | undefined,
+    article:
+        | Pick<
+              FilteredKnowledgeHubArticle,
+              'id' | 'draftVersionId' | 'publishedVersionId'
+          >
+        | undefined,
 ): Boolean {
     if (!article) {
         return false

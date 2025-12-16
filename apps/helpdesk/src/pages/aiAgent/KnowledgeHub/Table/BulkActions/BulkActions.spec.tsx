@@ -5,7 +5,7 @@ import type { Table } from '@gorgias/axiom'
 
 import * as useBulkKnowledgeActionsModule from '../../hooks/useBulkKnowledgeActions'
 import type { GroupedKnowledgeItem } from '../../types'
-import { KnowledgeType } from '../../types'
+import { KnowledgeType, KnowledgeVisibility } from '../../types'
 import { BulkActions } from './BulkActions'
 
 jest.mock('../../hooks/useBulkKnowledgeActions')
@@ -76,6 +76,9 @@ describe('BulkActions', () => {
                 rows: selectedItems.map((original) => ({ original })),
             }),
             getRowModel: () => ({
+                rows: totalRows.map((original) => ({ original })),
+            }),
+            getCoreRowModel: () => ({
                 rows: totalRows.map((original) => ({ original })),
             }),
         } as Table<GroupedKnowledgeItem>
@@ -760,6 +763,263 @@ describe('BulkActions', () => {
 
             expect(enableButton).not.toBeDisabled()
             expect(disableButton).not.toBeDisabled()
+        })
+
+        describe('Guidance limit validation', () => {
+            it('should disable enable button when bulk enable would exceed limit of 100', () => {
+                // 100 active guidance articles already in the system
+                const existingGuidanceArticles: GroupedKnowledgeItem[] =
+                    Array.from({ length: 100 }, (_, i) => ({
+                        id: `existing-${i}`,
+                        type: KnowledgeType.Guidance,
+                        title: `Existing Guidance ${i}`,
+                        lastUpdatedAt: '2024-01-01',
+                        inUseByAI: KnowledgeVisibility.PUBLIC,
+                    }))
+
+                // User selects 1 UNLISTED guidance to enable
+                const selectedItems: GroupedKnowledgeItem[] = [
+                    {
+                        id: '1',
+                        type: KnowledgeType.Guidance,
+                        title: 'New Guidance',
+                        lastUpdatedAt: '2024-01-01',
+                        inUseByAI: KnowledgeVisibility.UNLISTED,
+                    },
+                ]
+
+                const table = createMockTable(selectedItems, [
+                    ...existingGuidanceArticles,
+                    ...selectedItems,
+                ])
+
+                const { container } = render(
+                    <BulkActions
+                        table={table}
+                        helpCenterIds={helpCenterIds}
+                        isSearchActive={false}
+                    />,
+                )
+
+                const enableButton = screen.getByRole('button', {
+                    name: /enable for ai agent/i,
+                })
+                const disableButton = screen.getByRole('button', {
+                    name: /disable for ai agent/i,
+                })
+
+                // Enable button should be disabled due to limit
+                expect(enableButton).toBeDisabled()
+                // Disable button should still be enabled
+                expect(disableButton).not.toBeDisabled()
+
+                // Should show tooltip for enable button
+                const enableTooltipSpan = container.querySelector(
+                    'span[id^="enable-ai-button-"]',
+                )
+                expect(enableTooltipSpan).toBeInTheDocument()
+            })
+
+            it('should allow enable when under limit', () => {
+                // 95 active guidance articles
+                const existingGuidanceArticles: GroupedKnowledgeItem[] =
+                    Array.from({ length: 95 }, (_, i) => ({
+                        id: `existing-${i}`,
+                        type: KnowledgeType.Guidance,
+                        title: `Existing Guidance ${i}`,
+                        lastUpdatedAt: '2024-01-01',
+                        inUseByAI: KnowledgeVisibility.PUBLIC,
+                    }))
+
+                // Selecting 2 UNLISTED guidances (95 + 2 = 97, under limit)
+                const selectedItems: GroupedKnowledgeItem[] = [
+                    {
+                        id: '1',
+                        type: KnowledgeType.Guidance,
+                        title: 'New Guidance 1',
+                        lastUpdatedAt: '2024-01-01',
+                        inUseByAI: KnowledgeVisibility.UNLISTED,
+                    },
+                    {
+                        id: '2',
+                        type: KnowledgeType.Guidance,
+                        title: 'New Guidance 2',
+                        lastUpdatedAt: '2024-01-01',
+                        inUseByAI: KnowledgeVisibility.UNLISTED,
+                    },
+                ]
+
+                const table = createMockTable(selectedItems, [
+                    ...existingGuidanceArticles,
+                    ...selectedItems,
+                ])
+
+                render(
+                    <BulkActions
+                        table={table}
+                        helpCenterIds={helpCenterIds}
+                        isSearchActive={false}
+                    />,
+                )
+
+                const enableButton = screen.getByRole('button', {
+                    name: /enable for ai agent/i,
+                })
+
+                expect(enableButton).not.toBeDisabled()
+            })
+
+            it('should allow enable when exactly at limit after enabling', () => {
+                // 99 active guidance articles
+                const existingGuidanceArticles: GroupedKnowledgeItem[] =
+                    Array.from({ length: 99 }, (_, i) => ({
+                        id: `existing-${i}`,
+                        type: KnowledgeType.Guidance,
+                        title: `Existing Guidance ${i}`,
+                        lastUpdatedAt: '2024-01-01',
+                        inUseByAI: KnowledgeVisibility.PUBLIC,
+                    }))
+
+                // Selecting 1 UNLISTED guidance (99 + 1 = 100, at limit)
+                const selectedItems: GroupedKnowledgeItem[] = [
+                    {
+                        id: '1',
+                        type: KnowledgeType.Guidance,
+                        title: 'New Guidance',
+                        lastUpdatedAt: '2024-01-01',
+                        inUseByAI: KnowledgeVisibility.UNLISTED,
+                    },
+                ]
+
+                const table = createMockTable(selectedItems, [
+                    ...existingGuidanceArticles,
+                    ...selectedItems,
+                ])
+
+                render(
+                    <BulkActions
+                        table={table}
+                        helpCenterIds={helpCenterIds}
+                        isSearchActive={false}
+                    />,
+                )
+
+                const enableButton = screen.getByRole('button', {
+                    name: /enable for ai agent/i,
+                })
+
+                expect(enableButton).not.toBeDisabled()
+            })
+
+            it('should only count UNLISTED guidance items for limit check', () => {
+                // 98 active guidance articles + 1 UNLISTED + 1 PUBLIC = 99 total, 98 active
+                const existingPublicGuidance: GroupedKnowledgeItem[] =
+                    Array.from({ length: 98 }, (_, i) => ({
+                        id: `existing-${i}`,
+                        type: KnowledgeType.Guidance,
+                        title: `Existing Guidance ${i}`,
+                        lastUpdatedAt: '2024-01-01',
+                        inUseByAI: KnowledgeVisibility.PUBLIC,
+                    }))
+
+                const unlistedGuidance: GroupedKnowledgeItem = {
+                    id: 'unlisted-1',
+                    type: KnowledgeType.Guidance,
+                    title: 'Unlisted Guidance',
+                    lastUpdatedAt: '2024-01-01',
+                    inUseByAI: KnowledgeVisibility.UNLISTED,
+                }
+
+                const alreadyPublicGuidance: GroupedKnowledgeItem = {
+                    id: 'public-1',
+                    type: KnowledgeType.Guidance,
+                    title: 'Already Public Guidance',
+                    lastUpdatedAt: '2024-01-01',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                }
+
+                // Selecting 1 UNLISTED and 1 already PUBLIC guidance
+                const selectedItems: GroupedKnowledgeItem[] = [
+                    unlistedGuidance,
+                    alreadyPublicGuidance,
+                ]
+
+                // Total items in table: 98 existing PUBLIC + 1 UNLISTED + 1 PUBLIC = 100 items, 99 PUBLIC
+                const table = createMockTable(selectedItems, [
+                    ...existingPublicGuidance,
+                    unlistedGuidance,
+                    alreadyPublicGuidance,
+                ])
+
+                render(
+                    <BulkActions
+                        table={table}
+                        helpCenterIds={helpCenterIds}
+                        isSearchActive={false}
+                    />,
+                )
+
+                const enableButton = screen.getByRole('button', {
+                    name: /enable for ai agent/i,
+                })
+
+                // Only 1 UNLISTED item to enable (99 currently PUBLIC + 1 = 100, should be allowed)
+                expect(enableButton).not.toBeDisabled()
+            })
+
+            it('should prioritize FAQ validation over guidance limit validation', () => {
+                // 100 active guidance articles
+                const existingGuidanceArticles: GroupedKnowledgeItem[] =
+                    Array.from({ length: 100 }, (_, i) => ({
+                        id: `existing-${i}`,
+                        type: KnowledgeType.Guidance,
+                        title: `Existing Guidance ${i}`,
+                        lastUpdatedAt: '2024-01-01',
+                        inUseByAI: KnowledgeVisibility.PUBLIC,
+                    }))
+
+                // Selecting FAQ and UNLISTED guidance
+                const selectedItems: GroupedKnowledgeItem[] = [
+                    {
+                        id: '1',
+                        type: KnowledgeType.FAQ,
+                        title: 'FAQ Item',
+                        lastUpdatedAt: '2024-01-01',
+                    },
+                    {
+                        id: '2',
+                        type: KnowledgeType.Guidance,
+                        title: 'New Guidance',
+                        lastUpdatedAt: '2024-01-01',
+                        inUseByAI: KnowledgeVisibility.UNLISTED,
+                    },
+                ]
+
+                const table = createMockTable(selectedItems, [
+                    ...existingGuidanceArticles,
+                    ...selectedItems,
+                ])
+
+                const { container } = render(
+                    <BulkActions
+                        table={table}
+                        helpCenterIds={helpCenterIds}
+                        isSearchActive={false}
+                    />,
+                )
+
+                const enableButton = screen.getByRole('button', {
+                    name: /enable for ai agent/i,
+                })
+
+                expect(enableButton).toBeDisabled()
+
+                // Should show FAQ tooltip, not guidance limit tooltip
+                const enableTooltipSpan = container.querySelector(
+                    'span[id^="enable-ai-button-"]',
+                )
+                expect(enableTooltipSpan).toBeInTheDocument()
+            })
         })
     })
 

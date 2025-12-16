@@ -2,7 +2,10 @@ import type { SizeValue } from '@gorgias/axiom'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import type { HelpCenter } from 'models/helpCenter/types'
+import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceArticle, GuidanceTemplate } from 'pages/aiAgent/types'
+
+import { calculateGuidanceLimit } from './guidanceLimitUtils'
 
 export type GuidanceModeType = 'create' | 'edit' | 'read'
 
@@ -78,6 +81,7 @@ export type GuidanceContextConfig = {
     shopType: string
     guidanceArticle?: GuidanceArticle
     guidanceTemplate?: GuidanceTemplate
+    guidanceArticles: FilteredKnowledgeHubArticle[]
     initialMode: GuidanceModeType
     guidanceHelpCenter: HelpCenter
     onClose: () => void
@@ -121,22 +125,36 @@ export const createInitialState = (
     template?: GuidanceTemplate,
     article?: GuidanceArticle,
     initialMode: GuidanceModeType = 'create',
-): GuidanceState => ({
-    guidanceMode: initialMode,
-    isFullscreen: false,
-    isDetailsView: true,
-    title: article?.title ?? template?.name ?? '',
-    content: article?.content ?? template?.content ?? '',
-    visibility: article ? article.visibility === 'PUBLIC' : true,
-    savedSnapshot: {
+    guidanceArticles: FilteredKnowledgeHubArticle[] = [],
+): GuidanceState => {
+    const { isAtLimit } = calculateGuidanceLimit(guidanceArticles)
+
+    // For existing articles, use their visibility
+    // For new articles, default to false if at limit
+    let defaultVisibility = true
+    if (article) {
+        defaultVisibility = article.visibility === 'PUBLIC'
+    } else if (initialMode === 'create' && isAtLimit) {
+        defaultVisibility = false
+    }
+
+    return {
+        guidanceMode: initialMode,
+        isFullscreen: false,
+        isDetailsView: true,
         title: article?.title ?? template?.name ?? '',
         content: article?.content ?? template?.content ?? '',
-    },
-    guidance: article ?? undefined,
-    isAutoSaving: false,
-    isFromTemplate: template !== undefined && initialMode === 'create',
-    hasTemplateChanges: false,
-    versionStatus: 'latest_draft',
-    activeModal: null,
-    isUpdating: false,
-})
+        visibility: defaultVisibility,
+        savedSnapshot: {
+            title: article?.title ?? template?.name ?? '',
+            content: article?.content ?? template?.content ?? '',
+        },
+        guidance: article ?? undefined,
+        isAutoSaving: false,
+        isFromTemplate: template !== undefined && initialMode === 'create',
+        hasTemplateChanges: false,
+        versionStatus: 'latest_draft',
+        activeModal: null,
+        isUpdating: false,
+    }
+}

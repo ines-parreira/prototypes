@@ -3,7 +3,12 @@ import { useState } from 'react'
 import type { Table } from '@gorgias/axiom'
 
 import { useBulkKnowledgeActions } from '../../hooks/useBulkKnowledgeActions'
-import type { GroupedKnowledgeItem, KnowledgeType } from '../../types'
+import type {
+    FilteredKnowledgeHubArticle,
+    GroupedKnowledgeItem,
+    KnowledgeType,
+} from '../../types'
+import { mapKnowledgeVisibilityToArticleVisibility } from '../../types'
 import { ClearSearchButton } from './ClearSearchButton'
 import { DeleteButton } from './DeleteButton'
 import { DeleteConfirmationModal } from './DeleteConfirmationModal'
@@ -13,6 +18,7 @@ import { EnableForAIButton } from './EnableForAIButton'
 import { ButtonRenderMode } from './types'
 import {
     getAIAgentButtonConfig,
+    getBulkEnableButtonConfig,
     getDeleteButtonMode,
     getDuplicateButtonMode,
     TOOLTIP_MESSAGES,
@@ -50,23 +56,47 @@ export const BulkActions = ({
 
     const isAllContentView = activeContentType === null
 
-    const aiAgentButtonConfig = getAIAgentButtonConfig(selectedItems)
+    const hasSelection = selectedItems.length > 0
+    const hasFilteredRows = table.getRowModel().rows.length > 0
+
+    const guidanceRows = table
+        .getCoreRowModel()
+        .rows.filter((row) => row.original.type === 'guidance')
+        .map((row) => {
+            return {
+                ...row.original,
+                visibility: mapKnowledgeVisibilityToArticleVisibility(
+                    row.original.inUseByAI,
+                ),
+            } as unknown as FilteredKnowledgeHubArticle
+        })
+
+    const faqValidationConfig = getAIAgentButtonConfig(selectedItems)
+
+    const guidanceLimitConfig = getBulkEnableButtonConfig(guidanceRows)
+    const enableForAIButtonConfig =
+        faqValidationConfig.mode === ButtonRenderMode.DisabledWithTooltip
+            ? faqValidationConfig
+            : guidanceLimitConfig
+
+    const disableForAIButtonConfig = faqValidationConfig
+
     const duplicateMode = getDuplicateButtonMode(
         selectedItems,
         isAllContentView,
     )
     const deleteMode = getDeleteButtonMode(selectedItems, isAllContentView)
 
-    const isAIAgentActionDisabled =
+    const isDisableButtonDisabled =
         isLoading ||
-        aiAgentButtonConfig.mode === ButtonRenderMode.DisabledWithTooltip
+        disableForAIButtonConfig.mode === ButtonRenderMode.DisabledWithTooltip
+    const isEnableForAIButtonDisabled =
+        isLoading ||
+        enableForAIButtonConfig.mode === ButtonRenderMode.DisabledWithTooltip
     const isDuplicateActionDisabled =
         isLoading || duplicateMode === ButtonRenderMode.DisabledWithTooltip
     const isDeleteActionDisabled =
         isLoading || deleteMode === ButtonRenderMode.DisabledWithTooltip
-
-    const hasSelection = selectedItems.length > 0
-    const hasFilteredRows = table.getRowModel().rows.length > 0
 
     const handleDeleteClick = () => {
         setIsDeleteModalOpen(true)
@@ -93,16 +123,17 @@ export const BulkActions = ({
                 <>
                     <EnableForAIButton
                         onClick={() => handleBulkEnable(selectedItems)}
-                        isDisabled={isAIAgentActionDisabled}
-                        renderMode={aiAgentButtonConfig.mode}
-                        tooltipMessage={aiAgentButtonConfig.tooltipMessage}
+                        isDisabled={isEnableForAIButtonDisabled}
+                        renderMode={enableForAIButtonConfig.mode}
+                        tooltipMessage={enableForAIButtonConfig.tooltipMessage}
+                        guidanceArticles={guidanceRows}
                     />
 
                     <DisableForAIButton
                         onClick={() => handleBulkDisable(selectedItems)}
-                        isDisabled={isAIAgentActionDisabled}
-                        renderMode={aiAgentButtonConfig.mode}
-                        tooltipMessage={aiAgentButtonConfig.tooltipMessage}
+                        isDisabled={isDisableButtonDisabled}
+                        renderMode={disableForAIButtonConfig.mode}
+                        tooltipMessage={disableForAIButtonConfig.tooltipMessage}
                     />
 
                     <DuplicateSelect

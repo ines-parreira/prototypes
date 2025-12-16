@@ -4,6 +4,7 @@ import { LegacyLoadingSpinner, SidePanel } from '@gorgias/axiom'
 
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
+import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
@@ -18,6 +19,7 @@ type Props = {
     shopType: string
     guidanceArticleId?: number
     guidanceTemplate?: GuidanceTemplate
+    guidanceArticles: FilteredKnowledgeHubArticle[]
     onDelete?: () => void
     onCreate?: () => void
     onUpdate?: () => void
@@ -71,6 +73,7 @@ export const KnowledgeEditorGuidance = ({
     shopType,
     guidanceArticleId,
     guidanceTemplate,
+    guidanceArticles,
     onClose,
     onClickPrevious,
     onClickNext,
@@ -111,6 +114,7 @@ export const KnowledgeEditorGuidance = ({
         shopName,
         shopType,
         guidanceTemplate,
+        guidanceArticles,
         initialMode: guidanceMode,
         guidanceArticle,
         guidanceHelpCenter,

@@ -1,0 +1,21 @@
+import { NEW_GUIDANCE_ARTICLE_LIMIT } from 'pages/aiAgent/constants'
+import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
+
+export const calculateGuidanceLimit = (
+    guidanceArticles: FilteredKnowledgeHubArticle[],
+) => {
+    const activeGuidanceCount = (guidanceArticles ?? []).filter(
+        (article) => article.visibility === 'PUBLIC',
+    ).length
+
+    const isAtLimit = activeGuidanceCount >= NEW_GUIDANCE_ARTICLE_LIMIT
+
+    const limitMessage = `You've reached the limit of ${NEW_GUIDANCE_ARTICLE_LIMIT} enabled Guidances. To enable this one, disable another.`
+
+    return {
+        activeGuidanceCount,
+        isAtLimit,
+        limitMessage,
+        limit: NEW_GUIDANCE_ARTICLE_LIMIT,
+    }
+}

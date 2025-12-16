@@ -73,7 +73,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
     )
 
     const { onChangeField } = useGuidanceAutoSave()
-    const { toggleVisibility } = useToggleVisibility()
+    const { toggleVisibility, isAtLimit, limitMessage } = useToggleVisibility()
 
     const isDisabled = state.isUpdating || state.isAutoSaving
 
@@ -162,6 +162,10 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                                 aiAgentStatus: {
                                     value: state.visibility,
                                     onChange: toggleVisibility,
+                                    tooltip:
+                                        isAtLimit && !state.visibility
+                                            ? limitMessage
+                                            : undefined,
                                 },
                                 createdDatetime: guidanceArticle
                                     ? new Date(guidanceArticle.createdDatetime)
@@ -169,7 +173,9 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                                 lastUpdatedDatetime: guidanceArticle
                                     ? new Date(guidanceArticle.lastUpdated)
                                     : undefined,
-                                isUpdating: isDisabled,
+                                isUpdating:
+                                    isDisabled ||
+                                    (isAtLimit && !state.visibility),
                                 isDraft:
                                     state.guidance?.isCurrent === undefined
                                         ? false
