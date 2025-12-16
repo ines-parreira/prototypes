@@ -216,4 +216,5 @@ export enum FeatureFlagKey {
     ReportingP2MetricMigration = 'linear.project_new-stats-api.p2-metric-migration',
     ReportingP3MetricMigration = 'linear.project_new-stats-api.p3-metric-migration',
     ReportingUnsortedMetricMigration = 'linear.project_new-stats-api.reporting-unsorted-metric-migration',
+    EmbeddedSpqSettings = 'embedded-spq-settings',
 }
