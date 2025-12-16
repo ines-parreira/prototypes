@@ -268,6 +268,7 @@ export const useTicketsCreatedTrend = getTrendHook(
 
 export const fetchTicketsCreatedTrend = getTrendFetch(
     ticketsCreatedQueryFactory,
+    createdTicketsCountQueryV2Factory,
 )
 
 export const useTicketsRepliedTrend = getTrendHook(

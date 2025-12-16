@@ -3,7 +3,6 @@ import { useMemo } from 'react'
 import { getAiAgentCoverageRate } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
 import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
-import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketCustomFieldsMeasure } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import { TicketMessagesMember } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { customFieldsTicketTotalCountQueryFactory } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
@@ -68,7 +67,7 @@ export const useCoverageRate = (
             aiAgentTickets.data?.[
                 TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
             ],
-        allTickets: allTickets.data?.[TicketMeasure.TicketCount],
+        allTickets: allTickets.data ?? { value: null, prevValue: null },
     })
 
     const { isFetching: automationRateIsFetching, data: automationRateData } =

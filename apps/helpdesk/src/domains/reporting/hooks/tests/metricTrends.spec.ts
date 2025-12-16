@@ -315,6 +315,7 @@ describe('metric trends', () => {
             'fetchTicketsCreatedTrend',
             fetchTicketsCreatedTrend,
             ticketsCreatedQueryFactory,
+            createdTicketsCountQueryV2Factory,
         ],
         [
             'fetchOneTouchTicketsTrend',

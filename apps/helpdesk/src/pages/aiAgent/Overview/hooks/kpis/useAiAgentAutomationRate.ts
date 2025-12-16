@@ -1,5 +1,4 @@
 import { getAiAgentCoverageRate } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
-import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketCustomFieldsMeasure } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useAiAgentTicketNoHandover } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover'
@@ -25,7 +24,7 @@ export const useAiAgentAutomationRate = (
             aiAgentTicketNoHandover.data?.[
                 TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
             ],
-        allTickets: allTickets.data?.[TicketMeasure.TicketCount],
+        allTickets: allTickets.data ?? { value: null, prevValue: null },
     })
 
     return {

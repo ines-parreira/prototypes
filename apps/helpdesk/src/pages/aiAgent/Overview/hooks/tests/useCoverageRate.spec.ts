@@ -9,6 +9,7 @@ import { customFieldsTicketTotalCountQueryFactory } from 'domains/reporting/mode
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ticketFieldDefinitions } from 'fixtures/customField'
 import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
+import { useAllTickets } from 'pages/aiAgent/Overview/hooks/kpis/useAllTickets'
 import { useCoverageRate } from 'pages/aiAgent/Overview/hooks/kpis/useCoverageRate'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
@@ -22,6 +23,9 @@ const useAutomationRateTrendMock = assumeMock(useAutomationRateTrend)
 
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate')
 const useAiAgentAutomationRateMock = assumeMock(useAiAgentAutomationRate)
+
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useAllTickets')
+const useAllTicketsMock = assumeMock(useAllTickets)
 
 jest.mock(
     'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount',
@@ -54,6 +58,13 @@ describe('useCoverageRate', () => {
             timeDimensions: [],
             metricName: METRIC_NAMES.TEST_METRIC,
         })
+
+        // Default mock for useAllTickets
+        useAllTicketsMock.mockReturnValue({
+            data: { value: 2, prevValue: 1 },
+            isFetching: false,
+            isError: false,
+        } as any)
     })
 
     it.each([
@@ -373,5 +384,54 @@ describe('useCoverageRate', () => {
                 additionalFilters: undefined,
             }),
         )
+    })
+
+    it('should handle null/undefined allTickets data with fallback values', () => {
+        useAllTicketsMock.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+            isError: false,
+        } as any)
+
+        useMultipleMetricsTrendsMock.mockReturnValue({
+            data: {
+                'TicketCustomFieldsEnriched.ticketCustomFieldsTicketCount': {
+                    value: 3.1,
+                    prevValue: 3.5,
+                },
+            },
+            isFetching: false,
+            isError: false,
+        } as any)
+
+        useAutomationRateTrendMock.mockReturnValue({
+            isFetching: false,
+            data: {
+                value: 0.1234,
+                prevValue: 0,
+            },
+            isError: false,
+        } as any)
+
+        useAiAgentAutomationRateMock.mockReturnValue({
+            isLoading: false,
+            value: 0.1234,
+            prevValue: 0,
+        })
+
+        const { result } = renderHook(() => useCoverageRate(filters, timezone))
+
+        // Should still calculate coverage rate with fallback null values for allTickets
+        expect(result.current).toEqual({
+            'data-candu-id': 'ai-agent-overview-kpi-coverage-rate',
+            title: 'Coverage Rate',
+            hint: {
+                title: 'Percentage of tickets that AI Agent attempted to respond to.',
+            },
+            metricFormat: 'decimal-to-percent-precision-1',
+            value: 0,
+            prevValue: 0,
+            isLoading: false,
+        })
     })
 })

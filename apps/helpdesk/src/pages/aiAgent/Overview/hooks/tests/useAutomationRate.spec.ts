@@ -1,16 +1,20 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ticketFieldDefinitions } from 'fixtures/customField'
 import { useAiAgentAutomationRate } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate'
-
-jest.mock('domains/reporting/hooks/useMultipleMetricsTrend')
-const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
+import { useAiAgentTicketNoHandover } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover'
+import { useAllTickets } from 'pages/aiAgent/Overview/hooks/kpis/useAllTickets'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
+
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useAllTickets')
+const useAllTicketsMock = assumeMock(useAllTickets)
+
+jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover')
+const useAiAgentTicketNoHandoverMock = assumeMock(useAiAgentTicketNoHandover)
 
 const filters: StatsFilters = {
     period: {
@@ -29,18 +33,21 @@ describe('useAutomationRate', () => {
     })
 
     it('should return correct metric data when the query resolves', () => {
-        useMultipleMetricsTrendsMock.mockReturnValue({
+        useAllTicketsMock.mockReturnValue({
+            data: { value: 2, prevValue: 1 },
+            isFetching: false,
+            isError: false,
+        } as any)
+
+        useAiAgentTicketNoHandoverMock.mockReturnValue({
             data: {
                 'TicketCustomFieldsEnriched.ticketCount': {
                     value: 3.1,
                     prevValue: 3.5,
                 },
-                'TicketEnriched.ticketCount': {
-                    value: 2,
-                    prevValue: 1,
-                },
             },
             isFetching: false,
+            isError: false,
         } as any)
 
         const { result } = renderHook(() =>
@@ -61,8 +68,14 @@ describe('useAutomationRate', () => {
     })
 
     it('should return correct metric data when the query is still loading', () => {
-        useMultipleMetricsTrendsMock.mockReturnValue({
+        useAllTicketsMock.mockReturnValue({
             isFetching: true,
+            isError: false,
+        } as any)
+
+        useAiAgentTicketNoHandoverMock.mockReturnValue({
+            isFetching: false,
+            isError: false,
         } as any)
 
         const { result } = renderHook(() =>
