@@ -7,7 +7,7 @@
         .actions {
             display: flex;
             align-items: flex-end;
-            border-bottom: 1px solid var(--border-neutral-default);
+            border-bottom: 1px solid var(--border-neutral-default); // legacy
             padding: var(--spacing-sm) var(--spacing-lg);
             justify-content: flex-end;
             gap: var(--spacing-xs);
@@ -17,6 +17,14 @@
             height: 100%;
             overflow-y: auto;
             padding: var(--spacing-lg);
+        }
+    }
+}
+
+.axiom :local {
+    .playground {
+        .actions {
+            border-bottom: 1px solid var(--border-neutral-default);
         }
     }
 }

@@ -16,8 +16,8 @@
         padding: var(--layout-spacing-xs) var(--layout-spacing-xs);
         align-items: center;
         border-radius: var(--layout-spacing-l);
-        background: #fae5ff;
-        color: #c334dd;
+        background: #fae5ff; // legacy
+        color: #c334dd; // legacy
         font-feature-settings:
             'ss01' on,
             'cv10' on;
@@ -40,7 +40,7 @@
         align-items: center;
         justify-content: center;
         gap: var(--layout-spacing-xs);
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 }
 
@@ -49,7 +49,16 @@
         border-top: 1px solid var(--border-neutral-default);
     }
 
+    .discountInfo {
+        background: var(--surface-additional-fuchsia);
+        color: var(--content-additional-fuchsia);
+    }
+
     .discountInfoIcon {
         background-color: var(--elevation-neutral-default);
+    }
+
+    .totalSent {
+        color: var(--content-neutral-default);
     }
 }

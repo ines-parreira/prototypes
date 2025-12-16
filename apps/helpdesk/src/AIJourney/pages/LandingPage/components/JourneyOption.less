@@ -20,7 +20,7 @@
         width: 100%;
 
         &:hover {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
         }
     }
 
@@ -38,7 +38,21 @@
         &:checked {
             accent-color: var(
                 --content-neutral-default
-            ); // Use your theme variable
+            ); // legacy - Use your theme variable
+        }
+    }
+}
+
+.axiom :local {
+    .onboardingJourneyOption {
+        &:hover {
+            background: var(--hover-default);
+        }
+    }
+
+    input[type='radio'] {
+        &:checked {
+            accent-color: var(--content-neutral-default);
         }
     }
 }

@@ -10,10 +10,20 @@
         width: 6px;
         max-height: 30px;
         border-radius: 100px;
-        background: #20c08c52;
+        background: #20c08c52; // legacy
 
         &:hover {
-            background: #20c08c;
+            background: #20c08c; // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .bar {
+        background: var(--surface-success-primary);
+
+        &:hover {
+            background: var(--surface-success-primary);
         }
     }
 }

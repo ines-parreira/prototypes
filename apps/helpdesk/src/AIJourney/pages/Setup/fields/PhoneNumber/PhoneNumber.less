@@ -9,8 +9,14 @@
     }
 
     .errorMessage {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         font-size: 12px;
         margin-top: 4px;
+    }
+}
+
+.axiom :local {
+    .errorMessage {
+        color: var(--content-error-primary);
     }
 }

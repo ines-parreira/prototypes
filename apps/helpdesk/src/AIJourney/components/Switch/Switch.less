@@ -24,7 +24,7 @@
                 #e98aff 34.62%,
                 #a420bc 56.85%,
                 #d432f6 100%
-            );
+            ); // legacy
             opacity: 0;
             pointer-events: none;
             border-radius: var(--layout-spacing-s);
@@ -81,6 +81,10 @@
 .axiom :local {
     .switch {
         background: var(--border-neutral-default);
+
+        &::after {
+            background: var(--surface-accent-default);
+        }
     }
 
     .switchKnob {

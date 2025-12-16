@@ -25,7 +25,7 @@
             180deg,
             var(--neutral-grey-1) 0%,
             var(--neutral-grey-4) 50%
-        );
+        ); // legacy
     }
 
     .stepIndicator {
@@ -44,12 +44,20 @@
         font-weight: 500;
         width: max-content;
         align-self: center;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 }
 
 .axiom :local {
+    .stepIndicatorMargin {
+        background: var(--border-neutral-secondary);
+    }
+
     .stepIndicator {
         background-color: var(--content-neutral-default);
+    }
+
+    .stepName {
+        color: var(--content-neutral-default);
     }
 }

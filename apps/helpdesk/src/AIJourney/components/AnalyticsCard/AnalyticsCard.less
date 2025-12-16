@@ -37,14 +37,14 @@
 
         font-size: 12px;
         font-weight: 600;
-        color: var(--neutral-grey-0);
+        color: var(--neutral-grey-0); // legacy
 
         &--active {
-            background: var(--Feedback-Variations-Success_3, #20c08c);
+            background: var(--Feedback-Variations-Success_3, #20c08c); // legacy
         }
         &--paused {
-            background: rgba(239, 76, 0, 0.2);
-            color: #ef4c00;
+            background: rgba(239, 76, 0, 0.2); // legacy
+            color: #ef4c00; // legacy
         }
     }
 }
@@ -52,5 +52,17 @@
 .axiom :local {
     .analyticsCard {
         border: 1px solid var(--border-neutral-default);
+    }
+
+    .statusBadge {
+        color: var(--content-inverted-default);
+
+        &--active {
+            background: var(--surface-success-primary);
+        }
+        &--paused {
+            background: var(--surface-warning-primary);
+            color: var(--content-warning-primary);
+        }
     }
 }

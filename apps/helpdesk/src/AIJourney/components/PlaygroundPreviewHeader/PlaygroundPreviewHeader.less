@@ -1,7 +1,7 @@
 :local {
     .previewHeader {
         height: fit-content;
-        background-color: var(--surface-neutral-secondary);
+        background-color: var(--surface-neutral-secondary); // legacy
 
         padding: var(--layout-spacing-s);
         font-size: 12px;
@@ -36,11 +36,22 @@
     }
 
     .merchantInitials {
-        background-color: var(--surface-neutral-tertiary);
+        background-color: var(--surface-neutral-tertiary); // legacy
         border-radius: 100%;
-        color: var(--content-neutral-secondary);
+        color: var(--content-neutral-secondary); // legacy
         font-size: 16px;
         font-weight: 600;
         padding: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .previewHeader {
+        background-color: var(--surface-neutral-secondary);
+    }
+
+    .merchantInitials {
+        background-color: var(--surface-neutral-tertiary);
+        color: var(--content-neutral-secondary);
     }
 }

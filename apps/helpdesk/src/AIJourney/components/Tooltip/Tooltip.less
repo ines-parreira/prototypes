@@ -2,10 +2,10 @@
     .tooltip {
         position: absolute;
         top: 100%;
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.9); // legacy
         backdrop-filter: blur(4px);
         border-radius: var(--layout-spacing-xs);
-        border: 1px solid #ececec;
+        border: 1px solid #ececec; // legacy
         padding: var(--layout-spacing-xs);
         margin-top: var(--layout-spacing-xxs);
         width: max-content;
@@ -25,6 +25,11 @@
 }
 
 .axiom :local {
+    .tooltip {
+        background: var(--elevation-neutral-high);
+        border: 1px solid var(--border-neutral-default);
+    }
+
     .date {
         color: var(--content-neutral-secondary);
     }

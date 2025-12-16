@@ -7,7 +7,7 @@
 
     .messageBubble {
         border-radius: 16px 16px 16px 0;
-        background: #fff;
+        background: #fff; // legacy
         box-shadow:
             0 1.448px 3.862px 0 rgba(0, 0, 0, 0.08),
             -0.966px -0.966px 0.483px 0 rgba(0, 0, 0, 0.12) inset;
@@ -21,6 +21,16 @@
         gap: var(--layout-spacing-xxs);
         font-size: 10px;
         font-weight: 600;
+        color: var(--content-neutral-tertiary); // legacy
+    }
+}
+
+.axiom :local {
+    .messageBubble {
+        background: var(--elevation-neutral-default);
+    }
+
+    .bottomMessage {
         color: var(--content-neutral-tertiary);
     }
 }

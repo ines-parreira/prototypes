@@ -11,7 +11,7 @@
             #4b5566 5%,
             #97a9cc 50%,
             #4b5566 95%
-        );
+        ); // legacy
         transition:
             height 0.2s linear,
             background 0.2s linear;
@@ -39,7 +39,7 @@
         overflow: hidden;
 
         &:not([disabled]):hover {
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1); // legacy
             height: 40px; // Match .fakeBorder height
             box-shadow: 0 4px 16px 0 rgba(61, 64, 92, 0.2);
         }
@@ -53,7 +53,7 @@
             position: absolute;
             inset: 0;
             border-radius: inherit;
-            background-color: #3d405c;
+            background-color: #3d405c; // legacy
             opacity: 0;
             transition: opacity 0.4s linear;
             pointer-events: none;
@@ -89,7 +89,7 @@
         }
 
         &:disabled {
-            background: var(--neutral-grey-4);
+            background: var(--neutral-grey-4); // legacy
             opacity: 0.4;
         }
     }
@@ -99,7 +99,7 @@
         font-weight: 600;
         pointer-events: none;
         white-space: nowrap;
-        color: #fff; // forced white
+        color: #fff; // legacy - forced white
     }
 
     .primaryButtonContent {
@@ -110,7 +110,7 @@
         z-index: 1;
         pointer-events: none;
         white-space: nowrap;
-        color: #fff; // forced white
+        color: #fff; // legacy - forced white
     }
 
     .linkButton {
@@ -135,9 +135,35 @@
 }
 
 .axiom :local {
+    .fakeBorder {
+        background: var(--border-neutral-tertiary);
+    }
+
     .primaryButton {
         color: var(--content-inverted-default);
         background: var(--surface-additional-blue);
+
+        &:not([disabled]):hover {
+            border: 1px solid var(--border-neutral-tertiary);
+        }
+
+        &::after {
+            background-color: var(--hover-default);
+        }
+    }
+
+    .primaryButtonContent {
+        color: var(--content-inverted-default);
+    }
+
+    .secondaryButton {
+        &:disabled {
+            background: var(--surface-neutral-secondary);
+        }
+    }
+
+    .secondaryButtonContent {
+        color: var(--content-inverted-default);
     }
 
     .linkButton {
