@@ -1,6 +1,7 @@
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { readMigration } from 'core/flags/utils/readMigration'
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
 import {
     postReportingV1,
@@ -19,6 +20,12 @@ import type {
 } from 'domains/reporting/models/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { reportError } from 'utils/errors'
+
+// Metrics that are expected to support cursor pagination
+// Add metrics here when implementing pagination support for them
+const CURSOR_PAGINATION_WHITELIST = new Set<MetricName>([
+    METRIC_NAMES.VOICE_CALL_LIST,
+])
 
 export interface ExecuteMetricConfig<
     TCube extends Cube = Cube,
@@ -77,6 +84,41 @@ export async function metricExecutionHandler<
             let data
             if (stage === 'live' || stage === 'complete')
                 data = await postReportingV2<TData, TMeta>(config.newPayload!)
+
+            // Validate cursor pagination for non-whitelisted metrics
+            if (data && config.newPayload?.metricName) {
+                const nextCursor = (data.data as any).meta?.next_cursor
+                const metricName = config.newPayload.metricName
+
+                if (
+                    nextCursor != null &&
+                    !CURSOR_PAGINATION_WHITELIST.has(metricName)
+                ) {
+                    console.error(
+                        `Backend returned unexpected cursor pagination for metric ${metricName}`,
+                        {
+                            metricName,
+                            cursor: nextCursor,
+                            stage,
+                        },
+                    )
+
+                    reportError(
+                        new Error(
+                            `Backend returned unexpected cursor pagination for metric ${metricName}`,
+                        ),
+                        {
+                            tags: { team: SentryTeam.CRM_REPORTING },
+                            extra: {
+                                metricName,
+                                cursor: nextCursor,
+                                stage,
+                                query: JSON.stringify(config.newPayload),
+                            },
+                        },
+                    )
+                }
+            }
 
             // Only load the query in "shadow" and "live" stage as we use it to compare with the v1 query (not loaded in "complete" stage)
             let query

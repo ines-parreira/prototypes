@@ -1,6 +1,8 @@
 import { assumeMock } from '@repo/testing'
 import type { AxiosResponse } from 'axios'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     postReportingV1,
     postReportingV2,
@@ -372,6 +374,171 @@ describe('metricExecutionHandler', () => {
 
             expect(postReportingV2Mock).toHaveBeenCalledTimes(1)
             expect((result.data as any).data[0]).toBe(300)
+        })
+    })
+
+    describe('cursor pagination validation', () => {
+        it('should log error when cursor pagination is returned for non-whitelisted metric in live mode', async () => {
+            getNewStatsFeatureFlagMigrationMock.mockResolvedValue('live')
+
+            const responseWithCursor = createMockOldResponse(300)
+            ;(responseWithCursor.data as any).meta = {
+                next_cursor: 'cursor_abc123',
+            }
+
+            postReportingV2Mock.mockResolvedValue(responseWithCursor as any)
+            postReportingV2QueryMock.mockResolvedValue(
+                createMockNextQueryResponse() as any,
+            )
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                oldPayload: mockOldPayload,
+                newPayload: { ...mockNewPayload, metricName: 'test-metric' },
+            }
+
+            await metricExecutionHandler(config)
+
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message:
+                        'Backend returned unexpected cursor pagination for metric test-metric',
+                }),
+                expect.objectContaining({
+                    tags: { team: SentryTeam.CRM_REPORTING },
+                    extra: expect.objectContaining({
+                        metricName: 'test-metric',
+                        cursor: 'cursor_abc123',
+                        stage: 'live',
+                    }),
+                }),
+            )
+        })
+
+        it('should log error when cursor pagination is returned for non-whitelisted metric in complete mode', async () => {
+            getNewStatsFeatureFlagMigrationMock.mockResolvedValue('complete')
+
+            const responseWithCursor = createMockOldResponse(300)
+            ;(responseWithCursor.data as any).meta = {
+                next_cursor: 'cursor_xyz789',
+            }
+
+            postReportingV2Mock.mockResolvedValue(responseWithCursor as any)
+
+            const config: ExecuteMetricConfig = {
+                metricName: METRIC_NAMES.VOICE_CALL_COUNT,
+                newPayload: {
+                    ...mockNewPayload,
+                    metricName: METRIC_NAMES.VOICE_CALL_COUNT,
+                },
+            }
+
+            await metricExecutionHandler(config)
+
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message:
+                        'Backend returned unexpected cursor pagination for metric voice-call-count',
+                }),
+                expect.objectContaining({
+                    tags: { team: SentryTeam.CRM_REPORTING },
+                    extra: expect.objectContaining({
+                        metricName: METRIC_NAMES.VOICE_CALL_COUNT,
+                        cursor: 'cursor_xyz789',
+                        stage: 'complete',
+                    }),
+                }),
+            )
+        })
+
+        it('should NOT log error when cursor pagination is returned for whitelisted metric', async () => {
+            getNewStatsFeatureFlagMigrationMock.mockResolvedValue('live')
+
+            const responseWithCursor = createMockOldResponse(300)
+            ;(responseWithCursor.data as any).meta = {
+                next_cursor: 'cursor_abc123',
+            }
+
+            postReportingV2Mock.mockResolvedValue(responseWithCursor as any)
+            postReportingV2QueryMock.mockResolvedValue(
+                createMockNextQueryResponse() as any,
+            )
+
+            const config: ExecuteMetricConfig = {
+                metricName: METRIC_NAMES.VOICE_CALL_LIST,
+                oldPayload: mockOldPayload,
+                newPayload: {
+                    ...mockNewPayload,
+                    metricName: METRIC_NAMES.VOICE_CALL_LIST,
+                },
+            }
+
+            await metricExecutionHandler(config)
+
+            // reportErrorMock should only be called if there are other errors, not for cursor validation
+            // Filter to check only cursor-related errors
+            const cursorRelatedCalls = reportErrorMock.mock.calls.filter(
+                (call) =>
+                    call[0] &&
+                    typeof call[0] === 'object' &&
+                    'message' in call[0] &&
+                    typeof call[0].message === 'string' &&
+                    call[0].message.includes('cursor pagination'),
+            )
+            expect(cursorRelatedCalls).toHaveLength(0)
+        })
+
+        it('should NOT log error when cursor is null', async () => {
+            getNewStatsFeatureFlagMigrationMock.mockResolvedValue('complete')
+
+            const responseWithNullCursor = createMockOldResponse(300)
+            ;(responseWithNullCursor.data as any).meta = { next_cursor: null }
+
+            postReportingV2Mock.mockResolvedValue(responseWithNullCursor as any)
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                newPayload: { ...mockNewPayload, metricName: 'test-metric' },
+            }
+
+            await metricExecutionHandler(config)
+
+            const cursorRelatedCalls = reportErrorMock.mock.calls.filter(
+                (call) =>
+                    call[0] &&
+                    typeof call[0] === 'object' &&
+                    'message' in call[0] &&
+                    typeof call[0].message === 'string' &&
+                    call[0].message.includes('cursor pagination'),
+            )
+            expect(cursorRelatedCalls).toHaveLength(0)
+        })
+
+        it('should NOT validate cursor in shadow mode because data is not loaded', async () => {
+            getNewStatsFeatureFlagMigrationMock.mockResolvedValue('shadow')
+            postReportingV1Mock.mockResolvedValue(createMockOldResponse(100))
+            postReportingV2QueryMock.mockResolvedValue(
+                createMockNextQueryResponse() as any,
+            )
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                oldPayload: mockOldPayload,
+                newPayload: { ...mockNewPayload, metricName: 'test-metric' },
+            }
+
+            await metricExecutionHandler(config)
+
+            // Should not call reportError for cursor validation in shadow mode
+            const cursorRelatedCalls = reportErrorMock.mock.calls.filter(
+                (call) =>
+                    call[0] &&
+                    typeof call[0] === 'object' &&
+                    'message' in call[0] &&
+                    typeof call[0].message === 'string' &&
+                    call[0].message.includes('cursor pagination'),
+            )
+            expect(cursorRelatedCalls).toHaveLength(0)
         })
     })
 })
