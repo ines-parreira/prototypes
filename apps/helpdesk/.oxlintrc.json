@@ -45,6 +45,25 @@
             "rules": {
                 "no-restricted-imports": "off"
             }
+        },
+        {
+            "files": [
+                "src/domains/reporting/**/*.ts",
+                "src/domains/reporting/**/*.tsx"
+            ],
+            "rules": {
+                "no-restricted-imports": [
+                    "error",
+                    {
+                        "patterns": [
+                            {
+                                "group": ["../*", "./*"],
+                                "message": "Relative imports are not allowed in domains/reporting. Use absolute imports instead (e.g., 'domains/reporting/...'), cf RFC https://github.com/gorgias/architectural-decision-records/blob/main/project/helpdesk-web-app/0007-dont-use-relative-parent-imports.md"
+                            }
+                        ]
+                    }
+                ]
+            }
         }
     ],
     "plugins": ["import", "jsx-a11y", "react", "react-hooks", "typescript"],

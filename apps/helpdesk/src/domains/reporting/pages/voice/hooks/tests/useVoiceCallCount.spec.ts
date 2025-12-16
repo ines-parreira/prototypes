@@ -8,11 +8,10 @@ import { voiceCallCountQueryFactory } from 'domains/reporting/models/queryFactor
 import { voiceCallsCountQueryFactoryV2 } from 'domains/reporting/models/scopes/voiceCalls'
 import { APIOnlyFilterKey } from 'domains/reporting/models/stat/types'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { CALL_LIST_PAGE_SIZE } from 'domains/reporting/pages/voice/constants/voiceOverview'
+import { useVoiceCallCount } from 'domains/reporting/pages/voice/hooks/useVoiceCallCount'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
-
-import { LogicalOperatorEnum } from '../../../common/components/Filter/constants'
-import { useVoiceCallCount } from '../useVoiceCallCount'
 
 jest.mock('domains/reporting/hooks/useMetric')
 jest.mock('domains/reporting/models/queryFactories/voice/voiceCall')

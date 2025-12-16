@@ -3,14 +3,13 @@ import React, { useCallback } from 'react'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import PeriodStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_PeriodStatsFilter'
+import { PAST_YEAR } from 'domains/reporting/pages/constants'
 import DEPRECATED_SelfServiceIntegrationsFilter from 'domains/reporting/pages/self-service/DEPRECATED_SelfServiceIntegrationsFilter'
 import { getStatsFilters } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { Value } from 'pages/common/forms/SelectField/types'
-
-import { PAST_YEAR } from '../constants'
 
 /**
  * @deprecated

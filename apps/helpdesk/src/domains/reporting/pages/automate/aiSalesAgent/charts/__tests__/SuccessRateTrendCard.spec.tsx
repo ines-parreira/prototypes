@@ -1,5 +1,11 @@
 import { screen } from '@testing-library/react'
 
+import {
+    AiSalesAgentChart,
+    AiSalesAgentMetricConfig,
+} from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import SuccessRateTrendCard from 'domains/reporting/pages/automate/aiSalesAgent/charts/SuccessRateTrendCard'
+import { WarningBannerProvider } from 'domains/reporting/pages/automate/aiSalesAgent/components/WarningBannerProvider'
 import { useSuccessRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useSuccessRateTrend'
 import { TREND_BADGE_FORMAT } from 'domains/reporting/pages/common/components/TrendBadge'
 import {
@@ -9,13 +15,6 @@ import {
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
-
-import {
-    AiSalesAgentChart,
-    AiSalesAgentMetricConfig,
-} from '../../AiSalesAgentMetricsConfig'
-import { WarningBannerProvider } from '../../components/WarningBannerProvider'
-import SuccessRateTrendCard from '../SuccessRateTrendCard'
 
 jest.mock('domains/reporting/hooks/dashboards/useDashboardActions', () => ({
     useDashboardActions: jest.fn().mockReturnValue({}),

@@ -1,4 +1,3 @@
-import { OrderDirection } from '../../../../../models/api/types'
 import {
     knowledgeCSAT,
     knowledgeCSATQueryV2Factory,
@@ -8,8 +7,9 @@ import {
     knowledgeIntentsQueryV2Factory,
     knowledgeTicketsCount,
     knowledgeTicketsCountQueryV2Factory,
-} from '../knowledgeInsights'
-import type { Context } from '../scope'
+} from 'domains/reporting/models/scopes/knowledgeInsights'
+import type { Context } from 'domains/reporting/models/scopes/scope'
+import { OrderDirection } from 'models/api/types'
 
 describe('knowledgeTicketsCount', () => {
     it('should build query without sorting', () => {

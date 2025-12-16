@@ -5,16 +5,15 @@ import {
 
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import { MetricScope } from 'domains/reporting/hooks/metricNames'
+import type { QueryFor } from 'domains/reporting/models/scopes/scope'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
+import type { MeasureName } from 'domains/reporting/models/scopes/types'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import type {
     AggregationWindow,
     StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-
-import type { QueryFor } from '../scope'
-import { defineScope } from '../scope'
-import type { MeasureName } from '../types'
 
 jest.mock('domains/reporting/models/scopes/utils', () => ({
     createScopeFilters: jest.fn(),

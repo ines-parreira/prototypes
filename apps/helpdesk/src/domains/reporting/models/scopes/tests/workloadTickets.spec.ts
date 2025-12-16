@@ -1,11 +1,10 @@
+import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import type { Context } from 'domains/reporting/models/scopes/scope'
 import {
     workloadTicketsPerChannel,
     workloadTicketsPerChannelQueryV2Factory,
 } from 'domains/reporting/models/scopes/workloadTickets'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-
-import { withLogicalOperator } from '../../queryFactories/utils'
-import type { Context } from '../scope'
 
 describe('workloadTicketsScope', () => {
     const filters: StatsFilters = {
