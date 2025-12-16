@@ -144,6 +144,3 @@ apps/helpdesk/src/state/billing @gorgias/crm-growth
 apps/helpdesk/src/pages/aiAgent/utils/handoverCustomization* @gorgias/conv-ai-expansion
 apps/helpdesk/src/pages/aiAgent/hooks/handoverCustomization* @gorgias/conv-ai-expansion
 apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization* @gorgias/conv-ai-expansion
-
-# CRM Customer Story scope @gorgias/crm-customer-story
-apps/helpdesk/src/pages/customers @gorgias/crm-customer-story
