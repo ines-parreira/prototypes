@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { readMigration } from 'core/flags/utils/readMigration'
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
@@ -7,6 +9,7 @@ import {
     postReportingV1,
     postReportingV2,
     postReportingV2Query,
+    QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS,
 } from 'domains/reporting/models/resources'
 import type {
     BuiltQuery,
@@ -130,6 +133,14 @@ export async function metricExecutionHandler<
 
             return { data, query }
         } catch (e) {
+            if (
+                e instanceof AxiosError &&
+                e?.response?.status ===
+                    QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS
+            ) {
+                // Propagate the error without reporting it to Sentry to avoid noise
+                throw e
+            }
             reportError(
                 new Error(
                     `Next function failed in ${stage} mode for ${config.metricName}: ${(e as Error).message}`,

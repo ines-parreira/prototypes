@@ -1,5 +1,6 @@
 import { assumeMock } from '@repo/testing'
 import type { AxiosResponse } from 'axios'
+import { AxiosError } from 'axios'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
@@ -7,6 +8,7 @@ import {
     postReportingV1,
     postReportingV2,
     postReportingV2Query,
+    QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS,
 } from 'domains/reporting/models/resources'
 import type {
     BuiltQuery,
@@ -247,6 +249,100 @@ describe('metricExecutionHandler', () => {
             )
             expect(postReportingV1Mock).toHaveBeenCalledTimes(1)
             expect((result.data as any).data[0]).toBe(42)
+        })
+    })
+
+    describe('live mode', () => {
+        beforeEach(() => {
+            getNewStatsFeatureFlagMigrationMock.mockResolvedValue('live')
+        })
+
+        it('should call both APIs and return new response', async () => {
+            postReportingV1Mock.mockResolvedValue(createMockOldResponse(100))
+            postReportingV2Mock.mockResolvedValue(createMockOldResponse(200))
+            postReportingV2QueryMock.mockResolvedValue(
+                createMockNextQueryResponse() as any,
+            )
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                oldPayload: mockOldPayload,
+                newPayload: mockNewPayload,
+            }
+
+            const result = await metricExecutionHandler(config)
+
+            expect(postReportingV1Mock).toHaveBeenCalledTimes(1)
+            expect(postReportingV2Mock).toHaveBeenCalledTimes(1)
+            expect(postReportingV2QueryMock).toHaveBeenCalledTimes(1)
+            expect((result.data as any).data[0]).toBe(200)
+        })
+
+        it('should propagate 202 errors without reporting to Sentry', async () => {
+            postReportingV1Mock.mockResolvedValue(createMockOldResponse())
+            const axiosError = new AxiosError('Query accepted but not ready')
+            axiosError.response = {
+                status: QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS,
+                data: {},
+                statusText: 'Accepted',
+                headers: {},
+                config: {} as any,
+            }
+            postReportingV2Mock.mockRejectedValue(axiosError)
+            postReportingV2QueryMock.mockResolvedValue(
+                createMockNextQueryResponse() as any,
+            )
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                oldPayload: mockOldPayload,
+                newPayload: mockNewPayload,
+            }
+
+            await expect(metricExecutionHandler(config)).rejects.toThrow(
+                axiosError,
+            )
+            expect(reportErrorMock).not.toHaveBeenCalled()
+        })
+
+        it('should report and propagate errors from v2 API', async () => {
+            postReportingV1Mock.mockResolvedValue(createMockOldResponse())
+            const axiosError = new AxiosError('Server error')
+            axiosError.response = {
+                status: 500,
+                data: {},
+                statusText: 'Internal Server Error',
+                headers: {},
+                config: {} as any,
+            }
+            postReportingV2Mock.mockRejectedValue(axiosError)
+            postReportingV2QueryMock.mockResolvedValue(
+                createMockNextQueryResponse() as any,
+            )
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                oldPayload: mockOldPayload,
+                newPayload: mockNewPayload,
+            }
+
+            await expect(metricExecutionHandler(config)).rejects.toThrow(
+                axiosError,
+            )
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.any(Error),
+                expect.objectContaining({
+                    extra: expect.objectContaining({
+                        metricName: 'test-metric',
+                    }),
+                    tags: { team: 'crm-reporting' },
+                }),
+            )
+            // Verify the error message
+            const errorArg = reportErrorMock.mock.calls[0][0] as Error
+            expect(errorArg.message).toBe(
+                'Next function failed in live mode for test-metric: Server error',
+            )
         })
     })
 
