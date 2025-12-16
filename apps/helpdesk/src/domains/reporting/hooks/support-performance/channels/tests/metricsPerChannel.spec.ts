@@ -271,6 +271,7 @@ describe('metricsPerChannel', () => {
                 name: 'fetchCreatedTicketsMetricPerChannel',
                 fetch: fetchCreatedTicketsMetricPerChannel,
                 queryFactory: ticketsCreatedPerChannelPerChannelQueryFactory,
+                newQueryFactory: createdTicketsPerChannelQueryV2Factory,
             },
             {
                 name: 'fetchMessagesSentMetricPerChannel',
