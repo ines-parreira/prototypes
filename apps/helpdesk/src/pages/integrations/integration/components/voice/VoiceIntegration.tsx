@@ -1,4 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import type { LocationState } from 'history'
 import {
     matchPath,
@@ -10,7 +9,6 @@ import {
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     IntegrationType,
@@ -39,7 +37,6 @@ import VoiceIntegrationQueueRoutes from './VoiceIntegrationQueueRoutes'
 import VoiceIntegrationSettingsPage from './VoiceIntegrationSettingsPage'
 
 export default function VoiceIntegration() {
-    const useExtendedCallFlows = useFlag(FeatureFlagKey.ExtendedCallFlows)
     const { integrationId } = useParams<{ integrationId: string }>()
 
     const { pathname: path } = useLocation<LocationState>()
@@ -100,8 +97,7 @@ export default function VoiceIntegration() {
             </Route>
         </>
     )
-    const shouldUseNewRoutes =
-        useExtendedCallFlows && !!currentIntegration?.meta?.flow
+    const shouldUseNewRoutes = !!currentIntegration?.meta?.flow
 
     return (
         <div className="full-width">

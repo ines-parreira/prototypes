@@ -4,7 +4,6 @@ import { Form } from 'core/forms'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import VoiceIntegrationSettingCallRecording from '../VoiceIntegrationSettingCallRecording'
-import VoiceIntegrationSettingCallRecording_DEPRECATED from '../VoiceIntegrationSettingCallRecording_DEPRECATED'
 import type { TextToSpeechContext as TextToSpeechContextType } from '../VoiceMessageTTS/TextToSpeechContext'
 import TextToSpeechContext from '../VoiceMessageTTS/TextToSpeechContext'
 
@@ -12,64 +11,6 @@ const defaultPreferences = {
     record_inbound_calls: false,
     record_outbound_calls: false,
 }
-
-describe('VoiceIntegrationSettingCallRecording_DEPRECATED', () => {
-    const renderComponent = (preferences = defaultPreferences) =>
-        renderWithStoreAndQueryClientProvider(
-            <Form
-                defaultValues={{
-                    meta: {
-                        preferences,
-                        recording_notification: {},
-                    },
-                }}
-                onValidSubmit={jest.fn()}
-            >
-                <TextToSpeechContext.Provider
-                    value={{ integrationId: 123 } as TextToSpeechContextType}
-                >
-                    <VoiceIntegrationSettingCallRecording_DEPRECATED />
-                </TextToSpeechContext.Provider>
-            </Form>,
-        )
-
-    it('renders with toggles on', () => {
-        const { getByText } = renderComponent({
-            record_outbound_calls: true,
-            record_inbound_calls: true,
-        })
-        expect(getByText('Outbound calls')).toBeInTheDocument()
-        expect(getByText('Inbound calls')).toBeInTheDocument()
-
-        expect(
-            screen.getByRole('checkbox', {
-                name: 'Outbound calls',
-            }),
-        ).toBeChecked()
-        expect(
-            screen.getByRole('checkbox', {
-                name: 'Inbound calls',
-            }),
-        ).toBeChecked()
-    })
-
-    it('renders with toggles off', () => {
-        const { queryByText } = renderComponent()
-        expect(queryByText('Outbound calls')).toBeInTheDocument()
-        expect(queryByText('Inbound calls')).toBeInTheDocument()
-
-        expect(
-            screen.getByRole('checkbox', {
-                name: 'Outbound calls',
-            }),
-        ).not.toBeChecked()
-        expect(
-            screen.getByRole('checkbox', {
-                name: 'Inbound calls',
-            }),
-        ).not.toBeChecked()
-    })
-})
 
 describe('VoiceIntegrationSettingCallRecording', () => {
     const renderComponent = (preferences = defaultPreferences) =>

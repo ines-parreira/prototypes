@@ -1,11 +1,9 @@
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { Controls } from '@xyflow/react'
 
 import type { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import type { Edge } from 'core/ui/flows'
 import {
     Background,
@@ -17,8 +15,6 @@ import {
 } from 'core/ui/flows'
 import { createFlowGraph } from 'core/ui/flows/utils'
 
-import { VoiceFlowNodeType } from './constants'
-import { DEPRECATED_EnqueueNode } from './nodes/DEPRECATED_EnqueueNode'
 import { nodeTypes } from './nodeTypes'
 import type { VoiceFlowNode } from './types'
 import { getEdgeProps, getNextNodes, transformToReactFlowNodes } from './utils'
@@ -39,10 +35,6 @@ type VoiceFlowProps = {
 }
 
 export function VoiceFlow({ flow, preview = false }: VoiceFlowProps) {
-    const isExtendedCallFlowsGAReady = useFlag(
-        FeatureFlagKey.ExtendedCallFlowsGAReady,
-    )
-
     const computeEdges = useCallback(
         (nodes: VoiceFlowNode[]) => createFlowGraph(nodes, getNextNodes).edges,
         [],
@@ -63,15 +55,7 @@ export function VoiceFlow({ flow, preview = false }: VoiceFlowProps) {
             <Flow<VoiceFlowNode, Edge>
                 nodes={nodes}
                 edges={edges}
-                nodeTypes={
-                    isExtendedCallFlowsGAReady
-                        ? nodeTypes
-                        : {
-                              ...nodeTypes,
-                              [VoiceFlowNodeType.Enqueue]:
-                                  DEPRECATED_EnqueueNode,
-                          }
-                }
+                nodeTypes={nodeTypes}
                 edgeTypes={preview ? previewEdgeType : edgeTypes}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}

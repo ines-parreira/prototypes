@@ -13,7 +13,6 @@ import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
 import BusinessHoursSelectField from 'pages/settings/businessHours/BusinessHoursSelectField'
 import {
@@ -31,7 +30,6 @@ function VoiceIntegrationSettingsFormGeneralSection({
     integration,
 }: Props): JSX.Element {
     const isCBHEnabled = useFlag(FeatureFlagKey.CustomBusinessHours)
-    const useExtendedCallFlows = useFlag(FeatureFlagKey.ExtendedCallFlows)
 
     const methods = useFormContext<
         UpdateAllPhoneIntegrationSettings | PhoneIntegration
@@ -76,26 +74,17 @@ function VoiceIntegrationSettingsFormGeneralSection({
                 </div>
 
                 <div className={css.appRow}>
-                    {!useExtendedCallFlows ? (
-                        initialPhoneNumber && (
-                            <PhoneNumberInput
-                                value={initialPhoneNumber.phone_number_friendly}
-                                disabled={true}
-                            />
-                        )
-                    ) : (
-                        <FormField
-                            field={PhoneNumberSelectField}
-                            name={'meta.phone_number_id'}
-                            integrationType={IntegrationType.Phone}
-                            inputTransform={(value) =>
-                                value ? phoneNumbers[value] : null
-                            }
-                            outputTransform={(phoneNumber) => phoneNumber?.id}
-                            isRequired
-                            initialValue={initialPhoneNumber}
-                        />
-                    )}
+                    <FormField
+                        field={PhoneNumberSelectField}
+                        name={'meta.phone_number_id'}
+                        integrationType={IntegrationType.Phone}
+                        inputTransform={(value) =>
+                            value ? phoneNumbers[value] : null
+                        }
+                        outputTransform={(phoneNumber) => phoneNumber?.id}
+                        isRequired
+                        initialValue={initialPhoneNumber}
+                    />
                 </div>
             </div>
             {isCBHEnabled && (

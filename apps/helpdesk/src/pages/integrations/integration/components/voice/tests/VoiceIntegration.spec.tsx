@@ -1,7 +1,6 @@
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { renderWithRouter } from 'utils/testing'
 
@@ -60,90 +59,37 @@ jest.mock('../VoiceIntegrationFlowPage', () => () => (
     <div>VoiceIntegrationFlowPage</div>
 ))
 
-jest.mock('core/flags', () => ({
-    useFlag: jest.fn(),
-}))
-const useFlagMock = assumeMock(useFlag)
-
 describe('VoiceIntegration', () => {
     const renderComponent = (route: string = '') =>
         renderWithRouter(<VoiceIntegration />, { route })
 
-    describe.each([true, false])(
-        'routes outside of integration context',
-        (extendedCallFlowsFF) => {
-            beforeEach(() => {
-                useAppSelectorMock.mockReturnValue(null)
-                useFlagMock.mockReturnValue(extendedCallFlowsFF)
-            })
-
-            it('should render Queues', () => {
-                renderComponent()
-
-                expect(screen.getByText('QueueRoutes')).toBeInTheDocument()
-            })
-
-            it('should not render secondary navigation when on specific queue page', () => {
-                renderComponent(`${PHONE_INTEGRATION_BASE_URL}/queues/123`)
-
-                expect(screen.queryByText('About')).toBeNull()
-            })
-
-            it('should render the VoiceIntegrationOnboarding component on /new', () => {
-                renderComponent(`${PHONE_INTEGRATION_BASE_URL}/new`)
-
-                expect(
-                    screen.getByText('VoiceIntegrationOnboarding'),
-                ).toBeInTheDocument()
-            })
-        },
-    )
-
-    describe('integration context [FF off]', () => {
+    describe('routes outside of integration context', () => {
         beforeEach(() => {
-            useFlagMock.mockReturnValue(false)
+            useAppSelectorMock.mockReturnValue(null)
         })
 
-        it('should render integration settings', () => {
-            useAppSelectorMock.mockReturnValue({
-                id: 1,
-                name: 'testing',
-                type: 'phone',
-                meta: {
-                    function: 'standard',
-                },
-            })
-
+        it('should render Queues', () => {
             renderComponent()
 
-            expect(screen.queryByText('Preferences')).toBeNull()
-            expect(screen.queryByText('Voicemail')).toBeNull()
-            expect(screen.queryByText('Greetings & Music')).toBeNull()
+            expect(screen.getByText('QueueRoutes')).toBeInTheDocument()
         })
 
-        it('should render route for IVR integration', () => {
-            useAppSelectorMock.mockReturnValue({
-                id: 1,
-                name: 'testing',
-                type: 'phone',
-                meta: {
-                    function: 'ivr',
-                },
-            })
+        it('should not render secondary navigation when on specific queue page', () => {
+            renderComponent(`${PHONE_INTEGRATION_BASE_URL}/queues/123`)
 
-            renderComponent()
+            expect(screen.queryByText('About')).toBeNull()
+        })
 
-            expect(screen.queryByText('Preferences')).toBeInTheDocument()
-            expect(screen.queryByText('Voicemail')).toBeInTheDocument()
-            expect(screen.queryByText('IVR')).toBeInTheDocument()
+        it('should render the VoiceIntegrationOnboarding component on /new', () => {
+            renderComponent(`${PHONE_INTEGRATION_BASE_URL}/new`)
+
+            expect(
+                screen.getByText('VoiceIntegrationOnboarding'),
+            ).toBeInTheDocument()
         })
     })
 
     describe('integration context', () => {
-        beforeEach(() => {
-            useFlagMock.mockReturnValue(true)
-        })
-
         describe('with an integration that has a flow', () => {
             it('should render integration pages correctly', () => {
                 useAppSelectorMock.mockReturnValue({

@@ -104,12 +104,7 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
         expect(screen.getByTestId('business-hours-select')).toBeInTheDocument()
     })
 
-    it('should render editable phone number select field when feature flag is disabled', () => {
-        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-            if (flag === FeatureFlagKey.ExtendedCallFlows) return true
-            return false
-        })
-
+    it('should render editable phone number select field', () => {
         renderWithRouter(
             <VoiceIntegrationSettingsFormGeneralSection
                 integration={phoneIntegration}
@@ -119,35 +114,7 @@ describe('VoiceIntegrationSettingsFormGeneralSection', () => {
         expect(screen.getByTestId('phone-number-select')).toBeInTheDocument()
     })
 
-    it('should render disabled phone number input when feature flag is enabled', () => {
-        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-            if (flag === FeatureFlagKey.ExtendedCallFlows) return false
-            return false
-        })
-
-        renderWithRouter(
-            <VoiceIntegrationSettingsFormGeneralSection
-                integration={phoneIntegration}
-            />,
-        )
-
-        const textboxes = screen.getAllByRole('textbox')
-        const phoneInput = textboxes.find((input) =>
-            input.getAttribute('value')?.includes('555'),
-        )
-        expect(phoneInput).toBeDefined()
-        expect(phoneInput).toBeDisabled()
-        expect(
-            screen.queryByTestId('phone-number-select'),
-        ).not.toBeInTheDocument()
-    })
-
     it('should pass correct inputTransform and outputTransform to phone number field', () => {
-        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-            if (flag === FeatureFlagKey.ExtendedCallFlows) return true
-            return false
-        })
-
         const mockPhoneNumbers = {
             1: mockPhoneNumber,
             2: { id: 2, phone_number_friendly: '+1 (555) 987-6543' },

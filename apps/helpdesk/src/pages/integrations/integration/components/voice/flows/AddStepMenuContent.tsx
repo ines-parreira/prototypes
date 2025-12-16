@@ -1,6 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { useFlag } from 'core/flags'
 import { AddStepMenuItem } from 'core/ui/flows/components/AddStepMenuItem'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 
@@ -14,9 +11,6 @@ function AddStepMenuContent({
     source: string
     target: string
 }) {
-    const isExtendedCallFlowsGAReady = useFlag(
-        FeatureFlagKey.ExtendedCallFlowsGAReady,
-    )
     const { addNode, canAddFinalNode } = useAddNode(source, target)
 
     return (
@@ -26,18 +20,16 @@ function AddStepMenuContent({
                 label={'Time rule'}
                 onClick={() => addNode(VoiceFlowNodeType.TimeSplitConditional)}
             />
-            {isExtendedCallFlowsGAReady && (
-                <AddStepMenuItem
-                    icon={
-                        <StepCardIcon
-                            backgroundColor="fuchsia"
-                            name="search-magnifying-glass"
-                        />
-                    }
-                    label={'Customer lookup'}
-                    onClick={() => addNode(VoiceFlowNodeType.CustomerLookup)}
-                />
-            )}
+            <AddStepMenuItem
+                icon={
+                    <StepCardIcon
+                        backgroundColor="fuchsia"
+                        name="search-magnifying-glass"
+                    />
+                }
+                label={'Customer lookup'}
+                onClick={() => addNode(VoiceFlowNodeType.CustomerLookup)}
+            />
             <AddStepMenuItem
                 icon={
                     <StepCardIcon

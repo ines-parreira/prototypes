@@ -83,25 +83,6 @@ export const VOICEMAIL_DEFAULT_VOICE_MESSAGE = {
         "Hello, unfortunately we aren't able to take your call right now. Please leave us a voicemail and we'll get back to you as soon as possible. Thank you!",
 }
 
-export const DEFAULT_IVR_SETTINGS = {
-    greeting_message: {
-        voice_message_type: VoiceMessageType.TextToSpeech,
-        text_to_speech_content:
-            'Hello, thanks for calling. This IVR number has no menu options. Press 1 for set up instructions.',
-    },
-    menu_options: [
-        {
-            action: IvrMenuActionType.PlayMessage,
-            digit: '1',
-            voice_message: {
-                voice_message_type: VoiceMessageType.TextToSpeech,
-                text_to_speech_content:
-                    "You can update greetings and menu options in the integration's IVR settings page.",
-            },
-        },
-    ],
-}
-
 export const DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE = {
     voice_message_type: VoiceMessageType.TextToSpeech,
     text_to_speech_content:

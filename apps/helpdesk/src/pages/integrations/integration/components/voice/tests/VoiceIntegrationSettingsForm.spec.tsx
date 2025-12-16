@@ -4,7 +4,6 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 import { BrowserRouter } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { FormField, FormSubmitButton } from 'core/forms'
 import { integrationsState } from 'fixtures/integrations'
 import useAppSelector from 'hooks/useAppSelector'
@@ -35,7 +34,6 @@ jest.mock('../useVoiceSettingsForm')
 
 const useAppSelectorMock = assumeMock(useAppSelector)
 const useFormSubmitMock = assumeMock(useFormSubmit)
-const useFlagMock = assumeMock(useFlag)
 
 jest.mock('react-hook-form')
 
@@ -68,12 +66,6 @@ jest.mock('pages/common/components/UnsavedChangesPrompt', () => {
 
 jest.mock('../VoiceFormSubmitButton', () => ({ children }: any) => (
     <button type="submit">{children}</button>
-))
-jest.mock('../VoiceIntegrationSettingsFormCallFlowSection', () => () => (
-    <div>VoiceIntegrationSettingsFormCallFlowSection</div>
-))
-jest.mock('../VoiceIntegrationSettingsFormCallFlowSection', () => () => (
-    <div>VoiceIntegrationSettingsFormCallFlowSection</div>
 ))
 jest.mock('../VoiceIntegrationSettingCallRecording', () => () => (
     <div>VoiceIntegrationSettingCallRecording</div>
@@ -134,33 +126,9 @@ describe('<VoiceIntegrationSettingsForm />', () => {
         useFormSubmitMock.mockReturnValue({ onSubmit })
 
         FormSubmitButtonMock.mockReturnValue(<div>FormSubmitButton</div>)
-
-        // Default to ExtendedCallFlows false
-        useFlagMock.mockReturnValue(false)
-    })
-
-    it('should render the component [FF off]', () => {
-        renderComponent(props)
-
-        expect(screen.getByText('General')).toBeInTheDocument()
-        expect(screen.getByText('Integration name')).toBeInTheDocument()
-        expect(screen.getByText('Phone number')).toBeInTheDocument()
-        expect(screen.getByText('Manage Phone Number')).toBeInTheDocument()
-        expect(screen.getByText('Call settings')).toBeInTheDocument()
-        expect(
-            screen.getByText('Configure how incoming calls are handled'),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText('VoiceIntegrationSettingsFormCallFlowSection'),
-        ).toBeInTheDocument()
-
-        expect(screen.getByText('Save changes')).toBeInTheDocument()
-        expect(screen.getByText('Cancel')).toBeInTheDocument()
-        expect(screen.getByText('Delete integration')).toBeInTheDocument()
     })
 
     it('should render the new settings card layout', () => {
-        useFlagMock.mockReturnValue(true)
         renderComponent(props)
 
         expect(screen.getByText('General')).toBeInTheDocument()
@@ -186,62 +154,55 @@ describe('<VoiceIntegrationSettingsForm />', () => {
         ).toBeInTheDocument()
     })
 
-    describe.each([true, false])(
-        'when ExtendedCallFlows feature flag is %s',
-        (isExtendedCallFlowsEnabled) => {
-            beforeEach(() => {
-                useFlagMock.mockReturnValue(isExtendedCallFlowsEnabled)
-            })
+    describe('handle rendering', () => {
+        it('should display delete warning message and it should not contain text about "saved filters"', () => {
+            const { getByText, getByRole } = renderComponent(props)
 
-            it('should display delete warning message and it should not contain text about "saved filters"', () => {
-                const { getByText, getByRole } = renderComponent(props)
+            fireEvent.click(
+                getByRole('button', { name: /Delete integration/i }),
+            )
 
-                fireEvent.click(
-                    getByRole('button', { name: /Delete integration/i }),
-                )
+            expect(
+                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT),
+            ).toBeInTheDocument()
+        })
 
-                expect(
-                    getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT),
-                ).toBeInTheDocument()
-            })
+        it('should pass correct props to Integration name field', () => {
+            // @ts-ignore
+            methodsMock.watch = jest.fn(() => 'emoji')
+            renderComponent(props)
 
-            it('should pass correct props to Integration name field', () => {
-                // @ts-ignore
-                methodsMock.watch = jest.fn(() => 'emoji')
-                renderComponent(props)
+            expect(FormFieldMock).toHaveBeenNthCalledWith(
+                1,
+                expect.objectContaining({
+                    name: 'name',
+                    emoji: 'emoji',
+                    field: expect.any(Function),
+                    placeholder: 'Ex: Company Support Line',
+                    isRequired: true,
+                }),
+                {},
+            )
+        })
 
-                expect(FormFieldMock).toHaveBeenNthCalledWith(
-                    1,
-                    expect.objectContaining({
-                        name: 'name',
-                        emoji: 'emoji',
-                        field: expect.any(Function),
-                        placeholder: 'Ex: Company Support Line',
-                        isRequired: true,
-                    }),
-                    {},
-                )
-            })
+        it('should not display UnsavedChangesPrompt when form is not dirty', () => {
+            methodsMock.formState.isDirty = false
 
-            it('should not display UnsavedChangesPrompt when form is not dirty', () => {
-                methodsMock.formState.isDirty = false
+            renderComponent(props)
 
-                renderComponent(props)
+            expect(mockUnsavedChangesPrompt).toHaveBeenLastCalledWith(
+                expect.objectContaining({ when: false }),
+            )
+        })
 
-                expect(mockUnsavedChangesPrompt).toHaveBeenLastCalledWith(
-                    expect.objectContaining({ when: false }),
-                )
-            })
+        it('should display UnsavedChangesPrompt when form is dirty', () => {
+            methodsMock.formState.isDirty = true
 
-            it('should display UnsavedChangesPrompt when form is dirty', () => {
-                methodsMock.formState.isDirty = true
+            renderComponent(props)
 
-                renderComponent(props)
-
-                expect(mockUnsavedChangesPrompt).toHaveBeenLastCalledWith(
-                    expect.objectContaining({ when: true }),
-                )
-            })
-        },
-    )
+            expect(mockUnsavedChangesPrompt).toHaveBeenLastCalledWith(
+                expect.objectContaining({ when: true }),
+            )
+        })
+    })
 })

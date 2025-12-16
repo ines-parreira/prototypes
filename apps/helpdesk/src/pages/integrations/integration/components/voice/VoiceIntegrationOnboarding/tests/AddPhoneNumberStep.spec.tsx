@@ -5,7 +5,6 @@ import { useFormContext } from 'react-hook-form'
 
 import { PhoneFunction } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
@@ -21,7 +20,6 @@ jest.mock('../VoiceIntegrationOnboardingCancelButton', () => () => (
 jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('core/forms')
 jest.mock('react-hook-form')
-jest.mock('core/flags')
 
 const useAppSelectorMock = useAppSelector as jest.Mock
 const FormFieldMock = assumeMock(FormField)
@@ -37,7 +35,6 @@ const mockUseFormContextReturnValue = {
 } as unknown as ReturnType<typeof useFormContext>
 
 const useFormContextMock = assumeMock(useFormContext)
-const useFlagMock = assumeMock(useFlag)
 
 describe('AddPhoneNumberStep', () => {
     const mockGoToNextStep = jest.fn()
@@ -55,7 +52,6 @@ describe('AddPhoneNumberStep', () => {
         watchMock.mockReturnValue([null, PhoneFunction.Standard] as any)
         useFormContextMock.mockReturnValue(mockUseFormContextReturnValue)
         useSearchMock.mockReturnValue({ phoneNumberId: undefined })
-        useFlagMock.mockReturnValue(true)
     })
 
     const renderComponent = () =>
@@ -150,30 +146,6 @@ describe('AddPhoneNumberStep', () => {
         await waitFor(() => expect(mockGoToNextStep).toHaveBeenCalled())
     })
 
-    it.each([
-        { phoneFunction: PhoneFunction.Standard, label: 'Standard' },
-        {
-            phoneFunction: PhoneFunction.Ivr,
-            label: 'IVR (Interactive Voice Response)',
-        },
-    ])('should correctly map phone functions', ({ phoneFunction, label }) => {
-        useFlagMock.mockReturnValue(false)
-        FormFieldMock.mockImplementation(({ optionMapper, name }: any) => {
-            if (!!optionMapper) {
-                return (
-                    <div>
-                        <span>{optionMapper(phoneFunction).value}</span>
-                    </div>
-                )
-            }
-            return <>{name}</>
-        })
-
-        renderComponent()
-
-        expect(screen.getByText(label)).toBeInTheDocument()
-    })
-
     it('should call onCreateNewNumber when a new phone number is created', async () => {
         FormFieldMock.mockImplementation(({ onCreate, name }: any) => {
             if (!!onCreate) {
@@ -197,24 +169,11 @@ describe('AddPhoneNumberStep', () => {
         )
     })
 
-    it('should render business hours field when feature flag is enabled', () => {
-        useFlagMock.mockReturnValue(true)
-
+    it('should render business hours field', () => {
         renderComponent()
 
         expect(FormFieldMock).toHaveBeenCalledWith(
             expect.objectContaining({ name: 'business_hours_id' }),
-            {},
-        )
-    })
-
-    it('should render function field when feature flag is disabled', () => {
-        useFlagMock.mockReturnValue(false)
-
-        renderComponent()
-
-        expect(FormFieldMock).toHaveBeenCalledWith(
-            expect.objectContaining({ name: 'meta.function' }),
             {},
         )
     })

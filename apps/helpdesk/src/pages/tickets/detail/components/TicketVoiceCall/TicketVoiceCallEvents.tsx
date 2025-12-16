@@ -1,9 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-
 import { Skeleton } from '@gorgias/axiom'
 import { VoiceCallTerminationStatus } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import { hasFlowEndEvent, processEvents } from 'models/voiceCall/processEvents'
 import { useListVoiceCallEvents } from 'models/voiceCall/queries'
 
@@ -21,7 +18,6 @@ const TicketVoiceCallEvents = ({
     callId,
     terminationStatus,
 }: TicketVoiceCallEventsProps) => {
-    const isExtendedCallFlows = useFlag(FeatureFlagKey.ExtendedCallFlows)
     const { data, isLoading, error } = useListVoiceCallEvents({
         call_id: callId,
     })
@@ -55,7 +51,7 @@ const TicketVoiceCallEvents = ({
             )
         }
 
-        if (isExtendedCallFlows && hasFlowEndEvent(data.data.data)) {
+        if (hasFlowEndEvent(data.data.data)) {
             return (
                 <Timeline>
                     <div className={css.noEventsInfo}>

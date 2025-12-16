@@ -1,12 +1,9 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
 
 import { mockPlayMessageStep } from '@gorgias/helpdesk-mocks'
 
-import { useFlag } from 'core/flags'
 import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 
@@ -28,7 +25,6 @@ jest.mock('../useVoiceFlow', () => ({
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
-const useFlagMock = assumeMock(useFlag)
 
 const mockUseAddNode = {
     addNode: jest.fn(),
@@ -95,13 +91,6 @@ describe('AddStepMenuContent', () => {
         )
     }
 
-    beforeEach(() => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.ExtendedCallFlowsGAReady) return true
-            return false
-        })
-    })
-
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -133,19 +122,6 @@ describe('AddStepMenuContent', () => {
             expect(screen.getByText('Send to SMS')).toBeInTheDocument()
             expect(screen.getByText('Send to voicemail')).toBeInTheDocument()
             expect(screen.getByText('Forward to')).toBeInTheDocument()
-        })
-
-        it('should not render Customer lookup option when ExtendedCallFlowsGAReady is disabled', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.ExtendedCallFlowsGAReady)
-                    return false
-                return true
-            })
-
-            renderComponent()
-            expect(
-                screen.queryByText('Customer lookup'),
-            ).not.toBeInTheDocument()
         })
     })
 

@@ -1,18 +1,10 @@
 import { useEffect } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { useFormContext } from 'react-hook-form'
 
-import type { LegacySelectFieldRawOption as SelectFieldRawOption } from '@gorgias/axiom'
-import {
-    LegacyButton as Button,
-    Label,
-    LegacySelectField as SelectField,
-} from '@gorgias/axiom'
+import { LegacyButton as Button, Label } from '@gorgias/axiom'
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
-import { PhoneFunction } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
@@ -33,9 +25,6 @@ type Props = {
 }
 
 const AddPhoneNumberStep = ({ onCreateNewNumber }: Props) => {
-    const useExtendedFlowsGAReady = useFlag(
-        FeatureFlagKey.ExtendedCallFlowsGAReady,
-    )
     const { phoneNumberId } = useSearch<{
         phoneNumberId: string
     }>()
@@ -49,7 +38,6 @@ const AddPhoneNumberStep = ({ onCreateNewNumber }: Props) => {
     } = useFormContext<PhoneIntegration>()
 
     const emoji = watch('meta.emoji')
-    const phoneFunction = watch('meta.function')
 
     useEffect(() => {
         if (phoneNumberId) {
@@ -91,34 +79,13 @@ const AddPhoneNumberStep = ({ onCreateNewNumber }: Props) => {
                         onCreate={onCreateNewNumber}
                     />
                 </div>
-                {useExtendedFlowsGAReady ? (
-                    <div>
-                        <FormField
-                            field={BusinessHoursSelectField}
-                            name="business_hours_id"
-                            isRequired
-                        />
-                    </div>
-                ) : (
-                    <div>
-                        <FormField
-                            name={'meta.function'}
-                            label={'Function'}
-                            field={SelectField}
-                            options={[
-                                PhoneFunction.Standard,
-                                PhoneFunction.Ivr,
-                            ]}
-                            selectedOption={phoneFunction}
-                            optionMapper={(option: SelectFieldRawOption) => ({
-                                value:
-                                    option === PhoneFunction.Standard
-                                        ? 'Standard'
-                                        : 'IVR (Interactive Voice Response)',
-                            })}
-                        />
-                    </div>
-                )}
+                <div>
+                    <FormField
+                        field={BusinessHoursSelectField}
+                        name="business_hours_id"
+                        isRequired
+                    />
+                </div>
             </div>
             <div className={css.buttons}>
                 <VoiceIntegrationOnboardingCancelButton />
