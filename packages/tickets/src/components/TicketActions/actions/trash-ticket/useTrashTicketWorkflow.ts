@@ -21,22 +21,29 @@ export function useTrashTicketWorkflow({
         () => currentUser && hasRole(currentUser.data, UserRole.Agent),
         [currentUser],
     )
-    const { isOpen, toggle } = useToggle(false)
+    const {
+        isOpen: isTrashTicketModalOpen,
+        toggle: handleTrashTicketModalToggle,
+    } = useToggle(false)
 
-    const handleTrashTicketMenuClick = useCallback(async () => {
-        if (!isTrashed && !isOpen) {
-            void toggle()
-        } else if (isTrashed) {
-            await trashTicket(ticketId, {
-                trashed_datetime: null,
-            })
+    const handleTrashTicketMenuClick = useCallback(() => {
+        if (isTrashed) {
+            trashTicket(ticketId, { trashed_datetime: null })
+        } else if (!isTrashed && !isTrashTicketModalOpen) {
+            handleTrashTicketModalToggle()
         }
-    }, [isTrashed, isOpen, toggle, trashTicket, ticketId])
+    }, [
+        isTrashed,
+        isTrashTicketModalOpen,
+        handleTrashTicketModalToggle,
+        trashTicket,
+        ticketId,
+    ])
 
     return {
         canTrashTicket,
         handleTrashTicketMenuClick,
-        isOpen,
-        toggle,
+        isTrashTicketModalOpen,
+        handleTrashTicketModalToggle,
     }
 }

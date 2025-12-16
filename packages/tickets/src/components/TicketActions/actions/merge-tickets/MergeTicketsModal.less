@@ -1,0 +1,20 @@
+:local {
+    .container {
+        display: flex;
+        width: 100%;
+        min-height: 400px;
+
+        // Tabs component doesn't take the full width of the container for now
+        // Remove once the issue is fixed
+        :global(.react-aria-Tabs) {
+            width: 100%;
+        }
+
+        .stepperTabList {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: var(--spacing-xs) auto var(--spacing-xl);
+        }
+    }
+}

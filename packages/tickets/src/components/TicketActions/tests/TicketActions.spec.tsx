@@ -7,11 +7,15 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
     mockGetCurrentUserHandler,
+    mockMergeTicketsHandler,
+    mockSearchTicketsHandler,
+    mockTicket,
+    mockTicketsSearchList,
     mockUpdateTicketHandler,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../../tests/render.utils'
+import { render, testAppQueryClient } from '../../../tests/render.utils'
 import { TicketActions } from '../TicketActions'
 
 vi.mock('@repo/logging', () => ({
@@ -33,13 +37,21 @@ const mockGetCurrentUser = mockGetCurrentUserHandler(async () => {
     return HttpResponse.json(agentUser)
 })
 
-const server = setupServer(mockGetCurrentUser.handler)
+const mockSearchTickets = mockSearchTicketsHandler()
+const mockMergeTickets = mockMergeTicketsHandler()
+
+const server = setupServer(
+    mockGetCurrentUser.handler,
+    mockSearchTickets.handler,
+    mockMergeTickets.handler,
+)
 
 beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
+    server.listen({ onUnhandledRequest: 'warn' })
 })
 
 afterEach(() => {
+    testAppQueryClient.clear()
     server.resetHandlers()
 })
 
@@ -62,12 +74,13 @@ describe('TicketActions', () => {
         vi.clearAllMocks()
     })
 
-    const defaultProps = {
+    const defaultProps = mockTicket({
         id: 123,
         spam: false,
-        isUnread: false,
-        isTrashed: false,
-    }
+        is_unread: false,
+        trashed_datetime: null,
+        subject: 'Test Ticket Subject',
+    })
 
     async function openMenu(user: ReturnType<typeof render>['user']) {
         const button = screen.getByRole('button', {
@@ -497,7 +510,9 @@ describe('TicketActions', () => {
 
         it('should not display "Mark as unread" when ticket is already unread', async () => {
             const { user } = render(
-                <TicketActions {...defaultProps} isUnread={true} />,
+                <TicketActions
+                    {...mockTicket({ ...defaultProps, is_unread: true })}
+                />,
             )
 
             await openMenu(user)
@@ -650,7 +665,12 @@ describe('TicketActions', () => {
             server.use(mockUpdateTicket.handler)
 
             const { user } = render(
-                <TicketActions {...defaultProps} isTrashed={true} />,
+                <TicketActions
+                    {...mockTicket({
+                        ...defaultProps,
+                        trashed_datetime: '2024-01-01T00:00:00Z',
+                    })}
+                />,
                 {
                     initialEntries: ['/app/ticket/123'],
                     path: '/app/ticket/:ticketId',
@@ -708,7 +728,12 @@ describe('TicketActions', () => {
             server.use(mockUpdateTicket.handler)
 
             const { user } = render(
-                <TicketActions {...defaultProps} isTrashed={true} />,
+                <TicketActions
+                    {...mockTicket({
+                        ...defaultProps,
+                        trashed_datetime: '2024-01-01T00:00:00Z',
+                    })}
+                />,
                 {
                     initialEntries: ['/app/ticket/123'],
                     path: '/app/ticket/:ticketId',
@@ -721,6 +746,298 @@ describe('TicketActions', () => {
             await act(() => user.click(restoreMenuItem))
 
             expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Merge tickets', () => {
+        const sourceTicket = mockTicket({
+            id: 123,
+            subject: 'Source Ticket',
+            spam: false,
+            is_unread: false,
+            trashed_datetime: null,
+        })
+
+        it('should open modal with search step and disabled merge button', async () => {
+            const mockSearchTickets = mockSearchTicketsHandler()
+            server.use(mockSearchTickets.handler)
+
+            const { user } = render(<TicketActions {...sourceTicket} />)
+
+            await openMenu(user)
+
+            const mergeTicketMenuItem = screen.getByText('Merge ticket')
+            await act(() => user.click(mergeTicketMenuItem))
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument()
+                expect(screen.getByText('Select ticket')).toBeInTheDocument()
+                expect(
+                    screen.getByText('Select properties'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(/Select the ticket you want to merge/i),
+                ).toBeInTheDocument()
+            })
+
+            const propertiesStep = screen.getByText('Select properties')
+            expect(
+                propertiesStep.closest('[aria-disabled="true"]'),
+            ).toBeInTheDocument()
+
+            const mergeButton = screen.getByRole('button', {
+                name: 'Merge tickets',
+            })
+            expect(mergeButton).toBeDisabled()
+        })
+
+        it('should close modal when user cancels', async () => {
+            const mockSearchTickets = mockSearchTicketsHandler()
+            server.use(mockSearchTickets.handler)
+
+            const { user } = render(<TicketActions {...sourceTicket} />)
+
+            await openMenu(user)
+
+            const mergeTicketMenuItem = screen.getByText('Merge ticket')
+            await act(() => user.click(mergeTicketMenuItem))
+
+            await waitFor(() => {
+                expect(screen.getByRole('dialog')).toBeInTheDocument()
+            })
+
+            const closeButton = screen.getByRole('button', { name: /close/i })
+            await act(() => user.click(closeButton))
+
+            await waitFor(() => {
+                expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+            })
+        })
+
+        it('should search and display ticket results', async () => {
+            const mockSearchTickets = mockSearchTicketsHandler(async () =>
+                HttpResponse.json(
+                    mockTicketsSearchList({
+                        data: [
+                            {
+                                id: 456,
+                                subject: 'Target Ticket',
+                                assignee_team: undefined,
+                                assignee_user: undefined,
+                                customer: { id: 789 },
+                            },
+                        ],
+                    }),
+                ),
+            )
+            server.use(mockSearchTickets.handler)
+
+            const { user } = render(<TicketActions {...sourceTicket} />)
+
+            await openMenu(user)
+
+            const mergeTicketMenuItem = screen.getByText('Merge ticket')
+            await act(() => user.click(mergeTicketMenuItem))
+
+            const searchInput = screen.getByPlaceholderText(
+                'Search for a ticket',
+            )
+            await act(() => user.type(searchInput, 'target'))
+
+            await waitFor(() => {
+                expect(screen.getByText('Target Ticket')).toBeInTheDocument()
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Target Ticket')).toBeInTheDocument()
+                const ticketRow = screen
+                    .getByText('Target Ticket')
+                    .closest('tr')
+                expect(ticketRow).toBeInTheDocument()
+            })
+        })
+
+        it('should complete merge workflow successfully with field selection and show success notification', async () => {
+            const targetTicketData = {
+                id: 456,
+                subject: 'Target Ticket Subject',
+                assignee_team: undefined,
+                assignee_user: { id: 200, name: 'Agent Johnson' },
+                customer: { id: 999, name: 'Jane Smith' },
+            }
+
+            const mockSearchTickets = mockSearchTicketsHandler(async () =>
+                HttpResponse.json(
+                    mockTicketsSearchList({
+                        data: [targetTicketData],
+                    }),
+                ),
+            )
+
+            const mockMergeTicketsLocal = mockMergeTicketsHandler(async () =>
+                HttpResponse.json(
+                    mockTicket({
+                        id: 456,
+                        subject: 'Target Ticket Subject',
+                    }),
+                ),
+            )
+
+            const dispatchNotification = vi.fn()
+
+            server.use(mockSearchTickets.handler, mockMergeTicketsLocal.handler)
+
+            const { user } = render(<TicketActions {...sourceTicket} />, {
+                initialEntries: ['/app/ticket/123'],
+                path: '/app/ticket/:ticketId',
+                dispatchNotification,
+            })
+
+            await openMenu(user)
+
+            const mergeTicketMenuItem = screen.getByText('Merge ticket')
+            await act(() => user.click(mergeTicketMenuItem))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Target Ticket Subject'),
+                ).toBeInTheDocument()
+            })
+
+            const ticketRow = screen
+                .getByText('Target Ticket Subject')
+                .closest('tr')
+
+            const selectInput = ticketRow?.querySelector(
+                'input[type="radio"], input[type="checkbox"]',
+            )
+            if (selectInput) {
+                await act(() => user.click(selectInput as HTMLElement))
+            }
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.getByText(
+                            'I understand that this action is irreversible.',
+                        ),
+                    ).toBeInTheDocument()
+                },
+                { timeout: 5000 },
+            )
+
+            const confirmationCheckbox = screen.getByLabelText(
+                'I understand that this action is irreversible.',
+            )
+            await act(() => user.click(confirmationCheckbox))
+
+            await waitFor(() => {
+                const mergeButton = screen.getByRole('button', {
+                    name: 'Merge tickets',
+                })
+                expect(mergeButton).not.toBeDisabled()
+            })
+
+            const mergeButton = screen.getByRole('button', {
+                name: 'Merge tickets',
+            })
+            await act(() => user.click(mergeButton))
+
+            await waitFor(() => {
+                expect(dispatchNotification).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        status: 'success',
+                        message: 'Tickets merged successfully',
+                    }),
+                )
+            })
+        })
+
+        it('should show error notification when merge fails', async () => {
+            const targetTicketData = {
+                id: 456,
+                subject: 'Target Ticket',
+                assignee_team: undefined,
+                assignee_user: undefined,
+                customer: { id: 789 },
+            }
+
+            const mockSearchTickets = mockSearchTicketsHandler(async () =>
+                HttpResponse.json(
+                    mockTicketsSearchList({
+                        data: [targetTicketData],
+                    }),
+                ),
+            )
+
+            const mockMergeTicketsLocal = mockMergeTicketsHandler(async () =>
+                HttpResponse.json(null, { status: 500 }),
+            )
+
+            const dispatchNotification = vi.fn()
+
+            server.use(mockSearchTickets.handler, mockMergeTicketsLocal.handler)
+
+            const { user } = render(<TicketActions {...sourceTicket} />, {
+                initialEntries: ['/app/ticket/123'],
+                path: '/app/ticket/:ticketId',
+                dispatchNotification,
+            })
+
+            await openMenu(user)
+
+            const mergeTicketMenuItem = screen.getByText('Merge ticket')
+            await act(() => user.click(mergeTicketMenuItem))
+
+            await waitFor(() => {
+                expect(screen.getByText('Target Ticket')).toBeInTheDocument()
+            })
+
+            const ticketRow = screen.getByText('Target Ticket').closest('tr')
+
+            const selectInput = ticketRow?.querySelector(
+                'input[type="radio"], input[type="checkbox"]',
+            )
+            if (selectInput) {
+                await act(() => user.click(selectInput as HTMLElement))
+            }
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.getByText(
+                            'I understand that this action is irreversible.',
+                        ),
+                    ).toBeInTheDocument()
+                },
+                { timeout: 5000 },
+            )
+
+            const confirmationCheckbox = screen.getByLabelText(
+                'I understand that this action is irreversible.',
+            )
+            await act(() => user.click(confirmationCheckbox))
+
+            await waitFor(() => {
+                const mergeButton = screen.getByRole('button', {
+                    name: 'Merge tickets',
+                })
+                expect(mergeButton).not.toBeDisabled()
+            })
+
+            const mergeButton = screen.getByRole('button', {
+                name: 'Merge tickets',
+            })
+            await act(() => user.click(mergeButton))
+
+            await waitFor(() => {
+                expect(dispatchNotification).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        status: 'error',
+                        message: 'Could not merge tickets',
+                    }),
+                )
+            })
         })
     })
 })

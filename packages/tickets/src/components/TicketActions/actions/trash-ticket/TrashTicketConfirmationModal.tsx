@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
 import {
+    Box,
     Button,
     Modal,
     ModalSize,
@@ -40,14 +41,22 @@ export function TrashTicketConfirmationModal({
                     ticket.
                 </Text>
             </OverlayContent>
-            <OverlayFooter>
-                <Button
-                    variant="primary"
-                    intent="destructive"
-                    onClick={handleDeleteTicket}
-                >
-                    Delete ticket
-                </Button>
+            <OverlayFooter hideCancelButton>
+                <Box gap="xs" width="100%" justifyContent="flex-end">
+                    <Button
+                        variant="tertiary"
+                        onClick={() => onOpenChange(false)}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="primary"
+                        intent="destructive"
+                        onClick={handleDeleteTicket}
+                    >
+                        Delete ticket
+                    </Button>
+                </Box>
             </OverlayFooter>
         </Modal>
     )

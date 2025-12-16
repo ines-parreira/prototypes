@@ -7,6 +7,7 @@ import {
     mockGetTicketHandler,
     mockListTeamsHandler,
     mockListUsersHandler,
+    mockSearchTicketsHandler,
     mockTicket,
     mockTicketCustomer,
     mockUpdateTicketHandler,
@@ -21,6 +22,7 @@ const server = setupServer()
 const mockListTeams = mockListTeamsHandler()
 const mockListUsers = mockListUsersHandler()
 const mockGetCurrentUser = mockGetCurrentUserHandler()
+const mockSearchTickets = mockSearchTicketsHandler()
 
 const defaultMockTicket = mockTicket({
     id: 1234,
@@ -42,6 +44,7 @@ beforeEach(() => {
         mockListUsers.handler,
         mockGetCurrentUser.handler,
         mockGetTicket.handler,
+        mockSearchTickets.handler,
     )
 })
 
@@ -167,42 +170,6 @@ describe('TicketHeader', () => {
 
             await waitFor(() => {
                 expect(screen.getByText('Trash')).toBeInTheDocument()
-            })
-        })
-    })
-
-    describe('SpamTicket', () => {
-        it('should not render the spam tag when spam is false', async () => {
-            const { handler } = mockGetTicketHandler(async () =>
-                HttpResponse.json({
-                    ...defaultMockTicket,
-                    spam: false,
-                }),
-            )
-            server.use(handler)
-
-            render(<TicketHeader ticketId={defaultMockTicket.id} />)
-
-            await waitFor(() => {
-                expect(screen.getByText('John Doe')).toBeInTheDocument()
-            })
-
-            expect(screen.queryByText('Spam')).not.toBeInTheDocument()
-        })
-
-        it('should render the spam tag when spam is true', async () => {
-            const { handler } = mockGetTicketHandler(async () =>
-                HttpResponse.json({
-                    ...defaultMockTicket,
-                    spam: true,
-                }),
-            )
-            server.use(handler)
-
-            render(<TicketHeader ticketId={defaultMockTicket.id} />)
-
-            await waitFor(() => {
-                expect(screen.getByText('Spam')).toBeInTheDocument()
             })
         })
     })

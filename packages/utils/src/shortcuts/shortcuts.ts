@@ -233,6 +233,19 @@ export const shortcuts: Shortcuts = {
             },
         },
     },
+    TicketActions: {
+        description: 'Ticket actions menu',
+        actions: {
+            MARK_TICKET_SPAM: {
+                key: '!',
+                description: 'Mark ticket as spam.',
+            },
+            DELETE_TICKET: {
+                key: '#',
+                description: 'Delete the ticket (send to trash).',
+            },
+        },
+    },
     TimelineModal: {
         description: 'Timeline ticket modal',
         actions: {

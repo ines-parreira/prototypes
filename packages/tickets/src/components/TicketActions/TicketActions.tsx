@@ -1,5 +1,19 @@
-import { Button, IconName, Menu, MenuItem, MenuPlacement } from '@gorgias/axiom'
+import { useShortcuts } from '@repo/utils'
 
+import {
+    Button,
+    IconName,
+    Menu,
+    MenuItem,
+    MenuPlacement,
+    MenuSize,
+} from '@gorgias/axiom'
+import type { Ticket } from '@gorgias/helpdesk-types'
+
+import {
+    MergeTicketsModal,
+    useMergeTicketsWorflow,
+} from './actions/merge-tickets'
 import {
     TrashTicketConfirmationModal,
     useTrashTicketWorkflow,
@@ -19,33 +33,54 @@ import {
     TrashTicketOptions,
 } from './options'
 
-export type TicketActionsProps = {
-    id: number
-    spam: boolean
-    isUnread: boolean
-    isTrashed: boolean
-}
+export type TicketActionsProps = Ticket
 
-export function TicketActions({
-    id: ticketId,
-    spam: isSpam,
-    isUnread,
-    isTrashed,
-}: TicketActionsProps) {
-    const { handleTicketPrint } = useTicketPrint(ticketId)
-    const { markAsSpam } = useMarkAsSpam(ticketId)
-    const { markAsUnRead } = useMarkAsUnRead(ticketId)
+export function TicketActions(ticket: TicketActionsProps) {
+    const isTrashed = Boolean(ticket.trashed_datetime)
+
+    const { handleTicketPrint } = useTicketPrint(ticket.id)
+    const { markAsSpam } = useMarkAsSpam(ticket.id)
+    const { markAsUnRead } = useMarkAsUnRead(ticket.id)
+
     const { handleShowAllEventDisplay, areEventsVisible } =
         useTicketEventsDisplay()
     const { handleShowAllQuickRepliesDisplay, areQuickRepliesVisible } =
         useTicketQuickRepliesDisplay()
-    const { canTrashTicket, handleTrashTicketMenuClick, isOpen, toggle } =
-        useTrashTicketWorkflow({ isTrashed, ticketId })
+
+    const {
+        isMergeTicketsModalOpen,
+        handleMergeTicketsModalToggle,
+        handleMergeTicketsModalClick,
+    } = useMergeTicketsWorflow(ticket.id)
+
+    const {
+        canTrashTicket,
+        handleTrashTicketMenuClick,
+        isTrashTicketModalOpen,
+        handleTrashTicketModalToggle,
+    } = useTrashTicketWorkflow({
+        isTrashed,
+        ticketId: ticket.id,
+    })
+
+    const actions = {
+        MARK_TICKET_SPAM: {
+            action: () => {
+                markAsSpam(ticket.id, { spam: !ticket.spam })
+            },
+        },
+        DELETE_TICKET: {
+            action: () => canTrashTicket && handleTrashTicketModalToggle(true),
+        },
+    }
+
+    useShortcuts('TicketActions', actions)
 
     return (
         <>
             <Menu
                 placement={MenuPlacement.BottomRight}
+                size={MenuSize.Sm}
                 aria-label="More ticket options selection"
                 trigger={
                     <Button
@@ -56,12 +91,15 @@ export function TicketActions({
                     />
                 }
             >
-                <MenuItem {...MergeTicket} />
-                {!isUnread && (
+                <MenuItem
+                    {...MergeTicket}
+                    onAction={handleMergeTicketsModalClick}
+                />
+                {!ticket.is_unread && (
                     <MenuItem
                         {...MarkAsUnread}
                         onAction={() =>
-                            markAsUnRead(ticketId, { is_unread: true })
+                            markAsUnRead(ticket.id, { is_unread: true })
                         }
                     />
                 )}
@@ -84,10 +122,12 @@ export function TicketActions({
                 <MenuItem {...PrintTicket} onAction={handleTicketPrint} />
                 <MenuItem
                     id={SpamOptions.id}
-                    {...(isSpam
+                    {...(ticket.spam
                         ? SpamOptions.UnmarkAsSpam
                         : SpamOptions.MarkAsSpam)}
-                    onAction={() => markAsSpam(ticketId, { spam: !isSpam })}
+                    onAction={() =>
+                        markAsSpam(ticket.id, { spam: !ticket.spam })
+                    }
                 />
 
                 {canTrashTicket && (
@@ -101,9 +141,19 @@ export function TicketActions({
                 )}
             </Menu>
             <TrashTicketConfirmationModal
-                isOpen={isOpen}
-                onOpenChange={toggle}
-                ticketId={ticketId}
+                ticketId={ticket.id}
+                isOpen={isTrashTicketModalOpen}
+                onOpenChange={handleTrashTicketModalToggle}
+            />
+            <MergeTicketsModal
+                key={
+                    isMergeTicketsModalOpen
+                        ? 'merge-tickets-modal-open'
+                        : 'merge-tickets-modal-closed'
+                }
+                isOpen={isMergeTicketsModalOpen}
+                onOpenChange={handleMergeTicketsModalToggle}
+                ticket={ticket}
             />
         </>
     )
