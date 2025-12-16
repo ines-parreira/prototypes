@@ -10,7 +10,7 @@ import {
     useGetHelpCenterCategoryTree,
 } from 'models/helpCenter/queries'
 import type { CategoryWithLocalTranslation } from 'models/helpCenter/types'
-import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterExistingArticle'
+import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 
 import { FaqEditorWrapper } from './FaqEditorWrapper'
 

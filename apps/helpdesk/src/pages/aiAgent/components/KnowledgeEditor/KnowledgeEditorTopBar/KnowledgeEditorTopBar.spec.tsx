@@ -129,4 +129,48 @@ describe('KnowledgeEditorTopBar', () => {
             screen.queryByRole('button', { name: 'next' }),
         ).not.toBeInTheDocument()
     })
+
+    it('shows last saved indicator when guidanceMode is edit', () => {
+        render(
+            <Provider store={store}>
+                <KnowledgeEditorTopBar
+                    disabled={false}
+                    title="Guidance"
+                    isFullscreen={false}
+                    onToggleFullscreen={jest.fn()}
+                    onClose={jest.fn()}
+                    isDetailsView={false}
+                    onToggleDetailsView={jest.fn()}
+                    guidanceMode="edit"
+                    lastUpdatedDatetime={new Date('2024-01-15T10:30:00Z')}
+                />
+            </Provider>,
+        )
+
+        expect(
+            screen.getByRole('img', { name: 'cloud-check' }),
+        ).toBeInTheDocument()
+    })
+
+    it('does not show last saved indicator when guidanceMode is not edit and onChangeTitle is not provided', () => {
+        render(
+            <Provider store={store}>
+                <KnowledgeEditorTopBar
+                    disabled={false}
+                    title="Guidance"
+                    isFullscreen={false}
+                    onToggleFullscreen={jest.fn()}
+                    onClose={jest.fn()}
+                    isDetailsView={false}
+                    onToggleDetailsView={jest.fn()}
+                    guidanceMode="read"
+                    lastUpdatedDatetime={new Date('2024-01-15T10:30:00Z')}
+                />
+            </Provider>,
+        )
+
+        expect(
+            screen.queryByRole('img', { name: 'cloud-check' }),
+        ).not.toBeInTheDocument()
+    })
 })

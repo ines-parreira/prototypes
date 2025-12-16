@@ -15,8 +15,10 @@ export const SeoMetaTitle = ({
 }: {
     title: string
     metaTitle: string
-    onChangeMetaTitle?: (metaTitle: string) => void
+    onChangeMetaTitle?: (metaTitle: string | null) => void
 }) => {
+    const shouldUseTitle = !metaTitle
+
     const {
         isChecked,
         value,
@@ -30,7 +32,7 @@ export const SeoMetaTitle = ({
         defaultValue: title,
         draftValue: metaTitle,
         onCommit: onChangeMetaTitle,
-        defaultChecked: true,
+        defaultChecked: shouldUseTitle,
     })
 
     const onCheckboxChange = () => {

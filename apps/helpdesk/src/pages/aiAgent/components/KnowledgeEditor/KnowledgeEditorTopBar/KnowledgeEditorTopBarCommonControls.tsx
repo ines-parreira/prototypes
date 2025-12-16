@@ -1,22 +1,38 @@
 import classNames from 'classnames'
 
-import { Icon } from '@gorgias/axiom'
+import { Icon, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
 
 import css from './KnowledgeEditorTopBarControls.less'
 
 export const EditIconButton = (props: {
-    onEdit: () => void
+    onEdit?: () => void
     disabled?: boolean
-}) => (
-    <button
-        className={classNames(css.icon, css.secondaryButton)}
-        onClick={props.onEdit}
-        aria-label="edit"
-        disabled={props.disabled}
-    >
-        <Icon name="edit-pencil" />
-    </button>
-)
+    disabledReason?: string
+}) => {
+    const isDisabled = props.disabled || !props.onEdit
+
+    const button = (
+        <button
+            className={classNames(css.icon, css.secondaryButton)}
+            onClick={props.onEdit}
+            aria-label="edit"
+            disabled={isDisabled}
+        >
+            <Icon name="edit-pencil" />
+        </button>
+    )
+
+    if (props.disabledReason && !props.onEdit) {
+        return (
+            <Tooltip placement="bottom">
+                <TooltipTrigger>{button}</TooltipTrigger>
+                <TooltipContent title={props.disabledReason} />
+            </Tooltip>
+        )
+    }
+
+    return button
+}
 
 export const DeleteIconButton = (props: {
     onDelete: () => void

@@ -5,7 +5,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import { useNotify } from 'hooks/useNotify'
-import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterExistingArticle'
+import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
+import type { InitialArticleModeValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { REFETCH_KNOWLEDGE_HUB_TABLE } from '../constants'
@@ -35,7 +36,7 @@ type FaqEditorState = {
     currentArticleId: number | undefined
     editorMode: EditorMode
     faqArticleMode: 'new' | 'existing'
-    initialArticleMode: InitialArticleMode
+    initialArticleMode: InitialArticleModeValue
     shopName: string
     hasPrevious: boolean
     hasNext: boolean
@@ -140,7 +141,7 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
         'new',
     )
     const [initialArticleMode, setInitialArticleMode] =
-        useState<InitialArticleMode>(InitialArticleMode.READ)
+        useState<InitialArticleModeValue>(InitialArticleMode.READ)
 
     const currentArticleIndex = useMemo(() => {
         if (!currentArticleId || editorMode === 'create') {
@@ -204,30 +205,18 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
         setVersionStatus(undefined)
     }, [])
 
-    const handleCreate = useCallback(
-        (createdArticle?: { id: number }) => {
-            logEvent(editorConfig.events.created, {
-                source: 'knowledge_hub',
-                shop_name: shopName,
-                type,
-            })
+    const handleCreate = useCallback(() => {
+        logEvent(editorConfig.events.created, {
+            source: 'knowledge_hub',
+            shop_name: shopName,
+            type,
+        })
 
-            if (type !== 'guidance') {
-                notifySuccess(editorConfig.notifications.created)
-            }
-            dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
-
-            // Transition to existing mode after creation for FAQ articles
-            if (type === 'faq' && createdArticle?.id) {
-                setCurrentArticleId(createdArticle.id)
-                setFaqArticleMode('existing')
-                setInitialArticleMode(InitialArticleMode.READ)
-                setVersionStatus('latest_draft')
-                // Keep editor open to show the newly created article
-            }
-        },
-        [editorConfig, shopName, type, notifySuccess],
-    )
+        if (type !== 'guidance' && type !== 'faq') {
+            notifySuccess(editorConfig.notifications.created)
+        }
+        dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
+    }, [editorConfig, shopName, type, notifySuccess])
 
     const handleUpdate = useCallback(() => {
         logEvent(editorConfig.events.updated, {
@@ -237,7 +226,7 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
         })
 
         // When dealing with autosave, we don't want to show the success notification
-        if (type !== 'guidance') {
+        if (type !== 'guidance' && type !== 'faq') {
             notifySuccess(editorConfig.notifications.updated)
         }
         dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)

@@ -3,7 +3,7 @@ import type { History, Location } from 'history'
 
 import { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
-import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterExistingArticle'
+import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 
 import type { FaqEditorConfig, FilteredKnowledgeHubArticle } from '../types'
 import type { KnowledgeEditorReturn } from './useKnowledgeHubEditor'
@@ -22,13 +22,8 @@ jest.mock('./navigationUtils', () => ({
     updateArticleIdInUrl: jest.fn(),
 }))
 
-jest.mock('../utils/articleUtils', () => ({
-    getVersionStatus: jest.fn(),
-}))
-
 const { useHistory, useLocation } = jest.requireMock('react-router-dom')
 const { useKnowledgeHubEditor } = jest.requireMock('./useKnowledgeHubEditor')
-const { getVersionStatus } = jest.requireMock('../utils/articleUtils')
 
 describe('useKnowledgeHubFaqEditor', () => {
     const mockEditor: KnowledgeEditorReturn<FaqEditorConfig> = {
@@ -97,7 +92,6 @@ describe('useKnowledgeHubFaqEditor', () => {
         useKnowledgeHubEditor.mockReturnValue(mockEditor)
         useHistory.mockReturnValue(mockHistory)
         useLocation.mockReturnValue(mockLocation)
-        getVersionStatus.mockReturnValue(GetArticleVersionStatus.Current)
     })
 
     it('initializes with correct parameters', () => {
@@ -200,77 +194,6 @@ describe('useKnowledgeHubFaqEditor', () => {
                 result.current.handleDelete()
             })
             expect(mockEditor.handleDelete).toHaveBeenCalledTimes(1)
-        })
-    })
-
-    describe('openEditorForEdit with version status', () => {
-        it('calls getVersionStatus with the article and passes version status to editor', () => {
-            getVersionStatus.mockReturnValue(
-                GetArticleVersionStatus.LatestDraft,
-            )
-
-            const { result } = renderHook(() =>
-                useKnowledgeHubFaqEditor({
-                    shopName: 'test-shop',
-                    filteredFaqArticles,
-                }),
-            )
-
-            act(() => {
-                result.current.openEditorForEdit(2)
-            })
-
-            expect(getVersionStatus).toHaveBeenCalledWith(
-                filteredFaqArticles[1],
-            )
-            expect(mockEditor.openEditorForEdit).toHaveBeenCalledWith(
-                2,
-                GetArticleVersionStatus.LatestDraft,
-            )
-        })
-
-        it('passes Current version status when article has no draft changes', () => {
-            getVersionStatus.mockReturnValue(GetArticleVersionStatus.Current)
-
-            const { result } = renderHook(() =>
-                useKnowledgeHubFaqEditor({
-                    shopName: 'test-shop',
-                    filteredFaqArticles,
-                }),
-            )
-
-            act(() => {
-                result.current.openEditorForEdit(1)
-            })
-
-            expect(getVersionStatus).toHaveBeenCalledWith(
-                filteredFaqArticles[0],
-            )
-            expect(mockEditor.openEditorForEdit).toHaveBeenCalledWith(
-                1,
-                GetArticleVersionStatus.Current,
-            )
-        })
-
-        it('calls getVersionStatus with undefined when article is not found', () => {
-            getVersionStatus.mockReturnValue(GetArticleVersionStatus.Current)
-
-            const { result } = renderHook(() =>
-                useKnowledgeHubFaqEditor({
-                    shopName: 'test-shop',
-                    filteredFaqArticles,
-                }),
-            )
-
-            act(() => {
-                result.current.openEditorForEdit(999)
-            })
-
-            expect(getVersionStatus).toHaveBeenCalledWith(undefined)
-            expect(mockEditor.openEditorForEdit).toHaveBeenCalledWith(
-                999,
-                GetArticleVersionStatus.Current,
-            )
         })
     })
 })

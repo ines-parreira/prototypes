@@ -1,11 +1,10 @@
 import classNames from 'classnames'
 
-import { Icon, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
-
 import {
     DeleteButton,
     DiscardDraftButton,
     DuplicateButton,
+    EditIconButton,
     TestButton,
 } from './KnowledgeEditorTopBarCommonControls'
 import { useGuidanceToolbar } from './useGuidanceToolbar'
@@ -16,36 +15,6 @@ export type GuidanceMode =
     | { mode: 'read' }
     | { mode: 'edit' }
     | { mode: 'create' }
-
-const EditIconButton = (props: {
-    onEdit?: () => void
-    disabled?: boolean
-    disabledReason?: string
-}) => {
-    const isDisabled = props.disabled || !props.onEdit
-
-    const button = (
-        <button
-            className={classNames(css.icon, css.secondaryButton)}
-            onClick={props.onEdit}
-            aria-label="edit"
-            disabled={isDisabled}
-        >
-            <Icon name="edit-pencil" />
-        </button>
-    )
-
-    if (props.disabledReason && !props.onEdit) {
-        return (
-            <Tooltip placement="bottom">
-                <TooltipTrigger>{button}</TooltipTrigger>
-                <TooltipContent title={props.disabledReason} />
-            </Tooltip>
-        )
-    }
-
-    return button
-}
 
 export const GuidanceToolbarControls = () => {
     const {

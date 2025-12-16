@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import TextArea from 'pages/common/forms/TextArea'
 import { HELP_CENTER_TITLE_MAX_LENGTH } from 'pages/settings/helpCenter/constants'
@@ -15,6 +15,10 @@ export const ExcerptInput = ({
     onChangeExcerpt,
 }: ExcerptInputProps) => {
     const [inputValue, setInputValue] = useState<string>(excerpt)
+
+    useEffect(() => {
+        setInputValue(excerpt)
+    }, [excerpt])
 
     const handleChange = (value: string) => {
         setInputValue(value)

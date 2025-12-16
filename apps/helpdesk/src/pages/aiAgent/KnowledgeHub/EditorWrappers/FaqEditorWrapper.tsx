@@ -10,8 +10,8 @@ import type {
     CategoryWithLocalTranslation,
     Locale,
 } from 'models/helpCenter/types'
+import type { InitialArticleModeValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import { KnowledgeEditorHelpCenterArticle } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterArticle'
-import type { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterExistingArticle'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 
@@ -20,7 +20,7 @@ type FaqEditorWrapperProps = {
     isOpen: boolean
     currentArticleId?: number
     faqArticleMode: 'new' | 'existing'
-    initialArticleMode: InitialArticleMode
+    initialArticleMode: InitialArticleModeValue
     onClose: () => void
     onCreate: (createdArticle?: { id: number }) => void
     onUpdate: () => void
@@ -105,6 +105,8 @@ export const FaqEditorWrapper = ({
                             ? {
                                   type: 'new',
                                   onCreated: onCreate,
+                                  onUpdated: onUpdate,
+                                  onDeleted: onDelete,
                               }
                             : {
                                   type: 'existing',

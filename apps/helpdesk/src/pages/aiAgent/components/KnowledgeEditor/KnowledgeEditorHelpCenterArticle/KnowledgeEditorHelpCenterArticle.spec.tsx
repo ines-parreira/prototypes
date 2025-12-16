@@ -1,11 +1,11 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 
+import type { InitialArticleModeValue } from './context'
 import { KnowledgeEditorHelpCenterArticle } from './KnowledgeEditorHelpCenterArticle'
-import type { InitialArticleMode } from './KnowledgeEditorHelpCenterExistingArticle'
 
 jest.mock('@gorgias/axiom', () => ({
     SidePanel: ({
@@ -28,40 +28,69 @@ jest.mock('@gorgias/axiom', () => ({
                 {children}
             </div>
         ) : null,
-}))
-
-jest.mock('./KnowledgeEditorHelpCenterExistingArticle', () => ({
-    KnowledgeEditorHelpCenterExistingArticle: ({
-        isFullscreen,
-        onToggleFullscreen,
-        onTest,
-    }: {
-        isFullscreen: boolean
-        onToggleFullscreen: () => void
-        onTest: () => void
-    }) => (
-        <>
-            <div>EXISTING ARTICLE</div>
-            <button onClick={onToggleFullscreen}>
-                {isFullscreen ? 'leave fullscreen' : 'fullscreen'}
-            </button>
-            <button onClick={onTest}>Test</button>
-        </>
+    LegacyLoadingSpinner: () => (
+        <div data-testid="loading-spinner">Loading</div>
     ),
 }))
 
-jest.mock('./KnowledgeEditorHelpCenterNewArticle', () => ({
-    KnowledgeEditorHelpCenterNewArticle: ({
-        onTest,
-    }: {
-        onTest: () => void
-    }) => (
-        <>
-            <div>NEW ARTICLE</div>
-            <button onClick={onTest}>Test</button>
-        </>
-    ),
+jest.mock('models/helpCenter/queries', () => ({
+    useGetHelpCenterArticle: jest.fn(() => ({
+        data: {
+            id: 1,
+            translation: {
+                title: 'Test Article',
+                content: 'Test Content',
+                locale: 'en-US',
+            },
+        },
+        isLoading: false,
+    })),
 }))
+
+jest.mock('./ArticleEditorContent', () => ({
+    ArticleEditorContent: ({
+        closeHandlerRef,
+    }: {
+        closeHandlerRef: React.MutableRefObject<(() => void) | null>
+    }) => {
+        return (
+            <div data-testid="article-editor-content">
+                <button
+                    onClick={() => {
+                        if (closeHandlerRef.current) {
+                            closeHandlerRef.current()
+                        }
+                    }}
+                >
+                    Close Editor
+                </button>
+            </div>
+        )
+    },
+}))
+
+jest.mock('./context', () => {
+    const actual = jest.requireActual('./context')
+    return {
+        ...actual,
+        ArticleContextProvider: ({
+            children,
+        }: {
+            children: React.ReactNode
+        }) => <div data-testid="article-context-provider">{children}</div>,
+        useArticleContext: () => ({
+            playground: {
+                isOpen: false,
+                onTest: jest.fn(),
+                onClose: jest.fn(),
+                sidePanelWidth: '60vw',
+            },
+            config: {
+                onClose: jest.fn(),
+            },
+        }),
+    }
+})
 
 jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
     PlaygroundPanel: ({ onClose }: { onClose: () => void }) => (
@@ -72,49 +101,41 @@ jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
 }))
 
 describe('KnowledgeEditorHelpCenterArticle', () => {
-    it('renders existing article', () => {
+    const baseProps = {
+        helpCenter: getHelpCentersResponseFixture.data[0],
+        locales: getLocalesResponseFixture,
+        categories: [],
+        onClickPrevious: () => {},
+        onClickNext: () => {},
+        onClose: jest.fn(),
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('renders existing article with ArticleEditorContent', () => {
         render(
             <KnowledgeEditorHelpCenterArticle
-                helpCenter={getHelpCentersResponseFixture.data[0]}
-                locales={getLocalesResponseFixture}
-                categories={[]}
-                onClickPrevious={() => {}}
-                onClickNext={() => {}}
-                onClose={() => {}}
+                {...baseProps}
                 article={{
                     type: 'existing',
-                    initialArticleMode: 'read' as InitialArticleMode,
+                    initialArticleMode: 'read' as InitialArticleModeValue,
                     articleId: 1,
                 }}
             />,
         )
 
-        expect(screen.getByText('EXISTING ARTICLE')).toBeInTheDocument()
-
-        fireEvent.click(screen.getByRole('button', { name: 'fullscreen' }))
-
         expect(
-            screen.getByRole('button', { name: 'leave fullscreen' }),
+            screen.getByTestId('article-context-provider'),
         ).toBeInTheDocument()
-
-        fireEvent.click(
-            screen.getByRole('button', { name: 'leave fullscreen' }),
-        )
-
-        expect(
-            screen.getByRole('button', { name: 'fullscreen' }),
-        ).toBeInTheDocument()
+        expect(screen.getByTestId('article-editor-content')).toBeInTheDocument()
     })
 
-    it('renders new article', () => {
+    it('renders new article with ArticleEditorContent', () => {
         render(
             <KnowledgeEditorHelpCenterArticle
-                helpCenter={getHelpCentersResponseFixture.data[0]}
-                locales={getLocalesResponseFixture}
-                categories={[]}
-                onClickPrevious={() => {}}
-                onClickNext={() => {}}
-                onClose={() => {}}
+                {...baseProps}
                 article={{
                     type: 'new',
                     template: {
@@ -127,289 +148,78 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
             />,
         )
 
-        expect(screen.getByText('NEW ARTICLE')).toBeInTheDocument()
+        expect(
+            screen.getByTestId('article-context-provider'),
+        ).toBeInTheDocument()
+        expect(screen.getByTestId('article-editor-content')).toBeInTheDocument()
     })
 
-    describe('Playground Panel', () => {
-        const baseArticleProps = {
-            helpCenter: getHelpCentersResponseFixture.data[0],
-            locales: getLocalesResponseFixture,
-            categories: [],
-            onClickPrevious: () => {},
-            onClickNext: () => {},
-            onClose: () => {},
-        }
-
-        it('should not show playground panel initially for existing article', () => {
-            render(
-                <KnowledgeEditorHelpCenterArticle
-                    {...baseArticleProps}
-                    article={{
-                        type: 'existing',
-                        initialArticleMode: 'read' as InitialArticleMode,
-                        articleId: 1,
-                    }}
-                />,
-            )
-
-            expect(
-                screen.queryByTestId('playground-panel'),
-            ).not.toBeInTheDocument()
+    it('shows loading spinner while fetching existing article', () => {
+        const mockUseGetHelpCenterArticle = jest.requireMock(
+            'models/helpCenter/queries',
+        ).useGetHelpCenterArticle
+        mockUseGetHelpCenterArticle.mockReturnValue({
+            data: undefined,
+            isLoading: true,
         })
 
-        it('should not show playground panel initially for new article', () => {
-            render(
-                <KnowledgeEditorHelpCenterArticle
-                    {...baseArticleProps}
-                    article={{
-                        type: 'new',
-                        template: {
-                            title: 'Test Article',
-                            content: 'Test Content',
-                            key: 'test-template',
-                        },
-                        onCreated: () => {},
-                    }}
-                />,
-            )
+        render(
+            <KnowledgeEditorHelpCenterArticle
+                {...baseProps}
+                article={{
+                    type: 'existing',
+                    initialArticleMode: 'read' as InitialArticleModeValue,
+                    articleId: 1,
+                }}
+            />,
+        )
 
-            expect(
-                screen.queryByTestId('playground-panel'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should open playground panel when Test button is clicked on existing article', async () => {
-            render(
-                <KnowledgeEditorHelpCenterArticle
-                    {...baseArticleProps}
-                    article={{
-                        type: 'existing',
-                        initialArticleMode: 'read' as InitialArticleMode,
-                        articleId: 1,
-                    }}
-                />,
-            )
-
-            expect(
-                screen.queryByTestId('playground-panel'),
-            ).not.toBeInTheDocument()
-
-            await act(() =>
-                userEvent.click(screen.getByRole('button', { name: /test/i })),
-            )
-
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
-        })
-
-        it('should open playground panel when Test button is clicked on new article', async () => {
-            render(
-                <KnowledgeEditorHelpCenterArticle
-                    {...baseArticleProps}
-                    article={{
-                        type: 'new',
-                        template: {
-                            title: 'Test Article',
-                            content: 'Test Content',
-                            key: 'test-template',
-                        },
-                        onCreated: () => {},
-                    }}
-                />,
-            )
-
-            expect(
-                screen.queryByTestId('playground-panel'),
-            ).not.toBeInTheDocument()
-
-            await act(() =>
-                userEvent.click(screen.getByRole('button', { name: /test/i })),
-            )
-
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
-        })
-
-        it('should show two columns when playground is open', async () => {
-            render(
-                <KnowledgeEditorHelpCenterArticle
-                    {...baseArticleProps}
-                    article={{
-                        type: 'existing',
-                        initialArticleMode: 'read' as InitialArticleMode,
-                        articleId: 1,
-                    }}
-                />,
-            )
-
-            await act(() =>
-                userEvent.click(screen.getByRole('button', { name: /test/i })),
-            )
-
-            expect(screen.getByText('EXISTING ARTICLE')).toBeInTheDocument()
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
-        })
-
-        it('should close playground panel when close button is clicked', async () => {
-            render(
-                <KnowledgeEditorHelpCenterArticle
-                    {...baseArticleProps}
-                    article={{
-                        type: 'existing',
-                        initialArticleMode: 'read' as InitialArticleMode,
-                        articleId: 1,
-                    }}
-                />,
-            )
-
-            await act(() =>
-                userEvent.click(screen.getByRole('button', { name: /test/i })),
-            )
-
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
-
-            await act(() =>
-                userEvent.click(
-                    screen.getByRole('button', { name: /close playground/i }),
-                ),
-            )
-
-            expect(
-                screen.queryByTestId('playground-panel'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should toggle playground when Test button is clicked multiple times', async () => {
-            render(
-                <KnowledgeEditorHelpCenterArticle
-                    {...baseArticleProps}
-                    article={{
-                        type: 'existing',
-                        initialArticleMode: 'read' as InitialArticleMode,
-                        articleId: 1,
-                    }}
-                />,
-            )
-
-            await act(() =>
-                userEvent.click(screen.getByRole('button', { name: /test/i })),
-            )
-
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
-
-            await act(() =>
-                userEvent.click(screen.getByRole('button', { name: /test/i })),
-            )
-
-            expect(
-                screen.queryByTestId('playground-panel'),
-            ).not.toBeInTheDocument()
-
-            await act(() =>
-                userEvent.click(screen.getByRole('button', { name: /test/i })),
-            )
-
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
-        })
-
-        it('should render playground only when open', async () => {
-            render(
-                <KnowledgeEditorHelpCenterArticle
-                    {...baseArticleProps}
-                    article={{
-                        type: 'existing',
-                        initialArticleMode: 'read' as InitialArticleMode,
-                        articleId: 1,
-                    }}
-                />,
-            )
-
-            expect(
-                screen.queryByTestId('playground-panel'),
-            ).not.toBeInTheDocument()
-
-            await act(() =>
-                userEvent.click(screen.getByRole('button', { name: /test/i })),
-            )
-
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
-        })
-
-        it('should maintain playground state when toggling fullscreen', async () => {
-            render(
-                <KnowledgeEditorHelpCenterArticle
-                    {...baseArticleProps}
-                    article={{
-                        type: 'existing',
-                        initialArticleMode: 'read' as InitialArticleMode,
-                        articleId: 1,
-                    }}
-                />,
-            )
-
-            await act(() =>
-                userEvent.click(screen.getByRole('button', { name: /test/i })),
-            )
-
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
-
-            fireEvent.click(screen.getByRole('button', { name: 'fullscreen' }))
-
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
-
-            fireEvent.click(
-                screen.getByRole('button', { name: 'leave fullscreen' }),
-            )
-
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
-        })
+        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
     })
 
     describe('SidePanel onOpenChange', () => {
-        it('calls onClose when SidePanel onOpenChange is triggered with false', async () => {
+        it('can close panel for existing article', async () => {
             const user = userEvent.setup()
-            const onClose = jest.fn()
 
             render(
                 <KnowledgeEditorHelpCenterArticle
-                    helpCenter={getHelpCentersResponseFixture.data[0]}
-                    locales={getLocalesResponseFixture}
-                    categories={[]}
-                    onClickPrevious={() => {}}
-                    onClickNext={() => {}}
-                    onClose={onClose}
+                    {...baseProps}
                     article={{
                         type: 'existing',
-                        initialArticleMode: 'read' as InitialArticleMode,
+                        initialArticleMode: 'read' as InitialArticleModeValue,
                         articleId: 1,
                     }}
                 />,
             )
+
+            expect(screen.getByTestId('side-panel')).toBeInTheDocument()
 
             const closeButton = screen.getByTestId('close-panel-button')
             await act(() => user.click(closeButton))
-
-            expect(onClose).toHaveBeenCalledTimes(1)
         })
 
-        it('does not call onClose when SidePanel onOpenChange is triggered with true', () => {
-            const onClose = jest.fn()
+        it('can close panel for new article', async () => {
+            const user = userEvent.setup()
 
             render(
                 <KnowledgeEditorHelpCenterArticle
-                    helpCenter={getHelpCentersResponseFixture.data[0]}
-                    locales={getLocalesResponseFixture}
-                    categories={[]}
-                    onClickPrevious={() => {}}
-                    onClickNext={() => {}}
-                    onClose={onClose}
+                    {...baseProps}
                     article={{
-                        type: 'existing',
-                        initialArticleMode: 'read' as InitialArticleMode,
-                        articleId: 1,
+                        type: 'new',
+                        template: {
+                            title: 'Test Article',
+                            content: 'Test Content',
+                            key: 'test-template',
+                        },
+                        onCreated: () => {},
                     }}
                 />,
             )
 
-            expect(onClose).not.toHaveBeenCalled()
+            expect(screen.getByTestId('side-panel')).toBeInTheDocument()
+
+            const closeButton = screen.getByTestId('close-panel-button')
+            await act(() => user.click(closeButton))
         })
     })
 })

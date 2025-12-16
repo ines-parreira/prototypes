@@ -25,8 +25,18 @@ describe('SeoMetaDescription', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render checkbox as checked by default', () => {
+        it('should render checkbox as unchecked when metaDescription is provided', () => {
             render(<SeoMetaDescription {...defaultProps} />)
+
+            const checkbox = screen.getByRole('checkbox', {
+                name: /use as meta description/i,
+            })
+
+            expect(checkbox).not.toBeChecked()
+        })
+
+        it('should render checkbox as checked when metaDescription is empty', () => {
+            render(<SeoMetaDescription {...defaultProps} metaDescription="" />)
 
             const checkbox = screen.getByRole('checkbox', {
                 name: /use as meta description/i,
@@ -36,13 +46,19 @@ describe('SeoMetaDescription', () => {
         })
 
         it('should not render textarea when checkbox is checked', () => {
-            render(<SeoMetaDescription {...defaultProps} />)
+            render(<SeoMetaDescription {...defaultProps} metaDescription="" />)
 
             expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
         })
 
-        it('should not render caption when checkbox is checked', () => {
+        it('should render textarea when metaDescription is provided (checkbox unchecked)', () => {
             render(<SeoMetaDescription {...defaultProps} />)
+
+            expect(screen.getByRole('textbox')).toBeInTheDocument()
+        })
+
+        it('should not render caption when checkbox is checked', () => {
+            render(<SeoMetaDescription {...defaultProps} metaDescription="" />)
 
             expect(
                 screen.queryByText(
@@ -55,9 +71,10 @@ describe('SeoMetaDescription', () => {
     describe('Checkbox interaction', () => {
         it('should show textarea when checkbox is unchecked', async () => {
             const user = userEvent.setup()
-            render(<SeoMetaDescription {...defaultProps} />)
+            render(<SeoMetaDescription {...defaultProps} metaDescription="" />)
 
             const checkbox = screen.getByRole('checkbox')
+            expect(checkbox).toBeChecked()
 
             await user.click(checkbox)
 
@@ -66,40 +83,27 @@ describe('SeoMetaDescription', () => {
             })
         })
 
-        it('should populate textarea with metaDescription when checkbox is unchecked', async () => {
-            const user = userEvent.setup()
+        it('should populate textarea with metaDescription when it exists', () => {
             render(<SeoMetaDescription {...defaultProps} />)
 
-            const checkbox = screen.getByRole('checkbox')
-
-            await user.click(checkbox)
-
-            await waitFor(() => {
-                const textarea = screen.getByRole('textbox')
-                expect(textarea).toHaveValue('Custom meta description for SEO')
-            })
+            const textarea = screen.getByRole('textbox')
+            expect(textarea).toHaveValue('Custom meta description for SEO')
         })
 
-        it('should enable textarea when checkbox is unchecked', async () => {
-            const user = userEvent.setup()
+        it('should enable textarea when checkbox is unchecked', () => {
             render(<SeoMetaDescription {...defaultProps} />)
 
-            const checkbox = screen.getByRole('checkbox')
-
-            await user.click(checkbox)
-
-            await waitFor(() => {
-                const textarea = screen.getByRole('textbox')
-                expect(textarea).not.toBeDisabled()
-                expect(textarea).toBeRequired()
-            })
+            const textarea = screen.getByRole('textbox')
+            expect(textarea).not.toBeDisabled()
+            expect(textarea).toBeRequired()
         })
 
         it('should focus textarea when checkbox is unchecked', async () => {
             const user = userEvent.setup()
-            render(<SeoMetaDescription {...defaultProps} />)
+            render(<SeoMetaDescription {...defaultProps} metaDescription="" />)
 
             const checkbox = screen.getByRole('checkbox')
+            expect(checkbox).toBeChecked()
 
             await user.click(checkbox)
 
@@ -109,40 +113,46 @@ describe('SeoMetaDescription', () => {
             })
         })
 
-        it('should show caption when textarea is visible', async () => {
-            const user = userEvent.setup()
+        it('should show caption when textarea is visible', () => {
             render(<SeoMetaDescription {...defaultProps} />)
 
-            const checkbox = screen.getByRole('checkbox')
-
-            await user.click(checkbox)
-
-            await waitFor(() => {
-                expect(
-                    screen.getByText(
-                        /article description displayed in search engines/i,
-                    ),
-                ).toBeInTheDocument()
-            })
+            expect(
+                screen.getByText(
+                    /article description displayed in search engines/i,
+                ),
+            ).toBeInTheDocument()
         })
 
-        it('should hide textarea when checkbox is re-checked', async () => {
+        it('should hide textarea when checkbox is checked', async () => {
             const user = userEvent.setup()
             render(<SeoMetaDescription {...defaultProps} />)
 
             const checkbox = screen.getByRole('checkbox')
-
-            await user.click(checkbox)
-
-            await waitFor(() => {
-                expect(screen.getByRole('textbox')).toBeInTheDocument()
-            })
+            expect(checkbox).not.toBeChecked()
 
             await user.click(checkbox)
 
             await waitFor(() => {
                 expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
             })
+        })
+
+        it('should call onChangeMetaDescription with null when checkbox is checked', async () => {
+            const user = userEvent.setup()
+            const onChangeMetaDescription = jest.fn()
+            render(
+                <SeoMetaDescription
+                    {...defaultProps}
+                    onChangeMetaDescription={onChangeMetaDescription}
+                />,
+            )
+
+            const checkbox = screen.getByRole('checkbox')
+            expect(checkbox).not.toBeChecked()
+
+            await user.click(checkbox)
+
+            expect(onChangeMetaDescription).toHaveBeenCalledWith(null)
         })
     })
 
@@ -151,16 +161,8 @@ describe('SeoMetaDescription', () => {
             const user = userEvent.setup()
             render(<SeoMetaDescription {...defaultProps} />)
 
-            const checkbox = screen.getByRole('checkbox')
-
-            await user.click(checkbox)
-
-            await waitFor(() => {
-                const textarea = screen.getByRole('textbox')
-                expect(textarea).not.toBeDisabled()
-            })
-
             const textarea = screen.getByRole('textbox')
+            expect(textarea).not.toBeDisabled()
 
             await user.clear(textarea)
             await user.type(textarea, 'New custom description')
@@ -178,16 +180,8 @@ describe('SeoMetaDescription', () => {
                 />,
             )
 
-            const checkbox = screen.getByRole('checkbox')
-
-            await user.click(checkbox)
-
-            await waitFor(() => {
-                const textarea = screen.getByRole('textbox')
-                expect(textarea).not.toBeDisabled()
-            })
-
             const textarea = screen.getByRole('textbox')
+            expect(textarea).not.toBeDisabled()
 
             await user.clear(textarea)
             await user.type(textarea, 'Updated meta description')
@@ -199,11 +193,12 @@ describe('SeoMetaDescription', () => {
             )
         })
 
-        it('should not call onChangeMetaDescription when textarea is hidden', async () => {
+        it('should not call onChangeMetaDescription when textarea is hidden', () => {
             const onChangeMetaDescription = jest.fn()
             render(
                 <SeoMetaDescription
                     {...defaultProps}
+                    metaDescription=""
                     onChangeMetaDescription={onChangeMetaDescription}
                 />,
             )
@@ -213,19 +208,12 @@ describe('SeoMetaDescription', () => {
             expect(onChangeMetaDescription).not.toHaveBeenCalled()
         })
 
-        it('should have correct textarea attributes', async () => {
-            const user = userEvent.setup()
+        it('should have correct textarea attributes', () => {
             render(<SeoMetaDescription {...defaultProps} />)
 
-            const checkbox = screen.getByRole('checkbox')
-
-            await user.click(checkbox)
-
-            await waitFor(() => {
-                const textarea = screen.getByRole('textbox')
-                expect(textarea).toHaveAttribute('name', 'excerpt')
-                expect(textarea).toHaveAttribute('rows', '2')
-            })
+            const textarea = screen.getByRole('textbox')
+            expect(textarea).toHaveAttribute('name', 'excerpt')
+            expect(textarea).toHaveAttribute('rows', '2')
         })
     })
 
@@ -234,19 +222,10 @@ describe('SeoMetaDescription', () => {
             const user = userEvent.setup()
             render(<SeoMetaDescription {...defaultProps} />)
 
-            const checkbox = screen.getByRole('checkbox')
-
-            await user.click(checkbox)
-
-            await waitFor(() => {
-                const textarea = screen.getByRole('textbox')
-                expect(textarea).not.toBeDisabled()
-            })
-
             const textarea = screen.getByRole('textbox')
+            expect(textarea).not.toBeDisabled()
 
             await user.clear(textarea)
-
             await user.tab()
 
             await waitFor(() => {
@@ -260,19 +239,10 @@ describe('SeoMetaDescription', () => {
             const user = userEvent.setup()
             render(<SeoMetaDescription {...defaultProps} />)
 
-            const checkbox = screen.getByRole('checkbox')
-
-            await user.click(checkbox)
-
-            await waitFor(() => {
-                const textarea = screen.getByRole('textbox')
-                expect(textarea).not.toBeDisabled()
-            })
-
             const textarea = screen.getByRole('textbox')
+            expect(textarea).not.toBeDisabled()
 
             await user.clear(textarea)
-
             await user.tab()
 
             await waitFor(() => {
@@ -300,19 +270,10 @@ describe('SeoMetaDescription', () => {
                 />,
             )
 
-            const checkbox = screen.getByRole('checkbox')
-
-            await user.click(checkbox)
-
-            await waitFor(() => {
-                const textarea = screen.getByRole('textbox')
-                expect(textarea).not.toBeDisabled()
-            })
-
             const textarea = screen.getByRole('textbox')
+            expect(textarea).not.toBeDisabled()
 
             await user.clear(textarea)
-
             await user.tab()
 
             await waitFor(() => {
@@ -320,23 +281,15 @@ describe('SeoMetaDescription', () => {
             })
         })
 
-        it('should clear error when checkbox is re-checked', async () => {
+        it('should clear error when checkbox is checked', async () => {
             const user = userEvent.setup()
             render(<SeoMetaDescription {...defaultProps} />)
 
             const checkbox = screen.getByRole('checkbox')
-
-            await user.click(checkbox)
-
-            await waitFor(() => {
-                const textarea = screen.getByRole('textbox')
-                expect(textarea).not.toBeDisabled()
-            })
-
             const textarea = screen.getByRole('textbox')
+            expect(textarea).not.toBeDisabled()
 
             await user.clear(textarea)
-
             await user.tab()
 
             await waitFor(() => {
@@ -367,6 +320,7 @@ describe('SeoMetaDescription', () => {
             )
 
             const checkbox = screen.getByRole('checkbox')
+            expect(checkbox).toBeChecked()
 
             await user.click(checkbox)
 
@@ -385,16 +339,8 @@ describe('SeoMetaDescription', () => {
                 />,
             )
 
-            const checkbox = screen.getByRole('checkbox')
-
-            await user.click(checkbox)
-
-            await waitFor(() => {
-                const textarea = screen.getByRole('textbox')
-                expect(textarea).not.toBeDisabled()
-            })
-
             const textarea = screen.getByRole('textbox')
+            expect(textarea).not.toBeDisabled()
 
             await user.clear(textarea)
             await user.type(textarea, 'New description')
@@ -402,18 +348,15 @@ describe('SeoMetaDescription', () => {
             await expect(user.tab()).resolves.not.toThrow()
         })
 
-        it('should preserve value when unchecking and re-checking multiple times', async () => {
+        it('should preserve value when checking and unchecking multiple times', async () => {
             const user = userEvent.setup()
             render(<SeoMetaDescription {...defaultProps} />)
 
             const checkbox = screen.getByRole('checkbox')
+            expect(checkbox).not.toBeChecked()
 
-            await user.click(checkbox)
-
-            await waitFor(() => {
-                const textarea = screen.getByRole('textbox')
-                expect(textarea).toHaveValue('Custom meta description for SEO')
-            })
+            const textarea = screen.getByRole('textbox')
+            expect(textarea).toHaveValue('Custom meta description for SEO')
 
             await user.click(checkbox)
 

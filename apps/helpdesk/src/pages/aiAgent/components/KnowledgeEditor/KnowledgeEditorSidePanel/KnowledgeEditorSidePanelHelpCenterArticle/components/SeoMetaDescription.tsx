@@ -17,7 +17,7 @@ export const SeoMetaDescription = ({
 }: {
     defaultDescription: string
     metaDescription: string
-    onChangeMetaDescription?: (metaDescription: string) => void
+    onChangeMetaDescription?: (metaDescription: string | null) => void
 }) => {
     const {
         isChecked,

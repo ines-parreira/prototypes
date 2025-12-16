@@ -1,0 +1,277 @@
+import { useCallback, useRef } from 'react'
+
+import { useDebouncedCallback } from '@repo/hooks'
+
+import { useNotify } from 'hooks/useNotify'
+import {
+    useCreateArticle,
+    useCreateArticleTranslation,
+    useUpdateArticleTranslation,
+} from 'models/helpCenter/queries'
+import { slugify } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+
+import { useArticleContext } from '../context/ArticleContext'
+import type { ArticleState } from '../context/types'
+
+const DEFAULT_AUTOSAVE_DELAY_MS = 2000
+
+type AutoSaveParams = {
+    title: string
+    content: string
+    mode: 'edit' | 'create'
+    translationMode: 'existing' | 'new'
+    articleId: number | undefined
+    savedSnapshot: ArticleState['savedSnapshot']
+}
+
+export const useArticleAutoSave = () => {
+    const { state, dispatch, config } = useArticleContext()
+
+    const { helpCenter, template, onCreatedFn, onUpdatedFn } = config
+
+    const { error: notifyError } = useNotify()
+
+    const createArticleMutation = useCreateArticle()
+    const createTranslationMutation = useCreateArticleTranslation()
+    const updateTranslationMutation = useUpdateArticleTranslation()
+
+    const pendingSaveRef = useRef<{
+        title: string
+        content: string
+    } | null>(null)
+
+    const performAutoSave = useCallback(
+        async ({
+            title,
+            content,
+            mode,
+            translationMode,
+            articleId,
+            savedSnapshot,
+        }: AutoSaveParams) => {
+            if (!helpCenter.id || !helpCenter.default_locale) {
+                dispatch({ type: 'SET_AUTO_SAVING', payload: false })
+                return
+            }
+
+            if (
+                title === savedSnapshot.title &&
+                content === savedSnapshot.content
+            ) {
+                dispatch({ type: 'SET_AUTO_SAVING', payload: false })
+                return
+            }
+
+            pendingSaveRef.current = { title, content }
+
+            try {
+                if (mode === 'create' && translationMode === 'new') {
+                    const response = await createArticleMutation.mutateAsync([
+                        undefined,
+                        { help_center_id: helpCenter.id },
+                        {
+                            template_key: template?.key,
+                            translation: {
+                                locale: state.currentLocale,
+                                title,
+                                content,
+                                excerpt: '',
+                                slug: slugify(title),
+                                seo_meta: {
+                                    title: null,
+                                    description: null,
+                                },
+                                category_id: null,
+                                is_current: false,
+                                visibility_status: 'PUBLIC',
+                            },
+                        },
+                    ])
+
+                    if (response?.data && pendingSaveRef.current) {
+                        const savedValues = pendingSaveRef.current
+                        dispatch({
+                            type: 'MARK_CONTENT_AS_SAVED',
+                            payload: {
+                                title: savedValues.title,
+                                content: savedValues.content,
+                                article: response.data,
+                            },
+                        })
+                        dispatch({ type: 'SET_MODE', payload: 'edit' })
+                        onCreatedFn?.(response.data)
+                    }
+                } else if (mode === 'edit' && translationMode === 'new') {
+                    if (!articleId) {
+                        dispatch({ type: 'SET_AUTO_SAVING', payload: false })
+                        return
+                    }
+
+                    const response =
+                        await createTranslationMutation.mutateAsync([
+                            undefined,
+                            {
+                                help_center_id: helpCenter.id,
+                                article_id: articleId,
+                            },
+                            {
+                                locale: state.currentLocale,
+                                title,
+                                content,
+                                excerpt: '',
+                                slug: slugify(title),
+                                seo_meta: {
+                                    title: null,
+                                    description: null,
+                                },
+                                category_id: null,
+                                is_current: false,
+                                visibility_status: 'PUBLIC',
+                            },
+                        ])
+
+                    if (response?.data && pendingSaveRef.current) {
+                        const savedValues = pendingSaveRef.current
+                        const existingArticle = state.article
+                        if (existingArticle) {
+                            dispatch({
+                                type: 'MARK_CONTENT_AS_SAVED',
+                                payload: {
+                                    title: savedValues.title,
+                                    content: savedValues.content,
+                                    article: {
+                                        ...existingArticle,
+                                        translation: response.data,
+                                    },
+                                },
+                            })
+                        }
+                        onUpdatedFn?.()
+                    }
+                } else {
+                    if (!articleId) {
+                        dispatch({ type: 'SET_AUTO_SAVING', payload: false })
+                        return
+                    }
+
+                    const response =
+                        await updateTranslationMutation.mutateAsync([
+                            undefined,
+                            {
+                                help_center_id: helpCenter.id,
+                                article_id: articleId,
+                                locale: state.currentLocale,
+                            },
+                            {
+                                title,
+                                content,
+                                is_current: false,
+                            },
+                        ])
+
+                    if (response?.data && pendingSaveRef.current) {
+                        const savedValues = pendingSaveRef.current
+                        const existingArticle = state.article
+                        if (existingArticle) {
+                            dispatch({
+                                type: 'MARK_CONTENT_AS_SAVED',
+                                payload: {
+                                    title: savedValues.title,
+                                    content: savedValues.content,
+                                    article: {
+                                        ...existingArticle,
+                                        translation: {
+                                            ...existingArticle.translation,
+                                            ...response.data,
+                                        },
+                                    },
+                                },
+                            })
+                        }
+                        onUpdatedFn?.()
+                    }
+                }
+            } catch {
+                notifyError(
+                    mode === 'create'
+                        ? 'An error occurred while creating the article.'
+                        : 'An error occurred while saving the article.',
+                )
+            } finally {
+                pendingSaveRef.current = null
+                dispatch({ type: 'SET_AUTO_SAVING', payload: false })
+            }
+        },
+        [
+            helpCenter.id,
+            helpCenter.default_locale,
+            state.currentLocale,
+            state.article,
+            template?.key,
+            createArticleMutation,
+            createTranslationMutation,
+            updateTranslationMutation,
+            dispatch,
+            onCreatedFn,
+            onUpdatedFn,
+            notifyError,
+        ],
+    )
+
+    const debouncedAutoSave = useDebouncedCallback(
+        performAutoSave,
+        DEFAULT_AUTOSAVE_DELAY_MS,
+    )
+
+    const triggerAutoSave = useCallback(
+        (params: AutoSaveParams) => {
+            dispatch({ type: 'SET_AUTO_SAVING', payload: true })
+            debouncedAutoSave(params)
+        },
+        [dispatch, debouncedAutoSave],
+    )
+
+    const onChangeField = useCallback(
+        (field: 'title' | 'content', value: string) => {
+            if (field === 'title') {
+                dispatch({ type: 'SET_TITLE', payload: value })
+            } else {
+                dispatch({ type: 'SET_CONTENT', payload: value })
+            }
+
+            if (state.articleMode === 'read') return
+
+            const newTitle = field === 'title' ? value : state.title
+            const newContent = field === 'content' ? value : state.content
+
+            const isValid = newTitle.trim() !== '' && newContent.trim() !== ''
+            const isSameContent =
+                newTitle === state.savedSnapshot.title &&
+                newContent === state.savedSnapshot.content
+            if (!isValid || isSameContent) {
+                return
+            }
+
+            triggerAutoSave({
+                title: newTitle,
+                content: newContent,
+                mode: state.articleMode,
+                translationMode: state.translationMode,
+                articleId: state.article?.id,
+                savedSnapshot: state.savedSnapshot,
+            })
+        },
+        [
+            dispatch,
+            triggerAutoSave,
+            state.articleMode,
+            state.translationMode,
+            state.title,
+            state.content,
+            state.article?.id,
+            state.savedSnapshot,
+        ],
+    )
+
+    return { onChangeField }
+}

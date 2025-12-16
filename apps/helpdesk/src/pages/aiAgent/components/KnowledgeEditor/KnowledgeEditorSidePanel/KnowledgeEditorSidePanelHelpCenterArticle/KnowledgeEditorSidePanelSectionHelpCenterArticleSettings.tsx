@@ -1,16 +1,10 @@
 import { Icon, IconSize } from '@gorgias/axiom'
 
-import type { LocaleCode, VisibilityStatus } from 'models/helpCenter/types'
-import type { Option } from 'pages/common/forms/SelectField/types'
+import { useSettingsAutoSave } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
 import ArticleCategorySelectField from 'pages/settings/helpCenter/components/articles/ArticleCategorySelect/ArticleCategorySelectField'
-import type {
-    ActionType as LocaleActionType,
-    OptionItem as LocaleOption,
-} from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect/ArticleLanguageSelect'
 import { ArticleLanguageSelect } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect/ArticleLanguageSelect'
 import SelectVisibilityStatus from 'pages/settings/helpCenter/components/SelectVisibilityStatus/SelectVisibilityStatus'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
-import type { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 
 import { KnowledgeEditorSidePanelSection } from '../KnowledgeEditorSidePanelSection'
 import { ExcerptInput } from './components/ExcerptInput'
@@ -21,82 +15,33 @@ import { SlugInput } from './components/SlugInput'
 import css from './KnowledgeEditorSidePanelSectionHelpCenterArticleSettings.less'
 
 export type Props = {
-    category: {
-        categoryId: number | null
-        categoryTitlesById: Record<string, string>
-        categoryOptions: Option[]
-        onChangeCategory: (value: number | null) => void
-    }
-
-    language: {
-        locale: LocaleCode
-        localeOptions: LocaleOption[]
-        onChangeLanguage: (locale: LocaleCode) => void
-        onActionClick: (
-            action: LocaleActionType,
-            currentOption: LocaleOption,
-        ) => void
-    }
-
-    visibility: {
-        visibilityStatus: VisibilityStatus
-        onChangeVisibility: (status: VisibilityStatus) => void
-        isParentUnlisted: boolean
-    }
-
-    slug?: {
-        slug: string
-        onChangeSlug: (slug: string) => void
-        articleId: number
-    }
-
-    excerpt?: {
-        excerpt: string
-        onChangeExcerpt: (excerpt: string) => void
-    }
-
-    metaTitle?: {
-        metaTitle: string
-        onChangeMetaTitle: (metaTitle: string) => void
-    }
-    metaDescription?: {
-        metaDescription: string
-        onChangeMetaDescription: (metaDescription: string) => void
-    }
-
-    title: string
-
-    autoSave?: {
-        state: AutoSaveState
-        updatedAt?: Date
-    }
-
     sectionId: string
 }
 
 export const KnowledgeEditorSidePanelSectionHelpCenterArticleSettings = ({
-    category,
-    excerpt,
-    language,
-    metaTitle,
-    metaDescription,
-    title,
-    slug,
-    visibility,
-    autoSave,
     sectionId,
 }: Props) => {
+    const { settingsProps, autoSave } = useSettingsAutoSave()
+    const {
+        category,
+        excerpt,
+        language,
+        metaTitle,
+        metaDescription,
+        title,
+        slug,
+        visibility,
+    } = settingsProps
+
     const headerTitle = (
         <div className={css.headerWithBadge}>
             <span>Settings</span>
-            {autoSave && (
-                <AutoSaveBadge
-                    state={autoSave.state}
-                    updatedAt={autoSave.updatedAt}
-                    savedIcon={<Icon name="cloud-check" size={IconSize.Md} />}
-                    tooltipPlacement="top-start"
-                />
-            )}
+            <AutoSaveBadge
+                state={autoSave.state}
+                updatedAt={autoSave.updatedAt}
+                savedIcon={<Icon name="cloud-check" size={IconSize.Md} />}
+                tooltipPlacement="top-start"
+            />
         </div>
     )
 
@@ -170,7 +115,8 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleSettings = ({
                         defaultDescription={excerpt?.excerpt ?? ''}
                         metaDescription={metaDescription?.metaDescription ?? ''}
                         onChangeMetaDescription={
-                            metaTitle?.onChangeMetaTitle ?? undefined
+                            metaDescription?.onChangeMetaDescription ??
+                            undefined
                         }
                     />
                 </div>

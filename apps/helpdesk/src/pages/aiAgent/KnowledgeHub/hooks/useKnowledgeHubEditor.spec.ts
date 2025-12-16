@@ -4,7 +4,7 @@ import { act, renderHook } from '@testing-library/react'
 import { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import { useNotify } from 'hooks/useNotify'
-import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterExistingArticle'
+import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { REFETCH_KNOWLEDGE_HUB_TABLE } from '../constants'
@@ -440,7 +440,7 @@ describe('useKnowledgeHubEditor', () => {
         })
 
         describe('When FAQ article is created', () => {
-            it('should track correct analytics event and show success notification', () => {
+            it('should track correct analytics event and not show notification (autosave handles feedback)', () => {
                 const { result } = renderHook(() =>
                     useKnowledgeHubEditor(faqConfig),
                 )
@@ -457,43 +457,12 @@ describe('useKnowledgeHubEditor', () => {
                         type: 'faq',
                     },
                 )
-                expect(mockNotifySuccess).toHaveBeenCalledWith(
-                    'Help Center article created successfully',
-                )
-            })
-
-            it('should transition to existing mode when article is created', () => {
-                const { result } = renderHook(() =>
-                    useKnowledgeHubEditor(faqConfig),
-                )
-
-                // Open editor in create mode
-                act(() => {
-                    result.current.openEditorForCreate()
-                })
-
-                expect(result.current.faqArticleMode).toBe('new')
-                expect(result.current.currentArticleId).toBeUndefined()
-
-                // Create the article
-                const createdArticle = { id: 123 }
-                act(() => {
-                    result.current.handleCreate(createdArticle)
-                })
-
-                // Should transition to existing mode with the new article
-                expect(result.current.faqArticleMode).toBe('existing')
-                expect(result.current.currentArticleId).toBe(123)
-                expect(result.current.initialArticleMode).toBe(
-                    InitialArticleMode.READ,
-                )
-                expect(result.current.versionStatus).toBe('latest_draft')
-                expect(result.current.isEditorOpen).toBe(true)
+                expect(mockNotifySuccess).not.toHaveBeenCalled()
             })
         })
 
         describe('When FAQ article is updated', () => {
-            it('should show appropriate success notification', () => {
+            it('should not show success notification (autosave handles feedback)', () => {
                 const { result } = renderHook(() =>
                     useKnowledgeHubEditor(faqConfig),
                 )
@@ -502,9 +471,7 @@ describe('useKnowledgeHubEditor', () => {
                     result.current.handleUpdate()
                 })
 
-                expect(mockNotifySuccess).toHaveBeenCalledWith(
-                    'Help Center article updated successfully',
-                )
+                expect(mockNotifySuccess).not.toHaveBeenCalled()
             })
         })
 

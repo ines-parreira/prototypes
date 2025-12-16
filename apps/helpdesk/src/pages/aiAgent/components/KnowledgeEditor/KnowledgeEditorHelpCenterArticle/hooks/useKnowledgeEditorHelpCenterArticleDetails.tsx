@@ -1,64 +1,71 @@
 import { useMemo } from 'react'
 
-import type {
-    HelpCenter,
-    LocaleCode,
-    VisibilityStatus,
-} from 'models/helpCenter/types'
 import {
     getArticleUrl,
     getHelpCenterDomain,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 
-import type { Props as HelpCenterArticleDetailsProps } from '../../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelHelpCenterArticle/KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
+import { useArticleContext } from '../context'
 
-type Props = {
+export type ArticleDetailsData = {
     article?: {
-        visibilityStatus: VisibilityStatus
-        createdDatetime: string
-        lastUpdatedDatetime: string
-        slug?: string
-        articleId: number
-        unlistedId: string
+        id: number
+        title: string
         draftVersionId?: number | null
         publishedVersionId?: number | null
+        isCurrent?: boolean
     }
-    locale: LocaleCode
-    helpCenter: HelpCenter
+    createdDatetime?: Date
+    lastUpdatedDatetime?: Date
+    articleUrl?: string
 }
 
-export const useKnowledgeEditorHelpCenterArticleDetails = ({
-    article,
-    locale,
-    helpCenter,
-}: Props): Omit<HelpCenterArticleDetailsProps, 'sectionId'> => {
+/**
+ * Hook to get article details data from ArticleContext.
+ * Use this in components that are wrapped by ArticleContextProvider.
+ */
+export const useArticleDetailsFromContext = (): ArticleDetailsData => {
+    const { state, config } = useArticleContext()
+    const { helpCenter } = config
+
     return useMemo(() => {
+        const article = state.article
+        const locale = state.currentLocale
+        const slug =
+            state.translationMode === 'new'
+                ? undefined
+                : article?.translation.slug
+
         return {
             article: article
                 ? {
-                      id: article.articleId,
-                      title: '', // Title is not available in this context
-                      draftVersionId: article.draftVersionId,
-                      publishedVersionId: article.publishedVersionId,
+                      id: article.id,
+                      title: article.translation.title,
+                      draftVersionId: article.translation.draft_version_id,
+                      publishedVersionId:
+                          article.translation.published_version_id,
+                      isCurrent: article.translation.is_current,
                   }
                 : undefined,
-            createdDatetime: article
-                ? new Date(article.createdDatetime)
+            createdDatetime: article?.translation.created_datetime
+                ? new Date(article.translation.created_datetime)
                 : undefined,
-            lastUpdatedDatetime: article
-                ? new Date(article.lastUpdatedDatetime)
+            lastUpdatedDatetime: article?.translation.updated_datetime
+                ? new Date(article.translation.updated_datetime)
                 : undefined,
             articleUrl:
-                article && article.slug
+                article && slug
                     ? getArticleUrl({
                           domain: getHelpCenterDomain(helpCenter),
                           locale: locale,
-                          slug: article.slug,
-                          articleId: article.articleId,
-                          unlistedId: article.unlistedId,
-                          isUnlisted: article.visibilityStatus === 'UNLISTED',
+                          slug: slug,
+                          articleId: article.id,
+                          unlistedId: article.unlisted_id,
+                          isUnlisted:
+                              article.translation.visibility_status ===
+                              'UNLISTED',
                       })
                     : undefined,
         }
-    }, [helpCenter, article, locale])
+    }, [helpCenter, state.article, state.currentLocale, state.translationMode])
 }

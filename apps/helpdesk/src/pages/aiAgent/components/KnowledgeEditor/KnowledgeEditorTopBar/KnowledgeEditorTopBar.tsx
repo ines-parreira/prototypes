@@ -65,47 +65,39 @@ export const KnowledgeEditorTopBar = (props: Props) => {
             className={css.container}
             data-name={'knowledge-editor-top-bar-container'}
         >
-            <div className={css.navigationControls}>
-                {props.onClickPrevious && (
-                    <button
-                        className={classNames(
-                            controlsCss.icon,
-                            controlsCss.ghostButton,
-                        )}
-                        onClick={props.onClickPrevious}
-                        disabled={props.disabled}
-                        aria-label="previous"
-                    >
-                        <Icon name="arrow-chevron-left" />
-                    </button>
-                )}
-                {props.onClickNext && (
-                    <button
-                        className={classNames(
-                            controlsCss.icon,
-                            controlsCss.ghostButton,
-                        )}
-                        onClick={props.onClickNext}
-                        disabled={props.disabled}
-                        aria-label="next"
-                    >
-                        <Icon name="arrow-chevron-right" />
-                    </button>
-                )}
-            </div>
-
-            <div
-                className={classNames(
-                    css.title,
-                    props.onChangeTitle && !props.disabled
-                        ? css.editableTitle
-                        : undefined,
-                )}
-            >
+            {(props.onClickPrevious || props.onClickNext) && (
+                <div className={css.navigationControls}>
+                    {props.onClickPrevious && (
+                        <button
+                            className={classNames(
+                                controlsCss.icon,
+                                controlsCss.ghostButton,
+                            )}
+                            onClick={props.onClickPrevious}
+                            disabled={props.disabled}
+                            aria-label="previous"
+                        >
+                            <Icon name="arrow-chevron-left" />
+                        </button>
+                    )}
+                    {props.onClickNext && (
+                        <button
+                            className={classNames(
+                                controlsCss.icon,
+                                controlsCss.ghostButton,
+                            )}
+                            onClick={props.onClickNext}
+                            disabled={props.disabled}
+                            aria-label="next"
+                        >
+                            <Icon name="arrow-chevron-right" />
+                        </button>
+                    )}
+                </div>
+            )}
+            <div className={css.title}>
                 <KnowledgeEditorTopBarTitle
-                    onChangeTitle={
-                        props.disabled ? undefined : props.onChangeTitle
-                    }
+                    onChangeTitle={props.onChangeTitle}
                     title={props.title}
                 />
                 {props.isSaving && (
@@ -114,7 +106,7 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                         Saving
                     </span>
                 )}
-                {props.guidanceMode === 'edit' &&
+                {(props.onChangeTitle || props.guidanceMode === 'edit') &&
                     !props.isSaving &&
                     props.lastUpdatedDatetime && (
                         <span className={css.savingIndicator} tabIndex={0}>

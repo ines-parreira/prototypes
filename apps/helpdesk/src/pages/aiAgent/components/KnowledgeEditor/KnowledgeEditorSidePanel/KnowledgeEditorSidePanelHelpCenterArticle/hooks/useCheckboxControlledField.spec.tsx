@@ -32,7 +32,7 @@ describe('useCheckboxControlledField', () => {
             )
 
             expect(result.current.isChecked).toBe(false)
-            expect(result.current.value).toBe('')
+            expect(result.current.value).toBe('Custom Title')
             expect(result.current.isDisabled).toBe(false)
             expect(result.current.isRequired).toBe(true)
         })
@@ -62,12 +62,32 @@ describe('useCheckboxControlledField', () => {
                 }),
             )
 
+            expect(result.current.isChecked).toBe(false)
+            expect(result.current.value).toBe('Draft Title')
+            expect(result.current.isDisabled).toBe(false)
+            expect(result.current.isRequired).toBe(true)
+        })
+
+        it('should populate input with draftValue when toggling from checked to unchecked', () => {
+            const { result } = renderHook(
+                ({ draftValue }) =>
+                    useCheckboxControlledField({
+                        defaultValue: 'Default Title',
+                        draftValue,
+                        onCommit: jest.fn(),
+                        defaultChecked: true,
+                    }),
+                { initialProps: { draftValue: '' } },
+            )
+
+            expect(result.current.isChecked).toBe(true)
+
             act(() => {
                 result.current.toggleChecked()
             })
 
             expect(result.current.isChecked).toBe(false)
-            expect(result.current.value).toBe('Draft Title')
+            expect(result.current.value).toBe('')
             expect(result.current.isDisabled).toBe(false)
             expect(result.current.isRequired).toBe(true)
         })
@@ -95,6 +115,48 @@ describe('useCheckboxControlledField', () => {
             expect(result.current.isChecked).toBe(true)
             expect(result.current.hasError).toBe(false)
             expect(result.current.showError).toBe(false)
+        })
+
+        it('should call onCommit with null when checkbox is checked', () => {
+            const onCommit = jest.fn()
+            const { result } = renderHook(() =>
+                useCheckboxControlledField({
+                    defaultValue: 'Default Title',
+                    draftValue: 'Draft Title',
+                    onCommit,
+                    defaultChecked: false,
+                }),
+            )
+
+            expect(result.current.isChecked).toBe(false)
+
+            act(() => {
+                result.current.toggleChecked()
+            })
+
+            expect(result.current.isChecked).toBe(true)
+            expect(onCommit).toHaveBeenCalledWith(null)
+        })
+
+        it('should not call onCommit when checkbox is unchecked', () => {
+            const onCommit = jest.fn()
+            const { result } = renderHook(() =>
+                useCheckboxControlledField({
+                    defaultValue: 'Default Title',
+                    draftValue: '',
+                    onCommit,
+                    defaultChecked: true,
+                }),
+            )
+
+            expect(result.current.isChecked).toBe(true)
+
+            act(() => {
+                result.current.toggleChecked()
+            })
+
+            expect(result.current.isChecked).toBe(false)
+            expect(onCommit).not.toHaveBeenCalled()
         })
 
         it('should return new checked state from toggleChecked', () => {

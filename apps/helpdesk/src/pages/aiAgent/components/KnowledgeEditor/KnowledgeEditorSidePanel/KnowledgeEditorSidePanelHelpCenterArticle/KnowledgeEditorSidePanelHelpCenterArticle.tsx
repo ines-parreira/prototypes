@@ -1,41 +1,30 @@
+import { useArticleImpactFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
+
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
-import type { Props as ImpactProps } from '../KnowledgeEditorSidePanelSectionImpact'
 import { KnowledgeEditorSidePanelSectionImpact } from '../KnowledgeEditorSidePanelSectionImpact'
 import type { Props as HelpCenterArticleRelatedTicketsProps } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
 import { KnowledgeEditorSidePanelSectionRelatedTickets } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
-import type { Props as HelpCenterArticleDetailsProps } from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleDetails } from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
-import type { Props as HelpCenterArticleSettingsProps } from './KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleSettings } from './KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
 
 type Props = {
-    details: Omit<HelpCenterArticleDetailsProps, 'sectionId'>
-    impact?: Omit<ImpactProps, 'sectionId'>
     relatedTickets?: Omit<HelpCenterArticleRelatedTicketsProps, 'sectionId'>
-    settings: Omit<HelpCenterArticleSettingsProps, 'sectionId'>
 }
 
 export const KnowledgeEditorSidePanelHelpCenterArticle = ({
-    details,
-    impact,
     relatedTickets,
-    settings,
 }: Props) => {
-    const initialExpandedSections =
-        impact && relatedTickets
-            ? ['details', 'impact', 'relatedTickets', 'settings']
-            : impact
-              ? ['details', 'impact', 'settings']
-              : ['details', 'settings']
+    const impact = useArticleImpactFromContext()
+
+    const initialExpandedSections = relatedTickets
+        ? ['details', 'impact', 'relatedTickets', 'settings']
+        : ['details', 'impact', 'settings']
 
     return (
         <KnowledgeEditorSidePanel
             initialExpandedSections={initialExpandedSections}
         >
-            <KnowledgeEditorSidePanelSectionHelpCenterArticleDetails
-                {...details}
-                sectionId="details"
-            />
+            <KnowledgeEditorSidePanelSectionHelpCenterArticleDetails sectionId="details" />
 
             {impact && (
                 <KnowledgeEditorSidePanelSectionImpact
@@ -51,10 +40,7 @@ export const KnowledgeEditorSidePanelHelpCenterArticle = ({
                 />
             )}
 
-            <KnowledgeEditorSidePanelSectionHelpCenterArticleSettings
-                {...settings}
-                sectionId="settings"
-            />
+            <KnowledgeEditorSidePanelSectionHelpCenterArticleSettings sectionId="settings" />
         </KnowledgeEditorSidePanel>
     )
 }

@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { isDraft } from 'pages/aiAgent/KnowledgeHub/utils/articleUtils'
+import { useArticleDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
 
 import {
     KnowledgeEditorSidePanelFieldAIAgentStatus,
@@ -15,28 +15,21 @@ import commonCss from '../KnowledgeEditorSidePanelCommonFields.less'
 import css from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails.less'
 
 export type Props = {
-    article?: {
-        id: number
-        title: string
-        draftVersionId?: number | null
-        publishedVersionId?: number | null
-    }
-    createdDatetime?: Date
-    lastUpdatedDatetime?: Date
-    articleUrl?: string
     sectionId: string
 }
 
-export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = (
-    props: Props,
-) => {
-    const isArticleDraft = isDraft(props.article)
-    const isPublished = props.article ? !isArticleDraft : undefined
+export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
+    sectionId,
+}: Props) => {
+    const { article, createdDatetime, lastUpdatedDatetime, articleUrl } =
+        useArticleDetailsFromContext()
+
+    const isPublished = article ? article.isCurrent : undefined
 
     return (
         <KnowledgeEditorSidePanelSection
             header={{ title: 'Details' }}
-            sectionId={props.sectionId}
+            sectionId={sectionId}
         >
             <KnowledgeEditorSidePanelTwoColumnsContent
                 columns={[
@@ -86,7 +79,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = (
                         left: 'Created',
                         right: (
                             <KnowledgeEditorSidePanelFieldDateField
-                                date={props.createdDatetime}
+                                date={createdDatetime}
                                 key="created"
                             />
                         ),
@@ -95,7 +88,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = (
                         left: 'Last updated',
                         right: (
                             <KnowledgeEditorSidePanelFieldDateField
-                                date={props.lastUpdatedDatetime}
+                                date={lastUpdatedDatetime}
                                 key="last-updated"
                             />
                         ),
@@ -104,7 +97,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = (
                         left: 'Article URL',
                         right: (
                             <KnowledgeEditorSidePanelFieldURL
-                                url={props.articleUrl}
+                                url={articleUrl}
                                 key="article-url"
                             />
                         ),

@@ -1,0 +1,161 @@
+import type { ArticleReducerAction, ArticleState } from './types'
+
+export function articleReducer(
+    state: ArticleState,
+    action: ArticleReducerAction,
+): ArticleState {
+    switch (action.type) {
+        // Mode & UI actions
+        case 'SET_MODE':
+            return { ...state, articleMode: action.payload }
+
+        case 'SET_FULLSCREEN':
+            return { ...state, isFullscreen: action.payload }
+
+        case 'TOGGLE_FULLSCREEN':
+            return { ...state, isFullscreen: !state.isFullscreen }
+
+        case 'SET_DETAILS_VIEW':
+            return { ...state, isDetailsView: action.payload }
+
+        case 'TOGGLE_DETAILS_VIEW':
+            return { ...state, isDetailsView: !state.isDetailsView }
+
+        // Form data actions
+        case 'SET_TITLE':
+            return { ...state, title: action.payload }
+
+        case 'SET_CONTENT':
+            return { ...state, content: action.payload }
+
+        case 'MARK_CONTENT_AS_SAVED': {
+            const newTitle = action.payload?.title ?? state.title
+            const newContent = action.payload?.content ?? state.content
+            const newArticle = action.payload?.article ?? state.article
+
+            return {
+                ...state,
+                savedSnapshot: {
+                    title: newTitle,
+                    content: newContent,
+                },
+                isAutoSaving: false,
+                article: newArticle,
+                translationMode: 'existing',
+            }
+        }
+
+        case 'SET_AUTO_SAVING':
+            return { ...state, isAutoSaving: action.payload }
+
+        // Article reference actions
+        case 'SET_ARTICLE':
+            return { ...state, article: action.payload }
+
+        case 'SET_TRANSLATION_MODE':
+            return { ...state, translationMode: action.payload }
+
+        case 'UPDATE_TRANSLATION': {
+            if (!state.article) return state
+
+            return {
+                ...state,
+                article: {
+                    ...state.article,
+                    translation: {
+                        ...state.article.translation,
+                        ...action.payload,
+                    },
+                },
+            }
+        }
+
+        // Locale actions
+        case 'SET_LOCALE':
+            return {
+                ...state,
+                currentLocale: action.payload,
+                pendingSettingsChanges: {},
+            }
+
+        case 'SWITCH_ARTICLE': {
+            const { article, locale, translationMode } = action.payload
+            const title = article?.translation.title ?? ''
+            const content = article?.translation.content ?? ''
+
+            return {
+                ...state,
+                article,
+                currentLocale: locale,
+                translationMode,
+                title,
+                content,
+                savedSnapshot: { title, content },
+                pendingSettingsChanges: {},
+                articleMode:
+                    translationMode === 'new' ? 'edit' : state.articleMode,
+            }
+        }
+
+        // Settings actions
+        case 'SET_PENDING_SETTINGS':
+            return {
+                ...state,
+                pendingSettingsChanges: {
+                    ...state.pendingSettingsChanges,
+                    ...action.payload,
+                },
+            }
+
+        case 'CLEAR_PENDING_SETTINGS':
+            return { ...state, pendingSettingsChanges: {} }
+
+        // Version actions
+        case 'SET_VERSION_STATUS':
+            return { ...state, versionStatus: action.payload }
+
+        case 'SWITCH_VERSION': {
+            const { article, versionStatus } = action.payload
+            const title = article.translation.title
+            const content = article.translation.content
+
+            return {
+                ...state,
+                versionStatus,
+                article,
+                savedSnapshot: { title, content },
+                title,
+                content,
+                articleMode:
+                    versionStatus === 'current' ? 'read' : state.articleMode,
+            }
+        }
+
+        // Modal actions
+        case 'SET_MODAL':
+            return { ...state, activeModal: action.payload }
+
+        case 'CLOSE_MODAL':
+            return { ...state, activeModal: null }
+
+        // Loading actions
+        case 'SET_UPDATING':
+            return { ...state, isUpdating: action.payload }
+
+        // Reset actions
+        case 'RESET_TO_SERVER':
+            return {
+                ...state,
+                title: action.payload.title,
+                content: action.payload.content,
+                savedSnapshot: {
+                    title: action.payload.title,
+                    content: action.payload.content,
+                },
+                isAutoSaving: false,
+            }
+
+        default:
+            return state
+    }
+}

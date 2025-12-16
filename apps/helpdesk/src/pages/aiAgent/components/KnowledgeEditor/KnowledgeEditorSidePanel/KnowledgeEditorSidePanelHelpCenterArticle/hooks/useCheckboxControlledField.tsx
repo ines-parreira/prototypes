@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export type UseCheckboxControlledFieldArgs = {
     defaultValue: string
     draftValue: string
-    onCommit?: (value: string) => void
+    onCommit?: (value: string | null) => void
     defaultChecked?: boolean
 }
 
@@ -26,16 +26,29 @@ export function useCheckboxControlledField({
     defaultChecked = true,
 }: UseCheckboxControlledFieldArgs): UseCheckboxControlledFieldResult {
     const [isChecked, setIsChecked] = useState<boolean>(defaultChecked)
-    const [inputValue, setInputValue] = useState<string>('')
+    const [inputValue, setInputValue] = useState<string>(
+        defaultChecked ? '' : draftValue || '',
+    )
     const [hasError, setHasError] = useState<boolean>(false)
+
+    useEffect(() => {
+        if (draftValue) {
+            setIsChecked(false)
+            setInputValue(draftValue)
+        } else {
+            setIsChecked(defaultChecked)
+            setInputValue('')
+        }
+    }, [draftValue, defaultChecked])
 
     const toggleChecked = () => {
         const next = !isChecked
         setIsChecked(next)
-        if (!next) {
-            setInputValue(draftValue || '')
+        if (next) {
             setHasError(false)
+            onCommit?.(null)
         } else {
+            setInputValue(draftValue || '')
             setHasError(false)
         }
         return next
