@@ -1258,6 +1258,7 @@ describe('KnowledgeEditorGuidance', () => {
                         onClose={onClose}
                         guidanceMode="edit"
                         isOpen={true}
+                        guidanceArticles={[]}
                     />
                 </Provider>,
             )
