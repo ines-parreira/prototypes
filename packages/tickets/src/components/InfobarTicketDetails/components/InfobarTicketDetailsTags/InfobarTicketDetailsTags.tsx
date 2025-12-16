@@ -54,7 +54,7 @@ export function InfobarTicketDetailsTags({
                 id: tag.id,
                 label: tag.name,
             })) ?? [],
-        [ticket],
+        [ticket?.data.tags],
     )
 
     const tagsOptions = useMemo(
@@ -131,13 +131,27 @@ export function InfobarTicketDetailsTags({
                 <OverflowListItem>
                     <MultiSelect
                         trigger={({ ref }) => (
-                            <Button
-                                ref={ref}
-                                slot="button"
-                                icon="add-plus"
-                                variant="secondary"
-                                size="sm"
-                            />
+                            <>
+                                {ticketTags.length === 0 ? (
+                                    <Button
+                                        ref={ref}
+                                        slot="button"
+                                        leadingSlot={<Icon name="add-plus" />}
+                                        variant="secondary"
+                                        size="sm"
+                                    >
+                                        Add tags
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        ref={ref}
+                                        slot="button"
+                                        icon="add-plus"
+                                        variant="secondary"
+                                        size="sm"
+                                    />
+                                )}
+                            </>
                         )}
                         isSearchable={true}
                         searchValue={search}

@@ -131,6 +131,41 @@ describe('InfobarTicketDetailsTags', () => {
             })
         })
 
+        it('should render icon-only button when ticket has tags', async () => {
+            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+                initialEntries: [`/tickets/${ticketId}`],
+                path: `/tickets/${ticketId}`,
+            })
+
+            await waitFor(() => {
+                const addButton = getAddButton()
+                expect(addButton).toBeInTheDocument()
+                expect(addButton).not.toHaveTextContent('Add tags')
+            })
+        })
+
+        it('should render "Add tags" button with text when ticket has no tags', async () => {
+            const ticketWithNoTags = mockTicket({
+                id: Number(ticketId),
+                tags: [],
+            })
+
+            const mockGetTicketNoTags = mockGetTicketHandler(async () =>
+                HttpResponse.json(ticketWithNoTags),
+            )
+
+            server.use(mockGetTicketNoTags.handler, mockListTags.handler)
+
+            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+                initialEntries: [`/tickets/${ticketId}`],
+                path: `/tickets/${ticketId}`,
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Add tags')).toBeInTheDocument()
+            })
+        })
+
         it('should display existing ticket tags', async () => {
             render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
