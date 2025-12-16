@@ -178,8 +178,9 @@ export default function CustomFields({
                         </div>
                         <div className="d-flex">
                             <Video
-                                youtubeId="Vp7WAaKhiBE"
-                                legend="How to set up Ticket Fields?"
+                                legend="Setting up Fields in Gorgias"
+                                videoURL="https://fast.wistia.net/embed/iframe/ufxg4vhwja"
+                                previewURL="https://embed-ssl.wistia.com/deliveries/fd894e547dd8b4644c8be54a1932438e.jpg"
                             />
                         </div>
                     </Container>
