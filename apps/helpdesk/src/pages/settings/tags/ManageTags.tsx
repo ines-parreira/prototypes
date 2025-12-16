@@ -265,7 +265,11 @@ const ManageTags = () => {
                             <Link to="/app/stats/tags">here</Link>.
                         </p>
                     </div>
-                    <Video youtubeId="MHwrVTk6SNQ" legend="Working with tags" />
+                    <Video
+                        legend="Setting up Tags in Gorgias"
+                        videoURL="https://fast.wistia.net/embed/iframe/bsunfd1npp"
+                        previewURL="https://embed-ssl.wistia.com/deliveries/8af0d2ae7385e37e58a983e749f9d2e0.jpg"
+                    />
                 </div>
             </div>
 
