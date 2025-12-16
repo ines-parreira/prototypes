@@ -40,17 +40,27 @@
     }
 
     .heading {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         .heading-page-semibold();
     }
 
     .text {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         .heading-subsection-regular();
     }
 
     .exampleImg {
         max-width: 484px;
         width: 100%;
+    }
+}
+
+.axiom :local {
+    .heading {
+        color: var(--content-neutral-default);
+    }
+
+    .text {
+        color: var(--content-neutral-secondary);
     }
 }

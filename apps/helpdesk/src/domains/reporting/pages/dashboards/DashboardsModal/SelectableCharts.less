@@ -21,7 +21,7 @@
             --line-clamp: 2;
 
             .caption-regular();
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
             display: -webkit-box;
             line-clamp: var(--line-clamp);
             -webkit-line-clamp: var(--line-clamp);
@@ -36,6 +36,10 @@
     .wrapper {
         &:hover {
             background: var(--hover-default);
+        }
+
+        .description {
+            color: var(--content-neutral-secondary);
         }
     }
 }

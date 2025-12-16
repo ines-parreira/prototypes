@@ -5,12 +5,22 @@
 
     .date {
         font-size: 24px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-right: 16px;
     }
 
     .businessHours {
         font-size: 20px;
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .date {
+        color: var(--content-neutral-secondary);
+    }
+
+    .businessHours {
+        color: var(--content-neutral-secondary);
     }
 }

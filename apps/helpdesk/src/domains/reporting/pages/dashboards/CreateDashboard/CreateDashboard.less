@@ -39,18 +39,26 @@
 
     .subtitle {
         .body-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-bottom: var(--layout-spacing-s);
     }
 
     .footNote {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 }
 
 .axiom :local {
     .wrapper {
         border-color: var(--border-neutral-default);
+    }
+
+    .subtitle {
+        color: var(--content-neutral-secondary);
+    }
+
+    .footNote {
+        color: var(--content-neutral-secondary);
     }
 }

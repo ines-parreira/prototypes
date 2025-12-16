@@ -16,7 +16,7 @@
 
         i {
             font-size: 32px;
-            color: var(--accessory-magenta-3);
+            color: var(--accessory-magenta-3); // legacy
         }
     }
 
@@ -30,19 +30,33 @@
         font-size: 20px;
         font-weight: 600;
         line-height: 28px;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .description {
         font-size: 14px;
         line-height: 20px;
         font-weight: 400;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 }
 
 .axiom :local {
     .container {
         background-color: var(--surface-neutral-primary);
+    }
+
+    .textContainer {
+        i {
+            color: var(--content-brand-primary);
+        }
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .description {
+        color: var(--content-neutral-secondary);
     }
 }

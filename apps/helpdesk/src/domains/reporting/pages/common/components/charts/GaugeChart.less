@@ -19,7 +19,7 @@
     .noData {
         .body-regular();
         text-align: center;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
 
         p {
             margin: 0;
@@ -28,5 +28,11 @@
 
     .noDataTitle {
         font-weight: @body-semibold-font-weight;
+    }
+}
+
+.axiom :local {
+    .noData {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -2,27 +2,27 @@
     .wrapper {
         background: var(--neutral-grey-2); // legacy
         border-radius: 4px;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         padding: var(--layout-spacing-s);
 
         &.success {
             background: var(--main-primary-4); // legacy
-            color: var(--main-primary-0);
+            color: var(--main-primary-0); // legacy
         }
 
         &.light-success {
             background: var(--main-primary-0); // legacy
-            color: var(--main-primary-4);
+            color: var(--main-primary-4); // legacy
         }
 
         &.light-error {
-            background: var(--feedback-error-0);
-            color: var(--feedback-error-4);
+            background: var(--feedback-error-0); // legacy
+            color: var(--feedback-error-4); // legacy
         }
 
         &.error {
-            background: var(--feedback-error-4);
-            color: var(--feedback-error-0);
+            background: var(--feedback-error-4); // legacy
+            color: var(--feedback-error-0); // legacy
         }
     }
 
@@ -36,13 +36,26 @@
 .axiom :local {
     .wrapper {
         background: var(--surface-neutral-tertiary);
+        color: var(--content-neutral-secondary);
 
         &.success {
             background: var(--surface-success-secondary);
+            color: var(--content-inverted-default);
         }
 
         &.light-success {
             background: var(--surface-success-primary);
+            color: var(--content-success-primary);
+        }
+
+        &.light-error {
+            background: var(--surface-error-primary);
+            color: var(--content-error-primary);
+        }
+
+        &.error {
+            background: var(--surface-error-secondary);
+            color: var(--content-inverted-default);
         }
     }
 }

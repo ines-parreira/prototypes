@@ -11,7 +11,7 @@
 
     .closeIcon,
     .collapseIcon {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .titleRow {
@@ -42,5 +42,12 @@
 
     .discardChangesButton {
         margin-right: auto;
+    }
+}
+
+.axiom :local {
+    .closeIcon,
+    .collapseIcon {
+        color: var(--content-neutral-secondary);
     }
 }

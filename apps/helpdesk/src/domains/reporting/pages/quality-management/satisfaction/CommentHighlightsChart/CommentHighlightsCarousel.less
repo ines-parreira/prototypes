@@ -44,7 +44,7 @@
                 }
             }
             .slick-arrow.slick-disabled {
-                color: var(--neutral-grey-3);
+                color: var(--neutral-grey-3); // legacy
                 background-color: unset;
             }
 
@@ -151,7 +151,7 @@
         .avatar {
             background: var(--neutral-grey-2); // legacy
             .caption-semibold();
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
     }
 }
@@ -166,10 +166,18 @@
                     }
                 }
             }
+
+            .slick-arrow.slick-disabled {
+                color: var(--content-neutral-tertiary);
+            }
         }
 
         .styledDot:before {
             background: var(--surface-neutral-secondary);
+        }
+
+        .avatar {
+            color: var(--content-neutral-secondary);
         }
     }
 

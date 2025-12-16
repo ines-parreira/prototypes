@@ -49,7 +49,7 @@
     }
 
     .textContentHeading {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         .heading-page-semibold();
         max-width: 450px;
         margin: 0;
@@ -61,7 +61,7 @@
         justify-content: left;
         gap: var(--layout-spacing-l);
 
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         .heading-subsection-regular();
         max-width: 450px;
 
@@ -72,5 +72,15 @@
 
     .textContentLink {
         margin-top: var(--layout-spacing-l);
+    }
+}
+
+.axiom :local {
+    .textContentHeading {
+        color: var(--content-neutral-default);
+    }
+
+    .textContentBody {
+        color: var(--content-neutral-secondary);
     }
 }

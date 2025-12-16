@@ -1,9 +1,19 @@
 :local {
     .success {
-        color: var(--feedback-success);
+        color: var(--feedback-success); // legacy
     }
 
     .error {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
+    }
+}
+
+.axiom :local {
+    .success {
+        color: var(--content-success-primary);
+    }
+
+    .error {
+        color: var(--content-error-primary);
     }
 }

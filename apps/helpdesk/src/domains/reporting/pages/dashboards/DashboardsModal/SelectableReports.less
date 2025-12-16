@@ -4,7 +4,7 @@
 :local {
     .category {
         .body-medium();
-        color: #0075ff;
+        color: #0075ff; // legacy
         margin: var(--layout-spacing-s) 0 var(--layout-spacing-xs) 0;
         padding-left: var(--layout-spacing-xs);
     }
@@ -26,12 +26,12 @@
 
         .selection {
             .caption-regular();
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
 
         .icon {
             font-size: 20px;
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
         }
 
         &.isSelected {
@@ -41,6 +41,10 @@
 }
 
 .axiom :local {
+    .category {
+        color: var(--content-accent-default);
+    }
+
     .subcategory {
         &:hover {
             background: var(--hover-default);
@@ -48,6 +52,14 @@
 
         &.isSelected {
             background: var(--surface-neutral-tertiary);
+        }
+
+        .selection {
+            color: var(--content-neutral-secondary);
+        }
+
+        .icon {
+            color: var(--content-neutral-secondary);
         }
     }
 }

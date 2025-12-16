@@ -9,7 +9,7 @@
 
     .title {
         .body-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         gap: var(--layout-spacing-xxs);
         display: flex;
     }
@@ -23,10 +23,20 @@
     }
 
     .disableTuneIcon {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
     }
 
     .badge {
         max-width: fit-content;
+    }
+}
+
+.axiom :local {
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .disableTuneIcon {
+        color: var(--content-neutral-secondary);
     }
 }

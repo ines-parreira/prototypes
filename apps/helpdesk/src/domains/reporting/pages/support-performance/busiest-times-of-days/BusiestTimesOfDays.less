@@ -1,6 +1,6 @@
 :local {
     .cellContent {
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
     }
 
     .legendWrapper {
@@ -30,4 +30,10 @@
             var(--feedback-error-2) 4px
         )
         fixed;
+}
+
+.axiom :local {
+    .cellContent {
+        background: var(--elevation-neutral-default);
+    }
 }

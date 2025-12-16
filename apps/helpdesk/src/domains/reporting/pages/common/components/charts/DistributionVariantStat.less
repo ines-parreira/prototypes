@@ -9,11 +9,25 @@
             font-size: 25px;
 
             &.star-fill {
-                color: var(--yellow);
+                color: var(--yellow); // legacy
             }
 
             &.star-empty {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .distribution {
+        i {
+            &.star-fill {
+                color: var(--content-warning-primary);
+            }
+
+            &.star-empty {
+                color: var(--content-neutral-secondary);
             }
         }
     }

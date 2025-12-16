@@ -38,7 +38,13 @@
     }
 
     .forwardIcon {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         padding-left: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .forwardIcon {
+        color: var(--content-neutral-secondary);
     }
 }

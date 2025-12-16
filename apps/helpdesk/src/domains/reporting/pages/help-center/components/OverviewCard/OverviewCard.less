@@ -1,7 +1,8 @@
 :local {
     .bigNumber {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
+
     .trendLoader {
         width: 41px;
     }
@@ -18,6 +19,10 @@
 }
 
 .axiom :local {
+    .bigNumber {
+        color: var(--content-neutral-default);
+    }
+
     .noDataContainer {
         border: 1px solid var(--border-neutral-default);
         background: var(--surface-neutral-secondary);

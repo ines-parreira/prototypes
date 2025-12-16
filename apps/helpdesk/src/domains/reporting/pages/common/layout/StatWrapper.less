@@ -28,7 +28,7 @@
                     var(--neutral-grey-3-s),
                     var(--neutral-grey-3-l),
                     0.32
-                );
+                ); // legacy
             }
         }
     }
@@ -36,5 +36,15 @@
     .buttonContainer {
         display: flex;
         gap: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .csvLoader {
+        > div {
+            i {
+                color: var(--content-neutral-secondary);
+            }
+        }
     }
 }

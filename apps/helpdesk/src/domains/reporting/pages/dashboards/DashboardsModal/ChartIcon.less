@@ -10,10 +10,16 @@
         width: var(--size);
         height: var(--size);
         margin-right: var(--layout-spacing-xs);
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         > svg {
             font-size: 16px;
         }
+    }
+}
+
+.axiom :local {
+    .icon {
+        color: var(--content-neutral-default);
     }
 }

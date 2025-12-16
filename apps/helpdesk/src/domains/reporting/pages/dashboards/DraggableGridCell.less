@@ -21,8 +21,8 @@
             var(--main-primary-4-s),
             var(--main-primary-4-l),
             0.1
-        );
-        outline: 1px solid var(--main-primary);
+        ); // legacy
+        outline: 1px solid var(--main-primary); // legacy
         border-radius: var(--layout-spacing-xxs);
         opacity: 0;
         pointer-events: none;
@@ -63,7 +63,7 @@
         display: flex;
         flex-direction: column;
         background-color: var(--neutral-grey-0); // legacy
-        outline: 1px solid var(--main-primary);
+        outline: 1px solid var(--main-primary); // legacy
         outline-offset: -1px;
         border-radius: var(--layout-spacing-xxs);
         box-shadow: 4px 4px 16px 0px rgba(22, 22, 22, 0.1);
@@ -72,7 +72,13 @@
 }
 
 .axiom :local {
+    .fallback::before {
+        background-color: var(--surface-accent-subtle);
+        outline: 1px solid var(--border-accent-default);
+    }
+
     .preview {
         background-color: var(--elevation-neutral-default);
+        outline-color: var(--border-accent-default);
     }
 }

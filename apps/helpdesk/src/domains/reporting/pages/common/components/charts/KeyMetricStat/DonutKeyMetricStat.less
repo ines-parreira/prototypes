@@ -7,23 +7,23 @@
         width: 130px;
 
         .path-empty {
-            fill: var(--neutral-grey-2);
+            fill: var(--neutral-grey-2); // legacy
         }
 
         .path-success {
-            fill: var(--feedback-success);
+            fill: var(--feedback-success); // legacy
         }
 
         .path-warning {
-            fill: var(--yellow);
+            fill: var(--yellow); // legacy
         }
 
         .path-error {
-            fill: var(--feedback-error);
+            fill: var(--feedback-error); // legacy
         }
 
         .path-info {
-            fill: var(--main-primary);
+            fill: var(--main-primary); // legacy
         }
     }
 
@@ -36,6 +36,30 @@
 
         .value {
             font-size: 33px;
+        }
+    }
+}
+
+.axiom :local {
+    .donut {
+        .path-empty {
+            fill: var(--surface-neutral-tertiary);
+        }
+
+        .path-success {
+            fill: var(--content-success-primary);
+        }
+
+        .path-warning {
+            fill: var(--content-warning-primary);
+        }
+
+        .path-error {
+            fill: var(--content-error-primary);
+        }
+
+        .path-info {
+            fill: var(--content-additional-blue);
         }
     }
 }

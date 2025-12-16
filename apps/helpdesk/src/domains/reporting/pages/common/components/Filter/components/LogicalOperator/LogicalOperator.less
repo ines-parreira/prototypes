@@ -20,7 +20,7 @@
     .logicalOperator {
         .component-button-small();
         flex-shrink: 0;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         text-transform: lowercase;
     }
 }
@@ -28,5 +28,9 @@
 .axiom :local {
     .container {
         border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .logicalOperator {
+        color: var(--content-neutral-secondary);
     }
 }

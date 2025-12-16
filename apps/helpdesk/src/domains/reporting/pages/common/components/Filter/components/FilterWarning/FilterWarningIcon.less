@@ -4,11 +4,23 @@
         align-self: center;
 
         &.nonExistent {
-            color: var(--feedback-warning);
+            color: var(--feedback-warning); // legacy
         }
 
         &.notApplicable {
-            color: var(--neutral-grey-4);
+            color: var(--neutral-grey-4); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .icon {
+        &.nonExistent {
+            color: var(--content-warning-primary);
+        }
+
+        &.notApplicable {
+            color: var(--content-neutral-secondary);
         }
     }
 }

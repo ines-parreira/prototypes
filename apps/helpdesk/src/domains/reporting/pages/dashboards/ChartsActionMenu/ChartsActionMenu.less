@@ -3,7 +3,7 @@
 :local {
     .wrapper {
         cursor: pointer;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         .body-regular();
         :hover {
             background: var(--neutral-grey-2); // legacy
@@ -24,12 +24,11 @@
     .moreVertIcon {
         padding: var(--layout-spacing-xxs);
         border-radius: var(--layout-spacing-xxs);
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .chevronRightIcon {
-        color: var(--neutral-grey-4);
-        margin-left: auto;
+        color: var(--neutral-grey-4); // legacy
     }
 
     .addToDashboardAction {
@@ -43,27 +42,27 @@
         inset: 0;
         background: var(--neutral-grey-2); // legacy
         border: 1px solid var(--neutral-grey-3); // legacy
-        color: var(--main-primary);
+        color: var(--main-primary); // legacy
         height: 40px;
         padding: 0 var(--layout-spacing-xs);
         > i {
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
         }
     }
 
     .disableAddToDashboardAction {
-        color: var(--neutral-grey-3);
+        color: var(--neutral-grey-3); // legacy
         &:hover:not(.disabled) {
             background: var(--neutral-grey-2); // legacy
             cursor: not-allowed;
         }
         i {
-            color: var(--neutral-grey-3);
+            color: var(--neutral-grey-3); // legacy
         }
     }
 
     .dropdownLeftIcon {
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .dashboardName {
@@ -72,7 +71,7 @@
 
     .dashboardName:after {
         content: ' *';
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 
     .itemsWrapper {
@@ -81,30 +80,63 @@
 
     .noDashboards {
         .body-regular();
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         padding: var(--layout-spacing-xs);
     }
 }
 
 .axiom :local {
     .wrapper {
+        color: var(--content-neutral-default);
+
         :hover {
             background: var(--hover-default);
         }
     }
 
+    .moreVertIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .chevronRightIcon {
+        color: var(--content-neutral-secondary);
+    }
+
     .addToDashboardAction {
         border-color: var(--border-neutral-default);
         background: var(--surface-neutral-tertiary);
+        color: var(--content-accent-default);
 
         &:hover:not(.disabled) {
             background: var(--surface-neutral-secondary);
         }
+
+        > i {
+            color: var(--content-accent-default);
+        }
     }
 
     .disableAddToDashboardAction {
+        color: var(--content-neutral-tertiary);
+
         &:hover:not(.disabled) {
             background: var(--surface-neutral-tertiary);
         }
+
+        i {
+            color: var(--content-neutral-tertiary);
+        }
+    }
+
+    .dropdownLeftIcon {
+        color: var(--content-neutral-default);
+    }
+
+    .dashboardName:after {
+        color: var(--content-error-primary);
+    }
+
+    .noDashboards {
+        color: var(--content-neutral-secondary);
     }
 }

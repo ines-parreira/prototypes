@@ -18,16 +18,26 @@
     .fallbackHeading {
         .body-semibold();
 
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .fallbackSubheading {
         .body-regular();
 
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .pagination {
         margin: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .fallbackHeading {
+        color: var(--content-neutral-secondary);
+    }
+
+    .fallbackSubheading {
+        color: var(--content-neutral-secondary);
     }
 }

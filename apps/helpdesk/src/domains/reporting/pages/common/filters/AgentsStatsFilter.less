@@ -1,6 +1,6 @@
 :local {
     .dropdownHeader {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-weight: 500;
         padding: 8px 16px;
 
@@ -11,5 +11,11 @@
 
     .dropdownDivider {
         margin: 0 0 5px 0;
+    }
+}
+
+.axiom :local {
+    .dropdownHeader {
+        color: var(--content-neutral-secondary);
     }
 }

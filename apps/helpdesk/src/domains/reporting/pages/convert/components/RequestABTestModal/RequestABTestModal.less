@@ -41,7 +41,7 @@
 
     .info {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-top: var(--layout-spacing-m);
     }
 
@@ -58,7 +58,7 @@
 
     .content {
         .body-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .noMargin {
@@ -76,5 +76,13 @@
 .axiom :local {
     .rightSide {
         background-color: var(--surface-neutral-secondary);
+    }
+
+    .info {
+        color: var(--content-neutral-secondary);
+    }
+
+    .content {
+        color: var(--content-neutral-secondary);
     }
 }

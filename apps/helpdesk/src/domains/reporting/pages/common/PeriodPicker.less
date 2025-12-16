@@ -1,14 +1,24 @@
 :local {
     .arrowTooltip {
-        border-top-color: var(--TEMP_neutral5);
+        border-top-color: var(--TEMP_neutral5); // legacy
         opacity: 0.9;
     }
 
     .innerTooltip {
-        background-color: var(--TEMP_neutral5);
+        background-color: var(--TEMP_neutral5); // legacy
         box-shadow: 0px 2px 3px fade(black, 20%);
         font-family: 'Inter', sans-serif;
         padding: 10px;
         text-align: left;
+    }
+}
+
+.axiom :local {
+    .arrowTooltip {
+        border-top-color: var(--border-neutral-default);
+    }
+
+    .innerTooltip {
+        background-color: var(--elevation-neutral-high);
     }
 }

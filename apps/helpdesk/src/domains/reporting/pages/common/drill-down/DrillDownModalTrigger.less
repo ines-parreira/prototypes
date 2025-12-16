@@ -19,13 +19,25 @@
         }
 
         &.highlighted {
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
         }
 
         &:hover {
-            color: var(--main-primary);
+            color: var(--main-primary); // legacy
             text-decoration: underline;
             cursor: pointer;
+        }
+    }
+}
+
+.axiom :local {
+    .text {
+        &.highlighted {
+            color: var(--content-accent-default);
+        }
+
+        &:hover {
+            color: var(--content-accent-default);
         }
     }
 }

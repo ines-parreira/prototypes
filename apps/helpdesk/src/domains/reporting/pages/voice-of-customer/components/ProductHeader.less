@@ -19,14 +19,14 @@
         h2 {
             .heading-subsection-semibold();
 
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             margin-bottom: var(--layout-spacing-xs);
         }
 
         p {
             .caption-regular();
 
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
             margin: 0;
         }
     }
@@ -35,5 +35,15 @@
 .axiom :local {
     .container {
         border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .title {
+        h2 {
+            color: var(--content-neutral-default);
+        }
+
+        p {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

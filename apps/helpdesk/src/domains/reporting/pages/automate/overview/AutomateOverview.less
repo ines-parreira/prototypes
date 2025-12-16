@@ -16,7 +16,7 @@
     }
     .noDataHint {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         display: flex;
         align-items: center;
     }
@@ -24,7 +24,17 @@
         height: 354px;
     }
     .pageFooter {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-4); // legacy
         padding: var(--layout-spacing-m);
+    }
+}
+
+.axiom :local {
+    .noDataHint {
+        color: var(--content-neutral-secondary);
+    }
+
+    .pageFooter {
+        color: var(--content-neutral-secondary);
     }
 }
