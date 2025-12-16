@@ -4,10 +4,7 @@ import {
     onlineTimePerAgentQueryV2Factory,
     onlineTimeQueryV2Factory,
 } from 'domains/reporting/models/scopes/onlineTime'
-import type {
-    AggregationWindow,
-    StatsFilters,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
 
 describe('onlineTimeScope', () => {
@@ -19,12 +16,10 @@ describe('onlineTimeScope', () => {
     }
 
     const timezone = 'utc'
-    const granularity = 'day' as AggregationWindow
 
     const context = {
         filters,
         timezone,
-        granularity,
     }
 
     describe('onlineTime', () => {

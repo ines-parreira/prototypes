@@ -52,7 +52,6 @@ import { createdTicketsTimeseriesQueryV2Factory } from 'domains/reporting/models
 import { ticketsRepliedTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/ticketsReplied'
 import { zeroTouchTicketsTimeSeriesQueryV2Factory } from 'domains/reporting/models/scopes/zeroTouchTickets'
 import type {
-    AggregationWindow,
     Sentiment,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
@@ -77,12 +76,14 @@ type TimeSeriesQueryFactory<TCube extends Cubes> = (
 type BuiltTimeSeriesQueryFactory<
     TMeta extends ScopeMeta,
     TMetricName extends MetricName,
-> = (ctx: Context) => BuiltQuery<TMeta, TMetricName>
+> = (ctx: Context<TMeta>) => BuiltQuery<TMeta, TMetricName>
 
 const getTimeSeriesHook =
     <
         TCube extends Cubes,
-        TMeta extends ScopeMeta,
+        TMeta extends ScopeMeta & {
+            timeDimensions: readonly [string, ...string[]]
+        },
         TMetricName extends MetricName,
     >(
         query: TimeSeriesQueryFactory<TCube>,
@@ -91,14 +92,14 @@ const getTimeSeriesHook =
     (
         filters: StatsFilters,
         timezone: string,
-        granularity: AggregationWindow,
+        granularity: Context<TMeta>['granularity'],
     ) => {
         return useTimeSeries(
-            query(filters, timezone, granularity),
+            query(filters, timezone, granularity!),
             queryV2?.({
                 filters,
                 timezone,
-                granularity: granularity,
+                granularity,
             }),
         )
     }
@@ -115,14 +116,14 @@ const getTimeSeriesFetch =
     (
         filters: StatsFilters,
         timezone: string,
-        granularity: AggregationWindow,
+        granularity: Context<TMeta>['granularity'],
     ) => {
         return fetchTimeSeries(
-            query(filters, timezone, granularity),
+            query(filters, timezone, granularity!),
             queryV2?.({
                 filters,
                 timezone,
-                granularity: granularity,
+                granularity,
             }),
         )
     }

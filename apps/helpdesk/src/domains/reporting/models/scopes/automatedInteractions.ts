@@ -17,6 +17,10 @@ const automatedInteractionsScope = defineScope({
     timeDimensions: ['createdDatetime'],
 })
 
+type AutomatedInteractionsContext = Context<
+    typeof automatedInteractionsScope.config
+>
+
 export const automatedInteractions = automatedInteractionsScope
     .defineMetricName(METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET)
     .defineQuery(() => ({
@@ -26,8 +30,9 @@ export const automatedInteractions = automatedInteractionsScope
         ] as const,
     }))
 
-export const automatedInteractionsQueryV2Factory = (ctx: Context) =>
-    automatedInteractions.build(ctx)
+export const automatedInteractionsQueryV2Factory = (
+    ctx: AutomatedInteractionsContext,
+) => automatedInteractions.build(ctx)
 
 export const aiAgentAutomatedInteractions = automatedInteractionsScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS)
@@ -46,5 +51,6 @@ export const aiAgentAutomatedInteractions = automatedInteractionsScope
         ] as any,
     }))
 
-export const aiAgentAutomatedInteractionsQueryV2Factory = (ctx: Context) =>
-    aiAgentAutomatedInteractions.build(ctx)
+export const aiAgentAutomatedInteractionsQueryV2Factory = (
+    ctx: AutomatedInteractionsContext,
+) => aiAgentAutomatedInteractions.build(ctx)

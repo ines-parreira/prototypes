@@ -29,6 +29,8 @@ const messagesReceivedScope = defineScope({
     order: ['ticketId', 'messagesCount'],
 })
 
+type MessagesReceivedContext = Context<typeof messagesReceivedScope.config>
+
 export const messagesReceivedCount = messagesReceivedScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED)
     .defineQuery(({ ctx }) => {
@@ -44,8 +46,9 @@ export const messagesReceivedCount = messagesReceivedScope
         return query
     })
 
-export const messagesReceivedCountQueryV2Factory = (ctx: Context) =>
-    messagesReceivedCount.build(ctx)
+export const messagesReceivedCountQueryV2Factory = (
+    ctx: MessagesReceivedContext,
+) => messagesReceivedCount.build(ctx)
 
 export const messagesReceivedPerAgent = messagesReceivedScope
     .defineMetricName(
@@ -65,8 +68,9 @@ export const messagesReceivedPerAgent = messagesReceivedScope
         return query
     })
 
-export const messagesReceivedPerAgentQueryV2Factory = (ctx: Context) =>
-    messagesReceivedPerAgent.build(ctx)
+export const messagesReceivedPerAgentQueryV2Factory = (
+    ctx: MessagesReceivedContext,
+) => messagesReceivedPerAgent.build(ctx)
 
 export const messagesReceivedPerChannel = messagesReceivedScope
     .defineMetricName(
@@ -86,8 +90,9 @@ export const messagesReceivedPerChannel = messagesReceivedScope
         return query
     })
 
-export const messagesReceivedPerChannelQueryV2Factory = (ctx: Context) =>
-    messagesReceivedPerChannel.build(ctx)
+export const messagesReceivedPerChannelQueryV2Factory = (
+    ctx: MessagesReceivedContext,
+) => messagesReceivedPerChannel.build(ctx)
 
 export const messagesReceivedTimeSeries = messagesReceivedScope
     .defineMetricName(
@@ -103,5 +108,6 @@ export const messagesReceivedTimeSeries = messagesReceivedScope
         ],
     }))
 
-export const messagesReceivedTimeSeriesQueryV2Factory = (ctx: Context) =>
-    messagesReceivedTimeSeries.build(ctx)
+export const messagesReceivedTimeSeriesQueryV2Factory = (
+    ctx: MessagesReceivedContext,
+) => messagesReceivedTimeSeries.build(ctx)

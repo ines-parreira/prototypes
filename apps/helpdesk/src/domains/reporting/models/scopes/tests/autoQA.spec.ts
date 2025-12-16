@@ -32,10 +32,7 @@ import {
     reviewedClosedTicketsPerAgentQueryV2Factory,
     reviewedClosedTicketsQueryV2Factory,
 } from 'domains/reporting/models/scopes/autoQA'
-import type {
-    AggregationWindow,
-    StatsFilters,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 describe('autoQA', () => {
     const filters: StatsFilters = {
@@ -46,12 +43,10 @@ describe('autoQA', () => {
     }
 
     const timezone = 'utc'
-    const granularity = 'day' as AggregationWindow
 
     const context = {
         filters,
         timezone,
-        granularity,
     }
 
     describe('accuracyMetric', () => {

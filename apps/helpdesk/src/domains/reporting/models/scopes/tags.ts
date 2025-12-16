@@ -44,6 +44,8 @@ const tagsScope = defineScope({
     order: ['ticketId', 'ticketCount', 'timestamp'],
 })
 
+type TagsContext = Context<typeof tagsScope.config>
+
 export const taggedTicketCountTimeseries = tagsScope
     .defineMetricName(
         METRIC_NAMES.TICKET_INSIGHTS_TAGGED_TICKET_COUNT_TIME_SERIES,
@@ -59,7 +61,7 @@ export const taggedTicketCountTimeseries = tagsScope
         limit: 10_000,
     }))
 
-export const taggedTicketCountTimeseriesQueryV2Factory = (ctx: Context) =>
+export const taggedTicketCountTimeseriesQueryV2Factory = (ctx: TagsContext) =>
     taggedTicketCountTimeseries.build(ctx)
 
 export const tagsTicketCount = tagsScope
@@ -81,7 +83,7 @@ export const tagsTicketCount = tagsScope
         return query
     })
 
-export const tagsTicketCountQueryV2Factory = (ctx: Context) =>
+export const tagsTicketCountQueryV2Factory = (ctx: TagsContext) =>
     tagsTicketCount.build(ctx)
 
 export const tagsTicketCountTimeseries = tagsScope
@@ -100,7 +102,7 @@ export const tagsTicketCountTimeseries = tagsScope
         limit: 10_000,
     }))
 
-export const tagsTicketCountTimeseriesQueryV2Factory = (ctx: Context) =>
+export const tagsTicketCountTimeseriesQueryV2Factory = (ctx: TagsContext) =>
     tagsTicketCountTimeseries.build(ctx)
 
 /**

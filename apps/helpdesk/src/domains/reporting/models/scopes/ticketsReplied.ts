@@ -29,13 +29,15 @@ const ticketsRepliedScope = defineScope({
     ],
 })
 
+type TicketsRepliedContext = Context<typeof ticketsRepliedScope.config>
+
 export const ticketsRepliedCount = ticketsRepliedScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_REPLIED)
     .defineQuery(() => ({
         measures: ['ticketCount'] as const,
     }))
 
-export const ticketsRepliedCountQueryV2Factory = (ctx: Context) =>
+export const ticketsRepliedCountQueryV2Factory = (ctx: TicketsRepliedContext) =>
     ticketsRepliedCount.build(ctx)
 
 export const ticketsRepliedTimeseries = ticketsRepliedScope
@@ -52,8 +54,9 @@ export const ticketsRepliedTimeseries = ticketsRepliedScope
         ],
     }))
 
-export const ticketsRepliedTimeseriesQueryV2Factory = (ctx: Context) =>
-    ticketsRepliedTimeseries.build(ctx)
+export const ticketsRepliedTimeseriesQueryV2Factory = (
+    ctx: TicketsRepliedContext,
+) => ticketsRepliedTimeseries.build(ctx)
 
 export const ticketsRepliedCountPerAgent = ticketsRepliedScope
     .defineMetricName(
@@ -76,8 +79,9 @@ export const ticketsRepliedCountPerAgent = ticketsRepliedScope
         return query
     })
 
-export const ticketsRepliedCountPerAgentQueryV2Factory = (ctx: Context) =>
-    ticketsRepliedCountPerAgent.build(ctx)
+export const ticketsRepliedCountPerAgentQueryV2Factory = (
+    ctx: TicketsRepliedContext,
+) => ticketsRepliedCountPerAgent.build(ctx)
 
 export const ticketsRepliedCountPerChannel = ticketsRepliedScope
     .defineMetricName(
@@ -99,5 +103,6 @@ export const ticketsRepliedCountPerChannel = ticketsRepliedScope
         return query
     })
 
-export const ticketsRepliedCountPerChannelQueryV2Factory = (ctx: Context) =>
-    ticketsRepliedCountPerChannel.build(ctx)
+export const ticketsRepliedCountPerChannelQueryV2Factory = (
+    ctx: TicketsRepliedContext,
+) => ticketsRepliedCountPerChannel.build(ctx)

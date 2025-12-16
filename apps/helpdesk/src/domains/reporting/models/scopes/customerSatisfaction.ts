@@ -1,6 +1,6 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { satisfactionSurveysScope } from 'domains/reporting/models/scopes/satisfactionSurveys'
-import type { Context } from 'domains/reporting/models/scopes/scope'
+import type { SatisfactionSurveysContext } from 'domains/reporting/models/scopes/satisfactionSurveys'
 
 export const customerSatisfaction = satisfactionSurveysScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_CUSTOMER_SATISFACTION)
@@ -8,8 +8,9 @@ export const customerSatisfaction = satisfactionSurveysScope
         measures: ['averageSurveyScore'] as const,
     }))
 
-export const customerSatisfactionQueryV2Factory = (ctx: Context) =>
-    customerSatisfaction.build(ctx)
+export const customerSatisfactionQueryV2Factory = (
+    ctx: SatisfactionSurveysContext,
+) => customerSatisfaction.build(ctx)
 
 export const customerSatisfactionPerAgent = satisfactionSurveysScope
     .defineMetricName(
@@ -21,8 +22,9 @@ export const customerSatisfactionPerAgent = satisfactionSurveysScope
         limit: 10_000,
     }))
 
-export const customerSatisfactionPerAgentQueryV2Factory = (ctx: Context) =>
-    customerSatisfactionPerAgent.build(ctx)
+export const customerSatisfactionPerAgentQueryV2Factory = (
+    ctx: SatisfactionSurveysContext,
+) => customerSatisfactionPerAgent.build(ctx)
 
 export const customerSatisfactionPerChannel = satisfactionSurveysScope
     .defineMetricName(
@@ -34,5 +36,6 @@ export const customerSatisfactionPerChannel = satisfactionSurveysScope
         limit: 10_000,
     }))
 
-export const customerSatisfactionPerChannelQueryV2Factory = (ctx: Context) =>
-    customerSatisfactionPerChannel.build(ctx)
+export const customerSatisfactionPerChannelQueryV2Factory = (
+    ctx: SatisfactionSurveysContext,
+) => customerSatisfactionPerChannel.build(ctx)

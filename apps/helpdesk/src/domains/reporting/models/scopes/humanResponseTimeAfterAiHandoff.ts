@@ -39,6 +39,10 @@ const humanResponseTimeAfterAiHandoffScope = defineScope({
     ],
 })
 
+type HumanResponseTimeAfterAiHandoffContext = Context<
+    typeof humanResponseTimeAfterAiHandoffScope.config
+>
+
 export const humanResponseTimeAfterAiHandoff =
     humanResponseTimeAfterAiHandoffScope
         .defineMetricName(
@@ -57,8 +61,9 @@ export const humanResponseTimeAfterAiHandoff =
             return query
         })
 
-export const humanResponseTimeAfterAiHandoffQueryV2Factory = (ctx: Context) =>
-    humanResponseTimeAfterAiHandoff.build(ctx)
+export const humanResponseTimeAfterAiHandoffQueryV2Factory = (
+    ctx: HumanResponseTimeAfterAiHandoffContext,
+) => humanResponseTimeAfterAiHandoff.build(ctx)
 
 export const humanResponseTimeAfterAiHandoffPerAgent =
     humanResponseTimeAfterAiHandoffScope
@@ -82,7 +87,7 @@ export const humanResponseTimeAfterAiHandoffPerAgent =
         })
 
 export const humanResponseTimeAfterAiHandoffPerAgentQueryV2Factory = (
-    ctx: Context,
+    ctx: HumanResponseTimeAfterAiHandoffContext,
 ) => humanResponseTimeAfterAiHandoffPerAgent.build(ctx)
 
 export const humanResponseTimeAfterAiHandoffPerChannel =
@@ -107,5 +112,5 @@ export const humanResponseTimeAfterAiHandoffPerChannel =
         })
 
 export const humanResponseTimeAfterAiHandoffPerChannelQueryV2Factory = (
-    ctx: Context,
+    ctx: HumanResponseTimeAfterAiHandoffContext,
 ) => humanResponseTimeAfterAiHandoffPerChannel.build(ctx)

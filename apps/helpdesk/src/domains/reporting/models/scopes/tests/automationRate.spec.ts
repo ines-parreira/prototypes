@@ -4,10 +4,7 @@ import {
     overallAutomationRate,
     overallAutomationRateQueryV2Factory,
 } from 'domains/reporting/models/scopes/automationRate'
-import type {
-    AggregationWindow,
-    StatsFilters,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 describe('automationRateScope', () => {
     const filters: StatsFilters = {
@@ -18,12 +15,10 @@ describe('automationRateScope', () => {
     }
 
     const timezone = 'utc'
-    const granularity = 'day' as AggregationWindow
 
     const context = {
         filters,
         timezone,
-        granularity,
     }
 
     describe('overallAutomationRate', () => {

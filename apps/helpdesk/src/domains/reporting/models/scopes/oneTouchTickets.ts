@@ -29,6 +29,8 @@ const oneTouchTicketsScope = defineScope({
     order: ['ticketId', 'createdDatetime', 'closedDatetime', 'ticketCount'],
 })
 
+type OneTouchTicketsContext = Context<typeof oneTouchTicketsScope.config>
+
 export const oneTouchTickets = oneTouchTicketsScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_ONE_TOUCH_TICKETS)
     .defineQuery(({ ctx }) => {
@@ -46,7 +48,7 @@ export const oneTouchTickets = oneTouchTicketsScope
         return query
     })
 
-export const oneTouchTicketsQueryV2Factory = (ctx: Context) =>
+export const oneTouchTicketsQueryV2Factory = (ctx: OneTouchTicketsContext) =>
     oneTouchTickets.build(ctx)
 
 export const oneTouchTicketsTimeseries = oneTouchTicketsScope
@@ -63,8 +65,9 @@ export const oneTouchTicketsTimeseries = oneTouchTicketsScope
         ],
     }))
 
-export const oneTouchTicketsTimeseriesQueryV2Factory = (ctx: Context) =>
-    oneTouchTicketsTimeseries.build(ctx)
+export const oneTouchTicketsTimeseriesQueryV2Factory = (
+    ctx: OneTouchTicketsContext,
+) => oneTouchTicketsTimeseries.build(ctx)
 
 export const oneTouchTicketsPerAgent = oneTouchTicketsScope
     .defineMetricName(
@@ -86,8 +89,9 @@ export const oneTouchTicketsPerAgent = oneTouchTicketsScope
         return query
     })
 
-export const oneTouchTicketsPerAgentQueryV2Factory = (ctx: Context) =>
-    oneTouchTicketsPerAgent.build(ctx)
+export const oneTouchTicketsPerAgentQueryV2Factory = (
+    ctx: OneTouchTicketsContext,
+) => oneTouchTicketsPerAgent.build(ctx)
 
 export const oneTouchTicketsPerChannel = oneTouchTicketsScope
     .defineMetricName(
@@ -109,5 +113,6 @@ export const oneTouchTicketsPerChannel = oneTouchTicketsScope
         return query
     })
 
-export const oneTouchTicketsPerChannelQueryV2Factory = (ctx: Context) =>
-    oneTouchTicketsPerChannel.build(ctx)
+export const oneTouchTicketsPerChannelQueryV2Factory = (
+    ctx: OneTouchTicketsContext,
+) => oneTouchTicketsPerChannel.build(ctx)

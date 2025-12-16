@@ -40,6 +40,8 @@ const firstResponseTimeScope = defineScope({
     ],
 })
 
+type FirstResponseTimeContext = Context<typeof firstResponseTimeScope.config>
+
 export const medianFirstResponseTime = firstResponseTimeScope
     .defineMetricName(
         METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_FIRST_RESPONSE_TIME,
@@ -61,8 +63,9 @@ export const medianFirstResponseTime = firstResponseTimeScope
         return query
     })
 
-export const medianFirstResponseTimeQueryV2Factory = (ctx: Context) =>
-    medianFirstResponseTime.build(ctx)
+export const medianFirstResponseTimeQueryV2Factory = (
+    ctx: FirstResponseTimeContext,
+) => medianFirstResponseTime.build(ctx)
 
 export const medianFirstResponseTimePerAgent = firstResponseTimeScope
     .defineMetricName(
@@ -86,8 +89,9 @@ export const medianFirstResponseTimePerAgent = firstResponseTimeScope
         return query
     })
 
-export const medianFirstResponseTimePerAgentQueryV2Factory = (ctx: Context) =>
-    medianFirstResponseTimePerAgent.build(ctx)
+export const medianFirstResponseTimePerAgentQueryV2Factory = (
+    ctx: FirstResponseTimeContext,
+) => medianFirstResponseTimePerAgent.build(ctx)
 
 export const medianFirstResponseTimePerChannel = firstResponseTimeScope
     .defineMetricName(
@@ -111,5 +115,6 @@ export const medianFirstResponseTimePerChannel = firstResponseTimeScope
         return query
     })
 
-export const medianFirstResponseTimePerChannelQueryV2Factory = (ctx: Context) =>
-    medianFirstResponseTimePerChannel.build(ctx)
+export const medianFirstResponseTimePerChannelQueryV2Factory = (
+    ctx: FirstResponseTimeContext,
+) => medianFirstResponseTimePerChannel.build(ctx)

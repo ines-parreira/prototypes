@@ -101,7 +101,7 @@ export type BuiltQuery<
  * @property {ApiStatsFilters} filters - The filters to apply to the statistics query
  * @property {OrderDirection} [sortDirection] - Optional sort direction (ascending or descending)
  * @property {Values<TMeta['order']>} [sortBy] - Optional field to sort results by, derived from the scope's order metadata
- * @property {AggregationWindow} [granularity] - Optional time window for data aggregation (e.g., hourly, daily)
+ * @property {AggregationWindow} [granularity] - Optional time window for data aggregation (e.g., hourly, daily). Only available when TMeta has timeDimensions defined and non-empty.
  * @property {number} [offset] - Optional pagination offset for results
  * @property {number} [limit] - Optional maximum number of results to return
  * @property {boolean} [total] - Optional flag to include total count in the response
@@ -111,7 +111,12 @@ export type Context<TMeta extends ScopeMeta = ScopeMeta> = {
     filters: ApiStatsFilters
     sortDirection?: OrderDirection
     sortBy?: Values<TMeta['order']>
-    granularity?: AggregationWindow
+    granularity?: TMeta['timeDimensions'] extends readonly [
+        infer __First,
+        ...infer __Rest,
+    ]
+        ? AggregationWindow
+        : never
     offset?: number
     limit?: number
     total?: boolean
@@ -152,6 +157,7 @@ class MetricQuery<
         if (
             query.time_dimensions === undefined &&
             this.config.timeDimensions &&
+            this.config.timeDimensions.length > 0 &&
             ctx.granularity
         ) {
             query.time_dimensions = [

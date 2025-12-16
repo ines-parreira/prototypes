@@ -29,13 +29,15 @@ const messagesSentScope = defineScope({
     ],
 })
 
+type MessagesSentContext = Context<typeof messagesSentScope.config>
+
 export const sentMessagesCount = messagesSentScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT)
     .defineQuery(() => ({
         measures: ['messagesCount'] as const,
     }))
 
-export const sentMessagesCountQueryV2Factory = (ctx: Context) =>
+export const sentMessagesCountQueryV2Factory = (ctx: MessagesSentContext) =>
     sentMessagesCount.build(ctx)
 
 export const sentMessagesTimeseries = messagesSentScope
@@ -52,8 +54,9 @@ export const sentMessagesTimeseries = messagesSentScope
         ],
     }))
 
-export const sentMessagesTimeseriesQueryV2Factory = (ctx: Context) =>
-    sentMessagesTimeseries.build(ctx)
+export const sentMessagesTimeseriesQueryV2Factory = (
+    ctx: MessagesSentContext,
+) => sentMessagesTimeseries.build(ctx)
 
 export const sentMessagesPerAgent = messagesSentScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_SENT_PER_AGENT)
@@ -73,7 +76,7 @@ export const sentMessagesPerAgent = messagesSentScope
         return query
     })
 
-export const sentMessagesPerAgentQueryV2Factory = (ctx: Context) =>
+export const sentMessagesPerAgentQueryV2Factory = (ctx: MessagesSentContext) =>
     sentMessagesPerAgent.build(ctx)
 
 export const sentMessagesPerChannel = messagesSentScope
@@ -96,5 +99,6 @@ export const sentMessagesPerChannel = messagesSentScope
         return query
     })
 
-export const sentMessagesPerChannelQueryV2Factory = (ctx: Context) =>
-    sentMessagesPerChannel.build(ctx)
+export const sentMessagesPerChannelQueryV2Factory = (
+    ctx: MessagesSentContext,
+) => sentMessagesPerChannel.build(ctx)

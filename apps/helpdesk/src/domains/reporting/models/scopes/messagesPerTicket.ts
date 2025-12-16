@@ -40,11 +40,14 @@ const messagesPerTicketScope = defineScope({
     ],
 })
 
+type MessagesPerTicketContext = Context<typeof messagesPerTicketScope.config>
+
 export const messagesPerTicketCount = messagesPerTicketScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_PER_TICKET)
     .defineQuery(() => ({
         measures: ['averageMessagesCount'] as const,
     }))
 
-export const messagesPerTicketCountQueryV2Factory = (ctx: Context) =>
-    messagesPerTicketCount.build(ctx)
+export const messagesPerTicketCountQueryV2Factory = (
+    ctx: MessagesPerTicketContext,
+) => messagesPerTicketCount.build(ctx)

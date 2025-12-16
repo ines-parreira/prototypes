@@ -26,13 +26,15 @@ const ticketsClosedScope = defineScope({
     order: ['ticketId', 'ticketCount', 'closedDatetime', 'createdDatetime'],
 })
 
+type TicketsClosedContext = Context<typeof ticketsClosedScope.config>
+
 export const closedTicketsCount = ticketsClosedScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS)
     .defineQuery(() => ({
         measures: ['ticketCount'] as const,
     }))
 
-export const closedTicketsCountQueryV2Factory = (ctx: Context) =>
+export const closedTicketsCountQueryV2Factory = (ctx: TicketsClosedContext) =>
     closedTicketsCount.build(ctx)
 
 export const closedTicketsTimeseries = ticketsClosedScope
@@ -52,8 +54,9 @@ export const closedTicketsTimeseries = ticketsClosedScope
         ] as const,
     }))
 
-export const closedTicketsTimeseriesQueryV2Factory = (ctx: Context) =>
-    closedTicketsTimeseries.build(ctx)
+export const closedTicketsTimeseriesQueryV2Factory = (
+    ctx: TicketsClosedContext,
+) => closedTicketsTimeseries.build(ctx)
 
 export const closedTicketsPerAgent = ticketsClosedScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS_PER_AGENT)
@@ -73,8 +76,9 @@ export const closedTicketsPerAgent = ticketsClosedScope
         return query
     })
 
-export const closedTicketsPerAgentQueryV2Factory = (ctx: Context) =>
-    closedTicketsPerAgent.build(ctx)
+export const closedTicketsPerAgentQueryV2Factory = (
+    ctx: TicketsClosedContext,
+) => closedTicketsPerAgent.build(ctx)
 
 export const closedTicketsPerChannel = ticketsClosedScope
     .defineMetricName(
@@ -96,5 +100,6 @@ export const closedTicketsPerChannel = ticketsClosedScope
         return query
     })
 
-export const closedTicketsPerChannelQueryV2Factory = (ctx: Context) =>
-    closedTicketsPerChannel.build(ctx)
+export const closedTicketsPerChannelQueryV2Factory = (
+    ctx: TicketsClosedContext,
+) => closedTicketsPerChannel.build(ctx)

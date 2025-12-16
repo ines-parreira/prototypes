@@ -29,6 +29,8 @@ const zeroTouchTicketsScope = defineScope({
     order: ['ticketId', 'createdDatetime', 'closedDatetime', 'ticketCount'],
 })
 
+type ZeroTouchTicketsContext = Context<typeof zeroTouchTicketsScope.config>
+
 export const zeroTouchTickets = zeroTouchTicketsScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS)
     .defineQuery(({ ctx }) => {
@@ -44,7 +46,7 @@ export const zeroTouchTickets = zeroTouchTicketsScope
         return query
     })
 
-export const zeroTouchTicketsQueryV2Factory = (ctx: Context) =>
+export const zeroTouchTicketsQueryV2Factory = (ctx: ZeroTouchTicketsContext) =>
     zeroTouchTickets.build(ctx)
 
 export const zeroTouchTicketsPerAgent = zeroTouchTicketsScope
@@ -65,8 +67,9 @@ export const zeroTouchTicketsPerAgent = zeroTouchTicketsScope
         return query
     })
 
-export const zeroTouchTicketsPerAgentQueryV2Factory = (ctx: Context) =>
-    zeroTouchTicketsPerAgent.build(ctx)
+export const zeroTouchTicketsPerAgentQueryV2Factory = (
+    ctx: ZeroTouchTicketsContext,
+) => zeroTouchTicketsPerAgent.build(ctx)
 
 export const zeroTouchTicketsPerChannel = zeroTouchTicketsScope
     .defineMetricName(
@@ -86,8 +89,9 @@ export const zeroTouchTicketsPerChannel = zeroTouchTicketsScope
         return query
     })
 
-export const zeroTouchTicketsPerChannelQueryV2Factory = (ctx: Context) =>
-    zeroTouchTicketsPerChannel.build(ctx)
+export const zeroTouchTicketsPerChannelQueryV2Factory = (
+    ctx: ZeroTouchTicketsContext,
+) => zeroTouchTicketsPerChannel.build(ctx)
 
 export const zeroTouchTicketsTimeSeries = zeroTouchTicketsScope
     .defineMetricName(
@@ -103,5 +107,6 @@ export const zeroTouchTicketsTimeSeries = zeroTouchTicketsScope
         ],
     }))
 
-export const zeroTouchTicketsTimeSeriesQueryV2Factory = (ctx: Context) =>
-    zeroTouchTicketsTimeSeries.build(ctx)
+export const zeroTouchTicketsTimeSeriesQueryV2Factory = (
+    ctx: ZeroTouchTicketsContext,
+) => zeroTouchTicketsTimeSeries.build(ctx)

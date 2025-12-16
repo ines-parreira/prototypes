@@ -27,6 +27,8 @@ const ticketSLAScope = defineScope({
     ],
 })
 
+type TicketSLAContext = Context<typeof ticketSLAScope.config>
+
 export const satisfiedOrBreachedTickets = ticketSLAScope
     .defineMetricName(METRIC_NAMES.SLA_SATISFIED_OR_BREACHED_TICKETS)
     .defineQuery(({ ctx }) => {
@@ -45,8 +47,9 @@ export const satisfiedOrBreachedTickets = ticketSLAScope
         return query
     })
 
-export const satisfiedOrBreachedTicketsQueryV2Factory = (ctx: Context) =>
-    satisfiedOrBreachedTickets.build(ctx)
+export const satisfiedOrBreachedTicketsQueryV2Factory = (
+    ctx: TicketSLAContext,
+) => satisfiedOrBreachedTickets.build(ctx)
 
 export const satisfiedOrBreachedTicketsTimeseries = ticketSLAScope
     .defineMetricName(
@@ -73,5 +76,5 @@ export const satisfiedOrBreachedTicketsTimeseries = ticketSLAScope
     }))
 
 export const satisfiedOrBreachedTicketsTimeseriesQueryV2Factory = (
-    ctx: Context,
+    ctx: TicketSLAContext,
 ) => satisfiedOrBreachedTicketsTimeseries.build(ctx)

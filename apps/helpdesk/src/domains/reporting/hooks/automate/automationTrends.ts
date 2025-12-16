@@ -34,7 +34,7 @@ export const useTrendFromMultipleMetricsTrend = <
         timezone: string,
     ) => ReportingQuery<TCube>,
     metric: Metric,
-    queryFactoryV2?: (ctx: Context) => BuiltQuery<TMeta>,
+    queryFactoryV2?: (ctx: Context<TMeta>) => BuiltQuery<TMeta>,
     metricV2?: MeasureName,
 ) => {
     const trendData = useMultipleMetricsTrends(
@@ -74,7 +74,7 @@ export const fetchTrendFromMultipleMetricsTrend = async <
         timezone: string,
     ) => ReportingQuery<TCube>,
     metric: Metric,
-    queryFactoryV2?: (ctx: Context) => BuiltQuery<TMeta>,
+    queryFactoryV2?: (ctx: Context<TMeta>) => BuiltQuery<TMeta>,
     metricV2?: MeasureName,
 ) =>
     fetchMultipleMetricsTrends(

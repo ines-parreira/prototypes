@@ -10,10 +10,7 @@ import {
     transferredInboundVoiceCallsCountPerAgentQueryV2Factory,
     transferredInboundVoiceCallsCountQueryV2Factory,
 } from 'domains/reporting/models/scopes/voiceAgentEvents'
-import type {
-    AggregationWindow,
-    StatsFilters,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 describe('voiceAgentEventsScope', () => {
     const filters: StatsFilters = {
@@ -23,11 +20,9 @@ describe('voiceAgentEventsScope', () => {
         },
     }
     const timezone = 'utc'
-    const granularity = 'day' as AggregationWindow
     const context = {
         filters,
         timezone,
-        granularity,
     }
 
     describe('declinedVoiceCallsCount', () => {

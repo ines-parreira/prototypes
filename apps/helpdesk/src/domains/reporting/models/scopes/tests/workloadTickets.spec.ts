@@ -2,10 +2,7 @@ import {
     workloadTicketsPerChannel,
     workloadTicketsPerChannelQueryV2Factory,
 } from 'domains/reporting/models/scopes/workloadTickets'
-import type {
-    AggregationWindow,
-    StatsFilters,
-} from 'domains/reporting/models/stat/types'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 import { withLogicalOperator } from '../../queryFactories/utils'
 import type { Context } from '../scope'
@@ -20,12 +17,9 @@ describe('workloadTicketsScope', () => {
 
     const timezone = 'utc'
 
-    const granularity = 'day' as AggregationWindow
-
     const context = {
         filters,
         timezone,
-        granularity,
     }
 
     describe('workloadTicketsPerChannel', () => {

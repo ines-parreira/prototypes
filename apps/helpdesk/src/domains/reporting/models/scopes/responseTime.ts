@@ -29,6 +29,8 @@ const responseTimeScope = defineScope({
     ],
 })
 
+type ResponseTimeContext = Context<typeof responseTimeScope.config>
+
 export const medianResponseTime = responseTimeScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_MEDIAN_RESPONSE_TIME)
     .defineQuery(({ ctx }) => {
@@ -44,7 +46,7 @@ export const medianResponseTime = responseTimeScope
         return query
     })
 
-export const medianResponseTimeQueryV2Factory = (ctx: Context) =>
+export const medianResponseTimeQueryV2Factory = (ctx: ResponseTimeContext) =>
     medianResponseTime.build(ctx)
 
 export const medianResponseTimePerAgent = responseTimeScope
@@ -65,8 +67,9 @@ export const medianResponseTimePerAgent = responseTimeScope
         return query
     })
 
-export const medianResponseTimePerAgentQueryV2Factory = (ctx: Context) =>
-    medianResponseTimePerAgent.build(ctx)
+export const medianResponseTimePerAgentQueryV2Factory = (
+    ctx: ResponseTimeContext,
+) => medianResponseTimePerAgent.build(ctx)
 
 export const medianResponseTimePerChannel = responseTimeScope
     .defineMetricName(
@@ -86,5 +89,6 @@ export const medianResponseTimePerChannel = responseTimeScope
         return query
     })
 
-export const medianResponseTimePerChannelQueryV2Factory = (ctx: Context) =>
-    medianResponseTimePerChannel.build(ctx)
+export const medianResponseTimePerChannelQueryV2Factory = (
+    ctx: ResponseTimeContext,
+) => medianResponseTimePerChannel.build(ctx)

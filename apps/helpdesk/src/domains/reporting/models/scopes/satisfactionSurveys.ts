@@ -51,6 +51,10 @@ export const satisfactionSurveysScope = defineScope({
     ],
 })
 
+export type SatisfactionSurveysContext = Context<
+    typeof satisfactionSurveysScope.config
+>
+
 export const averageScore = satisfactionSurveysScope
     .defineMetricName(METRIC_NAMES.SATISFACTION_AVERAGE_SCORE)
     .defineQuery(({ ctx }) => {
@@ -68,7 +72,7 @@ export const averageScore = satisfactionSurveysScope
         return query
     })
 
-export const averageScoreQueryV2Factory = (ctx: Context) =>
+export const averageScoreQueryV2Factory = (ctx: SatisfactionSurveysContext) =>
     averageScore.build(ctx)
 
 export const averageCsatScorePerAgentTimeseries = satisfactionSurveysScope
@@ -98,7 +102,7 @@ export const averageCsatScorePerAgentTimeseries = satisfactionSurveysScope
     })
 
 export const averageCsatScorePerAgentTimeseriesQueryV2Factory = (
-    ctx: Context,
+    ctx: SatisfactionSurveysContext,
 ) => averageCsatScorePerAgentTimeseries.build(ctx)
 
 export const averageCsatScorePerChannelTimeseries = satisfactionSurveysScope
@@ -128,7 +132,7 @@ export const averageCsatScorePerChannelTimeseries = satisfactionSurveysScope
     })
 
 export const averageCsatScorePerChannelTimeseriesQueryV2Factory = (
-    ctx: Context,
+    ctx: SatisfactionSurveysContext,
 ) => averageCsatScorePerChannelTimeseries.build(ctx)
 
 export const averageCsatScorePerIntegrationTimeseries = satisfactionSurveysScope
@@ -158,7 +162,7 @@ export const averageCsatScorePerIntegrationTimeseries = satisfactionSurveysScope
     })
 
 export const averageCsatScorePerIntegrationTimeseriesQueryV2Factory = (
-    ctx: Context,
+    ctx: SatisfactionSurveysContext,
 ) => averageCsatScorePerIntegrationTimeseries.build(ctx)
 
 export const integrationCsatQueryBuilder = {

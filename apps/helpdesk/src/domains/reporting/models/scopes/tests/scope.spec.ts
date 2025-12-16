@@ -32,9 +32,13 @@ describe('scope', () => {
         },
     }
 
-    const mockContext = {
+    const mockContextWithoutGranularity = {
         timezone: 'UTC',
         filters: mockFilters,
+    }
+
+    const mockContextWithGranularity = {
+        ...mockContextWithoutGranularity,
         granularity: 'day' as AggregationWindow,
     }
 
@@ -190,10 +194,10 @@ describe('scope', () => {
                     .defineMetricName('test-metric')
                     .defineQuery(queryFactory)
 
-                const result = metricQuery.build(mockContext)
+                const result = metricQuery.build(mockContextWithoutGranularity)
 
                 expect(queryFactory).toHaveBeenCalledWith({
-                    ctx: mockContext,
+                    ctx: mockContextWithoutGranularity,
                     config: scope.config,
                 })
                 expect(result).toEqual({
@@ -218,13 +222,13 @@ describe('scope', () => {
                 .defineQuery(queryFactory as any)
 
             const result = metricQuery.build({
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 sortDirection: OrderDirection.Desc,
             })
 
             expect(queryFactory).toHaveBeenCalledWith({
                 ctx: {
-                    ...mockContext,
+                    ...mockContextWithoutGranularity,
                     sortDirection: OrderDirection.Desc,
                 },
                 config: scope.config,
@@ -261,7 +265,7 @@ describe('scope', () => {
                     filters: createScopeFilters(ctx.filters, config),
                 }))
 
-            const result = onlineTime.build(mockContext)
+            const result = onlineTime.build(mockContextWithoutGranularity)
 
             expect(mockCreateScopeFilters).toHaveBeenCalledWith(
                 mockFilters,
@@ -307,7 +311,7 @@ describe('scope', () => {
                 })
 
             const result = openTicketsCountPerAgent.build({
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 sortDirection: OrderDirection.Asc,
             })
 
@@ -339,7 +343,7 @@ describe('scope', () => {
                 }))
 
             const result = metric.build({
-                ...mockContext,
+                ...mockContextWithGranularity,
                 granularity: 'day' as AggregationWindow,
             })
 
@@ -365,7 +369,7 @@ describe('scope', () => {
                 }))
 
             const result = metric.build({
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 limit: 50,
             })
 
@@ -386,7 +390,7 @@ describe('scope', () => {
                 }))
 
             const result = metric.build({
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 offset: 100,
             })
 
@@ -407,7 +411,7 @@ describe('scope', () => {
                 }))
 
             const result = metric.build({
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 total: true,
             })
 
@@ -431,7 +435,7 @@ describe('scope', () => {
                 }))
 
             const result = metric.build({
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 sortDirection: OrderDirection.Desc,
                 sortBy: 'agentId',
             })
@@ -454,7 +458,7 @@ describe('scope', () => {
                 }))
 
             const result = metric.build({
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 sortDirection: OrderDirection.Asc,
             })
 
@@ -478,7 +482,7 @@ describe('scope', () => {
                 }))
 
             const result = metric.build({
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 sortDirection: OrderDirection.Desc,
             })
 
@@ -500,7 +504,7 @@ describe('scope', () => {
                 }))
 
             const result = metric.build({
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 sortDirection: OrderDirection.Desc,
             })
 
@@ -521,7 +525,7 @@ describe('scope', () => {
                 }))
 
             const result = metric.build({
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 sortDirection: OrderDirection.Desc,
             })
 
@@ -542,7 +546,7 @@ describe('scope', () => {
                     measures: ['ticketCount'],
                 }))
 
-            const result = metric.build(mockContext)
+            const result = metric.build(mockContextWithoutGranularity)
 
             expect(result.order).toBeUndefined()
         })
@@ -562,7 +566,7 @@ describe('scope', () => {
                 }))
 
             const contextWithoutSortBy = {
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 sortDirection: OrderDirection.Asc as OrderDirection,
             }
             const result = metric.build(contextWithoutSortBy)
@@ -585,7 +589,7 @@ describe('scope', () => {
                 }))
 
             const contextWithoutSortBy = {
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 sortDirection: OrderDirection.Desc as OrderDirection,
             }
             const result = metric.build(contextWithoutSortBy)
@@ -610,12 +614,119 @@ describe('scope', () => {
                 }))
 
             const contextWithoutSortBy = {
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 sortDirection: OrderDirection.Asc as OrderDirection,
             }
             const result = metric.build(contextWithoutSortBy)
 
             expect(result.order).toEqual([['agentId', 'asc']])
+        })
+    })
+
+    describe('Granularity Type Safety', () => {
+        it('should allow granularity when timeDimensions is defined', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                timeDimensions: ['createdDatetime'] as const,
+                filters: ['periodStart', 'periodEnd'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            // This should compile without errors
+            const result = metric.build({
+                ...mockContextWithGranularity,
+                granularity: 'week' as AggregationWindow,
+            })
+
+            expect(result.time_dimensions).toEqual([
+                {
+                    dimension: 'createdDatetime',
+                    granularity: 'week',
+                },
+            ])
+        })
+
+        it('should forbid granularity when timeDimensions is undefined', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                filters: ['periodStart', 'periodEnd'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            // This should compile - no granularity provided
+            const result = metric.build(mockContextWithoutGranularity)
+
+            expect(result.time_dimensions).toBeUndefined()
+
+            // NOTE: The following would be a TypeScript error
+            // oxlint-disable-next-line no-unused-vars
+            const resultWithGranularity = metric.build({
+                ...mockContextWithoutGranularity,
+                // @ts-expect-error - Testing that granularity is not allowed when timeDimensions is undefined
+                granularity: 'day' as AggregationWindow,
+            })
+        })
+
+        it('should forbid granularity when timeDimensions is empty array', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                timeDimensions: [] as const,
+                filters: ['periodStart', 'periodEnd'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            // This should compile - no granularity provided
+            const result = metric.build(mockContextWithoutGranularity)
+
+            expect(result.time_dimensions).toBeUndefined()
+
+            // NOTE: The following would be a TypeScript error (uncomment to verify):
+            // const resultWithGranularity = metric.build({
+            //     ...mockContextWithoutGranularity,
+            //     granularity: 'day' as AggregationWindow,
+            // })
+            // Type error: granularity is not allowed when timeDimensions is empty
+        })
+
+        it('should not apply time_dimensions when granularity is undefined and timeDimensions exist', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                timeDimensions: ['createdDatetime'] as const,
+                filters: ['periodStart', 'periodEnd'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            // Build without granularity - time_dimensions should not be applied
+            const result = metric.build({
+                timezone: 'UTC',
+                filters: mockFilters,
+            })
+
+            expect(result.time_dimensions).toBeUndefined()
         })
     })
 
@@ -634,7 +745,7 @@ describe('scope', () => {
                     filters: createScopeFilters(ctx.filters, config),
                 }))
 
-            const result = metric.build(mockContext)
+            const result = metric.build(mockContextWithoutGranularity)
 
             expect(result.metricName).toBe('empty-metric' as MetricName)
             expect(result.timezone).toBe('UTC')
@@ -657,7 +768,7 @@ describe('scope', () => {
             }
 
             const complexContext = {
-                ...mockContext,
+                ...mockContextWithoutGranularity,
                 filters: complexFilters,
             }
 

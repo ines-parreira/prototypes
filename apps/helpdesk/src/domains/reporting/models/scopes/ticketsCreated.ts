@@ -30,6 +30,8 @@ const ticketsCreatedScope = defineScope({
     order: ['ticketId', 'createdDatetime', 'ticketCount'],
 })
 
+type TicketsCreatedContext = Context<typeof ticketsCreatedScope.config>
+
 export const createdTicketsCount = ticketsCreatedScope
     .defineMetricName(METRIC_NAMES.SUPPORT_PERFORMANCE_TICKETS_CREATED)
     .defineQuery(({ ctx }) => {
@@ -47,7 +49,7 @@ export const createdTicketsCount = ticketsCreatedScope
         return query
     })
 
-export const createdTicketsCountQueryV2Factory = (ctx: Context) =>
+export const createdTicketsCountQueryV2Factory = (ctx: TicketsCreatedContext) =>
     createdTicketsCount.build(ctx)
 
 export const createdTicketsPerChannel = ticketsCreatedScope
@@ -70,8 +72,9 @@ export const createdTicketsPerChannel = ticketsCreatedScope
         return query
     })
 
-export const createdTicketsPerChannelQueryV2Factory = (ctx: Context) =>
-    createdTicketsPerChannel.build(ctx)
+export const createdTicketsPerChannelQueryV2Factory = (
+    ctx: TicketsCreatedContext,
+) => createdTicketsPerChannel.build(ctx)
 
 export const createdTicketsTimeseries = ticketsCreatedScope
     .defineMetricName(
@@ -88,5 +91,6 @@ export const createdTicketsTimeseries = ticketsCreatedScope
         order: [['createdDatetime', OrderDirection.Asc]] as const,
     }))
 
-export const createdTicketsTimeseriesQueryV2Factory = (ctx: Context) =>
-    createdTicketsTimeseries.build(ctx)
+export const createdTicketsTimeseriesQueryV2Factory = (
+    ctx: TicketsCreatedContext,
+) => createdTicketsTimeseries.build(ctx)
