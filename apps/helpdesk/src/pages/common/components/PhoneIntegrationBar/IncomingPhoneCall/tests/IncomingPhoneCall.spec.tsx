@@ -85,6 +85,7 @@ describe('<IncomingPhoneCall />', () => {
             customerPhoneNumber: '+25111111111',
             transferFromAgentId: null,
             isTransferring: false,
+            isPossibleSpam: false,
         })
 
         useMicrophonePermissionsMock.mockReturnValue({
@@ -190,6 +191,7 @@ describe('<IncomingPhoneCall />', () => {
             customerPhoneNumber: '+25111111111',
             transferFromAgentId: 3,
             isTransferring: true,
+            isPossibleSpam: false,
         })
 
         renderComponent({ call })
@@ -208,6 +210,7 @@ describe('<IncomingPhoneCall />', () => {
             customerPhoneNumber: '+25111111111',
             transferFromAgentId: null,
             isTransferring: false,
+            isPossibleSpam: false,
         })
 
         renderComponent({ call })
@@ -250,5 +253,43 @@ describe('<IncomingPhoneCall />', () => {
         expect(
             screen.getByRole('button', { name: /Accept/ }),
         ).not.toBeAriaDisabled()
+    })
+
+    it('should display "Maybe spam" badge when isPossibleSpam is true', () => {
+        const call = mockIncomingCall(integrationId, ticketId) as Call
+
+        jest.spyOn(hooks, 'useConnectionParameters').mockReturnValueOnce({
+            integrationId,
+            ticketId,
+            customerName: 'Bob',
+            customerPhoneNumber: '+25111111111',
+            transferFromAgentId: null,
+            isTransferring: false,
+            isPossibleSpam: true,
+        })
+
+        renderComponent({ call })
+
+        expect(screen.getByText('Maybe spam')).toBeInTheDocument()
+        expect(screen.getByText('Incoming call...')).toBeInTheDocument()
+    })
+
+    it('should not display "Maybe spam" badge when isPossibleSpam is false', () => {
+        const call = mockIncomingCall(integrationId, ticketId) as Call
+
+        jest.spyOn(hooks, 'useConnectionParameters').mockReturnValueOnce({
+            integrationId,
+            ticketId,
+            customerName: 'Bob',
+            customerPhoneNumber: '+25111111111',
+            transferFromAgentId: null,
+            isTransferring: false,
+            isPossibleSpam: false,
+        })
+
+        renderComponent({ call })
+
+        expect(screen.queryByText('Maybe spam')).toBeNull()
+        expect(screen.getByText('Incoming call...')).toBeInTheDocument()
     })
 })

@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -32,6 +33,7 @@ jest.mock('../useVoiceSettingsForm')
 
 const useAppSelectorMock = assumeMock(useAppSelector)
 const useFormSubmitMock = assumeMock(useFormSubmit)
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('react-hook-form')
 
@@ -70,6 +72,9 @@ jest.mock('../VoiceIntegrationSettingCallRecording', () => () => (
 ))
 jest.mock('../VoiceIntegrationSettingCallTranscription', () => () => (
     <div>VoiceIntegrationSettingCallTranscription</div>
+))
+jest.mock('../VoiceIntegrationSettingSpamPrevention', () => () => (
+    <div>VoiceIntegrationSettingSpamPrevention</div>
 ))
 jest.mock('@gorgias/realtime')
 
@@ -124,6 +129,8 @@ describe('<VoiceIntegrationSettingsForm />', () => {
         useFormSubmitMock.mockReturnValue({ onSubmit })
 
         FormSubmitButtonMock.mockReturnValue(<div>FormSubmitButton</div>)
+
+        useFlagMock.mockReturnValue(false)
     })
 
     it('should render the new settings card layout', () => {
@@ -150,6 +157,36 @@ describe('<VoiceIntegrationSettingsForm />', () => {
         expect(
             screen.getByText('VoiceIntegrationSettingCallTranscription'),
         ).toBeInTheDocument()
+        expect(
+            screen.queryByText('VoiceIntegrationSettingSpamPrevention'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render spam prevention section when feature flag is enabled', () => {
+        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+            if (flag === FeatureFlagKey.UseVoiceSpamDetection) return true
+            return false
+        })
+        renderComponent(props)
+
+        expect(screen.getByText('Spam prevention')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Decide if you want agents to be warned that some calls might be spam',
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('VoiceIntegrationSettingSpamPrevention'),
+        ).toBeInTheDocument()
+    })
+
+    it('should not render spam prevention section when feature flag is disabled', () => {
+        renderComponent(props)
+
+        expect(screen.queryByText('Spam prevention')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('VoiceIntegrationSettingSpamPrevention'),
+        ).not.toBeInTheDocument()
     })
 
     describe('handle rendering', () => {

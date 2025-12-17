@@ -6,7 +6,7 @@ import type { Call } from '@twilio/voice-sdk'
 import moment from 'moment'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
@@ -46,6 +46,7 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
         transferFromAgentId,
         ticketId,
         isTransferring,
+        isPossibleSpam,
     } = useConnectionParameters(call)
 
     const now = useNow()
@@ -95,6 +96,11 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
                                 name={customerName}
                                 phoneNumber={customerPhoneNumber}
                             />
+                            {isPossibleSpam && (
+                                <Badge corner="round" type="light-warning">
+                                    Maybe spam
+                                </Badge>
+                            )}
                         </div>
                     </PhoneBarCallerDetailsContainer>
                     <div>

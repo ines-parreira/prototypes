@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -11,6 +12,7 @@ import {
     SettingsCardHeader,
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
@@ -22,6 +24,7 @@ import GenericVoiceFormSubmitButton from './VoiceFormSubmitButton'
 import VoiceIntegrationSettingCallRecording from './VoiceIntegrationSettingCallRecording'
 import VoiceIntegrationSettingCallTranscription from './VoiceIntegrationSettingCallTranscription'
 import VoiceIntegrationSettingsFormGeneralSection from './VoiceIntegrationSettingsFormGeneralSection'
+import VoiceIntegrationSettingSpamPrevention from './VoiceIntegrationSettingSpamPrevention'
 import TextToSpeechProvider from './VoiceMessageTTS/TextToSpeechProvider'
 
 import css from './VoiceIntegrationSettingsForm.less'
@@ -33,6 +36,7 @@ type Props = {
 function VoiceIntegrationSettingsForm({ integration }: Props): JSX.Element {
     const { onSubmit } = useFormSubmit(integration)
     const { isDeleting, performDelete } = useDeletePhoneIntegration(integration)
+    const useVoiceSpamDetection = useFlag(FeatureFlagKey.UseVoiceSpamDetection)
 
     return (
         <TextToSpeechProvider integrationId={integration.id}>
@@ -73,6 +77,38 @@ function VoiceIntegrationSettingsForm({ integration }: Props): JSX.Element {
                         <VoiceIntegrationSettingCallTranscription />
                     </SettingsCardContent>
                 </SettingsCard>
+                {useVoiceSpamDetection && (
+                    <SettingsCard>
+                        <SettingsCardHeader>
+                            <SettingsCardTitle>
+                                Spam prevention{' '}
+                                <IconTooltip
+                                    tooltipProps={{
+                                        placement: 'top-start',
+                                        autohide: false,
+                                    }}
+                                >
+                                    Spam status comes from Twilio&apos;s
+                                    STIR/SHAKEN rating. Accuracy may vary — some
+                                    calls might lack a rating, and legitimate
+                                    ones could appear low-rated.{' '}
+                                    <a
+                                        href="https://link.gorgias.com/556d1f"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Find out more.
+                                    </a>
+                                </IconTooltip>
+                            </SettingsCardTitle>
+                            Decide if you want agents to be warned that some
+                            calls might be spam
+                        </SettingsCardHeader>
+                        <SettingsCardContent>
+                            <VoiceIntegrationSettingSpamPrevention />
+                        </SettingsCardContent>
+                    </SettingsCard>
+                )}
             </div>
             <div className={css.buttons}>
                 <div className={css.mainActions}>

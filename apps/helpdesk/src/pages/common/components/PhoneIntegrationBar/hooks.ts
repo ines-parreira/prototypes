@@ -9,6 +9,7 @@ type ConnectionParameters = {
     customerPhoneNumber: string
     transferFromAgentId?: number | null
     isTransferring: boolean
+    isPossibleSpam: boolean
 }
 
 export function useConnectionParameters(call: Call): ConnectionParameters {
@@ -39,6 +40,10 @@ export function useConnectionParameters(call: Call): ConnectionParameters {
     const isTransferring =
         call.customParameters.get('transfer')?.toLowerCase() === 'true'
 
+    const isPossibleSpamValue = call.customParameters.get('is_possible_spam')
+    const isPossibleSpam =
+        call.direction === Call.CallDirection.Incoming &&
+        isPossibleSpamValue?.toLowerCase() === 'true'
     return {
         integrationId,
         ticketId,
@@ -46,6 +51,7 @@ export function useConnectionParameters(call: Call): ConnectionParameters {
         customerPhoneNumber,
         transferFromAgentId,
         isTransferring,
+        isPossibleSpam,
     }
 }
 

@@ -59,6 +59,7 @@ export type PhoneIntegrationPreferences = {
         enabled: boolean
         value: number
     }
+    spam_prevention?: boolean
 }
 
 type VoicemailOutsideBusinessHoursBasicSettings = {

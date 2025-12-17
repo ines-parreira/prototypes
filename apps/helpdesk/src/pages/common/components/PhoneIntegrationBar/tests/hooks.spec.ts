@@ -19,6 +19,7 @@ describe('useConnectionParameters()', () => {
             ticketId: 2,
             transferFromAgentId: null,
             isTransferring: false,
+            isPossibleSpam: false,
         })
     })
 
@@ -33,6 +34,7 @@ describe('useConnectionParameters()', () => {
             ticketId: null,
             transferFromAgentId: null,
             isTransferring: false,
+            isPossibleSpam: false,
         })
     })
 
@@ -59,6 +61,31 @@ describe('useConnectionParameters()', () => {
             expect(parameters.isTransferring).toEqual(isTransferring)
         },
     )
+
+    it.each([
+        { customParameterValue: 'true', isPossibleSpam: true },
+        { customParameterValue: 'True', isPossibleSpam: true },
+        { customParameterValue: 'false', isPossibleSpam: false },
+        { customParameterValue: 'False', isPossibleSpam: false },
+        { customParameterValue: '', isPossibleSpam: false },
+    ])(
+        'should detect spam when is_possible_spam parameter is present for incoming call',
+        ({ customParameterValue, isPossibleSpam }) => {
+            const call = mockIncomingCall(1, 2) as Call
+            call.customParameters.set('is_possible_spam', customParameterValue)
+            const parameters = useConnectionParameters(call)
+
+            expect(parameters.isPossibleSpam).toEqual(isPossibleSpam)
+        },
+    )
+
+    it('should return isPossibleSpam as false for outgoing calls', () => {
+        const call = mockOutgoingCall() as Call
+        call.customParameters.set('is_possible_spam', 'true')
+        const parameters = useConnectionParameters(call)
+
+        expect(parameters.isPossibleSpam).toEqual(false)
+    })
 })
 
 describe('useAudioLevel', () => {
