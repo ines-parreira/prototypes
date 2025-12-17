@@ -3,48 +3,70 @@ import userEvent from '@testing-library/user-event'
 
 import type { Table } from '@gorgias/axiom'
 
+import { useGuidanceArticleMutation } from '../../../hooks/useGuidanceArticleMutation'
 import * as useBulkKnowledgeActionsModule from '../../hooks/useBulkKnowledgeActions'
 import type { GroupedKnowledgeItem } from '../../types'
 import { KnowledgeType, KnowledgeVisibility } from '../../types'
 import { BulkActions } from './BulkActions'
 
 jest.mock('../../hooks/useBulkKnowledgeActions')
-jest.mock('./DuplicateSelect', () => {
-    const { ButtonRenderMode } = jest.requireActual('./types')
-    return {
-        DuplicateSelect: ({
-            shopName,
-            helpCenterId,
-            selectedItems,
-            renderMode,
-        }: {
-            shopName?: string
-            helpCenterId?: number | null
-            selectedItems?: GroupedKnowledgeItem[]
-            renderMode?: any
-        }) => {
-            if (renderMode === ButtonRenderMode.Hidden) {
-                return null
-            }
-            return (
-                <div data-testid="duplicate-select">
-                    <span data-testid="shop-name">{shopName || 'no-shop'}</span>
-                    <span data-testid="help-center-id">
-                        {helpCenterId || 'no-id'}
-                    </span>
-                    <span data-testid="selected-count">
-                        {selectedItems?.length || 0}
-                    </span>
-                </div>
-            )
-        },
-    }
-})
+jest.mock('../../../hooks/useGuidanceArticleMutation', () => ({
+    useGuidanceArticleMutation: jest.fn(),
+}))
+jest.mock(
+    '../../../components/KnowledgeEditor/shared/DuplicateGuidance/DuplicateGuidance',
+    () => {
+        const { ButtonRenderMode } = jest.requireActual('./types')
+        return {
+            DuplicateGuidance: ({
+                shopName,
+                articleIds,
+                renderMode,
+                onDuplicate,
+                isDisabled,
+            }: {
+                shopName?: string
+                articleIds?: number[]
+                renderMode?: any
+                onDuplicate?: (
+                    articleIds: number[],
+                    shopNames: string[],
+                ) => Promise<{ success: boolean; shopNames?: string[] }>
+                isDisabled?: boolean
+            }) => {
+                if (renderMode === ButtonRenderMode.Hidden) {
+                    return null
+                }
+                return (
+                    <div data-testid="duplicate-select">
+                        <span data-testid="shop-name">
+                            {shopName || 'no-shop'}
+                        </span>
+                        <span data-testid="selected-count">
+                            {articleIds?.length || 0}
+                        </span>
+                        <button
+                            data-testid="trigger-duplicate"
+                            disabled={isDisabled}
+                            onClick={() =>
+                                onDuplicate?.(articleIds || [], ['test-shop'])
+                            }
+                        >
+                            Duplicate
+                        </button>
+                    </div>
+                )
+            },
+        }
+    },
+)
 
 const mockUseBulkKnowledgeActions =
     useBulkKnowledgeActionsModule.useBulkKnowledgeActions as jest.MockedFunction<
         typeof useBulkKnowledgeActionsModule.useBulkKnowledgeActions
     >
+
+const mockUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 
 describe('BulkActions', () => {
     const mockHandleBulkEnable = jest.fn()
@@ -65,6 +87,17 @@ describe('BulkActions', () => {
             handleBulkDelete: mockHandleBulkDelete,
             isLoading: false,
         })
+        mockUseGuidanceArticleMutation.mockReturnValue({
+            duplicate: jest.fn(),
+            isGuidanceArticleUpdating: false,
+            deleteGuidanceArticle: jest.fn(),
+            isGuidanceArticleDeleting: false,
+            createGuidanceArticle: jest.fn(),
+            updateGuidanceArticle: jest.fn(),
+            duplicateGuidanceArticle: jest.fn(),
+            discardGuidanceDraft: jest.fn(),
+            isDiscardingDraft: false,
+        } as any)
     })
 
     const createMockTable = (
@@ -1023,8 +1056,8 @@ describe('BulkActions', () => {
         })
     })
 
-    describe('DuplicateSelect integration', () => {
-        it('should pass shopName to DuplicateSelect when provided', () => {
+    describe('DuplicateGuidance integration', () => {
+        it('should pass shopName to DuplicateGuidance when provided', () => {
             const selectedItems: GroupedKnowledgeItem[] = [
                 {
                     id: '1',
@@ -1049,35 +1082,7 @@ describe('BulkActions', () => {
             )
         })
 
-        it('should pass guidanceHelpCenterId to DuplicateSelect', () => {
-            const selectedItems: GroupedKnowledgeItem[] = [
-                {
-                    id: '1',
-                    type: KnowledgeType.Guidance,
-                    title: 'Test Guidance',
-                    lastUpdatedAt: '2024-01-01',
-                },
-            ]
-            const table = createMockTable(selectedItems)
-
-            render(
-                <BulkActions
-                    table={table}
-                    helpCenterIds={{
-                        guidanceHelpCenterId: 123,
-                        faqHelpCenterId: 2,
-                        snippetHelpCenterId: 3,
-                    }}
-                    isSearchActive={false}
-                />,
-            )
-
-            expect(screen.getByTestId('help-center-id')).toHaveTextContent(
-                '123',
-            )
-        })
-
-        it('should pass selected items to DuplicateSelect', () => {
+        it('should pass article IDs to DuplicateGuidance', () => {
             const selectedItems: GroupedKnowledgeItem[] = [
                 {
                     id: '1',
@@ -1126,8 +1131,10 @@ describe('BulkActions', () => {
 
             expect(screen.getByTestId('shop-name')).toHaveTextContent('no-shop')
         })
+    })
 
-        it('should handle null guidanceHelpCenterId gracefully', () => {
+    describe('handleBulkDuplicate', () => {
+        it('should return success: false when guidanceHelpCenterId is null', async () => {
             const selectedItems: GroupedKnowledgeItem[] = [
                 {
                     id: '1',
@@ -1137,8 +1144,21 @@ describe('BulkActions', () => {
                 },
             ]
             const table = createMockTable(selectedItems)
+            const mockDuplicate = jest.fn()
 
-            render(
+            mockUseGuidanceArticleMutation.mockReturnValue({
+                duplicate: mockDuplicate,
+                isGuidanceArticleUpdating: false,
+                deleteGuidanceArticle: jest.fn(),
+                isGuidanceArticleDeleting: false,
+                createGuidanceArticle: jest.fn(),
+                updateGuidanceArticle: jest.fn(),
+                duplicateGuidanceArticle: jest.fn(),
+                discardGuidanceDraft: jest.fn(),
+                isDiscardingDraft: false,
+            } as any)
+
+            const { container } = render(
                 <BulkActions
                     table={table}
                     helpCenterIds={{
@@ -1150,8 +1170,195 @@ describe('BulkActions', () => {
                 />,
             )
 
-            expect(screen.getByTestId('help-center-id')).toHaveTextContent(
-                'no-id',
+            const duplicateComponent = container.querySelector(
+                '[data-testid="duplicate-select"]',
+            )
+            expect(duplicateComponent).toBeInTheDocument()
+
+            expect(mockDuplicate).not.toHaveBeenCalled()
+        })
+
+        it('should return success: false when guidanceHelpCenterId is undefined', async () => {
+            const selectedItems: GroupedKnowledgeItem[] = [
+                {
+                    id: '1',
+                    type: KnowledgeType.Guidance,
+                    title: 'Test Guidance',
+                    lastUpdatedAt: '2024-01-01',
+                },
+            ]
+            const table = createMockTable(selectedItems)
+            const mockDuplicate = jest.fn()
+
+            mockUseGuidanceArticleMutation.mockReturnValue({
+                duplicate: mockDuplicate,
+                isGuidanceArticleUpdating: false,
+                deleteGuidanceArticle: jest.fn(),
+                isGuidanceArticleDeleting: false,
+                createGuidanceArticle: jest.fn(),
+                updateGuidanceArticle: jest.fn(),
+                duplicateGuidanceArticle: jest.fn(),
+                discardGuidanceDraft: jest.fn(),
+                isDiscardingDraft: false,
+            } as any)
+
+            const { container } = render(
+                <BulkActions
+                    table={table}
+                    helpCenterIds={{
+                        guidanceHelpCenterId: undefined,
+                        faqHelpCenterId: 2,
+                        snippetHelpCenterId: 3,
+                    }}
+                    isSearchActive={false}
+                />,
+            )
+
+            const duplicateComponent = container.querySelector(
+                '[data-testid="duplicate-select"]',
+            )
+            expect(duplicateComponent).toBeInTheDocument()
+
+            expect(mockDuplicate).not.toHaveBeenCalled()
+        })
+
+        it('should successfully duplicate articles with correct parameters', async () => {
+            const selectedItems: GroupedKnowledgeItem[] = [
+                {
+                    id: '1',
+                    type: KnowledgeType.Guidance,
+                    title: 'Test Guidance 1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+                {
+                    id: '2',
+                    type: KnowledgeType.Guidance,
+                    title: 'Test Guidance 2',
+                    lastUpdatedAt: '2024-01-02',
+                },
+            ]
+            const table = createMockTable(selectedItems)
+            const mockDuplicate = jest.fn().mockResolvedValue(undefined)
+
+            mockUseGuidanceArticleMutation.mockReturnValue({
+                duplicate: mockDuplicate,
+                isGuidanceArticleUpdating: false,
+                deleteGuidanceArticle: jest.fn(),
+                isGuidanceArticleDeleting: false,
+                createGuidanceArticle: jest.fn(),
+                updateGuidanceArticle: jest.fn(),
+                duplicateGuidanceArticle: jest.fn(),
+                discardGuidanceDraft: jest.fn(),
+                isDiscardingDraft: false,
+            } as any)
+
+            render(
+                <BulkActions
+                    table={table}
+                    helpCenterIds={helpCenterIds}
+                    isSearchActive={false}
+                />,
+            )
+
+            const duplicateButton = screen.getByTestId('trigger-duplicate')
+
+            await act(() => userEvent.click(duplicateButton))
+
+            expect(mockDuplicate).toHaveBeenCalledWith([1, 2], ['test-shop'])
+        })
+
+        it('should handle errors during duplication and return success: false', async () => {
+            const selectedItems: GroupedKnowledgeItem[] = [
+                {
+                    id: '1',
+                    type: KnowledgeType.Guidance,
+                    title: 'Test Guidance',
+                    lastUpdatedAt: '2024-01-01',
+                },
+            ]
+            const table = createMockTable(selectedItems)
+            const mockDuplicate = jest
+                .fn()
+                .mockRejectedValue(new Error('API Error'))
+
+            mockUseGuidanceArticleMutation.mockReturnValue({
+                duplicate: mockDuplicate,
+                isGuidanceArticleUpdating: false,
+                deleteGuidanceArticle: jest.fn(),
+                isGuidanceArticleDeleting: false,
+                createGuidanceArticle: jest.fn(),
+                updateGuidanceArticle: jest.fn(),
+                duplicateGuidanceArticle: jest.fn(),
+                discardGuidanceDraft: jest.fn(),
+                isDiscardingDraft: false,
+            } as any)
+
+            render(
+                <BulkActions
+                    table={table}
+                    helpCenterIds={helpCenterIds}
+                    isSearchActive={false}
+                />,
+            )
+
+            const duplicateButton = screen.getByTestId('trigger-duplicate')
+
+            await act(() => userEvent.click(duplicateButton))
+
+            expect(mockDuplicate).toHaveBeenCalled()
+        })
+
+        it('should pass correct article IDs and shop names to duplicate function', async () => {
+            const selectedItems: GroupedKnowledgeItem[] = [
+                {
+                    id: '10',
+                    type: KnowledgeType.Guidance,
+                    title: 'Test Guidance 1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+                {
+                    id: '20',
+                    type: KnowledgeType.Guidance,
+                    title: 'Test Guidance 2',
+                    lastUpdatedAt: '2024-01-02',
+                },
+                {
+                    id: '30',
+                    type: KnowledgeType.Guidance,
+                    title: 'Test Guidance 3',
+                    lastUpdatedAt: '2024-01-03',
+                },
+            ]
+            const table = createMockTable(selectedItems)
+            const mockDuplicate = jest.fn().mockResolvedValue(undefined)
+
+            mockUseGuidanceArticleMutation.mockReturnValue({
+                duplicate: mockDuplicate,
+                isGuidanceArticleUpdating: false,
+                deleteGuidanceArticle: jest.fn(),
+                isGuidanceArticleDeleting: false,
+                createGuidanceArticle: jest.fn(),
+                updateGuidanceArticle: jest.fn(),
+                duplicateGuidanceArticle: jest.fn(),
+                discardGuidanceDraft: jest.fn(),
+                isDiscardingDraft: false,
+            } as any)
+
+            render(
+                <BulkActions
+                    table={table}
+                    helpCenterIds={helpCenterIds}
+                    isSearchActive={false}
+                />,
+            )
+
+            const duplicateButton = screen.getByTestId('trigger-duplicate')
+
+            await act(() => userEvent.click(duplicateButton))
+
+            expect(mockDuplicate).toHaveBeenCalledWith(
+                [10, 20, 30],
+                ['test-shop'],
             )
         })
     })

@@ -81,6 +81,7 @@ const defaultGuidanceArticleMutationProps: ReturnType<
     updateGuidanceArticle: jest.fn(),
     isGuidanceArticleUpdating: false,
     isGuidanceArticleDeleting: false,
+    duplicate: jest.fn(),
     duplicateGuidanceArticle: jest.fn(),
     discardGuidanceDraft: jest.fn(),
     isDiscardingDraft: false,

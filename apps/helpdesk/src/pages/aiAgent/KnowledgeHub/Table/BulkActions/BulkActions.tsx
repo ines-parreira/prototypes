@@ -1,7 +1,9 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import type { Table } from '@gorgias/axiom'
 
+import { DuplicateGuidance } from '../../../components/KnowledgeEditor/shared/DuplicateGuidance/DuplicateGuidance'
+import { useGuidanceArticleMutation } from '../../../hooks/useGuidanceArticleMutation'
 import { useBulkKnowledgeActions } from '../../hooks/useBulkKnowledgeActions'
 import type {
     FilteredKnowledgeHubArticle,
@@ -13,7 +15,6 @@ import { ClearSearchButton } from './ClearSearchButton'
 import { DeleteButton } from './DeleteButton'
 import { DeleteConfirmationModal } from './DeleteConfirmationModal'
 import { DisableForAIButton } from './DisableForAIButton'
-import { DuplicateSelect } from './DuplicateSelect'
 import { EnableForAIButton } from './EnableForAIButton'
 import { ButtonRenderMode } from './types'
 import {
@@ -53,6 +54,32 @@ export const BulkActions = ({
 
     const { handleBulkEnable, handleBulkDisable, handleBulkDelete, isLoading } =
         useBulkKnowledgeActions(helpCenterIds)
+
+    const { duplicate, isGuidanceArticleUpdating } = useGuidanceArticleMutation(
+        {
+            guidanceHelpCenterId: helpCenterIds.guidanceHelpCenterId ?? 0,
+        },
+    )
+
+    const handleBulkDuplicate = useCallback(
+        async (articleIds: number[], shopNames: string[]) => {
+            if (
+                !helpCenterIds.guidanceHelpCenterId ||
+                articleIds.length === 0 ||
+                shopNames.length === 0
+            ) {
+                return { success: false }
+            }
+
+            try {
+                await duplicate(articleIds, shopNames)
+                return { success: true, shopNames }
+            } catch {
+                return { success: false }
+            }
+        },
+        [duplicate, helpCenterIds.guidanceHelpCenterId],
+    )
 
     const isAllContentView = activeContentType === null
 
@@ -94,7 +121,9 @@ export const BulkActions = ({
         isLoading ||
         enableForAIButtonConfig.mode === ButtonRenderMode.DisabledWithTooltip
     const isDuplicateActionDisabled =
-        isLoading || duplicateMode === ButtonRenderMode.DisabledWithTooltip
+        isLoading ||
+        isGuidanceArticleUpdating ||
+        duplicateMode === ButtonRenderMode.DisabledWithTooltip
     const isDeleteActionDisabled =
         isLoading || deleteMode === ButtonRenderMode.DisabledWithTooltip
 
@@ -136,13 +165,15 @@ export const BulkActions = ({
                         tooltipMessage={disableForAIButtonConfig.tooltipMessage}
                     />
 
-                    <DuplicateSelect
+                    <DuplicateGuidance
                         isDisabled={isDuplicateActionDisabled}
                         renderMode={duplicateMode}
                         tooltipMessage={TOOLTIP_MESSAGES.duplicate}
                         shopName={shopName}
-                        helpCenterId={helpCenterIds.guidanceHelpCenterId}
-                        selectedItems={selectedItems}
+                        articleIds={selectedItems.map((item) =>
+                            Number(item.id),
+                        )}
+                        onDuplicate={handleBulkDuplicate}
                     />
 
                     <DeleteButton

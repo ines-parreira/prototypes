@@ -1,3 +1,9 @@
+import {
+    buildDuplicateNotificationMessage,
+    cleanStoreName,
+    createStoreLink,
+    isCurrentStore,
+} from '../../../components/KnowledgeEditor/shared/DuplicateGuidance/utils'
 import type {
     FilteredKnowledgeHubArticle,
     GroupedKnowledgeItem,
@@ -5,14 +11,10 @@ import type {
 import { KnowledgeType } from '../../types'
 import { ButtonRenderMode } from './types'
 import {
-    buildDuplicateNotificationMessage,
-    cleanStoreName,
-    createStoreLink,
     getAIAgentButtonConfig,
     getBulkEnableButtonConfig,
     getDeleteButtonMode,
     getDuplicateButtonMode,
-    isCurrentStore,
     TOOLTIP_MESSAGES,
 } from './utils'
 

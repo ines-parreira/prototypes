@@ -90,20 +90,6 @@ export const CopyIconButton = (props: {
     </button>
 )
 
-export const DuplicateButton = (props: {
-    onDuplicate?: () => void
-    disabled?: boolean
-}) => (
-    <button
-        className={classNames(css.icon, css.secondaryButton)}
-        onClick={props.onDuplicate}
-        aria-label="duplicate"
-        disabled={props.disabled || !props.onDuplicate}
-    >
-        <Icon name="copy" />
-    </button>
-)
-
 export const DeleteButton = (props: {
     onDelete?: () => void
     disabled?: boolean

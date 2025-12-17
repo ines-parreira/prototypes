@@ -2,6 +2,7 @@ import { renderHook } from '@repo/testing'
 import { act } from 'react-dom/test-utils'
 
 import {
+    useBulkCopyArticles,
     useCopyArticle,
     useCreateArticle,
     useDeleteArticle,
@@ -18,6 +19,7 @@ jest.mock('models/helpCenter/queries', () => ({
     useDeleteArticleTranslationDraft: jest.fn(),
     useUpdateArticleTranslation: jest.fn(),
     useCopyArticle: jest.fn(),
+    useBulkCopyArticles: jest.fn(),
     helpCenterKeys: {
         articles: jest.fn(() => ['articles']),
     },
@@ -42,6 +44,7 @@ const mockedUseUpdateArticleTranslation = jest.mocked(
     useUpdateArticleTranslation,
 )
 const mockedUseCopyArticle = jest.mocked(useCopyArticle)
+const mockedUseBulkCopyArticles = jest.mocked(useBulkCopyArticles)
 const mockedReportError = jest.mocked(reportError)
 
 describe('useGuidanceArticleMutation', () => {
@@ -72,6 +75,11 @@ describe('useGuidanceArticleMutation', () => {
         } as any)
 
         mockedUseCopyArticle.mockReturnValue({
+            mutateAsync: mutateAsyncMock,
+            isLoading: false,
+        } as any)
+
+        mockedUseBulkCopyArticles.mockReturnValue({
             mutateAsync: mutateAsyncMock,
             isLoading: false,
         } as any)

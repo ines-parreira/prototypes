@@ -17,7 +17,13 @@ export type GuidanceToolbarState =
     | { type: 'create' }
 
 export type GuidanceToolbarActions = {
-    duplicate: () => Promise<void>
+    duplicateGuidanceToShops: (
+        articleIds: number[],
+        shopNames: string[],
+    ) => Promise<{
+        success: boolean
+        shopNames?: string[]
+    }>
     onClickEdit: () => void
     onClickPublish: () => Promise<void>
     onOpenDiscardModal: () => void
@@ -50,33 +56,44 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
 
     const { guidanceHelpCenter } = config
 
-    const { shopName, onCopyFn, onUpdateFn } = config
+    const { onCopyFn, onUpdateFn } = config
 
-    const { duplicateGuidanceArticle, updateGuidanceArticle } =
+    const { duplicate, updateGuidanceArticle, isGuidanceArticleUpdating } =
         useGuidanceArticleMutation({
             guidanceHelpCenterId: guidanceHelpCenter.id ?? 0,
         })
 
-    const duplicate = useCallback(async () => {
-        if (!state.guidance?.id) return
+    /**
+     * Duplicates guidance articles to specified shops.
+     *
+     * This wrapper function adds application-specific behavior around the raw duplicate mutation:
+     * - Updates Knowledge Editor context state (SET_UPDATING)
+     * - Executes the onCopyFn callback after successful duplication
+     * - Returns success/failure status (error notifications handled by DuplicateGuidance component)
+     *
+     * @param articleIds - Array of article IDs to duplicate
+     * @param shopNames - Array of shop names to duplicate articles to
+     * @returns Promise resolving to success status and shop names
+     */
+    const duplicateGuidanceToShops = useCallback(
+        async (articleIds: number[], shopNames: string[]) => {
+            if (articleIds.length === 0) {
+                return { success: false }
+            }
 
-        dispatch({ type: 'SET_UPDATING', payload: true })
-        try {
-            await duplicateGuidanceArticle(state.guidance.id, shopName)
-            onCopyFn?.()
-        } catch {
-            notifyError('An error occurred while duplicating guidance.')
-        } finally {
-            dispatch({ type: 'SET_UPDATING', payload: false })
-        }
-    }, [
-        duplicateGuidanceArticle,
-        state.guidance?.id,
-        shopName,
-        onCopyFn,
-        notifyError,
-        dispatch,
-    ])
+            dispatch({ type: 'SET_UPDATING', payload: true })
+            try {
+                await duplicate(articleIds, shopNames)
+                onCopyFn?.()
+                return { success: true, shopNames }
+            } catch {
+                return { success: false }
+            } finally {
+                dispatch({ type: 'SET_UPDATING', payload: false })
+            }
+        },
+        [duplicate, onCopyFn, dispatch],
+    )
 
     const onClickEdit = useCallback(() => {
         dispatch({ type: 'SET_MODE', payload: 'edit' })
@@ -151,7 +168,8 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         hasDraft,
     )
 
-    const isDisabled = state.isUpdating || state.isAutoSaving
+    const isDisabled =
+        state.isUpdating || state.isAutoSaving || isGuidanceArticleUpdating
 
     const editDisabledReason = !canEdit
         ? 'You already have a draft version. Only one draft is allowed at a time, so the published version is read-only.'
@@ -160,7 +178,7 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
     return {
         state: toolbarState,
         actions: {
-            duplicate,
+            duplicateGuidanceToShops,
             onClickEdit,
             onClickPublish,
             onOpenDiscardModal,

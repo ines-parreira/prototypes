@@ -12,50 +12,34 @@ import {
 } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useBulkCopyArticles } from 'models/helpCenter/queries'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { REFETCH_KNOWLEDGE_HUB_TABLE } from '../../constants'
-import { dispatchDocumentEvent } from '../../EmptyState/utils'
-import type { GroupedKnowledgeItem } from '../../types'
+import { REFETCH_KNOWLEDGE_HUB_TABLE } from '../../../../KnowledgeHub/constants'
+import { dispatchDocumentEvent } from '../../../../KnowledgeHub/EmptyState/utils'
 import { ButtonRenderMode } from './types'
+import type {
+    DuplicateGuidanceProps,
+    StoreIntegrationItem,
+    StoreSection,
+    TriggerProps,
+} from './types'
 import { buildDuplicateNotificationMessage, cleanStoreName } from './utils'
 
-import './DuplicateSelect.less'
+import './DuplicateGuidance.less'
 
-type StoreIntegrationItem = {
-    id: string
-    name: string
-    isAction?: boolean
-}
-
-type StoreSection = {
-    id: string
-    name: string
-    items: StoreIntegrationItem[]
-}
-
-type DuplicateSelectProps = {
-    isDisabled?: boolean
-    renderMode?: ButtonRenderMode
-    tooltipMessage?: string
-    onChange?: (selectedStores: StoreIntegrationItem[]) => void
-    shopName?: string
-    helpCenterId?: number | null
-    selectedItems?: GroupedKnowledgeItem[]
-}
-
-export const DuplicateSelect = ({
+export const DuplicateGuidance = ({
     isDisabled,
     renderMode = ButtonRenderMode.Visible,
     tooltipMessage,
     onChange,
     shopName,
-    helpCenterId,
-    selectedItems = [],
-}: DuplicateSelectProps) => {
+    articleIds,
+    trigger,
+    placement,
+    onDuplicate,
+}: DuplicateGuidanceProps) => {
     const id = useId()
     const buttonId = `duplicate-button-${id}`
     const dispatch = useAppDispatch()
@@ -63,17 +47,8 @@ export const DuplicateSelect = ({
     const [selectedStores, setSelectedStores] = useState<
         StoreIntegrationItem[]
     >([])
+    const [resetKey, setResetKey] = useState(0)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const copyMutation = useBulkCopyArticles({
-        onSuccess: () => {
-            setIsDropdownOpen(false)
-        },
-    })
-
-    const articleIds = useMemo(
-        () => selectedItems.map((item) => Number(item.id)),
-        [selectedItems],
-    )
 
     const items: StoreIntegrationItem[] = useMemo(
         () =>
@@ -85,8 +60,8 @@ export const DuplicateSelect = ({
     )
 
     const isApplyDisabled = useMemo(
-        () => selectedStores.length === 0 || copyMutation.isLoading,
-        [selectedStores.length, copyMutation.isLoading],
+        () => selectedStores.length === 0 || isDisabled,
+        [selectedStores.length, isDisabled],
     )
 
     const sections = useMemo(() => {
@@ -128,33 +103,33 @@ export const DuplicateSelect = ({
     }, [items, shopName, isApplyDisabled])
 
     const handleApply = useCallback(async () => {
-        if (
-            selectedStores.length === 0 ||
-            !helpCenterId ||
-            articleIds.length === 0
-        ) {
+        if (selectedStores.length === 0 || articleIds.length === 0) {
             return
         }
 
-        try {
-            const cleanedShopNames = selectedStores.map((store) =>
-                cleanStoreName(store.name),
-            )
+        const cleanedShopNames = selectedStores.map((store) =>
+            cleanStoreName(store.name),
+        )
 
-            await copyMutation.mutateAsync([
-                undefined,
-                { help_center_id: helpCenterId },
-                {
-                    article_ids: articleIds,
-                    shop_names: cleanedShopNames,
-                },
-            ])
+        setIsDropdownOpen(false)
+
+        try {
+            const result = await onDuplicate(articleIds, cleanedShopNames)
+
+            if (!result.success) {
+                await dispatch(
+                    notify({
+                        message: 'An error occurred while duplicating guidance',
+                        status: NotificationStatus.Error,
+                    }),
+                )
+                return
+            }
 
             const notificationMessage = buildDuplicateNotificationMessage(
                 selectedStores,
                 shopName,
             )
-
             await dispatch(
                 notify({
                     message: notificationMessage,
@@ -163,16 +138,12 @@ export const DuplicateSelect = ({
                 }),
             )
 
-            // Refetch table data if duplicating to current store
             const isDuplicatingToCurrentStore = cleanedShopNames.some(
                 (cleanedName) => cleanedName === shopName,
             )
-
             if (isDuplicatingToCurrentStore) {
                 dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
             }
-
-            setSelectedStores([])
         } catch {
             await dispatch(
                 notify({
@@ -180,10 +151,11 @@ export const DuplicateSelect = ({
                     status: NotificationStatus.Error,
                 }),
             )
+        } finally {
+            setSelectedStores([])
+            setResetKey((prev) => prev + 1)
         }
-        // copyMutation is a React Query hook with stable mutation functions
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedStores, helpCenterId, articleIds, shopName, dispatch])
+    }, [selectedStores, articleIds, shopName, dispatch, onDuplicate])
 
     const handleChange = useCallback(
         (value: StoreIntegrationItem[]) => {
@@ -207,26 +179,30 @@ export const DuplicateSelect = ({
         setIsDropdownOpen(isOpen)
     }, [])
 
+    // Default trigger for bulk actions (Button with text "Duplicate")
+    const defaultTrigger = ({ ref }: TriggerProps) => (
+        <Button
+            ref={ref}
+            slot="button"
+            intent="regular"
+            size="sm"
+            variant="secondary"
+            trailingSlot={<Icon name="arrow-chevron-down" />}
+            isDisabled={isDisabled}
+        >
+            Duplicate
+        </Button>
+    )
+
     if (renderMode === ButtonRenderMode.Hidden) {
         return null
     }
 
     const multiSelect = (
         <MultiSelect<StoreSection>
+            key={resetKey}
             maxWidth={290}
-            trigger={({ ref }) => (
-                <Button
-                    ref={ref}
-                    slot="button"
-                    intent="regular"
-                    size="sm"
-                    variant="secondary"
-                    trailingSlot={<Icon name="arrow-chevron-down" />}
-                    isDisabled={isDisabled}
-                >
-                    Duplicate
-                </Button>
-            )}
+            trigger={trigger || defaultTrigger}
             maxHeight={206}
             isSearchable
             isOpen={isDropdownOpen}
@@ -234,6 +210,7 @@ export const DuplicateSelect = ({
             items={sections}
             onSelect={handleChange as (value: StoreSection[]) => void}
             aria-label="Duplicate guidance selection"
+            placement={placement}
         >
             {(section: StoreSection) => (
                 <ListSection

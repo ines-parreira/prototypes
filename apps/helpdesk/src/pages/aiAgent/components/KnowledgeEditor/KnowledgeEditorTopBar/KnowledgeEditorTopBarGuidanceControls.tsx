@@ -1,9 +1,14 @@
 import classNames from 'classnames'
 
+import { Button, Icon } from '@gorgias/axiom'
+
+import { useGuidanceContext } from '../KnowledgeEditorGuidance/context'
+import { DuplicateGuidance } from '../shared/DuplicateGuidance/DuplicateGuidance'
+import { ButtonRenderMode } from '../shared/DuplicateGuidance/types'
+import type { TriggerProps } from '../shared/DuplicateGuidance/types'
 import {
     DeleteButton,
     DiscardDraftButton,
-    DuplicateButton,
     EditIconButton,
     TestButton,
 } from './KnowledgeEditorTopBarCommonControls'
@@ -28,7 +33,7 @@ export const GuidanceToolbarControls = () => {
     } = useGuidanceToolbar()
 
     const {
-        duplicate,
+        duplicateGuidanceToShops,
         onClickEdit,
         onClickPublish,
         onOpenDiscardModal,
@@ -36,6 +41,22 @@ export const GuidanceToolbarControls = () => {
         onDiscardCreate,
     } = actions
 
+    const { state, config } = useGuidanceContext()
+    const articleId = state.guidance?.id
+    const shopName = config.shopName
+
+    const copyButtonTrigger = ({ ref }: TriggerProps) => (
+        <Button
+            ref={ref}
+            slot="button"
+            intent="regular"
+            size="md"
+            variant="secondary"
+            isDisabled={isDisabled}
+        >
+            <Icon name="copy" />
+        </Button>
+    )
     switch (toolbarState.type) {
         case 'published-with-draft':
             return (
@@ -44,10 +65,17 @@ export const GuidanceToolbarControls = () => {
                         disabled={isDisabled}
                         disabledReason={editDisabledReason}
                     />
-                    <DuplicateButton
-                        onDuplicate={duplicate}
-                        disabled={isDisabled}
-                    />
+                    {articleId && shopName && (
+                        <DuplicateGuidance
+                            articleIds={[articleId]}
+                            shopName={shopName}
+                            isDisabled={isDisabled}
+                            renderMode={ButtonRenderMode.Visible}
+                            trigger={copyButtonTrigger}
+                            placement="bottom right"
+                            onDuplicate={duplicateGuidanceToShops}
+                        />
+                    )}
                     <DeleteButton
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
@@ -63,10 +91,17 @@ export const GuidanceToolbarControls = () => {
                         onEdit={canEdit ? onClickEdit : undefined}
                         disabled={isDisabled}
                     />
-                    <DuplicateButton
-                        onDuplicate={duplicate}
-                        disabled={isDisabled}
-                    />
+                    {articleId && shopName && (
+                        <DuplicateGuidance
+                            articleIds={[articleId]}
+                            shopName={shopName}
+                            isDisabled={isDisabled}
+                            renderMode={ButtonRenderMode.Visible}
+                            trigger={copyButtonTrigger}
+                            placement="bottom right"
+                            onDuplicate={duplicateGuidanceToShops}
+                        />
+                    )}
                     <DeleteButton
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
@@ -82,10 +117,17 @@ export const GuidanceToolbarControls = () => {
                         onEdit={onClickEdit}
                         disabled={isDisabled}
                     />
-                    <DuplicateButton
-                        onDuplicate={duplicate}
-                        disabled={isDisabled}
-                    />
+                    {articleId && shopName && (
+                        <DuplicateGuidance
+                            articleIds={[articleId]}
+                            shopName={shopName}
+                            isDisabled={isDisabled}
+                            renderMode={ButtonRenderMode.Visible}
+                            trigger={copyButtonTrigger}
+                            placement="bottom right"
+                            onDuplicate={duplicateGuidanceToShops}
+                        />
+                    )}
                     <DeleteButton
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}

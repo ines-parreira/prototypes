@@ -9,6 +9,7 @@ import { SentryTeam } from 'common/const/sentryTeamNames'
 import type { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
 import {
     helpCenterKeys,
+    useBulkCopyArticles,
     useCopyArticle,
     useCreateArticle,
     useDeleteArticle,
@@ -168,6 +169,17 @@ export const useGuidanceArticleMutation = ({
         })
 
     const {
+        mutateAsync: bulkCopyArticlesAsync,
+        isLoading: isBulkCopyArticlesLoading,
+    } = useBulkCopyArticles({
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: helpCenterKeys.articles(guidanceHelpCenterId),
+            })
+        },
+    })
+
+    const {
         mutateAsync: deleteArticleTranslationDraftAsync,
         isLoading: isDiscardingDraft,
     } = useDeleteArticleTranslationDraft({
@@ -289,6 +301,31 @@ export const useGuidanceArticleMutation = ({
         [copyArticleAsync, guidanceHelpCenterId],
     )
 
+    const duplicate = useCallback(
+        async (articleIds: number[], shopNames: string[]) => {
+            try {
+                await bulkCopyArticlesAsync([
+                    undefined,
+                    { help_center_id: guidanceHelpCenterId },
+                    {
+                        article_ids: articleIds,
+                        shop_names: shopNames,
+                    },
+                ])
+            } catch (error) {
+                reportError(error, {
+                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
+                    extra: {
+                        context: 'Error during guidance article duplication',
+                    },
+                })
+
+                throw error
+            }
+        },
+        [bulkCopyArticlesAsync, guidanceHelpCenterId],
+    )
+
     const discardGuidanceDraft = useCallback(
         async (articleId: number, locale: LocaleCode) => {
             try {
@@ -324,8 +361,10 @@ export const useGuidanceArticleMutation = ({
         isGuidanceArticleUpdating:
             isArticleCreationLoading ||
             isUpdateArticleTranslationLoading ||
-            isCopyArticleLoading,
+            isCopyArticleLoading ||
+            isBulkCopyArticlesLoading,
         duplicateGuidanceArticle,
+        duplicate,
         discardGuidanceDraft,
         isDiscardingDraft,
     }

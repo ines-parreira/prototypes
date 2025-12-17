@@ -4,9 +4,11 @@ import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
+import { toImmutable } from 'common/utils'
 import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
@@ -84,6 +86,7 @@ jest.mock(
 
 const updateGuidanceArticle = jest.fn()
 const createGuidanceArticle = jest.fn()
+const duplicate = jest.fn()
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
     useGuidanceArticleMutation: jest.fn(() => ({
@@ -91,7 +94,11 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
         createGuidanceArticle,
         deleteGuidanceArticle: jest.fn(),
         duplicateGuidanceArticle: jest.fn(),
+        duplicate,
         isGuidanceArticleUpdating: false,
+        isGuidanceArticleDeleting: false,
+        discardGuidanceDraft: jest.fn(),
+        isDiscardingDraft: false,
     })),
 }))
 
@@ -106,17 +113,28 @@ jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
 jest.mock('domains/reporting/models/queryFactories/knowledge/resourceMetrics')
 const mockedFetchResourceMetrics = jest.mocked(useResourceMetrics)
 
+const mockUseStoreIntegrations = jest.mocked(useStoreIntegrations)
+
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => false),
 }))
 
+jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => jest.fn())
+
 const queryClient = mockQueryClient()
-const store = mockStore({
+const defaultState = {
     currentUser: fromJS({
         timezone: 'America/New_York',
     }),
-})
+    integrations: toImmutable({
+        integrations: [],
+    }),
+    billing: toImmutable({
+        products: [],
+    }),
+}
+const store = mockStore(defaultState)
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>
@@ -135,6 +153,8 @@ describe('KnowledgeEditorGuidance', () => {
         })
         updateGuidanceArticle.mockResolvedValue(guidanceArticle)
         createGuidanceArticle.mockResolvedValue(guidanceArticle)
+
+        mockUseStoreIntegrations.mockReturnValue([])
 
         mockedFetchResourceMetrics.mockReturnValue({
             isLoading: false,
@@ -173,7 +193,7 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -207,7 +227,7 @@ describe('KnowledgeEditorGuidance', () => {
 
     it('toggles fullscreen mode in edit mode', () => {
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -240,7 +260,7 @@ describe('KnowledgeEditorGuidance', () => {
 
     it('fetches the content if guidanceArticleId is changed', () => {
         const { rerender } = render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -266,7 +286,7 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         rerender(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -301,7 +321,7 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         const { getByLabelText } = render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -336,7 +356,7 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -371,7 +391,7 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -400,7 +420,7 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -438,7 +458,7 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -463,7 +483,7 @@ describe('KnowledgeEditorGuidance', () => {
 
     it('shows delete and duplicate buttons in read mode', () => {
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -481,9 +501,7 @@ describe('KnowledgeEditorGuidance', () => {
         expect(
             screen.getByRole('button', { name: 'delete' }),
         ).toBeInTheDocument()
-        expect(
-            screen.getByRole('button', { name: 'duplicate' }),
-        ).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'copy' })).toBeInTheDocument()
     })
 
     it('renders create mode with empty state', () => {
@@ -495,7 +513,7 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -516,51 +534,6 @@ describe('KnowledgeEditorGuidance', () => {
         expect(screen.getByRole('button', { name: 'test' })).toBeDisabled()
     })
 
-    it('calls onCopy callback after successful article duplication', async () => {
-        const user = userEvent.setup()
-        const onCopy = jest.fn()
-
-        const duplicateGuidanceArticle = jest.fn().mockResolvedValue(undefined)
-
-        jest.mocked(
-            require('pages/aiAgent/hooks/useGuidanceArticleMutation')
-                .useGuidanceArticleMutation,
-        ).mockReturnValue({
-            updateGuidanceArticle,
-            createGuidanceArticle,
-            deleteGuidanceArticle: jest.fn(),
-            duplicateGuidanceArticle,
-            isGuidanceArticleUpdating: false,
-        })
-
-        render(
-            <Provider store={mockStore({})}>
-                <KnowledgeEditorGuidance
-                    shopName="Test Shop"
-                    shopType="Test Shop Type"
-                    guidanceArticleId={1}
-                    onClose={jest.fn()}
-                    onCopy={onCopy}
-                    guidanceMode="read"
-                    isOpen={true}
-                    guidanceArticles={[]}
-                />
-            </Provider>,
-        )
-
-        await act(() =>
-            user.click(screen.getByRole('button', { name: 'duplicate' })),
-        )
-
-        await waitFor(() => {
-            expect(duplicateGuidanceArticle).toHaveBeenCalledWith(
-                1,
-                'Test Shop',
-            )
-            expect(onCopy).toHaveBeenCalledTimes(1)
-        })
-    })
-
     it('disables Publish button when form is invalid in edit mode', () => {
         // Override the mock to return a draft article with empty content
         mockUseGuidanceArticle.mockReturnValue({
@@ -575,7 +548,7 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -603,7 +576,7 @@ describe('KnowledgeEditorGuidance', () => {
         const onClose = jest.fn()
 
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -627,7 +600,7 @@ describe('KnowledgeEditorGuidance', () => {
 
     it('toggles ai agent status', async () => {
         render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
@@ -667,7 +640,7 @@ describe('KnowledgeEditorGuidance', () => {
     describe('Split View - Playground Panel', () => {
         it('should toggle playground panel when test button is clicked', async () => {
             const { queryByTestId } = render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -704,7 +677,7 @@ describe('KnowledgeEditorGuidance', () => {
 
         it('should render both editor and playground when test button is clicked', async () => {
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -738,7 +711,7 @@ describe('KnowledgeEditorGuidance', () => {
 
         it('should maintain editor content when playground is toggled', async () => {
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -770,7 +743,7 @@ describe('KnowledgeEditorGuidance', () => {
 
         it('should display playground alongside fullscreen mode', async () => {
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -818,7 +791,7 @@ describe('KnowledgeEditorGuidance', () => {
             const onClose = jest.fn()
 
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -844,7 +817,7 @@ describe('KnowledgeEditorGuidance', () => {
             const onClose = jest.fn()
 
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -936,7 +909,7 @@ describe('KnowledgeEditorGuidance', () => {
     describe('isOpen behavior', () => {
         it('returns null when isOpen is false', () => {
             const { container } = render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -954,7 +927,7 @@ describe('KnowledgeEditorGuidance', () => {
 
         it('renders content when isOpen is true', () => {
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -980,7 +953,7 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -1005,7 +978,7 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -1025,7 +998,7 @@ describe('KnowledgeEditorGuidance', () => {
     describe('useGuidanceArticle hook parameters', () => {
         it('passes correct parameters when editing an article', () => {
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -1055,7 +1028,7 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -1082,7 +1055,7 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -1110,7 +1083,7 @@ describe('KnowledgeEditorGuidance', () => {
             const onClickNext = jest.fn()
 
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -1141,7 +1114,7 @@ describe('KnowledgeEditorGuidance', () => {
 
         it('hides navigation buttons when callbacks are not provided', () => {
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -1164,7 +1137,7 @@ describe('KnowledgeEditorGuidance', () => {
 
         it('hides navigation buttons in edit mode even when callbacks are provided', () => {
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
@@ -1203,7 +1176,7 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             render(
-                <Provider store={mockStore({})}>
+                <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
