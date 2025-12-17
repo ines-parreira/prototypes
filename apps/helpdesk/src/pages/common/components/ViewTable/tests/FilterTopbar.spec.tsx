@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -10,7 +10,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { mockSearchRank } from 'fixtures/searchRank'
 import { view as viewFixture } from 'fixtures/views'
@@ -50,7 +49,8 @@ jest.mock('@repo/logging')
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const mockUseSplitTicketViewMock = useSplitTicketView as jest.Mock
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

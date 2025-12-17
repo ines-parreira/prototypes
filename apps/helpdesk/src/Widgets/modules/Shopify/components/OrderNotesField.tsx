@@ -1,11 +1,10 @@
 import type { ChangeEvent } from 'react'
 import { useContext, useEffect, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'

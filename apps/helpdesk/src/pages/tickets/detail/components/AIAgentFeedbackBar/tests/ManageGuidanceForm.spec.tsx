@@ -24,7 +24,8 @@ jest.mock('../utils', () => ({
     getGuidanceUrl: jest.fn(() => '/guidance/1'),
 }))
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => false),
 }))
 

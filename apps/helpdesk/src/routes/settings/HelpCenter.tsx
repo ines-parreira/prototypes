@@ -1,7 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
 import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNewView'
 import HelpCenterStartView from 'pages/settings/helpCenter/components/HelpCenterStartView'

@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
@@ -12,7 +13,6 @@ import thunk from 'redux-thunk'
 import { JobType } from '@gorgias/helpdesk-queries'
 
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import type { TagDropdownMenu } from 'tags'
 
 import type ApplyMacro from '../ApplyMacro'
@@ -23,7 +23,7 @@ import type TeamAssigneeDropdownMenu from '../TeamAssigneeDropdownMenu'
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock(

@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -9,7 +9,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
 import { useChannelsTableSetting } from 'domains/reporting/hooks/useChannelsTableConfigSetting'
 import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
@@ -62,7 +61,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/hooks/useIsHrtAiEnabled')

@@ -1,14 +1,13 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { shortcuts } from '@repo/utils'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import KeyboardHelp from '../KeyboardHelp'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 const badgeContentMock = 'badgeContentMock'

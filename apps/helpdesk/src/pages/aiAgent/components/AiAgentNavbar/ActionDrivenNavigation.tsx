@@ -1,8 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { NavLink } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
-import { useFlag } from 'core/flags'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import {

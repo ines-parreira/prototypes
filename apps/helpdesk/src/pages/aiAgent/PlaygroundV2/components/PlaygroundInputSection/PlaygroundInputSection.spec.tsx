@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -7,7 +8,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
@@ -216,7 +216,8 @@ jest.mock('@repo/utils', () => ({
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore([thunk])
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)

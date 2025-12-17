@@ -1,11 +1,11 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
-import { useFlag } from 'core/flags'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
 import Timeline from 'timeline/Timeline'
@@ -27,7 +27,7 @@ jest.mock('../TicketHeaderWrapper/TicketHeaderWrapper', () => () => (
 ))
 jest.mock('../ReplyForm', () => () => <div>ReplyForm</div>)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 
 const TimelineMock = assumeMock(Timeline)

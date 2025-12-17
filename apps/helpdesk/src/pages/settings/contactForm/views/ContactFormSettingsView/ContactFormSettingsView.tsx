@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import {
     Link,
@@ -16,7 +16,6 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
 import { TicketChannel } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

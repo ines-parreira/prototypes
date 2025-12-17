@@ -1,11 +1,10 @@
 import type { ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Redirect, useParams } from 'react-router-dom'
 
 import { Heading, LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import useAppSelector from 'hooks/useAppSelector'

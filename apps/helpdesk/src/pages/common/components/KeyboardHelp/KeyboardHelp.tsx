@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import {
     shortcuts as allShortcuts,
     shortcutManager,
@@ -11,7 +11,6 @@ import { omit } from 'lodash'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'

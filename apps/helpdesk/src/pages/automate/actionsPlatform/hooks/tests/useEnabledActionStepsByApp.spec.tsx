@@ -1,8 +1,8 @@
+import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ulid } from 'ulidx'
 
-import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
@@ -11,7 +11,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import useApps from '../useApps'
 import useEnabledActionStepsByApp from '../useEnabledActionStepsByApp'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('models/workflows/queries')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 

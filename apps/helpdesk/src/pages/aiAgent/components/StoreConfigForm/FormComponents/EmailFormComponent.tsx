@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { useParams } from 'react-router'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { EmailIntegrationListSelection } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'

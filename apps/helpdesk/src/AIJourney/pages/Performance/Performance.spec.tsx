@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -16,7 +17,6 @@ import {
 import { abandonedCartKpisMock } from 'AIJourney/utils/test-fixtures/abandonedCartKpisMock'
 import { journeyKpisMock } from 'AIJourney/utils/test-fixtures/journeyKpisMock'
 import { appQueryClient } from 'api/queryClient'
-import { useFlag } from 'core/flags'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import { shopifyIntegration } from 'fixtures/integrations'
@@ -87,7 +87,7 @@ const useAIJourneyKpisMock = assumeMock(useAIJourneyKpis)
 jest.mock('AIJourney/hooks/useKpisPerJourney/useKpisPerJourney')
 const useKpisPerJourneyMock = assumeMock(useKpisPerJourney)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 describe('<Performance />', () => {

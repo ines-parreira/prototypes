@@ -1,7 +1,6 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
-
-import { useFlag } from 'core/flags'
 
 import type { InteractionFilterType } from '../../types'
 import Filters from '../Filters'
@@ -9,7 +8,8 @@ import { InteractionType } from '../InteractionType'
 import { RangeFilter } from '../RangeFilter'
 import { TicketStatusFilter } from '../TicketStatusFilter'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

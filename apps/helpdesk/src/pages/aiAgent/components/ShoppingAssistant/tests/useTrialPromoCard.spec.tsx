@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -7,7 +7,6 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { useFlag } from 'core/flags'
 import { shopifyIntegration } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
 import useAppSelector from 'hooks/useAppSelector'
@@ -32,7 +31,7 @@ import { useTrialPromoCard } from '../hooks/useTrialPromoCard'
 
 // Mock dependencies
 jest.mock('@repo/logging')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')

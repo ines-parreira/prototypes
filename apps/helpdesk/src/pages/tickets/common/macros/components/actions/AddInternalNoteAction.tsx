@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { EditorState } from 'draft-js'
 import type { List, Map } from 'immutable'
 import {
@@ -12,7 +12,6 @@ import {
 } from 'reactstrap'
 
 import { UploadType } from 'common/types'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import type { IntegrationType } from 'models/integration/constants'
 import { MacroActionName } from 'models/macroAction/types'

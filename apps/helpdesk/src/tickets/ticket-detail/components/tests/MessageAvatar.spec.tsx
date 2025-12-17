@@ -1,10 +1,10 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 
 import { LegacyAvatar as Avatar } from '@gorgias/axiom'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import * as predicates from 'models/ticket/predicates'
 import { getAvatar } from 'pages/common/components/Avatar/utils'
 
@@ -14,7 +14,10 @@ jest.mock('@gorgias/axiom', () => ({
     LegacyAvatar: jest.fn(() => null),
 }))
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('models/ticket/predicates', () => ({

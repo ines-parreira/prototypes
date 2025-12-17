@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
@@ -11,7 +12,6 @@ import type {
 } from '@gorgias/helpdesk-queries'
 import { PhoneFunction } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -46,7 +46,8 @@ jest.mock('state/integrations/actions')
 const fetchIntegrationsMock = assumeMock(fetchIntegrations)
 fetchIntegrationsMock.mockReturnValue('mockFetchIntegrations' as any)
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const useFlagMock = assumeMock(useFlag)

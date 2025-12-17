@@ -1,10 +1,9 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { NavLink } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import standalonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import type { ArticleTemplate, HelpCenter } from 'models/helpCenter/types'
 import { Banner } from 'pages/common/components/Banner'

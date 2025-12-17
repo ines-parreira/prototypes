@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import * as segment from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -8,7 +9,6 @@ import { fromJS } from 'immutable'
 import moment from 'moment'
 import { MemoryRouter, Route } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { earlyAccessMonthlyAutomationPlan } from 'fixtures/productPrices'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -50,7 +50,7 @@ jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/trial/hooks/useNotifyAdmins')
 jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')
 jest.mock('pages/aiAgent/trial/hooks/useAiAgentTrialOnboarding')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseAiAgentUpgradePlan = assumeMock(useAiAgentUpgradePlan)

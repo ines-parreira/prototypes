@@ -1,12 +1,12 @@
+import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { getEnvironment, GorgiasUIEnv } from '@repo/utils'
 
-import { useFlag } from 'core/flags'
 import type { ShopifyIntegration } from 'models/integration/types'
 
 import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallation'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('@repo/utils')
 
 const mockUseFlag = useFlag as jest.Mock

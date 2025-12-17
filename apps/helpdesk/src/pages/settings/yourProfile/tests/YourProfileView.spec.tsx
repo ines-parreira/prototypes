@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, waitFor, within } from '@testing-library/react'
@@ -15,7 +16,6 @@ import {
 
 import { appQueryClient } from 'api/queryClient'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { ThemeProvider } from 'core/theme'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -107,7 +107,8 @@ jest.mock('moment-timezone', () => {
     }
 })
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

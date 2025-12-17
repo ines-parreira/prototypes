@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import Clipboard from 'clipboard'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom'
 import { Button, Separator } from '@gorgias/axiom'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'

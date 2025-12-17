@@ -43,9 +43,9 @@ jest.mock('pages/aiAgent/PlaygroundV2/contexts/EventsContext', () => ({
     EventsProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
 }))
 
-jest.mock('core/flags/hooks/useFlag', () => ({
-    __esModule: true,
-    default: jest.fn(() => true),
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
 }))
 
 jest.mock('models/aiAgent/queries', () => ({

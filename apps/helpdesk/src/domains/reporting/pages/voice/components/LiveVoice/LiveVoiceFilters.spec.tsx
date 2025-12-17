@@ -1,8 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { cleanup, render } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import {
     FilterComponentKey,
     FilterKey,
@@ -20,7 +19,7 @@ jest.spyOn(
     'getPageStatsFiltersWithLogicalOperators',
 ).mockReturnValue({} as any)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const useFlagMock = assumeMock(useFlag)
 

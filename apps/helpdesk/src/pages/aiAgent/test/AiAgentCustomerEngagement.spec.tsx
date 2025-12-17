@@ -1,6 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
+import { getLDClient } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { ldClientMock } from 'jest-launchdarkly-mock'
@@ -11,7 +12,6 @@ import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfig
 import * as chatColorHook from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import * as contextHook from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { getLDClient } from 'utils/launchDarkly'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
 import { AiAgentCustomerEngagement } from '../AiAgentCustomerEngagement'

@@ -1,10 +1,10 @@
+import { useFlag } from '@repo/feature-flags'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
@@ -16,7 +16,7 @@ import {
 } from '../../../../../../models/integration/types'
 import GorgiasChatIntegrationList from '../GorgiasChatIntegrationList'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const mockUseFlag = useFlag as jest.Mock

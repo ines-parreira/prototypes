@@ -1,14 +1,14 @@
+import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import { useDownloadOverViewData } from 'domains/reporting/hooks/support-performance/overview/useDownloadOverviewData'
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
 import { DownloadOverviewData } from 'domains/reporting/pages/support-performance/overview/DownloadOverviewData'
 import { saveZippedFiles } from 'utils/file'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('@repo/logging')

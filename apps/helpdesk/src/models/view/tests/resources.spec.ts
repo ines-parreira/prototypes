@@ -3,7 +3,6 @@ import _omit from 'lodash/omit'
 
 import { view } from 'fixtures/views'
 import client from 'models/api/resources'
-import { getLDClient } from 'utils/launchDarkly'
 
 import {
     createView,
@@ -19,9 +18,19 @@ const draftView: ViewDraft = {
     category: null,
 } as any
 
-jest.mock('utils/launchDarkly')
-const variationMock = getLDClient().variation as jest.Mock
-;(getLDClient().waitForInitialization as jest.Mock).mockResolvedValue({})
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
+    })),
+}))
+const variationMock = require('@repo/feature-flags').getLDClient()
+    .variation as jest.Mock
 
 describe('view resources', () => {
     beforeEach(() => {

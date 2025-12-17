@@ -1,9 +1,9 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { view } from 'fixtures/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useViewId from 'hooks/useViewId'
@@ -13,7 +13,10 @@ import { mockStore } from 'utils/testing'
 
 import TicketNavbarViewLink from '../TicketNavbarViewLink'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())

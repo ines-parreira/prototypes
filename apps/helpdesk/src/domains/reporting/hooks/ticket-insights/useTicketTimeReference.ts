@@ -1,10 +1,9 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { useFlag } from 'core/flags'
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
 
 export enum Entity {

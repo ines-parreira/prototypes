@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
@@ -10,14 +10,13 @@ import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 import Dimension from 'auto_qa/components/Dimension'
 import type { SupportedTicketQAScoreDimension } from 'auto_qa/config'
 import { dimensionConfig } from 'auto_qa/config'
-import { useFlag } from 'core/flags'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { AutoQATicketInteraction: 'auto-qa-ticket-interaction' },
 }))
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 describe('Dimension', () => {

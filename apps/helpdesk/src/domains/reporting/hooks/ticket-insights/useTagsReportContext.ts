@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useFlag } from 'core/flags'
 import { useTagResultsSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
 import {
     Entity,

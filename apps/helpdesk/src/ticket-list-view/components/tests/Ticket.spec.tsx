@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -5,7 +6,6 @@ import { userEvent } from '@testing-library/user-event'
 import { mockTicketTranslationCompact } from '@gorgias/helpdesk-mocks'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import type { Customer } from 'models/customer/types'
 import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'
 import type { TicketCompact } from 'ticket-list-view/types'
@@ -13,7 +13,10 @@ import { renderWithRouter } from 'utils/testing'
 
 import Ticket from '../Ticket'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('ticket-list-view/hooks/useIsTicketViewed', () => jest.fn())

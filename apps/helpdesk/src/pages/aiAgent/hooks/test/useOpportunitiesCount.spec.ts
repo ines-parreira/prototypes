@@ -1,6 +1,6 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { useFlag } from 'core/flags'
 import { useKnowledgeServiceOpportunities } from 'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities'
 import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 
@@ -16,7 +16,7 @@ jest.mock('pages/aiAgent/hooks/useShopIntegrationId', () => ({
     useShopIntegrationId: jest.fn(() => undefined),
 }))
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockUseHelpCenterAIArticlesLibrary = assumeMock(
     useHelpCenterAIArticlesLibrary,

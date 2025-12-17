@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { history } from '@repo/routing'
 import { useLocation } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import Modal from 'pages/common/components/modal/Modal'

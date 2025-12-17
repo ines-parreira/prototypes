@@ -1,9 +1,8 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 
 import navbarCss from 'assets/css/navbar.less'
 import { ActiveContent, Navbar } from 'common/navigation'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import { getHasAutomate } from 'state/billing/selectors'

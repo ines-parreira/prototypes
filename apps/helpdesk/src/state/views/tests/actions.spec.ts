@@ -45,7 +45,6 @@ import { initialState } from 'state/views/reducers'
 import * as viewsSelectors from 'state/views/selectors'
 import { ViewNavDirection } from 'state/views/types'
 import { getAST } from 'utils'
-import { getLDClient } from 'utils/launchDarkly'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -73,9 +72,19 @@ const searchCustomersWithHighlightsMock = assumeMock(
     searchCustomersWithHighlights,
 )
 
-jest.mock('utils/launchDarkly')
-const variationMock = getLDClient().variation as jest.Mock
-;(getLDClient().waitForInitialization as jest.Mock).mockResolvedValue({})
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
+    })),
+}))
+const variationMock = require('@repo/feature-flags').getLDClient()
+    .variation as jest.Mock
 
 const store = mockStore({
     views: initialState,

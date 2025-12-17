@@ -1,12 +1,11 @@
 import type { FC } from 'react'
 import { useRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import type { Article, HelpCenter } from 'models/helpCenter/types'
 import DropdownButton from 'pages/common/components/button/DropdownButton'

@@ -1,12 +1,11 @@
 import type { ComponentType, ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
 import { initialState } from 'state/billing/reducers'
@@ -25,7 +24,7 @@ const hookOptions = {
     )) as ComponentType,
 }
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 describe('useIsConvertSubscriber()', () => {

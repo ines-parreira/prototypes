@@ -57,7 +57,8 @@ jest.mock('hooks/useAppSelector', () => {
     }
 })
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

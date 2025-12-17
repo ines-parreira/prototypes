@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -5,7 +6,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { PageEmbedmentFixture } from 'pages/settings/contactForm/fixtures/pageEmbedment'
 import { useGetShopifyPages } from 'pages/settings/contactForm/queries'
@@ -17,7 +17,7 @@ import { CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID } from '../../Contact
 import type { ContactFormAutoEmbedPublishSectionProps } from '../ContactFormAutoEmbedPublishSection'
 import ContactFormAutoEmbedPublishSection from '../ContactFormAutoEmbedPublishSection'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockUseFlag = useFlag as jest.Mock
 

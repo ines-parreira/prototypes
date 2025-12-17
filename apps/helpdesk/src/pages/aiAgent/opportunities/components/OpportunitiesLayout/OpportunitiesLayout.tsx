@@ -1,10 +1,9 @@
 import { useEffect, useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'

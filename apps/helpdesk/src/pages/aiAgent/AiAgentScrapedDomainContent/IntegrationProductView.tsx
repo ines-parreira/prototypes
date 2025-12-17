@@ -1,10 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 
 import type { Product } from 'constants/integrations/types/shopify'
-import { useFlag } from 'core/flags'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ControlledCollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
 import { sanitizeHtmlMinimal } from 'utils/html'

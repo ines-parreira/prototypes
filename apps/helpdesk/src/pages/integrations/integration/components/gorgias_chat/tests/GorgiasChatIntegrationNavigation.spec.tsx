@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -7,7 +8,6 @@ import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
-import { useFlag } from 'core/flags'
 import { entitiesInitialState } from 'fixtures/entities'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -23,7 +23,7 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
     default: () => [

@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useFlag } from 'core/flags'
 import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import { getTimezone } from 'state/currentUser/selectors'

@@ -1,10 +1,9 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import aiAgentPoster from 'assets/img/pre-trial-banner-ai-agent.png'
 import shoppingAssistantPoster from 'assets/img/pre-trial-banner-thumbnail.png'
 import shoppingAssistantTrialVideo from 'assets/video/ai-agent-sales-video.mp4'
 import aiAgentTrialVideo from 'assets/video/ai-agent-trial-promo.mp4'
-import { useFlag } from 'core/flags'
 
 import type { TrialType } from '../types/ShoppingAssistant'
 

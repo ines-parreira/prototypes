@@ -1,7 +1,7 @@
 import type { ComponentType } from 'react'
 import type React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -9,7 +9,6 @@ import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
-import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
 import type { ShopifyIntegrationMeta } from 'models/integration/types/shopify'
 import { getStoreIntegrations } from 'state/integrations/selectors'
@@ -35,7 +34,7 @@ const defaultState = {
     }),
 } as RootState
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 jest.mock('state/integrations/selectors', () => ({
     getStoreIntegrations: jest.fn(),

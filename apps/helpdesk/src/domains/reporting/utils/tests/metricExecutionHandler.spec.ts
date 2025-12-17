@@ -26,7 +26,8 @@ import { reportError } from 'utils/errors'
 
 jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
 
-jest.mock('utils/launchDarkly', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     getLDClient: jest.fn(),
 }))
 

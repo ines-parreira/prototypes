@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
@@ -6,7 +7,6 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import {
     basicMonthlyAutomationPlan,
@@ -61,7 +61,7 @@ jest.mock('../../CancelAAOModal/CancelAAOModal')
 
 const CancelAAOModalMock = assumeMock(CancelAAOModal)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const useFlagMock = assumeMock(useFlag)
 

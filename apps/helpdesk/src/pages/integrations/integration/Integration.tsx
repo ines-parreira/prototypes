@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useAsyncFn, useEffectOnce, useUpdateEffect } from '@repo/hooks'
 import { history } from '@repo/routing'
 import classNames from 'classnames'
@@ -13,7 +13,6 @@ import { Container } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useFlag } from 'core/flags'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { EmailProvider } from 'models/integration/constants'

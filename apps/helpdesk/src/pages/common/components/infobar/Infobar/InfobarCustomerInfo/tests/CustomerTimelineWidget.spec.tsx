@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom'
 
 import type { TicketCompact } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
@@ -28,7 +27,7 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector', () => jest.fn((selector) => selector()))
 jest.mock('state/widgets/selectors', () => ({

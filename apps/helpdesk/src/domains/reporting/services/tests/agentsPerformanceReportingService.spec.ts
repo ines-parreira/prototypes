@@ -23,7 +23,7 @@ import {
 import * as files from 'utils/file'
 
 jest.mock('utils/file')
-jest.mock('utils/launchDarkly')
+jest.mock('@repo/feature-flags')
 
 const emptyReportData = {
     value: 1,

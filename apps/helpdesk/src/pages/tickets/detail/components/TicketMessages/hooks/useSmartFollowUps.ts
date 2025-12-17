@@ -1,7 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { z } from 'zod'
 
-import { useFlag } from 'core/flags'
 import type { Meta, SmartFollowUp } from 'models/ticket/types'
 import { SmartFollowUpType } from 'models/ticket/types'
 

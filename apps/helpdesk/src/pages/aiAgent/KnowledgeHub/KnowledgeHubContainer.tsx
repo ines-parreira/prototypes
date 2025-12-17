@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Box, Modal, OverlayHeader } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import { useAllResourcesMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import {

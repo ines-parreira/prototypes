@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,7 +8,6 @@ import { MemoryRouter, useHistory, useParams } from 'react-router-dom'
 import type { Store } from 'redux'
 
 import { appQueryClient } from 'api/queryClient'
-import { useFlag } from 'core/flags'
 import { useAllResourcesMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -139,7 +139,7 @@ jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor')
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubSnippetEditor')
 jest.mock('domains/reporting/models/queryFactories/knowledge/resourceMetrics')
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 // Global variables to capture the onClose callbacks
 let capturedGuidanceEditorOnClose: (() => void) | null = null

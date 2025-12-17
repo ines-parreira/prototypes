@@ -1,10 +1,9 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { useMainNavigationItems } from 'common/navigation/hooks/useMainNavigationItems'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { BASE_STATS_PATH } from 'routes/constants'
 
@@ -15,7 +14,7 @@ jest.mock('pages/aiAgent/hooks/useHasAiAgentMenu', () => ({
 }))
 const useHasAiAgentMenuMock = assumeMock(useHasAiAgentMenu)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 
 describe('MainNavigation', () => {

@@ -1,13 +1,13 @@
 import type { ComponentProps } from 'react'
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import type { QueryClient } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { useRouteMatch } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { macros } from 'fixtures/macro'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -62,7 +62,8 @@ jest.mock(
 )
 const mockUseRouteMatch = useRouteMatch as jest.Mock
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

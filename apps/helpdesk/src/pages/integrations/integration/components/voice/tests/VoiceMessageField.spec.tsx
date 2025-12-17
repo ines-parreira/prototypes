@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -6,7 +7,6 @@ import type { UploadedCustomRecording } from '@gorgias/helpdesk-queries'
 import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import type { VoiceMessage } from 'models/integration/types'
 import { VoiceMessageType } from 'models/integration/types'
@@ -36,7 +36,7 @@ const uploadResponse = (isLoading = false) =>
         mutate: mutateUploadMock,
     }) as unknown as ReturnType<typeof useUploadCustomVoiceRecording>
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagsMock = assumeMock(useFlag)
 
 describe('VoiceMessageField', () => {

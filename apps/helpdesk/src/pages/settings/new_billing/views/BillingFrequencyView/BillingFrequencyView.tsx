@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory } from 'react-router-dom'
 
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
-import { useFlag } from 'core/flags'
 import type { Plan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import { isOtherCadenceUpgrade } from 'models/billing/utils'

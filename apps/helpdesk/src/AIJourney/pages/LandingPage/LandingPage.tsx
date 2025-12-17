@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { motion } from 'framer-motion'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Button, PerformanceBadge } from 'AIJourney/components'
 import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
 import { useJourneyContext } from 'AIJourney/providers'
-import { useFlag } from 'core/flags'
 
 import { AnimatedText } from './components/AnimatedText'
 import { JourneyOption } from './components/JourneyOption'

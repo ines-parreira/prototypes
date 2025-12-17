@@ -1,7 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 
-import { getLDClient } from 'utils/launchDarkly'
-
 import type { CampaignProduct } from '../../types/CampaignProduct'
 import {
     attachUtmToCampaignProduct,
@@ -10,11 +8,21 @@ import {
     shouldAppendUtmParam,
 } from '../attachUtmParams'
 
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({
+const allFlagsMock = jest.fn(() => ({
     [FeatureFlagKey.RevenueDisableUtmParams]: false,
-})
+}))
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: allFlagsMock,
+    })),
+}))
 
 const MOCK_PRODUCT: CampaignProduct = {
     id: 1,

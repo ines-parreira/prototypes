@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 
@@ -10,7 +10,6 @@ import {
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { getHasAutomate } from 'state/billing/selectors'
@@ -34,7 +33,7 @@ jest.mock('../GlobalNavigationSpotlight', () => ({
 jest.mock('../NotificationsItem', () => () => <div>NotificationsItem</div>)
 jest.mock('../UserItem', () => () => <div>UserItem</div>)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('pages/aiAgent/hooks/useHasAiAgentMenu', () => ({

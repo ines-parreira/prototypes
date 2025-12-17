@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -9,7 +9,6 @@ import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
 import type { User } from 'config/types/user'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import {
     canMonitorCall,
     getCallMonitorability,
@@ -33,7 +32,10 @@ const voiceCall = {
 const icon = 'phone'
 const inCallAgent = { id: 789, name: 'Guybrush Threepwood' }
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('pages/common/components/MonitorCallButton/MonitorCallButton')

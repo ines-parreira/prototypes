@@ -1,9 +1,8 @@
 import { useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 
-import { useFlag } from 'core/flags'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { AiAgentPreviewModeSection } from 'pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection'
 import {

@@ -1,9 +1,8 @@
 import { useCallback, useEffect } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage, useToggle } from '@repo/hooks'
 
-import { useFlag } from 'core/flags'
 import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
 
 const TRANSLATIONS_ONBOARDING_MODAL_KEY =

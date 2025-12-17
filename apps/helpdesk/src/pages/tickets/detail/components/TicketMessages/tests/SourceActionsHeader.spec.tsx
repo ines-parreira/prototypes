@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useDebouncedValue, useElementSize } from '@repo/hooks'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -13,7 +13,6 @@ import {
 
 import { appQueryClient } from 'api/queryClient'
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isTicketMessageDeleted } from 'models/ticket/predicates'
@@ -68,7 +67,8 @@ jest.mock(
             </div>
         ),
 )
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

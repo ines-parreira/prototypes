@@ -1,3 +1,4 @@
+import { getLDClient } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -21,7 +22,6 @@ import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboa
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import type { RootState, StoreDispatch } from 'state/types'
-import { getLDClient } from 'utils/launchDarkly'
 import { renderWithRouter } from 'utils/testing'
 
 import { EngagementStep } from '../EngagementStep'

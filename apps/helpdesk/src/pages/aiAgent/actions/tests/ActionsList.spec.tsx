@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -6,7 +6,6 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 import {
@@ -24,7 +23,8 @@ import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import ActionsList from '../components/ActionsList'
 import type { StoresWorkflowConfiguration } from '../types'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)

@@ -1,7 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 import { parse } from 'qs'
 
-import { getLDClient } from 'utils/launchDarkly'
 import { attachSearchParamsToUrl } from 'utils/url'
 
 import type { CampaignProduct } from '../types/CampaignProduct'

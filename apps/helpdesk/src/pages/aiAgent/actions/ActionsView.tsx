@@ -1,11 +1,10 @@
 import { useEffect } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { Link, useParams } from 'react-router-dom'
 
 import emptyStateTemplate from 'assets/img/actions/empty-state-template.png'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { getLDClient } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
@@ -10,7 +11,6 @@ import type { Store } from 'redux'
 import activityTracker from 'services/activityTracker'
 import type { RootState } from 'state/types'
 import type { GorgiasInitialState } from 'types'
-import { getLDClient } from 'utils/launchDarkly'
 
 import Root from '../Root'
 
@@ -66,7 +66,7 @@ jest.mock('main/app', () => ({
 }))
 jest.mock('routes', () => () => <div>RoutesWrapper</div>)
 jest.mock('services/activityTracker', () => ({ createUserContext: jest.fn() }))
-jest.mock('utils/launchDarkly', () => ({
+jest.mock('@repo/feature-flags', () => ({
     getLDClient: jest.fn(),
     LDContext: {},
 }))

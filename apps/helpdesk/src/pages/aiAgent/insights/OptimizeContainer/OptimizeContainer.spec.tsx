@@ -3,6 +3,7 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
@@ -12,7 +13,6 @@ import moment from 'moment/moment'
 import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { AdjustedPeriodFilter } from 'pages/aiAgent/insights/widgets/AdjustedPeriodFilter/AdjustedPeriodFilter'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -56,7 +56,7 @@ jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: jest.fn(() => <></>),
 }))
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)
 
 const defaultStore = {

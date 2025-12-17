@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { history } from '@repo/routing'
 import { List } from 'immutable'
@@ -11,7 +11,6 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
-import { useFlag } from 'core/flags'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import type { CustomField } from 'custom-fields/types'

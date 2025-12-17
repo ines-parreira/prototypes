@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react'
 
-import type { FeatureFlagKey } from '@repo/feature-flags'
-
-import { getLDClient } from 'utils/launchDarkly'
+import type { FeatureFlagKey } from './featureFlagKey'
+import { getLDClient } from './launchdarkly'
 
 /**
  * @param flag - The feature flag to check from the FeatureFlagKey enum
  * @param defaultValue - The default value to return if the feature flag is not set, defaults to false
  * @returns The value of the feature flag
  */
-export default function useFlag<T = boolean>(
+export function useFlag<T = boolean>(
     flag: FeatureFlagKey,
     defaultValue: T = false as T,
 ): T {

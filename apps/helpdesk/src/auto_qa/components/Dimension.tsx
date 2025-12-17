@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
@@ -11,7 +11,6 @@ import {
 import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 
 import { dimensionOrderOfManualDimensions } from 'auto_qa/config'
-import { useFlag } from 'core/flags'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

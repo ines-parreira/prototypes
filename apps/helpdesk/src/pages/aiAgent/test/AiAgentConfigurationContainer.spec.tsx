@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
@@ -8,7 +8,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import * as billingFixtures from 'fixtures/billing'
@@ -194,7 +193,7 @@ const mockedUseHandoverCustomizationChatFallbackSettingsFormProps = {
     formValues: {},
 }
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 const mockStore = configureMockStore([thunk])

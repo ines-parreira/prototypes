@@ -31,7 +31,6 @@ ignore:
   - src/pages/settings/helpCenter/utils/algolia.ts
   - src/pages/common/hooks/useAutoScrollOnDragging.ts
   - src/routes/Routes.tsx
-  - src/utils/launchDarkly.ts
   - src/pages/automate/workflows/utils/testVisualBuilderScaffolding.tsx
   - src/tests/mockedReactFlow.ts
   - domains/**/index.ts

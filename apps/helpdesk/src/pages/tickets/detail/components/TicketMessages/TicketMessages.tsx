@@ -1,13 +1,12 @@
 import { useEffect, useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import type { Moment } from 'moment'
 
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetEarliestExecution } from 'models/knowledgeService/queries'
 import {

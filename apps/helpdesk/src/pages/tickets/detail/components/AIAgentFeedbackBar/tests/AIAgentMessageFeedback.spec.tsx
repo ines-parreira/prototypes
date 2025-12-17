@@ -1,3 +1,4 @@
+import { getLDClient } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -16,7 +17,6 @@ import type { TicketMessage } from 'models/ticket/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { getLDClient } from 'utils/launchDarkly'
 
 import AIAgentMessageFeedback, {
     FEEDBACK_MESSAGE_ACTIONS_TEST_ID,

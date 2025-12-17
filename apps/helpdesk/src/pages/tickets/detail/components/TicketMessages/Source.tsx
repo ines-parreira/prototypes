@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
 import { DateAndTimeFormatting } from '@repo/utils'
 import classnames from 'classnames'
@@ -8,7 +8,6 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { TicketChannel } from 'business/types/ticket'
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import { isTicketMessageSourceType } from 'models/ticket/predicates'
 import type {
     Meta,

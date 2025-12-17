@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
 import type { BannerNotification } from 'state/notifications/types'
 import { NotificationStyle } from 'state/notifications/types'
@@ -20,7 +20,8 @@ jest.mock('../../Context', () => ({
     ...jest.requireActual<Record<string, unknown>>('../../Context'),
     useBannersContext: jest.fn(),
 }))
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 jest.mock('../../hooks/useBannerCarousel')

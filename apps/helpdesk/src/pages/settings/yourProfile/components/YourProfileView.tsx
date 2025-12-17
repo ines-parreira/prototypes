@@ -1,7 +1,7 @@
 import type { SyntheticEvent } from 'react'
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
@@ -23,7 +23,6 @@ import type { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 
 import { UploadType } from 'common/types'
 import { TranslationSupportedLanguagesInEnglish } from 'constants/languages'
-import { useFlag } from 'core/flags'
 import { useSetTheme, useTheme } from 'core/theme'
 import type { HelpdeskThemeName } from 'core/theme'
 import Group from 'pages/common/components/layout/Group'

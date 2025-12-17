@@ -1,11 +1,9 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
-
-import { useFlag } from 'core/flags'
 
 import { useConvertBundleInChatSnippetEnabled } from '../useConvertBundleInChatSnippetEnabled'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 describe('useConvertBundleInChatSnippetEnabled', () => {
     it('should return the value of the ConvertChatInstallSnippet feature flag', () => {

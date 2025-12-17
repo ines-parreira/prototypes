@@ -1,10 +1,10 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { useFlag } from 'core/flags'
 import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)

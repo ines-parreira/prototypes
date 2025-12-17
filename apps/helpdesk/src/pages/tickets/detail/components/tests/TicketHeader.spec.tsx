@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -24,7 +24,6 @@ import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -169,7 +168,7 @@ const mockUseTicketsTranslatedProperties =
 
 const useParamsMock = useParams as jest.Mock
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = useFlag as jest.Mock
 
 jest.mock(

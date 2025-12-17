@@ -1,7 +1,7 @@
 import type { SyntheticEvent } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { produce } from 'immer'
@@ -52,7 +52,6 @@ import {
     isTextsMultiLanguage,
 } from 'config/integrations/gorgias_chat'
 import type { LanguageChat } from 'constants/languages'
-import { useFlag } from 'core/flags'
 import Launcher from 'gorgias-design-system/Launcher/Launcher'
 import type {
     GorgiasChatAvatarSettings,

@@ -2,7 +2,7 @@ import type { MouseEvent } from 'react'
 import type React from 'react'
 import { Fragment, useCallback, useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
@@ -20,7 +20,6 @@ import {
     getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
 import type { Language } from 'constants/languages'
-import { useFlag } from 'core/flags'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import BadgeItem from 'pages/common/components/BadgetItem'
 import IconButton from 'pages/common/components/button/IconButton'

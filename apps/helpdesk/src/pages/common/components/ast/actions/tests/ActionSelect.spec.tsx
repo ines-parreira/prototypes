@@ -1,8 +1,7 @@
+import { useFlag } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-
-import { useFlag } from 'core/flags'
 
 import ActionSelect from '../ActionSelect'
 import { actionsConfig } from '../config'
@@ -19,7 +18,8 @@ const commonProps = {
 
 const systemRule = fromJS({ type: 'system' })
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

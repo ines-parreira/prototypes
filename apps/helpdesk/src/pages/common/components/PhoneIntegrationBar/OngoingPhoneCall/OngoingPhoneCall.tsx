@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Call } from '@twilio/voice-sdk'
 import type { AxiosError } from 'axios'
 import classNames from 'classnames'
@@ -18,7 +18,6 @@ import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 
 import whisperingNotification from 'assets/audio/phone/whispering-notification.mp3'
 import { TwilioSocketEventType } from 'business/twilio'
-import { useFlag } from 'core/flags'
 import {
     gatherCallContext,
     getCallSid,

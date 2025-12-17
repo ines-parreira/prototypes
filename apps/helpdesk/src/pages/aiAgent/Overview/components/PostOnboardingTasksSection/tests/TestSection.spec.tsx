@@ -15,7 +15,8 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => false),
 }))
 
@@ -28,7 +29,7 @@ jest.mock('pages/aiAgent/PlaygroundV2/AiAgentPlayground', () => ({
     },
 }))
 
-const { useFlag } = require('core/flags')
+const { useFlag } = require('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 describe('TestSection', () => {

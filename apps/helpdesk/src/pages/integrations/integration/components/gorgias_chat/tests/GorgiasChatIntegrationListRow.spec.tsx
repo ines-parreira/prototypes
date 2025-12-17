@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import type { List, Map } from 'immutable'
@@ -8,7 +9,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatCreationWizardStatus,
@@ -24,7 +24,7 @@ import GorgiasChatIntegrationListRow, {
     GorgiasChatIntegrationStatusFeedbackMapping,
 } from '../GorgiasChatIntegrationListRow'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const mockUseFlag = useFlag as jest.Mock

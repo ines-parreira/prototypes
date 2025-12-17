@@ -1,7 +1,7 @@
 import type React from 'react'
 import { useEffect } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import axios from 'axios'
 import {
     Route,
@@ -11,7 +11,6 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Loader from 'pages/common/components/Loader/Loader'

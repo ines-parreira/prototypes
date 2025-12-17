@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -7,7 +7,6 @@ import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 
-import { useFlag } from 'core/flags'
 import {
     basicMonthlyHelpdeskPlan,
     customHelpdeskPlan,
@@ -42,7 +41,7 @@ jest.mock('@repo/routing', () => ({
     },
 }))
 jest.mock('../hooks/useEmailOnboarding')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('hooks/useAppSelector')
 
 const fetchEmailDomainsMock = assumeMock(fetchEmailDomains)

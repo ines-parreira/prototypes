@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import type { Call } from '@twilio/voice-sdk'
@@ -13,7 +13,6 @@ import thunk from 'redux-thunk'
 import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 
 import { TwilioSocketEventType } from 'business/twilio'
-import { useFlag } from 'core/flags'
 import * as twilioCallUtils from 'hooks/integrations/phone/twilioCall.utils'
 import client from 'models/api/resources'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
@@ -108,7 +107,10 @@ jest.mock(
 
 const mockUsePutCallParticipantOnHold = usePutCallParticipantOnHold as jest.Mock
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('pages/common/hooks/useCustomSound')

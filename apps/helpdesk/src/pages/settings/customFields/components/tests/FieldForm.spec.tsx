@@ -1,10 +1,10 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, getLastMockCall, userEvent } from '@repo/testing'
 import { createEvent, fireEvent, screen, waitFor } from '@testing-library/react'
 import { omit } from 'lodash'
 
 import type { ManagedTicketFieldType } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import {
     OBJECT_TYPE_SETTINGS,
     OBJECT_TYPES,
@@ -40,7 +40,7 @@ const notifyMock = assumeMock(notify)
 jest.mock('utils/errors')
 const reportErrorMock = assumeMock(reportError)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 jest.mock('models/aiAgent/queries')
 const useGetAccountConfigurationMock = assumeMock(useGetAccountConfiguration)

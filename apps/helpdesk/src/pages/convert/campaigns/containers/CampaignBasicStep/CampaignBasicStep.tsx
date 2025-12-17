@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { fromJS } from 'immutable'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
@@ -10,7 +10,6 @@ import {
     mapIntegrationLanguagesToLanguagePicker,
 } from 'config/integrations/gorgias_chat'
 import type { Language as LanguageEnum } from 'constants/languages'
-import { useFlag } from 'core/flags'
 import type { Language } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'

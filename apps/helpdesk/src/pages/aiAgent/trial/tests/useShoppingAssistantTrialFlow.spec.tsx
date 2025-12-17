@@ -1,5 +1,6 @@
 import type * as React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -7,7 +8,6 @@ import { act, renderHook } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { useModalManagerApi } from 'hooks/useModalManager'
@@ -35,7 +35,7 @@ jest.mock('@repo/logging')
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
 jest.mock('state/notifications/actions')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('pages/aiAgent/utils/extractShopNameFromUrl')
 jest.mock('pages/aiAgent/utils/getShopNameFromStoreActivations')
 

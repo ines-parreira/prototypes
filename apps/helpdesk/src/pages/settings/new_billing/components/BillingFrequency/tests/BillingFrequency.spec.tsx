@@ -1,15 +1,15 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { useFlag } from 'core/flags'
 import { Cadence } from 'models/billing/types'
 import { getCadenceName, isOtherCadenceDowngrade } from 'models/billing/utils'
 
 import type { BillingFrequencyProps } from '../BillingFrequency'
 import BillingFrequency from '../BillingFrequency'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

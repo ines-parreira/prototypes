@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
 import {
     fireEvent,
@@ -12,7 +13,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
@@ -28,7 +28,8 @@ jest.mock(
         useGetGuidancesAvailableActions: jest.fn(),
     }),
 )
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

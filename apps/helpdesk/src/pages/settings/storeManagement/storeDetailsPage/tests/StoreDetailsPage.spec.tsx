@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route } from 'react-router-dom'
 
 import type { HttpResponse, Integration } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import { IntegrationType } from 'models/integration/types'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { renderWithStore } from 'utils/testing'
@@ -16,7 +16,7 @@ import ChannelsTab from '../Channels/ChannelsTab'
 import useStoreGetter from '../General/hooks/useStoreGetter'
 import StoreDetailsPage from '../StoreDetailsPage'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('../Channels/ChannelsTab')
 jest.mock('../General/hooks/useStoreGetter')
 

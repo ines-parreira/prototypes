@@ -2,7 +2,7 @@ import type React from 'react'
 import { useMemo, useRef, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS } from 'immutable'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -15,7 +15,6 @@ import {
     EMAIL_INTEGRATION_TYPES,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'

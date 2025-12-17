@@ -1,9 +1,7 @@
 import { useEffect } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory, useParams } from 'react-router-dom'
-
-import { useFlag } from 'core/flags'
 
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
 import { SalesSettings } from './components/SalesSettings/SalesSettings'

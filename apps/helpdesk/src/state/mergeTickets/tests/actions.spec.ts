@@ -1,3 +1,4 @@
+import { getLDClient } from '@repo/feature-flags'
 import MockAdapter from 'axios-mock-adapter'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
@@ -8,14 +9,14 @@ import client from 'models/api/resources'
 import { searchTickets as modelSearchTickets } from 'models/ticket/resources'
 import type { Ticket } from 'models/ticket/types'
 import type { StoreDispatch } from 'state/types'
-import { getLDClient } from 'utils/launchDarkly'
 
 import { mergeTickets, searchTickets } from '../actions'
 
 jest.mock('models/ticket/resources', () => ({
     searchTickets: jest.fn(),
 }))
-jest.mock('utils/launchDarkly', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     getLDClient: jest.fn(),
 }))
 

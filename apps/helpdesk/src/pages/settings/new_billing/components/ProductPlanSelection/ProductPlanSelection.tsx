@@ -1,7 +1,7 @@
 import type React from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import moment from 'moment'
@@ -12,7 +12,6 @@ import {
 } from '@gorgias/axiom'
 import type { CustomerSummary } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import type { Plan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'

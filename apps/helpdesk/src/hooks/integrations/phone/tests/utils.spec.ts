@@ -38,16 +38,25 @@ import slice from 'pages/integrations/integration/components/voice/voiceDeviceSl
 import { ActivityEvents } from 'services/activityTracker'
 import * as activityTracker from 'services/activityTracker'
 import { reportError } from 'utils/errors'
-import { getLDClient } from 'utils/launchDarkly'
 
 jest.mock('common/notifications')
 jest.mock('utils/errors')
 jest.mock('@twilio/voice-sdk')
 jest.mock('services/activityTracker')
 jest.mock('api/queryClient')
-jest.mock('utils/launchDarkly', () => ({ getLDClient: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
+    })),
+}))
 
-const getLDClientMock = getLDClient as jest.Mock
+const getLDClientMock = require('@repo/feature-flags').getLDClient as jest.Mock
 const requestNotificationPermissionMock =
     requestNotificationPermission as jest.Mock
 

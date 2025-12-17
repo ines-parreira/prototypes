@@ -1,10 +1,9 @@
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { useFlag } from 'core/flags'
 import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/constants'
 import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { AllUsedTagsTableChart } from 'domains/reporting/pages/ticket-insights/tags/AllUsedTagsTableChart'
@@ -37,7 +36,7 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagsMock = assumeMock(useFlag)
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')

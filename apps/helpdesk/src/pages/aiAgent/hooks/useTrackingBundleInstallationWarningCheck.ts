@@ -1,9 +1,8 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import moment from 'moment'
 
-import { useFlag } from 'core/flags'
 import {
     useAtLeastOneStoreHasActiveTrial,
     useCanUseAiSalesAgent,

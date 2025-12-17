@@ -1,7 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import * as segment from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -12,7 +12,6 @@ import { MemoryRouter, useLocation, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { initialState as initialStatsFiltersState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { billingState } from 'fixtures/billing'
@@ -70,7 +69,7 @@ const mockUseHasNoOnboardedStores = jest.mocked(useHasNoOnboardedStores)
 
 jest.mock('pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled')
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 const logEventMock = jest.spyOn(segment, 'logEvent').mockImplementation(jest.fn)

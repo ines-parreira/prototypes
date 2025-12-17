@@ -1,7 +1,7 @@
 import type { FormEvent } from 'react'
-import React, { Component } from 'react'
+import { Component } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -33,7 +33,6 @@ import ListField from 'pages/common/forms/ListField'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'
 import type { RootState } from 'state/types'
-import { getLDClient } from 'utils/launchDarkly'
 
 import { updateOrCreateIntegration } from '../../../../../../state/integrations/actions'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'

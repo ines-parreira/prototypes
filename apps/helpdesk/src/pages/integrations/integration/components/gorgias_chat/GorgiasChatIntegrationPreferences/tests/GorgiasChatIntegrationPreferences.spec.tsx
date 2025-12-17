@@ -28,7 +28,6 @@ import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/t
 import { ReturnActionType } from 'models/selfServiceConfiguration/types'
 import * as IntegrationsActions from 'state/integrations/actions'
 import type { RootState, StoreDispatch } from 'state/types'
-import { getLDClient } from 'utils/launchDarkly'
 
 import { GorgiasChatIntegrationPreferencesComponent } from '../GorgiasChatIntegrationPreferences'
 
@@ -43,11 +42,11 @@ const defaultState = {
     },
 } as unknown as RootState
 
-jest.mock('utils/launchDarkly')
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+}))
 jest.mock('models/selfServiceConfiguration/resources')
-
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({})
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader',

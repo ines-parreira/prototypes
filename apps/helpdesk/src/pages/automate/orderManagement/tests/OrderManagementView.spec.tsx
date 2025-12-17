@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
@@ -12,7 +12,6 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { TicketChannel } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -47,7 +46,7 @@ jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings')
 jest.mock('pages/automate/common/hooks/useContactFormsAutomationSettings')
 jest.mock('@repo/logging')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>

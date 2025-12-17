@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { render } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -7,7 +8,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import client from 'models/api/resources'
 import useCollisionDetection from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
 
@@ -25,7 +25,7 @@ jest.mock(
     'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection',
 )
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 
 const mockUseCollisionDetection = useCollisionDetection as jest.Mock

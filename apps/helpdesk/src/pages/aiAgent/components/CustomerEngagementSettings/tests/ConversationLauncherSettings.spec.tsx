@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { getLDClient } from '@repo/feature-flags'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { ldClientMock } from 'jest-launchdarkly-mock'
@@ -12,7 +13,6 @@ import thunk from 'redux-thunk'
 import { integrationsState } from 'fixtures/integrations'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import { getLDClient } from 'utils/launchDarkly'
 
 import {
     ConversationLauncherAdvancedSettings,

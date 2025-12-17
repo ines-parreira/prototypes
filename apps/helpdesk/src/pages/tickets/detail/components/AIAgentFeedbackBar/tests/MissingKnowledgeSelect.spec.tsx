@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
@@ -170,8 +170,16 @@ jest.mock('../useEnrichKnowledgeFeedbackData/utils', () => ({
 
 const getResourceMetadataMock = assumeMock(getResourceMetadata)
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
+    })),
 }))
 
 jest.mock('hooks/useAppSelector')
@@ -182,10 +190,6 @@ const useAppDispatchMock = useAppDispatch as jest.Mock
 
 jest.mock('../hooks/useFeedbackTracking', () => ({
     useFeedbackTracking: jest.fn(),
-}))
-
-jest.mock('utils/launchDarkly', () => ({
-    getLDClient: jest.fn(),
 }))
 
 const mockUseFlag = useFlag as jest.Mock
@@ -233,7 +237,7 @@ describe('MissingKnowledgeSelect', () => {
             onFeedbackGiven: jest.fn(),
         })
 
-        const { getLDClient } = jest.requireMock('utils/launchDarkly')
+        const { getLDClient } = jest.requireMock('@repo/feature-flags')
         getLDClient.mockReturnValue({
             allFlags: jest.fn().mockReturnValue({}),
         })

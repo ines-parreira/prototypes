@@ -1,14 +1,13 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import BusinessHoursPage from '../BusinessHoursPage'
 import { BUSINESS_HOURS_BASE_URL } from '../constants'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 describe('BusinessHoursPage', () => {

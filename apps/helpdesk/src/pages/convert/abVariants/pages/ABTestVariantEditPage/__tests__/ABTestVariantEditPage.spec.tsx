@@ -2,7 +2,6 @@ import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import type routerDom from 'react-router-dom'
 import { BrowserRouter, useParams } from 'react-router-dom'
@@ -17,11 +16,13 @@ import { useUpdateCampaign } from 'pages/convert/campaigns/hooks/useUpdateCampai
 import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { getLDClient } from 'utils/launchDarkly'
 
 import ABTestVariantEditPage from '../ABTestVariantEditPage'
 
-jest.mock('utils/launchDarkly')
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+}))
 
 jest.mock('pages/common/hooks/useIsConvertSubscriber')
 const useIsConvertSubscriberMock = assumeMock(useIsConvertSubscriber)
@@ -75,11 +76,6 @@ describe('<ABTestVariantEditPage />', () => {
         })
 
         useIsConvertSubscriberMock.mockImplementation(() => true)
-
-        mockFlags({})
-
-        const allFlagsMock = getLDClient().allFlags as jest.Mock
-        allFlagsMock.mockReturnValue({})
     })
 
     beforeEach(() => {

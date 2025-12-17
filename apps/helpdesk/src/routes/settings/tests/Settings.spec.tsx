@@ -84,7 +84,8 @@ jest.mock('../helpers/settingsRenderer', () => ({
     renderAppSettings: jest.fn((Component: () => JSX.Element) => <Component />),
 }))
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

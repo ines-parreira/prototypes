@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 
@@ -9,7 +9,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useFlag from 'core/flags/hooks/useFlag'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type {
     ContentType,

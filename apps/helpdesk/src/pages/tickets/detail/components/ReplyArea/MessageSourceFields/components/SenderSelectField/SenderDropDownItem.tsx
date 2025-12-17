@@ -1,6 +1,5 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useFlag } from 'core/flags'
 import type { Sender } from 'hooks/useOutboundChannels'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DefaultIntegrationBadge from 'pages/integrations/integration/components/email/DefaultIntegrationBadge'

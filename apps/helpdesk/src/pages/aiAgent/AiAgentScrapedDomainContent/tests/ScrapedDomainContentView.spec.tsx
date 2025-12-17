@@ -1,7 +1,6 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-
-import useFlag from 'core/flags/hooks/useFlag'
 
 import { CONTENT_TYPE } from '../constant'
 import ScrapedDomainContentView from '../ScrapedDomainContentView'
@@ -9,9 +8,9 @@ import ScrapedDomainContentView from '../ScrapedDomainContentView'
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 jest.mock('state/notifications/actions')
-jest.mock('core/flags/hooks/useFlag', () => ({
-    __esModule: true,
-    default: jest.fn(),
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
 }))
 const mockUseFlag = assumeMock(useFlag)
 

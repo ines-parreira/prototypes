@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -16,7 +17,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { appQueryClient } from 'api/queryClient'
-import { useFlag } from 'core/flags'
 import { ThemeProvider } from 'core/theme'
 
 import { InstagramSection } from '../InstagramSection'
@@ -26,8 +26,8 @@ const server = setupServer()
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
-jest.mock('core/flags', () => ({
-    ...jest.requireActual('core/flags'),
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => false),
 }))
 const useFlagMock = useFlag as jest.Mock

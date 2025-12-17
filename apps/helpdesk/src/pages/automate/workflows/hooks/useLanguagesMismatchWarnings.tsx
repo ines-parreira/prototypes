@@ -1,13 +1,12 @@
 import type { ReactNode } from 'react'
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import _difference from 'lodash/difference'
 import _intersection from 'lodash/intersection'
 import { Link } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import type { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import type { ChannelLanguage } from 'pages/automate/common/types'

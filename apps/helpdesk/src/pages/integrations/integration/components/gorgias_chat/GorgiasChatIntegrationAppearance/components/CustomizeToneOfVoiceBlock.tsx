@@ -1,10 +1,9 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { Link } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import css from '../GorgiasChatIntegrationAppearance.less'

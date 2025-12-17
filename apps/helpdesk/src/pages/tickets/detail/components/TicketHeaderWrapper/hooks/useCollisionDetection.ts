@@ -1,8 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { User } from '@gorgias/helpdesk-queries'
-
-import { useFlag } from 'core/flags'
 
 import useAblyRealtimePresence from './useAblyRealtimePresence'
 import useSocketIOPresence from './useSocketIOPresence'

@@ -13,7 +13,6 @@ import { billingState } from 'fixtures/billing'
 import { entitiesInitialState } from 'fixtures/entities'
 import { integrationsState } from 'fixtures/integrations'
 import type { RootState, StoreDispatch } from 'state/types'
-import { getLDClient } from 'utils/launchDarkly'
 import { renderWithRouter } from 'utils/testing'
 
 import GorgiasChatIntegrationQuickReplies, {
@@ -33,14 +32,19 @@ jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {
     return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
 })
 
-jest.mock('utils/launchDarkly')
-
-const allFlagsMock = getLDClient().allFlags as jest.MockedFunction<
-    ReturnType<typeof getLDClient>['allFlags']
->
-allFlagsMock.mockReturnValue({
-    [FeatureFlagKey.ChatMultiLanguages]: true,
-})
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({
+            [FeatureFlagKey.ChatMultiLanguages]: true,
+        })),
+    })),
+}))
 
 describe('<GorgiasChatIntegrationQuickReplies/>', () => {
     const integration: Map<any, any> = fromJS({

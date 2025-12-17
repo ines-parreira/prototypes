@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import axios from 'axios'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useFlag } from 'core/flags'
 import type {
     PlaygroundMessage,
     PlaygroundPromptMessage,

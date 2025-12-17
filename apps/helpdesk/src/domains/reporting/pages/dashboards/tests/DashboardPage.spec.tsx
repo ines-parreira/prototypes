@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import {
@@ -11,7 +11,6 @@ import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
 import { AGENT_ROLE, BASIC_AGENT_ROLE } from 'config/user'
-import { useFlag } from 'core/flags'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { useDashboardById } from 'domains/reporting/hooks/dashboards/useDashboardById'
 import { useDashboardNameValidation } from 'domains/reporting/hooks/dashboards/useDashboardNameValidation'
@@ -34,7 +33,7 @@ import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { renderWithStore } from 'utils/testing'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('react-router-dom', () => ({

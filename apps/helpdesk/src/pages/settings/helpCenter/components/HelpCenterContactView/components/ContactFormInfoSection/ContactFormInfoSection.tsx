@@ -1,13 +1,12 @@
 import React, { useCallback, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import type { EmailContactInfoDto } from 'models/helpCenter/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

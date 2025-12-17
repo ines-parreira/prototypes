@@ -1,6 +1,5 @@
 import type { FeatureFlagKey } from '@repo/feature-flags'
-
-import { getLDClient } from 'utils/launchDarkly'
+import { getLDClient } from '@repo/feature-flags'
 
 export async function fetchFlag<T>(
     flag: FeatureFlagKey,

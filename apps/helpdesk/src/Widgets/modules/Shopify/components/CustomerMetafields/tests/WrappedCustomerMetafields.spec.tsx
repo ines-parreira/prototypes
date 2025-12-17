@@ -1,17 +1,17 @@
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { useFlag } from 'core/flags'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import WrappedCustomerMetafields from '../WrappedCustomerMetafields'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)
 
 jest.mock('@repo/logging', () => ({

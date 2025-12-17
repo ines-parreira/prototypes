@@ -1,7 +1,7 @@
 import type React from 'react'
 import { memo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
@@ -22,7 +22,6 @@ import {
     getSecondaryLanguagesAsTooltipContent,
 } from 'config/integrations/gorgias_chat'
 import type { Language } from 'constants/languages'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import BadgeItem from 'pages/common/components/BadgetItem'
 import { LanguageBullet } from 'pages/common/components/LanguageBulletList'

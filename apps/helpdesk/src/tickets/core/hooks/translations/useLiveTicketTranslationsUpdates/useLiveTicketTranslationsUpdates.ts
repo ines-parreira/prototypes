@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { chunk, isNumber } from 'lodash'
 
 import type { DomainEvent } from '@gorgias/events'
@@ -10,7 +10,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 import type { Language } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import { sleep } from 'hooks/integrations/phone/utils'
 import type { TicketMessage } from 'models/ticket/types'
 import { isInternalNote } from 'tickets/common/utils'

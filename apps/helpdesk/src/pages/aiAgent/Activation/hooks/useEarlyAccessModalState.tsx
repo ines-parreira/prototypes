@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useFlag } from 'core/flags'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'

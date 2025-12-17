@@ -306,7 +306,7 @@ jest.mock('core/theme/useTheme.ts', () =>
     })),
 )
 
-jest.mock('utils/launchDarkly')
+jest.mock('@repo/feature-flags')
 
 const SocketManagerMock = () => ({
     registerJoinEvents: jest.fn(),

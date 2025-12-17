@@ -38,7 +38,7 @@ jest.mock('../../../hooks/useAiAgentEnabled', () => ({
     }),
 }))
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const defaultStore = mockStore({
     currentAccount: fromJS({

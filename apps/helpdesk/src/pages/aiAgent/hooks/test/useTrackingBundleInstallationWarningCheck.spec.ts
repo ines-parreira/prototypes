@@ -1,8 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import moment from 'moment'
 
-import { useFlag } from 'core/flags'
 import {
     useAtLeastOneStoreHasActiveTrial,
     useCanUseAiSalesAgent,
@@ -12,7 +11,8 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 import { useTrackingBundleInstallationWarningCheck } from 'pages/aiAgent/hooks/useTrackingBundleInstallationWarningCheck'
 import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)

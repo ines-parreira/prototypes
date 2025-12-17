@@ -7,12 +7,11 @@ import React, {
     useState,
 } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { usePrevious } from '@repo/hooks'
 import _isEqual from 'lodash/isEqual'
 import { connect } from 'react-redux'
 
-import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import type {
     StaticFilter,

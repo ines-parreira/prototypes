@@ -1,8 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { NavLink } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { useFlag } from 'core/flags'
 import { EmailProvider } from 'models/integration/constants'
 import type { Integration } from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'

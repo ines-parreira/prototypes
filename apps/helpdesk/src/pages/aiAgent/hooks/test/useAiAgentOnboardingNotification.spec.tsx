@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
@@ -12,7 +12,6 @@ import {
     AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
 } from 'automate/notifications/constants'
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -70,7 +69,7 @@ const mockedOnboardingNotificationState = getOnboardingNotificationStateFixture(
     },
 )
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 const defaultState: Partial<RootState> = {

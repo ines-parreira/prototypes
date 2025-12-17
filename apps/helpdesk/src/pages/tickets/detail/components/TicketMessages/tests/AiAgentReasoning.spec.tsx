@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -10,7 +11,6 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -42,7 +42,7 @@ const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
 jest.mock('common/navigation/hooks/useNavBar/useNavBar')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('split-ticket-view-toggle')
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar',

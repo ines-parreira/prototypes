@@ -67,7 +67,6 @@ import {
 import { handleViewsCount } from 'state/views/actions'
 import { isViewSharedWithUser } from 'state/views/utils'
 import { isCurrentlyOnTicket } from 'utils'
-import { getLDClient } from 'utils/launchDarkly'
 
 import receivedEvents from '../receivedEvents'
 
@@ -134,8 +133,19 @@ jest.mock('state/entities/views/actions')
 
 jest.mock('state/views/utils')
 
-jest.mock('utils/launchDarkly')
-const variationMock = getLDClient().variation as jest.Mock
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
+    })),
+}))
+const variationMock = require('@repo/feature-flags').getLDClient()
+    .variation as jest.Mock
 
 describe('receivedEvents', () => {
     beforeEach(() => {

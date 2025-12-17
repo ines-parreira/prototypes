@@ -40,7 +40,10 @@ const mockResource = (overrides = {}) =>
         ...overrides,
     }) as unknown as KnowledgeResource
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 
 describe('KnowledgeSourceFeedback', () => {
     const mockOpenPreview = jest.fn()

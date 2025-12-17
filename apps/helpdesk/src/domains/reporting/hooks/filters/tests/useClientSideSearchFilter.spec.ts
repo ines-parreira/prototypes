@@ -1,12 +1,11 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useDebouncedValue } from '@repo/hooks'
 import { act, assumeMock, renderHook } from '@repo/testing'
 
-import { useFlag } from 'core/flags'
 import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import type { FilterOptionGroup } from 'domains/reporting/pages/types'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('@repo/hooks', () => ({
     useDebouncedValue: jest.fn((value) => value),
 }))

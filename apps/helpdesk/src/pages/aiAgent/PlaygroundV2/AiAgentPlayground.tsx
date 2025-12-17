@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 
 import {
@@ -8,7 +8,6 @@ import {
     LegacyLoadingSpinner as LoadingSpinner,
 } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { PlaygroundSettings } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundSettings/PlaygroundSettings'
 import { SyncingSourcesMessage } from 'pages/aiAgent/PlaygroundV2/components/SyncingSourcesMessage/SyncingSourcesMessage'

@@ -1,14 +1,13 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -27,7 +26,10 @@ import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const mockUseFlag = jest.mocked(useFlag)
 const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
 mockUseAiAgentAccess.mockReturnValue({ hasAccess: false, isLoading: false })

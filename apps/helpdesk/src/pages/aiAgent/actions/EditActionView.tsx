@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import _noop from 'lodash/noop'
 import { useHistory, useParams } from 'react-router-dom'
 
@@ -9,7 +9,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,

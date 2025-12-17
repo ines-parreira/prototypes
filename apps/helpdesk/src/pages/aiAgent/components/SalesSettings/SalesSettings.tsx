@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -10,7 +10,6 @@ import {
 } from '@gorgias/axiom'
 
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { SalesSettingsData } from 'models/aiAgent/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'

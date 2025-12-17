@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import type { Map } from 'immutable'
@@ -8,7 +8,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import { StatsNavbarView } from 'domains/reporting/pages/common/components/StatsNavbarView/StatsNavbarView'
@@ -34,7 +33,7 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 const useTrialAccessMock = assumeMock(useTrialAccess)
 useTrialAccessMock.mockReturnValue(createMockTrialAccess())
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {

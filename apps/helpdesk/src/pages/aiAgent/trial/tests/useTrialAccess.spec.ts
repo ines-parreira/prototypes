@@ -1,11 +1,10 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
 
-import { useFlag } from 'core/flags'
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetTrials } from 'models/aiAgent/queries'
@@ -48,7 +47,8 @@ jest.mock('../hooks/useSalesTrialRevampMilestone')
 jest.mock('models/aiAgent/queries')
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState')
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)

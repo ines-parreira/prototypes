@@ -1,6 +1,6 @@
 import type { ComponentType, ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { createBrowserHistory } from 'history'
@@ -15,7 +15,6 @@ import {
     NavBarContext,
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
-import { useFlag } from 'core/flags'
 import { VOICE_OVERVIEW_PAGE_TITLE } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import { StatsRoutes } from 'domains/reporting/routes/StatsRoutes'
 import * as billingFixtures from 'fixtures/billing'
@@ -25,7 +24,7 @@ import { initialState } from 'state/billing/reducers'
 import type { RootState } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')

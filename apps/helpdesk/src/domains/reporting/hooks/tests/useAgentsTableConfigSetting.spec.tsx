@@ -1,13 +1,12 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
 import { useIsHrtAiEnabled } from 'domains/reporting/hooks/useIsHrtAiEnabled'
 import {
@@ -30,7 +29,7 @@ const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 jest.mock('state/currentAccount/actions')
 const submitAgentTableConfigViewMock = assumeMock(submitAgentTableConfigView)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/hooks/useIsHrtAiEnabled')

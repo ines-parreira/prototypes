@@ -1,12 +1,11 @@
 import { useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Call } from '@twilio/voice-sdk'
 
 import { Box, Button } from '@gorgias/axiom'
 import { useHandleCallWhispering } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import { extractMonitoringCallParams } from 'hooks/integrations/phone/monitoring.utils'
 import { useCallMessageListener } from 'hooks/integrations/phone/useCallMessageListener'
 import { useNotify } from 'hooks/useNotify'

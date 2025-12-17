@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -19,7 +20,6 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
 } from 'constants/integration'
-import { useFlag } from 'core/flags'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
@@ -33,8 +33,8 @@ jest.mock('pages/tickets/detail/components/TicketMessages/Avatar', () => ({
     Avatar: () => <div>New Avatar</div>,
 }))
 
-jest.mock('core/flags', () => ({
-    ...jest.requireActual('core/flags'),
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => false),
 }))
 const useFlagMock = useFlag as jest.Mock

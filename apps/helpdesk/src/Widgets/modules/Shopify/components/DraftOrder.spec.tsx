@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -9,11 +10,9 @@ import configureMockStore from 'redux-mock-store'
 
 import { mockListShopifyOrderMetafieldsHandler } from '@gorgias/helpdesk-mocks'
 
-import { useFlag } from 'core/flags'
-
 import { AfterContent, DraftOrderContext, Wrapper } from './DraftOrder'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 

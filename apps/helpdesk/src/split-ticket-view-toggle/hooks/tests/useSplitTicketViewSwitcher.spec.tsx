@@ -1,16 +1,19 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import type { MemoryHistory } from 'history'
 import { createMemoryHistory } from 'history'
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { mockStore } from 'utils/testing'
 
 import useSplitTicketViewSwitcher from '../useSplitTicketViewSwitcher'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 
 function renderSwitcherHook(route: string, path: string = '/'): MemoryHistory {

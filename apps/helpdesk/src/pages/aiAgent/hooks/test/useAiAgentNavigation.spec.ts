@@ -1,7 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 
-import { useFlag } from 'core/flags'
 import {
     ANALYTICS,
     CUSTOMER_ENGAGEMENT,
@@ -13,7 +12,8 @@ import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 
 import { useAiAgentNavigation } from '../useAiAgentNavigation'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)

@@ -18,7 +18,8 @@ jest.mock('react-router-dom', () => ({
     useRouteMatch: jest.fn(),
 }))
 jest.mock('pages/common/components/NoMatch', () => () => <div>404</div>)
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const ComponentToRender = () => <div>OK</div>

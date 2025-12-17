@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from 'react'
 
+import { getLDClient, LDContext } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { history } from '@repo/routing'
 import { envVars, NodeEnv } from '@repo/utils'
@@ -23,7 +24,6 @@ import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/use
 import RoutesWrapper from 'routes'
 import activityTracker from 'services/activityTracker'
 import type { RootState } from 'state/types'
-import { getLDClient, LDContext } from 'utils/launchDarkly'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 type Props = { store: Store<RootState> }

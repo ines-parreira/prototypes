@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen } from '@testing-library/react'
@@ -12,7 +12,6 @@ import { StaticRouter, useHistory } from 'react-router-dom'
 import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
-import { useFlag } from 'core/flags'
 import { ThemeProvider } from 'core/theme'
 import { account } from 'fixtures/account'
 import useAppSelector from 'hooks/useAppSelector'
@@ -26,7 +25,8 @@ jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
 }))
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

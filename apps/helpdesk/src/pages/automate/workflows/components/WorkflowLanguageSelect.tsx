@@ -1,12 +1,11 @@
 import { useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { ReactCountryFlag } from 'react-country-flag'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

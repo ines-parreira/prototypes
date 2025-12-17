@@ -1,7 +1,5 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 import type { Location } from 'history'
-
-import { getLDClient } from 'utils/launchDarkly'
 
 export const getAiSalesAgentEmailEnabledFlag = () => {
     const launchDarklyClient = getLDClient()

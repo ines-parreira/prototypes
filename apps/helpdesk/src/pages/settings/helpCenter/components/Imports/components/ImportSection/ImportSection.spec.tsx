@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -10,7 +11,6 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi'
@@ -97,7 +97,7 @@ jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 jest.mock('rest_api/auth')
 ;(getAccessToken as jest.Mock).mockImplementation(() => 'token')
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 
 const history = createMemoryHistory()

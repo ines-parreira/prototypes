@@ -1,11 +1,13 @@
+import { useFlag } from '@repo/feature-flags'
 import { act, renderHook } from '@repo/testing'
-
-import { useFlag } from 'core/flags'
 
 import { requestNotificationPermission } from '../../requestNotificationPermission'
 import useNotificationsContext from '../useNotificationsContext'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = useFlag as jest.Mock
 
 jest.mock('../../requestNotificationPermission', () => ({

@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 import type { List, Map } from 'immutable'
 import {
@@ -11,7 +11,6 @@ import {
     UncontrolledTooltip,
 } from 'reactstrap'
 
-import { useFlag } from 'core/flags'
 import type { MacroResponseActionName } from 'models/macroAction/types'
 import { MacroActionName } from 'models/macroAction/types'
 

@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { User } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useSortedChannels } from 'domains/reporting/hooks/support-performance/useSortedChannels'
 import { useTagResultsSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'

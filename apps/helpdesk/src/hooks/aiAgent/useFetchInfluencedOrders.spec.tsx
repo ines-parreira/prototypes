@@ -1,9 +1,8 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersFilterMember,
@@ -24,7 +23,8 @@ jest.mock('hooks/aiAgent/useCanUseAiSalesAgent', () => ({
 }))
 const mockUseCanUseAiSalesAgent = jest.mocked(useCanUseAiSalesAgent)
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)

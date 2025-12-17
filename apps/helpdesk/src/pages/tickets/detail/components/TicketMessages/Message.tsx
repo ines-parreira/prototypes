@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import cn from 'classnames'
 
 import type {
@@ -8,7 +8,6 @@ import type {
     TicketMessage as TicketMessageType,
 } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { hasFailedAction, isFailed, isPending } from 'models/ticket/predicates'
 import type { TicketMessage } from 'models/ticket/types'

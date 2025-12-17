@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { useParams } from 'react-router-dom'
 
@@ -13,7 +13,6 @@ import {
 } from '@gorgias/axiom'
 import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getContext } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'

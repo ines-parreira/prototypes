@@ -1,3 +1,4 @@
+import { getLDClient } from '@repo/feature-flags'
 import { waitFor } from '@testing-library/react'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 import _get from 'lodash/get'
@@ -5,11 +6,10 @@ import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { getLDClient } from 'utils/launchDarkly'
-
 import serverErrorHandler from '../serverErrorHandler'
 
-jest.mock('utils/launchDarkly', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     getLDClient: jest.fn(),
 }))
 

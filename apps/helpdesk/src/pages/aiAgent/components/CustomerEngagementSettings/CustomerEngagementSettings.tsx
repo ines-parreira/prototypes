@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { get } from 'lodash'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router'
@@ -10,7 +10,6 @@ import { z } from 'zod'
 import { Box, LegacyButton as Button } from '@gorgias/axiom'
 
 import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'

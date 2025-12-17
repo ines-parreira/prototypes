@@ -1,11 +1,10 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
-import { useFlag } from 'core/flags'
 import LiveVoiceAgentRow from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentRow'
 import css from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList.less'
 import {

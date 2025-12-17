@@ -1,9 +1,8 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { Navigation } from 'components/Navigation/Navigation'
-import { useFlag } from 'core/flags'
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import { StatsNavbarViewSections } from 'domains/reporting/pages/common/components/StatsNavbarView/constants'
 import css from 'domains/reporting/pages/common/components/StatsNavbarView/StatsNavbarView.less'

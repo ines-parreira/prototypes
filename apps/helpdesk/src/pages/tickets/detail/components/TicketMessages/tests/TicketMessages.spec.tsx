@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -9,7 +10,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import { view } from 'fixtures/views'
@@ -104,8 +104,11 @@ jest.mock('@repo/navigation', () => ({
     },
 }))
 
-jest.mock('core/flags')
-const mockUseFlag = useFlag as jest.Mock
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+}))
+const mockUseFlag = assumeMock(useFlag)
 
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
 const getShouldDisplayAuditLogEventsMock = assumeMock(

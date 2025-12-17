@@ -9,7 +9,6 @@ import VoiceIntegration from '../VoiceIntegration'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
-jest.mock('core/flags')
 jest.mock(
     'pages/integrations/integration/components/voice/VoiceIntegrationQueueRoutes',
     () => () => <div>QueueRoutes</div>,

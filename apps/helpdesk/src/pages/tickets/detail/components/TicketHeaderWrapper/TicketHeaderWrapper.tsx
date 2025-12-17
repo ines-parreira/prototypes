@@ -1,7 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { AgentLabel } from 'pages/common/utils/labels'
 import TicketHeader from 'pages/tickets/detail/components/TicketHeader'

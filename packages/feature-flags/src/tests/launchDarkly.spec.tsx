@@ -1,32 +1,39 @@
 import { isDevelopment } from '@repo/utils'
 import * as LDClient from 'launchdarkly-js-client-sdk'
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { User } from 'config/types/user'
-import type { Account } from 'state/currentAccount/types'
+import * as launchDarkly from '../launchdarkly'
 
-import * as launchDarkly from '../launchDarkly'
-
-jest.mock('launchdarkly-js-client-sdk', () => ({
-    initialize: jest.fn(),
+vi.mock('launchdarkly-js-client-sdk', () => ({
+    initialize: vi.fn(),
 }))
-const mockInitialize = jest.mocked(LDClient.initialize)
-jest.mock('@repo/utils', () => ({
-    isDevelopment: jest.fn(),
+const mockInitialize = vi.mocked(LDClient.initialize)
+vi.mock('@repo/utils', () => ({
+    isDevelopment: vi.fn(),
 }))
-const mockIsDevelopment = jest.mocked(isDevelopment)
+const mockIsDevelopment = vi.mocked(isDevelopment)
 
-jest.unmock('utils/launchDarkly') // mocked by default via __mocks__
+type User = {
+    id: string
+    name: string
+    email: string
+}
+
+type Account = {
+    id: string
+    domain: string
+}
 
 const user: User = {
-    id: 123,
+    id: '123',
     name: 'Test User',
     email: 'test@example.com',
-} as User
+}
 
 const account: Account = {
-    id: 456,
+    id: '456',
     domain: 'test.com',
-} as Account
+}
 
 describe('launchDarkly', () => {
     beforeAll(() => {
@@ -37,7 +44,7 @@ describe('launchDarkly', () => {
     beforeEach(() => {
         window.USER_IMPERSONATED = null
         launchDarkly._setLDContext({})
-        jest.resetAllMocks()
+        vi.resetAllMocks()
         mockIsDevelopment.mockReturnValue(false)
     })
 
@@ -103,7 +110,9 @@ describe('launchDarkly', () => {
         })
 
         it('error handling', async () => {
-            const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
+            const consoleSpy = vi
+                .spyOn(console, 'error')
+                .mockImplementation(() => {})
             const error = new Error('LaunchDarkly initialization failed')
             mockInitialize.mockImplementation(() => {
                 throw error

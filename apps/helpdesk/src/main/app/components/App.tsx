@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
 
@@ -12,7 +12,6 @@ import {
     NotificationsToasts,
     useDesktopNotifications,
 } from 'common/notifications'
-import { useFlag } from 'core/flags'
 import { THEME_NAME, useApplyTheme, useTheme } from 'core/theme'
 import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import useHasPhone from 'hooks/useHasPhone'

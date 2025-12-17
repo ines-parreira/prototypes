@@ -1,6 +1,5 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useFlag } from 'core/flags'
 import { Cadence } from 'models/billing/types'
 import { getCadenceName, isOtherCadenceDowngrade } from 'models/billing/utils'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'

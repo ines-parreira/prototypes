@@ -1,11 +1,10 @@
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import { integrationsState } from 'fixtures/integrations'
 import {
     addAttachmentsAction,
@@ -27,7 +26,7 @@ import { renderWithStore } from 'utils/testing'
 
 import { Preview } from '../Preview'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('pages/tickets/common/utils', () => ({

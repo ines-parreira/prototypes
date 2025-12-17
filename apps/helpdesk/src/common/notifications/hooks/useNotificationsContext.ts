@@ -1,8 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { useFlag } from 'core/flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { requestNotificationPermission } from '../requestNotificationPermission'
 

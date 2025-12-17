@@ -1,9 +1,7 @@
 import { lazy, Suspense } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Map } from 'immutable'
-
-import { useFlag } from 'core/flags'
 
 import GorgiasChatCreationWizardLegacy from './GorgiasChatCreationWizard'
 

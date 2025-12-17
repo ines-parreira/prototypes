@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import _get from 'lodash/get'
 import { DropdownItem } from 'reactstrap'
 
@@ -15,7 +15,6 @@ import type {
 } from '@gorgias/helpdesk-types'
 import { VoiceMessageType } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { GorgiasApiResponseDataError } from 'models/api/types'
 import { MAX_VOICE_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'

@@ -1,7 +1,7 @@
+import { useFlag } from '@repo/feature-flags'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { useFlag } from 'core/flags'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { executeAction } from 'state/infobar/actions'
 import { ShopifyContext } from 'Widgets/modules/Shopify/contexts/ShopifyContext'
@@ -9,7 +9,7 @@ import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { OrderNotesField } from '../OrderNotesField'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {

@@ -1,15 +1,16 @@
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { createEvent, fireEvent, render, waitFor } from '@testing-library/react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import * as useOutboundChannels from 'hooks/useOutboundChannels'
 
 import SenderSelectField from '../SenderSelectField'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

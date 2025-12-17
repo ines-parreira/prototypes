@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory } from 'history'
@@ -9,7 +9,6 @@ import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import { useFlag } from 'core/flags'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -40,7 +39,7 @@ const useGmvInfluencedCtaButtonMock = assumeMock(useGmvInfluencedCtaButton)
 jest.mock('domains/reporting/models/queryFactories/ai-sales-agent/metrics')
 const gmvInfluencedQueryFactoryMock = assumeMock(gmvInfluencedQueryFactory)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 jest.useFakeTimers()

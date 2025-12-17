@@ -1,10 +1,10 @@
+import { useFlag } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { user } from 'fixtures/users'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -12,7 +12,7 @@ import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { AutomateSavingsCard } from '../AutomateSavingsCard'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 const store = mockStore({

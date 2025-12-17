@@ -11,7 +11,7 @@ describe('ensureInitialization', () => {
         jest.resetModules()
 
         // Mock the module after resetModules
-        jest.doMock('utils/launchDarkly', () => ({
+        jest.doMock('@repo/feature-flags', () => ({
             getLDClient: jest.fn().mockReturnValue(ldClientMock),
         }))
 

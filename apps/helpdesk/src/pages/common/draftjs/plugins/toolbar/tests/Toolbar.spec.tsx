@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import type { ContentState } from 'draft-js'
 import { EditorState } from 'draft-js'
@@ -7,7 +8,6 @@ import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 
-import { useFlag } from 'core/flags'
 import type { RichFieldEditor } from 'pages/common/forms/RichField/RichFieldEditor'
 import * as utils from 'utils'
 import { convertFromHTML } from 'utils/editor'
@@ -18,7 +18,8 @@ import Toolbar from '../Toolbar'
 import ToolbarProvider from '../ToolbarProvider'
 import { ActionName } from '../types'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

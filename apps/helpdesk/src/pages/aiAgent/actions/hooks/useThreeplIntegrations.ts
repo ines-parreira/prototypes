@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import type { HttpIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'

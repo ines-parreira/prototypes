@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { ContextBanner } from 'AlertBanners'
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getDeactivatedOAuthEmailIntegrations } from 'state/integrations/selectors'

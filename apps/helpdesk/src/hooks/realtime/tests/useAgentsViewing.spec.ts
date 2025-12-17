@@ -1,7 +1,7 @@
+import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 
@@ -14,7 +14,7 @@ jest.mock('providers/realtime-ably/hooks/useAblyAgentActivity')
 const mockUseAgentActivity = useAblyAgentActivity as jest.Mock
 const mockGetTicketActivity = jest.fn()
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 
 describe('useAgentsViewing', () => {

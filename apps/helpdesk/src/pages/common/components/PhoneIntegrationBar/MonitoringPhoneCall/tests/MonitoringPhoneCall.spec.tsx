@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import user, { userEvent } from '@testing-library/user-event'
@@ -9,7 +9,6 @@ import { setupServer } from 'msw/node'
 
 import { mockHandleCallWhisperingHandler } from '@gorgias/helpdesk-mocks'
 
-import { useFlag } from 'core/flags'
 import { useNotify } from 'hooks/useNotify'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
@@ -48,7 +47,7 @@ jest.mock(
     }),
 )
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 const useNotifyMock = assumeMock(useNotify)
 

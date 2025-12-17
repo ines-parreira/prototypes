@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { renderWithStore } from 'utils/testing'
 
@@ -13,7 +13,7 @@ import { mockStoresWithAssignedChannels } from '../../../fixtures'
 import { StoreManagementProvider } from '../../../StoreManagementProvider'
 import ChannelsTab from '../ChannelsTab'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockUseFlag = assumeMock(useFlag)
 

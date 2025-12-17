@@ -7,7 +7,8 @@ import { SourceBadge } from '../../tickets/ticket-detail/components/SourceBadge'
 import TicketCard from '../TicketCard'
 import TicketFields from '../TicketFields'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 jest.mock('pages/common/utils/DatetimeLabel', () => jest.fn(() => <div />))

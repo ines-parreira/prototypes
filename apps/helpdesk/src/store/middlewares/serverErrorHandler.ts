@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 import _get from 'lodash/get'
 import _some from 'lodash/some'
 import type { Middleware } from 'redux'
@@ -12,7 +12,6 @@ import type { Notification } from '../../state/notifications/types'
 import { NotificationStatus } from '../../state/notifications/types'
 import type { RootState, StoreDispatch } from '../../state/types'
 import { errorToChildren, stripErrorMessage } from '../../utils'
-import { getLDClient } from '../../utils/launchDarkly'
 import { waitForDocumentVisible } from '../../utils/waitForDocumentVisible'
 
 const IGNORED_PREFIXES = ['SUBMIT_ACTIVITY_ERROR']

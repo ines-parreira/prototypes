@@ -1,7 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { AgentPerformanceHeatmapSwitch } from 'domains/reporting/pages/support-performance/agents/AgentPerformanceHeatmapSwitch'
 import { AgentsEditColumns } from 'domains/reporting/pages/support-performance/agents/AgentsEditColumns'
 import css from 'domains/reporting/pages/support-performance/agents/AgentsPerformanceCardExtra.less'

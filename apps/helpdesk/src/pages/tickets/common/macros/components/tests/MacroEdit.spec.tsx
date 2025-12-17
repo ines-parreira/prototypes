@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -9,7 +9,6 @@ import thunk from 'redux-thunk'
 
 import { mockListCustomFieldsHandler } from '@gorgias/helpdesk-mocks'
 
-import { useFlag } from 'core/flags'
 import { integrationsState } from 'fixtures/integrations'
 import {
     addInternalNoteAction as addInternalNoteActionFixture,
@@ -61,7 +60,7 @@ jest.mock('../actions/SetPriorityAction', () => () => (
     <div data-testid="set-priority-action" />
 ))
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 const mockStore = configureMockStore([thunk])

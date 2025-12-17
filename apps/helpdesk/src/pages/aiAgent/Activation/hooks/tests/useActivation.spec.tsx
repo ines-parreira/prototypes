@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import * as segment from '@repo/logging'
 import { logEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
@@ -14,7 +14,6 @@ import { Route, Router, Switch } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
@@ -34,7 +33,7 @@ import { getStoreConfigurationFixture } from './fixtures/store-configurations.fi
 
 // Mock only external services
 jest.mock('@repo/logging')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('@repo/logging')
 const mockLogEvent = jest.mocked(logEvent)
 jest.mock('models/helpCenter/queries')
@@ -246,7 +245,7 @@ const renderHookWithRouter = ({
     }
 }
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 describe('useActivation', () => {

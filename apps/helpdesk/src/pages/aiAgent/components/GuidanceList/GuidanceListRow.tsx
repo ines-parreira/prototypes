@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
 import {
@@ -8,7 +8,6 @@ import {
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import type { StoreIntegration } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

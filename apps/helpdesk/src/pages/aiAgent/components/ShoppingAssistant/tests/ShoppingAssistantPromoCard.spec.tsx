@@ -1,9 +1,9 @@
+import { useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { getUseTrialEndingFixture } from 'pages/aiAgent/fixtures/useTrialEnding.fixture'
@@ -24,7 +24,7 @@ import { PromoCardVariant, TrialType } from '../types/ShoppingAssistant'
 jest.mock('../hooks/useTrialPromoCard')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('hooks/useAppSelector')
 jest.mock('hooks/useIsAccountDeactivated', () => ({
     useIsAccountDeactivated: jest.fn(() => true),

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 
+import { initLaunchDarkly } from '@repo/feature-flags'
 import type { Preview } from '@storybook/react'
 import {
     ArcElement,
@@ -17,7 +18,6 @@ import {
 } from 'chart.js'
 
 import { ThemeProvider, useSetTheme } from '../src/core/theme/index.ts'
-import { initLaunchDarkly } from '../src/utils/launchDarkly.ts'
 import { decorator as LDDecorator } from './launchdarkly-js-client-sdk.tsx'
 
 // @ts-expect-error

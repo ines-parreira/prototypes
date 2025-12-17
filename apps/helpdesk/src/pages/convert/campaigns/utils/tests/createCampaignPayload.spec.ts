@@ -7,11 +7,20 @@ import {
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import type { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 import type { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
-import { getLDClient } from 'utils/launchDarkly'
 
 import { createCampaignPayload } from '../createCampaignPayload'
 
-jest.mock('utils/launchDarkly')
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
+    })),
+}))
 
 const integration = fromJS({
     id: '1',
@@ -52,11 +61,6 @@ describe('createCampaignPayload', () => {
         utmQueryString: '',
         utmEnabled: true,
     }
-
-    beforeAll(() => {
-        const allFlagsMock = getLDClient().allFlags as jest.Mock
-        allFlagsMock.mockReturnValue({})
-    })
 
     it('returns campaign payload', () => {
         const payload = createCampaignPayload(defaultProps)

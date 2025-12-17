@@ -8,7 +8,7 @@ import {
     useState,
 } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import {
     useAsyncFn,
     usePrevious,
@@ -39,7 +39,6 @@ import {
 } from '@gorgias/axiom'
 
 import { getConfigByName } from 'config/views'
-import { useFlag } from 'core/flags'
 import { OBJECT_PATHS } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'

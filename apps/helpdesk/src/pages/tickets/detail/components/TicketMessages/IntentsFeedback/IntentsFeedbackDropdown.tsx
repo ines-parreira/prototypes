@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import {
@@ -12,8 +12,6 @@ import {
 } from 'reactstrap'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
-
-import { useFlag } from 'core/flags'
 
 import { Messages } from './constants'
 

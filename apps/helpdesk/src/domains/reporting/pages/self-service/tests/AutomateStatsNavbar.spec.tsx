@@ -1,8 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 
 import { Navigation } from 'components/Navigation/Navigation'
-import { useFlag } from 'core/flags'
 import { LINK_AI_SALES_AGENT_TEXT } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { AutomateStatsNavbar } from 'domains/reporting/pages/self-service/AutomateStatsNavbar'
@@ -16,7 +15,8 @@ import { renderWithRouter } from 'utils/testing'
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = assumeMock(useAppSelector)
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

@@ -1,12 +1,12 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import type { Moment } from 'moment'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import { LiveVoiceMetricCard } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard'
 import LiveVoiceMetrics from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetrics'
 import useLiveVoiceMetricCards from 'domains/reporting/pages/voice/components/LiveVoice/useLiveVoiceMetricCards'
@@ -33,7 +33,7 @@ const renderComponent = (
     )
 }
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/state/ui/stats/selectors')

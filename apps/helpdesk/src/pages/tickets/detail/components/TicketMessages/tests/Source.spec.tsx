@@ -6,7 +6,7 @@ import { omit } from 'lodash'
 import moment from 'moment'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
+import { useFlag } from '@repo/feature-flags'
 import { channels as mockChannels } from 'fixtures/channels'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import type { Source as MessageSource } from 'models/ticket/types'
@@ -14,7 +14,10 @@ import { assumeMock } from '@repo/testing'
 
 import Source from '../Source'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock(

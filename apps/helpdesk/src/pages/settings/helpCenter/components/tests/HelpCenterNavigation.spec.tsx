@@ -1,11 +1,11 @@
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import * as segment from '@repo/logging'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { TicketChannel } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
@@ -46,7 +46,7 @@ jest.mock('react-router-dom', () => {
     }
 })
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockUseFlags = useFlag as jest.MockedFunction<typeof useFlag>
 const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<

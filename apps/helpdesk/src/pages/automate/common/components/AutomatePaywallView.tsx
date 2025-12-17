@@ -1,13 +1,12 @@
 import type React from 'react'
 import { useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import PageHeader from 'pages/common/components/PageHeader'

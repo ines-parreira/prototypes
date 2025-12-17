@@ -1,6 +1,6 @@
 import { createElement, useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
@@ -20,7 +20,6 @@ import {
 } from '@gorgias/axiom'
 
 import { AGENT_ROLE } from 'config/user'
-import { useFlag } from 'core/flags'
 import PageHeader from 'pages/common/components/PageHeader'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'

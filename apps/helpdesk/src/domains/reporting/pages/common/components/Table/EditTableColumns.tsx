@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useDeepEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
@@ -10,7 +10,6 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import css from 'domains/reporting/pages/common/components/Table/EditColumns.less'
 import { EditColumnsItem } from 'domains/reporting/pages/common/components/Table/EditColumnsItem'
 import type { TooltipData } from 'domains/reporting/pages/types'

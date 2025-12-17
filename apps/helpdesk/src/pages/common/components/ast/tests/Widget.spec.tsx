@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -10,7 +11,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { appQueryClient } from 'api/queryClient'
-import { useFlag } from 'core/flags'
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {
     customerDropdownFieldDefinition,
@@ -50,7 +50,8 @@ const queryClient = mockQueryClient()
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinition')
 const useCustomFieldDefinitionMock = jest.mocked(useCustomFieldDefinition)
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

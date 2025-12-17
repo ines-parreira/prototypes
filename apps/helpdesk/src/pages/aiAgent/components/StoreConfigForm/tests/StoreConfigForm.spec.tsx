@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import * as hooksImports from '@repo/hooks'
 import { logEvent } from '@repo/logging'
 import { history } from '@repo/routing'
@@ -17,7 +17,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
     ticketDropdownFieldDefinition,
@@ -237,7 +236,7 @@ jest.mock('hooks/useAppDispatch', () => ({
     default: () => mockDispatch,
 }))
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = jest.mocked(useFlag)
 
 const mockStore = configureMockStore([thunk])

@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useFlag } from 'core/flags'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import type { StaticFilter } from 'domains/reporting/models/stat/types'
 import {

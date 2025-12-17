@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import type React from 'react'
 import { useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 
@@ -11,7 +11,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

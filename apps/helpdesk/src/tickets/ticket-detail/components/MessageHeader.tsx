@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 import classNamesBind from 'classnames/bind'
 import type { Map } from 'immutable'
@@ -8,7 +8,6 @@ import { fromJS } from 'immutable'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import type {
     Meta as MetaType,
     Source as SourceType,

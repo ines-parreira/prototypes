@@ -42,7 +42,6 @@ import {
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER_ADDRESS,
 } from 'state/ticket/constants'
 import type { StoreDispatch } from 'state/types'
-import { getLDClient } from 'utils/launchDarkly'
 
 import * as actions from '../actions'
 import { initialState } from '../reducers'
@@ -106,8 +105,19 @@ jest.mock('@repo/routing', () => ({
     },
 }))
 
-jest.mock('utils/launchDarkly')
-const variationMock = getLDClient().variation as jest.Mock
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
+    })),
+}))
+const variationMock = require('@repo/feature-flags').getLDClient()
+    .variation as jest.Mock
 
 jest.mock('api/queryClient', () => {
     return {

@@ -107,7 +107,7 @@ jest.mock('state/ticket/actions', () => ({
     triggerTicketFieldsErrors: jest.fn(),
 }))
 
-jest.mock('core/flags/hooks/useFlag')
+jest.mock('@repo/feature-flags')
 
 jest.mock('providers/OutboundTranslationProvider')
 const mockUseOutboundTranslationContext =

@@ -2,7 +2,7 @@ import 'tests/__mocks__/intersectionObserverMock'
 
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -11,7 +11,6 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
@@ -54,7 +53,7 @@ jest.mock('../../hooks/useCustomToneOfVoicePreview')
 
 const mockuseCustomToneofVoicePreview = jest.mocked(useCustomToneOfVoicePreview)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 const QueryClientProvider = mockQueryClientProvider().QueryClientProvider

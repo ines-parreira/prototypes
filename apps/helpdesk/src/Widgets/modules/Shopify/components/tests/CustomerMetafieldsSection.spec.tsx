@@ -1,16 +1,16 @@
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { useFlag } from 'core/flags'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { ShopifyContext } from 'Widgets/modules/Shopify/contexts/ShopifyContext'
 
 import CustomerMetafieldsSection from '../CustomerMetafieldsSection'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)
 
 describe('<CustomerMetafieldsSection />', () => {

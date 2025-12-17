@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import type { Map } from 'immutable'
@@ -11,7 +12,6 @@ import configureMockStore from 'redux-mock-store'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { AGENT_ROLE } from 'config/user'
-import { useFlag } from 'core/flags'
 import { ThemeProvider } from 'core/theme'
 import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -25,7 +25,8 @@ import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import AutomateNavbar from '../AutomateNavbar'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

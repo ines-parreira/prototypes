@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -5,7 +6,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import type { useWorkloadPerChannelDistributionForPreviousPeriod } from 'domains/reporting/hooks/distributions'
 import { useWorkloadPerChannelDistribution } from 'domains/reporting/hooks/distributions'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -21,7 +21,7 @@ import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import type { RootState, StoreDispatch } from 'state/types'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/pages/common/components/charts/GaugeChart')

@@ -1,12 +1,12 @@
+import { useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import { setTextAction } from 'fixtures/macro'
 
 import { ResponseTextPreview } from '../ResponseTextPreview'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock(

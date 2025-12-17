@@ -26,6 +26,18 @@ import type { RootState, StoreDispatch } from 'state/types'
 import type { AddContactCaptureFormProps } from '../../ContactCaptureForm/AddContactCaptureForm'
 import { CampaignMessage } from '../CampaignMessage'
 
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
+    })),
+}))
+
 jest.mock('models/convert/campaign/queries')
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('pages/convert/common/hooks/useContactFormFlag')

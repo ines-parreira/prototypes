@@ -1,10 +1,9 @@
 import { useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 import moment from 'moment'
 
-import { useFlag } from 'core/flags'
 import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useLast28daysForAutomateRedirect } from 'domains/reporting/hooks/automate/useLast28daysForAutomateRedirect'

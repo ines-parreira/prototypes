@@ -25,12 +25,14 @@ import { TicketMessageTranslationDisplayProvider } from '../TicketMessageTransla
 import { withMessageTranslations } from '../withMessageTranslations'
 
 // Mock the feature flag hook
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 
-const mockUseFlag = require('core/flags').useFlag as jest.MockedFunction<
-    typeof import('core/flags').useFlag
+const mockUseFlag = require('@repo/feature-flags')
+    .useFlag as jest.MockedFunction<
+    typeof import('@repo/feature-flags').useFlag
 >
 
 // Test component to be wrapped

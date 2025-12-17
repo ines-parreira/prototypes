@@ -1,8 +1,8 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 
-import { useFlag } from 'core/flags'
 import { THEME_NAME, useTheme } from 'core/theme'
 import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import { useRedirectDeprecatedTicketRoutes } from 'tickets/core/hooks'
@@ -13,7 +13,10 @@ import App from '../App'
 
 let history = createMemoryHistory()
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('common/notifications', () => ({

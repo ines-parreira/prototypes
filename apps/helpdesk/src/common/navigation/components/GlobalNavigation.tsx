@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
 
@@ -14,7 +14,6 @@ import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { useNavBarMenuIcon } from 'common/navigation/hooks/useNavBarMenuIcon'
 import { useNavBarShortcuts } from 'common/navigation/hooks/useNavBarShortcuts'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { useTheme } from 'core/theme'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import useAppSelector from 'hooks/useAppSelector'

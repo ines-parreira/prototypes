@@ -1,10 +1,9 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
-import { useFlag } from 'core/flags'
 import {
     useGetHelpCenterArticleList,
     useGetMultipleHelpCenterArticleLists,

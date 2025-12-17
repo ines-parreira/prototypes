@@ -106,7 +106,8 @@ jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
 jest.mock('domains/reporting/models/queryFactories/knowledge/resourceMetrics')
 const mockedFetchResourceMetrics = jest.mocked(useResourceMetrics)
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => false),
 }))
 
@@ -891,7 +892,7 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         it('displays impact section with loading state when data is not available', async () => {
-            const useFlag = require('core/flags').useFlag
+            const useFlag = require('@repo/feature-flags').useFlag
             useFlag.mockReturnValue(true)
 
             mockedFetchResourceMetrics.mockReturnValue({

@@ -13,7 +13,7 @@ import { mockStore, renderWithRouter } from 'utils/testing'
 import VoiceIntegrationSecondaryNavigation from '../VoiceIntegrationSecondaryNavigation'
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('state/integrations/selectors', () => ({
     getPhoneIntegrations: jest.fn(),
 }))

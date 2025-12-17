@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { useMeasure } from '@repo/hooks'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -6,7 +7,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { agents } from 'fixtures/agents'
 import { billingState } from 'fixtures/billing'
@@ -31,7 +31,7 @@ jest.mock('@repo/hooks', () => ({
 jest.mock('state/newMessage/actions.ts')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = useFlag as jest.Mock
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')

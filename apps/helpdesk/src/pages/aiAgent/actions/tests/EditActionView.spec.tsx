@@ -1,6 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
+import { useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -11,7 +12,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { ulid } from 'ulidx'
 
-import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
@@ -55,7 +55,7 @@ jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
 jest.mock('pages/aiAgent/actions/hooks/useThreeplIntegrations')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('pages/automate/workflows/utils/serverValidationErrors')
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/AppContext')

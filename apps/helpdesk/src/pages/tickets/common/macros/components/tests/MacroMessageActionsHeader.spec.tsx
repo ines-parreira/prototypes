@@ -1,13 +1,13 @@
+import { useFlag } from '@repo/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { List, Map } from 'immutable'
 
-import { useFlag } from 'core/flags'
 import { MacroActionName } from 'models/macroAction/types'
 
 import MacroMessageActionsHeader from '../MacroMessageActionsHeader'
 
 const onSelect = jest.fn()
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 
 const minProps = {

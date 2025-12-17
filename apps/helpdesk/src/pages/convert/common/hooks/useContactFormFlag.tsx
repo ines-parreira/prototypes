@@ -1,6 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { useFlag } from 'core/flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 const useCanAddContactFormFlag = () => {
     return useFlag(FeatureFlagKey.ConvertContactForm)

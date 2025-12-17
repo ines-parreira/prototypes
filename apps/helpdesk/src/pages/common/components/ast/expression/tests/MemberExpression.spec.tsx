@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -11,7 +12,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { appQueryClient } from 'api/queryClient'
-import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { automationSubscriptionProductPrices } from 'fixtures/account'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
@@ -29,7 +29,7 @@ import type { RootState } from 'state/types'
 
 import { MemberExpression } from '../MemberExpression'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({

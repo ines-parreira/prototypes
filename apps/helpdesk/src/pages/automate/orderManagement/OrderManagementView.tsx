@@ -1,12 +1,11 @@
 import { useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { createMemoryHistory } from 'history'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/constants'
 import type { PolicyKey } from 'models/selfServiceConfiguration/types'

@@ -3,12 +3,13 @@ import { renderHook } from '@testing-library/react'
 import { usePromoCardVideoContent } from '../hooks/usePromoCardVideoContent'
 import { TrialType } from '../types/ShoppingAssistant'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 
 describe('usePromoCardVideoContent', () => {
-    const mockUseFlag = jest.mocked(require('core/flags').useFlag)
+    const mockUseFlag = jest.mocked(require('@repo/feature-flags').useFlag)
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseFlag.mockReturnValue(true)

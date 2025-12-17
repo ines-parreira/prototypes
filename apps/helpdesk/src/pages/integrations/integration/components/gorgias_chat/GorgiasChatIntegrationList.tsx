@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
@@ -8,7 +8,6 @@ import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
 import { IntegrationType } from '../../../../../models/integration/types'

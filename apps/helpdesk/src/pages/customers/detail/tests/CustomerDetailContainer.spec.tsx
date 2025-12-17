@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { createBrowserHistory } from 'history'
 import { fromJS, Map } from 'immutable'
@@ -7,7 +8,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import useFlag from 'core/flags/hooks/useFlag'
 import { customer } from 'fixtures/customer'
 import type { RootState, StoreDispatch } from 'state/types'
 import Timeline from 'timeline/Timeline'
@@ -15,7 +15,7 @@ import { renderWithRouter } from 'utils/testing'
 
 import { CustomerDetailContainer } from '../CustomerDetailContainer'
 
-jest.mock('core/flags/hooks/useFlag')
+jest.mock('@repo/feature-flags')
 jest.mock('timeline/Timeline', () => jest.fn(() => <div>Timeline</div>))
 jest.mock('pages/customers/common/components/CustomerForm', () => () => (
     <div>CustomerForm</div>

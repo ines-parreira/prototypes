@@ -2,13 +2,12 @@ import type { MouseEvent } from 'react'
 import type React from 'react'
 import { useCallback } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 import moment from 'moment'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import type { HelpCenter, Locale } from 'models/helpCenter/types'
 import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
 import { LanguageTagList } from 'pages/common/components/LanguageTagList'

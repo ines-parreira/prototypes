@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { TEST } from 'pages/aiAgent/constants'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'

@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import * as hooksImports from '@repo/hooks'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
@@ -5,7 +6,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { agents } from 'fixtures/agents'
 import { billingState } from 'fixtures/billing'
@@ -40,7 +40,8 @@ const useLocalStorageSpy = jest.spyOn(
 
 const ticketId = 1
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

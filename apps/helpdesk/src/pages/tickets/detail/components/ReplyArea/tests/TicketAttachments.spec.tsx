@@ -14,6 +14,18 @@ import { replaceAttachmentURL } from 'utils'
 
 import TicketAttachments from '../TicketAttachments'
 
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
+    })),
+}))
+
 describe('TicketAttachments component', () => {
     beforeAll(() => {
         window.GORGIAS_STATE.currentAccount = {

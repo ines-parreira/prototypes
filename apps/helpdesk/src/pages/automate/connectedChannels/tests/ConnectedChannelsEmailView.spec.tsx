@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+import { useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -7,7 +8,6 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
@@ -34,7 +34,8 @@ jest.mock('react-router-dom', () => ({
     })),
 }))
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

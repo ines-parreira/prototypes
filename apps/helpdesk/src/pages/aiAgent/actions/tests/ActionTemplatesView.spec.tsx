@@ -23,7 +23,7 @@ import { renderWithRouter } from 'utils/testing'
 
 import ActionTemplatesView from '../ActionTemplatesView'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('models/workflows/queries')
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 

@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -7,7 +7,6 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import type { ShopifyIntegration } from 'models/integration/types'
@@ -74,7 +73,7 @@ jest.mock('state/billing/selectors', () => ({
 }))
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 const mockUseCanUseAiAgent = jest.mocked(useCanUseAiAgent)

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { shortcutManager, shortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import { useParams } from 'react-router'
@@ -8,7 +8,6 @@ import { useParams } from 'react-router'
 import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { FROALA_KEY } from 'config'
-import { useFlag } from 'core/flags'
 import { MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT } from 'pages/aiAgent/constants'
 import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
 import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'

@@ -18,9 +18,16 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     })),
 }))
 
-jest.mock('core/flags/hooks/useFlag', () => ({
-    __esModule: true,
-    default: jest.fn(() => true),
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(() => true),
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
+    })),
 }))
 
 jest.mock('../ProductAdditionalInfoView', () => {

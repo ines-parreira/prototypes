@@ -1,9 +1,8 @@
 import { createContext, useCallback, useContext, useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { TicketChannel } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import type { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import type { VisualBuilderNode } from '../models/visualBuilderGraph.types'

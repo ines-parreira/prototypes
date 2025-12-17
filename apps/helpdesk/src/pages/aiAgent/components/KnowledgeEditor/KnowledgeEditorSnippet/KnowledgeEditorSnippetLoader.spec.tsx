@@ -15,7 +15,8 @@ jest.mock('hooks/useNotify', () => ({
     useNotify: () => ({ error: jest.fn() }),
 }))
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => false),
 }))
 
@@ -687,7 +688,7 @@ describe('KnowledgeEditorSnippetLoader', () => {
         })
 
         it('displays impact section with loading state when data is not available', async () => {
-            const { useFlag } = require('core/flags')
+            const { useFlag } = require('@repo/feature-flags')
             useFlag.mockReturnValue(true)
 
             mockedFetchResourceMetrics.mockReturnValue({

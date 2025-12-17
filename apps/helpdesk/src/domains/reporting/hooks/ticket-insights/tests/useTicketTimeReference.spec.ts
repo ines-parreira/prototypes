@@ -1,9 +1,9 @@
+import { useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import {
     Entity,
     getStorageKey,
@@ -14,7 +14,7 @@ import { TicketTimeReference } from 'domains/reporting/models/stat/types'
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('@repo/hooks', () => ({

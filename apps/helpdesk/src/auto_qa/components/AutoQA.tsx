@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import cn from 'classnames'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
@@ -14,7 +14,6 @@ import {
 import type { SaveState } from 'auto_qa/hooks/useSaveState'
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'

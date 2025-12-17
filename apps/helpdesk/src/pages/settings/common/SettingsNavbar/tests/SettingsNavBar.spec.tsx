@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent } from '@repo/logging'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -8,7 +8,6 @@ import { useLocation } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
-import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { renderWithRouter } from 'utils/testing'
@@ -25,7 +24,8 @@ jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
 }))
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => false),
 }))
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({

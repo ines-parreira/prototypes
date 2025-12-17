@@ -6,14 +6,25 @@ import { fromJS } from 'immutable'
 
 import type { Plugin, PluginMethods } from 'pages/common/draftjs/plugins/types'
 import * as DraftTestUtils from 'pages/common/draftjs/tests/draftTestUtils'
-import { getLDClient } from 'utils/launchDarkly'
 
 import client from '../client'
 import createPredictionPlugin, { clearCache } from '../index'
 import { cachedSelection, predictionKey } from '../state'
 
+const variationMock = jest.fn(() => true)
+
 jest.mock('utils/errors')
-jest.mock('utils/launchDarkly', () => ({ getLDClient: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+    getLDClient: jest.fn(() => ({
+        variation: variationMock,
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
+    })),
+}))
 jest.mock('../client')
 
 const defaultContext: Map<any, any> = fromJS({})
@@ -22,10 +33,9 @@ beforeEach(() => {
     clearCache()
     predictionKey.set(null)
     cachedSelection.set(null)
-    jest.resetAllMocks()
-    jest.restoreAllMocks()
+    jest.clearAllMocks()
     jest.useFakeTimers()
-    ;(getLDClient as jest.Mock).mockReturnValue({ variation: () => true })
+    variationMock.mockReturnValue(true)
 })
 
 describe('prediction plugin', () => {
@@ -47,6 +57,7 @@ describe('prediction plugin', () => {
         predictionText: string,
         plugin: Plugin,
         pluginMethods: PluginMethods,
+        advanceTimers = true,
     ): Promise<EditorState> => {
         assumeMock(client.requestPrediction).mockResolvedValue(predictionText)
         const textState = DraftTestUtils.typeText(
@@ -56,6 +67,9 @@ describe('prediction plugin', () => {
         if (plugin.onChange) {
             const changedState = plugin.onChange(textState, pluginMethods)
             pluginMethods.setEditorState(changedState)
+        }
+        if (advanceTimers) {
+            jest.runAllTimers() // advance timers to trigger debounced function
         }
         await flushPromises() // flush prediction and callback requests
         return pluginMethods.getEditorState()
@@ -130,13 +144,46 @@ describe('prediction plugin', () => {
                 createEmptyStatePredictionPlugin()
             const text = 'Hi'
 
-            await typeAndPredict(text, '', predictionPlugin, pluginMethods)
-            await typeAndPredict(' ', '', predictionPlugin, pluginMethods)
-            await typeAndPredict('M', '', predictionPlugin, pluginMethods)
-            await typeAndPredict('a', '', predictionPlugin, pluginMethods)
-            await typeAndPredict('y', '', predictionPlugin, pluginMethods)
+            await typeAndPredict(
+                text,
+                '',
+                predictionPlugin,
+                pluginMethods,
+                false,
+            )
+            await typeAndPredict(
+                ' ',
+                '',
+                predictionPlugin,
+                pluginMethods,
+                false,
+            )
+            await typeAndPredict(
+                'M',
+                '',
+                predictionPlugin,
+                pluginMethods,
+                false,
+            )
+            await typeAndPredict(
+                'a',
+                '',
+                predictionPlugin,
+                pluginMethods,
+                false,
+            )
+            await typeAndPredict(
+                'y',
+                '',
+                predictionPlugin,
+                pluginMethods,
+                false,
+            )
+            jest.runAllTimers()
+            await flushPromises()
 
-            expect(client.requestPrediction).toHaveBeenCalledTimes(1)
+            // Should have 2 calls: 1 leading (immediate) + 1 trailing (after debounce)
+            expect(client.requestPrediction).toHaveBeenCalledTimes(2)
         })
 
         it('should display the prediction', async () => {
@@ -188,9 +235,18 @@ describe('prediction plugin', () => {
                 predictionPlugin,
                 pluginMethods,
             )
-            await typeAndPredict('P', '', predictionPlugin, pluginMethods)
+            await typeAndPredict(
+                'P',
+                '',
+                predictionPlugin,
+                pluginMethods,
+                false,
+            )
+            jest.runAllTimers()
+            await flushPromises()
 
-            expect(client.requestPrediction).toHaveBeenCalledTimes(1)
+            // Should have 2 calls: one for "Hi " and one for "Hi P" (leading edge of new debounce window)
+            expect(client.requestPrediction).toHaveBeenCalledTimes(2)
             expectToBeTextWithoutPrediction(
                 pluginMethods.getEditorState().getCurrentContent(),
                 'Hi P',

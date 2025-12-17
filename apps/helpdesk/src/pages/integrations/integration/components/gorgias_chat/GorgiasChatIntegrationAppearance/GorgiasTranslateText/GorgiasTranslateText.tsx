@@ -1,7 +1,7 @@
 import type React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { produce } from 'immer'
@@ -24,7 +24,6 @@ import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import { LanguageChat } from 'constants/languages'
-import { useFlag } from 'core/flags'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import PageHeader from 'pages/common/components/PageHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'

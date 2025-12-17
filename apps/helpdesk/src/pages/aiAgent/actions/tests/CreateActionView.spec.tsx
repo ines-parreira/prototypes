@@ -1,6 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
+import { useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, createEvent, fireEvent, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
@@ -9,7 +10,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import { ulid } from 'ulidx'
 
-import { useFlag } from 'core/flags'
 import { billingState } from 'fixtures/billing'
 import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -53,7 +53,7 @@ jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
 jest.mock('pages/aiAgent/actions/hooks/useThreeplIntegrations')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('pages/automate/workflows/utils/serverValidationErrors')
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(),

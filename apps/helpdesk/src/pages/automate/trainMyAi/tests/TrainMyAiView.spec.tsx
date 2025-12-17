@@ -32,7 +32,6 @@ import { useSupportedLocales } from 'pages/settings/helpCenter/providers/Support
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { getLDClient } from 'utils/launchDarkly'
 
 import { ARTICLE_RECOMMENDATION } from '../../common/components/constants'
 import TrainMyAiView from '../TrainMyAiView'
@@ -49,7 +48,10 @@ jest.mock('settings/automate/hooks/useIsAutomateSettings', () => ({
     useIsAutomateSettings: jest.fn(),
 }))
 const useIsAutomateSettingsMock = assumeMock(useIsAutomateSettings)
-jest.mock('utils/launchDarkly')
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+}))
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     ...(jest.requireActual('react-router-dom') as typeof routerDom),
@@ -76,10 +78,6 @@ const queryClient = mockQueryClient()
 
 const updateMutateMock = jest.fn().mockResolvedValue({})
 const updateArticleTranslationMutateMock = jest.fn().mockResolvedValue({})
-
-const allFlagsMock = getLDClient().allFlags as jest.MockedFunction<
-    ReturnType<typeof getLDClient>['allFlags']
->
 
 const useCurrentHelpCenterMock = useCurrentHelpCenter as jest.MockedFunction<
     typeof useCurrentHelpCenter
@@ -158,7 +156,6 @@ describe('<TrainMyAiView />', () => {
 
     beforeEach(() => {
         useIsAutomateSettingsMock.mockReturnValue(false)
-        allFlagsMock.mockReturnValue({})
         useParamsMock.mockReturnValue({
             shopType: 'shopify',
             shopName: 'myShop,',

@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import hash from 'object-hash'
 
@@ -14,7 +14,6 @@ import {
     getNotificationReceivedDatetimePayload,
 } from 'automate/notifications/utils'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { getOnboardingNotificationState } from 'models/aiAgent/resources/configuration'

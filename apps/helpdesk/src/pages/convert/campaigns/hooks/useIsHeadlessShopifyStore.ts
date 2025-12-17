@@ -1,6 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { useFlag } from 'core/flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 export function useIsHeadlessShopifyStore(): boolean {
     return Boolean(useFlag(FeatureFlagKey.RevenueBetaShopifyHeadless))

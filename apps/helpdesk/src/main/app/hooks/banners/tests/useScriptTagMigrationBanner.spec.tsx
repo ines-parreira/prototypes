@@ -1,9 +1,8 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useStoresRequiringScriptTagMigration from 'pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -11,7 +10,7 @@ import { makeGetRedirectUri } from 'state/integrations/selectors'
 
 import { useScriptTagMigrationBanner } from '../useScriptTagMigrationBanner'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('state/currentUser/selectors', () => ({

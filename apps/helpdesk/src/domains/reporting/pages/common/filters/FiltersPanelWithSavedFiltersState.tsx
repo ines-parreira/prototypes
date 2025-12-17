@@ -1,10 +1,9 @@
 import type { ComponentProps } from 'react'
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { connect } from 'react-redux'
 
-import { useFlag } from 'core/flags'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { SAVEABLE_FILTERS } from 'domains/reporting/pages/common/filters/constants'
 import { FiltersPanelComponent } from 'domains/reporting/pages/common/filters/FiltersPanel'

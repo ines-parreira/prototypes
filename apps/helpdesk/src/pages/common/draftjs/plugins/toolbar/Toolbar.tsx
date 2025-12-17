@@ -1,14 +1,13 @@
 import type { DragEvent, ReactNode } from 'react'
 import React, { useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { UploadType } from 'common/types'
-import { useFlag } from 'core/flags'
 import type {
     GuidanceVariable,
     GuidanceVariableList,

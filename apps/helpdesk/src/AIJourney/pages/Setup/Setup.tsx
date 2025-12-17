@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { motion } from 'framer-motion'
 import { useHistory } from 'react-router-dom'
 
@@ -14,7 +14,6 @@ import {
     useJourneyUpdateHandler,
 } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
-import { useFlag } from 'core/flags'
 import type { NewPhoneNumber } from 'models/phoneNumber/types'
 
 import {

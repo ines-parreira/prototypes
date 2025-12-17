@@ -1,16 +1,14 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-
-import { useFlag } from 'core/flags'
 
 import { AiAgentPlaygroundPage } from '../AiAgentPlaygroundPage'
 
 const mockSetIsCollapsibleColumnOpen = jest.fn()
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 jest.mock('pages/common/hooks/useCollapsibleColumn', () => ({
     useCollapsibleColumn: () => ({

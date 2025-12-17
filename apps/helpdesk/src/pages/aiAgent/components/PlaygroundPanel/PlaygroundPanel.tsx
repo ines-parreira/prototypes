@@ -1,12 +1,11 @@
 import { useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 
 import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
-import { useFlag } from 'core/flags'
 import PlaygroundActionsModal from 'pages/aiAgent/PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal'
 import type { DraftKnowledge } from 'pages/aiAgent/PlaygroundV2/types'
 import { getActionsToggleTooltipContent } from 'pages/aiAgent/PlaygroundV2/utils/playground.utils'

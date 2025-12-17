@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import type { Map } from 'immutable'
@@ -9,7 +9,6 @@ import { Box, Icon, Text, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { queryKeys, useListInstagramProfiles } from '@gorgias/helpdesk-queries'
 import { TicketMessageSourceType } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import type { Integration } from 'models/integration/types'
 import SourceIcon from 'pages/common/components/SourceIcon'

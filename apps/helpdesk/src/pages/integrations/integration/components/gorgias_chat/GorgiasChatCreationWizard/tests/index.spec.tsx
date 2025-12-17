@@ -1,12 +1,13 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { useFlag } from 'core/flags'
-
 import GorgiasChatCreationWizardSwitcher from '../index'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 jest.mock('../GorgiasChatCreationWizard', () => ({

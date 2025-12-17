@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
@@ -6,7 +7,6 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import SalesOverview from 'domains/reporting/pages/automate/aiSalesAgent/components/SalesOverview'
 import { useWarningBannerIsDisplayed } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useWarningBannerIsDisplayed'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -61,7 +61,7 @@ const mockHistoryReplace = jest.fn()
 
 const queryClient = mockQueryClient()
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagsMock = assumeMock(useFlag)
 
 describe('<SalesOverview />', () => {

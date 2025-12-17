@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -13,7 +14,6 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import { channels as mockChannels } from 'fixtures/channels'
 import { IntegrationType } from 'models/integration/types'
 import * as Avatar from 'pages/common/components/Avatar/Avatar'
@@ -22,7 +22,10 @@ import * as channelsService from 'services/channels'
 import DatetimeLabel from '../DatetimeLabel'
 import * as labels from '../labels'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('pages/tickets/detail/components/TicketMessages/Avatar', () => ({

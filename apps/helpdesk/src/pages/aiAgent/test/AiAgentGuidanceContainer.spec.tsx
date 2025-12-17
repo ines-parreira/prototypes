@@ -1,6 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
+import { useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -10,7 +11,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { toImmutable } from 'common/utils'
-import { useFlag } from 'core/flags'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
@@ -108,7 +108,7 @@ jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations.ts')
 const useStoreActivationsMock = assumeMock(useStoreActivations)
 const useStoreConfigurationsMock = assumeMock(useStoreConfigurations)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)
 
 const queryClient = mockQueryClient()

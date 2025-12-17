@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import { useCallback } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 import type { List } from 'immutable'
 import { fromJS, Map } from 'immutable'
@@ -15,7 +15,6 @@ import {
 import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { ACTION_TEMPLATES, ActionTemplateExecution } from 'config'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import type { IntegrationType } from 'models/integration/types'
 import { MacroActionName } from 'models/macroAction/types'

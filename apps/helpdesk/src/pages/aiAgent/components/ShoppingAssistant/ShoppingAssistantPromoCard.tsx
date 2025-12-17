@@ -1,8 +1,7 @@
 import type React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { TrialSharedModals } from 'pages/aiAgent/components/ShoppingAssistant/components/TrialSharedModals'

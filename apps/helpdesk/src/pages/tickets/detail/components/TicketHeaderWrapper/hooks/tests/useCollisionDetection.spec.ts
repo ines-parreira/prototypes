@@ -1,12 +1,11 @@
+import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
-
-import { useFlag } from 'core/flags'
 
 import useAblyRealtimePresence from '../useAblyRealtimePresence'
 import useCollisionDetection from '../useCollisionDetection'
 import useSocketIOPresence from '../useSocketIOPresence'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('../useAblyRealtimePresence')
 jest.mock('../useSocketIOPresence')
 

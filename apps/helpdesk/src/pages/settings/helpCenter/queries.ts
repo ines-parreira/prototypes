@@ -1,8 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { useFlag } from 'core/flags'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 import type { Paths } from '../../../rest_api/help_center_api/client.generated'

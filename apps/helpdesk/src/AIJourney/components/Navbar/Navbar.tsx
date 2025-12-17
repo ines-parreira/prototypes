@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { NavLink, useHistory, useParams } from 'react-router-dom'
 
 import { useJourneyContext } from 'AIJourney/providers'
 import { ActiveContent, Navbar } from 'common/navigation'
 import { Navigation } from 'components/Navigation/Navigation'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'

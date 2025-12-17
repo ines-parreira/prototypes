@@ -1,7 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { renderHook } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
@@ -18,7 +17,7 @@ jest.mock('../utils/eventLogger', () => ({
     logTrialBannerEvent: jest.fn(),
     logInTrialEvent: jest.fn(),
 }))
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockLogTrialBannerEvent = logTrialBannerEvent as jest.Mock
 const mockLogInTrialEvent = logInTrialEvent as jest.Mock

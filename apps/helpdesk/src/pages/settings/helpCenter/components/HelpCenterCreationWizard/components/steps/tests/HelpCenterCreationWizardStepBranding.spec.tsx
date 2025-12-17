@@ -1,11 +1,11 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
+import { useFlag } from '@repo/feature-flags'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
@@ -19,7 +19,7 @@ import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
 import { useHelpCenterCreationWizard } from '../../../hooks/useHelpCenterCreationWizard'
 import HelpCenterCreationWizardStepBranding from '../HelpCenterCreationWizardStepBranding'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 

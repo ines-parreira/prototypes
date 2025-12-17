@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { renderToStaticMarkup } from 'react-dom/server'
@@ -7,13 +7,12 @@ import configureStore from 'redux-mock-store'
 
 import { BannerCategories } from 'AlertBanners'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getDeactivatedOAuthEmailIntegrations } from 'state/integrations/selectors'
 
 import { useEmailDisconnectedBanner } from '../useEmailDisconnectedBanner'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 
 const mockedAddBanner = jest.fn()

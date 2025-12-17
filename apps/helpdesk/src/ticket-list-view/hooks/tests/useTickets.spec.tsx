@@ -1,7 +1,7 @@
+import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
 
 import type { TicketPartial } from '../../types'
@@ -11,7 +11,10 @@ import useTicketPartials from '../useTicketPartials'
 import useTickets from '../useTickets'
 import useViewTickets from '../useViewTickets'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = useFlag as jest.Mock
 
 jest.mock('../useTicketData', () => jest.fn())

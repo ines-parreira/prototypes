@@ -26,6 +26,12 @@ jest.mock('draft-js-plugins-editor', () => ({
     composeDecorators: jest.fn(),
 }))
 
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+    withFeatureFlags: jest.fn((Component) => Component),
+}))
+
 jest.mock('@gorgias/realtime')
 const mockUseAgentActivity = useAgentActivity as jest.Mock
 

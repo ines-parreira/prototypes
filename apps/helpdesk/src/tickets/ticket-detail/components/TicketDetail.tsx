@@ -1,12 +1,10 @@
 import type { ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import cn from 'classnames'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 import type { TicketCompact } from '@gorgias/helpdesk-queries'
-
-import { useFlag } from 'core/flags'
 
 import { useTicket } from '../hooks/useTicket'
 import { TicketBody } from './TicketBody'

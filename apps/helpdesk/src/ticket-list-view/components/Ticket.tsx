@@ -1,7 +1,7 @@
 import type { ComponentProps, MouseEvent } from 'react'
 import { useCallback, useMemo, useRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
@@ -16,7 +16,6 @@ import type {
     TicketTranslationCompact,
 } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import RelativeTime from 'pages/common/components/RelativeTime'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'

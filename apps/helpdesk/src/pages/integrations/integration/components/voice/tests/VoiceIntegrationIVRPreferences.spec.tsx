@@ -1,9 +1,9 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { Form } from 'core/forms'
 import { integrationsState } from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -33,7 +33,7 @@ const getDefaultValuesMock = assumeMock(getDefaultValues)
 jest.mock('core/forms')
 const FormMock = assumeMock(Form)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('../VoiceIntegrationIVRPreferencesForm', () => () => (
@@ -45,7 +45,7 @@ describe('<VoiceIntegrationIVRPreferences />', () => {
         integration: {
             ...phoneIntegration,
             meta: {
-                ...(phoneIntegration?.meta ?? {}),
+                ...phoneIntegration?.meta,
                 phone_team_id: 1,
             },
         },

@@ -1,9 +1,8 @@
 import { useEffect, useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { ViewType } from 'models/view/types'
 import { getActiveView } from 'state/views/selectors'

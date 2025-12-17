@@ -1,8 +1,8 @@
+import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import { FilterComponentKey } from 'domains/reporting/models/stat/types'
 import { BusiestTimesMetricSelectFilter } from 'domains/reporting/pages/common/filters/BusiestTimesMetricSelectFilter'
 import { BusiestTimeOfDaysMetrics } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
@@ -20,7 +20,7 @@ jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 describe('BusiestTimesMetricSelectFilter', () => {

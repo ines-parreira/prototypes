@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
@@ -8,7 +8,6 @@ import moment from 'moment'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { AlertBannerTypes } from 'AlertBanners'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence, ProductType } from 'models/billing/types'

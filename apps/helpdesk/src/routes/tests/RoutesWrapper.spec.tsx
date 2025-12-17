@@ -1,12 +1,14 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { StaticRouter } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
-
 import RoutesWrapper from '../RoutesWrapper'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('../PanelRoutes', () => ({

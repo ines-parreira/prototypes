@@ -1,12 +1,12 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
-import { useFlag } from 'core/flags'
 import { StatsNavbarView } from 'domains/reporting/pages/common/components/StatsNavbarView/StatsNavbarView'
 import StatsNavbarContainer from 'domains/reporting/pages/common/StatsNavbarContainer'
 import { renderWithStore } from 'utils/testing'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock(

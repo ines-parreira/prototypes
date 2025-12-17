@@ -1,15 +1,14 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { setupServer } from 'msw/node'
 
-import { useFlag } from 'core/flags'
 import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import { SimplifiedStepBuilderSteps } from './SimplifiedStepBuilderSteps'
 
 // Mock dependencies
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps', () => ({
     __esModule: true,
     default: () => ({
@@ -75,7 +74,7 @@ jest.mock(
                 if (!isOpen) return null
 
                 const React = require('react')
-                const { useFlag } = require('core/flags')
+                const { useFlag } = require('@repo/feature-flags')
                 const {
                     useVisualBuilderContext,
                 } = require('pages/automate/workflows/hooks/useVisualBuilder')

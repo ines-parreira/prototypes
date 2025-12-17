@@ -1,9 +1,9 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import * as timelineItem from 'timeline/helpers/timelineItem'
 import { useTimelineData } from 'timeline/hooks/useTimelineData'
 
@@ -14,11 +14,14 @@ import { Sort } from '../Sort'
 import { SortedTicketList } from '../SortedTicketList'
 import Timeline from '../Timeline'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
-jest.mock('core/flags/hooks/useFlag', () => jest.fn())
-
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 jest.mock('../hooks/useTimelineData', () => ({
     useTimelineData: jest.fn(),
 }))

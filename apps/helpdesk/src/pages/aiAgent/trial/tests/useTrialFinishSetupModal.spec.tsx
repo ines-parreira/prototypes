@@ -1,8 +1,8 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { create } from 'react-test-renderer'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
@@ -16,7 +16,7 @@ import { renderHookWithRouter } from 'tests/renderHookWithRouter'
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 jest.mock('hooks/useAppSelector')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockUseShoppingAssistantTrialFlow = assumeMock(
     useShoppingAssistantTrialFlow,

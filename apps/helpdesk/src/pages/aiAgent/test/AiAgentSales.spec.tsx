@@ -1,7 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -9,7 +9,6 @@ import { Provider } from 'react-redux'
 
 import { AGENT_ROLE } from 'config/user'
 import { HTTP_INTEGRATION_TYPE } from 'constants/integration'
-import { useFlag } from 'core/flags'
 import {
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPlan,
@@ -68,7 +67,8 @@ const defaultState = {
 const mockUseGetShoppingAssistantEnabled =
     useGetShoppingAssistantEnabled as jest.Mock
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)

@@ -1,12 +1,12 @@
+import { getLDClient } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
-import { getLDClient } from 'utils/launchDarkly'
-
 import useAreFlagsLoading from '../useAreFlagsLoading'
 
-jest.mock('utils/launchDarkly', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     getLDClient: jest.fn(),
 }))
 

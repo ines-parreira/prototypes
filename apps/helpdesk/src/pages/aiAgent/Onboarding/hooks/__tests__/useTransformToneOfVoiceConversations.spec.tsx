@@ -1,9 +1,8 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { transformToneOfVoice } from 'models/aiAgent/resources/transform-tone-of-voice'
 import type { OnboardingData } from 'models/aiAgent/types'
@@ -24,7 +23,8 @@ const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
 jest.mock('pages/aiAgent/Onboarding/components/TopProductsCard/hooks')
 const useTopProductsMock = assumeMock(useTopProducts)
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)

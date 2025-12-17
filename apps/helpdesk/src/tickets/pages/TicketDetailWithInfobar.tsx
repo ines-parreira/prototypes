@@ -1,11 +1,10 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useTicketInfobarNavigation } from '@repo/navigation'
 import { TicketHeader } from '@repo/tickets'
 import { useParams } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { Handle, Panel } from 'core/layout/panels'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'

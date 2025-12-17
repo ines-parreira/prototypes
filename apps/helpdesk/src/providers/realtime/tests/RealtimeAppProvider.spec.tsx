@@ -1,13 +1,12 @@
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, render } from '@testing-library/react'
 
 import type { RealtimeProvider } from '@gorgias/realtime'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
-import { useFlag } from 'core/flags'
 import { reportError } from 'utils/errors'
 
 import { useErrorThreshold } from '../hooks/useErrorThreshold'
@@ -31,7 +30,8 @@ jest.mock('@gorgias/realtime', () => ({
     ),
 }))
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

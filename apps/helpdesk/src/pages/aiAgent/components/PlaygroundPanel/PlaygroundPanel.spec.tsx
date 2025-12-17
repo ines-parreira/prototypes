@@ -21,7 +21,8 @@ jest.mock('common/navigation/hooks/useNavBar/useNavBar', () => ({
     })),
 }))
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => false),
 }))
 
@@ -534,7 +535,7 @@ describe('PlaygroundPanel', () => {
     })
 
     describe('Settings toggle functionality', () => {
-        const mockUseFlag = require('core/flags').useFlag as jest.Mock
+        const mockUseFlag = require('@repo/feature-flags').useFlag as jest.Mock
 
         beforeEach(() => {
             jest.clearAllMocks()

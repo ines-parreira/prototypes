@@ -1,6 +1,5 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useFlag } from 'core/flags'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import type { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
 

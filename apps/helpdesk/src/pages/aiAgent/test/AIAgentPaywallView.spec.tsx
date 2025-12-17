@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -8,7 +8,6 @@ import { Provider } from 'react-redux'
 
 import { AGENT_ROLE } from 'config/user'
 import { HTTP_INTEGRATION_TYPE } from 'constants/integration'
-import { useFlag } from 'core/flags'
 import { THEME_NAME, useTheme } from 'core/theme'
 import {
     HELPDESK_PRODUCT_ID,
@@ -26,7 +25,7 @@ import { useStoreActivations } from '../Activation/hooks/useStoreActivations'
 import type { AiAgentPaywallViewProps } from '../AiAgentPaywallView'
 import { AiAgentPaywallView } from '../AiAgentPaywallView'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 jest.mock('@repo/logging')
 jest.mock('core/theme', () => ({

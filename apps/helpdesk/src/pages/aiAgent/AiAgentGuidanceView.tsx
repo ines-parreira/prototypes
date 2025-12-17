@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useDebouncedValue } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import type { LocaleCode } from 'models/helpCenter/types'

@@ -1,10 +1,10 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { useFlag } from 'core/flags'
 import { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
 import { filterTimeDataWithSelectedTags } from 'domains/reporting/hooks/ticket-insights/helpers'
 import { useTicketCountPerTag } from 'domains/reporting/hooks/ticket-insights/useTicketCountPerTag'
@@ -28,7 +28,7 @@ import { tags } from 'fixtures/tag'
 import { OrderDirection } from 'models/api/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagsMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/hooks/timeSeries')

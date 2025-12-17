@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -12,7 +12,6 @@ import {
     mapLanguageOptionsToLanguageDropdown,
 } from 'config/integrations/gorgias_chat'
 import type { Language } from 'constants/languages'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
 import { GorgiasChatLauncherType } from 'models/integration/types/gorgiasChat'

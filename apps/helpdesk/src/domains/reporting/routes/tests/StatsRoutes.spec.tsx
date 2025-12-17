@@ -1,6 +1,7 @@
 import type { ComponentType, PropsWithChildren, ReactNode } from 'react'
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { logPageChange } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
@@ -11,7 +12,6 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import AutomateAiAgentStatsReport from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentStatsReport'
 import AiSalesAgentSalesOverview from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentSalesOverview'
 import AutomateStatsPaywall from 'domains/reporting/pages/automate/AutomateStatsPaywall'
@@ -105,7 +105,7 @@ const defaultState = {
     }),
 }
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')

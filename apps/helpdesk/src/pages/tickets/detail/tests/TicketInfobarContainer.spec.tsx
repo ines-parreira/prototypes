@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
@@ -11,7 +12,6 @@ import thunk from 'redux-thunk'
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
@@ -37,7 +37,10 @@ jest.mock('@repo/navigation', () => ({
 }))
 const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = jest.mocked(useFlag)
 
 jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({

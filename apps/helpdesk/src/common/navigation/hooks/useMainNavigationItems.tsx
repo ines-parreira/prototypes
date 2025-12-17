@@ -1,13 +1,12 @@
 import type { ReactNode } from 'react'
 import React, { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Map } from 'immutable'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { hasRole } from 'utils'
 

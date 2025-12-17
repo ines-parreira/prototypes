@@ -1,18 +1,17 @@
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-
-import { useFlag } from 'core/flags'
 
 import { mockStoresWithAssignedChannels } from '../../fixtures'
 import { StoreManagementProvider } from '../../StoreManagementProvider'
 import * as StoreManagementProviderModule from '../../StoreManagementProvider'
 import StoreManagementPage from '../StoreManagementPage'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('../../hooks/useStoresWithMaps', () => ({

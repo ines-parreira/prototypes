@@ -1,10 +1,9 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { User } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 import { getOtherAgentsOnTicket } from 'state/agents/selectors'

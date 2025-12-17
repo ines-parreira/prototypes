@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 
 import type { LegacySelectFieldTriggerProps as SelectFieldTriggerProps } from '@gorgias/axiom'
@@ -9,7 +9,6 @@ import {
     LegacySelectField as SelectField,
 } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 

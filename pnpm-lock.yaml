@@ -1591,6 +1591,9 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
+      '@repo/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@testing-library/dom':
         specifier: catalog:test
         version: 10.4.0

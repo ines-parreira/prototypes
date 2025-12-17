@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
@@ -12,7 +12,6 @@ import { Navbar } from 'reactstrap'
 
 import { AutoQA } from 'auto_qa'
 import { TicketStatus } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

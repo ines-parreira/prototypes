@@ -1,6 +1,5 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useFlag } from 'core/flags'
 import type { TemplateCustomization } from 'Widgets/modules/Template'
 import Template, { CustomizationContext } from 'Widgets/modules/Template'
 import type { WidgetProps } from 'Widgets/modules/Widget'

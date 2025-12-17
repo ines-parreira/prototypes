@@ -2,7 +2,7 @@ import 'tests/__mocks__/intersectionObserverMock'
 
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -14,7 +14,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import { useFlag } from 'core/flags'
 import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
 import {
     AiAgentOnboardingState,
@@ -76,7 +75,7 @@ jest.mock('@repo/logging', () => ({
     },
 }))
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 const mockedUseAiAgentOnboardingWizard = {

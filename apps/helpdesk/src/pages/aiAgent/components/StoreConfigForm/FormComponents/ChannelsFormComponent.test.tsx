@@ -1,12 +1,10 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 
-import { useFlag } from 'core/flags'
-
 import { ChannelsFormComponent } from './ChannelsFormComponent'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: () => ({
         hasAccess: true,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
@@ -10,7 +10,6 @@ import {
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import Caption from 'gorgias-design-system/Input/Caption'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/GuidanceEditor/variables'

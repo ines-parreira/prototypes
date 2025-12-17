@@ -1,7 +1,7 @@
+import { useFlag } from '@repo/feature-flags'
 import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
-import { useFlag } from 'core/flags'
 import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
@@ -13,7 +13,7 @@ import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAnd
 
 import SummaryTotal from '../SummaryTotal'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockUseFlag = useFlag as jest.Mock
 

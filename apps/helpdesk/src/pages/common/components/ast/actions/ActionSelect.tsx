@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { List, Map } from 'immutable'
 import {
     DropdownItem,
@@ -7,7 +7,6 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import { useFlag } from 'core/flags'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 import { RuleOperation } from 'state/rules/types'
 

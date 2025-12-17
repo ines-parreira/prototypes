@@ -20,7 +20,7 @@ import { renderWithRouter } from 'utils/testing'
 import ContactFormCustomization from './ContactFormCustomization'
 
 // Mock the hooks and components
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('pages/settings/contactForm/hooks/useContactFormApi')
 jest.mock(
     'pages/settings/contactForm/components/ContactFormDisplayModeToggle',

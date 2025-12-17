@@ -1,9 +1,8 @@
 import { useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 
-import { useFlag } from 'core/flags'
 import type {
     EmailMigrationOutboundVerification,
     EmailMigrationSenderVerificationIntegration,

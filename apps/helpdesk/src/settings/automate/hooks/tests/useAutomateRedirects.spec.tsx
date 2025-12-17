@@ -1,16 +1,18 @@
 import React from 'react'
 import type { ReactNode } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { createBrowserHistory } from 'history'
 import type { History } from 'history'
 import { Router } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
-
 import { useAutomateRedirects } from '../useAutomateRedirects'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 
 const createWrapper =

@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -6,7 +7,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { AgentPerformanceHeatmapSwitch } from 'domains/reporting/pages/support-performance/agents/AgentPerformanceHeatmapSwitch'
 import { AgentsEditColumns } from 'domains/reporting/pages/support-performance/agents/AgentsEditColumns'
 import {
@@ -27,7 +27,7 @@ const AgentPerformanceHeatmapSwitchMock = assumeMock(
     AgentPerformanceHeatmapSwitch,
 )
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagsMock = assumeMock(useFlag)
 
 const mockStore = configureMockStore([thunk])

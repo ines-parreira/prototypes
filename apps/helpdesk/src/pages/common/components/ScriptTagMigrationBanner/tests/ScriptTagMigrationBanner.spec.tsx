@@ -1,11 +1,10 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { UserRole } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import { integrationsState } from 'fixtures/integrations'
 import { renderWithRouter } from 'utils/testing'
 
@@ -16,7 +15,7 @@ jest.mock('../hooks/useStoresRequiringScriptTagMigration')
 
 const mockStore = configureMockStore([thunk])
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 describe('<ScriptTagMigrationBanner />', () => {

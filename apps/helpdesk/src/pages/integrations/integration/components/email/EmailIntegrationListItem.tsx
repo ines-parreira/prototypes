@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 
@@ -10,7 +10,6 @@ import { EmailProvider } from '@gorgias/helpdesk-queries'
 
 import gmailImg from 'assets/img/integrations/gmail.svg'
 import officeImg from 'assets/img/integrations/office.svg'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import type {
     EmailIntegration as DEPRECATED_EmailIntegration,

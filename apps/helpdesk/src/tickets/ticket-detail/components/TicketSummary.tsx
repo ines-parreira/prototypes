@@ -1,8 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { Ticket } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import TicketSummarySection from 'pages/tickets/detail/components/TicketSummary'
 
 import css from './TicketSummary.less'

@@ -1,3 +1,4 @@
+import { getLDClient } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
@@ -9,7 +10,6 @@ import type {
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
-import { getLDClient } from 'utils/launchDarkly'
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../../types'
 import {
@@ -27,7 +27,8 @@ jest.mock('models/workflows/queries', () => ({
     useGetStoreWorkflowsConfigurations: jest.fn(),
 }))
 
-jest.mock('utils/launchDarkly', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     getLDClient: jest.fn(),
 }))
 

@@ -5,7 +5,8 @@ import { MemoryRouter } from 'react-router-dom'
 import ImportEmail from './Import'
 
 // Mock feature flags
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 
@@ -76,7 +77,7 @@ const mockUseTableImport = jest.mocked(
     require('./Imports/Email/useTableImport').useTableImport,
 )
 
-const mockUseFlag = jest.mocked(require('core/flags').useFlag)
+const mockUseFlag = jest.mocked(require('@repo/feature-flags').useFlag)
 
 describe('ImportEmail', () => {
     const defaultTableProps = {

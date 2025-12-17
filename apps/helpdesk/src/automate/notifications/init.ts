@@ -1,8 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 
 import { registerCategory, registerNotification } from 'common/notifications'
 import { AUTOMATE_ICON } from 'pages/common/components/SourceIcon'
-import { getLDClient } from 'utils/launchDarkly'
 
 import AiAgentNotification from './components/AiAgentNotification'
 import WorkflowConfigurationUpdatedNotification from './components/WorkflowConfigurationUpdatedNotification'

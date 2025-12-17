@@ -1,10 +1,9 @@
 import type React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { useFlag } from 'core/flags'
 import AiSalesAgentSalesOverview from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentSalesOverview'
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { billingState } from 'fixtures/billing'
@@ -13,7 +12,7 @@ import { user } from 'fixtures/users'
 import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
 const mockUseFirstStoreWithAiSalesDataState: {

@@ -16,7 +16,7 @@ import { useAccountId } from '@gorgias/realtime'
 import { appQueryClient } from 'api/queryClient'
 import { useLiveVoiceUpdates } from 'domains/reporting/pages/voice/hooks/useLiveVoiceUpdates'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 jest.mock('@gorgias/helpdesk-queries', () => {
     return {

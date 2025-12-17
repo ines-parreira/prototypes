@@ -1,15 +1,18 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import type { History, Location } from 'history'
 import { fromJS } from 'immutable'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { ViewType } from 'models/view/types'
 import { getActiveView } from 'state/views/selectors'
 
 import useRedirectDeprecatedTicketRoutes from '../useRedirectDeprecatedTicketRoutes'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
 jest.mock('state/views/selectors', () => ({ getActiveView: jest.fn() }))

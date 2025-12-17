@@ -1,12 +1,10 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import {
     AgentActivityProvider,
     AgentOnlineStatusProvider,
     RealtimeProvider,
 } from '@gorgias/realtime-ably'
-
-import { useFlag } from 'core/flags'
 
 import { isRealtimeEnabledOnCluster } from './utils/isRealtimeEnabledOnCluster'
 

@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -5,7 +6,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { PageEmbedmentFixture } from 'pages/settings/helpCenter/fixtures/pageEmbedment'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -17,7 +17,7 @@ import { HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID } from '../../HelpCent
 import type { HelpCenterAutoEmbedPublishSectionProps } from '../HelpCenterAutoEmbedPublishSection'
 import HelpCenterAutoEmbedPublishSection from '../HelpCenterAutoEmbedPublishSection'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockUseFlag = useFlag as jest.Mock
 

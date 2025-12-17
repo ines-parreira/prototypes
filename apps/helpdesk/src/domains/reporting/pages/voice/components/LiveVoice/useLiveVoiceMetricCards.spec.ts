@@ -1,8 +1,8 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import { useSummaryMetric } from 'domains/reporting/hooks/useSummaryMetric'
 import { VoiceCallSummaryMeasure } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
 import { liveVoiceCallSummaryQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCallSummary'
@@ -15,7 +15,7 @@ import * as constants from 'domains/reporting/pages/voice/constants/liveVoice'
 import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')

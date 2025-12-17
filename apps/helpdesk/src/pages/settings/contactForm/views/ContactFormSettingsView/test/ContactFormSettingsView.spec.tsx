@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
@@ -12,7 +13,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
@@ -40,7 +40,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 jest.mock('pages/automate/common/hooks/useContactFormAutomationSettings')
 jest.mock('hooks/aiAgent/useAiAgentAccess')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const queryClient = mockQueryClient()
 

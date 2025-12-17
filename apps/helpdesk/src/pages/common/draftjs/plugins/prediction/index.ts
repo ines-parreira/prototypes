@@ -1,11 +1,9 @@
 import type { KeyboardEvent } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 import { EditorState } from 'draft-js'
 import type { Map } from 'immutable'
 import { debounce } from 'lodash'
-
-import { getLDClient } from 'utils/launchDarkly'
 
 import type { Plugin, PluginMethods } from '../types'
 import client from './client'

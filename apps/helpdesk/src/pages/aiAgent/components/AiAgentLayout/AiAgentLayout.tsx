@@ -1,14 +1,13 @@
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { Button } from '@gorgias/axiom'
 
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
-import { useFlag } from 'core/flags'
 import { useAtLeastOneStoreHasActiveTrial } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { useActivateAiAgentTrial } from 'pages/aiAgent/Activation/hooks/useActivateAiAgentTrial'

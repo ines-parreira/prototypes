@@ -1,13 +1,13 @@
 import type { ComponentProps, MouseEvent } from 'react'
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { EditorState } from 'draft-js'
 import _noop from 'lodash/noop'
 
-import * as flagUtils from 'core/flags'
 import { utmConfiguration } from 'fixtures/utmConfiguration'
 import ButtonPopover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import * as draftjsPluginsUtils from 'pages/common/draftjs/plugins/utils'
@@ -18,6 +18,9 @@ import * as editorUtils from 'utils/editor'
 
 import ToolbarProvider from '../../ToolbarProvider'
 import { AddLinkContainer } from '../AddLink'
+
+jest.mock('@repo/feature-flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('pages/convert/campaigns/utils/attachUtmParams')
 jest.mock('pages/convert/campaigns/hooks/useCampaignFormContext')
@@ -255,7 +258,7 @@ describe('<AddLink />', () => {
     )
 
     it('should be able to navigate between URL and UTM tabs', () => {
-        jest.spyOn(flagUtils, 'useFlag').mockReturnValue(true)
+        useFlagMock.mockReturnValue(true)
         const { getByText, getAllByRole } = render(
             <ToolbarProvider canAddUtm>
                 <AddLinkWithIsOpenState {...defaultProps} />
@@ -274,7 +277,7 @@ describe('<AddLink />', () => {
     })
 
     it('should navigate to url tab when utm apply is clicked', async () => {
-        jest.spyOn(flagUtils, 'useFlag').mockReturnValue(true)
+        useFlagMock.mockReturnValue(true)
         const { getByText, getAllByRole } = render(
             <ToolbarProvider canAddUtm>
                 <AddLinkWithIsOpenState {...defaultProps} />

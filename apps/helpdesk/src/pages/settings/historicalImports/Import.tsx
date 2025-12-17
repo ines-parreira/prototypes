@@ -1,11 +1,9 @@
 import { useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocation } from 'react-router-dom'
 
 import { TabItem, TabList, TabPanel, Tabs } from '@gorgias/axiom'
-
-import { useFlag } from 'core/flags'
 
 import { HeaderImport } from './HeaderImport'
 import { ImportEmailTable } from './Imports/Email/ImportEmailTable'

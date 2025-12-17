@@ -1,9 +1,8 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useParams } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import useOrderBy from 'hooks/useOrderBy'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'

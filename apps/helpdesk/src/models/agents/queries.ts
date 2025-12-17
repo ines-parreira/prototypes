@@ -1,10 +1,9 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import type { MutationOverrides } from 'types/query'
 
-import { useFlag } from '../../core/flags'
 import {
     createAgent,
     deleteAgent,

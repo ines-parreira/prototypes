@@ -1,7 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { useFlag } from 'core/flags'
-import { getLDClient } from 'utils/launchDarkly'
+import { FeatureFlagKey, getLDClient, useFlag } from '@repo/feature-flags'
 
 export const useIsProductCardDiscountedPriceEnabled = () => {
     return useFlag(FeatureFlagKey.ProductCardDiscountedPrice)

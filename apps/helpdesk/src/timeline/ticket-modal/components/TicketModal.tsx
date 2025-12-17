@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
@@ -12,7 +12,6 @@ import {
 import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { Drawer } from 'components/Drawer/Drawer'
-import { useFlag } from 'core/flags'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'

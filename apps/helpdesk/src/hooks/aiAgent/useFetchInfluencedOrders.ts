@@ -1,7 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { UseQueryResult } from '@tanstack/react-query'
 
-import { useFlag } from 'core/flags'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {

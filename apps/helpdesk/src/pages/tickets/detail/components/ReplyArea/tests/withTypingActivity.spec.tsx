@@ -1,13 +1,12 @@
+import { useFlag } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
 import { act, render, waitFor } from '@testing-library/react'
-
-import { useFlag } from 'core/flags'
 
 import type { TypingActivityProps } from '../withTypingActivity'
 import withTypingActivity from '../withTypingActivity'
 
 jest.mock('utils/errors')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('providers/realtime-ably/hooks/useAblyAgentActivity', () => ({
     useAblyAgentActivity: jest.fn().mockImplementation(() => ({
         startTyping: mockStartTyping,

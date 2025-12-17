@@ -1,14 +1,14 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import _noop from 'lodash/noop'
 
-import { useFlag } from 'core/flags'
-
 import { IntentsFeedbackDropdown } from '../IntentsFeedbackDropdown'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

@@ -1,7 +1,7 @@
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import classNames from 'classnames'
@@ -34,7 +34,6 @@ import {
     mapIntegrationLanguagesToLanguagePicker,
     mapLanguagePickerToIntegrationLanguages,
 } from 'config/integrations/gorgias_chat'
-import { useFlag } from 'core/flags'
 import { Label as DesignSystemLabel } from 'gorgias-design-system/Input/Label'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

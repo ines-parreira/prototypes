@@ -1,9 +1,6 @@
 import { isDevelopment } from '@repo/utils'
 import * as LDClient from 'launchdarkly-js-client-sdk'
 
-import type { User } from 'config/types/user'
-import type { Account } from 'state/currentAccount/types'
-
 let client: LDClient.LDClient
 export let LDContext: LDClient.LDContext = {}
 
@@ -15,7 +12,13 @@ export function getLDClient(): LDClient.LDClient {
     return client
 }
 
-export function initLaunchDarkly(
+export function initLaunchDarkly<
+    User extends { id: string },
+    Account extends {
+        id: string
+        domain: string
+    },
+>(
     user: User,
     account: Account,
     currentHelpdeskProductId?: string,

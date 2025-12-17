@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -8,7 +9,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { AttachmentEnum } from 'common/types'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -35,7 +35,7 @@ import ConvertSimplifiedEditorModal from '../ConvertSimplifiedEditorModal'
 
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('models/convert/campaign/queries')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 jest.mock('models/convert/campaign/queries')
 const useCreateCampaignMock = assumeMock(useCreateCampaign)

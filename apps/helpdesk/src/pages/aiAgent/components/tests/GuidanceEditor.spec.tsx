@@ -1,16 +1,16 @@
 import type React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
-import { useFlag } from 'core/flags'
 import { mockStore } from 'utils/testing'
 
 import { GuidanceEditor } from '../GuidanceEditor/GuidanceEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

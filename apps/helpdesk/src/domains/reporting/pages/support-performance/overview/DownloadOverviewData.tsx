@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { useFlag } from 'core/flags'
 import { useDownloadOverViewData } from 'domains/reporting/hooks/support-performance/overview/useDownloadOverviewData'
 import { DownloadDataButton } from 'domains/reporting/pages/support-performance/components/DownloadDataButton'
 import { saveZippedFiles } from 'utils/file'

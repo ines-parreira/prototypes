@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -7,7 +8,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { getContactFormForHelpCenterFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import type { Components } from 'rest_api/help_center_api/client.generated'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
@@ -21,7 +21,7 @@ import { getSingleHelpCenterResponseFixtureWithTranslation } from '../../../../.
 import { HelpCenterTranslationProvider } from '../../../../../providers/HelpCenterTranslation'
 import ContactFormInfoSection from '../ContactFormInfoSection'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 

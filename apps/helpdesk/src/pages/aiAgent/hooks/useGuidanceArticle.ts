@@ -1,11 +1,10 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
-import { useFlag } from 'core/flags'
 import {
     helpCenterKeys,
     useGetHelpCenterArticle,

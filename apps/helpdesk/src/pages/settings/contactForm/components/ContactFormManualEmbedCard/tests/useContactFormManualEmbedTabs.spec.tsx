@@ -1,12 +1,12 @@
+import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 
 import { useContactFormManualEmbedInstructionsCardState } from '../useContactFormManualEmbedTabs'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockUseFlag = useFlag as jest.Mock
 

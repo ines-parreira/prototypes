@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import * as hooksImports from '@repo/hooks'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
@@ -10,12 +11,14 @@ import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
-import { useFlag } from 'core/flags'
 import type { CurrentUser } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
 
 import { TranslationsOnboardingModal } from '../TranslationsOnboardingModal'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = useFlag as jest.Mock
 
 const server = setupServer()

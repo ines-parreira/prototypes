@@ -27,9 +27,9 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const mockUseFlag = jest.fn()
-jest.mock('core/flags', () => ({
-    ...jest.requireActual('core/flags'),
-    useFlag: (key: FeatureFlagKey) => mockUseFlag(key),
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: (...args: any[]) => mockUseFlag(...args),
 }))
 
 jest.mock('hooks/useAllIntegrations', () => ({

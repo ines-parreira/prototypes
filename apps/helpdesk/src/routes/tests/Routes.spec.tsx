@@ -1,7 +1,7 @@
 import type { ComponentType, PropsWithChildren, ReactNode } from 'react'
 import type React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logPageChange } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -18,7 +18,6 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { IntegrationsProvider } from 'AIJourney/providers'
 import { useUpdateJourney } from 'AIJourney/queries'
-import { useFlag } from 'core/flags'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
@@ -45,7 +44,8 @@ jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
 jest.mock('@repo/logging')
 const logPageMock = assumeMock(logPageChange)
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

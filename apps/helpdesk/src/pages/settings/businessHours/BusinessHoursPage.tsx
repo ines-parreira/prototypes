@@ -1,8 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Switch, useRouteMatch } from 'react-router'
 import { Route } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import PageHeader from 'pages/common/components/PageHeader'
 
 import BusinessHoursLegacy from './BusinessHoursLegacy'

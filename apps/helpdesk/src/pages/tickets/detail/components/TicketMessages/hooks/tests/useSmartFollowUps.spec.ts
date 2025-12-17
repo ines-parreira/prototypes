@@ -1,11 +1,11 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 
-import { useFlag } from 'core/flags'
 import { SmartFollowUpType } from 'models/ticket/types'
 
 import { useSmartFollowUps } from '../useSmartFollowUps'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 describe('useSmartFollowUps', () => {

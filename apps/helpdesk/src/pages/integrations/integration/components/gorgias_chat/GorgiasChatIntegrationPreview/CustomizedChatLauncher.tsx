@@ -1,8 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 
 import { GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT } from 'config/integrations/gorgias_chat'
-import { useFlag } from 'core/flags'
 import { THEME_NAME } from 'core/theme'
 import Launcher from 'gorgias-design-system/Launcher/Launcher'
 import type { GorgiasChatPosition } from 'models/integration/types'

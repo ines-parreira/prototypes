@@ -1,11 +1,10 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
-import { useFlag } from 'core/flags'
 import LiveVoiceAgentsList from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList'
 import {
     AgentStatusCategory,
@@ -13,7 +12,7 @@ import {
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { useAblyAgentsOnlineStatus } from 'providers/realtime-ably/hooks/useAblyAgentsOnlineStatus'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('@gorgias/realtime')

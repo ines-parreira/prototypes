@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useAsyncFn, useEffectOnce, useKey, usePrevious } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
@@ -19,7 +19,6 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import { RecentItems } from 'hooks/useRecentItems/constants'

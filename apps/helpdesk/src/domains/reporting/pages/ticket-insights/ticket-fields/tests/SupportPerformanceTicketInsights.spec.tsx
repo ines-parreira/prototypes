@@ -1,12 +1,12 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import type { CustomField } from 'custom-fields/types'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
@@ -77,7 +77,7 @@ const CustomFieldsTicketCountBreakdownTableChartMock = assumeMock(
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal')
 const DrillDownModalMock = assumeMock(DrillDownModal)
 const componentMock = jest.fn(() => <div />)
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagsMock = assumeMock(useFlag)
 jest.mock('domains/reporting/services/ticketFieldsReportingService')
 const useCustomFieldsReportDataMock = assumeMock(useCustomFieldsReportData)

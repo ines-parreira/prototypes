@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -9,7 +10,6 @@ import type {
 } from '@gorgias/helpdesk-queries'
 import { EmailProvider } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import type { OutlookIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { AccountSettingType } from 'state/currentAccount/types'
@@ -19,7 +19,7 @@ import EmailIntegrationListItem from '../EmailIntegrationListItem'
 import { canIntegrationDomainBeVerified } from '../helpers'
 import { useEmailOnboardingCompleteCheck } from '../hooks/useEmailOnboarding'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('../hooks/useEmailOnboarding')
 jest.mock('../helpers')
 

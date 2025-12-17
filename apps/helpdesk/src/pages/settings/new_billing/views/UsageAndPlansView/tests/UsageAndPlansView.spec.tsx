@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
@@ -7,7 +7,6 @@ import { fromJS } from 'immutable'
 import * as uiKit from '@gorgias/axiom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { shopifyIntegration } from 'fixtures/integrations'
 import {
@@ -48,7 +47,7 @@ import useProductCancellations from 'pages/settings/new_billing/hooks/useProduct
 import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('@repo/logging', () => ({

@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { history } from '@repo/routing'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { isEnterprise } from 'models/billing/utils'
 import PageHeader from 'pages/common/components/PageHeader'

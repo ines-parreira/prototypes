@@ -1,12 +1,11 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 
 import type { HttpResponse } from '@gorgias/helpdesk-queries'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useFlag } from 'core/flags'
 import type { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
 import {
     helpCenterKeys,

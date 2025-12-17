@@ -1,9 +1,9 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import moment from 'moment'
 
-import { useFlag } from 'core/flags'
 import { Cadence } from 'models/billing/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_ADVANTAGES } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
@@ -29,7 +29,8 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialEnding')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useUpgradePlan')
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

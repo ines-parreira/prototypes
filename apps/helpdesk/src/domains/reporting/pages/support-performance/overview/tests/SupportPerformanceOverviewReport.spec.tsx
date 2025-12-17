@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -8,7 +8,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { TrendCard } from 'domains/reporting/pages/common/components/TrendCard'
@@ -123,7 +122,7 @@ jest.mock(
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 const defaultState = {

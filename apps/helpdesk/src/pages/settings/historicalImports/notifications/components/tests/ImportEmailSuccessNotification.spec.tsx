@@ -17,8 +17,7 @@ jest.mock('@repo/logging', () => ({
 }))
 
 jest.mock('moment/moment', () => {
-    const moment = jest.requireActual('moment/moment')
-    return (date: string) => moment(date)
+    return jest.requireActual('moment/moment')
 })
 
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>

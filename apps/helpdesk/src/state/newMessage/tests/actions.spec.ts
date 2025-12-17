@@ -68,7 +68,7 @@ import { getLastSenderChannel, getPreferredChannel } from 'state/ticket/utils'
 import type { RootState, StoreDispatch } from 'state/types'
 import * as utils from 'utils'
 import { convertFromHTML } from 'utils/editor'
-import * as LDUtils from 'utils/launchDarkly'
+import * as LDUtils from '@repo/feature-flags'
 
 import { getReplyAreaStateSnapshot } from './testUtils'
 

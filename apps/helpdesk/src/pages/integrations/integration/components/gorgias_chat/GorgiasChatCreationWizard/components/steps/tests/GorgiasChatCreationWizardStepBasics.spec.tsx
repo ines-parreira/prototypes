@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -7,7 +8,6 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import {
     GorgiasChatCreationWizardSteps,
     IntegrationType,
@@ -17,7 +17,7 @@ import * as actions from 'state/integrations/actions'
 
 import GorgiasChatCreationWizardStepBasics from '../GorgiasChatCreationWizardStepBasics'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 jest.mock(

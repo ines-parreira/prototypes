@@ -1,9 +1,8 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useWindowSize } from '@repo/hooks'
 import { TicketsLegacyBridgeProvider } from '@repo/tickets'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { Handle, PanelGroup, Panels } from 'core/layout/panels'
 import { GlobalNavigationPanel } from 'core/navigation'
 import { ContentPanels } from 'core/ui'

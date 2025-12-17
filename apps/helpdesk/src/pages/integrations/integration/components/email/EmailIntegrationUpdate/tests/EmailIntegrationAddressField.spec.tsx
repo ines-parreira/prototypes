@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -8,7 +9,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { EmailIntegration } from 'models/integration/types'
 import { submitSetting } from 'state/currentAccount/actions'
@@ -19,7 +19,8 @@ import EmailIntegrationAddressField from '../EmailIntegrationAddressField'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 jest.mock('hooks/useAppDispatch')

@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
@@ -11,7 +11,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import { DisplayEventType } from 'domains/reporting/hooks/automate/automateStatsMeasureLabelMap'
 import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import type { AutomateTimeseries } from 'domains/reporting/hooks/automate/types'
@@ -153,7 +152,7 @@ const useAutomationRateByFeatureMock = jest.requireMock(
     'pages/aiAgent/analyticsOverview/hooks/useAutomationRateByFeature',
 ).useAutomationRateByFeature
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock(

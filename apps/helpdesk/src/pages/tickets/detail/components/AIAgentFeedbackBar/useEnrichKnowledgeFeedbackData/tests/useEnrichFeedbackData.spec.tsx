@@ -18,7 +18,6 @@ import { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArti
 import { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions'
 import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import { getLDClient } from 'utils/launchDarkly'
 
 import {
     useEnrichFeedbackData,
@@ -78,12 +77,16 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     })),
 }))
 
-jest.mock('utils/launchDarkly', () => ({
-    getLDClient: jest.fn(),
-}))
-
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
+    })),
 }))
 
 const queryClient = new QueryClient({
@@ -150,10 +153,16 @@ describe('useGetResourceData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-        ;(getLDClient as jest.Mock).mockReturnValue({
+        const getLDClientMock = require('@repo/feature-flags')
+            .getLDClient as jest.Mock
+        getLDClientMock.mockReturnValue({
             allFlags: jest.fn().mockReturnValue({
                 [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
             }),
+            variation: jest.fn((flag, defaultValue) => defaultValue),
+            waitForInitialization: jest.fn(() => Promise.resolve()),
+            on: jest.fn(),
+            off: jest.fn(),
         })
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: [],
@@ -501,8 +510,14 @@ describe('useEnrichFeedbackData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-        ;(getLDClient as jest.Mock).mockReturnValue({
+        const getLDClientMock = require('@repo/feature-flags')
+            .getLDClient as jest.Mock
+        getLDClientMock.mockReturnValue({
             allFlags: jest.fn().mockReturnValue(mockFlags),
+            variation: jest.fn((flag, defaultValue) => defaultValue),
+            waitForInitialization: jest.fn(() => Promise.resolve()),
+            on: jest.fn(),
+            off: jest.fn(),
         })
         ;(useGetMultipleHelpCenterArticleLists as jest.Mock).mockReturnValue({
             articles: [],

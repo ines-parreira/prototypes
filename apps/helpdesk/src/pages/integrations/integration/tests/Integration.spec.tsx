@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
@@ -6,7 +7,6 @@ import configureMockStore from 'redux-mock-store'
 
 import { EmailProvider } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -16,7 +16,7 @@ import { renderWithRouter } from 'utils/testing'
 import { IntegrationDetail } from '../Integration'
 import { Tab } from '../types'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 jest.mock('../components/aircall/AircallIntegrationList.tsx', () => () => (
     <div>AircallIntegrationList</div>

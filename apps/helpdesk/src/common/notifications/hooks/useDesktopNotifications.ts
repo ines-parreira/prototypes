@@ -1,8 +1,6 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import { useFlag } from 'core/flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { desktopNotify } from '../desktopNotify'
 import { requestNotificationPermission } from '../requestNotificationPermission'

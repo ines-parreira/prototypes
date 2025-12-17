@@ -1,6 +1,6 @@
 import type { FeatureFlagKey } from '@repo/feature-flags'
+import { useFlag } from '@repo/feature-flags'
 
-import useFlag from 'core/flags/hooks/useFlag'
 import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { reportError } from 'utils/errors'
 

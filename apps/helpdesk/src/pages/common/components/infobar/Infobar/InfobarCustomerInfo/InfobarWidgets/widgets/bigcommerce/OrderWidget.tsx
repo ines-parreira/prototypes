@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useContext, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
@@ -10,7 +10,6 @@ import type { Map } from 'immutable'
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { getBigCommerceDraftOrderUrl } from 'models/integration/resources/bigcommerce'

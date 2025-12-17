@@ -1,9 +1,8 @@
 import type React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useFlag } from 'core/flags'
 import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'

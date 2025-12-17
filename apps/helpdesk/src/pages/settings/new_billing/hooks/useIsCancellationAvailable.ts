@@ -1,8 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { CustomerSummary } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import type { HelpdeskPlan } from 'models/billing/types'
 
 import checkIsEnterpriseGMV from '../utils/checkIsEnterpriseGMV'

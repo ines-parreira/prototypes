@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useSessionStorage } from '@repo/hooks'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import moment from 'moment'
 import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'

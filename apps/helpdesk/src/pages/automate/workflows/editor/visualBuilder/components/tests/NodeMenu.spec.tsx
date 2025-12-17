@@ -1,15 +1,15 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import {
     nodeHelpers,
     renderVisualBuilder,
 } from 'pages/automate/workflows/utils/testVisualBuilderScaffolding'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

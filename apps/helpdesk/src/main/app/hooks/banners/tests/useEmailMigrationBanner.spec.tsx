@@ -1,11 +1,10 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
 import type { AlertBannerCTATypes } from 'AlertBanners'
 import { AlertBannerTypes } from 'AlertBanners'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import * as helpers from 'pages/common/components/EmailMigrationBanner/helpers'
 import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
@@ -13,7 +12,7 @@ import { getEmailMigrationStatus } from 'state/integrations/selectors'
 
 import { useEmailMigrationBanner } from '../useEmailMigrationBanner'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 const mockHistoryPush = jest.fn()
 

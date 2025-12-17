@@ -1,6 +1,5 @@
+import { useFlag } from '@repo/feature-flags'
 import { render } from '@testing-library/react'
-
-import { useFlag } from 'core/flags'
 
 import AblyRealtimeProviders from '../AblyRealtimeProviders'
 import * as isRealtimeEnabledOnCluster from '../utils/isRealtimeEnabledOnCluster'
@@ -28,7 +27,7 @@ jest.mock('@gorgias/realtime-ably', () => ({
     }) => <div data-testid="agent-online-status-provider">{children}</div>,
 }))
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 
 const isRealtimeEnabledOnClusterSpy = jest.spyOn(

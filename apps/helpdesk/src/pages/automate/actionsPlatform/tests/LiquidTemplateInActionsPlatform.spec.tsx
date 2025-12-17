@@ -1,13 +1,12 @@
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { ulid } from 'ulidx'
 
-import { useFlag } from 'core/flags'
 import {
     useDownloadWorkflowConfigurationStepLogs,
     useGetWorkflowConfigurationTemplates,
@@ -20,7 +19,7 @@ import useApps from '../hooks/useApps'
 import useEditActionTemplate from '../hooks/useEditActionTemplate'
 import type { ActionTemplate } from '../types'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionTemplate')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')

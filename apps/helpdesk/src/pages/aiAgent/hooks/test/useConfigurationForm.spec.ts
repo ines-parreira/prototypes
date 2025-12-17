@@ -1,9 +1,8 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { useFlag } from 'core/flags'
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppSelector from 'hooks/useAppSelector'
@@ -90,7 +89,7 @@ jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
 }))
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = jest.mocked(useFlag)
 
 const mockUseAiAgentStoreConfigurationContext = assumeMock(

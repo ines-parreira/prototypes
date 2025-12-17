@@ -10,7 +10,6 @@ import {
 import userEvent from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import type routerDom from 'react-router-dom'
 import { useParams } from 'react-router-dom'
@@ -37,12 +36,14 @@ import {
 import type { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { getLDClient } from 'utils/launchDarkly'
 import { renderWithRouter } from 'utils/testing'
 
 import { ABGroupView } from '../ABGroupPage'
 
-jest.mock('utils/launchDarkly')
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+}))
 
 jest.mock('models/convert/campaign/queries')
 const useUpdateCampaignMock = assumeMock(useUpdateCampaign)
@@ -109,11 +110,6 @@ describe('ABGroupView', () => {
         })
 
         useIsConvertSubscriberMock.mockImplementation(() => true)
-
-        mockFlags({})
-
-        const allFlagsMock = getLDClient().allFlags as jest.Mock
-        allFlagsMock.mockReturnValue({})
 
         window.HTMLElement.prototype.scrollTo = jest.fn()
 

@@ -1,11 +1,10 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Emoji } from 'emoji-mart'
 
 import { LegacyAvatar as Avatar } from '@gorgias/axiom'
 import type { TicketTeam, TicketUser } from '@gorgias/helpdesk-types'
-
-import { useFlag } from 'core/flags'
 
 import { TicketAssignee } from '../TicketAssignee'
 
@@ -17,7 +16,10 @@ jest.mock('emoji-mart', () => ({
     Emoji: jest.fn(() => <div />),
 }))
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('pages/tickets/detail/components/TicketMessages/Avatar', () => ({

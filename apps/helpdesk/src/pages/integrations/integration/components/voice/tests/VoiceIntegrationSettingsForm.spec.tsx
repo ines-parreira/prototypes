@@ -22,8 +22,6 @@ jest.mock('hooks/useAppDispatch')
 
 jest.mock('state/notifications/actions')
 
-jest.mock('core/flags')
-
 const phoneIntegration = integrationsState.integrations.find(
     (integration) => integration.type === IntegrationType.Phone,
 ) as unknown as PhoneIntegration
@@ -80,7 +78,7 @@ describe('<VoiceIntegrationSettingsForm />', () => {
         integration: {
             ...phoneIntegration,
             meta: {
-                ...(phoneIntegration?.meta ?? {}),
+                ...phoneIntegration?.meta,
                 phone_team_id: 1,
             },
         },

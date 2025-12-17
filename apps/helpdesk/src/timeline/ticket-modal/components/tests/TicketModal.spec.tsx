@@ -1,13 +1,12 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useHistory } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { TicketDetail } from 'tickets/ticket-detail'
 
 import { TicketModal } from '../TicketModal'
@@ -37,7 +36,8 @@ jest.mock('@gorgias/axiom', () => ({
     }),
 }))
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

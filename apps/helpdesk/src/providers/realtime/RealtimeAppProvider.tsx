@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { isObject, isString, toPlainObject } from 'lodash'
@@ -14,7 +14,6 @@ import {
 } from '@gorgias/realtime'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
-import { useFlag } from 'core/flags'
 import { reportError } from 'utils/errors'
 
 import { useErrorThreshold } from './hooks/useErrorThreshold'

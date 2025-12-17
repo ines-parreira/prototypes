@@ -1,6 +1,5 @@
+import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
-
-import { useFlag } from 'core/flags'
 
 import { desktopNotify } from '../../desktopNotify'
 import { requestNotificationPermission } from '../../requestNotificationPermission'
@@ -9,7 +8,10 @@ import getNotificationConfig from '../../utils/getNotificationConfig'
 import { useDesktopNotifications } from '../useDesktopNotifications'
 import useNotifications from '../useNotifications'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 jest.mock('../../desktopNotify', () => ({
     desktopNotify: jest.fn(),
 }))

@@ -1,10 +1,9 @@
 import { useRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import {
     formatCurrency,

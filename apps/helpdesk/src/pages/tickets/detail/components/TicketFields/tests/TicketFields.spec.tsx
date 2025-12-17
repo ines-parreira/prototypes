@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
@@ -16,7 +17,6 @@ import {
     TicketStatus,
 } from '@gorgias/helpdesk-types'
 
-import useFlag from 'core/flags/hooks/useFlag'
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
@@ -41,7 +41,7 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
         isLoading: false,
     })),
 }))
-jest.mock('core/flags/hooks/useFlag')
+jest.mock('@repo/feature-flags')
 
 const mockedUseCustomFieldConditions = assumeMock(useCustomFieldConditions)
 const mockedUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)

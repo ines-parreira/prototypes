@@ -16,6 +16,7 @@ import moment from 'moment-timezone'
 
 import './polyfills'
 
+import { initLaunchDarkly } from '@repo/feature-flags'
 import type { SegmentEvent } from '@repo/logging'
 import { logEvent } from '@repo/logging'
 import { envVars, getEnvironment, isProduction, isStaging } from '@repo/utils'
@@ -34,7 +35,6 @@ import { transformSystemMessagesToNotifications } from 'utils'
 import { initDatadogLogger, initDatadogRum } from 'utils/datadog'
 import { initErrorReporter } from 'utils/errors'
 import { identifyUser as identifyHotjarUser } from 'utils/hotjar'
-import { initLaunchDarkly } from 'utils/launchDarkly'
 import { initSDKs } from 'utils/sdk'
 
 const initMoment = (currentUser: EditableUserProfile) => {

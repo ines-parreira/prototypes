@@ -3,7 +3,6 @@ import type { RenderResult } from '@testing-library/react'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -28,13 +27,15 @@ import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useG
 import { getNewMessageAttachments } from 'state/newMessage/selectors'
 import type { RootState, StoreDispatch } from 'state/types'
 import { toJS } from 'utils'
-import { getLDClient } from 'utils/launchDarkly'
 import { renderWithRouter } from 'utils/testing'
 
 import type { Campaign } from '../../../types/Campaign'
 import { CampaignDetailsForm } from '../CampaignDetailsForm'
 
-jest.mock('utils/launchDarkly')
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn((flag, defaultValue) => defaultValue),
+}))
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
@@ -142,11 +143,6 @@ describe('<CampaignDetailsForm />', () => {
     })
 
     beforeEach(() => {
-        mockFlags({})
-
-        const allFlagsMock = getLDClient().allFlags as jest.Mock
-        allFlagsMock.mockReturnValue({})
-
         isConvertSubscriberSpy.mockImplementation(() => false)
 
         useGetPreviewProductsMock.mockReturnValue([])

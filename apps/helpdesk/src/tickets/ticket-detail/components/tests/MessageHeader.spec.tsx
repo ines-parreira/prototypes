@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { setupServer } from 'msw/node'
@@ -10,13 +10,12 @@ import thunk from 'redux-thunk'
 import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import { isForwardedMessage } from 'tickets/common/utils'
 import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
 
 import { MessageHeader } from '../MessageHeader'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('timeline/ticket-modal/hooks/useTicketModalContext')
 jest.mock('tickets/common/utils')
 

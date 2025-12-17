@@ -1,7 +1,8 @@
 import type React from 'react'
-import { createContext, type ReactNode, useContext } from 'react'
+import { createContext, useContext } from 'react'
+import type { ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 
@@ -9,7 +10,6 @@ import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import CopyButton from 'components/CopyButton/CopyButton'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'

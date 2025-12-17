@@ -1,13 +1,11 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import {
     SLAPolicyMetricType,
     SLAPolicyMetricUnit,
 } from '@gorgias/helpdesk-types'
-
-import { useFlag } from 'core/flags'
 
 import type { MappedFormSLAPolicy } from './makeMappedFormSLAPolicy'
 

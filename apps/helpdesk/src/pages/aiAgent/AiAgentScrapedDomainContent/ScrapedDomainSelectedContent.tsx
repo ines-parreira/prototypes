@@ -1,6 +1,6 @@
 import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
 
 import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -9,7 +9,6 @@ import hideViewIcon from 'assets/img/icons/hide-view-right.svg'
 import languageIcon from 'assets/img/icons/language.svg'
 import logoShopify from 'assets/img/integrations/shopify.svg'
 import type { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
-import useFlag from 'core/flags/hooks/useFlag'
 import type { ProductAdditionalInfoPayload } from 'models/ecommerce/types'
 import type { ArticleWithLocalTranslation } from 'models/helpCenter/types'
 import Accordion from 'pages/common/components/accordion/Accordion'

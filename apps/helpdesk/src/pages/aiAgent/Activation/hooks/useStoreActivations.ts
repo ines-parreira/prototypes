@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import _isEqual from 'lodash/isEqual'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
-import { useFlag } from 'core/flags'
 import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 import useAppSelector from 'hooks/useAppSelector'
 import type { StoreConfiguration } from 'models/aiAgent/types'

@@ -1,7 +1,7 @@
+import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import {
     AiAgentMessageType,
     MessageType,
@@ -22,7 +22,8 @@ jest.mock('../usePlaygroundApi', () => ({
 }))
 const mockedUsePlaygroundApi = jest.mocked(usePlaygroundApi)
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockedUseFlag = jest.mocked(useFlag)

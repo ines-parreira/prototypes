@@ -95,7 +95,7 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldConditions', () => ({
         isLoading: false,
     })),
 }))
-jest.mock('core/flags/hooks/useFlag')
+jest.mock('@repo/feature-flags')
 const mockedUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)
 const mockedUseCustomFieldConditions = assumeMock(useCustomFieldConditions)
 const mockedTriggerTicketFieldsErrors = assumeMock(triggerTicketFieldsErrors)

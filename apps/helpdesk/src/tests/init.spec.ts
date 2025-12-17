@@ -58,7 +58,7 @@ jest.mock('state/billing/selectors', () => ({
 jest.mock('utils/sdk')
 jest.mock('utils/datadog')
 jest.mock('utils/errors')
-jest.mock('utils/launchDarkly')
+jest.mock('@repo/feature-flags')
 jest.mock('utils/hotjar')
 jest.mock('@repo/logging')
 jest.mock('state/notifications/actions')

@@ -1,13 +1,12 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { RenderResult } from '@testing-library/react'
 import { render, screen } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import { useAiAgentOverviewModeEnabled } from 'pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled'
 
 import { AiAgentTaskSection } from '../AiAgentTaskSection'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled')
 jest.mock(
     '../../PostOnboardingTasksSection/PostOnboardingTasksSection',

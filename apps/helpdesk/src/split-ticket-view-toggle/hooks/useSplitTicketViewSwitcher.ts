@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useRef } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { usePrevious } from '@repo/hooks'
 import { matchPath, useHistory, useLocation } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import { ViewType } from 'models/view/types'

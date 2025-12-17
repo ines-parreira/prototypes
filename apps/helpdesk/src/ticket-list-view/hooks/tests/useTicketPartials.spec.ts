@@ -1,15 +1,17 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
-
 import TicketUpdatesManager from '../../TicketUpdatesManager'
 import type { TicketPartial } from '../../types'
 import useTicketPartials from '../useTicketPartials'
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('../../TicketUpdatesManager', () => jest.fn())

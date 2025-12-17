@@ -1,14 +1,14 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { useRouteMatch } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import { useAiAgentHeaderNavbarItems } from '../useAiAgentHeaderNavbarItems'
 
 jest.mock('react-router-dom', () => ({ useRouteMatch: jest.fn() }))
 const mockUseRouteMatch = assumeMock(useRouteMatch)
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)

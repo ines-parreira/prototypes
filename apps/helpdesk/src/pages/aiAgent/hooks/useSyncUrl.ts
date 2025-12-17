@@ -1,10 +1,9 @@
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useFlag } from 'core/flags'
 import {
     helpCenterKeys,
     useGetIngestionLogs,

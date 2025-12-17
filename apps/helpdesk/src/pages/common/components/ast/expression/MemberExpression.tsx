@@ -1,6 +1,6 @@
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 import type { Expression } from 'estree'
 import type { List } from 'immutable'
@@ -9,7 +9,6 @@ import { fromJS } from 'immutable'
 import type { CustomField } from '@gorgias/helpdesk-types'
 import { ObjectType } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'

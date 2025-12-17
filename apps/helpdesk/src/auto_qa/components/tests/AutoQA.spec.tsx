@@ -1,8 +1,8 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
@@ -25,7 +25,7 @@ const useTicketIsAfterFeedbackCollectionPeriodMock = assumeMock(
     useTicketIsAfterFeedbackCollectionPeriod,
 )
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('../AutoQASkeleton', () => () => <div>Loading...</div>)

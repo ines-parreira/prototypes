@@ -1,10 +1,11 @@
+import { getLDClient } from '@repo/feature-flags'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { readMigration } from 'core/flags/utils/readMigration'
-import { getLDClient } from 'utils/launchDarkly'
 
-jest.mock('utils/launchDarkly', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     getLDClient: jest.fn(),
 }))
 const getLDClientMock = getLDClient as jest.Mock

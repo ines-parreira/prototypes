@@ -1,9 +1,8 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { resetLDMocks } from 'jest-launchdarkly-mock'
 
-import { useFlag } from 'core/flags'
 import {
     convertStatusLimitReached,
     convertStatusOkWarning,
@@ -48,7 +47,8 @@ jest.mock('state/billing/actions', () => {
 })
 
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

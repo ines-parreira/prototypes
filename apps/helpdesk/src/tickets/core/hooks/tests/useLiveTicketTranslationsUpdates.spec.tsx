@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
@@ -15,7 +16,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import type { TicketMessage } from 'models/ticket/types'
 import {
     DisplayedContent,
@@ -31,7 +31,8 @@ type UseLiveTicketTranslationsUpdatesParams = Parameters<
 >[0]
 
 // Mock the feature flag hook
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

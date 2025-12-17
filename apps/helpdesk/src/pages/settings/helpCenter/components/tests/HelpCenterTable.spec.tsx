@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 
-import { useFlag } from 'core/flags'
 import type { Locale } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/constants'
 
@@ -12,7 +12,7 @@ import { getLocalesResponseFixture } from '../../fixtures/getLocalesResponse.fix
 import { useStoreIntegrationByShopName } from '../../hooks/useStoreIntegrationByShopName'
 import { HelpCenterTable } from '../HelpCenterTable'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
 }))

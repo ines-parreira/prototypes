@@ -1,6 +1,6 @@
+import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { useGetEarliestExecution } from 'models/knowledgeService/queries'
@@ -18,7 +18,8 @@ jest.mock('models/aiAgentFeedback/queries', () => ({
 jest.mock('models/knowledgeService/queries', () => ({
     useGetEarliestExecution: jest.fn(),
 }))
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

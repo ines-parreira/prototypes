@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
@@ -6,7 +6,6 @@ import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Route, Switch } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { user } from 'fixtures/users'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
@@ -82,7 +81,7 @@ const useTrialEligibilityForManualActivationFromFeatureFlagMock = assumeMock(
 jest.mock('pages/aiAgent/trial/hooks/useSalesTrialRevampMilestone')
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('pages/aiAgent/Activation/hooks/useActivateAiAgentTrial')
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')

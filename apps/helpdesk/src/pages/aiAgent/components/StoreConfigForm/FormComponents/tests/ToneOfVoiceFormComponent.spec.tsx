@@ -1,7 +1,6 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 
@@ -9,7 +8,8 @@ import { ToneOfVoiceFormComponent } from '../ToneOfVoiceFormComponent'
 
 const mockUpdateValue = jest.fn()
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)

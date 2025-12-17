@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -8,7 +9,6 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { useFlag } from 'core/flags'
 import { shopifyIntegration } from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as hooks from 'hooks/useAppSelector'
@@ -44,7 +44,8 @@ jest.mock('react-chartjs-2', () => ({
     ),
 }))
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

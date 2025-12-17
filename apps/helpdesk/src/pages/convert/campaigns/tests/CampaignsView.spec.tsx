@@ -33,7 +33,7 @@ import { CampaignsView } from '../CampaignsView'
 import type { Campaign } from '../types/Campaign'
 import { CampaignStatus } from '../types/enums/CampaignStatus.enum'
 
-jest.mock('utils/launchDarkly')
+jest.mock('@repo/feature-flags')
 
 jest.mock('hooks/useSearch')
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

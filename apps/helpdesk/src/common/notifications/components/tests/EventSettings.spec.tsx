@@ -1,14 +1,14 @@
 import React from 'react'
 
+import { getLDClient } from '@repo/feature-flags'
 import { fireEvent, render, waitFor } from '@testing-library/react'
-
-import { getLDClient } from 'utils/launchDarkly'
 
 import { categories, notifications } from '../../data'
 import type { Settings } from '../../types'
 import EventSettings from '../EventSettings'
 
-jest.mock('utils/launchDarkly', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     getLDClient: jest.fn(),
 }))
 

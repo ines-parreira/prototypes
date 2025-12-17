@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
@@ -9,7 +9,6 @@ import type { AccordionValues } from 'components/Accordion/utils/types'
 import { Navigation } from 'components/Navigation/Navigation'
 import { UserRole } from 'config/types/user'
 import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
-import { useFlag } from 'core/flags'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'

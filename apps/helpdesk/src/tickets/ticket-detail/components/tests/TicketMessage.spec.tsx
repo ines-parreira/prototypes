@@ -1,8 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import {
     isTicketMessageDeleted,
     isTicketMessageHidden,
@@ -54,7 +53,7 @@ jest.mock(
     ),
 )
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 describe('TicketMessage', () => {

@@ -1,11 +1,10 @@
 import type { ReactNode } from 'react'
 
+import { getLDClient } from '@repo/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 import { FormProvider, useForm } from 'react-hook-form'
 import { MemoryRouter } from 'react-router-dom'
-
-import { getLDClient } from 'utils/launchDarkly'
 
 import { ConversationStartersSettings } from '../ConversationStartersSettings'
 

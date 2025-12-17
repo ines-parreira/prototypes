@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import * as segment from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
@@ -5,7 +6,6 @@ import { useHistory, useLocation } from 'react-router-dom'
 
 import type { ContextBanner } from 'AlertBanners'
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
-import { useFlag } from 'core/flags'
 import { user } from 'fixtures/users'
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
@@ -17,7 +17,8 @@ import { getCurrentUser, getRoleName } from 'state/currentUser/selectors'
 
 import { useShoppingAssistantTrialBanner } from '../hooks/useShoppingAssistantTrialBanner'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

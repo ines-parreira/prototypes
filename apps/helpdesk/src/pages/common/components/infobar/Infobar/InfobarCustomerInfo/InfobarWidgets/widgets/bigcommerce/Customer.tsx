@@ -1,12 +1,11 @@
 import type { ReactNode } from 'react'
 import { useContext } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 
 import logo from 'assets/img/infobar/bigcommerce.svg'
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import type { BigCommerceCustomer } from 'models/integration/types'
 import { BigCommerceActionType } from 'models/integration/types'

@@ -1,12 +1,12 @@
+import { useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 
 import { InventoryScopeMissingBanner } from '../InventoryScopeMissingBanner'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 jest.mock('hooks/useAppSelector')
 
 const mockUseFlag = useFlag as jest.Mock

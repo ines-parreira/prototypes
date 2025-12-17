@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 import { isProduction } from '@repo/utils'
 import { Call, Device, TwilioError } from '@twilio/voice-sdk'
 
@@ -19,7 +19,6 @@ import { CALL_FAILED_MICROPHONE_PERMISSION_ERROR } from 'pages/common/components
 import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
 import type { StoreDispatch } from 'state/types'
 import { reportError } from 'utils/errors'
-import { getLDClient } from 'utils/launchDarkly'
 
 import {
     gatherCallContext,

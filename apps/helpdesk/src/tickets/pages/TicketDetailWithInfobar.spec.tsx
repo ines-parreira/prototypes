@@ -1,8 +1,8 @@
+import { useFlag } from '@repo/feature-flags'
 import { useTicketInfobarNavigation } from '@repo/navigation'
 import { render, screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
-import { useFlag } from 'core/flags'
 import { Handle } from 'core/layout/panels'
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
@@ -25,7 +25,10 @@ jest.mock('@repo/tickets', () => ({
     TicketHeader: () => <div>TicketHeader</div>,
 }))
 
-jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const useFlagMock = jest.mocked(useFlag)
 
 jest.mock('core/layout/panels', () => ({

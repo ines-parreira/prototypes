@@ -70,9 +70,9 @@ jest.mock('../CoreContext', () => {
     }
 })
 
-jest.mock('core/flags/hooks/useFlag', () => ({
-    __esModule: true,
-    default: jest.fn(() => true),
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
 }))
 
 const wrapper = ({ children }: { children: ReactNode }) => (

@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 
 import {
@@ -6,7 +6,6 @@ import {
     LegacyLoadingSpinner as LoadingSpinner,
 } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import BackLink from 'pages/common/components/BackLink'
 
 import { GuidanceAiSuggestionsList } from './components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'

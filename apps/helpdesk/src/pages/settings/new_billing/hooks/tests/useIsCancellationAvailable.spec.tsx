@@ -1,11 +1,11 @@
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -14,7 +14,7 @@ import useAutomatedHelpdeskCancellationFlowAvailable from '../useAutomatedHelpde
 import type { useIsCancellationAvailableProps } from '../useIsCancellationAvailable'
 import useIsCancellationAvailable from '../useIsCancellationAvailable'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = assumeMock(useAppSelector)

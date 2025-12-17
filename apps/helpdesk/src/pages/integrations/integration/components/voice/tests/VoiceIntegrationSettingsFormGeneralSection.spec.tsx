@@ -1,17 +1,16 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { IntegrationType } from '@gorgias/helpdesk-queries'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { renderWithRouter } from 'utils/testing'
 
 import VoiceIntegrationSettingsFormGeneralSection from '../VoiceIntegrationSettingsFormGeneralSection'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 
 const mockFormFieldProps: Record<string, any> = {}
 

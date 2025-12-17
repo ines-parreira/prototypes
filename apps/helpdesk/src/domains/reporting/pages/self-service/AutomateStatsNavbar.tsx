@@ -1,8 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { NavLink } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
-import { useFlag } from 'core/flags'
 import { LINK_AI_SALES_AGENT_TEXT } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { StatsNavbarViewSections } from 'domains/reporting/pages/common/components/StatsNavbarView/constants'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'

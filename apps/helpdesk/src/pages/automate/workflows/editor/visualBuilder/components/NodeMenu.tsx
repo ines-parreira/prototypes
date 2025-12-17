@@ -7,11 +7,10 @@ import React, {
     useState,
 } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import _isNil from 'lodash/isNil'
 import { DropdownItem } from 'reactstrap'
 
-import { useFlag } from 'core/flags'
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
 import useEnabledActionStepsByApp from 'pages/automate/actionsPlatform/hooks/useEnabledActionStepsByApp'
 import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'

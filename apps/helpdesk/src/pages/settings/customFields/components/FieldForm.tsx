@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { AxiosResponse } from 'axios'
 import { cloneDeep, pick, set } from 'lodash'
 
@@ -12,7 +12,6 @@ import {
 } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useFlag } from 'core/flags'
 import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
 import { getUIDataType } from 'custom-fields/helpers/getUIDataType'
 import { useUpdateAiAutofill } from 'custom-fields/hooks/queries/useUpdateAiAutofill'

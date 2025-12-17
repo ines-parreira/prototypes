@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
@@ -8,7 +9,6 @@ import { Provider } from 'react-redux'
 import { MemoryRouter, useParams } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
-import { useFlag } from 'core/flags'
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
@@ -78,7 +78,8 @@ jest.mock('pages/aiAgent/hooks/useShopIntegrationId', () => ({
     useShopIntegrationId: jest.fn(),
 }))
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

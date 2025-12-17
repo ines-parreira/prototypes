@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
@@ -24,8 +24,6 @@ import {
 import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
-
-import { useFlag } from '../../../core/flags'
 
 import css from './Performance.less'
 

@@ -1,7 +1,7 @@
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import type { QueryObserverResult } from '@tanstack/react-query'
 
-import { useFlag } from 'core/flags'
 import { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
 
 import { mapArticleApiToGuidanceArticle } from '../../utils/guidance.utils'
@@ -53,7 +53,7 @@ const mockedMapArticleApiToGuidanceArticle = assumeMock(
     mapArticleApiToGuidanceArticle,
 )
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)
 
 // Create a mock article that matches the expected shape

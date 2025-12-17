@@ -1,7 +1,7 @@
 import type { KeyboardEvent } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
@@ -20,7 +20,6 @@ import {
 } from '@gorgias/axiom'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { Customer } from 'models/customer/types'

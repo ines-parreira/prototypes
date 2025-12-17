@@ -1,11 +1,10 @@
 import type { ComponentProps } from 'react'
 import { useEffect } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 
 import type { User } from 'config/types/user'
-import { useFlag } from 'core/flags'
 import {
     canMonitorCall,
     getCallMonitorability,

@@ -1,10 +1,9 @@
+import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
-
-import { useFlag } from 'core/flags'
 
 import { useIsConvertPerformanceViewEnabled } from '../useIsConvertPerformanceViewEnabled'
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 
 describe('useIsConvertPerformanceViewEnabled', () => {

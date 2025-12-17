@@ -1,11 +1,12 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
+
 import {
     SLAPolicyMetricType,
     SLAPolicyMetricUnit,
 } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import { renderWithRouter } from 'utils/testing'
 
 import SLAFormView from '../SLAFormView'
@@ -17,7 +18,8 @@ jest.mock('../DeleteModal', () => ({
     DeleteModal: () => <div>DeleteModal</div>,
 }))
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

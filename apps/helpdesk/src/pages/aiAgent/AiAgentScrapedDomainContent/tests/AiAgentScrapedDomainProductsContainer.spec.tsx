@@ -1,7 +1,7 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
@@ -14,7 +14,6 @@ import thunk from 'redux-thunk'
 
 import { toImmutable } from 'common/utils'
 import type { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
-import { useFlag } from 'core/flags'
 import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { getIngestionLogFixture } from 'pages/aiAgent/fixtures/ingestionLog.fixture'
@@ -77,7 +76,7 @@ const mockUseGetProductsByIdsFromIntegration = assumeMock(
     useGetProductsByIdsFromIntegration,
 )
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)
 
 const queryClient = mockQueryClient()

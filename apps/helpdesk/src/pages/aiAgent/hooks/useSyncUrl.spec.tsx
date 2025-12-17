@@ -1,7 +1,7 @@
+import { useFlag } from '@repo/feature-flags'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
-import { useFlag } from 'core/flags'
 import {
     useGetIngestionLogs,
     useStartArticleIngestion,
@@ -22,7 +22,8 @@ import {
     useSyncUrl,
 } from './useSyncUrl'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 

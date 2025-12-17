@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
@@ -11,7 +11,6 @@ import { StaticRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
-import { useFlag } from 'core/flags'
 import { ThemeProvider } from 'core/theme'
 import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -32,7 +31,8 @@ const useStoreConfigurationMock = assumeMock(useStoreConfiguration)
 const defaultStoreConfiguration = getStoreConfigurationFixture()
 const queryClient = mockQueryClient()
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)

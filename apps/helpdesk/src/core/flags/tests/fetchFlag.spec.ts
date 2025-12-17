@@ -1,10 +1,10 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import { fetchFlag } from 'core/flags/fetchFlag'
-import { getLDClient } from 'utils/launchDarkly'
 
-jest.mock('utils/launchDarkly', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     getLDClient: jest.fn(),
 }))
 

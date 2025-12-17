@@ -1,4 +1,4 @@
-import { getLDClient } from 'utils/launchDarkly'
+import { getLDClient } from '@repo/feature-flags'
 
 // Shared initialization promise to avoid multiple waitForInitialization calls
 let initializationPromise: Promise<void> | null = null

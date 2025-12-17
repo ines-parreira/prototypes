@@ -1,6 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
-
-import useFlag from 'core/flags/hooks/useFlag'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 /** This feature flag is now fully activated on the milestone-1 */
 export type SalesTrialRevampMilestone = 'off' | 'milestone-0' | 'milestone-1'

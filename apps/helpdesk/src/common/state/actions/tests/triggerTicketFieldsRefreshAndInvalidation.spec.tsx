@@ -39,7 +39,7 @@ type MockedRootState = {
 }
 
 jest.mock('@gorgias/helpdesk-client')
-jest.mock('core/flags/hooks/useFlag')
+jest.mock('@repo/feature-flags')
 
 const mockedListCustomFields = assumeMock(listCustomFields)
 const mockedListCustomFieldConditions = assumeMock(listCustomFieldConditions)

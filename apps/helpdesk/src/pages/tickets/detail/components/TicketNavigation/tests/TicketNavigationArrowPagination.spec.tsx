@@ -1,11 +1,11 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import type { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 
@@ -17,7 +17,8 @@ import TicketNavigationArrowPagination from '../TicketNavigationArrowPagination'
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = useAppSelector as jest.Mock
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

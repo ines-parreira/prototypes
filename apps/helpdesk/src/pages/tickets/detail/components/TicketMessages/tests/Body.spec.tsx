@@ -1,4 +1,4 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -9,7 +9,6 @@ import {
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
-import { useFlag } from 'core/flags'
 import { message as defaultMessage } from 'models/ticket/tests/mocks'
 import type { SmartFollowUp, TicketMessage } from 'models/ticket/types'
 import { SmartFollowUpType } from 'models/ticket/types'
@@ -26,7 +25,7 @@ const store = mockStore({
     },
 } as RootState)
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock(

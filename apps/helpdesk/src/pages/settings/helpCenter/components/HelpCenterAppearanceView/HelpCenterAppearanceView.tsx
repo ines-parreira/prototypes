@@ -1,7 +1,7 @@
 import type React from 'react'
 import { createRef, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import axios from 'axios'
 import { FormGroup, FormText } from 'reactstrap'
@@ -9,7 +9,6 @@ import isHexColor from 'validator/lib/isHexColor'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { LocaleCode, UpdateHelpCenterDto } from 'models/helpCenter/types'

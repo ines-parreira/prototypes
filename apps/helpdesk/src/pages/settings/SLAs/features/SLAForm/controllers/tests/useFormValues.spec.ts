@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 
 import {
@@ -5,13 +6,13 @@ import {
     SLAPolicyMetricUnit,
 } from '@gorgias/helpdesk-types'
 
-import { useFlag } from 'core/flags'
 import { slaPolicy3 } from 'pages/settings/SLAs/fixtures/fixtures'
 
 import makeMappedFormSLAPolicy from '../makeMappedFormSLAPolicy'
 import useFormValues from '../useFormValues'
 
-jest.mock('core/flags', () => ({
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
 const mockUseFlag = useFlag as jest.Mock

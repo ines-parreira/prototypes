@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import { useFlag } from 'core/flags'
 import { useWorkloadPerChannelDistribution } from 'domains/reporting/hooks/distributions'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
