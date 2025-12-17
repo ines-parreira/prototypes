@@ -11,6 +11,7 @@ import {
 import type {
     JourneyApiDTO,
     JourneyConfigurationApiDTO,
+    JourneyDetailApiDTO,
 } from '@gorgias/convert-client'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
@@ -28,13 +29,15 @@ import { PlaygroundEvent } from 'pages/aiAgent/PlaygroundV2/types'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 export const AI_JOURNEY_DEFAULT_STATE: AIJourneySettings = {
-    journeyType: JourneyTypeEnum.CartAbandoned,
+    journeyId: '',
     selectedProduct: null,
     totalFollowUp: 1,
+    includedAudienceListIds: [],
     includeProductImage: true,
     includeDiscountCode: true,
-    discountCodeValue: 10,
+    discountCodeValue: 0,
     discountCodeMessageIdx: 1,
+    excludedAudienceListIds: [],
     outboundMessageInstructions: '',
 }
 
@@ -44,6 +47,8 @@ const journeySettingsMapper = {
     includeDiscountCode: 'offer_discount',
     discountCodeValue: 'max_discount_percent',
     discountCodeMessageIdx: 'discount_code_message_threshold',
+    includedAudienceListIds: 'included_audience_list_ids',
+    excludedAudienceListIds: 'excluded_audience_list_ids',
 } as const
 
 function buildJourneyConfig(
@@ -60,8 +65,10 @@ function buildJourneyConfig(
 }
 
 function parseJourneyConfig(
-    config: JourneyConfigurationApiDTO,
+    journeyData: JourneyDetailApiDTO,
 ): Partial<AIJourneySettings> {
+    const { configuration: config } = journeyData
+
     return {
         totalFollowUp: config[journeySettingsMapper.totalFollowUp] ?? undefined,
         includeProductImage: config[journeySettingsMapper.includeProductImage],
@@ -70,6 +77,12 @@ function parseJourneyConfig(
             config[journeySettingsMapper.discountCodeValue] ?? undefined,
         discountCodeMessageIdx:
             config[journeySettingsMapper.discountCodeMessageIdx] ?? undefined,
+        includedAudienceListIds:
+            journeyData[journeySettingsMapper.includedAudienceListIds] ??
+            undefined,
+        excludedAudienceListIds:
+            journeyData[journeySettingsMapper.excludedAudienceListIds] ??
+            undefined,
     }
 }
 
@@ -77,7 +90,8 @@ type AIJourneyContextValue = {
     shopifyIntegration:
         | ReturnType<typeof getShopifyIntegrationsSortedByName>[number]
         | undefined
-    journeys: JourneyApiDTO[]
+    flows: JourneyApiDTO[]
+    campaigns: JourneyApiDTO[]
     shopName: string
     isLoadingJourneys: boolean
     aiJourneySettings: AIJourneySettings
@@ -129,12 +143,17 @@ const WrappedAIJourneyProvider = ({
         [shopifyIntegrations, shopName],
     )
 
-    const { data: journeys, isLoading: areJourneysLoading } = useJourneys(
-        shopifyIntegration?.id,
-        [JourneyTypeEnum.CartAbandoned, JourneyTypeEnum.SessionAbandoned],
-        {
+    const { data: aggregatedJourneys, isLoading: areJourneysLoading } =
+        useJourneys(shopifyIntegration?.id, [], {
             enabled: !!shopifyIntegration?.id,
-        },
+        })
+
+    const flows = aggregatedJourneys?.filter(
+        (f) => f.type !== JourneyTypeEnum.Campaign,
+    )
+
+    const campaigns = aggregatedJourneys?.filter(
+        (c) => c.type === JourneyTypeEnum.Campaign,
     )
 
     const [localSettings, setLocalSettings] = useState<
@@ -148,17 +167,30 @@ const WrappedAIJourneyProvider = ({
 
     useEffect(() => {
         if (
-            journeys &&
-            journeys.length > 0 &&
-            !localSettings.journeyType &&
+            flows &&
+            flows.length > 0 &&
+            !localSettings.journeyId &&
             !areJourneysLoading
         ) {
             setLocalSettings((prev) => ({
                 ...prev,
-                journeyType: journeys[0].type,
+                journeyId: flows.filter(
+                    // playground does not cover winback for the moment
+                    (f) => f.type !== JourneyTypeEnum.WinBack,
+                )[0].id,
+            }))
+        } else if (
+            campaigns &&
+            campaigns.length > 0 &&
+            !localSettings.journeyId &&
+            !areJourneysLoading
+        ) {
+            setLocalSettings((prev) => ({
+                ...prev,
+                journeyId: campaigns[0].id,
             }))
         }
-    }, [journeys, localSettings.journeyType, areJourneysLoading])
+    }, [flows, campaigns, localSettings.journeyId, areJourneysLoading])
 
     useEffect(() => {
         if (
@@ -175,11 +207,10 @@ const WrappedAIJourneyProvider = ({
 
     const currentJourney = useMemo(
         () =>
-            journeys?.find(
-                (j: JourneyApiDTO) =>
-                    j.type === localSettings.journeyType?.replace('-', '_'),
+            aggregatedJourneys?.find(
+                (j: JourneyApiDTO) => j.id === localSettings.journeyId,
             ),
-        [localSettings.journeyType, journeys],
+        [localSettings.journeyId, aggregatedJourneys],
     )
 
     const { data: journeyData, isLoading: isLoadingJourneyData } =
@@ -195,9 +226,10 @@ const WrappedAIJourneyProvider = ({
             return {}
         }
 
-        const configSettings = journeyData.configuration
-            ? parseJourneyConfig(journeyData.configuration)
-            : {}
+        const { configuration } = journeyData
+
+        const configSettings =
+            journeyData && configuration ? parseJourneyConfig(journeyData) : {}
 
         return {
             ...configSettings,
@@ -234,6 +266,10 @@ const WrappedAIJourneyProvider = ({
                     state: currentJourney.state,
                     message_instructions:
                         aiJourneySettings.outboundMessageInstructions,
+                    included_audience_list_ids:
+                        aiJourneySettings.includedAudienceListIds,
+                    excluded_audience_list_ids:
+                        aiJourneySettings.excludedAudienceListIds,
                 },
                 journeyId: currentJourney.id,
                 journeyConfigs,
@@ -263,7 +299,8 @@ const WrappedAIJourneyProvider = ({
     const contextValue = useMemo(
         () => ({
             shopifyIntegration,
-            journeys: journeys || [],
+            flows: flows || [],
+            campaigns: campaigns || [],
             shopName,
             isLoadingJourneys: shopifyIntegration?.id
                 ? areJourneysLoading
@@ -283,7 +320,8 @@ const WrappedAIJourneyProvider = ({
         }),
         [
             shopifyIntegration,
-            journeys,
+            flows,
+            campaigns,
             shopName,
             areJourneysLoading,
             aiJourneySettings,

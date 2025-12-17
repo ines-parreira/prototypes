@@ -27,7 +27,7 @@ export const AiJourneyNavbar = () => {
         FeatureFlagKey.AiJourneyCampaignsEnabled,
     )
 
-    const { journeys } = useJourneyContext()
+    const { campaigns, journeys } = useJourneyContext()
 
     const history = useHistory()
 
@@ -38,6 +38,10 @@ export const AiJourneyNavbar = () => {
     const hasJourney = useMemo(() => {
         return journeys?.length !== 0
     }, [journeys])
+
+    const hasCampaigns = useMemo(() => {
+        return campaigns?.length !== 0
+    }, [campaigns])
 
     const selectedStoreIntegration = useMemo(() => {
         return storeIntegrations.find(
@@ -68,8 +72,10 @@ export const AiJourneyNavbar = () => {
         [storeIntegrations, history],
     )
 
-    const shouldAccessPlayground = isAiJourneyPlaygroundEnabled && hasJourney
-    const shouldAccessAnalytics = isAiJourneyAnalyticsEnabled && hasJourney
+    const shouldAccessPlayground =
+        isAiJourneyPlaygroundEnabled && (hasJourney || hasCampaigns)
+    const shouldAccessAnalytics =
+        isAiJourneyAnalyticsEnabled && (hasJourney || hasCampaigns)
     const shouldAccessCampaigns = isAiJourneyCampaignsEnabled && hasJourney
 
     return (

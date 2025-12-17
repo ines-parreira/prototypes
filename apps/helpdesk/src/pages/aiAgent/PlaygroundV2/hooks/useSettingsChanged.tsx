@@ -20,7 +20,7 @@ type NormalizedOutboundState = Omit<AIJourneySettings, 'selectedProduct'> & {
 
 type NormalizedOutboundStateForComparison = Omit<
     NormalizedOutboundState,
-    'journeyType'
+    'journeyId'
 >
 
 type InitialState = {
@@ -72,7 +72,7 @@ export const useSettingsChanged = () => {
 
     const currentOutboundState = useMemo<NormalizedOutboundState>(
         () => ({
-            journeyType: aiJourneySettings.journeyType,
+            journeyId: aiJourneySettings.journeyId,
             selectedProductId: aiJourneySettings.selectedProduct?.id ?? null,
             totalFollowUp: aiJourneySettings.totalFollowUp,
             includeProductImage: aiJourneySettings.includeProductImage,
@@ -81,6 +81,8 @@ export const useSettingsChanged = () => {
             discountCodeMessageIdx: aiJourneySettings.discountCodeMessageIdx,
             outboundMessageInstructions:
                 aiJourneySettings.outboundMessageInstructions,
+            includedAudienceListIds: aiJourneySettings.includedAudienceListIds,
+            excludedAudienceListIds: aiJourneySettings.excludedAudienceListIds,
         }),
         [aiJourneySettings],
     )
@@ -97,8 +99,8 @@ export const useSettingsChanged = () => {
     useEffect(() => {
         if (
             initialStateRef.current &&
-            initialStateRef.current.outbound.journeyType !==
-                currentOutboundState.journeyType
+            initialStateRef.current.outbound.journeyId !==
+                currentOutboundState.journeyId
         ) {
             initialStateRef.current = {
                 ...initialStateRef.current,
@@ -121,16 +123,16 @@ export const useSettingsChanged = () => {
     const hasOutboundChanged = useMemo(() => {
         if (!initialStateRef.current) return false
 
-        const { journeyType: __initialJourneyType, ...initialOutboundState } =
+        const { journeyId: __initialJourneyId, ...initialOutboundState } =
             initialStateRef.current.outbound
         const {
-            journeyType: __currentJourneyType,
-            ...currentOutboundStateWithoutJourneyType
+            journeyId: __currentJourneyId,
+            ...currentOutboundStateWithoutJourneyId
         } = currentOutboundState
 
         return !shallowEqual(
             initialOutboundState as NormalizedOutboundStateForComparison,
-            currentOutboundStateWithoutJourneyType as NormalizedOutboundStateForComparison,
+            currentOutboundStateWithoutJourneyId as NormalizedOutboundStateForComparison,
         )
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentOutboundState, updated])

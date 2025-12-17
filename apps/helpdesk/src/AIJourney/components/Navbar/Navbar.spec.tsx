@@ -113,6 +113,42 @@ describe('<AiJourneyNavbar />', () => {
         storeConfiguration: {
             monitoredSmsIntegrations: [1, 2],
         },
+        journeys: [
+            {
+                id: '01JZAPAD606K1JSKNHC8KVA4BD',
+                type: 'cart_abandoned',
+                account_id: 6069,
+                store_integration_id: 33858,
+                store_name: 'artemisathletix',
+                store_type: 'shopify',
+                state: 'active',
+                message_instructions: '',
+                created_datetime: '2025-07-04T12:24:29.121874',
+                meta: {
+                    ticket_view_id: 2099726,
+                },
+            },
+        ],
+        campaigns: [
+            {
+                id: '01KBJ589YAYKG7YHKH349KKZH0',
+                type: 'campaign',
+                account_id: 6069,
+                store_integration_id: 33858,
+                store_name: 'artemisathletix',
+                store_type: 'shopify',
+                state: 'active',
+                message_instructions: null,
+                created_datetime: '2025-12-03T13:08:31.820085',
+                meta: {
+                    ticket_view_id: 2137239,
+                },
+                campaign: {
+                    title: '23123',
+                    state: 'active',
+                },
+            },
+        ],
     }
 
     beforeEach(() => {
@@ -183,10 +219,30 @@ describe('<AiJourneyNavbar />', () => {
                 return false
             })
         })
-        it('should not render analytics section when no journey exists', async () => {
+
+        it('should render analytics section when has journey, but does not have campaigns', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journeyData: undefined,
+                campaigns: [],
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            renderNavbar()
+
+            screen.debug()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.queryByText('Analytics')).toBeInTheDocument()
+        })
+
+        it('should render analytics section when has campaigns, but does not have journey', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
                 journeys: [],
             }
 
@@ -201,14 +257,15 @@ describe('<AiJourneyNavbar />', () => {
             expect(mockReplace).toHaveBeenCalledWith(
                 '/app/ai-journey/teststore1',
             )
-            expect(screen.queryByText('Analytics')).not.toBeInTheDocument()
+            expect(screen.queryByText('Analytics')).toBeInTheDocument()
         })
 
-        it('should not render analytics section when journey exists without id', async () => {
+        it('should not render analytics section when no journey nor campaigns exists', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journeyData: { type: 'cart_abandoned', id: undefined },
+                journeyData: undefined,
                 journeys: [],
+                campaigns: [],
             }
 
             mockUseJourneyContext.mockReturnValue(
@@ -216,6 +273,8 @@ describe('<AiJourneyNavbar />', () => {
             )
 
             renderNavbar()
+
+            screen.debug()
 
             expect(mockReplace).toHaveBeenCalledWith(
                 '/app/ai-journey/teststore1',
@@ -254,28 +313,6 @@ describe('<AiJourneyNavbar />', () => {
             )
             expect(screen.queryByText('Analytics')).not.toBeInTheDocument()
         })
-
-        it('should render analytics section when journey exists and is not in draft state', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                journeyData: {
-                    type: 'cart_abandoned',
-                    id: 'journey-id',
-                    state: 'paused',
-                },
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
-            renderNavbar()
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.getByText('Analytics')).toBeInTheDocument()
-        })
     })
 
     describe('Playground section', () => {
@@ -290,10 +327,28 @@ describe('<AiJourneyNavbar />', () => {
                 return false
             })
         })
-        it('should not render playground section when no journey exists', async () => {
+
+        it('should render playground section when has journey, but does not have campaigns', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journeyData: undefined,
+                campaigns: [],
+            }
+
+            mockUseJourneyContext.mockReturnValue(
+                mockJourneyContextWithoutJourney,
+            )
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+            expect(screen.queryByText('Playground')).toBeInTheDocument()
+        })
+
+        it('should render playground section when has campaign, but does not have journey', async () => {
+            const mockJourneyContextWithoutJourney = {
+                ...mockJourneyContext,
                 journeys: [],
             }
 
@@ -306,14 +361,15 @@ describe('<AiJourneyNavbar />', () => {
             expect(mockReplace).toHaveBeenCalledWith(
                 '/app/ai-journey/teststore1',
             )
-            expect(screen.queryByText('Playground')).not.toBeInTheDocument()
+            expect(screen.queryByText('Playground')).toBeInTheDocument()
         })
 
-        it('should not render playground section when journey exists without id', async () => {
+        it('should not render playground section when no journey nor campaigns exists', async () => {
             const mockJourneyContextWithoutJourney = {
                 ...mockJourneyContext,
-                journeyData: { type: 'cart_abandoned', id: undefined },
+                journeyData: undefined,
                 journeys: [],
+                campaigns: [],
             }
 
             mockUseJourneyContext.mockReturnValue(
@@ -358,28 +414,6 @@ describe('<AiJourneyNavbar />', () => {
                 '/app/ai-journey/teststore1',
             )
             expect(screen.queryByText('Playground')).not.toBeInTheDocument()
-        })
-
-        it('should render playground section when journey exists and is not in draft state', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                journeyData: {
-                    type: 'cart_abandoned',
-                    id: 'journey-id',
-                    state: 'paused',
-                },
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
-            renderNavbar()
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.getByText('Playground')).toBeInTheDocument()
         })
     })
 

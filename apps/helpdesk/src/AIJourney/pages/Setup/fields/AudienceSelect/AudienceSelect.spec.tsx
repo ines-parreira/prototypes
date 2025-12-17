@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 
 import { useJourneyContext } from 'AIJourney/providers'
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
@@ -267,5 +267,197 @@ describe('AudienceSelect', () => {
         expect(screen.getByText('Audience to include')).toBeInTheDocument()
         expect(mockUseAudienceLists).toHaveBeenCalledWith(undefined)
         expect(mockUseAudienceSegments).toHaveBeenCalledWith(undefined)
+    })
+
+    it('should render without name prop and not display FieldPresentation', () => {
+        mockUseAudienceLists.mockReturnValue({
+            data: null,
+            isLoading: false,
+        })
+        mockUseAudienceSegments.mockReturnValue({
+            data: null,
+            isLoading: false,
+        })
+
+        render(<AudienceSelect value={[]} onChange={() => {}} />)
+
+        expect(
+            screen.queryByText('Audience to include'),
+        ).not.toBeInTheDocument()
+        expect(screen.getByText('Select audience')).toBeInTheDocument()
+    })
+
+    it('should render with label prop', () => {
+        mockUseAudienceLists.mockReturnValue({
+            data: null,
+            isLoading: false,
+        })
+        mockUseAudienceSegments.mockReturnValue({
+            data: null,
+            isLoading: false,
+        })
+
+        render(
+            <AudienceSelect
+                label="Choose your audience"
+                value={[]}
+                onChange={() => {}}
+            />,
+        )
+
+        expect(screen.getByText('Choose your audience')).toBeInTheDocument()
+    })
+
+    it('should render with both name and label props', () => {
+        mockUseAudienceLists.mockReturnValue({
+            data: null,
+            isLoading: false,
+        })
+        mockUseAudienceSegments.mockReturnValue({
+            data: null,
+            isLoading: false,
+        })
+
+        render(
+            <AudienceSelect
+                name="Audience to include"
+                label="Choose your audience"
+                value={[]}
+                onChange={() => {}}
+            />,
+        )
+
+        expect(screen.getByText('Audience to include')).toBeInTheDocument()
+        expect(screen.getByText('Choose your audience')).toBeInTheDocument()
+    })
+
+    it('should call onValidationChange when selection changes', async () => {
+        const handleChange = jest.fn()
+        const handleValidationChange = jest.fn()
+        mockUseAudienceLists.mockReturnValue({
+            data: {
+                data: [{ id: 'list1', name: 'VIP Customers' }],
+            },
+            isLoading: false,
+        })
+        mockUseAudienceSegments.mockReturnValue({
+            data: { data: [] },
+            isLoading: false,
+        })
+
+        const user = userEvent.setup()
+        render(
+            <AudienceSelect
+                value={[]}
+                onChange={handleChange}
+                onValidationChange={handleValidationChange}
+            />,
+        )
+
+        const selectField = screen.getByText('Select audience')
+        await user.click(selectField)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('option', {
+                    name: /VIP Customers/i,
+                }),
+            ).toBeInTheDocument()
+        })
+
+        await user.click(
+            screen.getByRole('option', {
+                name: /VIP Customers/i,
+            }),
+        )
+
+        expect(handleValidationChange).toHaveBeenCalledWith(true)
+    })
+
+    it('should show error when required and value is cleared after interaction', async () => {
+        const handleChange = jest.fn()
+        mockUseAudienceLists.mockReturnValue({
+            data: {
+                data: [
+                    { id: 'list1', name: 'VIP Customers' },
+                    { id: 'list2', name: 'Newsletter Subscribers' },
+                ],
+            },
+            isLoading: false,
+        })
+        mockUseAudienceSegments.mockReturnValue({
+            data: { data: [] },
+            isLoading: false,
+        })
+
+        const user = userEvent.setup()
+        const { rerender } = render(
+            <AudienceSelect
+                value={[]}
+                onChange={handleChange}
+                required={true}
+            />,
+        )
+
+        expect(
+            screen.queryByText('At least one audience is required.'),
+        ).not.toBeInTheDocument()
+
+        const selectField = screen.getByText('Select audience')
+        await user.click(selectField)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('option', {
+                    name: /VIP Customers/i,
+                }),
+            ).toBeInTheDocument()
+        })
+
+        await user.click(
+            screen.getByRole('option', {
+                name: /VIP Customers/i,
+            }),
+        )
+
+        expect(handleChange).toHaveBeenCalledWith(['list1'])
+
+        rerender(
+            <AudienceSelect
+                value={[]}
+                onChange={handleChange}
+                required={true}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('At least one audience is required.'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should show error when required and showError is true', () => {
+        mockUseAudienceLists.mockReturnValue({
+            data: null,
+            isLoading: false,
+        })
+        mockUseAudienceSegments.mockReturnValue({
+            data: null,
+            isLoading: false,
+        })
+
+        render(
+            <AudienceSelect
+                value={[]}
+                onChange={() => {}}
+                required={true}
+                showError={true}
+            />,
+        )
+
+        expect(
+            screen.getByText('At least one audience is required.'),
+        ).toBeInTheDocument()
     })
 })

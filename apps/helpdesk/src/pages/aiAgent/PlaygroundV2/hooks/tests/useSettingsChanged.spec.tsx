@@ -6,8 +6,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { JourneyTypeEnum } from '@gorgias/convert-client'
-
 import {
     useJourneyData,
     useJourneys,
@@ -223,7 +221,7 @@ describe('useSettingsChanged', () => {
         expect(result.current.hasOutboundChanged).toBe(firstOutboundValue)
     })
 
-    it('should not detect changes when only journeyType changes', () => {
+    it('should not detect changes when only journeyId changes', () => {
         const { result } = renderHook(
             () => ({
                 settingsChanged: useSettingsChanged(),
@@ -238,14 +236,14 @@ describe('useSettingsChanged', () => {
 
         act(() => {
             result.current.aiJourneyContext.setAIJourneySettings({
-                journeyType: JourneyTypeEnum.SessionAbandoned,
+                journeyId: 'new-id',
             })
         })
 
         expect(result.current.settingsChanged.hasOutboundChanged).toBe(false)
     })
 
-    it('should detect changes when outbound settings other than journeyType change', () => {
+    it('should detect changes when outbound settings other than journeyId change', () => {
         const { result } = renderHook(
             () => ({
                 settingsChanged: useSettingsChanged(),
@@ -267,7 +265,7 @@ describe('useSettingsChanged', () => {
         expect(result.current.settingsChanged.hasOutboundChanged).toBe(true)
     })
 
-    it('should reset initial state when journeyType changes', () => {
+    it('should reset initial state when journeyId changes', () => {
         const { result } = renderHook(
             () => ({
                 settingsChanged: useSettingsChanged(),
@@ -288,7 +286,7 @@ describe('useSettingsChanged', () => {
 
         act(() => {
             result.current.aiJourneyContext.setAIJourneySettings({
-                journeyType: JourneyTypeEnum.SessionAbandoned,
+                journeyId: 'other-id',
             })
         })
 

@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
@@ -21,15 +21,31 @@ jest.mock('../../contexts/AIJourneyContext', () => ({
     useAIJourneyContext: jest.fn(),
 }))
 
+jest.mock('AIJourney/pages/Setup/fields/AudienceSelect/AudienceSelect', () => ({
+    AudienceSelect: ({ label, value, onChange }: any) => (
+        <div>
+            <label>{label}</label>
+            <select
+                aria-label={label}
+                value={value[0] || ''}
+                onChange={(e) => onChange([e.target.value])}
+            >
+                <option value="">Select audience</option>
+                <option value="audience-1">Audience 1</option>
+            </select>
+        </div>
+    ),
+}))
+
 const mockUseAIJourneyContext = assumeMock(useAIJourneyContext)
 
 const mockProducts = shopifyProductResult().map(
     (product) => product.data,
 ) as Product[]
 
-const mockJourneys: JourneyApiDTO[] = [
+const mockFlows: JourneyApiDTO[] = [
     {
-        id: 'journey-1',
+        id: 'flow-1',
         type: JourneyTypeEnum.CartAbandoned,
         account_id: 123,
         store_integration_id: 123,
@@ -39,7 +55,7 @@ const mockJourneys: JourneyApiDTO[] = [
         created_datetime: '2024-01-01T00:00:00Z',
     },
     {
-        id: 'journey-2',
+        id: 'flow-2',
         type: JourneyTypeEnum.SessionAbandoned,
         account_id: 123,
         store_integration_id: 123,
@@ -47,6 +63,37 @@ const mockJourneys: JourneyApiDTO[] = [
         store_type: 'shopify',
         state: 'active' as const,
         created_datetime: '2024-01-01T00:00:00Z',
+    },
+]
+
+const mockCampaigns: JourneyApiDTO[] = [
+    {
+        id: 'campaign-1',
+        type: JourneyTypeEnum.Campaign,
+        account_id: 456,
+        store_integration_id: 123,
+        store_name: 'test-shop',
+        store_type: 'shopify',
+        state: 'active' as const,
+        created_datetime: '2024-01-01T00:00:00Z',
+        campaign: {
+            title: 'campaign-1 name',
+            state: 'draft',
+        },
+    },
+    {
+        id: 'campaign-2',
+        type: JourneyTypeEnum.Campaign,
+        account_id: 123,
+        store_integration_id: 123,
+        store_name: 'test-shop',
+        store_type: 'shopify',
+        state: 'active' as const,
+        created_datetime: '2024-01-01T00:00:00Z',
+        campaign: {
+            title: 'campaign-2 name',
+            state: 'active',
+        },
     },
 ]
 
@@ -66,7 +113,8 @@ const createMockAIJourneyContextValue = (
 ): ReturnType<typeof useAIJourneyContext> => ({
     shopifyIntegration: mockShopifyIntegration,
     shopName: 'test-shop',
-    journeys: mockJourneys,
+    flows: mockFlows,
+    campaigns: mockCampaigns,
     isLoadingJourneys: false,
     aiJourneySettings: AI_JOURNEY_DEFAULT_STATE,
     setAIJourneySettings: jest.fn(),
@@ -108,7 +156,7 @@ describe('AIJourneySettings', () => {
             expect(selectField).toBeInTheDocument()
         })
 
-        it('should allow changing journey type', async () => {
+        it('should allow changing journey Id', async () => {
             renderComponent()
 
             const selectField = screen.getByRole('textbox', {
@@ -117,13 +165,13 @@ describe('AIJourneySettings', () => {
             fireEvent.click(selectField)
 
             const sessionAbandonedOption = await screen.findByRole('option', {
-                name: /browse abandoned/i,
+                name: /campaign-1 name/i,
             })
             fireEvent.click(sessionAbandonedOption)
 
             await waitFor(() => {
                 expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
-                    journeyType: JourneyTypeEnum.SessionAbandoned,
+                    journeyId: 'campaign-1',
                 })
             })
         })
@@ -313,15 +361,13 @@ describe('AIJourneySettings', () => {
         })
 
         it('should cap discount value at 100', async () => {
-            const user = userEvent.setup()
             renderComponent()
 
             const discountInput = screen.getByRole('textbox', {
                 name: /discount code value/i,
             })
 
-            await user.clear(discountInput)
-            await user.type(discountInput, '150')
+            fireEvent.change(discountInput, { target: { value: '150' } })
 
             await waitFor(() => {
                 expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
@@ -576,7 +622,7 @@ describe('AIJourneySettings', () => {
         it('should display loading spinner while journeys are loading', () => {
             mockUseAIJourneyContext.mockReturnValue(
                 createMockAIJourneyContextValue({
-                    journeys: [],
+                    flows: [],
                     isLoadingJourneys: true,
                     productList: [],
                 }),
@@ -595,7 +641,8 @@ describe('AIJourneySettings', () => {
         it('should display banner when no journeys are available', () => {
             mockUseAIJourneyContext.mockReturnValue(
                 createMockAIJourneyContextValue({
-                    journeys: [],
+                    flows: [],
+                    campaigns: [],
                     productList: [],
                 }),
             )
@@ -613,7 +660,8 @@ describe('AIJourneySettings', () => {
         it('should display link to configure journeys', () => {
             mockUseAIJourneyContext.mockReturnValue(
                 createMockAIJourneyContextValue({
-                    journeys: [],
+                    flows: [],
+                    campaigns: [],
                     productList: [],
                 }),
             )
@@ -630,10 +678,11 @@ describe('AIJourneySettings', () => {
             )
         })
 
-        it('should not display form fields when no journeys are available', () => {
+        it('should not display form fields when no journeys nor campaigns are available', () => {
             mockUseAIJourneyContext.mockReturnValue(
                 createMockAIJourneyContextValue({
-                    journeys: [],
+                    flows: [],
+                    campaigns: [],
                     productList: [],
                 }),
             )
@@ -649,6 +698,171 @@ describe('AIJourneySettings', () => {
             expect(
                 screen.queryByText('Message settings'),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Audience selection', () => {
+        beforeEach(() => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: mockCampaigns[0],
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                    setAIJourneySettings: mockSetAIJourneySettings,
+                }),
+            )
+        })
+
+        it('should render audience to include field', () => {
+            renderComponent()
+
+            expect(
+                screen.getByLabelText('Audience to include'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render audience to exclude field', () => {
+            renderComponent()
+
+            expect(
+                screen.getByLabelText('Audience to exclude'),
+            ).toBeInTheDocument()
+        })
+
+        it('should allow selecting audience to include', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const includeSelect = screen.getByLabelText('Audience to include')
+            await user.selectOptions(includeSelect, 'audience-1')
+
+            await waitFor(() => {
+                expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
+                    includedAudienceListIds: ['audience-1'],
+                })
+            })
+        })
+
+        it('should allow selecting audience to exclude', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const excludeSelect = screen.getByLabelText('Audience to exclude')
+            await user.selectOptions(excludeSelect, 'audience-1')
+
+            await waitFor(() => {
+                expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
+                    excludedAudienceListIds: ['audience-1'],
+                })
+            })
+        })
+
+        it('should display selected included audience', () => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: mockCampaigns[0],
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                    aiJourneySettings: {
+                        ...AI_JOURNEY_DEFAULT_STATE,
+                        includedAudienceListIds: ['audience-1'],
+                    },
+                    setAIJourneySettings: mockSetAIJourneySettings,
+                }),
+            )
+
+            renderComponent()
+
+            const includeSelect = screen.getByLabelText('Audience to include')
+            expect(includeSelect).toHaveValue('audience-1')
+        })
+
+        it('should display selected excluded audience', () => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: mockCampaigns[0],
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                    aiJourneySettings: {
+                        ...AI_JOURNEY_DEFAULT_STATE,
+                        excludedAudienceListIds: ['audience-1'],
+                    },
+                    setAIJourneySettings: mockSetAIJourneySettings,
+                }),
+            )
+
+            renderComponent()
+
+            const excludeSelect = screen.getByLabelText('Audience to exclude')
+            expect(excludeSelect).toHaveValue('audience-1')
+        })
+    })
+
+    describe('Fields rendering', () => {
+        it('should show flows fields', () => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: mockFlows[0],
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(screen.queryByText('Product')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Total number of messages to send'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Include discount code'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Discount code value')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Include product image in first message'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText(
+                    'In which message should the discount code be sent',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Audience to include'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Audience to exclude'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show campaigns fields', () => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: mockCampaigns[0],
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(screen.queryByText('Product')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Total number of messages to send'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Include discount code'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Discount code value')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Include product image in first message'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(
+                    'In which message should the discount code be sent',
+                ),
+            ).not.toBeInTheDocument()
+            expect(screen.getByText('Audience to include')).toBeInTheDocument()
+            expect(screen.getByText('Audience to exclude')).toBeInTheDocument()
         })
     })
 })

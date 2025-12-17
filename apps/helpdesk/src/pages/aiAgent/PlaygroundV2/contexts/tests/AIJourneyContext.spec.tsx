@@ -4,8 +4,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { JourneyTypeEnum } from '@gorgias/convert-client'
-
 import {
     useJourneyData,
     useJourneys,
@@ -75,6 +73,8 @@ const mockJourneyData = {
         discount_code_message_threshold: 2,
     },
     message_instructions: 'Test instructions',
+    included_audience_list_ids: [],
+    excluded_audience_list_ids: [],
 }
 
 describe('AIJourneyContext', () => {
@@ -183,7 +183,7 @@ describe('AIJourneyContext', () => {
                 wrapper: createWrapper(),
             })
 
-            expect(result.current.journeys).toEqual(mockJourneys)
+            expect(result.current.flows).toEqual(mockJourneys)
         })
 
         it('should provide empty array when journeys is undefined', () => {
@@ -196,7 +196,7 @@ describe('AIJourneyContext', () => {
                 wrapper: createWrapper(),
             })
 
-            expect(result.current.journeys).toEqual([])
+            expect(result.current.flows).toEqual([])
         })
 
         it('should provide isLoadingJourneys from useJourneys hook', () => {
@@ -224,7 +224,7 @@ describe('AIJourneyContext', () => {
 
             expect(result.current.aiJourneySettings).toEqual({
                 ...AI_JOURNEY_DEFAULT_STATE,
-                journeyType: 'cart_abandoned',
+                journeyId: 'journey-1',
             })
         })
 
@@ -240,6 +240,7 @@ describe('AIJourneyContext', () => {
 
             expect(result.current.aiJourneySettings).toEqual({
                 ...AI_JOURNEY_DEFAULT_STATE,
+                journeyId: 'journey-1',
                 totalFollowUp: 2,
                 includeProductImage: false,
                 includeDiscountCode: true,
@@ -315,26 +316,26 @@ describe('AIJourneyContext', () => {
 
                 expect(result.current.aiJourneySettings).toEqual({
                     ...AI_JOURNEY_DEFAULT_STATE,
-                    journeyType: 'cart_abandoned',
+                    journeyId: 'journey-1',
                     totalFollowUp: 3,
                     includeProductImage: false,
                     discountCodeValue: 25,
                 })
             })
 
-            it('should update journeyType and trigger journey data fetch', () => {
+            it('should update journeyId and trigger journey data fetch', () => {
                 const { result } = renderHook(() => useAIJourneyContext(), {
                     wrapper: createWrapper(),
                 })
 
                 act(() => {
                     result.current.setAIJourneySettings({
-                        journeyType: JourneyTypeEnum.SessionAbandoned,
+                        journeyId: 'some-id',
                     })
                 })
 
-                expect(result.current.aiJourneySettings.journeyType).toBe(
-                    JourneyTypeEnum.SessionAbandoned,
+                expect(result.current.aiJourneySettings.journeyId).toBe(
+                    'some-id',
                 )
             })
         })
@@ -365,7 +366,7 @@ describe('AIJourneyContext', () => {
 
                 expect(result.current.aiJourneySettings).toEqual({
                     ...AI_JOURNEY_DEFAULT_STATE,
-                    journeyType: 'cart_abandoned',
+                    journeyId: 'journey-1',
                 })
             })
 
@@ -409,7 +410,7 @@ describe('AIJourneyContext', () => {
 
                 act(() => {
                     result.current.setAIJourneySettings({
-                        journeyType: JourneyTypeEnum.CartAbandoned,
+                        journeyId: 'journey-1',
                         totalFollowUp: 3,
                         outboundMessageInstructions: 'Updated instructions',
                     })
@@ -423,6 +424,8 @@ describe('AIJourneyContext', () => {
                     params: {
                         state: 'active',
                         message_instructions: 'Updated instructions',
+                        excluded_audience_list_ids: [],
+                        included_audience_list_ids: [],
                     },
                     journeyId: 'journey-1',
                     journeyConfigs: {
@@ -472,7 +475,7 @@ describe('AIJourneyContext', () => {
 
                 act(() => {
                     result.current.setAIJourneySettings({
-                        journeyType: JourneyTypeEnum.CartAbandoned,
+                        journeyId: 'journey-1',
                     })
                 })
 
@@ -488,18 +491,46 @@ describe('AIJourneyContext', () => {
         })
 
         describe('journey selection', () => {
-            it('should automatically set journeyType to first journey when journeys load', () => {
+            it('should automatically set journeyId to first journey when journeys load', () => {
                 const { result } = renderHook(() => useAIJourneyContext(), {
                     wrapper: createWrapper(),
                 })
 
-                expect(result.current.aiJourneySettings.journeyType).toBe(
-                    'cart_abandoned',
+                expect(result.current.aiJourneySettings.journeyId).toBe(
+                    'journey-1',
                 )
                 expect(result.current.currentJourney).toEqual(mockJourneys[0])
             })
 
-            it('should select correct journey based on journey type', () => {
+            it('should automatically set journeyId to first campaign when no flows exist', () => {
+                const mockCampaigns = [
+                    {
+                        id: 'campaign-1',
+                        type: 'campaign',
+                        state: 'active',
+                    },
+                    {
+                        id: 'campaign-2',
+                        type: 'campaign',
+                        state: 'active',
+                    },
+                ]
+
+                mockUseJourneys.mockReturnValue({
+                    data: mockCampaigns,
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(result.current.aiJourneySettings.journeyId).toBe(
+                    'campaign-1',
+                )
+            })
+
+            it('should select correct journey based on journey ID', () => {
                 let capturedJourneyId: any
                 let capturedOptions: any
                 mockUseJourneyData.mockImplementation((journeyId, options) => {
@@ -517,7 +548,7 @@ describe('AIJourneyContext', () => {
 
                 act(() => {
                     result.current.setAIJourneySettings({
-                        journeyType: JourneyTypeEnum.CartAbandoned,
+                        journeyId: 'journey-1',
                     })
                 })
 
@@ -526,7 +557,7 @@ describe('AIJourneyContext', () => {
                 expect(capturedOptions.enabled).toBe(true)
             })
 
-            it('should update journey selection when journey type changes', () => {
+            it('should update journey selection when journey ID changes', () => {
                 const { result, rerender } = renderHook(
                     () => useAIJourneyContext(),
                     {
@@ -536,7 +567,7 @@ describe('AIJourneyContext', () => {
 
                 act(() => {
                     result.current.setAIJourneySettings({
-                        journeyType: JourneyTypeEnum.SessionAbandoned,
+                        journeyId: 'journey-2',
                     })
                 })
 
@@ -544,38 +575,6 @@ describe('AIJourneyContext', () => {
 
                 expect(mockUseJourneyData).toHaveBeenCalledWith(
                     'journey-2',
-                    expect.objectContaining({
-                        enabled: true,
-                    }),
-                )
-            })
-
-            it('should handle journey type with hyphens correctly', () => {
-                const customJourneys = [
-                    {
-                        id: 'journey-3',
-                        type: 'cart_abandoned',
-                        state: 'active',
-                    },
-                ]
-
-                mockUseJourneys.mockReturnValue({
-                    data: customJourneys,
-                    isLoading: false,
-                })
-
-                const { result } = renderHook(() => useAIJourneyContext(), {
-                    wrapper: createWrapper(),
-                })
-
-                act(() => {
-                    result.current.setAIJourneySettings({
-                        journeyType: 'cart-abandoned' as JourneyTypeEnum,
-                    })
-                })
-
-                expect(mockUseJourneyData).toHaveBeenCalledWith(
-                    'journey-3',
                     expect.objectContaining({
                         enabled: true,
                     }),
@@ -614,9 +613,10 @@ describe('AIJourneyContext', () => {
                     wrapper: createWrapper(),
                 })
 
-                expect(result.current.aiJourneySettings).toEqual(
-                    AI_JOURNEY_DEFAULT_STATE,
-                )
+                expect(result.current.aiJourneySettings).toEqual({
+                    ...AI_JOURNEY_DEFAULT_STATE,
+                    journeyId: mockJourneys[0].id,
+                })
             })
 
             it('should handle journey data with partial configuration', () => {
@@ -635,7 +635,6 @@ describe('AIJourneyContext', () => {
 
                 expect(result.current.aiJourneySettings).toMatchObject({
                     totalFollowUp: 4,
-                    journeyType: JourneyTypeEnum.CartAbandoned,
                     selectedProduct: null,
                     outboundMessageInstructions: '',
                 })
@@ -668,16 +667,9 @@ describe('AIJourneyContext', () => {
                     wrapper: createWrapper(),
                 })
 
-                expect(mockUseJourneys).toHaveBeenCalledWith(
-                    undefined,
-                    [
-                        JourneyTypeEnum.CartAbandoned,
-                        JourneyTypeEnum.SessionAbandoned,
-                    ],
-                    {
-                        enabled: false,
-                    },
-                )
+                expect(mockUseJourneys).toHaveBeenCalledWith(undefined, [], {
+                    enabled: false,
+                })
             })
 
             it('should enable useJourneys when shopifyIntegration exists', () => {
@@ -685,16 +677,9 @@ describe('AIJourneyContext', () => {
                     wrapper: createWrapper(),
                 })
 
-                expect(mockUseJourneys).toHaveBeenCalledWith(
-                    123,
-                    [
-                        JourneyTypeEnum.CartAbandoned,
-                        JourneyTypeEnum.SessionAbandoned,
-                    ],
-                    {
-                        enabled: true,
-                    },
-                )
+                expect(mockUseJourneys).toHaveBeenCalledWith(123, [], {
+                    enabled: true,
+                })
             })
 
             it('should disable useJourneyData when currentJourney is undefined', () => {
@@ -768,7 +753,6 @@ describe('AIJourneyContext', () => {
                     totalFollowUp: 2,
                     includeProductImage: false,
                     discountCodeValue: 20,
-                    journeyType: JourneyTypeEnum.CartAbandoned,
                     selectedProduct: null,
                     outboundMessageInstructions: '',
                 })

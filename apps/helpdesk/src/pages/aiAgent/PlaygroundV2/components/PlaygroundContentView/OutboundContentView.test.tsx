@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 
 import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -75,8 +75,24 @@ describe('OutboundContentView', () => {
 
     const store = mockStore({})
 
+    const totalFollowUp = 3
+    const mockUseAIJourneyContext = jest.requireMock(
+        'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext',
+    )
+
     beforeEach(() => {
         jest.clearAllMocks()
+
+        mockUseAIJourneyContext.useAIJourneyContext = () => ({
+            followUpMessagesSent: 0,
+            aiJourneySettings: {
+                totalFollowUp: totalFollowUp,
+            },
+            currentJourney: {
+                id: '01JZAPAD606K1JSKNHC8KVA4BA',
+                type: 'session_abandoned',
+            },
+        })
     })
 
     const renderComponent = (props = {}) => {
@@ -193,14 +209,14 @@ describe('OutboundContentView', () => {
         ]
 
         it('should disable follow-up button when limit reached', () => {
-            const totalFollowUp = 3
-            const mockUseAIJourneyContext = jest.requireMock(
-                'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext',
-            )
             mockUseAIJourneyContext.useAIJourneyContext = () => ({
                 followUpMessagesSent: totalFollowUp + 1,
                 aiJourneySettings: {
                     totalFollowUp: totalFollowUp,
+                },
+                currentJourney: {
+                    id: '01JZAPAD606K1JSKNHC8KVA4BA',
+                    type: 'session_abandoned',
                 },
             })
 
@@ -210,6 +226,26 @@ describe('OutboundContentView', () => {
                 name: /view follow-up message/i,
             })
             expect(followUpButton).toBeDisabled()
+        })
+
+        it('should not render follow-up components when campaign is selected', () => {
+            mockUseAIJourneyContext.useAIJourneyContext = () => ({
+                followUpMessagesSent: totalFollowUp + 1,
+                aiJourneySettings: {
+                    totalFollowUp: totalFollowUp,
+                },
+                currentJourney: {
+                    id: '01JZAPAD606K1JSKNHC8KVA4BA',
+                    type: 'campaign',
+                },
+            })
+
+            renderComponent({ messages: mockMessages })
+
+            const followUpButton = screen.queryByRole('button', {
+                name: /view follow-up message/i,
+            })
+            expect(followUpButton).not.toBeInTheDocument()
         })
     })
 

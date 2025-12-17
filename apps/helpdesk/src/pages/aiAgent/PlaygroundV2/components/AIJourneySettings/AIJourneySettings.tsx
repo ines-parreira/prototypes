@@ -7,6 +7,7 @@ import {
     LegacyBanner as Banner,
     Button,
     ListItem,
+    ListSection,
     LegacyLoadingSpinner as LoadingSpinner,
     Select,
     SelectField,
@@ -16,10 +17,18 @@ import {
 } from '@gorgias/axiom'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
+import { AudienceSelect } from 'AIJourney/pages/Setup/fields/AudienceSelect/AudienceSelect'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import TextArea from 'pages/common/forms/TextArea'
 
 import css from './AIJourneySettings.less'
+
+type Entry = { id: string; label: string }
+type Section = {
+    id: number
+    name: string
+    items: Entry[]
+}
 
 const getJourneyLabel = (journeyType: JourneyTypeEnum): string => {
     switch (journeyType) {
@@ -43,31 +52,64 @@ const FOLLOW_UP_OPTIONS: { id: number; label: string }[] = [1, 2, 3, 4].map(
 
 export const AIJourneySettings: React.FC = () => {
     const {
-        journeys,
-        shopName,
-        isLoadingJourneys,
         aiJourneySettings,
+        campaigns,
+        currentJourney,
+        flows,
+        isLoadingJourneys,
         setAIJourneySettings,
+        shopName,
         productList,
     } = useAIJourneyContext()
 
     const {
         selectedProduct,
-        journeyType,
         totalFollowUp,
+        includedAudienceListIds,
         includeDiscountCode,
         includeProductImage,
         outboundMessageInstructions,
         discountCodeMessageIdx,
         discountCodeValue,
+        excludedAudienceListIds,
     } = aiJourneySettings
 
-    const journeyOptions = useMemo(() => {
-        return journeys.map((journey) => ({
-            id: journey.type,
+    const isEditingCampaign = currentJourney?.type === JourneyTypeEnum.Campaign
+
+    const flowsOptions = flows
+        // playground does not cover winback for the moment
+        .filter((j) => j.type !== JourneyTypeEnum.WinBack)
+        .map((journey) => ({
+            id: journey.id,
             label: getJourneyLabel(journey.type),
         }))
-    }, [journeys])
+
+    const campaignsOptions = campaigns.map((campaign) => ({
+        id: campaign.id,
+        label: campaign.campaign!.title,
+    }))
+
+    const journeyOptions: Section[] = useMemo(() => {
+        const options = []
+
+        if (flowsOptions.length > 0) {
+            options.push({
+                id: 1,
+                items: [...flowsOptions],
+                name: 'Flows',
+            })
+        }
+
+        if (campaignsOptions.length > 0) {
+            options.push({
+                id: 2,
+                items: [...campaignsOptions],
+                name: 'Campaigns',
+            })
+        }
+
+        return options
+    }, [campaignsOptions, flowsOptions])
 
     const aiJourneyStoreUrl = `/app/ai-journey/${shopName}`
 
@@ -81,8 +123,10 @@ export const AIJourneySettings: React.FC = () => {
     }, [productList])
 
     const selectedJourneyOption = useMemo(() => {
-        return journeyOptions.find((option) => option.id === journeyType)
-    }, [journeyOptions, journeyType])
+        return [...flowsOptions, ...campaignsOptions].find(
+            (option) => option.id === currentJourney?.id,
+        )
+    }, [flowsOptions, campaignsOptions, currentJourney])
 
     const selectedProductOption = useMemo(() => {
         return productOptions.find(
@@ -154,105 +198,123 @@ export const AIJourneySettings: React.FC = () => {
     return (
         <>
             <SelectField
-                value={selectedJourneyOption}
-                onChange={(value) => {
+                //@ts-ignore
+                onChange={(value: Entry) => {
                     setAIJourneySettings({
-                        journeyType: value.id,
+                        journeyId: value.id,
                     })
                 }}
                 items={journeyOptions}
                 label="Campaign / Flow"
+                maxHeight={300}
+                isSearchable
+                //@ts-ignore
+                value={selectedJourneyOption as Section}
             >
-                {(option: (typeof journeyOptions)[number]) => (
-                    <ListItem label={option.label} />
+                {(section: Section) => (
+                    <ListSection
+                        name={section.name}
+                        items={section.items}
+                        id={section.id}
+                    >
+                        {(item) => (
+                            <ListItem key={item.id} label={item.label} />
+                        )}
+                    </ListSection>
                 )}
             </SelectField>
 
-            <Select
-                data-name="select-field"
-                aria-label="Product"
-                trigger={({ selectedText, isOpen, ref }) => (
-                    <SelectTrigger>
-                        <TextField
-                            inputRef={ref as RefObject<HTMLInputElement>}
-                            value={selectedText}
-                            label="Product"
-                            isFocused={isOpen}
+            {!isEditingCampaign && (
+                <Select
+                    data-name="select-field"
+                    aria-label="Product"
+                    trigger={({ selectedText, isOpen, ref }) => (
+                        <SelectTrigger>
+                            <TextField
+                                inputRef={ref as RefObject<HTMLInputElement>}
+                                value={selectedText}
+                                label="Product"
+                                isFocused={isOpen}
+                                leadingSlot={
+                                    <img
+                                        className={css.selectedProductImage}
+                                        src={selectedProduct?.image?.src || ''}
+                                        alt="selected product"
+                                    />
+                                }
+                                trailingSlot={
+                                    isOpen
+                                        ? 'arrow-chevron-up'
+                                        : 'arrow-chevron-down'
+                                }
+                            />
+                        </SelectTrigger>
+                    )}
+                    items={productOptions}
+                    selectedItem={selectedProductOption}
+                    onSelect={(value) => {
+                        const product = getProductById(value.id)
+                        if (!product) return
+                        setAIJourneySettings({
+                            selectedProduct: product,
+                        })
+                    }}
+                    isDisabled={false}
+                    isSearchable
+                >
+                    {(option: (typeof productOptions)[number]) => (
+                        <ListItem
+                            id={option.id}
+                            label={option.label}
                             leadingSlot={
                                 <img
-                                    className={css.selectedProductImage}
-                                    src={selectedProduct?.image?.src || ''}
-                                    alt="selected product"
+                                    width="24px"
+                                    height="24px"
+                                    src={option.img}
+                                    alt={option.alt || 'Product image'}
                                 />
                             }
-                            trailingSlot={
-                                isOpen
-                                    ? 'arrow-chevron-up'
-                                    : 'arrow-chevron-down'
-                            }
                         />
-                    </SelectTrigger>
-                )}
-                items={productOptions}
-                selectedItem={selectedProductOption}
-                onSelect={(value) => {
-                    const product = getProductById(value.id)
-                    if (!product) return
-                    setAIJourneySettings({
-                        selectedProduct: product,
-                    })
-                }}
-                isDisabled={false}
-                isSearchable
-            >
-                {(option: (typeof productOptions)[number]) => (
-                    <ListItem
-                        id={option.id}
-                        label={option.label}
-                        leadingSlot={
-                            <img
-                                width="24px"
-                                height="24px"
-                                src={option.img}
-                                alt={option.alt || 'Product image'}
-                            />
-                        }
-                    />
-                )}
-            </Select>
+                    )}
+                </Select>
+            )}
 
             <span className={css.messageSettingsSeparator}>
                 Message settings
             </span>
-            <div
-                className={classNames([
-                    css.inputFieldWrapper,
-                    css.followUpField,
-                ])}
-            >
-                <SelectField
-                    value={FOLLOW_UP_OPTIONS.find(
-                        (option) => option.id === totalFollowUp + 1,
-                    )}
-                    onChange={handleFollowUpChange}
-                    items={FOLLOW_UP_OPTIONS}
-                    label="Total number of messages to send"
+            {!isEditingCampaign && (
+                <div
+                    className={classNames([
+                        css.inputFieldWrapper,
+                        css.followUpField,
+                    ])}
                 >
-                    {(option: { id: number; label: string }) => (
-                        <ListItem label={option.label} />
-                    )}
-                </SelectField>
-            </div>
+                    <SelectField
+                        value={FOLLOW_UP_OPTIONS.find(
+                            (option) => option.id === totalFollowUp + 1,
+                        )}
+                        onChange={handleFollowUpChange}
+                        items={FOLLOW_UP_OPTIONS}
+                        label="Total number of messages to send"
+                    >
+                        {(option: { id: number; label: string }) => (
+                            <ListItem label={option.label} />
+                        )}
+                    </SelectField>
+                </div>
+            )}
             <div className={css.toggleFieldsContainer}>
-                <ToggleField
-                    value={includeProductImage}
-                    label="Include product image in first message"
-                    onChange={(value) => {
-                        setAIJourneySettings({
-                            includeProductImage: value,
-                        })
-                    }}
-                />
+                {!isEditingCampaign && (
+                    <ToggleField
+                        value={includeProductImage}
+                        label="Include product image in first message"
+                        onChange={(value) => {
+                            setAIJourneySettings({
+                                includeProductImage: value,
+                            })
+                        }}
+                    />
+                )}
                 <ToggleField
                     value={includeDiscountCode}
                     label="Include discount code"
@@ -276,34 +338,62 @@ export const AIJourneySettings: React.FC = () => {
                     trailingSlot={<Button icon="percent" variant="tertiary" />}
                 />
             </div>
-            <div
-                className={classNames([
-                    css.discountCodeMessageIdxField,
-                    css.inputFieldWrapper,
-                ])}
-            >
-                <SelectField
-                    value={FOLLOW_UP_OPTIONS.find(
-                        (option) => option.id === discountCodeMessageIdx,
-                    )}
-                    onChange={(value) => {
-                        setAIJourneySettings({
-                            discountCodeMessageIdx: value.id,
-                        })
-                    }}
-                    items={FOLLOW_UP_OPTIONS.slice(0, totalFollowUp + 1).map(
-                        (option) => ({
+            {!isEditingCampaign && (
+                <div
+                    className={classNames([
+                        css.discountCodeMessageIdxField,
+                        css.inputFieldWrapper,
+                    ])}
+                >
+                    <SelectField
+                        value={FOLLOW_UP_OPTIONS.find(
+                            (option) => option.id === discountCodeMessageIdx,
+                        )}
+                        onChange={(value: any) => {
+                            setAIJourneySettings({
+                                discountCodeMessageIdx: value.id,
+                            })
+                        }}
+                        items={FOLLOW_UP_OPTIONS.slice(
+                            0,
+                            totalFollowUp + 1,
+                        ).map((option) => ({
                             id: option.id,
                             label: `Message ${option.label}`,
-                        }),
-                    )}
-                    label="In which message should the discount code be sent"
-                >
-                    {(option: { id: number; label: string }) => (
-                        <ListItem label={option.label} />
-                    )}
-                </SelectField>
-            </div>
+                        }))}
+                        label="In which message should the discount code be sent"
+                    >
+                        {(option: { id: number; label: string }) => (
+                            <ListItem label={option.label} />
+                        )}
+                    </SelectField>
+                </div>
+            )}
+            {isEditingCampaign && (
+                <div className={css.audiencesContainer}>
+                    <AudienceSelect
+                        label="Audience to include"
+                        value={includedAudienceListIds ?? []}
+                        exclude={excludedAudienceListIds ?? []}
+                        onChange={(value: string[]) => {
+                            setAIJourneySettings({
+                                includedAudienceListIds: value,
+                            })
+                        }}
+                        required
+                    />
+                    <AudienceSelect
+                        label="Audience to exclude"
+                        value={excludedAudienceListIds ?? []}
+                        exclude={includedAudienceListIds ?? []}
+                        onChange={(value: string[]) => {
+                            setAIJourneySettings({
+                                excludedAudienceListIds: value,
+                            })
+                        }}
+                    />
+                </div>
+            )}
             <TextArea
                 className={css.messageInstructions}
                 label="Message instructions"

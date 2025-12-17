@@ -1,5 +1,3 @@
-import type { JourneyTypeEnum } from '@gorgias/convert-client'
-
 import type { Product } from 'constants/integrations/types/shopify'
 
 export type PlaygroundTemplateMessage = {
@@ -45,13 +43,15 @@ export type InboundSettings = {
 }
 
 export type AIJourneySettings = {
-    journeyType: JourneyTypeEnum
+    journeyId: string
     selectedProduct: Product | null
     totalFollowUp: number
+    includedAudienceListIds: string[]
     includeProductImage: boolean
     includeDiscountCode: boolean
     discountCodeValue: number
     discountCodeMessageIdx: number
+    excludedAudienceListIds: string[]
     outboundMessageInstructions: string
 }
 

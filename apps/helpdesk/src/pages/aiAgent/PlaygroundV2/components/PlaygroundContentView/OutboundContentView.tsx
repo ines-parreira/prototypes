@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Tooltip } from 'reactstrap'
 
 import { Button } from '@gorgias/axiom'
+import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
@@ -31,7 +32,10 @@ export const OutboundContentView = ({
     const {
         followUpMessagesSent,
         aiJourneySettings: { totalFollowUp },
+        currentJourney,
     } = useAIJourneyContext()
+
+    const isCampaign = currentJourney?.type === JourneyTypeEnum.Campaign
 
     const followUpLimitReached = followUpMessagesSent >= totalFollowUp + 1
 
@@ -48,27 +52,33 @@ export const OutboundContentView = ({
                         onGuidanceClick={onGuidanceClick}
                         shouldDisplayReasoning={shouldDisplayReasoning}
                     />
-                    <div>
-                        <Button
-                            id="follow-up-button"
-                            isDisabled={isPolling || followUpLimitReached}
-                            variant="secondary"
-                            onClick={triggerMessage}
-                            isLoading={isTriggeringMessage}
-                        >
-                            View follow-up message
-                        </Button>
-                        {followUpLimitReached && (
-                            <Tooltip
-                                target="follow-up-button"
-                                placement="left"
-                                isOpen={tooltipOpen}
-                                toggle={toggleTooltip}
-                            >
-                                Configured follow up limit reached
-                            </Tooltip>
-                        )}
-                    </div>
+                    {!isCampaign && (
+                        <div>
+                            {
+                                <Button
+                                    id="follow-up-button"
+                                    isDisabled={
+                                        isPolling || followUpLimitReached
+                                    }
+                                    variant="secondary"
+                                    onClick={triggerMessage}
+                                    isLoading={isTriggeringMessage}
+                                >
+                                    View follow-up message
+                                </Button>
+                            }
+                            {followUpLimitReached && (
+                                <Tooltip
+                                    target="follow-up-button"
+                                    placement="left"
+                                    isOpen={tooltipOpen}
+                                    toggle={toggleTooltip}
+                                >
+                                    Configured follow up limit reached
+                                </Tooltip>
+                            )}
+                        </div>
+                    )}
                 </div>
             )}
             {messages.length === 0 && (

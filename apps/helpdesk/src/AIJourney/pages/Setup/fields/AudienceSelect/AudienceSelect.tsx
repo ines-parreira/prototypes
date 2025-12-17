@@ -17,7 +17,8 @@ type Section = {
 }
 
 type AudienceSelectFieldProps = {
-    name: string
+    name?: string
+    label?: string
     value: string[]
     onChange: (value: string[]) => void
     exclude?: string[]
@@ -32,6 +33,7 @@ export const AudienceSelect = ({
     value,
     isDisabled = false,
     exclude = [],
+    label,
     onChange = () => {},
     required = false,
     onValidationChange = () => {},
@@ -98,10 +100,11 @@ export const AudienceSelect = ({
 
     return (
         <div className={css.audienceSelectField}>
-            <FieldPresentation name={name} required={required} />
+            {name && <FieldPresentation name={name} required={required} />}
             <MultiSelectField
                 isSearchable
                 items={sections}
+                label={label}
                 maxHeight={250}
                 onChange={handleChange}
                 placeholder="Select audience"
