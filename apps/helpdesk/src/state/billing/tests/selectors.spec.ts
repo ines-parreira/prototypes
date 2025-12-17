@@ -524,7 +524,20 @@ describe('billing selectors', () => {
     })
 
     describe('getAvailablePlansMap', () => {
-        it('should return the prices', () => {
+        it('should return PlanId-Plan mapping', () => {
+            const expected = billingFixtures.billingState.products
+                .flatMap((product) => product.prices)
+                .reduce<{ [key: string]: Plan }>((acc, plan) => {
+                    acc[plan.plan_id] = plan
+                    return acc
+                }, {})
+
+            expect(selectors.getAvailablePlansMap(state)).toEqual(expected)
+        })
+    })
+
+    describe('getAvailablePricesMap', () => {
+        it('should return a PriceId-Plan mapping', () => {
             const expected = billingFixtures.billingState.products
                 .flatMap((product) => product.prices)
                 .reduce<{ [key: string]: Plan }>((acc, plan) => {
@@ -532,7 +545,7 @@ describe('billing selectors', () => {
                     return acc
                 }, {})
 
-            expect(selectors.getAvailablePlansMap(state)).toEqual(expected)
+            expect(selectors.getAvailablePricesMap(state)).toEqual(expected)
         })
     })
 
@@ -552,12 +565,12 @@ describe('billing selectors', () => {
     })
 
     describe('getAvailableAutomatePlansMap', () => {
-        it('should return the prices', () => {
+        it('should return a PlanId-Plan mapping', () => {
             const expected = billingFixtures.billingState.products
                 .filter((product) => product.type === ProductType.Automation)
                 .flatMap((product) => product.prices)
                 .reduce<{ [key: string]: Plan }>((acc, plan) => {
-                    acc[plan.price_id] = plan
+                    acc[plan.plan_id] = plan
                     return acc
                 }, {})
 

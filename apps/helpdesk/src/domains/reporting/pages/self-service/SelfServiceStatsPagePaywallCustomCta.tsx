@@ -20,7 +20,7 @@ const SelfServiceStatsPagePaywallCustomCta = () => {
         props: {
             domain: account.get('domain'),
             current_prices: Object.values(currentProducts || {})?.map(
-                (product) => product.price_id,
+                (plan) => plan.plan_id,
             ),
             paywall_feature: 'automation_addon',
         },

@@ -1,18 +1,18 @@
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
 
-export const useCurrentPriceIds = (): string[] => {
+export const useCurrentPlanIds = (): string[] => {
     const currentProducts = useAppSelector(getCurrentPlansByProduct)
 
-    const currentPriceIds: string[] = currentProducts
+    const currentPlanIds: string[] = currentProducts
         ? [
-              currentProducts.helpdesk?.price_id,
-              currentProducts.automation?.price_id || '',
-              currentProducts.convert?.price_id || '',
-              currentProducts.voice?.price_id || '',
-              currentProducts.sms?.price_id || '',
+              currentProducts.helpdesk?.plan_id,
+              currentProducts.automation?.plan_id || '',
+              currentProducts.convert?.plan_id || '',
+              currentProducts.voice?.plan_id || '',
+              currentProducts.sms?.plan_id || '',
           ].filter(Boolean)
         : []
 
-    return currentPriceIds
+    return currentPlanIds
 }

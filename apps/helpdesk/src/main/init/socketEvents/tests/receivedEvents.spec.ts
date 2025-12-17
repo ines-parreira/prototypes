@@ -17,7 +17,8 @@ import { TicketStatuses } from 'business/ticket'
 import { store as reduxStore } from 'common/store'
 import { section } from 'fixtures/section'
 import { view } from 'fixtures/views'
-import type { HelpdeskPlan, PriceId } from 'models/billing/types'
+import type { HelpdeskPlan, PlanId, PriceId } from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 import {
     ecommerceStoreFixture,
     shopperAddressFixture,
@@ -183,9 +184,21 @@ describe('receivedEvents', () => {
             'getAvailablePlansMap',
         )
 
+        const getAvailablePricesMapSpy = jest.spyOn(
+            billingSelectors,
+            'getAvailablePricesMap',
+        )
+
         beforeEach(() => {
             jest.useFakeTimers()
             getAvailablePlansMapSpy.mockImplementation(
+                () =>
+                    ({
+                        [mockedProMonthlyHelpdeskPlan.plan_id]:
+                            mockedProMonthlyHelpdeskPlan,
+                    }) as Record<PlanId, HelpdeskPlan>,
+            )
+            getAvailablePricesMapSpy.mockImplementation(
                 () =>
                     ({
                         [mockedProMonthlyHelpdeskPlan.price_id]:
@@ -364,8 +377,8 @@ describe('receivedEvents', () => {
             },
         )
 
-        it('should not notify and reload app if new account price is preloaded', () => {
-            const spy = jest.spyOn(notificationActions, 'notify')
+        it('should not notify and reload app if new account is preloaded', () => {
+            const notifySpy = jest.spyOn(notificationActions, 'notify')
             ;(
                 currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<
                     typeof currentAccountSelectors.getTicketAssignmentSettings
@@ -385,7 +398,36 @@ describe('receivedEvents', () => {
                 } as any)
             }
 
-            expect(spy).not.toHaveBeenCalledWith({
+            expect(notifySpy).not.toHaveBeenCalledWith({
+                message:
+                    'The app will reload automatically in a few seconds to reflect your subscription changes.',
+            })
+            jest.runAllTimers()
+            expect(window.location.reload).not.toHaveBeenCalled()
+        })
+
+        it('should not notify and reload app if new account is preloaded - with PlanId-Plan mapping', () => {
+            const notifySpy = jest.spyOn(notificationActions, 'notify')
+            ;(
+                currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<
+                    typeof currentAccountSelectors.getTicketAssignmentSettings
+                >
+            ).mockReturnValue(fromJS({}))
+
+            if (accountUpdatedHandler) {
+                accountUpdatedHandler.onReceive({
+                    account: {
+                        current_subscription: {
+                            products: {
+                                [ProductType.Helpdesk]:
+                                    mockedProMonthlyHelpdeskPlan.plan_id,
+                            },
+                        },
+                    },
+                } as any)
+            }
+
+            expect(notifySpy).not.toHaveBeenCalledWith({
                 message:
                     'The app will reload automatically in a few seconds to reflect your subscription changes.',
             })
