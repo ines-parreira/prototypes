@@ -232,7 +232,7 @@ const SelfServiceStatsPageCore = (): JSX.Element => {
                 case 'articleRecommendation':
                     return `/app/automation/${firstIntegration.type}/${firstIntegrationShopName}/article-recommendation`
                 case 'trainMyAi':
-                    return `/app/automation/${firstIntegration.type}/${firstIntegrationShopName}/train-my-ai`
+                    return `/app/settings/article-recommendations/${firstIntegration.type}/${firstIntegrationShopName}`
                 default:
                     return '/app/automation/'
             }

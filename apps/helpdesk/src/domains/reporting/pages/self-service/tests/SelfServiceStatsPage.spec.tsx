@@ -334,14 +334,31 @@ const WFConfigData = [
 
 describe('<SelfServiceStatsPage />', () => {
     function getIntegration(id: number, type: IntegrationType) {
+        const baseMeta = {
+            emoji: '',
+            phone_number_id: id,
+        }
+
+        let meta: any = baseMeta
+
+        if (type === IntegrationType.Shopify) {
+            meta = {
+                ...baseMeta,
+                shop_name: 'mystore',
+                shop_domain: 'mystore.myshopify.com',
+            }
+        } else if (type === IntegrationType.Magento2) {
+            meta = {
+                ...baseMeta,
+                store_url: 'https://mystore.example.com',
+            }
+        }
+
         return {
             id,
             type,
             name: `My Phone Integration ${id}`,
-            meta: {
-                emoji: '',
-                phone_number_id: id,
-            },
+            meta,
         }
     }
 
@@ -747,6 +764,163 @@ describe('<SelfServiceStatsPage />', () => {
 
             expect(mockUseTrialAccess).toHaveBeenCalled()
             expect(mockUseTrialAccess).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('visibilityLink for Article Recommendation', () => {
+        beforeEach(() => {
+            jest.clearAllMocks()
+
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({
+                    hasAnyTrialActive: true,
+                    isLoading: false,
+                }),
+            )
+        })
+
+        it('should render Improve Article Recommendation link when article recommendation is enabled and has data', async () => {
+            const selfServiceConfigWithArticleRec = [
+                {
+                    ...mockSelfServiceConfigurations[0],
+                    articleRecommendationHelpCenterId: 123,
+                },
+            ]
+
+            mockUseGetSelfServiceConfigurations.mockReturnValue({
+                data: selfServiceConfigWithArticleRec,
+                isLoading: false,
+            } as any)
+
+            useStatResourceMock.mockImplementation(({ resourceName }) => {
+                if (
+                    resourceName ===
+                    SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
+                ) {
+                    return [
+                        selfServiceArticleRecommendationPerformance,
+                        false,
+                        _noop,
+                    ]
+                } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
+                    return [selfServiceTopReportedIssues, false, _noop]
+                }
+                return [
+                    selfServiceProductsWithMostIssuesAndReturnRequests,
+                    false,
+                    _noop,
+                ]
+            })
+
+            const { getByRole } = renderWithRouter(
+                <QueryClientProvider client={mockClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <SelfServiceStatsPage />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            await flushPromises()
+
+            const improveLink = getByRole('link', {
+                name: /Improve Article Recommendation/i,
+            })
+            expect(improveLink).toBeInTheDocument()
+            expect(improveLink).toHaveAttribute(
+                'href',
+                '/app/settings/article-recommendations/shopify/mystore',
+            )
+        })
+
+        it('should not render Improve Article Recommendation link when article recommendation is disabled', async () => {
+            mockUseGetSelfServiceConfigurations.mockReturnValue({
+                data: mockSelfServiceConfigurations,
+                isLoading: false,
+            } as any)
+
+            useStatResourceMock.mockImplementation(({ resourceName }) => {
+                if (
+                    resourceName ===
+                    SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
+                ) {
+                    return [
+                        selfServiceArticleRecommendationPerformanceNoData,
+                        false,
+                        _noop,
+                    ]
+                } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
+                    return [selfServiceTopReportedIssues, false, _noop]
+                }
+                return [
+                    selfServiceProductsWithMostIssuesAndReturnRequests,
+                    false,
+                    _noop,
+                ]
+            })
+
+            const { queryByRole } = renderWithRouter(
+                <QueryClientProvider client={mockClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <SelfServiceStatsPage />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            await flushPromises()
+
+            const improveLink = queryByRole('link', {
+                name: /Improve Article Recommendation/i,
+            })
+            expect(improveLink).not.toBeInTheDocument()
+        })
+
+        it('should not render Improve Article Recommendation link when there is no data', async () => {
+            const selfServiceConfigWithArticleRec = [
+                {
+                    ...mockSelfServiceConfigurations[0],
+                    articleRecommendationHelpCenterId: 123,
+                },
+            ]
+
+            mockUseGetSelfServiceConfigurations.mockReturnValue({
+                data: selfServiceConfigWithArticleRec,
+                isLoading: false,
+            } as any)
+
+            useStatResourceMock.mockImplementation(({ resourceName }) => {
+                if (
+                    resourceName ===
+                    SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
+                ) {
+                    return [
+                        selfServiceArticleRecommendationPerformanceNoData,
+                        false,
+                        _noop,
+                    ]
+                } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
+                    return [selfServiceTopReportedIssues, false, _noop]
+                }
+                return [
+                    selfServiceProductsWithMostIssuesAndReturnRequests,
+                    false,
+                    _noop,
+                ]
+            })
+
+            const { queryByRole } = renderWithRouter(
+                <QueryClientProvider client={mockClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <SelfServiceStatsPage />
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            await flushPromises()
+
+            const improveLink = queryByRole('link', {
+                name: /Improve Article Recommendation/i,
+            })
+            expect(improveLink).not.toBeInTheDocument()
         })
     })
 })
