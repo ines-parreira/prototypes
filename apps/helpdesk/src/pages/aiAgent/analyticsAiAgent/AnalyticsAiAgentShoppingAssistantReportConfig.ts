@@ -1,5 +1,6 @@
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchTotalNumberOfOrdersTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
+import { fetchTotalNumberOfSalesConversationsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
@@ -18,8 +19,6 @@ import { AnalyticsAiAgentTotalSalesCard } from './charts/AnalyticsAiAgentTotalSa
 
 // Mock fetch functions - these will be replaced with real data fetchers later
 const fetchTotalSalesTrend = async () => ({ value: 3800, trend: 0.02 }) as any
-const fetchResolvedInteractionsTrend = async () =>
-    ({ value: 2300, trend: 0.02 }) as any
 const fetchTotalSalePerInteractionTrend = async () =>
     ({ value: 93, trend: 0.02 }) as any
 const fetchShoppingAssistantTrendBreakdown = async () =>
@@ -89,7 +88,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchResolvedInteractionsTrend,
+                        fetch: fetchTotalNumberOfSalesConversationsTrend,
                         metricFormat: 'integer',
                     },
                 ],
