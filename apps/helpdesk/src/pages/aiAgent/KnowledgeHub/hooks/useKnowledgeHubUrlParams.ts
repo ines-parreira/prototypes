@@ -170,10 +170,8 @@ export function useKnowledgeHubUrlParams(
         if (decodedFolder) {
             // Find the full folder object in tableData
             const matchingFolder = tableData.find(
-                (item) =>
-                    item.source === decodedFolder &&
-                    (item as GroupedKnowledgeItem).isGrouped,
-            ) as GroupedKnowledgeItem | undefined
+                (item) => item.source === decodedFolder,
+            )
 
             if (matchingFolder) {
                 // Upgrade to full folder object if we found it in tableData
@@ -181,19 +179,11 @@ export function useKnowledgeHubUrlParams(
                 if (
                     !selectedFolder ||
                     selectedFolder.source !== decodedFolder ||
-                    !selectedFolder.title
+                    !selectedFolder.title ||
+                    !selectedFolder.type
                 ) {
                     setSelectedFolder(matchingFolder)
                 }
-            } else if (
-                !selectedFolder ||
-                selectedFolder.source !== decodedFolder
-            ) {
-                // Fallback: create minimal folder object if not found in tableData
-                setSelectedFolder({
-                    source: decodedFolder,
-                    title: decodedFolder,
-                } as GroupedKnowledgeItem)
             }
         }
     }, [location.search, selectedFolder, tableData])
@@ -347,7 +337,7 @@ export function useKnowledgeHubUrlParams(
         const basePath = routes.knowledgeSources
         const targetPath = buildUrlWithParams(basePath)
         history.push(targetPath)
-    }, [routes.knowledgeSources, history])
+    }, [routes.knowledgeSources, history, buildUrlWithParams])
 
     return {
         selectedFilter,

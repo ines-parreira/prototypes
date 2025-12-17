@@ -567,7 +567,7 @@ describe('useKnowledgeHubUrlParams', () => {
             expect(result.current.selectedFolder).toBeNull()
         })
 
-        it('does not upgrade folder when it already has a title', () => {
+        it('upgrades folder when tableData loads even if it has a title', () => {
             const folderUrl = 'https://example.com/url'
             const history = createMemoryHistory({
                 initialEntries: [
@@ -596,14 +596,21 @@ describe('useKnowledgeHubUrlParams', () => {
                 rerender({ tableData: mockTableData })
             })
 
-            // Folder is NOT upgraded because it already has a title
-            // The upgrade logic only triggers when !selectedFolder.title
+            // Folder IS upgraded because the minimal object is missing the type property
+            // The upgrade logic triggers when !selectedFolder.type
             expect(result.current.selectedFolder).toMatchObject({
+                id: '1',
+                title: 'Test URL Folder',
+                type: KnowledgeType.URL,
                 source: folderUrl,
-                title: folderUrl,
+                isGrouped: true,
             })
-            // Should NOT have the full object properties
-            expect(result.current.selectedFolder).not.toHaveProperty('id')
+            // Should now have the full object properties
+            expect(result.current.selectedFolder).toHaveProperty('id', '1')
+            expect(result.current.selectedFolder).toHaveProperty(
+                'type',
+                KnowledgeType.URL,
+            )
         })
 
         it('creates minimal folder object when not found in tableData', () => {

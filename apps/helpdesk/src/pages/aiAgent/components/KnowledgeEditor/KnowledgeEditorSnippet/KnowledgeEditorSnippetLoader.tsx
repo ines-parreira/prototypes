@@ -235,6 +235,7 @@ export const KnowledgeEditorSnippetLoader = ({
                 },
                 {
                     visibility_status: newVisibility,
+                    is_current: true,
                 },
             ])
 
@@ -243,6 +244,7 @@ export const KnowledgeEditorSnippetLoader = ({
                     helpCenterId,
                     snippetId,
                     locale,
+                    'current',
                 ),
             })
 
