@@ -88,6 +88,7 @@ export const closedTicketsPerChannel = ticketsClosedScope
         const query = {
             measures: ['ticketCount'] as const,
             dimensions: ['channel'] as const,
+            limit: 10000,
         }
 
         if (ctx.sortDirection) {

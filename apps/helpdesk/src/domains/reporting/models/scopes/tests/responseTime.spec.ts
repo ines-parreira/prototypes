@@ -100,6 +100,7 @@ describe('responseTimeScope', () => {
                 },
             ],
             timezone: 'utc',
+            limit: 10000,
         }
 
         it('creates query', () => {

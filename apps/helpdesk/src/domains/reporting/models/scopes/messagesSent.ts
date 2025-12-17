@@ -64,6 +64,7 @@ export const sentMessagesPerAgent = messagesSentScope
         const query = {
             measures: ['messagesCount'] as const,
             dimensions: ['agentId'] as const,
+            limit: 10000,
         }
 
         if (ctx.sortDirection) {

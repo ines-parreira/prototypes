@@ -135,6 +135,7 @@ describe('messagesReceivedScope', () => {
                     granularity: 'day',
                 },
             ],
+            limit: 10000,
         }
 
         it('creates query', () => {

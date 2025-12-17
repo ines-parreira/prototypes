@@ -130,6 +130,7 @@ describe('messagesSentScope', () => {
                         granularity: 'day',
                     },
                 ],
+                limit: 10000,
             }
 
             expect(actual).toEqual(expected)
@@ -166,6 +167,7 @@ describe('messagesSentScope', () => {
                         granularity: 'day',
                     },
                 ],
+                limit: 10000,
             }
 
             expect(actual).toEqual(expected)

@@ -57,6 +57,7 @@ export const medianResponseTimePerAgent = responseTimeScope
         const query = {
             measures: ['medianResponseTime'] as const,
             dimensions: ['agentId'] as const,
+            limit: 10000,
         }
         if (ctx.sortDirection) {
             return {

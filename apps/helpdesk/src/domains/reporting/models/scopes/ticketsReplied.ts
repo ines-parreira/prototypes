@@ -66,7 +66,7 @@ export const ticketsRepliedCountPerAgent = ticketsRepliedScope
         const query = {
             measures: ['ticketCount'] as const,
             dimensions: ['agentId'] as const,
-            limit: 100,
+            limit: 10000,
         }
 
         if (ctx.sortDirection) {

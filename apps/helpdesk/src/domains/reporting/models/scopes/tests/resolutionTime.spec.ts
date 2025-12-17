@@ -68,6 +68,7 @@ describe('resolutionTimeScope', () => {
                     values: ['2025-09-03T23:59:59.000'],
                 },
             ],
+            limit: 10000,
             metricName: 'support-performance-median-resolution-time-per-agent',
             scope: 'resolution-time',
         }

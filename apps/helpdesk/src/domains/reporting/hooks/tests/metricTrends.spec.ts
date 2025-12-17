@@ -18,6 +18,8 @@ import {
     fetchTicketsCreatedTrend,
     fetchTicketsRepliedTrend,
     fetchZeroTouchTicketsTrend,
+    getTrendFetch,
+    getTrendHook,
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
     useHumanResponseTimeAfterAiHandoffTrend,
@@ -333,6 +335,7 @@ describe('metric trends', () => {
             'fetchTicketsRepliedTrend',
             fetchTicketsRepliedTrend,
             ticketsRepliedQueryFactory,
+            ticketsRepliedCountQueryV2Factory,
         ],
         [
             'fetchMessagesSentTrend',
@@ -379,6 +382,32 @@ describe('metric trends', () => {
                 queryFactory(prevStatsFilters, timezone),
                 queryV2Factory?.({ filters: statsFilters, timezone }),
                 queryV2Factory?.({ filters: prevStatsFilters, timezone }),
+            )
+        })
+    })
+
+    describe('factory functions with undefined queryV2', () => {
+        it('getTrendHook should handle undefined queryV2', () => {
+            const testHook = getTrendHook(openTicketsQueryFactory)
+            renderHook(() => testHook(statsFilters, timezone))
+
+            expect(useMetricTrendMock).toHaveBeenCalledWith(
+                openTicketsQueryFactory(statsFilters, timezone),
+                openTicketsQueryFactory(prevStatsFilters, timezone),
+                undefined,
+                undefined,
+            )
+        })
+
+        it('getTrendFetch should handle undefined queryV2', async () => {
+            const testFetch = getTrendFetch(openTicketsQueryFactory)
+            await testFetch(statsFilters, timezone)
+
+            expect(fetchMetricTrendMock).toHaveBeenCalledWith(
+                openTicketsQueryFactory(statsFilters, timezone),
+                openTicketsQueryFactory(prevStatsFilters, timezone),
+                undefined,
+                undefined,
             )
         })
     })

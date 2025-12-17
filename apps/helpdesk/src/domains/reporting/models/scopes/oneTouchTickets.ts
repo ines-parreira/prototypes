@@ -77,6 +77,7 @@ export const oneTouchTicketsPerAgent = oneTouchTicketsScope
         const query = {
             measures: ['ticketCount'] as const,
             dimensions: ['agentId'] as const,
+            limit: 10000,
         }
 
         if (ctx.sortDirection) {

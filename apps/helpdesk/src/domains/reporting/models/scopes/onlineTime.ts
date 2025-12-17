@@ -33,6 +33,7 @@ export const onlineTimePerAgent = onlineTimeScope
         const query = {
             measures: ['onlineTime'] as const,
             dimensions: ['agentId'] as const,
+            limit: 10000,
         }
         if (ctx.sortDirection) {
             return {

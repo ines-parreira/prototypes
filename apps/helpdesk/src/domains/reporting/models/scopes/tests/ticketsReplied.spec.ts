@@ -124,7 +124,7 @@ describe('ticketsRepliedScope', () => {
                 order: [['ticketCount', 'asc']],
                 metricName: 'support-performance-tickets-replied-per-agent',
                 scope: 'tickets-replied',
-                limit: 100,
+                limit: 10000,
             }
 
             expect(actual).toEqual(expected)
@@ -161,7 +161,7 @@ describe('ticketsRepliedScope', () => {
                         granularity: 'day',
                     },
                 ],
-                limit: 100,
+                limit: 10000,
             }
 
             expect(actual).toEqual(expected)

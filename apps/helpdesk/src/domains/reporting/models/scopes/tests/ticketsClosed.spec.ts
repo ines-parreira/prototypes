@@ -226,6 +226,7 @@ describe('ticketsClosedScope', () => {
                         granularity: 'day',
                     },
                 ],
+                limit: 10000,
             }
 
             expect(actual).toEqual(expected)
@@ -267,6 +268,7 @@ describe('ticketsClosedScope', () => {
                         granularity: 'day',
                     },
                 ],
+                limit: 10000,
             }
 
             expect(actual).toEqual(expected)

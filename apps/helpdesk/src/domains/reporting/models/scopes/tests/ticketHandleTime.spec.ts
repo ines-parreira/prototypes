@@ -70,6 +70,7 @@ describe('ticketHandleTimeScope', () => {
             ],
             metricName: 'agentxp-ticket-average-handle-time-per-agent',
             scope: 'ticket-handle-time',
+            limit: 10000,
         }
 
         it('creates query', () => {

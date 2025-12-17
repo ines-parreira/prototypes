@@ -52,6 +52,7 @@ export const medianResolutionTimePerAgent = resolutionTimeScope
         const query = {
             measures: ['medianResolutionTime'] as const,
             dimensions: ['agentId'] as const,
+            limit: 10000,
         }
         if (ctx.sortDirection) {
             return {

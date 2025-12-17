@@ -161,6 +161,7 @@ describe('oneTouchTicketsScope', () => {
                         granularity: 'day',
                     },
                 ],
+                limit: 10000,
             }
 
             expect(actual).toEqual(expected)
@@ -197,6 +198,7 @@ describe('oneTouchTicketsScope', () => {
                         granularity: 'day',
                     },
                 ],
+                limit: 10000,
             }
 
             expect(actual).toEqual(expected)

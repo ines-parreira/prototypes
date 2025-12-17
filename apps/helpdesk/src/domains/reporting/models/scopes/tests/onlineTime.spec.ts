@@ -83,6 +83,7 @@ describe('onlineTimeScope', () => {
                 ],
                 metricName: 'agentxp-online-time-per-agent',
                 scope: 'online-time',
+                limit: 10000,
             }
 
             expect(actual).toEqual(expected)
