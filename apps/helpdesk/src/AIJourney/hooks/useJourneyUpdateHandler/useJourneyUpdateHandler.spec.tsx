@@ -160,15 +160,6 @@ describe('useJourneyUpdateHandler', () => {
                     excluded_audience_list_ids: undefined,
                     campaign: undefined,
                 },
-                journeyConfigs: {
-                    max_follow_up_messages: undefined,
-                    offer_discount: undefined,
-                    max_discount_percent: 0,
-                    sms_sender_integration_id: undefined,
-                    sms_sender_number: undefined,
-                    discount_code_message_threshold: undefined,
-                    include_image: undefined,
-                },
             })
         })
 
@@ -274,7 +265,7 @@ describe('useJourneyUpdateHandler', () => {
             )
         })
 
-        it('should not include journeyConfigs when discount value is empty', async () => {
+        it('should set max_discount_percent to undefined when discount value is empty string', async () => {
             const mockResponse = { id: 'journey-123', updated: true }
             mockMutateAsync.mockResolvedValue(mockResponse)
 
@@ -303,16 +294,37 @@ describe('useJourneyUpdateHandler', () => {
                     excluded_audience_list_ids: undefined,
                     campaign: undefined,
                 },
-                journeyConfigs: {
-                    max_follow_up_messages: undefined,
-                    offer_discount: undefined,
-                    max_discount_percent: 0,
-                    sms_sender_integration_id: undefined,
-                    sms_sender_number: undefined,
-                    discount_code_message_threshold: undefined,
-                    include_image: undefined,
-                },
             })
+        })
+
+        it('should set max_discount_percent to undefined when discount value is not provided', async () => {
+            const mockResponse = { id: 'journey-123', updated: true }
+            mockMutateAsync.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useJourneyUpdateHandler({
+                        integrationId: 100,
+                        journeyId: 'journey-123',
+                    }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({
+                    isDiscountEnabled: true,
+                    journeyState: JourneyStatusEnum.Active,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        offer_discount: true,
+                        max_discount_percent: undefined,
+                    }),
+                }),
+            )
         })
 
         it('should use id parameter over journeyId from hook', async () => {
