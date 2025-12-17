@@ -210,6 +210,7 @@ export function OngoingPhoneCall({
                     break
                 default:
                     setIsBeingWhispered(false)
+                    playWhisperingNotificationSound()
             }
         }
     })

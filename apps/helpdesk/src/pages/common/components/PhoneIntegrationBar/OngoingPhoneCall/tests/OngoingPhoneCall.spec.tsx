@@ -636,7 +636,7 @@ describe('<OngoingPhoneCall/>', () => {
                     name: 'headset',
                 }),
             ).not.toBeInTheDocument()
-            expect(playSoundMock).not.toHaveBeenCalled()
+            expect(playSoundMock).toHaveBeenCalled()
         })
     })
 })
