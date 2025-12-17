@@ -1,12 +1,12 @@
 import type { PropsWithRef } from 'react'
 import React from 'react'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
+
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import type { Props as BodyCellProps } from 'pages/common/components/table/cells/BodyCell'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import type { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
-import { formatDatetime } from 'utils'
 
 import CellLinkWrapper from './CellLinkWrapper'
 

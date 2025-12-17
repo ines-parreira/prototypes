@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
+
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import type { StoreIntegration } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
@@ -12,7 +13,6 @@ import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
 import { LanguageList } from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import { formatDatetime } from 'utils'
 
 import type {
     LanguageCode,

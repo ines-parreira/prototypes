@@ -1,6 +1,7 @@
 import type React from 'react'
 import { createRef, useContext } from 'react'
 
+import { DateAndTimeFormatting } from '@repo/utils'
 import { isArray, map, startCase, truncate } from 'lodash'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -14,7 +15,6 @@ import type {
 import type { ShopifyMetafieldType } from '@gorgias/helpdesk-types'
 
 import CopyButton from 'components/CopyButton/CopyButton'
-import { DateAndTimeFormatting } from 'constants/datetime'
 import { Badge } from 'gorgias-design-system/Badge/Badge'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'

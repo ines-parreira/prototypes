@@ -1,9 +1,9 @@
 import { history } from '@repo/routing'
+import { DateAndTimeFormatting } from '@repo/utils'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Progress, Table } from 'reactstrap'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import type {
     ZendeskIntegration,
     ZendeskIntegrationMeta,

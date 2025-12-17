@@ -1,10 +1,10 @@
+import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
 import { UserSettingType } from '@gorgias/helpdesk-types'
 
-import { DateFormatType, TimeFormatType } from 'constants/datetime'
 import { Language } from 'constants/languages'
 
 import { useYourProfileMutations } from '../hooks/useYourProfileMutations'

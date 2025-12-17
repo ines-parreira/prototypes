@@ -1,11 +1,12 @@
 import { useContext, useMemo } from 'react'
 
+import type { DateTimeResultFormatType } from '@repo/utils'
+import { formatDatetime } from '@repo/utils'
 import _isNumber from 'lodash/isNumber'
 import type { Moment } from 'moment-timezone'
 import moment from 'moment-timezone'
 
 import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
-import type { DateTimeResultFormatType } from 'constants/datetime'
 import type { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
@@ -20,7 +21,6 @@ import {
 } from 'state/rules/types'
 import type { RootState } from 'state/types'
 import type { ViewFilter } from 'state/views/types'
-import { formatDatetime } from 'utils'
 
 /**
  * @deprecated replaced by DEFAULT_LOCALE in @repo/reporting imports

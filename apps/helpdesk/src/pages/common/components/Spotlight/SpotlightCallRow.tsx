@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import moment from 'moment'
 
 import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
 
 import { TicketStatus } from 'business/types/ticket'
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { EntityType } from 'hooks/useSearchRankScenario'
 import type { PicketVoiceCallWithHighlights } from 'models/search/types'
@@ -17,7 +17,6 @@ import { callHighlightsTransform } from 'pages/common/components/Spotlight/helpe
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 import TicketIcon from 'pages/common/components/TicketIcon'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
-import { formatDatetime } from 'utils'
 
 import VoiceCallStatusLabel from '../VoiceCallStatusLabel/VoiceCallStatusLabel'
 

@@ -1,6 +1,15 @@
 import { mockProductionEnvironment } from '@repo/testing'
 import * as envUtils from '@repo/utils'
-import { isDevelopment, isProduction, isStaging } from '@repo/utils'
+import {
+    DateAndTimeFormatting,
+    DateFormatType,
+    formatDatetime,
+    getDateAndTimeFormat,
+    isDevelopment,
+    isProduction,
+    isStaging,
+    TimeFormatType,
+} from '@repo/utils'
 import * as esprima from 'esprima'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -15,19 +24,24 @@ import {
     LITE_AGENT_ROLE,
     OBSERVER_AGENT_ROLE,
 } from 'config/user'
-import {
-    DateAndTimeFormatting,
-    DateFormatType,
-    TimeFormatType,
-} from 'constants/datetime'
 import schemasJSON from 'fixtures/openapi.json'
 import type { Account } from 'state/currentAccount/types'
 import * as utils from 'utils'
 import { assertUnreachable, getCode } from 'utils'
-import { getDateAndTimeFormat } from 'utils/datetime'
 
 jest.mock('common/utils')
-jest.mock('@repo/utils')
+jest.mock('@repo/utils', () => {
+    const actual = jest.requireActual('@repo/utils')
+    return {
+        ...actual,
+        isProduction: jest.fn(() => false),
+        isDevelopment: jest.fn(() => false),
+        isStaging: jest.fn(() => false),
+        envVars: {
+            GORGIAS_ASSETS_URL: undefined,
+        },
+    }
+})
 const isPrivateAssetMock = isPrivateAsset as jest.Mock
 const envVarsMock = envUtils.envVars as envUtils.EnvVars
 
@@ -64,27 +78,23 @@ describe('global utils', () => {
                 // unreliable string magic, or
                 config._d = new Date(config._i)
             }
-            expect(utils.formatDatetime('test', '')).toBe('Invalid date')
+            expect(formatDatetime('test', '')).toBe('Invalid date')
         })
 
         it('valid default format', () => {
-            expect(
-                utils.formatDatetime('2013-05-10 12:00', compactDateFormat),
-            ).toBe('05/10/2013')
+            expect(formatDatetime('2013-05-10 12:00', compactDateFormat)).toBe(
+                '05/10/2013',
+            )
         })
 
         it('invalid timezone defaults to UTC', () => {
             expect(
-                utils.formatDatetime(
-                    '2013-05-10 12:00',
-                    compactDateFormat,
-                    'xxx',
-                ),
+                formatDatetime('2013-05-10 12:00', compactDateFormat, 'xxx'),
             ).toBe('05/10/2013')
         })
 
         it('iso format - with timezone', () => {
-            const time = utils.formatDatetime(
+            const time = formatDatetime(
                 '2016-06-09T07:30:07+00:00',
                 'YYYY-DD-MM HH:mm',
                 'Europe/Paris',
@@ -93,32 +103,32 @@ describe('global utils', () => {
         })
 
         it('timestamp input as string', () => {
-            expect(utils.formatDatetime('1480695366', compactDateFormat)).toBe(
+            expect(formatDatetime('1480695366', compactDateFormat)).toBe(
                 '12/02/2016',
             )
         })
 
         it('timestamp input as number', () => {
-            expect(utils.formatDatetime(1480695366, compactDateFormat)).toBe(
+            expect(formatDatetime(1480695366, compactDateFormat)).toBe(
                 '12/02/2016',
             )
         })
 
         it('timestamp input as string decimal', () => {
-            expect(
-                utils.formatDatetime('1318781876.721', compactDateFormat),
-            ).toBe('10/16/2011')
+            expect(formatDatetime('1318781876.721', compactDateFormat)).toBe(
+                '10/16/2011',
+            )
         })
 
         it('timestamp input as number decimal', () => {
-            expect(
-                utils.formatDatetime(1318781876.721, compactDateFormat),
-            ).toBe('10/16/2011')
+            expect(formatDatetime(1318781876.721, compactDateFormat)).toBe(
+                '10/16/2011',
+            )
         })
 
         it('moment input', () => {
             expect(
-                utils.formatDatetime(
+                formatDatetime(
                     moment('2016-06-09T19:21:30'),
                     compactDateWithTimeFormat,
                 ),
@@ -127,7 +137,7 @@ describe('global utils', () => {
 
         it('moment input with timezone offset', () => {
             expect(
-                utils.formatDatetime(
+                formatDatetime(
                     moment('2016-06-09 19:21:30+0300'),
                     compactDateWithTimeFormat,
                 ),

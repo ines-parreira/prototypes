@@ -1,6 +1,6 @@
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import { produce } from 'immer'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import type {
     ConditionSchema,
@@ -19,7 +19,6 @@ import {
     getDateAndTimeFormatter,
 } from 'state/currentUser/selectors'
 import type { StoreState } from 'state/types'
-import { formatDatetime } from 'utils'
 import { stringToDatetime } from 'utils/date'
 
 import { TIMEPERIOD_REGEX } from '../constants'

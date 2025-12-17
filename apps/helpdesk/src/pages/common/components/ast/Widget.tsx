@@ -1,6 +1,8 @@
 import type { ComponentProps } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
+import type { DateTimeResultFormatType } from '@repo/utils'
 import type { EditorState } from 'draft-js'
 import type { Map } from 'immutable'
 import { fromJS, List } from 'immutable'
@@ -18,8 +20,6 @@ import {
     collectionOperators,
     deprecatedOperators,
 } from 'config/rules'
-import type { DateTimeResultFormatType } from 'constants/datetime'
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import DatePicker from 'pages/common/forms/DatePicker'
@@ -32,7 +32,7 @@ import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 import { isTimedeltaOperator, RuleOperation } from 'state/rules/types'
 import { humanizeChannel } from 'state/ticket/utils'
-import { formatDatetime, getLanguageDisplayName, humanizeString } from 'utils'
+import { getLanguageDisplayName, humanizeString } from 'utils'
 import { stringToDatetime } from 'utils/date'
 import { convertToHTML, getPlainText } from 'utils/editor'
 import { removeSuffix } from 'utils/string'

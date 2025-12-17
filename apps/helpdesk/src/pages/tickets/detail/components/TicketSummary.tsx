@@ -1,6 +1,7 @@
 import React, { forwardRef, useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import cn from 'classnames'
 
 import {
@@ -10,11 +11,9 @@ import {
 } from '@gorgias/axiom'
 import type { TicketSummary } from '@gorgias/helpdesk-types'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import css from 'pages/tickets/detail/components/TicketSummary.less'
 import useTicketSummary from 'pages/tickets/detail/hooks/useTicketSummary'
-import { formatDatetime } from 'utils'
 
 type TicketSummaryProps = {
     summary?: TicketSummary | null

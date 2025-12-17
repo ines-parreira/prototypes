@@ -1,10 +1,10 @@
 import { assumeMock } from '@repo/testing'
+import { TimeFormatType } from '@repo/utils'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import { UserSettingType } from 'config/types/user'
-import { TimeFormatType } from 'constants/datetime'
 import { useTextOverflow } from 'pages/common/hooks/useTextOverflow'
 import { renderWithStore } from 'utils/testing'
 

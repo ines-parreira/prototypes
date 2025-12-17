@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Popover, PopoverBody } from 'reactstrap'
@@ -10,7 +11,6 @@ import { Popover, PopoverBody } from 'reactstrap'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import { DateAndTimeFormatting } from 'constants/datetime'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -38,7 +38,6 @@ import type {
     Rule,
 } from 'state/rules/types'
 import { ManagedRulesSlugs, RuleType } from 'state/rules/types'
-import { formatDatetime } from 'utils'
 
 import { getRuleActions } from './ruleEditors/utils'
 

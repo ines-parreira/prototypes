@@ -1,11 +1,11 @@
 import { renderHook } from '@repo/testing'
+import { TimeFormatType } from '@repo/utils'
 
 import type {
     BusinessHoursConfig,
     BusinessHoursTimeframe,
 } from '@gorgias/helpdesk-types'
 
-import { TimeFormatType } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 
 import { useBusinessHours } from '../useBusinessHours'

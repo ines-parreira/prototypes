@@ -14,7 +14,8 @@ import TicketSummarySection, {
     TicketSummaryButton,
 } from '../TicketSummary'
 
-jest.mock('utils', () => ({
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
     formatDatetime: (date: string) => `Formatted(${date})`,
 }))
 

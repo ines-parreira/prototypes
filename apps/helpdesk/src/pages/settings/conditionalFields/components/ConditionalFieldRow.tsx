@@ -2,12 +2,12 @@ import type { MouseEvent } from 'react'
 import React, { useCallback } from 'react'
 
 import { history } from '@repo/routing'
+import { DateAndTimeFormatting } from '@repo/utils'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

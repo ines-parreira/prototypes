@@ -1,8 +1,8 @@
 import { assumeMock } from '@repo/testing'
+import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import { render, screen } from '@testing-library/react'
 import moment from 'moment'
 
-import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import DatePicker from 'pages/common/forms/DatePicker'
 import {
     getDateAndTimeFormatter,

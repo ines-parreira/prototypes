@@ -1,7 +1,11 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
+import {
+    DateTimeFormatMapper,
+    DateTimeFormatType,
+    formatDatetime,
+} from '@repo/utils'
 import { fireEvent, render, screen } from '@testing-library/react'
 import moment from 'moment-timezone'
 import { Provider } from 'react-redux'
@@ -15,7 +19,6 @@ import {
     mergeStatsFilters,
 } from 'domains/reporting/state/stats/statsSlice'
 import type { RootState } from 'state/types'
-import { formatDatetime } from 'utils'
 
 const RENDERED_ATTRIBUTE_NAME = 'data-range-key'
 

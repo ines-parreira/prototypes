@@ -1,12 +1,12 @@
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
+
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import { formatDatetime } from 'utils'
 
 import type { ActionTemplate, App } from '../types'
 

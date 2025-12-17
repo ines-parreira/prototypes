@@ -1,5 +1,6 @@
+import { formatDatetime } from '@repo/utils'
+
 import { isUsLanguage } from 'domains/reporting/pages/utils'
-import { formatDatetime } from 'utils'
 import { SHORT_DATE_WITH_YEAR_US, SHORT_DATE_WITH_YEAR_WORLD } from 'utils/date'
 
 const getDateFormat = () =>

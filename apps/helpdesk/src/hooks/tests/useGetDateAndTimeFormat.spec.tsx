@@ -1,17 +1,17 @@
 import React from 'react'
 
 import { renderHook } from '@repo/testing'
+import {
+    DateAndTimeFormatting,
+    DateFormatType,
+    TimeFormatType,
+} from '@repo/utils'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { UserSettingType } from 'config/types/user'
-import {
-    DateAndTimeFormatting,
-    DateFormatType,
-    TimeFormatType,
-} from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 
 describe('useGetDateAndTimeFormat', () => {

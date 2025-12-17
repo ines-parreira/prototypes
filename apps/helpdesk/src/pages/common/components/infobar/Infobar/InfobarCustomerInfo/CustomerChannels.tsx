@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { DateAndTimeFormatting, getLocalTime } from '@repo/utils'
 import cn from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -9,7 +10,6 @@ import { fromJS } from 'immutable'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
-import { DateAndTimeFormatting } from 'constants/datetime'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
@@ -21,7 +21,6 @@ import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin } from 'utils'
 
-import { getLocalTime } from '../../utils'
 import CustomerInfoWrapper from './CustomerInfoWrapper'
 import NewPhoneNumber from './NewPhoneNumber'
 

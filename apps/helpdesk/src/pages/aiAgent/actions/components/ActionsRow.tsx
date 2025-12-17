@@ -2,6 +2,7 @@ import type { MouseEvent } from 'react'
 import type React from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
 
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import { Link, useHistory, useParams } from 'react-router-dom'
 
 import {
@@ -10,7 +11,6 @@ import {
 } from '@gorgias/axiom'
 
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
@@ -24,7 +24,6 @@ import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGe
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import { formatDatetime } from 'utils'
 
 import { getActionsAppFromTemplateApp } from '../../../automate/actionsPlatform/utils'
 import { useGuidanceReferenceContext } from '../providers/GuidanceReferenceContext'

@@ -1,12 +1,12 @@
 import type { UIEventHandler } from 'react'
 import React, { useState } from 'react'
 
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
+import type { DateTimeResultFormatType } from '@repo/utils'
 import classNames from 'classnames'
 
 import { Skeleton } from '@gorgias/axiom'
 
-import type { DateTimeResultFormatType } from 'constants/datetime'
-import { DateAndTimeFormatting } from 'constants/datetime'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import css from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable.less'
@@ -20,7 +20,6 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import { formatPercentage } from 'pages/common/utils/numbers'
-import { formatDatetime } from 'utils'
 
 export enum TableCellType {
     String = 'string',

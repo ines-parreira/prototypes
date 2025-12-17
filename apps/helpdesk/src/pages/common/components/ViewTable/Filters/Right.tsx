@@ -1,6 +1,11 @@
 import type { ReactNode } from 'react'
 import { Component } from 'react'
 
+import {
+    DateAndTimeFormatting,
+    formatDatetime,
+    TimeFormatType,
+} from '@repo/utils'
 import type { ArrayExpression, Expression, Identifier, Literal } from 'estree'
 import type { List, Map, Seq } from 'immutable'
 import { fromJS } from 'immutable'
@@ -13,7 +18,6 @@ import { Input } from 'reactstrap'
 
 import type { StoreMapping } from '@gorgias/helpdesk-types'
 
-import { DateAndTimeFormatting, TimeFormatType } from 'constants/datetime'
 import CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
 import { isMultiValue } from 'custom-fields/components/MultiLevelSelect/helpers/isMultiValue'
 import type { CustomFieldValue } from 'custom-fields/types'
@@ -42,7 +46,7 @@ import type { RootState } from 'state/types'
 import type { updateFieldFilter } from 'state/views/actions'
 import * as viewsSelectors from 'state/views/selectors'
 import type { FieldSearchResult } from 'state/views/types'
-import { fieldPath, formatDatetime, getLanguageDisplayName } from 'utils'
+import { fieldPath, getLanguageDisplayName } from 'utils'
 import { stringToDatetime } from 'utils/date'
 
 import { getCustomFieldIdFromObjectPath, getMultiSelectLabel } from './utils'

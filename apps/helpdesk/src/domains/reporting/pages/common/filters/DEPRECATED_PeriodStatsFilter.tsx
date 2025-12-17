@@ -3,10 +3,10 @@ import React, { useCallback } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { DateAndTimeFormatting } from '@repo/utils'
 import type { Options as InitialSettings } from 'daterangepicker'
 import moment from 'moment-timezone'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import PeriodPicker from 'domains/reporting/pages/common/PeriodPicker'
 import { getNewSetOfRanges } from 'domains/reporting/pages/constants'

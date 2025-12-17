@@ -5,6 +5,7 @@ import type { ZonedDateTime } from '@internationalized/date'
 import { now } from '@internationalized/date'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { DateAndTimeFormatting } from '@repo/utils'
 import type { Options as InitialSettings } from 'daterangepicker'
 import moment from 'moment-timezone'
 import type { Moment } from 'moment/moment'
@@ -12,7 +13,6 @@ import { connect } from 'react-redux'
 
 import { Button, DateRangePicker } from '@gorgias/axiom'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import {

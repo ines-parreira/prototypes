@@ -1,17 +1,17 @@
-import type { Map } from 'immutable'
-
-import { TicketChannel } from 'business/types/ticket'
-import { DATE_VARIABLE_TOOLTIP_TEXT } from 'config/integrations/constants'
 import {
     DateAndTimeFormatting,
     DateTimeFormatMapper,
     DateTimeFormatType,
-} from 'constants/datetime'
+    formatDatetime,
+} from '@repo/utils'
+import type { Map } from 'immutable'
+
+import { TicketChannel } from 'business/types/ticket'
+import { DATE_VARIABLE_TOOLTIP_TEXT } from 'config/integrations/constants'
 import { IntegrationType } from 'models/integration/types'
 import { momentToLDMLFormat } from 'pages/common/utils/template'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import type { StoreState } from 'state/types'
-import { formatDatetime } from 'utils'
 
 export const MACRO_VARIABLES = {
     type: IntegrationType.Shopify,

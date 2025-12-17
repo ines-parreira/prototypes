@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useRef } from 'react'
 
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import { isEqual } from 'lodash'
 import moment from 'moment'
 import { Container } from 'reactstrap'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import { useWorkflowDataset } from 'domains/reporting/hooks/automate/useWorkflowDataset'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import type { WorkflowStatsFilters } from 'domains/reporting/models/stat/types'
@@ -20,7 +20,6 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import { getTimezone } from 'state/currentUser/selectors'
 import type { Notification } from 'state/notifications/types'
 import { NotificationStatus } from 'state/notifications/types'
-import { formatDatetime } from 'utils'
 
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,

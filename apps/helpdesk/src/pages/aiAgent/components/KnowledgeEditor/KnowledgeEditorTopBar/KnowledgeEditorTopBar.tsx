@@ -1,3 +1,4 @@
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import classNames from 'classnames'
 
 import {
@@ -10,9 +11,7 @@ import {
     TooltipTrigger,
 } from '@gorgias/axiom'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import { formatDatetime } from 'utils'
 
 import type { GuidanceMode } from './KnowledgeEditorTopBarGuidanceControls'
 import { KnowledgeEditorTopBarTitle } from './KnowledgeEditorTopBarTitle'

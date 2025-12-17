@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
+import { TimeFormatType } from '@repo/utils'
 import type { Moment } from 'moment-timezone'
 import moment from 'moment-timezone'
 
-import { TimeFormatType } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import DatePicker from 'pages/common/forms/DatePicker'
 import { getTimeFormatPreferenceSetting } from 'state/currentUser/selectors'

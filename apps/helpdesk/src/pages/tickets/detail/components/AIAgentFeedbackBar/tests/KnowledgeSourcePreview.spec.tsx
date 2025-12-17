@@ -8,7 +8,8 @@ import KnowledgeSourcePreview from '../KnowledgeSourcePreview'
 
 jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'MM/dd/yyyy')
 
-jest.mock('utils', () => ({
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
     formatDatetime: (date: string, format: string) =>
         `formatted-${date}-${format}`,
 }))

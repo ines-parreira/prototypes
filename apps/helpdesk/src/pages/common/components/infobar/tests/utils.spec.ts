@@ -1,17 +1,18 @@
+import type { DateTimeResultFormatType } from '@repo/utils'
+import {
+    DateAndTimeFormatting,
+    DateFormatType,
+    getDateAndTimeFormat,
+    getLocalTime,
+    TimeFormatType,
+} from '@repo/utils'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 import momentTimezone from 'moment-timezone'
 
-import type { DateTimeResultFormatType } from 'constants/datetime'
-import {
-    DateAndTimeFormatting,
-    DateFormatType,
-    TimeFormatType,
-} from 'constants/datetime'
 import type { Source, Template } from 'models/widget/types'
 import { jsonToCovertToWidgets } from 'pages/common/components/infobar/tests/fixtures'
 import { WidgetEnvironment } from 'state/widgets/types'
-import { getDateAndTimeFormat } from 'utils/datetime'
 
 import * as utils from '../utils'
 
@@ -314,7 +315,7 @@ describe('widgets infobar utils', () => {
                     () => fixedUtcDate,
                 )
 
-                const result = utils.getLocalTime(
+                const result = getLocalTime(
                     obj.timezoneOffset,
                     obj.datetimeFormat,
                 )

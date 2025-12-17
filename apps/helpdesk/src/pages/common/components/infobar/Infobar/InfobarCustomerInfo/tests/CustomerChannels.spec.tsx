@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react'
 
 import * as segmentTracker from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
+import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { clone } from 'lodash'
@@ -10,7 +11,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { UserRole, UserSettingType } from 'config/types/user'
-import { DateFormatType, TimeFormatType } from 'constants/datetime'
 import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
     PHONE_CUSTOMER_CHANNEL_TYPE,

@@ -1,10 +1,10 @@
+import type { DateFormatType, TimeFormatType } from '@repo/utils'
+
 import type { GetCurrentUserResult } from '@gorgias/helpdesk-queries'
 import type {
     UserPreferencesSetting,
     UserSetting,
 } from '@gorgias/helpdesk-types'
-
-import type { DateFormatType, TimeFormatType } from 'constants/datetime'
 
 export type ApplicationUserPreferencesSettings = UserPreferencesSetting & {
     data: UserPreferencesSetting['data'] & {

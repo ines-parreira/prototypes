@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
 
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { EntityType } from 'hooks/useSearchRankScenario'
 import type { PickedTicketWithHighlights } from 'models/search/types'
@@ -13,7 +13,6 @@ import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 import css from 'pages/common/components/Spotlight/SpotlightTicketRow.less'
 import TicketIcon from 'pages/common/components/TicketIcon'
 import { UserAssigneeLabel } from 'pages/common/utils/labels'
-import { formatDatetime } from 'utils'
 import { sanitizeHtmlDefault } from 'utils/html'
 
 type SpotlightTicketRowProps = {

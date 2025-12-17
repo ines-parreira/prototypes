@@ -1,9 +1,9 @@
+import { DateAndTimeFormatting } from '@repo/utils'
 import classNames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
-import { DateAndTimeFormatting } from 'constants/datetime'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import css from './TicketVoiceCallContainer.less'

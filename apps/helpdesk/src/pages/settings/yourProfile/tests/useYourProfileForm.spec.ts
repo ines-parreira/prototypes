@@ -1,9 +1,9 @@
+import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { act, renderHook } from '@testing-library/react'
 
 import type { UserLanguagePreferencesSetting } from '@gorgias/helpdesk-types'
 
 import { DEFAULT_PREFERENCES } from 'config'
-import { DateFormatType, TimeFormatType } from 'constants/datetime'
 
 import {
     useYourProfileForm,

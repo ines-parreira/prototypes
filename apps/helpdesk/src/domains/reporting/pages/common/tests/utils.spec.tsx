@@ -1,6 +1,7 @@
 import type React from 'react'
 
 import { renderHook } from '@repo/testing'
+import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import _keyBy from 'lodash/keyBy'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
@@ -10,7 +11,6 @@ import thunk from 'redux-thunk'
 import type { AnalyticsFilter } from '@gorgias/helpdesk-queries'
 
 import { TicketChannel } from 'business/types/ticket'
-import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import type {
     LegacyStatsFilters,
     SavedFilterDraft,

@@ -1,13 +1,13 @@
 import { useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { DateAndTimeFormatting } from '@repo/utils'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
 import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import type { CustomField } from 'custom-fields/types'
 import {

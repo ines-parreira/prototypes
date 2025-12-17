@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { DateAndTimeFormatting } from '@repo/utils'
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
@@ -21,7 +22,6 @@ import {
 } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
 import type { ZendeskIntegration } from 'models/integration/types'
@@ -101,7 +101,6 @@ export const ImportZendeskDetail = ({
 
         updateOrCreateIntegration(integrationData)
     }
-
     return (
         <div className="full-width">
             <PageHeader

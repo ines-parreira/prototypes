@@ -24,8 +24,6 @@ import _trim from 'lodash/trim'
 import _upperFirst from 'lodash/upperFirst'
 import md5 from 'md5'
 import type { Moment } from 'moment-timezone'
-import moment from 'moment-timezone'
-import { isMoment } from 'moment/moment'
 import type { Route } from 'react-router-dom'
 import type { Selector } from 'reselect'
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect'
@@ -40,7 +38,6 @@ import { TicketChannel } from './business/types/ticket'
 import { ACTION_TEMPLATES } from './config'
 import { UserRole } from './config/types/user'
 import { USER_ROLES_ORDERED_BY_PRIVILEGES } from './config/user'
-import type { DateTimeResultFormatType } from './constants/datetime'
 import type { GorgiasApiResponseDataError } from './models/api/types'
 import type { AlertNotification } from './state/notifications/types'
 import { NotificationStatus } from './state/notifications/types'
@@ -152,41 +149,6 @@ export function isEmailList(string?: string | null, delimiter = ','): boolean {
     }
 
     return addresses.every((address) => isEmail(address.trim()))
-}
-
-/**
- * @deprecated
- * @date 2025-12-03
- * @type migration to @repo/utils
- */
-export function formatDatetime(
-    datetime: Datetime,
-    format: DateTimeResultFormatType,
-    timezone?: string | null,
-): string {
-    try {
-        let momentDate = isMoment(datetime) ? datetime : moment.utc(datetime)
-
-        if (!isMoment(datetime)) {
-            // if the input is a UNIX timestamp, force moment to interpret it as a timestamp (not automatic)
-            const unix = moment.unix(datetime as any)
-            if (unix.isValid()) {
-                momentDate = unix
-            }
-        }
-
-        if (timezone) {
-            momentDate = momentDate.tz(timezone)
-        }
-
-        if (typeof format !== 'string') {
-            return momentDate.calendar(null, format)
-        }
-        return momentDate.format(format)
-    } catch (e) {
-        console.error('Failed to format datetime', e, datetime, timezone)
-        return String(datetime)
-    }
 }
 
 export function getAST(code: string): esprima.Program {

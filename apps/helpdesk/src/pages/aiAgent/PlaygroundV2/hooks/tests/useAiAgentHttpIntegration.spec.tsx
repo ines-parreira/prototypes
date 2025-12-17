@@ -18,15 +18,19 @@ jest.mock('models/aiAgent/resources/message-processing', () => ({
     createBaseUrl: jest.fn(() => 'https://aiagent.gorgias.help'),
 }))
 
-jest.mock('@repo/utils', () => ({
-    isProduction: jest.fn(() => false),
-    GorgiasUIEnv: {
-        Development: 'development',
-        Production: 'production',
-        Staging: 'staging',
-    },
-    getEnvironment: jest.fn(() => 'development'),
-}))
+jest.mock('@repo/utils', () => {
+    const actual = jest.requireActual('@repo/utils')
+    return {
+        ...actual,
+        isProduction: jest.fn(() => false),
+        GorgiasUIEnv: {
+            Development: 'development',
+            Production: 'production',
+            Staging: 'staging',
+        },
+        getEnvironment: jest.fn(() => 'development'),
+    }
+})
 
 describe('useAiAgentHttpIntegration', () => {
     const createWrapper = (store: any) => {

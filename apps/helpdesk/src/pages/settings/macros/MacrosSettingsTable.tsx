@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import { useCallback, useMemo } from 'react'
 
+import { DateAndTimeFormatting } from '@repo/utils'
 import { useRouteMatch } from 'react-router-dom'
 
 import {
@@ -9,7 +10,6 @@ import {
 } from '@gorgias/axiom'
 import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'

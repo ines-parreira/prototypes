@@ -20,7 +20,6 @@ import moment from 'moment'
 import momentTimezone from 'moment-timezone'
 
 import { isImmutable } from 'common/utils'
-import type { DateTimeResultFormatType } from 'constants/datetime'
 import type { CustomerEcommerceData } from 'models/customerEcommerceData/types'
 import type { CardTemplate, Source, Template } from 'models/widget/types'
 import {
@@ -40,7 +39,6 @@ import {
 import { WidgetEnvironment } from 'state/widgets/types'
 import { getSourcePathFromContext } from 'state/widgets/utils'
 import * as utils from 'utils'
-import { formatDatetime } from 'utils'
 import { reportError } from 'utils/errors'
 
 /**
@@ -523,23 +521,6 @@ export function jsonToWidgets(
         })
         return defaultWidgets
     }
-}
-
-/**
- * @deprecated
- * @date 2025-12-03
- * @type migration to @repo/utils
- *
- * Return the local time in string format, based on the UTC offset value
- */
-export function getLocalTime(
-    timezoneOffset: string,
-    datetimeFormat: DateTimeResultFormatType,
-) {
-    const timezoneDifference = parseInt(timezoneOffset.substring(0, 3))
-    const localTime = moment.utc().utcOffset(timezoneDifference)
-
-    return formatDatetime(localTime, datetimeFormat).toString()
 }
 
 /**

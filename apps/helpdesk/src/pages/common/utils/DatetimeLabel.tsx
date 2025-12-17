@@ -1,16 +1,15 @@
 import { useId } from '@repo/hooks'
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import classNames from 'classnames'
 import type { UncontrolledTooltipProps } from 'reactstrap'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getDateAndTimeFormatter,
     getTimezone,
 } from 'state/currentUser/selectors'
-import { formatDatetime } from 'utils'
 
 import css from './DatetimeLabel.less'
 

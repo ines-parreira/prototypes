@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
 import { useTimeout } from '@repo/hooks'
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import cn from 'classnames'
 
 import {
@@ -10,11 +11,9 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { formatDatetime } from 'utils'
 
 const STALE_TIMEOUT = 3000
 

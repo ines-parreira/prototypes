@@ -1,13 +1,13 @@
 import { useCallback, useRef, useState } from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
 import {
     LegacyIconButton as IconButton,
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import { useFlag } from 'core/flags'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import type { StoreIntegration } from 'models/integration/types'
@@ -19,7 +19,6 @@ import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPop
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
-import { formatDatetime } from 'utils'
 
 import type { GuidanceArticle } from '../../types'
 import { GuidanceActionsBadge } from './GuidanceActionsBadge'

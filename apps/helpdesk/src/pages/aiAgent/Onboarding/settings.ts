@@ -1,10 +1,10 @@
+import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { fromJS } from 'immutable'
 
 import { GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT } from 'config/integrations/gorgias_chat'
 import type { User } from 'config/types/user'
 import { UserSettingType } from 'config/types/user'
 import { ADMIN_ROLE } from 'config/user'
-import { DateFormatType, TimeFormatType } from 'constants/datetime'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,

@@ -1,11 +1,12 @@
 import { useCallback } from 'react'
 
+import { TimeFormatType } from '@repo/utils'
+
 import type {
     BusinessHoursConfig,
     BusinessHoursTimeframe,
 } from '@gorgias/helpdesk-types'
 
-import { TimeFormatType } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     ALWAYS_ON_OPTION_LABEL,

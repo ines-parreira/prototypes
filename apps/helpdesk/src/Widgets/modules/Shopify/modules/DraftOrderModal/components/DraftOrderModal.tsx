@@ -1,7 +1,7 @@
 import { useCallback, useContext, useMemo, useRef } from 'react'
 
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
-import { shortcutManager } from '@repo/utils'
+import { DateAndTimeFormatting, shortcutManager } from '@repo/utils'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
@@ -11,7 +11,6 @@ import { Button } from 'reactstrap'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import type { Product, Variant } from 'constants/integrations/types/shopify'
 import type {
     IntegrationDataItem,

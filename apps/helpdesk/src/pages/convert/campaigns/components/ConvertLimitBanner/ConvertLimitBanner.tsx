@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
 
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { isEnterprise } from 'models/billing/utils'
@@ -14,7 +14,6 @@ import useGetConvertStatus, {
 } from 'pages/convert/common/hooks/useGetConvertStatus'
 import { isExceedingPlanLimit } from 'pages/convert/common/utils/isExceedingPlanLimit'
 import { getCurrentConvertPlan } from 'state/billing/selectors'
-import { formatDatetime } from 'utils'
 
 type Props = {
     classes?: string

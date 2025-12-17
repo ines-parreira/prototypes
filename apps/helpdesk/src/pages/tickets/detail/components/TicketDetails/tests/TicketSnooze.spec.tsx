@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -7,7 +8,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { UserSettingType } from 'config/types/user'
-import { DateFormatType, TimeFormatType } from 'constants/datetime'
 
 import TicketSnooze from '../TicketSnooze'
 

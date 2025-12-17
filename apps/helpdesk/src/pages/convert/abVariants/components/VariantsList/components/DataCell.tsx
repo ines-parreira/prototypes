@@ -1,10 +1,10 @@
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
+
 import { Skeleton } from '@gorgias/axiom'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { formatPercentage } from 'pages/common/utils/numbers'
 import { ABGroupValueFormat } from 'pages/convert/abVariants/components/VariantsList/types'
-import { formatDatetime } from 'utils'
 
 type Props = {
     format: ABGroupValueFormat

@@ -1,9 +1,9 @@
+import { DateFormatType, TimeFormatType } from '@repo/utils'
 import type { List } from 'immutable'
 import { fromJS } from 'immutable'
 
 import { DEFAULT_PREFERENCES } from 'config'
 import { UserSettingType } from 'config/types/user'
-import { DateFormatType, TimeFormatType } from 'constants/datetime'
 import { user } from 'fixtures/users'
 import type { RootState } from 'state/types'
 

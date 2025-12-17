@@ -1,19 +1,19 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { useCallback, useMemo } from 'react'
 
+import { formatDatetime } from '@repo/utils'
+import type { DateTimeResultFormatType } from '@repo/utils'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
 import type { Macro } from '@gorgias/helpdesk-queries'
 
-import type { DateTimeResultFormatType } from 'constants/datetime'
 import { ISO639English } from 'constants/languages'
 import { MacroActionName } from 'models/macroAction/types'
 import bodyCellCss from 'pages/common/components/table/cells/BodyCell.less'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import CheckBox from 'pages/common/forms/CheckBox'
-import { formatDatetime } from 'utils'
 
 import { MacrosSettingsItemTag } from './MacrosSettingsItemTag'
 import MoreActions from './MoreActions'

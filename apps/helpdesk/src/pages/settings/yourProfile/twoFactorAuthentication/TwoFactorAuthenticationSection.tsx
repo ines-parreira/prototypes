@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
+import { DateAndTimeFormatting } from '@repo/utils'
 import classnames from 'classnames'
 
 import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'

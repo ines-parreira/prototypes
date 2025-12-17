@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import _truncate from 'lodash/truncate'
 import _uniqueId from 'lodash/uniqueId'
 import { Link } from 'react-router-dom'
@@ -11,7 +12,6 @@ import { Table } from 'reactstrap'
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import type { TicketMessageSourceType } from 'business/types/ticket'
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
@@ -24,7 +24,6 @@ import { ChannelLabel } from 'pages/common/utils/labels'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { formatDatetime } from 'utils'
 
 import css from './RuleTicketList.less'
 

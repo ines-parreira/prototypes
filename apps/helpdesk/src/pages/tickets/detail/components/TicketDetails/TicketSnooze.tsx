@@ -1,10 +1,10 @@
 import { useRef } from 'react'
 
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
+
 import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import { formatDatetime } from 'utils'
 
 import css from './TicketSnooze.less'
 
