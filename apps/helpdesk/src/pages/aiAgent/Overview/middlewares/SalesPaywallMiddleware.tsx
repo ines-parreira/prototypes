@@ -1,5 +1,5 @@
 import type React from 'react'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -7,9 +7,11 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
+import { AiAgentNotificationType } from 'automate/notifications/types'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
+import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import AIAgentTrialSuccessModal, {
     MODAL_NAME as AI_TRIAL_MODAL_NAME,
 } from 'pages/aiAgent/Activation/components/AIAgentTrialSuccessModal'
@@ -18,10 +20,14 @@ import { useActivation } from 'pages/aiAgent/Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { BookDemoContainer } from 'pages/aiAgent/components/ShoppingAssistant/components'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
+import type { AIAgentCTAOptions } from 'pages/aiAgent/components/ShoppingAssistant/hooks/useAiAgentPaywallCTA'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import { SALES } from 'pages/aiAgent/constants'
+import { SALES, WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
@@ -35,6 +41,7 @@ import {
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
+import LinkButton from 'pages/common/components/button/LinkButton'
 import RequestTrialModal from 'pages/common/components/RequestTrialModal/RequestTrialModal'
 import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
@@ -80,6 +87,7 @@ export const SalesPaywallMiddleware =
 
         const {
             canSeeTrialCTA,
+            canSeeSubscribeNowCTA,
             hasCurrentStoreTrialStarted,
             hasCurrentStoreTrialExpired,
             hasAnyTrialActive,
@@ -87,6 +95,8 @@ export const SalesPaywallMiddleware =
             canBookDemo,
             hasCurrentStoreTrialOptedOut,
             canNotifyAdmin,
+            isTrialingSubscription,
+            isOnboarded,
             isLoading: isTrialAccessLoading,
             trialType,
             isAdminUser,
@@ -129,6 +139,19 @@ export const SalesPaywallMiddleware =
             onSuccess: onSuccessOriginal,
         })
 
+        const { storeConfiguration } = useAiAgentStoreConfigurationContext()
+        const isOnUpdateOnboardingWizard =
+            storeConfiguration?.wizard?.completedDatetime === null
+        const canStartOnboarding =
+            (hasCurrentStoreTrialExpired ||
+                isTrialingSubscription ||
+                hasAutomatePlanAboveGen6(currentAutomatePlan)) &&
+            !isOnboarded
+
+        const aiAgentNavigation = useAiAgentNavigation({
+            shopName: shopName ?? '',
+        })
+
         const displayTrialButton = isShoppingAssistantTrialRevampEnabled
             ? canSeeTrialCTA
             : canStartTrialOriginal || canStartTrialFromFeatureFlag
@@ -169,6 +192,76 @@ export const SalesPaywallMiddleware =
                 startTrialOriginal()
             }
         }
+
+        const {
+            onboardingNotificationState,
+            handleOnSave,
+            handleOnSendOrCancelNotification,
+            handleOnPerformActionPostReceivedNotification,
+        } = useAiAgentOnboardingNotification({ shopName: shopName })
+
+        const handleOnFinishSetupNotification = useCallback(async () => {
+            const isFinishedSetupNotificationAlreadyReceived =
+                !!onboardingNotificationState?.finishAiAgentSetupNotificationReceivedDatetime
+
+            if (!isFinishedSetupNotificationAlreadyReceived) {
+                handleOnSendOrCancelNotification({
+                    aiAgentNotificationType:
+                        AiAgentNotificationType.FinishAiAgentSetup,
+                })
+            }
+
+            if (isOnUpdateOnboardingWizard) return
+
+            handleOnSendOrCancelNotification({
+                aiAgentNotificationType:
+                    AiAgentNotificationType.StartAiAgentSetup,
+                isCancel: true,
+            })
+
+            await handleOnSave({
+                onboardingState: AiAgentOnboardingState.StartedSetup,
+            })
+
+            handleOnPerformActionPostReceivedNotification(
+                AiAgentNotificationType.StartAiAgentSetup,
+            )
+        }, [
+            handleOnSave,
+            handleOnSendOrCancelNotification,
+            handleOnPerformActionPostReceivedNotification,
+            isOnUpdateOnboardingWizard,
+            onboardingNotificationState?.finishAiAgentSetupNotificationReceivedDatetime,
+        ])
+
+        const onOnboardingWizardClick = useCallback(() => {
+            if (isAdminUser) {
+                void handleOnFinishSetupNotification()
+            }
+
+            logEvent(SegmentEvent.AiAgentWelcomePageCtaClicked, {
+                version: 'Dynamic',
+                store: shopName,
+            })
+
+            const path = aiAgentNavigation.routes.onboardingWizardStep(
+                WizardStepEnum.CHANNELS,
+            )
+
+            history.push({
+                pathname: path,
+                search: isOnUpdateOnboardingWizard
+                    ? `?${WIZARD_UPDATE_QUERY_KEY}=true`
+                    : '',
+            })
+        }, [
+            aiAgentNavigation.routes,
+            handleOnFinishSetupNotification,
+            history,
+            isAdminUser,
+            isOnUpdateOnboardingWizard,
+            shopName,
+        ])
 
         const { earlyAccessModal, showEarlyAccessModal } = useActivation({
             autoDisplayEarlyAccessDisabled:
@@ -284,11 +377,17 @@ export const SalesPaywallMiddleware =
                     ChildComponent={ChildComponent}
                     eventData={eventData}
                     canBookDemo={canBookDemo}
+                    canSeeTrial={canSeeTrialCTA}
+                    isAdminUser={isAdminUser}
+                    canSeeSubscribeNow={canSeeSubscribeNowCTA}
                     hasCurrentStoreTrialOptedOut={hasCurrentStoreTrialOptedOut}
                     isTrialAccessLoading={isTrialAccessLoading!}
                     canNotifyAdmin={displayNotifyAdminButton}
                     isNotifyAdminDisabled={isNotifyAdminDisabled}
+                    canStartOnboarding={canStartOnboarding}
+                    isOnUpdateOnboardingWizard={isOnUpdateOnboardingWizard}
                     onNotifyAdminClick={openTrialRequestModal}
+                    onOnboardingWizardClick={onOnboardingWizardClick}
                 />
                 {/* TODO: [AIFLY-547] remove previous upgrade plan modal */}
                 {!ishoppingAssistantTrialImprovement && isTrialModalOpen && (
@@ -348,16 +447,21 @@ const PaywallWrapperComponent = ({
     displayTrialButton,
     startTrial,
     earlyAccessModal,
-    displayUpgradeButton = false,
     showSalesSettings,
     ChildComponent,
     eventData,
     canBookDemo,
+    canSeeTrial,
+    isAdminUser,
+    canSeeSubscribeNow,
     hasCurrentStoreTrialOptedOut,
     isTrialAccessLoading,
     canNotifyAdmin,
     isNotifyAdminDisabled,
+    canStartOnboarding,
+    isOnUpdateOnboardingWizard,
     onNotifyAdminClick,
+    onOnboardingWizardClick,
 }: {
     showUpgradePaywall: boolean
     showEarlyAccessModal: () => void
@@ -369,18 +473,20 @@ const PaywallWrapperComponent = ({
     ChildComponent: React.ComponentType<any>
     eventData: Record<string, string>
     canBookDemo: boolean
+    canSeeTrial: boolean
+    isAdminUser: boolean
+    canSeeSubscribeNow: boolean
     hasCurrentStoreTrialOptedOut: boolean
     isTrialAccessLoading: boolean
     canNotifyAdmin: boolean
     isNotifyAdminDisabled: boolean
+    canStartOnboarding: boolean
+    isOnUpdateOnboardingWizard: boolean
     onNotifyAdminClick: () => void
+    onOnboardingWizardClick: () => void
 }) => {
     const isAiShoppingAssistantEnabled = useFlag(
         FeatureFlagKey.AiShoppingAssistantEnabled,
-    )
-
-    const isAiAgentExpandingTrialExperienceForAll = useFlag(
-        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
     )
 
     const queryParams = new URLSearchParams(location.search)
@@ -426,76 +532,121 @@ const PaywallWrapperComponent = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldStartTrial])
 
-    const renderSecondaryActionButton = () => {
-        if (!isAiAgentExpandingTrialExperienceForAll && canBookDemo) {
-            return (
-                <Button
-                    fillStyle="ghost"
-                    onClick={() => {
-                        window.open(
-                            EXTERNAL_URLS.BOOK_DEMO_SHOPPING_ASSISTANT,
-                            '_blank',
-                        )
-                    }}
-                    className={css.trialButton}
-                >
-                    Book a demo
-                </Button>
-            )
-        }
-        if (canNotifyAdmin) {
-            return (
-                <Button
-                    fillStyle="ghost"
-                    onClick={() => {
-                        window.open(
-                            EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE,
-                            '_blank',
-                        )
-                    }}
-                    className={css.trialButton}
-                >
-                    Learn more
-                </Button>
-            )
-        }
+    const SetupAIAgentAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: isOnUpdateOnboardingWizard
+                ? 'Continue Setup'
+                : 'Set Up AI Agent',
+            'data-candu-id': 'ai-agent-welcome-page',
+            onClick: onOnboardingWizardClick,
+        }),
+        [onOnboardingWizardClick, isOnUpdateOnboardingWizard],
+    )
 
-        if (!displayTrialButton) {
-            return null
-        }
+    const SubscribeNowAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: 'Upgrade Now',
+            onClick: showEarlyAccessModal,
+        }),
+        [showEarlyAccessModal],
+    )
 
-        if (hasCurrentStoreTrialOptedOut) {
-            return (
-                <Button
-                    fillStyle="ghost"
-                    onClick={() => {
-                        window.open(
-                            EXTERNAL_URLS.SHOPPING_ASSISTANT_INFO,
-                            '_blank',
-                        )
-                    }}
-                    className={css.trialButton}
-                >
-                    How shopping Assistants boosts sales
-                </Button>
-            )
-        }
+    const TryTrialAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`,
+            onClick: startTrial,
+        }),
+        [startTrial],
+    )
 
-        return (
-            <Button
-                fillStyle="ghost"
-                onClick={startTrial}
-                className={css.trialButton}
-            >
-                Try for {SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days
-            </Button>
-        )
-    }
+    const NotifyAdminAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: isNotifyAdminDisabled ? 'Admin notified' : 'Notify admin',
+            leadingIcon: 'notifications_none',
+            isDisabled: isNotifyAdminDisabled,
+            onClick: onNotifyAdminClick,
+        }),
+        [isNotifyAdminDisabled, onNotifyAdminClick],
+    )
+
+    const LearnMoreAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: 'Learn more',
+            href: EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE,
+        }),
+        [],
+    )
+
+    const StartAIAgentAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: 'Start AI Agent only',
+            onClick: onOnboardingWizardClick,
+        }),
+        [onOnboardingWizardClick],
+    )
+
+    const BookDemoAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: 'Book a demo',
+            onClick: () => {
+                window.open(
+                    EXTERNAL_URLS.BOOK_DEMO_SHOPPING_ASSISTANT,
+                    '_blank',
+                )
+            },
+        }),
+        [],
+    )
 
     if (isAiShoppingAssistantEnabled && showUpgradePaywall) {
-        const handleBookDemo = () => {
-            window.open(EXTERNAL_URLS.BOOK_DEMO_SHOPPING_ASSISTANT, '_blank')
+        const actionsOrderedByPriority: (AIAgentCTAOptions | null)[] = []
+
+        // If onboarding is possible, anyone can start it and that's the only option we allow
+        if (canStartOnboarding) {
+            actionsOrderedByPriority.push(SetupAIAgentAction)
+        } else if (!isAdminUser) {
+            // If the non-admin user cannot notify an admin, show nothing
+            if (!canNotifyAdmin) {
+                return null
+            }
+
+            actionsOrderedByPriority.push(
+                NotifyAdminAction,
+                canBookDemo ? BookDemoAction : LearnMoreAction,
+                canBookDemo ? LearnMoreAction : null,
+            )
+        } else {
+            // Only admins can self serve, but not all merchants can
+            const selfService = canSeeSubscribeNow
+                ? SubscribeNowAction
+                : canSeeTrial
+                  ? TryTrialAction
+                  : null
+
+            // Not all merchants can book demos
+            const bookADemo = canBookDemo ? BookDemoAction : null
+
+            // Learn more doesn't always have enough space, so it is only shown
+            // if the user can't both self serve and book a demo
+            const learnMore =
+                (canSeeSubscribeNow || canSeeTrial) && canBookDemo
+                    ? null
+                    : LearnMoreAction
+
+            // As the merchant has AIAgent we need to let them through the paywall
+            const startAIAgent = StartAIAgentAction
+
+            actionsOrderedByPriority.push(
+                selfService,
+                bookADemo,
+                learnMore,
+                startAIAgent,
+            )
         }
+
+        // Actions are ordered but can be null, filter the nulls out
+        const filteredActions: AIAgentCTAOptions[] =
+            actionsOrderedByPriority.filter(Boolean) as AIAgentCTAOptions[]
 
         return (
             <PaywallWrapper>
@@ -503,42 +654,82 @@ const PaywallWrapperComponent = ({
                     aiAgentPaywallFeature={AIAgentPaywallFeatures.Upgrade}
                 >
                     <>
-                        {displayUpgradeButton && (
-                            <Button
-                                size="medium"
-                                onClick={showEarlyAccessModal}
-                                className={css.upgradeButton}
-                            >
-                                Upgrade Now
-                            </Button>
-                        )}
-                        {canNotifyAdmin && (
-                            <Button
-                                size="medium"
-                                onClick={onNotifyAdminClick}
-                                className={
-                                    !isNotifyAdminDisabled
-                                        ? css.upgradeButton
-                                        : ''
-                                }
-                                leadingIcon="notifications_none"
-                                isDisabled={isNotifyAdminDisabled}
-                            >
-                                {isNotifyAdminDisabled
-                                    ? 'Admin notified'
-                                    : 'Notify admin'}
-                            </Button>
-                        )}
-                        {renderSecondaryActionButton()}
-
-                        {canBookDemo &&
-                            isAiAgentExpandingTrialExperienceForAll && (
-                                <div className={css.bookDemoButton}>
-                                    <BookDemoContainer
-                                        onBookDemo={handleBookDemo}
-                                    />
+                        <div className={css.ctaButtons}>
+                            <>
+                                {filteredActions[0].href === undefined ? (
+                                    <Button
+                                        className={
+                                            filteredActions[0].isDisabled
+                                                ? ''
+                                                : css.primaryButton
+                                        }
+                                        intent="primary"
+                                        size="medium"
+                                        onClick={filteredActions[0].onClick}
+                                        leadingIcon={
+                                            filteredActions[0].leadingIcon
+                                        }
+                                        isDisabled={
+                                            filteredActions[0].isDisabled
+                                        }
+                                    >
+                                        {filteredActions[0].label}
+                                    </Button>
+                                ) : (
+                                    // Edge case - LearnMore as primary needs href
+                                    // Button doesn't support href
+                                    // LinkButton doesn't support leadingIcon
+                                    <LinkButton
+                                        className={css.primaryButton}
+                                        intent="primary"
+                                        size="medium"
+                                        onClick={filteredActions[0].onClick}
+                                        href={filteredActions[0].href}
+                                    >
+                                        {filteredActions[0].label}
+                                    </LinkButton>
+                                )}
+                                <div
+                                    data-candu-id={
+                                        filteredActions[0]['data-candu-id']
+                                    }
+                                />
+                            </>
+                            {filteredActions[1] ? (
+                                <LinkButton
+                                    className={css.secondaryButton}
+                                    fillStyle="ghost"
+                                    onClick={filteredActions[1].onClick}
+                                    href={filteredActions[1].href}
+                                    isDisabled={filteredActions[1].isDisabled}
+                                >
+                                    {filteredActions[1].label}
+                                </LinkButton>
+                            ) : null}
+                        </div>
+                        {filteredActions[2] ? (
+                            <div className={css.tertiaryButton}>
+                                <div className={css.tertiaryContainer}>
+                                    <LinkButton
+                                        className={css.tertiaryContainerButton}
+                                        fillStyle="ghost"
+                                        intent="secondary"
+                                        size="medium"
+                                        href={filteredActions[2].href}
+                                        onClick={filteredActions[2].onClick}
+                                        isDisabled={
+                                            filteredActions[2].isDisabled
+                                        }
+                                    >
+                                        <span
+                                            className={css.tertiaryButtonText}
+                                        >
+                                            {filteredActions[2].label}
+                                        </span>
+                                    </LinkButton>
                                 </div>
-                            )}
+                            </div>
+                        ) : null}
                     </>
                 </AiAgentPaywallView>
                 {earlyAccessModal}

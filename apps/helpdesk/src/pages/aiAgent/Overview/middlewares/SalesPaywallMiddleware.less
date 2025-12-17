@@ -24,40 +24,42 @@
         display: flex;
     }
 
-    .upgradeButton {
-        background-color: var(--neutral-grey-6) !important; // legacy
-        color: var(--neutral-grey-0) !important; // legacy
-        border-color: var(--neutral-grey-6) !important; // legacy
+    .ctaButtons {
+        display: flex;
+        gap: var(--layout-spacing-xs);
     }
 
-    .trialButton {
-        color: var(--neutral-grey-5) !important; // legacy
+    .primaryButton {
+        background-color: var(--neutral-grey-6) !important;
+        color: var(--neutral-grey-0) !important;
+        border-color: var(--neutral-grey-6) !important;
     }
 
-    .bookDemoButton {
+    .secondaryButton {
+        color: var(--neutral-grey-5) !important;
+    }
+
+    .tertiaryContainer {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+
+        .secondaryText {
+            color: var(--neutral-grey-5);
+        }
+
+        .tertiaryContainerButton {
+            padding: var(--layout-spacing-xxs);
+        }
+    }
+
+    .tertiaryButton {
         flex: 0 0 100%;
         margin-top: var(--layout-spacing-xs);
         margin-left: -5px;
     }
 
-    .bookDemoButtonText {
-        margin-left: var(--layout-spacing-xxs);
-        color: var(--neutral-grey-6); // legacy
-    }
-}
-
-.axiom :local {
-    .upgradeButton {
-        background-color: var(--surface-neutral-primary) !important;
-        color: var(--elevation-neutral-default) !important;
-        border-color: var(--surface-neutral-primary) !important;
-    }
-
-    .trialButton {
-        color: var(--content-neutral-secondary) !important;
-    }
-
-    .bookDemoButtonText {
-        color: var(--content-neutral-default);
+    .tertiaryButtonText {
+        color: var(--neutral-grey-6);
     }
 }

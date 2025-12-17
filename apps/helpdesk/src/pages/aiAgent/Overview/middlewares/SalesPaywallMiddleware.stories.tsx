@@ -20,6 +20,8 @@ import {
     basicMonthlyAutomationPlan,
 } from 'fixtures/productPrices'
 import { user } from 'fixtures/users'
+import { trialsKeys } from 'models/aiAgent/queries'
+import type { ResponseTrial } from 'models/aiAgent/types'
 import { SubscriptionStatus } from 'models/billing/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { AppContextProvider } from 'pages/AppContext'
@@ -79,6 +81,11 @@ const storyConfig: Meta<typeof SalesPaywallMiddleware> = {
                     fixed_gmv_band: parameters.fixed_gmv_band,
                 },
             }
+
+            queryClient.setQueryData(trialsKeys.list(account.domain), {
+                data: [] satisfies ResponseTrial[],
+            })
+
             return (
                 <MemoryRouter>
                     <AppContextProvider>
