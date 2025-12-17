@@ -385,4 +385,161 @@ describe('<Analytics />', () => {
         expect(screen.getByText(/25\.5%/)).toBeInTheDocument()
         expect(screen.getByText('150')).toBeInTheDocument()
     })
+
+    it('should filter journeys by campaign type only', () => {
+        const campaigns = [
+            { id: 1, name: 'Campaign 1' },
+            { id: 2, name: 'Campaign 2' },
+        ]
+
+        mockUseJourneyContext.mockReturnValue({
+            journeys: [{ id: 3, name: 'Journey 1' }],
+            campaigns,
+            currentIntegration: { id: 286584 },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'cart_abandoned',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                period: {
+                    end_datetime: moment().toISOString(),
+                    start_datetime: moment().toISOString(),
+                },
+                journeyType: {
+                    values: ['campaign'],
+                    operator: 'in',
+                },
+            },
+            userTimezone: 'America/New_York',
+            granularity: ReportingGranularity.Day,
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <Analytics />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
+            expect.any(String),
+            expect.any(String),
+            expect.any(Object),
+            expect.any(String),
+            [1, 2],
+        )
+    })
+
+    it('should filter journeys by flow type only', () => {
+        const journeys = [
+            { id: 1, name: 'Journey 1' },
+            { id: 2, name: 'Journey 2' },
+        ]
+
+        mockUseJourneyContext.mockReturnValue({
+            journeys,
+            campaigns: [{ id: 3, name: 'Campaign 1' }],
+            currentIntegration: { id: 286584 },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'cart_abandoned',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                period: {
+                    end_datetime: moment().toISOString(),
+                    start_datetime: moment().toISOString(),
+                },
+                journeyType: {
+                    values: ['flow'],
+                    operator: 'in',
+                },
+            },
+            userTimezone: 'America/New_York',
+            granularity: ReportingGranularity.Day,
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <Analytics />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
+            expect.any(String),
+            expect.any(String),
+            expect.any(Object),
+            expect.any(String),
+            [1, 2],
+        )
+    })
+
+    it('should not filter journeys when both types are selected', () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeys: [{ id: 1, name: 'Journey 1' }],
+            campaigns: [{ id: 2, name: 'Campaign 1' }],
+            currentIntegration: { id: 286584 },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'cart_abandoned',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                period: {
+                    end_datetime: moment().toISOString(),
+                    start_datetime: moment().toISOString(),
+                },
+                journeyType: {
+                    values: ['campaign', 'flow'],
+                    operator: 'in',
+                },
+            },
+            userTimezone: 'America/New_York',
+            granularity: ReportingGranularity.Day,
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <Analytics />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
+            expect.any(String),
+            expect.any(String),
+            expect.any(Object),
+            expect.any(String),
+            [],
+        )
+    })
 })

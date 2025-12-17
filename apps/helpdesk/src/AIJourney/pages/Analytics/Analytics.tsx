@@ -22,7 +22,7 @@ import { useAIJourneyConversionRate } from 'AIJourney/hooks/useAIJourneyConversi
 import { useAIJourneyGmvInfluenced } from 'AIJourney/hooks/useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced'
 import { useJourneyContext } from 'AIJourney/providers'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { JOURNEYS_FILTER_VALUES } from 'domains/reporting/pages/common/filters/JourneysFilter'
+import { JOURNEY_TYPE_FILTER_VALUES } from 'domains/reporting/pages/common/filters/JourneyTypeFilter'
 
 import { useStatsFilters } from '../../../domains/reporting/hooks/support-performance/useStatsFilters'
 import { FilterKey } from '../../../domains/reporting/models/stat/types'
@@ -51,15 +51,15 @@ export const Analytics = () => {
 
     const filters = {
         period: statsFilters.period,
-        journeys: statsFilters.journeys,
+        journeys: statsFilters.journeyType,
     }
 
     const journeysIdsToFilter = useMemo(() => {
-        const includeCampaigns = statsFilters.journeys?.values.includes(
-            JOURNEYS_FILTER_VALUES.CAMPAIGN,
+        const includeCampaigns = statsFilters.journeyType?.values.includes(
+            JOURNEY_TYPE_FILTER_VALUES.CAMPAIGN,
         )
-        const includeJourneys = statsFilters.journeys?.values.includes(
-            JOURNEYS_FILTER_VALUES.JOURNEY,
+        const includeJourneys = statsFilters.journeyType?.values.includes(
+            JOURNEY_TYPE_FILTER_VALUES.FLOW,
         )
 
         if (includeCampaigns && !includeJourneys && campaigns) {
@@ -71,7 +71,7 @@ export const Analytics = () => {
         }
 
         return []
-    }, [campaigns, journeys, statsFilters.journeys])
+    }, [campaigns, journeys, statsFilters.journeyType])
 
     const gmvInfluenced = useAIJourneyGmvInfluenced(
         integrationId,
@@ -323,7 +323,7 @@ export const Analytics = () => {
                     persistentFilters={[
                         FilterKey.Period,
                         FilterKey.AggregationWindow,
-                        FilterKey.Journeys,
+                        FilterKey.JourneyType,
                     ]}
                     withSavedFilters={false}
                     filterSettingsOverrides={{

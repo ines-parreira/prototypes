@@ -20,7 +20,7 @@ export const isFilterFilled = (
         case FilterKey.CampaignStatuses:
         case FilterKey.Campaigns:
         case FilterKey.Channels:
-        case FilterKey.Journeys:
+        case FilterKey.JourneyType:
         case FilterKey.HelpCenters:
         case FilterKey.Integrations:
         case FilterKey.StoreIntegrations:

@@ -4,10 +4,10 @@ import { FilterKey } from 'domains/reporting/models/stat/types'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import { emptyFilter } from 'domains/reporting/pages/common/filters/helpers'
 import {
-    JOURNEYS_FILTER_VALUES,
-    JourneysFilter,
+    JOURNEY_TYPE_FILTER_VALUES,
     JourneysFilterWithState,
-} from 'domains/reporting/pages/common/filters/JourneysFilter'
+    JourneyTypeFilter,
+} from 'domains/reporting/pages/common/filters/JourneyTypeFilter'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
@@ -18,7 +18,7 @@ jest.mock('@repo/logging', () => ({
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
 
-const JOURNEYS_FILTER_NAME = FilterLabels[FilterKey.Journeys]
+const JOURNEYS_FILTER_NAME = FilterLabels[FilterKey.JourneyType]
 
 const defaultState = {
     stats: statsSlice.initialState,
@@ -33,7 +33,7 @@ describe('JourneysFilter', () => {
 
     const renderComponent = (value = emptyFilter as any) =>
         renderWithStore(
-            <JourneysFilter value={value} dispatchUpdate={dispatchUpdate} />,
+            <JourneyTypeFilter value={value} dispatchUpdate={dispatchUpdate} />,
             defaultState,
         )
 
@@ -46,7 +46,7 @@ describe('JourneysFilter', () => {
             screen.getByRole('option', { name: 'Campaigns' }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('option', { name: 'Journeys' }),
+            screen.getByRole('option', { name: 'Flows' }),
         ).toBeInTheDocument()
     })
 
@@ -57,7 +57,7 @@ describe('JourneysFilter', () => {
         fireEvent.click(screen.getByText('Campaigns'))
 
         expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: [JOURNEYS_FILTER_VALUES.CAMPAIGN],
+            values: [JOURNEY_TYPE_FILTER_VALUES.CAMPAIGN],
             operator: emptyFilter.operator,
         })
     })
@@ -65,18 +65,18 @@ describe('JourneysFilter', () => {
     it('should dispatch update action when deselecting a journey option', () => {
         const selectedValue = {
             values: [
-                JOURNEYS_FILTER_VALUES.CAMPAIGN,
-                JOURNEYS_FILTER_VALUES.JOURNEY,
+                JOURNEY_TYPE_FILTER_VALUES.CAMPAIGN,
+                JOURNEY_TYPE_FILTER_VALUES.FLOW,
             ],
             operator: emptyFilter.operator,
         }
         renderComponent(selectedValue)
 
-        fireEvent.click(screen.getByText('Campaigns, Journeys'))
+        fireEvent.click(screen.getByText('Campaigns, Flows'))
         fireEvent.click(screen.getByRole('option', { name: 'Campaigns' }))
 
         expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: [JOURNEYS_FILTER_VALUES.JOURNEY],
+            values: [JOURNEY_TYPE_FILTER_VALUES.FLOW],
             operator: emptyFilter.operator,
         })
     })
@@ -84,18 +84,18 @@ describe('JourneysFilter', () => {
     it('should preserve operator when updating values', () => {
         const customOperator = 'custom_operator' as any
         const selectedValue = {
-            values: [JOURNEYS_FILTER_VALUES.CAMPAIGN],
+            values: [JOURNEY_TYPE_FILTER_VALUES.CAMPAIGN],
             operator: customOperator,
         }
         renderComponent(selectedValue)
 
         fireEvent.click(screen.getByText('Campaigns'))
-        fireEvent.click(screen.getByRole('option', { name: 'Journeys' }))
+        fireEvent.click(screen.getByRole('option', { name: 'Flows' }))
 
         expect(dispatchUpdate).toHaveBeenCalledWith({
             values: [
-                JOURNEYS_FILTER_VALUES.CAMPAIGN,
-                JOURNEYS_FILTER_VALUES.JOURNEY,
+                JOURNEY_TYPE_FILTER_VALUES.CAMPAIGN,
+                JOURNEY_TYPE_FILTER_VALUES.FLOW,
             ],
             operator: customOperator,
         })
@@ -116,8 +116,8 @@ describe('JourneysFilter', () => {
             fireEvent.click(screen.getByText('Campaigns'))
 
             expect(spy).toHaveBeenCalledWith({
-                journeys: {
-                    values: [JOURNEYS_FILTER_VALUES.CAMPAIGN],
+                journeyType: {
+                    values: [JOURNEY_TYPE_FILTER_VALUES.CAMPAIGN],
                     operator: emptyFilter.operator,
                 },
             })
@@ -128,8 +128,8 @@ describe('JourneysFilter', () => {
                 stats: {
                     ...statsSlice.initialState,
                     filters: {
-                        journeys: {
-                            values: [JOURNEYS_FILTER_VALUES.CAMPAIGN],
+                        journeyType: {
+                            values: [JOURNEY_TYPE_FILTER_VALUES.CAMPAIGN],
                             operator: emptyFilter.operator,
                         },
                     },

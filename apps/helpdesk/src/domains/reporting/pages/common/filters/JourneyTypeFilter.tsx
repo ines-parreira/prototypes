@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
@@ -14,31 +14,30 @@ import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/st
 import type { RootState } from 'state/types'
 
 type Props = {
-    value: StatsFiltersWithLogicalOperator[FilterKey.Journeys]
+    value: StatsFiltersWithLogicalOperator[FilterKey.JourneyType]
     dispatchUpdate: (
-        value: StatsFiltersWithLogicalOperator[FilterKey.Journeys],
+        value: StatsFiltersWithLogicalOperator[FilterKey.JourneyType],
     ) => void
 }
 
-export const JOURNEYS_FILTER_VALUES = {
+export const JOURNEY_TYPE_FILTER_VALUES = {
     CAMPAIGN: 'campaign',
-    // TODO: rename to flow
-    JOURNEY: 'journey',
+    FLOW: 'flow',
 }
 
-export const JourneysFilter = ({
+export const JourneyTypeFilter = ({
     value = emptyFilter,
     dispatchUpdate,
 }: Props) => {
     const availableJourneys = useMemo(
         () => [
             {
-                value: JOURNEYS_FILTER_VALUES.CAMPAIGN,
+                value: JOURNEY_TYPE_FILTER_VALUES.CAMPAIGN,
                 label: 'Campaigns',
             },
             {
-                value: JOURNEYS_FILTER_VALUES.JOURNEY,
-                label: 'Journeys',
+                value: JOURNEY_TYPE_FILTER_VALUES.FLOW,
+                label: 'Flows',
             },
         ],
         [],
@@ -82,7 +81,7 @@ export const JourneysFilter = ({
 
     return (
         <Filter
-            filterName={FilterLabels[FilterKey.Journeys]}
+            filterName={FilterLabels[FilterKey.JourneyType]}
             filterOptionGroups={filterOptions}
             selectedOptions={getSelectedJourneys()}
             onChangeOption={onOptionChange}
@@ -100,14 +99,16 @@ export const JourneysFilter = ({
 
 export const JourneysFilterWithState = connect(
     (state: RootState) => ({
-        value: getStatsFiltersWithLogicalOperators(state)[FilterKey.Journeys],
+        value: getStatsFiltersWithLogicalOperators(state)[
+            FilterKey.JourneyType
+        ],
     }),
     {
         dispatchUpdate: (
-            filter: StatsFiltersWithLogicalOperator[FilterKey.Journeys],
+            filter: StatsFiltersWithLogicalOperator[FilterKey.JourneyType],
         ) =>
             mergeStatsFiltersWithLogicalOperator({
-                journeys: filter,
+                journeyType: filter,
             }),
     },
-)(JourneysFilter)
+)(JourneyTypeFilter)
