@@ -143,7 +143,8 @@ export const useLiveVoiceUpdates = (
                     )
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.received/1.0.0': {
+                case '//helpdesk/phone.voice-call.inbound.received/1.0.0':
+                case '//helpdesk/phone.voice-call.inbound.received/1.1.0': {
                     const data = event.data
 
                     const voiceCall = {
