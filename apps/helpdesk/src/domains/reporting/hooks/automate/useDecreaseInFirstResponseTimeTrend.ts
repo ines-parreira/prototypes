@@ -62,7 +62,6 @@ export const fetchDecreaseInFirstResponseTimeTrend = async (
 ) => {
     return Promise.all([
         fetchFilteredAutomatedInteractions(filters, timezone),
-
         fetchBillableTicketsExcludingAIAgent(filters, timezone, aiAgentUserId),
         fetchFirstResponseTimeExcludingAIAgent(
             filters,

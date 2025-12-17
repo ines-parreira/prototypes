@@ -1,6 +1,9 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { getDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
+import {
+    getDecreaseInFirstResponseTimeTrend,
+    getDecreaseInResolutionTimeTrend,
+} from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
 import {
     fetchBillableTicketsExcludingAIAgent,
     fetchFilteredAutomatedInteractions,
@@ -151,7 +154,7 @@ describe('decreaseInFirstResponseTimeTrend', () => {
             )
 
             expect(result).toEqual(
-                getDecreaseInFirstResponseTimeTrend(
+                getDecreaseInResolutionTimeTrend(
                     false,
                     false,
                     filteredAutomatedInteractions.data,

@@ -74,7 +74,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Decrease in first resolution time')
+        expect(config.label).toBe('Decrease in first response time')
         expect(config.chartType).toBe(ChartType.Card)
     })
 

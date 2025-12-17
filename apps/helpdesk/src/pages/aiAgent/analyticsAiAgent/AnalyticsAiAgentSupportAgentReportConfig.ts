@@ -1,3 +1,4 @@
+import { fetchDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInFirstResponseTimeTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
@@ -20,8 +21,6 @@ const fetchTimeSavedTrend = async () => ({ value: 20750, trend: 0.02 }) as any
 const fetchCostSavedTrend = async () => ({ value: 2800, trend: 0.02 }) as any
 const fetchSupportInteractionsTrend = async () =>
     ({ value: 3900, trend: 0.02 }) as any
-const fetchDecreaseInFRTTrend = async () =>
-    ({ value: 88740, trend: 0.02 }) as any
 const fetchSupportAgentTrendBreakdown = async () =>
     ({
         isLoading: false,
@@ -98,12 +97,12 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
             },
             [AnalyticsAiAgentSupportAgentChart.DecreaseInFRTCard]: {
                 chartComponent: AnalyticsAiAgentDecreaseinFRTCard,
-                label: 'Decrease in first resolution time',
+                label: 'Decrease in first response time',
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchDecreaseInFRTTrend,
-                        metricFormat: 'decimal',
+                        fetch: fetchDecreaseInFirstResponseTimeTrend,
+                        metricFormat: 'duration',
                     },
                 ],
                 description: '',
