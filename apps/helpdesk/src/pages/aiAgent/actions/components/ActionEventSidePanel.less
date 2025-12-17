@@ -7,8 +7,8 @@
     .codeBlock {
         border-radius: 4px;
         min-height: var(--layout-spacing-m);
-        border: 1px solid var(--Neutral-Grey_3, #ddd);
-        background: var(--Neutral-Grey_1, #f9f9f9);
+        border: 1px solid var(--Neutral-Grey_3, #ddd); // legacy
+        background: var(--Neutral-Grey_1, #f9f9f9); // legacy
         padding: calc(var(--layout-spacing-xs) - 2px) var(--layout-spacing-xs);
     }
 
@@ -50,5 +50,12 @@
         align-items: baseline;
         display: flex;
         gap: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .codeBlock {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--surface-neutral-secondary);
     }
 }

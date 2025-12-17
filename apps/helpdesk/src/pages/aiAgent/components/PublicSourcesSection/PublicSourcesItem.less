@@ -10,7 +10,7 @@
     }
 
     .closeIcon {
-        color: var(--feedback-error) !important;
+        color: var(--feedback-error) !important; // legacy
     }
 
     .input {
@@ -18,7 +18,7 @@
     }
 
     .warningCaption {
-        color: var(--feedback-warning-4);
+        color: var(--feedback-warning-4); // legacy
     }
 
     .buttonGroup {
@@ -30,5 +30,15 @@
 
     .arrowIcon {
         margin-left: var(--layout-spacing-s);
+    }
+}
+
+.axiom :local {
+    .closeIcon {
+        color: var(--content-error-primary) !important;
+    }
+
+    .warningCaption {
+        color: var(--content-warning-primary);
     }
 }

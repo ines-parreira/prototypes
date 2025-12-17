@@ -48,12 +48,12 @@
 
     .titleButtonText {
         .caption-semibold();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .text {
         .caption-regular();
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
     }
 
     .text.loading {
@@ -62,7 +62,7 @@
             var(--neutral-grey-6) 0%,
             var(--neutral-grey-3) 50%,
             var(--neutral-grey-6) 100%
-        );
+        ); // legacy
         background-size: 200% 100%;
         background-clip: text;
         -webkit-background-clip: text;
@@ -82,11 +82,11 @@
 
     .textError {
         .caption-regular();
-        color: var(--semantic-red-6);
+        color: var(--semantic-red-6); // legacy
     }
 
     .expandIcon {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         font-size: 16px;
     }
 
@@ -120,18 +120,18 @@
             max-height 0.3s ease-in-out,
             opacity 0.3s ease-in-out;
         scrollbar-width: thin;
-        scrollbar-color: var(--neutral-grey-3) transparent;
+        scrollbar-color: var(--neutral-grey-3) transparent; // legacy
 
         &::-webkit-scrollbar {
             width: 4px;
         }
 
         &::-webkit-scrollbar-track {
-            background: transparent;
+            background: transparent; // legacy
         }
 
         &::-webkit-scrollbar-thumb {
-            background: var(--neutral-grey-3);
+            background: var(--neutral-grey-3); // legacy
             border-radius: 3px;
         }
     }
@@ -145,12 +145,12 @@
 
     .knowledgeSourceIcon {
         vertical-align: middle;
-        background-color: var(--neutral-grey-2);
+        background-color: var(--neutral-grey-2); // legacy
     }
 
     .executionId {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-top: var(--layout-spacing-s);
     }
 }
@@ -166,7 +166,42 @@
             var(--ai-border) border-box;
     }
 
+    .titleButtonText {
+        color: var(--content-neutral-default);
+    }
+
+    .text {
+        color: var(--content-neutral-default);
+    }
+
+    .text.loading {
+        background: linear-gradient(
+            90deg,
+            var(--content-neutral-default) 0%,
+            var(--surface-neutral-tertiary) 50%,
+            var(--content-neutral-default) 100%
+        );
+    }
+
+    .textError {
+        color: var(--content-error-primary);
+    }
+
+    .expandIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .body {
+        &::-webkit-scrollbar-thumb {
+            background: var(--surface-neutral-tertiary);
+        }
+    }
+
     .knowledgeSourceIcon {
         background-color: var(--elevation-neutral-mid);
+    }
+
+    .executionId {
+        color: var(--content-neutral-secondary);
     }
 }

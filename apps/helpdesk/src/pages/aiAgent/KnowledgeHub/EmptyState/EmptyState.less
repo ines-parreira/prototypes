@@ -1,9 +1,9 @@
 :local {
     .card {
         display: flex;
-        background: var(--elevation-neutral-bg);
+        background: var(--elevation-neutral-bg); // legacy
         border-radius: var(--sm, 12px);
-        border: 1px solid var(--border-neutral-default, #ebecef);
+        border: 1px solid var(--border-neutral-default, #ebecef); // legacy
         padding: var(--spacing-md);
         box-sizing: border-box;
         width: 264px;
@@ -13,14 +13,14 @@
         }
 
         .cardDescription {
-            color: var(--content-neutral-secondary);
+            color: var(--content-neutral-secondary); // legacy
         }
     }
 
     .smallCard {
         display: flex;
         border-radius: var(--sm, 12px);
-        border: 1px solid var(--border-neutral-default, #ebecef);
+        border: 1px solid var(--border-neutral-default, #ebecef); // legacy
         padding: var(--spacing-md);
         box-sizing: border-box;
 
@@ -39,7 +39,7 @@
         gap: var(--spacing-xxxxs, 2px);
         flex-shrink: 0;
         border-radius: var(--spacing-xl, 32px);
-        border: 0.5px solid var(--border-neutral-tertiary, #b3b8c1);
+        border: 0.5px solid var(--border-neutral-tertiary, #b3b8c1); // legacy
         margin-bottom: var(--spacing-sm);
     }
 
@@ -52,8 +52,8 @@
         flex: 1 0 0;
 
         border-radius: var(--spacing-sm, 12px);
-        border: 1px dashed var(--border-neutral-default, #ebecef);
-        background: var(--elevation-neutral-bg, #fafafa);
+        border: 1px dashed var(--border-neutral-default, #ebecef); // legacy
+        background: var(--elevation-neutral-bg, #fafafa); // legacy
 
         &:hover {
             cursor: pointer;
@@ -71,12 +71,37 @@
     }
 
     .templateFooter {
-        color: var(--content-neutral-secondary);
+        color: var(--content-neutral-secondary); // legacy
     }
 }
 
 .axiom :local {
     section {
-        outline: none;
+    }
+
+    .card {
+        background: var(--elevation-neutral-bg);
+        border: 1px solid var(--border-neutral-default);
+
+        .cardDescription {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .smallCard {
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .chip {
+        border: 0.5px solid var(--border-neutral-tertiary);
+    }
+
+    .emptyCard {
+        border: 1px dashed var(--border-neutral-default);
+        background: var(--elevation-neutral-bg);
+    }
+
+    .templateFooter {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -23,10 +23,18 @@
         border-radius: 4px;
 
         &:focus {
-            border: 2px solid var(--main-primary, #0075ff);
+            border: 2px solid var(--main-primary, #0075ff); // legacy
             box-shadow: 0 0 0 2px rgba(74, 141, 249, 0.2);
             outline: none;
             padding-left: 6px;
+        }
+    }
+}
+
+.axiom :local {
+    .editableTitle {
+        &:focus {
+            border: 2px solid var(--border-accent-default);
         }
     }
 }

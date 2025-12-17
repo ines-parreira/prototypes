@@ -23,11 +23,21 @@
 
     .formInputFooterInfo {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-top: var(--spacing-xxs);
 
         &.error {
-            color: var(--feedback-error);
+            color: var(--feedback-error); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .formInputFooterInfo {
+        color: var(--content-neutral-secondary);
+
+        &.error {
+            color: var(--content-error-primary);
         }
     }
 }

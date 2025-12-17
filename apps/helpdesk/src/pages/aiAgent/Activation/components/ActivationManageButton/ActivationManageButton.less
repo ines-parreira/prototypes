@@ -6,7 +6,7 @@
         align-items: center;
         padding-inline: var(--layout-spacing-s);
         background-color: transparent;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
 
         &.flat {
             border: none;
@@ -70,6 +70,8 @@
 
 .axiom :local {
     .button {
+        color: var(--content-neutral-default);
+
         &.bordered {
             border: 1px solid var(--border-neutral-default);
         }

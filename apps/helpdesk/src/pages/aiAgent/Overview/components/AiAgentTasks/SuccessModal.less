@@ -25,7 +25,7 @@
         top: 10px;
         right: 10px;
 
-        color: var(--content-neutral-default, #5c6370) !important;
+        color: var(--content-neutral-default, #5c6370) !important; // legacy
     }
 
     .modalBody {
@@ -33,10 +33,10 @@
         display: flex;
         flex-direction: column;
         gap: var(--layout-spacing-xs);
-        background-color: var(--elevation-neutral-mid);
+        background-color: var(--elevation-neutral-mid); // legacy
 
         span {
-            color: var(--content-neutral-secondary, #5c6370);
+            color: var(--content-neutral-secondary, #5c6370); // legacy
         }
 
         h3 {
@@ -46,11 +46,35 @@
 
     .modalFooter {
         padding: var(--layout-spacing-m);
-        background-color: var(--elevation-neutral-mid);
+        background-color: var(--elevation-neutral-mid); // legacy
         border-top: 0;
         padding-top: 0;
         display: flex;
         flex-direction: row;
         gap: var(--layout-spacing-xxs);
+    }
+}
+
+.axiom :local {
+    .closeButton {
+        color: var(--content-neutral-default) !important;
+    }
+
+    .modal {
+        > div {
+            border: none; // legacy
+        }
+    }
+
+    .modalBody {
+        background-color: var(--elevation-neutral-mid);
+
+        span {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .modalFooter {
+        background-color: var(--elevation-neutral-mid);
     }
 }

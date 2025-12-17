@@ -12,7 +12,7 @@
             0deg,
             var(--neutral-grey-0) 58.88%,
             var(--accessory-magenta-2) 115.33%
-        );
+        ); // legacy
     }
 
     .titleContainer {
@@ -26,5 +26,15 @@
 
     .title {
         margin-bottom: 0;
+    }
+}
+
+.axiom :local {
+    .container {
+        background: linear-gradient(
+            0deg,
+            var(--elevation-neutral-default) 58.88%,
+            var(--surface-brand-subtle) 115.33%
+        );
     }
 }

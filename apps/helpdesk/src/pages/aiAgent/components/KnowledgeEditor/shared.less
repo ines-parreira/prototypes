@@ -13,7 +13,7 @@
     .editor {
         flex: 1;
         background: white;
-        border-radius: var(--main-alternative-m, 12px);
+        border-radius: var(--main-alternative-m, 12px); // legacy
     }
     .loader {
         display: flex;
@@ -33,5 +33,11 @@
     }
     [data-name='knowledge-editor-top-bar-container'] {
         height: 58px;
+    }
+}
+
+.axiom :local {
+    .editor {
+        background: var(--elevation-neutral-default);
     }
 }

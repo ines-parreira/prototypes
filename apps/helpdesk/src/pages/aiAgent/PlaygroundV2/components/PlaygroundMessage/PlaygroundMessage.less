@@ -215,7 +215,15 @@
 .dark :local {
     .messageContainerHover {
         &:hover {
-            background-color: #312c33;
+            background-color: #312c33; // legacy
+        }
+    }
+}
+
+.axiom.dark :local {
+    .messageContainerHover {
+        &:hover {
+            background-color: var(--hover-default);
         }
     }
 }

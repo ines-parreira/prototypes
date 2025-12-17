@@ -38,7 +38,7 @@
 
     .badgeIcon {
         font-size: 12px !important;
-        color: var(--neutral-grey-6);
+        color: var(--neutral-grey-6); // legacy
         font-weight: 500;
     }
 
@@ -69,7 +69,7 @@
 
     .latestSync {
         .caption-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 }
 
@@ -78,5 +78,13 @@
         &:hover {
             background-color: var(--hover-default);
         }
+    }
+
+    .badgeIcon {
+        color: var(--content-neutral-default);
+    }
+
+    .latestSync {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -6,13 +6,13 @@
         var(--accessory-magenta-25-s),
         var(--accessory-magenta-25-l),
         1
-    );
+    ); // legacy
     @unfilledColor: hsla(
         var(--accessory-magenta-25-h),
         var(--accessory-magenta-25-s),
         var(--accessory-magenta-25-l),
         0.32
-    );
+    ); // legacy
 
     .wrapper {
         display: flex;
@@ -32,7 +32,7 @@
         /* Unfilled part (Firefox) */
         border: none;
         border-radius: 2px;
-        background-color: @unfilledColor;
+        background-color: @unfilledColor; // legacy
 
         /* Prevent to add the background color twice on Webkit */
         @supports (-webkit-appearance: none) and (not (-moz-appearance: none)) {
@@ -41,24 +41,45 @@
 
         /* Filled part (Webkit) */
         &::-webkit-progress-value {
-            background-color: @filledColor;
+            background-color: @filledColor; // legacy
             border-radius: 2px;
         }
 
         /* Unfilled part (Webkit) */
         &::-webkit-progress-bar {
-            background-color: @unfilledColor;
+            background-color: @unfilledColor; // legacy
             border-radius: 2px;
         }
 
         /* Filled part (Firefox) */
         &::-moz-progress-bar {
-            background-color: @filledColor;
+            background-color: @filledColor; // legacy
             border-radius: 2px;
         }
     }
 
     .description {
         .caption-allcaps();
+    }
+}
+
+.axiom :local {
+    @filledColorAxiom: var(--content-brand-primary);
+    @unfilledColorAxiom: var(--surface-brand-subtle);
+
+    .progress {
+        background-color: @unfilledColorAxiom;
+
+        &::-webkit-progress-value {
+            background-color: @filledColorAxiom;
+        }
+
+        &::-webkit-progress-bar {
+            background-color: @unfilledColorAxiom;
+        }
+
+        &::-moz-progress-bar {
+            background-color: @filledColorAxiom;
+        }
     }
 }

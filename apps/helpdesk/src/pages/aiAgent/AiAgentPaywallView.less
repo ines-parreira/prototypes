@@ -12,7 +12,7 @@
         height: 1390px;
         transform: rotate(-90deg);
         opacity: 0.72;
-        background: #cb55ef;
+        background: #cb55ef; // legacy
         filter: blur(320px);
         position: absolute;
         top: -1200px;
@@ -102,6 +102,10 @@
 }
 
 .axiom :local {
+    .background {
+        background: #cb55ef;
+    }
+
     .icon {
         color: var(--content-success-primary);
     }

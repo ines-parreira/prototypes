@@ -15,18 +15,28 @@
     }
 
     .customToggleWarning {
-        color: var(--content-neutral-secondary, #5c6370);
+        color: var(--content-neutral-secondary, #5c6370); // legacy
         display: flex;
         padding-left: 42px;
         width: fit-content;
 
         &:hover {
-            color: var(--content-neutral-secondary, #5c6370);
+            color: var(--content-neutral-secondary, #5c6370); // legacy
         }
     }
 
     .emailAddress {
         text-decoration-line: underline;
         text-decoration-style: solid;
+    }
+}
+
+.axiom :local {
+    .customToggleWarning {
+        color: var(--content-neutral-secondary);
+
+        &:hover {
+            color: var(--content-neutral-secondary);
+        }
     }
 }

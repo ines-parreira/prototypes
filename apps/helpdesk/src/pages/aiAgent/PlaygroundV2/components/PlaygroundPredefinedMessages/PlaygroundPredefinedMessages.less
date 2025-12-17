@@ -49,8 +49,8 @@
 
         > li > div > button {
             border-radius: var(--xxs, 6px);
-            border: 0.5px solid var(--border-border-neutral-tertiary, #b3b8c1);
-            background-color: var(--neutral-grey-0);
+            border: 0.5px solid var(--border-border-neutral-tertiary, #b3b8c1); // legacy
+            background-color: var(--neutral-grey-0); // legacy
         }
 
         [class*='ui-chip-container-'] {
@@ -64,7 +64,7 @@
     }
 
     .title {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         padding-bottom: var(--layout-spacing-xs);
         display: block;
     }
@@ -72,5 +72,18 @@
     .popoverBody {
         padding: var(--layout-spacing-s);
         max-width: 420px;
+    }
+}
+
+.axiom :local {
+    .list {
+        > li > div > button {
+            border: 0.5px solid var(--border-neutral-tertiary);
+            background-color: var(--elevation-neutral-default);
+        }
+    }
+
+    .title {
+        color: var(--content-neutral-secondary);
     }
 }
