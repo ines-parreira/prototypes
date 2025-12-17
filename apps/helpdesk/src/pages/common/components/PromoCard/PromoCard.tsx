@@ -17,8 +17,6 @@ import {
     LegacyIconButton as IconButton,
 } from '@gorgias/axiom'
 
-import LinkButton from '../button/LinkButton'
-
 import css from './PromoCard.less'
 
 interface PromoCardContextType {
@@ -424,7 +422,7 @@ const ActionButton = ({
     // External link
     if (href) {
         return (
-            <LinkButton
+            <a
                 href={href}
                 target={target}
                 rel={target === '_blank' ? 'noopener noreferrer' : undefined}
@@ -432,7 +430,7 @@ const ActionButton = ({
                 onClick={onClick}
             >
                 {content}
-            </LinkButton>
+            </a>
         )
     }
 
