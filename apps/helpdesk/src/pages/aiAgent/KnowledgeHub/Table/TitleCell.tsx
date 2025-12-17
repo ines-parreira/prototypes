@@ -71,6 +71,20 @@ export const TitleCell = ({
         draftVersionId: row.original.draftVersionId,
         publishedVersionId: row.original.publishedVersionId,
     })
+
+    const getIcon = () => {
+        if (!isGrouped) {
+            if (
+                type === KnowledgeType.Document ||
+                type === KnowledgeType.URL ||
+                type === KnowledgeType.Domain
+            ) {
+                return 'snippet'
+            }
+        }
+
+        return typeConfig[type].icon
+    }
     return (
         <div
             onClick={() => shouldMakeClickable && columnOnClick(row.original)}
@@ -79,7 +93,7 @@ export const TitleCell = ({
             }
         >
             <Box gap="xs" alignItems="center" className={css.titleCell}>
-                <Icon size="md" name={typeConfig[type].icon} />
+                <Icon size="md" name={getIcon()} />
                 <Text>{highlightText(title, searchTerm)}</Text>
                 {isGrouped && itemCount && (
                     <div className={css.quantity}>
