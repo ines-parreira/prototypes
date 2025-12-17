@@ -140,9 +140,12 @@ const PaymentsHistoryView = () => {
                         {invoices.map((invoice) => {
                             const isPaid = invoice.paid
                             const paymentIntent = invoice.payment_intent
+                            const has_payment_schedules =
+                                !!invoice.has_payment_schedules
 
                             const showRetryPaymentButton =
                                 !isPaid &&
+                                !has_payment_schedules &&
                                 [
                                     PaymentIntentStatus.RequiresSource,
                                     PaymentIntentStatus.RequiresPaymentMethod,

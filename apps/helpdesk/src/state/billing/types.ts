@@ -53,6 +53,7 @@ export type Invoice = {
     payment_intent: {
         status: PaymentIntentStatus
     }
+    has_payment_schedules?: boolean
 }
 
 export enum PaymentMethodType {

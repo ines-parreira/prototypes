@@ -144,4 +144,41 @@ describe('PaymentsHistoryView', () => {
         fireEvent.click(screen.getByText('Retry Payment'))
         expect(mockPayInvoice).toBeCalledWith(invoices[0].id)
     })
+
+    it('does not render Retry Payment button when invoice has payment schedules', async () => {
+        const invoiceWithPaymentSchedules: Invoice = {
+            description: 'Pro for the period from 2023-04-26 to 2023-04-28',
+            invoice_pdf: '#',
+            amount_due: 322052,
+            payment_intent: {
+                status: PaymentIntentStatus.RequiresPaymentMethod,
+            },
+            payment_confirmation_url: null,
+            attempted: true,
+            id: 'in_1N1DawI9qXomtXqStoF23sQ8',
+            paid: false,
+            date: 1682535698,
+            metadata: { payment_service: PaymentType.Stripe },
+            has_payment_schedules: true,
+        }
+
+        const store = mockedStore({
+            billing: fromJS({
+                invoices: [invoiceWithPaymentSchedules],
+                products: [],
+            }),
+        })
+
+        const { container } = render(
+            <Provider store={store}>
+                <PaymentsHistoryView />
+            </Provider>,
+        )
+
+        await waitFor(() =>
+            expect(container.querySelector('table')).toBeInTheDocument(),
+        )
+
+        expect(screen.queryByText('Retry Payment')).not.toBeInTheDocument()
+    })
 })
