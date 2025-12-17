@@ -1,21 +1,21 @@
 import type { MetricTrend } from '@repo/reporting'
 
-import { useAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useTotalNumberOfOrdersTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
 
-export const useAiAgentAutomationRateMetric = (): MetricTrend => {
+export const useOrdersInfluencedMetric = (): MetricTrend => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
-    const { isFetching, isError, data } = useAIAgentAutomationRateTrend(
+    const { isFetching, isError, data } = useTotalNumberOfOrdersTrend(
         cleanStatsFilters,
         userTimezone,
     )
 
     return {
-        isFetching: isFetching,
-        isError: isError,
+        isFetching,
+        isError,
         data: {
-            label: 'Automation rate',
+            label: 'Orders influenced',
             value: data?.value ?? null,
             prevValue: data?.prevValue ?? null,
         },
