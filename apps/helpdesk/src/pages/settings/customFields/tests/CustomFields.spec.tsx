@@ -263,4 +263,67 @@ describe('<CustomFields/>', () => {
             screen.getByRole('button', { name: 'Create Field' }),
         ).toBeAriaEnabled()
     })
+
+    it('should not display educational banner on empty state', () => {
+        useCustomFieldDefinitionsMock.mockReturnValue(emptyFieldDefinitions)
+
+        render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
+
+        expect(
+            screen.queryByText(
+                /Use Ticket Fields to track and report common ticket categories/,
+            ),
+        ).toBeNull()
+    })
+
+    it('should display educational banner for Ticket fields with', () => {
+        useCustomFieldDefinitionsMock.mockReturnValue(notEmptyFieldDefinitions)
+
+        render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
+
+        expect(
+            screen.getByText(
+                /Use Ticket Fields to track and report common ticket categories/,
+            ),
+        ).toBeInTheDocument()
+
+        const setupLink = screen.getByRole('link', {
+            name: /How to set up Ticket Fields/,
+        })
+        expect(setupLink).toBeInTheDocument()
+        expect(setupLink).toHaveAttribute(
+            'href',
+            'https://link.gorgias.com/gx3',
+        )
+
+        const playbookLink = screen.getByRole('link', {
+            name: /Ticket Fields playbook/,
+        })
+        expect(playbookLink).toBeInTheDocument()
+        expect(playbookLink).toHaveAttribute(
+            'href',
+            'http://link.gorgias.com/ticket-fields-playbook',
+        )
+    })
+
+    it('should display educational banner for Customer fields', () => {
+        useCustomFieldDefinitionsMock.mockReturnValue(notEmptyFieldDefinitions)
+
+        render(<CustomFields objectType={OBJECT_TYPES.CUSTOMER} />)
+
+        expect(
+            screen.getByText(
+                /Use Customer Fields to capture consistent details about your customers/,
+            ),
+        ).toBeInTheDocument()
+
+        const learnLink = screen.getByRole('link', {
+            name: /Learn how to manage Customer Fields/,
+        })
+        expect(learnLink).toBeInTheDocument()
+        expect(learnLink).toHaveAttribute(
+            'href',
+            'https://docs.gorgias.com/en-US/create-and-manage-customer-fields-969165',
+        )
+    })
 })

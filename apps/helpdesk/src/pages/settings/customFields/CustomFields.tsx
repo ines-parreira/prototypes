@@ -30,6 +30,33 @@ import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
 import css from './CustomFields.less'
 
+const EDUCATIONAL_CONTENT = {
+    Ticket: {
+        description:
+            'Use Ticket Fields to track and report common ticket categories.',
+        links: [
+            {
+                href: 'https://link.gorgias.com/gx3',
+                text: 'How to set up Ticket Fields',
+            },
+            {
+                href: 'http://link.gorgias.com/ticket-fields-playbook',
+                text: 'Ticket Fields playbook',
+            },
+        ],
+    },
+    Customer: {
+        description:
+            'Use Customer Fields to capture consistent details about your customers.',
+        links: [
+            {
+                href: 'https://docs.gorgias.com/en-US/create-and-manage-customer-fields-969165',
+                text: 'Learn how to manage Customer Fields',
+            },
+        ],
+    },
+} as const
+
 export default function CustomFields({
     objectType,
 }: {
@@ -140,7 +167,7 @@ export default function CustomFields({
                         )}
                     </div>
                 </PageHeader>
-                {shouldDisplayListingPage && objectType === 'Ticket' && (
+                {shouldDisplayListingPage && (
                     <Container
                         fluid
                         className={classNames(
@@ -154,27 +181,24 @@ export default function CustomFields({
                             className="pr-4"
                         >
                             <p className="mb-3">
-                                Use Ticket Fields to track and report common
-                                ticket categories.
+                                {EDUCATIONAL_CONTENT[objectType].description}
                             </p>
-                            <a
-                                className="d-block"
-                                href="https://link.gorgias.com/gx3"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
-                                <i className="material-icons">menu_book</i>{' '}
-                                <span>How to set up Ticket Fields</span>
-                            </a>
-                            <a
-                                className="d-block"
-                                href="http://link.gorgias.com/ticket-fields-playbook"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
-                                <i className="material-icons">menu_book</i>{' '}
-                                <span>Ticket Fields playbook</span>
-                            </a>
+                            {EDUCATIONAL_CONTENT[objectType].links.map(
+                                (link) => (
+                                    <a
+                                        key={link.href}
+                                        className="d-block"
+                                        href={link.href}
+                                        rel="noopener noreferrer"
+                                        target="_blank"
+                                    >
+                                        <i className="material-icons">
+                                            menu_book
+                                        </i>{' '}
+                                        <span>{link.text}</span>
+                                    </a>
+                                ),
+                            )}
                         </div>
                         <div className="d-flex">
                             <Video
@@ -184,12 +208,6 @@ export default function CustomFields({
                             />
                         </div>
                     </Container>
-                )}
-                {shouldDisplayListingPage && objectType !== 'Ticket' && (
-                    <div
-                        ref={setListingNode}
-                        data-candu-id="custom-fields-listing-educational-material"
-                    />
                 )}
                 {shouldDisplayListingPage && (
                     <>
