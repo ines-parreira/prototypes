@@ -101,6 +101,7 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
                     {isCallWhisperingEnabled && (
                         <DynamicSoundWaveIcon
                             audioLevel={isWhispering ? audioLevel : 0}
+                            hide={!isWhispering}
                         >
                             <Button
                                 variant="secondary"

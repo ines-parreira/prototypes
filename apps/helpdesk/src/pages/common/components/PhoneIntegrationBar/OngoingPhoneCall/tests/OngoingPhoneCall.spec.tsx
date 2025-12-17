@@ -229,6 +229,25 @@ describe('<OngoingPhoneCall/>', () => {
 
         const soundWaveIcon = container.querySelector('.soundWaveIcon')
         expect(soundWaveIcon).toBeInTheDocument()
+
+        const centralBar = soundWaveBars[2] as HTMLDivElement
+        expect(parseInt(centralBar.style.height)).toBeGreaterThan(0)
+    })
+
+    it('should not render dynamic sound wave around microphone button on mute', () => {
+        const call = mockIncomingCall(integrationId) as Call
+
+        const { container } = renderComponent(store, call)
+
+        const micButton = screen.getByLabelText('Mute phone call')
+        expect(micButton).toBeInTheDocument()
+
+        fireEvent.click(micButton)
+        expect(call.mute).toHaveBeenCalledWith(true)
+
+        const soundWaveBars = container.querySelectorAll('.soundWaveBar')
+        const centralBar = soundWaveBars[2] as HTMLDivElement
+        expect(centralBar.style.height).toBe('0px')
     })
 
     it('should not render dynamic sound wave around microphone button when whispering FF is off', () => {

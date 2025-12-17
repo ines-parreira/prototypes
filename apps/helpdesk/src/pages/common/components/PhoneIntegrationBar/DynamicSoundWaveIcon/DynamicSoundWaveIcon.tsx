@@ -5,22 +5,22 @@ import css from './DynamicSoundWaveIcon.less'
 type DynamicSoundWaveIconProps = {
     children: React.ReactNode
     audioLevel: number
-    minBarHeight?: number
     maxBarHeight?: number
     sensitivity?: number
     delay?: number
+    hide?: boolean
 }
 
 const BAR_COUNT = 5
-const BAR_WEIGHTS = [0.25, 0.5, 1.0, 0.5, 0.25]
+const BAR_STARTING_HEIGHTS = [0.375, 0.875, 0.625, 0.75, 0.5]
 
 export const DynamicSoundWaveIcon = ({
     children,
     audioLevel,
-    minBarHeight = 5,
-    maxBarHeight = 25,
-    sensitivity = 6,
+    maxBarHeight = 22,
+    sensitivity = 5,
     delay = 100,
+    hide = false,
 }: DynamicSoundWaveIconProps) => {
     const barsRef = useRef<(HTMLDivElement | null)[]>([])
 
@@ -49,11 +49,28 @@ export const DynamicSoundWaveIcon = ({
             // 3 -> 1
             // 4 -> 2
             const barDelay = Math.abs(BAR_COUNT / 2 - 0.5 - index) * delay
-            const height =
-                minBarHeight +
-                improvedAudioLevel *
-                    BAR_WEIGHTS[index] *
-                    (maxBarHeight - minBarHeight)
+
+            // all bars have a starting height based on the static icon design
+            // then, they will raise towars the max height when the volume is going up
+            // after reaching the max height, they will start to decrease
+            // example:
+            // supposing startingHeight = 6, maxBarHeight = 10 (v is volume)
+            // v = 0 |------    |
+            // v = 1 |-------   |
+            // v = 2 |--------  |
+            // v = 3 |--------- |
+            // v = 4 |----------| (max reached)
+            // v = 5 |--------- |
+            // v = 6 |--------  |
+            // ...
+            const startingHeight = BAR_STARTING_HEIGHTS[index] * maxBarHeight
+            const candidateHeight =
+                startingHeight + maxBarHeight * improvedAudioLevel
+            const height = hide
+                ? 0
+                : candidateHeight <= maxBarHeight
+                  ? candidateHeight
+                  : maxBarHeight - (candidateHeight - maxBarHeight)
 
             const changeBarHeight = () => {
                 bar.style.height = `${Math.round(height)}px`
@@ -72,7 +89,7 @@ export const DynamicSoundWaveIcon = ({
             // n_timer = 12 (negligible impact on performance)
             setTimeout(changeBarHeight, barDelay)
         })
-    }, [audioLevel, minBarHeight, maxBarHeight, sensitivity, delay])
+    }, [audioLevel, maxBarHeight, sensitivity, delay, hide])
 
     return (
         <div className={css.wrapper}>
@@ -84,9 +101,8 @@ export const DynamicSoundWaveIcon = ({
                         ref={(el) => (barsRef.current[index] = el)}
                         className={css.soundWaveBar}
                         style={{
-                            minHeight: minBarHeight,
                             maxHeight: maxBarHeight,
-                            height: minBarHeight,
+                            height: 0,
                         }}
                     />
                 ))}

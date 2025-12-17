@@ -273,7 +273,10 @@ export function OngoingPhoneCall({
                     }
                 />
                 {isCallWhisperingEnabled ? (
-                    <DynamicSoundWaveIcon audioLevel={audioLevel}>
+                    <DynamicSoundWaveIcon
+                        audioLevel={!isMuted ? audioLevel : 0}
+                        hide={isMuted}
+                    >
                         {microphoneButton}
                     </DynamicSoundWaveIcon>
                 ) : (

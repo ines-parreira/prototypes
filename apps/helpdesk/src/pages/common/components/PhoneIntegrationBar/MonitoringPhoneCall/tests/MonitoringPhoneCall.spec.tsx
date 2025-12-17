@@ -277,8 +277,8 @@ describe('MonitoringPhoneCall', () => {
                 (bar) => parseInt((bar as HTMLElement).style.height) || 0,
             )
 
-            // center bar (index 2) has weight 1.0 and reacts immediately to volume changes
-            expect(barHeights[2]).toBeGreaterThan(5)
+            // center bar (index 2) reacts immediately to volume changes
+            expect(barHeights[2]).toBeGreaterThan(0)
         })
 
         it('should stop whispering when button is clicked', async () => {
@@ -330,8 +330,8 @@ describe('MonitoringPhoneCall', () => {
                 (bar) => parseInt((bar as HTMLElement).style.height) || 0,
             )
 
-            // center bar (index 2) has weight 1.0 and reacts immediately to volume changes
-            expect(barHeights[2]).toBe(5)
+            // center bar (index 2) reacts immediately to volume changes
+            expect(barHeights[2]).toBe(0)
         })
 
         it('should show error notification when start whispering request fails', async () => {
