@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
-import { useCallback, useMemo } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
+import { useMemo } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -9,7 +9,7 @@ import RequestTrialModal from 'pages/common/components/RequestTrialModal/Request
 import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
 import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
 
-import { BookDemoContainer } from '../components'
+import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from '../constants/shoppingAssistant'
 import { TrialEventType, TrialType } from '../types/ShoppingAssistant'
 import { logInTrialEventFromPaywall } from '../utils/eventLogger'
 
@@ -22,6 +22,7 @@ export type AiAgentCtasParams = {
     canBookDemo: boolean
     canNotifyAdmin: boolean
     canSeeTrial: boolean
+    canSeeSubscribeNow: boolean
     isAdmin: boolean
     learnMoreUrl: string
 
@@ -44,6 +45,15 @@ export type AiAgentCtasParams = {
     isOnUpdateOnboardingWizard?: boolean
 }
 
+export type AIAgentCTAOptions = {
+    label: string
+    href?: ComponentProps<typeof LinkButton>['href']
+    'data-candu-id'?: string
+    leadingIcon?: ComponentProps<typeof Button>['leadingIcon']
+    isDisabled?: ComponentProps<typeof Button>['isDisabled']
+    onClick?: () => void
+}
+
 export type AiAgentCtas = {
     ctas: ReactNode
     modals: ReactNode
@@ -54,16 +64,15 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
     const {
         canStartOnboarding,
         hasAutomate,
-        isDuringOrAfterTrial,
         canBookDemo,
         canNotifyAdmin,
         canSeeTrial,
+        canSeeSubscribeNow,
         isAdmin,
         learnMoreUrl,
         onOpenWizard,
         onOpenSubscribeModal,
         onOpenTrialUpgradeModal,
-        onOpenUpgradePlanModal,
         onOpenTrialRequestModal,
         onCloseTrialRequestModal,
         onCloseTrialFinishSetupModal,
@@ -72,181 +81,113 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         isOnUpdateOnboardingWizard,
     } = props
 
-    const openDemoPage = useCallback(() => {
-        window.open(EXTERNAL_URLS.BOOK_DEMO_AIAGENT, '_blank')
-    }, [])
-
-    const UpgradeNowSecondary = useMemo(
-        () => (
-            <>
-                <Button
-                    className={css.learnMoreButton}
-                    fillStyle="ghost"
-                    onClick={() => {
-                        logInTrialEventFromPaywall(
-                            TrialEventType.UpgradePlan,
-                            hasAutomate
-                                ? TrialType.ShoppingAssistant
-                                : TrialType.AiAgent,
-                        )
-                        onOpenUpgradePlanModal(false)
-                    }}
-                >
-                    Upgrade Now
-                </Button>
-            </>
-        ),
-        [onOpenUpgradePlanModal, hasAutomate],
-    )
-    const SetupAIAgentButton = useMemo(
-        () => (
-            <>
-                <Button
-                    intent="primary"
-                    size="medium"
-                    onClick={onOpenWizard}
-                    trailingIcon={undefined}
-                    className={css.upgradeButton}
-                >
-                    {isOnUpdateOnboardingWizard
-                        ? 'Continue Setup'
-                        : 'Set Up AI Agent'}
-                </Button>
-                <div data-candu-id="ai-agent-welcome-page" />
-            </>
-        ),
+    const SetupAIAgentAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: isOnUpdateOnboardingWizard
+                ? 'Continue Setup'
+                : 'Set Up AI Agent',
+            'data-candu-id': 'ai-agent-welcome-page',
+            onClick: onOpenWizard,
+        }),
         [onOpenWizard, isOnUpdateOnboardingWizard],
     )
 
-    const SubscribeNowPrimary = useMemo(
-        () => (
-            <Button
-                intent="primary"
-                size="medium"
-                className={css.upgradeButton}
-                onClick={() => {
-                    logInTrialEventFromPaywall(
-                        TrialEventType.UpgradePlan,
-                        TrialType.AiAgent,
-                    )
-                    onOpenSubscribeModal()
-                }}
-            >
-                Subscribe now
-            </Button>
-        ),
-        [onOpenSubscribeModal],
+    const SubscribeNowAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: hasAutomate ? 'Upgrade now' : 'Subscribe now',
+            onClick: () => {
+                logInTrialEventFromPaywall(
+                    TrialEventType.UpgradePlan,
+                    hasAutomate
+                        ? TrialType.ShoppingAssistant
+                        : TrialType.AiAgent,
+                )
+                onOpenSubscribeModal()
+            },
+        }),
+        [hasAutomate, onOpenSubscribeModal],
     )
 
-    const TryTrial = useMemo(
-        () => (
-            <Button
-                size="medium"
-                onClick={() => {
-                    logInTrialEventFromPaywall(
-                        TrialEventType.StartTrial,
-                        hasAutomate
-                            ? TrialType.ShoppingAssistant
-                            : TrialType.AiAgent,
-                    )
-                    onOpenTrialUpgradeModal()
-                }}
-                className={css.upgradeButton}
-            >
-                {hasAutomate ? 'Try for 14 days' : 'Try for free'}
-            </Button>
-        ),
+    const TryTrialAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: hasAutomate
+                ? `Try for ${SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS} days`
+                : 'Try for free',
+            onClick: () => {
+                logInTrialEventFromPaywall(
+                    TrialEventType.StartTrial,
+                    hasAutomate
+                        ? TrialType.ShoppingAssistant
+                        : TrialType.AiAgent,
+                )
+                onOpenTrialUpgradeModal()
+            },
+        }),
         [onOpenTrialUpgradeModal, hasAutomate],
     )
 
-    const NotifyAdmin = useMemo(
-        () => (
-            <Button
-                size="medium"
-                onClick={() => {
-                    logInTrialEventFromPaywall(
-                        TrialEventType.NotifyAdmin,
-                        hasAutomate
-                            ? TrialType.ShoppingAssistant
-                            : TrialType.AiAgent,
-                    )
-                    onOpenTrialRequestModal()
-                }}
-                className={!isNotifyAdminDisabled ? css.upgradeButton : ''}
-                leadingIcon="notifications_none"
-                isDisabled={isNotifyAdminDisabled}
-            >
-                {isNotifyAdminDisabled ? 'Admin notified' : 'Notify admin'}
-            </Button>
-        ),
+    const NotifyAdminAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: isNotifyAdminDisabled ? 'Admin notified' : 'Notify admin',
+            leadingIcon: 'notifications_none',
+            isDisabled: isNotifyAdminDisabled,
+            onClick: () => {
+                logInTrialEventFromPaywall(
+                    TrialEventType.NotifyAdmin,
+                    hasAutomate
+                        ? TrialType.ShoppingAssistant
+                        : TrialType.AiAgent,
+                )
+                onOpenTrialRequestModal()
+            },
+        }),
         [onOpenTrialRequestModal, isNotifyAdminDisabled, hasAutomate],
     )
 
-    const LearnMore = useMemo(
-        () => (
-            <LinkButton
-                className={css.learnMoreButton}
-                target="blank"
-                fillStyle="ghost"
-                href={learnMoreUrl}
-                onClick={() => {
-                    logInTrialEventFromPaywall(
-                        TrialEventType.Learn,
-                        TrialType.AiAgent,
-                    )
-                }}
-            >
-                Learn more
-            </LinkButton>
-        ),
-        [learnMoreUrl],
+    const LearnMoreAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: 'Learn more',
+            href: learnMoreUrl,
+            onClick: () => {
+                logInTrialEventFromPaywall(
+                    TrialEventType.Learn,
+                    hasAutomate
+                        ? TrialType.ShoppingAssistant
+                        : TrialType.AiAgent,
+                )
+            },
+        }),
+        [hasAutomate, learnMoreUrl],
     )
 
-    const SubscribeNowLink = useMemo(
-        () => (
-            <LinkButton
-                className={css.learnMoreButton}
-                fillStyle="ghost"
-                onClick={() => {
-                    logInTrialEventFromPaywall(
-                        TrialEventType.UpgradePlan,
-                        hasAutomate
-                            ? TrialType.ShoppingAssistant
-                            : TrialType.AiAgent,
-                    )
-                    onOpenSubscribeModal()
-                }}
-            >
-                Subscribe now
-            </LinkButton>
-        ),
-        [onOpenSubscribeModal, hasAutomate],
-    )
-
-    const StartAIAgentOnly = useMemo(
-        () => (
-            <Button
-                intent="secondary"
-                size="medium"
-                fillStyle="ghost"
-                onClick={() => {
-                    onOpenWizard()
-                }}
-            >
-                Start AI Agent only
-            </Button>
-        ),
+    const StartAIAgentAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: 'Start AI Agent only',
+            onClick: onOpenWizard,
+        }),
         [onOpenWizard],
     )
 
-    const handleBookDemo = useCallback(() => {
-        logInTrialEventFromPaywall(TrialEventType.Demo, TrialType.AiAgent)
-        openDemoPage()
-    }, [openDemoPage])
+    const BookDemoAction = useMemo(
+        (): AIAgentCTAOptions => ({
+            label: 'Book a demo',
+            onClick: () => {
+                logInTrialEventFromPaywall(
+                    TrialEventType.Demo,
+                    hasAutomate
+                        ? TrialType.ShoppingAssistant
+                        : TrialType.AiAgent,
+                )
 
-    const BookDemoComponent = useMemo(
-        () => <BookDemoContainer onBookDemo={handleBookDemo} />,
-        [handleBookDemo],
+                window.open(
+                    hasAutomate
+                        ? EXTERNAL_URLS.BOOK_DEMO_SHOPPING_ASSISTANT
+                        : EXTERNAL_URLS.BOOK_DEMO_AIAGENT,
+                    '_blank',
+                )
+            },
+        }),
+        [hasAutomate],
     )
 
     const modals = useMemo(
@@ -272,127 +213,154 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
     )
 
     const { ctas, afterCtas } = useMemo(() => {
-        // 1) onboarded, on Automate plan or trial expired
+        const actionsOrderedByPriority: (AIAgentCTAOptions | null)[] = []
+
+        // If onboarding is possible, anyone can start it and that's the only option we allow
         if (canStartOnboarding) {
-            return { ctas: SetupAIAgentButton }
-        }
-
-        // 2) During trial → Subscribe now + Learn more
-        if (isDuringOrAfterTrial) {
-            return {
-                ctas: (
-                    <>
-                        {SubscribeNowPrimary}
-                        {LearnMore}
-                    </>
-                ),
+            actionsOrderedByPriority.push(SetupAIAgentAction)
+        } else if (!isAdmin) {
+            // If the non-admin user cannot notify an admin, show nothing
+            if (!canNotifyAdmin) {
+                return { ctas: null }
             }
+
+            actionsOrderedByPriority.push(
+                NotifyAdminAction,
+                canBookDemo ? BookDemoAction : LearnMoreAction,
+                canBookDemo ? LearnMoreAction : null,
+            )
+        } else {
+            // Only admins can self serve, but not all merchants can
+            const selfService = canSeeSubscribeNow
+                ? SubscribeNowAction
+                : canSeeTrial
+                  ? TryTrialAction
+                  : null
+
+            // Not all merchants can book demos
+            const bookADemo = canBookDemo ? BookDemoAction : null
+
+            // Learn more is always shown for AI Agent, but for Shopping Assistant
+            // there isn't enough space, so it is only shown if the user can't
+            // both self serve and book a demo
+            const learnMore = !hasAutomate
+                ? LearnMoreAction
+                : (canSeeSubscribeNow || canSeeTrial) && canBookDemo
+                  ? null
+                  : LearnMoreAction
+
+            // If the merchant has AIAgent we need to let them through the paywall
+            const startAIAgent = hasAutomate ? StartAIAgentAction : null
+
+            actionsOrderedByPriority.push(
+                selfService,
+                bookADemo,
+                learnMore,
+                startAIAgent,
+            )
         }
 
-        // 3) Pro+ Admin: Try for free + Subscribe link + Book demo
-        if (!hasAutomate && canBookDemo && isAdmin) {
-            return {
-                ctas: (
-                    <>
-                        <div className={css.welcomePageButtons}>
-                            {TryTrial}
-                            {SubscribeNowLink}
-                        </div>
-                    </>
-                ),
-                afterCtas: (
-                    <div className={css.bookDemoButton}>
-                        {BookDemoComponent}
+        // Actions are ordered but can be null, filter the nulls out
+        const filteredActions: AIAgentCTAOptions[] =
+            actionsOrderedByPriority.filter(Boolean) as AIAgentCTAOptions[]
+
+        return {
+            ctas: (
+                <>
+                    <div className={css.ctaButtons}>
+                        {
+                            <>
+                                {filteredActions[0].href === undefined ? (
+                                    <Button
+                                        className={
+                                            filteredActions[0].isDisabled
+                                                ? ''
+                                                : css.primaryButton
+                                        }
+                                        intent="primary"
+                                        size="medium"
+                                        onClick={filteredActions[0].onClick}
+                                        leadingIcon={
+                                            filteredActions[0].leadingIcon
+                                        }
+                                        isDisabled={
+                                            filteredActions[0].isDisabled
+                                        }
+                                    >
+                                        {filteredActions[0].label}
+                                    </Button>
+                                ) : (
+                                    // Edge case - LearnMore as primary needs href
+                                    // Button doesn't support href
+                                    // LinkButton doesn't support leadingIcon
+                                    <LinkButton
+                                        className={css.primaryButton}
+                                        intent="primary"
+                                        size="medium"
+                                        onClick={filteredActions[0].onClick}
+                                        href={filteredActions[0].href}
+                                    >
+                                        {filteredActions[0].label}
+                                    </LinkButton>
+                                )}
+                                <div
+                                    data-candu-id={
+                                        filteredActions[0]['data-candu-id']
+                                    }
+                                />
+                            </>
+                        }
+                        {filteredActions[1] ? (
+                            <LinkButton
+                                className={css.secondaryButton}
+                                fillStyle="ghost"
+                                onClick={filteredActions[1].onClick}
+                                href={filteredActions[1].href}
+                                isDisabled={filteredActions[1].isDisabled}
+                            >
+                                {filteredActions[1].label}
+                            </LinkButton>
+                        ) : null}
                     </div>
-                ),
-            }
-        }
-
-        // 4) Pro+ Lead: Notify admin + Learn more + Book demo
-        if (!hasAutomate && canBookDemo && canNotifyAdmin) {
-            return {
-                ctas: (
-                    <>
-                        <div className={css.welcomePageButtons}>
-                            {NotifyAdmin}
-                            {LearnMore}
+                </>
+            ),
+            afterCtas: filteredActions[2] ? (
+                <>
+                    <div className={css.tertiaryButton}>
+                        <div className={css.tertiaryContainer}>
+                            <LinkButton
+                                className={css.tertiaryContainerButton}
+                                fillStyle="ghost"
+                                intent="secondary"
+                                size="medium"
+                                href={filteredActions[2].href}
+                                onClick={filteredActions[2].onClick}
+                                isDisabled={filteredActions[2].isDisabled}
+                            >
+                                <span className={css.tertiaryButtonText}>
+                                    {filteredActions[2].label}
+                                </span>
+                            </LinkButton>
                         </div>
-                    </>
-                ),
-                afterCtas: (
-                    <div className={css.bookDemoButton}>
-                        {BookDemoComponent}
                     </div>
-                ),
-            }
+                </>
+            ) : null,
         }
-
-        // 5) Basic/Starter Admin: Try for free + Learn more
-        if (!hasAutomate && canSeeTrial && isAdmin) {
-            return {
-                ctas: (
-                    <>
-                        {TryTrial}
-                        {LearnMore}
-                    </>
-                ),
-            }
-        }
-
-        // 6) Basic/Starter Lead: Notify admin + Learn more
-        if (!hasAutomate && canNotifyAdmin) {
-            return {
-                ctas: (
-                    <>
-                        {NotifyAdmin}
-                        {LearnMore}
-                    </>
-                ),
-            }
-        }
-
-        // 7) Has Automate plan, no onboarding and Admin: Try for 14 days + Learn more
-        if (canSeeTrial && isAdmin) {
-            return {
-                ctas: (
-                    <>
-                        {TryTrial}
-                        {UpgradeNowSecondary}
-                    </>
-                ),
-            }
-        }
-
-        // 8) Has Automate plan, no onboarding and Lead: Notify admin + Start AI Agent Only
-        if (canNotifyAdmin) {
-            return {
-                ctas: (
-                    <>
-                        {NotifyAdmin}
-                        {StartAIAgentOnly}
-                    </>
-                ),
-            }
-        }
-
-        return { ctas: null }
     }, [
         canStartOnboarding,
         hasAutomate,
-        isDuringOrAfterTrial,
         canBookDemo,
         canNotifyAdmin,
         canSeeTrial,
+        canSeeSubscribeNow,
         isAdmin,
-        SetupAIAgentButton,
-        SubscribeNowPrimary,
-        TryTrial,
-        NotifyAdmin,
-        LearnMore,
-        SubscribeNowLink,
-        BookDemoComponent,
-        StartAIAgentOnly,
-        UpgradeNowSecondary,
+        SetupAIAgentAction,
+        SubscribeNowAction,
+        TryTrialAction,
+        NotifyAdminAction,
+        LearnMoreAction,
+        BookDemoAction,
+        StartAIAgentAction,
     ])
 
     return { ctas, modals, afterCtas }

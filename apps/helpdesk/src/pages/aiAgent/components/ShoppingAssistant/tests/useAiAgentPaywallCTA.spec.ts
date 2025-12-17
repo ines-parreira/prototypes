@@ -20,6 +20,7 @@ const createDefaultProps = (overrides = {}): AiAgentCtasParams => ({
     canBookDemo: false,
     canNotifyAdmin: false,
     canSeeTrial: false,
+    canSeeSubscribeNow: false,
     isAdmin: false,
     learnMoreUrl: EXTERNAL_URLS.AI_AGENT_TRIAL_LEARN_MORE_PAYWALL,
     onOpenWizard: jest.fn(),
@@ -47,283 +48,55 @@ describe('useAiAgentCtas', () => {
         jest.clearAllMocks()
     })
 
-    it('returns SetupAIAgentButton for backward compatibility or automate plan', () => {
+    it('renders TrialTryModal with correct props', () => {
+        const newTrialUpgradePlanModal = { someModalProp: 'test' }
         const props = createDefaultProps({
-            canStartOnboarding: true,
+            trialModals: {
+                isTrialModalOpen: true,
+                newTrialUpgradePlanModal,
+                isTrialRequestModalOpen: false,
+                trialRequestModal: {},
+                isTrialFinishSetupModalOpen: false,
+                trialFinishSetupModal: {},
+            },
         })
 
         const { result } = renderHook(() => useAiAgentCtas(props))
 
-        const ctas = result.current.ctas as any
-        const button = ctas.props.children[0]
-        const canduElement = ctas.props.children[1]
-
-        expect(button.props.children).toBe('Set Up AI Agent')
-        expect(canduElement.props['data-candu-id']).toBe(
-            'ai-agent-welcome-page',
-        )
-        expect(result.current.afterCtas).toBeUndefined()
-    })
-
-    it('returns SetupAIAgentButton with "Continue Setup" text when in update onboarding wizard', () => {
-        const props = createDefaultProps({
-            canStartOnboarding: true,
-            isOnUpdateOnboardingWizard: true,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-
-        const ctas = result.current.ctas as any
-        const button = ctas.props.children[0]
-
-        expect(button.props.children).toBe('Continue Setup')
-        expect(result.current.afterCtas).toBeUndefined()
-    })
-
-    it('returns SubscribeNowPrimary and LearnMore buttons during trial', () => {
-        const props = createDefaultProps({
-            isDuringOrAfterTrial: true,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-
-        const ctas = result.current.ctas as any
-        const subscribeButton = ctas.props.children[0]
-        const learnMoreButton = ctas.props.children[1]
-
-        expect(subscribeButton.props.children).toBe('Subscribe now')
-        expect(learnMoreButton.props.children).toBe('Learn more')
-        expect(result.current.afterCtas).toBeUndefined()
-    })
-
-    it('returns TryForFree, SubscribeNowLink, and BookDemo for Pro+ Admin', () => {
-        const props = createDefaultProps({
-            canBookDemo: true,
-            isAdmin: true,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-
-        const ctas = result.current.ctas as any
-        const buttonsWrapper = ctas.props.children
-        const tryForFreeButton = buttonsWrapper.props.children[0]
-        const subscribeButton = buttonsWrapper.props.children[1]
-
-        expect(tryForFreeButton.props.children).toBe('Try for free')
-        expect(subscribeButton.props.children).toBe('Subscribe now')
-
-        const afterCtas = result.current.afterCtas as any
-        const bookDemoContainer = afterCtas.props.children
-        expect(bookDemoContainer.type.name).toBe('BookDemoContainer')
-    })
-
-    it('returns NotifyAdmin, LearnMore, and BookDemo for Pro+ Lead', () => {
-        const props = createDefaultProps({
-            canBookDemo: true,
-            canNotifyAdmin: true,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-
-        const ctas = result.current.ctas as any
-        const buttonsWrapper = ctas.props.children
-        const notifyAdminButton = buttonsWrapper.props.children[0]
-        const learnMoreButton = buttonsWrapper.props.children[1]
-
-        expect(notifyAdminButton.props.children).toBe('Notify admin')
-        expect(learnMoreButton.props.children).toBe('Learn more')
-
-        const afterCtas = result.current.afterCtas as any
-        const bookDemoContainer = afterCtas.props.children
-        expect(bookDemoContainer.type.name).toBe('BookDemoContainer')
-    })
-
-    it('returns NotifyAdmin with "Admin notified" text when notify admin is disabled', () => {
-        const props = createDefaultProps({
-            canBookDemo: true,
-            canNotifyAdmin: true,
-            isNotifyAdminDisabled: true,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-
-        const ctas = result.current.ctas as any
-        const buttonsWrapper = ctas.props.children
-        const notifyAdminButton = buttonsWrapper.props.children[0]
-
-        expect(notifyAdminButton.props.children).toBe('Admin notified')
-        expect(notifyAdminButton.props.isDisabled).toBe(true)
-    })
-
-    it('returns TryForFree and LearnMore for Basic/Starter Admin', () => {
-        const props = createDefaultProps({
-            canSeeTrial: true,
-            isAdmin: true,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-
-        const ctas = result.current.ctas as any
-        const tryForFreeButton = ctas.props.children[0]
-        const learnMoreButton = ctas.props.children[1]
-
-        expect(tryForFreeButton.props.children).toBe('Try for free')
-        expect(learnMoreButton.props.children).toBe('Learn more')
-        expect(result.current.afterCtas).toBeUndefined()
-    })
-
-    it('returns NotifyAdmin and LearnMore for Basic/Starter Lead', () => {
-        const props = createDefaultProps({
-            canNotifyAdmin: true,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-
-        const ctas = result.current.ctas as any
-        const notifyAdminButton = ctas.props.children[0]
-        const learnMoreButton = ctas.props.children[1]
-
-        expect(notifyAdminButton.props.children).toBe('Notify admin')
-        expect(learnMoreButton.props.children).toBe('Learn more')
-        expect(result.current.afterCtas).toBeUndefined()
-    })
-
-    it('calls onOpenWizard when SetupAIAgentButton is clicked', async () => {
-        const onOpenWizard = jest.fn()
-        const props = createDefaultProps({
-            canStartOnboarding: true,
-            onOpenWizard,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-        const ctas = result.current.ctas as any
-        const button = ctas.props.children[0]
-
-        await act(() => button.props.onClick())
-
-        expect(onOpenWizard).toHaveBeenCalled()
-    })
-
-    it('calls onOpenSubscribeModal when SubscribeNowPrimary is clicked', async () => {
-        const onOpenSubscribeModal = jest.fn()
-        const props = createDefaultProps({
-            isDuringOrAfterTrial: true,
-            onOpenSubscribeModal,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-        const ctas = result.current.ctas as any
-        const button = ctas.props.children[0]
-
-        await act(() => button.props.onClick())
-
-        expect(onOpenSubscribeModal).toHaveBeenCalled()
-    })
-
-    it('calls onOpenTrialUpgradeModal when TryForFree is clicked', async () => {
-        const onOpenTrialUpgradeModal = jest.fn()
-        const props = createDefaultProps({
-            canSeeTrial: true,
-            isAdmin: true,
-            onOpenTrialUpgradeModal,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-        const ctas = result.current.ctas as any
-        const button = ctas.props.children[0]
-
-        await act(() => button.props.onClick())
-
-        expect(onOpenTrialUpgradeModal).toHaveBeenCalled()
-    })
-
-    it('calls openDemoPage when BookADemo is clicked', async () => {
-        const mockWindowOpen = jest.fn()
-        global.window.open = mockWindowOpen
-
-        const props = createDefaultProps({
-            canBookDemo: true,
-            isAdmin: true,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-        const afterCtas = result.current.afterCtas as any
-
-        const button = afterCtas.props.children
-        await act(() => button.props.onBookDemo())
-
-        expect(mockWindowOpen).toHaveBeenCalledWith(
-            'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
-            '_blank',
-        )
-    })
-
-    it('calls onOpenTrialRequestModal when NotifyAdmin is clicked', async () => {
-        const onOpenTrialRequestModal = jest.fn()
-        const props = createDefaultProps({
-            canNotifyAdmin: true,
-            onOpenTrialRequestModal,
-        })
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-        const ctas = result.current.ctas as any
-        const button = ctas.props.children[0]
-
-        await act(() => button.props.onClick())
-
-        expect(onOpenTrialRequestModal).toHaveBeenCalled()
-    })
-
-    it('uses the correct learn more URL based on trial type', () => {
-        const aiAgentUrl = EXTERNAL_URLS.AI_AGENT_TRIAL_LEARN_MORE_PAYWALL
-        const shoppingAssistantUrl =
-            EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE_PAYWALL
-
-        // Test with AI Agent URL
-        const propsWithAiAgentUrl = createDefaultProps({
-            canNotifyAdmin: true,
-            learnMoreUrl: aiAgentUrl,
-        })
-
-        const { result: resultWithAiAgentUrl } = renderHook(() =>
-            useAiAgentCtas(propsWithAiAgentUrl),
-        )
-        const ctasWithAiAgentUrl = resultWithAiAgentUrl.current.ctas as any
-        const learnMoreButtonWithAiAgentUrl =
-            ctasWithAiAgentUrl.props.children[1]
-
-        expect(learnMoreButtonWithAiAgentUrl.props.href).toBe(aiAgentUrl)
-
-        // Test with Shopping Assistant URL
-        const propsWithShoppingAssistantUrl = createDefaultProps({
-            canNotifyAdmin: true,
-            learnMoreUrl: shoppingAssistantUrl,
-        })
-
-        const { result: resultWithShoppingAssistantUrl } = renderHook(() =>
-            useAiAgentCtas(propsWithShoppingAssistantUrl),
-        )
-        const ctasWithShoppingAssistantUrl = resultWithShoppingAssistantUrl
-            .current.ctas as any
-        const learnMoreButtonWithShoppingAssistantUrl =
-            ctasWithShoppingAssistantUrl.props.children[1]
-
-        expect(learnMoreButtonWithShoppingAssistantUrl.props.href).toBe(
-            shoppingAssistantUrl,
-        )
-    })
-
-    it('returns null ctas when no conditions match', () => {
-        const props = createDefaultProps()
-
-        const { result } = renderHook(() => useAiAgentCtas(props))
-
-        expect(result.current.ctas).toBeNull()
-        expect(result.current.afterCtas).toBeUndefined()
-
-        // Check that modals are still rendered
         const modals = result.current.modals as any
-        expect(modals.props.children.length).toBe(3)
+        const TrialTryModalComponent = modals.props.children[0]
+
+        expect(TrialTryModalComponent.type.name).toBe('TrialTryModal')
+        expect(TrialTryModalComponent.props.isOpen).toBe(true)
+        expect(TrialTryModalComponent.props.someModalProp).toBe('test')
+    })
+
+    it('renders RequestTrialModal with correct props', () => {
+        const onCloseTrialRequestModal = jest.fn()
+        const trialRequestModal = { someModalProp: 'test' }
+        const props = createDefaultProps({
+            onCloseTrialRequestModal,
+            trialModals: {
+                isTrialModalOpen: false,
+                newTrialUpgradePlanModal: {},
+                isTrialRequestModalOpen: true,
+                trialRequestModal,
+                isTrialFinishSetupModalOpen: false,
+                trialFinishSetupModal: {},
+            },
+        })
+
+        const { result } = renderHook(() => useAiAgentCtas(props))
+
+        const modals = result.current.modals as any
+        const RequestTrialModalComponent = modals.props.children[1]
+
+        expect(RequestTrialModalComponent.type.name).toBe('RequestTrialModal')
+        expect(RequestTrialModalComponent.props.isOpen).toBe(true)
+        expect(RequestTrialModalComponent.props.onClose).toBe(
+            onCloseTrialRequestModal,
+        )
+        expect(RequestTrialModalComponent.props.someModalProp).toBe('test')
     })
 
     it('renders TrialFinishSetupModal with correct props', () => {
@@ -356,78 +129,619 @@ describe('useAiAgentCtas', () => {
         expect(trialFinishSetupModalComponent.props.someModalProp).toBe('test')
     })
 
-    it('returns TryTrial and Upgrade Now for Has Automate plan Admin (Case 7)', async () => {
-        const onOpenTrialUpgradeModal = jest.fn()
-        const onOpenUpgradePlanModal = jest.fn()
-        const props = createDefaultProps({
-            hasAutomate: true,
-            canSeeTrial: true,
-            isAdmin: true,
-            onOpenTrialUpgradeModal,
-            onOpenUpgradePlanModal,
+    it.each([true, false])(
+        'returns SetupAIAgentAction if user can start onboarding [isOnUpdateOnboardingWizard: %s]',
+        async (isOnUpdateOnboardingWizard: boolean) => {
+            const onOpenWizard = jest.fn()
+            const props = createDefaultProps({
+                canStartOnboarding: true,
+                isOnUpdateOnboardingWizard,
+                onOpenWizard,
+            })
+
+            const { result } = renderHook(() => useAiAgentCtas(props))
+            const {
+                primaryButtonText,
+                primaryButtonOnClick,
+                secondaryButton,
+                tertiaryButton,
+            } = extract(result)
+
+            expect(primaryButtonText).toBe(
+                isOnUpdateOnboardingWizard
+                    ? 'Continue Setup'
+                    : 'Set Up AI Agent',
+            )
+
+            await act(() => primaryButtonOnClick())
+            expect(onOpenWizard).toHaveBeenCalled()
+
+            expect(secondaryButton).toBeUndefined()
+
+            expect(tertiaryButton).toBeUndefined()
+        },
+    )
+
+    describe('as a non-admin user', () => {
+        it('returns nothing if the user cannot notify an admin', () => {
+            const props = createDefaultProps({})
+
+            const { result } = renderHook(() => useAiAgentCtas(props))
+            const { primaryButton, secondaryButton, tertiaryButton } =
+                extract(result)
+
+            expect(primaryButton).toBeUndefined()
+
+            expect(secondaryButton).toBeUndefined()
+
+            expect(tertiaryButton).toBeUndefined()
         })
 
-        const { result } = renderHook(() => useAiAgentCtas(props))
+        describe.each([true, false])(
+            'when the merchant has [AIAgent: %s]',
+            (hasAutomate: boolean) => {
+                it.each([true, false])(
+                    'returns NotifyAdminAction and LearnMoreAction if the user can notify an admin but cant book a demo [isNotifyAdminDisabled: %s]',
+                    async (isNotifyAdminDisabled: boolean) => {
+                        const onOpenTrialRequestModal = jest.fn()
+                        const props = createDefaultProps({
+                            canNotifyAdmin: true,
+                            learnMoreUrl: 'http://foo.bar.com/',
+                            hasAutomate,
+                            isNotifyAdminDisabled,
+                            onOpenTrialRequestModal,
+                        })
 
-        const ctas = result.current.ctas as any
-        const tryTrialButton = ctas.props.children[0]
-        const upgradeNowWrapper = ctas.props.children[1]
-        const upgradeNowButton = upgradeNowWrapper.props.children
+                        const { result } = renderHook(() =>
+                            useAiAgentCtas(props),
+                        )
+                        const {
+                            primaryButton,
+                            primaryButtonText,
+                            primaryButtonOnClick,
+                            secondaryButtonText,
+                            secondaryButtonOnClick,
+                            secondaryButtonHref,
+                            tertiaryButton,
+                        } = extract(result)
 
-        expect(tryTrialButton.props.children).toBe('Try for 14 days')
-        expect(upgradeNowButton.props.children).toBe('Upgrade Now')
-        expect(result.current.afterCtas).toBeUndefined()
+                        expect(primaryButtonText).toBe(
+                            isNotifyAdminDisabled
+                                ? 'Admin notified'
+                                : 'Notify admin',
+                        )
 
-        // click try trial button to test events on primary CTA
-        await act(() => tryTrialButton.props.onClick())
+                        if (isNotifyAdminDisabled) {
+                            expect(primaryButton.isDisabled).toBeTruthy()
+                        } else {
+                            expect(primaryButton.isDisabled).toBeFalsy()
 
-        expect(onOpenTrialUpgradeModal).toHaveBeenCalled()
-        expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
-            TrialEventType.StartTrial,
-            TrialType.ShoppingAssistant,
-        )
+                            await act(() => primaryButtonOnClick())
 
-        await act(() => upgradeNowButton.props.onClick())
+                            expect(onOpenTrialRequestModal).toHaveBeenCalled()
+                            expect(
+                                mockLogInTrialEventFromPaywall,
+                            ).toHaveBeenCalledWith(
+                                TrialEventType.NotifyAdmin,
+                                hasAutomate
+                                    ? TrialType.ShoppingAssistant
+                                    : TrialType.AiAgent,
+                            )
+                        }
 
-        expect(onOpenUpgradePlanModal).toHaveBeenCalledWith(false)
-        expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
-            TrialEventType.UpgradePlan,
-            TrialType.ShoppingAssistant,
+                        expect(secondaryButtonText).toBe('Learn more')
+                        expect(secondaryButtonHref).toBe('http://foo.bar.com/')
+
+                        await act(() => secondaryButtonOnClick())
+
+                        expect(
+                            mockLogInTrialEventFromPaywall,
+                        ).toHaveBeenCalledWith(
+                            TrialEventType.Learn,
+                            hasAutomate
+                                ? TrialType.ShoppingAssistant
+                                : TrialType.AiAgent,
+                        )
+
+                        expect(tertiaryButton).toBeUndefined()
+                    },
+                )
+
+                it.each([true, false])(
+                    'returns NotifyAdminAction, BookADemo, and LearnMoreAction if the user can notify an admin and can book a demo [isNotifyAdminDisabled: %s]',
+                    async (isNotifyAdminDisabled: boolean) => {
+                        const mockWindowOpen = jest.fn()
+                        global.window.open = mockWindowOpen
+
+                        const onOpenTrialRequestModal = jest.fn()
+
+                        const props = createDefaultProps({
+                            canNotifyAdmin: true,
+                            canBookDemo: true,
+                            learnMoreUrl: 'http://foo.bar.com/',
+                            hasAutomate,
+                            isNotifyAdminDisabled,
+                            onOpenTrialRequestModal,
+                        })
+
+                        const { result } = renderHook(() =>
+                            useAiAgentCtas(props),
+                        )
+                        const {
+                            primaryButton,
+                            primaryButtonText,
+                            primaryButtonOnClick,
+                            secondaryButtonText,
+                            secondaryButtonOnClick,
+                            tertiaryButtonText,
+                            tertiaryButtonOnClick,
+                            tertiaryButtonHref,
+                        } = extract(result)
+
+                        expect(primaryButtonText).toBe(
+                            isNotifyAdminDisabled
+                                ? 'Admin notified'
+                                : 'Notify admin',
+                        )
+
+                        if (isNotifyAdminDisabled) {
+                            expect(primaryButton.isDisabled).toBeTruthy()
+                        } else {
+                            expect(primaryButton.isDisabled).toBeFalsy()
+
+                            await act(() => primaryButtonOnClick())
+
+                            expect(onOpenTrialRequestModal).toHaveBeenCalled()
+                            expect(
+                                mockLogInTrialEventFromPaywall,
+                            ).toHaveBeenCalledWith(
+                                TrialEventType.NotifyAdmin,
+                                hasAutomate
+                                    ? TrialType.ShoppingAssistant
+                                    : TrialType.AiAgent,
+                            )
+                        }
+
+                        expect(secondaryButtonText).toBe('Book a demo')
+
+                        await act(() => secondaryButtonOnClick())
+
+                        expect(mockWindowOpen).toHaveBeenCalledWith(
+                            hasAutomate
+                                ? EXTERNAL_URLS.BOOK_DEMO_SHOPPING_ASSISTANT
+                                : EXTERNAL_URLS.BOOK_DEMO_AIAGENT,
+                            '_blank',
+                        )
+                        expect(
+                            mockLogInTrialEventFromPaywall,
+                        ).toHaveBeenCalledWith(
+                            TrialEventType.Demo,
+                            hasAutomate
+                                ? TrialType.ShoppingAssistant
+                                : TrialType.AiAgent,
+                        )
+
+                        expect(tertiaryButtonText).toBe('Learn more')
+                        expect(tertiaryButtonHref).toBe('http://foo.bar.com/')
+
+                        await act(() => tertiaryButtonOnClick())
+
+                        expect(
+                            mockLogInTrialEventFromPaywall,
+                        ).toHaveBeenCalledWith(
+                            TrialEventType.Learn,
+                            hasAutomate
+                                ? TrialType.ShoppingAssistant
+                                : TrialType.AiAgent,
+                        )
+                    },
+                )
+            },
         )
     })
 
-    it('returns NotifyAdmin and StartAIAgentOnly for Has Automate plan Lead (Case 8)', async () => {
-        const onOpenWizard = jest.fn()
-        const onOpenTrialRequestModal = jest.fn()
-        const props = createDefaultProps({
-            hasAutomate: true,
-            canNotifyAdmin: true,
-            onOpenTrialRequestModal,
-            onOpenWizard,
+    describe('as an admin user', () => {
+        it('returns LearnMoreAction if the user has no available actions', async () => {
+            const props = createDefaultProps({
+                isAdmin: true,
+                canSeeTrial: false,
+                canSeeSubscribeNow: false,
+                canBookDemo: false,
+                learnMoreUrl: 'http://foo.bar.com/',
+            })
+
+            const { result } = renderHook(() => useAiAgentCtas(props))
+            const {
+                primaryButtonText,
+                primaryButtonHref,
+                primaryButtonOnClick,
+                secondaryButton,
+                tertiaryButton,
+            } = extract(result)
+
+            expect(primaryButtonText).toBe('Learn more')
+            expect(primaryButtonHref).toBe('http://foo.bar.com/')
+
+            await act(() => primaryButtonOnClick())
+
+            expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
+                TrialEventType.Learn,
+                TrialType.AiAgent,
+            )
+
+            expect(secondaryButton).toBeUndefined()
+            expect(tertiaryButton).toBeUndefined()
         })
 
-        const { result } = renderHook(() => useAiAgentCtas(props))
+        describe('when the merchant does not have AI Agent', () => {
+            it.each([true, false])(
+                'returns SubscribeNowAction if the user can see subscribe now CTA [canBookDemo: %s]',
+                async (canBookDemo: boolean) => {
+                    const mockWindowOpen = jest.fn()
+                    global.window.open = mockWindowOpen
 
-        const ctas = result.current.ctas as any
-        const notifyAdminButton = ctas.props.children[0]
-        const startAiAgentButton = ctas.props.children[1]
+                    const onOpenSubscribeModal = jest.fn()
+                    const onOpenWizard = jest.fn()
 
-        expect(notifyAdminButton.props.children).toBe('Notify admin')
-        expect(startAiAgentButton.props.children).toBe('Start AI Agent only')
-        expect(result.current.afterCtas).toBeUndefined()
+                    const props = createDefaultProps({
+                        isAdmin: true,
+                        canSeeSubscribeNow: true,
+                        canBookDemo,
+                        learnMoreUrl: 'http://foo.bar.com/',
+                        onOpenSubscribeModal,
+                        onOpenWizard,
+                    })
 
-        // click notify admin button to test events on primary CTA
-        await act(() => notifyAdminButton.props.onClick())
+                    const { result } = renderHook(() => useAiAgentCtas(props))
+                    const {
+                        primaryButtonText,
+                        primaryButtonOnClick,
+                        secondaryButtonText,
+                        secondaryButtonOnClick,
+                        secondaryButtonHref,
+                        tertiaryButton,
+                        tertiaryButtonText,
+                        tertiaryButtonOnClick,
+                        tertiaryButtonHref,
+                    } = extract(result)
 
-        expect(onOpenTrialRequestModal).toHaveBeenCalled()
-        expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
-            TrialEventType.NotifyAdmin,
-            TrialType.ShoppingAssistant,
-        )
+                    expect(primaryButtonText).toBe('Subscribe now')
 
-        // click start AI Agent button to test events on secondary CTA
-        await act(() => startAiAgentButton.props.onClick())
+                    await act(() => primaryButtonOnClick())
 
-        expect(onOpenWizard).toHaveBeenCalled()
+                    expect(onOpenSubscribeModal).toHaveBeenCalled()
+                    expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
+                        TrialEventType.UpgradePlan,
+                        TrialType.AiAgent,
+                    )
+
+                    if (canBookDemo) {
+                        expect(secondaryButtonText).toBe('Book a demo')
+
+                        await act(() => secondaryButtonOnClick())
+
+                        expect(mockWindowOpen).toHaveBeenCalledWith(
+                            'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
+                            '_blank',
+                        )
+                        expect(
+                            mockLogInTrialEventFromPaywall,
+                        ).toHaveBeenCalledWith(
+                            TrialEventType.Demo,
+                            TrialType.AiAgent,
+                        )
+                    } else {
+                        expect(secondaryButtonText).toBe('Learn more')
+                        expect(secondaryButtonHref).toBe('http://foo.bar.com/')
+
+                        await act(() => secondaryButtonOnClick())
+
+                        expect(
+                            mockLogInTrialEventFromPaywall,
+                        ).toHaveBeenCalledWith(
+                            TrialEventType.Learn,
+                            TrialType.AiAgent,
+                        )
+                    }
+
+                    if (canBookDemo) {
+                        expect(tertiaryButtonText).toBe('Learn more')
+                        expect(tertiaryButtonHref).toBe('http://foo.bar.com/')
+
+                        await act(() => tertiaryButtonOnClick())
+
+                        expect(
+                            mockLogInTrialEventFromPaywall,
+                        ).toHaveBeenCalledWith(
+                            TrialEventType.Learn,
+                            TrialType.AiAgent,
+                        )
+                    } else {
+                        expect(tertiaryButton).toBeUndefined()
+                    }
+                },
+            )
+
+            it.each([true, false])(
+                'returns TryTrialAction is the user can see try trial CTA [canBookDemo: %s]',
+                async (canBookDemo: boolean) => {
+                    const mockWindowOpen = jest.fn()
+                    global.window.open = mockWindowOpen
+
+                    const onOpenTrialUpgradeModal = jest.fn()
+                    const onOpenWizard = jest.fn()
+
+                    const props = createDefaultProps({
+                        isAdmin: true,
+                        canSeeTrial: true,
+                        canBookDemo,
+                        learnMoreUrl: 'http://foo.bar.com/',
+                        onOpenTrialUpgradeModal,
+                        onOpenWizard,
+                    })
+
+                    const { result } = renderHook(() => useAiAgentCtas(props))
+                    const {
+                        primaryButtonText,
+                        primaryButtonOnClick,
+                        secondaryButtonText,
+                        secondaryButtonOnClick,
+                        secondaryButtonHref,
+                        tertiaryButton,
+                        tertiaryButtonText,
+                        tertiaryButtonOnClick,
+                        tertiaryButtonHref,
+                    } = extract(result)
+
+                    expect(primaryButtonText).toBe('Try for free')
+
+                    await act(() => primaryButtonOnClick())
+
+                    expect(onOpenTrialUpgradeModal).toHaveBeenCalled()
+                    expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
+                        TrialEventType.StartTrial,
+                        TrialType.AiAgent,
+                    )
+
+                    if (canBookDemo) {
+                        expect(secondaryButtonText).toBe('Book a demo')
+
+                        await act(() => secondaryButtonOnClick())
+
+                        expect(mockWindowOpen).toHaveBeenCalledWith(
+                            'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_paywall',
+                            '_blank',
+                        )
+                        expect(
+                            mockLogInTrialEventFromPaywall,
+                        ).toHaveBeenCalledWith(
+                            TrialEventType.Demo,
+                            TrialType.AiAgent,
+                        )
+                    } else {
+                        expect(secondaryButtonText).toBe('Learn more')
+                        expect(secondaryButtonHref).toBe('http://foo.bar.com/')
+
+                        await act(() => secondaryButtonOnClick())
+
+                        expect(
+                            mockLogInTrialEventFromPaywall,
+                        ).toHaveBeenCalledWith(
+                            TrialEventType.Learn,
+                            TrialType.AiAgent,
+                        )
+                    }
+
+                    if (canBookDemo) {
+                        expect(tertiaryButtonText).toBe('Learn more')
+                        expect(tertiaryButtonHref).toBe('http://foo.bar.com/')
+
+                        await act(() => tertiaryButtonOnClick())
+
+                        expect(
+                            mockLogInTrialEventFromPaywall,
+                        ).toHaveBeenCalledWith(
+                            TrialEventType.Learn,
+                            TrialType.AiAgent,
+                        )
+                    } else {
+                        expect(tertiaryButton).toBeUndefined()
+                    }
+                },
+            )
+        })
+
+        describe('when the merchant has AI Agent', () => {
+            it.each([true, false])(
+                'returns SubscribeNowAction if the user can see subscribe now CTA [canBookDemo: %s]',
+                async (canBookDemo: boolean) => {
+                    const mockWindowOpen = jest.fn()
+                    global.window.open = mockWindowOpen
+
+                    const onOpenSubscribeModal = jest.fn()
+                    const onOpenWizard = jest.fn()
+
+                    const props = createDefaultProps({
+                        isAdmin: true,
+                        hasAutomate: true,
+                        canSeeSubscribeNow: true,
+                        canBookDemo,
+                        learnMoreUrl: 'http://foo.bar.com/',
+                        onOpenSubscribeModal,
+                        onOpenWizard,
+                    })
+
+                    const { result } = renderHook(() => useAiAgentCtas(props))
+                    const {
+                        primaryButtonText,
+                        primaryButtonOnClick,
+                        secondaryButtonText,
+                        secondaryButtonOnClick,
+                        secondaryButtonHref,
+                        tertiaryButtonText,
+                        tertiaryButtonOnClick,
+                    } = extract(result)
+
+                    expect(primaryButtonText).toBe('Upgrade now')
+
+                    await act(() => primaryButtonOnClick())
+
+                    expect(onOpenSubscribeModal).toHaveBeenCalled()
+                    expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
+                        TrialEventType.UpgradePlan,
+                        TrialType.ShoppingAssistant,
+                    )
+
+                    if (canBookDemo) {
+                        expect(secondaryButtonText).toBe('Book a demo')
+
+                        await act(() => secondaryButtonOnClick())
+
+                        expect(mockWindowOpen).toHaveBeenCalledWith(
+                            'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
+                            '_blank',
+                        )
+                        expect(
+                            mockLogInTrialEventFromPaywall,
+                        ).toHaveBeenCalledWith(
+                            TrialEventType.Demo,
+                            TrialType.ShoppingAssistant,
+                        )
+                    } else {
+                        expect(secondaryButtonText).toBe('Learn more')
+                        expect(secondaryButtonHref).toBe('http://foo.bar.com/')
+
+                        await act(() => secondaryButtonOnClick())
+
+                        expect(
+                            mockLogInTrialEventFromPaywall,
+                        ).toHaveBeenCalledWith(
+                            TrialEventType.Learn,
+                            TrialType.ShoppingAssistant,
+                        )
+                    }
+
+                    expect(tertiaryButtonText).toBe('Start AI Agent only')
+
+                    await act(() => tertiaryButtonOnClick())
+
+                    expect(onOpenWizard).toHaveBeenCalled()
+                },
+            )
+
+            it.each([true, false])(
+                'returns TryTrialAction is the user can see try trial CTA [canBookDemo: %s]',
+                async (canBookDemo: boolean) => {
+                    const mockWindowOpen = jest.fn()
+                    global.window.open = mockWindowOpen
+
+                    const onOpenTrialUpgradeModal = jest.fn()
+                    const onOpenWizard = jest.fn()
+
+                    const props = createDefaultProps({
+                        isAdmin: true,
+                        hasAutomate: true,
+                        canSeeTrial: true,
+                        canBookDemo,
+                        learnMoreUrl: 'http://foo.bar.com/',
+                        onOpenTrialUpgradeModal,
+                        onOpenWizard,
+                    })
+
+                    const { result } = renderHook(() => useAiAgentCtas(props))
+                    const {
+                        primaryButtonText,
+                        primaryButtonOnClick,
+                        secondaryButtonText,
+                        secondaryButtonOnClick,
+                        secondaryButtonHref,
+                        tertiaryButtonText,
+                        tertiaryButtonOnClick,
+                    } = extract(result)
+
+                    expect(primaryButtonText).toBe('Try for 14 days')
+
+                    await act(() => primaryButtonOnClick())
+
+                    expect(onOpenTrialUpgradeModal).toHaveBeenCalled()
+                    expect(mockLogInTrialEventFromPaywall).toHaveBeenCalledWith(
+                        TrialEventType.StartTrial,
+                        TrialType.ShoppingAssistant,
+                    )
+
+                    if (canBookDemo) {
+                        expect(secondaryButtonText).toBe('Book a demo')
+
+                        await act(() => secondaryButtonOnClick())
+
+                        expect(mockWindowOpen).toHaveBeenCalledWith(
+                            'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=shop_assistant_paywall',
+                            '_blank',
+                        )
+                        expect(
+                            mockLogInTrialEventFromPaywall,
+                        ).toHaveBeenCalledWith(
+                            TrialEventType.Demo,
+                            TrialType.ShoppingAssistant,
+                        )
+                    } else {
+                        expect(secondaryButtonText).toBe('Learn more')
+                        expect(secondaryButtonHref).toBe('http://foo.bar.com/')
+
+                        await act(() => secondaryButtonOnClick())
+
+                        expect(
+                            mockLogInTrialEventFromPaywall,
+                        ).toHaveBeenCalledWith(
+                            TrialEventType.Learn,
+                            TrialType.ShoppingAssistant,
+                        )
+                    }
+
+                    expect(tertiaryButtonText).toBe('Start AI Agent only')
+
+                    await act(() => tertiaryButtonOnClick())
+
+                    expect(onOpenWizard).toHaveBeenCalled()
+                },
+            )
+        })
     })
 })
+
+function extract(result: any) {
+    const ctas = result.current.ctas as any
+    const afterctas = result.current.afterCtas as any
+
+    const primaryButton =
+        ctas?.props.children.props.children[0]?.props.children[0].props
+    const primaryButtonText = primaryButton?.children
+    const primaryButtonOnClick = primaryButton?.onClick
+    const primaryButtonHref = primaryButton?.href
+
+    const secondaryButton = ctas?.props.children.props.children[1]?.props
+    const secondaryButtonText = secondaryButton?.children
+    const secondaryButtonOnClick = secondaryButton?.onClick
+    const secondaryButtonHref = secondaryButton?.href
+
+    const tertiaryButton =
+        afterctas?.props.children.props.children.props.children.props
+    const tertiaryButtonText = tertiaryButton?.children.props.children
+    const tertiaryButtonOnClick = tertiaryButton?.onClick
+    const tertiaryButtonHref = tertiaryButton?.href
+
+    return {
+        primaryButton,
+        primaryButtonText,
+        primaryButtonOnClick,
+        primaryButtonHref,
+        secondaryButton,
+        secondaryButtonText,
+        secondaryButtonOnClick,
+        secondaryButtonHref,
+        tertiaryButton,
+        tertiaryButtonText,
+        tertiaryButtonOnClick,
+        tertiaryButtonHref,
+    }
+}

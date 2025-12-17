@@ -1,23 +1,41 @@
 :local {
-    .upgradeButton {
-        background-color: var(--neutral-grey-6) !important; // legacy
-        color: var(--neutral-grey-0) !important; // legacy
-        border-color: var(--neutral-grey-6) !important; // legacy
+    .ctaButtons {
+        display: flex;
+        gap: var(--layout-spacing-xs);
     }
 
-    .learnMoreButton {
-        color: var(--neutral-grey-5) !important; // legacy
+    .primaryButton {
+        background-color: var(--neutral-grey-6) !important;
+        color: var(--neutral-grey-0) !important;
+        border-color: var(--neutral-grey-6) !important;
     }
 
-    .bookDemoButton {
+    .secondaryButton {
+        color: var(--neutral-grey-5) !important;
+    }
+
+    .tertiaryContainer {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+
+        .secondaryText {
+            color: var(--neutral-grey-5);
+        }
+
+        .tertiaryContainerButton {
+            padding: var(--layout-spacing-xxs);
+        }
+    }
+
+    .tertiaryButton {
         flex: 0 0 100%;
         margin-top: var(--layout-spacing-xs);
         margin-left: -5px;
     }
 
-    .welcomePageButtons {
-        display: flex;
-        gap: var(--layout-spacing-xs);
+    .tertiaryButtonText {
+        color: var(--neutral-grey-6);
     }
 }
 

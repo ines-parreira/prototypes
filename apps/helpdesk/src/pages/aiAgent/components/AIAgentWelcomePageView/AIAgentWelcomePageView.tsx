@@ -301,6 +301,7 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
     const canBookDemo = trialAccess.canBookDemo
     const canNotifyAdmin = trialAccess.canNotifyAdmin
     const canSeeTrial = trialAccess.canSeeTrialCTA
+    const canSeeSubscribeNow = trialAccess.canSeeSubscribeNowCTA
 
     const learnMoreUrl = isAiAgentTrial
         ? EXTERNAL_URLS.AI_AGENT_TRIAL_LEARN_MORE_PAYWALL
@@ -313,6 +314,7 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         canBookDemo,
         canNotifyAdmin,
         canSeeTrial,
+        canSeeSubscribeNow,
         isAdmin,
         learnMoreUrl,
 

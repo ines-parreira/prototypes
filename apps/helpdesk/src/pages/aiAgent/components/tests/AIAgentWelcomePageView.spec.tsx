@@ -150,10 +150,6 @@ const mockUpgradePlanModal =
     require('pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal')
         .UpgradePlanModal as jest.Mock
 
-jest.mock('../ShoppingAssistant/components', () => ({
-    BookDemoContainer: jest.fn(() => null),
-}))
-
 // Mock window.open
 Object.defineProperty(window, 'open', {
     value: jest.fn(),
@@ -513,6 +509,24 @@ describe('<AIAgentWelcomePageView />', () => {
             expect(
                 screen.getByText('Set Up AI Agent', {
                     selector: 'button span',
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('should show a book a demo CTA', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                currentAutomatePlan: undefined,
+                isOnboarded: false,
+                canBookDemo: true,
+                isAdminUser: true,
+            })
+
+            renderWithProvider()
+
+            expect(
+                screen.getByRole('button', {
+                    name: 'Book a demo',
                 }),
             ).toBeInTheDocument()
         })
