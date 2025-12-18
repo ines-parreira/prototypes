@@ -57,6 +57,7 @@ type Props = {
     hideFooterButtons?: boolean
     hideFooterAlerts?: boolean
     onValuesChange?: (fields: GuidanceFormFields) => void
+    showUnsavedChangesPrompt?: boolean
 }
 
 export const GuidanceForm = ({
@@ -73,6 +74,7 @@ export const GuidanceForm = ({
     hideFooterButtons,
     hideFooterAlerts,
     onValuesChange,
+    showUnsavedChangesPrompt = true,
 }: Props) => {
     const areActionsInGuidanceEnabled = useFlag<boolean>(
         FeatureFlagKey.AiAgentSupportActionInGuidance,
@@ -267,7 +269,7 @@ export const GuidanceForm = ({
 
     return (
         <>
-            {!isKnowledgeHubEnabled && (
+            {showUnsavedChangesPrompt && !isKnowledgeHubEnabled && (
                 <UnsavedChangesPrompt
                     onSave={onSave}
                     when={isFormDirty && !isLoading}

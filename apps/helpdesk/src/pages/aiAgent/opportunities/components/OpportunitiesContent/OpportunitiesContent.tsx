@@ -415,6 +415,7 @@ export const OpportunitiesContent = ({
                                 hideHeader
                                 hideFooterAlerts
                                 hideFooterButtons
+                                showUnsavedChangesPrompt={false}
                             />
                         </div>
                     </div>
