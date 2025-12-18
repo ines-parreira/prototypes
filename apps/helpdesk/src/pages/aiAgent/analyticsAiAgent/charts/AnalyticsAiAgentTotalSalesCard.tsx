@@ -1,21 +1,19 @@
 import { TrendCard } from '@repo/reporting'
 
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import { useTotalSalesMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useTotalSalesMetric'
+import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 
 export const AnalyticsAiAgentTotalSalesCard = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const trend = {
-        isFetching: false,
-        isError: false,
-        data: {
-            label: 'Total sales',
-            value: 7800,
-            prevValue: 7650,
-        },
-    }
+    const { cleanStatsFilters } = useStatsFilters()
+    const trendTooltipData = formatPreviousPeriod(cleanStatsFilters?.period)
+
+    const trend = useTotalSalesMetric()
 
     return (
         <TrendCard
@@ -24,6 +22,8 @@ export const AnalyticsAiAgentTotalSalesCard = ({
             interpretAs="more-is-better"
             withBorder
             withFixedWidth={false}
+            isLoading={trend.isFetching}
+            trendBadgeTooltipData={{ period: trendTooltipData }}
             hint={{
                 title: 'Total sales',
                 caption:

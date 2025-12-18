@@ -1,4 +1,5 @@
 import { FilterKey } from 'domains/reporting/models/stat/types'
+import { fetchGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { fetchTotalNumberOfOrdersTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
 import { fetchTotalNumberOfSalesConversationsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
@@ -18,7 +19,6 @@ import { AnalyticsAiAgentRevenuePerInteractionCard } from './charts/AnalyticsAiA
 import { AnalyticsAiAgentTotalSalesCard } from './charts/AnalyticsAiAgentTotalSalesCard'
 
 // Mock fetch functions - these will be replaced with real data fetchers later
-const fetchTotalSalesTrend = async () => ({ value: 3800, trend: 0.02 }) as any
 const fetchTotalSalePerInteractionTrend = async () =>
     ({ value: 93, trend: 0.02 }) as any
 const fetchShoppingAssistantTrendBreakdown = async () =>
@@ -62,7 +62,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchTotalSalesTrend,
+                        fetch: fetchGmvInfluencedTrend,
                         metricFormat: 'decimal',
                     },
                 ],
