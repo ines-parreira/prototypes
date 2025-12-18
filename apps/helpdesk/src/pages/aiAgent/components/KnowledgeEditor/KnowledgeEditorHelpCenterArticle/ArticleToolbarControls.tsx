@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 import {
     DeleteButton,
-    DiscardDraftButton,
+    DeleteDraftButton,
     EditIconButton,
     TestButton,
 } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarCommonControls'
@@ -96,8 +96,8 @@ export const ArticleToolbarControls = () => {
             const isCreateMode = toolbarState.type === 'create'
             return (
                 <>
-                    <DiscardDraftButton
-                        onDiscard={onDiscard}
+                    <DeleteDraftButton
+                        onDelete={onDiscard}
                         disabled={isDisabled}
                     />
                     <button

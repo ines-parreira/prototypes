@@ -75,14 +75,14 @@ describe('ArticleToolbarControls', () => {
             ).toBeInTheDocument()
         })
 
-        it('should not render publish or discard buttons', () => {
+        it('should not render publish or delete draft buttons', () => {
             render(<ArticleToolbarControls />)
 
             expect(
                 screen.queryByRole('button', { name: /publish/i }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: /discard/i }),
+                screen.queryByRole('button', { name: /delete draft/i }),
             ).not.toBeInTheDocument()
         })
 
@@ -301,17 +301,17 @@ describe('ArticleToolbarControls', () => {
             ).toBeInTheDocument()
         })
 
-        it('should not render edit, delete, or discard buttons', () => {
+        it('should not render edit, delete, or delete draft buttons', () => {
             render(<ArticleToolbarControls />)
 
             expect(
                 screen.queryByRole('button', { name: /^edit$/i }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: /delete/i }),
+                screen.queryByRole('button', { name: /^delete$/i }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: /discard/i }),
+                screen.queryByRole('button', { name: /delete draft/i }),
             ).not.toBeInTheDocument()
         })
 
@@ -343,11 +343,11 @@ describe('ArticleToolbarControls', () => {
             )
         })
 
-        it('should render discard, publish, and test buttons', () => {
+        it('should render delete draft, publish, and test buttons', () => {
             render(<ArticleToolbarControls />)
 
             expect(
-                screen.getByRole('button', { name: /discard/i }),
+                screen.getByRole('button', { name: /delete draft/i }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /publish/i }),
@@ -364,15 +364,17 @@ describe('ArticleToolbarControls', () => {
                 screen.queryByRole('button', { name: /^edit$/i }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: /delete/i }),
+                screen.queryByRole('button', { name: /^delete$/i }),
             ).not.toBeInTheDocument()
         })
 
-        it('should call onDiscard when discard is clicked', async () => {
+        it('should call onDiscard when delete draft is clicked', async () => {
             const user = userEvent.setup()
             render(<ArticleToolbarControls />)
 
-            await user.click(screen.getByRole('button', { name: /discard/i }))
+            await user.click(
+                screen.getByRole('button', { name: /delete draft/i }),
+            )
 
             expect(mockOnDiscard).toHaveBeenCalled()
         })
@@ -410,7 +412,7 @@ describe('ArticleToolbarControls', () => {
             render(<ArticleToolbarControls />)
 
             expect(
-                screen.getByRole('button', { name: /discard/i }),
+                screen.getByRole('button', { name: /delete draft/i }),
             ).toBeDisabled()
             expect(
                 screen.getByRole('button', { name: /publish/i }),
@@ -438,11 +440,11 @@ describe('ArticleToolbarControls', () => {
             )
         })
 
-        it('should render discard, publish, and test buttons', () => {
+        it('should render delete draft, publish, and test buttons', () => {
             render(<ArticleToolbarControls />)
 
             expect(
-                screen.getByRole('button', { name: /discard/i }),
+                screen.getByRole('button', { name: /delete draft/i }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /publish/i }),
@@ -466,11 +468,13 @@ describe('ArticleToolbarControls', () => {
             expect(screen.getByRole('button', { name: /test/i })).toBeDisabled()
         })
 
-        it('should call onDiscard when discard is clicked', async () => {
+        it('should call onDiscard when delete draft is clicked', async () => {
             const user = userEvent.setup()
             render(<ArticleToolbarControls />)
 
-            await user.click(screen.getByRole('button', { name: /discard/i }))
+            await user.click(
+                screen.getByRole('button', { name: /delete draft/i }),
+            )
 
             expect(mockOnDiscard).toHaveBeenCalled()
         })

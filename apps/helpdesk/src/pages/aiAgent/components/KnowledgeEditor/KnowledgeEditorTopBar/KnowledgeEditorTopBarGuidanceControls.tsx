@@ -8,7 +8,7 @@ import { ButtonRenderMode } from '../shared/DuplicateGuidance/types'
 import type { TriggerProps } from '../shared/DuplicateGuidance/types'
 import {
     DeleteButton,
-    DiscardDraftButton,
+    DeleteDraftButton,
     EditIconButton,
     TestButton,
 } from './KnowledgeEditorTopBarCommonControls'
@@ -162,8 +162,8 @@ export const GuidanceToolbarControls = () => {
             const isCreateMode = toolbarState.type === 'create'
             return (
                 <>
-                    <DiscardDraftButton
-                        onDiscard={
+                    <DeleteDraftButton
+                        onDelete={
                             isCreateMode ? onDiscardCreate : onOpenDiscardModal
                         }
                         disabled={isDisabled}

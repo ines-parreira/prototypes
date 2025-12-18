@@ -341,9 +341,9 @@ describe('KnowledgeEditorGuidance', () => {
         // In create mode, Publish button is disabled (article not yet created)
         const publishButton = screen.getByRole('button', { name: 'Publish' })
         expect(publishButton).toBeDisabled()
-        // Discard button is available
+        // Delete draft button is available
         expect(
-            screen.getByRole('button', { name: 'discard draft' }),
+            screen.getByRole('button', { name: 'delete draft' }),
         ).toBeInTheDocument()
     })
 
@@ -588,11 +588,11 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
-        const discardButton = screen.getByRole('button', {
-            name: 'discard draft',
+        const deleteDraftButton = screen.getByRole('button', {
+            name: 'delete draft',
         })
         act(() => {
-            fireEvent.click(discardButton)
+            fireEvent.click(deleteDraftButton)
         })
 
         expect(onClose).toHaveBeenCalledTimes(1)

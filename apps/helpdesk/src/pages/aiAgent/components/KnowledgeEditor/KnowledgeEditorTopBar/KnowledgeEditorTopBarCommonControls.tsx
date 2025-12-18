@@ -62,17 +62,17 @@ export const CancelButton = (props: {
     </button>
 )
 
-export const DiscardDraftButton = (props: {
-    onDiscard: () => void
+export const DeleteDraftButton = (props: {
+    onDelete: () => void
     disabled?: boolean
 }) => (
     <button
-        className={classNames(css.button, css.ghostButton)}
-        onClick={props.onDiscard}
-        aria-label="discard draft"
+        className={classNames(css.button, css.destructiveButtonNoBorder)}
+        onClick={props.onDelete}
+        aria-label="delete draft"
         disabled={props.disabled}
     >
-        Discard
+        Delete
     </button>
 )
 
