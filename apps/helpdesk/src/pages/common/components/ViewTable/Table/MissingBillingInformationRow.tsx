@@ -17,7 +17,7 @@ import { BillingInformationFields } from 'pages/settings/new_billing/components/
 import { BillingInformationSetupForm } from 'pages/settings/new_billing/components/BillingInformationSetupForm/BillingInformationSetupForm'
 import { FormSubmitButton } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 import { StripeElementsProvider } from 'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider'
-import { getIsMissingBillingInformation } from 'pages/settings/new_billing/utils/getIsMissingBillingInformation'
+import { getIsMissingBillingtInformation } from 'pages/settings/new_billing/utils/getIsMissingBillingtInformation'
 import { PaymentMethodType } from 'state/billing/types'
 import {
     hasCreditCard as getHasCreditCard,
@@ -49,7 +49,7 @@ export default function MissingBillingInformationRow() {
         refetchOnWindowFocus: false,
     })
 
-    const isMissingContactInformation = getIsMissingBillingInformation(
+    const isMissingContactInformation = getIsMissingBillingtInformation(
         billingInformation.data?.data,
     )
 
