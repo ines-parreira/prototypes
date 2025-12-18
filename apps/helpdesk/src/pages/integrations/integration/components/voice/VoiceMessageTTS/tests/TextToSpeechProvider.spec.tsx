@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
@@ -10,6 +11,7 @@ import { useChannel } from '@gorgias/realtime'
 
 import { Form } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
+import { useAblyChannel } from 'providers/realtime-ably/hooks/useAblyChannel'
 
 import { DEFAULT_TTS_GENDER, DEFAULT_TTS_LANGUAGE } from '../constants'
 import { useTextToSpeechContext } from '../TextToSpeechContext'
@@ -17,6 +19,12 @@ import TextToSpeechProvider from '../TextToSpeechProvider'
 
 jest.mock('@gorgias/realtime')
 const mockUseChannel = useChannel as jest.Mock
+
+jest.mock('providers/realtime-ably/hooks/useAblyChannel')
+const mockUseAblyChannel = useAblyChannel as jest.Mock
+
+jest.mock('@repo/feature-flags')
+const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock
@@ -62,6 +70,7 @@ describe('TextToSpeechProvider', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseAppSelector.mockImplementation(() => '1')
+        mockUseFlag.mockReturnValue(false)
     })
 
     describe('context', () => {
@@ -404,6 +413,46 @@ describe('TextToSpeechProvider', () => {
 
             const currentValue = result.current.form.getValues('testField')
             expect(currentValue.text_to_speech_recording_file_path).toBeNull()
+        })
+
+        it('should handle Ably events when AblyRealtime flag is enabled', async () => {
+            mockUseFlag.mockReturnValue(true)
+
+            const { result } = renderHook(
+                () => ({
+                    form: useFormContext(),
+                    context: useTextToSpeechContext(),
+                }),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            const onAblyEventCallback =
+                mockUseAblyChannel.mock.calls[0][0].onEvent
+
+            const event: DomainEvent = {
+                dataschema:
+                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.0',
+                data: {
+                    tts_url: 'https://example.com/tts-audio.mp3',
+                    text: 'Hello world',
+                    property_url: 'testField',
+                    language_code: VoiceLanguage.EnUs,
+                    voice_gender: VoiceGender.Female,
+                },
+            } as DomainEvent
+
+            act(() => {
+                onAblyEventCallback(event)
+            })
+
+            await waitFor(() => {
+                const currentValue = result.current.form.getValues('testField')
+                expect(currentValue.text_to_speech_recording_file_path).toBe(
+                    'https://example.com/tts-audio.mp3',
+                )
+            })
         })
     })
 

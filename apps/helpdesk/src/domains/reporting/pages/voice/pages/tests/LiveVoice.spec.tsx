@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react'
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
@@ -16,6 +17,7 @@ import LiveVoiceMetrics from 'domains/reporting/pages/voice/components/LiveVoice
 import { useLiveVoiceUpdates } from 'domains/reporting/pages/voice/hooks/useLiveVoiceUpdates'
 import LiveVoice from 'domains/reporting/pages/voice/pages/LiveVoice'
 import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
+import { useAblyChannel } from 'providers/realtime-ably/hooks/useAblyChannel'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
 import { getTimezone } from 'state/currentUser/selectors'
@@ -23,6 +25,8 @@ import { getTimezone } from 'state/currentUser/selectors'
 jest.mock('domains/reporting/state/ui/stats/selectors')
 jest.mock('@gorgias/helpdesk-queries')
 jest.mock('@gorgias/realtime')
+jest.mock('providers/realtime-ably/hooks/useAblyChannel')
+jest.mock('@repo/feature-flags')
 jest.mock('domains/reporting/pages/voice/hooks/useLiveVoiceUpdates')
 jest.mock(
     'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceFilters',
@@ -57,6 +61,8 @@ const useListLiveCallQueueVoiceCallsMock = assumeMock(
 )
 const useLiveVoiceUpdatesMock = assumeMock(useLiveVoiceUpdates)
 const useChannelMock = assumeMock(useChannel)
+const useAblyChannelMock = assumeMock(useAblyChannel)
+const useFlagMock = assumeMock(useFlag)
 const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
 )
@@ -97,6 +103,7 @@ describe('LiveVoice', () => {
             },
             handleEvent: handleEventMock,
         })
+        useFlagMock.mockReturnValue(false)
     })
 
     it('should render all sections', () => {
@@ -135,6 +142,34 @@ describe('LiveVoice', () => {
             integration_ids: [3, 4],
             voice_queue_ids: [5, 6],
         })
+        expect(handleEventMock).toHaveBeenCalledWith(event)
+    })
+
+    it('should handle Ably events when PubNubRealtime flag is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+
+        const handleEventMock = jest.fn()
+        useLiveVoiceUpdatesMock.mockReturnValue({
+            channel: {
+                accountId: 123,
+                name: 'stats.liveVoice',
+            },
+            handleEvent: handleEventMock,
+        })
+
+        renderComponent()
+
+        const event = {
+            dataschema: '//helpdesk/phone.voice-call.inbound.rang-agent/1.0.0',
+            data: {
+                voice_call_id: 1234,
+                user_id: 5678,
+                account_id: 123,
+            },
+        }
+
+        useAblyChannelMock.mock.calls[0][0]?.onEvent!(event as DomainEvent)
+
         expect(handleEventMock).toHaveBeenCalledWith(event)
     })
 

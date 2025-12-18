@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useAsyncFn, useEffectOnce, useKey, usePrevious } from '@repo/hooks'
@@ -156,15 +156,6 @@ export const TicketDetailContainer = ({
             ticketLanguage: ticket.get('language'),
             ticketMessages: ticket.get('messages')?.toJS() ?? [],
         })
-
-    const handleTicketMessageTranslationsRef = useRef(
-        handleTicketMessageTranslationEvents,
-    )
-
-    useEffect(() => {
-        handleTicketMessageTranslationsRef.current =
-            handleTicketMessageTranslationEvents
-    }, [handleTicketMessageTranslationEvents])
 
     useEffect(() => {
         ticketIdParamRef.current = ticketIdParam
@@ -657,6 +648,42 @@ export const TicketDetailContainer = ({
         })
     }
 
+    const isAblyRealtimeEnabled = useFlag(FeatureFlagKey.AblyRealtime)
+
+    const handlePubNubEvent = useCallback(
+        (event: DomainEvent) => {
+            if (!isAblyRealtimeEnabled) {
+                handleTicketMessageTranslationEvents(event)
+            } else {
+                return
+            }
+        },
+        [handleTicketMessageTranslationEvents, isAblyRealtimeEnabled],
+    )
+
+    const handlePubNubEventRef = useRef(handlePubNubEvent)
+
+    useEffect(() => {
+        handlePubNubEventRef.current = handlePubNubEvent
+    }, [handlePubNubEvent])
+
+    const handleAblyEvent = useCallback(
+        (event: DomainEvent) => {
+            if (isAblyRealtimeEnabled) {
+                handleTicketMessageTranslationEvents(event)
+            } else {
+                return
+            }
+        },
+        [handleTicketMessageTranslationEvents, isAblyRealtimeEnabled],
+    )
+
+    const handleAblyEventRef = useRef(handleAblyEvent)
+
+    useEffect(() => {
+        handleAblyEventRef.current = handleAblyEvent
+    }, [handleAblyEvent])
+
     const { joinTicket, leaveTicket } = useAgentActivity()
     const { joinTicket: joinTicketAbly, leaveTicket: leaveTicketAbly } =
         useAblyAgentActivity()
@@ -664,10 +691,14 @@ export const TicketDetailContainer = ({
     useEffect(() => {
         joinTicket(Number(ticketIdParam), {
             onEvent: (event: DomainEvent) => {
-                handleTicketMessageTranslationsRef.current(event)
+                handlePubNubEventRef.current(event)
             },
         })
-        joinTicketAbly(Number(ticketIdParam))
+        joinTicketAbly(Number(ticketIdParam), {
+            onEvent: (event: DomainEvent) => {
+                handleAblyEventRef.current(event)
+            },
+        })
 
         return () => {
             leaveTicket()

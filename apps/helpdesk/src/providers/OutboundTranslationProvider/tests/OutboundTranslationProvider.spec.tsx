@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 
@@ -7,6 +8,7 @@ import type { DomainEvent } from '@gorgias/events'
 import { useChannel } from '@gorgias/realtime'
 
 import useAppSelector from 'hooks/useAppSelector'
+import { useAblyChannel } from 'providers/realtime-ably/hooks/useAblyChannel'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { setTranslationState } from 'state/newMessage/actions'
@@ -21,6 +23,12 @@ import {
 
 jest.mock('@gorgias/realtime')
 const mockUseChannel = useChannel as jest.Mock
+
+jest.mock('providers/realtime-ably/hooks/useAblyChannel')
+const mockUseAblyChannel = useAblyChannel as jest.Mock
+
+jest.mock('@repo/feature-flags')
+const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock
@@ -53,6 +61,7 @@ describe('OutboundTranslationProvider', () => {
         })
 
         mockUseAppDispatch.mockReturnValue(jest.fn())
+        mockUseFlag.mockReturnValue(false)
     })
 
     afterEach(() => {
@@ -339,6 +348,160 @@ describe('OutboundTranslationProvider', () => {
         })
 
         expect(mockNotify).not.toHaveBeenCalled()
+    })
+
+    describe('Feature flag-based event handling', () => {
+        it('processes PubNub channel events when AblyRealtime flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            let onPubNubEventListener:
+                | ((event: DomainEvent) => void)
+                | undefined
+            mockUseChannel.mockImplementation(({ onEvent }) => {
+                onPubNubEventListener = onEvent
+            })
+
+            const { result } = renderHook(
+                () => useOutboundTranslationContext(),
+                {
+                    wrapper,
+                },
+            )
+
+            act(() => {
+                result.current.registerTranslationDraft('123', 'draft456')
+            })
+
+            const event = {
+                dataschema:
+                    '//helpdesk/draft-ticket-message-translation.completed/1.0.0',
+                data: {
+                    id: 'draft456',
+                    stripped_html: '<p>Translated content</p>',
+                    stripped_text: 'Translated content',
+                },
+            } as DomainEvent
+
+            act(() => {
+                onPubNubEventListener?.(event)
+            })
+
+            expect(mockSetTranslationState).toHaveBeenCalledWith({
+                translatedContentState: expect.any(ContentState),
+            })
+        })
+
+        it('does NOT process PubNub channel events when AblyRealtime flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            let onPubNubEventListener:
+                | ((event: DomainEvent) => void)
+                | undefined
+            mockUseChannel.mockImplementation(({ onEvent }) => {
+                onPubNubEventListener = onEvent
+            })
+
+            const { result } = renderHook(
+                () => useOutboundTranslationContext(),
+                {
+                    wrapper,
+                },
+            )
+
+            act(() => {
+                result.current.registerTranslationDraft('123', 'draft456')
+            })
+
+            const event = {
+                dataschema:
+                    '//helpdesk/draft-ticket-message-translation.completed/1.0.0',
+                data: {
+                    id: 'draft456',
+                    stripped_html: '<p>Translated content</p>',
+                    stripped_text: 'Translated content',
+                },
+            } as DomainEvent
+
+            act(() => {
+                onPubNubEventListener?.(event)
+            })
+
+            expect(mockSetTranslationState).not.toHaveBeenCalled()
+        })
+
+        it('processes Ably channel events when AblyRealtime flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            let onAblyEventListener: ((event: DomainEvent) => void) | undefined
+            mockUseAblyChannel.mockImplementation(({ onEvent }) => {
+                onAblyEventListener = onEvent
+            })
+
+            const { result } = renderHook(
+                () => useOutboundTranslationContext(),
+                {
+                    wrapper,
+                },
+            )
+
+            act(() => {
+                result.current.registerTranslationDraft('123', 'draft456')
+            })
+
+            const event = {
+                dataschema:
+                    '//helpdesk/draft-ticket-message-translation.completed/1.0.0',
+                data: {
+                    id: 'draft456',
+                    stripped_html: '<p>Translated content</p>',
+                    stripped_text: 'Translated content',
+                },
+            } as DomainEvent
+
+            act(() => {
+                onAblyEventListener?.(event)
+            })
+
+            expect(mockSetTranslationState).toHaveBeenCalledWith({
+                translatedContentState: expect.any(ContentState),
+            })
+        })
+
+        it('does NOT process Ably channel events when AblyRealtime flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            let onAblyEventListener: ((event: DomainEvent) => void) | undefined
+            mockUseAblyChannel.mockImplementation(({ onEvent }) => {
+                onAblyEventListener = onEvent
+            })
+
+            const { result } = renderHook(
+                () => useOutboundTranslationContext(),
+                {
+                    wrapper,
+                },
+            )
+
+            act(() => {
+                result.current.registerTranslationDraft('123', 'draft456')
+            })
+
+            const event = {
+                dataschema:
+                    '//helpdesk/draft-ticket-message-translation.completed/1.0.0',
+                data: {
+                    id: 'draft456',
+                    stripped_html: '<p>Translated content</p>',
+                    stripped_text: 'Translated content',
+                },
+            } as DomainEvent
+
+            act(() => {
+                onAblyEventListener?.(event)
+            })
+
+            expect(mockSetTranslationState).not.toHaveBeenCalled()
+        })
     })
 
     it('useOutboundTranslationContext throws error when useOutboundTranslationContext is used outside provider', () => {
