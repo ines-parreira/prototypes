@@ -114,25 +114,51 @@ export const useAutomationRateByFeature = (): {
         {
             name: 'AI Agent',
             interactions: aiAgentInteractions.data.value ?? 0,
+            loading:
+                aiAgentInteractions.isFetching ||
+                allAutomatedInteractions.isFetching ||
+                allAutomatedInteractionsByAutoResponders.isFetching ||
+                billableTicketsExcludingAIAgent.isFetching,
         },
         {
             name: 'Flows',
             interactions: flowsInteractions.data.value ?? 0,
+            loading:
+                flowsInteractions.isFetching ||
+                allAutomatedInteractions.isFetching ||
+                allAutomatedInteractionsByAutoResponders.isFetching ||
+                billableTicketsExcludingAIAgent.isFetching,
         },
         {
             name: 'Article Recommendation',
             interactions: articleRecommendationInteractions.data.value ?? 0,
+            loading:
+                articleRecommendationInteractions.isFetching ||
+                allAutomatedInteractions.isFetching ||
+                allAutomatedInteractionsByAutoResponders.isFetching ||
+                billableTicketsExcludingAIAgent.isFetching,
         },
         {
             name: 'Order Management',
             interactions: orderManagementInteractions.data.value ?? 0,
+            loading:
+                orderManagementInteractions.isFetching ||
+                allAutomatedInteractions.isFetching ||
+                allAutomatedInteractionsByAutoResponders.isFetching ||
+                billableTicketsExcludingAIAgent.isFetching,
         },
     ]
 
     const chartData: ChartDataItem[] = features.map(
-        ({ name, interactions }) => {
+        ({ name, interactions, loading }) => {
+            if (loading) {
+                return {
+                    name,
+                    value: null,
+                }
+            }
             const automationRate = automationRateUnfilteredDenominator({
-                filteredAutomatedInteractions: interactions,
+                filteredAutomatedInteractions: interactions ?? 0,
                 allAutomatedInteractions: allAutomatedInteractionsValue,
                 allAutomatedInteractionsByAutoResponders:
                     allAutomatedInteractionsByAutoRespondersValue,

@@ -13,21 +13,24 @@ import {
 } from 'recharts'
 import type { TooltipContentProps } from 'recharts/types/component/Tooltip'
 
-import { useAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
+import colors from '@gorgias/axiom/tokens/colors/semantic/light.json'
+
 import { useAutomationRateTimeSeriesData } from 'domains/reporting/hooks/automate/useAutomationRateTimeSeriesData'
+import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
 
 import { DATE_FORMAT } from '../../constants'
 import { formatPreviousPeriod } from '../../utils/formatPreviousPeriod'
+import { AutomationLineChartSkeleton } from './AutomationLineChartSkeleton'
 
 import css from './AutomationLineChart.less'
 
 const METRIC_TITLE = 'Overall automation rate'
 
 const CHART_COLORS = {
-    stroke: '#7E55F6',
-    grid: '#B3B8C1',
+    stroke: colors['Dataviz-purple'].$value,
+    grid: colors['border-neutral-secondary'].$value,
 }
 
 export const CustomTooltip = ({
@@ -97,7 +100,7 @@ export const AutomationLineChart = () => {
         granularity,
     )
 
-    const automationRateTrend = useAIAgentAutomationRateTrend(
+    const automationRateTrend = useAutomationRateTrend(
         cleanStatsFilters,
         userTimezone,
     )
@@ -135,6 +138,8 @@ export const AutomationLineChart = () => {
         }))
     }, [timeSeriesData])
 
+    const isLoading = automationRateTrend.isFetching || !timeSeriesData
+
     return (
         <ChartCard
             title={METRIC_TITLE}
@@ -143,78 +148,82 @@ export const AutomationLineChart = () => {
             metricFormat="decimal-to-percent"
             interpretAs="more-is-better"
             tooltipData={{ period: tooltipPeriod }}
-            isLoading={automationRateTrend.isFetching}
+            isLoading={isLoading}
         >
-            <div className={css.chartWrapper}>
-                <ResponsiveContainer width="100%" height={280}>
-                    <AreaChart
-                        data={chartData}
-                        margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-                    >
-                        <defs>
-                            <linearGradient
-                                id="automationRateGradient"
-                                x1="0"
-                                y1="0"
-                                x2="0"
-                                y2="1"
-                            >
-                                <stop
-                                    offset="0%"
-                                    stopColor={CHART_COLORS.stroke}
-                                    stopOpacity={0.2}
-                                />
-                                <stop
-                                    offset="50%"
-                                    stopColor={CHART_COLORS.stroke}
-                                    stopOpacity={0.1}
-                                />
-                                <stop
-                                    offset="75%"
-                                    stopColor={CHART_COLORS.stroke}
-                                    stopOpacity={0.05}
-                                />
-                                <stop
-                                    offset="100%"
-                                    stopColor={CHART_COLORS.stroke}
-                                    stopOpacity={0}
-                                />
-                            </linearGradient>
-                        </defs>
-                        <CartesianGrid
-                            strokeDasharray="3 3"
-                            stroke={CHART_COLORS.grid}
-                            vertical={false}
-                        />
-                        <XAxis
-                            dataKey="date"
-                            tick={{ fill: '#5C6370', fontSize: 12 }}
-                            axisLine={false}
-                            tickLine={{ stroke: CHART_COLORS.grid }}
-                            tickMargin={8}
-                        />
-                        <YAxis
-                            tick={{ fill: '#5C6370', fontSize: 12 }}
-                            axisLine={false}
-                            tickLine={false}
-                            tickFormatter={formatYAxisTick}
-                            width={40}
-                        />
-                        <Tooltip content={CustomTooltip} cursor={false} />
-                        <Area
-                            type="monotone"
-                            dataKey="value"
-                            stroke={CHART_COLORS.stroke}
-                            strokeWidth={2}
-                            fillOpacity={1}
-                            fill="url(#automationRateGradient)"
-                            isAnimationActive={true}
-                            animationDuration={1000}
-                            animationEasing="ease-in-out"
-                        />
-                    </AreaChart>
-                </ResponsiveContainer>
-            </div>
+            {isLoading ? (
+                <AutomationLineChartSkeleton />
+            ) : (
+                <div className={css.chartWrapper}>
+                    <ResponsiveContainer width="100%" height={280}>
+                        <AreaChart
+                            data={chartData}
+                            margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                        >
+                            <defs>
+                                <linearGradient
+                                    id="automationRateGradient"
+                                    x1="0"
+                                    y1="0"
+                                    x2="0"
+                                    y2="1"
+                                >
+                                    <stop
+                                        offset="0%"
+                                        stopColor={CHART_COLORS.stroke}
+                                        stopOpacity={0.2}
+                                    />
+                                    <stop
+                                        offset="50%"
+                                        stopColor={CHART_COLORS.stroke}
+                                        stopOpacity={0.1}
+                                    />
+                                    <stop
+                                        offset="75%"
+                                        stopColor={CHART_COLORS.stroke}
+                                        stopOpacity={0.05}
+                                    />
+                                    <stop
+                                        offset="100%"
+                                        stopColor={CHART_COLORS.stroke}
+                                        stopOpacity={0}
+                                    />
+                                </linearGradient>
+                            </defs>
+                            <CartesianGrid
+                                strokeDasharray="3 3"
+                                stroke={CHART_COLORS.grid}
+                                vertical={false}
+                            />
+                            <XAxis
+                                dataKey="date"
+                                tick={{ fill: '#5C6370', fontSize: 12 }}
+                                axisLine={false}
+                                tickLine={{ stroke: CHART_COLORS.grid }}
+                                tickMargin={8}
+                            />
+                            <YAxis
+                                tick={{ fill: '#5C6370', fontSize: 12 }}
+                                axisLine={false}
+                                tickLine={false}
+                                tickFormatter={formatYAxisTick}
+                                width={40}
+                            />
+                            <Tooltip content={CustomTooltip} cursor={false} />
+                            <Area
+                                type="monotone"
+                                dataKey="value"
+                                stroke={CHART_COLORS.stroke}
+                                strokeWidth={2}
+                                fillOpacity={1}
+                                fill="url(#automationRateGradient)"
+                                isAnimationActive={true}
+                                animationDuration={1000}
+                                animationEasing="ease-in-out"
+                            />
+                        </AreaChart>
+                    </ResponsiveContainer>
+                </div>
+            )}
         </ChartCard>
     )
 }

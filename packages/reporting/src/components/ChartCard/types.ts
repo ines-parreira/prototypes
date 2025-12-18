@@ -2,7 +2,7 @@ export type { MetricTrendFormat, TrendDirection } from '../../types'
 
 export type ChartDataItem = {
     name: string
-    value: number
+    value: number | null
 }
 
 export type ChartType = 'donut' | 'bar'

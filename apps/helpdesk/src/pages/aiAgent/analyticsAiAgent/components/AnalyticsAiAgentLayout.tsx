@@ -21,6 +21,8 @@ import {
     AiAgentAnalyticsQueryParams,
 } from '../constants'
 
+import css from './AnalyticsAiAgentLayout.less'
+
 const AI_AGENT_TAB_PARAM = 'ai-agent-tab'
 
 const HEADER_NAVBAR_ITEMS = [
@@ -101,7 +103,11 @@ export const AnalyticsAiAgentLayout = () => {
 
     return (
         <Box display="flex" flexDirection="column" flex={1} minWidth="0px">
-            <Box flexDirection="column" justifyContent="space-between">
+            <Box
+                flexDirection="column"
+                justifyContent="space-between"
+                className={css.stickyHeader}
+            >
                 <Box
                     flexDirection="row"
                     justifyContent="space-between"

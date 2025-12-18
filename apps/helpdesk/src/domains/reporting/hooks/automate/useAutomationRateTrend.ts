@@ -10,10 +10,8 @@ import {
     fetchFilteredAutomatedInteractions,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import {
-    fetchMetricTrend,
-    type MetricTrend,
-} from 'domains/reporting/hooks/useMetricTrend'
+import { fetchMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import {
     overallAutomationRate,
     overallAutomationRateQueryV2Factory,
@@ -33,6 +31,7 @@ export const useAutomationRateTrend = (
     })
 
     useDeepEffect(() => {
+        setData((prev) => ({ ...prev, isFetching: true }))
         fetchAutomationRateTrend(filters, timezone, aiAgentUserId).then(setData)
     }, [filters, timezone, aiAgentUserId])
 

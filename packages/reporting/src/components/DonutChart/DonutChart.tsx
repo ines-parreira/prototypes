@@ -173,12 +173,19 @@ export const DonutChart = ({
         (item) => !hiddenSegments.has(item.name),
     )
 
-    const totalValue = visibleData.reduce((sum, item) => sum + item.value, 0)
+    const totalValue = visibleData.reduce(
+        (sum, item) => sum + (item.value ?? 0),
+        0,
+    )
 
     const dataWithPercentages = dataWithColors.map((item) => ({
         ...item,
-        legendValue: `${((item.value / totalValue) * 100).toFixed(2)}%`,
-        percentage: valueFormatter ? valueFormatter(item.value) : item.value,
+        legendValue: visibleData.find((i) => i.name === item.name)
+            ? `${(((item.value ?? 0) / totalValue) * 100).toFixed(2)}%`
+            : '0%',
+        percentage: valueFormatter
+            ? valueFormatter(item.value ?? 0)
+            : (item.value ?? 0),
     }))
 
     return (

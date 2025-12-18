@@ -96,6 +96,9 @@ jest.mock('domains/reporting/hooks/automate/automationTrends')
 const useFilteredAutomatedInteractionsMock = assumeMock(
     useFilteredAutomatedInteractions,
 )
+const mockUseTrendFromMultipleMetricsTrend = jest.requireMock(
+    'domains/reporting/hooks/automate/automationTrends',
+).useTrendFromMultipleMetricsTrend
 
 jest.mock('domains/reporting/pages/common/components/TrendBadge')
 const trendBadgeMock = assumeMock(TrendBadge)
@@ -153,6 +156,12 @@ const useAutomationRateByFeatureMock = jest.requireMock(
 ).useAutomationRateByFeature
 
 jest.mock('@repo/feature-flags')
+jest.mock('domains/reporting/hooks/metricTrends')
+const mockUseTicketHandleTimeTrend = jest.requireMock(
+    'domains/reporting/hooks/metricTrends',
+).useTicketHandleTimeTrend
+
+jest.mock('core/flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock(
@@ -1001,27 +1010,56 @@ describe('<AutomateOverview />', () => {
         })
 
         it('should render AnalyticsOverviewLayout when AiAgentAnalyticsDashboardsNewScreens flag is enabled', () => {
-            jest.spyOn(
-                require('core/flags'),
-                'useAreFlagsLoading',
-            ).mockReturnValue(false)
-            useFlagMock.mockImplementation((flag) => {
-                if (
-                    flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens
-                )
-                    return true
-                return false
-            })
-
-            const { container } = render(
-                <Provider store={mockStore(defaultState)}>
-                    <QueryClientProvider client={queryClient}>
-                        <AutomateOverview />
-                    </QueryClientProvider>
-                </Provider>,
+            const useStatsFiltersSpy = jest.spyOn(
+                require('domains/reporting/hooks/support-performance/useStatsFilters'),
+                'useStatsFilters',
             )
 
-            expect(container.querySelector('.analyticsOverviewLayout'))
+            try {
+                jest.spyOn(
+                    require('core/flags'),
+                    'useAreFlagsLoading',
+                ).mockReturnValue(false)
+                useFlagMock.mockImplementation((flag) => {
+                    if (
+                        flag ===
+                        FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens
+                    )
+                        return true
+                    return false
+                })
+
+                useStatsFiltersSpy.mockReturnValue({
+                    cleanStatsFilters: {
+                        period: { from: '2024-01-01', to: '2024-01-31' },
+                    },
+                    userTimezone: 'UTC',
+                } as any)
+
+                mockUseTicketHandleTimeTrend.mockReturnValue({
+                    data: { value: 1.5 },
+                    isFetching: false,
+                    isError: false,
+                })
+
+                mockUseTrendFromMultipleMetricsTrend.mockReturnValue({
+                    data: { value: 100 },
+                    isFetching: false,
+                    isError: false,
+                })
+
+                const { container } = render(
+                    <Provider store={mockStore(defaultState)}>
+                        <QueryClientProvider client={queryClient}>
+                            <AutomateOverview />
+                        </QueryClientProvider>
+                    </Provider>,
+                )
+
+                expect(container.querySelector('.analyticsOverviewLayout'))
+            } finally {
+                useStatsFiltersSpy.mockRestore()
+            }
         })
     })
 

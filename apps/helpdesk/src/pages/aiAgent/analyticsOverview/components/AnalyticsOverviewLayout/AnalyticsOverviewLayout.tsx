@@ -10,6 +10,8 @@ import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../../config/defaultLayoutCon
 import { AnalyticsOverviewDownloadButton } from '../AnalyticsOverviewDownloadButton/AnalyticsOverviewDownloadButton'
 import { DashboardLayoutRenderer } from '../DashboardLayoutRenderer/DashboardLayoutRenderer'
 
+import css from './AnalyticsOverviewLayout.less'
+
 export const AnalyticsOverviewLayout = () => {
     const dashboardRef = useRef<HTMLDivElement>(null)
 
@@ -21,6 +23,7 @@ export const AnalyticsOverviewLayout = () => {
                 padding="lg"
                 paddingBottom="0px"
                 gap="lg"
+                className={css.stickyHeader}
             >
                 <Box
                     flexDirection="row"

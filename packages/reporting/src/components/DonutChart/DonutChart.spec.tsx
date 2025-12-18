@@ -25,7 +25,7 @@ describe('DonutChart', () => {
     ]
 
     const percentageFormatter = (value: number) => {
-        const total = mockData.reduce((sum, item) => sum + item.value, 0)
+        const total = mockData.reduce((sum, item) => sum + (item.value ?? 0), 0)
         return `${((value / total) * 100).toFixed(2)}%`
     }
 
@@ -118,7 +118,7 @@ describe('DonutChart', () => {
                 await userEvent.click(aiAgentLegend)
             })
 
-            expect(screen.getByText('128.57%')).toBeInTheDocument()
+            expect(screen.getByText('50.00%')).toBeInTheDocument()
             expect(screen.getByText('AI Agent')).toBeInTheDocument()
         })
 

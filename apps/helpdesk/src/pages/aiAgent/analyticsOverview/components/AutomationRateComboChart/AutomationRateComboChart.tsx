@@ -7,7 +7,7 @@ import moment from 'moment'
 
 import { ButtonGroup, ButtonGroupItem, Icon } from '@gorgias/axiom'
 
-import { useAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
+import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 
 import { useAutomationRateByFeature } from '../../hooks/useAutomationRateByFeature'
@@ -23,7 +23,7 @@ export const AutomationRateComboChart = () => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
     const [chartType, setChartType] = useState<ChartType>('donut')
 
-    const automationRateTrend = useAIAgentAutomationRateTrend(
+    const automationRateTrend = useAutomationRateTrend(
         cleanStatsFilters,
         userTimezone,
     )

@@ -1,14 +1,14 @@
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import * as automateHooks from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
+import * as automateHooks from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import * as statsHooks from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 
 import * as automationRateByFeatureHook from '../../hooks/useAutomationRateByFeature'
 import { AutomationRateComboChart } from './AutomationRateComboChart'
 
-jest.mock('domains/reporting/hooks/automate/useAIAgentAutomationRateTrend')
+jest.mock('domains/reporting/hooks/automate/useAutomationRateTrend')
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('../../hooks/useAutomationRateByFeature')
 
@@ -44,10 +44,7 @@ describe('AutomationChart', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        jest.spyOn(
-            automateHooks,
-            'useAIAgentAutomationRateTrend',
-        ).mockReturnValue({
+        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
             isFetching: false,
             isError: false,
             data: {
@@ -139,10 +136,7 @@ describe('AutomationChart', () => {
     })
 
     it('should render with negative trend icon when trend is negative', () => {
-        jest.spyOn(
-            automateHooks,
-            'useAIAgentAutomationRateTrend',
-        ).mockReturnValue({
+        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
             isFetching: false,
             isError: false,
             data: {
@@ -224,10 +218,7 @@ describe('AutomationChart', () => {
     })
 
     it('should render loading skeleton when automation rate is fetching', () => {
-        jest.spyOn(
-            automateHooks,
-            'useAIAgentAutomationRateTrend',
-        ).mockReturnValue({
+        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
             isFetching: true,
             isError: false,
             data: undefined,
@@ -262,10 +253,7 @@ describe('AutomationChart', () => {
     })
 
     it('should handle null automation rate value', () => {
-        jest.spyOn(
-            automateHooks,
-            'useAIAgentAutomationRateTrend',
-        ).mockReturnValue({
+        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
             isFetching: false,
             isError: false,
             data: {
@@ -280,10 +268,7 @@ describe('AutomationChart', () => {
     })
 
     it('should handle undefined automation rate data', () => {
-        jest.spyOn(
-            automateHooks,
-            'useAIAgentAutomationRateTrend',
-        ).mockReturnValue({
+        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
             isFetching: false,
             isError: false,
             data: undefined,

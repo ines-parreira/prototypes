@@ -1,161 +1,306 @@
-import { useState } from 'react'
+import { useMemo } from 'react'
+
+import { formatMetricValue } from '@repo/reporting'
 
 import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
-    ButtonGroup,
-    ButtonGroupItem,
     HeaderRowGroup,
     Heading,
     Icon,
+    Skeleton,
     TableBodyContent,
     TableHeader,
     TableRoot,
     TableToolbar,
     Text,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
     useTable,
 } from '@gorgias/axiom'
 
+import { usePerformanceMetricsPerFeature } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
+import type { FeatureMetrics } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
+
+import { DownloadPerformanceBreakdownButton } from './DownloadPerformanceBreakdownButton'
+
 import css from './PerformanceBreakdownTable.less'
 
-type PerformanceData = {
-    feature: string
-    automationRate: string
-    automatedInteractions: number
-    handedOver: string
-    costSaved: string
-    timeSavedPerAgent: string
-    decreaseInResolutionTime: string
-}
-
-const TABLE_DATA: PerformanceData[] = [
+const PLACEHOLDER_DATA: FeatureMetrics[] = [
     {
         feature: 'AI Agent',
-        automationRate: '18%',
-        automatedInteractions: 2700,
-        handedOver: '7%',
-        costSaved: '$1,200',
-        timeSavedPerAgent: '2h 45m',
-        decreaseInResolutionTime: '20%',
-    },
-    {
-        feature: 'Article Recommendation',
-        automationRate: '4%',
-        automatedInteractions: 450,
-        handedOver: '5%',
-        costSaved: '$450',
-        timeSavedPerAgent: '1h 00m',
-        decreaseInResolutionTime: '2%',
+        automationRate: null,
+        automatedInteractions: null,
+        handoverCount: null,
+        costSaved: null,
+        timeSaved: null,
     },
     {
         feature: 'Flows',
-        automationRate: '7%',
-        automatedInteractions: 900,
-        handedOver: '4%',
-        costSaved: '$500',
-        timeSavedPerAgent: '1h 15m',
-        decreaseInResolutionTime: '4%',
+        automationRate: null,
+        automatedInteractions: null,
+        handoverCount: null,
+        costSaved: null,
+        timeSaved: null,
+    },
+    {
+        feature: 'Article Recommendation',
+        automationRate: null,
+        automatedInteractions: null,
+        handoverCount: null,
+        costSaved: null,
+        timeSaved: null,
     },
     {
         feature: 'Order Management',
-        automationRate: '3%',
-        automatedInteractions: 350,
-        handedOver: '2%',
-        costSaved: '$250',
-        timeSavedPerAgent: '0h 30m',
-        decreaseInResolutionTime: '2%',
+        automationRate: null,
+        automatedInteractions: null,
+        handoverCount: null,
+        costSaved: null,
+        timeSaved: null,
     },
 ]
 
 export const PerformanceBreakdownTable = () => {
-    const [activeTab, setActiveTab] = useState<string>('all-features')
+    const {
+        data: metricsData,
+        isError,
+        loadingStates,
+    } = usePerformanceMetricsPerFeature()
 
-    const columns: ColumnDef<PerformanceData>[] = [
-        {
-            accessorKey: 'feature',
-            header: () => (
-                <Text size="sm" variant="bold" className={css.featureName}>
-                    Feature
-                </Text>
-            ),
-            cell: (info) => (
-                <Text size="md" variant="bold" className={css.featureName}>
-                    {info.getValue() as string}
-                </Text>
-            ),
-            enableHiding: false,
-        },
-        {
-            accessorKey: 'automationRate',
-            header: () => (
-                <Box className={css.headerWithIcon}>
-                    <span>Overall automation rate</span>
-                    <Icon name="info" size="xs" />
-                </Box>
-            ),
-            enableHiding: true,
-        },
-        {
-            accessorKey: 'automatedInteractions',
-            header: () => (
-                <Box className={css.headerWithIcon}>
-                    <span>Automated interactions</span>
-                    <Icon name="info" size="xs" />
-                </Box>
-            ),
-            cell: (info) => (info.getValue() as number).toLocaleString(),
-            enableHiding: true,
-        },
-        {
-            accessorKey: 'handedOver',
-            header: () => (
-                <Box className={css.headerWithIcon}>
-                    <span>Handed over</span>
-                    <Icon name="info" size="xs" />
-                </Box>
-            ),
-            enableHiding: true,
-        },
-        {
-            accessorKey: 'costSaved',
-            header: () => (
-                <Box className={css.headerWithIcon}>
-                    <span>Cost saved</span>
-                    <Icon name="info" size="xs" />
-                </Box>
-            ),
-            enableHiding: true,
-        },
-        {
-            accessorKey: 'timeSavedPerAgent',
-            header: () => (
-                <Box className={css.headerWithIcon}>
-                    <span>Time saved per agent</span>
-                    <Icon name="info" size="xs" />
-                </Box>
-            ),
-            enableHiding: true,
-        },
-        {
-            accessorKey: 'decreaseInResolutionTime',
-            header: () => (
-                <Box className={css.headerWithIcon}>
-                    <span>Decrease in resolution time</span>
-                    <Icon name="info" size="xs" />
-                </Box>
-            ),
-            enableHiding: true,
-        },
-    ]
+    const tableData: FeatureMetrics[] = useMemo(
+        () =>
+            metricsData && metricsData.length > 0
+                ? metricsData
+                : PLACEHOLDER_DATA,
+        [metricsData],
+    )
+
+    // Keep columns stable to prevent Skeleton animation resets
+    // loadingStates is intentionally omitted from deps to avoid recreating columns
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const columns: ColumnDef<FeatureMetrics>[] = useMemo(
+        () => [
+            {
+                accessorKey: 'feature',
+                header: () => (
+                    <Text size="sm" variant="bold" className={css.featureName}>
+                        Feature
+                    </Text>
+                ),
+                meta: { displayName: 'Feature' },
+                cell: (info) => (
+                    <Text size="md" variant="bold" className={css.featureName}>
+                        {info.getValue() as string}
+                    </Text>
+                ),
+                enableHiding: false,
+            },
+            {
+                accessorKey: 'automationRate',
+                header: () => (
+                    <Box className={css.headerWithIcon}>
+                        <span>Overall automation rate</span>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Icon name="info" size="xs" />
+                            </TooltipTrigger>
+                            <TooltipContent
+                                title="Overall automation rate"
+                                caption="The number of interactions automated by all automation features as a % of total customer interactions."
+                            />
+                        </Tooltip>
+                    </Box>
+                ),
+                meta: { displayName: 'Overall automation rate' },
+                cell: (info) => {
+                    const value = info.getValue() as number | null
+                    const feature = info.row.original.feature
+                    if (loadingStates.automationRate && value === null) {
+                        return (
+                            <Skeleton
+                                key={`${feature}-automationRate`}
+                                width="60px"
+                                height="20px"
+                            />
+                        )
+                    }
+                    return formatMetricValue(value, 'percent-precision-1')
+                },
+                enableHiding: true,
+            },
+            {
+                accessorKey: 'automatedInteractions',
+                header: () => (
+                    <Box className={css.headerWithIcon}>
+                        <span>Automated interactions</span>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Icon name="info" size="xs" />
+                            </TooltipTrigger>
+                            <TooltipContent
+                                title="Automated interactions"
+                                caption="The number of fully automated interactions solved without any human agent intervention."
+                            />
+                        </Tooltip>
+                    </Box>
+                ),
+                meta: { displayName: 'Automated interactions' },
+                cell: (info) => {
+                    const value = info.getValue() as number | null
+                    const feature = info.row.original.feature
+                    if (loadingStates.automatedInteractions && value === null) {
+                        return (
+                            <Skeleton
+                                key={`${feature}-automatedInteractions`}
+                                width="60px"
+                                height="20px"
+                            />
+                        )
+                    }
+                    return formatMetricValue(value, 'decimal')
+                },
+                enableHiding: true,
+            },
+            {
+                accessorKey: 'handoverCount',
+                header: () => (
+                    <Box className={css.headerWithIcon}>
+                        <span>Handover interactions</span>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Icon name="info" size="xs" />
+                            </TooltipTrigger>
+                            <TooltipContent
+                                title="Handover interactions"
+                                caption="The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent."
+                            />
+                        </Tooltip>
+                    </Box>
+                ),
+                meta: { displayName: 'Handover interactions' },
+                cell: (info) => {
+                    const value = info.getValue() as number | null
+                    const feature = info.row.original.feature
+
+                    // Article Recommendation and Order Management don't have handovers
+                    if (
+                        feature === 'Article Recommendation' ||
+                        feature === 'Order Management'
+                    ) {
+                        return '-'
+                    }
+
+                    if (loadingStates.handovers && value === null) {
+                        return (
+                            <Skeleton
+                                key={`${feature}-handoverCount`}
+                                width="60px"
+                                height="20px"
+                            />
+                        )
+                    }
+                    return formatMetricValue(value, 'decimal')
+                },
+                enableHiding: true,
+            },
+            {
+                accessorKey: 'costSaved',
+                header: () => (
+                    <Box className={css.headerWithIcon}>
+                        <span>Cost saved</span>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Icon name="info" size="xs" />
+                            </TooltipTrigger>
+                            <TooltipContent
+                                title="Cost saved"
+                                caption="The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket."
+                            />
+                        </Tooltip>
+                    </Box>
+                ),
+                meta: { displayName: 'Cost saved' },
+                cell: (info) => {
+                    const value = info.getValue() as number | null
+                    const feature = info.row.original.feature
+
+                    if (loadingStates.costSaved && value === null) {
+                        return (
+                            <Skeleton
+                                key={`${feature}-costSaved`}
+                                width="60px"
+                                height="20px"
+                            />
+                        )
+                    }
+                    if (value !== null && isNaN(value)) {
+                        return 'N/A'
+                    }
+                    return formatMetricValue(value, 'currency-precision-1')
+                },
+                enableHiding: true,
+            },
+            {
+                accessorKey: 'timeSaved',
+                header: () => (
+                    <Box className={css.headerWithIcon}>
+                        <span>Time saved by agents</span>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Icon name="info" size="xs" />
+                            </TooltipTrigger>
+                            <TooltipContent
+                                title="Time saved by agents"
+                                caption="The time agent would have spent resolving customer inquiries without all automation features."
+                            />
+                        </Tooltip>
+                    </Box>
+                ),
+                meta: { displayName: 'Time saved by agents' },
+                cell: (info) => {
+                    const value = info.getValue() as number | null
+                    const feature = info.row.original.feature
+                    if (
+                        (loadingStates.automatedInteractions ||
+                            loadingStates.timeSaved) &&
+                        value === null
+                    ) {
+                        return (
+                            <Skeleton
+                                key={`${feature}-timeSaved`}
+                                width="80px"
+                                height="20px"
+                            />
+                        )
+                    }
+                    return formatMetricValue(value, 'duration')
+                },
+                enableHiding: true,
+            },
+        ],
+        // oxlint-disable-next-line exhaustive-deps
+        [],
+    )
 
     const table = useTable({
-        data: TABLE_DATA,
+        data: tableData,
         columns,
         sortingConfig: {
             enableSorting: true,
             enableMultiSort: false,
         },
     })
+
+    const allDataLoaded =
+        !loadingStates.automationRate &&
+        !loadingStates.automatedInteractions &&
+        !loadingStates.handovers &&
+        !loadingStates.timeSaved
+
+    const showEmptyState =
+        allDataLoaded && !isError && (!metricsData || metricsData.length === 0)
 
     return (
         <Box
@@ -170,27 +315,15 @@ export const PerformanceBreakdownTable = () => {
                     Performance breakdown
                 </Heading>
             </Box>
-            <ButtonGroup
-                selectedKey={activeTab}
-                onSelectionChange={setActiveTab}
-            >
-                <ButtonGroupItem id="all-features">
-                    All features
-                </ButtonGroupItem>
-                <ButtonGroupItem id="article-recommendation">
-                    Article Recommendation
-                </ButtonGroupItem>
-                <ButtonGroupItem id="flows">Flows</ButtonGroupItem>
-                <ButtonGroupItem id="order-management">
-                    Order Management
-                </ButtonGroupItem>
-            </ButtonGroup>
             <Box
                 className={css.tableContainer}
                 display="flex"
                 flexDirection="column"
                 minWidth="0px"
             >
+                <Box display="flex" justifyContent="flex-end">
+                    <DownloadPerformanceBreakdownButton />
+                </Box>
                 <TableToolbar
                     table={table}
                     bottomRow={{
@@ -211,6 +344,21 @@ export const PerformanceBreakdownTable = () => {
                             table={table}
                         />
                     </TableRoot>
+                    {showEmptyState && (
+                        <Box
+                            display="flex"
+                            flexDirection="column"
+                            alignItems="center"
+                            justifyContent="center"
+                            padding="xxxl"
+                            gap="md"
+                        >
+                            <Heading size="sm">No data found</Heading>
+                            <Text size="md" color="secondary">
+                                Try to adjust your report filters.
+                            </Text>
+                        </Box>
+                    )}
                 </Box>
             </Box>
         </Box>

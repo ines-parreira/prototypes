@@ -6,7 +6,7 @@ type LegendItem = {
     name: string
     color: string
     percentage: string | number
-    legendValue: string
+    legendValue: string | null
 }
 
 type DonutChartLegendProps = {
