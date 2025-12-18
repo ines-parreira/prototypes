@@ -13,19 +13,19 @@ import { EmailMultiselect } from './form/EmailMultiselect'
 import { useEmailIntegrations } from './form/hooks/useEmailIntegrations'
 import { TimeFrameField } from './form/TimeFrameField'
 
-import css from './CreateImportModal.less'
+import css from './EmailImportModalWizard.less'
 
-type CreateImportModalProps = {
+type EmailImportModalWizzardProps = {
     isOpen: boolean
     onClose: () => void
     selectedEmail?: string | null
 }
 
-const CreateImportModal = ({
+export const EmailImportModalWizard = ({
     isOpen,
     onClose,
     selectedEmail,
-}: CreateImportModalProps) => {
+}: EmailImportModalWizzardProps) => {
     const [email, setEmail] = useState(selectedEmail ?? '')
     const [forwardingProvider, setForwardingProvider] = useState<
         'gmail' | 'outlook'
@@ -160,5 +160,3 @@ const CreateImportModal = ({
         </Modal>
     )
 }
-
-export default CreateImportModal

@@ -4,6 +4,9 @@ import { MemoryRouter } from 'react-router-dom'
 
 import ImportEmail from './Import'
 
+// Polyfill for getAnimations which is not available in JSDOM
+Element.prototype.getAnimations = jest.fn().mockReturnValue([])
+
 // Mock feature flags
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -27,23 +30,40 @@ jest.mock('./HeaderImport', () => ({
     },
 }))
 
-jest.mock('./Modal/CreateImportModal', () => {
-    return function MockCreateImportModal({
+jest.mock('./Modal/EmailImportModalWizard', () => ({
+    EmailImportModalWizard: function MockEmailImportModalWizard({
         selectedEmail,
         isOpen,
         onClose,
     }: any) {
+        if (!isOpen) return null
         return (
             <div data-testid="create-import-modal">
-                <div data-testid="modal-open">{isOpen ? 'true' : 'false'}</div>
+                <div data-testid="modal-open">true</div>
                 <div data-testid="selected-email">
                     {selectedEmail === null ? 'null' : selectedEmail}
                 </div>
                 <button onClick={onClose}>Close Modal</button>
             </div>
         )
-    }
-})
+    },
+}))
+
+jest.mock('./Modal/ZendeskImportModalWizard', () => ({
+    ZendeskImportModalWizard: function MockZendeskImportModalWizard({
+        onClose,
+    }: {
+        onClose: () => void
+    }) {
+        return (
+            <div role="dialog" aria-label="Import Zendesk data">
+                <h2>Import Zendesk data</h2>
+                <button onClick={onClose}>Cancel</button>
+                <button>Import</button>
+            </div>
+        )
+    },
+}))
 
 jest.mock('./Imports/Email/ImportEmailTable', () => ({
     ImportEmailTable: function MockImportEmailTable({
@@ -114,8 +134,8 @@ describe('ImportEmail', () => {
             ).toBeInTheDocument()
             expect(screen.getByTestId('table-import-email')).toBeInTheDocument()
             expect(
-                screen.getByTestId('create-import-modal'),
-            ).toBeInTheDocument()
+                screen.queryByTestId('create-import-modal'),
+            ).not.toBeInTheDocument()
         })
 
         it('should have correct container class', () => {
@@ -137,15 +157,17 @@ describe('ImportEmail', () => {
         it('should handle null selectedEmail when no query parameter is present', () => {
             renderComponent(['/import-email'])
 
-            expect(screen.getByTestId('selected-email')).toHaveTextContent(
-                'null',
-            )
+            expect(
+                screen.queryByTestId('create-import-modal'),
+            ).not.toBeInTheDocument()
         })
 
         it('should handle empty selectedEmail parameter', () => {
             renderComponent(['/import-email?selectedEmail='])
 
-            expect(screen.getByTestId('selected-email')).toBeEmptyDOMElement()
+            expect(
+                screen.queryByTestId('create-import-modal'),
+            ).not.toBeInTheDocument()
         })
 
         it('should handle URL encoded email addresses', () => {
@@ -171,24 +193,34 @@ describe('ImportEmail', () => {
         it('should auto-open modal when selectedEmail is present', () => {
             renderComponent(['/import-email?selectedEmail=test@example.com'])
 
+            expect(
+                screen.getByTestId('create-import-modal'),
+            ).toBeInTheDocument()
             expect(screen.getByTestId('modal-open')).toHaveTextContent('true')
         })
 
         it('should not auto-open modal when selectedEmail is null', () => {
             renderComponent(['/import-email'])
 
-            expect(screen.getByTestId('modal-open')).toHaveTextContent('false')
+            expect(
+                screen.queryByTestId('create-import-modal'),
+            ).not.toBeInTheDocument()
         })
 
         it('should not auto-open modal when selectedEmail is empty string', () => {
             renderComponent(['/import-email?selectedEmail='])
 
-            expect(screen.getByTestId('modal-open')).toHaveTextContent('false')
+            expect(
+                screen.queryByTestId('create-import-modal'),
+            ).not.toBeInTheDocument()
         })
 
         it('should auto-open modal for any non-empty selectedEmail value', () => {
             renderComponent(['/import-email?selectedEmail=any-value'])
 
+            expect(
+                screen.getByTestId('create-import-modal'),
+            ).toBeInTheDocument()
             expect(screen.getByTestId('modal-open')).toHaveTextContent('true')
         })
     })
@@ -199,12 +231,17 @@ describe('ImportEmail', () => {
             renderComponent(['/import-email'])
 
             // Initially closed
-            expect(screen.getByTestId('modal-open')).toHaveTextContent('false')
+            expect(
+                screen.queryByTestId('create-import-modal'),
+            ).not.toBeInTheDocument()
 
             // Click header button
             await user.click(screen.getByText('Open Create Import Modal'))
 
             // Should be open
+            expect(
+                screen.getByTestId('create-import-modal'),
+            ).toBeInTheDocument()
             expect(screen.getByTestId('modal-open')).toHaveTextContent('true')
         })
 
@@ -213,12 +250,17 @@ describe('ImportEmail', () => {
             renderComponent(['/import-email'])
 
             // Initially closed
-            expect(screen.getByTestId('modal-open')).toHaveTextContent('false')
+            expect(
+                screen.queryByTestId('create-import-modal'),
+            ).not.toBeInTheDocument()
 
             // Click table button
             await user.click(screen.getByText('Table Open Create Import Modal'))
 
             // Should be open
+            expect(
+                screen.getByTestId('create-import-modal'),
+            ).toBeInTheDocument()
             expect(screen.getByTestId('modal-open')).toHaveTextContent('true')
         })
 
@@ -227,13 +269,18 @@ describe('ImportEmail', () => {
             renderComponent(['/import-email?selectedEmail=test@example.com'])
 
             // Initially open due to selectedEmail
+            expect(
+                screen.getByTestId('create-import-modal'),
+            ).toBeInTheDocument()
             expect(screen.getByTestId('modal-open')).toHaveTextContent('true')
 
             // Click close button
             await user.click(screen.getByText('Close Modal'))
 
             // Should be closed
-            expect(screen.getByTestId('modal-open')).toHaveTextContent('false')
+            expect(
+                screen.queryByTestId('create-import-modal'),
+            ).not.toBeInTheDocument()
         })
 
         it('should be able to open modal after closing it', async () => {
@@ -241,14 +288,22 @@ describe('ImportEmail', () => {
             renderComponent(['/import-email?selectedEmail=test@example.com'])
 
             // Initially open
+            expect(
+                screen.getByTestId('create-import-modal'),
+            ).toBeInTheDocument()
             expect(screen.getByTestId('modal-open')).toHaveTextContent('true')
 
             // Close modal
             await user.click(screen.getByText('Close Modal'))
-            expect(screen.getByTestId('modal-open')).toHaveTextContent('false')
+            expect(
+                screen.queryByTestId('create-import-modal'),
+            ).not.toBeInTheDocument()
 
             // Open modal again via header
             await user.click(screen.getByText('Open Create Import Modal'))
+            expect(
+                screen.getByTestId('create-import-modal'),
+            ).toBeInTheDocument()
             expect(screen.getByTestId('modal-open')).toHaveTextContent('true')
         })
     })
@@ -314,7 +369,7 @@ describe('ImportEmail', () => {
 
             // Should not crash and should render the component
             expect(
-                screen.getByTestId('create-import-modal'),
+                screen.getByTestId('header-import-email'),
             ).toBeInTheDocument()
         })
 
@@ -441,6 +496,79 @@ describe('ImportEmail', () => {
                 screen.getByRole('tab', { name: 'Email Import' }),
             ).toBeInTheDocument()
             expect(screen.getByTestId('table-import-email')).toBeInTheDocument()
+        })
+    })
+
+    describe('Zendesk Import modal interactions', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+        })
+
+        it('should open Zendesk modal when clicking header button on Zendesk Import tab', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            expect(
+                screen.queryByRole('dialog', { name: 'Import Zendesk data' }),
+            ).not.toBeInTheDocument()
+
+            await user.click(
+                screen.getByRole('tab', { name: 'Zendesk Import' }),
+            )
+
+            await user.click(screen.getByText('Open Create Import Modal'))
+
+            expect(
+                screen.getByRole('dialog', { name: 'Import Zendesk data' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('create-import-modal'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should close Zendesk modal when close button is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('tab', { name: 'Zendesk Import' }),
+            )
+
+            await user.click(screen.getByText('Open Create Import Modal'))
+
+            expect(
+                screen.getByRole('dialog', { name: 'Import Zendesk data' }),
+            ).toBeInTheDocument()
+
+            await user.click(screen.getByRole('button', { name: 'Cancel' }))
+
+            expect(
+                screen.queryByRole('dialog', { name: 'Import Zendesk data' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should be able to reopen Zendesk modal after closing it', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('tab', { name: 'Zendesk Import' }),
+            )
+
+            await user.click(screen.getByText('Open Create Import Modal'))
+            expect(
+                screen.getByRole('dialog', { name: 'Import Zendesk data' }),
+            ).toBeInTheDocument()
+
+            await user.click(screen.getByRole('button', { name: 'Cancel' }))
+            expect(
+                screen.queryByRole('dialog', { name: 'Import Zendesk data' }),
+            ).not.toBeInTheDocument()
+
+            await user.click(screen.getByText('Open Create Import Modal'))
+            expect(
+                screen.getByRole('dialog', { name: 'Import Zendesk data' }),
+            ).toBeInTheDocument()
         })
     })
 })

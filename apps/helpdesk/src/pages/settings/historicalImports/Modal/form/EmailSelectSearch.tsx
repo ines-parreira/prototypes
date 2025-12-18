@@ -16,7 +16,7 @@ import SelectInputBox, {
 
 import type { EmailOption } from './EmailMultiselect'
 
-import css from '../CreateImportModal.less'
+import css from '../EmailImportModalWizard.less'
 
 type EmailSelectSearchProps = {
     emailOptions: EmailOption[]

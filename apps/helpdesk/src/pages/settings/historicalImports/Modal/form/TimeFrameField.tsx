@@ -7,7 +7,7 @@ import {
 
 import { TimeFrameSelector } from './TimeFrameSelector'
 
-import css from '../CreateImportModal.less'
+import css from '../EmailImportModalWizard.less'
 
 type TimeFrameFieldProps = {
     timeframe: string

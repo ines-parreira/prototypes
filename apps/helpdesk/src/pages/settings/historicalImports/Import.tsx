@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import type { Key } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocation } from 'react-router-dom'
@@ -9,7 +10,8 @@ import { HeaderImport } from './HeaderImport'
 import { ImportEmailTable } from './Imports/Email/ImportEmailTable'
 import { useTableImport } from './Imports/Email/useTableImport'
 import { ZendeskImportTable } from './Imports/Zendesk/ZendeskImportTable'
-import CreateImportModal from './Modal/CreateImportModal'
+import { EmailImportModalWizard } from './Modal/EmailImportModalWizard'
+import { ZendeskImportModalWizard } from './Modal/ZendeskImportModalWizard'
 
 const EMAIL_IMPORT = 'email-import'
 const ZENDESK_IMPORT = 'zendesk-import'
@@ -21,18 +23,35 @@ const ImportEmails = () => {
     const historicalImportsEnabled = useFlag(FeatureFlagKey.HistoricalImports)
     const [isCreateImportModalOpen, setIsCreateImportModalOpen] =
         useState(!!selectedEmail)
+    const [isZendeskImportModalOpen, setIsZendeskImportModalOpen] =
+        useState(false)
+
+    const [activeTab, setActiveTab] = useState<Key>(EMAIL_IMPORT)
 
     const { tableProps } = useTableImport()
+
+    const openImportModal = () => {
+        // get active TabItem
+        // based on it trigger the action
+        if (activeTab === EMAIL_IMPORT) {
+            setIsCreateImportModalOpen(true)
+        } else {
+            setIsZendeskImportModalOpen(true)
+        }
+    }
 
     return (
         <div className="full-width">
             <HeaderImport
-                onOpenCreateImportModal={() => setIsCreateImportModalOpen(true)}
+                onOpenCreateImportModal={openImportModal}
                 showCta={Boolean(tableProps.importList?.length)}
             />
 
             <>
-                <Tabs defaultSelectedItem="overview">
+                <Tabs
+                    defaultSelectedItem="overview"
+                    onSelectionChange={(val: Key) => setActiveTab(val)}
+                >
                     <TabList>
                         <TabItem id={EMAIL_IMPORT} label="Email Import" />
                         {historicalImportsEnabled && (
@@ -45,9 +64,7 @@ const ImportEmails = () => {
 
                     <TabPanel id={EMAIL_IMPORT}>
                         <ImportEmailTable
-                            onOpenCreateImportModal={() =>
-                                setIsCreateImportModalOpen(true)
-                            }
+                            onOpenCreateImportModal={openImportModal}
                             {...tableProps}
                         />
                     </TabPanel>
@@ -59,11 +76,19 @@ const ImportEmails = () => {
                 </Tabs>
             </>
 
-            <CreateImportModal
-                selectedEmail={selectedEmail}
-                isOpen={isCreateImportModalOpen}
-                onClose={() => setIsCreateImportModalOpen(false)}
-            />
+            {isCreateImportModalOpen && (
+                <EmailImportModalWizard
+                    selectedEmail={selectedEmail}
+                    isOpen={isCreateImportModalOpen}
+                    onClose={() => setIsCreateImportModalOpen(false)}
+                />
+            )}
+
+            {isZendeskImportModalOpen && (
+                <ZendeskImportModalWizard
+                    onClose={() => setIsZendeskImportModalOpen(false)}
+                />
+            )}
         </div>
     )
 }

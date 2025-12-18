@@ -8,7 +8,7 @@ import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import { EmailSelectSearch } from './EmailSelectSearch'
 import { useEmailIntegrations } from './hooks/useEmailIntegrations'
 
-import css from '../CreateImportModal.less'
+import css from '../EmailImportModalWizard.less'
 
 export type EmailOption = {
     provider: IntegrationType
