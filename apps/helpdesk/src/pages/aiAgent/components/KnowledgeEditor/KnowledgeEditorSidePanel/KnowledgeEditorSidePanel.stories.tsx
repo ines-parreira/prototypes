@@ -60,37 +60,30 @@ const Template: StoryFn<ComponentProps<typeof KnowledgeEditorSidePanel>> = (
 const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
 
 const relatedTickets = {
-    tickets: [
+    ticketCount: 4,
+    latest3Tickets: [
         {
+            id: 123,
             title: 'Still waiting on my order?',
             lastUpdatedDatetime: oneHourAgo,
-            url: 'https://gorgias.gorgias.com/app/views/123/456',
             messageCount: 2,
             aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
         },
         {
-            title: 'Still waiting on my order?',
+            id: 456,
+            title: 'How to cancel my order?',
             lastUpdatedDatetime: oneHourAgo,
-            url: 'https://gorgias.gorgias.com/app/views/123/456',
             messageCount: 3,
             aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover,
         },
         {
-            title: 'Still waiting on my order?',
+            id: 789,
+            title: 'How to track my order?',
             lastUpdatedDatetime: oneHourAgo,
-            url: 'https://gorgias.gorgias.com/app/views/123/456',
             messageCount: 1,
             aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover,
         },
-        {
-            title: 'Still waiting on my order?',
-            lastUpdatedDatetime: oneHourAgo,
-            url: 'https://gorgias.gorgias.com/app/views/123/456',
-            messageCount: 5,
-            aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
-        },
     ],
-    relatedTicketsUrl: 'https://gorgias.gorgias.com/app/views',
 }
 
 export const ForGuidance: Story = Template.bind({})
@@ -127,7 +120,7 @@ ForNewGuidance.args = {
                 isUpdating: false,
             }}
             impact={{}}
-            relatedTickets={{}}
+            relatedTickets={{ ticketCount: 0 }}
         />
     ),
 }
@@ -168,7 +161,7 @@ ForNewDocumentSnippet.args = {
                 googleStorageUrl: 'https://storage.googleapis.com/doc.pdf',
             }}
             impact={{}}
-            relatedTickets={{}}
+            relatedTickets={{ ticketCount: 0 }}
         />
     ),
 }
@@ -207,7 +200,7 @@ ForNewURLSnippet.args = {
                 url: 'https://www.google.com',
             }}
             impact={{}}
-            relatedTickets={{}}
+            relatedTickets={{ ticketCount: 0 }}
         />
     ),
 }

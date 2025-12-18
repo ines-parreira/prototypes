@@ -90,6 +90,12 @@ export enum SlaMetric {
     BreachedTicketsRate = 'sla-breached-tickets-rate',
 }
 
+export enum KnowledgeMetric {
+    Tickets = 'knowledge_tickets',
+    HandoverTickets = 'knowledge_handover',
+    CSAT = 'knowledge_csat',
+}
+
 export enum ConvertMetric {
     CampaignSalesCount = 'campaign_sales_count',
 }

@@ -19,7 +19,10 @@ import type { HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins } from 'doma
 import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import type { TicketSLACubeWithJoins } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import type { TicketFirstHumanAgentResponseTimeCube } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
-import type { TicketInsightsTaskCube } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
+import type {
+    TicketInsightsTaskCube,
+    TicketInsightsTaskCubeWithJoins,
+} from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
 import type { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import type { VoiceCallCube } from 'domains/reporting/models/cubes/VoiceCallCube'
 import type { VoiceCallSummaryCube } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
@@ -52,3 +55,4 @@ export type Cubes =
     | AIAgentAutomatedInteractionsCube
     | TicketFirstHumanAgentResponseTimeCube
     | TicketInsightsTaskCube
+    | TicketInsightsTaskCubeWithJoins

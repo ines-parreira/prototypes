@@ -16,6 +16,7 @@ type Props = {
     bottomLink?: {
         text: string
         url?: string
+        onClick?: () => void
     }
     children: React.ReactNode
     sectionId: string
@@ -65,13 +66,22 @@ export const KnowledgeEditorSidePanelSection = ({
                         <div
                             className={classNames(
                                 css.bottomLink,
-                                bottomLink.url === undefined &&
+                                !bottomLink.url &&
+                                    !bottomLink.onClick &&
                                     css.disabledBottomLink,
                             )}
                         >
-                            {bottomLink.url ? (
+                            {bottomLink.onClick ? (
+                                <button
+                                    type="button"
+                                    className={css.bottomLinkButton}
+                                    onClick={bottomLink.onClick}
+                                >
+                                    {bottomLink.text}
+                                </button>
+                            ) : bottomLink.url ? (
                                 <a
-                                    href={bottomLink.url || '#'}
+                                    href={bottomLink.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >

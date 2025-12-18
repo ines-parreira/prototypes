@@ -10,6 +10,11 @@ import {
     AIJourneyMetricsConfig,
 } from 'AIJourney/types/AIJourneyTypes'
 import { totalNumberProductRecommendationsDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import {
+    knowledgeCSATDrillDownQueryFactory,
+    knowledgeHandoverTicketsDrillDownQueryFactory,
+    knowledgeTicketsDrillDownQueryFactory,
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import { medianFirstAgentResponseTimePerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import {
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
@@ -29,6 +34,7 @@ import {
     AiSalesAgentChart,
     AiSalesAgentMetricsWithDrillDownConfig,
 } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import type {
     ColumnConfig,
     DrillDownQueryFactory,
@@ -75,6 +81,7 @@ import { VoiceMetricsConfig } from 'domains/reporting/pages/voice/VoiceConfigs/V
 import type {
     AiSalesAgentMetrics,
     DrillDownMetric,
+    KnowledgeMetrics,
 } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { ProductsPerTicketColumn } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
 import {
@@ -83,6 +90,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    KnowledgeMetric,
     ProductInsightsTableColumns,
     SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,
@@ -512,6 +520,89 @@ export const getDrillDownQuery = (
                     metricData.journeyIds,
                 )
         }
+        case KnowledgeMetric.Tickets: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                __sorting?: OrderDirection,
+            ) => {
+                const knowledgeMetricData = metricData as KnowledgeMetrics
+                const filtersWithPeriod: StatsFilters = {
+                    ...statsFilters,
+                    [FilterKey.Period]: {
+                        start_datetime:
+                            knowledgeMetricData.dateRange.start_datetime,
+                        end_datetime:
+                            knowledgeMetricData.dateRange.end_datetime,
+                    },
+                }
+                return knowledgeTicketsDrillDownQueryFactory(
+                    filtersWithPeriod,
+                    timezone,
+                    knowledgeMetricData.resourceSourceId,
+                    knowledgeMetricData.resourceSourceSetId,
+                )
+            }
+        }
+        case KnowledgeMetric.HandoverTickets: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                __sorting?: OrderDirection,
+            ) => {
+                const knowledgeMetricData = metricData as KnowledgeMetrics
+                const filtersWithHandover: StatsFilters = {
+                    ...statsFilters,
+                    [FilterKey.Period]: {
+                        start_datetime:
+                            knowledgeMetricData.dateRange.start_datetime,
+                        end_datetime:
+                            knowledgeMetricData.dateRange.end_datetime,
+                    },
+                    [FilterKey.CustomFields]: [
+                        {
+                            customFieldId:
+                                knowledgeMetricData.outcomeCustomFieldId!,
+                            operator: LogicalOperatorEnum.ONE_OF,
+                            values: [
+                                'Handover::With message',
+                                'Handover::Without message',
+                            ],
+                        },
+                    ],
+                }
+                return knowledgeHandoverTicketsDrillDownQueryFactory(
+                    filtersWithHandover,
+                    timezone,
+                    knowledgeMetricData.resourceSourceId,
+                    knowledgeMetricData.resourceSourceSetId,
+                )
+            }
+        }
+        case KnowledgeMetric.CSAT: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                __sorting?: OrderDirection,
+            ) => {
+                const knowledgeMetricData = metricData as KnowledgeMetrics
+                const filtersWithPeriod: StatsFilters = {
+                    ...statsFilters,
+                    [FilterKey.Period]: {
+                        start_datetime:
+                            knowledgeMetricData.dateRange.start_datetime,
+                        end_datetime:
+                            knowledgeMetricData.dateRange.end_datetime,
+                    },
+                }
+                return knowledgeCSATDrillDownQueryFactory(
+                    filtersWithPeriod,
+                    timezone,
+                    knowledgeMetricData.resourceSourceId,
+                    knowledgeMetricData.resourceSourceSetId,
+                )
+            }
+        }
     }
 }
 const queryBuilderWithAgentFilter =
@@ -766,6 +857,13 @@ export const getDrillDownMetricColumn = (
         metricValueFormat =
             TicketVolumeConfig[ProductsPerTicketColumn.TicketVolume]
                 .metricFormat
+    } else if (
+        metricData.metricName === KnowledgeMetric.Tickets ||
+        metricData.metricName === KnowledgeMetric.HandoverTickets ||
+        metricData.metricName === KnowledgeMetric.CSAT
+    ) {
+        metricTitle = metricData.title || ''
+        metricValueFormat = 'decimal'
     } else if ('perAgentId' in metricData) {
         metricTitle = TableLabels[metricData.metricName]
         metricValueFormat = AgentsColumnConfig[metricData.metricName].format

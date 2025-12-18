@@ -1,21 +1,29 @@
 import { screen } from '@testing-library/react'
 
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
-import { renderWithRouter } from 'utils/testing'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { KnowledgeEditorSidePanelURLSnippet } from './KnowledgeEditorSidePanelURLSnippet'
 
 describe('KnowledgeEditorSidePanelURLSnippet', () => {
     it('renders', () => {
-        renderWithRouter(
+        const testDate = new Date('2025-06-17')
+        const testDateRange = {
+            start_datetime: new Date(
+                Date.now() - 28 * 24 * 60 * 60 * 1000,
+            ).toISOString(),
+            end_datetime: new Date().toISOString(),
+        }
+
+        renderWithStoreAndQueryClientAndRouter(
             <KnowledgeEditorSidePanelURLSnippet
                 details={{
                     aiAgentStatus: {
                         value: true,
                         onChange: jest.fn(),
                     },
-                    createdDatetime: new Date('2025-06-17'),
-                    lastUpdatedDatetime: new Date('2025-06-17'),
+                    createdDatetime: testDate,
+                    lastUpdatedDatetime: testDate,
                     url: 'https://www.google.com',
                 }}
                 impact={{
@@ -25,24 +33,30 @@ describe('KnowledgeEditorSidePanelURLSnippet', () => {
                     intents: ['Billing/Payment', 'Shipping/Inquiry'],
                 }}
                 relatedTickets={{
-                    tickets: [
+                    ticketCount: 2,
+                    latest3Tickets: [
                         {
-                            lastUpdatedDatetime: new Date('2025-06-17'),
-                            url: 'https://www.google.com',
+                            id: 1,
+                            lastUpdatedDatetime: testDate,
                             title: 'Ticket 1',
                             messageCount: 2,
                             aiAgentOutcome:
                                 AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
                         },
                         {
-                            lastUpdatedDatetime: new Date('2025-06-17'),
-                            url: 'https://www.google.com',
+                            id: 2,
+                            lastUpdatedDatetime: testDate,
                             title: 'Ticket 2',
                             messageCount: 4,
                             aiAgentOutcome:
                                 AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover,
                         },
                     ],
+                    resourceSourceId: 123,
+                    resourceSourceSetId: 456,
+                    dateRange: testDateRange,
+                    outcomeCustomFieldId: 789,
+                    intentCustomFieldId: 101112,
                 }}
             />,
         )

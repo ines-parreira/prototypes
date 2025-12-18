@@ -5,7 +5,10 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
-import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+import {
+    getLast28DaysDateRange,
+    useResourceMetrics,
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import {
@@ -68,11 +71,14 @@ export const KnowledgeEditorSnippetLoader = ({
     const { data: articleData, isInitialLoading: isSnippetLoading } =
         useGetHelpCenterArticle(snippetId, helpCenterId, locale)
 
+    const dateRange = useMemo(() => getLast28DaysDateRange(), [])
+
     const resourceImpact = useResourceMetrics({
         resourceSourceId: snippetId,
         resourceSourceSetId: helpCenterId,
         timezone: timezone ?? 'UTC',
         enabled: isPerformanceStatsEnabled,
+        dateRange,
     })
 
     const {

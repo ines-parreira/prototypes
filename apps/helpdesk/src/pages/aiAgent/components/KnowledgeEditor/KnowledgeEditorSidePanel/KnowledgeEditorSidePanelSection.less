@@ -62,7 +62,8 @@
         justify-content: flex-start;
 
         > a,
-        > span {
+        > span,
+        > button {
             height: 22px;
             padding: 0 6px 0 8px;
             display: flex;
@@ -72,6 +73,18 @@
             gap: var(--spacing-xxxs);
             color: var(--content-neutral-default);
             .caption-semibold();
+        }
+    }
+
+    .bottomLinkButton {
+        all: unset;
+        cursor: pointer;
+        color: inherit;
+        font: inherit;
+        font-weight: bold;
+
+        &:hover {
+            text-decoration: underline;
         }
     }
 

@@ -2,7 +2,10 @@ import { useCallback, useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+import {
+    getLast28DaysDateRange,
+    useResourceMetrics,
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
@@ -50,11 +53,14 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
         shopType,
     )
 
+    const dateRange = useMemo(() => getLast28DaysDateRange(), [])
+
     const resourceImpact = useResourceMetrics({
         resourceSourceId: guidanceArticle?.id ?? 0,
         resourceSourceSetId: guidanceHelpCenter.id,
         timezone: timezone ?? 'UTC',
         enabled: isPerformanceStatsEnabled && !!guidanceArticle,
+        dateRange,
     })
 
     const impact = useMemo(

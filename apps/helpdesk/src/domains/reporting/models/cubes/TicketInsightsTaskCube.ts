@@ -1,4 +1,8 @@
-import type { Cube } from 'domains/reporting/models/types'
+import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
+import type {
+    Cube,
+    JoinedCubesWithMapping,
+} from 'domains/reporting/models/types'
 
 export enum TicketInsightsTaskMeasure {
     TicketCount = 'TicketInsightsTask.ticketCount',
@@ -22,4 +26,9 @@ export type TicketInsightsTaskCube = Cube<
     never,
     never,
     never
+>
+
+export type TicketInsightsTaskCubeWithJoins = JoinedCubesWithMapping<
+    TicketInsightsTaskCube,
+    TicketCubeWithJoins
 >

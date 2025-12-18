@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 
 import type { Props as ImpactProps } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
@@ -153,6 +154,7 @@ export const KnowledgeEditorSnippetView = ({
                 />
                 {isDetailsView && renderSidePanel()}
             </div>
+            <DrillDownModal />
         </div>
     )
 }

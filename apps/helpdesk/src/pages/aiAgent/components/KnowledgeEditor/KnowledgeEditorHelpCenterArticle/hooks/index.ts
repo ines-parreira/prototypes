@@ -1,5 +1,7 @@
 export { useArticleImpactFromContext } from './useArticleImpactFromContext'
 export type { ArticleImpactData } from './useArticleImpactFromContext'
+export { useArticleRelatedTicketsFromContext } from './useArticleRelatedTicketsFromContext'
+export type { ArticleRelatedTicketsData } from './useArticleRelatedTicketsFromContext'
 export { useArticleToolbar } from './useArticleToolbar'
 export type {
     ArticleToolbarData,

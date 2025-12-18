@@ -7,7 +7,22 @@ import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorSnippetView } from './KnowledgeEditorSnippetView'
 
-const store = mockStore({})
+const store = mockStore({
+    ui: {
+        stats: {
+            drillDown: {
+                isOpen: false,
+                currentPage: 1,
+                metricData: null,
+                export: {
+                    isLoading: false,
+                    isError: false,
+                    isRequested: false,
+                },
+            },
+        },
+    },
+})
 
 const renderWithProvider = (ui: React.ReactElement) => {
     return render(<Provider store={store}>{ui}</Provider>)

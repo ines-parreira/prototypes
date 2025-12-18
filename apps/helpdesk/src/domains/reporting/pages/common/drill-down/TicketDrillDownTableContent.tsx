@@ -49,6 +49,7 @@ import type {
 import {
     AIInsightsMetric,
     AutoQAMetric,
+    KnowledgeMetric,
     SatisfactionMetric,
 } from 'domains/reporting/state/ui/stats/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -135,7 +136,13 @@ export const TicketDrillDownTableContent = ({
         metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
         metricData.metricName === AutoQAAgentsTableColumn.ReviewedClosedTickets
     const showSurveyScore =
-        metricData.metricName === SatisfactionMetric.SatisfactionScore
+        metricData.metricName === SatisfactionMetric.SatisfactionScore ||
+        metricData.metricName === KnowledgeMetric.CSAT
+
+    const isKnowledgeMetric =
+        metricData.metricName === KnowledgeMetric.Tickets ||
+        metricData.metricName === KnowledgeMetric.HandoverTickets ||
+        metricData.metricName === KnowledgeMetric.CSAT
 
     const { showMetric, metricTitle, metricValueFormat } = columnConfig
 
@@ -277,7 +284,8 @@ export const TicketDrillDownTableContent = ({
                     isAiSalesAgentConversationsMetric ||
                     isAiSalesAgentSuccessRateMetric ||
                     isAiSalesAgentDiscountOfferedMetric ||
-                    isAiSalesAgentTotalProductRecommendationsMetric) && (
+                    isAiSalesAgentTotalProductRecommendationsMetric ||
+                    isKnowledgeMetric) && (
                     <HeaderCellProperty
                         title="Outcome"
                         width={columnWidths.outcome}
@@ -318,14 +326,15 @@ export const TicketDrillDownTableContent = ({
                     isAiJourneyTotalOrdersMetric ||
                     isAiJourneyResponseRateMetric ||
                     isAiJourneyOptOutRateMetric ||
-                    isAiJourneyClickThroughRateMetric) && (
-                    <HeaderCellProperty
-                        title="Assignee"
-                        width={columnWidths.assignee}
-                        className={css.headerCell}
-                        tooltip={tooltipHints.assignee}
-                    />
-                )}
+                    isAiJourneyClickThroughRateMetric) &&
+                    !isKnowledgeMetric && (
+                        <HeaderCellProperty
+                            title="Assignee"
+                            width={columnWidths.assignee}
+                            className={css.headerCell}
+                            tooltip={tooltipHints.assignee}
+                        />
+                    )}
                 <HeaderCellProperty
                     title="Created"
                     width={columnWidths.created}
@@ -428,7 +437,8 @@ export const TicketDrillDownTableContent = ({
                     isAiJourneyTotalOrdersMetric ||
                     isAiJourneyResponseRateMetric ||
                     isAiJourneyOptOutRateMetric ||
-                    isAiJourneyClickThroughRateMetric
+                    isAiJourneyClickThroughRateMetric ||
+                    isKnowledgeMetric
                 ) && (
                     <HeaderCellProperty
                         title="Contact Reason"
@@ -527,7 +537,8 @@ export const TicketDrillDownTableContent = ({
                                 isAiSalesAgentConversationsMetric ||
                                 isAiSalesAgentSuccessRateMetric ||
                                 isAiSalesAgentDiscountOfferedMetric ||
-                                isAiSalesAgentTotalProductRecommendationsMetric) && (
+                                isAiSalesAgentTotalProductRecommendationsMetric ||
+                                isKnowledgeMetric) && (
                                 <BodyCell width={columnWidths.outcome}>
                                     {item.outcome ? (
                                         <TruncateMultilineCellContent
@@ -590,17 +601,18 @@ export const TicketDrillDownTableContent = ({
                             {(!isAiSalesAgentTotalNumberOfOrdersMetric ||
                                 isAiJourneyResponseRateMetric ||
                                 isAiJourneyOptOutRateMetric ||
-                                isAiJourneyClickThroughRateMetric) && (
-                                <BodyCell width={columnWidths.assignee}>
-                                    {item.assignee && (
-                                        <AgentAvatar
-                                            agent={item.assignee}
-                                            avatarSize={24}
-                                            className={css.agent}
-                                        />
-                                    )}
-                                </BodyCell>
-                            )}
+                                isAiJourneyClickThroughRateMetric) &&
+                                !isKnowledgeMetric && (
+                                    <BodyCell width={columnWidths.assignee}>
+                                        {item.assignee && (
+                                            <AgentAvatar
+                                                agent={item.assignee}
+                                                avatarSize={24}
+                                                className={css.agent}
+                                            />
+                                        )}
+                                    </BodyCell>
+                                )}
                             <BodyCell width={columnWidths.created}>
                                 {item.ticket.created ? (
                                     <DatetimeLabel
@@ -684,7 +696,8 @@ export const TicketDrillDownTableContent = ({
                                 isAiSalesAgentTotalProductRecommendationsMetric ||
                                 isAiJourneyResponseRateMetric ||
                                 isAiJourneyOptOutRateMetric ||
-                                isAiJourneyClickThroughRateMetric
+                                isAiJourneyClickThroughRateMetric ||
+                                isKnowledgeMetric
                             ) && (
                                 <BodyCell width={columnWidths.contactReason}>
                                     {item.ticket.contactReason ? (

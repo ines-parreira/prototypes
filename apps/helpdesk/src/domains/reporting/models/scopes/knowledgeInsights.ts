@@ -1,12 +1,14 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { DRILLDOWN_QUERY_LIMIT } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
 const knowledgeStatisticsScope = defineScope({
     scope: MetricScope.KnowledgeInsights,
     measures: ['ticketCount', 'averageSurveyScore'],
     dimensions: [
+        'ticketId',
         'resourceType',
         'resourceSourceId',
         'resourceSourceSetId',
@@ -142,3 +144,53 @@ export const knowledgeIntents = knowledgeStatisticsScope
 
 export const knowledgeIntentsQueryV2Factory = (ctx: Context) =>
     knowledgeIntents.build(ctx)
+
+// Drilldown query factories
+
+export const knowledgeTicketsDrillDown = knowledgeStatisticsScope
+    .defineMetricName(METRIC_NAMES.KNOWLEDGE_TICKETS)
+    .defineQuery(() => ({
+        measures: [] as const,
+        dimensions: [
+            'ticketId',
+            'resourceType',
+            'resourceSourceId',
+            'resourceSourceSetId',
+        ] as const,
+        limit: DRILLDOWN_QUERY_LIMIT,
+    }))
+
+export const knowledgeTicketsDrillDownQueryV2Factory = (ctx: Context) =>
+    knowledgeTicketsDrillDown.build(ctx)
+
+export const knowledgeHandoverTicketsDrillDown = knowledgeStatisticsScope
+    .defineMetricName(METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS)
+    .defineQuery(() => ({
+        measures: [] as const,
+        dimensions: [
+            'ticketId',
+            'resourceType',
+            'resourceSourceId',
+            'resourceSourceSetId',
+        ] as const,
+        limit: DRILLDOWN_QUERY_LIMIT,
+    }))
+
+export const knowledgeHandoverTicketsDrillDownQueryV2Factory = (ctx: Context) =>
+    knowledgeHandoverTicketsDrillDown.build(ctx)
+
+export const knowledgeCSATDrillDown = knowledgeStatisticsScope
+    .defineMetricName(METRIC_NAMES.KNOWLEDGE_CSAT)
+    .defineQuery(() => ({
+        measures: ['averageSurveyScore'] as const,
+        dimensions: [
+            'ticketId',
+            'resourceType',
+            'resourceSourceId',
+            'resourceSourceSetId',
+        ] as const,
+        limit: DRILLDOWN_QUERY_LIMIT,
+    }))
+
+export const knowledgeCSATDrillDownQueryV2Factory = (ctx: Context) =>
+    knowledgeCSATDrillDown.build(ctx)

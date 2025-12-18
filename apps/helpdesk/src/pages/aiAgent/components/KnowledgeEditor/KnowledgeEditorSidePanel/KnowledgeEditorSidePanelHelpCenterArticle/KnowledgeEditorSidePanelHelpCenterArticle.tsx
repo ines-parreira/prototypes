@@ -1,20 +1,17 @@
-import { useArticleImpactFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
+import {
+    useArticleImpactFromContext,
+    useArticleRelatedTicketsFromContext,
+} from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionImpact } from '../KnowledgeEditorSidePanelSectionImpact'
-import type { Props as HelpCenterArticleRelatedTicketsProps } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
 import { KnowledgeEditorSidePanelSectionRelatedTickets } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleDetails } from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleSettings } from './KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
 
-type Props = {
-    relatedTickets?: Omit<HelpCenterArticleRelatedTicketsProps, 'sectionId'>
-}
-
-export const KnowledgeEditorSidePanelHelpCenterArticle = ({
-    relatedTickets,
-}: Props) => {
+export const KnowledgeEditorSidePanelHelpCenterArticle = () => {
     const impact = useArticleImpactFromContext()
+    const relatedTickets = useArticleRelatedTicketsFromContext()
 
     const initialExpandedSections = relatedTickets
         ? ['details', 'impact', 'relatedTickets', 'settings']

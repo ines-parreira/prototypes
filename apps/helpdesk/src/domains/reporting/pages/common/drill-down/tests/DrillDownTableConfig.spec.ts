@@ -12,6 +12,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    KnowledgeMetric,
     ProductInsightsTableColumns,
     SatisfactionMetric,
     TagsMetric,
@@ -86,6 +87,9 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AIJourneyMetric.ResponseRate,
     AIJourneyMetric.OptOutRate,
     AIJourneyMetric.ClickThroughRate,
+    KnowledgeMetric.Tickets,
+    KnowledgeMetric.HandoverTickets,
+    KnowledgeMetric.CSAT,
 ]
 
 describe('MetricsConfig', () => {

@@ -20,6 +20,11 @@ import {
     totalNumberOfSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
     totalNumberProductRecommendationsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import {
+    knowledgeCSATDrillDownQueryFactory,
+    knowledgeHandoverTicketsDrillDownQueryFactory,
+    knowledgeTicketsDrillDownQueryFactory,
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
 import {
     customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory,
@@ -104,6 +109,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    KnowledgeMetric,
     ProductInsightsTableColumns,
     SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,
@@ -151,6 +157,7 @@ jest.mock(
     'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount',
 )
 jest.mock('domains/reporting/models/queryFactories/ai-sales-agent/metrics')
+jest.mock('domains/reporting/models/queryFactories/knowledge/resourceMetrics')
 jest.mock('AIJourney/queries/aiJourneyDrillDownQueries')
 
 jest.mock(
@@ -233,6 +240,16 @@ const aiJourneyOptOutRateDrillDownQueryFactoryMock = assumeMock(
 )
 const aiJourneyClickThroughRateDrillDownQueryFactoryMock = assumeMock(
     aiJourneyClickThroughRateDrillDownQueryFactory,
+)
+
+const knowledgeTicketsDrillDownQueryFactoryMock = assumeMock(
+    knowledgeTicketsDrillDownQueryFactory,
+)
+const knowledgeHandoverTicketsDrillDownQueryFactoryMock = assumeMock(
+    knowledgeHandoverTicketsDrillDownQueryFactory,
+)
+const knowledgeCSATDrillDownQueryFactoryMock = assumeMock(
+    knowledgeCSATDrillDownQueryFactory,
 )
 
 describe('getDrillDownQuery', () => {
@@ -571,6 +588,37 @@ describe('getDrillDownQuery', () => {
         },
     ]
 
+    const knowledgeMetrics: DrillDownMetric[] = [
+        {
+            metricName: KnowledgeMetric.Tickets,
+            resourceSourceId: 123,
+            resourceSourceSetId: 456,
+            dateRange: {
+                start_datetime: '2025-01-15T00:00:00.000',
+                end_datetime: '2025-01-20T23:59:59.000',
+            },
+        },
+        {
+            metricName: KnowledgeMetric.HandoverTickets,
+            resourceSourceId: 123,
+            resourceSourceSetId: 456,
+            dateRange: {
+                start_datetime: '2025-01-15T00:00:00.000',
+                end_datetime: '2025-01-20T23:59:59.000',
+            },
+            outcomeCustomFieldId: 777,
+        },
+        {
+            metricName: KnowledgeMetric.CSAT,
+            resourceSourceId: 123,
+            resourceSourceSetId: 456,
+            dateRange: {
+                start_datetime: '2025-01-15T00:00:00.000',
+                end_datetime: '2025-01-20T23:59:59.000',
+            },
+        },
+    ]
+
     it.each([
         ...supportedMetrics,
         ...agentsMetrics,
@@ -586,6 +634,7 @@ describe('getDrillDownQuery', () => {
         ...productInsightsMetrics,
         ...voiceOfCustomerMetrics,
         ...aiJourneyMetrics,
+        ...knowledgeMetrics,
     ])(
         'should return a query for every DrillDown metric: $metricName',
         (metricName: DrillDownMetric) => {
@@ -1470,6 +1519,109 @@ describe('getDrillDownQuery', () => {
         ).toHaveBeenCalledWith(statsFilters, timezone, '789', undefined, [
             'click-through-journey-id',
         ])
+    })
+
+    it('should be populated with KnowledgeMetric.Tickets', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const dateRange = {
+            start_datetime: '2025-01-15T00:00:00.000',
+            end_datetime: '2025-01-20T23:59:59.000',
+        }
+        const drillDownMetric = {
+            metricName: KnowledgeMetric.Tickets,
+            resourceSourceId: 123,
+            resourceSourceSetId: 456,
+            dateRange,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(knowledgeTicketsDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                period: dateRange,
+            }),
+            timezone,
+            123,
+            456,
+        )
+    })
+
+    it('should be populated with KnowledgeMetric.HandoverTickets', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const dateRange = {
+            start_datetime: '2025-01-15T00:00:00.000',
+            end_datetime: '2025-01-20T23:59:59.000',
+        }
+        const outcomeCustomFieldId = 777
+        const drillDownMetric = {
+            metricName: KnowledgeMetric.HandoverTickets,
+            resourceSourceId: 123,
+            resourceSourceSetId: 456,
+            dateRange,
+            outcomeCustomFieldId,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            knowledgeHandoverTicketsDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(
+            expect.objectContaining({
+                period: dateRange,
+            }),
+            timezone,
+            123,
+            456,
+        )
+    })
+
+    it('should be populated with KnowledgeMetric.CSAT', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const dateRange = {
+            start_datetime: '2025-01-15T00:00:00.000',
+            end_datetime: '2025-01-20T23:59:59.000',
+        }
+        const drillDownMetric = {
+            metricName: KnowledgeMetric.CSAT,
+            resourceSourceId: 123,
+            resourceSourceSetId: 456,
+            dateRange,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(knowledgeCSATDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                period: dateRange,
+            }),
+            timezone,
+            123,
+            456,
+        )
     })
 })
 

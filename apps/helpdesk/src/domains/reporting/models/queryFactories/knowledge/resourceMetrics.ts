@@ -1,6 +1,8 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import _groupBy from 'lodash/groupBy'
+
+import { useGetTicket } from '@gorgias/helpdesk-queries'
 
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
@@ -8,6 +10,7 @@ import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { Cubes } from 'domains/reporting/models/cubes'
 import { TicketCustomFieldsDimension } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
+import type { TicketInsightsTaskCubeWithJoins } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
 import {
     TicketInsightsTaskDimension,
     TicketInsightsTaskMeasure,
@@ -29,14 +32,26 @@ import type {
 } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import useAppDispatch from 'hooks/useAppDispatch'
+import { OrderDirection } from 'models/api/types'
 import type { Props as ImpactProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+
+import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from '../../../hooks/automate/types'
+import { setMetricData } from '../../../state/ui/stats/drillDownSlice'
+import { KnowledgeMetric } from '../../../state/ui/stats/types'
+import { DRILLDOWN_QUERY_LIMIT } from '../../../utils/reporting'
+import { TicketDimension } from '../../cubes/TicketCube'
 
 type ResourceMetricsParams = {
     resourceSourceId: number
     resourceSourceSetId: number
     timezone: string
     enabled?: boolean
+    dateRange: {
+        start_datetime: string
+        end_datetime: string
+    }
 }
 
 type ResourceMetricsResult = {
@@ -55,6 +70,10 @@ type AllResourcesMetricsParams = {
     timezone: string
     enabled?: boolean
     loadIntents?: boolean
+    dateRange: {
+        start_datetime: string
+        end_datetime: string
+    }
 }
 
 type ResourceMetrics = {
@@ -116,6 +135,16 @@ export const createV1Query = <TCube extends Cubes = Cubes>(
     }
 
     // Add standard filters
+    if (
+        !filters.period ||
+        !filters.period.start_datetime ||
+        !filters.period.end_datetime
+    ) {
+        throw new Error(
+            'Period filters (start_datetime and end_datetime) are required for knowledge metrics queries',
+        )
+    }
+
     baseFilters.push(
         {
             member: 'TicketEnriched.periodStart',
@@ -215,6 +244,132 @@ export const createV1Query = <TCube extends Cubes = Cubes>(
         ] as ReportingQuery<TCube>['timeDimensions'],
         metricName,
         timezone,
+    }
+}
+
+/**
+ * Creates a V1 drilldown query for knowledge statistics
+ * Adds TicketId dimension and sets limit to 100
+ */
+export const createV1DrillDownQuery = (
+    metricName: MetricName,
+    resourceSourceId: number,
+    resourceSourceSetId: number,
+    filters: ApiStatsFilters,
+    timezone: string,
+): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
+    const baseQuery = createV1Query<TicketInsightsTaskCubeWithJoins>(
+        metricName,
+        resourceSourceId,
+        resourceSourceSetId,
+        filters,
+        timezone,
+        '', // measure not needed for drilldown
+    )
+
+    return {
+        ...baseQuery,
+        metricName,
+        measures: [] as any,
+        dimensions: [TicketDimension.TicketId, ...baseQuery.dimensions] as any,
+        limit: DRILLDOWN_QUERY_LIMIT,
+    }
+}
+
+/**
+ * Public drilldown query factory for knowledge tickets
+ * Used by central routing in helpers.ts
+ */
+export const knowledgeTicketsDrillDownQueryFactory = (
+    filters: ApiStatsFilters,
+    timezone: string,
+    resourceSourceId: number,
+    resourceSourceSetId: number,
+): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
+    return createV1DrillDownQuery(
+        METRIC_NAMES.KNOWLEDGE_TICKETS,
+        resourceSourceId,
+        resourceSourceSetId,
+        filters,
+        timezone,
+    )
+}
+
+/**
+ * Public drilldown query factory for knowledge handover tickets
+ * Used by central routing in helpers.ts
+ */
+export const knowledgeHandoverTicketsDrillDownQueryFactory = (
+    filters: ApiStatsFilters,
+    timezone: string,
+    resourceSourceId: number,
+    resourceSourceSetId: number,
+): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
+    return createV1DrillDownQuery(
+        METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
+        resourceSourceId,
+        resourceSourceSetId,
+        filters,
+        timezone,
+    )
+}
+
+/**
+ * Public drilldown query factory for knowledge CSAT
+ * Used by central routing in helpers.ts
+ */
+export const knowledgeCSATDrillDownQueryFactory = (
+    filters: ApiStatsFilters,
+    timezone: string,
+    resourceSourceId: number,
+    resourceSourceSetId: number,
+): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
+    const baseQuery = createV1DrillDownQuery(
+        METRIC_NAMES.KNOWLEDGE_CSAT,
+        resourceSourceId,
+        resourceSourceSetId,
+        filters,
+        timezone,
+    )
+
+    // Override measures to include avgSurveyScore for CSAT drilldown
+    // Add filter to only include tickets with survey scores
+    return {
+        ...baseQuery,
+        measures: ['TicketInsightsTask.avgSurveyScore'] as any,
+        filters: [
+            ...baseQuery.filters,
+            {
+                member: 'TicketInsightsTask.avgSurveyScore' as any,
+                operator: ReportingFilterOperator.Set,
+                values: [],
+            },
+        ],
+    }
+}
+
+/**
+ * Query factory to fetch the first 3 related ticket IDs for knowledge resources
+ * Returns the 3 most recent tickets ordered by creation date descending
+ */
+export const knowledgeRelatedTicketsQueryFactory = (
+    filters: ApiStatsFilters,
+    timezone: string,
+    resourceSourceId: number,
+    resourceSourceSetId: number,
+): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
+    const baseQuery = createV1DrillDownQuery(
+        METRIC_NAMES.KNOWLEDGE_TICKETS,
+        resourceSourceId,
+        resourceSourceSetId,
+        filters,
+        timezone,
+    )
+
+    return {
+        ...baseQuery,
+        limit: 3,
+        order: [[TicketDimension.CreatedDatetime, OrderDirection.Desc]],
     }
 }
 
@@ -330,21 +485,18 @@ export const useResourceMetrics = ({
     resourceSourceSetId,
     timezone,
     enabled = true,
+    dateRange,
 }: ResourceMetricsParams): ResourceMetricsResult => {
     // Fetch the AI Agent custom field IDs for filtering
     const { outcomeCustomFieldId, intentCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
-    // Calculate 28-day period and set up filters for specific article and help center
+    // Set up filters for specific article and help center
     const filters: ApiStatsFilters = useMemo(() => {
-        const endDate = new Date()
-        const startDate = new Date()
-        startDate.setDate(startDate.getDate() - 28)
-
         return {
             [FilterKey.Period]: {
-                start_datetime: startDate.toISOString(),
-                end_datetime: endDate.toISOString(),
+                start_datetime: dateRange.start_datetime,
+                end_datetime: dateRange.end_datetime,
             },
             [APIOnlyFilterKey.ResourceSourceId]: {
                 operator: LogicalOperatorEnum.ONE_OF,
@@ -355,7 +507,7 @@ export const useResourceMetrics = ({
                 values: [String(resourceSourceSetId)],
             },
         }
-    }, [resourceSourceId, resourceSourceSetId])
+    }, [resourceSourceId, resourceSourceSetId, dateRange])
 
     // Create handover-specific filters that include custom field filter for "Handover" outcome
     // Handover values can be either "Handover::With message" or "Handover::Without message"
@@ -393,6 +545,31 @@ export const useResourceMetrics = ({
             ],
         }
     }, [filters, intentCustomFieldId])
+
+    // Create onClick handlers for drilldown
+    const dispatch = useAppDispatch()
+
+    const createOnClick = useCallback(
+        (
+            metricName: KnowledgeMetric,
+            title: string,
+            outcomeId?: number,
+            intentId?: number,
+        ) =>
+            () => {
+                const metricData = {
+                    metricName,
+                    title,
+                    resourceSourceId,
+                    resourceSourceSetId,
+                    dateRange,
+                    ...(outcomeId && { outcomeCustomFieldId: outcomeId }),
+                    ...(intentId && { intentCustomFieldId: intentId }),
+                }
+                dispatch(setMetricData(metricData))
+            },
+        [dispatch, resourceSourceId, resourceSourceSetId, dateRange],
+    )
 
     // Fetch tickets count
     const ticketsMetric = useMetric(
@@ -494,22 +671,30 @@ export const useResourceMetrics = ({
                       tickets: ticketsMetric.data?.value
                           ? {
                                 value: ticketsMetric.data.value,
-                                // TODO: drilldown
-                                onClick: undefined,
+                                onClick: createOnClick(
+                                    KnowledgeMetric.Tickets,
+                                    'Tickets',
+                                ),
                             }
                           : null,
                       handoverTickets: handoverTicketsMetric.data?.value
                           ? {
                                 value: handoverTicketsMetric.data.value,
-                                // TODO: drilldown
-                                onClick: undefined,
+                                onClick: createOnClick(
+                                    KnowledgeMetric.HandoverTickets,
+                                    'Handover Tickets',
+                                    outcomeCustomFieldId,
+                                    intentCustomFieldId,
+                                ),
                             }
                           : null,
                       csat: csatMetric.data?.value
                           ? {
                                 value: Number(csatMetric.data.value.toFixed(2)),
-                                // TODO: drilldown
-                                onClick: undefined,
+                                onClick: createOnClick(
+                                    KnowledgeMetric.CSAT,
+                                    'CSAT',
+                                ),
                             }
                           : null,
                       intents: intents ?? null,
@@ -617,26 +802,23 @@ export const useAllResourcesMetrics = ({
     timezone,
     enabled = true,
     loadIntents = true,
+    dateRange,
 }: AllResourcesMetricsParams): AllResourcesMetricsResult => {
     const { outcomeCustomFieldId, intentCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
     const filters: ApiStatsFilters = useMemo(() => {
-        const endDate = new Date()
-        const startDate = new Date()
-        startDate.setDate(startDate.getDate() - 28)
-
         return {
             [FilterKey.Period]: {
-                start_datetime: startDate.toISOString(),
-                end_datetime: endDate.toISOString(),
+                start_datetime: dateRange.start_datetime,
+                end_datetime: dateRange.end_datetime,
             },
             [APIOnlyFilterKey.ShopIntegrationId]: {
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: [String(shopIntegrationId)],
             },
         }
-    }, [shopIntegrationId])
+    }, [shopIntegrationId, dateRange])
 
     const handoverFilters: ApiStatsFilters = useMemo(() => {
         return {
@@ -776,4 +958,274 @@ export const useAllResourcesMetrics = ({
         isError,
         data,
     }
+}
+
+/**
+ * Type definitions for related tickets
+ */
+type RelatedTicket = {
+    id: number
+    title: string
+    lastUpdatedDatetime: Date
+    messageCount: number
+    aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS
+}
+
+type UseRelatedTicketsParams = {
+    resourceSourceId: number
+    resourceSourceSetId: number
+    timezone: string
+    enabled: boolean
+    dateRange: {
+        start_datetime: string
+        end_datetime: string
+    }
+}
+
+type UseRelatedTicketsResult = {
+    data: RelatedTicket[] | null
+    isLoading: boolean
+    isError: boolean
+}
+
+export const getLast28DaysDateRange = () => {
+    const endDate = new Date()
+    const startDate = new Date()
+    startDate.setDate(startDate.getDate() - 28)
+    return {
+        start_datetime: startDate.toISOString(),
+        end_datetime: endDate.toISOString(),
+    }
+}
+
+/**
+ * Hook to fetch and transform the latest 3 related tickets for a knowledge resource
+ * Uses enrichment to get full ticket details (title, datetime, custom fields, etc.)
+ */
+export function useRelatedTickets({
+    resourceSourceId,
+    resourceSourceSetId,
+    timezone,
+    enabled,
+    dateRange,
+}: UseRelatedTicketsParams): UseRelatedTicketsResult {
+    const { outcomeCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
+
+    // Create filters with provided date range
+    const filters: ApiStatsFilters = useMemo(() => {
+        return {
+            [FilterKey.Period]: {
+                start_datetime: dateRange.start_datetime,
+                end_datetime: dateRange.end_datetime,
+            },
+        }
+    }, [dateRange])
+
+    // Create the query
+    const query = useMemo(
+        () =>
+            knowledgeRelatedTicketsQueryFactory(
+                filters,
+                timezone,
+                resourceSourceId,
+                resourceSourceSetId,
+            ),
+        [filters, timezone, resourceSourceId, resourceSourceSetId],
+    )
+
+    // Step 1: Fetch ticket IDs
+    const {
+        data: metricsData,
+        isFetching: isMetricsFetching,
+        isError: isMetricsError,
+    } = useMetricPerDimensionV2(query, undefined, undefined, enabled)
+
+    const ticketIds = useMemo(() => {
+        if (!enabled || !metricsData?.allData) return []
+
+        return metricsData.allData
+            .map((record) => {
+                const id = record[TicketDimension.TicketId]
+                return parseInt(id, 10)
+            })
+            .filter((id): id is number => !isNaN(id))
+            .slice(0, 3)
+    }, [enabled, metricsData])
+
+    // Step 2: Fetch full ticket details
+    const ticket1 = useGetTicket(ticketIds[0], undefined, {
+        query: {
+            enabled: enabled && ticketIds.length > 0,
+        },
+    })
+    const ticket2 = useGetTicket(ticketIds[1], undefined, {
+        query: {
+            enabled: enabled && ticketIds.length > 1,
+        },
+    })
+    const ticket3 = useGetTicket(ticketIds[2], undefined, {
+        query: {
+            enabled: enabled && ticketIds.length > 2,
+        },
+    })
+
+    // Transform ticket data
+    const transformedData = useMemo(() => {
+        if (!enabled || ticketIds.length === 0) return null
+
+        const ticketResponses = [
+            ticket1.data,
+            ticket2.data,
+            ticket3.data,
+        ].filter(
+            (response): response is NonNullable<typeof response> => !!response,
+        )
+
+        const tickets = ticketResponses
+            .map((response) => (response as any).data)
+            .filter((ticket): ticket is NonNullable<typeof ticket> => !!ticket)
+            .map((ticket) => {
+                // Get AI Agent outcome from custom fields
+                const outcomeField =
+                    ticket.custom_fields?.[outcomeCustomFieldId]
+                const outcomeValue = outcomeField?.value ?? ''
+                const aiAgentOutcome = String(outcomeValue).includes('Handover')
+                    ? AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover
+                    : AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated
+
+                return {
+                    id: ticket.id,
+                    title: ticket.subject || `Ticket #${ticket.id}`,
+                    lastUpdatedDatetime: new Date(
+                        ticket.created_datetime || Date.now(),
+                    ),
+                    messageCount: ticket.messages?.length || 1,
+                    aiAgentOutcome,
+                }
+            })
+
+        return tickets.length > 0 ? tickets : null
+    }, [
+        enabled,
+        ticketIds,
+        ticket1.data,
+        ticket2.data,
+        ticket3.data,
+        outcomeCustomFieldId,
+    ])
+
+    // Aggregate loading and error states
+    const isLoading =
+        enabled &&
+        (isMetricsFetching ||
+            ticket1.isLoading ||
+            ticket2.isLoading ||
+            ticket3.isLoading)
+
+    const isError =
+        enabled &&
+        (isMetricsError ||
+            ticket1.isError ||
+            ticket2.isError ||
+            ticket3.isError)
+
+    return {
+        data: transformedData,
+        isLoading,
+        isError,
+    }
+}
+
+export type RelatedTicketsWithDrilldown = {
+    ticketCount: number
+    latest3Tickets?: RelatedTicket[]
+    isLoading: boolean
+    resourceSourceId: number
+    resourceSourceSetId: number
+    dateRange: {
+        start_datetime: string
+        end_datetime: string
+    }
+    outcomeCustomFieldId: number
+    intentCustomFieldId: number
+}
+
+type UseRelatedTicketsWithDrilldownParams = {
+    resourceSourceId: number
+    resourceSourceSetId: number
+    timezone: string
+    enabled: boolean
+    ticketCount: number
+    dateRange: {
+        start_datetime: string
+        end_datetime: string
+    }
+}
+
+type UseRelatedTicketsWithDrilldownResult =
+    | RelatedTicketsWithDrilldown
+    | undefined
+
+/**
+ * Hook to fetch related tickets data with drilldown information
+ */
+export function useRelatedTicketsWithDrilldown({
+    resourceSourceId,
+    resourceSourceSetId,
+    timezone,
+    enabled,
+    ticketCount,
+    dateRange,
+}: UseRelatedTicketsWithDrilldownParams): UseRelatedTicketsWithDrilldownResult {
+    const { outcomeCustomFieldId, intentCustomFieldId } =
+        useGetCustomTicketsFieldsDefinitionData()
+
+    const relatedTicketsData = useRelatedTickets({
+        resourceSourceId,
+        resourceSourceSetId,
+        timezone,
+        enabled,
+        dateRange,
+    })
+
+    return useMemo(() => {
+        if (!enabled) return undefined
+
+        if (relatedTicketsData.isLoading) {
+            return {
+                ticketCount,
+                isLoading: true,
+                resourceSourceId,
+                resourceSourceSetId,
+                dateRange,
+                outcomeCustomFieldId,
+                intentCustomFieldId,
+            }
+        }
+
+        if (ticketCount === 0 && !relatedTicketsData.data) {
+            return undefined
+        }
+
+        return {
+            ticketCount,
+            latest3Tickets: relatedTicketsData.data ?? undefined,
+            isLoading: relatedTicketsData.isLoading,
+            resourceSourceId,
+            resourceSourceSetId,
+            dateRange,
+            outcomeCustomFieldId,
+            intentCustomFieldId,
+        }
+    }, [
+        enabled,
+        relatedTicketsData.isLoading,
+        relatedTicketsData.data,
+        ticketCount,
+        resourceSourceId,
+        resourceSourceSetId,
+        dateRange,
+        outcomeCustomFieldId,
+        intentCustomFieldId,
+    ])
 }

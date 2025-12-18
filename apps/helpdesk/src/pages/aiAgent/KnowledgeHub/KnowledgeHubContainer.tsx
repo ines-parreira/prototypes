@@ -5,7 +5,10 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import { Box, Modal, OverlayHeader } from '@gorgias/axiom'
 
-import { useAllResourcesMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+import {
+    getLast28DaysDateRange,
+    useAllResourcesMetrics,
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getNextSyncDate,
@@ -196,11 +199,14 @@ export const KnowledgeHubContainer = () => {
     const storeIntegration = useStoreIntegrationByShopName(shopName)
     const shopIntegrationId = storeIntegration?.id
 
+    const metricsDateRange = useMemo(() => getLast28DaysDateRange(), [])
+
     const allResourcesMetrics = useAllResourcesMetrics({
         shopIntegrationId: shopIntegrationId || 0,
         timezone: timezone ?? 'UTC',
         enabled: isPerformanceStatsEnabled && !!shopIntegrationId,
         loadIntents: false,
+        dateRange: metricsDateRange,
     })
 
     if (isPerformanceStatsEnabled) {

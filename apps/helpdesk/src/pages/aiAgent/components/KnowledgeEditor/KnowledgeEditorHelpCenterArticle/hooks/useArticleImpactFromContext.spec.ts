@@ -1,12 +1,15 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { renderHook } from '@testing-library/react'
 
-import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+import {
+    getLast28DaysDateRange,
+    useResourceMetrics,
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
+import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context/ArticleContext'
+import type { ArticleContextValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context/types'
+import type { MetricProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
 
-import type { MetricProps } from '../../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
-import { useArticleContext } from '../context/ArticleContext'
-import type { ArticleContextValue } from '../context/types'
 import { useArticleImpactFromContext } from './useArticleImpactFromContext'
 
 jest.mock('@repo/feature-flags', () => ({
@@ -18,17 +21,22 @@ jest.mock(
     'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
     () => ({
         useResourceMetrics: jest.fn(),
+        getLast28DaysDateRange: jest.fn(),
     }),
 )
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 
-jest.mock('../context/ArticleContext', () => ({
-    useArticleContext: jest.fn(),
-}))
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context/ArticleContext',
+    () => ({
+        useArticleContext: jest.fn(),
+    }),
+)
 
 const mockUseFlag = useFlag as jest.Mock
 const mockUseResourceMetrics = useResourceMetrics as jest.Mock
+const mockGetLast28DaysDateRange = getLast28DaysDateRange as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
 
@@ -74,11 +82,17 @@ describe('useArticleImpactFromContext', () => {
         intents: ['Intent 1', 'Intent 2'],
     }
 
+    const mockDateRange = {
+        since: '2025-01-01',
+        until: '2025-01-28',
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
 
         mockUseAppSelector.mockReturnValue('America/New_York')
         mockUseArticleContext.mockReturnValue(defaultContextValue)
+        mockGetLast28DaysDateRange.mockReturnValue(mockDateRange)
         mockUseResourceMetrics.mockReturnValue({
             data: mockMetricsData,
             isLoading: false,
@@ -104,6 +118,7 @@ describe('useArticleImpactFromContext', () => {
                 resourceSourceSetId: 1,
                 timezone: 'America/New_York',
                 enabled: false,
+                dateRange: mockDateRange,
             })
         })
     })
@@ -141,6 +156,7 @@ describe('useArticleImpactFromContext', () => {
                 resourceSourceSetId: 1,
                 timezone: 'America/New_York',
                 enabled: true,
+                dateRange: mockDateRange,
             })
         })
 
@@ -160,6 +176,7 @@ describe('useArticleImpactFromContext', () => {
                 resourceSourceSetId: 1,
                 timezone: 'America/New_York',
                 enabled: false,
+                dateRange: mockDateRange,
             })
         })
 
@@ -171,6 +188,7 @@ describe('useArticleImpactFromContext', () => {
             expect(mockUseResourceMetrics).toHaveBeenCalledWith(
                 expect.objectContaining({
                     timezone: 'UTC',
+                    dateRange: mockDateRange,
                 }),
             )
         })

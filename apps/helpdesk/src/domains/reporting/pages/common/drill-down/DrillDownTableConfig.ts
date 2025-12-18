@@ -20,6 +20,8 @@ import { TicketDrillDownTableContent } from 'domains/reporting/pages/common/dril
 import type { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
 import { ConvertDrillDownConfig } from 'domains/reporting/pages/convert/constants/CampaignsDrillDownConfig'
+import { KnowledgeDrillDownConfig } from 'domains/reporting/pages/knowledge/KnowledgeDrillDownConfig'
+import { KnowledgeMetricConfig } from 'domains/reporting/pages/knowledge/KnowledgeMetricConfig'
 import {
     SatisfactionAverageSurveyScoreMetricConfig,
     SatisfactionMetricConfig,
@@ -50,6 +52,7 @@ import type {
     AIInsightsMetric,
     AutoQAMetric,
     ChannelsTableColumns,
+    KnowledgeMetric,
     ProductInsightsTableColumns,
     SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,
@@ -105,6 +108,7 @@ const TicketDrillDownConfig: DomainConfig<
     | VoiceOfCustomerMetricWithDrillDown
     | ProductInsightsTableColumns.ReturnMentions
     | ProductsPerTicketColumn.TicketVolume
+    | KnowledgeMetric
 > = {
     drillDownHook: useTicketDrillDownHook,
     tableComponent: TicketDrillDownTableContent,
@@ -126,6 +130,7 @@ const TicketDrillDownConfig: DomainConfig<
         ...ProductInsightsColumnWithDrillDownConfig,
         ...VoiceOfCustomerMetricWithDrillDownConfig,
         ...TicketVolumeConfig,
+        ...KnowledgeMetricConfig,
     },
 }
 
@@ -135,6 +140,7 @@ export const DomainsConfig = {
     [Domain.Voice]: VoiceDrillDownConfig,
     [Domain.AiSalesAgent]: AiSalesAgentDrillDownConfig,
     [Domain.AIJourney]: AIJourneyDrillDownConfig,
+    [Domain.Knowledge]: KnowledgeDrillDownConfig,
 }
 
 export const MetricsConfig: Record<
@@ -146,4 +152,5 @@ export const MetricsConfig: Record<
     ...VoiceDrillDownConfig.metricsConfig,
     ...AiSalesAgentDrillDownConfig.metricsConfig,
     ...AIJourneyDrillDownConfig.metricsConfig,
+    ...KnowledgeDrillDownConfig.metricsConfig,
 }

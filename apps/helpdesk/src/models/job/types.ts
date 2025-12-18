@@ -8,6 +8,7 @@ import type { HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins } from 'doma
 import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import type { TicketSLACubeWithJoins } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import type { TicketFirstHumanAgentResponseTimeCube } from 'domains/reporting/models/cubes/TicketFirstHumanAgentResponseTime'
+import type { TicketInsightsTaskCubeWithJoins } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
 import type { TicketMessagesEnrichedResponseTimes } from 'domains/reporting/models/cubes/TicketMessagesEnrichedResponseTimesCube'
 import type { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import type { VoiceCallCube } from 'domains/reporting/models/cubes/VoiceCallCube'
@@ -78,6 +79,7 @@ export type DrillDownReportingQuery = ReportingQuery<
     | AiSalesAgentOrdersCube
     | TicketProductsEnrichedCube
     | TicketFirstHumanAgentResponseTimeCube
+    | TicketInsightsTaskCubeWithJoins
 >
 
 type APIDrillDownReportingQuery = Omit<DrillDownReportingQuery, 'metricName'>

@@ -1,5 +1,7 @@
 import {
     knowledgeCSAT,
+    knowledgeCSATDrillDown,
+    knowledgeCSATDrillDownQueryV2Factory,
     knowledgeCSATQueryV2Factory,
     knowledgeHandoverTicketsCount,
     knowledgeHandoverTicketsCountQueryV2Factory,
@@ -197,6 +199,51 @@ describe('knowledgeCSATQueryV2Factory', () => {
 
         expect(query.measures).toEqual(['averageSurveyScore'])
         expect(query.timezone).toBe('America/New_York')
+    })
+})
+
+describe('knowledgeCSATDrillDown', () => {
+    it('should build drilldown query with averageSurveyScore measure', () => {
+        const ctx: Context = {
+            timezone: 'America/New_York',
+            filters: {
+                period: {
+                    start_datetime: '2024-01-01T00:00:00Z',
+                    end_datetime: '2024-01-31T23:59:59Z',
+                },
+            },
+        }
+
+        const query = knowledgeCSATDrillDown.build(ctx)
+
+        expect(query.measures).toEqual(['averageSurveyScore'])
+        expect(query.dimensions).toEqual([
+            'ticketId',
+            'resourceType',
+            'resourceSourceId',
+            'resourceSourceSetId',
+        ])
+        expect(query.limit).toBe(100)
+    })
+})
+
+describe('knowledgeCSATDrillDownQueryV2Factory', () => {
+    it('should create a drilldown query with averageSurveyScore measure', () => {
+        const ctx: Context = {
+            timezone: 'America/New_York',
+            filters: {
+                period: {
+                    start_datetime: '2024-01-01T00:00:00Z',
+                    end_datetime: '2024-01-31T23:59:59Z',
+                },
+            },
+        }
+
+        const query = knowledgeCSATDrillDownQueryV2Factory(ctx)
+
+        expect(query.measures).toEqual(['averageSurveyScore'])
+        expect(query.timezone).toBe('America/New_York')
+        expect(query.limit).toBe(100)
     })
 })
 

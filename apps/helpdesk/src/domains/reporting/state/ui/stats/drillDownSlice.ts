@@ -22,6 +22,7 @@ import type {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    KnowledgeMetric,
     ProductInsightsTableColumns,
     SatisfactionAverageSurveyScoreMetric,
     SatisfactionMetric,
@@ -149,6 +150,18 @@ export type TicketsPerProductPerIntentMetrics = {
     intentCustomFieldId: number
     intentCustomFieldValueString: string
     productId: string
+} & CommonMetrics
+
+export type KnowledgeMetrics = {
+    metricName: KnowledgeMetric
+    resourceSourceId: number
+    resourceSourceSetId: number
+    outcomeCustomFieldId?: number
+    intentCustomFieldId?: number
+    dateRange: {
+        start_datetime: string
+        end_datetime: string
+    }
 } & CommonMetrics
 
 export type VoiceOfCustomerMetrics = (
@@ -309,6 +322,7 @@ export type DrillDownMetric =
     | ProductMetrics
     | VoiceOfCustomerMetrics
     | AIJourneyMetrics
+    | KnowledgeMetrics
 
 export type DrillDownState = {
     isOpen: boolean

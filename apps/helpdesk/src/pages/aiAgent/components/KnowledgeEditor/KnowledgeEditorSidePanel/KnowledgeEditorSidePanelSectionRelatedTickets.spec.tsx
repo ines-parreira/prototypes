@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
-import { renderWithRouter } from 'utils/testing'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { KnowledgeEditorSidePanel } from './KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionRelatedTickets } from './KnowledgeEditorSidePanelSectionRelatedTickets'
@@ -9,47 +9,50 @@ import { KnowledgeEditorSidePanelSectionRelatedTickets } from './KnowledgeEditor
 describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
     it('renders', () => {
         const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
+        const testDateRange = {
+            start_datetime: new Date(
+                Date.now() - 28 * 24 * 60 * 60 * 1000,
+            ).toISOString(),
+            end_datetime: new Date().toISOString(),
+        }
 
-        renderWithRouter(
+        renderWithStoreAndQueryClientAndRouter(
             <KnowledgeEditorSidePanel
                 initialExpandedSections={['related-tickets']}
             >
                 <KnowledgeEditorSidePanelSectionRelatedTickets
-                    tickets={[
+                    ticketCount={4}
+                    latest3Tickets={[
                         {
+                            id: 123,
                             title: 'Still waiting on my order?',
                             lastUpdatedDatetime: oneHourAgo,
-                            url: 'https://gorgias.gorgias.com/app/views/123/456',
                             messageCount: 2,
                             aiAgentOutcome:
                                 AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
                         },
                         {
+                            id: 456,
                             title: 'How to cancel my order?',
                             lastUpdatedDatetime: oneHourAgo,
-                            url: 'https://gorgias.gorgias.com/app/views/123/456',
                             messageCount: 1,
                             aiAgentOutcome:
                                 AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover,
                         },
                         {
+                            id: 789,
                             title: 'How to track my order?',
                             lastUpdatedDatetime: oneHourAgo,
-                            url: 'https://gorgias.gorgias.com/app/views/123/456',
-                            messageCount: 5,
-                            aiAgentOutcome:
-                                AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
-                        },
-                        {
-                            title: 'Issue with my order',
-                            lastUpdatedDatetime: oneHourAgo,
-                            url: 'https://gorgias.gorgias.com/app/views/123/456',
                             messageCount: 5,
                             aiAgentOutcome:
                                 AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
                         },
                     ]}
-                    relatedTicketsUrl="https://gorgias.gorgias.com/app/views"
+                    resourceSourceId={123}
+                    resourceSourceSetId={456}
+                    dateRange={testDateRange}
+                    outcomeCustomFieldId={789}
+                    intentCustomFieldId={101112}
                     sectionId="related-tickets"
                 />
             </KnowledgeEditorSidePanel>,
@@ -57,11 +60,29 @@ describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
 
         expect(screen.getByText('Recent tickets')).toBeInTheDocument()
         expect(screen.getByText('4')).toBeInTheDocument()
-        expect(screen.getByText('View all')).toBeInTheDocument()
+        expect(screen.getByText('View more')).toBeInTheDocument()
         expect(
             screen.getByText('Still waiting on my order?'),
         ).toBeInTheDocument()
         expect(screen.getByText('How to cancel my order?')).toBeInTheDocument()
         expect(screen.getByText('How to track my order?')).toBeInTheDocument()
+    })
+
+    it('renders loading skeletons when isLoading is true', () => {
+        renderWithStoreAndQueryClientAndRouter(
+            <KnowledgeEditorSidePanel
+                initialExpandedSections={['related-tickets']}
+            >
+                <KnowledgeEditorSidePanelSectionRelatedTickets
+                    ticketCount={0}
+                    isLoading={true}
+                    sectionId="related-tickets"
+                />
+            </KnowledgeEditorSidePanel>,
+        )
+
+        expect(screen.getByText('Recent tickets')).toBeInTheDocument()
+        // When loading, the count is replaced with a skeleton
+        expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
 })

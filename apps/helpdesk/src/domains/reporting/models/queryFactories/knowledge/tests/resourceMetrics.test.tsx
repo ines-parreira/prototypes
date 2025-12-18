@@ -3,23 +3,45 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 
+import { useGetTicket } from '@gorgias/helpdesk-queries'
+
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
+import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
+import { TicketInsightsTaskMeasure } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
 import {
     aggregateResourceMetrics,
+    createV1DrillDownQuery,
     createV1Query,
+    getLast28DaysDateRange,
+    knowledgeCSATDrillDownQueryFactory,
+    knowledgeHandoverTicketsDrillDownQueryFactory,
+    knowledgeRelatedTicketsQueryFactory,
+    knowledgeTicketsDrillDownQueryFactory,
     parseIntentsData,
     parseIntentsDataByResource,
     useAllResourcesMetrics,
+    useRelatedTickets,
+    useRelatedTicketsWithDrilldown,
     useResourceMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
-import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import { FilterKey } from 'domains/reporting/models/stat/types'
+import type {
+    ApiStatsFilters,
+    StatsFilters,
+} from 'domains/reporting/models/stat/types'
+import {
+    APIOnlyFilterKey,
+    FilterKey,
+} from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useMetric')
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    useGetTicket: jest.fn(),
+}))
 jest.mock(
     'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
     () => ({
@@ -30,6 +52,7 @@ jest.mock(
     }),
 )
 jest.mock('hooks/useAppSelector', () => jest.fn(() => 'America/New_York'))
+jest.mock('hooks/useAppDispatch', () => jest.fn(() => jest.fn()))
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -58,6 +81,11 @@ const wrapper = ({ children }: any) => (
         </QueryClientProvider>
     </Provider>
 )
+
+const testDateRange = {
+    start_datetime: moment().subtract(28, 'days').toISOString(),
+    end_datetime: moment().toISOString(),
+}
 
 describe('createV1Query', () => {
     const periodStart = moment()
@@ -1345,6 +1373,77 @@ describe('aggregateResourceMetrics', () => {
     })
 })
 
+describe('knowledgeCSATDrillDownQueryFactory', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.clone().add(7, 'days')
+    const resourceSourceId = 123
+    const resourceSourceSetId = 456
+    const timezone = 'America/New_York'
+
+    const statsFilters: StatsFilters = {
+        [FilterKey.Period]: {
+            start_datetime: periodStart.toISOString(),
+            end_datetime: periodEnd.toISOString(),
+        },
+    }
+
+    it('should include avgSurveyScore measure in drilldown query', () => {
+        const query = knowledgeCSATDrillDownQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.measures).toEqual([
+            TicketInsightsTaskMeasure.AvgSurveyScore,
+        ])
+        expect(query.metricName).toBe(METRIC_NAMES.KNOWLEDGE_CSAT)
+    })
+
+    it('should include ticketId dimension for drilldown', () => {
+        const query = knowledgeCSATDrillDownQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.dimensions).toContain('TicketEnriched.ticketId')
+    })
+
+    it('should include resource filters', () => {
+        const query = knowledgeCSATDrillDownQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceId',
+            operator: 'equals',
+            values: [String(resourceSourceId)],
+        })
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceSetId',
+            operator: 'equals',
+            values: [String(resourceSourceSetId)],
+        })
+    })
+
+    it('should have drilldown query limit', () => {
+        const query = knowledgeCSATDrillDownQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.limit).toBe(100)
+    })
+})
+
 describe('useResourceMetrics', () => {
     beforeEach(() => {
         jest.clearAllMocks()
@@ -1369,6 +1468,7 @@ describe('useResourceMetrics', () => {
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                 }),
             { wrapper },
         )
@@ -1401,6 +1501,7 @@ describe('useResourceMetrics', () => {
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                 }),
             { wrapper },
         )
@@ -1446,6 +1547,7 @@ describe('useResourceMetrics', () => {
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                 }),
             { wrapper },
         )
@@ -1476,6 +1578,7 @@ describe('useResourceMetrics', () => {
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                 }),
             { wrapper },
         )
@@ -1503,6 +1606,7 @@ describe('useResourceMetrics', () => {
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                     enabled: false,
                 }),
             { wrapper },
@@ -1550,6 +1654,7 @@ describe('useResourceMetrics', () => {
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                 }),
             { wrapper },
         )
@@ -1576,6 +1681,7 @@ describe('useAllResourcesMetrics', () => {
                 useAllResourcesMetrics({
                     shopIntegrationId: 1,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                 }),
             { wrapper },
         )
@@ -1602,6 +1708,7 @@ describe('useAllResourcesMetrics', () => {
                 useAllResourcesMetrics({
                     shopIntegrationId: 1,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                 }),
             { wrapper },
         )
@@ -1677,6 +1784,7 @@ describe('useAllResourcesMetrics', () => {
                 useAllResourcesMetrics({
                     shopIntegrationId: 1,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                 }),
             { wrapper },
         )
@@ -1723,6 +1831,7 @@ describe('useAllResourcesMetrics', () => {
                 useAllResourcesMetrics({
                     shopIntegrationId: 1,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                     enabled: false,
                 }),
             { wrapper },
@@ -1748,6 +1857,7 @@ describe('useAllResourcesMetrics', () => {
                 useAllResourcesMetrics({
                     shopIntegrationId: 1,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                     loadIntents: true,
                 }),
             { wrapper },
@@ -1773,6 +1883,7 @@ describe('useAllResourcesMetrics', () => {
                 useAllResourcesMetrics({
                     shopIntegrationId: 1,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                     loadIntents: false,
                 }),
             { wrapper },
@@ -1814,6 +1925,7 @@ describe('useAllResourcesMetrics', () => {
                 useAllResourcesMetrics({
                     shopIntegrationId: 1,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                     loadIntents: false,
                 }),
             { wrapper },
@@ -1850,6 +1962,7 @@ describe('useAllResourcesMetrics', () => {
                 useAllResourcesMetrics({
                     shopIntegrationId: 1,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                     loadIntents: false,
                 }),
             { wrapper },
@@ -1886,6 +1999,7 @@ describe('useAllResourcesMetrics', () => {
                 useAllResourcesMetrics({
                     shopIntegrationId: 1,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                     loadIntents: true,
                 }),
             { wrapper },
@@ -1922,6 +2036,7 @@ describe('useAllResourcesMetrics', () => {
                 useAllResourcesMetrics({
                     shopIntegrationId: 1,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                     loadIntents: true,
                 }),
             { wrapper },
@@ -1976,6 +2091,7 @@ describe('useAllResourcesMetrics', () => {
                 useAllResourcesMetrics({
                     shopIntegrationId: 1,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                     loadIntents: false,
                 }),
             { wrapper },
@@ -2073,6 +2189,7 @@ describe('useAllResourcesMetrics', () => {
                 useAllResourcesMetrics({
                     shopIntegrationId: 1,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                 }),
             { wrapper },
         )
@@ -2121,10 +2238,1045 @@ describe('useAllResourcesMetrics', () => {
                 useAllResourcesMetrics({
                     shopIntegrationId: 1,
                     timezone: 'America/New_York',
+                    dateRange: testDateRange,
                 }),
             { wrapper },
         )
 
         expect(result.current.data).toEqual([])
+    })
+})
+
+describe('createV1Query edge cases', () => {
+    const resourceSourceId = 123
+    const resourceSourceSetId = 456
+    const timezone = 'America/New_York'
+
+    it('should throw error when period filters are missing', () => {
+        const invalidFilters = {} as any
+
+        expect(() =>
+            createV1Query(
+                METRIC_NAMES.KNOWLEDGE_TICKETS,
+                resourceSourceId,
+                resourceSourceSetId,
+                invalidFilters,
+                timezone,
+                'TicketInsightsTask.ticketCount',
+            ),
+        ).toThrow(
+            'Period filters (start_datetime and end_datetime) are required for knowledge metrics queries',
+        )
+    })
+
+    it('should throw error when start_datetime is missing', () => {
+        const invalidFilters = {
+            [FilterKey.Period]: {
+                end_datetime: moment().toISOString(),
+            },
+        } as any
+
+        expect(() =>
+            createV1Query(
+                METRIC_NAMES.KNOWLEDGE_TICKETS,
+                resourceSourceId,
+                resourceSourceSetId,
+                invalidFilters,
+                timezone,
+                'TicketInsightsTask.ticketCount',
+            ),
+        ).toThrow(
+            'Period filters (start_datetime and end_datetime) are required for knowledge metrics queries',
+        )
+    })
+
+    it('should throw error when end_datetime is missing', () => {
+        const invalidFilters = {
+            [FilterKey.Period]: {
+                start_datetime: moment().toISOString(),
+            },
+        } as any
+
+        expect(() =>
+            createV1Query(
+                METRIC_NAMES.KNOWLEDGE_TICKETS,
+                resourceSourceId,
+                resourceSourceSetId,
+                invalidFilters,
+                timezone,
+                'TicketInsightsTask.ticketCount',
+            ),
+        ).toThrow(
+            'Period filters (start_datetime and end_datetime) are required for knowledge metrics queries',
+        )
+    })
+
+    it('should use Set operator when resourceSourceId is null', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.clone().add(7, 'days')
+        const filters: StatsFilters = {
+            [FilterKey.Period]: {
+                start_datetime: periodStart.toISOString(),
+                end_datetime: periodEnd.toISOString(),
+            },
+        }
+
+        const query = createV1Query(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            null,
+            resourceSourceSetId,
+            filters,
+            timezone,
+            'TicketInsightsTask.ticketCount',
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceId',
+            operator: 'set',
+            values: [],
+        })
+    })
+
+    it('should use Set operator when resourceSourceSetId is null', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.clone().add(7, 'days')
+        const filters: StatsFilters = {
+            [FilterKey.Period]: {
+                start_datetime: periodStart.toISOString(),
+                end_datetime: periodEnd.toISOString(),
+            },
+        }
+
+        const query = createV1Query(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            resourceSourceId,
+            null,
+            filters,
+            timezone,
+            'TicketInsightsTask.ticketCount',
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceSetId',
+            operator: 'set',
+            values: [],
+        })
+    })
+
+    it('should add shop integration ID filter when present', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.clone().add(7, 'days')
+        const shopIntegrationId = 999
+        const filters: ApiStatsFilters = {
+            [FilterKey.Period]: {
+                start_datetime: periodStart.toISOString(),
+                end_datetime: periodEnd.toISOString(),
+            },
+            [APIOnlyFilterKey.ShopIntegrationId]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [String(shopIntegrationId)],
+            },
+        }
+
+        const query = createV1Query(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            filters,
+            timezone,
+            'TicketInsightsTask.ticketCount',
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.shopIntegrationId',
+            operator: 'equals',
+            values: [String(shopIntegrationId)],
+        })
+    })
+
+    it('should not add shop integration ID filter when empty', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.clone().add(7, 'days')
+        const filters: ApiStatsFilters = {
+            [FilterKey.Period]: {
+                start_datetime: periodStart.toISOString(),
+                end_datetime: periodEnd.toISOString(),
+            },
+            [APIOnlyFilterKey.ShopIntegrationId]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [],
+            },
+        }
+
+        const query = createV1Query(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            filters,
+            timezone,
+            'TicketInsightsTask.ticketCount',
+        )
+
+        const shopIntegrationFilters = query.filters.filter(
+            (f: any) => f.member === 'TicketInsightsTask.shopIntegrationId',
+        )
+
+        expect(shopIntegrationFilters).toHaveLength(0)
+    })
+})
+
+describe('createV1DrillDownQuery', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.clone().add(7, 'days')
+    const resourceSourceId = 123
+    const resourceSourceSetId = 456
+    const timezone = 'America/New_York'
+
+    const statsFilters: StatsFilters = {
+        [FilterKey.Period]: {
+            start_datetime: periodStart.toISOString(),
+            end_datetime: periodEnd.toISOString(),
+        },
+    }
+
+    it('should include TicketId dimension', () => {
+        const query = createV1DrillDownQuery(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            statsFilters,
+            timezone,
+        )
+
+        expect(query.dimensions).toContain(TicketDimension.TicketId)
+        expect(query.dimensions[0]).toBe(TicketDimension.TicketId)
+    })
+
+    it('should set limit to 100', () => {
+        const query = createV1DrillDownQuery(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            statsFilters,
+            timezone,
+        )
+
+        expect(query.limit).toBe(100)
+    })
+
+    it('should have empty measures array', () => {
+        const query = createV1DrillDownQuery(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            statsFilters,
+            timezone,
+        )
+
+        expect(query.measures).toEqual([])
+    })
+
+    it('should preserve all base filters', () => {
+        const query = createV1DrillDownQuery(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            statsFilters,
+            timezone,
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceId',
+            operator: 'equals',
+            values: [String(resourceSourceId)],
+        })
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceSetId',
+            operator: 'equals',
+            values: [String(resourceSourceSetId)],
+        })
+    })
+
+    it('should preserve metricName', () => {
+        const query = createV1DrillDownQuery(
+            METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            statsFilters,
+            timezone,
+        )
+
+        expect(query.metricName).toBe(METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS)
+    })
+})
+
+describe('knowledgeTicketsDrillDownQueryFactory', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.clone().add(7, 'days')
+    const resourceSourceId = 123
+    const resourceSourceSetId = 456
+    const timezone = 'America/New_York'
+
+    const statsFilters: StatsFilters = {
+        [FilterKey.Period]: {
+            start_datetime: periodStart.toISOString(),
+            end_datetime: periodEnd.toISOString(),
+        },
+    }
+
+    it('should create drilldown query with KNOWLEDGE_TICKETS metric', () => {
+        const query = knowledgeTicketsDrillDownQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.metricName).toBe(METRIC_NAMES.KNOWLEDGE_TICKETS)
+        expect(query.limit).toBe(100)
+        expect(query.dimensions).toContain(TicketDimension.TicketId)
+    })
+
+    it('should include resource filters', () => {
+        const query = knowledgeTicketsDrillDownQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceId',
+            operator: 'equals',
+            values: [String(resourceSourceId)],
+        })
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceSetId',
+            operator: 'equals',
+            values: [String(resourceSourceSetId)],
+        })
+    })
+})
+
+describe('knowledgeHandoverTicketsDrillDownQueryFactory', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.clone().add(7, 'days')
+    const resourceSourceId = 123
+    const resourceSourceSetId = 456
+    const timezone = 'America/New_York'
+
+    const statsFilters: StatsFilters = {
+        [FilterKey.Period]: {
+            start_datetime: periodStart.toISOString(),
+            end_datetime: periodEnd.toISOString(),
+        },
+    }
+
+    it('should create drilldown query with KNOWLEDGE_HANDOVER_TICKETS metric', () => {
+        const query = knowledgeHandoverTicketsDrillDownQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.metricName).toBe(METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS)
+        expect(query.limit).toBe(100)
+        expect(query.dimensions).toContain(TicketDimension.TicketId)
+    })
+
+    it('should include resource filters', () => {
+        const query = knowledgeHandoverTicketsDrillDownQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceId',
+            operator: 'equals',
+            values: [String(resourceSourceId)],
+        })
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceSetId',
+            operator: 'equals',
+            values: [String(resourceSourceSetId)],
+        })
+    })
+})
+
+describe('knowledgeRelatedTicketsQueryFactory', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.clone().add(7, 'days')
+    const resourceSourceId = 123
+    const resourceSourceSetId = 456
+    const timezone = 'America/New_York'
+
+    const statsFilters: StatsFilters = {
+        [FilterKey.Period]: {
+            start_datetime: periodStart.toISOString(),
+            end_datetime: periodEnd.toISOString(),
+        },
+    }
+
+    it('should set limit to 3 for related tickets', () => {
+        const query = knowledgeRelatedTicketsQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.limit).toBe(3)
+    })
+
+    it('should include order by CreatedDatetime descending', () => {
+        const query = knowledgeRelatedTicketsQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.order).toEqual([
+            [TicketDimension.CreatedDatetime, OrderDirection.Desc],
+        ])
+    })
+
+    it('should include TicketId dimension', () => {
+        const query = knowledgeRelatedTicketsQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.dimensions).toContain(TicketDimension.TicketId)
+    })
+
+    it('should use KNOWLEDGE_TICKETS metric', () => {
+        const query = knowledgeRelatedTicketsQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.metricName).toBe(METRIC_NAMES.KNOWLEDGE_TICKETS)
+    })
+
+    it('should include resource filters', () => {
+        const query = knowledgeRelatedTicketsQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceId',
+            operator: 'equals',
+            values: [String(resourceSourceId)],
+        })
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceSetId',
+            operator: 'equals',
+            values: [String(resourceSourceSetId)],
+        })
+    })
+})
+
+describe('getLast28DaysDateRange', () => {
+    it('should return date range for last 28 days', () => {
+        const result = getLast28DaysDateRange()
+
+        expect(result).toHaveProperty('start_datetime')
+        expect(result).toHaveProperty('end_datetime')
+
+        const startDate = new Date(result.start_datetime)
+        const endDate = new Date(result.end_datetime)
+
+        const daysDifference = Math.round(
+            (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+        )
+
+        expect(daysDifference).toBe(28)
+    })
+
+    it('should return ISO string formatted dates', () => {
+        const result = getLast28DaysDateRange()
+
+        expect(result.start_datetime).toMatch(/^\d{4}-\d{2}-\d{2}T/)
+        expect(result.end_datetime).toMatch(/^\d{4}-\d{2}-\d{2}T/)
+    })
+
+    it('should return end date close to current time', () => {
+        const result = getLast28DaysDateRange()
+        const endDate = new Date(result.end_datetime)
+        const now = new Date()
+
+        const timeDifference = Math.abs(now.getTime() - endDate.getTime())
+
+        expect(timeDifference).toBeLessThan(5000)
+    })
+})
+
+describe('useRelatedTickets', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        queryClient.clear()
+    })
+
+    it('should return null data when disabled', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTickets({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: false,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.data).toBeNull()
+        expect(result.current.isLoading).toBe(false)
+        expect(result.current.isError).toBe(false)
+    })
+
+    it('should return loading state when fetching ticket IDs', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: true,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTickets({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should return loading state when fetching ticket details', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: {
+                allData: [
+                    { 'TicketEnriched.ticketId': '1' },
+                    { 'TicketEnriched.ticketId': '2' },
+                ],
+            },
+            isFetching: false,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: true,
+            isError: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTickets({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should return error state when metrics fetch fails', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+            isError: true,
+        })
+        ;(useGetTicket as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTickets({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.isError).toBe(true)
+    })
+
+    it('should return error state when ticket fetch fails', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: {
+                allData: [{ 'TicketEnriched.ticketId': '1' }],
+            },
+            isFetching: false,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: true,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTickets({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.isError).toBe(true)
+    })
+
+    it('should transform tickets with handover outcome', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: {
+                allData: [
+                    { 'TicketEnriched.ticketId': '1' },
+                    { 'TicketEnriched.ticketId': '2' },
+                ],
+            },
+            isFetching: false,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock)
+            .mockReturnValueOnce({
+                data: {
+                    data: {
+                        id: 1,
+                        subject: 'Test Ticket 1',
+                        created_datetime: '2024-01-01T00:00:00Z',
+                        messages: [{ id: 1 }, { id: 2 }],
+                        custom_fields: {
+                            123: { value: 'Handover::With message' },
+                        },
+                    },
+                },
+                isLoading: false,
+                isError: false,
+            })
+            .mockReturnValueOnce({
+                data: {
+                    data: {
+                        id: 2,
+                        subject: 'Test Ticket 2',
+                        created_datetime: '2024-01-02T00:00:00Z',
+                        messages: [{ id: 1 }],
+                        custom_fields: {
+                            123: { value: 'Automated::Success' },
+                        },
+                    },
+                },
+                isLoading: false,
+                isError: false,
+            })
+            .mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: false,
+            })
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTickets({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.data).toHaveLength(2)
+        expect(result.current.data?.[0]).toMatchObject({
+            id: 1,
+            title: 'Test Ticket 1',
+            messageCount: 2,
+            aiAgentOutcome: 'Handover',
+        })
+        expect(result.current.data?.[1]).toMatchObject({
+            id: 2,
+            title: 'Test Ticket 2',
+            messageCount: 1,
+            aiAgentOutcome: 'Automated',
+        })
+    })
+
+    it('should use ticket ID as title when subject is missing', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: {
+                allData: [{ 'TicketEnriched.ticketId': '123' }],
+            },
+            isFetching: false,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock)
+            .mockReturnValueOnce({
+                data: {
+                    data: {
+                        id: 123,
+                        subject: '',
+                        created_datetime: '2024-01-01T00:00:00Z',
+                        messages: [],
+                        custom_fields: {},
+                    },
+                },
+                isLoading: false,
+                isError: false,
+            })
+            .mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: false,
+            })
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTickets({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.data?.[0].title).toBe('Ticket #123')
+    })
+
+    it('should limit to 3 tickets', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: {
+                allData: [
+                    { 'TicketEnriched.ticketId': '1' },
+                    { 'TicketEnriched.ticketId': '2' },
+                    { 'TicketEnriched.ticketId': '3' },
+                    { 'TicketEnriched.ticketId': '4' },
+                    { 'TicketEnriched.ticketId': '5' },
+                ],
+            },
+            isFetching: false,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock).mockImplementation((id) => ({
+            data: {
+                data: {
+                    id,
+                    subject: `Ticket ${id}`,
+                    created_datetime: '2024-01-01T00:00:00Z',
+                    messages: [],
+                    custom_fields: {},
+                },
+            },
+            isLoading: false,
+            isError: false,
+        }))
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTickets({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.data).toHaveLength(3)
+    })
+
+    it('should filter out invalid ticket IDs', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: {
+                allData: [
+                    { 'TicketEnriched.ticketId': 'invalid' },
+                    { 'TicketEnriched.ticketId': '1' },
+                ],
+            },
+            isFetching: false,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock).mockImplementation((id) =>
+            id === 1
+                ? {
+                      data: {
+                          data: {
+                              id: 1,
+                              subject: 'Valid Ticket',
+                              created_datetime: '2024-01-01T00:00:00Z',
+                              messages: [],
+                              custom_fields: {},
+                          },
+                      },
+                      isLoading: false,
+                      isError: false,
+                  }
+                : {
+                      data: undefined,
+                      isLoading: false,
+                      isError: false,
+                  },
+        )
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTickets({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.data).toHaveLength(1)
+    })
+})
+
+describe('useRelatedTicketsWithDrilldown', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        queryClient.clear()
+    })
+
+    it('should return undefined when disabled', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTicketsWithDrilldown({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: false,
+                    ticketCount: 10,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current).toBeUndefined()
+    })
+
+    it('should return loading state with ticket count', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: true,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTicketsWithDrilldown({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    ticketCount: 10,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current).toEqual({
+            ticketCount: 10,
+            isLoading: true,
+            resourceSourceId: 100,
+            resourceSourceSetId: 200,
+            dateRange: testDateRange,
+            outcomeCustomFieldId: 123,
+            intentCustomFieldId: 456,
+        })
+    })
+
+    it('should return undefined when ticketCount is 0 and no tickets data', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: { allData: [] },
+            isFetching: false,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTicketsWithDrilldown({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    ticketCount: 0,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current).toBeUndefined()
+    })
+
+    it('should return data with tickets and drilldown info', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: {
+                allData: [{ 'TicketEnriched.ticketId': '1' }],
+            },
+            isFetching: false,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock)
+            .mockReturnValueOnce({
+                data: {
+                    data: {
+                        id: 1,
+                        subject: 'Test Ticket',
+                        created_datetime: '2024-01-01T00:00:00Z',
+                        messages: [{ id: 1 }],
+                        custom_fields: {
+                            123: { value: 'Automated::Success' },
+                        },
+                    },
+                },
+                isLoading: false,
+                isError: false,
+            })
+            .mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: false,
+            })
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTicketsWithDrilldown({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    ticketCount: 5,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current).toEqual({
+            ticketCount: 5,
+            latest3Tickets: [
+                {
+                    id: 1,
+                    title: 'Test Ticket',
+                    lastUpdatedDatetime: new Date('2024-01-01T00:00:00Z'),
+                    messageCount: 1,
+                    aiAgentOutcome: 'Automated',
+                },
+            ],
+            isLoading: false,
+            resourceSourceId: 100,
+            resourceSourceSetId: 200,
+            dateRange: testDateRange,
+            outcomeCustomFieldId: 123,
+            intentCustomFieldId: 456,
+        })
+    })
+
+    it('should return data without latest3Tickets when none available', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: { allData: [] },
+            isFetching: false,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useRelatedTicketsWithDrilldown({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    ticketCount: 5,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current).toEqual({
+            ticketCount: 5,
+            latest3Tickets: undefined,
+            isLoading: false,
+            resourceSourceId: 100,
+            resourceSourceSetId: 200,
+            dateRange: testDateRange,
+            outcomeCustomFieldId: 123,
+            intentCustomFieldId: 456,
+        })
     })
 })

@@ -1,63 +1,108 @@
-import { useMemo } from 'react'
+import { useCallback } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Icon, IconSize, Tag } from '@gorgias/axiom'
+import { Icon, IconSize, Skeleton, Tag } from '@gorgias/axiom'
 
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
+import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import type { KnowledgeMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
+import useAppDispatch from 'hooks/useAppDispatch'
 import { KnowledgeEditorSidePanelSection } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSection'
 import RelativeTime from 'pages/common/components/RelativeTime'
 
 import css from './KnowledgeEditorSidePanelSectionRelatedTickets.less'
 
 type Ticket = {
+    id: number
     title: string
     lastUpdatedDatetime: Date
-    url: string
     messageCount: number
     aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS
 }
 
 export type Props = {
-    tickets?: Ticket[]
-    relatedTicketsUrl?: string
+    ticketCount: number
+    latest3Tickets?: Ticket[]
+    isLoading?: boolean
     sectionId: string
+    resourceSourceId?: number
+    resourceSourceSetId?: number
+    dateRange?: {
+        start_datetime: string
+        end_datetime: string
+    }
+    outcomeCustomFieldId?: number
+    intentCustomFieldId?: number
 }
 
 export const KnowledgeEditorSidePanelSectionRelatedTickets = ({
     sectionId,
-    tickets,
-    relatedTicketsUrl,
+    ticketCount,
+    latest3Tickets,
+    isLoading,
+    resourceSourceId,
+    resourceSourceSetId,
+    dateRange,
+    outcomeCustomFieldId,
+    intentCustomFieldId,
 }: Props) => {
-    const latest3Tickets = useMemo(() => {
-        if (!tickets) return []
+    const dispatch = useAppDispatch()
 
-        return [...tickets]
-            .sort(
-                (a, b) =>
-                    b.lastUpdatedDatetime.getTime() -
-                    a.lastUpdatedDatetime.getTime(),
-            )
-            .slice(0, 3)
-    }, [tickets])
+    const handleViewMoreClick = useCallback(() => {
+        if (!resourceSourceId || !resourceSourceSetId || !dateRange) return
+
+        const metricData: KnowledgeMetrics = {
+            metricName: KnowledgeMetric.Tickets,
+            title: 'Recent tickets',
+            resourceSourceId,
+            resourceSourceSetId,
+            dateRange,
+            outcomeCustomFieldId,
+            intentCustomFieldId,
+        }
+
+        dispatch(setMetricData(metricData))
+    }, [
+        dispatch,
+        resourceSourceId,
+        resourceSourceSetId,
+        dateRange,
+        outcomeCustomFieldId,
+        intentCustomFieldId,
+    ])
 
     return (
         <KnowledgeEditorSidePanelSection
             header={{
-                title: <Title tickets={tickets} />,
+                title: (
+                    <Title ticketCount={ticketCount} isLoading={isLoading} />
+                ),
                 subtitle: 'Last 28 days',
             }}
             sectionId={sectionId}
             bottomLink={
-                tickets && tickets.length > 3
+                ticketCount > 3 &&
+                resourceSourceId &&
+                resourceSourceSetId &&
+                dateRange
                     ? {
-                          text: 'View all',
-                          url: relatedTicketsUrl,
+                          text: 'View more',
+                          onClick: handleViewMoreClick,
                       }
                     : undefined
             }
         >
-            {latest3Tickets.length > 0 ? (
+            {isLoading ? (
+                <div className={css.container}>
+                    <div className={css.ticketsList}>
+                        {[1, 2, 3].map((index) => (
+                            <TicketCardSkeleton key={index} />
+                        ))}
+                    </div>
+                </div>
+            ) : latest3Tickets && latest3Tickets.length > 0 ? (
                 <div className={css.container}>
                     <div className={css.ticketsList}>
                         {latest3Tickets.map((ticket, index) => (
@@ -74,15 +119,28 @@ export const KnowledgeEditorSidePanelSectionRelatedTickets = ({
     )
 }
 
-const Title = ({ tickets }: Pick<Props, 'tickets'>) => (
+const Title = ({
+    ticketCount,
+    isLoading,
+}: {
+    ticketCount: number
+    isLoading?: boolean
+}) => (
     <span className={css.title}>
-        Recent tickets <Tag color="grey">{tickets?.length ?? 0}</Tag>
+        Recent tickets{' '}
+        {isLoading ? (
+            <Skeleton width={30} height={24} />
+        ) : (
+            <Tag color="grey" style={{ width: 'auto' }}>
+                {ticketCount}
+            </Tag>
+        )}
     </span>
 )
 
 const TicketCard = ({ ticket }: { ticket: Ticket }) => (
     <Link
-        to={ticket.url}
+        to={`/app/ticket/${ticket.id}`}
         target="_blank"
         rel="noopener noreferrer"
         className={css.ticketCard}
@@ -119,4 +177,21 @@ const TicketCard = ({ ticket }: { ticket: Ticket }) => (
             </div>
         </div>
     </Link>
+)
+
+const TicketCardSkeleton = () => (
+    <div className={css.ticketCard}>
+        <div className={css.ticketCardHeader}>
+            <div className={css.ticketCardTitle}>
+                <Skeleton width={150} height={16} />
+            </div>
+            <div className={css.ticketCardLastUpdatedDatetime}>
+                <Skeleton width={60} height={16} />
+            </div>
+        </div>
+        <div className={css.ticketCardContent}>
+            <Skeleton width={80} height={24} />
+            <Skeleton width={80} height={16} />
+        </div>
+    </div>
 )
