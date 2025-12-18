@@ -1,12 +1,20 @@
 import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import type { Map } from 'immutable'
 import { Link, Redirect } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import { IntegrationType } from 'models/integration/types'
-import { GorgiasChatCreationWizardStatus } from 'models/integration/types/gorgiasChat'
+import {
+    GorgiasChatCreationWizardStatus,
+    GorgiasChatCreationWizardSteps,
+} from 'models/integration/types/gorgiasChat'
 import PageHeader from 'pages/common/components/PageHeader'
+import Wizard from 'pages/common/components/wizard/Wizard'
+import WizardStep from 'pages/common/components/wizard/WizardStep'
+
+import GorgiasChatCreationWizardStepBasics from './components/steps/GorgiasChatCreationWizardStepBasics'
 
 import css from './GorgiasChatCreationWizard.less'
 
@@ -18,11 +26,36 @@ type Props = {
 
 const GorgiasChatCreationWizard: React.FC<Props> = ({
     integration,
+    loading,
     isUpdate,
 }) => {
+    const steps = Object.values(GorgiasChatCreationWizardSteps)
+
+    const integrationId = integration.get('id')
+
+    const [hasIntegrationLoaded, setHasIntegrationLoaded] = useState(
+        !isUpdate || integrationId,
+    )
+
     const wizardStatus = integration.getIn(['meta', 'wizard', 'status'])
 
+    const wizardStep = integration.getIn(
+        ['meta', 'wizard', 'step'],
+        GorgiasChatCreationWizardSteps.Basics,
+    )
+
+    const initialStep = wizardStep
+
+    useEffect(() => {
+        if (!isUpdate || integrationId) {
+            setHasIntegrationLoaded(true)
+        }
+    }, [isUpdate, integrationId])
+
     const name = integration.get('name')
+
+    const isSubmitting =
+        loading.get('updateIntegration') === integration.get('id', true)
 
     return (
         <>
@@ -59,6 +92,20 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
                         </Breadcrumb>
                     }
                 />
+                <div className={css.wrapper}>
+                    {hasIntegrationLoaded && (
+                        <Wizard steps={steps} startAt={initialStep}>
+                            <WizardStep
+                                name={GorgiasChatCreationWizardSteps.Basics}
+                            >
+                                <GorgiasChatCreationWizardStepBasics
+                                    isUpdate={isUpdate}
+                                    isSubmitting={isSubmitting}
+                                />
+                            </WizardStep>
+                        </Wizard>
+                    )}
+                </div>
             </div>
         </>
     )

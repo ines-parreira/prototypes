@@ -1,11 +1,35 @@
-import React from 'react'
+import type React from 'react'
 
+import { render } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { GorgiasChatCreationWizardStatus } from 'models/integration/types/gorgiasChat'
-import { renderWithRouter } from 'utils/testing'
 
 import GorgiasChatCreationWizard from '../GorgiasChatCreationWizard'
+
+jest.mock(
+    'pages/common/hooks/useIsIntersectingWithBrowserViewport',
+    () => () => false,
+)
+
+const mockStore = configureMockStore([thunk])
+
+const mockStoreState = {
+    currentUser: fromJS({
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        role: { name: 'admin' },
+    }),
+    integrations: fromJS({
+        integrations: [],
+    }),
+}
 
 const createIntegration = (overrides: Record<string, any> = {}) =>
     fromJS({
@@ -17,17 +41,32 @@ const createIntegration = (overrides: Record<string, any> = {}) =>
 
 const emptyLoadingState = fromJS({})
 
+const renderComponent = (
+    props: Partial<React.ComponentProps<typeof GorgiasChatCreationWizard>> = {},
+    route = '/',
+) => {
+    const defaultProps = {
+        integration: createIntegration(),
+        loading: emptyLoadingState,
+        isUpdate: false,
+    }
+
+    const history = createMemoryHistory({ initialEntries: [route] })
+
+    const result = render(
+        <Router history={history}>
+            <Provider store={mockStore(mockStoreState)}>
+                <GorgiasChatCreationWizard {...defaultProps} {...props} />
+            </Provider>
+        </Router>,
+    )
+
+    return { ...result, history }
+}
+
 describe('GorgiasChatCreationWizard (revamp minimal)', () => {
     it('renders create flow breadcrumb and banner', () => {
-        const integration = createIntegration()
-
-        const { getByText } = renderWithRouter(
-            <GorgiasChatCreationWizard
-                integration={integration}
-                loading={emptyLoadingState}
-                isUpdate={false}
-            />,
-        )
+        const { getByText } = renderComponent()
 
         expect(
             getByText('🚧 Revamp mode: under development'),
@@ -42,13 +81,10 @@ describe('GorgiasChatCreationWizard (revamp minimal)', () => {
     it('renders update flow breadcrumb with integration name', () => {
         const integration = createIntegration({ name: 'Updated Chat' })
 
-        const { getByText, queryByText } = renderWithRouter(
-            <GorgiasChatCreationWizard
-                integration={integration}
-                loading={emptyLoadingState}
-                isUpdate
-            />,
-        )
+        const { getByText, queryByText } = renderComponent({
+            integration,
+            isUpdate: true,
+        })
 
         expect(getByText('Updated Chat')).toBeInTheDocument()
         expect(queryByText('New Chat')).toBeNull()
@@ -61,13 +97,9 @@ describe('GorgiasChatCreationWizard (revamp minimal)', () => {
             },
         })
 
-        const { history } = renderWithRouter(
-            <GorgiasChatCreationWizard
-                integration={integration}
-                loading={emptyLoadingState}
-                isUpdate={false}
-            />,
-            { route: '/app/settings/channels/gorgias_chat/new' },
+        const { history } = renderComponent(
+            { integration },
+            '/app/settings/channels/gorgias_chat/new',
         )
 
         expect(history.location.pathname).toBe(
