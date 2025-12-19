@@ -35,7 +35,7 @@ export const DeleteDraftModal = ({
             <OverlayFooter hideCancelButton>
                 <Box gap="xs" justifyContent="flex-end" width="100%">
                     <Button
-                        variant="secondary"
+                        variant="tertiary"
                         onClick={onClose}
                         isDisabled={isDeleting}
                     >
