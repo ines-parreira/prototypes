@@ -203,9 +203,7 @@ export const OpportunitiesLayout = () => {
                     onOpportunityDismissed={onOpportunityDismissed}
                     useKnowledgeService={useKnowledgeService}
                     isLoadingOpportunityDetails={isLoadingOpportunityDetails}
-                    totalCount={
-                        useKnowledgeService ? totalCount : opportunities.length
-                    }
+                    totalCount={opportunities.length}
                 />
             </div>
         </div>

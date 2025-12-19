@@ -28,15 +28,15 @@ export const useOpportunitiesCount = (
             !useKnowledgeService,
         )
 
-    const { isLoading: isLoadingKnowledgeService, totalCount } =
+    const { isLoading: isLoadingKnowledgeService, totalPending } =
         useKnowledgeServiceOpportunities(shopIntegrationId, useKnowledgeService)
 
     const opportunitiesCount = useMemo(() => {
         if (useKnowledgeService) {
-            return totalCount
+            return totalPending
         } else if (!helpCenterId) return 0
         return aiArticles?.length ?? 0
-    }, [aiArticles, helpCenterId, useKnowledgeService, totalCount])
+    }, [aiArticles, helpCenterId, useKnowledgeService, totalPending])
 
     return {
         count: opportunitiesCount,
