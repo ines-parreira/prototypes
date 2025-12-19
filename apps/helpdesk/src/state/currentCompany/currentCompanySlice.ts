@@ -4,6 +4,12 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { RootState } from 'state/types'
 
 export enum CompanyTier {
+    // NEW values
+    Band1 = 'band_1', // SMB
+    Band2 = 'band_2', // Commercial
+    Band3 = 'band_3', // Enterprise
+    Band4 = 'band_4', // Named Accounts
+    // DEPRECATED values
     Tier1 = 'tier_1', // SMB 1
     Tier2 = 'tier_2', // SMB 2
     Tier3 = 'tier_3', // Commercial 1

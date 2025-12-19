@@ -54,7 +54,7 @@ describe('currentCompany selectors', () => {
             expect(getCompanyFixedGmvBandTier(emptyState)).toBeNull()
         })
 
-        it('should handle different tier values', () => {
+        it('should handle different tier values (deprecated)', () => {
             const tierValues = [
                 CompanyTier.Tier1,
                 CompanyTier.Tier2,
@@ -71,6 +71,24 @@ describe('currentCompany selectors', () => {
                     },
                 } as Partial<RootState> as RootState
                 expect(getCompanyFixedGmvBandTier(state)).toBe(tier)
+            })
+        })
+
+        it('should handle different band values (new)', () => {
+            const bandValues = [
+                CompanyTier.Band1,
+                CompanyTier.Band2,
+                CompanyTier.Band3,
+                CompanyTier.Band4,
+            ]
+
+            bandValues.forEach((band) => {
+                const state = {
+                    currentCompany: {
+                        fixed_gmv_band: band,
+                    },
+                } as Partial<RootState> as RootState
+                expect(getCompanyFixedGmvBandTier(state)).toBe(band)
             })
         })
     })

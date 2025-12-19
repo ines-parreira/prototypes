@@ -371,4 +371,165 @@ export const Enterprise2_NonAdmin_ShoppingAssistant: Story = {
     },
 }
 
+// New GMV Band Stories
+export const SMB_Admin_AIAgent: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Admin,
+        trialType: TrialType.AiAgent,
+        fixed_gmv_band: CompanyTier.Band1,
+    },
+}
+
+export const SMB_Admin_ShoppingAssistant: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Admin,
+        trialType: TrialType.ShoppingAssistant,
+        fixed_gmv_band: CompanyTier.Band1,
+    },
+}
+
+export const Commercial_Admin_AIAgent: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Admin,
+        trialType: TrialType.AiAgent,
+        fixed_gmv_band: CompanyTier.Band2,
+    },
+}
+
+export const Commercial_Admin_ShoppingAssistant: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Admin,
+        trialType: TrialType.ShoppingAssistant,
+        fixed_gmv_band: CompanyTier.Band2,
+    },
+}
+
+export const Enterprise_Admin_AIAgent: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Admin,
+        trialType: TrialType.AiAgent,
+        fixed_gmv_band: CompanyTier.Band3,
+    },
+}
+
+export const Enterprise_Admin_ShoppingAssistant: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Admin,
+        trialType: TrialType.ShoppingAssistant,
+        fixed_gmv_band: CompanyTier.Band3,
+    },
+}
+
+export const NamedAccounts_Admin_AIAgent: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Admin,
+        trialType: TrialType.AiAgent,
+        fixed_gmv_band: CompanyTier.Band4,
+    },
+}
+
+export const NamedAccounts_Admin_ShoppingAssistant: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Admin,
+        trialType: TrialType.ShoppingAssistant,
+        fixed_gmv_band: CompanyTier.Band4,
+    },
+}
+
+export const SMB_NonAdmin_AIAgent: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Agent,
+        trialType: TrialType.AiAgent,
+        fixed_gmv_band: CompanyTier.Band1,
+    },
+}
+
+export const SMB_NonAdmin_ShoppingAssistant: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Agent,
+        trialType: TrialType.ShoppingAssistant,
+        fixed_gmv_band: CompanyTier.Band1,
+    },
+}
+
+export const Commercial_NonAdmin_AIAgent: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Agent,
+        trialType: TrialType.AiAgent,
+        fixed_gmv_band: CompanyTier.Band2,
+    },
+}
+
+export const Commercial_NonAdmin_ShoppingAssistant: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Agent,
+        trialType: TrialType.ShoppingAssistant,
+        fixed_gmv_band: CompanyTier.Band2,
+    },
+}
+
+export const Enterprise_NonAdmin_AIAgent: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Agent,
+        trialType: TrialType.AiAgent,
+        fixed_gmv_band: CompanyTier.Band3,
+    },
+}
+
+export const Enterprise_NonAdmin_ShoppingAssistant: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Agent,
+        trialType: TrialType.ShoppingAssistant,
+        fixed_gmv_band: CompanyTier.Band3,
+    },
+}
+
+export const NamedAccounts_NonAdmin_AIAgent: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Agent,
+        trialType: TrialType.AiAgent,
+        fixed_gmv_band: CompanyTier.Band4,
+    },
+}
+
+export const NamedAccounts_NonAdmin_ShoppingAssistant: Story = {
+    args: { ...defaultProps },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Agent,
+        trialType: TrialType.ShoppingAssistant,
+        fixed_gmv_band: CompanyTier.Band4,
+    },
+}
+
 export default storyConfig

@@ -131,6 +131,8 @@ describe('OfficeHours', () => {
                 { tier: CompanyTier.Tier2, description: 'SMB 2' },
                 { tier: CompanyTier.Tier3, description: 'Commercial 1' },
                 { tier: CompanyTier.Tier4, description: 'Commercial 2' },
+                { tier: CompanyTier.Band1, description: 'SMB' },
+                { tier: CompanyTier.Band2, description: 'Commercial' },
             ]
 
             it.each(eligibleTiers)(
@@ -154,6 +156,8 @@ describe('OfficeHours', () => {
                 { tier: CompanyTier.Tier1, description: 'SMB 1' },
                 { tier: CompanyTier.Tier5, description: 'Enterprise 1' },
                 { tier: CompanyTier.Tier6, description: 'Enterprise 2' },
+                { tier: CompanyTier.Band3, description: 'Enterprise' },
+                { tier: CompanyTier.Band4, description: 'Named Accounts' },
             ]
 
             it.each(ineligibleTiers)(

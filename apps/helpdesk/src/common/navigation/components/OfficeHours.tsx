@@ -22,11 +22,15 @@ export default function OfficeHours({ onToggleDropdown }: Props) {
     const currentUser = useAppSelector(getCurrentUser)
     const gmvBandTier = useAppSelector(getCompanyFixedGmvBandTier)
 
-    // Eligible tiers: tier_2 (SMB 2), tier_3 (Commercial 1), tier_4 (Commercial 2)
+    // Eligible tiers:
+    // DEPRECATED: tier_2 (SMB 2), tier_3 (Commercial 1), tier_4 (Commercial 2)
+    // NEW: band_1 (SMB), band_2 (Commercial)
     const eligibleTiers = [
         CompanyTier.Tier2,
         CompanyTier.Tier3,
         CompanyTier.Tier4,
+        CompanyTier.Band1,
+        CompanyTier.Band2,
     ]
     const isEligibleByGmvBand =
         gmvBandTier && eligibleTiers.includes(gmvBandTier)
