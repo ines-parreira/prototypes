@@ -2,6 +2,7 @@ import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { fetchTotalNumberOfOrdersTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
 import { fetchTotalNumberOfSalesConversationsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
+import { fetchTotalSalePerInteractionTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalSalePerInteractionTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
@@ -19,8 +20,6 @@ import { AnalyticsAiAgentRevenuePerInteractionCard } from './charts/AnalyticsAiA
 import { AnalyticsAiAgentTotalSalesCard } from './charts/AnalyticsAiAgentTotalSalesCard'
 
 // Mock fetch functions - these will be replaced with real data fetchers later
-const fetchTotalSalePerInteractionTrend = async () =>
-    ({ value: 93, trend: 0.02 }) as any
 const fetchShoppingAssistantTrendBreakdown = async () =>
     ({
         isLoading: false,
