@@ -9,7 +9,7 @@ import {
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
-const calculateTimeSavedByAgents = (
+export const calculateTimeSavedByAgents = (
     ticketHandleTimeTrend: MetricTrend,
     automatedInteractionTrend: MetricTrend,
 ) => {

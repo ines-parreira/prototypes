@@ -1,5 +1,6 @@
 import { fetchAIAgentAutomatedInteractionsTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend'
 import { fetchAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
+import { fetchAiAgentTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useAiAgentTimeSavedByAgentsTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
@@ -19,7 +20,6 @@ import { AnalyticsAiAgentTimeSavedCard } from './charts/AnalyticsAiAgentTimeSave
 import { AnalyticsAiAgentTotalSalesCard } from './charts/AnalyticsAiAgentTotalSalesCard'
 
 // Mock fetch functions - these will be replaced with real data fetchers later
-const fetchTimeSavedTrend = async () => ({ value: 20750, trend: 0.02 }) as any
 const fetchAllAgentsTrendBreakdown = async () =>
     ({
         isLoading: false,
@@ -100,7 +100,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchTimeSavedTrend,
+                        fetch: fetchAiAgentTimeSavedByAgentsTrend,
                         metricFormat: 'duration',
                     },
                 ],
