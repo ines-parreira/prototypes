@@ -103,9 +103,20 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
 }))
 
 jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
-    PlaygroundPanel: ({ onClose }: { onClose: () => void }) => (
+    PlaygroundPanel: ({
+        onClose,
+        draftKnowledge,
+    }: {
+        onClose: () => void
+        draftKnowledge?: { sourceId: number; sourceSetId: number }
+    }) => (
         <div data-testid="playground-panel">
             <button onClick={onClose}>Close Playground</button>
+            {draftKnowledge && (
+                <div data-testid="draft-knowledge-data">
+                    {JSON.stringify(draftKnowledge)}
+                </div>
+            )}
         </div>
     ),
 }))
@@ -673,6 +684,256 @@ describe('KnowledgeEditorGuidance', () => {
                     queryByTestId('playground-panel'),
                 ).not.toBeInTheDocument()
             })
+        })
+
+        it('should pass draft knowledge to playground when guidance is in draft state', async () => {
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: {
+                    ...guidanceArticle,
+                    id: 42,
+                    isCurrent: false,
+                },
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={42}
+                        onClose={jest.fn()}
+                        guidanceMode="read"
+                        isOpen={true}
+                        guidanceArticles={[]}
+                    />
+                </Provider>,
+            )
+
+            const testButton = screen.getByRole('button', { name: /test/i })
+            await act(async () => {
+                fireEvent.click(testButton)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('playground-panel'),
+                ).toBeInTheDocument()
+            })
+
+            const draftKnowledgeData = screen.getByTestId(
+                'draft-knowledge-data',
+            )
+            expect(draftKnowledgeData).toBeInTheDocument()
+            expect(draftKnowledgeData.textContent).toBe(
+                JSON.stringify({ sourceId: 42, sourceSetId: 1 }),
+            )
+        })
+
+        it('should not pass draft knowledge to playground when guidance is current', async () => {
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: {
+                    ...guidanceArticle,
+                    id: 42,
+                    isCurrent: true,
+                },
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={42}
+                        onClose={jest.fn()}
+                        guidanceMode="read"
+                        isOpen={true}
+                        guidanceArticles={[]}
+                    />
+                </Provider>,
+            )
+
+            const testButton = screen.getByRole('button', { name: /test/i })
+            await act(async () => {
+                fireEvent.click(testButton)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('playground-panel'),
+                ).toBeInTheDocument()
+            })
+
+            expect(
+                screen.queryByTestId('draft-knowledge-data'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not pass draft knowledge to playground when isCurrent is undefined', async () => {
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: {
+                    ...guidanceArticle,
+                    id: 42,
+                    isCurrent: undefined,
+                },
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={42}
+                        onClose={jest.fn()}
+                        guidanceMode="read"
+                        isOpen={true}
+                        guidanceArticles={[]}
+                    />
+                </Provider>,
+            )
+
+            const testButton = screen.getByRole('button', { name: /test/i })
+            await act(async () => {
+                fireEvent.click(testButton)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('playground-panel'),
+                ).toBeInTheDocument()
+            })
+
+            expect(
+                screen.queryByTestId('draft-knowledge-data'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not pass draft knowledge to playground when guidance article is null', async () => {
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: null,
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={42}
+                        onClose={jest.fn()}
+                        guidanceMode="read"
+                        isOpen={true}
+                        guidanceArticles={[]}
+                    />
+                </Provider>,
+            )
+
+            const testButton = screen.getByRole('button', { name: /test/i })
+            await act(async () => {
+                fireEvent.click(testButton)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('playground-panel'),
+                ).toBeInTheDocument()
+            })
+
+            expect(
+                screen.queryByTestId('draft-knowledge-data'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should pass draft knowledge to playground when guidance is in draft state in edit mode', async () => {
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: {
+                    ...guidanceArticle,
+                    id: 42,
+                    isCurrent: false,
+                },
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={42}
+                        onClose={jest.fn()}
+                        guidanceMode="edit"
+                        isOpen={true}
+                        guidanceArticles={[]}
+                    />
+                </Provider>,
+            )
+
+            const testButton = screen.getByRole('button', { name: /test/i })
+            await act(async () => {
+                fireEvent.click(testButton)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('playground-panel'),
+                ).toBeInTheDocument()
+            })
+
+            const draftKnowledgeData = screen.getByTestId(
+                'draft-knowledge-data',
+            )
+            expect(draftKnowledgeData).toBeInTheDocument()
+            expect(draftKnowledgeData.textContent).toBe(
+                JSON.stringify({ sourceId: 42, sourceSetId: 1 }),
+            )
+        })
+
+        it('should not pass draft knowledge to playground when guidance is current in edit mode', async () => {
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: {
+                    ...guidanceArticle,
+                    id: 42,
+                    isCurrent: true,
+                },
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={42}
+                        onClose={jest.fn()}
+                        guidanceMode="edit"
+                        isOpen={true}
+                        guidanceArticles={[]}
+                    />
+                </Provider>,
+            )
+
+            const testButton = screen.getByRole('button', { name: /test/i })
+            await act(async () => {
+                fireEvent.click(testButton)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('playground-panel'),
+                ).toBeInTheDocument()
+            })
+
+            expect(
+                screen.queryByTestId('draft-knowledge-data'),
+            ).not.toBeInTheDocument()
         })
 
         it('should render both editor and playground when test button is clicked', async () => {

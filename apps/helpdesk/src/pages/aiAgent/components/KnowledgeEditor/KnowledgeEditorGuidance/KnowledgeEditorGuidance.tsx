@@ -34,7 +34,19 @@ type Props = {
 const KnowledgeEditorGuidanceInner = () => {
     const closeHandlerRef = useRef<(() => void) | null>(null)
 
-    const { playground, config } = useGuidanceContext()
+    const { playground, config, state } = useGuidanceContext()
+    const isGuidanceInDraftState =
+        state.guidance?.isCurrent === undefined
+            ? false
+            : !state.guidance?.isCurrent
+
+    const draftKnowledgeForPlayground =
+        isGuidanceInDraftState && state.guidance
+            ? {
+                  sourceId: state.guidance.id,
+                  sourceSetId: config.guidanceHelpCenter.id,
+              }
+            : undefined
 
     return (
         <SidePanel
@@ -60,7 +72,10 @@ const KnowledgeEditorGuidanceInner = () => {
                 </div>
                 {playground.isOpen && (
                     <div className={css.playground}>
-                        <PlaygroundPanel onClose={playground.onClose} />
+                        <PlaygroundPanel
+                            onClose={playground.onClose}
+                            draftKnowledge={draftKnowledgeForPlayground}
+                        />
                     </div>
                 )}
             </div>
