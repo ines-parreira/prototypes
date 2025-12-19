@@ -1,17 +1,8 @@
 import { useMemo } from 'react'
 
-import { ChartCard } from '@repo/reporting'
+import { ChartCard, TimeSeriesChart } from '@repo/reporting'
+import type { TimeSeriesDataItem } from '@repo/reporting'
 import moment from 'moment'
-import {
-    Area,
-    AreaChart,
-    CartesianGrid,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis,
-} from 'recharts'
-import type { TooltipContentProps } from 'recharts/types/component/Tooltip'
 
 import colors from '@gorgias/axiom/tokens/colors/semantic/light.json'
 
@@ -22,73 +13,22 @@ import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeS
 
 import { DATE_FORMAT } from '../../constants'
 import { formatPreviousPeriod } from '../../utils/formatPreviousPeriod'
-import { AutomationLineChartSkeleton } from './AutomationLineChartSkeleton'
-
-import css from './AutomationLineChart.less'
 
 const METRIC_TITLE = 'Overall automation rate'
 
-const CHART_COLORS = {
-    stroke: colors['Dataviz-purple'].$value,
-    grid: colors['border-neutral-secondary'].$value,
-}
+const CHART_COLOR = colors['Dataviz-purple'].$value
 
-export const CustomTooltip = ({
-    active,
-    payload,
-    label,
-}: TooltipContentProps<number | string, string | number>) => {
-    if (!active || !payload || !payload[0]) {
-        return null
-    }
-
-    const value = payload[0].value
-    const percentage =
-        typeof value === 'number' ? (value * 100).toFixed(1) : '0.0'
-    const displayLabel = typeof label === 'number' ? label.toString() : label
-
-    return (
-        <div
-            style={{
-                backgroundColor: 'var(--surface-inverted-default)',
-                borderRadius: 'var(--spacing-xs)',
-                padding: 'var(--spacing-xxs) var(--spacing-xs)',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                gap: 'var(--spacing-xxxs)',
-            }}
-        >
-            <p
-                style={{
-                    margin: 0,
-                    fontSize: '12px',
-                    color: 'var(--surface-neutral-tertiary)',
-                }}
-            >
-                {displayLabel}
-            </p>
-            <p
-                style={{
-                    margin: 0,
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    color: 'var(--content-inverted-default)',
-                }}
-            >
-                {percentage}%
-            </p>
-        </div>
-    )
-}
-
-export const formatYAxisTick = (value: number) => {
+const formatYAxisTick = (value: number) => {
     const percentage = value * 100
     if (percentage >= 1000) {
         return `${(percentage / 1000).toFixed(percentage % 1000 === 0 ? 0 : 1)}K`
     }
     return percentage.toString()
+}
+
+const formatTooltipValue = (value: number) => {
+    const percentage = (value * 100).toFixed(1)
+    return `${percentage}%`
 }
 
 export const AutomationLineChart = () => {
@@ -119,7 +59,7 @@ export const AutomationLineChart = () => {
             ? automationRateTrend.data.prevValue
             : undefined
 
-    const chartData = useMemo(() => {
+    const chartData = useMemo((): TimeSeriesDataItem[] => {
         if (!timeSeriesData || !timeSeriesData[0]) {
             return []
         }
@@ -150,80 +90,15 @@ export const AutomationLineChart = () => {
             tooltipData={{ period: tooltipPeriod }}
             isLoading={isLoading}
         >
-            {isLoading ? (
-                <AutomationLineChartSkeleton />
-            ) : (
-                <div className={css.chartWrapper}>
-                    <ResponsiveContainer width="100%" height={280}>
-                        <AreaChart
-                            data={chartData}
-                            margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-                        >
-                            <defs>
-                                <linearGradient
-                                    id="automationRateGradient"
-                                    x1="0"
-                                    y1="0"
-                                    x2="0"
-                                    y2="1"
-                                >
-                                    <stop
-                                        offset="0%"
-                                        stopColor={CHART_COLORS.stroke}
-                                        stopOpacity={0.2}
-                                    />
-                                    <stop
-                                        offset="50%"
-                                        stopColor={CHART_COLORS.stroke}
-                                        stopOpacity={0.1}
-                                    />
-                                    <stop
-                                        offset="75%"
-                                        stopColor={CHART_COLORS.stroke}
-                                        stopOpacity={0.05}
-                                    />
-                                    <stop
-                                        offset="100%"
-                                        stopColor={CHART_COLORS.stroke}
-                                        stopOpacity={0}
-                                    />
-                                </linearGradient>
-                            </defs>
-                            <CartesianGrid
-                                strokeDasharray="3 3"
-                                stroke={CHART_COLORS.grid}
-                                vertical={false}
-                            />
-                            <XAxis
-                                dataKey="date"
-                                tick={{ fill: '#5C6370', fontSize: 12 }}
-                                axisLine={false}
-                                tickLine={{ stroke: CHART_COLORS.grid }}
-                                tickMargin={8}
-                            />
-                            <YAxis
-                                tick={{ fill: '#5C6370', fontSize: 12 }}
-                                axisLine={false}
-                                tickLine={false}
-                                tickFormatter={formatYAxisTick}
-                                width={40}
-                            />
-                            <Tooltip content={CustomTooltip} cursor={false} />
-                            <Area
-                                type="monotone"
-                                dataKey="value"
-                                stroke={CHART_COLORS.stroke}
-                                strokeWidth={2}
-                                fillOpacity={1}
-                                fill="url(#automationRateGradient)"
-                                isAnimationActive={true}
-                                animationDuration={1000}
-                                animationEasing="ease-in-out"
-                            />
-                        </AreaChart>
-                    </ResponsiveContainer>
-                </div>
-            )}
+            <TimeSeriesChart
+                data={chartData}
+                isLoading={isLoading}
+                color={CHART_COLOR}
+                yAxisFormatter={formatYAxisTick}
+                valueFormatter={formatTooltipValue}
+                useGradient={true}
+                chartHeight={280}
+            />
         </ChartCard>
     )
 }

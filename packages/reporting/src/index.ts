@@ -21,7 +21,12 @@ export {
     BarChart,
     type ChartDataItem,
     type ChartType,
+    type TimeSeriesDataItem,
 } from './components/ChartCard'
+export {
+    TimeSeriesChart,
+    renderTimeSeriesTooltipContent,
+} from './components/TimeSeriesChart/TimeSeriesChart'
 export { TrendChart } from './components/TrendChart/TrendChart'
 export { TrendCard } from './components/TrendCard/TrendCard'
 export { formatMetricTrend, formatMetricValue } from './utils/helpers'

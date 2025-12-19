@@ -4,6 +4,7 @@ import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { SourceFilter } from 'domains/reporting/models/queryFactories/ai-sales-agent/constants'
 import { aiSalesAgentOrdersDefaultFiltersMembers } from 'domains/reporting/models/queryFactories/ai-sales-agent/filters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type {
@@ -88,6 +89,11 @@ export const influencedGmvTimeSeriesQueryFactory = (
                 member: AiSalesAgentOrdersDimension.IsInfluenced,
                 operator: ReportingFilterOperator.Equals,
                 values: ['1'],
+            },
+            {
+                member: AiSalesAgentOrdersDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: [SourceFilter.ShoppingAssistant],
             },
         ],
         AiSalesAgentOrdersMeasure.Gmv,

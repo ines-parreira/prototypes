@@ -9,42 +9,47 @@ import {
 
 import colors from '@gorgias/axiom/tokens/colors/semantic/light.json'
 
-import css from './AutomationLineChart.less'
+import css from './TimeSeriesChart.less'
 
 const SKELETON_DATA = [
-    { x: 0, y: 0.3 },
-    { x: 1, y: 0.35 },
-    { x: 2, y: 0.55 },
-    { x: 3, y: 0.5 },
-    { x: 4, y: 0.6 },
-    { x: 5, y: 0.58 },
-    { x: 6, y: 0.7 },
-    { x: 7, y: 0.65 },
-    { x: 8, y: 0.68 },
-    { x: 9, y: 0.72 },
-    { x: 10, y: 0.68 },
-    { x: 11, y: 0.75 },
-    { x: 12, y: 0.7 },
-    { x: 13, y: 0.65 },
-    { x: 14, y: 0.6 },
+    { date: '0', value: 0.3 },
+    { date: '1', value: 0.35 },
+    { date: '2', value: 0.55 },
+    { date: '3', value: 0.5 },
+    { date: '4', value: 0.6 },
+    { date: '5', value: 0.58 },
+    { date: '6', value: 0.7 },
+    { date: '7', value: 0.65 },
+    { date: '8', value: 0.68 },
+    { date: '9', value: 0.72 },
+    { date: '10', value: 0.68 },
+    { date: '11', value: 0.75 },
+    { date: '12', value: 0.7 },
+    { date: '13', value: 0.65 },
+    { date: '14', value: 0.6 },
 ]
 
-const CHART_COLORS = {
-    grid: colors['border-neutral-secondary'].$value,
-    skeletonStroke: colors['border-neutral-tertiary'].$value,
+const GRID_COLOR = colors['border-neutral-secondary'].$value
+const TICK_COLOR = '#5C6370'
+const SKELETON_STROKE_COLOR = colors['border-neutral-tertiary'].$value
+
+type TimeSeriesChartSkeletonProps = {
+    chartHeight: number
 }
 
-export const AutomationLineChartSkeleton = () => {
+export const TimeSeriesChartSkeleton = ({
+    chartHeight,
+}: TimeSeriesChartSkeletonProps) => {
     return (
         <div className={`${css.chartWrapper} ${css.skeletonChart}`}>
-            <ResponsiveContainer width="100%" height={280}>
+            <ResponsiveContainer width="100%" height={chartHeight}>
                 <AreaChart
                     data={SKELETON_DATA}
                     margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
                 >
                     <defs>
                         <linearGradient
-                            id="skeletonGradient"
+                            id="timeSeriesSkeletonGradient"
                             x1="0"
                             y1="0"
                             x2="0"
@@ -52,31 +57,31 @@ export const AutomationLineChartSkeleton = () => {
                         >
                             <stop
                                 offset="0%"
-                                stopColor={CHART_COLORS.skeletonStroke}
+                                stopColor={SKELETON_STROKE_COLOR}
                                 stopOpacity={0.1}
                             />
                             <stop
                                 offset="100%"
-                                stopColor={CHART_COLORS.skeletonStroke}
+                                stopColor={SKELETON_STROKE_COLOR}
                                 stopOpacity={0.02}
                             />
                         </linearGradient>
                     </defs>
                     <CartesianGrid
                         strokeDasharray="3 3"
-                        stroke={CHART_COLORS.grid}
+                        stroke={GRID_COLOR}
                         vertical={false}
                     />
                     <XAxis
-                        dataKey="x"
-                        tick={{ fill: '#5C6370', fontSize: 12 }}
+                        dataKey="date"
+                        tick={{ fill: TICK_COLOR, fontSize: 12 }}
                         axisLine={false}
-                        tickLine={{ stroke: CHART_COLORS.grid }}
+                        tickLine={{ stroke: GRID_COLOR }}
                         tickMargin={8}
                         tickFormatter={() => ''}
                     />
                     <YAxis
-                        tick={{ fill: '#5C6370', fontSize: 12 }}
+                        tick={{ fill: TICK_COLOR, fontSize: 12 }}
                         axisLine={false}
                         tickLine={false}
                         tickFormatter={() => ''}
@@ -84,10 +89,10 @@ export const AutomationLineChartSkeleton = () => {
                     />
                     <Area
                         type="monotone"
-                        dataKey="y"
-                        stroke={CHART_COLORS.skeletonStroke}
+                        dataKey="value"
+                        stroke={SKELETON_STROKE_COLOR}
                         strokeWidth={3}
-                        fill="url(#skeletonGradient)"
+                        fill="url(#timeSeriesSkeletonGradient)"
                         isAnimationActive={false}
                         opacity={0.4}
                     />

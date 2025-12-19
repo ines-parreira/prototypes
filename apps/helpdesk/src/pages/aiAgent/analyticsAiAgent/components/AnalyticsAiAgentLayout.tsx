@@ -146,6 +146,7 @@ export const AnalyticsAiAgentLayout = () => {
                                 },
                             },
                         }}
+                        compact
                     />
                 </Box>
             </Box>
