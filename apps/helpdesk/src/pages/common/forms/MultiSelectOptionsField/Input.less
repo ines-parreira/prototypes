@@ -11,7 +11,14 @@
     &.disabled {
         cursor: not-allowed;
         pointer-events: none;
-        background-color: var(--neutral-grey-1);
-        color: var(--neutral-grey-4);
+        background-color: var(--neutral-grey-1); // legacy
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local .input {
+    &.disabled {
+        background-color: var(--elevation-neutral-mid);
+        color: var(--content-neutral-secondary);
     }
 }

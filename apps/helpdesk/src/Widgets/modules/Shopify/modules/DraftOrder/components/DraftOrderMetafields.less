@@ -6,7 +6,7 @@
     }
 
     .errorMessage {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
         margin-left: 12.5px;
         .body-regular();
     }
@@ -14,5 +14,11 @@
     .infoMessage {
         margin-left: 12.5px;
         .body-regular();
+    }
+}
+
+.axiom :local {
+    .errorMessage {
+        color: var(--content-error-primary);
     }
 }

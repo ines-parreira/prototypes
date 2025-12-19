@@ -1,8 +1,14 @@
 :local {
     .error {
-        color: red;
+        color: red; // legacy
         font-size: 12px;
         line-height: 16px;
         margin-top: 8px;
+    }
+}
+
+.axiom :local {
+    .error {
+        color: var(--content-error-primary);
     }
 }

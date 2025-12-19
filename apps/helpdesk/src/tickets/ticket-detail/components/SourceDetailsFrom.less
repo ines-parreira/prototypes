@@ -4,7 +4,7 @@
             var(--neutral-grey-4-h),
             var(--neutral-grey-4-s),
             calc(var(--neutral-grey-4-l) - 8%)
-        );
+        ); // legacy
         font-size: 1rem;
         display: flex;
         min-width: 0;
@@ -26,8 +26,18 @@
                 var(--neutral-grey-4-h),
                 var(--neutral-grey-4-s),
                 calc(var(--neutral-grey-4-l) - 8%)
-            );
+            ); // legacy
             text-decoration: underline !important;
+        }
+    }
+}
+
+.axiom :local {
+    .from {
+        color: var(--content-neutral-secondary);
+
+        a {
+            color: var(--content-neutral-secondary);
         }
     }
 }

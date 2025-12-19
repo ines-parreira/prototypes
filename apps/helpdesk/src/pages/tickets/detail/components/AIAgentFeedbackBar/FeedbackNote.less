@@ -12,6 +12,12 @@
 
     .descriptionText {
         .caption-regular();
-        color: var(neutral-grey-5);
+        color: var(neutral-grey-5); // legacy
+    }
+}
+
+.axiom :local {
+    .descriptionText {
+        color: var(--content-neutral-secondary);
     }
 }

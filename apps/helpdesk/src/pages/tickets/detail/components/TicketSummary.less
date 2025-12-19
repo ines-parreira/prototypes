@@ -229,7 +229,7 @@
         margin-left: auto;
 
         svg {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
@@ -238,7 +238,7 @@
         margin-top: var(--layout-spacing-xxs);
         white-space: pre-line;
         .bodyError {
-            color: var(--neutral-grey-5);
+            color: var(--neutral-grey-5); // legacy
         }
     }
 
@@ -246,7 +246,7 @@
         .caption-regular();
         display: flex;
         align-items: center;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         min-height: 24px;
     }
 
@@ -321,7 +321,33 @@
             padding-left: 0 !important;
 
             &:hover {
-                background-color: var(--main-primary-0) !important;
+                background-color: var(--main-primary-0) !important; // legacy
+            }
+        }
+    }
+}
+
+.axiom :local {
+    .initButton {
+        svg {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .body {
+        .bodyError {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .info {
+        color: var(--content-neutral-secondary);
+    }
+
+    .footer {
+        .retryButton {
+            &:hover {
+                background-color: var(--surface-accent-subtle) !important;
             }
         }
     }

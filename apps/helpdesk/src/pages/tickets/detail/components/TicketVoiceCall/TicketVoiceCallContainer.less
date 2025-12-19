@@ -17,7 +17,7 @@
         }
 
         &:hover {
-            background: var(--neutral-grey-1);
+            background: var(--neutral-grey-1); // legacy
         }
     }
 
@@ -41,11 +41,11 @@
     }
 
     .errorStatus {
-        color: var(--feedback-error);
+        color: var(--feedback-error); // legacy
     }
 
     .greyStatus {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .statusWrapper {
@@ -134,18 +134,46 @@
             text-transform: capitalize;
 
             .sourceLabel {
-                color: var(--neutral-grey-4);
+                color: var(--neutral-grey-4); // legacy
             }
         }
     }
 
     .noEventsInfo {
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
     }
 
     .timelineItemContent {
         align-items: center;
         justify-content: space-between;
         width: 100%;
+    }
+}
+
+.axiom :local {
+    .container {
+        &:hover {
+            background: var(--surface-neutral-secondary);
+        }
+    }
+
+    .errorStatus {
+        color: var(--content-error-primary);
+    }
+
+    .greyStatus {
+        color: var(--content-neutral-secondary);
+    }
+
+    .sourceDetails {
+        .sourceDetail {
+            .sourceLabel {
+                color: var(--content-neutral-secondary);
+            }
+        }
+    }
+
+    .noEventsInfo {
+        color: var(--content-neutral-secondary);
     }
 }

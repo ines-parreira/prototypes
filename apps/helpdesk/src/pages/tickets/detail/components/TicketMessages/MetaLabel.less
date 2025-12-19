@@ -3,7 +3,7 @@
         var(--neutral-grey-4-h),
         var(--neutral-grey-4-s),
         calc(var(--neutral-grey-4-l) - 8%)
-    );
+    ); // legacy
     font-size: 1rem;
     display: inline-flex;
     white-space: pre;
@@ -28,11 +28,19 @@
             var(--neutral-grey-4-h),
             var(--neutral-grey-4-s),
             calc(var(--neutral-grey-4-l) - 8%)
-        );
+        ); // legacy
         text-decoration: underline !important;
     }
 
     .spinner {
         margin-right: 5px;
+    }
+}
+
+.axiom :local .from {
+    color: var(--content-neutral-secondary);
+
+    a {
+        color: var(--content-neutral-secondary);
     }
 }

@@ -15,7 +15,7 @@
         top: 0;
         height: 100%;
         padding: 0.45rem;
-        color: #95a7b7;
+        color: #95a7b7; // legacy
         pointer-events: none;
         overflow: hidden;
         text-align: right;
@@ -27,5 +27,12 @@
 
     .rightLabel {
         right: 0;
+    }
+}
+
+.axiom :local {
+    .leftLabel,
+    .rightLabel {
+        color: var(--content-neutral-tertiary);
     }
 }

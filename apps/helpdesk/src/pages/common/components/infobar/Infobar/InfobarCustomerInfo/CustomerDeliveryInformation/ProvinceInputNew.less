@@ -3,9 +3,15 @@
         margin-bottom: var(--layout-spacing-xs);
     }
     .errorText {
-        color: var(--color-text-negative);
+        color: var(--color-text-negative); // legacy
         font-size: var(--text-size-small);
         margin-top: var(--layout-spacing-2xs);
         display: block;
+    }
+}
+
+.axiom :local {
+    .errorText {
+        color: var(--content-error-primary);
     }
 }

@@ -7,7 +7,7 @@
         color: var(--neutral-grey-6); // legacy
 
         &:global(.globalNav) {
-            background-color: var(--navigation-background);
+            background-color: var(--navigation-background); // legacy
         }
     }
 }
@@ -15,4 +15,8 @@
 .axiom:local(.app) {
     background-color: var(--elevation-neutral-default);
     color: var(--content-neutral-default);
+
+    &:global(.globalNav) {
+        background-color: var(--elevation-neutral-bg);
+    }
 }

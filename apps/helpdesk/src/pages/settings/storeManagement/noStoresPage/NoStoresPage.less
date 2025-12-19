@@ -1,6 +1,6 @@
 :local {
     .title {
-        color: var(--modern-neutral-grey-6);
+        color: var(--modern-neutral-grey-6); // legacy
         font-family: Inter, sans-serif;
         font-size: 20px;
         font-style: normal;
@@ -27,5 +27,11 @@
     .noStoreIcon,
     .message {
         margin-bottom: var(--layout-spacing-m);
+    }
+}
+
+.axiom :local {
+    .title {
+        color: var(--content-neutral-default);
     }
 }

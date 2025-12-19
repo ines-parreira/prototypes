@@ -3,7 +3,7 @@
 :local {
     .emptyStateWrapper {
         align-items: center;
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         display: flex;
         flex-direction: column;
         justify-self: center;
@@ -16,5 +16,11 @@
             .heading-subsection-semibold();
             margin-bottom: var(--layout-spacing-xs);
         }
+    }
+}
+
+.axiom :local {
+    .emptyStateWrapper {
+        color: var(--content-neutral-secondary);
     }
 }

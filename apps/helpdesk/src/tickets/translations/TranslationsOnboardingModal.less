@@ -13,12 +13,12 @@
         z-index: 1;
 
         button {
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
             &:hover {
-                color: var(--neutral-grey-7);
+                color: var(--neutral-grey-7); // legacy
             }
             &:active {
-                color: var(--neutral-grey-8);
+                color: var(--neutral-grey-8); // legacy
             }
         }
     }
@@ -46,7 +46,7 @@
     }
 
     .modalFooter {
-        background: var(--neutral-grey-0);
+        background: var(--neutral-grey-0); // legacy
         padding: var(--layout-spacing-m);
         display: flex;
         flex-direction: column;
@@ -70,12 +70,12 @@
 
     .footerDescription {
         .body-regular();
-        color: var(--neutral-grey-5);
+        color: var(--neutral-grey-5); // legacy
         margin-bottom: 0;
 
         .highlight {
             .body-semibold();
-            color: var(--neutral-grey-6);
+            color: var(--neutral-grey-6); // legacy
         }
     }
 
@@ -85,5 +85,31 @@
         align-items: center;
         justify-content: flex-start;
         gap: var(--spacing-xs);
+    }
+}
+
+.axiom :local {
+    .closeButton {
+        button {
+            color: var(--content-neutral-default);
+            &:hover {
+                color: var(--content-neutral-strong);
+            }
+            &:active {
+                color: var(--content-neutral-strongest);
+            }
+        }
+    }
+
+    .modalFooter {
+        background: var(--elevation-neutral-default);
+    }
+
+    .footerDescription {
+        color: var(--content-neutral-secondary);
+
+        .highlight {
+            color: var(--content-neutral-default);
+        }
     }
 }
