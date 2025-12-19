@@ -13,7 +13,6 @@ const oneTouchTicketsScope = defineScope({
         'agentId',
         'teamId',
         'channel',
-        'csatScores',
         'integrationId',
         'storeId',
         'communicationSkills',
@@ -25,6 +24,7 @@ const oneTouchTicketsScope = defineScope({
         'brandVoiceScore',
         'customFields',
         'tags',
+        'score',
     ],
     order: ['ticketId', 'createdDatetime', 'closedDatetime', 'ticketCount'],
 })

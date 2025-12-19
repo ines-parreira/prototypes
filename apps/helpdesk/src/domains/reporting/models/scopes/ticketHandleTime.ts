@@ -19,7 +19,6 @@ const ticketHandleTimeScope = defineScope({
         'agentId',
         'teamId',
         'channel',
-        'csatScores',
         'integrationId',
         'storeId',
         'communicationSkills',
@@ -31,6 +30,7 @@ const ticketHandleTimeScope = defineScope({
         'brandVoiceScore',
         'customFields',
         'tags',
+        'score',
     ],
     order: ['ticketId', 'handleTime', 'averageHandleTime'],
 })

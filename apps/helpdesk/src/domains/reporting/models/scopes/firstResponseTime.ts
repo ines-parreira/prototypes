@@ -19,7 +19,6 @@ const firstResponseTimeScope = defineScope({
         'agentId',
         'teamId',
         'channel',
-        'csatScores',
         'integrationId',
         'storeId',
         'communicationSkills',
@@ -31,6 +30,7 @@ const firstResponseTimeScope = defineScope({
         'brandVoiceScore',
         'customFields',
         'tags',
+        'score',
     ],
     order: [
         'tickets',

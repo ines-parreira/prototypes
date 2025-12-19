@@ -29,7 +29,7 @@ export const satisfactionSurveysScope = defineScope({
         'agentId',
         'teamId',
         'channel',
-        'csatScores',
+        'score',
         'integrationId',
         'storeId',
         'communicationSkills',

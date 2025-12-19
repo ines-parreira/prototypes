@@ -316,7 +316,6 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 break
         }
     })
-
     return filters as ScopeFilters<TMeta>
 }
 

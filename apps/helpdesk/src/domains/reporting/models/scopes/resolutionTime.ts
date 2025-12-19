@@ -19,7 +19,6 @@ const resolutionTimeScope = defineScope({
         'agentId',
         'teamId',
         'channel',
-        'csatScores',
         'integrationId',
         'storeId',
         'communicationSkills',
@@ -31,6 +30,7 @@ const resolutionTimeScope = defineScope({
         'brandVoiceScore',
         'customFields',
         'tags',
+        'score',
     ],
     order: ['tickets', 'medianResolutionTime'],
 })

@@ -26,7 +26,7 @@ const autoQAScope = defineScope({
         'agentId',
         'teamId',
         'channel',
-        'csatScores',
+        'score',
         'integrationId',
         'tags',
         'customFields',

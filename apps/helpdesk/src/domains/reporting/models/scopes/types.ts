@@ -159,7 +159,6 @@ export type StringFilterName =
     | 'channel'
     | 'integrationId'
     | 'storeId'
-    | 'csatScores'
     | 'accuracyScore'
     | 'efficiencyScore'
     | 'internalComplianceScore'
