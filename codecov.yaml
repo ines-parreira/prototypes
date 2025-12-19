@@ -17,6 +17,7 @@ comment:
 
 ignore:
   - src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/**/*
+  - apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/revamp/**/*
   - src/core/layout/panels/helpers/calculateSizes.ts
   - src/pages/automate/workflows/editor/visualBuilder/editors/TestFlowEditor.tsx
   - src/pages/aiAgent/Onboarding/components/OnboardingDevPreview/OnboardingDevPreview.tsx

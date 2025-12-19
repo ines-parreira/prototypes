@@ -560,7 +560,7 @@
           }
         },
         {
-          "usageCount": 7,
+          "usageCount": 8,
           "name": "DEPRECATED_getIntegrationsByTypes",
           "nodeType": "VariableDeclaration",
           "deprecationDate": "2022-09-14",

@@ -101,7 +101,16 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
                                 <GorgiasChatCreationWizardStepBasics
                                     isUpdate={isUpdate}
                                     isSubmitting={isSubmitting}
+                                    integration={integration}
                                 />
+                            </WizardStep>
+                            <WizardStep
+                                name={GorgiasChatCreationWizardSteps.Branding}
+                            >
+                                <div style={{ padding: '24px' }}>
+                                    <h2>Branding Step Placeholder</h2>
+                                    <p>This step will be implemented next.</p>
+                                </div>
                             </WizardStep>
                         </Wizard>
                     )}
