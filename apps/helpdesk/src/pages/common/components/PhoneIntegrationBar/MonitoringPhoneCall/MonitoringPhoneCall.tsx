@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Call } from '@twilio/voice-sdk'
 
-import { Box, Button } from '@gorgias/axiom'
+import { Box, Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 import { useHandleCallWhispering } from '@gorgias/helpdesk-queries'
 
 import { extractMonitoringCallParams } from 'hooks/integrations/phone/monitoring.utils'
@@ -99,29 +99,42 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
                 </PhoneBarCallerDetailsContainer>
                 <Box display="flex" alignItems="center" gap="sm">
                     {isCallWhisperingEnabled && (
-                        <DynamicSoundWaveIcon
-                            audioLevel={isWhispering ? audioLevel : 0}
-                            hide={!isWhispering}
-                        >
-                            <Button
-                                variant="secondary"
-                                icon={isWhispering ? 'user-mute' : 'user-voice'}
-                                onClick={() => {
-                                    handleCallWhispering({
-                                        data: {
-                                            monitoring_call_sid:
-                                                monitoringCallSid,
-                                            whisper: !isWhispering,
-                                        },
-                                    })
-                                }}
-                                isLoading={isLoading}
+                        <Tooltip>
+                            <DynamicSoundWaveIcon
+                                audioLevel={isWhispering ? audioLevel : 0}
+                                hide={!isWhispering}
                             >
-                                {isWhispering
-                                    ? 'Stop Whispering'
-                                    : 'Start Whispering'}
-                            </Button>
-                        </DynamicSoundWaveIcon>
+                                <Button
+                                    variant="secondary"
+                                    icon={
+                                        isWhispering
+                                            ? 'user-mute'
+                                            : 'user-voice'
+                                    }
+                                    onClick={() => {
+                                        handleCallWhispering({
+                                            data: {
+                                                monitoring_call_sid:
+                                                    monitoringCallSid,
+                                                whisper: !isWhispering,
+                                            },
+                                        })
+                                    }}
+                                    isLoading={isLoading}
+                                >
+                                    {isWhispering
+                                        ? 'Stop whispering'
+                                        : 'Whisper to agent'}
+                                </Button>
+                            </DynamicSoundWaveIcon>
+                            <TooltipContent
+                                title={
+                                    isWhispering
+                                        ? 'Stop whispering'
+                                        : 'Whisper to agent'
+                                }
+                            />
+                        </Tooltip>
                     )}
                     <Button
                         intent="destructive"
