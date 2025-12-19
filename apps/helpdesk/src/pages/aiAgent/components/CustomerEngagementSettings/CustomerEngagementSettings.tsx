@@ -12,6 +12,7 @@ import { Box, LegacyButton as Button } from '@gorgias/axiom'
 import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { EmbeddedSpqsSettings } from 'pages/aiAgent/components/CustomerEngagementSettings/EmbeddedSpqsSettings'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { useShoppingAssistantTracking } from 'pages/aiAgent/hooks/useShoppingAssistantTracking'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
@@ -70,6 +71,8 @@ export const CustomerEngagementSettings = () => {
     const isAiShoppingAssistantEnabled = useFlag(
         FeatureFlagKey.AiShoppingAssistantEnabled,
     )
+
+    const isSpqSettingsEnabled = useFlag(FeatureFlagKey.EmbeddedSpqSettings)
 
     const canUpdateTexts =
         storeConfiguration?.monitoredChatIntegrations.length === 1
@@ -241,6 +244,8 @@ export const CustomerEngagementSettings = () => {
                         )}
 
                         <div data-candu-id="ai-sales-agent-customer-engagement-settings-educational-content" />
+
+                        {isSpqSettingsEnabled && <EmbeddedSpqsSettings />}
 
                         {(!isTriggerOnSearchDisabled ||
                             initialIsSalesHelpOnSearchEnabled) && (
