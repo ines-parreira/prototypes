@@ -2,7 +2,7 @@ import { useDebouncedEffect } from '@repo/hooks'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { useNotify } from 'hooks/useNotify'
-import { useUpdateArticleTranslation } from 'models/helpCenter/queries'
+import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import type {
     ArticleWithLocalTranslation,
     Category,
@@ -18,7 +18,7 @@ jest.mock('@repo/hooks', () => ({
 }))
 
 jest.mock('hooks/useNotify')
-jest.mock('models/helpCenter/queries')
+jest.mock('models/helpCenter/mutations')
 jest.mock('../context/ArticleContext')
 
 jest.mock(

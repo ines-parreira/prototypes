@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 import { useNotify } from 'hooks/useNotify'
-import { useUpdateArticleTranslation } from 'models/helpCenter/queries'
+import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 
 import { useArticleContext } from '../context'
 
@@ -45,7 +45,7 @@ export const useArticleToolbar = (): ArticleToolbarData => {
 
     const { helpCenter, onUpdatedFn } = config
 
-    const updateTranslationMutation = useUpdateArticleTranslation()
+    const updateTranslationMutation = useUpdateArticleTranslation(helpCenter.id)
 
     const onClickEdit = useCallback(() => {
         dispatch({ type: 'SET_MODE', payload: 'edit' })

@@ -7,7 +7,7 @@ import {
     useCreateArticle,
     useCreateArticleTranslation,
     useUpdateArticleTranslation,
-} from 'models/helpCenter/queries'
+} from 'models/helpCenter/mutations'
 import { slugify } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 
 import { useArticleContext } from '../context/ArticleContext'
@@ -31,9 +31,13 @@ export const useArticleAutoSave = () => {
 
     const { error: notifyError } = useNotify()
 
-    const createArticleMutation = useCreateArticle()
-    const createTranslationMutation = useCreateArticleTranslation()
-    const updateTranslationMutation = useUpdateArticleTranslation()
+    const { mutateAsync: createArticleMutation } = useCreateArticle(
+        helpCenter.id,
+    )
+    const { mutateAsync: createTranslationMutation } =
+        useCreateArticleTranslation(helpCenter.id)
+    const { mutateAsync: updateTranslationMutation } =
+        useUpdateArticleTranslation(helpCenter.id)
 
     const pendingSaveRef = useRef<{
         title: string
@@ -66,11 +70,10 @@ export const useArticleAutoSave = () => {
 
             try {
                 if (mode === 'create' && translationMode === 'new') {
-                    const response = await createArticleMutation.mutateAsync([
+                    const response = await createArticleMutation([
                         undefined,
                         { help_center_id: helpCenter.id },
                         {
-                            template_key: template?.key,
                             translation: {
                                 locale: state.currentLocale,
                                 title,
@@ -85,6 +88,7 @@ export const useArticleAutoSave = () => {
                                 is_current: false,
                                 visibility_status: 'PUBLIC',
                             },
+                            template_key: template?.key,
                         },
                     ])
 
@@ -107,28 +111,27 @@ export const useArticleAutoSave = () => {
                         return
                     }
 
-                    const response =
-                        await createTranslationMutation.mutateAsync([
-                            undefined,
-                            {
-                                help_center_id: helpCenter.id,
-                                article_id: articleId,
+                    const response = await createTranslationMutation([
+                        undefined,
+                        {
+                            help_center_id: helpCenter.id,
+                            article_id: articleId,
+                        },
+                        {
+                            locale: state.currentLocale,
+                            title,
+                            content,
+                            excerpt: '',
+                            slug: slugify(title),
+                            seo_meta: {
+                                title: null,
+                                description: null,
                             },
-                            {
-                                locale: state.currentLocale,
-                                title,
-                                content,
-                                excerpt: '',
-                                slug: slugify(title),
-                                seo_meta: {
-                                    title: null,
-                                    description: null,
-                                },
-                                category_id: null,
-                                is_current: false,
-                                visibility_status: 'PUBLIC',
-                            },
-                        ])
+                            category_id: null,
+                            is_current: false,
+                            visibility_status: 'PUBLIC',
+                        },
+                    ])
 
                     if (response?.data && pendingSaveRef.current) {
                         const savedValues = pendingSaveRef.current
@@ -154,20 +157,19 @@ export const useArticleAutoSave = () => {
                         return
                     }
 
-                    const response =
-                        await updateTranslationMutation.mutateAsync([
-                            undefined,
-                            {
-                                help_center_id: helpCenter.id,
-                                article_id: articleId,
-                                locale: state.currentLocale,
-                            },
-                            {
-                                title,
-                                content,
-                                is_current: false,
-                            },
-                        ])
+                    const response = await updateTranslationMutation([
+                        undefined,
+                        {
+                            help_center_id: helpCenter.id,
+                            article_id: articleId,
+                            locale: state.currentLocale,
+                        },
+                        {
+                            title,
+                            content,
+                            is_current: false,
+                        },
+                    ])
 
                     if (response?.data && pendingSaveRef.current) {
                         const savedValues = pendingSaveRef.current

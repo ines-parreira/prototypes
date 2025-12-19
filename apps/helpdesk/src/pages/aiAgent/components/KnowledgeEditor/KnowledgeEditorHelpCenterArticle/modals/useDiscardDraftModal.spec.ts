@@ -1,10 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { useNotify } from 'hooks/useNotify'
-import {
-    useDeleteArticleTranslationDraft,
-    useGetHelpCenterArticle,
-} from 'models/helpCenter/queries'
+import { useDeleteArticleTranslationDraft } from 'models/helpCenter/mutations'
 import type { LocaleCode } from 'models/helpCenter/types'
 
 import { useArticleContext } from '../context/ArticleContext'
@@ -15,9 +12,8 @@ jest.mock('hooks/useNotify', () => ({
     useNotify: jest.fn(),
 }))
 
-jest.mock('models/helpCenter/queries', () => ({
+jest.mock('models/helpCenter/mutations', () => ({
     useDeleteArticleTranslationDraft: jest.fn(),
-    useGetHelpCenterArticle: jest.fn(),
 }))
 
 jest.mock('../context/ArticleContext', () => ({
@@ -27,17 +23,16 @@ jest.mock('../context/ArticleContext', () => ({
 const mockUseNotify = useNotify as jest.Mock
 const mockUseDeleteArticleTranslationDraft =
     useDeleteArticleTranslationDraft as jest.Mock
-const mockUseGetHelpCenterArticle = useGetHelpCenterArticle as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
 
 describe('useDiscardDraftModal', () => {
     let mockDispatch: jest.Mock
     let mockNotifyError: jest.Mock
     let mockNotifySuccess: jest.Mock
-    let mockDeleteMutateAsync: jest.Mock
-    let mockRefetch: jest.Mock
+    let mockDiscardDraftMutateAsync: jest.Mock
     let mockOnClose: jest.Mock
     let mockOnUpdatedFn: jest.Mock
+    let mockOnDeletedFn: jest.Mock
 
     const mockTranslation = {
         locale: 'en-US' as const,
@@ -108,6 +103,7 @@ describe('useDiscardDraftModal', () => {
             initialMode: 'edit',
             onClose: mockOnClose,
             onUpdatedFn: mockOnUpdatedFn,
+            onDeletedFn: mockOnDeletedFn,
             ...overrides.config,
         } as ArticleContextValue['config'],
         hasPendingContentChanges: false,
@@ -128,20 +124,17 @@ describe('useDiscardDraftModal', () => {
         mockDispatch = jest.fn()
         mockNotifyError = jest.fn()
         mockNotifySuccess = jest.fn()
-        mockDeleteMutateAsync = jest.fn()
-        mockRefetch = jest.fn()
+        mockDiscardDraftMutateAsync = jest.fn()
         mockOnClose = jest.fn()
         mockOnUpdatedFn = jest.fn()
+        mockOnDeletedFn = jest.fn()
 
         mockUseNotify.mockReturnValue({
             error: mockNotifyError,
             success: mockNotifySuccess,
         })
         mockUseDeleteArticleTranslationDraft.mockReturnValue({
-            mutateAsync: mockDeleteMutateAsync,
-        })
-        mockUseGetHelpCenterArticle.mockReturnValue({
-            refetch: mockRefetch,
+            mutateAsync: mockDiscardDraftMutateAsync,
         })
         mockUseArticleContext.mockReturnValue(createMockContext())
     })
@@ -237,12 +230,13 @@ describe('useDiscardDraftModal', () => {
             })
 
             expect(mockDispatch).not.toHaveBeenCalled()
-            expect(mockDeleteMutateAsync).not.toHaveBeenCalled()
+            expect(mockDiscardDraftMutateAsync).not.toHaveBeenCalled()
         })
 
         it('should dispatch SET_UPDATING true at start', async () => {
-            mockDeleteMutateAsync.mockResolvedValue({})
-            mockRefetch.mockResolvedValue({ data: mockArticle })
+            mockDiscardDraftMutateAsync.mockResolvedValue({
+                data: mockTranslation,
+            })
 
             const { result } = renderHook(() => useDiscardDraftModal())
 
@@ -257,8 +251,9 @@ describe('useDiscardDraftModal', () => {
         })
 
         it('should call deleteTranslationDraftMutation with correct params', async () => {
-            mockDeleteMutateAsync.mockResolvedValue({})
-            mockRefetch.mockResolvedValue({ data: mockArticle })
+            mockDiscardDraftMutateAsync.mockResolvedValue({
+                data: mockTranslation,
+            })
 
             const { result } = renderHook(() => useDiscardDraftModal())
 
@@ -266,7 +261,7 @@ describe('useDiscardDraftModal', () => {
                 await result.current.onDiscard()
             })
 
-            expect(mockDeleteMutateAsync).toHaveBeenCalledWith([
+            expect(mockDiscardDraftMutateAsync).toHaveBeenCalledWith([
                 undefined,
                 {
                     help_center_id: 1,
@@ -276,9 +271,10 @@ describe('useDiscardDraftModal', () => {
             ])
         })
 
-        it('should show success notification on successful discard', async () => {
-            mockDeleteMutateAsync.mockResolvedValue({})
-            mockRefetch.mockResolvedValue({ data: mockArticle })
+        it('should show success notification when response contains translation data', async () => {
+            mockDiscardDraftMutateAsync.mockResolvedValue({
+                data: mockTranslation,
+            })
 
             const { result } = renderHook(() => useDiscardDraftModal())
 
@@ -289,32 +285,15 @@ describe('useDiscardDraftModal', () => {
             expect(mockNotifySuccess).toHaveBeenCalledWith('Draft discarded')
         })
 
-        describe('when article has published version', () => {
-            it('should refetch article and dispatch SWITCH_VERSION', async () => {
-                const refetchedArticle = {
-                    ...mockArticle,
-                    translation: {
-                        ...mockTranslation,
-                        title: 'Refetched Title',
-                        is_current: true,
-                    },
+        describe('when response contains translation data (has title)', () => {
+            it('should dispatch SWITCH_VERSION with response data', async () => {
+                const responseTranslation = {
+                    ...mockTranslation,
+                    title: 'Updated Title',
                 }
-                mockDeleteMutateAsync.mockResolvedValue({})
-                mockRefetch.mockResolvedValue({ data: refetchedArticle })
-
-                mockUseArticleContext.mockReturnValue(
-                    createMockContext({
-                        state: {
-                            article: {
-                                ...mockArticle,
-                                translation: {
-                                    ...mockTranslation,
-                                    published_version_id: 789,
-                                },
-                            },
-                        },
-                    }),
-                )
+                mockDiscardDraftMutateAsync.mockResolvedValue({
+                    data: responseTranslation,
+                })
 
                 const { result } = renderHook(() => useDiscardDraftModal())
 
@@ -322,63 +301,22 @@ describe('useDiscardDraftModal', () => {
                     await result.current.onDiscard()
                 })
 
-                expect(mockRefetch).toHaveBeenCalled()
                 expect(mockDispatch).toHaveBeenCalledWith({
                     type: 'SWITCH_VERSION',
                     payload: {
-                        article: refetchedArticle,
+                        article: {
+                            ...mockArticle,
+                            translation: responseTranslation,
+                        },
                         versionStatus: 'current',
                     },
                 })
             })
 
-            it('should not dispatch SWITCH_VERSION if refetch returns no data', async () => {
-                mockDeleteMutateAsync.mockResolvedValue({})
-                mockRefetch.mockResolvedValue({ data: undefined })
-
-                mockUseArticleContext.mockReturnValue(
-                    createMockContext({
-                        state: {
-                            article: {
-                                ...mockArticle,
-                                translation: {
-                                    ...mockTranslation,
-                                    published_version_id: 789,
-                                },
-                            },
-                        },
-                    }),
-                )
-
-                const { result } = renderHook(() => useDiscardDraftModal())
-
-                await act(async () => {
-                    await result.current.onDiscard()
-                })
-
-                expect(mockRefetch).toHaveBeenCalled()
-                expect(mockDispatch).not.toHaveBeenCalledWith(
-                    expect.objectContaining({ type: 'SWITCH_VERSION' }),
-                )
-            })
-
             it('should call onUpdatedFn after successful discard', async () => {
-                mockDeleteMutateAsync.mockResolvedValue({})
-                mockRefetch.mockResolvedValue({ data: mockArticle })
-
-                mockUseArticleContext.mockReturnValue(
-                    createMockContext({
-                        state: {
-                            article: {
-                                ...mockArticle,
-                                translation: {
-                                    ...mockTranslation,
-                                    published_version_id: 789,
-                                },
-                            },
-                        },
-                    }),
-                )
+                mockDiscardDraftMutateAsync.mockResolvedValue({
+                    data: mockTranslation,
+                })
 
                 const { result } = renderHook(() => useDiscardDraftModal())
 
@@ -388,25 +326,26 @@ describe('useDiscardDraftModal', () => {
 
                 expect(mockOnUpdatedFn).toHaveBeenCalled()
             })
+
+            it('should not call onClose or onDeletedFn', async () => {
+                mockDiscardDraftMutateAsync.mockResolvedValue({
+                    data: mockTranslation,
+                })
+
+                const { result } = renderHook(() => useDiscardDraftModal())
+
+                await act(async () => {
+                    await result.current.onDiscard()
+                })
+
+                expect(mockOnClose).not.toHaveBeenCalled()
+                expect(mockOnDeletedFn).not.toHaveBeenCalled()
+            })
         })
 
-        describe('when article has no published version', () => {
+        describe('when response does not contain translation data (no title)', () => {
             it('should call config.onClose', async () => {
-                mockDeleteMutateAsync.mockResolvedValue({})
-
-                mockUseArticleContext.mockReturnValue(
-                    createMockContext({
-                        state: {
-                            article: {
-                                ...mockArticle,
-                                translation: {
-                                    ...mockTranslation,
-                                    published_version_id: null,
-                                },
-                            },
-                        },
-                    }),
-                )
+                mockDiscardDraftMutateAsync.mockResolvedValue({})
 
                 const { result } = renderHook(() => useDiscardDraftModal())
 
@@ -415,25 +354,10 @@ describe('useDiscardDraftModal', () => {
                 })
 
                 expect(mockOnClose).toHaveBeenCalled()
-                expect(mockRefetch).not.toHaveBeenCalled()
             })
 
-            it('should call onUpdatedFn after successful discard', async () => {
-                mockDeleteMutateAsync.mockResolvedValue({})
-
-                mockUseArticleContext.mockReturnValue(
-                    createMockContext({
-                        state: {
-                            article: {
-                                ...mockArticle,
-                                translation: {
-                                    ...mockTranslation,
-                                    published_version_id: null,
-                                },
-                            },
-                        },
-                    }),
-                )
+            it('should call onDeletedFn', async () => {
+                mockDiscardDraftMutateAsync.mockResolvedValue({})
 
                 const { result } = renderHook(() => useDiscardDraftModal())
 
@@ -441,13 +365,40 @@ describe('useDiscardDraftModal', () => {
                     await result.current.onDiscard()
                 })
 
-                expect(mockOnUpdatedFn).toHaveBeenCalled()
+                expect(mockOnDeletedFn).toHaveBeenCalled()
+            })
+
+            it('should not call onUpdatedFn or dispatch SWITCH_VERSION', async () => {
+                mockDiscardDraftMutateAsync.mockResolvedValue({})
+
+                const { result } = renderHook(() => useDiscardDraftModal())
+
+                await act(async () => {
+                    await result.current.onDiscard()
+                })
+
+                expect(mockOnUpdatedFn).not.toHaveBeenCalled()
+                expect(mockDispatch).not.toHaveBeenCalledWith(
+                    expect.objectContaining({ type: 'SWITCH_VERSION' }),
+                )
+            })
+
+            it('should not show success notification', async () => {
+                mockDiscardDraftMutateAsync.mockResolvedValue({})
+
+                const { result } = renderHook(() => useDiscardDraftModal())
+
+                await act(async () => {
+                    await result.current.onDiscard()
+                })
+
+                expect(mockNotifySuccess).not.toHaveBeenCalled()
             })
         })
 
         describe('error handling', () => {
             it('should show error notification when discard fails', async () => {
-                mockDeleteMutateAsync.mockRejectedValue(
+                mockDiscardDraftMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
 
@@ -462,8 +413,8 @@ describe('useDiscardDraftModal', () => {
                 )
             })
 
-            it('should not call refetch or onClose when discard fails', async () => {
-                mockDeleteMutateAsync.mockRejectedValue(
+            it('should not call onClose or onDeletedFn when discard fails', async () => {
+                mockDiscardDraftMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
 
@@ -473,12 +424,12 @@ describe('useDiscardDraftModal', () => {
                     await result.current.onDiscard()
                 })
 
-                expect(mockRefetch).not.toHaveBeenCalled()
                 expect(mockOnClose).not.toHaveBeenCalled()
+                expect(mockOnDeletedFn).not.toHaveBeenCalled()
             })
 
             it('should not call onUpdatedFn when discard fails', async () => {
-                mockDeleteMutateAsync.mockRejectedValue(
+                mockDiscardDraftMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
 
@@ -494,8 +445,9 @@ describe('useDiscardDraftModal', () => {
 
         describe('finally block', () => {
             it('should dispatch SET_UPDATING false after success', async () => {
-                mockDeleteMutateAsync.mockResolvedValue({})
-                mockRefetch.mockResolvedValue({ data: mockArticle })
+                mockDiscardDraftMutateAsync.mockResolvedValue({
+                    data: mockTranslation,
+                })
 
                 const { result } = renderHook(() => useDiscardDraftModal())
 
@@ -512,7 +464,7 @@ describe('useDiscardDraftModal', () => {
             })
 
             it('should dispatch SET_UPDATING false after error', async () => {
-                mockDeleteMutateAsync.mockRejectedValue(
+                mockDiscardDraftMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
 
@@ -531,8 +483,9 @@ describe('useDiscardDraftModal', () => {
             })
 
             it('should dispatch CLOSE_MODAL after success', async () => {
-                mockDeleteMutateAsync.mockResolvedValue({})
-                mockRefetch.mockResolvedValue({ data: mockArticle })
+                mockDiscardDraftMutateAsync.mockResolvedValue({
+                    data: mockTranslation,
+                })
 
                 const { result } = renderHook(() => useDiscardDraftModal())
 
@@ -548,7 +501,7 @@ describe('useDiscardDraftModal', () => {
             })
 
             it('should dispatch CLOSE_MODAL after error', async () => {
-                mockDeleteMutateAsync.mockRejectedValue(
+                mockDiscardDraftMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
 

@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useQueryClient } from '@tanstack/react-query'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
@@ -11,13 +10,12 @@ import {
 } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
+import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import {
-    helpCenterArticleKeys,
     useGetArticleIngestionLogs,
     useGetFileIngestion,
     useGetHelpCenterArticle,
     useGetIngestedResource,
-    useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
 import type { LocaleCode } from 'models/helpCenter/types'
 import type { IngestedResourceWithArticleId } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
@@ -60,13 +58,12 @@ export const KnowledgeEditorSnippetLoader = ({
     onTest,
 }: Props) => {
     const { error: notifyError } = useNotify()
-    const queryClient = useQueryClient()
     const isPerformanceStatsEnabled = useFlag(
         FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
     )
     const timezone = useAppSelector(getTimezone)
-    const { mutateAsync: updateArticleTranslation } =
-        useUpdateArticleTranslation()
+    const { mutateAsync: updateTranslationMutation } =
+        useUpdateArticleTranslation(helpCenterId)
 
     const { data: articleData, isInitialLoading: isSnippetLoading } =
         useGetHelpCenterArticle(snippetId, helpCenterId, locale)
@@ -232,7 +229,7 @@ export const KnowledgeEditorSnippetLoader = ({
                 articleData.translation.visibility_status === 'PUBLIC'
             const newVisibility = currentVisibility ? 'UNLISTED' : 'PUBLIC'
 
-            await updateArticleTranslation([
+            await updateTranslationMutation([
                 undefined,
                 {
                     help_center_id: helpCenterId,
@@ -245,26 +242,16 @@ export const KnowledgeEditorSnippetLoader = ({
                 },
             ])
 
-            await queryClient.invalidateQueries({
-                queryKey: helpCenterArticleKeys(
-                    helpCenterId,
-                    snippetId,
-                    locale,
-                    'current',
-                ),
-            })
-
             onUpdated?.()
         } catch {
             notifyError('An error occurred while updating snippet.')
         }
     }, [
         articleData,
-        updateArticleTranslation,
+        updateTranslationMutation,
         helpCenterId,
         snippetId,
         locale,
-        queryClient,
         onUpdated,
         notifyError,
     ])

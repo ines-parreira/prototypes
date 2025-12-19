@@ -1,10 +1,8 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { useNotify } from 'hooks/useNotify'
-import {
-    useDeleteArticleTranslation,
-    useGetHelpCenterArticle,
-} from 'models/helpCenter/queries'
+import { useDeleteArticleTranslation } from 'models/helpCenter/mutations'
+import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
 import type { ArticleWithLocalTranslation } from 'models/helpCenter/types'
 
 import { useArticleContext } from '../context/ArticleContext'
@@ -13,6 +11,7 @@ import { createEmptyTranslation } from '../context/utils'
 import { useLocaleManagement } from './useLocaleManagement'
 
 jest.mock('hooks/useNotify')
+jest.mock('models/helpCenter/mutations')
 jest.mock('models/helpCenter/queries')
 jest.mock('../context/ArticleContext')
 jest.mock('../context/utils')

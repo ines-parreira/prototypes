@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { useNotify } from 'hooks/useNotify'
-import { useDeleteArticle } from 'models/helpCenter/queries'
+import { useDeleteArticle } from 'models/helpCenter/mutations'
 import type { LocaleCode } from 'models/helpCenter/types'
 
 import { useArticleContext } from '../context/ArticleContext'
@@ -12,7 +12,7 @@ jest.mock('hooks/useNotify', () => ({
     useNotify: jest.fn(),
 }))
 
-jest.mock('models/helpCenter/queries', () => ({
+jest.mock('models/helpCenter/mutations', () => ({
     useDeleteArticle: jest.fn(),
 }))
 
@@ -27,7 +27,7 @@ const mockUseArticleContext = useArticleContext as jest.Mock
 describe('useDeleteArticleModal', () => {
     let mockDispatch: jest.Mock
     let mockNotifyError: jest.Mock
-    let mockDeleteMutateAsync: jest.Mock
+    let mockDeleteArticleMutateAsync: jest.Mock
     let mockOnClose: jest.Mock
     let mockOnDeletedFn: jest.Mock
 
@@ -119,7 +119,7 @@ describe('useDeleteArticleModal', () => {
 
         mockDispatch = jest.fn()
         mockNotifyError = jest.fn()
-        mockDeleteMutateAsync = jest.fn()
+        mockDeleteArticleMutateAsync = jest.fn()
         mockOnClose = jest.fn()
         mockOnDeletedFn = jest.fn()
 
@@ -128,7 +128,7 @@ describe('useDeleteArticleModal', () => {
             success: jest.fn(),
         })
         mockUseDeleteArticle.mockReturnValue({
-            mutateAsync: mockDeleteMutateAsync,
+            mutateAsync: mockDeleteArticleMutateAsync,
         })
         mockUseArticleContext.mockReturnValue(createMockContext())
     })
@@ -236,11 +236,11 @@ describe('useDeleteArticleModal', () => {
             })
 
             expect(mockDispatch).not.toHaveBeenCalled()
-            expect(mockDeleteMutateAsync).not.toHaveBeenCalled()
+            expect(mockDeleteArticleMutateAsync).not.toHaveBeenCalled()
         })
 
         it('should dispatch SET_UPDATING true at start', async () => {
-            mockDeleteMutateAsync.mockResolvedValue({})
+            mockDeleteArticleMutateAsync.mockResolvedValue({})
 
             const { result } = renderHook(() => useDeleteArticleModal())
 
@@ -255,7 +255,7 @@ describe('useDeleteArticleModal', () => {
         })
 
         it('should call deleteArticleMutation with correct params', async () => {
-            mockDeleteMutateAsync.mockResolvedValue({})
+            mockDeleteArticleMutateAsync.mockResolvedValue({})
 
             const { result } = renderHook(() => useDeleteArticleModal())
 
@@ -263,7 +263,7 @@ describe('useDeleteArticleModal', () => {
                 await result.current.onDelete()
             })
 
-            expect(mockDeleteMutateAsync).toHaveBeenCalledWith([
+            expect(mockDeleteArticleMutateAsync).toHaveBeenCalledWith([
                 undefined,
                 {
                     help_center_id: 1,
@@ -274,7 +274,7 @@ describe('useDeleteArticleModal', () => {
 
         describe('success flow', () => {
             it('should call config.onDeletedFn when provided', async () => {
-                mockDeleteMutateAsync.mockResolvedValue({})
+                mockDeleteArticleMutateAsync.mockResolvedValue({})
 
                 const { result } = renderHook(() => useDeleteArticleModal())
 
@@ -286,7 +286,7 @@ describe('useDeleteArticleModal', () => {
             })
 
             it('should not fail when config.onDeletedFn is not provided', async () => {
-                mockDeleteMutateAsync.mockResolvedValue({})
+                mockDeleteArticleMutateAsync.mockResolvedValue({})
                 mockUseArticleContext.mockReturnValue(
                     createMockContext({
                         config: { onDeletedFn: undefined },
@@ -305,7 +305,7 @@ describe('useDeleteArticleModal', () => {
 
         describe('error handling', () => {
             it('should show error notification when delete fails', async () => {
-                mockDeleteMutateAsync.mockRejectedValue(
+                mockDeleteArticleMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
 
@@ -321,7 +321,7 @@ describe('useDeleteArticleModal', () => {
             })
 
             it('should not call onDeletedFn when delete fails', async () => {
-                mockDeleteMutateAsync.mockRejectedValue(
+                mockDeleteArticleMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
 
@@ -337,7 +337,7 @@ describe('useDeleteArticleModal', () => {
 
         describe('finally block', () => {
             it('should dispatch SET_UPDATING false after success', async () => {
-                mockDeleteMutateAsync.mockResolvedValue({})
+                mockDeleteArticleMutateAsync.mockResolvedValue({})
 
                 const { result } = renderHook(() => useDeleteArticleModal())
 
@@ -354,7 +354,7 @@ describe('useDeleteArticleModal', () => {
             })
 
             it('should dispatch SET_UPDATING false after error', async () => {
-                mockDeleteMutateAsync.mockRejectedValue(
+                mockDeleteArticleMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
 
@@ -373,7 +373,7 @@ describe('useDeleteArticleModal', () => {
             })
 
             it('should dispatch CLOSE_MODAL after success', async () => {
-                mockDeleteMutateAsync.mockResolvedValue({})
+                mockDeleteArticleMutateAsync.mockResolvedValue({})
 
                 const { result } = renderHook(() => useDeleteArticleModal())
 
@@ -389,7 +389,7 @@ describe('useDeleteArticleModal', () => {
             })
 
             it('should dispatch CLOSE_MODAL after error', async () => {
-                mockDeleteMutateAsync.mockRejectedValue(
+                mockDeleteArticleMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
 
@@ -407,7 +407,7 @@ describe('useDeleteArticleModal', () => {
             })
 
             it('should call config.onClose after success', async () => {
-                mockDeleteMutateAsync.mockResolvedValue({})
+                mockDeleteArticleMutateAsync.mockResolvedValue({})
 
                 const { result } = renderHook(() => useDeleteArticleModal())
 
@@ -419,7 +419,7 @@ describe('useDeleteArticleModal', () => {
             })
 
             it('should call config.onClose after error', async () => {
-                mockDeleteMutateAsync.mockRejectedValue(
+                mockDeleteArticleMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
 

@@ -1,10 +1,8 @@
 import { useCallback, useRef } from 'react'
 
 import { useNotify } from 'hooks/useNotify'
-import {
-    useDeleteArticleTranslation,
-    useGetHelpCenterArticle,
-} from 'models/helpCenter/queries'
+import { useDeleteArticleTranslation } from 'models/helpCenter/mutations'
+import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
 import type { LocaleCode } from 'models/helpCenter/types'
 import type {
     ActionType as LocaleActionType,
@@ -21,7 +19,7 @@ export const useLocaleManagement = () => {
     const { helpCenter, onDeletedFn } = config
     const { error: notifyError } = useNotify()
 
-    const deleteTranslationMutation = useDeleteArticleTranslation()
+    const deleteTranslationMutation = useDeleteArticleTranslation(helpCenter.id)
 
     const pendingLocaleActionRef = useRef<{
         action: LocaleActionType

@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { useNotify } from 'hooks/useNotify'
-import { useUpdateArticleTranslation } from 'models/helpCenter/queries'
+import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import type { LocaleCode } from 'models/helpCenter/types'
 
 import { useArticleContext } from '../context/ArticleContext'
@@ -12,7 +12,7 @@ jest.mock('hooks/useNotify', () => ({
     useNotify: jest.fn(),
 }))
 
-jest.mock('models/helpCenter/queries', () => ({
+jest.mock('models/helpCenter/mutations', () => ({
     useUpdateArticleTranslation: jest.fn(),
 }))
 

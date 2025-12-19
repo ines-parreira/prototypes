@@ -1,21 +1,14 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useQueryClient } from '@tanstack/react-query'
-
-import type { HttpResponse } from '@gorgias/helpdesk-queries'
-
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import type { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
 import {
-    helpCenterKeys,
     useBulkCopyArticles,
     useCopyArticle,
     useCreateArticle,
     useDeleteArticle,
     useDeleteArticleTranslationDraft,
     useUpdateArticleTranslation,
-} from 'models/helpCenter/queries'
+} from 'models/helpCenter/mutations'
 import type { LocaleCode } from 'models/helpCenter/types'
 import {
     mapGuidanceToArticleApi,
@@ -24,171 +17,39 @@ import {
 import { reportError } from 'utils/errors'
 
 import type { CreateGuidanceArticle, UpdateGuidanceArticle } from '../types'
-import { getGuidanceArticleQueryParams } from './useGuidanceArticles'
 
 export const useGuidanceArticleMutation = ({
     guidanceHelpCenterId,
 }: {
     guidanceHelpCenterId: number
 }) => {
-    const isIncreaseGuidanceCreationLimit = useFlag(
-        FeatureFlagKey.IncreaseGuidanceCreationLimit,
-    )
-    const queryClient = useQueryClient()
-
-    const guidanceArticleKeys = helpCenterKeys.articles(guidanceHelpCenterId)
-    const guidanceArticleWithQueryParamsKeys = helpCenterKeys.articles(
-        guidanceHelpCenterId,
-        getGuidanceArticleQueryParams(isIncreaseGuidanceCreationLimit),
-    )
-
     const {
         mutateAsync: createArticleMutateAsync,
         isLoading: isArticleCreationLoading,
-    } = useCreateArticle({
-        onMutate: async ([, , payload]) => {
-            await queryClient.cancelQueries({
-                queryKey: guidanceArticleKeys,
-            })
-
-            const optimisticArticle = {
-                id: new Date().valueOf(),
-                help_center_id: guidanceHelpCenterId,
-                created_datetime: new Date().toISOString(),
-                updated_datetime: new Date().toISOString(),
-                translation: {
-                    created_datetime: new Date().toISOString(),
-                    updated_datetime: new Date().toISOString(),
-                    ...payload.translation,
-                },
-            }
-
-            queryClient.setQueryData<
-                HttpResponse<
-                    ReturnType<
-                        typeof useGetMultipleHelpCenterArticleLists
-                    >['articles']
-                >
-            >(guidanceArticleWithQueryParamsKeys, (old: any) => {
-                if (!old?.data) return old
-                return {
-                    ...old,
-                    data: [optimisticArticle, ...old.data],
-                }
-            })
-        },
-
-        onSettled: async () => {
-            await queryClient.invalidateQueries({
-                queryKey: guidanceArticleKeys,
-            })
-        },
-    })
+    } = useCreateArticle(guidanceHelpCenterId)
 
     const {
         mutateAsync: deleteArticleMutateAsync,
         isLoading: isGuidanceArticleDeleting,
-    } = useDeleteArticle({
-        onMutate: async ([, pathParams]) => {
-            await queryClient.cancelQueries({
-                queryKey: guidanceArticleKeys,
-            })
-
-            queryClient.setQueryData<
-                HttpResponse<
-                    ReturnType<
-                        typeof useGetMultipleHelpCenterArticleLists
-                    >['articles']
-                >
-            >(guidanceArticleWithQueryParamsKeys, (old: any) => {
-                if (!old?.data) return old
-                return {
-                    ...old,
-                    data: old.data.filter(
-                        (article: any) => article.id !== pathParams.id,
-                    ),
-                }
-            })
-        },
-        onSettled: async () => {
-            await queryClient.invalidateQueries({
-                queryKey: guidanceArticleKeys,
-            })
-        },
-    })
+    } = useDeleteArticle(guidanceHelpCenterId)
 
     const {
         mutateAsync: updateArticleTranslationAsync,
         isLoading: isUpdateArticleTranslationLoading,
-    } = useUpdateArticleTranslation({
-        onMutate: async ([, pathParams, updatedData]) => {
-            await queryClient.cancelQueries({
-                queryKey: guidanceArticleKeys,
-            })
-
-            queryClient.setQueryData<
-                HttpResponse<
-                    ReturnType<
-                        typeof useGetMultipleHelpCenterArticleLists
-                    >['articles']
-                >
-            >(guidanceArticleWithQueryParamsKeys, (old) => {
-                if (!old?.data) return old
-
-                return {
-                    ...old,
-                    data: old.data.map((article) => {
-                        return article.id === pathParams.article_id
-                            ? {
-                                  ...article,
-                                  translation: {
-                                      ...article.translation,
-                                      ...updatedData,
-                                  },
-                              }
-                            : article
-                    }),
-                }
-            })
-        },
-
-        onSettled: async () => {
-            await queryClient.invalidateQueries({
-                queryKey: guidanceArticleKeys,
-            })
-        },
-    })
+    } = useUpdateArticleTranslation(guidanceHelpCenterId)
 
     const { mutateAsync: copyArticleAsync, isLoading: isCopyArticleLoading } =
-        useCopyArticle({
-            onSuccess: async () => {
-                await queryClient.invalidateQueries({
-                    queryKey: helpCenterKeys.articles(guidanceHelpCenterId),
-                })
-            },
-        })
+        useCopyArticle(guidanceHelpCenterId)
 
     const {
         mutateAsync: bulkCopyArticlesAsync,
         isLoading: isBulkCopyArticlesLoading,
-    } = useBulkCopyArticles({
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({
-                queryKey: helpCenterKeys.articles(guidanceHelpCenterId),
-            })
-        },
-    })
+    } = useBulkCopyArticles(guidanceHelpCenterId)
 
     const {
         mutateAsync: deleteArticleTranslationDraftAsync,
         isLoading: isDiscardingDraft,
-    } = useDeleteArticleTranslationDraft({
-        onSettled: async () => {
-            await queryClient.invalidateQueries({
-                queryKey: guidanceArticleKeys,
-            })
-        },
-    })
+    } = useDeleteArticleTranslationDraft(guidanceHelpCenterId)
 
     const createGuidanceArticle = useCallback(
         async (createGuidanceArticle: CreateGuidanceArticle) => {

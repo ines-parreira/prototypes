@@ -94,7 +94,6 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         'latest_draft',
         {
             enabled: isExisting,
-            cacheTime: -1, // we don't clear the cache on mutations so we are forcing the query to go to the server instead.
         },
     )
 

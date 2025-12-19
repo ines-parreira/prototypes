@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 import { useNotify } from 'hooks/useNotify'
-import { useDeleteArticleTranslation } from 'models/helpCenter/queries'
+import { useDeleteArticleTranslation } from 'models/helpCenter/mutations'
 import type { OptionItem as LocaleOption } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect'
 
 import { useArticleContext } from '../context'
@@ -10,7 +10,8 @@ export const useDeleteTranslationModal = () => {
     const { state, dispatch, config } = useArticleContext()
     const { error: notifyError } = useNotify()
 
-    const deleteTranslationMutation = useDeleteArticleTranslation()
+    const { mutateAsync: deleteTranslationMutation } =
+        useDeleteArticleTranslation(config.helpCenter.id)
 
     const activeModal = state.activeModal
     const isOpen =
@@ -27,7 +28,7 @@ export const useDeleteTranslationModal = () => {
 
         dispatch({ type: 'SET_UPDATING', payload: true })
         try {
-            await deleteTranslationMutation.mutateAsync([
+            await deleteTranslationMutation([
                 undefined,
                 {
                     help_center_id: config.helpCenter.id,

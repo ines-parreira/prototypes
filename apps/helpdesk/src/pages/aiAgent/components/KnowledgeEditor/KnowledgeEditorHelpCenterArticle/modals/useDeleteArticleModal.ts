@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 import { useNotify } from 'hooks/useNotify'
-import { useDeleteArticle } from 'models/helpCenter/queries'
+import { useDeleteArticle } from 'models/helpCenter/mutations'
 
 import { useArticleContext } from '../context'
 
@@ -9,14 +9,16 @@ export const useDeleteArticleModal = () => {
     const { state, dispatch, config } = useArticleContext()
     const { error: notifyError } = useNotify()
 
-    const deleteArticleMutation = useDeleteArticle()
+    const { mutateAsync: deleteArticleMutation } = useDeleteArticle(
+        config.helpCenter.id,
+    )
 
     const onDelete = useCallback(async () => {
         if (!state.article?.id) return
 
         dispatch({ type: 'SET_UPDATING', payload: true })
         try {
-            await deleteArticleMutation.mutateAsync([
+            await deleteArticleMutation([
                 undefined,
                 {
                     help_center_id: config.helpCenter.id,

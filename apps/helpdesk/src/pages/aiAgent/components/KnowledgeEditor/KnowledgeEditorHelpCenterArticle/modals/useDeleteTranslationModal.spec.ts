@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { useNotify } from 'hooks/useNotify'
-import { useDeleteArticleTranslation } from 'models/helpCenter/queries'
+import { useDeleteArticleTranslation } from 'models/helpCenter/mutations'
 import type { LocaleCode } from 'models/helpCenter/types'
 import type { OptionItem as LocaleOption } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect'
 
@@ -13,7 +13,7 @@ jest.mock('hooks/useNotify', () => ({
     useNotify: jest.fn(),
 }))
 
-jest.mock('models/helpCenter/queries', () => ({
+jest.mock('models/helpCenter/mutations', () => ({
     useDeleteArticleTranslation: jest.fn(),
 }))
 
@@ -28,7 +28,7 @@ const mockUseArticleContext = useArticleContext as jest.Mock
 describe('useDeleteTranslationModal', () => {
     let mockDispatch: jest.Mock
     let mockNotifyError: jest.Mock
-    let mockDeleteMutateAsync: jest.Mock
+    let mockDeleteTranslationMutateAsync: jest.Mock
     let mockOnClose: jest.Mock
     let mockOnDeletedFn: jest.Mock
 
@@ -126,7 +126,7 @@ describe('useDeleteTranslationModal', () => {
 
         mockDispatch = jest.fn()
         mockNotifyError = jest.fn()
-        mockDeleteMutateAsync = jest.fn()
+        mockDeleteTranslationMutateAsync = jest.fn()
         mockOnClose = jest.fn()
         mockOnDeletedFn = jest.fn()
 
@@ -135,7 +135,7 @@ describe('useDeleteTranslationModal', () => {
             success: jest.fn(),
         })
         mockUseDeleteArticleTranslation.mockReturnValue({
-            mutateAsync: mockDeleteMutateAsync,
+            mutateAsync: mockDeleteTranslationMutateAsync,
         })
         mockUseArticleContext.mockReturnValue(createMockContext())
     })
@@ -308,7 +308,7 @@ describe('useDeleteTranslationModal', () => {
             })
 
             expect(mockDispatch).not.toHaveBeenCalled()
-            expect(mockDeleteMutateAsync).not.toHaveBeenCalled()
+            expect(mockDeleteTranslationMutateAsync).not.toHaveBeenCalled()
         })
 
         it('should not do anything when locale is missing', async () => {
@@ -325,7 +325,7 @@ describe('useDeleteTranslationModal', () => {
             })
 
             expect(mockDispatch).not.toHaveBeenCalled()
-            expect(mockDeleteMutateAsync).not.toHaveBeenCalled()
+            expect(mockDeleteTranslationMutateAsync).not.toHaveBeenCalled()
         })
 
         it('should dispatch SET_UPDATING true at start', async () => {
@@ -333,7 +333,7 @@ describe('useDeleteTranslationModal', () => {
                 type: 'delete-translation',
                 locale: mockLocaleOption,
             }
-            mockDeleteMutateAsync.mockResolvedValue({})
+            mockDeleteTranslationMutateAsync.mockResolvedValue({})
             mockUseArticleContext.mockReturnValue(
                 createMockContext({
                     state: { activeModal: deleteTranslationModal },
@@ -357,7 +357,7 @@ describe('useDeleteTranslationModal', () => {
                 type: 'delete-translation',
                 locale: mockLocaleOption,
             }
-            mockDeleteMutateAsync.mockResolvedValue({})
+            mockDeleteTranslationMutateAsync.mockResolvedValue({})
             mockUseArticleContext.mockReturnValue(
                 createMockContext({
                     state: { activeModal: deleteTranslationModal },
@@ -370,7 +370,7 @@ describe('useDeleteTranslationModal', () => {
                 await result.current.onDelete()
             })
 
-            expect(mockDeleteMutateAsync).toHaveBeenCalledWith([
+            expect(mockDeleteTranslationMutateAsync).toHaveBeenCalledWith([
                 undefined,
                 {
                     help_center_id: 1,
@@ -386,7 +386,7 @@ describe('useDeleteTranslationModal', () => {
                     type: 'delete-translation',
                     locale: mockLocaleOption,
                 }
-                mockDeleteMutateAsync.mockResolvedValue({})
+                mockDeleteTranslationMutateAsync.mockResolvedValue({})
                 mockUseArticleContext.mockReturnValue(
                     createMockContext({
                         state: { activeModal: deleteTranslationModal },
@@ -407,7 +407,7 @@ describe('useDeleteTranslationModal', () => {
                     type: 'delete-translation',
                     locale: mockLocaleOption,
                 }
-                mockDeleteMutateAsync.mockResolvedValue({})
+                mockDeleteTranslationMutateAsync.mockResolvedValue({})
                 mockUseArticleContext.mockReturnValue(
                     createMockContext({
                         state: { activeModal: deleteTranslationModal },
@@ -429,7 +429,7 @@ describe('useDeleteTranslationModal', () => {
                     type: 'delete-translation',
                     locale: mockLocaleOption,
                 }
-                mockDeleteMutateAsync.mockResolvedValue({})
+                mockDeleteTranslationMutateAsync.mockResolvedValue({})
                 mockUseArticleContext.mockReturnValue(
                     createMockContext({
                         state: { activeModal: deleteTranslationModal },
@@ -452,7 +452,7 @@ describe('useDeleteTranslationModal', () => {
                     type: 'delete-translation',
                     locale: mockLocaleOption,
                 }
-                mockDeleteMutateAsync.mockRejectedValue(
+                mockDeleteTranslationMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
                 mockUseArticleContext.mockReturnValue(
@@ -477,7 +477,7 @@ describe('useDeleteTranslationModal', () => {
                     type: 'delete-translation',
                     locale: mockLocaleOption,
                 }
-                mockDeleteMutateAsync.mockRejectedValue(
+                mockDeleteTranslationMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
                 mockUseArticleContext.mockReturnValue(
@@ -503,7 +503,7 @@ describe('useDeleteTranslationModal', () => {
                     type: 'delete-translation',
                     locale: mockLocaleOption,
                 }
-                mockDeleteMutateAsync.mockResolvedValue({})
+                mockDeleteTranslationMutateAsync.mockResolvedValue({})
                 mockUseArticleContext.mockReturnValue(
                     createMockContext({
                         state: { activeModal: deleteTranslationModal },
@@ -529,7 +529,7 @@ describe('useDeleteTranslationModal', () => {
                     type: 'delete-translation',
                     locale: mockLocaleOption,
                 }
-                mockDeleteMutateAsync.mockRejectedValue(
+                mockDeleteTranslationMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
                 mockUseArticleContext.mockReturnValue(
@@ -557,7 +557,7 @@ describe('useDeleteTranslationModal', () => {
                     type: 'delete-translation',
                     locale: mockLocaleOption,
                 }
-                mockDeleteMutateAsync.mockResolvedValue({})
+                mockDeleteTranslationMutateAsync.mockResolvedValue({})
                 mockUseArticleContext.mockReturnValue(
                     createMockContext({
                         state: { activeModal: deleteTranslationModal },
@@ -582,7 +582,7 @@ describe('useDeleteTranslationModal', () => {
                     type: 'delete-translation',
                     locale: mockLocaleOption,
                 }
-                mockDeleteMutateAsync.mockRejectedValue(
+                mockDeleteTranslationMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
                 mockUseArticleContext.mockReturnValue(

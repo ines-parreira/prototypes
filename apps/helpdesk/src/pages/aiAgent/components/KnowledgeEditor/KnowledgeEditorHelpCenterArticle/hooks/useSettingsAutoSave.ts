@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { useDebouncedEffect } from '@repo/hooks'
 
 import { useNotify } from 'hooks/useNotify'
-import { useUpdateArticleTranslation } from 'models/helpCenter/queries'
+import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import type {
     Locale,
     LocaleCode,
@@ -55,7 +55,8 @@ export const useSettingsAutoSave = () => {
     const { error: notifyError } = useNotify()
     const [isSettingsAutoSaving, setIsSettingsAutoSaving] = useState(false)
 
-    const updateTranslationMutation = useUpdateArticleTranslation()
+    const { mutateAsync: updateTranslationMutation } =
+        useUpdateArticleTranslation(helpCenter.id)
 
     const categoryTitlesById = useMemo(
         () => getCategoryTitlesById(categories),
@@ -214,7 +215,7 @@ export const useSettingsAutoSave = () => {
             }
 
             try {
-                const response = await updateTranslationMutation.mutateAsync([
+                const response = await updateTranslationMutation([
                     undefined,
                     {
                         help_center_id: helpCenter.id,

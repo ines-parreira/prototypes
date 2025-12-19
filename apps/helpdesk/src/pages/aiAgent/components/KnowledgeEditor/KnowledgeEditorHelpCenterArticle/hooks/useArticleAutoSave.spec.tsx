@@ -6,7 +6,7 @@ import {
     useCreateArticle,
     useCreateArticleTranslation,
     useUpdateArticleTranslation,
-} from 'models/helpCenter/queries'
+} from 'models/helpCenter/mutations'
 import type { ArticleWithLocalTranslation } from 'models/helpCenter/types'
 import { slugify } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 
@@ -19,7 +19,7 @@ jest.mock('@repo/hooks', () => ({
 }))
 
 jest.mock('hooks/useNotify')
-jest.mock('models/helpCenter/queries')
+jest.mock('models/helpCenter/mutations')
 jest.mock('../context/ArticleContext')
 jest.mock('pages/settings/helpCenter/utils/helpCenter.utils')
 

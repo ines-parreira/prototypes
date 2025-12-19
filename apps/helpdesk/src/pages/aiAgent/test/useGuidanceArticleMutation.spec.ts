@@ -8,31 +8,22 @@ import {
     useDeleteArticle,
     useDeleteArticleTranslationDraft,
     useUpdateArticleTranslation,
-} from 'models/helpCenter/queries'
+} from 'models/helpCenter/mutations'
 import { reportError } from 'utils/errors'
 
 import { useGuidanceArticleMutation } from '../hooks/useGuidanceArticleMutation'
 
-jest.mock('models/helpCenter/queries', () => ({
+jest.mock('models/helpCenter/mutations', () => ({
     useCreateArticle: jest.fn(),
     useDeleteArticle: jest.fn(),
     useDeleteArticleTranslationDraft: jest.fn(),
     useUpdateArticleTranslation: jest.fn(),
     useCopyArticle: jest.fn(),
     useBulkCopyArticles: jest.fn(),
-    helpCenterKeys: {
-        articles: jest.fn(() => ['articles']),
-    },
 }))
 
 jest.mock('utils/errors', () => ({
     reportError: jest.fn(),
-}))
-
-jest.mock('@tanstack/react-query', () => ({
-    useQueryClient: () => ({
-        invalidateQueries: jest.fn(),
-    }),
 }))
 
 const mockedUseCreateArticle = jest.mocked(useCreateArticle)
