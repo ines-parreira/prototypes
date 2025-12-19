@@ -127,6 +127,7 @@ describe('firstResponseTimeScope', () => {
                         granularity: 'day',
                     },
                 ],
+                limit: 10_000,
             }
 
             expect(actual).toEqual(expected)
@@ -164,6 +165,7 @@ describe('firstResponseTimeScope', () => {
                         granularity: 'day',
                     },
                 ],
+                limit: 10_000,
             }
 
             expect(actual).toEqual(expected)

@@ -32,7 +32,7 @@ const ticketHandleTimeScope = defineScope({
         'customFields',
         'tags',
     ],
-    order: ['ticketId', 'handleTime'],
+    order: ['ticketId', 'handleTime', 'averageHandleTime'],
 })
 
 export const ticketAverageHandleTime = ticketHandleTimeScope
@@ -55,7 +55,7 @@ export const ticketAverageHandleTimePerAgent = ticketHandleTimeScope
         if (ctx.sortDirection) {
             return {
                 ...query,
-                order: [['handleTime', ctx.sortDirection]] as const,
+                order: [['averageHandleTime', ctx.sortDirection]] as const,
             }
         }
         return query

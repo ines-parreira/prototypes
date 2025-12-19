@@ -75,6 +75,7 @@ export const medianFirstResponseTimePerAgent = firstResponseTimeScope
         const query = {
             measures: ['medianFirstResponseTime'] as const,
             dimensions: ['agentId'] as const,
+            limit: 10_000,
         }
 
         if (ctx.sortDirection) {

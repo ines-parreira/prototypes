@@ -64,6 +64,7 @@ export const closedTicketsPerAgent = ticketsClosedScope
         const query = {
             measures: ['ticketCount'] as const,
             dimensions: ['agentId'] as const,
+            limit: 10_000,
         }
 
         if (ctx.sortDirection) {
