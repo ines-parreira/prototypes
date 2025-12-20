@@ -1,21 +1,19 @@
 import { TrendCard } from '@repo/reporting'
 
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import { useAiAgentSupportInteractionsMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportInteractionsMetric'
+import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 
 export const AnalyticsAiAgentSupportInteractionsCard = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const trend = {
-        isFetching: false,
-        isError: false,
-        data: {
-            label: 'Support interactions',
-            value: 3900,
-            prevValue: 3830,
-        },
-    }
+    const { cleanStatsFilters } = useStatsFilters()
+    const trendTooltipData = formatPreviousPeriod(cleanStatsFilters?.period)
+
+    const trend = useAiAgentSupportInteractionsMetric()
 
     return (
         <TrendCard
@@ -24,6 +22,8 @@ export const AnalyticsAiAgentSupportInteractionsCard = ({
             interpretAs="more-is-better"
             withBorder
             withFixedWidth={false}
+            isLoading={trend.isFetching}
+            trendBadgeTooltipData={{ period: trendTooltipData }}
             hint={{
                 title: 'Support tickets',
                 caption:

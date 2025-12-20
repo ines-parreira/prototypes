@@ -1,5 +1,11 @@
 import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { AIAgentAutomatedInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
+import {
+    AIAgentInteractionsBySkillDatasetDimension,
+    AIAgentInteractionsBySkillMeasure,
+    AIAgentSkills,
+} from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import type { AutomationDatasetCube } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import {
     AutomationDatasetFilterMember,
@@ -11,6 +17,7 @@ import {
     BillableTicketDatasetMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import {
+    aiAgentInteractionsBySkillDefaultFilters,
     automationDatasetAdditionalFilters,
     automationDatasetDefaultFilters,
     billableTicketDatasetDefaultFilters,
@@ -54,6 +61,24 @@ export const aiAgentAutomatedInteractionsQueryFactory = (
             member: AutomationDatasetFilterMember.EventType,
             operator: ReportingFilterOperator.Equals,
             values: [AutomateEventType.AI_AGENT_TICKET_RESOLVED],
+        },
+    ],
+})
+
+export const aiAgentSupportInteractionsQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AIAgentAutomatedInteractionsCube> => ({
+    metricName: METRIC_NAMES.AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL,
+    measures: [AIAgentInteractionsBySkillMeasure.Count],
+    dimensions: [AIAgentInteractionsBySkillDatasetDimension.BillableType],
+    timezone,
+    filters: [
+        ...aiAgentInteractionsBySkillDefaultFilters(filters),
+        {
+            member: AIAgentInteractionsBySkillDatasetDimension.BillableType,
+            operator: ReportingFilterOperator.Equals,
+            values: [AIAgentSkills.AIAgentSupport],
         },
     ],
 })

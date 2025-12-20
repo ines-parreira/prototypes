@@ -1,12 +1,18 @@
 import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
+    AIAgentInteractionsBySkillDatasetDimension,
+    AIAgentInteractionsBySkillMeasure,
+    AIAgentSkills,
+} from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
+import {
     AutomationDatasetFilterMember,
     AutomationDatasetMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { BillableTicketDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import {
     aiAgentAutomatedInteractionsQueryFactory,
+    aiAgentSupportInteractionsQueryFactory,
     articleRecommendationAutomatedInteractionsQueryFactory,
     automationDatasetQueryFactory,
     billableTicketDatasetExcludingAIAgentQueryFactory,
@@ -375,6 +381,41 @@ describe('Automate metrics', () => {
                     },
                 ],
                 measures: [AutomationDatasetMeasure.AutomatedInteractions],
+                timezone: 'UTC',
+            })
+        })
+    })
+
+    describe('aiAgentSupportInteractionsQueryFactory', () => {
+        it('creates a query for AI agent support interactions', () => {
+            const result = aiAgentSupportInteractionsQueryFactory(
+                filters,
+                timezone,
+            )
+            expect(result).toEqual({
+                metricName:
+                    METRIC_NAMES.AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL,
+                dimensions: [
+                    AIAgentInteractionsBySkillDatasetDimension.BillableType,
+                ],
+                filters: [
+                    {
+                        member: 'AIAgentAutomatedInteractions.periodStart',
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: ['2021-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'AIAgentAutomatedInteractions.periodEnd',
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: ['2021-01-02T00:00:00.000'],
+                    },
+                    {
+                        member: AIAgentInteractionsBySkillDatasetDimension.BillableType,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [AIAgentSkills.AIAgentSupport],
+                    },
+                ],
+                measures: [AIAgentInteractionsBySkillMeasure.Count],
                 timezone: 'UTC',
             })
         })

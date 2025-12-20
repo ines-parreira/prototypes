@@ -1,27 +1,167 @@
-import { render, screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+
+import { useAiAgentSupportInteractionsTrend } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTrend'
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { AnalyticsAiAgentSupportInteractionsCard } from './AnalyticsAiAgentSupportInteractionsCard'
 
-describe('AnalyticsAiAgentSupportInteractionsCard', () => {
-    it('should render the card title', () => {
-        render(<AnalyticsAiAgentSupportInteractionsCard />)
+jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+const mockUseStatsFilters = jest.mocked(useStatsFilters)
 
-        expect(screen.getByText('Support interactions')).toBeInTheDocument()
+jest.mock('domains/reporting/hooks/automate/useAiAgentSupportInteractionsTrend')
+const mockUseAiAgentSupportInteractionsTrend = jest.mocked(
+    useAiAgentSupportInteractionsTrend,
+)
+
+describe('AnalyticsAiAgentSupportInteractionsCard', () => {
+    const mockFilters: StatsFilters = {
+        period: {
+            start_datetime: '2024-06-25T00:00:00.000Z',
+            end_datetime: '2024-07-01T23:59:59.999Z',
+        },
+    }
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: mockFilters,
+            granularity: 'day',
+            userTimezone: 'UTC',
+        } as any)
+
+        mockUseAiAgentSupportInteractionsTrend.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: 3900,
+                prevValue: 3600,
+            },
+        })
     })
 
-    it('should format and display decimal value correctly', () => {
-        render(<AnalyticsAiAgentSupportInteractionsCard />)
+    it('should render loading state initially', () => {
+        mockUseAiAgentSupportInteractionsTrend.mockReturnValue({
+            isFetching: true,
+            isError: false,
+            data: {
+                value: 0,
+                prevValue: 0,
+            },
+        })
 
-        expect(screen.getByText('3,900')).toBeInTheDocument()
+        renderWithQueryClientProvider(
+            <AnalyticsAiAgentSupportInteractionsCard />,
+        )
+
+        expect(screen.getAllByLabelText('Loading')).toHaveLength(2)
+    })
+
+    it('should render the card with formatted number', async () => {
+        renderWithQueryClientProvider(
+            <AnalyticsAiAgentSupportInteractionsCard />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(screen.getByText('3,900')).toBeInTheDocument()
+        })
+    })
+
+    it('should format tooltip period correctly', async () => {
+        renderWithQueryClientProvider(
+            <AnalyticsAiAgentSupportInteractionsCard />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryAllByLabelText('Loading')).toHaveLength(0)
+        })
+
+        expect(mockUseStatsFilters).toHaveBeenCalled()
     })
 
     it('should render hint tooltip icon', () => {
-        render(<AnalyticsAiAgentSupportInteractionsCard />)
+        renderWithQueryClientProvider(
+            <AnalyticsAiAgentSupportInteractionsCard />,
+        )
 
         const infoIcon = screen.getByRole('img', {
             hidden: true,
             name: 'info',
         })
         expect(infoIcon).toBeInTheDocument()
+    })
+
+    it('should render without action menu when chartId is not provided', async () => {
+        renderWithQueryClientProvider(
+            <AnalyticsAiAgentSupportInteractionsCard />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(screen.getByText('3,900')).toBeInTheDocument()
+        })
+    })
+
+    it('should handle different period for tooltip', async () => {
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                ...mockFilters,
+                period: {
+                    start_datetime: '2024-01-01T00:00:00.000Z',
+                    end_datetime: '2024-01-01T23:59:59.999Z',
+                },
+            },
+            granularity: 'day',
+            userTimezone: 'UTC',
+        } as any)
+
+        renderWithQueryClientProvider(
+            <AnalyticsAiAgentSupportInteractionsCard />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+        })
+    })
+
+    it('should render with chartId and dashboard props', async () => {
+        renderWithQueryClientProvider(
+            <AnalyticsAiAgentSupportInteractionsCard
+                chartId="test-chart-id"
+                dashboard={{
+                    id: 1,
+                    name: 'Test Dashboard',
+                    analytics_filter_id: 1,
+                    children: [],
+                    emoji: '🚀',
+                }}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(screen.getByText('3,900')).toBeInTheDocument()
+        })
+    })
+
+    it('should display trend badge with previous value', async () => {
+        const { container } = renderWithQueryClientProvider(
+            <AnalyticsAiAgentSupportInteractionsCard />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(screen.getByText('3,900')).toBeInTheDocument()
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText('300')).toBeInTheDocument()
+        })
+
+        const trendingIcon = container.querySelector('[aria-label*="trending"]')
+        expect(trendingIcon).toBeInTheDocument()
     })
 })
