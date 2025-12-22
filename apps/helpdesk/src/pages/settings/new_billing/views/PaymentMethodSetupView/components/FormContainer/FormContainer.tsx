@@ -22,7 +22,7 @@ import {
 } from 'pages/settings/new_billing/constants'
 import { useStripeElementPaymentState } from 'pages/settings/new_billing/hooks/useStripeElementPaymentState'
 import { filterTaxIdsByAddress } from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
-import { getIsMissingBillingtInformation } from 'pages/settings/new_billing/utils/getIsMissingBillingtInformation'
+import { getIsMissingBillingInformation } from 'pages/settings/new_billing/utils/getIsMissingBillingInformation'
 import { StripePaymentFields } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentFields/StripePaymentFields'
 import type { ISubscriptionSummaryProps } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary'
 import { SubscriptionSummary } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary'
@@ -64,7 +64,7 @@ export const FormContainer: React.FC<
     ) as Maybe<StripePaymentMethodType>
 
     const shouldDisplayBillingInformationFields =
-        getIsMissingBillingtInformation(billingInformation)
+        getIsMissingBillingInformation(billingInformation)
 
     const defaultValues = useDefaultValues(
         billingInformation,
