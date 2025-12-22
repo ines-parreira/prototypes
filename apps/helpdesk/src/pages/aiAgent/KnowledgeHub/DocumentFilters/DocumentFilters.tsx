@@ -23,9 +23,17 @@ export const DocumentFilters = ({
     selectedFilter,
     onFilterChange,
 }: DocumentFiltersProps) => {
+    const knowledgeTypeOrder = [
+        KnowledgeType.Guidance,
+        KnowledgeType.FAQ,
+        KnowledgeType.Domain,
+        KnowledgeType.URL,
+        KnowledgeType.Document,
+    ]
+
     const filters = [
         { type: null, label: 'All content', icon: null },
-        ...Object.values(KnowledgeType).map((type) => ({
+        ...knowledgeTypeOrder.map((type) => ({
             type,
             label: typeConfig[type].label,
             icon: typeConfig[type].icon,
