@@ -86,7 +86,6 @@ const store = mockStore({
                     {
                         name: 'Basic',
                         plan_id: 'basic',
-                        price_id: 'basic_price',
                         custom: false,
                     },
                 ],
@@ -273,7 +272,7 @@ describe('<EmailIntegrationOnboarding />', () => {
                 currentAccount: fromJS({
                     current_subscription: {
                         products: {
-                            [HELPDESK_PRODUCT_ID]: plan.price_id,
+                            [HELPDESK_PRODUCT_ID]: plan.plan_id,
                         },
                     },
                 }),

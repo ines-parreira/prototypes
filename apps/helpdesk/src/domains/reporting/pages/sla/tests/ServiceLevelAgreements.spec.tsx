@@ -82,7 +82,7 @@ const createInitialState = (hasAutomate: boolean) =>
                     prices: hasAutomate
                         ? [
                               {
-                                  price_id: 'price_1',
+                                  plan_id: 'plan_1',
                               },
                           ]
                         : [],
@@ -96,7 +96,7 @@ const createInitialState = (hasAutomate: boolean) =>
                 status: 'trialing',
                 start_datetime: '2017-08-23T01:38:53+00:00',
                 products: {
-                    1: 'price_1',
+                    1: 'plan_1',
                 },
                 scheduled_to_cancel_at: null,
             },

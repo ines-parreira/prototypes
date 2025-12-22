@@ -47,11 +47,6 @@ export type PlanForProductType<T extends ProductType> =
 // A PlanId is billing-provider agnostic.
 export type PlanId = string
 
-// A Stripe price ID always starts with 'price_'.
-export type PriceId = string
-// A Stripe product ID always starts with 'prod_'.
-export type ProductId = string
-
 export type Plan = HelpdeskPlan | AutomatePlan | SMSOrVoicePlan | ConvertPlan
 
 export type Product<T extends ProductType = ProductType> = {
@@ -70,7 +65,6 @@ type BasePlan = {
     plan_id: PlanId
     cadence: Cadence
     name: string
-    price_id: string
     public: boolean
     // Set as optional to prevent breaking changes
     generation?: number

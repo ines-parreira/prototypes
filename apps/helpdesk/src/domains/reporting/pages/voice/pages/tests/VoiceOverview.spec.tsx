@@ -140,9 +140,9 @@ describe('VoiceOverview', () => {
                     products: {
                         ...account.current_subscription.products,
                         [AUTOMATION_PRODUCT_ID]:
-                            basicYearlyAutomationPlan.price_id,
+                            basicYearlyAutomationPlan.plan_id,
                         ...(featureEnabled && {
-                            [VOICE_PRODUCT_ID]: voicePlan1.price_id,
+                            [VOICE_PRODUCT_ID]: voicePlan1.plan_id,
                         }),
                     },
                 },

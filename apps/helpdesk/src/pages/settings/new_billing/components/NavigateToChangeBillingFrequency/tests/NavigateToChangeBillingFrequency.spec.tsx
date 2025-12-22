@@ -64,7 +64,7 @@ describe('NavigateToChangeBillingFrequency', () => {
                         ...account.current_subscription,
                         products: {
                             ...account.current_subscription.products,
-                            [HELPDESK_PRODUCT_ID]: starterHelpdeskPlan.price_id,
+                            [HELPDESK_PRODUCT_ID]: starterHelpdeskPlan.plan_id,
                         },
                     },
                 }),
@@ -96,8 +96,7 @@ describe('NavigateToChangeBillingFrequency', () => {
                         ...account.current_subscription,
                         products: {
                             ...account.current_subscription.products,
-                            [AUTOMATION_PRODUCT_ID]:
-                                legacyAutomatePlan.price_id,
+                            [AUTOMATION_PRODUCT_ID]: legacyAutomatePlan.plan_id,
                         },
                     },
                 }),
@@ -203,7 +202,7 @@ describe('NavigateToChangeBillingFrequency', () => {
                             products: {
                                 ...account.current_subscription.products,
                                 [HELPDESK_PRODUCT_ID]:
-                                    basicYearlyHelpdeskPlan.price_id,
+                                    basicYearlyHelpdeskPlan.plan_id,
                             },
                         },
                     }),

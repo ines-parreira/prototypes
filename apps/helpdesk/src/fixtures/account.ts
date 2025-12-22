@@ -20,7 +20,7 @@ export const account: Account = {
         status: SubscriptionStatus.TRIALING,
         start_datetime: '2017-08-23T01:38:53+00:00',
         products: {
-            [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+            [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
         },
         scheduled_to_cancel_at: null,
     },
@@ -84,6 +84,6 @@ export const account: Account = {
 }
 
 export const automationSubscriptionProductPrices = {
-    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
-    [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPlan.price_id,
+    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+    [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPlan.plan_id,
 }

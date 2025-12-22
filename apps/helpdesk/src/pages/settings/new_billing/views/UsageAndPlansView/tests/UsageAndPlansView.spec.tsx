@@ -119,8 +119,8 @@ const mockedAccount = {
     current_subscription: {
         ...account.current_subscription,
         products: {
-            [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
-            [CONVERT_PRODUCT_ID]: convertPlan1.price_id,
+            [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+            [CONVERT_PRODUCT_ID]: convertPlan1.plan_id,
         },
         status: 'active',
     },
@@ -400,9 +400,8 @@ describe('UsageAndPlansView', () => {
                 current_subscription: {
                     ...mockedAccount.current_subscription,
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
-                        [SMS_PRODUCT_ID]: smsPlan1.price_id,
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                        [SMS_PRODUCT_ID]: smsPlan1.plan_id,
                     },
                 },
             }),
@@ -515,7 +514,7 @@ describe('UsageAndPlansView', () => {
                 current_subscription: {
                     ...mockedAccount.current_subscription,
                     products: {
-                        [HELPDESK_PRODUCT_ID]: starterHelpdeskPlan.price_id,
+                        [HELPDESK_PRODUCT_ID]: starterHelpdeskPlan.plan_id,
                     },
                 },
             }),
@@ -600,7 +599,7 @@ describe('UsageAndPlansView', () => {
                     ...mockedAccount.current_subscription,
                     status: 'trialing',
                     products: {
-                        [HELPDESK_PRODUCT_ID]: plan.price_id,
+                        [HELPDESK_PRODUCT_ID]: plan.plan_id,
                     },
                 },
             }),
@@ -660,9 +659,9 @@ describe('UsageAndPlansView', () => {
                         ...mockedAccount.current_subscription,
                         status: 'trialing',
                         products: {
-                            [HELPDESK_PRODUCT_ID]: helpdeskPlan.price_id,
-                            [SMS_PRODUCT_ID]: smsPlan.price_id,
-                            [VOICE_PRODUCT_ID]: voicePlan.price_id,
+                            [HELPDESK_PRODUCT_ID]: helpdeskPlan.plan_id,
+                            [SMS_PRODUCT_ID]: smsPlan.plan_id,
+                            [VOICE_PRODUCT_ID]: voicePlan.plan_id,
                         },
                     },
                 }),
@@ -704,8 +703,7 @@ describe('UsageAndPlansView', () => {
                     ...mockedAccount.current_subscription,
                     status: 'trialing',
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                     },
                 },
             }),
@@ -826,10 +824,9 @@ describe('UsageAndPlansView', () => {
                 current_subscription: {
                     ...mockedAccount.current_subscription,
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                         [AUTOMATION_PRODUCT_ID]:
-                            basicMonthlyAutomationPlan.price_id,
+                            basicMonthlyAutomationPlan.plan_id,
                     },
                 },
             }),

@@ -29,7 +29,7 @@ export const getStateWithHelpdeskPlan = (
             current_subscription: {
                 ...account.current_subscription,
                 products: {
-                    [HELPDESK_PRODUCT_ID]: helpdeskPlan.price_id,
+                    [HELPDESK_PRODUCT_ID]: helpdeskPlan.plan_id,
                 },
             },
         }),

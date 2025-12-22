@@ -42,8 +42,8 @@ describe('SavedFiltersPanel', () => {
             ...account,
             current_subscription: {
                 products: {
-                    [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.price_id,
-                    [AUTOMATION_PRODUCT_ID]: basicYearlyAutomationPlan.price_id,
+                    [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.plan_id,
+                    [AUTOMATION_PRODUCT_ID]: basicYearlyAutomationPlan.plan_id,
                 },
                 status: 'active',
             },

@@ -66,7 +66,7 @@ describe('SummaryItem', () => {
         ).toBeInTheDocument()
     })
 
-    it('does not display old plan when product.price_id matches selected plan', () => {
+    it('does not display old plan when plan.plan_id matches selected plan', () => {
         render(
             <SummaryItem {...props} currentPlan={basicMonthlyHelpdeskPlan} />,
         )

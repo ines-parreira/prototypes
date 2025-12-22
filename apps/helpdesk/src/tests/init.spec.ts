@@ -30,7 +30,6 @@ jest.mock('common/store', () => {
                             prices: [
                                 {
                                     plan_id: 'automate-USD5',
-                                    price_id: 'price_automate_USD5',
                                     amount: 100,
                                     num_quota_tickets: 1000,
                                 },

@@ -9,9 +9,7 @@ import type {
     HelpdeskPlan,
     Plan,
     PlanId,
-    PriceId,
     Product,
-    ProductId,
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
@@ -201,63 +199,6 @@ export const getCurrentPlansByProduct = createSelector(
             }
         })
 
-        // if object is empty, go with the non-agnostic legacy way
-        // i.e. with Stripe implementation details : <ProductId, PriceId>
-        if (!_isEmpty(currentPlansByProduct)) {
-            return currentPlansByProduct
-        }
-
-        const currentPlansPriceIdByProduct: Record<ProductId, PriceId> = (
-            (currentSubscription.get('products') || fromJS({})) as Map<any, any>
-        ).toJS()
-
-        Object.values(currentPlansPriceIdByProduct).forEach((priceId) => {
-            const helpdeskPlan = helpdeskAvailablePlans.find(
-                (plan) => plan.price_id === priceId,
-            )
-
-            if (!!helpdeskPlan) {
-                currentPlansByProduct[ProductType.Helpdesk] = helpdeskPlan
-                return
-            }
-
-            const autPlan = automateAvailablePlans.find(
-                (plan) => plan.price_id === priceId,
-            )
-
-            if (!!autPlan) {
-                currentPlansByProduct[ProductType.Automation] = autPlan
-                return
-            }
-
-            const voicePlan = voiceAvailablePlans.find(
-                (plan) => plan.price_id === priceId,
-            )
-
-            if (!!voicePlan) {
-                currentPlansByProduct[ProductType.Voice] = voicePlan
-                return
-            }
-
-            const smsPlan = smsAvailablePlans.find(
-                (plan) => plan.price_id === priceId,
-            )
-
-            if (!!smsPlan) {
-                currentPlansByProduct[ProductType.SMS] = smsPlan
-                return
-            }
-
-            const convertPlan = convertAvailablePlans.find(
-                (plan) => plan.price_id === priceId,
-            )
-
-            if (!!convertPlan) {
-                currentPlansByProduct[ProductType.Convert] = convertPlan
-                return
-            }
-        })
-
         return !_isEmpty(currentPlansByProduct)
             ? currentPlansByProduct
             : undefined
@@ -355,17 +296,6 @@ export const getAvailablePlansMap = createSelector(
         products.reduce<Record<PlanId, Plan>>((acc, product) => {
             product.prices.map((plan) => {
                 acc[plan.plan_id] = plan
-            })
-            return acc
-        }, {}),
-)
-
-export const getAvailablePricesMap = createSelector(
-    getAvailablePlansByProduct,
-    (products) =>
-        products.reduce<Record<PriceId, Plan>>((acc, product) => {
-            product.prices.map((plan) => {
-                acc[plan.price_id] = plan
             })
             return acc
         }, {}),

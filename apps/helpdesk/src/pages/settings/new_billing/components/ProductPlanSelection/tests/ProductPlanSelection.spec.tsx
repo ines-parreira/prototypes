@@ -36,9 +36,9 @@ const store = mockStore({
     currentAccount: fromJS({
         current_subscription: {
             products: {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
-                [SMS_PRODUCT_ID]: smsPlan1.price_id,
-                [VOICE_PRODUCT_ID]: voicePlan1.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                [SMS_PRODUCT_ID]: smsPlan1.plan_id,
+                [VOICE_PRODUCT_ID]: voicePlan1.plan_id,
             },
         },
     }),
@@ -124,13 +124,13 @@ describe('ProductPlanSelection', () => {
         basicMonthlyHelpdeskPlan,
         {
             ...basicMonthlyHelpdeskPlan,
-            price_id: 'price_123',
+            plan_id: 'plan_123',
             name: 'Product 1',
             num_quota_tickets: 100,
         },
         {
             ...basicMonthlyHelpdeskPlan,
-            price_id: 'price_456',
+            plan_id: 'plan_456',
             name: 'Product 2',
             num_quota_tickets: 200,
         },
@@ -429,7 +429,7 @@ describe('ProductPlanSelection', () => {
     it('should filter out automate plans of different generation', () => {
         const gen5AutomatePlan = {
             ...basicMonthlyAutomationPlan,
-            price_id: 'price_automate_456',
+            plan_id: 'plan_automate_456',
             name: 'Product automate 2',
             num_quota_tickets: 333,
             generation: 5,
@@ -437,7 +437,7 @@ describe('ProductPlanSelection', () => {
         const automateAvailablePlans = [
             {
                 ...basicMonthlyAutomationPlan,
-                price_id: 'price_automate_123',
+                plan_id: 'plan_automate_123',
                 name: 'Product automate 1',
                 num_quota_tickets: 111,
                 generation: 6,
@@ -472,14 +472,14 @@ describe('ProductPlanSelection', () => {
         const automateAvailablePlans = [
             {
                 ...basicMonthlyAutomationPlan,
-                price_id: 'price_automate_456',
+                plan_id: 'plan_automate_456',
                 name: 'Product automate 2',
                 num_quota_tickets: 333,
                 generation: 5,
             },
             {
                 ...basicMonthlyAutomationPlan,
-                price_id: 'price_automate_123',
+                plan_id: 'plan_automate_123',
                 name: 'Product automate 1',
                 num_quota_tickets: 111,
                 generation: 6,
@@ -899,7 +899,7 @@ describe('ProductPlanSelection', () => {
                         current_subscription: {
                             products: {
                                 [HELPDESK_PRODUCT_ID]:
-                                    basicMonthlyHelpdeskPlan.price_id,
+                                    basicMonthlyHelpdeskPlan.plan_id,
                             },
                         },
                     }),

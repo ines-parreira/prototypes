@@ -210,8 +210,7 @@ describe('services', () => {
             it('should start the subscription of the current account.', async () => {
                 const expectedSubscription = {
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                     },
                     status: 'active',
                 }

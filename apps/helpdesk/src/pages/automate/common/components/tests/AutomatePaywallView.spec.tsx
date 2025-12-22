@@ -78,7 +78,7 @@ describe('AutomatePaywallView', () => {
                             current_subscription: {
                                 products: {
                                     [HELPDESK_PRODUCT_ID]:
-                                        legacyBasicHelpdeskPlan.price_id,
+                                        legacyBasicHelpdeskPlan.plan_id,
                                 },
                             },
                         }),

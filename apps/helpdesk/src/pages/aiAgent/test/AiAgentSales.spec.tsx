@@ -53,7 +53,7 @@ const defaultState = {
     currentAccount: fromJS({
         current_subscription: {
             products: {
-                [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.price_id,
+                [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.plan_id,
             },
         },
     }),

@@ -127,7 +127,7 @@ describe('current account actions', () => {
         beforeEach(() => {
             const updatedSubscription = {
                 products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                 },
             }
 
@@ -140,7 +140,7 @@ describe('current account actions', () => {
             return store
                 .dispatch(
                     actions.updateSubscription({
-                        prices: [basicMonthlyHelpdeskPlan.price_id],
+                        prices: [basicMonthlyHelpdeskPlan.plan_id],
                     }),
                 )
                 .then(() => expect(store.getActions()).toMatchSnapshot())
@@ -150,7 +150,7 @@ describe('current account actions', () => {
             return store
                 .dispatch(
                     actions.updateSubscription({
-                        prices: [basicMonthlyHelpdeskPlan.price_id],
+                        prices: [basicMonthlyHelpdeskPlan.plan_id],
                     }),
                 )
                 .then(() =>
@@ -170,7 +170,7 @@ describe('current account actions', () => {
                 return store
                     .dispatch(
                         actions.updateSubscription({
-                            prices: [basicMonthlyHelpdeskPlan.price_id],
+                            prices: [basicMonthlyHelpdeskPlan.plan_id],
                         }),
                     )
                     .then(() => expect(store.getActions()).toMatchSnapshot())
@@ -182,9 +182,8 @@ describe('current account actions', () => {
         it('updates the local state with the current subscription product plans', () => {
             const currentSubscription = {
                 products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
-                    [AUTOMATION_PRODUCT_ID]:
-                        basicMonthlyAutomationPlan.price_id,
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                    [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPlan.plan_id,
                 },
             }
 
@@ -195,7 +194,7 @@ describe('current account actions', () => {
             return store
                 .dispatch(
                     actions.updateSubscriptionsForPlans(
-                        { helpdesk: basicMonthlyHelpdeskPlan.price_id },
+                        { helpdesk: basicMonthlyHelpdeskPlan.plan_id },
                         [],
                     ),
                 )
@@ -207,7 +206,7 @@ describe('current account actions', () => {
         it('should return a Redux action to set the current subscription.', () => {
             const subscription = {
                 products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                 },
                 status: 'active',
             }

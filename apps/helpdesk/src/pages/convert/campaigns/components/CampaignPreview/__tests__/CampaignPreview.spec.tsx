@@ -46,8 +46,8 @@ const defaultState: Partial<RootState> = {
         current_subscription: {
             ...account.current_subscription,
             products: {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
-                [CONVERT_PRODUCT_ID]: convertPlan0.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                [CONVERT_PRODUCT_ID]: convertPlan0.plan_id,
             },
         },
     }),

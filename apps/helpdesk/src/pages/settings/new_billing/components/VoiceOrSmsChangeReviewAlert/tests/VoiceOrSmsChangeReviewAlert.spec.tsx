@@ -63,10 +63,9 @@ describe('VoiceOrSmsChangeReviewAlert', () => {
                 current_subscription: {
                     ...account.current_subscription,
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
-                        [SMS_PRODUCT_ID]: smsPlan0.price_id,
-                        [VOICE_PRODUCT_ID]: voicePlan0.price_id,
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                        [SMS_PRODUCT_ID]: smsPlan0.plan_id,
+                        [VOICE_PRODUCT_ID]: voicePlan0.plan_id,
                     },
                 },
             }),
@@ -117,8 +116,7 @@ describe('VoiceOrSmsChangeReviewAlert', () => {
                 current_subscription: {
                     ...account.current_subscription,
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                     },
                 },
             }),
@@ -166,8 +164,7 @@ describe('VoiceOrSmsChangeReviewAlert', () => {
                 current_subscription: {
                     ...account.current_subscription,
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                     },
                 },
             }),
@@ -213,8 +210,7 @@ describe('VoiceOrSmsChangeReviewAlert', () => {
                 current_subscription: {
                     ...account.current_subscription,
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                     },
                 },
             }),

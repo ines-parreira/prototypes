@@ -138,7 +138,7 @@ describe('<FeaturePaywall />', () => {
                         current_subscription: {
                             products: {
                                 [HELPDESK_PRODUCT_ID]:
-                                    legacyBasicHelpdeskPlan.price_id,
+                                    legacyBasicHelpdeskPlan.plan_id,
                             },
                         },
                     }),
@@ -175,7 +175,7 @@ describe('<FeaturePaywall />', () => {
                         current_subscription: {
                             products: {
                                 [HELPDESK_PRODUCT_ID]:
-                                    customHelpdeskPlan.price_id,
+                                    customHelpdeskPlan.plan_id,
                             },
                         },
                     }),

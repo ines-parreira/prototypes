@@ -81,7 +81,6 @@ describe('<Access/>', () => {
                             features: {},
                             tier: 'Enterprise',
                             product: 'helpdesk',
-                            price_id: 'price_enterprise',
                             public: true,
                         },
                     ],

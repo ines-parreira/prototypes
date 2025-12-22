@@ -48,8 +48,7 @@ describe('useShouldDisplayEmailIntegrationsLink', () => {
                 current_subscription: {
                     ...accountFixture.current_subscription,
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                     },
                 },
             },
@@ -80,7 +79,7 @@ describe('useShouldDisplayEmailIntegrationsLink', () => {
                     ...accountFixture.current_subscription,
                     products: {
                         [HELPDESK_PRODUCT_ID]:
-                            advancedMonthlyHelpdeskPlan.price_id,
+                            advancedMonthlyHelpdeskPlan.plan_id,
                     },
                 },
             },
@@ -96,7 +95,7 @@ describe('useShouldDisplayEmailIntegrationsLink', () => {
                 current_subscription: {
                     ...accountFixture.current_subscription,
                     products: {
-                        [HELPDESK_PRODUCT_ID]: customHelpdeskPlan.price_id,
+                        [HELPDESK_PRODUCT_ID]: customHelpdeskPlan.plan_id,
                     },
                 },
             },

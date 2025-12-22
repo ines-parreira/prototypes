@@ -26,7 +26,7 @@ const store = {
         current_subscription: {
             ...account.current_subscription,
             products: {
-                [HELPDESK_PRODUCT_ID]: proMonthlyHelpdeskPlan.price_id,
+                [HELPDESK_PRODUCT_ID]: proMonthlyHelpdeskPlan.plan_id,
             },
         },
     }),

@@ -30,12 +30,12 @@ import {
 const mockStore = configureMockStore([thunk])
 
 const HELPDESK_PRODUCT_ID = 'hepdeskpid'
-const INTEGRATIONS_PRICE_ID = '3'
+const INTEGRATIONS_PLAN_ID = '3'
 const store = mockStore({
     currentAccount: fromJS({
         current_subscription: {
             products: {
-                [HELPDESK_PRODUCT_ID]: INTEGRATIONS_PRICE_ID,
+                [HELPDESK_PRODUCT_ID]: INTEGRATIONS_PLAN_ID,
             },
         },
     }),
@@ -46,7 +46,7 @@ const store = mockStore({
                 id: HELPDESK_PRODUCT_ID,
                 prices: [
                     {
-                        price_id: INTEGRATIONS_PRICE_ID,
+                        plan_id: INTEGRATIONS_PLAN_ID,
                         integrations: 150,
                         amount: 100,
                     },
@@ -66,7 +66,7 @@ const store = mockStore({
 
 const prices = [
     {
-        price_id: INTEGRATIONS_PRICE_ID,
+        plan_id: INTEGRATIONS_PLAN_ID,
         integrations: 150,
         cadence: Cadence.Month,
         amount: 100,

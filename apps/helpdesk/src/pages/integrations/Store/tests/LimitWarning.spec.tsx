@@ -11,8 +11,8 @@ import LimitWarning from '../LimitWarning'
 const mockStore = configureMockStore([thunk])
 
 const HELPDESK_PRODUCT_ID = 'hepdeskpid'
-const LOW_INTEGRATION_PRICE_ID = '2'
-const HIGH_INTEGRATIONS_PRICE_ID = '3'
+const LOW_INTEGRATION_PLAN_ID = '2'
+const HIGH_INTEGRATIONS_PLAN_ID = '3'
 
 const products = [
     {
@@ -20,12 +20,12 @@ const products = [
         id: HELPDESK_PRODUCT_ID,
         prices: [
             {
-                price_id: LOW_INTEGRATION_PRICE_ID,
+                plan_id: LOW_INTEGRATION_PLAN_ID,
                 integrations: 5,
                 amount: 100,
             },
             {
-                price_id: HIGH_INTEGRATIONS_PRICE_ID,
+                plan_id: HIGH_INTEGRATIONS_PLAN_ID,
                 integrations: 150,
                 amount: 100,
             },
@@ -47,7 +47,7 @@ describe('<LimitWarning />', () => {
             currentAccount: fromJS({
                 current_subscription: {
                     products: {
-                        [HELPDESK_PRODUCT_ID]: HIGH_INTEGRATIONS_PRICE_ID,
+                        [HELPDESK_PRODUCT_ID]: HIGH_INTEGRATIONS_PLAN_ID,
                     },
                 },
             }),
@@ -68,7 +68,7 @@ describe('<LimitWarning />', () => {
             currentAccount: fromJS({
                 current_subscription: {
                     products: {
-                        [HELPDESK_PRODUCT_ID]: LOW_INTEGRATION_PRICE_ID,
+                        [HELPDESK_PRODUCT_ID]: LOW_INTEGRATION_PLAN_ID,
                     },
                 },
             }),

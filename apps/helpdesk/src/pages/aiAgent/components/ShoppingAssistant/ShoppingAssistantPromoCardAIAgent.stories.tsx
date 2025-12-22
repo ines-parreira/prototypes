@@ -75,7 +75,7 @@ const storyConfig: Meta<typeof ShoppingAssistantPromoCard> = {
                             [AUTOMATION_PRODUCT_ID]:
                                 parameters.trialType === TrialType.AiAgent
                                     ? undefined
-                                    : basicMonthlyAutomationPlan.price_id,
+                                    : basicMonthlyAutomationPlan.plan_id,
                         },
                     },
                 }),

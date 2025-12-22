@@ -96,9 +96,9 @@ describe('<ReturnOrderFlowViewContainer />', () => {
                         current_subscription: {
                             products: {
                                 [HELPDESK_PRODUCT_ID]:
-                                    basicMonthlyHelpdeskPlan.price_id,
+                                    basicMonthlyHelpdeskPlan.plan_id,
                                 [AUTOMATION_PRODUCT_ID]:
-                                    basicMonthlyAutomationPlan.price_id,
+                                    basicMonthlyAutomationPlan.plan_id,
                             },
                             status: 'active',
                         },

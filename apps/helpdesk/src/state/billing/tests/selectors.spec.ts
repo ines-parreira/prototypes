@@ -35,8 +35,7 @@ describe('billing selectors', () => {
             currentAccount: fromJS({
                 current_subscription: {
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                     },
                 },
             }),
@@ -270,7 +269,7 @@ describe('billing selectors', () => {
                             'products',
                             AUTOMATION_PRODUCT_ID,
                         ],
-                        basicMonthlyAutomationPlan.price_id,
+                        basicMonthlyAutomationPlan.plan_id,
                     ),
                 }),
             ).toEqual(basicMonthlyAutomationPlan)
@@ -284,7 +283,7 @@ describe('billing selectors', () => {
                     ...state,
                     currentAccount: state.currentAccount.setIn(
                         ['current_subscription', 'products', VOICE_PRODUCT_ID],
-                        voicePlan1.price_id,
+                        voicePlan1.plan_id,
                     ),
                 }),
             ).toEqual(voicePlan1)
@@ -298,7 +297,7 @@ describe('billing selectors', () => {
                     ...state,
                     currentAccount: state.currentAccount.setIn(
                         ['current_subscription', 'products', SMS_PRODUCT_ID],
-                        smsPlan1.price_id,
+                        smsPlan1.plan_id,
                     ),
                 }),
             ).toEqual(smsPlan1)
@@ -316,7 +315,7 @@ describe('billing selectors', () => {
                             'products',
                             CONVERT_PRODUCT_ID,
                         ],
-                        convertPlan1.price_id,
+                        convertPlan1.plan_id,
                     ),
                 }),
             ).toEqual(convertPlan1)
@@ -381,7 +380,7 @@ describe('billing selectors', () => {
                                 'products',
                                 HELPDESK_PRODUCT_ID,
                             ],
-                            product.price_id,
+                            product.plan_id,
                         ),
                         billing: state.billing.mergeIn(
                             ['products', 0, 'prices'],
@@ -406,7 +405,7 @@ describe('billing selectors', () => {
                                 'products',
                                 HELPDESK_PRODUCT_ID,
                             ],
-                            product.price_id,
+                            product.plan_id,
                         ),
                         billing: state.billing.mergeIn(
                             ['products', 0, 'prices'],
@@ -429,7 +428,7 @@ describe('billing selectors', () => {
                             'products',
                             AUTOMATION_PRODUCT_ID,
                         ],
-                        basicMonthlyAutomationPlan.price_id,
+                        basicMonthlyAutomationPlan.plan_id,
                     ),
                 }),
             ).toMatchSnapshot()
@@ -439,11 +438,11 @@ describe('billing selectors', () => {
     describe('getCurrentPlansByProduct', () => {
         it('should return the current products', () => {
             const products = {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
-                [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPlan.price_id,
-                [VOICE_PRODUCT_ID]: voicePlan1.price_id,
-                [SMS_PRODUCT_ID]: smsPlan1.price_id,
-                [CONVERT_PRODUCT_ID]: convertPlan1.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPlan.plan_id,
+                [VOICE_PRODUCT_ID]: voicePlan1.plan_id,
+                [SMS_PRODUCT_ID]: smsPlan1.plan_id,
+                [CONVERT_PRODUCT_ID]: convertPlan1.plan_id,
             }
             const currentPlansByProduct = selectors.getCurrentPlansByProduct({
                 ...state,
@@ -494,7 +493,7 @@ describe('billing selectors', () => {
                 ...state,
                 currentAccount: state.currentAccount.setIn(
                     ['current_subscription', 'products', CONVERT_PRODUCT_ID],
-                    'price_unknown_id',
+                    'plan_unknown_id',
                 ),
             })
 
@@ -533,19 +532,6 @@ describe('billing selectors', () => {
                 }, {})
 
             expect(selectors.getAvailablePlansMap(state)).toEqual(expected)
-        })
-    })
-
-    describe('getAvailablePricesMap', () => {
-        it('should return a PriceId-Plan mapping', () => {
-            const expected = billingFixtures.billingState.products
-                .flatMap((product) => product.prices)
-                .reduce<{ [key: string]: Plan }>((acc, plan) => {
-                    acc[plan.price_id] = plan
-                    return acc
-                }, {})
-
-            expect(selectors.getAvailablePricesMap(state)).toEqual(expected)
         })
     })
 
@@ -611,9 +597,9 @@ describe('billing selectors', () => {
     describe('getIsVettedForPhone', () => {
         it('should return true if one phone product is in the current subscription', () => {
             const products = {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
-                [VOICE_PRODUCT_ID]: voicePlan1.price_id,
-                [SMS_PRODUCT_ID]: smsPlan1.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                [VOICE_PRODUCT_ID]: voicePlan1.plan_id,
+                [SMS_PRODUCT_ID]: smsPlan1.plan_id,
             }
             const isVettedForPhone = selectors.getIsVettedForPhone({
                 ...state,
@@ -627,7 +613,7 @@ describe('billing selectors', () => {
 
         it('should return false if no phone product is in the current subscription', () => {
             const products = {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
             }
             const isVettedForPhone = selectors.getIsVettedForPhone({
                 ...state,

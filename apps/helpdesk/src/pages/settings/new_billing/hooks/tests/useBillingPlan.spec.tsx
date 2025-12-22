@@ -200,7 +200,7 @@ describe('useBillingPlans', () => {
                         products: {
                             ...account.current_subscription.products,
                             [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPlan.price_id,
+                                basicMonthlyHelpdeskPlan.plan_id,
                         },
                     },
                 }),
@@ -263,7 +263,7 @@ describe('useBillingPlans', () => {
                             ...account.current_subscription,
                             products: {
                                 ...account.current_subscription.products,
-                                [HELPDESK_PRODUCT_ID]: oldPlan.price_id,
+                                [HELPDESK_PRODUCT_ID]: oldPlan.plan_id,
                             },
                         },
                     }),
@@ -320,7 +320,7 @@ describe('useBillingPlans', () => {
                         products: {
                             ...account.current_subscription.products,
                             [AUTOMATION_PRODUCT_ID]:
-                                firstTierMonthlyAutomationPlan.price_id,
+                                firstTierMonthlyAutomationPlan.plan_id,
                         },
                     },
                 }),
@@ -382,7 +382,7 @@ describe('useBillingPlans', () => {
                             ...account.current_subscription,
                             products: {
                                 ...account.current_subscription.products,
-                                [CONVERT_PRODUCT_ID]: convertPlan0.price_id,
+                                [CONVERT_PRODUCT_ID]: convertPlan0.plan_id,
                             },
                         },
                     }),
@@ -466,7 +466,7 @@ describe('useBillingPlans', () => {
                             status: 'active',
                             products: {
                                 ...account.current_subscription.products,
-                                [productID]: oldPlan?.price_id,
+                                [productID]: oldPlan?.plan_id,
                             },
                         },
                     }),
@@ -617,7 +617,7 @@ describe('useBillingPlans', () => {
                             ...account.current_subscription,
                             products: {
                                 ...account.current_subscription.products,
-                                [productID]: oldPlan?.price_id,
+                                [productID]: oldPlan?.plan_id,
                             },
                         },
                     }),
@@ -708,9 +708,9 @@ describe('useBillingPlans', () => {
                         ...account.current_subscription,
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPlan.price_id,
-                            [SMS_PRODUCT_ID]: smsPlan0.price_id,
-                            [VOICE_PRODUCT_ID]: voicePlan0.price_id,
+                                basicMonthlyHelpdeskPlan.plan_id,
+                            [SMS_PRODUCT_ID]: smsPlan0.plan_id,
+                            [VOICE_PRODUCT_ID]: voicePlan0.plan_id,
                         },
                     },
                 }),
@@ -774,9 +774,9 @@ describe('useBillingPlans', () => {
                         ...account.current_subscription,
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPlan.price_id,
-                            [SMS_PRODUCT_ID]: smsPlan0.price_id,
-                            [VOICE_PRODUCT_ID]: voicePlan0.price_id,
+                                basicMonthlyHelpdeskPlan.plan_id,
+                            [SMS_PRODUCT_ID]: smsPlan0.plan_id,
+                            [VOICE_PRODUCT_ID]: voicePlan0.plan_id,
                         },
                     },
                 }),
@@ -880,7 +880,7 @@ describe('useBillingPlans', () => {
                             products: {
                                 ...account.current_subscription.products,
                                 [HELPDESK_PRODUCT_ID]:
-                                    basicMonthlyHelpdeskPlan.price_id,
+                                    basicMonthlyHelpdeskPlan.plan_id,
                             },
                         },
                     }),
@@ -978,7 +978,7 @@ describe('useBillingPlans', () => {
                             products: {
                                 ...account.current_subscription.products,
                                 [HELPDESK_PRODUCT_ID]:
-                                    basicMonthlyHelpdeskPlan.price_id,
+                                    basicMonthlyHelpdeskPlan.plan_id,
                             },
                         },
                     }),

@@ -14,7 +14,6 @@ const createMockAutomatePlan = (generation?: number): AutomatePlan => ({
     plan_id: 'test-plan',
     cadence: Cadence.Month,
     name: 'Test Automate Plan',
-    price_id: 'price_123',
     public: true,
     generation,
     features: {

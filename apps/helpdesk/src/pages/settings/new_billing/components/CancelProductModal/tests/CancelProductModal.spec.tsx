@@ -54,7 +54,7 @@ const store = mockStore({
         ...account,
         current_subscription: {
             products: {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
             },
         },
     }),
@@ -1240,8 +1240,7 @@ describe('CancelProductModal: AI Agent cancellation flow', () => {
                 ...account,
                 current_subscription: {
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                     },
                 },
             }),

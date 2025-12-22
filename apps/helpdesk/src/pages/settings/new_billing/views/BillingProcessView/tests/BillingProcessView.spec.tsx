@@ -78,7 +78,7 @@ const storeInitialState = {
     currentAccount: fromJS({
         current_subscription: {
             products: {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
             },
             scheduled_to_cancel_at: null,
         },
@@ -186,8 +186,7 @@ describe('UsageAndPlansView', () => {
                 ...storeInitialState.currentAccount,
                 current_subscription: fromJS({
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPlan.price_id,
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                     },
                     scheduled_to_cancel_at: scheduledToCancelAt,
                 }),
@@ -491,7 +490,7 @@ describe('UsageAndPlansView', () => {
                         currentAccount: fromJS({
                             current_subscription: {
                                 products: {
-                                    [productId]: plan.price_id,
+                                    [productId]: plan.plan_id,
                                 },
                                 scheduled_to_cancel_at: null,
                             },
@@ -565,7 +564,7 @@ describe('UsageAndPlansView', () => {
                         currentAccount: fromJS({
                             current_subscription: {
                                 products: {
-                                    [productId]: plan.price_id,
+                                    [productId]: plan.plan_id,
                                 },
                                 scheduled_to_cancel_at: null,
                             },
@@ -637,9 +636,9 @@ describe('UsageAndPlansView', () => {
                     current_subscription: {
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPlan.price_id,
+                                basicMonthlyHelpdeskPlan.plan_id,
                             [AUTOMATION_PRODUCT_ID]:
-                                basicMonthlyAutomationPlan.price_id,
+                                basicMonthlyAutomationPlan.plan_id,
                         },
                         scheduled_to_cancel_at: null,
                     },
@@ -707,7 +706,7 @@ describe('UsageAndPlansView', () => {
                     current_subscription: {
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPlan.price_id,
+                                basicMonthlyHelpdeskPlan.plan_id,
                         },
                         scheduled_to_cancel_at: null,
                     },
@@ -810,9 +809,9 @@ describe('UsageAndPlansView', () => {
                     current_subscription: {
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPlan.price_id,
+                                basicMonthlyHelpdeskPlan.plan_id,
                             [AUTOMATION_PRODUCT_ID]:
-                                basicMonthlyAutomationPlan.price_id,
+                                basicMonthlyAutomationPlan.plan_id,
                         },
                         scheduled_to_cancel_at: null,
                     },

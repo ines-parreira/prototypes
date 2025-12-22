@@ -71,9 +71,9 @@ const getState = (featureEnabled: boolean) =>
                 ...account.current_subscription,
                 products: {
                     ...account.current_subscription.products,
-                    [AUTOMATION_PRODUCT_ID]: basicYearlyAutomationPlan.price_id,
+                    [AUTOMATION_PRODUCT_ID]: basicYearlyAutomationPlan.plan_id,
                     ...(featureEnabled && {
-                        [VOICE_PRODUCT_ID]: voicePlan1.price_id,
+                        [VOICE_PRODUCT_ID]: voicePlan1.plan_id,
                     }),
                 },
             },

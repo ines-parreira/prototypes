@@ -49,7 +49,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
   "billing": Immutable.Map {
     "products": Immutable.List [
       Immutable.Map {
-        "id": "prod_LsH6kV35G6zKWo",
+        "id": "helpdesk",
         "type": "helpdesk",
         "prices": Immutable.List [
           Immutable.Map {
@@ -63,7 +63,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.4,
             "cadence": "month",
-            "price_id": "price_1LVt4TI9qXomtXqSeHydKB9S",
             "amount": 1000,
             "features": Immutable.Map {
               "automation_addon_overview": Immutable.Map {
@@ -166,7 +165,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.4,
             "cadence": "month",
-            "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
             "amount": 6000,
             "features": Immutable.Map {
               "automation_addon_overview": Immutable.Map {
@@ -269,7 +267,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.4,
             "cadence": "quarter",
-            "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD-2",
             "amount": 6000,
             "features": Immutable.Map {
               "automation_addon_overview": Immutable.Map {
@@ -372,7 +369,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.36,
             "cadence": "month",
-            "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
             "amount": 36000,
             "features": Immutable.Map {
               "automation_addon_overview": Immutable.Map {
@@ -475,7 +471,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.36,
             "cadence": "quarter",
-            "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU-2",
             "amount": 36000,
             "features": Immutable.Map {
               "automation_addon_overview": Immutable.Map {
@@ -578,7 +573,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.4,
             "cadence": "year",
-            "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
             "amount": 60000,
             "features": Immutable.Map {
               "automation_addon_overview": Immutable.Map {
@@ -681,7 +675,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.36,
             "cadence": "month",
-            "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
             "amount": 90000,
             "features": Immutable.Map {
               "automation_addon_overview": Immutable.Map {
@@ -784,7 +777,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.36,
             "cadence": "quarter",
-            "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K-2",
             "amount": 90000,
             "features": Immutable.Map {
               "automation_addon_overview": Immutable.Map {
@@ -887,7 +879,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.36,
             "cadence": "year",
-            "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
             "amount": 360000,
             "features": Immutable.Map {
               "automation_addon_overview": Immutable.Map {
@@ -990,7 +981,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.36,
             "cadence": "year",
-            "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
             "amount": 900000,
             "features": Immutable.Map {
               "automation_addon_overview": Immutable.Map {
@@ -1085,7 +1075,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         ],
       },
       Immutable.Map {
-        "id": "prod_LsHD5xmSqoFBBs",
+        "id": "automation",
         "type": "automation",
         "prices": Immutable.List [
           Immutable.Map {
@@ -1098,7 +1088,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.2,
             "cadence": "month",
-            "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
             "amount": 3000,
             "features": Immutable.Map {
               "automation_managed_rules": Immutable.Map {
@@ -1131,7 +1120,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 1.5,
             "cadence": "month",
-            "price_id": "price_1Qs400I9qXomtXqSTWFHnorA",
             "amount": 3000,
             "generation": 6,
             "features": Immutable.Map {
@@ -1165,7 +1153,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.2,
             "cadence": "month",
-            "price_id": "price_1LYUoGH2GG3UYmlxHnILo5nF",
             "amount": 3001,
             "features": Immutable.Map {
               "automation_managed_rules": Immutable.Map {
@@ -1198,7 +1185,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.18,
             "cadence": "month",
-            "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
             "amount": 18000,
             "features": Immutable.Map {
               "automation_managed_rules": Immutable.Map {
@@ -1231,7 +1217,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.18,
             "cadence": "quarter",
-            "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P-2",
             "amount": 18000,
             "features": Immutable.Map {
               "automation_managed_rules": Immutable.Map {
@@ -1264,7 +1249,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.2,
             "cadence": "quarter",
-            "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl-2",
             "amount": 30000,
             "features": Immutable.Map {
               "automation_managed_rules": Immutable.Map {
@@ -1297,7 +1281,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.2,
             "cadence": "year",
-            "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
             "amount": 30000,
             "features": Immutable.Map {
               "automation_managed_rules": Immutable.Map {
@@ -1330,7 +1313,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.18,
             "cadence": "month",
-            "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
             "amount": 45000,
             "features": Immutable.Map {
               "automation_managed_rules": Immutable.Map {
@@ -1363,7 +1345,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.18,
             "cadence": "quarter",
-            "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL-2",
             "amount": 45000,
             "features": Immutable.Map {
               "automation_managed_rules": Immutable.Map {
@@ -1396,7 +1377,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.18,
             "cadence": "year",
-            "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
             "amount": 180000,
             "features": Immutable.Map {
               "automation_managed_rules": Immutable.Map {
@@ -1429,7 +1409,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.18,
             "cadence": "year",
-            "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
             "amount": 450000,
             "features": Immutable.Map {
               "automation_managed_rules": Immutable.Map {
@@ -1455,7 +1434,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         ],
       },
       Immutable.Map {
-        "id": "prod_MT8Fzk7vmcT73m",
+        "id": "sms",
         "type": "sms",
         "prices": Immutable.List [
           Immutable.Map {
@@ -1468,7 +1447,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 1.6,
             "cadence": "month",
-            "price_id": "price_1M6V7uI9qXomtXqSpsoVQWUw",
             "amount": 0,
           },
           Immutable.Map {
@@ -1481,7 +1459,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 1.2,
             "cadence": "month",
-            "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
             "amount": 90,
           },
           Immutable.Map {
@@ -1494,7 +1471,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 1.5,
             "cadence": "quarter",
-            "price_id": "price_1O9Vc7I9qXomtXqS4a8p3S7e",
             "amount": 200,
           },
           Immutable.Map {
@@ -1507,7 +1483,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 1.5,
             "cadence": "year",
-            "price_id": "price_1O9Vc7I9qXomtXqS4a8p3S7e",
             "amount": 200,
           },
           Immutable.Map {
@@ -1520,13 +1495,12 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.77,
             "cadence": "month",
-            "price_id": "price_1LkBzLI9qXomtXqSgzXlOnP4",
             "amount": 5768,
           },
         ],
       },
       Immutable.Map {
-        "id": "prod_MT6fyh00TCFRGZ",
+        "id": "voice",
         "type": "voice",
         "prices": Immutable.List [
           Immutable.Map {
@@ -1539,7 +1513,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 2.4,
             "cadence": "month",
-            "price_id": "price_1LkClqI9qXomtXqSlgYCG6Wm",
             "amount": 0,
           },
           Immutable.Map {
@@ -1552,7 +1525,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 1.4,
             "cadence": "month",
-            "price_id": "price_1LkAzlI9qXomtXqSxOOrhzcU",
             "amount": 175,
           },
           Immutable.Map {
@@ -1565,7 +1537,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0.47,
             "cadence": "month",
-            "price_id": "price_1LkB44I9qXomtXqS4aF9ibna",
             "amount": 1750,
           },
           Immutable.Map {
@@ -1578,7 +1549,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 2.2,
             "cadence": "quarter",
-            "price_id": "price_1O9TX8I9qXomtXqSR9drzVqz-2",
             "amount": 3000,
           },
           Immutable.Map {
@@ -1591,13 +1561,12 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 2.2,
             "cadence": "year",
-            "price_id": "price_1O9TX8I9qXomtXqSR9drzVqz",
             "amount": 3000,
           },
         ],
       },
       Immutable.Map {
-        "id": "prod_Mwy3exdalDFouZ",
+        "id": "convert",
         "type": "convert",
         "prices": Immutable.List [
           Immutable.Map {
@@ -1611,7 +1580,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 1,
             "cadence": "month",
-            "price_id": "price_1NdBfmI9qXomtXqSFfC7T2xX",
             "amount": 0,
           },
           Immutable.Map {
@@ -1625,7 +1593,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0,
             "cadence": "month",
-            "price_id": "price_1NdBiMI9qXomtXqSX8MxFkYW",
             "amount": 3000,
           },
           Immutable.Map {
@@ -1639,7 +1606,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0,
             "cadence": "month",
-            "price_id": "price_1NdXfXI9qXomtXqS0CDMe7Yy",
             "amount": 25000,
           },
           Immutable.Map {
@@ -1653,7 +1619,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0,
             "cadence": "quarter",
-            "price_id": "price_2NmZrmH2GG3UYmlxBGfOOSL1-2",
             "amount": 36000,
           },
           Immutable.Map {
@@ -1667,7 +1632,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0,
             "cadence": "year",
-            "price_id": "price_2NmZrmH2GG3UYmlxBGfOOSL1",
             "amount": 36000,
           },
           Immutable.Map {
@@ -1681,7 +1645,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0,
             "cadence": "month",
-            "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSLS",
             "amount": 80000,
           },
           Immutable.Map {
@@ -1695,7 +1658,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0,
             "cadence": "month",
-            "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSL2",
             "amount": 110000,
           },
           Immutable.Map {
@@ -1709,7 +1671,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "custom": false,
             "extra_ticket_cost": 0,
             "cadence": "month",
-            "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSL1",
             "amount": 157500,
           },
         ],
@@ -1759,7 +1720,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
       "status": "trialing",
       "start_datetime": "2017-08-23T01:38:53+00:00",
       "products": Immutable.Map {
-        "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+        "helpdesk": "basic-monthly-usd-4",
       },
       "scheduled_to_cancel_at": null,
     },

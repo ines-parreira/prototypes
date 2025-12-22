@@ -32,11 +32,11 @@ jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
 })
 
 describe('ConvertStatsNavbar', () => {
-    const getState = (price: HelpdeskPlan, enabled = false): RootState => {
+    const getState = (plan: HelpdeskPlan, enabled = false): RootState => {
         const productsWithStarter = _cloneDeep(products)
         const helpdeskProduct =
             productsWithStarter[0] as Product<ProductType.Helpdesk>
-        helpdeskProduct.prices.push(price)
+        helpdeskProduct.prices.push(plan)
 
         return {
             billing: fromJS({ ...billingState, products: productsWithStarter }),
@@ -45,7 +45,7 @@ describe('ConvertStatsNavbar', () => {
                 current_subscription: {
                     ...account.current_subscription,
                     products: {
-                        [HELPDESK_PRODUCT_ID]: price.price_id,
+                        [HELPDESK_PRODUCT_ID]: plan.plan_id,
                     },
                 },
                 features: {

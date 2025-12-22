@@ -98,7 +98,7 @@ describe('current account reducers', () => {
             trial_end_datetime: '2024-03-01T11:33:41+00:00',
             trial_start_datetime: '2024-03-03T11:33:41+00:00',
             products: {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
             },
             status: 'past_due',
             scheduled_to_cancel_at: '2024-03-04T11:33:41+00:00',
@@ -140,7 +140,7 @@ describe('current account reducers', () => {
             trial_end_datetime: '2024-03-01T11:33:41+00:00',
             trial_start_datetime: '2024-03-03T11:33:41+00:00',
             products: {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
             },
             status: 'past_due',
             scheduled_to_cancel_at: '2024-03-04T11:33:41+00:00',
@@ -167,9 +167,8 @@ describe('current account reducers', () => {
             const newSubscription = {
                 ...subscription,
                 products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
-                    [AUTOMATION_PRODUCT_ID]:
-                        basicMonthlyAutomationPlan.price_id,
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                    [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPlan.plan_id,
                 },
                 status: 'active',
             }
@@ -189,7 +188,7 @@ describe('current account reducers', () => {
             trial_end_datetime: '2024-03-01T11:33:41+00:00',
             trial_start_datetime: '2024-03-03T11:33:41+00:00',
             products: {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
             },
             status: 'past_due',
             scheduled_to_cancel_at: '2024-03-04T11:33:41+00:00',
@@ -200,7 +199,7 @@ describe('current account reducers', () => {
             const action = {
                 type: types.UPDATE_SUBSCRIPTION_PRODUCTS,
                 products: fromJS({
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                 }),
             }
             expect(
@@ -216,7 +215,7 @@ describe('current account reducers', () => {
             const action = {
                 type: types.UPDATE_SUBSCRIPTION_PRODUCTS,
                 products: fromJS({
-                    [HELPDESK_PRODUCT_ID]: advancedMonthlyHelpdeskPlan.price_id,
+                    [HELPDESK_PRODUCT_ID]: advancedMonthlyHelpdeskPlan.plan_id,
                 }),
             }
             expect(reducer(state, action).get('current_subscription')).toEqual(
@@ -224,7 +223,7 @@ describe('current account reducers', () => {
                     ...subscription,
                     products: {
                         [HELPDESK_PRODUCT_ID]:
-                            advancedMonthlyHelpdeskPlan.price_id,
+                            advancedMonthlyHelpdeskPlan.plan_id,
                     },
                 }),
             )

@@ -17,7 +17,7 @@ import { TicketStatuses } from 'business/ticket'
 import { store as reduxStore } from 'common/store'
 import { section } from 'fixtures/section'
 import { view } from 'fixtures/views'
-import type { HelpdeskPlan, PlanId, PriceId } from 'models/billing/types'
+import type { HelpdeskPlan, PlanId } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
 import {
     ecommerceStoreFixture,
@@ -184,11 +184,6 @@ describe('receivedEvents', () => {
             'getAvailablePlansMap',
         )
 
-        const getAvailablePricesMapSpy = jest.spyOn(
-            billingSelectors,
-            'getAvailablePricesMap',
-        )
-
         beforeEach(() => {
             jest.useFakeTimers()
             getAvailablePlansMapSpy.mockImplementation(
@@ -197,13 +192,6 @@ describe('receivedEvents', () => {
                         [mockedProMonthlyHelpdeskPlan.plan_id]:
                             mockedProMonthlyHelpdeskPlan,
                     }) as Record<PlanId, HelpdeskPlan>,
-            )
-            getAvailablePricesMapSpy.mockImplementation(
-                () =>
-                    ({
-                        [mockedProMonthlyHelpdeskPlan.price_id]:
-                            mockedProMonthlyHelpdeskPlan,
-                    }) as Record<PriceId, HelpdeskPlan>,
             )
         })
 
@@ -391,7 +379,7 @@ describe('receivedEvents', () => {
                         current_subscription: {
                             products: {
                                 [HELPDESK_PRODUCT_ID]:
-                                    mockedProMonthlyHelpdeskPlan.price_id,
+                                    mockedProMonthlyHelpdeskPlan.plan_id,
                             },
                         },
                     },
@@ -449,7 +437,7 @@ describe('receivedEvents', () => {
                         current_subscription: {
                             products: {
                                 [HELPDESK_PRODUCT_ID]:
-                                    advancedMonthlyHelpdeskPlan.price_id,
+                                    advancedMonthlyHelpdeskPlan.plan_id,
                             },
                         },
                     },

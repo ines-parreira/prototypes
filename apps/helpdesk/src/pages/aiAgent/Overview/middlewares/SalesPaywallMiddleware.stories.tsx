@@ -73,7 +73,7 @@ const storyConfig: Meta<typeof SalesPaywallMiddleware> = {
                             [AUTOMATION_PRODUCT_ID]:
                                 parameters.trialType === TrialType.AiAgent
                                     ? undefined
-                                    : basicMonthlyAutomationPlan.price_id,
+                                    : basicMonthlyAutomationPlan.plan_id,
                         },
                     },
                 }),

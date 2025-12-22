@@ -52,7 +52,6 @@ describe('useAiAgentUpgradePlan', () => {
             plan_id: 'plan-123',
             cadence: Cadence.Month,
             name: 'AI Agent Plan',
-            price_id: 'price_123',
             public: true,
         }
 

@@ -31,7 +31,7 @@ exports[`current account actions setCurrentSubscription() should return a Redux 
 {
   "subscription": Immutable.Map {
     "products": Immutable.Map {
-      "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+      "helpdesk": "basic-monthly-usd-4",
     },
     "status": "active",
   },
@@ -114,8 +114,8 @@ exports[`current account actions update subscription product plans updates the l
 [
   {
     "products": {
-      "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
-      "prod_LsHD5xmSqoFBBs": "price_1LJBjXI9qXomtXqSSX34F3we",
+      "automation": "aut-addon-basic-full-price-monthly-usd-4",
+      "helpdesk": "basic-monthly-usd-4",
     },
     "type": "UPDATE_SUBSCRIPTION_PRODUCTS",
   },
@@ -127,7 +127,7 @@ exports[`current account actions update subscription should update subscription 
   {
     "subscription": {
       "products": {
-        "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+        "helpdesk": "basic-monthly-usd-4",
       },
     },
     "type": "UPDATE_SUBSCRIPTION_SUCCESS",

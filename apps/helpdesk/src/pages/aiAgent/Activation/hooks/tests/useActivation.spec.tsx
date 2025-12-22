@@ -51,10 +51,10 @@ jest.mock('state/billing/selectors', () => ({
     ...jest.requireActual('state/billing/selectors'),
     getCurrentPlansByProduct: jest.fn(() => ({
         helpdesk: {
-            price_id: 'helpdesk_price_id',
+            plan_id: 'helpdesk_plan_id',
         },
         automation: {
-            price_id: 'automation_price_id',
+            plan_id: 'automation_plan_id',
         },
     })),
 }))

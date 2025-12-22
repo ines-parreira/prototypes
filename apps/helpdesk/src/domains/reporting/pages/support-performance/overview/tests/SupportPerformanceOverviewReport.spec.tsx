@@ -345,9 +345,9 @@ describe('<SupportPerformanceOverview />', () => {
                     current_subscription: {
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                basicYearlyHelpdeskPlan.price_id,
+                                basicYearlyHelpdeskPlan.plan_id,
                             [AUTOMATION_PRODUCT_ID]:
-                                basicYearlyAutomationPlan.price_id,
+                                basicYearlyAutomationPlan.plan_id,
                         },
                         status: 'active',
                     },

@@ -91,7 +91,7 @@ describe('Item', () => {
                         prices: [
                             {
                                 product_id: 'product_111',
-                                price_id: '111',
+                                plan_id: '111',
                             },
                         ],
                     },

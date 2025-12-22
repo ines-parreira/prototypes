@@ -26,7 +26,7 @@ const store = mockStore({
     currentAccount: fromJS({
         current_subscription: {
             products: {
-                [HELPDESK_PRODUCT_ID]: proMonthlyHelpdeskPlan.price_id,
+                [HELPDESK_PRODUCT_ID]: proMonthlyHelpdeskPlan.plan_id,
             },
         },
     }),
@@ -145,9 +145,9 @@ describe('<Magento2/>', () => {
 
     describe('Not in price', () => {
         const productsWithMagentoDisabled = _cloneDeep(products)
-        const basicPriceWithMagentoDisabled = basicMonthlyHelpdeskPlan
-        basicPriceWithMagentoDisabled.features.magento_integration.enabled = false
-        productsWithMagentoDisabled[0].prices[0] = basicPriceWithMagentoDisabled
+        const basicPlanWithMagentoDisabled = basicMonthlyHelpdeskPlan
+        basicPlanWithMagentoDisabled.features.magento_integration.enabled = false
+        productsWithMagentoDisabled[0].prices[0] = basicPlanWithMagentoDisabled
 
         const noEnabledFeatureStore = mockStore({
             billing: fromJS({
@@ -158,7 +158,7 @@ describe('<Magento2/>', () => {
                 current_subscription: {
                     products: {
                         [HELPDESK_PRODUCT_ID]:
-                            basicPriceWithMagentoDisabled.price_id,
+                            basicPlanWithMagentoDisabled.plan_id,
                     },
                 },
             }),

@@ -78,11 +78,11 @@ const defaultStore: DeepPartial<RootState> = {
         current_subscription: {
             ...account.current_subscription,
             products: {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
-                [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPlan.price_id,
-                [VOICE_PRODUCT_ID]: voicePlan2.price_id,
-                [SMS_PRODUCT_ID]: smsPlan2.price_id,
-                [CONVERT_PRODUCT_ID]: convertPlan5.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPlan.plan_id,
+                [VOICE_PRODUCT_ID]: voicePlan2.plan_id,
+                [SMS_PRODUCT_ID]: smsPlan2.plan_id,
+                [CONVERT_PRODUCT_ID]: convertPlan5.plan_id,
             },
         },
     }),
@@ -206,7 +206,7 @@ describe('BillingFrequencyView', () => {
                     current_subscription: {
                         ...account.current_subscription,
                         products: {
-                            [HELPDESK_PRODUCT_ID]: plan?.price_id,
+                            [HELPDESK_PRODUCT_ID]: plan?.plan_id,
                         },
                     },
                 }),
@@ -319,15 +319,15 @@ describe('BillingFrequencyView', () => {
                         ...account.current_subscription,
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                originalPlans[ProductType.Helpdesk]?.price_id,
+                                originalPlans[ProductType.Helpdesk]?.plan_id,
                             [AUTOMATION_PRODUCT_ID]:
-                                originalPlans[ProductType.Automation]?.price_id,
+                                originalPlans[ProductType.Automation]?.plan_id,
                             [VOICE_PRODUCT_ID]:
-                                originalPlans[ProductType.Voice]?.price_id,
+                                originalPlans[ProductType.Voice]?.plan_id,
                             [SMS_PRODUCT_ID]:
-                                originalPlans[ProductType.SMS]?.price_id,
+                                originalPlans[ProductType.SMS]?.plan_id,
                             [CONVERT_PRODUCT_ID]:
-                                originalPlans[ProductType.Convert]?.price_id,
+                                originalPlans[ProductType.Convert]?.plan_id,
                         },
                     },
                 }),
@@ -425,15 +425,15 @@ describe('BillingFrequencyView', () => {
                         ...account.current_subscription,
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                originalPlans[ProductType.Helpdesk]?.price_id,
+                                originalPlans[ProductType.Helpdesk]?.plan_id,
                             [AUTOMATION_PRODUCT_ID]:
-                                originalPlans[ProductType.Automation]?.price_id,
+                                originalPlans[ProductType.Automation]?.plan_id,
                             [VOICE_PRODUCT_ID]:
-                                originalPlans[ProductType.Voice]?.price_id,
+                                originalPlans[ProductType.Voice]?.plan_id,
                             [SMS_PRODUCT_ID]:
-                                originalPlans[ProductType.SMS]?.price_id,
+                                originalPlans[ProductType.SMS]?.plan_id,
                             [CONVERT_PRODUCT_ID]:
-                                originalPlans[ProductType.Convert]?.price_id,
+                                originalPlans[ProductType.Convert]?.plan_id,
                         },
                     },
                 }),

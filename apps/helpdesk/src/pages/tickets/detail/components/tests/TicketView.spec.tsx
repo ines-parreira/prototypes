@@ -76,7 +76,6 @@ describe('<TicketView />', () => {
                 prices: [
                     {
                         plan_id: 'basic',
-                        price_id: 'price_basic',
                         amount: 100,
                         num_quota_tickets: 1000,
                     },
