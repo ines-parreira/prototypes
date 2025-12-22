@@ -1,4 +1,7 @@
 :local {
+    .titleTextAlignment {
+        text-align: center;
+    }
     .card {
         display: flex;
         background: var(--elevation-neutral-bg); // legacy
@@ -7,6 +10,10 @@
         padding: var(--spacing-md);
         box-sizing: border-box;
         width: 264px;
+        // custom class to override default colors from axiom without affecting other places where it is used
+        &.transparentBg {
+            background-color: transparent !important;
+        }
 
         &:hover {
             cursor: pointer;
@@ -19,6 +26,7 @@
 
     .smallCard {
         display: flex;
+        flex: 1;
         border-radius: var(--sm, 12px);
         border: 1px solid var(--border-neutral-default, #ebecef); // legacy
         padding: var(--spacing-md);

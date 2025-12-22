@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 import { Box, Button, Heading, Icon, Text } from '@gorgias/axiom'
 
 import {
@@ -40,7 +42,7 @@ export const EmptyStates = ({
                 <Heading size={'sm'}>Create new content</Heading>
                 <Box flexDirection={'row'} gap="md">
                     <div
-                        className={css.card}
+                        className={classNames(css.card, css.transparentBg)}
                         onClick={() => {
                             dispatchDocumentEvent(
                                 OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
@@ -68,7 +70,7 @@ export const EmptyStates = ({
                         </Box>
                     </div>
                     <div
-                        className={css.card}
+                        className={classNames(css.card, css.transparentBg)}
                         onClick={() => {
                             if (!helpCenterId) {
                                 dispatchDocumentEvent(
@@ -101,8 +103,10 @@ export const EmptyStates = ({
                 </Box>
             </Box>
             {/* Bottom row*/}
-            <Box flexDirection={'column'} gap="md" alignItems={titleAlignment}>
-                <Heading size={'sm'}>Sync or upload external content</Heading>
+            <Box flexDirection={'column'} gap="md">
+                <Heading size={'sm'} className={css.titleTextAlignment}>
+                    Sync or upload external content
+                </Heading>
                 <Box flexDirection={'row'} gap="md">
                     {!hasWebsiteSync && (
                         <div
