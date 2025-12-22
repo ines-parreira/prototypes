@@ -29,7 +29,7 @@ import { getMetafieldTypeLabel } from '../../utils/getMetafieldTypeLabel'
 import { isSupportedMetafieldType } from '../../utils/isSupportedMetafieldType'
 import { useFilteredMetafields } from '../hooks/useFilteredMetafields'
 import MaxFieldsImportedBanner from '../MaxMetafieldsImportedBanner/MaxFieldsImportedBanner'
-import { getColumns } from './Columns'
+import { getCheckboxColumn, staticColumns } from './Columns'
 import { mockImportableFields } from './data'
 
 import styles from './MetafieldsImportList.less'
@@ -105,10 +105,13 @@ export default function MetafieldsImportList({
         onSelectionChange(limitedSelectedFields)
     }
 
-    const columns = useMemo(
-        () => getColumns(selectedMetafields, totalSelectedCount),
-        [selectedMetafields, totalSelectedCount],
-    )
+    const columns = useMemo(() => {
+        const checkboxColumn = getCheckboxColumn(
+            selectedMetafields,
+            totalSelectedCount,
+        )
+        return [checkboxColumn, ...staticColumns]
+    }, [selectedMetafields, totalSelectedCount])
 
     const table = useTable({
         data: filteredData,
