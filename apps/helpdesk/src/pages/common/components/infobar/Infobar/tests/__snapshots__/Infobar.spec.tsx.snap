@@ -157,6 +157,11 @@ exports[`<Infobar/> should ignore other keys 1`] = `
           customer: 
           {"id":2}
         </div>
+        <button
+          data-testid="edit-customer-button"
+        >
+          Edit Customer
+        </button>
       </div>
     </div>
   </div>
@@ -208,6 +213,11 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
           customer: 
           {"id":2}
         </div>
+        <button
+          data-testid="edit-customer-button"
+        >
+          Edit Customer
+        </button>
       </div>
       <div
         class="d-none d-md-block"
@@ -251,6 +261,11 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
           customer: 
           {"id":10}
         </div>
+        <button
+          data-testid="edit-customer-button"
+        >
+          Edit Customer
+        </button>
       </div>
       <div>
         MergeCustomersContainer
@@ -305,6 +320,11 @@ exports[`<Infobar/> should render customer context 1`] = `
           customer: 
           {"id":2}
         </div>
+        <button
+          data-testid="edit-customer-button"
+        >
+          Edit Customer
+        </button>
       </div>
     </div>
   </div>
@@ -569,6 +589,11 @@ exports[`<Infobar/> should render selected customer 1`] = `
             customer: 
             {"id":"7"}
           </div>
+          <button
+            data-testid="edit-customer-button"
+          >
+            Edit Customer
+          </button>
         </div>
         <div>
           MergeCustomersContainer
@@ -703,6 +728,11 @@ exports[`<Infobar/> should render ticket context 1`] = `
           customer: 
           {"id":2}
         </div>
+        <button
+          data-testid="edit-customer-button"
+        >
+          Edit Customer
+        </button>
       </div>
     </div>
   </div>
@@ -754,6 +784,11 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
           customer: 
           {"id":2}
         </div>
+        <button
+          data-testid="edit-customer-button"
+        >
+          Edit Customer
+        </button>
       </div>
     </div>
     <div

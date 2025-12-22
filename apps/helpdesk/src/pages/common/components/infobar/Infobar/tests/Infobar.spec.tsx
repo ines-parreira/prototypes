@@ -15,6 +15,8 @@ import { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
 import type InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import { InfobarSearchResultsList } from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
 import type InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
+import type Modal from 'pages/common/components/modal/Modal'
+import type ModalHeader from 'pages/common/components/modal/ModalHeader'
 import type Search from 'pages/common/components/Search'
 import {
     fetchPreviewCustomer,
@@ -82,10 +84,24 @@ jest.mock(
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo.tsx',
     () =>
-        ({ customer }: ComponentProps<typeof InfobarCustomerInfo>) => (
+        ({
+            customer,
+            onEditCustomer,
+        }: ComponentProps<typeof InfobarCustomerInfo>) => (
             <div data-testid="InfobarCustomerInfo">
                 InfobarCustomerInfo
                 <div>customer: {JSON.stringify(customer)}</div>
+                {onEditCustomer && (
+                    <button
+                        data-testid="edit-customer-button"
+                        onClick={() => {
+                            const customerData = customer?.toJS?.() || customer
+                            onEditCustomer(customerData as any)
+                        }}
+                    >
+                        Edit Customer
+                    </button>
+                )}
             </div>
         ),
 )
@@ -97,6 +113,28 @@ jest.mock(
             <div data-testid="InfobarLayout">{children}</div>
         ),
 )
+
+jest.mock('pages/common/components/modal/ModalHeader', () => {
+    return ({ title }: ComponentProps<typeof ModalHeader>) => (
+        <header>
+            <h2>{title}</h2>
+        </header>
+    )
+})
+
+jest.mock('pages/common/components/modal/Modal', () => {
+    return ({ isOpen, onClose, children }: ComponentProps<typeof Modal>) =>
+        isOpen ? (
+            <div role="dialog" aria-modal="true">
+                <button onClick={onClose}>Close</button>
+                {children}
+            </div>
+        ) : null
+})
+
+jest.mock('pages/customers/common/components/CustomerForm', () => {
+    return () => <div data-testid="CustomerForm">CustomerForm</div>
+})
 
 jest.mock(
     'pages/common/components/MergeCustomers/MergeCustomersContainer',
@@ -686,5 +724,54 @@ describe('<Infobar/>', () => {
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.InfobarEditWidgetsClicked,
         )
+    })
+
+    describe('modal title', () => {
+        it('should display "Update customer" when customer name is null', async () => {
+            const customerWithoutName = fromJS({
+                id: 123,
+                email: 'test@example.com',
+            })
+
+            const { getByRole, findByRole } = renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} customer={customerWithoutName} />
+                </Provider>,
+            )
+
+            const editButton = await waitFor(() =>
+                getByRole('button', { name: /edit customer/i }),
+            )
+            fireEvent.click(editButton)
+
+            const modalTitle = await findByRole('heading', {
+                name: 'Update customer',
+            })
+            expect(modalTitle).toBeInTheDocument()
+        })
+
+        it('should display "Update customer: {name}" when customer name is not null', async () => {
+            const customerWithName = fromJS({
+                id: 123,
+                name: 'John Doe',
+                email: 'john@example.com',
+            })
+
+            const { getByRole, findByRole } = renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} customer={customerWithName} />
+                </Provider>,
+            )
+
+            const editButton = await waitFor(() =>
+                getByRole('button', { name: /edit customer/i }),
+            )
+            fireEvent.click(editButton)
+
+            const modalTitle = await findByRole('heading', {
+                name: 'Update customer: John Doe',
+            })
+            expect(modalTitle).toBeInTheDocument()
+        })
     })
 })

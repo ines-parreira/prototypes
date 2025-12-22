@@ -276,6 +276,10 @@ export const Infobar = ({
         areSourcesReady(sources, currentContext) &&
         !displaySelectedCustomer
 
+    const modalTitle = selectedCustomerForModal?.name
+        ? `Update customer: ${selectedCustomerForModal.name}`
+        : 'Update customer'
+
     return (
         <InfobarLayout
             isOnNewLayout={isOnNewLayout}
@@ -534,9 +538,7 @@ export const Infobar = ({
                             setSelectedCustomerForModal(null)
                         }}
                     >
-                        <ModalHeader
-                            title={`Update customer: ${selectedCustomerForModal.name}`}
-                        />
+                        <ModalHeader title={modalTitle} />
                         <CustomerForm
                             customer={fromJS(selectedCustomerForModal)}
                             closeModal={() => {

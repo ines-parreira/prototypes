@@ -75,6 +75,10 @@ export const CustomerDetailContainer = ({
         [activeCustomer, filteredChannels],
     )
 
+    const modalTitle = activeCustomer.get('name')
+        ? `Update customer: ${activeCustomer.get('name')}`
+        : 'Update customer'
+
     return shouldDisplayLoader ? (
         <Loader message="Loading customer..." />
     ) : (
@@ -100,11 +104,7 @@ export const CustomerDetailContainer = ({
                 isOpen={isCustomerFormOpen}
                 onClose={() => setIsCustomerFormOpen(false)}
             >
-                <ModalHeader
-                    title={`Update customer: ${
-                        activeCustomer.get('name') as string
-                    }`}
-                />
+                <ModalHeader title={modalTitle} />
                 <CustomerForm
                     customer={activeCustomer}
                     closeModal={() => setIsCustomerFormOpen(false)}
