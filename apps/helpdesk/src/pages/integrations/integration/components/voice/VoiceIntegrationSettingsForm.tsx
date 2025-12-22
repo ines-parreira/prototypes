@@ -13,6 +13,7 @@ import {
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import usePhoneNumbers from 'pages/integrations/integration/components/phone/usePhoneNumbers'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
 import { PHONE_INTEGRATION_BASE_URL } from './constants'
@@ -37,6 +38,12 @@ function VoiceIntegrationSettingsForm({ integration }: Props): JSX.Element {
     const { onSubmit } = useFormSubmit(integration)
     const { isDeleting, performDelete } = useDeletePhoneIntegration(integration)
     const useVoiceSpamDetection = useFlag(FeatureFlagKey.UseVoiceSpamDetection)
+
+    const { getCountryFromPhoneNumberId } = usePhoneNumbers()
+    const phoneNumberCountry = integration.meta.phone_number_id
+        ? getCountryFromPhoneNumberId(integration.meta.phone_number_id)
+        : undefined
+    const isUsPhoneNumber = phoneNumberCountry === 'US'
 
     return (
         <TextToSpeechProvider integrationId={integration.id}>
@@ -77,7 +84,7 @@ function VoiceIntegrationSettingsForm({ integration }: Props): JSX.Element {
                         <VoiceIntegrationSettingCallTranscription />
                     </SettingsCardContent>
                 </SettingsCard>
-                {useVoiceSpamDetection && (
+                {useVoiceSpamDetection && isUsPhoneNumber && (
                     <SettingsCard>
                         <SettingsCardHeader>
                             <SettingsCardTitle>

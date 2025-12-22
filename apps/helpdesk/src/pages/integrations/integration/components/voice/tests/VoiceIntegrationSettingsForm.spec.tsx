@@ -10,8 +10,8 @@ import { integrationsState } from 'fixtures/integrations'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import type { PhoneIntegration } from 'models/integration/types'
+import usePhoneNumbers from 'pages/integrations/integration/components/phone/usePhoneNumbers'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
-import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
 
 import {
     useDeletePhoneIntegration,
@@ -20,6 +20,7 @@ import {
 import VoiceIntegrationSettingsForm from '../VoiceIntegrationSettingsForm'
 
 jest.mock('hooks/useAppDispatch')
+jest.mock('hooks/useAppSelector')
 
 jest.mock('state/notifications/actions')
 
@@ -27,17 +28,15 @@ const phoneIntegration = integrationsState.integrations.find(
     (integration) => integration.type === IntegrationType.Phone,
 ) as unknown as PhoneIntegration
 
-jest.mock('hooks/useAppSelector')
-jest.mock('state/entities/phoneNumbers/selectors')
+jest.mock('pages/integrations/integration/components/phone/usePhoneNumbers')
 jest.mock('../useVoiceSettingsForm')
 
 const useAppSelectorMock = assumeMock(useAppSelector)
+const usePhoneNumbersMock = assumeMock(usePhoneNumbers)
 const useFormSubmitMock = assumeMock(useFormSubmit)
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('react-hook-form')
-
-const getNewPhoneNumberMock = assumeMock(getNewPhoneNumber)
 
 const useFormContextMock = assumeMock(useFormContext)
 
@@ -115,12 +114,11 @@ describe('<VoiceIntegrationSettingsForm />', () => {
 
     beforeEach(() => {
         FormFieldMock.mockReturnValue(<div>FormField</div>)
-        getNewPhoneNumberMock.mockReturnValue((() => {
-            '+1 500 500 5005'
-        }) as any)
-        useAppSelectorMock.mockReturnValue({
-            id: 1,
-            phone_number_friendly: '+1 (500) 500-5005',
+        useAppSelectorMock.mockReturnValue({})
+        usePhoneNumbersMock.mockReturnValue({
+            phoneNumbers: {},
+            getPhoneNumberById: jest.fn(),
+            getCountryFromPhoneNumberId: jest.fn(() => 'US'),
         })
         useFormContextMock.mockReturnValue(methodsMock)
         useDeleteVoiceIntegrationMock.mockReturnValue(
@@ -162,7 +160,7 @@ describe('<VoiceIntegrationSettingsForm />', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render spam prevention section when feature flag is enabled', () => {
+    it('should render spam prevention section when feature flag is enabled and phone number is US', () => {
         useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
             if (flag === FeatureFlagKey.UseVoiceSpamDetection) return true
             return false
@@ -181,6 +179,96 @@ describe('<VoiceIntegrationSettingsForm />', () => {
     })
 
     it('should not render spam prevention section when feature flag is disabled', () => {
+        renderComponent(props)
+
+        expect(screen.queryByText('Spam prevention')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('VoiceIntegrationSettingSpamPrevention'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not render spam prevention section when feature flag is enabled but phone number is not US', () => {
+        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+            if (flag === FeatureFlagKey.UseVoiceSpamDetection) return true
+            return false
+        })
+        usePhoneNumbersMock.mockReturnValue({
+            phoneNumbers: {},
+            getPhoneNumberById: jest.fn(),
+            getCountryFromPhoneNumberId: jest.fn(() => 'GB'),
+        })
+        renderComponent(props)
+
+        expect(screen.queryByText('Spam prevention')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('VoiceIntegrationSettingSpamPrevention'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not render spam prevention section when phone number is not found in store', () => {
+        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+            if (flag === FeatureFlagKey.UseVoiceSpamDetection) return true
+            return false
+        })
+        usePhoneNumbersMock.mockReturnValue({
+            phoneNumbers: {},
+            getPhoneNumberById: jest.fn(),
+            getCountryFromPhoneNumberId: jest.fn(() => undefined),
+        })
+        renderComponent(props)
+
+        expect(screen.queryByText('Spam prevention')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('VoiceIntegrationSettingSpamPrevention'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not render spam prevention section when phone number string is missing', () => {
+        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+            if (flag === FeatureFlagKey.UseVoiceSpamDetection) return true
+            return false
+        })
+        usePhoneNumbersMock.mockReturnValue({
+            phoneNumbers: {},
+            getPhoneNumberById: jest.fn(),
+            getCountryFromPhoneNumberId: jest.fn(() => undefined),
+        })
+        renderComponent(props)
+
+        expect(screen.queryByText('Spam prevention')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('VoiceIntegrationSettingSpamPrevention'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not render spam prevention section when phone number is invalid', () => {
+        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+            if (flag === FeatureFlagKey.UseVoiceSpamDetection) return true
+            return false
+        })
+        usePhoneNumbersMock.mockReturnValue({
+            phoneNumbers: {},
+            getPhoneNumberById: jest.fn(),
+            getCountryFromPhoneNumberId: jest.fn(() => undefined),
+        })
+        renderComponent(props)
+
+        expect(screen.queryByText('Spam prevention')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('VoiceIntegrationSettingSpamPrevention'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not render spam prevention section when parsed phone number has no country', () => {
+        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+            if (flag === FeatureFlagKey.UseVoiceSpamDetection) return true
+            return false
+        })
+        usePhoneNumbersMock.mockReturnValue({
+            phoneNumbers: {},
+            getPhoneNumberById: jest.fn(),
+            getCountryFromPhoneNumberId: jest.fn(() => undefined),
+        })
         renderComponent(props)
 
         expect(screen.queryByText('Spam prevention')).not.toBeInTheDocument()
