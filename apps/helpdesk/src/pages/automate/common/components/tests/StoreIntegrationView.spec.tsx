@@ -12,12 +12,6 @@ describe('StoreIntegrationView', () => {
         expect(headerElement).toBeInTheDocument()
     })
 
-    test('renders image with correct src and alt attributes', () => {
-        render(<StoreIntegrationView title="Test Title" />)
-        const imgElement = screen.getByAltText('Feature preview')
-        expect(imgElement).toBeInTheDocument()
-    })
-
     test('renders correct title text', () => {
         render(<StoreIntegrationView title="Test Title" />)
         const titleElement = screen.getByText(
@@ -28,15 +22,25 @@ describe('StoreIntegrationView', () => {
 
     test('renders correct description text', () => {
         render(<StoreIntegrationView title="Test Title" />)
-        const descriptionElement = screen.getByText(
-            'Connect Shopify, Magento or BigCommerce stores to start using AI Agent!',
-        )
-        expect(descriptionElement).toBeInTheDocument()
+        expect(
+            screen.getByText(/Connect your store to start using AI Agent\./),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                /Note: AI Agent is currently available only with Shopify\./,
+            ),
+        ).toBeInTheDocument()
     })
 
-    test('renders LinkButton with correct href', () => {
+    test('renders LinkButton with correct text and href', () => {
         render(<StoreIntegrationView title="Test Title" />)
-        const linkButtonElement = screen.getByText('Go to app store')
-        expect(linkButtonElement).toBeInTheDocument()
+        const linkButton = screen.getByRole('link', {
+            name: 'Connect My Shopify Store',
+        })
+        expect(linkButton).toBeInTheDocument()
+        expect(linkButton).toHaveAttribute(
+            'href',
+            '/app/settings/integrations/shopify',
+        )
     })
 })

@@ -63,8 +63,11 @@ describe('withStoreIntegrations', () => {
         ).not.toBeInTheDocument()
         expect(screen.getByText('Hello')).toBeInTheDocument()
         expect(
+            screen.getByText(/Connect your store to start using AI Agent\./),
+        ).toBeInTheDocument()
+        expect(
             screen.getByText(
-                'Connect Shopify, Magento or BigCommerce stores to start using AI Agent!',
+                /Note: AI Agent is currently available only with Shopify\./,
             ),
         ).toBeInTheDocument()
     })
