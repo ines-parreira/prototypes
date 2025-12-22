@@ -275,7 +275,7 @@ describe('NavigateToChangeBillingFrequency', () => {
                             products: {
                                 ...account.current_subscription.products,
                                 [HELPDESK_PRODUCT_ID]:
-                                    starterHelpdeskPlan.price_id,
+                                    starterHelpdeskPlan.plan_id,
                             },
                         },
                     }),
