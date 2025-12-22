@@ -5,7 +5,6 @@ import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import type { Opportunity } from 'pages/aiAgent/opportunities/utils/mapAiArticlesToOpportunities'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -36,7 +35,7 @@ interface DismissOpportunityModalProps {
     isOpen: boolean
     opportunity: Opportunity | null
     onClose: () => void
-    onConfirm: () => void
+    onConfirm: (feedbackData: { feedbackToUpsert: FeedbackMutation[] }) => void
     onOpportunityDismissed?: (context: {
         opportunityId: string
         opportunityType: string
@@ -115,19 +114,6 @@ export const DismissOpportunityModal = ({
         return selectedReasons.map((r) => r.label).join(', ')
     }, [selectedReasons])
 
-    const { mutateAsync: upsertFeedback } = useUpsertFeedback(
-        {
-            objectType: FeedbackObjectType.OPPORTUNITY,
-            objectId: opportunity?.id || '',
-            executionId: '00000000-0000-0000-0000-000000000000', // Using a static execution ID for opportunities
-        },
-        {
-            onSettled: () => {
-                setIsSubmitting(false)
-            },
-        },
-    )
-
     const feedbackData = useMemo(() => {
         if (!opportunity || !userId) return { feedbackToUpsert: [] }
 
@@ -161,7 +147,7 @@ export const DismissOpportunityModal = ({
         return { feedbackToUpsert: feedback }
     }, [opportunity, selectedReasons, freeformText, userId, isOtherSelected])
 
-    const handleConfirm = useCallback(async () => {
+    const handleConfirm = useCallback(() => {
         if (
             !opportunity ||
             selectedReasons.length === 0 ||
@@ -192,36 +178,19 @@ export const DismissOpportunityModal = ({
 
         setIsSubmitting(true)
 
-        try {
-            await upsertFeedback({ data: feedbackData })
+        resetForm()
 
-            resetForm()
+        onOpportunityDismissed?.({
+            opportunityId: opportunity.id,
+            opportunityType: opportunity.type,
+        })
 
-            onOpportunityDismissed?.({
-                opportunityId: opportunity.id,
-                opportunityType: opportunity.type,
-            })
-
-            onConfirm()
-            onClose()
-        } catch (error) {
-            console.error(
-                'Failed to submit opportunity dismiss feedback:',
-                error,
-            )
-            dispatch(
-                notify({
-                    message: 'Failed to submit feedback. Please try again.',
-                    status: NotificationStatus.Error,
-                }),
-            )
-            setIsSubmitting(false)
-        }
+        onConfirm(feedbackData)
+        onClose()
     }, [
         opportunity,
         selectedReasons,
         feedbackData,
-        upsertFeedback,
         onOpportunityDismissed,
         onConfirm,
         onClose,

@@ -6,10 +6,13 @@ import {
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
+import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
+import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { ArticleTemplateReviewAction } from 'models/helpCenter/types'
+import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { DismissOpportunityModal } from 'pages/aiAgent/opportunities/components/DismissOpportunityModal/DismissOpportunityModal'
@@ -22,7 +25,9 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
+import { reportError } from 'utils/errors'
 
+import { FeedbackObjectType } from '../../../../tickets/detail/components/AIAgentFeedbackBar/types'
 import { GuidanceForm } from '../../../components/GuidanceForm/GuidanceForm'
 import { useAiAgentNavigation } from '../../../hooks/useAiAgentNavigation'
 import type { GuidanceFormFields } from '../../../types'
@@ -133,63 +138,88 @@ export const OpportunitiesContent = ({
         },
     })
 
+    const { mutateAsync: upsertFeedback } = useUpsertFeedback({
+        objectType: FeedbackObjectType.OPPORTUNITY,
+        objectId: selectedOpportunity?.id || '',
+        executionId: '00000000-0000-0000-0000-000000000000',
+    })
+
+    const submitFeedback = useCallback(
+        (feedbackData: { feedbackToUpsert: FeedbackMutation[] }) => {
+            upsertFeedback({ data: feedbackData }).catch((error) => {
+                reportError(error, {
+                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
+                    extra: {
+                        context:
+                            'Failed to submit opportunity dismiss feedback',
+                        feedbackData,
+                    },
+                })
+            })
+        },
+        [upsertFeedback],
+    )
+
     const handleOpenDismissModal = useCallback(() => {
         setIsDismissModalOpen(true)
     }, [])
 
-    const handleConfirmDismiss = useCallback(async () => {
-        if (!selectedOpportunity) return
+    const handleConfirmDismiss = useCallback(
+        async (feedbackData: { feedbackToUpsert: FeedbackMutation[] }) => {
+            if (!selectedOpportunity) return
 
-        setIsLoading(true)
-        try {
-            if (useKnowledgeService) {
-                await processOpportunity.mutateAsync({
-                    opportunityId: parseInt(selectedOpportunity.id, 10),
-                    data: buildDismissPayload(),
-                })
-                onOpportunityDismissed?.({
-                    opportunityId: selectedOpportunity.id,
-                    opportunityType: selectedOpportunity.type,
-                })
-                onArchive(selectedOpportunity.key)
-            } else {
-                reviewArticle.mutate([
-                    undefined,
-                    { help_center_id: helpCenterId },
-                    {
-                        action: 'archive',
-                        template_key: `ai_${selectedOpportunity.id}`,
-                        reason: 'Dismissed with feedback',
-                    },
-                ])
+            setIsLoading(true)
+            try {
+                if (useKnowledgeService) {
+                    await processOpportunity.mutateAsync({
+                        opportunityId: parseInt(selectedOpportunity.id, 10),
+                        data: buildDismissPayload(),
+                    })
+                    onArchive(selectedOpportunity.key)
+                } else {
+                    reviewArticle.mutate([
+                        undefined,
+                        { help_center_id: helpCenterId },
+                        {
+                            action: 'archive',
+                            template_key: `ai_${selectedOpportunity.id}`,
+                            reason: 'Dismissed with feedback',
+                        },
+                    ])
+                }
+
+                submitFeedback(feedbackData)
+
+                dispatch(
+                    notify({
+                        message: 'Successfully dismissed opportunity',
+                        status: NotificationStatus.Success,
+                    }),
+                )
+                setIsDismissModalOpen(false)
+            } catch {
+                dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message:
+                            'Failed to dismiss opportunity. Please try again.',
+                    }),
+                )
+            } finally {
+                setIsLoading(false)
             }
-            dispatch(
-                notify({
-                    message: 'Successfully dismissed opportunity',
-                    status: NotificationStatus.Success,
-                }),
-            )
-            setIsDismissModalOpen(false)
-        } catch {
-            dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to dismiss opportunity. Please try again.',
-                }),
-            )
-        } finally {
-            setIsLoading(false)
-        }
-    }, [
-        selectedOpportunity,
-        helpCenterId,
-        reviewArticle,
-        useKnowledgeService,
-        processOpportunity,
-        onOpportunityDismissed,
-        onArchive,
-        dispatch,
-    ])
+        },
+        [
+            selectedOpportunity,
+            helpCenterId,
+            reviewArticle,
+            useKnowledgeService,
+            processOpportunity,
+            onArchive,
+            dispatch,
+            submitFeedback,
+        ],
+    )
 
     const handleCancelDismiss = useCallback(() => {
         setIsDismissModalOpen(false)

@@ -1065,4 +1065,145 @@ describe('OpportunitiesContent', () => {
             expect(skeletons.length).toBeGreaterThan(0)
         })
     })
+
+    describe('Feedback submission on dismiss', () => {
+        it('should submit feedback after dismissing opportunity', async () => {
+            const selectedOpportunity: Opportunity = {
+                id: '1',
+                title: 'Test opportunity',
+                content: 'Test content',
+                type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                key: 'ai_1',
+            }
+
+            renderComponent({
+                selectedOpportunity,
+                opportunities: [selectedOpportunity],
+            })
+
+            const dismissButton = screen.getByRole('button', {
+                name: /Dismiss/i,
+            })
+            act(() => {
+                userEvent.click(dismissButton)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Dismiss opportunity?'),
+                ).toBeInTheDocument()
+            })
+
+            const dropdown = screen.getByRole('combobox')
+            act(() => {
+                userEvent.click(dropdown)
+            })
+
+            await waitFor(() => {
+                expect(screen.getAllByRole('option')).toHaveLength(4)
+            })
+
+            const firstOption = screen.getAllByRole('option')[0]
+            act(() => {
+                userEvent.click(firstOption)
+            })
+
+            await waitFor(() => {
+                const confirmButton = screen.getAllByRole('button', {
+                    name: /Dismiss/i,
+                })[1]
+                expect(confirmButton).not.toHaveAttribute(
+                    'aria-disabled',
+                    'true',
+                )
+            })
+
+            const confirmButton = screen.getAllByRole('button', {
+                name: /Dismiss/i,
+            })[1]
+            act(() => {
+                userEvent.click(confirmButton)
+            })
+
+            await waitFor(() => {
+                expect(mockReviewArticleMutate).toHaveBeenCalled()
+                expect(mockUpsertFeedback).toHaveBeenCalledWith({
+                    data: expect.objectContaining({
+                        feedbackToUpsert: expect.any(Array),
+                    }),
+                })
+            })
+        })
+
+        it('should dismiss opportunity even if feedback submission fails', async () => {
+            mockUpsertFeedback.mockRejectedValueOnce(
+                new Error('Feedback API Error'),
+            )
+
+            const selectedOpportunity: Opportunity = {
+                id: '1',
+                title: 'Test opportunity',
+                content: 'Test content',
+                type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                key: 'ai_1',
+            }
+
+            renderComponent({
+                selectedOpportunity,
+                opportunities: [selectedOpportunity],
+            })
+
+            const dismissButton = screen.getByRole('button', {
+                name: /Dismiss/i,
+            })
+            act(() => {
+                userEvent.click(dismissButton)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Dismiss opportunity?'),
+                ).toBeInTheDocument()
+            })
+
+            const dropdown = screen.getByRole('combobox')
+            act(() => {
+                userEvent.click(dropdown)
+            })
+
+            await waitFor(() => {
+                expect(screen.getAllByRole('option')).toHaveLength(4)
+            })
+
+            const firstOption = screen.getAllByRole('option')[0]
+            act(() => {
+                userEvent.click(firstOption)
+            })
+
+            await waitFor(() => {
+                const confirmButton = screen.getAllByRole('button', {
+                    name: /Dismiss/i,
+                })[1]
+                expect(confirmButton).not.toHaveAttribute(
+                    'aria-disabled',
+                    'true',
+                )
+            })
+
+            const confirmButton = screen.getAllByRole('button', {
+                name: /Dismiss/i,
+            })[1]
+            act(() => {
+                userEvent.click(confirmButton)
+            })
+
+            await waitFor(() => {
+                expect(mockReviewArticleMutate).toHaveBeenCalled()
+                expect(notify).toHaveBeenCalledWith({
+                    message: 'Successfully dismissed opportunity',
+                    status: 'success',
+                })
+            })
+        })
+    })
 })

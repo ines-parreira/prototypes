@@ -6,9 +6,6 @@ import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-
 import { OpportunityDismissReason } from '../../../../tickets/detail/components/AIAgentFeedbackBar/types'
 import { OpportunityType } from '../../enums'
 import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
@@ -26,8 +23,6 @@ jest.mock('hooks/useAppSelector', () => ({
     default: jest.fn(() => 'test-user-id'),
 }))
 
-jest.mock('models/knowledgeService/mutations')
-
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
@@ -35,7 +30,6 @@ describe('DismissOpportunityModal', () => {
     const mockOnClose = jest.fn()
     const mockOnConfirm = jest.fn()
     const mockOnOpportunityDismissed = jest.fn()
-    const mockUpsertFeedback = jest.fn()
 
     const mockOpportunity: Opportunity = {
         id: 'test-opportunity-id',
@@ -66,14 +60,6 @@ describe('DismissOpportunityModal', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-
-        const {
-            useUpsertFeedback,
-        } = require('models/knowledgeService/mutations')
-        ;(useUpsertFeedback as jest.Mock).mockReturnValue({
-            mutateAsync: mockUpsertFeedback.mockResolvedValue({}),
-            isLoading: false,
-        })
     })
 
     describe('Modal rendering', () => {
@@ -326,55 +312,7 @@ describe('DismissOpportunityModal', () => {
             })
         })
 
-        it('should show loading state when submitting', async () => {
-            const user = userEvent.setup()
-
-            // Mock a pending promise
-            const pendingPromise = new Promise(() => {}) // Never resolves
-            mockUpsertFeedback.mockReturnValue(pendingPromise)
-
-            const {
-                useUpsertFeedback,
-            } = require('models/knowledgeService/mutations')
-            ;(useUpsertFeedback as jest.Mock).mockReturnValue({
-                mutateAsync: mockUpsertFeedback,
-                isLoading: false,
-            })
-
-            renderComponent()
-
-            // Select a reason
-            const dropdown = screen.getByRole('combobox')
-            await user.click(dropdown)
-
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const firstOption = screen.getAllByRole('option')[0]
-            await user.click(firstOption)
-
-            await waitFor(() => {
-                const dismissButton = screen.getByRole('button', {
-                    name: 'Dismiss',
-                })
-                expect(dismissButton).not.toHaveAttribute(
-                    'aria-disabled',
-                    'true',
-                )
-            })
-
-            // Click dismiss button
-            const dismissButton = screen.getByRole('button', {
-                name: 'Dismiss',
-            })
-            await user.click(dismissButton)
-
-            // Should show loading state (button should be disabled during submission)
-            expect(mockUpsertFeedback).toHaveBeenCalled()
-        })
-
-        it('should call onConfirm and onClose when dismiss is successful', async () => {
+        it('should call onConfirm with feedback data and onClose when dismiss is confirmed', async () => {
             const user = userEvent.setup()
             renderComponent()
 
@@ -411,11 +349,18 @@ describe('DismissOpportunityModal', () => {
                 await user.click(dismissButton)
             })
 
-            await waitFor(() => {
-                expect(mockUpsertFeedback).toHaveBeenCalled()
-                expect(mockOnConfirm).toHaveBeenCalledTimes(1)
-                expect(mockOnClose).toHaveBeenCalledTimes(1)
-            })
+            expect(mockOnConfirm).toHaveBeenCalledTimes(1)
+            expect(mockOnConfirm).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    feedbackToUpsert: expect.arrayContaining([
+                        expect.objectContaining({
+                            feedbackValue:
+                                OpportunityDismissReason.NOT_FOR_AI_AGENT,
+                        }),
+                    ]),
+                }),
+            )
+            expect(mockOnClose).toHaveBeenCalledTimes(1)
         })
 
         it('should call onOpportunityDismissed with correct parameters when dismiss is successful', async () => {
@@ -465,56 +410,6 @@ describe('DismissOpportunityModal', () => {
                 })
             })
         })
-
-        it('should show error notification when feedback submission fails', async () => {
-            const user = userEvent.setup()
-            const mockError = new Error('API Error')
-            mockUpsertFeedback.mockRejectedValue(mockError)
-
-            renderComponent()
-
-            // Select a reason
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
-
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const firstOption = screen.getAllByRole('option')[0]
-            await act(async () => {
-                await user.click(firstOption)
-            })
-
-            await waitFor(() => {
-                const dismissButton = screen.getByRole('button', {
-                    name: 'Dismiss',
-                })
-                expect(dismissButton).not.toHaveAttribute(
-                    'aria-disabled',
-                    'true',
-                )
-            })
-
-            // Click dismiss button
-            const dismissButton = screen.getByRole('button', {
-                name: 'Dismiss',
-            })
-            await act(async () => {
-                await user.click(dismissButton)
-            })
-
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    message: 'Failed to submit feedback. Please try again.',
-                    status: NotificationStatus.Error,
-                })
-                expect(mockOnConfirm).not.toHaveBeenCalled()
-                expect(mockOnClose).not.toHaveBeenCalled()
-            })
-        })
     })
 
     describe('Edge cases', () => {
@@ -538,7 +433,7 @@ describe('DismissOpportunityModal', () => {
             expect(dismissButton).toHaveAttribute('aria-disabled', 'true')
 
             // Since button is disabled, the form submission won't be triggered
-            expect(mockUpsertFeedback).not.toHaveBeenCalled()
+            expect(mockOnConfirm).not.toHaveBeenCalled()
         })
 
         it('should handle multiple reason selection', async () => {
@@ -583,10 +478,21 @@ describe('DismissOpportunityModal', () => {
                 await user.click(dismissButton)
             })
 
-            await waitFor(() => {
-                expect(mockUpsertFeedback).toHaveBeenCalled()
-                expect(mockOnConfirm).toHaveBeenCalled()
-            })
+            expect(mockOnConfirm).toHaveBeenCalled()
+            expect(mockOnConfirm).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    feedbackToUpsert: expect.arrayContaining([
+                        expect.objectContaining({
+                            feedbackValue:
+                                OpportunityDismissReason.NOT_FOR_AI_AGENT,
+                        }),
+                        expect.objectContaining({
+                            feedbackValue:
+                                OpportunityDismissReason.TOPIC_ALREADY_EXISTS,
+                        }),
+                    ]),
+                }),
+            )
         })
 
         it('should toggle reason selection correctly', async () => {
@@ -720,8 +626,8 @@ describe('DismissOpportunityModal', () => {
                 expect(dismissButton).toHaveAttribute('aria-disabled', 'true')
             })
 
-            // No API call should have been made
-            expect(mockUpsertFeedback).not.toHaveBeenCalled()
+            // No callbacks should have been triggered
+            expect(mockOnConfirm).not.toHaveBeenCalled()
         })
 
         it('should validate freeform text is required when Other is selected', async () => {
@@ -808,28 +714,22 @@ describe('DismissOpportunityModal', () => {
                 await user.click(dismissButton)
             })
 
-            await waitFor(() => {
-                expect(mockUpsertFeedback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        data: expect.objectContaining({
-                            feedbackToUpsert: expect.arrayContaining([
-                                expect.objectContaining({
-                                    feedbackValue:
-                                        OpportunityDismissReason.NOT_FOR_AI_AGENT,
-                                }),
-                                expect.objectContaining({
-                                    feedbackValue:
-                                        OpportunityDismissReason.OTHER,
-                                }),
-                                expect.objectContaining({
-                                    feedbackValue:
-                                        'Additional detailed feedback',
-                                }),
-                            ]),
+            expect(mockOnConfirm).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    feedbackToUpsert: expect.arrayContaining([
+                        expect.objectContaining({
+                            feedbackValue:
+                                OpportunityDismissReason.NOT_FOR_AI_AGENT,
                         }),
-                    }),
-                )
-            })
+                        expect.objectContaining({
+                            feedbackValue: OpportunityDismissReason.OTHER,
+                        }),
+                        expect.objectContaining({
+                            feedbackValue: 'Additional detailed feedback',
+                        }),
+                    ]),
+                }),
+            )
         })
     })
 })
