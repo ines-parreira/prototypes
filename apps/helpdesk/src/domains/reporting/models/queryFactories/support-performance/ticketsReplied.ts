@@ -11,6 +11,7 @@ import {
     TicketMember,
 } from 'domains/reporting/models/cubes/TicketCube'
 import { CHANNEL_DIMENSION } from 'domains/reporting/models/queryFactories/support-performance/constants'
+import { hasFilter } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type {
     ReportingGranularity,
@@ -55,11 +56,15 @@ export const ticketsRepliedQueryFactory = (
             operator: ReportingFilterOperator.BeforeDate,
             values: [formatReportingQueryDate(filters.period.end_datetime)],
         },
-        {
-            member: TicketMember.Channel,
-            operator: ReportingFilterOperator.NotEquals,
-            values: [TicketMessageSourceType.InternalNote],
-        },
+        ...(!hasFilter(filters.channels)
+            ? [
+                  {
+                      member: TicketMember.Channel,
+                      operator: ReportingFilterOperator.NotEquals,
+                      values: [TicketMessageSourceType.InternalNote],
+                  },
+              ]
+            : []),
         ...PublicAndMessageViaFilter,
         ...statsFiltersToReportingFilters(
             HelpdeskTicketsRepliedStatsFiltersMembers,

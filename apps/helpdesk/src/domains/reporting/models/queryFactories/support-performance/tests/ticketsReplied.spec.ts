@@ -211,11 +211,6 @@ describe('ticketsRepliedMetricPerAgent', () => {
                     operator: ReportingFilterOperator.BeforeDate,
                     values: [formatReportingQueryDate(periodEnd)],
                 },
-                {
-                    member: TicketMember.Channel,
-                    operator: ReportingFilterOperator.NotEquals,
-                    values: [TicketMessageSourceType.InternalNote],
-                },
                 ...PublicAndMessageViaFilter,
                 {
                     member: HelpdeskMessageMember.PeriodStart,
@@ -281,11 +276,6 @@ describe('ticketsRepliedMetricPerAgent', () => {
                     member: TicketMember.PeriodEnd,
                     operator: ReportingFilterOperator.BeforeDate,
                     values: [formatReportingQueryDate(periodEnd)],
-                },
-                {
-                    member: TicketMember.Channel,
-                    operator: ReportingFilterOperator.NotEquals,
-                    values: [TicketMessageSourceType.InternalNote],
                 },
                 ...PublicAndMessageViaFilter,
                 {
