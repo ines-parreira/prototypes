@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import type { Map } from 'immutable'
@@ -52,7 +51,6 @@ const formatFollowerCount = (count: number): string => {
 
 export const InstagramSection = ({ customer }: { customer: Map<any, any> }) => {
     const [showDetails, setShowDetails] = useState(false)
-    const isIgSectionEnabled = useFlag(FeatureFlagKey.InstagramUserSection)
     const messages = useAppSelector(getMessages)
     const lastMessage = messages.last()
     const firstMessage = messages.first()
@@ -79,8 +77,7 @@ export const InstagramSection = ({ customer }: { customer: Map<any, any> }) => {
         instagramProfilesParams,
         {
             query: {
-                enabled:
-                    !!customer.get('id') && !!instagramId && isIgSectionEnabled,
+                enabled: !!customer.get('id') && !!instagramId,
                 queryKey: queryKeys.integrations.listInstagramProfiles(
                     instagramProfilesParams,
                 ),
@@ -99,7 +96,7 @@ export const InstagramSection = ({ customer }: { customer: Map<any, any> }) => {
         logEvent(SegmentEvent.InstagramHandleClicked)
     }
 
-    if (!isIgSectionEnabled || !userInstaData) {
+    if (!userInstaData) {
         return (
             <>
                 <Box flex={1} mb="xs">
