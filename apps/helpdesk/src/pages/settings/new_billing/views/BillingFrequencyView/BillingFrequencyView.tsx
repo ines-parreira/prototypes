@@ -251,7 +251,9 @@ const BillingFrequencyView = ({
                             isFrequencyChanged={true}
                         />
                     </div>
-                    {!isTrialing && <NewSummaryPaymentSection />}
+                    {!isTrialing && (
+                        <NewSummaryPaymentSection trackingSource="billing_frequency" />
+                    )}
                     <SummaryFooter
                         isPaymentEnabled={isPaymentEnabled}
                         isTrialing={isTrialing}

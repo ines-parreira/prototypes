@@ -73,6 +73,7 @@ const AutomateModalStep = ({
                 selectedPlan={selectedPlan}
                 setSelectedPlan={setSelectedPlan}
                 setIsSubscriptionEnabled={setIsSubscriptionEnabled}
+                trackingSource="subscription_modal_ai_agent"
             />
             {!!image && (
                 <img

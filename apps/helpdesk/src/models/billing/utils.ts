@@ -52,6 +52,23 @@ export function isConvert(plan: Plan): plan is ConvertPlan {
     return plan.product === ProductType.Convert
 }
 
+export function getProductTrackingName(productType: ProductType): string {
+    switch (productType) {
+        case ProductType.Helpdesk:
+            return 'helpdesk'
+        case ProductType.Automation:
+            return 'ai_agent'
+        case ProductType.Voice:
+            return 'voice'
+        case ProductType.SMS:
+            return 'sms'
+        case ProductType.Convert:
+            return 'convert'
+        default:
+            return productType
+    }
+}
+
 export function isStarterTier(
     plan: HelpdeskPlan | undefined,
 ): plan is HelpdeskPlan {

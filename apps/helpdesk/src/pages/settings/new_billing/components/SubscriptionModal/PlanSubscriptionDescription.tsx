@@ -36,6 +36,7 @@ export type PlanSubscriptionDescriptionProps = {
     selectedPlan: Plan | undefined
     setSelectedPlan: React.Dispatch<React.SetStateAction<Plan | undefined>>
     setIsSubscriptionEnabled: React.Dispatch<React.SetStateAction<boolean>>
+    trackingSource: string
 }
 
 const PlanSubscriptionDescription = ({
@@ -48,6 +49,7 @@ const PlanSubscriptionDescription = ({
     selectedPlan,
     setSelectedPlan,
     setIsSubscriptionEnabled,
+    trackingSource,
 }: PlanSubscriptionDescriptionProps) => {
     const ref = useRef(null)
     const isPaymentEnabled = !!useIsPaymentEnabled()
@@ -210,6 +212,7 @@ const PlanSubscriptionDescription = ({
                 >
                     <NewSummaryPaymentSection
                         className={css.summaryPaymentSection}
+                        trackingSource={trackingSource}
                     />
                 </div>
                 {isSummaryFooterVisible && (

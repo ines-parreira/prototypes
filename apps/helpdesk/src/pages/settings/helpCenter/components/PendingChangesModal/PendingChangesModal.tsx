@@ -13,6 +13,7 @@ type PendingChangesModalProps = {
     onDiscard?: () => void
     onContinueEditing?: () => void
     onSave: () => Promise<void> | Promise<[void, void, void]>
+    onShow?: () => void
     title?: string
     saveText?: string
     isSaving?: boolean
@@ -25,6 +26,7 @@ const PendingChangesModal = ({
     onContinueEditing,
     onDiscard,
     onSave,
+    onShow,
     title = 'Save changes?',
     saveText = 'Save Changes',
     isSaving = false,
@@ -45,13 +47,14 @@ const PendingChangesModal = ({
             if (when) {
                 setNextPath(location.pathname)
                 setShowPrompt(true)
+                onShow?.()
                 return false
             }
         })
         return () => {
             unblockRef.current && unblockRef.current()
         }
-    }, [when, history])
+    }, [when, history, onShow])
 
     function onConfirm() {
         if (unblockRef && unblockRef.current) {

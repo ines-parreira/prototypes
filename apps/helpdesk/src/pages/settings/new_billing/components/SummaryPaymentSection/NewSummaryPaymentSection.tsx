@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
@@ -20,9 +21,14 @@ import css from './SummaryPaymentSection.less'
 type Props = React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
->
+> & {
+    trackingSource: string
+}
 
-export const NewSummaryPaymentSection = (props: Props) => {
+export const NewSummaryPaymentSection = ({
+    trackingSource,
+    ...props
+}: Props) => {
     const billingState = useBillingStateWithSideEffects()
 
     if (!billingState.data)
@@ -30,11 +36,20 @@ export const NewSummaryPaymentSection = (props: Props) => {
 
     return (
         <div {...props} className={classNames(css.container, props.className)}>
-            <PaymentState billingState={billingState.data} {...props} />
+            <PaymentState
+                billingState={billingState.data}
+                trackingSource={trackingSource}
+            />
         </div>
     )
 }
-function PaymentState({ billingState }: { billingState: BillingState }) {
+function PaymentState({
+    billingState,
+    trackingSource,
+}: {
+    billingState: BillingState
+    trackingSource: string
+}) {
     const {
         credit_card: creditCard,
         shopify_billing: shopifyBilling,
@@ -43,7 +58,12 @@ function PaymentState({ billingState }: { billingState: BillingState }) {
     } = billingState.customer
 
     if (creditCard) {
-        return <CreditCard creditCard={creditCard} />
+        return (
+            <CreditCard
+                creditCard={creditCard}
+                trackingSource={trackingSource}
+            />
+        )
     }
 
     if (shopifyBilling) {
@@ -56,7 +76,7 @@ function PaymentState({ billingState }: { billingState: BillingState }) {
     }
 
     if (achDebit) {
-        return <ACHDebit achDebit={achDebit} />
+        return <ACHDebit achDebit={achDebit} trackingSource={trackingSource} />
     }
 
     if (achCredit) {
@@ -64,17 +84,35 @@ function PaymentState({ billingState }: { billingState: BillingState }) {
     }
 
     // No payment method
-    return <NoPaymentMethod />
+    return <NoPaymentMethod trackingSource={trackingSource} />
 }
 
-const CreditCard = ({ creditCard }: { creditCard: CreditCardType }) =>
+const CreditCard = ({
+    creditCard,
+    trackingSource,
+}: {
+    creditCard: CreditCardType
+    trackingSource: string
+}) =>
     isCardExpired(creditCard) ? (
-        <CreditCardExpired creditCard={creditCard} />
+        <CreditCardExpired
+            creditCard={creditCard}
+            trackingSource={trackingSource}
+        />
     ) : (
-        <CreditCardValid creditCard={creditCard} />
+        <CreditCardValid
+            creditCard={creditCard}
+            trackingSource={trackingSource}
+        />
     )
 
-const CreditCardExpired = ({ creditCard }: { creditCard: CreditCardType }) => (
+const CreditCardExpired = ({
+    creditCard,
+    trackingSource,
+}: {
+    creditCard: CreditCardType
+    trackingSource: string
+}) => (
     <>
         <div className={css.method}>
             <i className={classNames('material-icons', css.warningIcon)}>
@@ -83,11 +121,27 @@ const CreditCardExpired = ({ creditCard }: { creditCard: CreditCardType }) => (
             <strong className={css.cardBrand}>{creditCard.brand}</strong> ending
             with <strong>{creditCard.last4}</strong> is expired
         </div>
-        <Link to={BILLING_PAYMENT_CARD_PATH}>Change Payment Method</Link>
+        <Link
+            to={BILLING_PAYMENT_CARD_PATH}
+            onClick={() => {
+                logEvent(SegmentEvent.BillingUpdatePaymentMethodClicked, {
+                    action: 'change',
+                    source: trackingSource,
+                })
+            }}
+        >
+            Change Payment Method
+        </Link>
     </>
 )
 
-const CreditCardValid = ({ creditCard }: { creditCard: CreditCardType }) => (
+const CreditCardValid = ({
+    creditCard,
+    trackingSource,
+}: {
+    creditCard: CreditCardType
+    trackingSource: string
+}) => (
     <>
         <div className={css.method}>
             <i className={classNames('material-icons', css.cardIcon)}>
@@ -96,7 +150,17 @@ const CreditCardValid = ({ creditCard }: { creditCard: CreditCardType }) => (
             <strong className={css.cardBrand}>{creditCard.brand}</strong> ending
             with <strong>{creditCard.last4}</strong>
         </div>
-        <Link to={BILLING_PAYMENT_CARD_PATH}>Change Payment Method</Link>
+        <Link
+            to={BILLING_PAYMENT_CARD_PATH}
+            onClick={() => {
+                logEvent(SegmentEvent.BillingUpdatePaymentMethodClicked, {
+                    action: 'change',
+                    source: trackingSource,
+                })
+            }}
+        >
+            Change Payment Method
+        </Link>
     </>
 )
 
@@ -148,20 +212,36 @@ const ShopifyBillingActive = ({
     </>
 )
 
-const ACHDebit = ({ achDebit }: { achDebit: AchDebitBankAccount }) => (
+const ACHDebit = ({
+    achDebit,
+    trackingSource,
+}: {
+    achDebit: AchDebitBankAccount
+    trackingSource: string
+}) => (
     <>
         <div className={css.method}>
             Bank transfer (ACH debit) from account{' '}
             <strong>{achDebit.bank_name}</strong> ending with{' '}
             <strong>{achDebit.last4}</strong>
         </div>
-        <Link to={BILLING_PAYMENT_CARD_PATH}>Change Payment Method</Link>
+        <Link
+            to={BILLING_PAYMENT_CARD_PATH}
+            onClick={() => {
+                logEvent(SegmentEvent.BillingUpdatePaymentMethodClicked, {
+                    action: 'change',
+                    source: trackingSource,
+                })
+            }}
+        >
+            Change Payment Method
+        </Link>
     </>
 )
 
 const ACHCredit = () => <>Bank transfer (ACH credit)</>
 
-const NoPaymentMethod = () => (
+const NoPaymentMethod = ({ trackingSource }: { trackingSource: string }) => (
     <>
         <div className={css.method}>
             <i className={classNames('material-icons', css.warningIcon)}>
@@ -169,6 +249,16 @@ const NoPaymentMethod = () => (
             </i>
             No payment method registered on your account
         </div>
-        <Link to={BILLING_PAYMENT_CARD_PATH}>Add Payment Method</Link>
+        <Link
+            to={BILLING_PAYMENT_CARD_PATH}
+            onClick={() => {
+                logEvent(SegmentEvent.BillingUpdatePaymentMethodClicked, {
+                    action: 'add',
+                    source: trackingSource,
+                })
+            }}
+        >
+            Add Payment Method
+        </Link>
     </>
 )

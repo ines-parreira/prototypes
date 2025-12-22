@@ -45,6 +45,17 @@ const ScheduledCancellationSummaryMock = assumeMock(
     ScheduledCancellationSummary,
 )
 const mockUseProductCancellations = assumeMock(useProductCancellations)
+
+// Mock PendingChangesModal to capture props
+jest.mock(
+    'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal',
+    () => jest.fn(() => null),
+)
+
+const mockPendingChangesModal = jest.mocked(
+    require('pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'),
+)
+
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useParams: jest.fn().mockReturnValue({
@@ -909,5 +920,156 @@ describe('UsageAndPlansView', () => {
             expect(screen.queryByText('Active')).not.toBeInTheDocument()
             expect(screen.queryByText(/Active until/i)).not.toBeInTheDocument()
         })
+    })
+
+    it('should track event when PendingChangesModal is shown', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
+
+        // Get the onShow callback from mock calls
+        const pendingChangesModalCalls = mockPendingChangesModal.mock.calls
+        const pendingChangesModalProps =
+            pendingChangesModalCalls[pendingChangesModalCalls.length - 1]?.[0]
+
+        logEventMock.mockClear()
+
+        // Simulate modal being shown
+        pendingChangesModalProps?.onShow()
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingUsageAndPlansPendingChangesModalShown,
+        )
+        expect(logEventMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should track event when Update Subscription button is clicked in PendingChangesModal', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
+
+        // Get the onSave callback from mock calls
+        const pendingChangesModalCalls = mockPendingChangesModal.mock.calls
+        const pendingChangesModalProps =
+            pendingChangesModalCalls[pendingChangesModalCalls.length - 1]?.[0]
+
+        logEventMock.mockClear()
+
+        // Simulate Update Subscription button click
+        await pendingChangesModalProps?.onSave()
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingUsageAndPlansPendingChangesModalClick,
+            { action: 'update' },
+        )
+        expect(logEventMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should track event when Discard button is clicked in PendingChangesModal', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
+
+        // Get the onDiscard callback from mock calls
+        const pendingChangesModalCalls = mockPendingChangesModal.mock.calls
+        const pendingChangesModalProps =
+            pendingChangesModalCalls[pendingChangesModalCalls.length - 1]?.[0]
+
+        logEventMock.mockClear()
+
+        // Simulate Discard button click
+        pendingChangesModalProps?.onDiscard()
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingUsageAndPlansPendingChangesModalClick,
+            { action: 'discard' },
+        )
+        expect(logEventMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should track event when Back to Editing button is clicked in PendingChangesModal', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
+
+        // Get the onContinueEditing callback from mock calls
+        const pendingChangesModalCalls = mockPendingChangesModal.mock.calls
+        const pendingChangesModalProps =
+            pendingChangesModalCalls[pendingChangesModalCalls.length - 1]?.[0]
+
+        logEventMock.mockClear()
+
+        // Simulate Back to Editing button click
+        pendingChangesModalProps?.onContinueEditing()
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingUsageAndPlansPendingChangesModalClick,
+            { action: 'back' },
+        )
+        expect(logEventMock).toHaveBeenCalledTimes(1)
     })
 })

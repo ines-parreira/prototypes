@@ -1,6 +1,8 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { resetLDMocks } from 'jest-launchdarkly-mock'
 
 import {
@@ -25,6 +27,9 @@ import {
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import BillingStartView from '../BillingStartView'
+
+jest.mock('@repo/logging')
+const logEventMock = assumeMock(logEvent)
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -84,6 +89,7 @@ describe('BillingStartView', () => {
         useFlagMock.mockReset()
         useFlagMock.mockReset()
         window.USER_IMPERSONATED = null
+        logEventMock.mockClear()
     })
 
     describe('Billing maintenance mode is ON', () => {
@@ -391,6 +397,42 @@ describe('BillingStartView', () => {
             expect(mockAddBanner).not.toHaveBeenCalled()
             expect(mockRemoveBanner).toHaveBeenCalled()
             expect(screen.queryByText('Set Up SMS')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('BillingPaymentInformationTabClicked tracking', () => {
+        it('should track event when Payment Information tab is clicked', async () => {
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithPhone,
+                {
+                    route: BILLING_BASE_PATH,
+                },
+            )
+
+            const paymentInfoTab = screen.getByText('Payment Information')
+
+            logEventMock.mockClear()
+
+            await act(() => userEvent.click(paymentInfoTab))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingPaymentInformationTabClicked,
+            )
+        })
+
+        it('should NOT show Payment Information tab when subscription is canceled', () => {
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithCanceledSubscription,
+                {
+                    route: BILLING_BASE_PATH,
+                },
+            )
+
+            expect(
+                screen.queryByText('Payment Information'),
+            ).not.toBeInTheDocument()
         })
     })
 })

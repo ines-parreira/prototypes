@@ -1,5 +1,5 @@
 import type React from 'react'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -174,6 +174,10 @@ const BillingProcessView = ({
         })
     })
 
+    const handlePendingChangesModalShow = useCallback(() => {
+        logEvent(SegmentEvent.BillingUsageAndPlansPendingChangesModalShown)
+    }, [])
+
     const messageForEnterprise = useMemo(() => {
         let message =
             "Hey Gorgias, I'd like to get a quote for the following bundle of products:\n"
@@ -315,7 +319,7 @@ const BillingProcessView = ({
                     />
                 </div>
                 {!isTrialing && !isCurrentSubscriptionCanceled && (
-                    <NewSummaryPaymentSection />
+                    <NewSummaryPaymentSection trackingSource="subscription_update" />
                 )}
                 <SummaryFooter
                     isPaymentEnabled={isPaymentEnabled}
@@ -486,11 +490,30 @@ const BillingProcessView = ({
             </div>
             {!isCurrentSubscriptionScheduledToCancel && (
                 <PendingChangesModal
-                    onSave={updateSubscription}
-                    onDiscard={() => setShowPendingChangesModal(false)}
-                    onContinueEditing={() => setShowPendingChangesModal(false)}
+                    onSave={() => {
+                        logEvent(
+                            SegmentEvent.BillingUsageAndPlansPendingChangesModalClick,
+                            { action: 'update' },
+                        )
+                        return updateSubscription()
+                    }}
+                    onDiscard={() => {
+                        logEvent(
+                            SegmentEvent.BillingUsageAndPlansPendingChangesModalClick,
+                            { action: 'discard' },
+                        )
+                        setShowPendingChangesModal(false)
+                    }}
+                    onContinueEditing={() => {
+                        logEvent(
+                            SegmentEvent.BillingUsageAndPlansPendingChangesModalClick,
+                            { action: 'back' },
+                        )
+                        setShowPendingChangesModal(false)
+                    }}
+                    onShow={handlePendingChangesModalShow}
                     when={anyProductChanged && !updateProcessStarted}
-                    message="Your subscription changes will only be taken into account after you click “Update subscription”"
+                    message='Your subscription changes will only be taken into account after you click "Update subscription"'
                     show={showPendingChangesModal}
                     title="Update subscription?"
                     saveText="Update subscription"

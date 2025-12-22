@@ -1142,7 +1142,7 @@ describe('ProductPlanSelection', () => {
         })
     })
 
-    describe('BillingUsageAndPlansRemoveProductClicked tracking', () => {
+    describe('BillingUsageAndPlansCancelAutoRenewalClicked tracking', () => {
         it('should track event when Cancel auto-renewal button is clicked for Helpdesk', async () => {
             useAutomatedHelpdeskCancellationFlowAvailableMock.mockReturnValue(
                 true,
@@ -1162,11 +1162,12 @@ describe('ProductPlanSelection', () => {
             await act(() => userEvent.click(cancelButton))
 
             expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
-                { product: 'helpdesk' },
+                SegmentEvent.BillingUsageAndPlansCancelAutoRenewalClicked,
             )
         })
+    })
 
+    describe('BillingUsageAndPlansRemoveProductClicked tracking', () => {
         it('should track event when Remove product button is clicked for Automation', async () => {
             const automationProps = {
                 ...props,
@@ -1304,6 +1305,282 @@ describe('ProductPlanSelection', () => {
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
                 { product: 'voice' },
+            )
+        })
+    })
+
+    describe('BillingUsageAndPlansAddProductClicked tracking', () => {
+        it('should track event when Add Product button is clicked for Automation', async () => {
+            const automationProps = {
+                ...props,
+                type: ProductType.Automation,
+                currentPlan: undefined,
+                availablePlans: [basicMonthlyAutomationPlan],
+                selectedPlans: {
+                    ...selectedPlans,
+                    automation: {
+                        isSelected: false,
+                    },
+                },
+            }
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...automationProps} />
+                </Provider>,
+            )
+
+            logEventMock.mockClear()
+
+            const addButton = screen.getByRole('button', {
+                name: /Add Product/i,
+            })
+            await act(() => userEvent.click(addButton))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansAddProductClicked,
+                { product: 'ai_agent' },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+
+        it('should track event when Add Product button is clicked for Convert', async () => {
+            const convertProps = {
+                ...props,
+                type: ProductType.Convert,
+                currentPlan: undefined,
+                availablePlans: [convertPlan1],
+                selectedPlans: {
+                    ...selectedPlans,
+                    convert: {
+                        isSelected: false,
+                    },
+                },
+            }
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...convertProps} />
+                </Provider>,
+            )
+
+            logEventMock.mockClear()
+
+            const addButton = screen.getByRole('button', {
+                name: /Add Product/i,
+            })
+            await act(() => userEvent.click(addButton))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansAddProductClicked,
+                { product: 'convert' },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+
+        it('should track event when Add Product button is clicked for SMS', async () => {
+            const smsProps = {
+                ...props,
+                type: ProductType.SMS,
+                currentPlan: undefined,
+                availablePlans: [smsPlan1],
+                selectedPlans: {
+                    ...selectedPlans,
+                    sms: {
+                        isSelected: false,
+                    },
+                },
+            }
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...smsProps} />
+                </Provider>,
+            )
+
+            logEventMock.mockClear()
+
+            const addButton = screen.getByRole('button', {
+                name: /Add Product/i,
+            })
+            await act(() => userEvent.click(addButton))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansAddProductClicked,
+                { product: 'sms' },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+
+        it('should track event when Add Product button is clicked for Voice', async () => {
+            const voiceProps = {
+                ...props,
+                type: ProductType.Voice,
+                currentPlan: undefined,
+                availablePlans: [voicePlan1],
+                selectedPlans: {
+                    ...selectedPlans,
+                    voice: {
+                        isSelected: false,
+                    },
+                },
+            }
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...voiceProps} />
+                </Provider>,
+            )
+
+            logEventMock.mockClear()
+
+            const addButton = screen.getByRole('button', {
+                name: /Add Product/i,
+            })
+            await act(() => userEvent.click(addButton))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansAddProductClicked,
+                { product: 'voice' },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('BillingUsageAndPlansPanSelected tracking', () => {
+        it('should track event when a Helpdesk plan is selected from dropdown', async () => {
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...props} />
+                </Provider>,
+            )
+
+            logEventMock.mockClear()
+
+            const priceSelector = screen.getByLabelText('Price value')
+            await act(() => userEvent.click(priceSelector))
+
+            const menuitems = screen.getAllByRole('menuitem')
+            const starterPlanItem = menuitems.find((item) =>
+                item.textContent?.includes(
+                    starterHelpdeskPlan.num_quota_tickets.toString(),
+                ),
+            )
+
+            await act(() => userEvent.click(starterPlanItem!))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansPanSelected,
+                {
+                    product: 'helpdesk',
+                    value: starterHelpdeskPlan.num_quota_tickets,
+                },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+
+        it('should track event when an Automation plan is selected from dropdown', async () => {
+            const automationProps = {
+                ...props,
+                type: ProductType.Automation,
+                currentPlan: basicMonthlyAutomationPlan,
+                availablePlans: [basicMonthlyAutomationPlan],
+                selectedPlans: {
+                    ...selectedPlans,
+                    automation: {
+                        plan: basicMonthlyAutomationPlan,
+                        isSelected: true,
+                    },
+                },
+            }
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...automationProps} />
+                </Provider>,
+            )
+
+            logEventMock.mockClear()
+
+            const priceSelector = screen.getByLabelText('Price value')
+            await act(() => userEvent.click(priceSelector))
+
+            const menuitems = screen.getAllByRole('menuitem')
+            const automationPlanItem = menuitems[0]
+
+            await act(() => userEvent.click(automationPlanItem))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansPanSelected,
+                {
+                    product: 'ai_agent',
+                    value: basicMonthlyAutomationPlan.num_quota_tickets,
+                },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+
+        it('should track event when a Convert plan is selected from dropdown', async () => {
+            const convertProps = {
+                ...props,
+                type: ProductType.Convert,
+                currentPlan: convertPlan1,
+                availablePlans: [convertPlan1],
+                selectedPlans: {
+                    ...selectedPlans,
+                    convert: {
+                        plan: convertPlan1,
+                        isSelected: true,
+                    },
+                },
+            }
+
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...convertProps} />
+                </Provider>,
+            )
+
+            logEventMock.mockClear()
+
+            const priceSelector = screen.getByLabelText('Price value')
+            await act(() => userEvent.click(priceSelector))
+
+            const menuitems = screen.getAllByRole('menuitem')
+            const convertPlanItem = menuitems[0]
+
+            await act(() => userEvent.click(convertPlanItem))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansPanSelected,
+                {
+                    product: 'convert',
+                    value: convertPlan1.num_quota_tickets,
+                },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+
+        it('should NOT track event when Enterprise plan is selected', async () => {
+            render(
+                <Provider store={store}>
+                    <ProductPlanSelection {...props} />
+                </Provider>,
+            )
+
+            logEventMock.mockClear()
+
+            const priceSelector = screen.getByLabelText('Price value')
+            await act(() => userEvent.click(priceSelector))
+
+            const menuitems = screen.getAllByRole('menuitem')
+            const enterpriseItem = menuitems[menuitems.length - 1]
+
+            await act(() => userEvent.click(enterpriseItem))
+
+            expect(logEventMock).not.toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansPanSelected,
+                expect.anything(),
             )
         })
     })

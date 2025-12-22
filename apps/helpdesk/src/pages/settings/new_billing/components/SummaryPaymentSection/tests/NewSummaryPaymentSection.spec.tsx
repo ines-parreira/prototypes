@@ -1,4 +1,7 @@
-import { screen } from '@testing-library/react'
+import { logEvent, SegmentEvent } from '@repo/logging'
+import { assumeMock } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -17,15 +20,22 @@ import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQ
 
 import { NewSummaryPaymentSection } from '../NewSummaryPaymentSection'
 
+jest.mock('@repo/logging')
+const logEventMock = assumeMock(logEvent)
+
 const mockedServer = new MockAdapter(client)
 
 describe('NewSummaryPaymentSection', () => {
+    beforeEach(() => {
+        logEventMock.mockClear()
+    })
+
     it('should render the no-payment-method use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, trial)
 
         renderWithStoreAndQueryClientProvider(
             <MemoryRouter>
-                <NewSummaryPaymentSection />
+                <NewSummaryPaymentSection trackingSource="test" />
             </MemoryRouter>,
             {},
         )
@@ -48,7 +58,7 @@ describe('NewSummaryPaymentSection', () => {
 
         renderWithStoreAndQueryClientProvider(
             <MemoryRouter>
-                <NewSummaryPaymentSection />
+                <NewSummaryPaymentSection trackingSource="test" />
             </MemoryRouter>,
             {},
         )
@@ -73,7 +83,7 @@ describe('NewSummaryPaymentSection', () => {
 
         renderWithStoreAndQueryClientProvider(
             <MemoryRouter>
-                <NewSummaryPaymentSection />
+                <NewSummaryPaymentSection trackingSource="test" />
             </MemoryRouter>,
             {},
         )
@@ -96,7 +106,7 @@ describe('NewSummaryPaymentSection', () => {
 
         renderWithStoreAndQueryClientProvider(
             <MemoryRouter>
-                <NewSummaryPaymentSection />
+                <NewSummaryPaymentSection trackingSource="test" />
             </MemoryRouter>,
             {},
         )
@@ -121,7 +131,7 @@ describe('NewSummaryPaymentSection', () => {
 
         renderWithStoreAndQueryClientProvider(
             <MemoryRouter>
-                <NewSummaryPaymentSection />
+                <NewSummaryPaymentSection trackingSource="test" />
             </MemoryRouter>,
             {},
         )
@@ -143,7 +153,7 @@ describe('NewSummaryPaymentSection', () => {
 
         renderWithStoreAndQueryClientProvider(
             <MemoryRouter>
-                <NewSummaryPaymentSection />
+                <NewSummaryPaymentSection trackingSource="test" />
             </MemoryRouter>,
             {},
         )
@@ -163,7 +173,7 @@ describe('NewSummaryPaymentSection', () => {
 
         renderWithStoreAndQueryClientProvider(
             <MemoryRouter>
-                <NewSummaryPaymentSection />
+                <NewSummaryPaymentSection trackingSource="test" />
             </MemoryRouter>,
             {},
         )
@@ -177,5 +187,103 @@ describe('NewSummaryPaymentSection', () => {
         expect(
             screen.queryByText(/Activate Billing with Shopify/),
         ).not.toBeInTheDocument()
+    })
+
+    describe('BillingUpdatePaymentMethodClicked tracking', () => {
+        it('should track when Add Payment Method is clicked (no payment method)', async () => {
+            mockedServer.onGet('/billing/state').reply(200, trial)
+
+            renderWithStoreAndQueryClientProvider(
+                <MemoryRouter>
+                    <NewSummaryPaymentSection trackingSource="TestSource" />
+                </MemoryRouter>,
+                {},
+            )
+
+            const link = await screen.findByText('Add Payment Method')
+
+            logEventMock.mockClear()
+
+            await act(() => userEvent.click(link))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUpdatePaymentMethodClicked,
+                { action: 'add', source: 'TestSource' },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+
+        it('should track when Change Payment Method is clicked (valid credit card)', async () => {
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+
+            renderWithStoreAndQueryClientProvider(
+                <MemoryRouter>
+                    <NewSummaryPaymentSection trackingSource="TestSource" />
+                </MemoryRouter>,
+                {},
+            )
+
+            const link = await screen.findByText('Change Payment Method')
+
+            logEventMock.mockClear()
+
+            await act(() => userEvent.click(link))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUpdatePaymentMethodClicked,
+                { action: 'change', source: 'TestSource' },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+
+        it('should track when Change Payment Method is clicked (expired credit card)', async () => {
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithExpiredCreditCard)
+
+            renderWithStoreAndQueryClientProvider(
+                <MemoryRouter>
+                    <NewSummaryPaymentSection trackingSource="TestSource" />
+                </MemoryRouter>,
+                {},
+            )
+
+            const link = await screen.findByText('Change Payment Method')
+
+            logEventMock.mockClear()
+
+            await act(() => userEvent.click(link))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUpdatePaymentMethodClicked,
+                { action: 'change', source: 'TestSource' },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+
+        it('should track when Change Payment Method is clicked (ACH debit)', async () => {
+            mockedServer.onGet('/billing/state').reply(200, payingWithAchDebit)
+
+            renderWithStoreAndQueryClientProvider(
+                <MemoryRouter>
+                    <NewSummaryPaymentSection trackingSource="TestSource" />
+                </MemoryRouter>,
+                {},
+            )
+
+            const link = await screen.findByText('Change Payment Method')
+
+            logEventMock.mockClear()
+
+            await act(() => userEvent.click(link))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUpdatePaymentMethodClicked,
+                { action: 'change', source: 'TestSource' },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
     })
 })

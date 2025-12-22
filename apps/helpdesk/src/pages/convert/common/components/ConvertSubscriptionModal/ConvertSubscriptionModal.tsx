@@ -98,6 +98,7 @@ const ConvertSubscriptionModal = ({
             onClose={onClose}
             onSubscribe={onSubscribe}
             topModalComponent={bookDemoInfobar}
+            trackingSource="subscription_modal_convert"
         />
     )
 }

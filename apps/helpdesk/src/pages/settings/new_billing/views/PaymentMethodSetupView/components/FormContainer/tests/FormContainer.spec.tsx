@@ -1,5 +1,4 @@
-import React from 'react'
-
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import {
     AddressElement,
@@ -34,6 +33,9 @@ import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 jest.mock('@stripe/react-stripe-js')
+jest.mock('@repo/logging')
+
+const logEventMock = assumeMock(logEvent)
 
 assumeMock(AddressElement).mockImplementation(() => (
     <div data-testid="stripe-address-element" />
@@ -100,6 +102,10 @@ const initialReduxState: Partial<RootState> = {
 }
 
 describe('FormContainer', () => {
+    beforeEach(() => {
+        logEventMock.mockClear()
+    })
+
     it('should redirect to the "Usage & Plans" tab when is starting subscription', async () => {
         mockedServer.onPut('/api/billing/contact/').reply(200, {})
 
@@ -242,6 +248,89 @@ describe('FormContainer', () => {
 
         await waitFor(() => {
             expect(history.location.pathname).toBe(BILLING_PAYMENT_PATH)
+        })
+    })
+
+    describe('BillingPaymentInformationUpdateCardVisited tracking', () => {
+        it('should track event on component mount', () => {
+            const testPath = '/app/settings/billing/payment/card'
+
+            mockStripeElementsValue({
+                paymentMethod: {
+                    complete: true,
+                    value: {
+                        type: 'card',
+                    },
+                },
+            })
+
+            renderWithStoreAndQueryClientAndRouter(
+                <FormContainer
+                    hasCreditCard={true}
+                    billingInformation={
+                        {
+                            email: 'example@gorgias.com',
+                            shipping: {
+                                address: {
+                                    country: 'FR',
+                                    postal_code: '75001',
+                                },
+                            },
+                        } as BillingContactDetailResponse
+                    }
+                    dispatchBillingError={() => {}}
+                />,
+                initialReduxState,
+                { route: testPath },
+            )
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingPaymentInformationUpdateCardVisited,
+                { url: testPath },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+
+        it('should track event for starting subscription flow', () => {
+            const testPath = '/app/settings/billing/process'
+
+            mockStripeElementsValue({
+                paymentMethod: {
+                    complete: false,
+                    value: {
+                        type: 'card',
+                    },
+                },
+            })
+
+            renderWithStoreAndQueryClientAndRouter(
+                <FormContainer
+                    hasCreditCard={false}
+                    billingInformation={{
+                        email: 'test@example.com',
+                        shipping: {
+                            name: 'Test User',
+                            address: {
+                                line1: '123 Test St',
+                                line2: '',
+                                city: 'Test City',
+                                state: 'TS',
+                                postal_code: '12345',
+                                country: 'US',
+                            },
+                        },
+                    }}
+                    dispatchBillingError={() => {}}
+                />,
+                initialReduxState,
+                { route: testPath },
+            )
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingPaymentInformationUpdateCardVisited,
+                { url: testPath },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
         })
     })
 })

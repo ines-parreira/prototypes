@@ -1,12 +1,13 @@
 import type React from 'react'
 import { useMemo } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import mapValues from 'lodash/mapValues'
 import type { SubmitHandler } from 'react-hook-form'
 import { useStore } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import { Form } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
@@ -71,6 +72,14 @@ export const FormContainer: React.FC<
     )
 
     const handleValidSubmit = useHandleValidSubmit()
+
+    const { pathname } = useLocation()
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.BillingPaymentInformationUpdateCardVisited, {
+            url: pathname,
+        })
+    })
 
     return (
         <Form

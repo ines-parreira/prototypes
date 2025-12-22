@@ -18,6 +18,7 @@ import { Cadence, ProductType } from 'models/billing/types'
 import {
     getProductInfo,
     getProductLabel,
+    getProductTrackingName,
     isHelpdesk,
     isStarterTier,
 } from 'models/billing/utils'
@@ -283,6 +284,12 @@ const ProductPlanSelection = ({
                 plan: plan ?? enterprisePlan,
             },
         }))
+        if (plan) {
+            logEvent(SegmentEvent.BillingUsageAndPlansPanSelected, {
+                product: getProductTrackingName(plan.product),
+                value: plan.num_quota_tickets,
+            })
+        }
     }
     const handleOnCancelAutoRenewal = () => {
         setIsCancellationFlowOpen(true)
@@ -313,7 +320,13 @@ const ProductPlanSelection = ({
                         fillStyle="ghost"
                         intent="primary"
                         size="small"
-                        onClick={handleOpen}
+                        onClick={() => {
+                            logEvent(
+                                SegmentEvent.BillingUsageAndPlansAddProductClicked,
+                                { product: getProductTrackingName(type) },
+                            )
+                            handleOpen()
+                        }}
                         isDisabled={
                             !editingAvailable || productDisabledForTrialingUser
                         }
@@ -359,8 +372,7 @@ const ProductPlanSelection = ({
                     size="small"
                     onClick={() => {
                         logEvent(
-                            SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
-                            { product: 'helpdesk' },
+                            SegmentEvent.BillingUsageAndPlansCancelAutoRenewalClicked,
                         )
                         handleOnCancelAutoRenewal()
                     }}
@@ -377,7 +389,7 @@ const ProductPlanSelection = ({
                     onClick={() => {
                         logEvent(
                             SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
-                            { product: 'ai_agent' },
+                            { product: getProductTrackingName(type) },
                         )
                         if (useConsolidatedCancellationModal) {
                             setIsCancellationFlowOpen(true)
@@ -398,7 +410,7 @@ const ProductPlanSelection = ({
                     onClick={() => {
                         logEvent(
                             SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
-                            { product: 'convert' },
+                            { product: getProductTrackingName(type) },
                         )
                         handleConvertClose()
                     }}
@@ -418,7 +430,7 @@ const ProductPlanSelection = ({
                     onClick={() => {
                         logEvent(
                             SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
-                            { product: 'sms' },
+                            { product: getProductTrackingName(type) },
                         )
                         setIsCancellationFlowOpen(true)
                     }}
@@ -438,7 +450,7 @@ const ProductPlanSelection = ({
                     onClick={() => {
                         logEvent(
                             SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
-                            { product: 'voice' },
+                            { product: getProductTrackingName(type) },
                         )
                         setIsCancellationFlowOpen(true)
                     }}

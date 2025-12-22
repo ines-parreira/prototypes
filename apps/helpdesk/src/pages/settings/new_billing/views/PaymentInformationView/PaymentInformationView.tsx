@@ -1,3 +1,7 @@
+import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
+import { useLocation } from 'react-router'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
 import { getCadenceName } from 'models/billing/utils'
@@ -24,12 +28,20 @@ const PaymentInformationView = ({
 }: PaymentInformationViewProps) => {
     const cadence = useAppSelector(getCurrentHelpdeskCadence) ?? Cadence.Month
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
+    const { pathname } = useLocation()
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.BillingPaymentInformationTabVisited, {
+            url: pathname,
+        })
+    })
 
     return (
         <div className={css.container}>
             <Section icon="credit_card" title="Payment method">
                 <NewSummaryPaymentSection
                     className={css.summaryPaymentSection}
+                    trackingSource="payment_method"
                 />
             </Section>
             <Section icon="history" title="Billing frequency">

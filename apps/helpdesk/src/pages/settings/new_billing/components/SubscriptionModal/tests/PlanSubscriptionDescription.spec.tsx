@@ -26,6 +26,7 @@ describe('PlanSubscriptionDescription', () => {
         selectedPlan: currentSelectedPlan,
         setSelectedPlan: setSelectedPlanMock,
         setIsSubscriptionEnabled: setIsSubscriptionEnabledMock,
+        trackingSource: 'test',
     } as PlanSubscriptionDescriptionProps
 
     it('should render correctly', () => {

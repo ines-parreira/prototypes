@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Link } from 'react-router-dom'
 
 import type { LegacyTooltipProps as TooltipProps } from '@gorgias/axiom'
@@ -86,7 +87,18 @@ export default function NavigateToChangeBillingFrequency({
                 </>
             )
         } else {
-            return <Link to={BILLING_PAYMENT_FREQUENCY_PATH}>{buttonText}</Link>
+            return (
+                <Link
+                    to={BILLING_PAYMENT_FREQUENCY_PATH}
+                    onClick={() => {
+                        logEvent(
+                            SegmentEvent.BillingPaymentInformationChangeFrequencyClicked,
+                        )
+                    }}
+                >
+                    {buttonText}
+                </Link>
+            )
         }
     } else {
         toolTipContent = (

@@ -1,3 +1,5 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
+import { assumeMock } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -22,11 +24,47 @@ import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQ
 import type { PaymentInformationViewProps } from '../PaymentInformationView'
 import PaymentInformationView from '../PaymentInformationView'
 
+jest.mock('@repo/logging')
+const logEventMock = assumeMock(logEvent)
+
 const defaultProps: PaymentInformationViewProps = {
     contactBilling: jest.fn(),
 }
 
 describe('PaymentInformationView', () => {
+    beforeEach(() => {
+        logEventMock.mockClear()
+    })
+
+    it('should track BillingPaymentInformationTabVisited event on component mount', () => {
+        const testPath = '/app/settings/billing/payment'
+
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter initialEntries={[testPath]}>
+                <PaymentInformationView {...defaultProps} />
+            </MemoryRouter>,
+            {
+                billing: fromJS(billingState),
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        ...account.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.plan_id,
+                        },
+                    },
+                }),
+            },
+        )
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingPaymentInformationTabVisited,
+            { url: testPath },
+        )
+        expect(logEventMock).toHaveBeenCalledTimes(1)
+    })
+
     it.each(Object.values(Cadence))(
         'should render billing frequency [%s]',
         (cadence: Cadence) => {
@@ -59,7 +97,9 @@ describe('PaymentInformationView', () => {
 
     it('should ask the user to contact us to downgrade', async () => {
         renderWithStoreAndQueryClientProvider(
-            <PaymentInformationView {...defaultProps} />,
+            <MemoryRouter>
+                <PaymentInformationView {...defaultProps} />
+            </MemoryRouter>,
             {
                 billing: fromJS(billingState),
                 currentAccount: fromJS({

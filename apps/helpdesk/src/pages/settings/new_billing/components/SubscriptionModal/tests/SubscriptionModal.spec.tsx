@@ -49,7 +49,11 @@ describe('SubscriptionModal', () => {
 
     it('should not render', () => {
         renderWithStoreAndQueryClientProvider(
-            <SubscriptionModal {...minProps} isOpen={false} />,
+            <SubscriptionModal
+                trackingSource="test"
+                {...minProps}
+                isOpen={false}
+            />,
             defaultState,
         )
 
@@ -61,7 +65,12 @@ describe('SubscriptionModal', () => {
         const onClose = jest.fn()
 
         renderWithStoreAndQueryClientProvider(
-            <SubscriptionModal {...minProps} isOpen={true} onClose={onClose} />,
+            <SubscriptionModal
+                trackingSource="test"
+                {...minProps}
+                isOpen={true}
+                onClose={onClose}
+            />,
             defaultState,
         )
 

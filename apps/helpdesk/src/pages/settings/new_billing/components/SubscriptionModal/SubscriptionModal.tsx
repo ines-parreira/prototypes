@@ -39,6 +39,7 @@ type Props = {
     onSubscribe: () => void
     topModalComponent?: React.ReactNode
     fade?: boolean
+    trackingSource: string
 }
 
 const SubscriptionModal = ({
@@ -57,6 +58,7 @@ const SubscriptionModal = ({
     onSubscribe,
     topModalComponent,
     fade = true,
+    trackingSource,
 }: Props) => {
     const [showContactSupportModal, setShowContactSupportModal] =
         useState(false)
@@ -145,6 +147,7 @@ const SubscriptionModal = ({
                         selectedPlan={selectedPlan}
                         setSelectedPlan={setSelectedPlan}
                         setIsSubscriptionEnabled={setIsSubscriptionEnabled}
+                        trackingSource={trackingSource}
                     />
                 </ModalBody>
                 <SubscriptionModalFooter

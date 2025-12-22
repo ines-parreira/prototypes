@@ -1,3 +1,5 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
+import { assumeMock } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -23,6 +25,10 @@ import NavigateToChangeBillingFrequency from '../NavigateToChangeBillingFrequenc
 
 import css from './NavigateToChangeBillingFrequency.less'
 
+jest.mock('@repo/logging')
+
+const logEventMock = assumeMock(logEvent)
+
 const store: Partial<StoreState> = {
     billing: fromJS(billingState),
     currentAccount: fromJS(account),
@@ -38,6 +44,7 @@ const props: NavigateToChangeBillingFrequencyProps = {
 describe('NavigateToChangeBillingFrequency', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        logEventMock.mockClear()
     })
 
     it('should render the correct button text', () => {
@@ -227,4 +234,62 @@ describe('NavigateToChangeBillingFrequency', () => {
             )
         },
     )
+
+    describe('BillingPaymentInformationChangeFrequencyClicked tracking', () => {
+        it('should track event when Change Frequency link is clicked', async () => {
+            renderWithStoreAndQueryClientProvider(
+                <MemoryRouter>
+                    <NavigateToChangeBillingFrequency {...props} />
+                </MemoryRouter>,
+                store,
+            )
+
+            const link = screen.getByText('Change Frequency')
+            expect(link).toBeInTheDocument()
+            expect(link).toHaveAttribute(
+                'href',
+                '/app/settings/billing/payment/frequency',
+            )
+
+            logEventMock.mockClear()
+
+            await act(() => userEvent.click(link))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingPaymentInformationChangeFrequencyClicked,
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+
+        it('should NOT track event when button is disabled (starter plan)', async () => {
+            renderWithStoreAndQueryClientProvider(
+                <MemoryRouter>
+                    <NavigateToChangeBillingFrequency {...props} />
+                </MemoryRouter>,
+                {
+                    ...store,
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: {
+                                ...account.current_subscription.products,
+                                [HELPDESK_PRODUCT_ID]:
+                                    starterHelpdeskPlan.price_id,
+                            },
+                        },
+                    }),
+                },
+            )
+
+            const button = screen.getByText('Change Frequency')
+            expect(button).toHaveClass(css.disabledText)
+
+            logEventMock.mockClear()
+
+            await act(() => userEvent.click(button))
+
+            expect(logEventMock).not.toHaveBeenCalled()
+        })
+    })
 })
