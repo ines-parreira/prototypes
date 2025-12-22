@@ -234,7 +234,7 @@ export const TicketInfobarContainer = ({
                 'hidden-panel': !isOpenedPanel,
             })}
         >
-            {hasAccess && !hasUIVisionMS1 && (
+            {(hasAccess || hasAIAgent) && !hasUIVisionMS1 && (
                 <Navbar className={css.navbar}>
                     {tabs.map((tab) => (
                         <div

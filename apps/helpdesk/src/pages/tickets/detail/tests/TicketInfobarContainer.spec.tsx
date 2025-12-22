@@ -205,11 +205,36 @@ describe('<TicketInfobarContainer />', () => {
         expect(customerTab).not.toBeInTheDocument()
     })
 
-    it('should not show the AI Feedback tab when AI Agent feature not enabled', () => {
+    it('should show the AI Feedback tab when AI Agent has worked on ticket', () => {
         useAiAgentAccessMock.mockReturnValue({
             hasAccess: false,
             isLoading: false,
         })
+
+        useHasAIAgentMock.mockReturnValue(true)
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            },
+        )
+
+        const aiAgentTab = screen.queryByText(AI_FEEDBACK_TAB.LABEL)
+
+        expect(aiAgentTab).toBeInTheDocument()
+    })
+
+    it('should not show the AI Feedback tab if AI Agent feature not enabled and AI agent did not work on ticket', () => {
+        useAiAgentAccessMock.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+
+        useHasAIAgentMock.mockReturnValue(false)
 
         renderWithRouter(
             <Provider store={store}>
