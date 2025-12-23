@@ -293,6 +293,24 @@ const HelpCenterEditor = ({
                             const editor = editorRef.current?.editor
                             if (!editor) return
 
+                            //
+                            //  when used inside a react-aria modal, the froala editor popups get a inert attribute;
+                            //  this makes them non interactive, so we need to remove it
+
+                            /* istanbul ignore next */
+                            try {
+                                // @ts-ignore
+                                editor.popups.onShow = (popupId: string) => {
+                                    setTimeout(() => {
+                                        editor.popups
+                                            .get(popupId)
+                                            .removeAttr('inert')
+                                    }, 50)
+                                }
+                            } catch (error) {
+                                console.error(error)
+                            }
+
                             const content = editor.html.get(true)
 
                             onEditorReady?.(replaceUploadUrls(content))
