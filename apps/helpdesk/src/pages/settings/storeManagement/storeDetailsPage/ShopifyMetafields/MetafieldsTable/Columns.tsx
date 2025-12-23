@@ -53,7 +53,7 @@ export const columns: ColumnDef<Field>[] = [
             const isVisible = info.row.original.isVisible ?? true
             return (
                 <Box gap="xs">
-                    <Tooltip placement="top left">
+                    <Tooltip placement="top right">
                         <Button
                             id="metafield-visibility-toggle"
                             variant="tertiary"
@@ -63,17 +63,28 @@ export const columns: ColumnDef<Field>[] = [
                             }
                         />
 
-                        <TooltipContent title="Show metafield data when viewing a customer profile and ticket." />
+                        <TooltipContent>
+                            <Text size="sm">
+                                Show metafield data when viewing <br /> a
+                                customer profile and ticket.
+                            </Text>
+                        </TooltipContent>
                     </Tooltip>
 
-                    <Tooltip placement="top left">
+                    <Tooltip placement="top right">
                         <Button
                             variant="tertiary"
                             id={metafieldId}
                             icon="remove-minus-circle"
                             onClick={() => onRemoveClick(metafieldId)}
                         />
-                        <TooltipContent title="Remove metafield from Gorgias. This action won't delete it from Shopify." />
+                        <TooltipContent>
+                            <Text size="sm">
+                                Remove metafield from Gorgias. <br />
+                                This action won&apos;t delete it from <br />
+                                Shopify.
+                            </Text>
+                        </TooltipContent>
                     </Tooltip>
                 </Box>
             )

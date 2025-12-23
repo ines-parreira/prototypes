@@ -5,9 +5,6 @@ import {
     createSortableColumn,
     Icon,
     Text,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { MAX_FIELDS_PER_CATEGORY } from '../../constants'
@@ -19,6 +16,7 @@ import { getCheckboxContent } from '../../utils/getCheckboxContent'
 import { isSupportedMetafieldType } from '../../utils/isSupportedMetafieldType'
 import { shouldShowLimitTooltip } from '../../utils/shouldShowLimitTooltip'
 import LimitReachedTooltip from './LimitReachedTooltip'
+import TypeNotSupportedTooltip from './TypeNotSupportedTooltip'
 
 import css from './Columns.less'
 
@@ -34,18 +32,16 @@ const nameColumn = createSortableColumn<Field>('name', 'Name', (info) => {
                         <Text variant="bold">{info.getValue() as string}</Text>
                     </span>
 
-                    <Tooltip placement="top right">
-                        <TooltipTrigger>
+                    <TypeNotSupportedTooltip
+                        trigger={
                             <span role="button" tabIndex={0}>
                                 <Icon
                                     color={'var(--content-warning-primary)'}
                                     name="triangle-warning"
                                 />
                             </span>
-                        </TooltipTrigger>
-
-                        <TooltipContent title="Gorgias does not support this metafield type." />
-                    </Tooltip>
+                        }
+                    />
                 </Box>
             )}
         </Box>
