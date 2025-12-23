@@ -165,7 +165,6 @@ export const articleRecommendedInteractionsTimeSeriesQueryFactory = (
     filters: [
         ...automationDatasetDefaultFilters(filters),
         ...automationDatasetAdditionalFilters(filters),
-        // Filter for article recommendation events only
         {
             member: AutomationDatasetFilterMember.EventType,
             operator: ReportingFilterOperator.Equals,
@@ -173,4 +172,35 @@ export const articleRecommendedInteractionsTimeSeriesQueryFactory = (
         },
     ],
     metricName: METRIC_NAMES.AUTOMATE_ARTICLE_RECOMMENDATION_INTERACTIONS,
+})
+
+export const aiAgentInteractionsTimeSeriesQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+): TimeSeriesQuery<AutomationDatasetCube> => ({
+    measures: [
+        AutomationDatasetMeasure.AutomatedInteractions,
+        AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+    ],
+    dimensions: [],
+    timeDimensions: [
+        {
+            dimension:
+                AutomationDatasetDimension.AutomationEventCreatedDatetime,
+            granularity,
+            dateRange: getFilterDateRange(filters.period),
+        },
+    ],
+    timezone,
+    filters: [
+        ...automationDatasetDefaultFilters(filters),
+        ...automationDatasetAdditionalFilters(filters),
+        {
+            member: AutomationDatasetFilterMember.EventType,
+            operator: ReportingFilterOperator.Equals,
+            values: [AutomateEventType.AI_AGENT_TICKET_RESOLVED],
+        },
+    ],
+    metricName: METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS,
 })
