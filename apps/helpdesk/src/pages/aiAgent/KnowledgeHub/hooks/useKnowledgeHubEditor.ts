@@ -63,6 +63,7 @@ type CommonEditorActions = {
     handleCreate: (createdArticle?: { id: number }) => void
     handleUpdate: () => void
     handleDelete: () => void
+    handleVisibilityUpdate?: (visibility: string) => void
     handleClickPrevious: () => void
     handleClickNext: () => void
 }
@@ -85,6 +86,8 @@ const EDITOR_CONFIG = {
             updated: 'Guidance updated successfully',
             deleted: 'Guidance deleted successfully',
             copied: 'Guidance duplicated successfully',
+            visibilityOn: 'Content enabled for AI Agent.',
+            visibilityOff: 'Content disabled for AI Agent.',
         },
         events: {
             created: SegmentEvent.AiAgentGuidanceCreated,
@@ -98,6 +101,8 @@ const EDITOR_CONFIG = {
             created: 'Help Center article created successfully',
             updated: 'Help Center article updated successfully',
             deleted: 'Help Center article deleted successfully',
+            visibilityOn: 'Content enabled for AI Agent.',
+            visibilityOff: 'Content disabled for AI Agent.',
         },
         events: {
             created: SegmentEvent.AiAgentKnowledgeContentCreated,
@@ -110,6 +115,8 @@ const EDITOR_CONFIG = {
             created: 'Snippet created successfully',
             updated: 'Snippet updated successfully',
             deleted: 'Snippet deleted successfully',
+            visibilityOn: 'Content enabled for AI Agent.',
+            visibilityOff: 'Content disabled for AI Agent.',
         },
         events: {
             created: SegmentEvent.AiAgentKnowledgeContentCreated,
@@ -225,12 +232,8 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
             type,
         })
 
-        // When dealing with autosave, we don't want to show the success notification
-        if (type !== 'guidance' && type !== 'faq') {
-            notifySuccess(editorConfig.notifications.updated)
-        }
         dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
-    }, [editorConfig, shopName, type, notifySuccess])
+    }, [editorConfig, shopName, type])
 
     const handleDelete = useCallback(() => {
         logEvent(editorConfig.events.deleted, {
@@ -243,6 +246,23 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
         dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
         closeEditor()
     }, [editorConfig, shopName, type, notifySuccess, closeEditor])
+
+    const handleVisibilityUpdate = useCallback(
+        (visibility: string) => {
+            logEvent(editorConfig.events.updated, {
+                source: 'knowledge_hub',
+                shop_name: shopName,
+                type,
+            })
+
+            const notificationType =
+                visibility === 'PUBLIC' ? 'visibilityOn' : 'visibilityOff'
+
+            notifySuccess(editorConfig.notifications[notificationType])
+            dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
+        },
+        [editorConfig, shopName, type, notifySuccess],
+    )
 
     const handleClickPrevious = useCallback(() => {
         if (hasPrevious) {
@@ -286,6 +306,7 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
         closeEditor,
         handleCreate,
         handleUpdate,
+        handleVisibilityUpdate,
         handleDelete,
         handleClickPrevious,
         handleClickNext,

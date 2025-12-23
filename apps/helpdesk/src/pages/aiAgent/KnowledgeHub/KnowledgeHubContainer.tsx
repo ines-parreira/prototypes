@@ -623,6 +623,7 @@ export const KnowledgeHubContainer = () => {
                 onUpdate={snippetEditor.handleUpdate}
                 currentArticleId={snippetEditor.currentArticleId}
                 snippetType={snippetEditor.currentSnippetType}
+                handleVisibilityUpdate={snippetEditor.handleVisibilityUpdate}
             />
         </div>
     )

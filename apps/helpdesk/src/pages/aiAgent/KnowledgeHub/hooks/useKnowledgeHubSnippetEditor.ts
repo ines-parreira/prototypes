@@ -97,5 +97,6 @@ export const useKnowledgeHubSnippetEditor = ({
         hasNext: editor.hasNext,
         handleClickPrevious,
         handleClickNext,
+        handleVisibilityUpdate: editor.handleVisibilityUpdate,
     }
 }

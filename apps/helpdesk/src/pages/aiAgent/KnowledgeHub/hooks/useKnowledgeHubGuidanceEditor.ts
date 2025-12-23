@@ -31,6 +31,7 @@ export const useKnowledgeHubGuidanceEditor = ({
         onCreate: editor.handleCreate,
         onUpdate: editor.handleUpdate,
         onDelete: editor.handleDelete,
+        handleVisibilityUpdate: editor.handleVisibilityUpdate,
     }
 
     return {

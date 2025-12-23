@@ -43,6 +43,7 @@ type Props = {
     isFullscreen: boolean
     onToggleFullscreen: () => void
     onTest: () => void
+    handleVisibilityUpdate?: (visibility: string) => void
 }
 export const KnowledgeEditorSnippetLoader = ({
     snippetId,
@@ -52,10 +53,10 @@ export const KnowledgeEditorSnippetLoader = ({
     onClose,
     onClickPrevious,
     onClickNext,
-    onUpdated,
     isFullscreen,
     onToggleFullscreen,
     onTest,
+    handleVisibilityUpdate,
 }: Props) => {
     const { error: notifyError } = useNotify()
     const isPerformanceStatsEnabled = useFlag(
@@ -242,7 +243,7 @@ export const KnowledgeEditorSnippetLoader = ({
                 },
             ])
 
-            onUpdated?.()
+            handleVisibilityUpdate?.(newVisibility)
         } catch {
             notifyError('An error occurred while updating snippet.')
         }
@@ -252,8 +253,8 @@ export const KnowledgeEditorSnippetLoader = ({
         helpCenterId,
         snippetId,
         locale,
-        onUpdated,
         notifyError,
+        handleVisibilityUpdate,
     ])
 
     const isLoading =

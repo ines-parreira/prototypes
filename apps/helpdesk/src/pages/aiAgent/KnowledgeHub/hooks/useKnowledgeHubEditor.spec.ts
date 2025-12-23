@@ -631,17 +631,35 @@ describe('useKnowledgeHubEditor', () => {
         })
 
         describe('When snippet is updated', () => {
-            it('should show snippet-specific success notification', () => {
+            it('should show snippet-specific success notification when visibility is set to PUBLIC', () => {
                 const { result } = renderHook(() =>
                     useKnowledgeHubEditor(snippetConfig),
                 )
 
                 act(() => {
-                    result.current.handleUpdate()
+                    if (result.current.handleVisibilityUpdate) {
+                        result.current.handleVisibilityUpdate('PUBLIC')
+                    }
                 })
 
                 expect(mockNotifySuccess).toHaveBeenCalledWith(
-                    'Snippet updated successfully',
+                    'Content enabled for AI Agent.',
+                )
+            })
+
+            it('should show snippet-specific success notification when visibility is set to UNLISTED', () => {
+                const { result } = renderHook(() =>
+                    useKnowledgeHubEditor(snippetConfig),
+                )
+
+                act(() => {
+                    if (result.current.handleVisibilityUpdate) {
+                        result.current.handleVisibilityUpdate('UNLISTED')
+                    }
+                })
+
+                expect(mockNotifySuccess).toHaveBeenCalledWith(
+                    'Content disabled for AI Agent.',
                 )
             })
         })

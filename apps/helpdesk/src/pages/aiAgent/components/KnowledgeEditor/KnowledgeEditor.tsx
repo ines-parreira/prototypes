@@ -18,6 +18,7 @@ type Props = {
     onUpdate?: () => void
     guidanceMode: GuidanceMode['mode']
     isOpen: boolean
+    handleVisibilityUpdate?: (visibility: string) => void
 }
 
 export const KnowledgeEditor = ({
@@ -34,6 +35,7 @@ export const KnowledgeEditor = ({
     onUpdate,
     guidanceMode,
     isOpen,
+    handleVisibilityUpdate,
 }: Props) => {
     return (
         <KnowledgeEditorGuidance
@@ -50,6 +52,7 @@ export const KnowledgeEditor = ({
             onUpdate={onUpdate}
             guidanceMode={guidanceMode}
             isOpen={isOpen}
+            handleVisibilityUpdate={handleVisibilityUpdate}
         />
     )
 }

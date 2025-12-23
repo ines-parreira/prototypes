@@ -12,7 +12,12 @@ export const useToggleVisibility = () => {
 
     const { state, dispatch, config } = useGuidanceContext()
 
-    const { onUpdateFn, guidanceHelpCenter, guidanceArticles } = config
+    const {
+        onUpdateFn,
+        guidanceHelpCenter,
+        guidanceArticles,
+        handleVisibilityUpdate,
+    } = config
 
     const { updateGuidanceArticle } = useGuidanceArticleMutation({
         guidanceHelpCenterId: guidanceHelpCenter.id ?? 0,
@@ -57,6 +62,7 @@ export const useToggleVisibility = () => {
                 })
                 dispatch({ type: 'SET_VISIBILITY', payload: !state.visibility })
                 onUpdateFn?.()
+                handleVisibilityUpdate?.(newVisibility)
             }
         } catch {
             notifyError('An error occurred while updating visibility.')
@@ -73,6 +79,7 @@ export const useToggleVisibility = () => {
         onUpdateFn,
         isAtLimit,
         limitMessage,
+        handleVisibilityUpdate,
     ])
 
     return {

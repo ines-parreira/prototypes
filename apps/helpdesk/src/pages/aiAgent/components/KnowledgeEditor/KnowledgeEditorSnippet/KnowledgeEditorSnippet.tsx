@@ -20,6 +20,7 @@ type Props = {
     onClickNext?: () => void
     onUpdated?: () => void
     isOpen: boolean
+    handleVisibilityUpdate?: (visibility: string) => void
 }
 
 export const KnowledgeEditorSnippet = ({
@@ -31,6 +32,7 @@ export const KnowledgeEditorSnippet = ({
     onClickNext,
     onUpdated,
     isOpen,
+    handleVisibilityUpdate,
 }: Props) => {
     const [isFullscreen, setIsFullscreen] = useState(false)
 
@@ -76,6 +78,7 @@ export const KnowledgeEditorSnippet = ({
                         isFullscreen={isFullscreen}
                         onToggleFullscreen={onToggleFullscreen}
                         onTest={onTest}
+                        handleVisibilityUpdate={handleVisibilityUpdate}
                     />
                 </div>
                 {isPlaygroundOpen && (

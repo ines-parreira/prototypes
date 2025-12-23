@@ -29,6 +29,7 @@ type Props = {
     onClickNext?: () => void
     guidanceMode: GuidanceModeType
     isOpen: boolean
+    handleVisibilityUpdate?: (visibility: string) => void
 }
 
 const KnowledgeEditorGuidanceInner = () => {
@@ -98,6 +99,7 @@ export const KnowledgeEditorGuidance = ({
     onUpdate,
     onCopy,
     isOpen,
+    handleVisibilityUpdate,
 }: Props) => {
     const guidanceHelpCenter = useAiAgentHelpCenter({
         shopName: shopName,
@@ -140,6 +142,7 @@ export const KnowledgeEditorGuidance = ({
         onCreateFn: onCreate,
         onUpdateFn: onUpdate,
         onCopyFn: onCopy,
+        handleVisibilityUpdate,
     }
 
     return (

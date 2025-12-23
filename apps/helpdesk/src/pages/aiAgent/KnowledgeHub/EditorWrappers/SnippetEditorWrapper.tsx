@@ -10,6 +10,7 @@ type SnippetEditorWrapperProps = {
     onUpdate: () => void
     onClickPrevious?: () => void
     onClickNext?: () => void
+    handleVisibilityUpdate?: (visibility: string) => void
 }
 
 export const SnippetEditorWrapper = ({
@@ -21,6 +22,7 @@ export const SnippetEditorWrapper = ({
     onUpdate,
     onClickPrevious,
     onClickNext,
+    handleVisibilityUpdate,
 }: SnippetEditorWrapperProps) => {
     if (!isOpen || !currentArticleId || !snippetType) {
         return null
@@ -36,6 +38,7 @@ export const SnippetEditorWrapper = ({
             onClickPrevious={onClickPrevious}
             onClickNext={onClickNext}
             isOpen={isOpen}
+            handleVisibilityUpdate={handleVisibilityUpdate}
         />
     )
 }

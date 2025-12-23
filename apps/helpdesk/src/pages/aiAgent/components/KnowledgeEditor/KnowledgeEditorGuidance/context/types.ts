@@ -91,6 +91,7 @@ export type GuidanceContextConfig = {
     onCreateFn?: () => void
     onUpdateFn?: () => void
     onCopyFn?: () => void
+    handleVisibilityUpdate?: (visibility: string) => void
 }
 
 export type PlaygroundState = {

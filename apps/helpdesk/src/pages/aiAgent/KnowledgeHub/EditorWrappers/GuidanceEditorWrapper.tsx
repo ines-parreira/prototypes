@@ -17,6 +17,7 @@ type GuidanceEditorWrapperProps = {
     onDelete?: () => void
     onClickPrevious?: () => void
     onClickNext?: () => void
+    handleVisibilityUpdate?: (visibility: string) => void
 }
 
 export const GuidanceEditorWrapper = ({
@@ -33,6 +34,7 @@ export const GuidanceEditorWrapper = ({
     onDelete,
     onClickPrevious,
     onClickNext,
+    handleVisibilityUpdate,
 }: GuidanceEditorWrapperProps) => {
     if (!isOpen) {
         return null
@@ -53,6 +55,7 @@ export const GuidanceEditorWrapper = ({
             onDelete={onDelete}
             onClickPrevious={onClickPrevious}
             onClickNext={onClickNext}
+            handleVisibilityUpdate={handleVisibilityUpdate}
         />
     )
 }
