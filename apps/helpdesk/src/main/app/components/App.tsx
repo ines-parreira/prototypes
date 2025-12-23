@@ -127,6 +127,15 @@ export default function App({ children }: Props) {
                 <OutOfRecoveryCodesModal />
                 <AxiomMigrationHighlightTokensToggle />
             </UIKitRootNodeProvider>
+            <div
+                id="notifications-root"
+                data-react-aria-top-layer="true"
+                style={{
+                    position: 'fixed',
+                    zIndex: 10000,
+                    pointerEvents: 'none',
+                }}
+            />
         </AppNode>
     )
 }

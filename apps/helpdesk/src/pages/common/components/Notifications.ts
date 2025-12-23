@@ -33,7 +33,8 @@ const theme: Theme = {
             colors[STATUSES.info],
         borderLeftWidth: 4,
         paddingRight: 16,
-        zIndex: 1100, // Higher than the modal's z-index
+        zIndex: 1100,
+        pointerEvents: 'auto', // Ensure links inside are clickable
     }),
     notificationIcon: () => ({
         marginLeft: 16,

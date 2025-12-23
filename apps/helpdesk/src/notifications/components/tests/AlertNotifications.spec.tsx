@@ -72,4 +72,34 @@ describe('AlertNotifications', () => {
         dismissNotification(123)
         expect(dismissNotificationMock).toHaveBeenCalledWith(123)
     })
+
+    it('should use notifications-root element as portal target when it exists', () => {
+        const notificationsRootElement = document.createElement('div')
+        notificationsRootElement.id = 'notifications-root'
+        document.body.appendChild(notificationsRootElement)
+
+        render(<AlertNotifications />)
+
+        expect(NotificationsSystem).toHaveBeenCalledWith(
+            expect.any(Object),
+            expect.objectContaining({}),
+        )
+
+        document.body.removeChild(notificationsRootElement)
+    })
+
+    it('should fallback to document.body as portal target when notifications-root does not exist', () => {
+        const getElementByIdSpy = jest.spyOn(document, 'getElementById')
+        getElementByIdSpy.mockReturnValue(null)
+
+        render(<AlertNotifications />)
+
+        expect(getElementByIdSpy).toHaveBeenCalledWith('notifications-root')
+        expect(NotificationsSystem).toHaveBeenCalledWith(
+            expect.any(Object),
+            expect.objectContaining({}),
+        )
+
+        getElementByIdSpy.mockRestore()
+    })
 })
