@@ -260,7 +260,7 @@ const getHelpCenterListResponse = {
             { id: 2, name: 'help center 2', type: 'faq' },
         ],
     }),
-    isLoading: false,
+    isInitialLoading: false,
 } as unknown as ReturnType<typeof useGetHelpCenterList>
 
 const findToggle = (type: 'email' | 'chat') =>
@@ -327,7 +327,7 @@ const setupMocks = ({
 
     mockUseGetHelpCenterList.mockReturnValue({
         ...getHelpCenterListResponse,
-        isLoading: isHelpCentersLoading,
+        isInitialLoading: isHelpCentersLoading,
     } as unknown as ReturnType<typeof useGetHelpCenterList>)
 
     applyMockActivationHook()

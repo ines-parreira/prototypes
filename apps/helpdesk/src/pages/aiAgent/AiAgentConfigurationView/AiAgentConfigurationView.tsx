@@ -2,9 +2,14 @@ import { useMemo } from 'react'
 
 import { Redirect } from 'react-router-dom'
 
-import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+import {
+    Banner,
+    Button,
+    LegacyLoadingSpinner as LoadingSpinner,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import { isGorgiasApiError } from 'models/api/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { SETTINGS } from 'pages/aiAgent/constants'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
@@ -40,14 +45,19 @@ export const AiAgentConfigurationView = ({
 
     const { integration } = useShopifyIntegrationAndScope(shopName)
 
-    const { data: helpCenterListData, isLoading: isLoadingHelpCenters } =
-        useGetHelpCenterList(
-            { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
-            {
-                staleTime: 1000 * 60 * 5,
-                refetchOnWindowFocus: false,
-            },
-        )
+    const {
+        data: helpCenterListData,
+        isInitialLoading: isLoadingHelpCenters,
+        isError: isHelpCentersError,
+        error: helpCentersError,
+        refetch: refetchHelpCenters,
+    } = useGetHelpCenterList(
+        { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
+        {
+            staleTime: 1000 * 60 * 5,
+            refetchOnWindowFocus: false,
+        },
+    )
 
     const helpCenters = useMemo(
         () =>
@@ -68,17 +78,6 @@ export const AiAgentConfigurationView = ({
         return <Redirect to="/app/automation" />
     }
 
-    if (isStoreConfigLoading || isLoadingHelpCenters) {
-        return (
-            <div className={css.spinner} aria-label="loading">
-                <LoadingSpinner size="big" />
-            </div>
-        )
-    }
-
-    const integrationNeedMorePermissions =
-        !hasShopifyRequiredPermissions(integration)
-
     const getTitle = () => {
         switch (section) {
             case 'chat':
@@ -91,6 +90,50 @@ export const AiAgentConfigurationView = ({
                 return SETTINGS
         }
     }
+
+    if (isHelpCentersError) {
+        const is403Error =
+            isGorgiasApiError(helpCentersError) &&
+            helpCentersError.response?.status === 403
+
+        const retryButton = !is403Error ? (
+            <Button
+                intent="regular"
+                variant="primary"
+                size="sm"
+                onClick={() => refetchHelpCenters()}
+            >
+                Retry
+            </Button>
+        ) : null
+        const errorMessage = isGorgiasApiError(helpCentersError)
+            ? helpCentersError.response?.data?.error?.msg
+            : 'There was an error while trying to fetch help centers. Please try again later.'
+
+        return (
+            <div className={css.errorContainer}>
+                <Banner
+                    variant="inline"
+                    intent="destructive"
+                    isClosable={false}
+                    size="md"
+                    title="Failed to load resources"
+                    description={errorMessage}
+                    children={retryButton}
+                />
+            </div>
+        )
+    }
+
+    if (isStoreConfigLoading || isLoadingHelpCenters) {
+        return (
+            <div className={css.spinner} aria-label="loading">
+                <LoadingSpinner size="big" />
+            </div>
+        )
+    }
+    const integrationNeedMorePermissions =
+        !hasShopifyRequiredPermissions(integration)
 
     return (
         <AiAgentLayout
