@@ -159,13 +159,13 @@ export const AllAgentsLineChart = ({
                     <CartesianGrid
                         strokeDasharray="0"
                         vertical={false}
-                        stroke="var(--border-neutral-tertiary)"
+                        stroke="var(--border-neutral-default)"
                     />
                     <XAxis
                         dataKey="date"
                         axisLine={false}
                         tickLine={{
-                            stroke: 'var(--border-neutral-tertiary)',
+                            stroke: 'var(--border-neutral-default)',
                         }}
                         tick={{
                             fill: 'var(--content-neutral-secondary)',

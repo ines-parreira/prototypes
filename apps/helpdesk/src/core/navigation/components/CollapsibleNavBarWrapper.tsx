@@ -4,6 +4,8 @@ import { CollapsibleNavbarContainer } from 'common/navigation/components/Collaps
 import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 
+import css from './NavbarPanel.less'
+
 type Props = {
     children: ReactNode
 }
@@ -18,6 +20,7 @@ export function CollapsibleNavBarWrapper({ children }: Props) {
                 onMouseOver={onNavHover}
                 onFocus={onNavHover}
                 onMouseLeave={onNavLeave}
+                className={css.navbarPanel}
                 style={{ height: '100%' }}
             >
                 {children}

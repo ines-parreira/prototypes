@@ -155,8 +155,7 @@
 .axiom :local .component {
     background-color: var(--elevation-neutral-default);
 
-    scrollbar-color: var(--border-neutral-secondary)
-        var(--elevation-neutral-mid);
+    scrollbar-color: var(--border-neutral-default) var(--elevation-neutral-mid);
 
     ::-webkit-scrollbar-thumb {
         background-color: var(--content-neutral-tertiary);
@@ -180,17 +179,17 @@
 
     .footer {
         background-color: var(--surface-neutral-secondary);
-        border-top: 1px solid var(--border-neutral-secondary);
+        border-top: 1px solid var(--border-neutral-default);
         box-shadow: 1px 0 6px
             color-mix(in srgb, var(--content-neutral-default) 10%, transparent);
     }
 
     .infobarContent {
-        background: var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
     }
 
     .infobarSectionSeparator {
-        border-bottom: 1px solid var(--border-neutral-secondary);
+        border-bottom: 1px solid var(--border-neutral-default);
     }
 
     .infobarSearchWrapper {

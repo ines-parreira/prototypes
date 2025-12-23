@@ -5,6 +5,8 @@ import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { Panel } from 'core/layout/panels'
 
+import css from './NavbarPanel.less'
+
 const panelConfig = {
     defaultSize: 238,
     minSize: 200,
@@ -27,6 +29,7 @@ export default function NavbarPanel({ children }: Props) {
                     onMouseOver={onNavHover}
                     onFocus={onNavHover}
                     onMouseLeave={onNavLeave}
+                    className={css.navbarPanel}
                     style={{ height: '100%' }}
                 >
                     {children}

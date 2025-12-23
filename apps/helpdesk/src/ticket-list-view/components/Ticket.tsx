@@ -155,11 +155,13 @@ export default function Ticket({
                                     title={agentViewingMessage}
                                 />
                             )}
-                            <CheckBoxField
-                                ref={checkboxRef}
-                                value={isSelected}
-                                onClick={handleClickCheckbox}
-                            />
+                            <div className={css.checkboxContainer}>
+                                <CheckBoxField
+                                    ref={checkboxRef}
+                                    value={isSelected}
+                                    onClick={handleClickCheckbox}
+                                />
+                            </div>
                             <div
                                 className={cn(css.content, {
                                     [css.unread]: ticket.is_unread,
