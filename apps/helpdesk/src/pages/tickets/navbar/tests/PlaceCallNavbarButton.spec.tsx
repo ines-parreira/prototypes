@@ -1,4 +1,5 @@
-import { assumeMock } from '@repo/testing'
+import { logEvent, SegmentEvent } from '@repo/logging'
+import { assumeMock, userEvent } from '@repo/testing'
 import { useConditionalShortcuts } from '@repo/utils'
 import {
     cleanup,
@@ -37,6 +38,12 @@ jest.mock('hooks/useHasPhone')
 jest.mock(
     'pages/integrations/integration/components/voice/useMicrophonePermissions',
 )
+jest.mock('@repo/logging', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {
+        PlaceCallButtonClicked: 'PlaceCallButtonClicked',
+    },
+}))
 
 const isDesktopDeviceMock = assumeMock(isDesktopDevice)
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
@@ -201,5 +208,16 @@ describe('<PlaceCallNavbarButton />', () => {
 
         expect(screen.getByText('Open the dialpad')).toBeInTheDocument()
         expect(screen.getByText('⌘')).toBeInTheDocument()
+    })
+
+    it('should log PlaceCallButtonClicked event when place call button is clicked', async () => {
+        renderComponent()
+
+        const button = screen.getByText('Place call')
+        await userEvent.click(button)
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.PlaceCallButtonClicked,
+        )
     })
 })

@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useShortcuts } from '@repo/utils'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -33,6 +34,9 @@ export function CreateTicketNavbarButton() {
                     as={Link}
                     to={createTicketPath}
                     className={css.createTicketCTA}
+                    onClick={() =>
+                        logEvent(SegmentEvent.CreateTicketButtonClicked)
+                    }
                 >
                     <ButtonIconLabel
                         icon="add"

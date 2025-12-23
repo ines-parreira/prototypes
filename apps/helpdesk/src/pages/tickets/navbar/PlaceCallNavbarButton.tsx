@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { useConditionalShortcuts } from '@repo/utils'
 
 import {
@@ -69,7 +70,10 @@ export function PlaceCallNavbarButton() {
                 as="button"
                 className={css.navbarButton}
                 disabled={isButtonDisabled}
-                onClick={() => setIsDeviceVisible(!isDeviceVisible)}
+                onClick={() => {
+                    logEvent(SegmentEvent.PlaceCallButtonClicked)
+                    setIsDeviceVisible(!isDeviceVisible)
+                }}
                 ref={buttonRef}
                 id={BUTTON_ID}
             >

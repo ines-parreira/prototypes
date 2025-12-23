@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route } from 'react-router-dom'
@@ -16,6 +17,13 @@ jest.mock('react-router-dom', () => {
 
 jest.mock('pages/common/components/CreateTicket/useCreateTicketButton', () => ({
     useCreateTicketButton: jest.fn(),
+}))
+
+jest.mock('@repo/logging', () => ({
+    logEvent: jest.fn(),
+    SegmentEvent: {
+        CreateTicketButtonClicked: 'CreateTicketButtonClicked',
+    },
 }))
 
 const mockedUseCreateTicketButton = jest.mocked(useCreateTicketButton)
@@ -128,5 +136,17 @@ describe('<CreateTicketNavbarButton />', () => {
                 name: /discard and create new ticket/i,
             }),
         ).not.toBeInTheDocument()
+    })
+
+    it('should log CreateTicketButtonClicked event when create ticket link is clicked', async () => {
+        renderComponent()
+
+        const link = screen.getByRole('link', { name: /create ticket/i })
+
+        await userEvent.click(link)
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.CreateTicketButtonClicked,
+        )
     })
 })
