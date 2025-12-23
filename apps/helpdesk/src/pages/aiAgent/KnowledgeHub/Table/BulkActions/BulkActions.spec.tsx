@@ -514,7 +514,7 @@ describe('BulkActions', () => {
             ]
             const table = createMockTable(selectedItems)
 
-            const { container } = render(
+            render(
                 <BulkActions
                     table={table}
                     helpCenterIds={helpCenterIds}
@@ -531,15 +531,6 @@ describe('BulkActions', () => {
 
             expect(enableButton).toBeDisabled()
             expect(disableButton).toBeDisabled()
-
-            const enableTooltipSpan = container.querySelector(
-                'span[id^="enable-ai-button-"]',
-            )
-            const disableTooltipSpan = container.querySelector(
-                'span[id^="disable-ai-button-"]',
-            )
-            expect(enableTooltipSpan).toBeInTheDocument()
-            expect(disableTooltipSpan).toBeInTheDocument()
         })
 
         it('should disable AI agent buttons with tooltip when FAQ and Guidance items are selected', () => {
@@ -559,7 +550,7 @@ describe('BulkActions', () => {
             ]
             const table = createMockTable(selectedItems)
 
-            const { container } = render(
+            render(
                 <BulkActions
                     table={table}
                     helpCenterIds={helpCenterIds}
@@ -576,15 +567,6 @@ describe('BulkActions', () => {
 
             expect(enableButton).toBeDisabled()
             expect(disableButton).toBeDisabled()
-
-            const enableTooltipSpan = container.querySelector(
-                'span[id^="enable-ai-button-"]',
-            )
-            const disableTooltipSpan = container.querySelector(
-                'span[id^="disable-ai-button-"]',
-            )
-            expect(enableTooltipSpan).toBeInTheDocument()
-            expect(disableTooltipSpan).toBeInTheDocument()
         })
 
         it('should disable AI agent buttons with tooltip when FAQ and Document items are selected', () => {
@@ -604,7 +586,7 @@ describe('BulkActions', () => {
             ]
             const table = createMockTable(selectedItems)
 
-            const { container } = render(
+            render(
                 <BulkActions
                     table={table}
                     helpCenterIds={helpCenterIds}
@@ -621,15 +603,6 @@ describe('BulkActions', () => {
 
             expect(enableButton).toBeDisabled()
             expect(disableButton).toBeDisabled()
-
-            const enableTooltipSpan = container.querySelector(
-                'span[id^="enable-ai-button-"]',
-            )
-            const disableTooltipSpan = container.querySelector(
-                'span[id^="disable-ai-button-"]',
-            )
-            expect(enableTooltipSpan).toBeInTheDocument()
-            expect(disableTooltipSpan).toBeInTheDocument()
         })
 
         it('should enable AI agent buttons when only Guidance items are selected', () => {
@@ -826,7 +799,7 @@ describe('BulkActions', () => {
                     ...selectedItems,
                 ])
 
-                const { container } = render(
+                render(
                     <BulkActions
                         table={table}
                         helpCenterIds={helpCenterIds}
@@ -845,12 +818,6 @@ describe('BulkActions', () => {
                 expect(enableButton).toBeDisabled()
                 // Disable button should still be enabled
                 expect(disableButton).not.toBeDisabled()
-
-                // Should show tooltip for enable button
-                const enableTooltipSpan = container.querySelector(
-                    'span[id^="enable-ai-button-"]',
-                )
-                expect(enableTooltipSpan).toBeInTheDocument()
             })
 
             it('should allow enable when under limit', () => {
@@ -1033,7 +1000,7 @@ describe('BulkActions', () => {
                     ...selectedItems,
                 ])
 
-                const { container } = render(
+                render(
                     <BulkActions
                         table={table}
                         helpCenterIds={helpCenterIds}
@@ -1046,12 +1013,6 @@ describe('BulkActions', () => {
                 })
 
                 expect(enableButton).toBeDisabled()
-
-                // Should show FAQ tooltip, not guidance limit tooltip
-                const enableTooltipSpan = container.querySelector(
-                    'span[id^="enable-ai-button-"]',
-                )
-                expect(enableTooltipSpan).toBeInTheDocument()
             })
         })
     })

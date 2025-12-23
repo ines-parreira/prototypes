@@ -66,7 +66,7 @@ describe('DisableForAIButton', () => {
     it('should render disabled button with tooltip when renderMode is DisabledWithTooltip', () => {
         const tooltipMessage = 'This action is not supported'
 
-        const { container } = render(
+        render(
             <DisableForAIButton
                 onClick={jest.fn()}
                 isDisabled={true}
@@ -80,9 +80,6 @@ describe('DisableForAIButton', () => {
         })
         expect(button).toBeInTheDocument()
         expect(button).toBeDisabled()
-
-        const span = container.querySelector('span[id^="disable-ai-button-"]')
-        expect(span).toBeInTheDocument()
     })
 
     it('should not call onClick when button is disabled with tooltip', async () => {

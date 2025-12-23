@@ -98,17 +98,24 @@ export const BulkActions = ({
             } as unknown as FilteredKnowledgeHubArticle
         })
 
-    const faqValidationConfig = getAIAgentButtonConfig(selectedItems)
+    const faqEnableValidationConfig = getAIAgentButtonConfig(
+        selectedItems,
+        'enable',
+    )
+    const faqDisableValidationConfig = getAIAgentButtonConfig(
+        selectedItems,
+        'disable',
+    )
 
     const guidanceLimitConfig = getBulkEnableButtonConfig(guidanceRows)
     const enableForAIButtonConfig =
-        faqValidationConfig.mode === ButtonRenderMode.DisabledWithTooltip
-            ? faqValidationConfig
+        faqEnableValidationConfig.mode === ButtonRenderMode.DisabledWithTooltip
+            ? faqEnableValidationConfig
             : guidanceLimitConfig
 
-    const disableForAIButtonConfig = faqValidationConfig
+    const disableForAIButtonConfig = faqDisableValidationConfig
 
-    const duplicateMode = getDuplicateButtonMode(
+    const duplicateButtonConfig = getDuplicateButtonMode(
         selectedItems,
         isAllContentView,
     )
@@ -123,7 +130,7 @@ export const BulkActions = ({
     const isDuplicateActionDisabled =
         isLoading ||
         isGuidanceArticleUpdating ||
-        duplicateMode === ButtonRenderMode.DisabledWithTooltip
+        duplicateButtonConfig.mode === ButtonRenderMode.DisabledWithTooltip
     const isDeleteActionDisabled =
         isLoading || deleteMode === ButtonRenderMode.DisabledWithTooltip
 
@@ -167,8 +174,8 @@ export const BulkActions = ({
 
                     <DuplicateGuidance
                         isDisabled={isDuplicateActionDisabled}
-                        renderMode={duplicateMode}
-                        tooltipMessage={TOOLTIP_MESSAGES.duplicate}
+                        renderMode={duplicateButtonConfig.mode}
+                        tooltipMessage={duplicateButtonConfig.tooltipMessage}
                         shopName={shopName}
                         articleIds={selectedItems.map((item) =>
                             Number(item.id),

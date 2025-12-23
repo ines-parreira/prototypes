@@ -1,6 +1,4 @@
-import { useId } from '@repo/hooks'
-
-import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
 
 import type { BulkActionButtonProps } from './types'
 import { ButtonRenderMode } from './types'
@@ -16,9 +14,6 @@ export const DeleteButton = ({
     renderMode = ButtonRenderMode.Visible,
     tooltipMessage,
 }: DeleteButtonProps) => {
-    const id = useId()
-    const buttonId = `delete-button-${id}`
-
     if (renderMode === ButtonRenderMode.Hidden) {
         return null
     }
@@ -39,12 +34,10 @@ export const DeleteButton = ({
 
     if (renderMode === ButtonRenderMode.DisabledWithTooltip && tooltipMessage) {
         return (
-            <>
-                <span id={buttonId}>{button}</span>
-                <Tooltip target={buttonId} placement="top">
-                    {tooltipMessage}
-                </Tooltip>
-            </>
+            <Tooltip delay={0}>
+                <TooltipTrigger>{button}</TooltipTrigger>
+                <TooltipContent>{tooltipMessage}</TooltipContent>
+            </Tooltip>
         )
     }
 

@@ -8,7 +8,9 @@ import {
     ListItem,
     ListSection,
     MultiSelect,
-    LegacyTooltip as Tooltip,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -249,9 +251,11 @@ export const DuplicateGuidance = ({
     if (renderMode === ButtonRenderMode.DisabledWithTooltip && tooltipMessage) {
         return (
             <>
-                <span id={buttonId}>{multiSelect}</span>
-                <Tooltip target={buttonId} placement="top">
-                    {tooltipMessage}
+                <Tooltip placement="top" delay={0}>
+                    <TooltipTrigger>
+                        <span id={buttonId}>{multiSelect}</span>
+                    </TooltipTrigger>
+                    <TooltipContent>{tooltipMessage}</TooltipContent>
                 </Tooltip>
             </>
         )

@@ -35,15 +35,15 @@ describe('BulkActions utils', () => {
                     lastUpdatedAt: '2024-01-01',
                 },
             ]
-            expect(getDuplicateButtonMode(items, true)).toBe(
-                ButtonRenderMode.Visible,
-            )
-            expect(getDuplicateButtonMode(items, false)).toBe(
-                ButtonRenderMode.Visible,
-            )
+            expect(getDuplicateButtonMode(items, true)).toEqual({
+                mode: ButtonRenderMode.Visible,
+            })
+            expect(getDuplicateButtonMode(items, false)).toEqual({
+                mode: ButtonRenderMode.Visible,
+            })
         })
 
-        it('returns DisabledWithTooltip in All content view with mixed types', () => {
+        it('returns DisabledWithTooltip with FAQ message when only FAQ items are mixed with Guidance', () => {
             const items: GroupedKnowledgeItem[] = [
                 {
                     type: KnowledgeType.Guidance,
@@ -58,12 +58,13 @@ describe('BulkActions utils', () => {
                     lastUpdatedAt: '2024-01-01',
                 },
             ]
-            expect(getDuplicateButtonMode(items, true)).toBe(
-                ButtonRenderMode.DisabledWithTooltip,
-            )
+            expect(getDuplicateButtonMode(items, true)).toEqual({
+                mode: ButtonRenderMode.DisabledWithTooltip,
+                tooltipMessage: TOOLTIP_MESSAGES.duplicateWithFAQ,
+            })
         })
 
-        it('returns DisabledWithTooltip in All content view with only FAQ items', () => {
+        it('returns DisabledWithTooltip with FAQ message when only FAQ items are selected', () => {
             const items: GroupedKnowledgeItem[] = [
                 {
                     type: KnowledgeType.FAQ,
@@ -72,9 +73,100 @@ describe('BulkActions utils', () => {
                     lastUpdatedAt: '2024-01-01',
                 },
             ]
-            expect(getDuplicateButtonMode(items, true)).toBe(
-                ButtonRenderMode.DisabledWithTooltip,
-            )
+            expect(getDuplicateButtonMode(items, true)).toEqual({
+                mode: ButtonRenderMode.DisabledWithTooltip,
+                tooltipMessage: TOOLTIP_MESSAGES.duplicateWithFAQ,
+            })
+        })
+
+        it('returns DisabledWithTooltip with snippets message when Document items are selected', () => {
+            const items: GroupedKnowledgeItem[] = [
+                {
+                    type: KnowledgeType.Guidance,
+                    id: '1',
+                    title: 'G1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+                {
+                    type: KnowledgeType.Document,
+                    id: '2',
+                    title: 'Doc1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+            ]
+            expect(getDuplicateButtonMode(items, true)).toEqual({
+                mode: ButtonRenderMode.DisabledWithTooltip,
+                tooltipMessage: TOOLTIP_MESSAGES.duplicateWithSnippets,
+            })
+        })
+
+        it('returns DisabledWithTooltip with snippets message when URL items are selected', () => {
+            const items: GroupedKnowledgeItem[] = [
+                {
+                    type: KnowledgeType.Guidance,
+                    id: '1',
+                    title: 'G1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+                {
+                    type: KnowledgeType.URL,
+                    id: '2',
+                    title: 'URL1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+            ]
+            expect(getDuplicateButtonMode(items, true)).toEqual({
+                mode: ButtonRenderMode.DisabledWithTooltip,
+                tooltipMessage: TOOLTIP_MESSAGES.duplicateWithSnippets,
+            })
+        })
+
+        it('returns DisabledWithTooltip with snippets message when Domain items are selected', () => {
+            const items: GroupedKnowledgeItem[] = [
+                {
+                    type: KnowledgeType.Guidance,
+                    id: '1',
+                    title: 'G1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+                {
+                    type: KnowledgeType.Domain,
+                    id: '2',
+                    title: 'Domain1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+            ]
+            expect(getDuplicateButtonMode(items, true)).toEqual({
+                mode: ButtonRenderMode.DisabledWithTooltip,
+                tooltipMessage: TOOLTIP_MESSAGES.duplicateWithSnippets,
+            })
+        })
+
+        it('prioritizes snippets message when both FAQ and snippets are selected', () => {
+            const items: GroupedKnowledgeItem[] = [
+                {
+                    type: KnowledgeType.Guidance,
+                    id: '1',
+                    title: 'G1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+                {
+                    type: KnowledgeType.FAQ,
+                    id: '2',
+                    title: 'F1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+                {
+                    type: KnowledgeType.Document,
+                    id: '3',
+                    title: 'Doc1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+            ]
+            expect(getDuplicateButtonMode(items, true)).toEqual({
+                mode: ButtonRenderMode.DisabledWithTooltip,
+                tooltipMessage: TOOLTIP_MESSAGES.duplicateWithSnippets,
+            })
         })
 
         it('returns Hidden in individual view with non-Guidance items', () => {
@@ -86,21 +178,22 @@ describe('BulkActions utils', () => {
                     lastUpdatedAt: '2024-01-01',
                 },
             ]
-            expect(getDuplicateButtonMode(items, false)).toBe(
-                ButtonRenderMode.Hidden,
-            )
+            expect(getDuplicateButtonMode(items, false)).toEqual({
+                mode: ButtonRenderMode.Hidden,
+            })
         })
 
-        it('returns DisabledWithTooltip when empty selection in All content view', () => {
-            expect(getDuplicateButtonMode([], true)).toBe(
-                ButtonRenderMode.DisabledWithTooltip,
-            )
+        it('returns DisabledWithTooltip with snippets message when empty selection in All content view', () => {
+            expect(getDuplicateButtonMode([], true)).toEqual({
+                mode: ButtonRenderMode.DisabledWithTooltip,
+                tooltipMessage: TOOLTIP_MESSAGES.duplicateWithSnippets,
+            })
         })
 
         it('returns Hidden when empty selection in individual view', () => {
-            expect(getDuplicateButtonMode([], false)).toBe(
-                ButtonRenderMode.Hidden,
-            )
+            expect(getDuplicateButtonMode([], false)).toEqual({
+                mode: ButtonRenderMode.Hidden,
+            })
         })
     })
 
@@ -232,7 +325,7 @@ describe('BulkActions utils', () => {
 
     describe('getAIAgentButtonConfig', () => {
         it('returns Hidden mode when no items are selected', () => {
-            const result = getAIAgentButtonConfig([])
+            const result = getAIAgentButtonConfig([], 'enable')
 
             expect(result.mode).toBe(ButtonRenderMode.Hidden)
             expect(result.tooltipMessage).toBeUndefined()
@@ -254,7 +347,7 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items)
+            const result = getAIAgentButtonConfig(items, 'enable')
 
             expect(result.mode).toBe(ButtonRenderMode.Visible)
             expect(result.tooltipMessage).toBeUndefined()
@@ -270,7 +363,7 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items)
+            const result = getAIAgentButtonConfig(items, 'enable')
 
             expect(result.mode).toBe(ButtonRenderMode.Visible)
             expect(result.tooltipMessage).toBeUndefined()
@@ -286,7 +379,7 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items)
+            const result = getAIAgentButtonConfig(items, 'enable')
 
             expect(result.mode).toBe(ButtonRenderMode.Visible)
             expect(result.tooltipMessage).toBeUndefined()
@@ -302,7 +395,7 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items)
+            const result = getAIAgentButtonConfig(items, 'enable')
 
             expect(result.mode).toBe(ButtonRenderMode.Visible)
             expect(result.tooltipMessage).toBeUndefined()
@@ -324,13 +417,13 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items)
+            const result = getAIAgentButtonConfig(items, 'enable')
 
             expect(result.mode).toBe(ButtonRenderMode.Visible)
             expect(result.tooltipMessage).toBeUndefined()
         })
 
-        it('returns DisabledWithTooltip mode when only FAQ items are selected', () => {
+        it('returns DisabledWithTooltip mode with enable message when only FAQ items are selected for enable action', () => {
             const items: GroupedKnowledgeItem[] = [
                 {
                     type: KnowledgeType.FAQ,
@@ -340,13 +433,29 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items)
+            const result = getAIAgentButtonConfig(items, 'enable')
 
             expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
-            expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.aiAgentOnlyFAQ)
+            expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.enableOnlyFAQ)
         })
 
-        it('returns DisabledWithTooltip mode when multiple FAQ items are selected', () => {
+        it('returns DisabledWithTooltip mode with disable message when only FAQ items are selected for disable action', () => {
+            const items: GroupedKnowledgeItem[] = [
+                {
+                    type: KnowledgeType.FAQ,
+                    id: '1',
+                    title: 'FAQ 1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+            ]
+
+            const result = getAIAgentButtonConfig(items, 'disable')
+
+            expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
+            expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.disableOnlyFAQ)
+        })
+
+        it('returns DisabledWithTooltip mode with enable message when multiple FAQ items are selected for enable action', () => {
             const items: GroupedKnowledgeItem[] = [
                 {
                     type: KnowledgeType.FAQ,
@@ -362,10 +471,32 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items)
+            const result = getAIAgentButtonConfig(items, 'enable')
 
             expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
-            expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.aiAgentOnlyFAQ)
+            expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.enableOnlyFAQ)
+        })
+
+        it('returns DisabledWithTooltip mode with disable message when multiple FAQ items are selected for disable action', () => {
+            const items: GroupedKnowledgeItem[] = [
+                {
+                    type: KnowledgeType.FAQ,
+                    id: '1',
+                    title: 'FAQ 1',
+                    lastUpdatedAt: '2024-01-01',
+                },
+                {
+                    type: KnowledgeType.FAQ,
+                    id: '2',
+                    title: 'FAQ 2',
+                    lastUpdatedAt: '2024-01-01',
+                },
+            ]
+
+            const result = getAIAgentButtonConfig(items, 'disable')
+
+            expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
+            expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.disableOnlyFAQ)
         })
 
         it('returns DisabledWithTooltip mode when FAQ and Guidance items are selected', () => {
@@ -384,7 +515,7 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items)
+            const result = getAIAgentButtonConfig(items, 'enable')
 
             expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
             expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.aiAgentMixedFAQ)
@@ -406,7 +537,7 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items)
+            const result = getAIAgentButtonConfig(items, 'disable')
 
             expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
             expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.aiAgentMixedFAQ)
@@ -434,7 +565,7 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items)
+            const result = getAIAgentButtonConfig(items, 'enable')
 
             expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
             expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.aiAgentMixedFAQ)
@@ -654,7 +785,7 @@ describe('BulkActions utils', () => {
 
             expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
             expect(result.tooltipMessage).toBe(
-                "You've reached the limit of 100 enabled Guidances. To enable this one, disable another.",
+                "You've reached the limit of 100 enabled Guidance. Disable Guidance to enable more.",
             )
         })
 
@@ -668,7 +799,7 @@ describe('BulkActions utils', () => {
 
             expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
             expect(result.tooltipMessage).toBe(
-                "You've reached the limit of 100 enabled Guidances. To enable this one, disable another.",
+                "You've reached the limit of 100 enabled Guidance. Disable Guidance to enable more.",
             )
         })
 
@@ -681,7 +812,7 @@ describe('BulkActions utils', () => {
             const result = getBulkEnableButtonConfig(guidanceArticles)
 
             expect(result.tooltipMessage).toBe(
-                "You've reached the limit of 100 enabled Guidances. To enable this one, disable another.",
+                "You've reached the limit of 100 enabled Guidance. Disable Guidance to enable more.",
             )
         })
 
@@ -710,7 +841,7 @@ describe('BulkActions utils', () => {
 
             expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
             expect(result.tooltipMessage).toBe(
-                "You've reached the limit of 100 enabled Guidances. To enable this one, disable another.",
+                "You've reached the limit of 100 enabled Guidance. Disable Guidance to enable more.",
             )
         })
 
@@ -733,7 +864,7 @@ describe('BulkActions utils', () => {
 
             expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
             expect(result.tooltipMessage).toBe(
-                "You've reached the limit of 100 enabled Guidances. To enable this one, disable another.",
+                "You've reached the limit of 100 enabled Guidance. Disable Guidance to enable more.",
             )
         })
     })

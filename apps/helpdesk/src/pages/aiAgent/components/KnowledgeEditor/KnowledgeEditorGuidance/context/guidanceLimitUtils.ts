@@ -10,7 +10,7 @@ export const calculateGuidanceLimit = (
 
     const isAtLimit = activeGuidanceCount >= NEW_GUIDANCE_ARTICLE_LIMIT
 
-    const limitMessage = `You've reached the limit of ${NEW_GUIDANCE_ARTICLE_LIMIT} enabled Guidances. To enable this one, disable another.`
+    const limitMessage = `You've reached the limit of ${NEW_GUIDANCE_ARTICLE_LIMIT} enabled Guidance. Disable Guidance to enable more.`
 
     return {
         activeGuidanceCount,

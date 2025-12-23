@@ -54,7 +54,7 @@ describe('DeleteButton', () => {
     })
 
     it('should render button with tooltip wrapper when renderMode is DisabledWithTooltip', () => {
-        const { container } = render(
+        render(
             <DeleteButton
                 onClick={jest.fn()}
                 isDisabled={true}
@@ -65,9 +65,6 @@ describe('DeleteButton', () => {
 
         expect(screen.getByRole('button')).toBeInTheDocument()
         expect(screen.getByRole('button')).toBeDisabled()
-
-        const span = container.querySelector('span[id^="delete-button-"]')
-        expect(span).toBeInTheDocument()
     })
 
     it('should not render tooltip when renderMode is DisabledWithTooltip but no message provided', () => {

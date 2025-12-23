@@ -89,7 +89,7 @@ describe('calculateGuidanceLimit', () => {
         const result = calculateGuidanceLimit([])
 
         expect(result.limitMessage).toBe(
-            `You've reached the limit of ${NEW_GUIDANCE_ARTICLE_LIMIT} enabled Guidances. To enable this one, disable another.`,
+            `You've reached the limit of ${NEW_GUIDANCE_ARTICLE_LIMIT} enabled Guidance. Disable Guidance to enable more.`,
         )
     })
 })

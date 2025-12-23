@@ -140,7 +140,7 @@ describe('useToggleVisibility', () => {
 
         expect(result.current.isAtLimit).toBe(true)
         expect(result.current.limitMessage).toContain(
-            `${NEW_GUIDANCE_ARTICLE_LIMIT} enabled Guidances`,
+            `You've reached the limit of 100 enabled Guidance. Disable Guidance to enable more.`,
         )
     })
 
