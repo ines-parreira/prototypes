@@ -1,7 +1,5 @@
 import type { BillingContactDetailResponse } from 'state/billing/types'
 
-import { reportCRMGrowthError } from './reportCRMGrowthError'
-
 // Countries where our customers do not use postal codes. See: https://docs.google.com/spreadsheets/d/1sPiWPJyLXqjd0x6i13H36gX22GzrFECBk74j_8z4VRY/edit?gid=1085738161#gid=1085738161
 const COUNTRIES_WITHOUT_POSTAL_CODES = new Set(['AE', 'AW', 'HK', 'JM', 'QA'])
 
@@ -14,18 +12,7 @@ export const getIsMissingBillingInformation = (
 ): boolean => {
     // Runtime validation: shipping or shipping.address can be undefined even though
     // TypeScript types indicate they're required.
-    // Related Sentry issue: https://gorgias.sentry.io/issues/7121302754
     if (!state || !state.shipping || !state.shipping.address) {
-        if (state) {
-            reportCRMGrowthError(
-                new Error(
-                    'Unexpected undefined shipping or address in billing state',
-                ),
-                JSON.stringify({
-                    billingState: state,
-                }),
-            )
-        }
         return false
     }
 
