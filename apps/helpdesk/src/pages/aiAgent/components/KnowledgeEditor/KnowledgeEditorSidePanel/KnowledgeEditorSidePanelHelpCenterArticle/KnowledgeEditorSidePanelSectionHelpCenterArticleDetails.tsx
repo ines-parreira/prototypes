@@ -1,6 +1,8 @@
 import classNames from 'classnames'
+import { Link } from 'react-router-dom'
 
 import { useArticleDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
+import { HELP_CENTER_BASE_PATH } from 'pages/settings/helpCenter/constants'
 
 import {
     KnowledgeEditorSidePanelFieldAIAgentStatus,
@@ -21,8 +23,13 @@ export type Props = {
 export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
     sectionId,
 }: Props) => {
-    const { article, createdDatetime, lastUpdatedDatetime, articleUrl } =
-        useArticleDetailsFromContext()
+    const {
+        article,
+        createdDatetime,
+        lastUpdatedDatetime,
+        articleUrl,
+        helpCenter,
+    } = useArticleDetailsFromContext()
 
     const isPublished = article ? article.isCurrent : undefined
 
@@ -91,6 +98,19 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
                                 date={lastUpdatedDatetime}
                                 key="last-updated"
                             />
+                        ),
+                    },
+                    {
+                        left: 'Help Center',
+                        right: helpCenter ? (
+                            <Link
+                                to={`${HELP_CENTER_BASE_PATH}/${helpCenter.id}/articles`}
+                                className={commonCss.urlLink}
+                            >
+                                {helpCenter.label}
+                            </Link>
+                        ) : (
+                            '-'
                         ),
                     },
                     {

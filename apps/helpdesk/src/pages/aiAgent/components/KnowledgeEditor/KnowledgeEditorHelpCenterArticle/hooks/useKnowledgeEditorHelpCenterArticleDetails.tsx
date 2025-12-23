@@ -18,6 +18,10 @@ export type ArticleDetailsData = {
     createdDatetime?: Date
     lastUpdatedDatetime?: Date
     articleUrl?: string
+    helpCenter?: {
+        label: string
+        id: number
+    }
 }
 
 /**
@@ -66,6 +70,10 @@ export const useArticleDetailsFromContext = (): ArticleDetailsData => {
                               'UNLISTED',
                       })
                     : undefined,
+            helpCenter: {
+                label: helpCenter.name,
+                id: helpCenter.id,
+            },
         }
     }, [helpCenter, state.article, state.currentLocale, state.translationMode])
 }

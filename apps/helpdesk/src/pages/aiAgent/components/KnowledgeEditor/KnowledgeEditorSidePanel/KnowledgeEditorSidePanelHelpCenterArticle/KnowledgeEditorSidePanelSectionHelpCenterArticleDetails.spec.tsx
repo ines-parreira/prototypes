@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import { useArticleDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
 
@@ -16,6 +17,16 @@ const mockUseArticleDetailsFromContext =
     useArticleDetailsFromContext as jest.Mock
 
 describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
+    const renderComponent = () => {
+        return render(
+            <MemoryRouter>
+                <KnowledgeEditorSidePanel initialExpandedSections={['details']}>
+                    <KnowledgeEditorSidePanelSectionHelpCenterArticleDetails sectionId="details" />
+                </KnowledgeEditorSidePanel>
+            </MemoryRouter>,
+        )
+    }
+
     it('renders published article when isCurrent is true', () => {
         mockUseArticleDetailsFromContext.mockReturnValue({
             article: {
@@ -29,13 +40,13 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
             lastUpdatedDatetime: new Date('2025-06-17'),
             articleUrl:
                 'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
+            helpCenter: {
+                label: 'My Help Center',
+                id: 1,
+            },
         })
 
-        render(
-            <KnowledgeEditorSidePanel initialExpandedSections={['details']}>
-                <KnowledgeEditorSidePanelSectionHelpCenterArticleDetails sectionId="details" />
-            </KnowledgeEditorSidePanel>,
-        )
+        renderComponent()
 
         expect(screen.getByText('Details')).toBeInTheDocument()
         expect(screen.getByText('Published')).toBeInTheDocument()
@@ -58,13 +69,13 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
             createdDatetime: undefined,
             lastUpdatedDatetime: undefined,
             articleUrl: undefined,
+            helpCenter: {
+                label: 'My Help Center',
+                id: 1,
+            },
         })
 
-        render(
-            <KnowledgeEditorSidePanel initialExpandedSections={['details']}>
-                <KnowledgeEditorSidePanelSectionHelpCenterArticleDetails sectionId="details" />
-            </KnowledgeEditorSidePanel>,
-        )
+        renderComponent()
         expect(screen.getByText('Draft')).toBeInTheDocument()
     })
 
@@ -80,13 +91,13 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
             createdDatetime: undefined,
             lastUpdatedDatetime: undefined,
             articleUrl: undefined,
+            helpCenter: {
+                label: 'My Help Center',
+                id: 1,
+            },
         })
 
-        render(
-            <KnowledgeEditorSidePanel initialExpandedSections={['details']}>
-                <KnowledgeEditorSidePanelSectionHelpCenterArticleDetails sectionId="details" />
-            </KnowledgeEditorSidePanel>,
-        )
+        renderComponent()
         expect(screen.getByText('Draft')).toBeInTheDocument()
     })
 
@@ -96,13 +107,69 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
             createdDatetime: undefined,
             lastUpdatedDatetime: undefined,
             articleUrl: undefined,
+            helpCenter: undefined,
         })
 
-        render(
-            <KnowledgeEditorSidePanel initialExpandedSections={['details']}>
-                <KnowledgeEditorSidePanelSectionHelpCenterArticleDetails sectionId="details" />
-            </KnowledgeEditorSidePanel>,
-        )
-        expect(screen.getAllByText('-')).toHaveLength(4) // Status, Created, Last updated, Article URL
+        renderComponent()
+        expect(screen.getAllByText('-')).toHaveLength(5)
+    })
+
+    describe('Help Center link', () => {
+        it('renders Help Center link with correct URL and label', () => {
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl:
+                    'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
+                helpCenter: {
+                    label: 'My Test Help Center',
+                    id: 42,
+                },
+            })
+
+            renderComponent()
+
+            const helpCenterLink = screen.getByRole('link', {
+                name: 'My Test Help Center',
+            })
+            expect(helpCenterLink).toBeInTheDocument()
+            expect(helpCenterLink).toHaveAttribute(
+                'href',
+                '/app/settings/help-center/42/articles',
+            )
+        })
+
+        it('renders dash when helpCenter is undefined', () => {
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl:
+                    'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
+                helpCenter: undefined,
+            })
+
+            renderComponent()
+
+            const helpCenterLabel = screen.getByText('Help Center')
+            expect(helpCenterLabel).toBeInTheDocument()
+
+            expect(
+                screen.queryByRole('link', { name: /Help Center/i }),
+            ).not.toBeInTheDocument()
+        })
     })
 })

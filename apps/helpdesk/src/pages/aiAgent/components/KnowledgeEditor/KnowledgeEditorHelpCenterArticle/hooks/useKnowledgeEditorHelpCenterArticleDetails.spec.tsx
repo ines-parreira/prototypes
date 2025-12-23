@@ -2,8 +2,8 @@ import { renderHook } from '@testing-library/react'
 
 import type { LocaleCode } from 'models/helpCenter/types'
 
-import { useArticleContext } from '../context/ArticleContext'
-import type { ArticleContextValue } from '../context/types'
+import { useArticleContext } from '../context'
+import type { ArticleContextValue } from '../context'
 import { useArticleDetailsFromContext } from './useKnowledgeEditorHelpCenterArticleDetails'
 
 jest.mock('../context/ArticleContext', () => ({
@@ -45,7 +45,7 @@ describe('useArticleDetailsFromContext', () => {
         translation: mockTranslation,
     }
 
-    const mockHelpCenter = {
+    const mockHelpCenter: any = {
         id: 1,
         name: 'Test Help Center',
         subdomain: 'acme',
@@ -251,6 +251,44 @@ describe('useArticleDetailsFromContext', () => {
         })
     })
 
+    describe('helpCenter', () => {
+        it('should return helpCenter with label and id', () => {
+            const { result } = renderHook(() => useArticleDetailsFromContext())
+
+            expect(result.current.helpCenter).toEqual({
+                label: 'Test Help Center',
+                id: 1,
+            })
+        })
+
+        it('should return helpCenter data from config', () => {
+            const customHelpCenter: any = {
+                id: 999,
+                name: 'Custom Help Center',
+                subdomain: 'custom',
+                domain_type: 'SUBDOMAIN' as const,
+                custom_domain: null,
+                default_locale: 'en-US' as const,
+                locales: ['en-US'] as LocaleCode[],
+                created_datetime: '2024-01-01T00:00:00Z',
+                updated_datetime: '2024-01-02T00:00:00Z',
+            }
+
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    config: { helpCenter: customHelpCenter },
+                }),
+            )
+
+            const { result } = renderHook(() => useArticleDetailsFromContext())
+
+            expect(result.current.helpCenter).toEqual({
+                label: 'Custom Help Center',
+                id: 999,
+            })
+        })
+    })
+
     describe('return value shape', () => {
         it('should return all expected properties', () => {
             const { result } = renderHook(() => useArticleDetailsFromContext())
@@ -259,6 +297,7 @@ describe('useArticleDetailsFromContext', () => {
             expect(result.current).toHaveProperty('createdDatetime')
             expect(result.current).toHaveProperty('lastUpdatedDatetime')
             expect(result.current).toHaveProperty('articleUrl')
+            expect(result.current).toHaveProperty('helpCenter')
         })
     })
 })
