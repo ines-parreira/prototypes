@@ -222,6 +222,11 @@ describe('ImportMetafieldFlow', () => {
 
         it('should call backToCategories when continue button is clicked', async () => {
             const user = userEvent.setup()
+            const selectedFields = mockImportableFields.filter(
+                (field) => field.category === 'customer',
+            )
+            mockGetSelectionForCategory.mockReturnValue(selectedFields)
+
             useImportWizard.mockReturnValue({
                 ...defaultWizardState,
                 step: 'list',

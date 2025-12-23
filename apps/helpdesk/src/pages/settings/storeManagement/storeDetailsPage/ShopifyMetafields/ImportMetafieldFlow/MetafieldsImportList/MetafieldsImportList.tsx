@@ -231,7 +231,12 @@ export default function MetafieldsImportList({
                 <Button variant="secondary" onClick={onBack}>
                     Back to category
                 </Button>
-                <Button onClick={onContinue}>Continue</Button>
+                <Button
+                    onClick={onContinue}
+                    isDisabled={selectedMetafields.length === 0}
+                >
+                    Continue
+                </Button>
             </Box>
         </div>
     )

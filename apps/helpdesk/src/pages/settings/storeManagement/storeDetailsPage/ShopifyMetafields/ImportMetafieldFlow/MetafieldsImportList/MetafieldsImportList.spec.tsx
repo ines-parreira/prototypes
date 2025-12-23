@@ -115,7 +115,30 @@ describe('MetafieldsImportList', () => {
 
     it('should call onContinue when Continue button is clicked', async () => {
         const user = userEvent.setup()
+        const selectedFields = mockImportableFields.filter(
+            (field) => field.category === 'customer',
+        )
 
+        render(
+            <MetafieldsImportList
+                category="customer"
+                selectedMetafields={selectedFields}
+                onSelectionChange={mockOnSelectionChange}
+                onBack={mockOnBack}
+                onContinue={mockOnContinue}
+            />,
+        )
+
+        const continueButton = screen.getByRole('button', {
+            name: /^continue$/i,
+        })
+
+        await act(() => user.click(continueButton))
+
+        expect(mockOnContinue).toHaveBeenCalledTimes(1)
+    })
+
+    it('should disable Continue button when no items are selected', () => {
         render(
             <MetafieldsImportList
                 category="customer"
@@ -130,9 +153,29 @@ describe('MetafieldsImportList', () => {
             name: /^continue$/i,
         })
 
-        await act(() => user.click(continueButton))
+        expect(continueButton).toBeDisabled()
+    })
 
-        expect(mockOnContinue).toHaveBeenCalledTimes(1)
+    it('should enable Continue button when items are selected', () => {
+        const selectedFields = mockImportableFields.filter(
+            (field) => field.category === 'customer',
+        )
+
+        render(
+            <MetafieldsImportList
+                category="customer"
+                selectedMetafields={selectedFields}
+                onSelectionChange={mockOnSelectionChange}
+                onBack={mockOnBack}
+                onContinue={mockOnContinue}
+            />,
+        )
+
+        const continueButton = screen.getByRole('button', {
+            name: /^continue$/i,
+        })
+
+        expect(continueButton).not.toBeDisabled()
     })
 
     it('should initialize table with selected metafields', () => {
