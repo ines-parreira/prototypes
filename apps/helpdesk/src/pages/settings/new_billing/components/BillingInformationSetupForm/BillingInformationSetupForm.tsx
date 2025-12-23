@@ -10,6 +10,7 @@ import type { FormProps } from 'core/forms'
 import { Form } from 'core/forms'
 import { BILLING_PAYMENT_PATH } from 'pages/settings/new_billing/constants'
 import { filterTaxIdsByAddress } from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
+import { normalizeStateToCode } from 'pages/settings/new_billing/utils/normalizeStateToCode'
 import { useSubmitBillingAddress } from 'pages/settings/new_billing/views/BillingAddressSetupView/hooks/useSubmitBillingAddress'
 import type {
     BillingContactDetailResponse,
@@ -62,7 +63,14 @@ const useDefaultValues = (billingInformation: BillingContactDetailResponse) => {
             address: {
                 complete: false,
                 ...billingInformation.shipping,
-                phone: billingInformation.shipping.phone ?? undefined,
+                address: {
+                    ...billingInformation.shipping?.address,
+                    state: normalizeStateToCode(
+                        billingInformation.shipping?.address?.state,
+                        billingInformation.shipping?.address?.country,
+                    ),
+                },
+                phone: billingInformation.shipping?.phone ?? undefined,
             },
         }
 

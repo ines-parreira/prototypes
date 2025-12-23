@@ -23,6 +23,7 @@ import {
 import { useStripeElementPaymentState } from 'pages/settings/new_billing/hooks/useStripeElementPaymentState'
 import { filterTaxIdsByAddress } from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
 import { getIsMissingBillingInformation } from 'pages/settings/new_billing/utils/getIsMissingBillingInformation'
+import { normalizeStateToCode } from 'pages/settings/new_billing/utils/normalizeStateToCode'
 import { StripePaymentFields } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentFields/StripePaymentFields'
 import type { ISubscriptionSummaryProps } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary'
 import { SubscriptionSummary } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary'
@@ -140,7 +141,11 @@ const useDefaultValues = (
                 ...billingInformation.shipping,
                 address: {
                     ...billingInformation.shipping?.address,
-                    state: billingInformation.shipping?.address?.state ?? '',
+                    state:
+                        normalizeStateToCode(
+                            billingInformation.shipping?.address?.state,
+                            billingInformation.shipping?.address?.country,
+                        ) ?? '',
                 },
                 phone: billingInformation.shipping?.phone ?? undefined,
             },
