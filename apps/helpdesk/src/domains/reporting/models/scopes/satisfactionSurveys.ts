@@ -89,6 +89,7 @@ export const averageCsatScorePerAgentTimeseries = satisfactionSurveysScope
                     granularity: ctx.granularity,
                 },
             ],
+            limit: 10_000,
         }
 
         if (ctx.sortDirection) {
@@ -119,6 +120,7 @@ export const averageCsatScorePerChannelTimeseries = satisfactionSurveysScope
                     granularity: ctx.granularity,
                 },
             ],
+            limit: 10_000,
         }
 
         if (ctx.sortDirection) {
