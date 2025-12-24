@@ -30,7 +30,7 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig = {
             type: 'charts',
             items: [
                 {
-                    chartId: AnalyticsOverviewChart.AutomationDonutChart,
+                    chartId: AnalyticsOverviewChart.AutomationRateComboChart,
                     gridSize: 6,
                 },
                 {

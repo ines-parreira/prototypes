@@ -12,18 +12,25 @@ import {
 import { STATS_ROUTES } from 'routes/constants'
 
 import { AnalyticsOverviewAutomatedInteractionsCard } from './charts/AnalyticsOverviewAutomatedInteractionsCard'
+import { AnalyticsOverviewAutomatedInteractionsComboChart } from './charts/AnalyticsOverviewAutomatedInteractionsComboChart'
 import { AnalyticsOverviewAutomationRateCard } from './charts/AnalyticsOverviewAutomationRateCard'
 import { AnalyticsOverviewCostSavedCard } from './charts/AnalyticsOverviewCostSavedCard'
-import { AnalyticsOverviewDonutChart } from './charts/AnalyticsOverviewDonutChart'
 import { AnalyticsOverviewLineChart } from './charts/AnalyticsOverviewLineChart'
 import { AnalyticsOverviewPerformanceTable } from './charts/AnalyticsOverviewPerformanceTable'
 import { AnalyticsOverviewTimeSavedCard } from './charts/AnalyticsOverviewTimeSavedCard'
+import { AutomationRateComboChart } from './components/AutomationRateComboChart/AutomationRateComboChart'
 
 // Mock fetch functions - these will be replaced with real data fetchers later
-const fetchAutomationBreakdown = async () =>
+const fetchAutomationRateByFeatureData = async () =>
     ({
         isLoading: false,
-        fileName: 'automation-breakdown.csv',
+        fileName: 'automation-rate-by-feature.csv',
+        files: {},
+    }) as any
+const fetchAutomatedInteractionsBySkillData = async () =>
+    ({
+        isLoading: false,
+        fileName: 'automated-interactions-by-skill.csv',
         files: {},
     }) as any
 const fetchAutomationTrendData = async () =>
@@ -44,7 +51,8 @@ export enum AnalyticsOverviewChart {
     AutomatedInteractionsCard = 'automated_interactions_card',
     TimeSavedCard = 'time_saved_card',
     CostSavedCard = 'cost_saved_card',
-    AutomationDonutChart = 'automation_donut_chart',
+    AutomationRateComboChart = 'automation_rate_combo_chart',
+    AutomatedInteractionsComboChart = 'automated_interactions_combo_chart',
     AutomationLineChart = 'automation_line_chart',
     PerformanceTable = 'performance_table',
 }
@@ -109,16 +117,29 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 description: 'Cost savings from automation',
                 chartType: ChartType.Card,
             },
-            [AnalyticsOverviewChart.AutomationDonutChart]: {
-                chartComponent: AnalyticsOverviewDonutChart,
-                label: 'Automation breakdown by feature',
+            [AnalyticsOverviewChart.AutomationRateComboChart]: {
+                chartComponent: AutomationRateComboChart,
+                label: 'Overall automation rate',
                 csvProducer: [
                     {
                         type: DataExportFormat.Table,
-                        fetch: fetchAutomationBreakdown,
+                        fetch: fetchAutomationRateByFeatureData,
                     },
                 ],
-                description: 'Breakdown of automation by feature',
+                description: 'Breakdown of automation rate by feature',
+                chartType: ChartType.Graph,
+            },
+            [AnalyticsOverviewChart.AutomatedInteractionsComboChart]: {
+                chartComponent:
+                    AnalyticsOverviewAutomatedInteractionsComboChart,
+                label: 'Automated interactions',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Table,
+                        fetch: fetchAutomatedInteractionsBySkillData,
+                    },
+                ],
+                description: 'Breakdown of automated interactions by skill',
                 chartType: ChartType.Graph,
             },
             [AnalyticsOverviewChart.AutomationLineChart]: {

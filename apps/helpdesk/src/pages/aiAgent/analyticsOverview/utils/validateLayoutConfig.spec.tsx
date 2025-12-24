@@ -350,7 +350,7 @@ describe('validateLayoutConfig', () => {
                         },
                         {
                             chartId:
-                                AnalyticsOverviewChart.AutomationDonutChart,
+                                AnalyticsOverviewChart.AutomationRateComboChart,
                             gridSize: 6,
                         },
                     ],

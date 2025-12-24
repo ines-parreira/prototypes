@@ -53,7 +53,7 @@ describe('DashboardLayoutRenderer', () => {
         ).toBeInTheDocument()
         expect(
             screen.getByTestId(
-                `chart-${AnalyticsOverviewChart.AutomationDonutChart}`,
+                `chart-${AnalyticsOverviewChart.AutomationRateComboChart}`,
             ),
         ).toBeInTheDocument()
         expect(

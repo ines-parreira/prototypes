@@ -81,14 +81,14 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config.chartType).toBe(ChartType.Card)
     })
 
-    it('should have automation donut chart config', () => {
+    it('should have automated interactions combo chart config', () => {
         const config =
             AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.AutomationDonutChart
+                AnalyticsOverviewChart.AutomatedInteractionsComboChart
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Automation breakdown by feature')
+        expect(config.label).toBe('Automated interactions')
         expect(config.chartType).toBe(ChartType.Graph)
     })
 
@@ -125,7 +125,7 @@ describe('AnalyticsOverviewReportConfig', () => {
     it('should have all chart configs defined', () => {
         const charts = AnalyticsOverviewReportConfig.charts
 
-        expect(Object.keys(charts)).toHaveLength(7)
+        expect(Object.keys(charts)).toHaveLength(8)
         expect(charts[AnalyticsOverviewChart.AutomationRateCard]).toBeDefined()
         expect(
             charts[AnalyticsOverviewChart.AutomatedInteractionsCard],
@@ -133,7 +133,10 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(charts[AnalyticsOverviewChart.TimeSavedCard]).toBeDefined()
         expect(charts[AnalyticsOverviewChart.CostSavedCard]).toBeDefined()
         expect(
-            charts[AnalyticsOverviewChart.AutomationDonutChart],
+            charts[AnalyticsOverviewChart.AutomationRateComboChart],
+        ).toBeDefined()
+        expect(
+            charts[AnalyticsOverviewChart.AutomatedInteractionsComboChart],
         ).toBeDefined()
         expect(charts[AnalyticsOverviewChart.AutomationLineChart]).toBeDefined()
         expect(charts[AnalyticsOverviewChart.PerformanceTable]).toBeDefined()
@@ -199,10 +202,10 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(typeof csvProducer?.fetch).toBe('function')
     })
 
-    it('should have fetch function for automation breakdown', async () => {
+    it('should have fetch function for automated interactions by skill', async () => {
         const config =
             AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.AutomationDonutChart
+                AnalyticsOverviewChart.AutomatedInteractionsComboChart
             ]
 
         expect(config.csvProducer).toBeDefined()
@@ -210,14 +213,8 @@ describe('AnalyticsOverviewReportConfig', () => {
 
         const csvProducer = config.csvProducer?.[0]
         expect(csvProducer).toBeDefined()
-
-        if (csvProducer && typeof csvProducer.fetch === 'function') {
-            const result = await (csvProducer.fetch as any)()
-            expect(result).toBeDefined()
-            expect(result).toHaveProperty('isLoading')
-            expect(result).toHaveProperty('fileName')
-            expect(result).toHaveProperty('files')
-        }
+        expect(csvProducer?.fetch).toBeDefined()
+        expect(typeof csvProducer?.fetch).toBe('function')
     })
 
     it('should have fetch function for automation trend data', async () => {

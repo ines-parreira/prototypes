@@ -3,16 +3,22 @@ import { render, screen } from '@testing-library/react'
 import { AnalyticsAllAgentsComboChart } from './AnalyticsAllAgentsComboChart'
 
 jest.mock(
-    'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/AutomationRateComboChart',
+    'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart',
     () => ({
-        AutomationRateComboChart: () => <div>AutomationRateComboChart</div>,
+        AnalyticsOverviewAutomatedInteractionsComboChart: () => (
+            <div>AnalyticsOverviewAutomatedInteractionsComboChart</div>
+        ),
     }),
 )
 
 describe('AnalyticsAllAgentsComboChart', () => {
-    it('should render AutomationRateComboChart component', () => {
+    it('should render AnalyticsOverviewAutomatedInteractionsComboChart component', () => {
         render(<AnalyticsAllAgentsComboChart />)
 
-        expect(screen.getByText('AutomationRateComboChart')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'AnalyticsOverviewAutomatedInteractionsComboChart',
+            ),
+        ).toBeInTheDocument()
     })
 })

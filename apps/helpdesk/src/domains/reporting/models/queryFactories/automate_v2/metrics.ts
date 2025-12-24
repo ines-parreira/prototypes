@@ -211,3 +211,14 @@ export const orderManagementAutomatedInteractionsQueryFactory = (
         },
     ],
 })
+
+export const aiAgentInteractionsBySkillQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AIAgentAutomatedInteractionsCube> => ({
+    metricName: METRIC_NAMES.AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL,
+    measures: [AIAgentInteractionsBySkillMeasure.Count],
+    dimensions: [AIAgentInteractionsBySkillDatasetDimension.BillableType],
+    timezone,
+    filters: [...aiAgentInteractionsBySkillDefaultFilters(filters)],
+})

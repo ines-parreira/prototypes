@@ -1,5 +1,5 @@
-import { AutomationRateComboChart } from 'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/AutomationRateComboChart'
+import { AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart'
 
 export const AnalyticsAllAgentsComboChart = () => {
-    return <AutomationRateComboChart />
+    return <AnalyticsOverviewAutomatedInteractionsComboChart />
 }
