@@ -3,7 +3,7 @@
     "extends": ["../node_modules/@gorgias/config/oxlint-react.json"],
     "overrides": [
         {
-            "files": ["vitest.config.ts", "jest.config.ts"],
+            "files": ["vitest.config.ts", "jest.config.ts", ".prettierrc.mjs"],
             "rules": {
                 "import/no-default-export": "off"
             }
