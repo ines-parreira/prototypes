@@ -66,7 +66,6 @@ export enum PhoneCountry {
     IL = 'IL', // Israel
     IN = 'IN', // India
     IT = 'IT', // Italy
-    JP = 'JP', // Japan
     LU = 'LU', // Luxembourg
     MX = 'MX', // Mexico
     NL = 'NL', // Netherlands
@@ -240,13 +239,6 @@ export const phoneCountryConfig: Record<
         adjective: 'Italian',
         phoneTypeConfig: {
             [PhoneType.Local]: {},
-        },
-    },
-    [PhoneCountry.JP]: {
-        name: 'Japan',
-        adjective: 'Japanese',
-        phoneTypeConfig: {
-            [PhoneType.National]: {},
         },
     },
     [PhoneCountry.LU]: {
