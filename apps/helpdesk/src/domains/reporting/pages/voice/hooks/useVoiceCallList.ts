@@ -157,5 +157,9 @@ export const selectVoiceCallData = (
                 ? row[VoiceCallDimension.QueueName]
                 : row['queueName'],
         callSid: 'undefined', // can be filled if we ever need it, by adding it to the dimensions
+        isPossibleSpam:
+            VoiceCallDimension.IsPossibleSpam in row
+                ? row[VoiceCallDimension.IsPossibleSpam]
+                : row['isPossibleSpam'],
     }))
 }

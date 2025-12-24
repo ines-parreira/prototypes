@@ -57,6 +57,7 @@ const voiceCallListDimensions = [
     VoiceCallDimension.DisplayStatus,
     VoiceCallDimension.QueueId,
     VoiceCallDimension.QueueName,
+    VoiceCallDimension.IsPossibleSpam,
 ]
 
 describe('voice queries factories', () => {

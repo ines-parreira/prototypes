@@ -157,6 +157,7 @@ export const formatVoiceCallsData = (
             callSid: voiceCall.external_id,
             monitoringStatus: voiceCall.monitoring_status,
             lastMonitoringAgentId: voiceCall.last_monitoring_agent_id,
+            isPossibleSpam: voiceCall.is_possible_spam,
         }
     })
 

@@ -293,6 +293,59 @@ describe('useLiveVoiceUpdates', () => {
                             created_datetime: expect.any(String),
                             provider: 'provider',
                             customer_id: 123456,
+                            is_possible_spam: null,
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should handle inbound voice call event with spam data and add it to the list', () => {
+            const mockOldData = {
+                data: {
+                    data: [],
+                },
+            }
+            const mockEvent = {
+                dataschema:
+                    '//helpdesk/phone.voice-call.inbound.received/1.1.0',
+                data: {
+                    voice_call_id: 123,
+                    integration_id: 2,
+                    status: 'queued',
+                    call_sid: 'abc',
+                    phone_number_source: '123456789',
+                    phone_number_destination: '987654321',
+                    started_datetime: new Date().toISOString(),
+                    created_datetime: new Date().toISOString(),
+                    provider: 'provider',
+                    customer_id: 123456,
+                    is_possible_spam: true,
+                },
+            } as DomainEvent
+
+            appQueryClient.setQueryData(queryKey, mockOldData)
+
+            const { result } = renderHook(() => useLiveVoiceUpdates(params))
+
+            result.current.handleEvent(mockEvent)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: 123,
+                            integration_id: 2,
+                            direction: VoiceCallDirection.Inbound,
+                            status: VoiceCallStatus.Queued,
+                            external_id: 'abc',
+                            phone_number_source: '123456789',
+                            phone_number_destination: '987654321',
+                            started_datetime: expect.any(String),
+                            created_datetime: expect.any(String),
+                            provider: 'provider',
+                            customer_id: 123456,
+                            is_possible_spam: true,
                         },
                     ],
                 },

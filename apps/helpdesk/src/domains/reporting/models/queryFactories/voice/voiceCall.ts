@@ -139,6 +139,7 @@ const voiceCallListDimensions = [
     VoiceCallDimension.DisplayStatus,
     VoiceCallDimension.QueueId,
     VoiceCallDimension.QueueName,
+    VoiceCallDimension.IsPossibleSpam,
 ]
 
 export const connectedCallsFilter = {

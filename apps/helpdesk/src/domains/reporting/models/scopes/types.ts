@@ -94,6 +94,7 @@ export type DimensionName =
     | 'voicemailUrl'
     | 'waitTime'
     | 'filteringAgentId'
+    | 'isPossibleSpam'
 
 export type MeasureName =
     | 'ticketCount'

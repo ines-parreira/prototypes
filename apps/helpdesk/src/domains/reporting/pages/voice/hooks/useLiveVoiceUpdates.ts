@@ -143,9 +143,14 @@ export const useLiveVoiceUpdates = (
                     )
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.received/1.0.0':
-                case '//helpdesk/phone.voice-call.inbound.received/1.1.0': {
+                case '//helpdesk/phone.voice-call.inbound.received/1.1.0':
+                case '//helpdesk/phone.voice-call.inbound.received/1.0.0': {
                     const data = event.data
+                    const isPossibleSpam =
+                        event.dataschema ===
+                        '//helpdesk/phone.voice-call.inbound.received/1.1.0'
+                            ? event.data.is_possible_spam
+                            : null
 
                     const voiceCall = {
                         id: data.voice_call_id,
@@ -163,6 +168,7 @@ export const useLiveVoiceUpdates = (
                         ),
                         provider: data.provider,
                         customer_id: data.customer_id,
+                        is_possible_spam: isPossibleSpam,
                     }
                     addVoiceCallToLiveCallsQueryCache(voiceCall, params)
                     voiceCallIdToSidRef.current = {

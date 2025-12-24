@@ -35,6 +35,7 @@ export type VoiceCallStatListItem = {
     [VoiceCallDimension.DisplayStatus]: VoiceCallDisplayStatus
     [VoiceCallDimension.QueueId]: string | null
     [VoiceCallDimension.QueueName]: string | null
+    [VoiceCallDimension.IsPossibleSpam]: boolean | null
 }
 
 export type VoiceCallSummary = {
@@ -65,6 +66,7 @@ export type VoiceCallSummary = {
     callSid: string
     monitoringStatus?: VoiceCallMonitoringStatus | null
     lastMonitoringAgentId?: number | null
+    isPossibleSpam?: boolean | null
 }
 
 export enum VoiceCallFilterDirection {

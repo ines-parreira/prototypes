@@ -1,5 +1,9 @@
+import React from 'react'
+
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 
+import { Icon, Tag } from '@gorgias/axiom'
 import type { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { isLiveCallRinging } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
@@ -18,6 +22,7 @@ type Props = {
 const UNKNOWN_AGENT = 'Unknown agent'
 
 const InboundVoiceCallActivity = ({ voiceCall }: Props) => {
+    const useSpamDetection = useFlag(FeatureFlagKey.UseVoiceSpamDetection)
     return (
         <div className={css.callActivityContainer}>
             <i className={classNames('material-icons', css.phoneIcon)}>
@@ -39,6 +44,16 @@ const InboundVoiceCallActivity = ({ voiceCall }: Props) => {
                         voiceCall.customerName ?? voiceCall.phoneNumberSource
                     }
                 />
+            )}
+            {useSpamDetection && voiceCall.isPossibleSpam && (
+                <span className={css.maybeSpamTag}>
+                    <Tag
+                        leadingSlot={<Icon name={'triangle-warning'} />}
+                        color={'orange'}
+                    >
+                        Maybe spam
+                    </Tag>
+                </span>
             )}
             <div className={css.action}>
                 {getActionLabel(voiceCall.status, voiceCall.agentId)}

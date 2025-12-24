@@ -379,6 +379,7 @@ describe('voiceCallsScope', () => {
                     'displayStatus',
                     'queueId',
                     'queueName',
+                    'isPossibleSpam',
                 ],
                 timezone: 'utc',
                 metricName: METRIC_NAMES.VOICE_CALL_LIST,

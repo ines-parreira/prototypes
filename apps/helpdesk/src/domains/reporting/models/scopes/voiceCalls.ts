@@ -42,6 +42,7 @@ const voiceCallsScope = defineScope({
         'voicemailAvailable',
         'voicemailUrl',
         'waitTime',
+        'isPossibleSpam',
     ],
     order: [
         'averageTalkTimeInSeconds',
@@ -267,6 +268,7 @@ export const voiceCallsCountAllDimensions = voiceCallsScope
             'displayStatus',
             'queueId',
             'queueName',
+            'isPossibleSpam',
         ] as const,
     }))
 

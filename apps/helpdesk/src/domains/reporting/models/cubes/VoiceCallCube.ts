@@ -34,6 +34,7 @@ export enum VoiceCallDimension {
     DisplayStatus = 'VoiceCall.displayStatus',
     QueueId = 'VoiceCall.queueId',
     QueueName = 'VoiceCall.queueName',
+    IsPossibleSpam = 'VoiceCall.isPossibleSpam',
 }
 
 export enum VoiceCallMember {
