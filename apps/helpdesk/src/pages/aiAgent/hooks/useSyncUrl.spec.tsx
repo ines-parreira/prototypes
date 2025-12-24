@@ -326,7 +326,9 @@ describe('useSyncUrl', () => {
                     mockCustomDomains,
                     mockStoreUrl,
                 ),
-            ).toBe('URL cannot be a Gorgias Help Center')
+            ).toBe(
+                'Help Center links are not supported. You can manage your Help Center separately in knowledge.',
+            )
         })
 
         it('returns error for custom domain Help Center URL', () => {
@@ -337,7 +339,9 @@ describe('useSyncUrl', () => {
                     mockCustomDomains,
                     mockStoreUrl,
                 ),
-            ).toBe('URL cannot be a Gorgias Help Center')
+            ).toBe(
+                'Help Center links are not supported. You can manage your Help Center separately in knowledge.',
+            )
         })
 
         it('returns error for store domain URL', () => {
@@ -379,7 +383,9 @@ describe('useSyncUrl', () => {
                     mockCustomDomains,
                     mockStoreUrl,
                 ),
-            ).toBe('This URL has already been added')
+            ).toBe(
+                'This URL is already synced. To sync new version, re sync the existing URL.',
+            )
         })
 
         it('returns error when limit reached', () => {
@@ -460,7 +466,9 @@ describe('useSyncUrl', () => {
                     mockCustomDomains,
                     helpCenterStoreUrl,
                 ),
-            ).toBe('URL cannot be a Gorgias Help Center')
+            ).toBe(
+                'Help Center links are not supported. You can manage your Help Center separately in knowledge.',
+            )
         })
     })
 
@@ -629,7 +637,9 @@ describe('useSyncUrl', () => {
 
             await expect(
                 result.current.syncUrl('https://existing.com/page'),
-            ).rejects.toThrow('This URL has already been added')
+            ).rejects.toThrow(
+                'This URL is already synced. To sync new version, re sync the existing URL.',
+            )
 
             expect(mockStartIngestion).not.toHaveBeenCalled()
         })

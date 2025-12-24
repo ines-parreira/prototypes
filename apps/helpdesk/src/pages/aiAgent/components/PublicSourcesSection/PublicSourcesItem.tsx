@@ -111,7 +111,7 @@ const getInputError = (
     }
 
     if (isGorgiasHelpCenterUrl) {
-        return 'URL cannot be a Gorgias Help Center'
+        return 'Help Center links are not supported. You can manage your Help Center separately in knowledge.'
     }
 
     if (isRootUrl) {
@@ -119,7 +119,7 @@ const getInputError = (
     }
 
     if (isDuplicate) {
-        return 'This URL has already been added'
+        return 'This URL is already synced. To sync new version, re sync the existing URL.'
     }
 
     if (hasDocumentExtension) {
@@ -284,6 +284,11 @@ export const PublicSourcesItem = ({
         source.status,
     )
 
+    const handleViewExistingUrl = () => {
+        const knowledgeHubUrl = `${routes.knowledge}?filter=url&folder=${encodeURIComponent(value)}`
+        history.push(knowledgeHubUrl)
+    }
+
     return (
         <div className={css.container}>
             <InputField
@@ -294,7 +299,24 @@ export const PublicSourcesItem = ({
                 placeholder="https://www.example.com/return-policy"
                 hasError={source.status === 'error' || !!inputError}
                 aria-label="Public URL"
-                error={inputError}
+                error={
+                    isDuplicate ? (
+                        <>
+                            {inputError}{' '}
+                            <a
+                                onClick={handleViewExistingUrl}
+                                style={{
+                                    cursor: 'pointer',
+                                    textDecoration: 'underline',
+                                }}
+                            >
+                                View existing URL
+                            </a>
+                        </>
+                    ) : (
+                        inputError
+                    )
+                }
             />
             <Button
                 id={syncButtonId}

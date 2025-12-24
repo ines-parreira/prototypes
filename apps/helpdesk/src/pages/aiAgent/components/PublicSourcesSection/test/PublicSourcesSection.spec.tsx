@@ -184,7 +184,9 @@ describe('<PublicSourcesSection />', () => {
 
         expect(syncButton).toBeAriaDisabled()
         expect(
-            screen.getByText('This URL has already been added'),
+            screen.getByText(
+                'This URL is already synced. To sync new version, re sync the existing URL.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -250,7 +252,9 @@ describe('<PublicSourcesSection />', () => {
             screen.getByRole('button', { name: /Sync URL/ }),
         ).toBeAriaDisabled()
         expect(
-            screen.getByText('URL cannot be a Gorgias Help Center'),
+            screen.getByText(
+                'Help Center links are not supported. You can manage your Help Center separately in knowledge.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -269,7 +273,9 @@ describe('<PublicSourcesSection />', () => {
             screen.getByRole('button', { name: /Sync URL/ }),
         ).toBeAriaDisabled()
         expect(
-            screen.getByText('URL cannot be a Gorgias Help Center'),
+            screen.getByText(
+                'Help Center links are not supported. You can manage your Help Center separately in knowledge.',
+            ),
         ).toBeInTheDocument()
     })
 

@@ -124,7 +124,7 @@ export const getUrlValidationError = (
         helpCenterCustomDomains,
     )
     if (isGorgiasHelpCenterUrl) {
-        return 'URL cannot be a Gorgias Help Center'
+        return 'Help Center links are not supported. You can manage your Help Center separately in knowledge.'
     }
 
     const isStoreDomainUrl = isUrlFromStoreDomain(url, storeUrl)
@@ -139,7 +139,7 @@ export const getUrlValidationError = (
 
     const isDuplicate = existingUrls.includes(url)
     if (isDuplicate) {
-        return 'This URL has already been added'
+        return 'This URL is already synced. To sync new version, re sync the existing URL.'
     }
 
     if (existingUrls.length >= SOURCES_LIMIT) {

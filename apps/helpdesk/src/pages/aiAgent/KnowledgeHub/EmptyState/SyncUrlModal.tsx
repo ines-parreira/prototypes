@@ -6,8 +6,8 @@ import { useParams } from 'react-router-dom'
 import {
     Box,
     Button,
-    Heading,
     Modal,
+    OverlayHeader,
     Text,
     TextField,
     LegacyTooltip as Tooltip,
@@ -217,9 +217,14 @@ export const SyncUrlModal = ({
     )
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={closeModal} size="sm">
-            <Heading slot="title">{isResync ? 'Sync URL' : 'Add URL'}</Heading>
-            <Box flexDirection="column" gap="md" marginTop="md">
+        <Modal
+            isOpen={isOpen}
+            onOpenChange={closeModal}
+            size="sm"
+            isDismissable
+        >
+            <OverlayHeader title={isResync ? 'Sync URL' : 'Add URL'} />
+            <Box flexDirection="column" gap="md">
                 {isResync ? (
                     <>
                         <Text color="critical">
@@ -268,7 +273,9 @@ export const SyncUrlModal = ({
                     id={syncButtonId}
                     intent={isResync ? 'destructive' : 'regular'}
                     onClick={handleSync}
-                    isDisabled={isLoading || !url || isSyncLessThan24h}
+                    isDisabled={
+                        isLoading || !url || isSyncLessThan24h || !!error
+                    }
                     leadingSlot="arrows-reload-alt-1"
                 >
                     Sync
