@@ -170,46 +170,6 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                     </span>
                   </button>
                 </div>
-                <div
-                  class="buttonsWrapper"
-                >
-                  <div
-                    class="wrapper"
-                  >
-                    <div
-                      class="ui-multibutton-group-3397"
-                      data-name="box"
-                      style="display: flex;"
-                    >
-                      <button
-                        aria-disabled="false"
-                        class="ui-button-wrapper-cef1 mainAction small ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                        type="button"
-                      >
-                        <span
-                          class="ui-button-content-cef1"
-                        >
-                          Apply Saved Filter
-                        </span>
-                      </button>
-                      <button
-                        aria-disabled="false"
-                        class="ui-button-wrapper-cef1 toggle small wrapper fill small ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                        type="button"
-                      >
-                        <span
-                          class="ui-button-content-cef1"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            arrow_drop_down
-                          </i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -876,46 +836,6 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                       Add Filter
                     </span>
                   </button>
-                </div>
-                <div
-                  class="buttonsWrapper"
-                >
-                  <div
-                    class="wrapper"
-                  >
-                    <div
-                      class="ui-multibutton-group-3397"
-                      data-name="box"
-                      style="display: flex;"
-                    >
-                      <button
-                        aria-disabled="false"
-                        class="ui-button-wrapper-cef1 mainAction small ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                        type="button"
-                      >
-                        <span
-                          class="ui-button-content-cef1"
-                        >
-                          Apply Saved Filter
-                        </span>
-                      </button>
-                      <button
-                        aria-disabled="false"
-                        class="ui-button-wrapper-cef1 toggle small wrapper fill small ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                        type="button"
-                      >
-                        <span
-                          class="ui-button-content-cef1"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            arrow_drop_down
-                          </i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -1584,46 +1504,6 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                     </span>
                   </button>
                 </div>
-                <div
-                  class="buttonsWrapper"
-                >
-                  <div
-                    class="wrapper"
-                  >
-                    <div
-                      class="ui-multibutton-group-3397"
-                      data-name="box"
-                      style="display: flex;"
-                    >
-                      <button
-                        aria-disabled="false"
-                        class="ui-button-wrapper-cef1 mainAction small ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                        type="button"
-                      >
-                        <span
-                          class="ui-button-content-cef1"
-                        >
-                          Apply Saved Filter
-                        </span>
-                      </button>
-                      <button
-                        aria-disabled="false"
-                        class="ui-button-wrapper-cef1 toggle small wrapper fill small ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                        type="button"
-                      >
-                        <span
-                          class="ui-button-content-cef1"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            arrow_drop_down
-                          </i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -2291,46 +2171,6 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                     </span>
                   </button>
                 </div>
-                <div
-                  class="buttonsWrapper"
-                >
-                  <div
-                    class="wrapper"
-                  >
-                    <div
-                      class="ui-multibutton-group-3397"
-                      data-name="box"
-                      style="display: flex;"
-                    >
-                      <button
-                        aria-disabled="false"
-                        class="ui-button-wrapper-cef1 mainAction small ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                        type="button"
-                      >
-                        <span
-                          class="ui-button-content-cef1"
-                        >
-                          Apply Saved Filter
-                        </span>
-                      </button>
-                      <button
-                        aria-disabled="false"
-                        class="ui-button-wrapper-cef1 toggle small wrapper fill small ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                        type="button"
-                      >
-                        <span
-                          class="ui-button-content-cef1"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            arrow_drop_down
-                          </i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -2997,46 +2837,6 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                       Add Filter
                     </span>
                   </button>
-                </div>
-                <div
-                  class="buttonsWrapper"
-                >
-                  <div
-                    class="wrapper"
-                  >
-                    <div
-                      class="ui-multibutton-group-3397"
-                      data-name="box"
-                      style="display: flex;"
-                    >
-                      <button
-                        aria-disabled="false"
-                        class="ui-button-wrapper-cef1 mainAction small ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                        type="button"
-                      >
-                        <span
-                          class="ui-button-content-cef1"
-                        >
-                          Apply Saved Filter
-                        </span>
-                      </button>
-                      <button
-                        aria-disabled="false"
-                        class="ui-button-wrapper-cef1 toggle small wrapper fill small ui-button-fill-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                        type="button"
-                      >
-                        <span
-                          class="ui-button-content-cef1"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            arrow_drop_down
-                          </i>
-                        </span>
-                      </button>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

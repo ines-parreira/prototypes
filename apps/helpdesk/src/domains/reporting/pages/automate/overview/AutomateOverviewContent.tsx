@@ -129,6 +129,7 @@ export default function AutomateOverviewContent() {
                                 //         AUTOMATE_ENABLED_CHANNELS,
                                 // },
                             }}
+                            withSavedFilters={false}
                         />
                     </DashboardGridCell>
                 </DashboardSection>
