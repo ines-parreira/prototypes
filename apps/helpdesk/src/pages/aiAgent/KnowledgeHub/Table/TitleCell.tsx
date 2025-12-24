@@ -3,6 +3,7 @@ import { Box, Icon, Tag, Text } from '@gorgias/axiom'
 
 import { GuidanceActionsBadge } from 'pages/aiAgent/components/GuidanceList/GuidanceActionsBadge'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
+import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { KnowledgeType, typeConfig } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
@@ -94,7 +95,9 @@ export const TitleCell = ({
         >
             <Box gap="xs" alignItems="center" className={css.titleCell}>
                 <Icon size="md" name={getIcon()} />
-                <Text>{highlightText(title, searchTerm)}</Text>
+                <TruncatedTextWithTooltip tooltipContent={title}>
+                    <Text>{highlightText(title, searchTerm)}</Text>
+                </TruncatedTextWithTooltip>
                 {isGrouped && itemCount && (
                     <div className={css.quantity}>
                         <Icon name="arrow-sub-down-right" size="sm" />
@@ -120,7 +123,9 @@ export const TitleCell = ({
                 {!isGrouped && source && (
                     <div className={css.source}>
                         <Icon name={typeConfig[type].icon} size="sm" />
-                        {source}
+                        <TruncatedTextWithTooltip tooltipContent={source}>
+                            <span>{source}</span>
+                        </TruncatedTextWithTooltip>
                     </div>
                 )}
             </Box>

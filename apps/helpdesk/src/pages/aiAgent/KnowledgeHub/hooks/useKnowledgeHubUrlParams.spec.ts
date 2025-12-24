@@ -1374,4 +1374,194 @@ describe('useKnowledgeHubUrlParams', () => {
             pushSpy.mockRestore()
         })
     })
+
+    describe('article viewing and folder preservation', () => {
+        it('preserves folder data when viewing an article', () => {
+            const folderUrl = 'https://example.com/url'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge/document/123?folder=${encodeURIComponent(folderUrl)}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                (props) =>
+                    useKnowledgeHubUrlParams(TEST_SHOP_NAME, props.tableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                    initialProps: { tableData: mockTableData },
+                },
+            )
+
+            // selectedFolder should be upgraded to full folder object from tableData
+            expect(result.current.selectedFolder).toMatchObject({
+                id: '1',
+                title: 'Test URL Folder',
+                type: KnowledgeType.URL,
+                source: folderUrl,
+                isGrouped: true,
+            })
+        })
+
+        it('does not change selectedFolder when viewing article if folder already has full data', () => {
+            const folderUrl = 'https://example.com/url'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge/document/123?folder=${encodeURIComponent(folderUrl)}`,
+                ],
+            })
+
+            const { result, rerender } = renderHook(
+                (props) =>
+                    useKnowledgeHubUrlParams(TEST_SHOP_NAME, props.tableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                    initialProps: { tableData: mockTableData },
+                },
+            )
+
+            const firstFolder = result.current.selectedFolder
+
+            // Rerender with same data - should not change selectedFolder
+            act(() => {
+                rerender({ tableData: mockTableData })
+            })
+
+            expect(result.current.selectedFolder).toBe(firstFolder)
+        })
+
+        it('upgrades selectedFolder when viewing article if missing required properties', () => {
+            const folderUrl = 'https://example.com/url'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge/document/123?folder=${encodeURIComponent(folderUrl)}`,
+                ],
+            })
+
+            const { result, rerender } = renderHook(
+                (props) =>
+                    useKnowledgeHubUrlParams(TEST_SHOP_NAME, props.tableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                    initialProps: { tableData: [] as GroupedKnowledgeItem[] },
+                },
+            )
+
+            // Initially has minimal folder object
+            expect(result.current.selectedFolder).toMatchObject({
+                source: folderUrl,
+                title: folderUrl,
+            })
+            expect(result.current.selectedFolder).not.toHaveProperty('type')
+
+            // Update with tableData - should upgrade even when viewing article
+            act(() => {
+                rerender({ tableData: mockTableData })
+            })
+
+            // Should now have full folder object
+            expect(result.current.selectedFolder).toMatchObject({
+                id: '1',
+                title: 'Test URL Folder',
+                type: KnowledgeType.URL,
+                source: folderUrl,
+                isGrouped: true,
+            })
+        })
+
+        it('maintains folder data after closing article editor', () => {
+            const folderUrl = 'https://example.com/url'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge/document/123?folder=${encodeURIComponent(folderUrl)}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                (props) =>
+                    useKnowledgeHubUrlParams(TEST_SHOP_NAME, props.tableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                    initialProps: { tableData: mockTableData },
+                },
+            )
+
+            // selectedFolder should have full folder object
+            const folderBeforeClose = result.current.selectedFolder
+            expect(folderBeforeClose).toMatchObject({
+                id: '1',
+                title: 'Test URL Folder',
+                type: KnowledgeType.URL,
+                source: folderUrl,
+            })
+
+            // Simulate closing editor by navigating to folder view
+            act(() => {
+                history.push(
+                    `/app/shop/test-shop/ai-agent/knowledge?folder=${encodeURIComponent(folderUrl)}`,
+                )
+            })
+
+            // selectedFolder should still have same folder data
+            expect(result.current.selectedFolder).toMatchObject({
+                id: '1',
+                title: 'Test URL Folder',
+                type: KnowledgeType.URL,
+                source: folderUrl,
+                isGrouped: true,
+            })
+        })
+
+        it('creates folder object from individual items when not already grouped', () => {
+            const folderUrl = 'https://example.com/ungrouped'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(folderUrl)}`,
+                ],
+            })
+
+            const ungroupedItems: GroupedKnowledgeItem[] = [
+                {
+                    id: '10',
+                    title: 'Individual Item 1',
+                    type: KnowledgeType.Document,
+                    source: folderUrl,
+                    isGrouped: false,
+                    lastUpdatedAt: '2024-01-02',
+                } as GroupedKnowledgeItem,
+                {
+                    id: '11',
+                    title: 'Individual Item 2',
+                    type: KnowledgeType.Document,
+                    source: folderUrl,
+                    isGrouped: false,
+                    lastUpdatedAt: '2024-01-01',
+                } as GroupedKnowledgeItem,
+            ]
+
+            const { result } = renderHook(
+                (props) =>
+                    useKnowledgeHubUrlParams(TEST_SHOP_NAME, props.tableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                    initialProps: { tableData: ungroupedItems },
+                },
+            )
+
+            // Should create folder object from individual items
+            expect(result.current.selectedFolder).toMatchObject({
+                type: KnowledgeType.Document,
+                source: folderUrl,
+                title: folderUrl, // Uses source as title for ungrouped items
+                isGrouped: true,
+                itemCount: 2,
+            })
+
+            // Should use most recent item's properties
+            expect(result.current.selectedFolder?.id).toBe('10')
+            expect(result.current.selectedFolder?.lastUpdatedAt).toBe(
+                '2024-01-02',
+            )
+        })
+    })
 })

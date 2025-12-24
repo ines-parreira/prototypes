@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useHistory, useLocation } from 'react-router-dom'
 
@@ -50,6 +50,29 @@ function safeDecodeUrlParameter(encoded: string): string {
         // Fallback to original encoded value - safer than using partial decode
         return encoded
     }
+}
+
+/**
+ * Determines if the current URL path represents viewing an article/snippet.
+ *
+ * Article URLs follow the pattern: /base/path/:knowledgeType/:articleId
+ * For example: /ai-agent/knowledge-sources/help-center/article-123
+ *
+ * This checks that:
+ * - Path has at least 3 segments (base path + type + id)
+ * - The second-to-last segment exists (knowledge type)
+ * - The last segment exists (article/snippet id)
+ *
+ * @param pathname - The URL pathname to check
+ * @returns True if viewing an individual article, false otherwise
+ */
+function isViewingArticleUrl(pathname: string): boolean {
+    const pathParts = pathname.split('/')
+    return (
+        pathParts.length >= 3 &&
+        !!pathParts[pathParts.length - 2] &&
+        !!pathParts[pathParts.length - 1]
+    )
 }
 
 export function useKnowledgeHubUrlParams(
@@ -143,6 +166,48 @@ export function useKnowledgeHubUrlParams(
         ],
     )
 
+    // Memoize folder object creation from URL to avoid unnecessary recalculations
+    const folderObjectFromUrl = useMemo(() => {
+        const params = new URLSearchParams(location.search)
+        const folderParam = params.get('folder')
+        const decodedFolder = folderParam
+            ? safeDecodeUrlParameter(folderParam)
+            : null
+
+        if (!decodedFolder) {
+            return null
+        }
+
+        const matchingItems = tableData.filter(
+            (item) => item.source === decodedFolder,
+        )
+
+        if (matchingItems.length === 0) {
+            // Create minimal folder object when tableData doesn't have matching items yet
+            // This happens during initialization before tableData loads
+            return {
+                source: decodedFolder,
+                title: decodedFolder,
+            } as GroupedKnowledgeItem
+        }
+
+        const sortedItems = [...matchingItems].sort(
+            (a, b) =>
+                new Date(b.lastUpdatedAt || 0).getTime() -
+                new Date(a.lastUpdatedAt || 0).getTime(),
+        )
+        const mostRecentItem = sortedItems[0]
+
+        return {
+            ...mostRecentItem,
+            title: mostRecentItem.isGrouped
+                ? mostRecentItem.title
+                : decodedFolder,
+            isGrouped: true,
+            itemCount: matchingItems.length,
+        } as GroupedKnowledgeItem
+    }, [location.search, tableData])
+
     // Sync filter state with URL when URL changes
     useEffect(() => {
         const params = new URLSearchParams(location.search)
@@ -154,39 +219,53 @@ export function useKnowledgeHubUrlParams(
 
     // Sync folder state with URL when URL changes or tableData loads
     useEffect(() => {
-        const params = new URLSearchParams(location.search)
-        const folderParam = params.get('folder')
-        const decodedFolder = folderParam
-            ? safeDecodeUrlParameter(folderParam)
-            : null
+        const isViewingArticle = isViewingArticleUrl(location.pathname)
 
-        // Clear folder if URL has no folder param
-        if (!decodedFolder && selectedFolder) {
+        // Clear folder if URL has no folder param and not viewing an article
+        if (!folderObjectFromUrl && selectedFolder && !isViewingArticle) {
             setSelectedFolder(null)
             return
         }
 
-        // Set or upgrade folder if URL has folder param
-        if (decodedFolder) {
-            // Find the full folder object in tableData
-            const matchingFolder = tableData.find(
-                (item) => item.source === decodedFolder,
-            )
+        // Set or upgrade folder if URL has folder param and we have a valid folder object
+        if (folderObjectFromUrl) {
+            const decodedFolder = folderObjectFromUrl.source
 
-            if (matchingFolder) {
-                // Upgrade to full folder object if we found it in tableData
-                // or if the current folder is incomplete (missing title/type)
+            // When viewing an article, only upgrade if selectedFolder is missing required properties
+            // Don't change selectedFolder if it already has the correct folder
+            if (isViewingArticle) {
+                // Only upgrade if selectedFolder is missing required properties
                 if (
-                    !selectedFolder ||
-                    selectedFolder.source !== decodedFolder ||
-                    !selectedFolder.title ||
-                    !selectedFolder.type
+                    selectedFolder &&
+                    selectedFolder.source === decodedFolder &&
+                    selectedFolder.type &&
+                    selectedFolder.lastUpdatedAt
                 ) {
-                    setSelectedFolder(matchingFolder)
+                    // selectedFolder already has full data, don't update
+                    return
                 }
             }
+
+            // Upgrade to full folder object only if:
+            // 1. No folder is selected, OR
+            // 2. Different folder source, OR
+            // 3. Current folder lacks type but new folder has it (upgrade from minimal to full)
+            const shouldUpgrade =
+                !selectedFolder ||
+                selectedFolder.source !== decodedFolder ||
+                (!selectedFolder.type && folderObjectFromUrl.type)
+
+            if (shouldUpgrade) {
+                setSelectedFolder(folderObjectFromUrl)
+            }
         }
-    }, [location.search, selectedFolder, tableData])
+    }, [
+        location.search,
+        selectedFolder,
+        tableData,
+        location.pathname,
+        folderObjectFromUrl,
+    ])
 
     // Sync search term with URL
     useEffect(() => {
