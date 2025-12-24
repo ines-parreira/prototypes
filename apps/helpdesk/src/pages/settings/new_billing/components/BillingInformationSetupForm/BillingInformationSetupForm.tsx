@@ -1,13 +1,13 @@
 import type React from 'react'
 import { useMemo } from 'react'
 
+import type { FormProps } from '@repo/forms'
+import { Form } from '@repo/forms'
 import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import mapValues from 'lodash/mapValues'
 import type { SubmitHandler } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 
-import type { FormProps } from 'core/forms'
-import { Form } from 'core/forms'
 import { BILLING_PAYMENT_PATH } from 'pages/settings/new_billing/constants'
 import { filterTaxIdsByAddress } from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
 import { normalizeStateToCode } from 'pages/settings/new_billing/utils/normalizeStateToCode'

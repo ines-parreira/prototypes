@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { FormField } from '@repo/forms'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 import { useWatch } from 'react-hook-form'
 
@@ -7,13 +8,12 @@ import { LegacyBanner as Banner } from '@gorgias/axiom'
 import { useListPhoneNumbers } from '@gorgias/helpdesk-queries'
 import type { ForwardToExternalNumberStep } from '@gorgias/helpdesk-types'
 
-import { FormField } from 'core/forms'
 import type { NodeProps } from 'core/ui/flows'
 import { NodeWrapper } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import PhoneSelectField from 'pages/integrations/integration/components/phone/PhoneSelectField'
 
-import { type ForwardToExternalNode } from '../types'
+import type { ForwardToExternalNode } from '../types'
 import { VoiceStepNode } from './VoiceStepNode'
 
 type ForwardToNodeProps = NodeProps<ForwardToExternalNode>

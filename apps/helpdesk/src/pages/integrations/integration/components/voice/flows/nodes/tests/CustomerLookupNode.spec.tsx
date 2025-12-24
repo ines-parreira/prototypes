@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { Form } from '@repo/forms'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -20,7 +21,6 @@ import {
 import type { CustomField, ListCustomFields200 } from '@gorgias/helpdesk-types'
 import { ObjectType } from '@gorgias/helpdesk-types'
 
-import { Form } from 'core/forms'
 import { Flow, FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 

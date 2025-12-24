@@ -1,9 +1,9 @@
+import { Form } from '@repo/forms'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { mockBusinessHoursDetails } from '@gorgias/helpdesk-mocks'
 
-import { Form } from 'core/forms'
 import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
 import { renderWithRouter } from 'utils/testing'
 

@@ -1,8 +1,9 @@
 import { forwardRef } from 'react'
 
+import { useFormContext } from '@repo/forms'
+
 import { LegacySelectField as SelectField } from '@gorgias/axiom'
 
-import { useFormContext } from 'core/forms'
 import {
     SUPPORTED_UI_DATA_TYPE_VALUES,
     SUPPORTED_UI_DATA_TYPES,

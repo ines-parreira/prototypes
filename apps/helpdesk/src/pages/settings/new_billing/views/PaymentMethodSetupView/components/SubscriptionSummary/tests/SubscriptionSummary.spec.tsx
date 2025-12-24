@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { Form } from '@repo/forms'
 import { useSessionStorage } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { Form } from 'core/forms'
 import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
 import { Cadence, ProductType } from 'models/billing/types'
 import { useBillingPlans } from 'pages/settings/new_billing/hooks/useBillingPlan'

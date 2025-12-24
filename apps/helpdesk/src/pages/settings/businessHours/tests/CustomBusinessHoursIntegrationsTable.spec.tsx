@@ -1,3 +1,4 @@
+import { Form } from '@repo/forms'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -14,7 +15,6 @@ import {
     mockListIntegrationsForBusinessHoursResponse,
 } from '@gorgias/helpdesk-mocks'
 
-import { Form } from 'core/forms'
 import { IntegrationType } from 'models/integration/constants'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'

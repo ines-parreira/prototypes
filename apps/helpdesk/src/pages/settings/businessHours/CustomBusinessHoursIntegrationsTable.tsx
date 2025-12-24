@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 
+import { FormField, useFormContext } from '@repo/forms'
 import { useDebouncedValue } from '@repo/hooks'
 import cn from 'classnames'
 
@@ -13,7 +14,6 @@ import {
 import type { ListIntegrationsForBusinessHoursOrderBy } from '@gorgias/helpdesk-queries'
 import { useListIntegrationsForBusinessHours } from '@gorgias/helpdesk-queries'
 
-import { FormField, useFormContext } from 'core/forms'
 import type { OrderDirection } from 'models/api/types'
 import { IntegrationType } from 'models/integration/types'
 import ChannelFilter from 'pages/common/components/ChannelFilter/ChannelFilter'

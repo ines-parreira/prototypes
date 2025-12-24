@@ -1,3 +1,11 @@
+declare global {
+    interface Window {
+        DEVELOPMENT: boolean
+        PRODUCTION: boolean
+        STAGING: boolean
+    }
+}
+
 export const mockProductionEnvironment = () => {
     window.DEVELOPMENT = false
     window.STAGING = false

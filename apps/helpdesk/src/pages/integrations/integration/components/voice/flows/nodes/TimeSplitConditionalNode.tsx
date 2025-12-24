@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
 
+import { FormField } from '@repo/forms'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
@@ -10,7 +11,6 @@ import type {
 } from '@gorgias/helpdesk-types'
 import { TimeSplitConditionalRuleType } from '@gorgias/helpdesk-types'
 
-import { FormField } from 'core/forms'
 import type { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import { useBusinessHours } from 'hooks/businessHours/useBusinessHours'

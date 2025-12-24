@@ -1,17 +1,16 @@
+import { FormField, useFormContext } from '@repo/forms'
+import * as forms from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
 import { render, screen } from '@testing-library/react'
 
 import { VoiceQueueTargetScope } from '@gorgias/helpdesk-queries'
 
-import { FormField, useFormContext } from 'core/forms'
-import * as forms from 'core/forms'
-
 import VoiceQueueSettingsFormCallFlowSection from '../VoiceQueueSettingsFormCallFlowSection'
 
 const formFieldSpy = jest.spyOn(forms, 'FormField')
 
-jest.mock('core/forms')
+jest.mock('@repo/forms')
 const FormFieldMock = assumeMock(FormField)
 
 jest.mock('models/team/queries', () => ({

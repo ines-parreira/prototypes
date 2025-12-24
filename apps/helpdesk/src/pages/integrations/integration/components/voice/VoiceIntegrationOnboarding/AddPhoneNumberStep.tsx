@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 
+import { FormField } from '@repo/forms'
 import { useFormContext } from 'react-hook-form'
 
 import { LegacyButton as Button, Label } from '@gorgias/axiom'
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 
-import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import { IntegrationType } from 'models/integration/constants'

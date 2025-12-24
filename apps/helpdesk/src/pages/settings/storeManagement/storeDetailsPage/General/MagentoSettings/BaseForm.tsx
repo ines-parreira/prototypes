@@ -1,4 +1,5 @@
-import { Form } from 'core/forms/components/Form'
+import { Form } from '@repo/forms'
+
 import type { Magento2Integration } from 'models/integration/types'
 
 import ActionButtons from './ActionButtons'

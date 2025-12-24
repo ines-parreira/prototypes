@@ -1,33 +1,34 @@
 import React from 'react'
 
-import { assumeMock, getLastMockCall } from '@repo/testing'
+import { assumeMock, getLastMockCall } from '@repo/testing/vitest'
 import { render } from '@testing-library/react'
 import { useController } from 'react-hook-form'
+import { vi } from 'vitest'
 
-import InputField from 'pages/common/forms/input/InputField'
+import { FormField } from '../FormField'
 
-import { FormField } from '../components/FormField'
-
-jest.mock('react-hook-form', () => ({
-    useController: jest.fn(),
+vi.mock('react-hook-form', () => ({
+    useController: vi.fn(),
 }))
-jest.mock('pages/common/forms/input/InputField', () => jest.fn(() => null))
 
 const useControllerMock = assumeMock(useController)
-const InputFieldMock = assumeMock(InputField)
+
+const MockField = vi.fn(() => null)
 
 const defaultProps = {
     name: 'test',
     isDisabled: false,
+    field: MockField,
 }
 const formFieldProps = {
     name: 'test result',
-    onChange: jest.fn(),
+    onChange: vi.fn(),
     value: 'test',
 }
 
 describe('FormField', () => {
     beforeEach(() => {
+        vi.clearAllMocks()
         const errorMessage = 'error'
         useControllerMock.mockReturnValue({
             field: formFieldProps,
@@ -52,50 +53,49 @@ describe('FormField', () => {
         })
     })
 
-    it('should render InputField with correct props', () => {
+    it('should render field with correct props', () => {
         render(<FormField {...defaultProps} />)
 
-        expect(InputField).toHaveBeenCalledWith(
+        expect(MockField).toHaveBeenCalledWith(
             {
-                ...defaultProps,
                 ...formFieldProps,
                 onChange: expect.any(Function),
                 error: 'error',
+                isDisabled: false,
             },
             {},
         )
 
-        getLastMockCall(InputFieldMock)[0].onChange!('test')
-
+        getLastMockCall(MockField)[0].onChange!('test')
         expect(formFieldProps.onChange).toHaveBeenCalledWith('test')
     })
 
     it('should render the custom field with correct props', () => {
-        const CustomField = jest.fn(() => null)
+        const CustomField = vi.fn(() => null)
         render(<FormField {...defaultProps} field={CustomField} />)
 
         expect(CustomField).toHaveBeenCalledWith(
             {
-                ...defaultProps,
                 ...formFieldProps,
                 onChange: expect.any(Function),
                 error: 'error',
+                isDisabled: false,
             },
             {},
         )
     })
 
     it('should transform the input value', () => {
-        const transform = jest.fn((value: string) => value.toUpperCase())
+        const transform = vi.fn((value: string) => value.toUpperCase())
         render(<FormField {...defaultProps} inputTransform={transform} />)
 
-        expect(getLastMockCall(InputFieldMock)[0].value).toEqual('TEST')
+        expect(getLastMockCall(MockField)[0]?.value).toEqual('TEST')
     })
 
     it('should transform the output value', () => {
-        const transform = jest.fn((value: string) => value.toUpperCase())
+        const transform = vi.fn((value: string) => value.toUpperCase()) as any
         render(<FormField {...defaultProps} outputTransform={transform} />)
-        getLastMockCall(InputFieldMock)[0].onChange!('test')
+        ;(getLastMockCall(MockField)[0].onChange as any)('test')
 
         expect(formFieldProps.onChange).toHaveBeenCalledWith('TEST')
     })

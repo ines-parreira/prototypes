@@ -1,8 +1,9 @@
+import { FormField } from '@repo/forms'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
-import { FormField } from 'core/forms'
+import InputField from 'pages/common/forms/input/InputField'
 import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
 import { renderWithStore } from 'utils/testing'
 
@@ -51,6 +52,7 @@ describe('CreateCustomBusinessHoursForm', () => {
             <FormField
                 name="business_hours_config.timezone"
                 label="Timezone"
+                field={InputField}
             />,
             undefined,
             {
@@ -80,6 +82,7 @@ describe('CreateCustomBusinessHoursForm', () => {
                 <FormField
                     name="overrideConfirmation"
                     label="Override confirmation"
+                    field={InputField}
                 />
                 <button type="submit">Submit</button>
             </div>,
@@ -104,8 +107,9 @@ describe('CreateCustomBusinessHoursForm', () => {
                 <FormField
                     name="overrideConfirmation"
                     label="Override confirmation"
+                    field={InputField}
                 />
-                <FormField name="name" label="Name" />
+                <FormField name="name" label="Name" field={InputField} />
                 <button type="submit">Submit</button>
             </div>,
             {

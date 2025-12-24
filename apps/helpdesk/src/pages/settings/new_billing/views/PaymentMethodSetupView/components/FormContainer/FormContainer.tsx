@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useMemo } from 'react'
 
+import { Form } from '@repo/forms'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
@@ -9,7 +10,6 @@ import type { SubmitHandler } from 'react-hook-form'
 import { useStore } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { Form } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import type { StripePaymentMethodType } from 'models/billing/types'
 import BackLink from 'pages/settings/new_billing/components/BackLink'

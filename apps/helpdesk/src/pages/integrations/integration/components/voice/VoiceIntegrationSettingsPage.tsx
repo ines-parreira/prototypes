@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { Form, toFormErrors } from '@repo/forms'
 import { history } from '@repo/routing'
 import { useParams } from 'react-router-dom'
 
@@ -10,7 +11,6 @@ import type {
 import { useGetIntegration } from '@gorgias/helpdesk-queries'
 import { validateUpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-validators'
 
-import { Form, toFormErrors } from 'core/forms'
 import { useNotify } from 'hooks/useNotify'
 import { isPhoneIntegration } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import type {
     DetailedHTMLProps,
     FormHTMLAttributes,
@@ -12,8 +12,8 @@ import type {
 } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import type { FormErrors, FormValidator } from '../utils/validation'
-import { createResolver, toFieldErrors } from '../utils/validation'
+import type { FormErrors, FormValidator } from '../../utils/validation'
+import { createResolver, toFieldErrors } from '../../utils/validation'
 
 export type FormProps<TFieldValues extends FieldValues> = PropsWithChildren<
     Omit<UseFormProps<TFieldValues>, 'resolver' | 'errors'> &

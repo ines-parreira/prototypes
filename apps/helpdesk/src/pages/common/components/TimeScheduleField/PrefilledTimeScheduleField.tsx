@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 
+import { useFieldArray } from '@repo/forms'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { BusinessHoursTimeframe } from '@gorgias/helpdesk-types'
 
-import { useFieldArray } from 'core/forms'
 import {
     DAYS_OPTIONS_WITHOUT_ALWAYS_ON,
     DEFAULT_BUSINESS_HOUR,

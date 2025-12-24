@@ -1,3 +1,4 @@
+import { FormField } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -5,7 +6,6 @@ import { useFormContext } from 'react-hook-form'
 
 import { PhoneFunction } from '@gorgias/helpdesk-queries'
 
-import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
@@ -18,7 +18,7 @@ jest.mock('../VoiceIntegrationOnboardingCancelButton', () => () => (
     <button>Cancel</button>
 ))
 jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('core/forms')
+jest.mock('@repo/forms')
 jest.mock('react-hook-form')
 
 const useAppSelectorMock = useAppSelector as jest.Mock

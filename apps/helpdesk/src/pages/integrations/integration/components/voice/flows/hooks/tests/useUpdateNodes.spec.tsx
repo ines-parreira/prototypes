@@ -1,8 +1,8 @@
+import { Form } from '@repo/forms'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { mockPlayMessageStep } from '@gorgias/helpdesk-mocks'
 
-import { Form } from 'core/forms'
 import { Flow, FlowProvider } from 'core/ui/flows'
 import * as layoutUtils from 'core/ui/flows/layout.utils'
 

@@ -1,3 +1,4 @@
+import { Form } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -6,7 +7,6 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { mockListBusinessHoursResponse } from '@gorgias/helpdesk-mocks'
 
-import { Form } from 'core/forms'
 import useDeleteCustomBusinessHours from 'hooks/businessHours/useDeleteCustomBusinessHours'
 import { IntegrationType } from 'models/integration/constants'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'

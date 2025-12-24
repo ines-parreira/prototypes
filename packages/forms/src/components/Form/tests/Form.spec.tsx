@@ -3,21 +3,64 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 import _set from 'lodash/set'
+import { vi } from 'vitest'
 
-import { Form } from '../components/Form'
-import { FormField } from '../components/FormField'
-import { FormSubmitButton } from '../components/FormSubmitButton'
-import type { FormErrors } from '../utils/validation'
+import type { FormErrors } from '../../../utils/validation'
+import { FormField } from '../../FormField/FormField'
+import { FormSubmitButton } from '../../FormSubmitButton/FormSubmitButton'
+import { Form } from '../Form'
 
-const onSubmit = jest.fn()
+const onSubmit = vi.fn()
+
+// Mock field component for testing
+const MockInputField = ({
+    label,
+    value,
+    onChange,
+    error,
+    isRequired,
+}: {
+    label?: string
+    value?: string
+    onChange?: (value: string) => void
+    error?: string
+    isRequired?: boolean
+}) => (
+    <div>
+        {label && (
+            <label>
+                {label}
+                {isRequired && ' *'}
+            </label>
+        )}
+        <input
+            aria-label={label}
+            value={value || ''}
+            onChange={(e) => onChange?.(e.target.value)}
+        />
+        {error && <span>{error}</span>}
+    </div>
+)
 
 describe('<Form />', () => {
+    beforeEach(() => {
+        vi.clearAllMocks()
+    })
+
     describe('fields', () => {
         it('renders the field components', () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField name="name" label="Name" />
-                    <FormField name="address" label="Address" />
+                    <FormField
+                        field={MockInputField}
+                        name="name"
+                        label="Name"
+                    />
+                    <FormField
+                        field={MockInputField}
+                        name="address"
+                        label="Address"
+                    />
                 </Form>,
             )
 
@@ -30,7 +73,11 @@ describe('<Form />', () => {
         it('allows passing default (initial) values', async () => {
             render(
                 <Form defaultValues={{ name: 'John' }} onValidSubmit={onSubmit}>
-                    <FormField name="name" label="Name" />
+                    <FormField
+                        field={MockInputField}
+                        name="name"
+                        label="Name"
+                    />
                 </Form>,
             )
 
@@ -47,7 +94,11 @@ describe('<Form />', () => {
         it('updates values when fields change', async () => {
             render(
                 <Form defaultValues={{ name: 'John' }} onValidSubmit={onSubmit}>
-                    <FormField name="name" label="Name" />
+                    <FormField
+                        field={MockInputField}
+                        name="name"
+                        label="Name"
+                    />
                 </Form>,
             )
 
@@ -67,8 +118,16 @@ describe('<Form />', () => {
         it('allows using dot notation for field names', async () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField name="name" label="Name" />
-                    <FormField name="address.street" label="Street" />
+                    <FormField
+                        field={MockInputField}
+                        name="name"
+                        label="Name"
+                    />
+                    <FormField
+                        field={MockInputField}
+                        name="address.street"
+                        label="Street"
+                    />
                 </Form>,
             )
 
@@ -94,9 +153,21 @@ describe('<Form />', () => {
         it('allows using dot notation as array indexes for field names', async () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField name="name" label="Name" />
-                    <FormField name="items.0.name" label="First item" />
-                    <FormField name="items.1.name" label="Second item" />
+                    <FormField
+                        field={MockInputField}
+                        name="name"
+                        label="Name"
+                    />
+                    <FormField
+                        field={MockInputField}
+                        name="items.0.name"
+                        label="First item"
+                    />
+                    <FormField
+                        field={MockInputField}
+                        name="items.1.name"
+                        label="Second item"
+                    />
                 </Form>,
             )
 
@@ -127,7 +198,12 @@ describe('<Form />', () => {
         it('validates required fields', async () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField name="name" label="Name" isRequired />
+                    <FormField
+                        field={MockInputField}
+                        name="name"
+                        label="Name"
+                        isRequired
+                    />
                 </Form>,
             )
 
@@ -146,6 +222,7 @@ describe('<Form />', () => {
             render(
                 <Form onValidSubmit={onSubmit}>
                     <FormField
+                        field={MockInputField}
                         name="name"
                         label="Name"
                         isRequired
@@ -166,6 +243,7 @@ describe('<Form />', () => {
             render(
                 <Form onValidSubmit={onSubmit}>
                     <FormField
+                        field={MockInputField}
                         name="name"
                         label="Name"
                         validation={{
@@ -207,7 +285,11 @@ describe('<Form />', () => {
                     errors={{ username: 'Username is already in use' }}
                     onValidSubmit={onSubmit}
                 >
-                    <FormField name="username" label="Username" />
+                    <FormField
+                        field={MockInputField}
+                        name="username"
+                        label="Username"
+                    />
                 </Form>,
             )
 
@@ -238,7 +320,11 @@ describe('<Form />', () => {
                     }}
                     onValidSubmit={onSubmit}
                 >
-                    <FormField name="username" label="Username" />
+                    <FormField
+                        field={MockInputField}
+                        name="username"
+                        label="Username"
+                    />
                 </Form>,
             )
 
@@ -305,10 +391,26 @@ describe('<Form />', () => {
 
             render(
                 <Form<Values> onValidSubmit={onSubmit} validator={validate}>
-                    <FormField name="name" label="Name" />
-                    <FormField name="address.street" label="Street" />
-                    <FormField name="items.0.name" label="First item" />
-                    <FormField name="items.1.name" label="Second item" />
+                    <FormField
+                        field={MockInputField}
+                        name="name"
+                        label="Name"
+                    />
+                    <FormField
+                        field={MockInputField}
+                        name="address.street"
+                        label="Street"
+                    />
+                    <FormField
+                        field={MockInputField}
+                        name="items.0.name"
+                        label="First item"
+                    />
+                    <FormField
+                        field={MockInputField}
+                        name="items.1.name"
+                        label="Second item"
+                    />
                 </Form>,
             )
 
@@ -334,7 +436,11 @@ describe('<Form />', () => {
         it('allows using a form submit button', () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField name="name" label="Name" />
+                    <FormField
+                        field={MockInputField}
+                        name="name"
+                        label="Name"
+                    />
                     <button type="submit">Save Changes</button>
                 </Form>,
             )
@@ -345,13 +451,17 @@ describe('<Form />', () => {
         it('tracks dirty state disabling it while unchanged', async () => {
             render(
                 <Form onValidSubmit={onSubmit}>
-                    <FormField name="name" label="Name" />
+                    <FormField
+                        field={MockInputField}
+                        name="name"
+                        label="Name"
+                    />
                     <FormSubmitButton />
                 </Form>,
             )
 
             const button = screen.getByRole('button', { name: 'Save Changes' })
-            expect(button).toBeAriaDisabled()
+            expect(button).toHaveAttribute('aria-disabled', 'true')
 
             fireEvent.click(button)
 
@@ -363,13 +473,17 @@ describe('<Form />', () => {
         it('tracks dirty state correctly based on default values', async () => {
             render(
                 <Form onValidSubmit={onSubmit} defaultValues={{ name: 'test' }}>
-                    <FormField name="name" label="Name" />
+                    <FormField
+                        field={MockInputField}
+                        name="name"
+                        label="Name"
+                    />
                     <FormSubmitButton />
                 </Form>,
             )
             const button = screen.getByRole('button', { name: 'Save Changes' })
 
-            expect(button).toBeAriaDisabled()
+            expect(button).toHaveAttribute('aria-disabled', 'true')
 
             fireEvent.click(button)
 
@@ -397,19 +511,23 @@ describe('<Form />', () => {
                     onValidSubmit={onSubmit}
                     defaultValues={{ name: 'initial' }}
                 >
-                    <FormField name="name" label="Name" />
+                    <FormField
+                        field={MockInputField}
+                        name="name"
+                        label="Name"
+                    />
                     <FormSubmitButton />
                 </Form>,
             )
 
             const button = screen.getByRole('button', { name: 'Save Changes' })
-            expect(button).toBeAriaDisabled()
+            expect(button).toHaveAttribute('aria-disabled', 'true')
 
             fireEvent.change(screen.getByLabelText('Name'), {
                 target: { value: 'changed' },
             })
 
-            expect(button).toBeAriaEnabled()
+            expect(button).not.toHaveAttribute('aria-disabled', 'true')
 
             fireEvent.click(button)
 
@@ -423,7 +541,7 @@ describe('<Form />', () => {
             const input = screen.getByLabelText('Name') as HTMLInputElement
             expect(input.value).toBe('changed')
             /* button should be disabled again because the dirty state is reset */
-            expect(button).toBeAriaDisabled()
+            expect(button).toHaveAttribute('aria-disabled', 'true')
         })
     })
 })

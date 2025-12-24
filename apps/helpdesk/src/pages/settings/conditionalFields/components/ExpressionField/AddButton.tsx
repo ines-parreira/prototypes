@@ -1,7 +1,7 @@
+import { useWatch } from '@repo/forms'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { CustomFieldConditionExpression } from '@gorgias/helpdesk-queries'
-
-import { useWatch } from 'core/forms'
 
 export function AddButton({ onClick }: { onClick: () => void }) {
     const expression: CustomFieldConditionExpression[] = useWatch({

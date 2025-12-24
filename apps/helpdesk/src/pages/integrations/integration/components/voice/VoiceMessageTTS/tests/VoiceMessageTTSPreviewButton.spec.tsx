@@ -1,3 +1,4 @@
+import { Form } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -8,7 +9,6 @@ import { mockSynthesizeSpeechPreviewHandler } from '@gorgias/helpdesk-mocks'
 import type { VoiceMessageTextToSpeech } from '@gorgias/helpdesk-queries'
 import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 
-import { Form } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 

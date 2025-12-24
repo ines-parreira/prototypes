@@ -1,5 +1,6 @@
 import { useMemo, useRef } from 'react'
 
+import { FormField } from '@repo/forms'
 import { useFormContext, useWatch } from 'react-hook-form'
 
 import type { SelectFieldProps } from '@gorgias/axiom'
@@ -10,7 +11,6 @@ import type {
 } from '@gorgias/helpdesk-types'
 import { ObjectType } from '@gorgias/helpdesk-types'
 
-import { FormField } from 'core/forms'
 import type { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import { getIntermediaryNodeId } from 'core/ui/flows/utils'

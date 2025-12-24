@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { FormField, useWatch } from '@repo/forms'
 import type { NodeProps } from '@xyflow/react'
 import { useParams } from 'react-router-dom'
 
@@ -12,7 +13,6 @@ import type {
 } from '@gorgias/helpdesk-types'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import { FormField, useWatch } from 'core/forms'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 
 import { VoiceIntegrationSelectCaption } from '../../VoiceIntegrationSelectCaption'

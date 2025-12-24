@@ -1,9 +1,8 @@
 import React from 'react'
 
+import { useController, useFieldArray, useFormContext } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
-
-import { useController, useFieldArray, useFormContext } from 'core/forms'
 
 import MetricsFieldArray from '../MetricsFieldArray'
 
@@ -28,8 +27,8 @@ useFormContextMock.mockReturnValue({
     getValues: jest.fn(),
 } as unknown as ReturnType<typeof useFormContext>)
 
-jest.mock('core/forms', () => ({
-    ...jest.requireActual('core/forms'),
+jest.mock('@repo/forms', () => ({
+    ...jest.requireActual('@repo/forms'),
     useFieldArray: jest.fn(),
     useController: jest.fn(),
     useFormContext: jest.fn(),

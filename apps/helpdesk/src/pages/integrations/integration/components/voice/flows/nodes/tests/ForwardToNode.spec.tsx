@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { Form } from '@repo/forms'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -16,7 +17,6 @@ import type {
     ListPhoneNumbers200DataItem,
 } from '@gorgias/helpdesk-types'
 
-import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 

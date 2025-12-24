@@ -1,6 +1,8 @@
+import React from 'react'
+
 import { render, screen } from '@testing-library/react'
 
-import FormActions from '../components/FormActions'
+import FormActions from '../FormActions'
 
 describe('FormActions', () => {
     it('should render children', () => {

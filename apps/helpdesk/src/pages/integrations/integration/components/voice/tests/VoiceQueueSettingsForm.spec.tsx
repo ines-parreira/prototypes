@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { FormField } from '@repo/forms'
 import { assumeMock, getLastMockCall, renderHook } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
@@ -14,9 +15,9 @@ import {
 } from '@gorgias/helpdesk-queries'
 import * as validators from '@gorgias/helpdesk-validators'
 
-import { FormField } from 'core/forms/components/FormField'
 import { voiceQueue } from 'fixtures/voiceQueue'
 import useAppDispatch from 'hooks/useAppDispatch'
+import InputField from 'pages/common/forms/input/InputField'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { renderWithRouter } from 'utils/testing'
@@ -73,20 +74,41 @@ const wrapper = (props: {
     >
         {props.children}
         <div>Form Content</div>
-        <FormField label="Name" name="name" />
-        <FormField label="Ring Time" name="ring_time" />
-        <FormField label="Wait Time" name="wait_time" />
-        <FormField label="Capacity" name="capacity" />
-        <FormField label="Wrap Up Time" name="wrap_up_time" />
+        <FormField label="Name" name="name" field={InputField} />
+        <FormField label="Ring Time" name="ring_time" field={InputField} />
+        <FormField label="Wait Time" name="wait_time" field={InputField} />
+        <FormField label="Capacity" name="capacity" field={InputField} />
+        <FormField
+            label="Wrap Up Time"
+            name="wrap_up_time"
+            field={InputField}
+        />
         <FormField
             label="Is Wrap Up Time Enabled"
             name="is_wrap_up_time_enabled"
+            field={InputField}
         />
-        <FormField label="Wait Music" name="wait_music" />
-        <FormField label="Distribution Mode" name="distribution_mode" />
-        <FormField label="Linked Targets" name="linked_targets" />
-        <FormField label="Priority Weight" name="priority_weight" />
-        <FormField label="Target Scope" name="target_scope" />
+        <FormField label="Wait Music" name="wait_music" field={InputField} />
+        <FormField
+            label="Distribution Mode"
+            name="distribution_mode"
+            field={InputField}
+        />
+        <FormField
+            label="Linked Targets"
+            name="linked_targets"
+            field={InputField}
+        />
+        <FormField
+            label="Priority Weight"
+            name="priority_weight"
+            field={InputField}
+        />
+        <FormField
+            label="Target Scope"
+            name="target_scope"
+            field={InputField}
+        />
         <button type="submit">Submit</button>
     </VoiceQueueSettingsForm>
 )

@@ -1,11 +1,11 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FormField, FormSubmitButton } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 import { BrowserRouter } from 'react-router-dom'
 
-import { FormField, FormSubmitButton } from 'core/forms'
 import { integrationsState } from 'fixtures/integrations'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
@@ -42,7 +42,7 @@ const useFormContextMock = assumeMock(useFormContext)
 
 const useDeleteVoiceIntegrationMock = assumeMock(useDeletePhoneIntegration)
 
-jest.mock('core/forms')
+jest.mock('@repo/forms')
 const FormSubmitButtonMock = assumeMock(FormSubmitButton)
 const FormFieldMock = assumeMock(FormField)
 

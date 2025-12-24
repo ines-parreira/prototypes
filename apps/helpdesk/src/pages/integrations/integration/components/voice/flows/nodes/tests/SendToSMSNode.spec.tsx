@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { Form } from '@repo/forms'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -12,7 +13,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { SendToSMSStep } from '@gorgias/helpdesk-types'
 
-import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 

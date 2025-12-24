@@ -1,12 +1,10 @@
-import type { ComponentProps, ComponentType } from 'react'
+import type { ComponentType } from 'react'
 import React, { useCallback } from 'react'
 
 import type { ControllerRenderProps, UseControllerProps } from 'react-hook-form'
 import { useController } from 'react-hook-form'
 
-import InputField from 'pages/common/forms/input/InputField'
-
-// Needed otherwise we can’t access CustomFieldProps value / onChange
+// Needed otherwise we can't access CustomFieldProps value / onChange
 //  in the ControllerParams type
 type NeededProps = {
     value?: any
@@ -28,17 +26,15 @@ type ControllerParams<CustomFieldProps extends NeededProps> = {
 }
 
 export type FormFieldProps<CustomFieldProps extends NeededProps> = {
-    field?: ComponentType<CustomFieldProps>
+    field: ComponentType<CustomFieldProps>
 } & ControllerParams<CustomFieldProps> &
     // onChange, onBlur, value, etc. are handled by the controller
     // we might want to allow some overrides in the future
     Omit<CustomFieldProps, keyof ControllerRenderProps>
 
-export function FormField<
-    CustomFieldProps extends NeededProps = ComponentProps<typeof InputField>,
->({
+export function FormField<CustomFieldProps extends NeededProps>({
     name,
-    field: Field = InputField,
+    field: Field,
     validation,
     inputTransform,
     outputTransform,

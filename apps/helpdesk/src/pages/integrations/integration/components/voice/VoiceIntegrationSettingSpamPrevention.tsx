@@ -1,4 +1,5 @@
-import { FormField } from 'core/forms'
+import { FormField } from '@repo/forms'
+
 import NewToggleField from 'pages/common/forms/NewToggleField'
 
 function VoiceIntegrationSettingSpamPrevention() {

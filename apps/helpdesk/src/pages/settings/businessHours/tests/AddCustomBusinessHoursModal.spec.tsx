@@ -13,8 +13,8 @@ jest.mock('../CustomBusinessHoursIntegrationsTable', () => () => (
     <div>CustomBusinessHoursIntegrationsTable</div>
 ))
 
-jest.mock('core/forms', () => ({
-    ...jest.requireActual('core/forms'),
+jest.mock('@repo/forms', () => ({
+    ...jest.requireActual('@repo/forms'),
     FormSubmitButton: jest.fn(({ children }: { children: React.ReactNode }) => (
         <button type="submit">{children}</button>
     )),

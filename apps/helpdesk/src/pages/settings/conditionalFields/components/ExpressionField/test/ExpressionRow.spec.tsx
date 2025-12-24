@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { FormField, useWatch } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { ExpressionOperator } from '@gorgias/helpdesk-queries'
 
-import { FormField, useWatch } from 'core/forms'
 import type { CustomField } from 'custom-fields/types'
 
 import { ExpressionRow } from '../ExpressionRow'
@@ -14,10 +14,10 @@ import { OperatorField } from '../OperatorField'
 import { ValueField } from '../ValueField'
 
 jest.mock(
-    'core/forms',
+    '@repo/forms',
     () =>
         ({
-            ...jest.requireActual('core/forms'),
+            ...jest.requireActual('@repo/forms'),
             useWatch: jest.fn(),
             FormField: jest.fn(() => <div />),
         }) as Record<string, unknown>,

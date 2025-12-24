@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 
+import { FormField, FormSubmitButton } from '@repo/forms'
 import { useFormContext } from 'react-hook-form'
 
 import { LegacyCheckBoxField as CheckBoxField } from '@gorgias/axiom'
 import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 
-import { FormField, FormSubmitButton } from 'core/forms'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 import css from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferences.less'

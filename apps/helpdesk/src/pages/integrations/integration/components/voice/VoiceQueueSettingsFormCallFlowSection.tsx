@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 
+import { FormField, useFormContext } from '@repo/forms'
+
 import {
     LegacyBanner as Banner,
     LegacyButton as Button,
@@ -12,7 +14,6 @@ import {
     VoiceQueueTargetScope,
 } from '@gorgias/helpdesk-queries'
 
-import { FormField, useFormContext } from 'core/forms'
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import RadioButtonField from 'pages/common/forms/RadioButtonField'

@@ -1,10 +1,10 @@
 import type React from 'react'
 
+import { FormField } from '@repo/forms'
 import { Link } from 'react-router-dom'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import { FormField } from 'core/forms'
 import {
     SettingsCard,
     SettingsCardContent,

@@ -1,9 +1,9 @@
+import { toFormErrors } from '@repo/forms'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { useGetSlaPolicy } from '@gorgias/helpdesk-queries'
 import { validateCreateSLAPolicy } from '@gorgias/helpdesk-validators'
 
-import { toFormErrors } from 'core/forms'
 import type { SLATemplate } from 'pages/settings/SLAs/config/templates'
 import Loader from 'pages/settings/SLAs/features/Loader/Loader'
 

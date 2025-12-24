@@ -1,8 +1,9 @@
+import { Form, FormField } from '@repo/forms'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { Form, FormField } from 'core/forms'
 import Modal from 'pages/common/components/modal/Modal'
+import InputField from 'pages/common/forms/input/InputField'
 
 import EditCustomBusinessHoursIntegrationsSection from '../EditCustomBusinessHoursIntegrationsSection'
 import type { EditCustomBusinessHoursFormValues } from '../types'
@@ -13,6 +14,7 @@ jest.mock('../AssignIntegrationsModal', () => (props: any) => (
         <FormField
             name="temporary_assigned_integrations"
             label="Temporary assigned integrations"
+            field={InputField}
         />
         <button onClick={props.onClose}>Close</button>
     </Modal>

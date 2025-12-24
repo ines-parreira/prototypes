@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { Form } from '@repo/forms'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -9,7 +10,6 @@ import {
     mockVoiceMessageTextToSpeech,
 } from '@gorgias/helpdesk-mocks'
 
-import { Form } from 'core/forms'
 import { Flow, FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 

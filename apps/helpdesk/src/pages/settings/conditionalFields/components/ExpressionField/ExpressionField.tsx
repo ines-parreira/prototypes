@@ -1,4 +1,5 @@
-import { useFieldArray, useFormState } from 'core/forms'
+import { useFieldArray, useFormState } from '@repo/forms'
+
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import Caption from 'pages/common/forms/Caption/Caption'

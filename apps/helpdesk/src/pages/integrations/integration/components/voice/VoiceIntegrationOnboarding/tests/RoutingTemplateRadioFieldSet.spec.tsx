@@ -1,8 +1,7 @@
+import { useFormContext } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import { useFormContext } from 'core/forms'
 
 import RoutingTemplateRadioFieldSet from '../RoutingTemplateRadioFieldSet'
 import {
@@ -11,7 +10,7 @@ import {
     getSendToVoicemailFlow,
 } from '../utils'
 
-jest.mock('core/forms')
+jest.mock('@repo/forms')
 jest.mock('../utils', () => ({
     getRouteToQueueFlow: jest.fn(),
     getDefaultIvrFlow: jest.fn(),

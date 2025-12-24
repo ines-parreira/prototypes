@@ -1,10 +1,10 @@
+import { Form, toFormErrors } from '@repo/forms'
 import { history } from '@repo/routing'
 
 import { useUpdateBusinessHours } from '@gorgias/helpdesk-queries'
 import type { BusinessHoursDetails } from '@gorgias/helpdesk-types'
 import { validateBusinessHoursUpdate } from '@gorgias/helpdesk-validators'
 
-import { Form, toFormErrors } from 'core/forms'
 import { useNotify } from 'hooks/useNotify'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 import {

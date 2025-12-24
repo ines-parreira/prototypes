@@ -1,12 +1,11 @@
+import { FormField } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { act, render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { FormField } from 'core/forms'
-
 import VoiceIntegrationSettingCallTranscription from '../VoiceIntegrationSettingCallTranscription'
 
-jest.mock('core/forms')
+jest.mock('@repo/forms')
 const FormFieldMock = assumeMock(FormField)
 
 describe('VoiceIntegrationSettingCallTranscription', () => {

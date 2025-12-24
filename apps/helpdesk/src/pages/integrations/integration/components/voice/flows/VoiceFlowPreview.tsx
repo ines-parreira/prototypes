@@ -1,8 +1,9 @@
+import { Form } from '@repo/forms'
+
 import { Box } from '@gorgias/axiom'
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
-import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 import Loader from 'pages/common/components/Loader/Loader'
 

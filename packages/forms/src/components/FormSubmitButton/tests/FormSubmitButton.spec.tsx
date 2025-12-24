@@ -1,13 +1,14 @@
 import React from 'react'
 
-import { assumeMock } from '@repo/testing'
+import { assumeMock } from '@repo/testing/vitest'
 import { render, screen } from '@testing-library/react'
 import { useFormState } from 'react-hook-form'
+import { vi } from 'vitest'
 
-import { FormSubmitButton } from '../components/FormSubmitButton'
+import { FormSubmitButton } from '../FormSubmitButton'
 
-jest.mock('react-hook-form', () => ({
-    useFormState: jest.fn(),
+vi.mock('react-hook-form', () => ({
+    useFormState: vi.fn(),
 }))
 
 const useFormStateMock = assumeMock(useFormState)
@@ -31,7 +32,7 @@ describe('FormSubmitButton', () => {
             name: 'Loading... Save Changes',
         })
         expect(button).toBeInTheDocument()
-        expect(button).toBeAriaDisabled()
+        expect(button).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('should be disabled or not according to form state', () => {
@@ -44,7 +45,7 @@ describe('FormSubmitButton', () => {
             name: 'Save Changes',
         })
 
-        expect(button).toBeAriaDisabled()
+        expect(button).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('allows overriding disabled state', () => {
@@ -53,6 +54,6 @@ describe('FormSubmitButton', () => {
             name: 'Save Changes',
         })
 
-        expect(button).toBeAriaDisabled()
+        expect(button).toHaveAttribute('aria-disabled', 'true')
     })
 })

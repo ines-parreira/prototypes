@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { FormField } from '@repo/forms'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -11,8 +12,8 @@ import type { CallRoutingFlow } from '@gorgias/helpdesk-types'
 import type { ValidationError } from '@gorgias/helpdesk-validators'
 import { validateCallRoutingFlow } from '@gorgias/helpdesk-validators'
 
-import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
+import InputField from 'pages/common/forms/input/InputField'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
@@ -114,14 +115,21 @@ const wrapper = ({
         <FormField
             label="First Step ID"
             name="first_step_id"
+            field={InputField}
             data-testid="first-step-id"
         />
         <FormField
             label="Play Message Content"
             name="steps.play-message.message.text_to_speech_content"
             data-testid="play-message-content"
+            field={InputField}
         />
-        <FormField label="Steps" name="steps" data-testid="steps-field" />
+        <FormField
+            label="Steps"
+            name="steps"
+            data-testid="steps-field"
+            field={InputField}
+        />
     </VoiceFlowForm>
 )
 

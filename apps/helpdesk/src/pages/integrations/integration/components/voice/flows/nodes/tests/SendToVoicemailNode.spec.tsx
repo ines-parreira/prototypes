@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { Form } from '@repo/forms'
 import { screen } from '@testing-library/react'
 
 import {
@@ -11,7 +12,6 @@ import type {
     SendToVoicemailStep,
 } from '@gorgias/helpdesk-types'
 
-import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 

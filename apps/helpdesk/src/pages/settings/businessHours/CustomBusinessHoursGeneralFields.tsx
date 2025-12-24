@@ -1,6 +1,7 @@
+import { FormField } from '@repo/forms'
 import classNames from 'classnames'
 
-import { FormField } from 'core/forms'
+import InputField from 'pages/common/forms/input/InputField'
 import SelectDropdownField from 'pages/common/forms/SelectDropdownField'
 import { getMomentTimezoneNames } from 'utils/date'
 
@@ -18,6 +19,7 @@ export default function CustomBusinessHoursGeneralFields({
             className={classNames(css.container, { [css.column]: !horizontal })}
         >
             <FormField
+                field={InputField}
                 className={css.field}
                 name="name"
                 label="Name"

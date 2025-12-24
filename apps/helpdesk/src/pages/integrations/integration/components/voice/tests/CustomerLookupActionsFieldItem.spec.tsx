@@ -1,11 +1,10 @@
 import type { ComponentProps } from 'react'
 
+import { Form } from '@repo/forms'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import type { CustomerFieldBranchOption } from '@gorgias/helpdesk-types'
-
-import { Form } from 'core/forms'
 
 import { CustomerLookupActionsFieldItem } from '../CustomerLookupActionsFieldItem'
 

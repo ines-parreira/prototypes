@@ -1,7 +1,7 @@
+import { useFieldArray, useWatch } from '@repo/forms'
+
 import { Box, Button, Icon } from '@gorgias/axiom'
 import type { BranchOptions } from '@gorgias/helpdesk-types'
-
-import { useFieldArray, useWatch } from 'core/forms'
 
 import { useDeleteNode } from './flows/utils/useDeleteNode'
 import { IvrMenuActionFieldItem } from './IvrMenuActionsFieldItem'

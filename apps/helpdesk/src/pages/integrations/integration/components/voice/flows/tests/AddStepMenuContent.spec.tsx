@@ -1,10 +1,10 @@
+import { Form } from '@repo/forms'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { act } from 'react-dom/test-utils'
 
 import { mockPlayMessageStep } from '@gorgias/helpdesk-mocks'
 
-import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 
 import AddStepMenuContent from '../AddStepMenuContent'

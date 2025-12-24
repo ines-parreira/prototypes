@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 
+import { FormField, useFormContext } from '@repo/forms'
+
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 
-import { FormField, useFormContext } from 'core/forms'
 import AccordionRadioFieldSet from 'pages/common/forms/AccordionRadioFieldSet'
 import VoiceQueueSelectField from 'pages/integrations/integration/components/voice/VoiceQueueSelectField'
 

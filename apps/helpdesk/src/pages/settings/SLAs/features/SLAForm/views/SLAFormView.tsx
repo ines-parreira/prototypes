@@ -1,12 +1,13 @@
 import { useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import type { FormValidator } from '@repo/forms'
+import { Form, FormField, FormSubmitButton } from '@repo/forms'
 import { history } from '@repo/routing'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import type { FormValidator } from 'core/forms'
-import { Form, FormField, FormSubmitButton } from 'core/forms'
+import InputField from 'pages/common/forms/input/InputField'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import settingsCss from 'pages/settings/settings.less'
 import PageHeader from 'pages/settings/SLAs/features/PageHeader/PageHeader'
@@ -57,6 +58,7 @@ export default function SLAFormView({
                     >
                         <FormSection>
                             <FormField
+                                field={InputField}
                                 name="name"
                                 label="SLA name"
                                 isRequired

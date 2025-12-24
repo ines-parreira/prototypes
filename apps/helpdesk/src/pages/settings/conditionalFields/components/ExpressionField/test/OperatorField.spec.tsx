@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { useFormContext } from '@repo/forms'
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { LegacySelectField as SelectField } from '@gorgias/axiom'
 import { ExpressionOperator } from '@gorgias/helpdesk-queries'
 
-import { useFormContext } from 'core/forms'
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import {
     EXPRESSION_OPERATORS_BY_UI_DATA_TYPE,
@@ -23,7 +23,7 @@ jest.mock(
             LegacySelectField: jest.fn(() => <div data-testid="Mock" />),
         }) as Record<string, unknown>,
 )
-jest.mock('core/forms', () => ({
+jest.mock('@repo/forms', () => ({
     useFormContext: jest.fn(),
 }))
 

@@ -1,3 +1,5 @@
+import { FormField, useWatch } from '@repo/forms'
+
 import {
     Box,
     LegacyButton as Button,
@@ -5,7 +7,7 @@ import {
 } from '@gorgias/axiom'
 import type { BranchOptions } from '@gorgias/helpdesk-types'
 
-import { FormField, useWatch } from 'core/forms'
+import InputField from 'pages/common/forms/input/InputField'
 
 import css from './IvrMenuActionsFieldItem.less'
 
@@ -29,6 +31,7 @@ export function IvrMenuActionFieldItem({
         <Box gap="xs" width="100%">
             <Button intent="secondary">{value?.input_digit}</Button>
             <FormField
+                field={InputField}
                 key={fieldName}
                 className={css.branchName}
                 name={`${name}.${index}.branch_name`}

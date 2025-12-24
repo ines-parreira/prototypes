@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import type { FormErrors } from '@repo/forms'
 import { useInterval, useLocalStorage } from '@repo/hooks'
 import isObject from 'lodash/isObject'
 import kebabCase from 'lodash/kebabCase'
@@ -19,7 +20,6 @@ import {
     useUpdateIntegration,
 } from '@gorgias/helpdesk-queries'
 
-import type { FormErrors } from 'core/forms'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import type { Integration, OutlookIntegration } from 'models/integration/types'

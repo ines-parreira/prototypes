@@ -1,9 +1,9 @@
+import { Form } from '@repo/forms'
 import { render, screen } from '@testing-library/react'
 
 import { mockCustomerFieldsConditionalStep } from '@gorgias/helpdesk-mocks'
 import type { CallRoutingFlowSteps } from '@gorgias/helpdesk-types'
 
-import { Form } from 'core/forms'
 import { Flow, FlowProvider } from 'core/ui/flows'
 
 import { VoiceFlowNodeType } from '../../constants'

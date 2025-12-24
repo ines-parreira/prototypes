@@ -1,10 +1,10 @@
 import { useFlag } from '@repo/feature-flags'
+import { Form } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
-import { Form } from 'core/forms'
 import { integrationsState } from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
@@ -30,7 +30,7 @@ jest.mock('../useVoiceSettingsForm')
 const useFormSubmitMock = assumeMock(useFormSubmit)
 const getDefaultValuesMock = assumeMock(getDefaultValues)
 
-jest.mock('core/forms')
+jest.mock('@repo/forms')
 const FormMock = assumeMock(Form)
 
 jest.mock('@repo/feature-flags')

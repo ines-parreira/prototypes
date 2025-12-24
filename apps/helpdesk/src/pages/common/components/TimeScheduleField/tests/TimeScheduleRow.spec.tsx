@@ -1,7 +1,8 @@
+import { Form, FormField } from '@repo/forms'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { Form, FormField } from 'core/forms'
+import InputField from 'pages/common/forms/input/InputField'
 
 import TimeScheduleRow from '../TimeScheduleRow'
 
@@ -110,7 +111,11 @@ describe('TimeScheduleRow', () => {
                 }}
             >
                 <TimeScheduleRow {...props} />
-                <FormField name="someField" type="checkbox" />
+                <FormField
+                    name="someField"
+                    type="checkbox"
+                    field={InputField}
+                />
             </Form>,
         )
 
@@ -169,7 +174,11 @@ describe('TimeScheduleRow', () => {
                 }}
             >
                 <TimeScheduleRow {...props} />
-                <FormField name="someField" type="checkbox" />
+                <FormField
+                    name="someField"
+                    type="checkbox"
+                    field={InputField}
+                />
             </Form>,
         )
 

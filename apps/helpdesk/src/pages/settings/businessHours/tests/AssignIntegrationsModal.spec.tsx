@@ -1,7 +1,8 @@
+import { Form, FormField } from '@repo/forms'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { Form, FormField } from 'core/forms'
+import InputField from 'pages/common/forms/input/InputField'
 
 import AssignIntegrationsModal from '../AssignIntegrationsModal'
 import { CustomBusinessHoursContext } from '../CustomBusinessHoursContext'
@@ -44,9 +45,11 @@ const renderWithForm = (
                 <FormField
                     name="assigned_integrations.assign_integrations"
                     label="Assigned integrations"
+                    field={InputField}
                 />
                 <FormField
                     type="checkbox"
+                    field={InputField}
                     name="overrideConfirmation"
                     label="Override confirmation"
                 />

@@ -1,3 +1,4 @@
+import { Form } from '@repo/forms'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -14,7 +15,6 @@ import type { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
 import type { TimeSplitConditionalStep } from '@gorgias/helpdesk-types'
 import { TimeSplitConditionalRuleType } from '@gorgias/helpdesk-types'
 
-import { Form } from 'core/forms'
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 

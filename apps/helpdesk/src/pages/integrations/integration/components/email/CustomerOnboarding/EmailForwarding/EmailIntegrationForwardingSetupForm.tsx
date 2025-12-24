@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 
+import { Form } from '@repo/forms'
 import classNames from 'classnames'
 
 import {
@@ -8,7 +9,6 @@ import {
 } from '@gorgias/axiom'
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import { Form } from 'core/forms'
 import FormRow from 'pages/common/forms/FormRow'
 import BaseEmailIntegrationInputField from 'pages/integrations/integration/components/email/BaseEmailIntegrationInputField'
 import EmailForwardingInstructions from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailForwardingInstructions'

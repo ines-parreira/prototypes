@@ -1,12 +1,12 @@
 import type { ComponentProps } from 'react'
 
+import { Form, useFormContext } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { mockEnqueueStep } from '@gorgias/helpdesk-mocks'
 
-import { Form, useFormContext } from 'core/forms'
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
@@ -15,8 +15,8 @@ import { RouteToStepTypeField } from '../RouteToStepTypeField'
 import type { VoiceFlowFormValues } from '../types'
 import { useDeleteNode } from '../utils/useDeleteNode'
 
-jest.mock('core/forms', () => ({
-    ...jest.requireActual('core/forms'),
+jest.mock('@repo/forms', () => ({
+    ...jest.requireActual('@repo/forms'),
     useFormContext: jest.fn(),
 }))
 

@@ -1,3 +1,4 @@
+import { Form, FormField, FormSubmitButton } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { act, renderHook, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -10,8 +11,6 @@ import {
     mockSendToSMSStep,
 } from '@gorgias/helpdesk-mocks'
 import type { CallRoutingFlow, EnqueueStep } from '@gorgias/helpdesk-types'
-
-import { Form, FormField, FormSubmitButton } from 'core/forms'
 
 import { VoiceFlowNodeType } from '../../constants'
 import type { VoiceFlowNode } from '../../types'

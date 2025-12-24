@@ -1,7 +1,8 @@
+import { Form, toFormErrors } from '@repo/forms'
+
 import type { BusinessHoursCreate } from '@gorgias/helpdesk-types'
 import { validateBusinessHoursCreate } from '@gorgias/helpdesk-validators'
 
-import { Form, toFormErrors } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'

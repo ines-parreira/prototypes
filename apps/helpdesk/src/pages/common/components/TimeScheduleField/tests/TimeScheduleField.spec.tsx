@@ -1,6 +1,6 @@
+import { Form } from '@repo/forms'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { Form } from 'core/forms'
 import { DEFAULT_BUSINESS_HOURS_SCHEDULE } from 'pages/settings/businessHours/constants'
 
 import TimeScheduleField from '../TimeScheduleField'

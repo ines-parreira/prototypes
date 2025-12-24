@@ -1,0 +1,56 @@
+{
+    "name": "@repo/forms",
+    "version": "1.0.0",
+    "description": "Form components and utilities",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "test": "vitest run --configLoader=runner",
+        "test:ci:cover": "vitest run --configLoader=runner --coverage",
+        "test:watch": "vitest watch --configLoader=runner",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+    },
+    "peerDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
+        "@gorgias/helpdesk-validators": "catalog:rest-api-sdk",
+        "@repo/hooks": "workspace:*",
+        "classnames": "catalog:styles",
+        "lodash": "catalog:lodash",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+        "react-hook-form": "catalog:react-hook-form"
+    },
+    "devDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
+        "@gorgias/helpdesk-validators": "catalog:rest-api-sdk",
+        "@repo/config": "workspace:*",
+        "@repo/hooks": "workspace:*",
+        "@repo/testing": "workspace:*",
+        "@testing-library/dom": "catalog:test",
+        "@testing-library/jest-dom": "catalog:test",
+        "@testing-library/react": "catalog:test",
+        "@testing-library/user-event": "catalog:test",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@types/classnames": "catalog:styles",
+        "@types/lodash": "catalog:lodash",
+        "@types/react": "catalog:react",
+        "@types/react-dom": "catalog:react",
+        "@vitest/coverage-v8": "catalog:test",
+        "classnames": "catalog:styles",
+        "immer": "^10.0.4",
+        "lodash": "catalog:lodash",
+        "msw": "catalog:test",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+        "react-hook-form": "catalog:react-hook-form",
+        "typescript": "catalog:typescript",
+        "vitest": "catalog:test"
+    }
+}

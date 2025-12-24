@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react'
+import React, { type PropsWithChildren } from 'react'
 
 import css from './FormActions.less'
 

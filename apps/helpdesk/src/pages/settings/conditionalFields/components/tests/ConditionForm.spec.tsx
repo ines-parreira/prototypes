@@ -1,13 +1,13 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { Form, FormField, FormSubmitButton } from '@repo/forms'
 import { history } from '@repo/routing'
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
-import { Form, FormField, FormSubmitButton } from 'core/forms'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
@@ -18,7 +18,7 @@ import { DeletionPopover } from '../DeletionPopover'
 import { ExpressionField } from '../ExpressionField'
 import ThenField from '../ThenField'
 
-jest.mock('core/forms', () => ({
+jest.mock('@repo/forms', () => ({
     Form: jest.fn(({ children }) => <form>{children}</form>),
     FormField: jest.fn(() => <div />),
     FormSubmitButton: jest.fn(() => <button />),

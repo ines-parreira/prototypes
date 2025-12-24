@@ -1,11 +1,12 @@
 import React from 'react'
 
+import { Form, FormField } from '@repo/forms'
 import pick from 'lodash/pick'
 
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
-import { Form, FormField } from 'core/forms'
 import FormRow from 'pages/common/forms/FormRow'
+import InputField from 'pages/common/forms/input/InputField'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 import { isEmail } from 'utils'
 
@@ -59,6 +60,7 @@ export default function EmailIntegrationConnectForm(props: Props) {
                 >
                     <FormRow>
                         <FormField
+                            field={InputField}
                             name="meta.address"
                             label="Email"
                             caption="Please add a work email. We don't recommend using a personal email address (@gmail.com, @outlook.com)."
@@ -78,6 +80,7 @@ export default function EmailIntegrationConnectForm(props: Props) {
                     </FormRow>
                     <FormRow>
                         <FormField
+                            field={InputField}
                             name="name"
                             label="Email display name"
                             caption="The display name will appear in emails sent to customers. It must not include @, ;, <, >, [ ]."

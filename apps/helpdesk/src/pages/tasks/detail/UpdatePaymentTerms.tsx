@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { Form, FormField } from '@repo/forms'
 import classnames from 'classnames'
 
 import type { LegacySelectFieldRawOption as SelectFieldRawOption } from '@gorgias/axiom'
@@ -11,7 +12,6 @@ import {
 } from '@gorgias/axiom'
 import type { UpdatePaymentTerms as UpdatePaymentTermsInputType } from '@gorgias/helpdesk-queries'
 
-import { Form, FormField } from 'core/forms'
 import PageHeader from 'pages/common/components/PageHeader'
 import { useGetPaymentTermsWithSideEffects } from 'pages/settings/new_billing/hooks/useGetPaymentTermsWithSideEffects'
 import { useUpdatePaymentTermsWithSideEffects } from 'pages/settings/new_billing/hooks/useUpdatePaymentTermsWithSideEffects'

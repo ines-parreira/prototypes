@@ -1,6 +1,6 @@
+import { Form } from '@repo/forms'
 import { render, screen } from '@testing-library/react'
 
-import { Form } from 'core/forms'
 import type { Node } from 'core/ui/flows'
 import { Flow, FlowProvider } from 'core/ui/flows'
 

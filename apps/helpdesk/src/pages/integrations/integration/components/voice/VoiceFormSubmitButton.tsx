@@ -1,6 +1,5 @@
+import { FormSubmitButton } from '@repo/forms'
 import { useFormState } from 'react-hook-form'
-
-import { FormSubmitButton } from 'core/forms'
 
 type Props = {
     children: React.ReactNode

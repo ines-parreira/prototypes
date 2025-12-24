@@ -20,7 +20,7 @@ jest.mock('react-hook-form', () => ({
         watch: jest.fn(() => 'test-emoji'),
     }),
 }))
-jest.mock('core/forms', () => ({
+jest.mock('@repo/forms', () => ({
     FormField: ({ field: Component, name, ...props }: any) => {
         mockFormFieldProps[name] = { field: Component, name, ...props }
         if (name === 'business_hours_id') {

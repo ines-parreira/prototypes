@@ -1,5 +1,6 @@
 import { useMemo, useRef } from 'react'
 
+import { FormField } from '@repo/forms'
 import { useWatch } from 'react-hook-form'
 
 import { LegacyBanner as Banner, LegacyLabel as Label } from '@gorgias/axiom'
@@ -10,7 +11,6 @@ import {
     validateVoiceMessage,
 } from '@gorgias/helpdesk-validators'
 
-import { FormField } from 'core/forms'
 import type { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import { getIntermediaryNodeId } from 'core/ui/flows/utils'
@@ -19,7 +19,7 @@ import { IvrMenuActionsFieldArray } from '../../IvrMenuActionsFieldArray'
 import VoiceMessageField from '../../VoiceMessageField'
 import { VoiceFlowNodeType } from '../constants'
 import { useUpdateNodes } from '../hooks/useUpdateNodes'
-import { type IvrMenuNode } from '../types'
+import type { IvrMenuNode } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
 import { getFormTargetStepId } from '../utils'
 import { VoiceStepNode } from './VoiceStepNode'

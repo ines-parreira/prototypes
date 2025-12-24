@@ -1,3 +1,4 @@
+import { toFormErrors } from '@repo/forms'
 import { useHistory } from 'react-router-dom'
 
 import type {
@@ -7,7 +8,6 @@ import type {
 import { useCreateIntegration } from '@gorgias/helpdesk-queries'
 import { validatePhoneIntegrationMeta } from '@gorgias/helpdesk-validators'
 
-import { toFormErrors } from 'core/forms'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useNotify } from 'hooks/useNotify'
 import { fetchIntegrations } from 'state/integrations/actions'

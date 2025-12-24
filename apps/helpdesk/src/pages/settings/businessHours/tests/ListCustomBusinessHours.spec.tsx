@@ -1,3 +1,4 @@
+import { Form } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
@@ -7,7 +8,6 @@ import { setupServer } from 'msw/node'
 
 import { mockListBusinessHoursHandler } from '@gorgias/helpdesk-mocks'
 
-import { Form } from 'core/forms'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ListCustomBusinessHours from '../ListCustomBusinessHours'

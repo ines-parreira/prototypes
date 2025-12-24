@@ -1,11 +1,11 @@
+import { useFieldArray, useWatch } from '@repo/forms'
+
 import { Box, Button, Icon } from '@gorgias/axiom'
 import type {
     CustomerFieldBranchOption,
     CustomerFieldsConditionalStep,
     CustomField,
 } from '@gorgias/helpdesk-types'
-
-import { useFieldArray, useWatch } from 'core/forms'
 
 import { CustomerLookupActionsFieldItem } from './CustomerLookupActionsFieldItem'
 import { useDeleteNode } from './flows/utils/useDeleteNode'

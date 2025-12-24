@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 
-import classNames from 'classnames'
-
-import type { CreateSLAPolicy } from '@gorgias/helpdesk-types'
-
 import {
     FormField,
     useController,
     useFieldArray,
     useFormContext,
-} from 'core/forms'
+} from '@repo/forms'
+import classNames from 'classnames'
+
+import type { CreateSLAPolicy } from '@gorgias/helpdesk-types'
+
 import Caption from 'pages/common/forms/Caption/Caption'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import settingsCss from 'pages/settings/settings.less'

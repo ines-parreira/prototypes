@@ -1,5 +1,6 @@
 import type { ComponentProps, ReactNode } from 'react'
 
+import { Form, toFormErrors } from '@repo/forms'
 import type { DefaultValues } from 'react-hook-form'
 
 import type {
@@ -11,7 +12,6 @@ import {
     validateUpdateVoiceQueue,
 } from '@gorgias/helpdesk-validators'
 
-import { Form, toFormErrors } from 'core/forms'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 
 import { DEFAULT_QUEUE_VALUES } from './constants'

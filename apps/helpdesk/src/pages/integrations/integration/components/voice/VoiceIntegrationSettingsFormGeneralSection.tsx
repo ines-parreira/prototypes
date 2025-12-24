@@ -1,4 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FormField } from '@repo/forms'
 import { useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
@@ -8,7 +9,6 @@ import type {
     UpdateAllPhoneIntegrationSettings,
 } from '@gorgias/helpdesk-queries'
 
-import { FormField } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'

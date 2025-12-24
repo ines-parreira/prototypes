@@ -1,5 +1,12 @@
 import { useRef } from 'react'
 
+import {
+    Form,
+    FormActionsGroup,
+    FormField,
+    FormSubmitButton,
+    toFormErrors,
+} from '@repo/forms'
 import { useIsMounted } from '@repo/hooks'
 
 import {
@@ -14,8 +21,6 @@ import type {
 import { validateUpdateAccountSettingBody } from '@gorgias/helpdesk-validators'
 
 import { Drawer } from 'components/Drawer/Drawer'
-import { Form, FormField, FormSubmitButton, toFormErrors } from 'core/forms'
-import FormActionsGroup from 'core/forms/components/FormActionsGroup'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 import TimeScheduleField from 'pages/common/components/TimeScheduleField/TimeScheduleField'
 import SelectDropdownField from 'pages/common/forms/SelectDropdownField'

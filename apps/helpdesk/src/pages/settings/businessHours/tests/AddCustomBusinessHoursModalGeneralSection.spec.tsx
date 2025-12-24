@@ -1,6 +1,5 @@
+import { Form } from '@repo/forms'
 import { render, screen } from '@testing-library/react'
-
-import { Form } from 'core/forms'
 
 import AddCustomBusinessHoursModalGeneralSection from '../AddCustomBusinessHoursModalGeneralSection'
 

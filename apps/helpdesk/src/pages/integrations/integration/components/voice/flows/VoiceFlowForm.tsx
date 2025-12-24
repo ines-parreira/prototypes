@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 
+import { Form, toFormErrors } from '@repo/forms'
 import omit from 'lodash/omit'
 
 import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 import { validateCallRoutingFlow } from '@gorgias/helpdesk-validators'
 
-import { Form, toFormErrors } from 'core/forms'
 import { useNotify } from 'hooks/useNotify'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 

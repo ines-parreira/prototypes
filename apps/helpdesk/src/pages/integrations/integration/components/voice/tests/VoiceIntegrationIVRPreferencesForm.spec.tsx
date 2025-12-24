@@ -1,10 +1,10 @@
+import { Form } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 
-import { Form } from 'core/forms'
 import { integrationsState } from 'fixtures/integrations'
 import { IntegrationType } from 'models/integration/constants'
 import VoiceIntegrationIVRPreferencesForm from 'pages/integrations/integration/components/voice/VoiceIntegrationIVRPreferencesForm'
@@ -42,7 +42,7 @@ describe('<VoiceIntegrationIVRPreferencesForm /> - Form State Tests', () => {
     const mockIntegration = {
         ...phoneIntegration,
         meta: {
-            ...(phoneIntegration?.meta ?? {}),
+            ...phoneIntegration?.meta,
             preferences: {
                 voicemail_outside_business_hours: true,
             },

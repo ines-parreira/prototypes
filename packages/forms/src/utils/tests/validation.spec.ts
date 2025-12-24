@@ -1,14 +1,18 @@
 import { validateCreateCustomerBody } from '@gorgias/helpdesk-validators'
 
-import type { GorgiasApiResponseDataError } from 'models/api/types'
-
-import type { FormValidator } from '../utils/validation'
+import type { FormValidator } from '../validation'
 import {
     createFormValidator,
     createResolver,
     toFieldErrors,
     toFormErrors,
-} from '../utils/validation'
+} from '../validation'
+
+// Type definition from models/api/types
+type GorgiasApiResponseDataError<T = unknown> = {
+    msg: string
+    data: T
+}
 
 describe('toFieldErrors()', () => {
     it('transforms FormErrors into FieldErrors', () => {

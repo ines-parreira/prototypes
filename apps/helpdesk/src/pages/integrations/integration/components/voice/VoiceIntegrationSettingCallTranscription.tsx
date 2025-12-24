@@ -1,8 +1,9 @@
 import { useState } from 'react'
 
+import { FormField } from '@repo/forms'
+
 import { LegacyBanner as Banner } from '@gorgias/axiom'
 
-import { FormField } from 'core/forms'
 import NewToggleField from 'pages/common/forms/NewToggleField'
 
 function VoiceIntegrationSettingCallTranscription_DEPRECATED() {

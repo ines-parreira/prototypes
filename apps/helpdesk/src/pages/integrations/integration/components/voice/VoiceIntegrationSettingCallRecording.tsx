@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react'
 
+import { FormField } from '@repo/forms'
 import { useFormContext } from 'react-hook-form'
 
 import { LegacyBanner as Banner, Box } from '@gorgias/axiom'
 import type { UpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-queries'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
-import { FormField } from 'core/forms'
 import { RECORDING_NOTIFICATION_MAX_DURATION } from 'models/integration/constants'
 import NewToggleField from 'pages/common/forms/NewToggleField'
 

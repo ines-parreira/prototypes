@@ -1,11 +1,11 @@
 import React from 'react'
 
+import { useFormContext } from '@repo/forms'
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { LegacySelectField as SelectField } from '@gorgias/axiom'
 
-import { useFormContext } from 'core/forms'
 import { SUPPORTED_UI_DATA_TYPE_VALUES } from 'custom-fields/constants'
 import {
     ticketDropdownFieldDefinition,
@@ -24,7 +24,7 @@ jest.mock(
             LegacySelectField: jest.fn(() => <div data-testid="Mock" />),
         }) as Record<string, unknown>,
 )
-jest.mock('core/forms', () => ({
+jest.mock('@repo/forms', () => ({
     useFormContext: jest.fn(),
 }))
 

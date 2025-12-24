@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { FormField } from '@repo/forms'
 import { useWatch } from 'react-hook-form'
 
 import {
@@ -11,7 +12,6 @@ import type { SendToVoicemailStep } from '@gorgias/helpdesk-types'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 import { validateVoiceMessage } from '@gorgias/helpdesk-validators'
 
-import { FormField } from 'core/forms'
 import type { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 

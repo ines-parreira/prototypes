@@ -1,6 +1,6 @@
+import { Form } from '@repo/forms'
 import { screen } from '@testing-library/react'
 
-import { Form } from 'core/forms'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import VoiceIntegrationSettingSpamPrevention from '../VoiceIntegrationSettingSpamPrevention'

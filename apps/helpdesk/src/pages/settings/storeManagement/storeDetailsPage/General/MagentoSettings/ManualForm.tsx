@@ -1,5 +1,7 @@
-import { FormField } from 'core/forms'
+import { FormField } from '@repo/forms'
+
 import type { Magento2Integration } from 'models/integration/types'
+import InputField from 'pages/common/forms/input/InputField'
 
 import { BaseForm } from './BaseForm'
 import { useManualForm } from './hooks/useManualForm'
@@ -48,6 +50,7 @@ export default function ManualForm({
             {formFields.map(({ label, name }) => (
                 <div key={name} className={css.manualFormField}>
                     <FormField
+                        field={InputField}
                         label={label}
                         name={name}
                         placeholder={placeholder}

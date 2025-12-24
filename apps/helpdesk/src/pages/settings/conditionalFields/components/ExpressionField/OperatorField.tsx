@@ -1,9 +1,10 @@
 import { forwardRef } from 'react'
 
+import { useFormContext } from '@repo/forms'
+
 import { LegacySelectField as SelectField } from '@gorgias/axiom'
 import { ExpressionOperator } from '@gorgias/helpdesk-queries'
 
-import { useFormContext } from 'core/forms'
 import { getUIDataType } from 'custom-fields/helpers/getUIDataType'
 import type { CustomField, SupportedUIDataType } from 'custom-fields/types'
 

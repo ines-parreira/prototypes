@@ -1,19 +1,18 @@
 import React from 'react'
 
+import { useWatch } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import type { CustomFieldConditionExpression } from '@gorgias/helpdesk-queries'
 
-import { useWatch } from 'core/forms'
-
 import { AddButton } from '../AddButton'
 
 jest.mock(
-    'core/forms',
+    '@repo/forms',
     () =>
         ({
-            ...jest.requireActual('core/forms'),
+            ...jest.requireActual('@repo/forms'),
             useWatch: jest.fn(),
         }) as Record<string, unknown>,
 )

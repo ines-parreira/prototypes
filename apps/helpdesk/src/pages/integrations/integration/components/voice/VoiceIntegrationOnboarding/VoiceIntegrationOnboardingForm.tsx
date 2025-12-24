@@ -1,6 +1,6 @@
-import type { PhoneIntegration } from '@gorgias/helpdesk-types'
+import { Form } from '@repo/forms'
 
-import { Form } from 'core/forms'
+import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 
 import { DEFAULT_PHONE_ONBOARDING_VALUES } from './constants'
 import {

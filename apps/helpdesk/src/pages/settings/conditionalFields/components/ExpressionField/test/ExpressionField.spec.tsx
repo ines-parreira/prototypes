@@ -1,5 +1,7 @@
 import React from 'react'
 
+import type { UseFormStateReturn } from '@repo/forms'
+import { useFieldArray, useFormState } from '@repo/forms'
 import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
@@ -8,8 +10,6 @@ import {
     ExpressionOperator,
 } from '@gorgias/helpdesk-queries'
 
-import type { UseFormStateReturn } from 'core/forms'
-import { useFieldArray, useFormState } from 'core/forms'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import type { CustomField } from 'custom-fields/types'
 
@@ -18,10 +18,10 @@ import { ExpressionField } from '../ExpressionField'
 import { ExpressionRow } from '../ExpressionRow'
 
 jest.mock(
-    'core/forms',
+    '@repo/forms',
     () =>
         ({
-            ...jest.requireActual('core/forms'),
+            ...jest.requireActual('@repo/forms'),
             useFieldArray: jest.fn(),
             useFormState: jest.fn(),
             FormField: jest.fn(() => <div />),

@@ -1,3 +1,4 @@
+import { Form, FormField, FormSubmitButton } from '@repo/forms'
 import { history } from '@repo/routing'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
@@ -7,7 +8,7 @@ import type {
     UpdateCustomFieldCondition,
 } from '@gorgias/helpdesk-queries'
 
-import { Form, FormField, FormSubmitButton } from 'core/forms'
+import InputField from 'pages/common/forms/input/InputField'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import settingsCss from 'pages/settings/settings.less'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
@@ -63,6 +64,7 @@ export default function EditConditionForm({ condition }: ConditionFormProps) {
         >
             <div className={settingsCss.contentWrapper}>
                 <FormField
+                    field={InputField}
                     className={css.mbS}
                     name="name"
                     label="Condition name"
@@ -70,6 +72,7 @@ export default function EditConditionForm({ condition }: ConditionFormProps) {
                     placeholder="Provide a name for condition. E.g: Contact Reason Conditions"
                 />
                 <FormField
+                    field={InputField}
                     className={css.mbS}
                     name="description"
                     label="Condition description"

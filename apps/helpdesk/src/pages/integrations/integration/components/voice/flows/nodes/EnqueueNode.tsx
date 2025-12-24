@@ -1,9 +1,10 @@
+import { FormField, useFormContext, useWatch } from '@repo/forms'
+
 import type { LegacyCheckBoxFieldProps as CheckBoxFieldProps } from '@gorgias/axiom'
 import { LegacyCheckBoxField as CheckBoxField } from '@gorgias/axiom'
 import type { EnqueueStep } from '@gorgias/helpdesk-types'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 
-import { FormField, useFormContext, useWatch } from 'core/forms'
 import type { NodeProps } from 'core/ui/flows'
 import {
     StaticVerticalStep,
@@ -12,7 +13,7 @@ import {
 import InfoIconWithTooltip from 'pages/tickets/common/components/InfoIconWithTooltip'
 
 import VoiceMessageField from '../../VoiceMessageField'
-import { type EnqueueNode } from '../types'
+import type { EnqueueNode } from '../types'
 import { useVoiceFlow } from '../useVoiceFlow'
 import { transformToReactFlowNodes } from '../utils'
 import { useDeleteNode } from '../utils/useDeleteNode'

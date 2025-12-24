@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react'
 
+import type { Form } from '@repo/forms'
 import type { FieldValues } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 
-import type { Form } from 'core/forms'
 import { useNotify } from 'hooks/useNotify'
 import type { UnsavedChangesModalProps } from 'pages/common/components/UnsavedChangesModal'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'

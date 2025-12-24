@@ -1,3 +1,5 @@
+import { FormField, useWatch } from '@repo/forms'
+
 import {
     Box,
     LegacyIconButton as IconButton,
@@ -7,8 +9,6 @@ import {
     TextField,
 } from '@gorgias/axiom'
 import type { CustomerFieldBranchOption } from '@gorgias/helpdesk-types'
-
-import { FormField, useWatch } from 'core/forms'
 
 const DROPDOWN_WIDTH = '160px'
 

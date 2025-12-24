@@ -1,6 +1,8 @@
+import { FormField } from '@repo/forms'
+
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
-import { FormField } from 'core/forms'
+import InputField from 'pages/common/forms/input/InputField'
 
 import css from './VoiceQueueSettingsFormGeneralSection.less'
 
@@ -10,8 +12,14 @@ const PRIORITY_WEIGHT_MIN = 1
 export default function VoiceQueueSettingsFormGeneralSection() {
     return (
         <div className={css.container}>
-            <FormField label="Queue name" name="name" isRequired />
             <FormField
+                field={InputField}
+                label="Queue name"
+                name="name"
+                isRequired
+            />
+            <FormField
+                field={InputField}
                 label="Queue capacity"
                 type="number"
                 name="capacity"

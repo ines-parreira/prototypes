@@ -1,11 +1,11 @@
 import { useEffect, useMemo } from 'react'
 
+import { FormField, useFormContext } from '@repo/forms'
 import cn from 'classnames'
 import { get } from 'lodash'
 
 import { LegacyIconButton as IconButton } from '@gorgias/axiom'
 
-import { FormField, useFormContext } from 'core/forms'
 import SelectDropdownField from 'pages/common/forms/SelectDropdownField'
 import {
     ALWAYS_ON_OPTION_LABEL,

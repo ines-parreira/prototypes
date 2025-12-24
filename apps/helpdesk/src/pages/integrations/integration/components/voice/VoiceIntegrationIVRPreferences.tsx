@@ -1,6 +1,7 @@
+import { Form } from '@repo/forms'
+
 import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 
-import { Form } from 'core/forms'
 import { isPhoneIntegration } from 'models/integration/types'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
