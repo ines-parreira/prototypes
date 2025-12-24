@@ -6,6 +6,7 @@ import MockAdapter from 'axios-mock-adapter'
 import { MemoryRouter } from 'react-router-dom'
 
 import client from 'models/api/resources'
+import type { BillingState } from 'models/billing/types'
 import {
     payingWithAchCredit,
     payingWithAchDebit,
@@ -284,6 +285,28 @@ describe('NewSummaryPaymentSection', () => {
                 { action: 'change', source: 'TestSource' },
             )
             expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+
+        it('should render the account-provisioning use-case when customer is undefined', async () => {
+            const accountCreationState: BillingState = {
+                ...trial,
+                customer: undefined as unknown as BillingState['customer'],
+            }
+
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, accountCreationState)
+
+            renderWithStoreAndQueryClientProvider(
+                <MemoryRouter>
+                    <NewSummaryPaymentSection trackingSource="TestSource" />
+                </MemoryRouter>,
+                {},
+            )
+
+            expect(
+                await screen.findByText(/Account is being provisioned/),
+            ).toBeInTheDocument()
         })
     })
 })

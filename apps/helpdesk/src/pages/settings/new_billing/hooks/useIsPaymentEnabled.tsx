@@ -13,7 +13,9 @@ export const useIsPaymentEnabled = () => {
     const { addBanner } = useBanners()
 
     return useMemo(() => {
-        if (!billingState) {
+        // During account provisioning, billingState exists but customer is undefined
+        // despite TypeScript types indicating customer is always present
+        if (!billingState || !billingState.customer) {
             return undefined
         }
 

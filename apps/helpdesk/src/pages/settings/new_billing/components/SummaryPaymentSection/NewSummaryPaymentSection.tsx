@@ -50,6 +50,12 @@ function PaymentState({
     billingState: BillingState
     trackingSource: string
 }) {
+    // During account provisioning, billingState exists but customer is undefined
+    // despite TypeScript types indicating customer is always present
+    if (!billingState.customer) {
+        return <AccountProvisioning />
+    }
+
     const {
         credit_card: creditCard,
         shopify_billing: shopifyBilling,
@@ -68,7 +74,7 @@ function PaymentState({
 
     if (shopifyBilling) {
         return (
-            <ShopfyBilling
+            <ShopifyBilling
                 subscriptionId={shopifyBilling.subscription_id}
                 isTrialing={billingState.subscription.is_trialing}
             />
@@ -164,7 +170,7 @@ const CreditCardValid = ({
     </>
 )
 
-const ShopfyBilling = ({
+const ShopifyBilling = ({
     subscriptionId,
     isTrialing,
 }: {
@@ -261,4 +267,8 @@ const NoPaymentMethod = ({ trackingSource }: { trackingSource: string }) => (
             Add Payment Method
         </Link>
     </>
+)
+
+const AccountProvisioning = () => (
+    <div className={css.method}>Account is being provisioned</div>
 )
