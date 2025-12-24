@@ -12,11 +12,6 @@ type ListResponse<ListItemType> = {
 
 type Response<ListItemType> = HttpResponse<ListResponse<ListItemType>>
 
-/**
- * @deprecated Use useExhaustEndpoint from @repo/hooks package instead
- * @date 2025-12-23
- * @type migration
- */
 export function useExhaustEndpoint<ListItemType>(
     queryKey: QueryKey,
     fetchPage: (cursor?: string) => Promise<Response<ListItemType>>,

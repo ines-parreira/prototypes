@@ -6,7 +6,7 @@ import css from './Label.less'
 
 export const Label = ({ children }: { children: ReactNode }) => {
     return (
-        <Text className={css.label} size="sm">
+        <Text className={css.label} size="sm" overflow="ellipsis">
             {children}
         </Text>
     )

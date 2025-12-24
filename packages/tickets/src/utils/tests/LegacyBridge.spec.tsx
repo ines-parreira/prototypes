@@ -19,6 +19,11 @@ const mockTicketViewNavigation: LegacyBridgeContextType['ticketViewNavigation'] 
         isNextEnabled: false,
     }
 
+const mockVoiceDevice: LegacyBridgeContextType['voiceDevice'] = {
+    device: {},
+    call: null,
+}
+
 describe('TicketsLegacyBridgeProvider', () => {
     it('should render children', () => {
         render(
@@ -29,6 +34,13 @@ describe('TicketsLegacyBridgeProvider', () => {
                 dispatchHideAuditLogEvents={vi.fn()}
                 toggleQuickReplies={vi.fn()}
                 ticketViewNavigation={mockTicketViewNavigation}
+                handleTicketDraft={{
+                    hasDraft: false,
+                    onResumeDraft: vi.fn(),
+                    onDiscardDraft: vi.fn(),
+                }}
+                makeOutboundCall={vi.fn()}
+                voiceDevice={mockVoiceDevice}
             >
                 <div>Test Child</div>
             </TicketsLegacyBridgeProvider>,
@@ -63,6 +75,13 @@ describe('TicketsLegacyBridgeProvider', () => {
                 dispatchHideAuditLogEvents={mockFn}
                 toggleQuickReplies={mockFn}
                 ticketViewNavigation={mockTicketViewNavigation}
+                handleTicketDraft={{
+                    hasDraft: false,
+                    onResumeDraft: vi.fn(),
+                    onDiscardDraft: vi.fn(),
+                }}
+                makeOutboundCall={vi.fn()}
+                voiceDevice={mockVoiceDevice}
             >
                 <TestComponent />
             </TicketsLegacyBridgeProvider>,
@@ -102,6 +121,13 @@ describe('useTicketsLegacyBridge', () => {
                 dispatchHideAuditLogEvents={mockFn}
                 toggleQuickReplies={mockFn}
                 ticketViewNavigation={mockTicketViewNavigation}
+                handleTicketDraft={{
+                    hasDraft: false,
+                    onResumeDraft: vi.fn(),
+                    onDiscardDraft: vi.fn(),
+                }}
+                makeOutboundCall={vi.fn()}
+                voiceDevice={mockVoiceDevice}
             >
                 <TestComponent />
             </TicketsLegacyBridgeProvider>,

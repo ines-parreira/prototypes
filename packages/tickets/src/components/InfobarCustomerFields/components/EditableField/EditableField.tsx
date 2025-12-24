@@ -10,6 +10,8 @@ type EditableFieldProps<T extends string | number> = {
     renderDisplay?: (value: T, onClick: () => void) => React.ReactNode
     validator?: (value: T) => string | undefined
     className?: string
+    autoFocus?: boolean
+    onBlur?: () => void
 } & (T extends string
     ? {
           type?: 'text'
@@ -35,6 +37,8 @@ export function EditableField<T extends string | number = string | number>(
         type = 'text',
         minValue,
         maxValue,
+        autoFocus,
+        onBlur,
     } = props
 
     const [inputValue, setInputValue] = useState<T | undefined>(value)
@@ -66,7 +70,7 @@ export function EditableField<T extends string | number = string | number>(
     const handleSubmit = useCallback(() => {
         if (inputValue === undefined) {
             setIsEditing(false)
-            return
+            return true
         }
 
         const finalValue =
@@ -77,14 +81,14 @@ export function EditableField<T extends string | number = string | number>(
         if (finalValue === value || (!finalValue && !value)) {
             setIsEditing(false)
             setError(undefined)
-            return
+            return true
         }
 
         if (validator) {
             const validationError = validator(finalValue as string & number)
             if (validationError) {
                 setError(validationError)
-                return
+                return false
             }
         }
 
@@ -92,6 +96,7 @@ export function EditableField<T extends string | number = string | number>(
         setInputValue(finalValue as T)
         onValueChange(finalValue as T)
         setIsEditing(false)
+        return true
     }, [inputValue, value, validator, onValueChange, type])
 
     const handleClick = useCallback((e?: MouseEvent) => {
@@ -105,8 +110,11 @@ export function EditableField<T extends string | number = string | number>(
 
     const handleFieldBlur = useCallback(() => {
         setIsEditing(false)
-        handleSubmit()
-    }, [handleSubmit])
+        const success = handleSubmit()
+        if (success) {
+            onBlur?.()
+        }
+    }, [handleSubmit, onBlur])
 
     if (!renderDisplay || isEditing || error || !inputValue) {
         if (type === 'number') {
@@ -120,7 +128,7 @@ export function EditableField<T extends string | number = string | number>(
                     variant="secondary"
                     onFocus={handleFieldFocus}
                     onBlur={handleFieldBlur}
-                    autoFocus={isEditing}
+                    autoFocus={autoFocus ?? isEditing}
                     error={error}
                     minValue={minValue}
                     maxValue={maxValue}
@@ -139,7 +147,7 @@ export function EditableField<T extends string | number = string | number>(
                 variant="secondary"
                 onFocus={handleFieldFocus}
                 onBlur={handleFieldBlur}
-                autoFocus={isEditing}
+                autoFocus={autoFocus ?? isEditing}
                 error={error}
             />
         )

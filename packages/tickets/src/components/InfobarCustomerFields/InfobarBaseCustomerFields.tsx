@@ -1,19 +1,32 @@
 import React from 'react'
 
-import { OverflowListItem, Text } from '@gorgias/axiom'
+import { useHistory } from 'react-router-dom'
 
+import {
+    IconName,
+    MenuItem,
+    OverflowListItem,
+    SubMenu,
+    Text,
+} from '@gorgias/axiom'
+
+import { useTicketsLegacyBridge } from '../../utils/LegacyBridge/useTicketsLegacyBridge'
 import {
     formatPhoneNumberInternational,
     validateChannelField,
 } from '../../utils/validation'
 import { EditableField } from './components/EditableField'
+import { EditableMenuField } from './components/EditableMenuField'
 import { FieldRow } from './components/FieldRow'
+import { TriggerLabel } from './components/TriggerLabel'
+import { VoiceFieldMenuItems } from './components/VoiceFieldMenuItems'
 import {
     useBaseCustomerFields,
     useCustomerChannels,
     useCustomerLocalTime,
     useCustomerLocation,
 } from './hooks'
+import { usePhoneAndSMSIntegrations } from './hooks/usePhoneAndSMSIntegrations'
 
 import css from './InfobarCustomerFields.less'
 
@@ -33,12 +46,17 @@ export function InfobarBaseCustomerFields({
 }: InfobarBaseCustomerFieldsProps) {
     const { customer, handleNoteChange, handleChannelChange } =
         useBaseCustomerFields(ticketId)
+    const { handleTicketDraft } = useTicketsLegacyBridge()
+    const { hasDraft, onResumeDraft, onDiscardDraft } = handleTicketDraft
+    const history = useHistory()
 
     const { location } = useCustomerLocation(customer)
     const { emailChannels, phoneChannels, otherChannels } = useCustomerChannels(
         customer?.channels,
     )
     const localTime = useCustomerLocalTime(customer)
+    const { phoneIntegrations, smsIntegrations, phoneNumbers, isLoading } =
+        usePhoneAndSMSIntegrations()
     const note = customer?.note
 
     if (!customer) {
@@ -89,7 +107,7 @@ export function InfobarBaseCustomerFields({
                         className={css.overflowListItem}
                     >
                         <FieldRow label={index === 0 ? 'Phone' : null}>
-                            <EditableField
+                            <EditableMenuField
                                 value={channel.address || ''}
                                 onValueChange={(value) =>
                                     handleChannelChange(
@@ -102,24 +120,28 @@ export function InfobarBaseCustomerFields({
                                 validator={(value) =>
                                     validateChannelField('phone', value)
                                 }
-                                renderDisplay={(value, onClick) => (
-                                    <Text
-                                        size="sm"
-                                        overflow="ellipsis"
-                                        className={`${css.fieldValue} ${css.isEditable}`}
-                                        onClick={onClick}
-                                    >
-                                        <a
-                                            className={css.emailLink}
-                                            href={`tel:${value}`}
-                                        >
-                                            {formatPhoneNumberInternational(
-                                                value,
-                                            )}
-                                        </a>
-                                    </Text>
+                                name="number"
+                                onDelete={() =>
+                                    handleChannelChange(channel.id, 'phone', '')
+                                }
+                                renderTrigger={(value) => (
+                                    <TriggerLabel
+                                        label={formatPhoneNumberInternational(
+                                            value,
+                                        )}
+                                    />
                                 )}
-                            />
+                            >
+                                <VoiceFieldMenuItems
+                                    phoneAddress={channel.address || ''}
+                                    customerId={customer.id.toString()}
+                                    customerName={customer.name || ''}
+                                    phoneIntegrations={phoneIntegrations}
+                                    smsIntegrations={smsIntegrations}
+                                    phoneNumbers={phoneNumbers}
+                                    isLoading={isLoading}
+                                />
+                            </EditableMenuField>
                         </FieldRow>
                     </OverflowListItem>
                 ))
@@ -139,44 +161,91 @@ export function InfobarBaseCustomerFields({
                 </OverflowListItem>
             )}
             {emailChannels.length > 0 ? (
-                emailChannels.map((channel, index) => (
-                    <OverflowListItem
-                        key={channel.id}
-                        className={css.overflowListItem}
-                    >
-                        <FieldRow label={index === 0 ? 'Email' : null}>
-                            <EditableField
-                                value={channel.address || ''}
-                                onValueChange={(value) =>
-                                    handleChannelChange(
-                                        channel.id,
-                                        'email',
-                                        value,
-                                    )
-                                }
-                                placeholder="+ Add"
-                                validator={(value) =>
-                                    validateChannelField('email', value)
-                                }
-                                renderDisplay={(value, onClick) => (
-                                    <Text
-                                        size="sm"
-                                        overflow="ellipsis"
-                                        className={`${css.fieldValue} ${css.isEditable}`}
-                                        onClick={onClick}
-                                    >
-                                        <a
-                                            className={css.emailLink}
-                                            href={`mailto:${value}`}
+                emailChannels.map((channel, index) => {
+                    const createTicketLocation = {
+                        pathname: `/app/ticket/new`,
+                        search: `?customer=${customer.id}`,
+                        state: {
+                            receiver: {
+                                name: customer.name || '',
+                                address: channel.address || '',
+                            },
+                            _navigationKey: Date.now(),
+                        },
+                    }
+
+                    return (
+                        <OverflowListItem
+                            key={channel.id}
+                            className={css.overflowListItem}
+                        >
+                            <FieldRow label={index === 0 ? 'Email' : null}>
+                                <EditableMenuField
+                                    value={channel.address || ''}
+                                    onValueChange={(value) =>
+                                        handleChannelChange(
+                                            channel.id,
+                                            'email',
+                                            value,
+                                        )
+                                    }
+                                    placeholder="+ Add"
+                                    validator={(value) =>
+                                        validateChannelField('email', value)
+                                    }
+                                    name="email"
+                                    onDelete={() =>
+                                        handleChannelChange(
+                                            channel.id,
+                                            'email',
+                                            '',
+                                        )
+                                    }
+                                    renderTrigger={(value) => (
+                                        <TriggerLabel
+                                            label={value}
+                                            tooltipText="Send email as new ticket"
+                                        />
+                                    )}
+                                >
+                                    {hasDraft ? (
+                                        <SubMenu
+                                            label="Send email"
+                                            leadingSlot={IconName.CommMail}
                                         >
-                                            {value}
-                                        </a>
-                                    </Text>
-                                )}
-                            />
-                        </FieldRow>
-                    </OverflowListItem>
-                ))
+                                            <MenuItem
+                                                label="A draft ticket already exists"
+                                                isDisabled
+                                            />
+                                            <MenuItem
+                                                label="Resume draft"
+                                                onAction={onResumeDraft}
+                                            />
+                                            <MenuItem
+                                                label="Discard and create new ticket"
+                                                onAction={() =>
+                                                    onDiscardDraft(
+                                                        createTicketLocation,
+                                                    )
+                                                }
+                                            />
+                                        </SubMenu>
+                                    ) : (
+                                        <MenuItem
+                                            label="Send email"
+                                            leadingSlot={IconName.CommMail}
+                                            onAction={() =>
+                                                history.push(
+                                                    createTicketLocation,
+                                                )
+                                            }
+                                        />
+                                    )}
+                                </EditableMenuField>
+                            </FieldRow>
+                        </OverflowListItem>
+                    )
+                })
             ) : (
                 <OverflowListItem className={css.overflowListItem}>
                     <FieldRow label="Email">

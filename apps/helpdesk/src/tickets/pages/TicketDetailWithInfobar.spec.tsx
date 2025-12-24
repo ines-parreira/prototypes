@@ -1,7 +1,7 @@
 import { useFlag } from '@repo/feature-flags'
 import { useTicketInfobarNavigation } from '@repo/navigation'
 import { render, screen } from '@testing-library/react'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 
 import { Handle } from 'core/layout/panels'
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
@@ -15,8 +15,13 @@ import { TicketDetailWithInfobar } from './TicketDetailWithInfobar'
 
 const mockOnToggleUnread = jest.fn()
 
-jest.mock('react-router-dom', () => ({ useParams: jest.fn() }))
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(),
+    useLocation: jest.fn(),
+}))
 const useParamsMock = useParams as jest.Mock
+const useLocationMock = useLocation as jest.Mock
 
 jest.mock('@repo/navigation', () => ({ useTicketInfobarNavigation: jest.fn() }))
 const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
@@ -107,6 +112,7 @@ describe('TicketDetailWithInfobar', () => {
         jest.clearAllMocks()
         useFlagMock.mockReturnValue(false)
         useParamsMock.mockReturnValue({ ticketId: '1234' })
+        useLocationMock.mockReturnValue({ state: {} })
         useTicketInfobarNavigationMock.mockReturnValue({ isExpanded: true })
     })
 

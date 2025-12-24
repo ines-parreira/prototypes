@@ -45,6 +45,32 @@ export type LegacyBridgeContextType = {
     dispatchHideAuditLogEvents: () => void
     toggleQuickReplies: (toggle: boolean) => void
     onToggleUnread?: (ticketId: number, isUnread: boolean) => void
+    handleTicketDraft: {
+        hasDraft: boolean
+        onResumeDraft: () => void
+        onDiscardDraft: (params: {
+            pathname: string
+            search?: string
+            state?: {
+                receiver: {
+                    name: string
+                    address: string
+                }
+            }
+        }) => void
+    }
+    makeOutboundCall: (options: {
+        fromAddress: string
+        toAddress: string
+        integrationId: number
+        customerName: string
+        ticketId: number | null
+        agentId: number
+    }) => void
+    voiceDevice: {
+        device?: unknown
+        call?: unknown
+    }
 }
 
 export const LegacyBridgeContext =

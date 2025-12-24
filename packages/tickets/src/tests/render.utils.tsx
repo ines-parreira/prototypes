@@ -34,6 +34,9 @@ type LegacyBridgeOptions = {
     dispatchHideAuditLogEvents?: ReturnType<typeof vi.fn>
     toggleQuickReplies?: ReturnType<typeof vi.fn>
     onToggleUnread?: ReturnType<typeof vi.fn>
+    handleTicketDraft?: LegacyBridgeContextType['handleTicketDraft']
+    makeOutboundCall?: ReturnType<typeof vi.fn>
+    voiceDevice?: LegacyBridgeContextType['voiceDevice']
 }
 
 type RenderOptions = RenderOptionsPrimitive &
@@ -66,6 +69,16 @@ const defaultOptions = {
         isPreviousEnabled: false,
         legacyGoToNextTicket: vi.fn(),
         isNextEnabled: false,
+    },
+    handleTicketDraft: {
+        hasDraft: false,
+        onResumeDraft: vi.fn(),
+        onDiscardDraft: vi.fn(),
+    },
+    makeOutboundCall: vi.fn(),
+    voiceDevice: {
+        device: {},
+        call: null,
     },
 }
 
@@ -101,6 +114,7 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
                 mergedOptions.dispatchHideAuditLogEvents,
             toggleQuickReplies: mergedOptions.toggleQuickReplies,
             onToggleUnread: mergedOptions.onToggleUnread,
+            handleTicketDraft: mergedOptions.handleTicketDraft,
         },
         ...result,
     }

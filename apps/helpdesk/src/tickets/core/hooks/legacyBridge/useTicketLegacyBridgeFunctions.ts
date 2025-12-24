@@ -1,5 +1,9 @@
 import { useMemo } from 'react'
 
+import { useOutboundCall } from 'hooks/integrations/phone/useOutboundCall'
+import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
+import useHandleTicketDraft from 'pages/common/components/CreateTicket/useHandleTicketDraft'
+
 import {
     useLegacyDispatchAuditLogEvents,
     useLegacyDispatchHideAuditLogEvents,
@@ -15,6 +19,9 @@ export const useTicketLegacyBridgeFunctions = () => {
     const dispatchAuditLogEvents = useLegacyDispatchAuditLogEvents()
     const dispatchHideAuditLogEvents = useLegacyDispatchHideAuditLogEvents()
     const toggleQuickReplies = useLegacyToggleQuickReplies()
+    const handleTicketDraft = useHandleTicketDraft()
+    const makeOutboundCall = useOutboundCall()
+    const voiceDevice = useVoiceDevice()
 
     const ticketViewNavigation = useLegacyTicketViewNavigation()
 
@@ -26,6 +33,9 @@ export const useTicketLegacyBridgeFunctions = () => {
             dispatchAuditLogEvents,
             dispatchHideAuditLogEvents,
             toggleQuickReplies,
+            handleTicketDraft,
+            makeOutboundCall,
+            voiceDevice,
         }),
         [
             dispatchNotification,
@@ -34,6 +44,9 @@ export const useTicketLegacyBridgeFunctions = () => {
             dispatchAuditLogEvents,
             dispatchHideAuditLogEvents,
             toggleQuickReplies,
+            handleTicketDraft,
+            makeOutboundCall,
+            voiceDevice,
         ],
     )
 }

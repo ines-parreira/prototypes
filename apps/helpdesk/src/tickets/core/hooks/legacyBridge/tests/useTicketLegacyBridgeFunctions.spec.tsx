@@ -4,8 +4,10 @@ import { renderHook } from '@repo/testing'
 import type { match as Match } from 'react-router-dom'
 import { MemoryRouter, useRouteMatch } from 'react-router-dom'
 
+import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { type VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 import useGoToPreviousTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
 import useIsTicketNavigationAvailable from 'pages/tickets/detail/components/TicketNavigation/hooks/useIsTicketNavigationAvailable'
@@ -22,6 +24,7 @@ jest.mock('react-router-dom', () => ({
     useRouteMatch: jest.fn(),
     useLocation: jest.fn(() => ({ pathname: '/' })),
 }))
+jest.mock('hooks/integrations/phone/useVoiceDevice')
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
 jest.mock(
@@ -35,6 +38,7 @@ jest.mock(
 )
 jest.mock('split-ticket-view-toggle')
 
+const useVoiceDeviceMock = jest.mocked(useVoiceDevice)
 const useRouteMatchMock = jest.mocked(useRouteMatch)
 const useAppDispatchMock = jest.mocked(useAppDispatch)
 const useAppSelectorMock = jest.mocked(useAppSelector)
@@ -57,6 +61,11 @@ describe('useTicketLegacyBridgeFunctions', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
+        useVoiceDeviceMock.mockReturnValue({
+            call: null,
+            device: null,
+            actions: {},
+        } as unknown as VoiceDeviceContextState)
         useAppDispatchMock.mockReturnValue(mockDispatch)
         useAppSelectorMock.mockReturnValue({
             get: jest.fn().mockReturnValue(null),

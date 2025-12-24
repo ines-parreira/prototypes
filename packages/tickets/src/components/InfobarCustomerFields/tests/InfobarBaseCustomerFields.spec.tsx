@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -6,6 +6,8 @@ import { OverflowList } from '@gorgias/axiom'
 import {
     mockGetCurrentUserHandler,
     mockGetTicketHandler,
+    mockListIntegrationsHandler,
+    mockListPhoneNumbersHandler,
     mockTicket,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
@@ -13,6 +15,20 @@ import type { TicketCustomer, User } from '@gorgias/helpdesk-types'
 
 import { render, testAppQueryClient } from '../../../tests/render.utils'
 import { InfobarBaseCustomerFields } from '../InfobarBaseCustomerFields'
+
+const { useHistory } = vi.hoisted(() => ({
+    useHistory: vi.fn().mockReturnValue({
+        history: vi.fn(),
+    }),
+}))
+
+vi.mock('react-router-dom', async () => {
+    const actual = await vi.importActual('react-router-dom')
+    return {
+        ...actual,
+        useHistory,
+    }
+})
 
 const server = setupServer()
 
@@ -92,7 +108,12 @@ const setupMocks = (customer: TicketCustomer, userSettings = [{}]) => {
         HttpResponse.json(ticket),
     )
 
-    server.use(mockGetCurrentUser.handler, mockGetTicket.handler)
+    server.use(
+        mockGetCurrentUser.handler,
+        mockGetTicket.handler,
+        mockListIntegrationsHandler().handler,
+        mockListPhoneNumbersHandler().handler,
+    )
 }
 
 const TestComponent = () => {
@@ -237,5 +258,190 @@ describe('InfobarBaseCustomerFields', () => {
         expect(screen.getByText('+16666666666')).toBeInTheDocument()
         expect(screen.getByText('foo-address')).toBeInTheDocument()
         expect(screen.getByText('Foo Bar')).toBeInTheDocument()
+    })
+
+    describe('Draft ticket functionality', () => {
+        async function openEmailMenu() {
+            await waitFor(() => {
+                expect(screen.getByText('test@example.com')).toBeInTheDocument()
+            })
+
+            const emailText = screen.getByText('test@example.com')
+
+            act(() => {
+                fireEvent.click(emailText)
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Send email')).toBeInTheDocument()
+            })
+        }
+
+        async function openDraftSubmenu(
+            user: ReturnType<typeof render>['user'],
+        ) {
+            await openEmailMenu()
+
+            const sendEmailItems = screen.getAllByText('Send email')
+            const sendEmailButton = sendEmailItems[sendEmailItems.length - 1]
+
+            await act(() => user.click(sendEmailButton))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('A draft ticket already exists'),
+                ).toBeInTheDocument()
+            })
+        }
+
+        it('should show draft-related menu items when a draft exists', async () => {
+            setupMocks(createMockCustomer())
+
+            const onResumeDraft = vi.fn()
+            const onDiscardDraft = vi.fn()
+
+            const { user } = render(<TestComponent />, {
+                handleTicketDraft: {
+                    hasDraft: true,
+                    onResumeDraft,
+                    onDiscardDraft,
+                },
+            })
+
+            await screen.findByText('Note')
+
+            await openDraftSubmenu(user)
+
+            expect(
+                await screen.findByText('A draft ticket already exists'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Resume draft')).toBeInTheDocument()
+            expect(
+                screen.getByText('Discard and create new ticket'),
+            ).toBeInTheDocument()
+        })
+
+        it('should call onResumeDraft when "Resume draft" is clicked', async () => {
+            setupMocks(createMockCustomer())
+
+            const onResumeDraft = vi.fn()
+            const onDiscardDraft = vi.fn()
+
+            const { user } = render(<TestComponent />, {
+                handleTicketDraft: {
+                    hasDraft: true,
+                    onResumeDraft,
+                    onDiscardDraft,
+                },
+            })
+
+            await screen.findByText('Note')
+
+            await openDraftSubmenu(user)
+
+            const resumeButton = await screen.findByText('Resume draft')
+            act(() => {
+                fireEvent.click(resumeButton)
+            })
+
+            expect(onResumeDraft).toHaveBeenCalledTimes(1)
+        })
+
+        it('should call onDiscardDraft with correct location when "Discard and create new ticket" is clicked', async () => {
+            const customer = createMockCustomer()
+            setupMocks(customer)
+
+            const onResumeDraft = vi.fn()
+            const onDiscardDraft = vi.fn()
+
+            const { user } = render(<TestComponent />, {
+                handleTicketDraft: {
+                    hasDraft: true,
+                    onResumeDraft,
+                    onDiscardDraft,
+                },
+            })
+
+            await screen.findByText('Note')
+
+            await openDraftSubmenu(user)
+
+            const discardButton = await screen.findByText(
+                'Discard and create new ticket',
+            )
+            act(() => {
+                fireEvent.click(discardButton)
+            })
+
+            expect(onDiscardDraft).toHaveBeenCalledTimes(1)
+            expect(onDiscardDraft).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    pathname: '/app/ticket/new',
+                    search: `?customer=${customer.id}`,
+                    state: {
+                        receiver: {
+                            name: customer.name,
+                            address: customer.channels[0].address,
+                        },
+                        _navigationKey: expect.any(Number),
+                    },
+                }),
+            )
+        })
+
+        it('should show regular "Send email" menu item when no draft exists', async () => {
+            const customer = createMockCustomer()
+            setupMocks(customer)
+
+            const mockPush = vi.fn()
+            useHistory.mockReturnValue({
+                push: mockPush,
+            })
+
+            const onResumeDraft = vi.fn()
+            const onDiscardDraft = vi.fn()
+
+            render(<TestComponent />, {
+                handleTicketDraft: {
+                    hasDraft: false,
+                    onResumeDraft,
+                    onDiscardDraft,
+                },
+            })
+
+            await screen.findByText('Note')
+
+            await openEmailMenu()
+
+            expect(await screen.findByText('Send email')).toBeInTheDocument()
+
+            expect(
+                screen.queryByText('A draft ticket already exists'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('Resume draft')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Discard and create new ticket'),
+            ).not.toBeInTheDocument()
+
+            const sendEmailButton = await screen.findByText('Send email')
+            act(() => {
+                fireEvent.click(sendEmailButton)
+            })
+
+            expect(mockPush).toHaveBeenCalledTimes(1)
+            expect(mockPush).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    pathname: '/app/ticket/new',
+                    search: `?customer=${customer.id}`,
+                    state: {
+                        receiver: {
+                            name: customer.name,
+                            address: customer.channels[0].address,
+                        },
+                        _navigationKey: expect.any(Number),
+                    },
+                }),
+            )
+        })
     })
 })

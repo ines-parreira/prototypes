@@ -9,6 +9,8 @@ import {
     mockListCustomerCustomFieldsValuesResponse,
     mockListCustomFieldsHandler,
     mockListCustomFieldsResponse,
+    mockListIntegrationsHandler,
+    mockListPhoneNumbersHandler,
     mockTicket,
     mockTicketCustomer,
     mockUser,
@@ -100,6 +102,8 @@ describe('InfobarCustomerFields', () => {
             mockGetCurrentUser.handler,
             mockListCustomFields.handler,
             mockListCustomerFieldsValues.handler,
+            mockListIntegrationsHandler().handler,
+            mockListPhoneNumbersHandler().handler,
         )
 
         const { container } = render(<InfobarCustomerFields />, {

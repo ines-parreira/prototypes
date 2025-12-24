@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useTicketInfobarNavigation } from '@repo/navigation'
 import { TicketHeader } from '@repo/tickets'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 
 import { Handle, Panel } from 'core/layout/panels'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
@@ -46,6 +46,7 @@ function TicketDetailContent({ onToggleUnread }: Props) {
     const { ticketId: ticketIdParam } = useParams<{ ticketId: string }>()
     const { isExpanded } = useTicketInfobarNavigation()
     const { mode } = useKnowledgeSourceSideBar()
+    const location = useLocation<{ _navigationKey?: number }>()
 
     const ticketId = parseInt(ticketIdParam, 10)
 
@@ -55,8 +56,12 @@ function TicketDetailContent({ onToggleUnread }: Props) {
         [isExpanded],
     )
 
+    const containerKey = location.state?._navigationKey
+        ? `ticket-detail-${location.state._navigationKey}`
+        : 'ticket-detail'
+
     return (
-        <div className={css.container}>
+        <div className={css.container} key={containerKey}>
             {hasUIVisionMS1 && <TicketHeader ticketId={ticketId} />}
             <div className={css.content}>
                 <TicketDetailPanel

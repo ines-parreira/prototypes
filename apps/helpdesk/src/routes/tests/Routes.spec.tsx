@@ -29,10 +29,12 @@ import { billingState } from 'fixtures/billing'
 import { shopifyProductResult } from 'fixtures/shopify'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { useListProducts } from 'models/integration/queries'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { type VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import Routes from 'routes/Routes'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { initialState } from 'state/billing/reducers'
@@ -52,6 +54,8 @@ jest.mock('@repo/feature-flags', () => ({
 jest.mock('hooks/useIsAccountDeactivated', () => ({
     useIsAccountDeactivated: jest.fn(),
 }))
+
+jest.mock('hooks/integrations/phone/useVoiceDevice')
 
 jest.mock(
     'pages/App',
@@ -239,6 +243,8 @@ const mockUseIsAccountDeactivated = useIsAccountDeactivated as jest.Mock
 jest.mock('domains/reporting/pages/report-chart-restrictions/ProtectedRoute')
 const ProtectedRouteMock = assumeMock(ProtectedRoute)
 
+const useVoiceDeviceMock = assumeMock(useVoiceDevice)
+
 ;(useAllIntegrations as jest.Mock).mockReturnValue({
     integrations: [
         {
@@ -291,6 +297,12 @@ describe('<Routes/>', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
         mockUseIsAccountDeactivated.mockReturnValue(false)
+        useVoiceDeviceMock.mockReturnValue({
+            call: null,
+            device: null,
+            actions: {},
+        } as unknown as VoiceDeviceContextState)
+
         mockHistory.replace('/app')
         StatsRoutesMock.mockImplementation(() => <div />)
         ProtectedRouteMock.mockImplementation(({ children }) => children)

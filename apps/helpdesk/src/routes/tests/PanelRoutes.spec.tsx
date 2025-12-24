@@ -10,7 +10,9 @@ import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { account } from 'fixtures/account'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
+import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import { useIsMobileResolution } from 'hooks/useIsMobileResolution'
+import { type VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
@@ -19,9 +21,11 @@ import PanelRoutes from '../PanelRoutes'
 jest.mock('core/navigation', () => ({
     GlobalNavigationPanel: () => <div>GlobalNavigationPanel</div>,
 }))
+jest.mock('hooks/integrations/phone/useVoiceDevice')
 jest.mock('hooks/useIsMobileResolution', () => ({
     useIsMobileResolution: jest.fn(),
 }))
+const useVoiceDeviceMock = assumeMock(useVoiceDevice)
 const useIsMobileResolutionMock = assumeMock(useIsMobileResolution)
 jest.mock('@repo/hooks', () => ({
     ...jest.requireActual('@repo/hooks'),
@@ -57,6 +61,11 @@ jest.mock('../MobileRoutes', () => ({
 
 describe('PanelRoutes', () => {
     beforeEach(() => {
+        useVoiceDeviceMock.mockReturnValue({
+            call: null,
+            device: null,
+            actions: {},
+        } as unknown as VoiceDeviceContextState)
         useIsMobileResolutionMock.mockReturnValue(false)
         useWindowSizeMock.mockReturnValue({ width: 1000, height: 1000 })
         useNavBarMock.mockReturnValue({
