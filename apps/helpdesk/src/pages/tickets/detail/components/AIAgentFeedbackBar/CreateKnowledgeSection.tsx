@@ -69,7 +69,6 @@ const CreateKnowledgeSection = ({
                 intent="secondary"
                 size="small"
                 ref={buttonRef}
-                isDisabled={!helpCenterId}
             >
                 Create knowledge
             </DropdownButton>
@@ -95,7 +94,7 @@ const CreateKnowledgeSection = ({
                             )}
                         />
                     </DropdownItem>
-                    {canCreateArticle && (
+                    {canCreateArticle && helpCenterId && (
                         <DropdownItem
                             onClick={() => setToggleDropdown(false)}
                             option={{
