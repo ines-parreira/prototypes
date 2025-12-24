@@ -7,6 +7,7 @@ import { useTicket } from '../../hooks/useTicket'
 import { EditableBreadcrumb } from '../EditableBreadcrumb'
 import { TicketActions } from '../TicketActions/TicketActions'
 import { TeamAssignee, UserAssignee } from '../TicketAssignee'
+import { TicketStatusMenu } from '../TicketMenuStatus/TicketStatusMenu'
 import { TicketPriority } from '../TicketPriority'
 import { TicketViewNavigator } from '../TicketViewNavigator/TicketViewNavigator'
 import { TrashedTicket } from '../TrashedTicket'
@@ -52,6 +53,7 @@ export function TicketHeader({ ticketId }: Props) {
             </div>
             <div className={css.right}>
                 <TrashedTicket trashedDatetime={trashed_datetime} />
+                <TicketStatusMenu ticket={ticket} />
                 <TicketPriority
                     ticketId={ticketId}
                     currentPriority={currentPriority}

@@ -98,7 +98,7 @@
         "@gorgias/realtime": "^0.21.21",
         "@gorgias/realtime-ably": "^0.2.16",
         "@hookform/resolvers": "^3.10.0",
-        "@internationalized/date": "^3.10.0",
+        "@internationalized/date": "catalog:axiom",
         "@knocklabs/client": "^0.16.3",
         "@knocklabs/react": "^0.7.31",
         "@reduxjs/toolkit": "^1.9.7",

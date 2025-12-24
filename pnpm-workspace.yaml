@@ -7,6 +7,8 @@ overrides:
   '@tanstack/react-query': '4.36.1'
   '@types/escodegen': '^0.0.10'
   '@formatjs/ecma402-abstract': '1.11.4'
+  # TODO: Enforce alignment with Axiom
+  '@internationalized/date': '3.10.0'
   'jquery': '3.5.1'
   'json-schema': '0.4.0'
   '@emotion/styled-base': '10.0.31'
@@ -25,8 +27,9 @@ minimumReleaseAgeExclude:
 
 catalogs:
   axiom:
-    '@gorgias/axiom': '0.130.0'
+    '@gorgias/axiom': '0.135.0'
     '@gorgias/design-tokens': '0.11.4'
+    '@internationalized/date': '3.10.0'
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit': '0.1.14'
   rest-api-sdk:

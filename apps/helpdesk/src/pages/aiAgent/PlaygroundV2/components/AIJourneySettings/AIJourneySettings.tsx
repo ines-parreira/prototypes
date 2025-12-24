@@ -197,7 +197,7 @@ export const AIJourneySettings: React.FC = () => {
 
     return (
         <>
-            <SelectField
+            <SelectField<Section>
                 //@ts-ignore
                 onChange={(value: Entry) => {
                     setAIJourneySettings({
