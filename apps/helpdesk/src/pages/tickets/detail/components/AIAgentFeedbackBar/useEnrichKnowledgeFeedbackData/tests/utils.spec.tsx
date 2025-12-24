@@ -213,6 +213,7 @@ describe('utils', () => {
                         guidanceHelpCenterId: 200,
                         snippetHelpCenterId: 300,
                         executionId: 'exec-1',
+                        shopIntegrationId: 1,
                     },
                 },
             ]

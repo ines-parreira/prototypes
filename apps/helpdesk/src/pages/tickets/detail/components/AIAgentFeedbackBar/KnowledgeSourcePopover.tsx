@@ -3,6 +3,8 @@ import { memo, useCallback, useMemo, useRef, useState } from 'react'
 
 import { useTimeout } from '@repo/hooks'
 
+import { Tag } from '@gorgias/axiom'
+
 import { Popover } from 'components/Popover'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
@@ -32,6 +34,7 @@ type KnowledgeSourcePopoverProps = {
     shopName: string
     shopType: string
     forceShowBody?: boolean
+    isDraft?: boolean
 }
 
 const KnowledgeSourcePopover = ({
@@ -44,6 +47,7 @@ const KnowledgeSourcePopover = ({
     shopName,
     shopType,
     forceShowBody = false,
+    isDraft = false,
 }: KnowledgeSourcePopoverProps) => {
     const triggerRef = useRef<HTMLElement>(null)
     const [isOpen, setIsOpen] = useState(false)
@@ -136,7 +140,10 @@ const KnowledgeSourcePopover = ({
                                 withLabel
                             />
                         </div>
-                        <div className={css.title}>{popoverTitle}</div>
+                        <div className={css.titleRow}>
+                            <div className={css.title}>{popoverTitle}</div>
+                            {isDraft && <Tag color="grey">Draft</Tag>}
+                        </div>
                         {body && !isLoadingActions && (
                             <div className={css.body}>
                                 <span>{body}</span>

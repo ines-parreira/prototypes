@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 import type { FindFeedbackResult } from '@gorgias/knowledge-service-types'
 
 import type { StoreConfiguration } from 'models/aiAgent/types'
@@ -33,6 +34,7 @@ export const useGetResourceData = ({
     shopName,
     shopType,
     shopIntegrationId,
+    versionStatus = 'current',
 }: {
     queriesEnabled: boolean
     faqHelpCenterMetadata: { ids: number[]; recordIds?: number[] }
@@ -43,12 +45,13 @@ export const useGetResourceData = ({
     shopName: string
     shopType: string
     shopIntegrationId: number
+    versionStatus?: GetArticleVersionStatus
 }) => {
     const { articles, isLoading: isArticlesLoading } =
         useGetMultipleHelpCenterArticleLists(
             faqHelpCenterMetadata.ids,
             {
-                version_status: 'latest_draft',
+                version_status: versionStatus,
                 per_page: 100,
                 ids: faqHelpCenterMetadata.recordIds,
             },
@@ -93,6 +96,7 @@ export const useGetResourceData = ({
             },
             {
                 ids: guidanceHelpCenterMetadata.recordIds,
+                version_status: versionStatus,
             },
         )
 

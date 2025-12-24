@@ -70,6 +70,7 @@ export type KnowledgeReasoningResource = {
     resourceType: AiAgentKnowledgeResourceTypeEnum
     resourceSetId?: string
     resourceTitle?: string
+    resourceIsDraft?: boolean
 }
 
 export type NoteFeedbackOnMessage = {

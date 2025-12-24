@@ -2023,6 +2023,7 @@ describe('AiAgentReasoning', () => {
                 resourceTitle: 'Test Article',
                 resourceLocale: 'en',
                 taskIds: [],
+                resourceIsDraft: false,
             },
             {
                 resourceType: 'GUIDANCE' as const,
@@ -2031,6 +2032,7 @@ describe('AiAgentReasoning', () => {
                 resourceTitle: 'Test Guidance',
                 resourceLocale: 'en',
                 taskIds: [],
+                resourceIsDraft: false,
             },
             {
                 resourceType: 'ACTION' as const,
@@ -2039,6 +2041,7 @@ describe('AiAgentReasoning', () => {
                 resourceTitle: 'Test Action',
                 resourceLocale: 'en',
                 taskIds: [],
+                resourceIsDraft: false,
             },
 
             {
@@ -2048,6 +2051,7 @@ describe('AiAgentReasoning', () => {
                 resourceTitle: 'Test File Snippet',
                 resourceLocale: 'en',
                 taskIds: [],
+                resourceIsDraft: false,
             },
             {
                 resourceType: 'EXTERNAL_SNIPPET' as const,
@@ -2056,6 +2060,7 @@ describe('AiAgentReasoning', () => {
                 resourceTitle: 'Test External Snippet',
                 resourceLocale: 'en',
                 taskIds: [],
+                resourceIsDraft: false,
             },
             {
                 resourceType: 'ORDER' as const,
@@ -2064,6 +2069,7 @@ describe('AiAgentReasoning', () => {
                 resourceTitle: '#98765',
                 resourceLocale: 'en',
                 taskIds: [],
+                resourceIsDraft: false,
             },
             {
                 resourceType: 'PRODUCT_KNOWLEDGE' as const,
@@ -2072,6 +2078,7 @@ describe('AiAgentReasoning', () => {
                 resourceTitle: 'Product Knowledge',
                 resourceLocale: 'en',
                 taskIds: [],
+                resourceIsDraft: false,
             },
             {
                 resourceType: 'PRODUCT_RECOMMENDATION' as const,
@@ -2080,6 +2087,7 @@ describe('AiAgentReasoning', () => {
                 resourceTitle: 'Product Recommendation',
                 resourceLocale: 'en',
                 taskIds: [],
+                resourceIsDraft: false,
             },
         ]
 
@@ -2088,6 +2096,7 @@ describe('AiAgentReasoning', () => {
             resourceId: '13608',
             resourceSetId: '16',
             resourceTitle: 'Test Article',
+            resourceIsDraft: false,
         }
 
         const expectedGuidanceResource = {
@@ -2095,12 +2104,14 @@ describe('AiAgentReasoning', () => {
             resourceId: '1045245',
             resourceSetId: '26665',
             resourceTitle: 'Test Guidance',
+            resourceIsDraft: false,
         }
 
         const expectedActionResource = {
             resourceType: 'ACTION',
             resourceId: '01J7KWHHMDY3H5S174D89VG7S3',
             resourceTitle: 'Test Action',
+            resourceIsDraft: false,
         }
 
         const expectedFileExternalSnippetResource = {
@@ -2108,6 +2119,7 @@ describe('AiAgentReasoning', () => {
             resourceId: '12345',
             resourceSetId: '78',
             resourceTitle: 'Test File Snippet',
+            resourceIsDraft: false,
         }
 
         const expectedExternalSnippetResource = {
@@ -2115,24 +2127,28 @@ describe('AiAgentReasoning', () => {
             resourceId: '54321',
             resourceSetId: '89',
             resourceTitle: 'Test External Snippet',
+            resourceIsDraft: false,
         }
 
         const expectedOrderResource = {
             resourceType: 'ORDER',
             resourceId: '98765',
             resourceTitle: '#98765',
+            resourceIsDraft: false,
         }
 
         const expectedProductKnowledgeResource = {
             resourceType: 'PRODUCT_KNOWLEDGE',
             resourceId: '12345',
             resourceTitle: 'Product Knowledge',
+            resourceIsDraft: false,
         }
 
         const expectedProductRecommendationResource = {
             resourceType: 'PRODUCT_RECOMMENDATION',
             resourceId: '67890',
             resourceTitle: 'Product Recommendation',
+            resourceIsDraft: false,
         }
 
         it.each([

@@ -294,14 +294,14 @@ describe('useGetResourceData', () => {
 
         expect(useGetMultipleHelpCenterArticleLists).toHaveBeenCalledWith(
             [100],
-            { version_status: 'latest_draft', per_page: 100, ids: [1] },
+            { version_status: 'current', per_page: 100, ids: [1] },
             expect.objectContaining({ enabled: true }),
         )
 
         expect(useMultipleGuidanceArticles).toHaveBeenCalledWith(
             [200],
             expect.objectContaining({ enabled: true }),
-            { ids: [1] },
+            { ids: [1], version_status: 'current' },
         )
 
         expect(useGetMultipleHelpCenter).toHaveBeenCalledWith(
@@ -498,6 +498,7 @@ describe('useEnrichFeedbackData', () => {
         faqHelpCenterId: 100,
         guidanceHelpCenterId: 200,
         snippetHelpCenterId: 300,
+        shopIntegrationId: 1,
         executionId: 'exec-123',
     }
     const wrapper = ({ children }: any) => (

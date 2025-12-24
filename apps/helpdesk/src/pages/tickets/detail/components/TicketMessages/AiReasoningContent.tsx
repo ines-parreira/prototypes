@@ -205,6 +205,7 @@ export const AiAgentReasoningContent = ({
                                 iconClassName={`${css.knowledgeSourceIcon} ${knowledgeSourceIconCss.reasoningBadge}`}
                                 onClick={handleClick}
                                 forceShowBody
+                                isDraft={resource.resourceIsDraft}
                             />
                         )
                     },

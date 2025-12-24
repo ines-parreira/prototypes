@@ -42,6 +42,7 @@ const createMockStoreConfiguration = (
     faqHelpCenterId: 100,
     guidanceHelpCenterId: 200,
     snippetHelpCenterId: 300,
+    shopIntegrationId: 1,
     executionId: 'exec-1',
     ...overrides,
 })
@@ -148,6 +149,8 @@ describe('useGetResourcesReasoningMetadata', () => {
         )
 
         expect(useShopifyIntegrationAndScope).toHaveBeenCalledWith('test-store')
+
+        // First call: fetch all resources with 'current' version (published)
         expect(useGetResourceData).toHaveBeenCalledWith({
             queriesEnabled: true,
             faqHelpCenterMetadata: {
@@ -167,8 +170,33 @@ describe('useGetResourcesReasoningMetadata', () => {
             shopType: 'shopify',
             shopIntegrationId: 1,
             productIds: [100, 200],
+            versionStatus: 'current',
         })
 
+        // Second call: fetch draft resources with 'latest_draft' version (none in this case)
+        expect(useGetResourceData).toHaveBeenCalledWith({
+            queriesEnabled: false, // No draft resources, so disabled
+            faqHelpCenterMetadata: {
+                ids: [],
+                recordIds: [],
+            },
+            guidanceHelpCenterMetadata: {
+                ids: [],
+                recordIds: [],
+            },
+            snippetHelpCenterMetadata: {
+                ids: [],
+                recordIds: [],
+            },
+            actionIds: undefined,
+            shopName: 'test-store',
+            shopType: 'shopify',
+            shopIntegrationId: 1,
+            productIds: [],
+            versionStatus: 'latest_draft',
+        })
+
+        expect(useGetResourceData).toHaveBeenCalledTimes(2)
         expect(getResourceType).toHaveBeenCalledTimes(8)
         expect(getResourceMetadata).toHaveBeenCalledTimes(8)
         expect(result.current?.isLoading).toBe(false)
@@ -210,6 +238,7 @@ describe('useGetResourcesReasoningMetadata', () => {
             { wrapper },
         )
 
+        // First call: fetch all resources with 'current' version
         expect(useGetResourceData).toHaveBeenCalledWith({
             queriesEnabled: true,
             faqHelpCenterMetadata: {
@@ -229,7 +258,10 @@ describe('useGetResourcesReasoningMetadata', () => {
             shopType: 'shopify',
             shopIntegrationId: 1,
             productIds: [2],
+            versionStatus: 'current',
         })
+
+        expect(useGetResourceData).toHaveBeenCalledTimes(2)
     })
 
     it('should handle duplicate resources and merge them correctly', () => {
@@ -373,6 +405,7 @@ describe('useGetResourcesReasoningMetadata', () => {
             { wrapper },
         )
 
+        // First call: fetch all resources with 'current' version
         expect(useGetResourceData).toHaveBeenCalledWith({
             queriesEnabled: true,
             faqHelpCenterMetadata: {
@@ -392,8 +425,10 @@ describe('useGetResourcesReasoningMetadata', () => {
             shopType: 'shopify',
             shopIntegrationId: 1,
             productIds: [],
+            versionStatus: 'current',
         })
 
+        expect(useGetResourceData).toHaveBeenCalledTimes(2)
         expect(result.current?.data).toEqual([])
         expect(getResourceMetadata).not.toHaveBeenCalled()
     })

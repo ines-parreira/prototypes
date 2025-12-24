@@ -22,6 +22,7 @@ type KnowledgeSourceRendererProps = {
     shopName: string
     shopType: string
     isDeleted?: boolean
+    isDraft?: boolean
     onClick?: () => void
     className?: string
     iconClassName?: string
@@ -45,6 +46,7 @@ const KnowledgeSourceRenderer = ({
     shopName,
     shopType,
     isDeleted = false,
+    isDraft = false,
     onClick,
     className,
     iconClassName,
@@ -63,6 +65,7 @@ const KnowledgeSourceRenderer = ({
         shopType,
         onClick: !isDeleted ? onClick : undefined,
         forceShowBody,
+        isDraft,
     }
 
     const icon = (

@@ -97,4 +97,52 @@ describe('KnowledgeSourcePopover', () => {
         expect(link).toHaveAttribute('target', '_blank')
         expect(link).toHaveAttribute('rel', 'noreferrer noopener')
     })
+
+    it('should show Draft tag when isDraft is true', async () => {
+        render(
+            <KnowledgeSourcePopover {...popoverProps} isDraft>
+                {(ref, eventHandlers) => (
+                    <div
+                        ref={ref as React.RefObject<HTMLDivElement>}
+                        {...eventHandlers}
+                    >
+                        Hover me
+                    </div>
+                )}
+            </KnowledgeSourcePopover>,
+        )
+
+        const trigger = screen.getByText('Hover me')
+        fireEvent.mouseOver(trigger)
+
+        await waitFor(() =>
+            expect(screen.getByText(popoverProps.title)).toBeInTheDocument(),
+        )
+
+        expect(screen.getByText('Draft')).toBeInTheDocument()
+    })
+
+    it('should not show Draft tag when isDraft is false', async () => {
+        render(
+            <KnowledgeSourcePopover {...popoverProps} isDraft={false}>
+                {(ref, eventHandlers) => (
+                    <div
+                        ref={ref as React.RefObject<HTMLDivElement>}
+                        {...eventHandlers}
+                    >
+                        Hover me
+                    </div>
+                )}
+            </KnowledgeSourcePopover>,
+        )
+
+        const trigger = screen.getByText('Hover me')
+        fireEvent.mouseOver(trigger)
+
+        await waitFor(() =>
+            expect(screen.getByText(popoverProps.title)).toBeInTheDocument(),
+        )
+
+        expect(screen.queryByText('Draft')).not.toBeInTheDocument()
+    })
 })
