@@ -71,6 +71,7 @@ type KnowledgeHubTableProps = {
     shopType: string
     guidanceHelpCenterId?: number | null
     snippetHelpCenterId?: number | null
+    clearSearchParams: () => void
 }
 
 export const KnowledgeHubTable = ({
@@ -94,6 +95,7 @@ export const KnowledgeHubTable = ({
     shopType,
     guidanceHelpCenterId,
     snippetHelpCenterId,
+    clearSearchParams,
 }: KnowledgeHubTableProps) => {
     // Initialize activeFilterTypes from URL params
     const [activeFilterTypes, setActiveFilterTypes] = useState<Set<string>>(
@@ -284,7 +286,8 @@ export const KnowledgeHubTable = ({
     }
 
     const clearSearch = () => {
-        onSearchChange('')
+        clearSearchParams()
+        setActiveFilterTypes(new Set())
     }
 
     const handleFilterSelect = (filterValue: string) => {

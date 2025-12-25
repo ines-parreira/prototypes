@@ -116,6 +116,7 @@ export const KnowledgeHubContainer = () => {
         updateUrlWithFolderParam,
         removeFolderParamFromUrl,
         handleCloseEditorPath,
+        clearSearchParams,
     } = useKnowledgeHubUrlParams(shopName, tableData)
 
     const { routes } = useAiAgentNavigation({ shopName })
@@ -559,6 +560,7 @@ export const KnowledgeHubContainer = () => {
                 shopType={shopType}
                 guidanceHelpCenterId={guidanceHelpCenterId}
                 snippetHelpCenterId={snippetHelpCenterId}
+                clearSearchParams={clearSearchParams}
             />
             <Modal
                 isOpen={isAddKnowledgeModalOpen}

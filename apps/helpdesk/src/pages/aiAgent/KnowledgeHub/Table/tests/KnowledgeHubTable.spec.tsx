@@ -131,6 +131,7 @@ describe('KnowledgeHubTable', () => {
         onDateRangeChange: jest.fn(),
         inUseByAIFilter: null,
         onInUseByAIChange: jest.fn(),
+        clearSearchParams: jest.fn(),
     }
 
     beforeEach(() => {
@@ -160,6 +161,12 @@ describe('KnowledgeHubTable', () => {
             boolean | null
         >(props.inUseByAIFilter ?? null)
 
+        const clearSearchParams = () => {
+            setSearchTerm('')
+            setDateRange({ startDate: null, endDate: null })
+            setInUseByAIFilter(null)
+        }
+
         return (
             <KnowledgeHubTable
                 {...defaultProps}
@@ -172,6 +179,7 @@ describe('KnowledgeHubTable', () => {
                 }
                 inUseByAIFilter={inUseByAIFilter}
                 onInUseByAIChange={setInUseByAIFilter}
+                clearSearchParams={clearSearchParams}
             />
         )
     }
@@ -274,7 +282,9 @@ describe('KnowledgeHubTable', () => {
             await user.type(searchInput, 'nonexistent')
 
             await waitFor(() => {
-                expect(screen.getByText('Clear search')).toBeInTheDocument()
+                expect(
+                    screen.getAllByText('Clear search and filters')[0],
+                ).toBeInTheDocument()
             })
         })
 
@@ -288,8 +298,8 @@ describe('KnowledgeHubTable', () => {
 
             expect(searchInput).toHaveValue('nonexistent')
 
-            const clearButton = await waitFor(() =>
-                screen.getByText('Clear search'),
+            const clearButton = await waitFor(
+                () => screen.getAllByText('Clear search and filters')[0],
             )
 
             await user.click(clearButton)
@@ -313,7 +323,9 @@ describe('KnowledgeHubTable', () => {
                 ).toBeInTheDocument()
             })
 
-            const clearButton = screen.getByText('Clear search')
+            const clearButton = screen.getAllByText(
+                'Clear search and filters',
+            )[0]
 
             await user.click(clearButton)
 
@@ -338,7 +350,9 @@ describe('KnowledgeHubTable', () => {
                 ).toBeInTheDocument()
             })
 
-            const clearButton = screen.getByText('Clear search')
+            const clearButton = screen.getAllByText(
+                'Clear search and filters',
+            )[0]
 
             await user.click(clearButton)
 

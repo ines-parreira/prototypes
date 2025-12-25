@@ -84,7 +84,6 @@ export const BulkActions = ({
     const isAllContentView = activeContentType === null
 
     const hasSelection = selectedItems.length > 0
-    const hasFilteredRows = table.getRowModel().rows.length > 0
 
     const guidanceRows = table
         .getCoreRowModel()
@@ -147,7 +146,7 @@ export const BulkActions = ({
         setIsDeleteModalOpen(false)
     }
 
-    const showClearSearch = isSearchActive && hasFilteredRows && onClearSearch
+    const showClearSearch = isSearchActive && onClearSearch
 
     if (!showClearSearch && !hasSelection) {
         return null

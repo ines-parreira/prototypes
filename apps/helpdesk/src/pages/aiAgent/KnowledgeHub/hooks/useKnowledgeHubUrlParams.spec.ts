@@ -1564,4 +1564,296 @@ describe('useKnowledgeHubUrlParams', () => {
             )
         })
     })
+
+    describe('clearSearchParams', () => {
+        it('clears search term and updates URL', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?search=test'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Initial state
+            expect(result.current.searchTerm).toBe('test')
+            expect(history.location.search).toBe('?search=test')
+
+            // Clear search params
+            act(() => {
+                result.current.clearSearchParams()
+            })
+
+            // State should be cleared
+            expect(result.current.searchTerm).toBe('')
+            // URL should be updated
+            expect(history.location.search).toBe('')
+        })
+
+        it('clears date range and updates URL', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge?startDate=2024-01-01&endDate=2024-12-31',
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Initial state
+            expect(result.current.dateRange).toEqual({
+                startDate: '2024-01-01',
+                endDate: '2024-12-31',
+            })
+
+            // Clear search params
+            act(() => {
+                result.current.clearSearchParams()
+            })
+
+            // State should be cleared
+            expect(result.current.dateRange).toEqual({
+                startDate: null,
+                endDate: null,
+            })
+            // URL should be updated
+            expect(history.location.search).toBe('')
+        })
+
+        it('clears inUseByAI filter and updates URL', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?inUseByAI=true'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Initial state
+            expect(result.current.inUseByAIFilter).toBe(true)
+
+            // Clear search params
+            act(() => {
+                result.current.clearSearchParams()
+            })
+
+            // State should be cleared
+            expect(result.current.inUseByAIFilter).toBeNull()
+            // URL should be updated
+            expect(history.location.search).toBe('')
+        })
+
+        it('clears all search params at once', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge?search=test&startDate=2024-01-01&endDate=2024-12-31&inUseByAI=true',
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Initial state
+            expect(result.current.searchTerm).toBe('test')
+            expect(result.current.dateRange).toEqual({
+                startDate: '2024-01-01',
+                endDate: '2024-12-31',
+            })
+            expect(result.current.inUseByAIFilter).toBe(true)
+
+            // Clear all search params
+            act(() => {
+                result.current.clearSearchParams()
+            })
+
+            // All state should be cleared
+            expect(result.current.searchTerm).toBe('')
+            expect(result.current.dateRange).toEqual({
+                startDate: null,
+                endDate: null,
+            })
+            expect(result.current.inUseByAIFilter).toBeNull()
+            // URL should be updated
+            expect(history.location.search).toBe('')
+        })
+
+        it('preserves filter parameter when clearing search params', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge?filter=url&search=test&startDate=2024-01-01',
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Clear search params
+            act(() => {
+                result.current.clearSearchParams()
+            })
+
+            // Filter should be preserved
+            expect(result.current.selectedFilter).toBe(KnowledgeType.URL)
+            expect(history.location.search).toBe('?filter=url')
+
+            // Search params should be cleared
+            expect(result.current.searchTerm).toBe('')
+            expect(result.current.dateRange).toEqual({
+                startDate: null,
+                endDate: null,
+            })
+        })
+
+        it('preserves folder parameter when clearing search params', () => {
+            const folderUrl = 'https://example.com/folder'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(folderUrl)}&search=test&inUseByAI=true`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Clear search params
+            act(() => {
+                result.current.clearSearchParams()
+            })
+
+            // Folder should be preserved
+            expect(result.current.selectedFolder?.source).toBe(folderUrl)
+            expect(history.location.search).toContain(
+                `folder=${encodeURIComponent(folderUrl)}`,
+            )
+
+            // Search params should be cleared
+            expect(result.current.searchTerm).toBe('')
+            expect(result.current.inUseByAIFilter).toBeNull()
+        })
+
+        it('preserves both filter and folder when clearing search params', () => {
+            const folderUrl = 'https://example.com/url'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?filter=url&folder=${encodeURIComponent(folderUrl)}&search=test&startDate=2024-01-01&endDate=2024-12-31&inUseByAI=false`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Clear search params
+            act(() => {
+                result.current.clearSearchParams()
+            })
+
+            // Filter and folder should be preserved
+            expect(result.current.selectedFilter).toBe(KnowledgeType.URL)
+            expect(result.current.selectedFolder?.source).toBe(folderUrl)
+            expect(history.location.search).toContain('filter=url')
+            expect(history.location.search).toContain(
+                `folder=${encodeURIComponent(folderUrl)}`,
+            )
+
+            // All search params should be cleared
+            expect(result.current.searchTerm).toBe('')
+            expect(result.current.dateRange).toEqual({
+                startDate: null,
+                endDate: null,
+            })
+            expect(result.current.inUseByAIFilter).toBeNull()
+            expect(history.location.search).not.toContain('search=')
+            expect(history.location.search).not.toContain('startDate=')
+            expect(history.location.search).not.toContain('endDate=')
+            expect(history.location.search).not.toContain('inUseByAI=')
+        })
+
+        it('handles clearing when no search params exist', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Clear search params (even though none exist)
+            act(() => {
+                result.current.clearSearchParams()
+            })
+
+            // Should not error and filter should remain
+            expect(result.current.selectedFilter).toBe(KnowledgeType.URL)
+            expect(result.current.searchTerm).toBe('')
+            expect(result.current.dateRange).toEqual({
+                startDate: null,
+                endDate: null,
+            })
+            expect(result.current.inUseByAIFilter).toBeNull()
+        })
+
+        it('can clear search params multiple times', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?search=test'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Clear first time
+            act(() => {
+                result.current.clearSearchParams()
+            })
+
+            expect(result.current.searchTerm).toBe('')
+
+            // Set search again
+            act(() => {
+                result.current.setSearchTerm('new search')
+            })
+
+            expect(result.current.searchTerm).toBe('new search')
+
+            // Clear second time
+            act(() => {
+                result.current.clearSearchParams()
+            })
+
+            expect(result.current.searchTerm).toBe('')
+            expect(history.location.search).toBe('')
+        })
+    })
 })

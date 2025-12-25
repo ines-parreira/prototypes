@@ -1,19 +1,23 @@
 import { Button } from '@gorgias/axiom'
+import type { ButtonSize } from '@gorgias/axiom'
 
 type ClearSearchButtonProps = {
     onClick: () => void
-    isDisabled?: boolean
+    size?: ButtonSize
 }
 
-export const ClearSearchButton = ({ onClick }: ClearSearchButtonProps) => (
+export const ClearSearchButton = ({
+    onClick,
+    size,
+}: ClearSearchButtonProps) => (
     <Button
         as="button"
         intent="regular"
         leadingSlot="close-circle"
-        size="sm"
+        size={size || 'sm'}
         variant="secondary"
         onClick={onClick}
     >
-        Clear search
+        Clear search and filters
     </Button>
 )

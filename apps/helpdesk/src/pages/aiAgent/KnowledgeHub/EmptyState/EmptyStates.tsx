@@ -15,6 +15,7 @@ import {
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { KnowledgeType, typeConfig } from 'pages/aiAgent/KnowledgeHub/types'
 
+import { ClearSearchButton } from '../Table/BulkActions/ClearSearchButton'
 import { openUploadDocumentModal } from './UploadDocumentModal'
 
 import css from './EmptyState.less'
@@ -418,13 +419,7 @@ export const EmptyStateNoSearchResults = ({
                     Try adjusting your search or filters to find the right
                     knowledge.
                 </Text>
-                <Button
-                    leadingSlot="close-circle"
-                    variant="secondary"
-                    onClick={clearSearch}
-                >
-                    Clear search
-                </Button>
+                <ClearSearchButton onClick={clearSearch} size="md" />
             </Box>
         </Box>
     )

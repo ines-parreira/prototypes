@@ -418,6 +418,29 @@ export function useKnowledgeHubUrlParams(
         history.push(targetPath)
     }, [routes.knowledgeSources, history, buildUrlWithParams])
 
+    const clearSearchParams = useCallback(() => {
+        // Clear React state
+        setSearchTerm('')
+        setDateRange({
+            startDate: null,
+            endDate: null,
+        })
+        setInUseByAIFilter(null)
+
+        // Update URL - remove search params while preserving filter/folder
+        const params = new URLSearchParams(location.search)
+        params.delete('search')
+        params.delete('startDate')
+        params.delete('endDate')
+        params.delete('inUseByAI')
+
+        const newSearch = params.toString()
+        const newUrl = newSearch
+            ? `${history.location.pathname}?${newSearch}`
+            : history.location.pathname
+        history.replace(newUrl)
+    }, [history, location.search])
+
     return {
         selectedFilter,
         setSelectedFilter,
@@ -434,5 +457,6 @@ export function useKnowledgeHubUrlParams(
         updateUrlWithFolderParam,
         removeFolderParamFromUrl,
         handleCloseEditorPath,
+        clearSearchParams,
     }
 }
