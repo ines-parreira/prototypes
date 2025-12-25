@@ -1,5 +1,7 @@
 import classNames from 'classnames'
 
+import { Separator } from '@gorgias/axiom'
+
 import { HeaderActions } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/ActionButtons'
 import { BackButton } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/BackButton'
 import { HeaderTitle } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/HeaderTitle'
@@ -39,37 +41,42 @@ export const KnowledgeHubHeader = ({
     const hasRightSection = true // Right section always has content
 
     return (
-        <div className={css.header}>
-            <div
-                className={classNames(css.leftSection, {
-                    [css.leftSectionVisible]: hasLeftSection,
-                })}
-            >
-                <BackButton data={data} onBack={onBack} />
+        <>
+            <div className={css.header}>
+                <div
+                    className={classNames(css.leftSection, {
+                        [css.leftSectionVisible]: hasLeftSection,
+                    })}
+                >
+                    <BackButton data={data} onBack={onBack} />
+                </div>
+                <div
+                    className={classNames(css.middleSection, {
+                        [css.middleSectionWithLeftMargin]: hasLeftSection,
+                        [css.middleSectionWithRightMargin]: hasRightSection,
+                    })}
+                >
+                    <HeaderTitle data={data} />
+                    <LastSyncedDate data={data} />
+                </div>
+                <div className={css.rightSection}>
+                    <HeaderActions
+                        data={data}
+                        onAddKnowledge={onAddKnowledge}
+                        onTest={onTest}
+                        onSync={onSync}
+                        onDelete={onDelete}
+                        isTestButtonDisabled={isTestButtonDisabled}
+                        isAddKnowledgeButtonDisabled={
+                            isAddKnowledgeButtonDisabled
+                        }
+                        isSyncButtonDisabled={isSyncButtonDisabled}
+                        isDeleteButtonDisabled={isDeleteButtonDisabled}
+                        syncTooltipMessage={syncTooltipMessage}
+                    />
+                </div>
             </div>
-            <div
-                className={classNames(css.middleSection, {
-                    [css.middleSectionWithLeftMargin]: hasLeftSection,
-                    [css.middleSectionWithRightMargin]: hasRightSection,
-                })}
-            >
-                <HeaderTitle data={data} />
-                <LastSyncedDate data={data} />
-            </div>
-            <div className={css.rightSection}>
-                <HeaderActions
-                    data={data}
-                    onAddKnowledge={onAddKnowledge}
-                    onTest={onTest}
-                    onSync={onSync}
-                    onDelete={onDelete}
-                    isTestButtonDisabled={isTestButtonDisabled}
-                    isAddKnowledgeButtonDisabled={isAddKnowledgeButtonDisabled}
-                    isSyncButtonDisabled={isSyncButtonDisabled}
-                    isDeleteButtonDisabled={isDeleteButtonDisabled}
-                    syncTooltipMessage={syncTooltipMessage}
-                />
-            </div>
-        </div>
+            <Separator direction="horizontal" />
+        </>
     )
 }

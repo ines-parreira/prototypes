@@ -503,18 +503,18 @@ export const KnowledgeHubContainer = () => {
 
     return (
         <div className={css.container}>
+            <KnowledgeHubHeader
+                data={selectedFolder}
+                onBack={handleBack}
+                onAddKnowledge={onAddKnowledgeClick}
+                onTest={handleOpenPlayground}
+                onSync={onSync}
+                onDelete={onUrlDelete}
+                isSyncButtonDisabled={isSyncButtonDisabled}
+                isDeleteButtonDisabled={isDeleteButtonDisabled}
+                syncTooltipMessage={syncTooltipMessage}
+            />
             <Box paddingLeft="lg" paddingRight="lg" flexDirection="column">
-                <KnowledgeHubHeader
-                    data={selectedFolder}
-                    onBack={handleBack}
-                    onAddKnowledge={onAddKnowledgeClick}
-                    onTest={handleOpenPlayground}
-                    onSync={onSync}
-                    onDelete={onUrlDelete}
-                    isSyncButtonDisabled={isSyncButtonDisabled}
-                    isDeleteButtonDisabled={isDeleteButtonDisabled}
-                    syncTooltipMessage={syncTooltipMessage}
-                />
                 <SyncStoreDomainBanner
                     syncStatus={syncStatus}
                     shopName={shopName}
