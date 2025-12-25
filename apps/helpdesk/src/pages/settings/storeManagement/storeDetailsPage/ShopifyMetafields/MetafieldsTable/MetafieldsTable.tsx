@@ -121,60 +121,64 @@ export default function MetafieldsTable<TData, TValue>({
     return (
         <>
             <div className={styles.tableWrapper}>
-                <TableToolbar<TData>
-                    table={table}
-                    bottomRow={{
-                        left: [
-                            'search',
-                            {
-                                key: 'filters',
-                                content: (
-                                    <div>
-                                        <Filters onChange={handleFiltersChange}>
-                                            <SelectFilter
-                                                id="type"
-                                                label="Type"
-                                                items={metafieldTypeOptions}
-                                                keyName="id"
+                <div className={styles.topToolbarWrapper}>
+                    <TableToolbar<TData>
+                        table={table}
+                        bottomRow={{
+                            left: [
+                                'search',
+                                {
+                                    key: 'filters',
+                                    content: (
+                                        <div>
+                                            <Filters
+                                                onChange={handleFiltersChange}
                                             >
-                                                {(option) => (
-                                                    <ListItem
-                                                        label={option.label}
-                                                    />
-                                                )}
-                                            </SelectFilter>
-                                            <SelectFilter
-                                                id="category"
-                                                label="Category"
-                                                items={categoryOptions}
-                                                keyName="id"
-                                            >
-                                                {(option) => (
-                                                    <ListItem
-                                                        label={option.label}
-                                                    />
-                                                )}
-                                            </SelectFilter>
-                                        </Filters>
-                                    </div>
-                                ),
-                            },
-                        ],
-                        right: [
-                            'totalCount',
-                            {
-                                key: 'import',
-                                content: (
-                                    <ImportAction
-                                        onImportClick={
-                                            handleOpenCategoriesModal
-                                        }
-                                    />
-                                ),
-                            },
-                        ],
-                    }}
-                />
+                                                <SelectFilter
+                                                    id="type"
+                                                    label="Type"
+                                                    items={metafieldTypeOptions}
+                                                    keyName="id"
+                                                >
+                                                    {(option) => (
+                                                        <ListItem
+                                                            label={option.label}
+                                                        />
+                                                    )}
+                                                </SelectFilter>
+                                                <SelectFilter
+                                                    id="category"
+                                                    label="Category"
+                                                    items={categoryOptions}
+                                                    keyName="id"
+                                                >
+                                                    {(option) => (
+                                                        <ListItem
+                                                            label={option.label}
+                                                        />
+                                                    )}
+                                                </SelectFilter>
+                                            </Filters>
+                                        </div>
+                                    ),
+                                },
+                            ],
+                            right: [
+                                'totalCount',
+                                {
+                                    key: 'import',
+                                    content: (
+                                        <ImportAction
+                                            onImportClick={
+                                                handleOpenCategoriesModal
+                                            }
+                                        />
+                                    ),
+                                },
+                            ],
+                        }}
+                    />
+                </div>
                 <TableRoot withBorder>
                     <TableHeader>
                         <HeaderRowGroup
