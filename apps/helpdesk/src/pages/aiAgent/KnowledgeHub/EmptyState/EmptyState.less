@@ -2,39 +2,14 @@
     .titleTextAlignment {
         text-align: center;
     }
-    .card {
-        display: flex;
-        background: var(--elevation-neutral-bg); // legacy
-        border-radius: var(--sm, 12px);
-        border: 1px solid var(--border-neutral-default, #ebecef); // legacy
-        padding: var(--spacing-md);
-        box-sizing: border-box;
-        width: 264px;
-        // custom class to override default colors from axiom without affecting other places where it is used
-        &.transparentBg {
-            background-color: transparent !important;
-        }
 
-        &:hover {
-            cursor: pointer;
-        }
-
-        .cardDescription {
-            color: var(--content-neutral-secondary); // legacy
-        }
+    .cardTitle {
+        color: var(--content-neutral-default);
+        font-weight: 600;
     }
 
-    .smallCard {
-        display: flex;
-        flex: 1;
-        border-radius: var(--sm, 12px);
-        border: 1px solid var(--border-neutral-default, #ebecef); // legacy
-        padding: var(--spacing-md);
-        box-sizing: border-box;
-
-        &:hover {
-            cursor: pointer;
-        }
+    .cardDescription {
+        color: var(--content-neutral-default);
     }
 
     .chip {
@@ -80,36 +55,5 @@
 
     .templateFooter {
         color: var(--content-neutral-secondary); // legacy
-    }
-}
-
-.axiom :local {
-    section {
-    }
-
-    .card {
-        background: var(--elevation-neutral-bg);
-        border: 1px solid var(--border-neutral-default);
-
-        .cardDescription {
-            color: var(--content-neutral-secondary);
-        }
-    }
-
-    .smallCard {
-        border: 1px solid var(--border-neutral-default);
-    }
-
-    .chip {
-        border: 0.5px solid var(--border-neutral-default);
-    }
-
-    .emptyCard {
-        border: 1px dashed var(--border-neutral-default);
-        background: var(--elevation-neutral-bg);
-    }
-
-    .templateFooter {
-        color: var(--content-neutral-secondary);
     }
 }

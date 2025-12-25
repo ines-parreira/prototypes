@@ -1,6 +1,4 @@
-import classNames from 'classnames'
-
-import { Box, Button, Heading, Icon, Text } from '@gorgias/axiom'
+import { Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
 
 import {
     HELP_CENTER_SELECT_MODAL_OPEN,
@@ -42,15 +40,16 @@ export const EmptyStates = ({
             >
                 <Heading size={'sm'}>Create new content</Heading>
                 <Box flexDirection={'row'} gap="md">
-                    <div
-                        className={classNames(css.card, css.transparentBg)}
+                    <Card
+                        elevation="default"
                         onClick={() => {
                             dispatchDocumentEvent(
                                 OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
                             )
                         }}
+                        gap="xxxs"
                     >
-                        <Box flexDirection={'column'} gap="xs">
+                        <div className={css.cardTitle}>
                             <Text size={'md'} variant={'bold'}>
                                 <Box flexDirection={'row'} gap="xxxs">
                                     <Icon
@@ -62,16 +61,15 @@ export const EmptyStates = ({
                                     Guidance
                                 </Box>
                             </Text>
-                            <div className={css.cardDescription}>
-                                <Text size={'sm'}>
-                                    Instruct AI Agent to handle customer
-                                    requests and follow internal processes.
-                                </Text>
-                            </div>
-                        </Box>
-                    </div>
-                    <div
-                        className={classNames(css.card, css.transparentBg)}
+                        </div>
+                        <div className={css.cardDescription}>
+                            <Text size={'sm'}>
+                                Instruct AI Agent to handle customer requests
+                                and follow internal processes.
+                            </Text>
+                        </div>
+                    </Card>
+                    <Card
                         onClick={() => {
                             if (!helpCenterId) {
                                 dispatchDocumentEvent(
@@ -81,8 +79,9 @@ export const EmptyStates = ({
                                 onFaqEditorOpen?.()
                             }
                         }}
+                        gap="xxxs"
                     >
-                        <Box flexDirection={'column'} gap="xs">
+                        <div className={css.cardTitle}>
                             <Text size={'md'} variant={'bold'}>
                                 <Box flexDirection={'row'} gap="xxxs">
                                     <Icon
@@ -93,14 +92,14 @@ export const EmptyStates = ({
                                     {typeConfig[KnowledgeType.FAQ].label}
                                 </Box>
                             </Text>
-                            <div className={css.cardDescription}>
-                                <Text size={'sm'}>
-                                    Let AI Agent use published Help Center
-                                    articles as knowledge.
-                                </Text>
-                            </div>
-                        </Box>
-                    </div>
+                        </div>
+                        <div className={css.cardDescription}>
+                            <Text size={'sm'}>
+                                Let AI Agent use published Help Center articles
+                                as knowledge.
+                            </Text>
+                        </div>
+                    </Card>
                 </Box>
             </Box>
             {/* Bottom row*/}
@@ -110,13 +109,13 @@ export const EmptyStates = ({
                 </Heading>
                 <Box flexDirection={'row'} gap="md">
                     {!hasWebsiteSync && (
-                        <div
-                            className={css.smallCard}
+                        <Card
                             onClick={() => {
                                 openSyncStoreWebsiteModal()
                             }}
+                            gap="xxxs"
                         >
-                            <Box flexDirection={'column'} gap="xs">
+                            <div className={css.cardTitle}>
                                 <Text size={'md'} variant={'bold'}>
                                     <Box flexDirection={'row'} gap="xxxs">
                                         <Icon
@@ -128,18 +127,20 @@ export const EmptyStates = ({
                                         {typeConfig[KnowledgeType.Domain].label}
                                     </Box>
                                 </Text>
+                            </div>
+                            <div className={css.cardDescription}>
                                 <Text size={'sm'}>Sync your site content</Text>
-                            </Box>
-                        </div>
+                            </div>
+                        </Card>
                     )}
 
-                    <div
-                        className={css.smallCard}
+                    <Card
                         onClick={() => {
                             openSyncUrlModal()
                         }}
+                        gap="xxxs"
                     >
-                        <Box flexDirection={'column'} gap="xs">
+                        <div className={css.cardTitle}>
                             <Text size={'md'} variant={'bold'}>
                                 <Box flexDirection={'row'} gap="xxxs">
                                     <Icon
@@ -150,16 +151,18 @@ export const EmptyStates = ({
                                     {typeConfig[KnowledgeType.URL].label}
                                 </Box>
                             </Text>
+                        </div>
+                        <div className={css.cardDescription}>
                             <Text size={'sm'}>Sync single-page URLs</Text>
-                        </Box>
-                    </div>
-                    <div
-                        className={css.smallCard}
+                        </div>
+                    </Card>
+                    <Card
                         onClick={() => {
                             openUploadDocumentModal()
                         }}
+                        gap="xxxs"
                     >
-                        <Box flexDirection={'column'} gap="xs">
+                        <div className={css.cardTitle}>
                             <Text size={'md'} variant={'bold'}>
                                 <Box flexDirection={'row'} gap="xxxs">
                                     <Icon
@@ -171,9 +174,11 @@ export const EmptyStates = ({
                                     {typeConfig[KnowledgeType.Document].label}
                                 </Box>
                             </Text>
+                        </div>
+                        <div className={css.cardDescription}>
                             <Text size={'sm'}>Upload external files</Text>
-                        </Box>
-                    </div>
+                        </div>
+                    </Card>
                 </Box>
             </Box>
         </Box>
@@ -396,7 +401,12 @@ export const EmptyStateWrapper = ({
         case KnowledgeType.URL:
             return <EmptyStateURL />
         default:
-            return <EmptyStates helpCenterId={helpCenterId} />
+            return (
+                <EmptyStates
+                    helpCenterId={helpCenterId}
+                    onFaqEditorOpen={onFaqEditorOpen}
+                />
+            )
     }
 }
 
