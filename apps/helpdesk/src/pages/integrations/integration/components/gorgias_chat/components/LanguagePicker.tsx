@@ -128,7 +128,11 @@ export function LanguagePicker({
     )
 
     return (
-        <div className={css.languagePickerWrapper}>
+        <div
+            className={css.languagePickerWrapper}
+            role="group"
+            aria-label="Language selection"
+        >
             <SelectField
                 items={mappedLanguages}
                 value={defaultLanguage}
@@ -136,6 +140,7 @@ export function LanguagePicker({
                 label={label}
                 isRequired
                 isSearchable
+                aria-label="Select default language"
                 caption="Select the main language for your chat."
             >
                 {(language: Language) => (
@@ -169,7 +174,13 @@ export function LanguagePicker({
             )}
 
             {isMultiLanguageEnabled && selectedLanguages.length > 0 && (
-                <div className={css.languageList}>{selectedLanguageTags}</div>
+                <div
+                    className={css.languageList}
+                    role="list"
+                    aria-label="Selected additional languages"
+                >
+                    {selectedLanguageTags}
+                </div>
             )}
         </div>
     )

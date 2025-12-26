@@ -1,24 +1,19 @@
 /* istanbul ignore file */
 import type React from 'react'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
-import classNames from 'classnames'
-import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import {
-    LegacyButton as Button,
-    Label,
-    LegacyTooltip as Tooltip,
-} from '@gorgias/axiom'
+import { Button, Radio, RadioGroup, Text, TextField } from '@gorgias/axiom'
 
 import type { LanguageItem } from 'config/integrations/gorgias_chat'
 import {
-    getGorgiasChatLanguageOptions,
+    getGorgiasChatLanguageOptionsPlainJS,
     getHasShopifyScriptTagScopes,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
@@ -35,9 +30,9 @@ import {
     mapIntegrationLanguagesToLanguagePicker,
     mapLanguagePickerToIntegrationLanguages,
 } from 'config/integrations/gorgias_chat'
-import { Label as DesignSystemLabel } from 'gorgias-design-system/Input/Label'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import type { StoreIntegration } from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
@@ -45,30 +40,27 @@ import {
     GorgiasChatCreationWizardStatus,
     GorgiasChatCreationWizardSteps,
     IntegrationType,
+    isShopifyIntegration,
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import type { Language } from 'pages/common/components/LanguagePicker/LanguagePicker'
-import { LanguagePicker } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import InputField from 'pages/common/forms/input/InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import type { Language } from 'pages/integrations/integration/components/gorgias_chat/components/LanguagePicker'
+import { LanguagePicker } from 'pages/integrations/integration/components/gorgias_chat/components/LanguagePicker'
+import { StorePicker } from 'pages/integrations/integration/components/gorgias_chat/components/StorePicker'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import {
-    DEPRECATED_getIntegrationsByTypes,
+    getIntegrationsByTypes,
     makeGetRedirectUri,
 } from 'state/integrations/selectors'
 
-import { StoreNameDropdown } from '../../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
-import useThemeAppExtensionInstallation from '../../../../hooks/useThemeAppExtensionInstallation'
-import DiscardNewChatPrompt from '../../components/DiscardNewChatPrompt'
 import { GorgiasChatCreationWizardStep } from '../../GorgiasChatCreationWizardStep'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+import DiscardNewChatPrompt from '../DiscardNewChatPrompt'
 
 import css from './GorgiasChatCreationWizardStepBasics.less'
 
@@ -138,24 +130,24 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     }, [currentLanguages])
 
     const gorgiasChatIntegrations = useAppSelector(
-        DEPRECATED_getIntegrationsByTypes([IntegrationType.GorgiasChat]),
+        getIntegrationsByTypes([IntegrationType.GorgiasChat]),
     )
 
     const allStoreIntegrations = useAppSelector(
-        DEPRECATED_getIntegrationsByTypes([
+        getIntegrationsByTypes([
             IntegrationType.Shopify,
             IntegrationType.BigCommerce,
             IntegrationType.Magento2,
         ]),
     )
 
-    const storeIntegrations = allStoreIntegrations as List<Map<any, any>>
+    const storeIntegrations = allStoreIntegrations
 
     const chatMultiLanguagesEnabled = useFlag(FeatureFlagKey.ChatMultiLanguages)
     const enableNewLanguages = useFlag(FeatureFlagKey.EnableNewLanguages)
 
     const [currentStoreIntegration, setCurrentStoreIntegration] = useState<
-        Map<any, any> | false
+        StoreIntegration | false
     >()
     const [currentLiveChatAvailability, setCurrentLiveChatAvailability] =
         useState<
@@ -187,47 +179,45 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         [integration],
     )
 
-    const handleLanguageChange = (languages: Language[]) => {
+    const availableLanguages = useMemo(
+        () => getGorgiasChatLanguageOptionsPlainJS(enableNewLanguages),
+        [enableNewLanguages],
+    )
+
+    const handleLanguageChange = useCallback((languages: Language[]) => {
         const integrationLanguages =
             mapLanguagePickerToIntegrationLanguages(languages)
         setCurrentLanguages(integrationLanguages)
-    }
+    }, [])
 
     const storeIntegration =
         currentStoreIntegration ??
         (isUpdate
             ? storeIntegrations.find(
                   (storeIntegration) =>
-                      storeIntegration?.get('id') ===
+                      storeIntegration?.id ===
                       integration.getIn(['meta', 'shop_integration_id']),
               )
-            : storeIntegrations.size === 1
-              ? storeIntegrations.first()
+            : storeIntegrations.length === 1
+              ? storeIntegrations[0]
               : undefined)
 
-    const isStoreOfShopifyType = storeIntegration
-        ? storeIntegration?.get('type') === IntegrationType.Shopify
-        : false
-
-    const { shouldUseThemeAppExtensionInstallation } =
-        useThemeAppExtensionInstallation(
-            isStoreOfShopifyType
-                ? (storeIntegration as Immutable.Map<any, any>)?.toJS()
-                : undefined,
-        )
+    const isStoreOfShopifyType =
+        storeIntegration && isShopifyIntegration(storeIntegration)
 
     const hasShopifyScriptTagScope =
         storeIntegration &&
         getHasShopifyScriptTagScopes({
-            storeIntegration: storeIntegration.toJS(),
+            storeIntegration,
         })
 
     const retriggerOAuthFlow = () => {
         setOAuthFlowTriggered(true)
         setIsModalUpdateShopifyPermissionsOpen(false)
-        const shopName = storeIntegration
-            ? (storeIntegration.getIn(['meta', 'shop_name']) as string)
-            : undefined
+        const shopName =
+            storeIntegration && isShopifyIntegration(storeIntegration)
+                ? storeIntegration.meta.shop_name
+                : undefined
         void onSave()?.then(() => {
             if (shopName) {
                 window.location.href = redirectUri.replace(
@@ -378,15 +368,17 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         form.meta = {
             ...form.meta,
             ...(chatMultiLanguagesEnabled
-                ? { languages: currentLanguages }
+                ? {
+                      languages: currentLanguages ?? [
+                          { language, primary: true },
+                      ],
+                  }
                 : {}),
             shop_name: storeIntegration
-                ? getShopNameFromStoreIntegration(storeIntegration?.toJS())
+                ? getShopNameFromStoreIntegration(storeIntegration)
                 : null,
-            shop_type: storeIntegration ? storeIntegration?.get('type') : null,
-            shop_integration_id: storeIntegration
-                ? storeIntegration?.get('id')
-                : null,
+            shop_type: storeIntegration ? storeIntegration.type : null,
+            shop_integration_id: storeIntegration ? storeIntegration.id : null,
         }
 
         return dispatch(
@@ -403,7 +395,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                             live_chat_availability: liveChatAvailability,
                             installation_method: installationMethod,
                             shop_type: storeIntegration
-                                ? storeIntegration?.get('type')
+                                ? storeIntegration.type
                                 : undefined,
                         },
                     )
@@ -435,7 +427,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                 </ModalBody>
                 <ModalActionsFooter>
                     <Button
-                        intent="secondary"
+                        variant="secondary"
                         onClick={() =>
                             setIsModalUpdateShopifyPermissionsOpen(false)
                         }
@@ -471,12 +463,12 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             <ShopifyScriptTagScopeModal />
             <GorgiasChatCreationWizardStep
                 step={GorgiasChatCreationWizardSteps.Basics}
-                preview={'Placeholder'}
+                preview={'Preview placeholder'}
                 footer={
                     <>
                         {isUpdate ? (
                             <Button
-                                fillStyle="ghost"
+                                variant="tertiary"
                                 onClick={() =>
                                     onSave()?.then(() => {
                                         history.push(
@@ -491,8 +483,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                         ) : (
                             <Link to="/app/settings/channels/gorgias_chat">
                                 <Button
-                                    fillStyle="ghost"
-                                    intent="secondary"
+                                    variant="secondary"
                                     isDisabled={isSubmitting}
                                 >
                                     Cancel
@@ -502,221 +493,189 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                         <Button
                             onClick={() => onSave(true, false, true)}
                             isLoading={isSubmitting}
+                            variant="primary"
                         >
-                            {isUpdate ? 'Next' : 'Create & Customize'}
+                            {isUpdate ? 'Continue' : 'Create & Customize'}
                         </Button>
                     </>
                 }
             >
-                <>
-                    <div className={css.section}>
-                        <InputField
+                <div className={css.cardBody}>
+                    <div className={css.constrainedInput}>
+                        <TextField
                             label="Chat title"
                             isRequired
                             value={name}
                             onChange={setCurrentName}
-                            className={css.inputGroup}
                             error={
                                 hasFailedSubmit && !name
                                     ? 'This field is required.'
                                     : undefined
                             }
+                            caption="Give your chat a name for internal reference. This title won't be visible to customers."
                         />
-                        {chatMultiLanguagesEnabled ? (
-                            <div className={css.inputGroup}>
-                                <div className={css.defaultLanguageGroup}>
-                                    <DesignSystemLabel
-                                        className={classNames(
-                                            css.label,
-                                            css.languageLabel,
-                                        )}
-                                        label="Default language"
-                                        required
-                                    />
-                                    <Tooltip
-                                        aria-label="Tooltip for default language"
-                                        placement="top-start"
-                                        target="default-language-icon"
-                                        trigger={['hover']}
-                                    >
-                                        {`Used whenever the customer's language is
-                                        not automatically detected or
-                                        unavailable.`}
-                                    </Tooltip>
-                                    <i
-                                        aria-label="Icon for default language info"
-                                        id="default-language-icon"
-                                        className={classNames(
-                                            'material-icons-outlined',
-                                            css.tooltipIcon,
-                                        )}
-                                    >
-                                        info
-                                    </i>
-                                </div>
-                                <LanguagePicker
-                                    languages={languagePickerLanguages}
-                                    availableLanguages={getGorgiasChatLanguageOptions(
-                                        enableNewLanguages,
-                                    ).toJS()}
-                                    onSelectLanguageChange={(languages) =>
-                                        handleLanguageChange(languages)
-                                    }
-                                />
-                            </div>
-                        ) : (
-                            <div className={css.inputGroup}>
-                                <Label className={css.inputLabel}>
-                                    Language
-                                </Label>
-                                <SelectField
-                                    value={language}
-                                    onChange={
-                                        setCurrentLanguage as React.ComponentProps<
-                                            typeof SelectField
-                                        >['onChange']
-                                    }
-                                    options={getGorgiasChatLanguageOptions(
-                                        enableNewLanguages,
-                                    ).toJS()}
-                                    className={css.languageSelect}
-                                    dropdownMenuClassName={
-                                        css.languageSelectDropdownMenu
-                                    }
-                                />
-                            </div>
-                        )}
                     </div>
-                    <div className={css.section}>
-                        <div className={css.sectionHeading}>
-                            Select a platform type
-                        </div>
-                        <div className={css.radioButtonGroup}>
-                            <PreviewRadioButton
-                                value="ecommerce-platforms"
-                                isSelected={isStoreRequired}
-                                label="Ecommerce platforms"
-                                caption="Shopify, Magento, BigCommerce"
-                                onClick={() => {
+                    <div className={css.constrainedInput}>
+                        <LanguagePicker
+                            languages={languagePickerLanguages}
+                            availableLanguages={availableLanguages}
+                            onSelectLanguageChange={handleLanguageChange}
+                            isMultiLanguageEnabled={chatMultiLanguagesEnabled}
+                            label={
+                                chatMultiLanguagesEnabled
+                                    ? 'Default language'
+                                    : 'Language'
+                            }
+                        />
+                    </div>
+                    <div>
+                        <Text
+                            variant="bold"
+                            size="md"
+                            className={css.platformSelectionHeading}
+                        >
+                            Choose where you&apos;ll install your chat
+                        </Text>
+                        <RadioGroup
+                            value={
+                                isStoreRequired
+                                    ? 'ecommerce-platforms'
+                                    : 'any-other-website'
+                            }
+                            onChange={(value) => {
+                                if (value === 'ecommerce-platforms') {
                                     if (
                                         !currentStoreIntegration &&
-                                        storeIntegrations.size === 1
+                                        storeIntegrations.length === 1
                                     ) {
                                         setCurrentStoreIntegration(
-                                            storeIntegrations.first(),
+                                            storeIntegrations[0],
                                         )
                                     }
                                     setCurrentInstallationMethod(
                                         GorgiasChatCreationWizardInstallationMethod.OneClick,
                                     )
-                                }}
-                            />
-                            <PreviewRadioButton
-                                value="any-other-website"
-                                isSelected={!isStoreRequired}
-                                label="Any other website"
-                                caption="Websites, knowledge bases, etc."
-                                onClick={() => {
+                                } else {
                                     setCurrentInstallationMethod(
                                         GorgiasChatCreationWizardInstallationMethod.Manual,
                                     )
                                     setCurrentStoreIntegration(false)
-                                }}
-                            />
-                        </div>
-                        <Label isRequired={isStoreRequired}>
-                            Connect a store
-                        </Label>
-                        <div className={css.connectStoreDescription}>
-                            Connect a store to use AI Agent features in chat and
-                            to enable{' '}
-                            {shouldUseThemeAppExtensionInstallation
-                                ? 'quick'
-                                : '1-click'}{' '}
-                            install for Shopify.
-                        </div>
-                        <StoreNameDropdown
-                            storeIntegrationId={
-                                storeIntegration && storeIntegration?.get('id')
-                            }
-                            gorgiasChatIntegrations={gorgiasChatIntegrations}
-                            storeIntegrations={storeIntegrations}
-                            onChange={(storeIntegrationId: number) => {
-                                const storeIntegration = storeIntegrations.find(
-                                    (storeIntegration) =>
-                                        storeIntegration?.get('id') ===
-                                        storeIntegrationId,
-                                )
-
-                                setCurrentStoreIntegration(storeIntegration)
-
-                                if (!name) {
-                                    setCurrentName(storeIntegration.get('name'))
                                 }
                             }}
-                            hasError={hasStoreError}
-                        />
-                        {hasStoreError && (
-                            <div className={css.error}>
-                                This field is required.
-                            </div>
-                        )}
+                            flexDirection="column"
+                            gap="xs"
+                            marginBottom="md"
+                        >
+                            <Radio
+                                value="ecommerce-platforms"
+                                label="Ecommerce platforms"
+                                caption="Shopify, Magento, BigCommerce"
+                            />
+                            <Radio
+                                value="any-other-website"
+                                label="Any other website"
+                                caption="Websites, knowledge bases, etc."
+                            />
+                        </RadioGroup>
+                        {isStoreRequired && (
+                            <>
+                                <div className={css.constrainedInput}>
+                                    <StorePicker
+                                        selectedStoreIntegrationId={
+                                            storeIntegration
+                                                ? storeIntegration.id
+                                                : null
+                                        }
+                                        gorgiasChatIntegrations={
+                                            gorgiasChatIntegrations
+                                        }
+                                        storeIntegrations={storeIntegrations}
+                                        onChange={(
+                                            storeIntegrationId: number,
+                                        ) => {
+                                            const selectedStore =
+                                                storeIntegrations.find(
+                                                    (integration) =>
+                                                        integration.id ===
+                                                        storeIntegrationId,
+                                                )
 
-                        {isStoreRequired &&
-                            storeIntegration &&
-                            isStoreOfShopifyType &&
-                            !hasShopifyScriptTagScope && (
-                                <div
-                                    className={css.info}
-                                    data-testid="has-shopify-script-tag-scope"
-                                >
-                                    Please{' '}
-                                    <a onClick={retriggerOAuthFlow} href="#">
-                                        update Shopify permissions
-                                    </a>{' '}
-                                    to ensure better chat stability. Your
-                                    progress on this page will be saved.
+                                            setCurrentStoreIntegration(
+                                                selectedStore,
+                                            )
+
+                                            if (!name && selectedStore) {
+                                                setCurrentName(
+                                                    selectedStore.name,
+                                                )
+                                            }
+                                        }}
+                                        error={
+                                            hasStoreError
+                                                ? 'This field is required.'
+                                                : undefined
+                                        }
+                                    />
                                 </div>
-                            )}
+
+                                {storeIntegration &&
+                                    isStoreOfShopifyType &&
+                                    !hasShopifyScriptTagScope && (
+                                        <div
+                                            className={css.info}
+                                            data-testid="has-shopify-script-tag-scope"
+                                        >
+                                            Please{' '}
+                                            <a
+                                                onClick={retriggerOAuthFlow}
+                                                href="#"
+                                            >
+                                                update Shopify permissions
+                                            </a>{' '}
+                                            to ensure better chat stability.
+                                            Your progress on this page will be
+                                            saved.
+                                        </div>
+                                    )}
+                            </>
+                        )}
                     </div>
-                    <div className={css.section}>
-                        <div className={css.sectionHeading}>
+                    <div>
+                        <Text
+                            variant="bold"
+                            size="md"
+                            className={css.platformSelectionHeading}
+                        >
                             Choose how to connect with customers
-                        </div>
-                        <div className={css.radioButtonGroup}>
-                            <PreviewRadioButton
+                        </Text>
+                        <RadioGroup
+                            value={liveChatAvailability}
+                            onChange={(value) => {
+                                setCurrentLiveChatAvailability(
+                                    value as
+                                        | typeof GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
+                                        | typeof GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
+                                )
+                            }}
+                            flexDirection="column"
+                            gap="xs"
+                            marginBottom="md"
+                        >
+                            <Radio
                                 value={
-                                    GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
-                                }
-                                isSelected={
-                                    liveChatAvailability ===
                                     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
                                 }
                                 label="Allow live chat messages"
                                 caption="Creates live chat tickets when an agent is available during business hours."
-                                onClick={() =>
-                                    setCurrentLiveChatAvailability(
-                                        GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
-                                    )
-                                }
                             />
-                            <PreviewRadioButton
+                            <Radio
                                 value={GORGIAS_CHAT_LIVE_CHAT_OFFLINE}
-                                isSelected={
-                                    liveChatAvailability ===
-                                    GORGIAS_CHAT_LIVE_CHAT_OFFLINE
-                                }
                                 label="Allow only offline capture messages"
                                 caption="Creates offline capture tickets that you can respond to by email at any moment."
-                                onClick={() =>
-                                    setCurrentLiveChatAvailability(
-                                        GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
-                                    )
-                                }
                             />
-                        </div>
+                        </RadioGroup>
                     </div>
-                </>
+                </div>
             </GorgiasChatCreationWizardStep>
         </>
     )

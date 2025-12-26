@@ -227,7 +227,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByRole('button', { name: 'Next' }))
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
 
         expect(spy).toHaveBeenCalledTimes(1)
         const [formData, , silentUpdate, , goToNextStep, successMessage] =
@@ -299,7 +299,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
         expect(
             getByRole('button', { name: 'Save & Customize Later' }),
         ).toBeAriaDisabled()
-        expect(getByRole('button', { name: /Next/ })).toBeAriaDisabled()
+        expect(getByRole('button', { name: /Continue/ })).toBeAriaDisabled()
     })
 
     it('should include languages when creating chat', () => {
@@ -364,7 +364,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByRole('button', { name: 'Next' }))
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
 
         expect(spy).toHaveBeenCalledTimes(1)
         const [formData] = spy.mock.calls[0]

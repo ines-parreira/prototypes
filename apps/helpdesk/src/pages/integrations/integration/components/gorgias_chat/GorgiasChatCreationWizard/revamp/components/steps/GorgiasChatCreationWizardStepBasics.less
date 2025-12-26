@@ -1,14 +1,6 @@
 @import (reference) '~css/typography';
 
 :local {
-    .inputLabel {
-        margin-bottom: var(--layout-spacing-xs);
-    }
-
-    .inputGroup {
-        margin-bottom: var(--layout-spacing-m);
-    }
-
     .defaultLanguageGroup {
         display: flex;
         gap: 4px;
@@ -20,28 +12,21 @@
         margin-bottom: var(--layout-spacing-s);
     }
 
-    .section {
-        margin-bottom: var(--layout-spacing-xl);
+    .cardBody {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-s);
     }
 
-    .sectionHeading {
-        font-weight: 600;
-        font-size: 20px;
-        line-height: 28px;
-        letter-spacing: -0.02em;
-        margin-bottom: var(--layout-spacing-m);
-    }
-
-    .radioButtonGroup {
-        display: grid;
-        grid-template-columns: 1fr;
-        row-gap: var(--layout-spacing-s);
-        column-gap: var(--layout-spacing-s);
-        margin-bottom: var(--layout-spacing-l);
-
-        @media (min-width: 1280px) {
-            grid-template-columns: 1fr 1fr;
+    .constrainedInput {
+        [class*='ui-input-wrapper-'] {
+            width: 240px;
         }
+    }
+
+    .platformSelectionHeading {
+        display: block;
+        margin-bottom: var(--layout-spacing-xxs);
     }
 
     .error {

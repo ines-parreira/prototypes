@@ -11,8 +11,6 @@ import { IntegrationType } from 'models/integration/types'
 
 import useThemeAppExtensionInstallation from '../hooks/useThemeAppExtensionInstallation'
 
-import css from './StorePicker.less'
-
 const getStoreIconName = (type: StoreIntegration['type']): IconName => {
     switch (type) {
         case IntegrationType.Shopify:
@@ -33,6 +31,7 @@ type Props = {
     onChange: (storeIntegrationId: number) => void
     isDisabled?: boolean
     placeholder?: string
+    error?: string
 }
 
 export const StorePicker = ({
@@ -42,6 +41,7 @@ export const StorePicker = ({
     onChange,
     isDisabled,
     placeholder = 'Select a store',
+    error,
 }: Props) => {
     const selectedStore = useMemo(
         () =>
@@ -91,17 +91,19 @@ export const StorePicker = ({
     }, [shouldUseThemeAppExtensionInstallation])
 
     return (
-        <div className={css.selectContainer}>
+        <div role="listbox" aria-label="Store selection">
             <SelectField
                 items={storeIntegrations}
                 value={selectedStore}
                 onChange={(store) => onChange(store.id)}
                 label="Connect a store"
+                aria-label="Select a store to connect"
                 placeholder={placeholder}
                 isRequired
                 isDisabled={isDisabled}
                 isSearchable
                 caption={helperText}
+                error={error}
                 leadingSlot={
                     selectedStore
                         ? getStoreIconName(selectedStore?.type)

@@ -28,6 +28,12 @@ export interface LanguageItem {
     primary?: boolean
 }
 
+export type GorgiasChatLanguageOption = {
+    value: Language
+    label: string
+    isNew?: boolean
+}
+
 export interface LanguageUI {
     value: string
     label: string
@@ -99,6 +105,36 @@ export const getGorgiasChatLanguageOptions = (
         : languages.filter((language) => !language.isNew)
 
     return fromJS(filteredLanguages) as List<Map<string, string>>
+}
+
+export const getGorgiasChatLanguageOptionsPlainJS = (
+    enableNewLanguages?: boolean,
+): GorgiasChatLanguageOption[] => {
+    const languages: GorgiasChatLanguageOption[] = [
+        { value: Language.EnglishUs, label: 'English - US' },
+        { value: Language.EnglishGb, label: 'English - GB', isNew: true },
+        { value: Language.FrenchFr, label: 'French - FR' },
+        { value: Language.German, label: 'German' },
+        { value: Language.Spanish, label: 'Spanish' },
+        { value: Language.Czech, label: 'Czech' },
+        { value: Language.Danish, label: 'Danish' },
+        { value: Language.Dutch, label: 'Dutch' },
+        { value: Language.Finnish, label: 'Finnish', isNew: true },
+        { value: Language.FrenchCa, label: 'French - CA' },
+        { value: Language.Italian, label: 'Italian' },
+        { value: Language.Japanese, label: 'Japanese', isNew: true },
+        { value: Language.Norwegian, label: 'Norwegian' },
+        {
+            value: Language.PortugueseBrazil,
+            label: 'Portuguese - BR',
+            isNew: true,
+        },
+        { value: Language.Swedish, label: 'Swedish' },
+    ]
+
+    return enableNewLanguages
+        ? languages
+        : languages.filter((language) => !language.isNew)
 }
 
 export const GORGIAS_CHAT_WIDGET_TEXTS: {
