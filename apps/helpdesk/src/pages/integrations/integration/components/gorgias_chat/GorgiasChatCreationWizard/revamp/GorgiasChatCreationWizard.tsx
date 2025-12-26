@@ -14,7 +14,9 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 
+import GorgiasChatCreationWizardStepAutomate from './components/steps/GorgiasChatCreationWizardStepAutomate'
 import GorgiasChatCreationWizardStepBasics from './components/steps/GorgiasChatCreationWizardStepBasics'
+import GorgiasChatCreationWizardStepBranding from './components/steps/GorgiasChatCreationWizardStepBranding'
 
 import css from './GorgiasChatCreationWizard.less'
 
@@ -107,10 +109,18 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
                             <WizardStep
                                 name={GorgiasChatCreationWizardSteps.Branding}
                             >
-                                <div style={{ padding: '24px' }}>
-                                    <h2>Branding Step Placeholder</h2>
-                                    <p>This step will be implemented next.</p>
-                                </div>
+                                <GorgiasChatCreationWizardStepBranding
+                                    isSubmitting={isSubmitting}
+                                    integration={integration}
+                                />
+                            </WizardStep>
+                            <WizardStep
+                                name={GorgiasChatCreationWizardSteps.Automate}
+                            >
+                                <GorgiasChatCreationWizardStepAutomate
+                                    isSubmitting={isSubmitting}
+                                    integration={integration}
+                                />
                             </WizardStep>
                         </Wizard>
                     )}
