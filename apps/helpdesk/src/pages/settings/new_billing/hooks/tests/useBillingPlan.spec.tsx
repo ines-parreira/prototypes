@@ -359,6 +359,59 @@ describe('useBillingPlans', () => {
             })
         })
 
+        it('should not notify users when they remove AI Agent if not on free trial', async () => {
+            const dispatchBillingError = jest.fn()
+            const queryClient = mockQueryClient()
+
+            const alteredStore = mockedStore({
+                ...store,
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        ...account.current_subscription,
+                        status: SubscriptionStatus.ACTIVE,
+                        products: {
+                            ...account.current_subscription.products,
+                            [AUTOMATION_PRODUCT_ID]:
+                                firstTierMonthlyAutomationPlan.plan_id,
+                        },
+                    },
+                }),
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useBillingPlans({
+                        dispatchBillingError,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={alteredStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                },
+            )
+
+            await act(async () =>
+                result.current.setSelectedPlans((prev) => ({
+                    ...prev,
+                    [ProductType.Automation]: {
+                        plan: basicYearlyHelpdeskPlan,
+                        isSelected: false,
+                    },
+                })),
+            )
+
+            await act(async () => result.current.updateSubscription())
+
+            expect(notifyMock).not.toHaveBeenCalledWith({
+                message: 'You have removed AI Agent from your subscription',
+                status: NotificationStatus.Success,
+                style: NotificationStyle.Alert,
+            })
+        })
+
         it.each([
             ['enable', false, true],
             ['disable', true, false],

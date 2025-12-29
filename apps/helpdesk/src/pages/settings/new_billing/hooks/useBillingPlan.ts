@@ -605,7 +605,7 @@ export const useBillingPlans = ({
         if (Object.keys(plansToBeUpdated).length > 0) {
             // AI Agent has been removed while in free trial
             if (
-                notifications.length === 0 &&
+                isFreeTrial &&
                 !!currentAutomatePlan &&
                 selectedPlans[ProductType.Automation].isSelected === false
             ) {
