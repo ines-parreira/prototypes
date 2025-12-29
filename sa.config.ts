@@ -1,13 +1,35 @@
-import { defineConfig } from '@gorgias/static-analysis'
+import fs from 'node:fs'
+import path from 'node:path'
+
+import { defineConfig, deprecationPlugin } from '@gorgias/static-analysis'
 
 export default defineConfig({
-    sourceDir: 'apps/helpdesk/src',
-    adapter: 'deprecation',
-    rules: {
-        deprecation: {
-            pkgs: [
+    moduleGraphOptions: {
+        rootDir: path.resolve(__dirname, 'apps/helpdesk/src'),
+        modules: ['node_modules', 'node_modules/@types'],
+        alias: {
+            '@knocklabs/types': [
+                path.resolve(
+                    __dirname,
+                    'apps/helpdesk/node_modules/@knocklabs/types/src/index.d.ts',
+                ),
+            ],
+        },
+        tsconfig: {
+            configFile: path.resolve(__dirname, 'apps/helpdesk/tsconfig.json'),
+        },
+    },
+    plugins: [
+        deprecationPlugin({
+            report: (results) => {
+                fs.writeFileSync(
+                    'scripts/deprecated-monitoring/deprecated.snapshot.json',
+                    JSON.stringify(results, null, 2),
+                )
+            },
+            deprecatedPackages: [
                 {
-                    pkgName: 'launchdarkly-react-client-sdk',
+                    name: 'launchdarkly-react-client-sdk',
                     // Use the useFlag hook (@repo/feature-flags) instead
                     // More context: https://www.notion.so/gorgias/How-to-use-Feature-flags-54fb0f6329b04d21970f42f295d1ef02?pvs=4#1921ae2178f580c99babe154b7116151
                     imports: ['useFlags', 'LD', 'LDProvider'],
@@ -15,7 +37,7 @@ export default defineConfig({
                     date: '2025-02-10',
                 },
                 {
-                    pkgName: 'reactstrap',
+                    name: 'reactstrap',
                     imports: ['Button'],
                     type: 'ui-kit-migration',
                     date: '2025-08-12',
@@ -23,31 +45,55 @@ export default defineConfig({
                 //
                 //  axiom related Legacy component deprecations
                 {
-                    pkgName: '@gorgias/axiom',
+                    name: '@gorgias/axiom',
                     imports: [
                         'LegacyButton',
                         'LegacyIconButton',
                         'LegacySelectField',
-                        'LegacyAvatar',
+                        'LegacySelectFieldOption',
+                        'LegacySelectFieldProps',
+                        'LegacySelectFieldRawOption',
+                        'LegacySelectFieldTriggerProps',
+                        'LegacyTextField',
+                        'LegacyTextFieldProps',
+                        'LegacyInput',
+                        'LegacyInputProps',
                         'LegacyShortcutKey',
+                        'LegacyShortcutKeyProps',
+                        'LegacyAvatar',
+                        'LegacyAvatarProps',
                         'LegacyTooltip',
+                        'LegacyTooltipProps',
+                        'LegacyTooltipTrigger',
+                        'LegacyTooltipPlacement',
+                        'LegacyTag',
+                        'LegacyTagProps',
+                        'LegacyLabel',
+                        'LegacyLabelProps',
+                        'LegacyToggleField',
+                        'LegacyToggleFieldProps',
+                        'LegacyCheckboxField',
+                        'LegacyCheckboxFieldProps',
+                        'LegacyTabNavigation',
+                        'LegacyTabNavigationProps',
+                        'LegacyBadge',
+                        'LegacyBadgeProps',
+                        'LegacyBanner',
+                        'LegacyBannerFillStyle',
+                        'LegacyBannerType',
+                        'LegacyBannerVariant',
+                        'LegacyChip',
+                        'LegacyChipProps',
+                        'LegacyProgressBar',
+                        'LegacyProgressBarProps',
+                        'LegacyLoadingSpinner',
+                        'LegacyLoadingSpinnerProps',
+                        'LegacyColorType',
                     ],
                     type: 'ui-kit-migration',
                     date: '2025-10-15',
                 },
             ],
-        },
-    },
-    /**
-     * To generate custom reports intented to be shared with humans,
-     * you can use the markdown reporter:
-     *
-     * type: 'markdown',
-     * filePath: 'deprecated.report.md',
-     *
-     */
-    reporter: {
-        type: 'json',
-        filePath: './scripts/deprecated-monitoring/deprecated.snapshot.json',
-    },
+        }),
+    ],
 })

@@ -2,7 +2,7 @@ import React from 'react'
 
 import cn from 'classnames'
 
-import css from './Ticket.less'
+import css from './components/Ticket.less'
 
 const FailedMessageLabel = () => {
     return (

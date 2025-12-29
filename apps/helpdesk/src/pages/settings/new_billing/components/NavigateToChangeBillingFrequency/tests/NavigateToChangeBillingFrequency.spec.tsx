@@ -23,7 +23,7 @@ import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQ
 import type { NavigateToChangeBillingFrequencyProps } from '../NavigateToChangeBillingFrequency'
 import NavigateToChangeBillingFrequency from '../NavigateToChangeBillingFrequency'
 
-import css from './NavigateToChangeBillingFrequency.less'
+import css from '../NavigateToChangeBillingFrequency.less'
 
 jest.mock('@repo/logging')
 

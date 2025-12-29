@@ -26,7 +26,7 @@ import 'init'
 import { store } from 'common/store'
 import Root from 'pages/Root'
 // eslint-disable-next-line
-import mobileScrollManager from 'services/mobileScrollManager.js'
+import mobileScrollManager from 'services/mobileScrollManager'
 
 // Only import and run scan in development
 if (process.env.NODE_ENV === 'development') {

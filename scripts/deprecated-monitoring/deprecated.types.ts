@@ -1,40 +1,32 @@
-type BaseEntry = {
-    usageCount: number
+export type DeprecatedUsage = {
     name: string
+    files: string[]
+}
+
+export type DeprecatedItem = {
+    filePath: string
     nodeType: string
-    deprecationDate: string
-    deprecationType?: string
-    declarationFile: string
+    nodeName: string
+    comment: string
+    count: number
+    usages: DeprecatedUsage[]
 }
 
-export type Entry = BaseEntry & {
-    imports: {
-        named: {
-            usageUrls: Set<string>
-        }
-        default: {
-            usageUrls: Set<string>
-            defaultImportNames: Set<string>
-        }
-    }
+export type DeprecatedPackageUsage = {
+    name: string
+    count: number
+    files: string[]
 }
 
-export type JSONEntry = BaseEntry & {
-    usageUrls: {
-        named: Array<string>
-        default: Array<string>
-    }
-    defaultImportNames: Array<string>
+export type DeprecatedPackage = {
+    packageName: string
+    usagesCount: number
+    usages: DeprecatedPackageUsage[]
 }
 
-export type JSONReport = {
-    summary: {
-        totalEntries: number
-        totalUsages: number
-        reportGeneratedAt: string
-    }
-    entries: Array<{
-        type: string
-        entries: Array<JSONEntry>
-    }>
+export type StaticAnalysisReport = {
+    date: string
+    total: number
+    deprecated: DeprecatedItem[]
+    deprecatedPackageUsages: DeprecatedPackage[]
 }
