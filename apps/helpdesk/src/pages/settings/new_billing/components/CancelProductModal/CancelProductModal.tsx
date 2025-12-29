@@ -205,7 +205,7 @@ const CancelProductModal = ({
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
-                        message: `You have removed ${productCancellationScenario.productDisplayName} from your subscription`,
+                        message: `Your ${productCancellationScenario.productDisplayName} auto-renewal has been cancelled.`,
                     }),
                 )
                 isCancelled = true

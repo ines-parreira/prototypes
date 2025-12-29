@@ -13,12 +13,12 @@ export enum CancellationFlowStep {
 }
 
 export enum CancellationPrimaryReasonLabel {
-    Pricing = 'Pricing & Subscription',
-    DoesNotFitMyNeeds = 'Product Fit, Features & Roadmap',
-    EaseOfUse = 'Ease of Use, Adoption & Value Realization',
-    PerformanceAndReliability = 'Platform Performance & Reliability',
-    SupportAndService = 'Support & Services Experience',
-    SecurityAndCompliance = 'Security, Compliance & Legal',
+    Pricing = 'Pricing and Subscription',
+    DoesNotFitMyNeeds = 'Product Fit, Features and Roadmap',
+    EaseOfUse = 'Ease of Use, Adoption and Value Realization',
+    PerformanceAndReliability = 'Platform Performance and Reliability',
+    SupportAndService = 'Support and Services Experience',
+    SecurityAndCompliance = 'Security, Compliance and Legal',
 }
 
 export enum CancellationSecondaryReasonLabel {

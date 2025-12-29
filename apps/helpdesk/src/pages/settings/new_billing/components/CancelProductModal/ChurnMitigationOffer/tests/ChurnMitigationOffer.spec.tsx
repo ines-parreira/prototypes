@@ -23,11 +23,13 @@ describe('ChurnMitigationOffer', () => {
         const defaultTextElement = container.querySelector('.container')
         expect(defaultTextElement).toBeInTheDocument()
         expect(defaultTextElement).toHaveTextContent(
-            'Need help staying with us?',
+            'We get it--your business is unique. Before you cancel, our team can review your plan and offer a custom solution that fits your goals and budget.',
         )
         expect(defaultTextElement).toHaveTextContent(
-            'If you would like to get help with the product, discuss potential offers, or share further feedback,' +
-                " please select “Accept Offer” below. Let's work together to keep you happy and satisfied.",
+            "Wheter you're scaling, testing new channels, or just need a smaller plan, we'll make sure you're getting the most value from Gorgias",
+        )
+        expect(defaultTextElement).toHaveTextContent(
+            'Click "Get My Offer" and we\'ll reach out to discuss your personalized options--no strings attached.',
         )
     })
 })

@@ -13,12 +13,22 @@ const ChurnMitigationOffer = ({
                 <div data-candu-id={canduContentId}></div>
             ) : (
                 <div className={css.container}>
-                    <span>Need help staying with us?</span>
                     <span>
-                        {`If you would like to get help with the product, discuss
-                        potential offers, or share further feedback, please
-                        select “Accept Offer” below. Let's work together to keep
-                        you happy and satisfied.`}
+                        {`We get it--your business is unique. Before you cancel,
+                        our team can review your plan and offer a custom
+                        solution that fits your goals and budget.`}
+                    </span>
+                    <span>
+                        {`Wheter you're scaling, testing new channels, or just
+                        need a smaller plan, we'll make sure you're getting the
+                        most value from Gorgias`}
+                    </span>
+                    <span>
+                        {`Click "`}
+                        <strong>Get My Offer</strong>
+                        {`" and we'll reach
+                        out to discuss your personalized options--no strings
+                        attached.`}
                     </span>
                 </div>
             )}
