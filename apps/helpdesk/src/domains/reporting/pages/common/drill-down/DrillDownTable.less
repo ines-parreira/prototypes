@@ -1,103 +1,74 @@
 :local {
     .container {
+        display: flex;
+        flex-direction: column;
         width: 100%;
         max-height: 70vh;
+    }
+
+    .tableBorder {
+        flex: 1;
+        min-height: 0;
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .tableWrapper {
+        flex: 1;
         overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
 
         thead td {
             position: sticky;
             top: 0;
             z-index: 1;
-            background-color: var(--neutral-grey-0); // legacy
-        }
-    }
+            background-color: var(--elevation-neutral-default);
+            height: 48px;
+            box-sizing: border-box;
 
-    .table tbody td {
-        padding: 0;
-    }
-
-    .headerCell > div {
-        width: 100%;
-    }
-
-    .tableRow {
-        font-weight: 400;
-        transition: background-color 0.3s;
-
-        td > div {
-            padding: var(--layout-spacing-xs) var(--layout-spacing-s);
+            > div {
+                padding: var(--spacing-xs) var(--spacing-s);
+                height: 100%;
+                box-sizing: border-box;
+            }
         }
 
-        &:hover {
-            background-color: var(--neutral-grey-1); // legacy
+        tbody tr {
+            height: 48px;
+
+            td {
+                height: 48px;
+                box-sizing: border-box;
+
+                > div {
+                    padding: var(--spacing-xs) var(--spacing-md);
+                    height: 100%;
+                    box-sizing: border-box;
+                }
+            }
+
+            &:not(:last-child) td {
+                border-bottom: 1px solid var(--border-neutral-subtle);
+            }
         }
-    }
-
-    .agent > span {
-        font-weight: 400;
-    }
-
-    .isHighlighted {
-        font-weight: 600;
-
-        .agent > span {
-            font-weight: 600;
-        }
-    }
-
-    .noData {
-        color: var(--neutral-grey-3); // legacy
-    }
-
-    .multiLineOutcome {
-        font-size: 12px;
-        line-height: 1.3;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .level1 {
-        font-size: 14px;
-        margin-bottom: 2px;
-    }
-
-    .sublevels {
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 16px;
-        color: var(--neutral-grey-5); // legacy
-        margin: 0;
     }
 
     .pagination {
-        margin-top: var(--layout-spacing-s);
-        margin-left: var(--layout-spacing-m);
-        margin-bottom: var(--layout-spacing-s);
-    }
-}
-
-.axiom :local {
-    .container {
-        thead td {
-            background-color: var(--elevation-neutral-default);
-        }
+        display: flex;
+        justify-content: flex-end;
+        padding: var(--layout-spacing-m) 0;
     }
 
-    .tableRow {
-        &:hover {
-            background-color: var(--elevation-neutral-mid);
-        }
-    }
-
-    .noData {
-        color: var(--border-neutral-default);
-    }
-
-    .sublevels {
-        color: var(--content-neutral-tertiary);
+    .headerCellTitle {
+        color: var(--content-neutral-secondary);
     }
 }

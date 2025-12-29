@@ -21,6 +21,9 @@ jest.mock('./ArticleVersionBanner')
 jest.mock('./KnowledgeEditorHelpCenterArticleEditView')
 jest.mock('./KnowledgeEditorHelpCenterArticleReadView')
 jest.mock('./modals')
+jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
+    DrillDownModal: jest.fn(() => null),
+}))
 
 const mockUseArticleContext = useArticleContext as jest.Mock
 const mockUseArticleAutoSave = useArticleAutoSave as jest.Mock

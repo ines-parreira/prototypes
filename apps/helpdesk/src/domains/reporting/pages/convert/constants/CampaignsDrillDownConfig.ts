@@ -27,6 +27,7 @@ export const useConvertDrillDownHook = (metricData: DrillDownMetric) =>
 export const ConvertDrillDownConfig: DomainConfig<ConvertMetric> = {
     drillDownHook: useConvertDrillDownHook,
     tableComponent: CampaignSalesDrillDownTableContent,
+    legacyTableComponent: CampaignSalesDrillDownTableContent,
     infoBarObjectType: 'orders',
     isMetricDataDownloadable: true,
     modalTriggerTooltipText: 'Click to view orders',

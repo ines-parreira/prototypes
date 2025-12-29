@@ -5,8 +5,8 @@ import { render, screen } from '@testing-library/react'
 
 import { DRILL_DOWN_PER_PAGE } from 'domains/reporting/hooks/useDrillDownData'
 import { DrillDownDownloadButton } from 'domains/reporting/pages/common/drill-down/DrillDownDownloadButton'
-import { DrillDownInfoBar } from 'domains/reporting/pages/common/drill-down/DrillDownInfoBar'
 import { getDrillDownConfig } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
+import { LegacyDrillDownInfoBar } from 'domains/reporting/pages/common/drill-down/LegacyDrillDownInfoBar'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
@@ -39,7 +39,7 @@ describe('<DrillDownInfobar />', () => {
 
     it('should render the infobar with current number of results', () => {
         render(
-            <DrillDownInfoBar
+            <LegacyDrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
                 domainConfig={getDrillDownConfig(metricData)}
@@ -59,7 +59,7 @@ describe('<DrillDownInfobar />', () => {
             isFetching: false,
         } as any)
         render(
-            <DrillDownInfoBar
+            <LegacyDrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
                 domainConfig={getDrillDownConfig(metricData)}
@@ -79,7 +79,7 @@ describe('<DrillDownInfobar />', () => {
         } as any)
 
         render(
-            <DrillDownInfoBar
+            <LegacyDrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
                 domainConfig={getDrillDownConfig(metricData)}
@@ -102,7 +102,7 @@ describe('<DrillDownInfobar />', () => {
         } as any)
 
         render(
-            <DrillDownInfoBar
+            <LegacyDrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
                 domainConfig={getDrillDownConfig(metricData)}
@@ -140,7 +140,7 @@ describe('<DrillDownInfobar />', () => {
             } as any)
 
             render(
-                <DrillDownInfoBar
+                <LegacyDrillDownInfoBar
                     metricData={metricData}
                     useDataHook={useDrillDownDataMock}
                     domainConfig={getDrillDownConfig(metricData)}
@@ -175,7 +175,7 @@ describe('<DrillDownInfobar />', () => {
         } as any)
 
         render(
-            <DrillDownInfoBar
+            <LegacyDrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
                 domainConfig={getDrillDownConfig(metricData)}

@@ -13,7 +13,7 @@ import {
     AIJourneyMetricsConfig,
 } from 'AIJourney/types/AIJourneyTypes'
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
-import { useEnrichedDrillDownDataUnpaginated } from 'domains/reporting/hooks/useDrillDownData'
+import { useEnrichedDrillDownData } from 'domains/reporting/hooks/useDrillDownData'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import {
     TicketSLADimension,
@@ -25,10 +25,10 @@ import type {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
 } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
-import { DrillDownTable } from 'domains/reporting/pages/common/drill-down/DrillDownTable'
 import { MetricsConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
 import { getDrillDownMetricColumn } from 'domains/reporting/pages/common/drill-down/helpers'
-import { TicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/TicketDrillDownTableContent'
+import { LegacyDrillDownTable } from 'domains/reporting/pages/common/drill-down/LegacyDrillDownTable'
+import { LegacyTicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/LegacyTicketDrillDownTableContent'
 import type { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
 import { CampaignSalesDrillDownTableContent } from 'domains/reporting/pages/convert/components/CampaignSalesDrillDownTableContent'
 import { useCampaignStatsFilters } from 'domains/reporting/pages/convert/hooks/useCampaignStatsFilters'
@@ -55,6 +55,7 @@ import {
     SlaMetric,
 } from 'domains/reporting/state/ui/stats/types'
 import { campaign, campaignId } from 'fixtures/campaign'
+import { NumberedPagination } from 'pages/common/components/Paginations'
 import type { RootState, StoreDispatch } from 'state/types'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
@@ -65,25 +66,15 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/axiom'),
             Skeleton: () => <div data-testid={MOCK_SKELETON_TEST_ID} />,
-            Pagination: () => <div data-testid="pagination" />,
         }) as typeof import('@gorgias/axiom'),
 )
+jest.mock('pages/common/components/Paginations')
+const numberedPaginationMock = assumeMock(NumberedPagination)
 
 jest.mock('domains/reporting/pages/common/drill-down/helpers')
 const getDrillDownMetricColumnMock = assumeMock(getDrillDownMetricColumn)
-jest.mock('domains/reporting/hooks/useDrillDownData', () => ({
-    useEnrichedDrillDownDataUnpaginated: jest.fn(),
-    useEnrichedDrillDownData: jest.fn(),
-    defaultEnrichmentFields: [],
-    extraEnrichmentFieldsPerMetric: {},
-}))
-const useEnrichedDrillDownDataUnpaginatedMock = assumeMock(
-    useEnrichedDrillDownDataUnpaginated,
-)
-const useEnrichedDrillDownDataMock = assumeMock(
-    jest.requireMock('domains/reporting/hooks/useDrillDownData')
-        .useEnrichedDrillDownData,
-)
+jest.mock('domains/reporting/hooks/useDrillDownData')
+const useEnrichedDrillDownDataMock = assumeMock(useEnrichedDrillDownData)
 
 jest.mock('domains/reporting/pages/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
@@ -93,7 +84,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
-describe('<DrillDownTable />', () => {
+describe('<LegacyDrillDownTable />', () => {
     const defaultState = {
         ui: {
             stats: {
@@ -101,6 +92,9 @@ describe('<DrillDownTable />', () => {
             },
         },
     } as unknown as RootState
+    const currentPage = 1
+    const pagesCount = 2
+    const useDataHookMock = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -109,6 +103,7 @@ describe('<DrillDownTable />', () => {
             metricTitle: '',
             metricValueFormat: 'decimal',
         })
+        numberedPaginationMock.mockImplementation(() => <div />)
     })
 
     const renderTable = (
@@ -120,12 +115,13 @@ describe('<DrillDownTable />', () => {
     ) => {
         return render(
             <Provider store={mockStore(defaultState)}>
-                <DrillDownTable
+                <LegacyDrillDownTable
                     columnConfig={getDrillDownMetricColumn(
                         metricData,
                         MetricsConfig[metricData.metricName].showMetric,
                     )}
                     metricData={metricData}
+                    useDataHook={useDataHookMock}
                     TableContent={content}
                 />
             </Provider>,
@@ -177,15 +173,18 @@ describe('<DrillDownTable />', () => {
         ]
 
         const renderTableForTicket = (metricData: DrillDownMetric) => {
-            return renderTable(metricData, TicketDrillDownTableContent)
+            return renderTable(metricData, LegacyTicketDrillDownTableContent)
         }
 
         it('should render the table title, table header and rows', () => {
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: data,
                 isFetching: false,
             } as any)
-
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+            } as any)
             renderTableForTicket(metricData)
 
             expect(screen.getByRole('table')).toBeInTheDocument()
@@ -205,8 +204,13 @@ describe('<DrillDownTable />', () => {
         })
 
         it('should not render Avatar if no assignee', () => {
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: [{ ...exampleRow, assignee: null }],
+            } as any)
+            useDataHookMock.mockReturnValue({
+                data: [{ ...exampleRow, assignee: null }],
+                currentPage,
+                perPage: 1,
             } as any)
 
             renderTableForTicket(metricData)
@@ -214,11 +218,14 @@ describe('<DrillDownTable />', () => {
             expect(document.querySelector('.agent')).not.toBeInTheDocument()
         })
 
-        it.skip('should render the table with skeletons on loading', () => {
-            // TODO: Loading behavior in new DrillDownTable needs investigation
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
-                data: [],
+        it('should render the table with skeletons on loading', () => {
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: data,
                 isFetching: true,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
             } as any)
 
             renderTableForTicket(metricData)
@@ -228,13 +235,19 @@ describe('<DrillDownTable />', () => {
             ).not.toBe(0)
         })
 
-        it('should redirect to Ticket page on row click', async () => {
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+        it('should redirect to Ticket page on row click', () => {
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: [{ ...exampleRow, assignee: null }],
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
             } as any)
 
             renderTableForTicket(metricData)
-            await act(() => userEvent.click(screen.getAllByRole('row')[1]))
+            act(() => {
+                userEvent.click(screen.getAllByRole('row')[1])
+            })
 
             expect(window.open).toHaveBeenCalledWith(
                 `/app/ticket/${exampleRow.ticket.id}`,
@@ -242,13 +255,19 @@ describe('<DrillDownTable />', () => {
             )
         })
 
-        it('should should log segment event on ticket row click', async () => {
+        it('should should log segment event on ticket row click', () => {
             const autoQAMetricData = {
                 metricName: AutoQAMetric.ReviewedClosedTickets,
             }
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+            } as any)
 
             renderTableForTicket(autoQAMetricData)
-            await act(() => userEvent.click(screen.getAllByRole('row')[1]))
+            act(() => {
+                userEvent.click(screen.getAllByRole('row')[1])
+            })
 
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.StatDrillDownTicketClicked,
@@ -280,9 +299,13 @@ describe('<DrillDownTable />', () => {
                 metricTitle: SlaMetricConfig[SlaMetric.AchievementRate].title,
                 metricValueFormat: SLA_FORMAT,
             })
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: [dataWithSlas],
                 isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
             } as any)
 
             renderTableForTicket(metricData)
@@ -303,9 +326,13 @@ describe('<DrillDownTable />', () => {
                 metricTitle: 'Satisfaction score',
                 metricValueFormat: 'decimal-to-percent',
             })
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: [data],
                 isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
             } as any)
 
             renderTableForTicket(metricData)
@@ -331,9 +358,13 @@ describe('<DrillDownTable />', () => {
                         '3.2',
                 },
             }
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: [dataWithAutoQA],
                 isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
             } as any)
 
             renderTableForTicket(metricData)
@@ -368,9 +399,13 @@ describe('<DrillDownTable />', () => {
                         '3.2',
                 },
             }
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: [dataWithAutoQA],
                 isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
             } as any)
 
             renderTableForTicket(metricData)
@@ -384,14 +419,29 @@ describe('<DrillDownTable />', () => {
         })
 
         it('should render Pagination when more then one page of results', () => {
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
-                data: Array(25).fill(exampleRow),
-                isFetching: false,
+            const onPageChange = jest.fn()
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: data,
+                isFetching: true,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+                pagesCount,
+                onPageChange,
             } as any)
 
             renderTableForTicket(metricData)
 
-            expect(screen.getByTestId('pagination')).toBeInTheDocument()
+            expect(numberedPaginationMock).toHaveBeenCalledWith(
+                {
+                    count: pagesCount,
+                    page: currentPage,
+                    onChange: onPageChange,
+                    className: 'pagination',
+                },
+                {},
+            )
         })
 
         it('should render product skus', () => {
@@ -407,9 +457,13 @@ describe('<DrillDownTable />', () => {
                 },
             }
 
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: [dataWithProduct],
                 isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
             } as any)
 
             renderTableForTicket(metricData)
@@ -446,9 +500,13 @@ describe('<DrillDownTable />', () => {
                 },
             ]
 
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: dataWithMultiLineOutcome,
                 isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
             } as any)
 
             renderTableForTicket(metricData)
@@ -492,9 +550,13 @@ describe('<DrillDownTable />', () => {
                 },
             ]
 
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: dataWithSingleLineOutcome,
                 isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
             } as any)
 
             renderTableForTicket(metricData)
@@ -552,15 +614,14 @@ describe('<DrillDownTable />', () => {
         }
 
         it('should render the table title, table header and rows', () => {
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
-                data: data,
-                isFetching: false,
-            } as any)
             useEnrichedDrillDownDataMock.mockReturnValue({
                 data: data,
                 isFetching: false,
             } as any)
-
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+            } as any)
             renderTableForCampaignSales(metricData)
 
             expect(screen.getByRole('table')).toBeInTheDocument()
@@ -573,10 +634,6 @@ describe('<DrillDownTable />', () => {
                 metricTitle,
                 metricValueFormat: 'decimal',
             })
-            useEnrichedDrillDownDataMock.mockReturnValue({
-                data: data,
-                isFetching: false,
-            } as any)
 
             renderTableForCampaignSales(metricData)
 
@@ -590,10 +647,6 @@ describe('<DrillDownTable />', () => {
                 metricTitle,
                 metricValueFormat: 'decimal',
             })
-            useEnrichedDrillDownDataMock.mockReturnValue({
-                data: data,
-                isFetching: false,
-            } as any)
 
             const { getByText } = renderTableForCampaignSales(metricData)
 
@@ -601,15 +654,14 @@ describe('<DrillDownTable />', () => {
             expect(getByText(customerName)).toBeInTheDocument()
         })
 
-        it.skip('should render the table with skeletons on loading', () => {
-            // TODO: Loading behavior in new DrillDownTable needs investigation
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
-                data: [],
+        it('should render the table with skeletons on loading', () => {
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: data,
                 isFetching: true,
             } as any)
-            useEnrichedDrillDownDataMock.mockReturnValue({
-                data: [],
-                isFetching: true,
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
             } as any)
 
             renderTableForCampaignSales(metricData)
@@ -620,18 +672,29 @@ describe('<DrillDownTable />', () => {
         })
 
         it('should render Pagination when more then one page of results', () => {
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
-                data: Array(25).fill(exampleRow),
-                isFetching: false,
-            } as any)
+            const onPageChange = jest.fn()
             useEnrichedDrillDownDataMock.mockReturnValue({
-                data: Array(25).fill(exampleRow),
-                isFetching: false,
+                data: data,
+                isFetching: true,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+                pagesCount,
+                onPageChange,
             } as any)
 
             renderTableForCampaignSales(metricData)
 
-            expect(screen.getByTestId('pagination')).toBeInTheDocument()
+            expect(numberedPaginationMock).toHaveBeenCalledWith(
+                {
+                    count: pagesCount,
+                    page: currentPage,
+                    onChange: onPageChange,
+                    className: 'pagination',
+                },
+                {},
+            )
         })
     })
 
@@ -643,7 +706,7 @@ describe('<DrillDownTable />', () => {
         }
 
         const renderTableForTotalOrders = (metricData: DrillDownMetric) => {
-            return renderTable(metricData, TicketDrillDownTableContent)
+            return renderTable(metricData, LegacyTicketDrillDownTableContent)
         }
 
         it('should render expected columns for TotalOrders metric', () => {
@@ -691,9 +754,13 @@ describe('<DrillDownTable />', () => {
                 order: { id: '6146766766294', customer: 'Kahlil Adams' },
                 product: { titles: [], variants: [] },
             }
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: [exampleRow],
                 isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
             } as any)
 
             renderTableForTotalOrders(metricData)
@@ -731,9 +798,13 @@ describe('<DrillDownTable />', () => {
                 outcome: 'Automated::Snooze::With message',
                 product: { titles: [], variants: [] },
             }
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: [exampleRow],
                 isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
             } as any)
 
             renderTableForTotalOrders(metricData)
@@ -767,9 +838,13 @@ describe('<DrillDownTable />', () => {
                 outcome: 'Automated::Snooze::With message',
                 product: { titles: [], variants: [] },
             }
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: [exampleRow],
                 isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
             } as any)
 
             renderTableForTotalOrders(metricData)
@@ -833,13 +908,17 @@ describe('<DrillDownTable />', () => {
         }
 
         const renderTableForResponseRate = (metricData: DrillDownMetric) => {
-            return renderTable(metricData, TicketDrillDownTableContent)
+            return renderTable(metricData, LegacyTicketDrillDownTableContent)
         }
 
         it('should render expected columns for ResponseRate metric', () => {
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: [exampleRow],
                 isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
             } as any)
 
             renderTableForResponseRate(metricData)
@@ -904,13 +983,17 @@ describe('<DrillDownTable />', () => {
         }
 
         const renderTableForOptOutRate = (metricData: DrillDownMetric) => {
-            return renderTable(metricData, TicketDrillDownTableContent)
+            return renderTable(metricData, LegacyTicketDrillDownTableContent)
         }
 
         it('should render expected columns for OptOutRate metric', () => {
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: [exampleRow],
                 isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
             } as any)
 
             renderTableForOptOutRate(metricData)
@@ -961,13 +1044,17 @@ describe('<DrillDownTable />', () => {
         const renderTableForClickThroughRate = (
             metricData: DrillDownMetric,
         ) => {
-            return renderTable(metricData, TicketDrillDownTableContent)
+            return renderTable(metricData, LegacyTicketDrillDownTableContent)
         }
 
         it('should render expected columns for ClickThroughRate metric', () => {
-            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: [exampleRow],
                 isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 1,
             } as any)
 
             renderTableForClickThroughRate(metricData)

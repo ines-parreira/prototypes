@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
-import css from 'domains/reporting/pages/common/drill-down/DrillDownInfobar.less'
+import css from 'domains/reporting/pages/common/drill-down/LegacyDrillDownInfobar.less'
 import useAppSelector from 'hooks/useAppSelector'
 import { useRunningJobs } from 'jobs'
 import Loader from 'pages/common/components/Loader/Loader'

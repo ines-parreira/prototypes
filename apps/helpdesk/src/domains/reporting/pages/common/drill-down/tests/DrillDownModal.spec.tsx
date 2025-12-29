@@ -8,15 +8,15 @@ import thunk from 'redux-thunk'
 
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
-import { DrillDownInfoBar } from 'domains/reporting/pages/common/drill-down/DrillDownInfoBar'
 import {
     DrillDownModal,
     getDrillDownConfig,
 } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
-import { DrillDownTable } from 'domains/reporting/pages/common/drill-down/DrillDownTable'
 import { MetricsConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
 import { getDrillDownMetricColumn } from 'domains/reporting/pages/common/drill-down/helpers'
-import { TicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/TicketDrillDownTableContent'
+import { LegacyDrillDownInfoBar } from 'domains/reporting/pages/common/drill-down/LegacyDrillDownInfoBar'
+import { LegacyDrillDownTable } from 'domains/reporting/pages/common/drill-down/LegacyDrillDownTable'
+import { LegacyTicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/LegacyTicketDrillDownTableContent'
 import { CampaignSalesDrillDownTableContent } from 'domains/reporting/pages/convert/components/CampaignSalesDrillDownTableContent'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import VoiceCallDrillDownTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
@@ -30,10 +30,10 @@ import {
 } from 'domains/reporting/state/ui/stats/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
-jest.mock('domains/reporting/pages/common/drill-down/DrillDownTable')
-const DrillDownTableMock = assumeMock(DrillDownTable)
-jest.mock('domains/reporting/pages/common/drill-down/DrillDownInfoBar')
-const DrillDownInfobarMock = assumeMock(DrillDownInfoBar)
+jest.mock('domains/reporting/pages/common/drill-down/LegacyDrillDownTable')
+const DrillDownTableMock = assumeMock(LegacyDrillDownTable)
+jest.mock('domains/reporting/pages/common/drill-down/LegacyDrillDownInfoBar')
+const DrillDownInfobarMock = assumeMock(LegacyDrillDownInfoBar)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -73,7 +73,7 @@ describe('<DrillDownModal />', () => {
     it.each([
         [
             TicketFieldsMetric.TicketCustomFieldsTicketCount,
-            TicketDrillDownTableContent,
+            LegacyTicketDrillDownTableContent,
         ],
         [ConvertMetric.CampaignSalesCount, CampaignSalesDrillDownTableContent],
         [VoiceMetric.AverageWaitTime, VoiceCallDrillDownTableContent],
@@ -107,11 +107,11 @@ describe('<DrillDownModal />', () => {
         ],
         [
             AiSalesAgentChart.AiSalesAgentTotalSalesConv,
-            TicketDrillDownTableContent,
+            LegacyTicketDrillDownTableContent,
         ],
-        [AIJourneyMetric.TotalOrders, TicketDrillDownTableContent],
-        [AIJourneyMetric.ResponseRate, TicketDrillDownTableContent],
-        [AIJourneyMetric.OptOutRate, TicketDrillDownTableContent],
+        [AIJourneyMetric.TotalOrders, LegacyTicketDrillDownTableContent],
+        [AIJourneyMetric.ResponseRate, LegacyTicketDrillDownTableContent],
+        [AIJourneyMetric.OptOutRate, LegacyTicketDrillDownTableContent],
     ])(
         'should render correct drill down table content for metric %s',
         (metric, ExpectedTableContentComponent) => {

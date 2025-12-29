@@ -15,6 +15,7 @@ import {
     getDrillDownMetricOrder,
     useDrillDownData,
     useEnrichedDrillDownData,
+    useEnrichedDrillDownDataUnpaginated,
 } from 'domains/reporting/hooks/useDrillDownData'
 import {
     useMetricPerDimension,
@@ -618,6 +619,377 @@ describe('DrillDownData hooks', () => {
                     }),
                 }),
             )
+        })
+    })
+
+    describe('useEnrichedDrillDownDataUnpaginated', () => {
+        const metricDimension = HelpdeskMessageMeasure.MessageCount
+        const ticketIdField = TicketDimension.TicketId
+        const exampleRow = {
+            [TicketDimension.TicketId]: '777',
+            [EnrichmentFields.TicketName]: 'Some Ticket',
+            [EnrichmentFields.Description]: 'Some description',
+            [EnrichmentFields.Channel]: TicketChannel.FacebookMention,
+            [EnrichmentFields.Status]: TicketStatus.Open,
+            [EnrichmentFields.CreatedDatetime]: '2023-04-07T00:00:00.000',
+            [EnrichmentFields.ContactReason]: 'some contact reason',
+            [EnrichmentFields.AssigneeId]: '1',
+            [EnrichmentFields.IsUnread]: true,
+            [metricDimension]: 12,
+        }
+        const rowData = [exampleRow]
+        const metricData: DrillDownMetric = {
+            metricName: OverviewMetric.MessagesSent,
+        }
+
+        beforeEach(() => {
+            getHumanAndBotAgentsJSMock.mockReturnValue(agents)
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: { allData: rowData } as unknown as any,
+                isFetching: false,
+                isError: false,
+            })
+        })
+
+        it('should return formatted data without pagination', () => {
+            const { result } = renderHook(
+                () =>
+                    useEnrichedDrillDownDataUnpaginated(
+                        getDrillDownQuery(metricData),
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current).toEqual({
+                isFetching: false,
+                totalResults: rowData.length,
+                data: rowData.map((row) =>
+                    formatTicketDrillDownRowData({
+                        row,
+                        metricField: metricDimension,
+                        agents,
+                        ticketIdField,
+                    }),
+                ),
+            })
+        })
+
+        it('should return empty data when no results', () => {
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: { allData: [], value: null } as unknown as any,
+                isFetching: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useEnrichedDrillDownDataUnpaginated(
+                        getDrillDownQuery(metricData),
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current.data).toEqual([])
+            expect(result.current.totalResults).toBe(0)
+        })
+
+        it('should handle loading state correctly', () => {
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: null,
+                isFetching: true,
+                isError: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useEnrichedDrillDownDataUnpaginated(
+                        getDrillDownQuery(metricData),
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current.isFetching).toBe(true)
+            expect(result.current.data).toEqual([])
+        })
+
+        it('should handle multiple tickets correctly', () => {
+            const multipleRowData = [
+                exampleRow,
+                {
+                    ...exampleRow,
+                    [TicketDimension.TicketId]: '888',
+                    [EnrichmentFields.TicketName]: 'Another Ticket',
+                },
+                {
+                    ...exampleRow,
+                    [TicketDimension.TicketId]: '999',
+                    [EnrichmentFields.TicketName]: 'Third Ticket',
+                },
+            ]
+
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: {
+                    allData: multipleRowData,
+                    value: null,
+                } as unknown as any,
+                isFetching: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useEnrichedDrillDownDataUnpaginated(
+                        getDrillDownQuery(metricData),
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current.data).toHaveLength(3)
+            expect(result.current.totalResults).toBe(3)
+        })
+
+        it('should merge SLA metrics into one entry per ticket', () => {
+            const metricName = SlaMetric.AchievementRate
+            const FRTMetricName = 'FRT'
+            const RTMetricName = 'RT'
+            const FRTData = {
+                [TicketDimension.TicketId]: '448211952',
+                [TicketSLADimension.TicketId]: '448211952',
+                [TicketSLADimension.SlaStatus]: 'BREACHED',
+                [TicketSLADimension.SlaPolicyMetricName]: FRTMetricName,
+                [TicketSLADimension.SlaPolicyMetricStatus]: 'BREACHED',
+                [TicketSLADimension.SlaDelta]: null,
+                [TicketSLADimension.SlaAnchorDatetime]:
+                    '2024-05-30T00:00:00.000',
+                [TicketSLAMeasure.TicketCount]: '1',
+                [EnrichmentFields.TicketName]: 'Some Ticket',
+                [EnrichmentFields.Description]: 'Some description',
+                [EnrichmentFields.Channel]: TicketChannel.FacebookMention,
+                [EnrichmentFields.Status]: TicketStatus.Open,
+                [EnrichmentFields.CreatedDatetime]: '2023-04-07T00:00:00.000',
+                [EnrichmentFields.ContactReason]: 'some contact reason',
+                [EnrichmentFields.AssigneeId]: '1',
+                [EnrichmentFields.IsUnread]: true,
+                [metricDimension]: 12,
+            }
+
+            const RTData = {
+                [TicketDimension.TicketId]: '448211952',
+                [TicketSLADimension.TicketId]: '448211952',
+                [TicketSLADimension.SlaStatus]: 'BREACHED',
+                [TicketSLADimension.SlaPolicyMetricName]: RTMetricName,
+                [TicketSLADimension.SlaPolicyMetricStatus]: 'BREACHED',
+                [TicketSLADimension.SlaDelta]: null,
+                [TicketSLADimension.SlaAnchorDatetime]:
+                    '2024-05-30T00:00:00.000',
+                [TicketSLAMeasure.TicketCount]: '1',
+                [EnrichmentFields.TicketName]: 'Some Ticket',
+                [EnrichmentFields.Description]: 'Some description',
+                [EnrichmentFields.Channel]: TicketChannel.FacebookMention,
+                [EnrichmentFields.Status]: TicketStatus.Open,
+                [EnrichmentFields.CreatedDatetime]: '2023-04-07T00:00:00.000',
+                [EnrichmentFields.ContactReason]: 'some contact reason',
+                [EnrichmentFields.AssigneeId]: '1',
+                [EnrichmentFields.IsUnread]: true,
+                [metricDimension]: 12,
+            }
+
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: {
+                    allData: [FRTData, RTData],
+                } as unknown as any,
+                isFetching: false,
+                isError: false,
+            })
+            const slaMetricData: DrillDownMetric = {
+                metricName: metricName,
+            }
+
+            const { result } = renderHook(
+                () =>
+                    useEnrichedDrillDownDataUnpaginated(
+                        getDrillDownQuery(slaMetricData),
+                        slaMetricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current.data).toHaveLength(1)
+            expect(result.current.data).toContainEqual(
+                expect.objectContaining({
+                    slas: expect.objectContaining({
+                        [FRTMetricName]: expect.objectContaining(FRTData),
+                        [RTMetricName]: expect.objectContaining(RTData),
+                    }),
+                }),
+            )
+        })
+
+        it('should filter data by intent for CSAT drilldown', () => {
+            const ticketWithMatchingIntent = {
+                [TicketDimension.TicketId]: '123',
+                [EnrichmentFields.CustomFields]: {
+                    100: 'order_status::checking',
+                },
+                [EnrichmentFields.TicketName]: 'Matching Ticket',
+            }
+
+            const ticketWithoutMatchingIntent = {
+                [TicketDimension.TicketId]: '456',
+                [EnrichmentFields.CustomFields]: {
+                    100: 'shipping::tracking',
+                },
+                [EnrichmentFields.TicketName]: 'Non-Matching Ticket',
+            }
+
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: {
+                    allData: [
+                        ticketWithMatchingIntent,
+                        ticketWithoutMatchingIntent,
+                    ],
+                    value: null,
+                } as unknown as any,
+                isFetching: false,
+                isError: false,
+            })
+
+            const csatMetricData: DrillDownMetric = {
+                metricName:
+                    AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction,
+                intentFieldId: 100,
+                intentFieldValues: ['order_status'],
+            } as DrillDownMetric
+
+            const { result } = renderHook(
+                () =>
+                    useEnrichedDrillDownDataUnpaginated(
+                        getDrillDownQuery(csatMetricData),
+                        csatMetricData,
+                        [
+                            ...defaultEnrichmentFields,
+                            EnrichmentFields.CustomFields,
+                        ],
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current.data).toHaveLength(1)
+            expect(result.current.totalResults).toBe(1)
+        })
+
+        it('should use measure when second dimension is not available', () => {
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: { allData: rowData, value: null } as unknown as any,
+                isFetching: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useEnrichedDrillDownDataUnpaginated(
+                        getDrillDownQuery(metricData),
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current.data).toHaveLength(1)
+        })
+
+        it('should handle null data gracefully', () => {
+            useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
+                data: null,
+                isFetching: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useEnrichedDrillDownDataUnpaginated(
+                        getDrillDownQuery(metricData),
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current.data).toEqual([])
+            expect(result.current.totalResults).toBe(0)
         })
     })
 

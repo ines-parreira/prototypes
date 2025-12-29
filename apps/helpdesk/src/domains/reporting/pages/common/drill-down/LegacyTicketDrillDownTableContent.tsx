@@ -1,9 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { TicketInfobarTab } from '@repo/navigation'
-import { formatMetricValue } from '@repo/reporting'
 import classNames from 'classnames'
-
-import { Tag } from '@gorgias/axiom'
 
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
@@ -19,16 +16,17 @@ import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent
 import { AgentAvatar } from 'domains/reporting/pages/common/AgentAvatar'
 import { DrillDownTableContentSkeleton } from 'domains/reporting/pages/common/components/Table/DrillDownTableContentSkeleton'
 import { TruncateCellContent } from 'domains/reporting/pages/common/components/TruncateCellContent'
-import { useDrillDownDataContext } from 'domains/reporting/pages/common/drill-down/DrillDownDataContext'
+import TruncateMultilineCellContent from 'domains/reporting/pages/common/components/TruncateMultilineCellContent'
 import { formatTicketDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
-import { DrillDownHeaderCellWithTooltip } from 'domains/reporting/pages/common/drill-down/DrillDownHeaderCellWithTooltip'
-import css from 'domains/reporting/pages/common/drill-down/DrillDownTable.less'
-import { DrillDownTicketDetailsCell } from 'domains/reporting/pages/common/drill-down/DrillDownTicketDetailsCell'
-import { DrillDownTruncateMultilineCellContent } from 'domains/reporting/pages/common/drill-down/DrillDownTruncateMultilineCellContent'
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
+import css from 'domains/reporting/pages/common/drill-down/LegacyDrillDownTable.less'
+import { LegacyDrillDownTicketDetailsCell } from 'domains/reporting/pages/common/drill-down/LegacyDrillDownTicketDetailsCell'
 import type { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
-import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'domains/reporting/pages/common/utils'
 import { CSAT_SCORE } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionMetricsConfig'
 import { SLAStatusCell } from 'domains/reporting/pages/sla/components/SlaStatusCell'
 import { SLA_FORMAT } from 'domains/reporting/pages/sla/SlaConfig'
@@ -124,7 +122,7 @@ const getOnClickHandler =
         }
     }
 
-export const TicketDrillDownTableContent = ({
+export const LegacyTicketDrillDownTableContent = ({
     metricData,
     columnConfig,
 }: {
@@ -186,8 +184,7 @@ export const TicketDrillDownTableContent = ({
         metricData.metricName ===
         AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
 
-    // Fetch data directly (used by legacy table, or when context is not available)
-    const fetchedData = useEnrichedDrillDownData(
+    const { data, isFetching } = useEnrichedDrillDownData(
         getDrillDownQuery(metricData),
         metricData,
         extraEnrichmentFieldsPerMetric[metricData.metricName] ||
@@ -195,14 +192,6 @@ export const TicketDrillDownTableContent = ({
         formatTicketDrillDownRowData,
         EnrichmentFields.TicketId,
     )
-
-    // Try to use context data (for new paginated table), fall back to fetched data (for legacy table)
-    const contextData = useDrillDownDataContext() as
-        | typeof fetchedData
-        | undefined
-
-    // Use context data if available (new table with pagination), otherwise use fetched data (legacy)
-    const { data, isFetching } = contextData ?? fetchedData
 
     const getTicketColumnWidth = () => {
         if (
@@ -227,7 +216,7 @@ export const TicketDrillDownTableContent = ({
     const columnWidths = {
         ticket: getTicketColumnWidth(),
         metric: 140,
-        surveyScore: 48,
+        surveyScore: 140,
         assignee: 180,
         created: 180,
         contactReason: 180,
@@ -236,64 +225,17 @@ export const TicketDrillDownTableContent = ({
         order: 140,
         product: 180,
     }
-    const getColumnWidthsForSkeleton = () => {
-        const hasOrderColumns =
-            isAiSalesAgentTotalNumberOfOrdersMetric ||
-            isAiJourneyTotalOrdersMetric
-        const hasCustomerColumn =
-            isAiJourneyResponseRateMetric ||
-            isAiJourneyOptOutRateMetric ||
-            isAiJourneyClickThroughRateMetric
-        const hasOutcomeColumn =
-            isAiInsightsMetric ||
-            isAiPerformanceMetric ||
-            isAiSalesAgentConversationsMetric ||
-            isAiSalesAgentSuccessRateMetric ||
-            isAiSalesAgentDiscountOfferedMetric ||
-            isAiSalesAgentTotalProductRecommendationsMetric ||
-            (isKnowledgeMetric &&
-                metricData.metricName !== KnowledgeMetric.CSAT)
-        const hasAssigneeColumn =
-            (!isAiSalesAgentTotalNumberOfOrdersMetric ||
-                isAiJourneyTotalOrdersMetric ||
-                hasCustomerColumn) &&
-            !isKnowledgeMetric
-        const hasContactReasonColumn = !(
-            isAiInsightsMetric ||
-            isAiPerformanceMetric ||
-            isAiInsightsCsatMetric ||
-            isAiSalesAgentSuccessRateMetric ||
-            isAiSalesAgentDiscountOfferedMetric ||
-            isAiSalesAgentTotalProductRecommendationsMetric ||
-            hasCustomerColumn ||
-            isKnowledgeMetric
-        )
-        const hasIntentColumn = isAiPerformanceMetric || isAiInsightsCsatMetric
-
-        return [
-            columnWidths.ticket,
-            ...(hasOrderColumns
-                ? [columnWidths.order, columnWidths.order, columnWidths.order]
-                : []),
-            ...(hasCustomerColumn ? [columnWidths.order] : []),
-            ...(isAiSalesAgentTotalProductRecommendationsMetric
-                ? [columnWidths.product]
-                : []),
-            ...(hasOutcomeColumn ? [columnWidths.outcome] : []),
-            ...(showMetric ? [columnWidths.metric] : []),
-            ...(showSurveyScore ? [columnWidths.surveyScore] : []),
-            ...(isAutoQAResolutionCompleteness ? [columnWidths.metric] : []),
-            ...(hasAssigneeColumn ? [columnWidths.assignee] : []),
-            columnWidths.created,
-            ...(isAutoQAReviewedClosedTickets
-                ? Array(7).fill(columnWidths.metric)
-                : []),
-            ...(hasContactReasonColumn ? [columnWidths.contactReason] : []),
-            ...(hasIntentColumn ? [columnWidths.intent] : []),
-        ].map((width) => width - 40)
-    }
-
-    const columnWidthsForSkeleton = getColumnWidthsForSkeleton()
+    const columnWidthsForSkeleton = [
+        columnWidths.ticket,
+        columnWidths.metric,
+        ...(showSurveyScore ? [columnWidths.surveyScore] : []),
+        columnWidths.assignee,
+        columnWidths.created,
+        columnWidths.contactReason,
+        columnWidths.outcome,
+        columnWidths.intent,
+        columnWidths.order,
+    ].map((width) => width - 40)
 
     return (
         <>
@@ -302,7 +244,6 @@ export const TicketDrillDownTableContent = ({
                     title="Ticket"
                     width={columnWidths.ticket}
                     className={css.headerCell}
-                    titleClassName={css.headerCellTitle}
                 />
                 {(isAiSalesAgentTotalNumberOfOrdersMetric ||
                     isAiJourneyTotalOrdersMetric) && (
@@ -311,19 +252,16 @@ export const TicketDrillDownTableContent = ({
                             title="Order"
                             width={columnWidths.order}
                             className={css.headerCell}
-                            titleClassName={css.headerCellTitle}
                         />
                         <HeaderCellProperty
                             title="Amount"
                             width={columnWidths.order}
                             className={css.headerCell}
-                            titleClassName={css.headerCellTitle}
                         />
                         <HeaderCellProperty
                             title="Customer"
                             width={columnWidths.order}
                             className={css.headerCell}
-                            titleClassName={css.headerCellTitle}
                         />
                     </>
                 )}
@@ -334,7 +272,6 @@ export const TicketDrillDownTableContent = ({
                         title="Customer"
                         width={columnWidths.order}
                         className={css.headerCell}
-                        titleClassName={css.headerCellTitle}
                     />
                 )}
                 {isAiSalesAgentTotalProductRecommendationsMetric && (
@@ -343,7 +280,6 @@ export const TicketDrillDownTableContent = ({
                             title="Products SKUs"
                             width={columnWidths.product}
                             className={css.headerCell}
-                            titleClassName={css.headerCellTitle}
                         />
                     </>
                 )}
@@ -353,22 +289,19 @@ export const TicketDrillDownTableContent = ({
                     isAiSalesAgentSuccessRateMetric ||
                     isAiSalesAgentDiscountOfferedMetric ||
                     isAiSalesAgentTotalProductRecommendationsMetric ||
-                    (isKnowledgeMetric &&
-                        metricData.metricName !== KnowledgeMetric.CSAT)) && (
-                    <DrillDownHeaderCellWithTooltip
+                    isKnowledgeMetric) && (
+                    <HeaderCellProperty
                         title="Outcome"
                         width={columnWidths.outcome}
                         className={css.headerCell}
-                        titleClassName={css.headerCellTitle}
                         tooltip={tooltipHints.outcome}
                     />
                 )}
                 {showMetric && (
-                    <DrillDownHeaderCellWithTooltip
+                    <HeaderCellProperty
                         title={metricTitle}
                         width={columnWidths.metric}
                         className={css.headerCell}
-                        titleClassName={css.headerCellTitle}
                         tooltip={tooltipHints.metric}
                     />
                 )}
@@ -377,15 +310,13 @@ export const TicketDrillDownTableContent = ({
                         title={CSAT_SCORE}
                         width={columnWidths.surveyScore}
                         className={css.headerCell}
-                        titleClassName={css.headerCellTitle}
                     />
                 )}
                 {isAutoQAResolutionCompleteness && (
-                    <DrillDownHeaderCellWithTooltip
+                    <HeaderCellProperty
                         title={RESOLUTION_COMPLETENESS_SHORT_LABEL}
                         width={columnWidths.metric}
                         className={css.headerCell}
-                        titleClassName={css.headerCellTitle}
                         tooltip={
                             <HintTooltipContent
                                 {...TrendCardConfig[
@@ -401,27 +332,24 @@ export const TicketDrillDownTableContent = ({
                     isAiJourneyOptOutRateMetric ||
                     isAiJourneyClickThroughRateMetric) &&
                     !isKnowledgeMetric && (
-                        <DrillDownHeaderCellWithTooltip
+                        <HeaderCellProperty
                             title="Assignee"
                             width={columnWidths.assignee}
                             className={css.headerCell}
-                            titleClassName={css.headerCellTitle}
                             tooltip={tooltipHints.assignee}
                         />
                     )}
                 <HeaderCellProperty
-                    title={isKnowledgeMetric ? 'Date' : 'Created'}
+                    title="Created"
                     width={columnWidths.created}
                     className={css.headerCell}
-                    titleClassName={css.headerCellTitle}
                 />
                 {isAutoQAReviewedClosedTickets && (
                     <>
-                        <DrillDownHeaderCellWithTooltip
+                        <HeaderCellProperty
                             title={RESOLUTION_COMPLETENESS_SHORT_LABEL}
                             width={columnWidths.metric}
                             className={css.headerCell}
-                            titleClassName={css.headerCellTitle}
                             tooltip={
                                 <HintTooltipContent
                                     {...TrendCardConfig[
@@ -430,11 +358,10 @@ export const TicketDrillDownTableContent = ({
                                 />
                             }
                         />
-                        <DrillDownHeaderCellWithTooltip
+                        <HeaderCellProperty
                             title={ACCURACY_LABEL}
                             width={columnWidths.metric}
                             className={css.headerCell}
-                            titleClassName={css.headerCellTitle}
                             tooltip={
                                 <HintTooltipContent
                                     {...TrendCardConfig[AutoQAMetric.Accuracy]
@@ -442,11 +369,10 @@ export const TicketDrillDownTableContent = ({
                                 />
                             }
                         />
-                        <DrillDownHeaderCellWithTooltip
+                        <HeaderCellProperty
                             title={INTERNAL_COMPLIANCE_LABEL}
                             width={columnWidths.metric}
                             className={css.headerCell}
-                            titleClassName={css.headerCellTitle}
                             tooltip={
                                 <HintTooltipContent
                                     {...TrendCardConfig[
@@ -455,11 +381,10 @@ export const TicketDrillDownTableContent = ({
                                 />
                             }
                         />
-                        <DrillDownHeaderCellWithTooltip
+                        <HeaderCellProperty
                             title={EFFICIENCY_LABEL}
                             width={columnWidths.metric}
                             className={css.headerCell}
-                            titleClassName={css.headerCellTitle}
                             tooltip={
                                 <HintTooltipContent
                                     {...TrendCardConfig[AutoQAMetric.Efficiency]
@@ -467,11 +392,10 @@ export const TicketDrillDownTableContent = ({
                                 />
                             }
                         />
-                        <DrillDownHeaderCellWithTooltip
+                        <HeaderCellProperty
                             title={COMMUNICATION_SKILLS_LABEL}
                             width={columnWidths.metric}
                             className={css.headerCell}
-                            titleClassName={css.headerCellTitle}
                             tooltip={
                                 <HintTooltipContent
                                     {...TrendCardConfig[
@@ -480,11 +404,10 @@ export const TicketDrillDownTableContent = ({
                                 />
                             }
                         />
-                        <DrillDownHeaderCellWithTooltip
+                        <HeaderCellProperty
                             title={LANGUAGE_PROFICIENCY_SKILLS_LABEL}
                             width={columnWidths.metric}
                             className={css.headerCell}
-                            titleClassName={css.headerCellTitle}
                             tooltip={
                                 <HintTooltipContent
                                     {...TrendCardConfig[
@@ -493,11 +416,10 @@ export const TicketDrillDownTableContent = ({
                                 />
                             }
                         />
-                        <DrillDownHeaderCellWithTooltip
+                        <HeaderCellProperty
                             title={BRAND_VOICE_LABEL}
                             width={columnWidths.metric}
                             className={css.headerCell}
-                            titleClassName={css.headerCellTitle}
                             tooltip={
                                 <HintTooltipContent
                                     {...TrendCardConfig[AutoQAMetric.BrandVoice]
@@ -522,21 +444,19 @@ export const TicketDrillDownTableContent = ({
                     isAiJourneyClickThroughRateMetric ||
                     isKnowledgeMetric
                 ) && (
-                    <DrillDownHeaderCellWithTooltip
+                    <HeaderCellProperty
                         title="Contact Reason"
                         width={columnWidths.contactReason}
                         className={css.headerCell}
-                        titleClassName={css.headerCellTitle}
                         tooltip={tooltipHints.contactReason}
                     />
                 )}
 
                 {(isAiPerformanceMetric || isAiInsightsCsatMetric) && (
-                    <DrillDownHeaderCellWithTooltip
+                    <HeaderCellProperty
                         title="Intent"
                         width={columnWidths.intent}
                         className={css.headerCell}
-                        titleClassName={css.headerCellTitle}
                         tooltip={tooltipHints.intent}
                     />
                 )}
@@ -545,8 +465,6 @@ export const TicketDrillDownTableContent = ({
                 {isFetching ? (
                     <DrillDownTableContentSkeleton
                         columnWidths={columnWidthsForSkeleton}
-                        rowCount={10}
-                        height={40}
                     />
                 ) : (
                     data.map((item) => (
@@ -560,7 +478,7 @@ export const TicketDrillDownTableContent = ({
                                 metricData.metricName,
                             )}
                         >
-                            <DrillDownTicketDetailsCell
+                            <LegacyDrillDownTicketDetailsCell
                                 ticketDetails={item.ticket}
                                 bodyCellProps={{
                                     width: columnWidths.ticket,
@@ -624,23 +542,15 @@ export const TicketDrillDownTableContent = ({
                                 isAiSalesAgentSuccessRateMetric ||
                                 isAiSalesAgentDiscountOfferedMetric ||
                                 isAiSalesAgentTotalProductRecommendationsMetric ||
-                                (isKnowledgeMetric &&
-                                    metricData.metricName !==
-                                        KnowledgeMetric.CSAT)) && (
+                                isKnowledgeMetric) && (
                                 <BodyCell width={columnWidths.outcome}>
                                     {item.outcome ? (
                                         isKnowledgeMetric ? (
-                                            <Tag
-                                                color={
-                                                    item.outcome === 'Automated'
-                                                        ? 'green'
-                                                        : 'orange'
-                                                }
-                                            >
-                                                {item.outcome}
-                                            </Tag>
+                                            <TruncateCellContent
+                                                content={item.outcome}
+                                            />
                                         ) : (
-                                            <DrillDownTruncateMultilineCellContent
+                                            <TruncateMultilineCellContent
                                                 className={css.multiLineOutcome}
                                                 maxLines={
                                                     item.outcome
@@ -673,6 +583,7 @@ export const TicketDrillDownTableContent = ({
                                         ? formatMetricValue(
                                               item.metricValue,
                                               metricValueFormat,
+                                              NOT_AVAILABLE_PLACEHOLDER,
                                           )
                                         : item.slas && (
                                               <SLAStatusCell item={item.slas} />
@@ -802,7 +713,7 @@ export const TicketDrillDownTableContent = ({
                             ) && (
                                 <BodyCell width={columnWidths.contactReason}>
                                     {item.ticket.contactReason ? (
-                                        <DrillDownTruncateMultilineCellContent
+                                        <TruncateMultilineCellContent
                                             className={css.multiLineOutcome}
                                             tooltip={item.ticket.contactReason}
                                             value={item.ticket.contactReason}
@@ -831,7 +742,7 @@ export const TicketDrillDownTableContent = ({
                                 isAiInsightsCsatMetric) && (
                                 <BodyCell width={columnWidths.intent}>
                                     {item.intent ? (
-                                        <DrillDownTruncateMultilineCellContent
+                                        <TruncateMultilineCellContent
                                             className={css.multiLineOutcome}
                                             value={item.intent}
                                             maxLines={

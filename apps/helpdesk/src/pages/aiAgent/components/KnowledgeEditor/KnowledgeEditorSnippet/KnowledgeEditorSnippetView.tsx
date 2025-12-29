@@ -154,7 +154,7 @@ export const KnowledgeEditorSnippetView = ({
                 />
                 {isDetailsView && renderSidePanel()}
             </div>
-            <DrillDownModal />
+            <DrillDownModal isLegacy={false} />
         </div>
     )
 }

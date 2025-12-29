@@ -4,7 +4,6 @@ import { render, screen } from '@testing-library/react'
 
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
 import { DrillDownTicketDetailsCell } from 'domains/reporting/pages/common/drill-down/DrillDownTicketDetailsCell'
-import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 
 describe('<DrillDownTicketDetailsCell />', () => {
     const subject = 'Ticket subject'
@@ -38,30 +37,33 @@ describe('<DrillDownTicketDetailsCell />', () => {
         expect(container.firstChild).toHaveClass('highlighted')
     })
 
-    it('should render with placeholder for missing channel', () => {
+    it('should render with subject fallback when missing', () => {
         render(
             <DrillDownTicketDetailsCell
                 ticketDetails={{
                     ...ticketDetails,
-                    isRead: false,
-                    channel: null,
+                    subject: null,
                 }}
             />,
         )
 
-        expect(screen.getByText(NOT_AVAILABLE_PLACEHOLDER)).toBeInTheDocument()
+        expect(
+            screen.getByText(`Ticket ${ticketDetails.id}`),
+        ).toBeInTheDocument()
     })
 
-    it('should render as deleted or merged when status unknown', () => {
+    it('should render deleted or merged message when description is missing', () => {
         render(
             <DrillDownTicketDetailsCell
                 ticketDetails={{
                     ...ticketDetails,
-                    status: null,
+                    description: null,
                 }}
             />,
         )
 
-        expect(screen.getByText('delete')).toBeInTheDocument()
+        expect(
+            screen.getByText('Ticket has been deleted or merged'),
+        ).toBeInTheDocument()
     })
 })

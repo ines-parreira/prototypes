@@ -1,16 +1,16 @@
+import type { FunctionComponent } from 'react'
+
 import { Skeleton } from '@gorgias/axiom'
 
 import { DRILL_DOWN_PER_PAGE } from 'domains/reporting/hooks/useDrillDownData'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
-export const DrillDownTableContentSkeleton = ({
-    columnWidths,
-    rowCount,
-}: {
+export const DrillDownTableContentSkeleton: FunctionComponent<{
     columnWidths: number[]
     rowCount?: number
-}) => {
+    height?: number
+}> = ({ columnWidths, rowCount, height = 32 }) => {
     const numberOfRows = rowCount ?? DRILL_DOWN_PER_PAGE
 
     return (
@@ -21,7 +21,11 @@ export const DrillDownTableContentSkeleton = ({
                     <TableBodyRow key={`row-${rowIndex}`}>
                         {columnWidths.map((width, colIndex) => (
                             <BodyCell key={`col-${colIndex}-row-${rowIndex}`}>
-                                <Skeleton inline width={width} height={32} />
+                                <Skeleton
+                                    inline
+                                    width={width}
+                                    height={height}
+                                />
                             </BodyCell>
                         ))}
                     </TableBodyRow>

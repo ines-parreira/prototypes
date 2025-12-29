@@ -258,6 +258,61 @@ export function useEnrichedDrillDownData<T>(
     }
 }
 
+export function useEnrichedDrillDownDataUnpaginated<T>(
+    queryFactory: DrillDownQueryFactory,
+    metricData: DrillDownMetric,
+    enrichmentFields: EnrichmentFields[],
+    getDrillDownFormatter: (props: DrillDownFormatterProps) => T,
+    enrichmentIdField: EnrichmentFields,
+): Omit<
+    DrillDownData<T>,
+    'perPage' | 'currentPage' | 'pagesCount' | 'onPageChange'
+> {
+    const query = useDrillDownQuery(queryFactory, metricData)
+    const agents = useAppSelector(getHumanAndAutomationBotAgentsJS)
+    const { data: someData, isFetching } = useMetricPerDimensionWithEnrichment(
+        query,
+        enrichmentFields,
+        enrichmentIdField,
+    )
+
+    const customFieldsIds = useGetCustomTicketsFieldsDefinitionData()
+
+    let rowData = useMemo(
+        () => aggregateSlas(someData?.allData, metricData, query.dimensions[0]),
+        [metricData, query.dimensions, someData?.allData],
+    )
+    rowData = filterCSATDataBasedOnIntent(metricData, rowData) || []
+    const totalResults = rowData.length
+
+    const formattedData = useMemo(
+        () =>
+            rowData.map((row) =>
+                getDrillDownFormatter({
+                    row,
+                    metricField: query.dimensions[1] ?? query.measures[0],
+                    agents,
+                    ticketIdField: query.dimensions[0],
+                    customFieldsIds,
+                }),
+            ),
+        [
+            rowData,
+            getDrillDownFormatter,
+            query.dimensions,
+            query.measures,
+            agents,
+            customFieldsIds,
+        ],
+    )
+
+    return {
+        isFetching,
+        totalResults,
+        data: formattedData,
+    }
+}
+
 export function useDrillDownData<T>(
     queryFactory: DrillDownQueryFactory,
     metricData: DrillDownMetric,

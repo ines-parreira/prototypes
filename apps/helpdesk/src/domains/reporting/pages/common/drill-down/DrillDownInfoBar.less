@@ -1,0 +1,28 @@
+@import '~css/typography.less';
+
+:local {
+    .wrapper {
+        border-bottom: 1px solid var(--surface-primary-subtle);
+        margin-top: 10px;
+        margin-bottom: var(--layout-spacing-s);
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-s);
+    }
+
+    .icon {
+        font-size: 20px;
+        color: var(--content-primary-default);
+    }
+
+    .text {
+        .body-regular();
+        flex: 1;
+        color: var(--content-neutral-tertiary);
+        font-weight: 500;
+    }
+
+    .successButton {
+        color: var(--content-success-default);
+    }
+}

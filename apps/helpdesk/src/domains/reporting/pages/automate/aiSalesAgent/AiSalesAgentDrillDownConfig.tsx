@@ -12,6 +12,7 @@ import {
 import { formatTicketDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import type { DomainConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
+import { LegacyTicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/LegacyTicketDrillDownTableContent'
 import { TicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/TicketDrillDownTableContent'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 
@@ -29,6 +30,7 @@ export const AiSalesAgentDrillDownConfig: DomainConfig<AiSalesAgentDrillDownMetr
     {
         drillDownHook: useTicketDrillDownHook,
         tableComponent: TicketDrillDownTableContent,
+        legacyTableComponent: LegacyTicketDrillDownTableContent,
         infoBarObjectType: 'tickets',
         isMetricDataDownloadable: false,
         modalTriggerTooltipText: 'Click to view tickets',

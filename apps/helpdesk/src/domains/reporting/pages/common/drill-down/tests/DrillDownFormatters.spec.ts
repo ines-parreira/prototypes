@@ -6,6 +6,7 @@ import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { VoiceEventsByAgentDimension } from 'domains/reporting/models/cubes/VoiceEventsByAgent'
 import {
+    formatKnowledgeTicketDrillDownRowData,
     formatTicketDrillDownRowData,
     formatVoiceDrillDownRowData,
 } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
@@ -597,6 +598,191 @@ describe('DrillDownFormatters', () => {
                         titles: [],
                         variants: [],
                     },
+                }),
+            )
+        })
+    })
+
+    describe('formatKnowledgeTicketDrillDownRowData', () => {
+        it('should return "Handover" for handover outcomes with nested details', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': {
+                    1: 'Handover::With message',
+                    2: '2::2',
+                },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatKnowledgeTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    outcome: 'Handover',
+                }),
+            )
+        })
+
+        it('should return "Handover" for handover outcomes without nested details', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': { 1: 'Handover', 2: '2::2' },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatKnowledgeTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    outcome: 'Handover',
+                }),
+            )
+        })
+
+        it('should return "Automated" for close outcomes', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': {
+                    1: 'Close::Without message',
+                    2: '2::2',
+                },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatKnowledgeTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    outcome: 'Automated',
+                }),
+            )
+        })
+
+        it('should return "Automated" for any non-handover outcome', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': { 1: 'Unknown', 2: '2::2' },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatKnowledgeTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    outcome: 'Automated',
+                }),
+            )
+        })
+
+        it('should return undefined when outcome custom field is missing', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': { 1: null, 2: '2::2' },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatKnowledgeTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    outcome: undefined,
+                }),
+            )
+        })
+
+        it('should return undefined when outcome custom field ID is not provided', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': null,
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': { 1: 'Handover::With message' },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatKnowledgeTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {},
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    outcome: undefined,
+                }),
+            )
+        })
+
+        it('should format other fields identically to formatTicketDrillDownRowData', () => {
+            const row = {
+                'Ticket.assignee_user_id': null,
+                'Ticket.channel': 'chat',
+                'Ticket.contact_reason': 'Some reason',
+                'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
+                'Ticket.custom_fields': { 1: 'Handover::With message' },
+                'TicketEnriched.ticketId': '1',
+            }
+            const result = formatKnowledgeTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                customFieldsIds: {
+                    outcomeCustomFieldId: 1,
+                },
+            })
+
+            expect(result).toEqual(
+                expect.objectContaining({
+                    assignee: null,
+                    ticket: {
+                        channel: 'chat',
+                        contactReason: 'Some reason',
+                        created: '2024-12-19T17:13:00.291264',
+                        description: null,
+                        id: null,
+                        isRead: false,
+                        status: null,
+                        subject: null,
+                    },
+                    metricValue: undefined,
                 }),
             )
         })

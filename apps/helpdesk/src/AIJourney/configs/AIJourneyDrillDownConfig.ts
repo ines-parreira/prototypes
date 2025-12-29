@@ -10,6 +10,7 @@ import { EnrichmentFields } from 'domains/reporting/models/types'
 import { formatTicketDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import type { DomainConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
+import { LegacyTicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/LegacyTicketDrillDownTableContent'
 import { TicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/TicketDrillDownTableContent'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 
@@ -43,6 +44,7 @@ const useAIJourneyDrillDownHook = (metricData: DrillDownMetric) => {
 export const AIJourneyDrillDownConfig: DomainConfig<AIJourneyMetric> = {
     drillDownHook: useAIJourneyDrillDownHook,
     tableComponent: TicketDrillDownTableContent,
+    legacyTableComponent: LegacyTicketDrillDownTableContent,
     infoBarObjectType: 'tickets',
     isMetricDataDownloadable: false,
     modalTriggerTooltipText: 'Click to view associated tickets',

@@ -84,6 +84,14 @@ export type DrillDownFormatterProps = {
     }
 }
 
+type OutcomeExtractor = (params: {
+    row: MergedRecord<any, any>
+    customFieldsIds?: {
+        outcomeCustomFieldId?: number
+        intentCustomFieldId?: number
+    }
+}) => string | undefined
+
 const getAIOutcome = ({
     row,
     customFieldsIds,
@@ -121,6 +129,36 @@ const getAIOutcome = ({
     return undefined
 }
 
+const getKnowledgeOutcome = ({
+    row,
+    customFieldsIds,
+}: {
+    row: MergedRecord<any, any>
+    customFieldsIds?: {
+        outcomeCustomFieldId?: number
+        intentCustomFieldId?: number
+    }
+}): string | undefined => {
+    const outcomeId = customFieldsIds?.outcomeCustomFieldId
+    if (!outcomeId) {
+        return undefined
+    }
+
+    const outcome = (
+        row[EnrichmentFields.CustomFields] as Record<string, any>
+    )?.[outcomeId] as string | undefined
+
+    if (!outcome) {
+        return undefined
+    }
+
+    if (outcome.startsWith(CUSTOM_FIELD_AI_AGENT_HANDOVER)) {
+        return AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover
+    }
+
+    return AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated
+}
+
 const getAIIntent = ({
     row,
     customFieldsIds,
@@ -139,14 +177,17 @@ const getAIIntent = ({
         : undefined
 }
 
-export const formatTicketDrillDownRowData = ({
-    row,
-    agents,
-    metricField,
-    ticketIdField,
-    customFieldsIds,
-}: DrillDownFormatterProps): TicketDrillDownRowData => {
-    const outcome = getAIOutcome({ row, customFieldsIds })
+const formatTicketDrillDownRowDataInternal = (
+    {
+        row,
+        agents,
+        metricField,
+        ticketIdField,
+        customFieldsIds,
+    }: DrillDownFormatterProps,
+    outcomeExtractor: OutcomeExtractor,
+): TicketDrillDownRowData => {
+    const outcome = outcomeExtractor({ row, customFieldsIds })
     const intent = getAIIntent({ row, customFieldsIds })
     const surveyScore =
         row[TicketSatisfactionSurveyDimension.SurveyScore] ||
@@ -195,6 +236,18 @@ export const formatTicketDrillDownRowData = ({
                 : [],
         },
     }
+}
+
+export const formatTicketDrillDownRowData = (
+    props: DrillDownFormatterProps,
+): TicketDrillDownRowData => {
+    return formatTicketDrillDownRowDataInternal(props, getAIOutcome)
+}
+
+export const formatKnowledgeTicketDrillDownRowData = (
+    props: DrillDownFormatterProps,
+): TicketDrillDownRowData => {
+    return formatTicketDrillDownRowDataInternal(props, getKnowledgeOutcome)
 }
 
 export const formatConvertCampaignSalesDrillDownRowData = ({

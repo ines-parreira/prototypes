@@ -23,6 +23,7 @@ export const VoiceDrillDownConfig: DomainConfig<
 > = {
     drillDownHook: useVoiceDrillDownHook,
     tableComponent: VoiceCallDrillDownTableContent,
+    legacyTableComponent: VoiceCallDrillDownTableContent,
     infoBarObjectType: 'voice calls',
     isMetricDataDownloadable: false,
     modalTriggerTooltipText: 'Click to view calls',
