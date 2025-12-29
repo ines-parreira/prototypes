@@ -380,7 +380,11 @@ const ProductPlanSelection = ({
                     Cancel auto-renewal
                 </Button>
             )
-        } else if (type === ProductType.Automation) {
+        }
+        if (scheduledToCancelAt) {
+            return <></>
+        }
+        if (type === ProductType.Automation) {
             return (
                 <Button
                     fillStyle="ghost"

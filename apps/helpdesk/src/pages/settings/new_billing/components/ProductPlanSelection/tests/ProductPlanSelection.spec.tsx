@@ -1142,6 +1142,110 @@ describe('ProductPlanSelection', () => {
         })
     })
 
+    describe('Remove product button when scheduled for cancellation', () => {
+        describe.each([
+            {
+                productType: ProductType.Automation,
+                productName: 'Automation',
+                currentPlan: basicMonthlyAutomationPlan,
+                availablePlans: [basicMonthlyAutomationPlan],
+                requiresFlag: false,
+            },
+            {
+                productType: ProductType.Convert,
+                productName: 'Convert',
+                currentPlan: convertPlan1,
+                availablePlans: [convertPlan1],
+                requiresFlag: false,
+            },
+            {
+                productType: ProductType.SMS,
+                productName: 'SMS',
+                currentPlan: smsPlan1,
+                availablePlans: [smsPlan1],
+                requiresFlag: true,
+            },
+            {
+                productType: ProductType.Voice,
+                productName: 'Voice',
+                currentPlan: voicePlan1,
+                availablePlans: [voicePlan1],
+                requiresFlag: true,
+            },
+        ])(
+            '$productName button visibility with scheduledToCancelAt',
+            ({ productType, currentPlan, availablePlans, requiresFlag }) => {
+                let productProps: ProductPlanSelectionProps
+
+                beforeEach(() => {
+                    if (requiresFlag) {
+                        useFlagMock.mockReturnValue(true)
+                    }
+
+                    productProps = {
+                        type: productType,
+                        cadence: Cadence.Month,
+                        currentPlan,
+                        availablePlans,
+                        selectedPlans: {
+                            ...selectedPlans,
+                            [productType]: {
+                                plan: currentPlan,
+                                isSelected: true,
+                            },
+                        },
+                        setSelectedPlans: mockSetSelectedPlans,
+                        periodEnd: 'February 14, 2024',
+                        editingAvailable: true,
+                        updateSubscription: mockUpdateSubscription,
+                    }
+                })
+
+                it('should hide Remove product button when scheduledToCancelAt is set', () => {
+                    const { queryByRole } = render(
+                        <Provider store={store}>
+                            <ProductPlanSelection
+                                {...productProps}
+                                scheduledToCancelAt="2025-12-31T23:59:59Z"
+                            />
+                        </Provider>,
+                    )
+
+                    expect(
+                        queryByRole('button', { name: 'Remove product' }),
+                    ).not.toBeInTheDocument()
+                })
+
+                it('should show Remove product button when scheduledToCancelAt is null', () => {
+                    const { getByRole } = render(
+                        <Provider store={store}>
+                            <ProductPlanSelection
+                                {...productProps}
+                                scheduledToCancelAt={null}
+                            />
+                        </Provider>,
+                    )
+
+                    expect(
+                        getByRole('button', { name: 'Remove product' }),
+                    ).toBeInTheDocument()
+                })
+
+                it('should show Remove product button when scheduledToCancelAt is undefined', () => {
+                    const { getByRole } = render(
+                        <Provider store={store}>
+                            <ProductPlanSelection {...productProps} />
+                        </Provider>,
+                    )
+
+                    expect(
+                        getByRole('button', { name: 'Remove product' }),
+                    ).toBeInTheDocument()
+                })
+            },
+        )
+    })
+
     describe('BillingUsageAndPlansCancelAutoRenewalClicked tracking', () => {
         it('should track event when Cancel auto-renewal button is clicked for Helpdesk', async () => {
             useAutomatedHelpdeskCancellationFlowAvailableMock.mockReturnValue(
