@@ -1,7 +1,8 @@
 import { useMemo } from 'react'
 
+import { useAgentActivity as useAblyAgentActivity } from '@gorgias/realtime-ably'
+
 import useAppSelector from 'hooks/useAppSelector'
-import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import type { TicketPresenceState } from './useCollisionDetection'

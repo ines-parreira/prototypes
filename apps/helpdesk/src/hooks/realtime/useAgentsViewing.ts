@@ -3,9 +3,9 @@ import { useMemo } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { User } from '@gorgias/helpdesk-queries'
+import { useAgentActivity } from '@gorgias/realtime-ably'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 import { getOtherAgentsOnTicket } from 'state/agents/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
@@ -17,7 +17,7 @@ export default function useAgentsViewing(ticketId: number) {
         getOtherAgentsOnTicket(String(ticketId)),
     )
 
-    const { getTicketActivity } = useAblyAgentActivity()
+    const { getTicketActivity } = useAgentActivity()
     const ticketViewingActivity = useMemo(
         () =>
             getTicketActivity(ticketId).viewing.filter(

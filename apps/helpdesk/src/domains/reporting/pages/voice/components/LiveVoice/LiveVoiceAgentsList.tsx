@@ -4,6 +4,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 import { useAgentsOnlineStatus } from '@gorgias/realtime'
+import { useAgentsOnlineStatus as useAblyAgentsOnlineStatus } from '@gorgias/realtime-ably'
 
 import LiveVoiceAgentRow from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentRow'
 import css from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList.less'
@@ -17,7 +18,6 @@ import TableBody from 'pages/common/components/table/TableBody'
 import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
 import { TableBodyRowExpandable } from 'pages/common/components/table/TableBodyRowExpandable'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import { useAblyAgentsOnlineStatus } from 'providers/realtime-ably/hooks/useAblyAgentsOnlineStatus'
 
 type Props = {
     agents: LiveCallQueueAgent[]

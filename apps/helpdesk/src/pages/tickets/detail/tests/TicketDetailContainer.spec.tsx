@@ -15,6 +15,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useAgentActivity } from '@gorgias/realtime'
+import { useAgentActivity as useAblyAgentActivity } from '@gorgias/realtime-ably'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { OBJECT_TYPES } from 'custom-fields/constants'
@@ -29,7 +30,6 @@ import * as voiceCallQueries from 'models/voiceCall/queries'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 import useGoToPreviousTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
-import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 import localForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
@@ -179,7 +179,7 @@ const mockUseAgentActivity = useAgentActivity as jest.Mock
 const mockJoinTicket = jest.fn()
 const mockLeaveTicket = jest.fn()
 
-jest.mock('providers/realtime-ably/hooks/useAblyAgentActivity')
+jest.mock('@gorgias/realtime-ably')
 const mockUseAblyAgentActivity = useAblyAgentActivity as jest.Mock
 const mockJoinTicketAbly = jest.fn()
 const mockLeaveTicketAbly = jest.fn()

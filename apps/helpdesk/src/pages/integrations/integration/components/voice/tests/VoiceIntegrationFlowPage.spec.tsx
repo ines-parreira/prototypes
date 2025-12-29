@@ -23,6 +23,7 @@ jest.mock(
     }),
 )
 jest.mock('@gorgias/realtime')
+jest.mock('@gorgias/realtime-ably')
 
 const server = setupServer()
 

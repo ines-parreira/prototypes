@@ -4,7 +4,6 @@ import { render } from '@testing-library/react'
 import { reportError } from 'utils/errors'
 
 import AblyRealtimeProviders from '../AblyRealtimeProviders'
-import * as isRealtimeEnabledOnCluster from '../utils/isRealtimeEnabledOnCluster'
 
 let mockLogHandler: ((message: string) => void) | undefined
 
@@ -42,16 +41,9 @@ jest.mock('utils/errors')
 const mockUseFlag = useFlag as jest.Mock
 const mockReportError = reportError as jest.MockedFunction<typeof reportError>
 
-const isRealtimeEnabledOnClusterSpy = jest.spyOn(
-    isRealtimeEnabledOnCluster,
-    'isRealtimeEnabledOnCluster',
-    'get',
-)
-
 describe('AblyRealtimeProviders', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
-        isRealtimeEnabledOnClusterSpy.mockReturnValue(false)
         mockLogHandler = undefined
         mockReportError.mockClear()
     })
@@ -60,16 +52,7 @@ describe('AblyRealtimeProviders', () => {
         jest.resetModules() // clears module cache
     })
 
-    it('should not render the realtime providers if realtime not enabled on cluster', () => {
-        const { queryByTestId } = render(
-            <AblyRealtimeProviders>foo</AblyRealtimeProviders>,
-        )
-        expect(queryByTestId('realtime-provider')).not.toBeInTheDocument()
-    })
-
-    it('should render the realtime providers if realtime enabled on cluster', () => {
-        isRealtimeEnabledOnClusterSpy.mockReturnValue(true)
-
+    it('should render the realtime providers ', () => {
         const { getByTestId, getByText } = render(
             <AblyRealtimeProviders>foo</AblyRealtimeProviders>,
         )
@@ -80,7 +63,6 @@ describe('AblyRealtimeProviders', () => {
     })
 
     it('should enable logging if feature flag is enabled', () => {
-        isRealtimeEnabledOnClusterSpy.mockReturnValue(true)
         mockUseFlag.mockImplementation((flag) => {
             return flag === FeatureFlagKey.AblyRealtimeLogging
         })
@@ -92,7 +74,6 @@ describe('AblyRealtimeProviders', () => {
 
     describe('logHandler', () => {
         it('should call reportError when error reporting is enabled', () => {
-            isRealtimeEnabledOnClusterSpy.mockReturnValue(true)
             mockUseFlag.mockImplementation((flag) => {
                 return flag === FeatureFlagKey.AblyErrorReporting
             })
@@ -112,7 +93,6 @@ describe('AblyRealtimeProviders', () => {
         })
 
         it('should not call reportError when error reporting is disabled', () => {
-            isRealtimeEnabledOnClusterSpy.mockReturnValue(true)
             mockUseFlag.mockReturnValue(false)
 
             render(<AblyRealtimeProviders>foo</AblyRealtimeProviders>)

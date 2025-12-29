@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { debounce } from 'lodash'
 
-import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
+import { useAgentActivity } from '@gorgias/realtime-ably'
+
 import { TYPING_ACTIVITY_AGENT_TIMEOUT_MS } from 'state/newMessage/constants'
 
 export type TypingActivityProps = {
@@ -15,7 +16,7 @@ export default function withTypingActivity<P>(
 ) {
     return function WithTypingActivityWrapper(props: P) {
         const [isTyping, setIsTyping] = useState(false)
-        const { startTyping, stopTyping } = useAblyAgentActivity()
+        const { startTyping, stopTyping } = useAgentActivity()
 
         // eslint-disable-next-line exhaustive-deps
         const debouncedStopTyping = useCallback(

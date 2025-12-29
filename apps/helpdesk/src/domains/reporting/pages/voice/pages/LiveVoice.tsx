@@ -5,6 +5,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { DomainEvent } from '@gorgias/events'
 import { useListLiveCallQueueVoiceCalls } from '@gorgias/helpdesk-queries'
 import { useChannel } from '@gorgias/realtime'
+import { useChannel as useAblyChannel } from '@gorgias/realtime-ably'
 
 import type { PaywallConfig } from 'config/paywalls'
 import { paywallConfigs } from 'config/paywalls'
@@ -26,7 +27,6 @@ import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'domains/re
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
-import { useAblyChannel } from 'providers/realtime-ably/hooks/useAblyChannel'
 import { AccountFeature } from 'state/currentAccount/types'
 
 function LiveVoice() {

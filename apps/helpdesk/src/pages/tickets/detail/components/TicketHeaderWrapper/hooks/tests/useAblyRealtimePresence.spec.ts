@@ -1,16 +1,17 @@
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
+import { useAgentActivity } from '@gorgias/realtime-ably'
+
 import useAppSelector from 'hooks/useAppSelector'
-import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 
 import useAblyRealtimePresence from '../useAblyRealtimePresence'
 
-jest.mock('providers/realtime-ably/hooks/useAblyAgentActivity')
+jest.mock('@gorgias/realtime-ably')
 jest.mock('hooks/useAppSelector')
 
 const mockUseAppSelector = useAppSelector as jest.Mock
-const mockUseAblyAgentActivity = useAblyAgentActivity as jest.Mock
+const mockUseAgentActivity = useAgentActivity as jest.Mock
 
 describe('useAblyRealtimePresence', () => {
     const ticketId = 123
@@ -23,7 +24,7 @@ describe('useAblyRealtimePresence', () => {
         }
 
         mockUseAppSelector.mockReturnValue(currentUser)
-        mockUseAblyAgentActivity.mockReturnValue({
+        mockUseAgentActivity.mockReturnValue({
             getTicketActivity: () => ticketActivity,
         })
 

@@ -10,8 +10,6 @@ import {
 
 import { reportError } from 'utils/errors'
 
-import { isRealtimeEnabledOnCluster } from './utils/isRealtimeEnabledOnCluster'
-
 type Props = {
     children: ReactNode
 }
@@ -40,20 +38,16 @@ const AblyRealtimeProviders = ({ children }: Props) => {
         }
     }, [])
 
-    if (isRealtimeEnabledOnCluster) {
-        return (
-            <RealtimeProvider
-                enableLogging={isAblyRealtimeLoggingEnabled}
-                logHandler={logHandler}
-            >
-                <AgentOnlineStatusProvider>
-                    <AgentActivityProvider>{children}</AgentActivityProvider>
-                </AgentOnlineStatusProvider>
-            </RealtimeProvider>
-        )
-    }
-
-    return <>{children}</>
+    return (
+        <RealtimeProvider
+            enableLogging={isAblyRealtimeLoggingEnabled}
+            logHandler={logHandler}
+        >
+            <AgentOnlineStatusProvider>
+                <AgentActivityProvider>{children}</AgentActivityProvider>
+            </AgentOnlineStatusProvider>
+        </RealtimeProvider>
+    )
 }
 
 export default AblyRealtimeProviders

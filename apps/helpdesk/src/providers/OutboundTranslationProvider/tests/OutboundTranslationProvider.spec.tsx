@@ -6,9 +6,9 @@ import { ContentState, EditorState } from 'draft-js'
 
 import type { DomainEvent } from '@gorgias/events'
 import { useChannel } from '@gorgias/realtime'
+import { useChannel as useAblyChannel } from '@gorgias/realtime-ably'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useAblyChannel } from 'providers/realtime-ably/hooks/useAblyChannel'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { setTranslationState } from 'state/newMessage/actions'
@@ -24,7 +24,7 @@ import {
 jest.mock('@gorgias/realtime')
 const mockUseChannel = useChannel as jest.Mock
 
-jest.mock('providers/realtime-ably/hooks/useAblyChannel')
+jest.mock('@gorgias/realtime-ably')
 const mockUseAblyChannel = useAblyChannel as jest.Mock
 
 jest.mock('@repo/feature-flags')

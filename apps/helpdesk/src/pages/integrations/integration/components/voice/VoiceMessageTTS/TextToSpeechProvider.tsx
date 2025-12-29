@@ -6,10 +6,10 @@ import { useFormContext } from 'react-hook-form'
 import type { DomainEvent } from '@gorgias/events'
 import type { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 import { useChannel } from '@gorgias/realtime'
+import { useChannel as useAblyChannel } from '@gorgias/realtime-ably'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
-import { useAblyChannel } from 'providers/realtime-ably/hooks/useAblyChannel'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 

@@ -4,19 +4,19 @@ import { render, screen } from '@testing-library/react'
 
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 import { useAgentsOnlineStatus } from '@gorgias/realtime'
+import { useAgentsOnlineStatus as useAblyAgentsOnlineStatus } from '@gorgias/realtime-ably'
 
 import LiveVoiceAgentsList from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList'
 import {
     AgentStatusCategory,
     groupAgentsByStatus,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
-import { useAblyAgentsOnlineStatus } from 'providers/realtime-ably/hooks/useAblyAgentsOnlineStatus'
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('@gorgias/realtime')
-jest.mock('providers/realtime-ably/hooks/useAblyAgentsOnlineStatus')
+jest.mock('@gorgias/realtime-ably')
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils', () => ({
     ...jest.requireActual(
         'domains/reporting/pages/voice/components/LiveVoice/utils',

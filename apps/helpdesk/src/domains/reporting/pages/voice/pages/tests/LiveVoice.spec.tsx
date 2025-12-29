@@ -8,6 +8,7 @@ import { render } from '@testing-library/react'
 import type { DomainEvent } from '@gorgias/events'
 import * as apiQueries from '@gorgias/helpdesk-queries'
 import { useChannel } from '@gorgias/realtime'
+import { useChannel as useAblyChannel } from '@gorgias/realtime-ably'
 
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
@@ -17,7 +18,6 @@ import LiveVoiceMetrics from 'domains/reporting/pages/voice/components/LiveVoice
 import { useLiveVoiceUpdates } from 'domains/reporting/pages/voice/hooks/useLiveVoiceUpdates'
 import LiveVoice from 'domains/reporting/pages/voice/pages/LiveVoice'
 import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
-import { useAblyChannel } from 'providers/realtime-ably/hooks/useAblyChannel'
 import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import type { AccountSettingBusinessHours } from 'state/currentAccount/types'
 import { getTimezone } from 'state/currentUser/selectors'
@@ -25,7 +25,7 @@ import { getTimezone } from 'state/currentUser/selectors'
 jest.mock('domains/reporting/state/ui/stats/selectors')
 jest.mock('@gorgias/helpdesk-queries')
 jest.mock('@gorgias/realtime')
-jest.mock('providers/realtime-ably/hooks/useAblyChannel')
+jest.mock('@gorgias/realtime-ably')
 jest.mock('@repo/feature-flags')
 jest.mock('domains/reporting/pages/voice/hooks/useLiveVoiceUpdates')
 jest.mock(

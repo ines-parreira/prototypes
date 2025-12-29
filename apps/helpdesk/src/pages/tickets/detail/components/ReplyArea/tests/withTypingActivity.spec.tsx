@@ -7,8 +7,8 @@ import withTypingActivity from '../withTypingActivity'
 
 jest.mock('utils/errors')
 jest.mock('@repo/feature-flags')
-jest.mock('providers/realtime-ably/hooks/useAblyAgentActivity', () => ({
-    useAblyAgentActivity: jest.fn().mockImplementation(() => ({
+jest.mock('@gorgias/realtime-ably', () => ({
+    useAgentActivity: jest.fn().mockImplementation(() => ({
         startTyping: mockStartTyping,
         stopTyping: mockStopTyping,
     })),

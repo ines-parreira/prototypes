@@ -9,9 +9,9 @@ import type { DomainEvent } from '@gorgias/events'
 import type { VoiceMessageTextToSpeech } from '@gorgias/helpdesk-types'
 import { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 import { useChannel } from '@gorgias/realtime'
+import { useChannel as useAblyChannel } from '@gorgias/realtime-ably'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useAblyChannel } from 'providers/realtime-ably/hooks/useAblyChannel'
 
 import { DEFAULT_TTS_GENDER, DEFAULT_TTS_LANGUAGE } from '../constants'
 import { useTextToSpeechContext } from '../TextToSpeechContext'
@@ -20,7 +20,7 @@ import TextToSpeechProvider from '../TextToSpeechProvider'
 jest.mock('@gorgias/realtime')
 const mockUseChannel = useChannel as jest.Mock
 
-jest.mock('providers/realtime-ably/hooks/useAblyChannel')
+jest.mock('@gorgias/realtime-ably')
 const mockUseAblyChannel = useAblyChannel as jest.Mock
 
 jest.mock('@repo/feature-flags')

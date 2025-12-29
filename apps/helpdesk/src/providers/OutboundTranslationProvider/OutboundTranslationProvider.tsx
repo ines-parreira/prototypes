@@ -14,10 +14,10 @@ import { convertToRaw, EditorState } from 'draft-js'
 
 import type { DomainEvent } from '@gorgias/events'
 import { useChannel } from '@gorgias/realtime'
+import { useChannel as useAblyChannel } from '@gorgias/realtime-ably'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { useAblyChannel } from 'providers/realtime-ably/hooks/useAblyChannel'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { setTranslationState } from 'state/newMessage/actions'

@@ -14,6 +14,7 @@ import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQ
 import VoiceFlowPreview from '../VoiceFlowPreview'
 
 jest.mock('@gorgias/realtime')
+jest.mock('@gorgias/realtime-ably')
 jest.mock('../VoiceFlow', () => ({
     VoiceFlow: ({ preview }: { preview: boolean }) => (
         <div data-testid="voice-flow" data-preview={preview}>

@@ -13,6 +13,7 @@ import { useLocation, useParams } from 'react-router-dom'
 
 import type { DomainEvent } from '@gorgias/events'
 import { useAgentActivity } from '@gorgias/realtime'
+import { useAgentActivity as useAblyAgentActivity } from '@gorgias/realtime-ably'
 
 import {
     TicketChannel,
@@ -35,7 +36,6 @@ import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAge
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import KnowledgeSourceSidebarWrapper from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
-import { useAblyAgentActivity } from 'providers/realtime-ably/hooks/useAblyAgentActivity'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import socketManager from 'services/socketManager/socketManager'
