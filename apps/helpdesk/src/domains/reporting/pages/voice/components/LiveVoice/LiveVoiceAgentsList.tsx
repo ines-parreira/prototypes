@@ -1,10 +1,7 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
-import { useAgentsOnlineStatus } from '@gorgias/realtime'
-import { useAgentsOnlineStatus as useAblyAgentsOnlineStatus } from '@gorgias/realtime-ably'
+import { useAgentsOnlineStatus } from '@gorgias/realtime-ably'
 
 import LiveVoiceAgentRow from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentRow'
 import css from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList.less'
@@ -24,14 +21,7 @@ type Props = {
 }
 
 export default function LiveVoiceAgentsList({ agents }: Props) {
-    const isAblyRealtimeEnabled = useFlag(FeatureFlagKey.AblyRealtime)
-    const { onlineAgents: ablyOnlineAgents } = useAblyAgentsOnlineStatus()
-    const { onlineAgents: pubNubOnlineAgents } = useAgentsOnlineStatus()
-
-    const onlineAgents = useMemo(
-        () => (isAblyRealtimeEnabled ? ablyOnlineAgents : pubNubOnlineAgents),
-        [isAblyRealtimeEnabled, ablyOnlineAgents, pubNubOnlineAgents],
-    )
+    const { onlineAgents } = useAgentsOnlineStatus()
 
     const data: WithChildren<Data>[] = useMemo(() => {
         const agentsWithOnlineStatus = recomputeAgentsWithOnlineStatusChange(

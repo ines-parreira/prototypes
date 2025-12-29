@@ -12,8 +12,7 @@ import { connect } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 
 import type { DomainEvent } from '@gorgias/events'
-import { useAgentActivity } from '@gorgias/realtime'
-import { useAgentActivity as useAblyAgentActivity } from '@gorgias/realtime-ably'
+import { useAgentActivity } from '@gorgias/realtime-ably'
 
 import {
     TicketChannel,
@@ -648,34 +647,11 @@ export const TicketDetailContainer = ({
         })
     }
 
-    const isAblyRealtimeEnabled = useFlag(FeatureFlagKey.AblyRealtime)
-
-    const handlePubNubEvent = useCallback(
-        (event: DomainEvent) => {
-            if (!isAblyRealtimeEnabled) {
-                handleTicketMessageTranslationEvents(event)
-            } else {
-                return
-            }
-        },
-        [handleTicketMessageTranslationEvents, isAblyRealtimeEnabled],
-    )
-
-    const handlePubNubEventRef = useRef(handlePubNubEvent)
-
-    useEffect(() => {
-        handlePubNubEventRef.current = handlePubNubEvent
-    }, [handlePubNubEvent])
-
     const handleAblyEvent = useCallback(
         (event: DomainEvent) => {
-            if (isAblyRealtimeEnabled) {
-                handleTicketMessageTranslationEvents(event)
-            } else {
-                return
-            }
+            handleTicketMessageTranslationEvents(event)
         },
-        [handleTicketMessageTranslationEvents, isAblyRealtimeEnabled],
+        [handleTicketMessageTranslationEvents],
     )
 
     const handleAblyEventRef = useRef(handleAblyEvent)
@@ -685,16 +661,9 @@ export const TicketDetailContainer = ({
     }, [handleAblyEvent])
 
     const { joinTicket, leaveTicket } = useAgentActivity()
-    const { joinTicket: joinTicketAbly, leaveTicket: leaveTicketAbly } =
-        useAblyAgentActivity()
 
     useEffect(() => {
         joinTicket(Number(ticketIdParam), {
-            onEvent: (event: DomainEvent) => {
-                handlePubNubEventRef.current(event)
-            },
-        })
-        joinTicketAbly(Number(ticketIdParam), {
             onEvent: (event: DomainEvent) => {
                 handleAblyEventRef.current(event)
             },
@@ -702,15 +671,8 @@ export const TicketDetailContainer = ({
 
         return () => {
             leaveTicket()
-            leaveTicketAbly()
         }
-    }, [
-        ticketIdParam,
-        joinTicket,
-        leaveTicket,
-        joinTicketAbly,
-        leaveTicketAbly,
-    ])
+    }, [ticketIdParam, joinTicket, leaveTicket])
 
     const isMobileResolution = useIsMobileResolution()
 

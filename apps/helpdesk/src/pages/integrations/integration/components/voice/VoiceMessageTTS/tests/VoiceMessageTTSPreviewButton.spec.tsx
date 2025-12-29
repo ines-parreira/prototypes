@@ -27,7 +27,6 @@ const mockNotify = {
 jest.mock('hooks/useNotify', () => ({
     useNotify: () => mockNotify,
 }))
-jest.mock('@gorgias/realtime')
 jest.mock('@gorgias/realtime-ably')
 
 jest.mock('state/currentAccount/selectors', () => ({

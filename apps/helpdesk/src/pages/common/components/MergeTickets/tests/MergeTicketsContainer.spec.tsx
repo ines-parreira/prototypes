@@ -9,12 +9,6 @@ import _noop from 'lodash/noop'
 import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTicketsContainer'
 import { renderWithStore } from 'utils/testing'
 
-jest.mock('@gorgias/realtime', () => ({
-    useAgentActivity: () => ({
-        viewTickets: jest.fn(),
-    }),
-}))
-
 describe('MergeTicketsContainer component', () => {
     const ticketSubject = 'foo'
     const baseTicket = fromJS({

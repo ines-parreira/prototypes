@@ -70,12 +70,6 @@ jest.mock('@repo/utils', () => ({
     },
 }))
 
-jest.mock('@gorgias/realtime', () => ({
-    useAgentActivity: () => ({
-        viewTickets: jest.fn(),
-    }),
-}))
-
 jest.mock('../ShowMoreFieldsDropdown', () => () => (
     <div>ShowMoreFieldsDropdown</div>
 ))

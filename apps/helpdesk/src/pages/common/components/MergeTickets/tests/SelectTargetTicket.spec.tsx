@@ -10,12 +10,6 @@ jest.mock('services/channels', () => ({
     getChannels: () => mockChannels,
 }))
 
-jest.mock('@gorgias/realtime', () => ({
-    useAgentActivity: () => ({
-        viewTickets: jest.fn(),
-    }),
-}))
-
 describe('SelectTargetTicket component', () => {
     const baseTicket = fromJS({
         subject: 'foo',

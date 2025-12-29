@@ -47,7 +47,6 @@ jest.mock('pages/common/components/FormUnsavedChangesPrompt', () => {
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(),
 }))
-jest.mock('@gorgias/realtime')
 jest.mock('@gorgias/realtime-ably')
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = assumeMock(useAppSelector)

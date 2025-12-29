@@ -14,8 +14,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useAgentActivity } from '@gorgias/realtime'
-import { useAgentActivity as useAblyAgentActivity } from '@gorgias/realtime-ably'
+import { useAgentActivity } from '@gorgias/realtime-ably'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { OBJECT_TYPES } from 'custom-fields/constants'
@@ -174,15 +173,10 @@ jest.mock(
     }),
 )
 
-jest.mock('@gorgias/realtime')
+jest.mock('@gorgias/realtime-ably')
 const mockUseAgentActivity = useAgentActivity as jest.Mock
 const mockJoinTicket = jest.fn()
 const mockLeaveTicket = jest.fn()
-
-jest.mock('@gorgias/realtime-ably')
-const mockUseAblyAgentActivity = useAblyAgentActivity as jest.Mock
-const mockJoinTicketAbly = jest.fn()
-const mockLeaveTicketAbly = jest.fn()
 
 // Mock knowledge source sidebar components
 jest.mock(
@@ -340,16 +334,13 @@ describe('TicketDetailContainer component', () => {
             joinTicket: mockJoinTicket,
             leaveTicket: mockLeaveTicket,
         })
-        mockUseAblyAgentActivity.mockReturnValue({
-            joinTicket: mockJoinTicketAbly,
-            leaveTicket: mockLeaveTicketAbly,
-        })
         mockUseOutboundTranslationContext.mockReturnValue({
             isTranslationPending: false,
         })
         mockUseLiveTicketTranslationsUpdates.mockReturnValue({
             handleTicketMessageTranslationEvents: jest.fn(),
         })
+        mockJoinTicket.mockClear()
         mockUseFlag.mockReturnValue(false)
     })
 
@@ -1736,7 +1727,7 @@ describe('TicketDetailContainer component', () => {
         expect(mockUseTicketActivityTracking).toHaveBeenCalledWith(undefined)
     })
 
-    it('should call joinTicket and leaveTicket from realtime package on mount / unmount', () => {
+    it('should call joinTicket and leaveTicket from realtime ably package on mount / unmount', () => {
         const { unmount } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
@@ -1757,8 +1748,14 @@ describe('TicketDetailContainer component', () => {
         expect(mockLeaveTicket).toHaveBeenCalled()
     })
 
-    it('should call joinTicket and leaveTicket from realtime ably package on mount / unmount', () => {
-        const { unmount } = renderWithRouter(
+    it('should process realtime events', () => {
+        const mockHandleTicketMessageTranslationEvents = jest.fn()
+        mockUseLiveTicketTranslationsUpdates.mockReturnValue({
+            handleTicketMessageTranslationEvents:
+                mockHandleTicketMessageTranslationEvents,
+        })
+
+        renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer {...minProps} />
@@ -1770,155 +1767,18 @@ describe('TicketDetailContainer component', () => {
             },
         )
 
-        expect(mockJoinTicketAbly).toHaveBeenCalledWith(1, {
+        expect(mockJoinTicket).toHaveBeenCalledWith(1, {
             onEvent: expect.any(Function),
         })
 
-        unmount()
-        expect(mockLeaveTicketAbly).toHaveBeenCalled()
-    })
+        const onEventCall = mockJoinTicket.mock.calls[0][1].onEvent
+        const mockDomainEvent = { type: 'test-event', data: {} }
 
-    describe('Feature flag-based event handling', () => {
-        beforeEach(() => {
-            mockJoinTicket.mockClear()
-            mockJoinTicketAbly.mockClear()
-        })
+        onEventCall(mockDomainEvent)
 
-        it('should process PubNub events when AblyRealtime flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-            const mockHandleTicketMessageTranslationEvents = jest.fn()
-            mockUseLiveTicketTranslationsUpdates.mockReturnValue({
-                handleTicketMessageTranslationEvents:
-                    mockHandleTicketMessageTranslationEvents,
-            })
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockedStore}>
-                        <TicketDetailContainer {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/foo/:ticketId',
-                    route: '/foo/1',
-                },
-            )
-
-            expect(mockJoinTicket).toHaveBeenCalledWith(1, {
-                onEvent: expect.any(Function),
-            })
-
-            const onPubNubEventCall = mockJoinTicket.mock.calls[0][1].onEvent
-            const mockDomainEvent = { type: 'test-event', data: {} }
-
-            onPubNubEventCall(mockDomainEvent)
-
-            expect(
-                mockHandleTicketMessageTranslationEvents,
-            ).toHaveBeenCalledWith(mockDomainEvent)
-        })
-
-        it('should NOT process PubNub events when AblyRealtime flag is enabled', () => {
-            mockUseFlag.mockReturnValue(true)
-            const mockHandleTicketMessageTranslationEvents = jest.fn()
-            mockUseLiveTicketTranslationsUpdates.mockReturnValue({
-                handleTicketMessageTranslationEvents:
-                    mockHandleTicketMessageTranslationEvents,
-            })
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockedStore}>
-                        <TicketDetailContainer {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/foo/:ticketId',
-                    route: '/foo/1',
-                },
-            )
-
-            expect(mockJoinTicket).toHaveBeenCalledWith(1, {
-                onEvent: expect.any(Function),
-            })
-
-            const onPubNubEventCall = mockJoinTicket.mock.calls[0][1].onEvent
-            const mockDomainEvent = { type: 'test-event', data: {} }
-
-            onPubNubEventCall(mockDomainEvent)
-
-            expect(
-                mockHandleTicketMessageTranslationEvents,
-            ).not.toHaveBeenCalled()
-        })
-
-        it('should process Ably events when AblyRealtime flag is enabled', () => {
-            mockUseFlag.mockReturnValue(true)
-            const mockHandleTicketMessageTranslationEvents = jest.fn()
-            mockUseLiveTicketTranslationsUpdates.mockReturnValue({
-                handleTicketMessageTranslationEvents:
-                    mockHandleTicketMessageTranslationEvents,
-            })
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockedStore}>
-                        <TicketDetailContainer {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/foo/:ticketId',
-                    route: '/foo/1',
-                },
-            )
-
-            expect(mockJoinTicketAbly).toHaveBeenCalledWith(1, {
-                onEvent: expect.any(Function),
-            })
-
-            const onAblyEventCall = mockJoinTicketAbly.mock.calls[0][1].onEvent
-            const mockDomainEvent = { type: 'test-event', data: {} }
-
-            onAblyEventCall(mockDomainEvent)
-
-            expect(
-                mockHandleTicketMessageTranslationEvents,
-            ).toHaveBeenCalledWith(mockDomainEvent)
-        })
-
-        it('should NOT process Ably events when AblyRealtime flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-            const mockHandleTicketMessageTranslationEvents = jest.fn()
-            mockUseLiveTicketTranslationsUpdates.mockReturnValue({
-                handleTicketMessageTranslationEvents:
-                    mockHandleTicketMessageTranslationEvents,
-            })
-
-            renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockedStore}>
-                        <TicketDetailContainer {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/foo/:ticketId',
-                    route: '/foo/1',
-                },
-            )
-
-            expect(mockJoinTicketAbly).toHaveBeenCalledWith(1, {
-                onEvent: expect.any(Function),
-            })
-
-            const onAblyEventCall = mockJoinTicketAbly.mock.calls[0][1].onEvent
-            const mockDomainEvent = { type: 'test-event', data: {} }
-
-            onAblyEventCall(mockDomainEvent)
-
-            expect(
-                mockHandleTicketMessageTranslationEvents,
-            ).not.toHaveBeenCalled()
-        })
+        expect(mockHandleTicketMessageTranslationEvents).toHaveBeenCalledWith(
+            mockDomainEvent,
+        )
     })
 
     describe('Mobile view functionality', () => {

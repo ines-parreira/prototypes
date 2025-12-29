@@ -1,11 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
-import type { DomainEvent } from '@gorgias/events'
 import { useListLiveCallQueueVoiceCalls } from '@gorgias/helpdesk-queries'
-import { useChannel } from '@gorgias/realtime'
-import { useChannel as useAblyChannel } from '@gorgias/realtime-ably'
+import { useChannel } from '@gorgias/realtime-ably'
 
 import type { PaywallConfig } from 'config/paywalls'
 import { paywallConfigs } from 'config/paywalls'
@@ -57,47 +53,11 @@ function LiveVoice() {
         },
     )
 
-    const isAblyRealtimeEnabled = useFlag(FeatureFlagKey.AblyRealtime)
     const { channel, handleEvent } = useLiveVoiceUpdates(params)
-
-    const handlePubNubEvent = useCallback(
-        (event: DomainEvent) => {
-            if (!isAblyRealtimeEnabled) {
-                handleEvent(event)
-            }
-        },
-        [handleEvent, isAblyRealtimeEnabled],
-    )
-
-    const handlePubNubEventRef = useRef(handlePubNubEvent)
-
-    useEffect(() => {
-        handlePubNubEventRef.current = handlePubNubEvent
-    }, [handlePubNubEvent])
-
-    const handleAblyEvent = useCallback(
-        (event: DomainEvent) => {
-            if (isAblyRealtimeEnabled) {
-                handleEvent(event)
-            }
-        },
-        [handleEvent, isAblyRealtimeEnabled],
-    )
-
-    const handleAblyEventRef = useRef(handleAblyEvent)
-
-    useEffect(() => {
-        handleAblyEventRef.current = handleAblyEvent
-    }, [handleAblyEvent])
 
     useChannel({
         channel,
-        onEvent: handlePubNubEvent,
-    })
-
-    useAblyChannel({
-        channel,
-        onEvent: handleAblyEvent,
+        onEvent: handleEvent,
     })
 
     return (

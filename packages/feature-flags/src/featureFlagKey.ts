@@ -159,7 +159,6 @@ export enum FeatureFlagKey {
     PauseSLA = 'linear.task_SUPXP-2724.pause-sla',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     ProductCardDiscountedPrice = 'product-card-discounted-price',
-    PubNubRealtime = 'pubnub-realtime',
     RedirectDeprecatedTicketRoutes = 'redirect-deprecated-ticket-routes',
     ReportingAgentsTableAverageAndTotal = 'reporting-agents-table-average-and-total',
     ReportingDashboardResizeCharts = 'reporting-dashboard-resize-charts',

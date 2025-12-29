@@ -8,13 +8,11 @@ import {
     useState,
 } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { ContentState } from 'draft-js'
 import { convertToRaw, EditorState } from 'draft-js'
 
 import type { DomainEvent } from '@gorgias/events'
-import { useChannel } from '@gorgias/realtime'
-import { useChannel as useAblyChannel } from '@gorgias/realtime-ably'
+import { useChannel } from '@gorgias/realtime-ably'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -280,46 +278,13 @@ export const OutboundTranslationProvider = ({
         [handleTranslationCompletedEvent, handleTranslationFailedEvent],
     )
 
-    const isAblyRealtimeEnabled = useFlag(FeatureFlagKey.AblyRealtime)
-
-    const handlePubNubChannelEvent = useCallback(
-        (event: DomainEvent) => {
-            if (!isAblyRealtimeEnabled) {
-                handleChannelEvent(event)
-            } else {
-                return
-            }
-        },
-        [handleChannelEvent, isAblyRealtimeEnabled],
-    )
-
-    const handleAblyChannelEvent = useCallback(
-        (event: DomainEvent) => {
-            if (isAblyRealtimeEnabled) {
-                handleChannelEvent(event)
-            } else {
-                return
-            }
-        },
-        [handleChannelEvent, isAblyRealtimeEnabled],
-    )
-
     useChannel({
         channel: {
             name: 'user',
             accountId,
             userId,
         },
-        onEvent: handlePubNubChannelEvent,
-    })
-
-    useAblyChannel({
-        channel: {
-            name: 'user',
-            accountId,
-            userId,
-        },
-        onEvent: handleAblyChannelEvent,
+        onEvent: handleChannelEvent,
     })
 
     useEffect(() => {

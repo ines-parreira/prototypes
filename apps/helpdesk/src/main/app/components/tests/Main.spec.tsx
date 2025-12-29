@@ -57,31 +57,12 @@ jest.mock('react-cookie', () => ({
 }))
 
 jest.mock(
-    'providers/realtime/RealtimeAppProvider',
-    () =>
-        ({ children }: { children: React.ReactNode }) => (
-            <div data-testid="realtime-app-provider">{children}</div>
-        ),
-)
-
-jest.mock(
     'providers/realtime-ably/AblyRealtimeProviders',
     () =>
         ({ children }: { children: React.ReactNode }) => (
             <div data-testid="ably-realtime-app-provider">{children}</div>
         ),
 )
-
-jest.mock('@gorgias/realtime', () => ({
-    AgentActivityProvider: ({ children }: { children: React.ReactNode }) => (
-        <div data-testid="agent-activity-provider">{children}</div>
-    ),
-    AgentOnlineStatusProvider: ({
-        children,
-    }: {
-        children: React.ReactNode
-    }) => <div data-testid="agent-online-status-provider">{children}</div>,
-}))
 
 jest.mock('../App', () => ({
     __esModule: true,
@@ -111,15 +92,8 @@ describe('Main', () => {
         expect(screen.getByTestId('cookies-provider')).toBeInTheDocument()
         expect(screen.getByTestId('app')).toBeInTheDocument()
         expect(screen.getByText(childrenText)).toBeInTheDocument()
-        expect(screen.getByTestId('realtime-app-provider')).toBeInTheDocument()
         expect(
             screen.getByTestId('ably-realtime-app-provider'),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByTestId('agent-online-status-provider'),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByTestId('agent-activity-provider'),
         ).toBeInTheDocument()
     })
 })
