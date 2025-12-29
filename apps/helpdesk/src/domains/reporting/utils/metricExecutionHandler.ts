@@ -150,6 +150,7 @@ export async function metricExecutionHandler<
                     extra: {
                         metricName: config.metricName,
                         reason: JSON.stringify(e),
+                        payload: JSON.stringify(config.newPayload),
                     },
                 },
             )

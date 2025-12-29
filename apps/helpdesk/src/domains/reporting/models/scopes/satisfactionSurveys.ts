@@ -151,6 +151,7 @@ export const averageCsatScorePerIntegrationTimeseries = satisfactionSurveysScope
                     granularity: ctx.granularity,
                 },
             ],
+            limit: 10_000,
         }
 
         if (ctx.sortDirection) {

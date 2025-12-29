@@ -278,6 +278,7 @@ describe('averageCsatScope', () => {
                 metricName:
                     'satisfaction-average-csat-score-per-integration-time-series',
                 scope: 'satisfaction-surveys',
+                limit: 10_000,
             }
 
             expect(actual).toEqual(expected)
@@ -315,6 +316,7 @@ describe('averageCsatScope', () => {
                 metricName:
                     'satisfaction-average-csat-score-per-integration-time-series',
                 scope: 'satisfaction-surveys',
+                limit: 10_000,
             }
 
             expect(actual).toEqual(expected)

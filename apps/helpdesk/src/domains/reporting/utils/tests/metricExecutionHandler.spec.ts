@@ -223,7 +223,11 @@ describe('metricExecutionHandler', () => {
                     'Next function failed in shadow mode for test-metric: New API failed',
                 ),
                 {
-                    extra: { metricName: 'test-metric', reason: '{}' },
+                    extra: {
+                        metricName: 'test-metric',
+                        reason: '{}',
+                        payload: JSON.stringify(mockNewPayload),
+                    },
                     tags: { team: 'crm-reporting' },
                 },
             )
