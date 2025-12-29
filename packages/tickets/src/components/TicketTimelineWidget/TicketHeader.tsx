@@ -1,0 +1,31 @@
+import type { IconName } from '@gorgias/axiom'
+import { Box, Icon, Text } from '@gorgias/axiom'
+import type { Ticket } from '@gorgias/helpdesk-types'
+
+type TicketHeaderProps = Pick<Ticket, 'subject'> & {
+    time: string
+    iconName: IconName
+}
+
+export function TicketHeader({ subject, time, iconName }: TicketHeaderProps) {
+    return (
+        <Box gap="xxxs" alignItems="center">
+            <Icon name={iconName} size="md" />
+            <Box
+                justifyContent="space-between"
+                alignItems="center"
+                flex="1"
+                minWidth={0}
+                gap="xxxs"
+            >
+                <Text size="sm" variant="bold" overflow="ellipsis">
+                    {subject}
+                </Text>
+
+                <Text size="sm" variant="regular">
+                    {time}
+                </Text>
+            </Box>
+        </Box>
+    )
+}

@@ -32,6 +32,7 @@ import InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/Infobar
 import { ActionButtonContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 import { InfobarSearchResultsList } from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
 import InfobarWidgetsEditionTools from 'pages/common/components/infobar/Infobar/InfobarWidgetsEditionTools'
+import { TicketTimelineWidgetContainer } from 'pages/common/components/infobar/Infobar/TicketTimelineWidget/TicketTimelineWidgetContainer'
 import { useCustomerSearch } from 'pages/common/components/infobar/Infobar/useCustomerSearch'
 import { useSelectedCustomer } from 'pages/common/components/infobar/Infobar/useSelectedCustomer'
 import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
@@ -50,7 +51,7 @@ import { setActiveCustomerAsReceiver } from 'state/newMessage/actions'
 import { setCustomer } from 'state/ticket/actions'
 import * as widgetsActions from 'state/widgets/actions'
 import type { WidgetEnvironment } from 'state/widgets/types'
-import { isAdmin } from 'utils'
+import { isAdmin, isCurrentlyOnCustomerPage } from 'utils'
 
 type Props = {
     context: WidgetEnvironment
@@ -308,6 +309,12 @@ export const Infobar = ({
                         onMergeClick={handleMergeClick}
                     />
                 )}
+
+                {hasUIVisionMS1 &&
+                    !isCurrentlyOnCustomerPage(defaultCustomerId) && (
+                        <TicketTimelineWidgetContainer />
+                    )}
+
                 {!hasUIVisionMS1 && (
                     <div className={css.infobarSearchWrapper}>
                         <Search

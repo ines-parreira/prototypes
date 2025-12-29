@@ -26,6 +26,7 @@ import { getDisplayName } from 'state/customers/helpers'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import * as actions from 'state/widgets/actions'
 import { itemsWithContext } from 'state/widgets/utils'
+import { isCurrentlyOnCustomerPage } from 'utils'
 
 import AddAppSuggestion from './AddAppSuggestion'
 import CustomerChannels from './CustomerChannels'
@@ -326,10 +327,14 @@ const InfobarCustomerInfo = ({
                         <Separator className={css.separator} />
                     </>
                 )}
-                <CustomerTimelineWidget
-                    isEditing={isEditing}
-                    shopperId={Number(customer.get('id'))}
-                />
+
+                {(!hasUIVisionMS1 ||
+                    isCurrentlyOnCustomerPage(customer.get('id'))) && (
+                    <CustomerTimelineWidget
+                        isEditing={isEditing}
+                        shopperId={Number(customer.get('id'))}
+                    />
+                )}
             </div>
 
             {shouldSuggestCustomerProfileShopifySync && (

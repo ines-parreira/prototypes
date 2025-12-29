@@ -90,8 +90,8 @@ const renderWithProviders = (ui: React.ReactElement, customStore = store) => {
 
 describe('<InfobarCustomerInfo/>', () => {
     beforeEach(() => {
-        useFlagMock.mockReturnValue(false)
         jest.resetAllMocks()
+        useFlagMock.mockReturnValue(false)
     })
 
     it('should not render because there is no passed customer', () => {
@@ -411,6 +411,14 @@ describe('<InfobarCustomerInfo/>', () => {
         renderWithProviders(<InfobarCustomerInfo {...minProps} />)
 
         expect(screen.getByText('New Avatar')).toBeInTheDocument()
+    })
+
+    it('should render CustomerTimelineWidget by default', () => {
+        useFlagMock.mockReturnValue(false)
+
+        renderWithProviders(<InfobarCustomerInfo {...minProps} />)
+
+        expect(screen.getByText('CustomerTimelineWidget')).toBeInTheDocument()
     })
 
     it('should render Instagram profile link when customer has an Instagram channel', () => {
