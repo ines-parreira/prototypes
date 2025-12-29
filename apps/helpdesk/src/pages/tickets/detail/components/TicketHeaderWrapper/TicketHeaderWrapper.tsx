@@ -90,21 +90,26 @@ const TicketHeaderWrapper = ({
 }: Props) => {
     const ticket = useAppSelector((state) => state.ticket)
     const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
+    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
 
     const isExistingTicket = !!ticket.get('id')
 
     return (
         <>
             <div className={classnames(css.headerContainer)}>
-                <TicketHeader
-                    ticket={ticket}
-                    hideTicket={hideTicket}
-                    setStatus={setStatus}
-                    className="flex-grow"
-                    onGoToNextTicket={onGoToNextTicket}
-                    onToggleUnread={onToggleUnread}
-                />
-                <TicketFields />
+                {!hasUIVisionMS1 && (
+                    <>
+                        <TicketHeader
+                            ticket={ticket}
+                            hideTicket={hideTicket}
+                            setStatus={setStatus}
+                            className="flex-grow"
+                            onGoToNextTicket={onGoToNextTicket}
+                            onToggleUnread={onToggleUnread}
+                        />
+                        <TicketFields />
+                    </>
+                )}
                 <CollisionDetection ticketId={ticket.get('id')} />
             </div>
             {isExistingTicket && !hasMessagesTranslation && (

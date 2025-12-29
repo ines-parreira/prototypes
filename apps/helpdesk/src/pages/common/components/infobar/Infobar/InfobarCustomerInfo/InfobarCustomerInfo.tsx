@@ -86,6 +86,7 @@ const InfobarCustomerInfo = ({
     onEditCustomer,
     onSyncToShopify,
 }: OwnProps) => {
+    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const dispatch = useAppDispatch()
     const hasIntegrations =
@@ -267,56 +268,64 @@ const InfobarCustomerInfo = ({
             }`}
         >
             <div className={css.customerInfo}>
-                <div className={css.customerProfile}>
-                    {hasTicketThreadRevamp ? (
-                        <Avatar name={customer.get('name') ?? ''} />
-                    ) : (
-                        <DEPRECATED_Avatar
-                            name={customer.get('name', '')}
-                            email={customer.get('email', '')}
-                            url={customer.getIn([
+                {!hasUIVisionMS1 && (
+                    <>
+                        <div className={css.customerProfile}>
+                            {hasTicketThreadRevamp ? (
+                                <Avatar name={customer.get('name') ?? ''} />
+                            ) : (
+                                <DEPRECATED_Avatar
+                                    name={customer.get('name', '')}
+                                    email={customer.get('email', '')}
+                                    url={customer.getIn([
+                                        'meta',
+                                        'profile_picture_url',
+                                    ])}
+                                    size={36}
+                                />
+                            )}
+                            <div className={css.customerLink}>
+                                <Link
+                                    to={`/app/customer/${customer.get('id') as string}`}
+                                    className={css.displayName}
+                                >
+                                    {/* TODO(React18): Find a solution to casting to ReactNode once we upgrade to React 18 types */}
+                                    {getDisplayName(customer) as ReactNode}
+                                </Link>
+                            </div>
+                            <div className={css.customerOptions}>
+                                <CustomerOptionsDropdownButton
+                                    activeCustomer={customer}
+                                    onEditCustomer={onEditCustomer}
+                                    onSyncToShopify={onSyncToShopify}
+                                />
+                            </div>
+                        </div>
+                        <CustomerFields
+                            customerId={Number(customer.get('id'))}
+                        />
+                        <Separator className={css.separator} />
+                        <CustomerChannels
+                            channels={customer.get('channels') || fromJS([])}
+                            customerLocationInfo={customer.getIn([
                                 'meta',
-                                'profile_picture_url',
+                                'location_info',
                             ])}
-                            size={36}
-                        />
-                    )}
-                    <div className={css.customerLink}>
-                        <Link
-                            to={`/app/customer/${customer.get('id') as string}`}
-                            className={css.displayName}
+                            customerLastSeenOnChat={lastSeenOnChat}
+                            customerId={customer.get('id', '')}
+                            customerName={customer.get('name', '')}
                         >
-                            {/* TODO(React18): Find a solution to casting to ReactNode once we upgrade to React 18 types */}
-                            {getDisplayName(customer) as ReactNode}
-                        </Link>
-                    </div>
-                    <div className={css.customerOptions}>
-                        <CustomerOptionsDropdownButton
-                            activeCustomer={customer}
-                            onEditCustomer={onEditCustomer}
-                            onSyncToShopify={onSyncToShopify}
-                        />
-                    </div>
-                </div>
-                <CustomerFields customerId={Number(customer.get('id'))} />
-                <Separator className={css.separator} />
-                <CustomerChannels
-                    channels={customer.get('channels') || fromJS([])}
-                    customerLocationInfo={customer.getIn([
-                        'meta',
-                        'location_info',
-                    ])}
-                    customerLastSeenOnChat={lastSeenOnChat}
-                    customerId={customer.get('id', '')}
-                    customerName={customer.get('name', '')}
-                >
-                    {hasIgChannel && <InstagramSection customer={customer} />}
-                    <CustomerNote
-                        customerId={Number(customer.get('id'))}
-                        initialNote={customer.get('note')}
-                    />
-                </CustomerChannels>
-                <Separator className={css.separator} />
+                            {hasIgChannel && (
+                                <InstagramSection customer={customer} />
+                            )}
+                            <CustomerNote
+                                customerId={Number(customer.get('id'))}
+                                initialNote={customer.get('note')}
+                            />
+                        </CustomerChannels>
+                        <Separator className={css.separator} />
+                    </>
+                )}
                 <CustomerTimelineWidget
                     isEditing={isEditing}
                     shopperId={Number(customer.get('id'))}

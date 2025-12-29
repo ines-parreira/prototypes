@@ -78,4 +78,17 @@ describe('<TicketHeaderWrapper/>', () => {
         )
         expect(container).toMatchSnapshot()
     })
+
+    it('should hide TicketHeader and TicketFields when UIVisionMilestone1 flag is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+
+        const { queryByText } = render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketHeaderWrapper {...minProps} />
+            </Provider>,
+        )
+
+        expect(queryByText('TicketHeader')).not.toBeInTheDocument()
+        expect(queryByText('TicketFields')).not.toBeInTheDocument()
+    })
 })

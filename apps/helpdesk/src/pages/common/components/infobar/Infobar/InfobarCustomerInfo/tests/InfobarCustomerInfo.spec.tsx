@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import type React from 'react'
 
-import { useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -37,7 +37,7 @@ jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => false),
 }))
-const useFlagMock = useFlag as jest.Mock
+const useFlagMock = useFlag as jest.Mock<boolean, [string]>
 
 jest.mock('../CustomerTimelineWidget', () => ({
     CustomerTimelineWidget: () => <div>CustomerTimelineWidget</div>,
@@ -402,7 +402,11 @@ describe('<InfobarCustomerInfo/>', () => {
     })
 
     it('should render the new avatar if the ticket thread revamp flag is enabled', () => {
-        useFlagMock.mockReturnValue(true)
+        useFlagMock.mockImplementation((flag: string) => {
+            if (flag === FeatureFlagKey.TicketThreadRevamp) return true
+            if (flag === FeatureFlagKey.UIVisionMilestone1) return false
+            return false
+        })
 
         renderWithProviders(<InfobarCustomerInfo {...minProps} />)
 

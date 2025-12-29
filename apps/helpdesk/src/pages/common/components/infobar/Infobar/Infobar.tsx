@@ -308,39 +308,42 @@ export const Infobar = ({
                         onMergeClick={handleMergeClick}
                     />
                 )}
-                <div className={css.infobarSearchWrapper}>
-                    <Search
-                        className={css.infobarSearch}
-                        tabIndex={10}
-                        placeholder="Search for customers by email, order number, etc."
-                        onKeyDown={handleKeyDown}
-                        onChange={onChange}
-                        value={searchTerm}
-                    />
-                    {isAdmin(currentUser) && (
-                        <>
-                            <IconButton
-                                className={classnames(
-                                    'd-none d-md-inline-block ml-2 btn-transparent',
-                                )}
-                                id="toggle-widgets-edition-button"
-                                intent="secondary"
-                                isDisabled={!canEditWidgets}
-                                onClick={toggleEditionMode}
-                            >
-                                settings
-                            </IconButton>
-                            <Tooltip
-                                placement="left"
-                                target="toggle-widgets-edition-button"
-                            >
-                                {isEditing
-                                    ? 'Exit widgets editing'
-                                    : 'Edit widgets'}
-                            </Tooltip>
-                        </>
-                    )}
-                </div>
+                {!hasUIVisionMS1 && (
+                    <div className={css.infobarSearchWrapper}>
+                        <Search
+                            className={css.infobarSearch}
+                            tabIndex={10}
+                            placeholder="Search for customers by email, order number, etc."
+                            onKeyDown={handleKeyDown}
+                            onChange={onChange}
+                            value={searchTerm}
+                        />
+                        {isAdmin(currentUser) && (
+                            <>
+                                <IconButton
+                                    className={classnames(
+                                        'd-none d-md-inline-block ml-2 btn-transparent',
+                                    )}
+                                    id="toggle-widgets-edition-button"
+                                    intent="secondary"
+                                    isDisabled={!canEditWidgets}
+                                    onClick={toggleEditionMode}
+                                >
+                                    settings
+                                </IconButton>
+                                <Tooltip
+                                    placement="left"
+                                    target="toggle-widgets-edition-button"
+                                >
+                                    {isEditing
+                                        ? 'Exit widgets editing'
+                                        : 'Edit widgets'}
+                                </Tooltip>
+                            </>
+                        )}
+                    </div>
+                )}
+
                 <div className={css.content}>
                     {mode === 'loading' ? (
                         <Loader />
