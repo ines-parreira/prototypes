@@ -984,6 +984,92 @@ describe('utils', () => {
                 })
             })
 
+            it('should add queueId filter when present with ONE_OF operator', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['queueId'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    voiceQueues: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [1001, 1002],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'queueId',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [1001, 1002],
+                })
+            })
+
+            it('should add queueId filter when present with NOT_ONE_OF operator', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['queueId'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    voiceQueues: {
+                        operator: LogicalOperatorEnum.NOT_ONE_OF,
+                        values: [1003, 1004],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'queueId',
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: [1003, 1004],
+                })
+            })
+
+            it('should not add queueId filter when voiceQueues has empty values', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['queueId'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    voiceQueues: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).not.toContainEqual(
+                    expect.objectContaining({ member: 'queueId' }),
+                )
+                expect(result).toHaveLength(2)
+            })
+
+            it('should not add queueId filter when voiceQueues is undefined', () => {
+                const scopeConfig: ScopeMeta = {
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['queueId'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).not.toContainEqual(
+                    expect.objectContaining({ member: 'queueId' }),
+                )
+                expect(result).toHaveLength(2)
+            })
+
             it('should add slaPolicyUuid filter when present', () => {
                 const scopeConfig: ScopeMeta = {
                     scope: MetricScope.TicketsOpen,

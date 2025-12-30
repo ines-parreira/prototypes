@@ -258,6 +258,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'callDirection':
             case 'callTerminationStatus':
             case 'isAnsweredByAgent':
+            case 'isDuringBusinessHours':
             case 'displayStatus':
                 {
                     const filter = statFilters[filterKey]
@@ -312,6 +313,20 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                             ),
                         ],
                     })
+                }
+                break
+            case 'queueId':
+                if (
+                    statFilters.voiceQueues &&
+                    hasFilter(statFilters.voiceQueues)
+                ) {
+                    filters.push(
+                        createStandardFilter(
+                            'queueId',
+                            statFilters.voiceQueues.operator,
+                            statFilters.voiceQueues.values,
+                        ),
+                    )
                 }
                 break
         }
