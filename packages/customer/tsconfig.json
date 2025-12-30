@@ -1,0 +1,8 @@
+{
+    "extends": "@repo/config/tsconfig.react.json",
+    "compilerOptions": {
+        "types": ["vitest/globals", "@testing-library/jest-dom"]
+    },
+    "include": ["assets.d.ts", "global.d.ts", "src/**/*"],
+    "exclude": ["node_modules"]
+}
