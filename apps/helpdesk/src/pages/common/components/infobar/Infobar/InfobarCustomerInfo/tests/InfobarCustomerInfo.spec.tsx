@@ -421,15 +421,23 @@ describe('<InfobarCustomerInfo/>', () => {
         expect(screen.getByText('CustomerTimelineWidget')).toBeInTheDocument()
     })
 
-    it('should render Instagram profile link when customer has an Instagram channel', () => {
+    it('should render Instagram profile link when customer has an Instagram channel and ticket is Instagram ticket', () => {
         const customerWithIg = fromJS({
             id: 1,
             name: 'test_user',
             channels: [{ type: 'instagram' }],
         })
 
+        const sourcesWithIgTicket = fromJS({
+            ticket: { channel: 'instagram-comment' },
+        })
+
         renderWithProviders(
-            <InfobarCustomerInfo {...minProps} customer={customerWithIg} />,
+            <InfobarCustomerInfo
+                {...minProps}
+                customer={customerWithIg}
+                sources={sourcesWithIgTicket}
+            />,
         )
 
         const igLink = screen.getByRole('link', { name: /@test_user/ })
@@ -450,8 +458,16 @@ describe('<InfobarCustomerInfo/>', () => {
             channels: [{ type: 'instagram' }],
         })
 
+        const sourcesWithIgTicket = fromJS({
+            ticket: { channel: 'instagram-direct-message' },
+        })
+
         renderWithProviders(
-            <InfobarCustomerInfo {...minProps} customer={customerWithIg} />,
+            <InfobarCustomerInfo
+                {...minProps}
+                customer={customerWithIg}
+                sources={sourcesWithIgTicket}
+            />,
         )
 
         const igLink = screen.getByRole('link', { name: /@test_user/ })
@@ -467,6 +483,30 @@ describe('<InfobarCustomerInfo/>', () => {
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.InstagramHandleClicked,
         )
+    })
+
+    it('should not render Instagram profile link when customer has Instagram channel but ticket is not Instagram ticket', () => {
+        const customerWithIg = fromJS({
+            id: 1,
+            name: 'test_user',
+            channels: [{ type: 'instagram' }],
+        })
+
+        const sourcesWithEmailTicket = fromJS({
+            ticket: { channel: 'email' },
+        })
+
+        renderWithProviders(
+            <InfobarCustomerInfo
+                {...minProps}
+                customer={customerWithIg}
+                sources={sourcesWithEmailTicket}
+            />,
+        )
+
+        expect(
+            screen.queryByRole('link', { name: /@test_user/ }),
+        ).not.toBeInTheDocument()
     })
 
     it('should not render Instagram profile link when customer has no Instagram channel', () => {
@@ -542,8 +582,16 @@ describe('<InfobarCustomerInfo/>', () => {
                 channels: [{ type: 'instagram' }],
             })
 
+            const sourcesWithIgTicket = fromJS({
+                ticket: { channel: 'instagram-mention' },
+            })
+
             renderWithProviders(
-                <InfobarCustomerInfo {...minProps} customer={customerWithIg} />,
+                <InfobarCustomerInfo
+                    {...minProps}
+                    customer={customerWithIg}
+                    sources={sourcesWithIgTicket}
+                />,
                 storeWithMessages,
             )
 
@@ -612,8 +660,16 @@ describe('<InfobarCustomerInfo/>', () => {
                 channels: [{ type: 'instagram' }],
             })
 
+            const sourcesWithIgTicket = fromJS({
+                ticket: { channel: 'instagram-ad-comment' },
+            })
+
             renderWithProviders(
-                <InfobarCustomerInfo {...minProps} customer={customerWithIg} />,
+                <InfobarCustomerInfo
+                    {...minProps}
+                    customer={customerWithIg}
+                    sources={sourcesWithIgTicket}
+                />,
                 storeWithMessageNoId,
             )
 
@@ -650,8 +706,16 @@ describe('<InfobarCustomerInfo/>', () => {
                 channels: [{ type: 'instagram' }],
             })
 
+            const sourcesWithIgTicket = fromJS({
+                ticket: { channel: 'instagram-comment' },
+            })
+
             renderWithProviders(
-                <InfobarCustomerInfo {...minProps} customer={customerWithIg} />,
+                <InfobarCustomerInfo
+                    {...minProps}
+                    customer={customerWithIg}
+                    sources={sourcesWithIgTicket}
+                />,
                 storeWithMismatch,
             )
 

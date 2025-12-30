@@ -109,6 +109,11 @@ const InfobarCustomerInfo = ({
         customerIntegrationsData,
     )
 
+    const ticketChannel = sources.getIn(['ticket', 'channel']) as
+        | string
+        | undefined
+    const isInstagramTicket = ticketChannel?.startsWith('instagram')
+
     const editionContextObject = useMemo(
         () => ({
             isEditing,
@@ -316,7 +321,7 @@ const InfobarCustomerInfo = ({
                             customerId={customer.get('id', '')}
                             customerName={customer.get('name', '')}
                         >
-                            {hasIgChannel && (
+                            {hasIgChannel && isInstagramTicket && (
                                 <InstagramSection customer={customer} />
                             )}
                             <CustomerNote
