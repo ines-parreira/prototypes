@@ -17,12 +17,14 @@
     },
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
+        "@gorgias/events": "catalog:events",
         "@gorgias/helpdesk-client": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-validators": "catalog:rest-api-sdk",
         "@internationalized/date": "catalog:axiom",
         "@repo/config": "workspace:*",
+        "@repo/feature-flags": "workspace:*",
         "@repo/hooks": "workspace:*",
         "@repo/logging": "workspace:*",
         "@repo/navigation": "workspace:*",
@@ -39,15 +41,18 @@
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
         "react-router-dom-v5-compat": "catalog:react-router",
-        "zod": "catalog:zod"
+        "zod": "catalog:zod",
+        "zustand": "catalog:zustand"
     },
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
+        "@gorgias/events": "catalog:events",
         "@gorgias/helpdesk-client": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
+        "@repo/feature-flags": "workspace:*",
         "@repo/hooks": "workspace:*",
         "@repo/logging": "workspace:*",
         "@repo/navigation": "workspace:*",
@@ -81,6 +86,7 @@
         "react-router-dom-v5-compat": "catalog:react-router",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
-        "zod": "catalog:zod"
+        "zod": "catalog:zod",
+        "zustand": "catalog:zustand"
     }
 }

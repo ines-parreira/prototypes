@@ -13,22 +13,24 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
-import { appQueryClient } from 'api/queryClient'
-
-import type { CurrentUser } from '../translations/useCurrentUserLanguagePreferences'
-import { useTicketsTranslatedProperties } from '../translations/useTicketsTranslatedProperties'
+import { testAppQueryClient } from '../../tests/render.utils'
+import type { CurrentUser } from '../hooks/useCurrentUserLanguagePreferences'
+import { useTicketsTranslatedProperties } from '../hooks/useTicketsTranslatedProperties'
 
 // Mock the feature flag hook
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-}))
+vi.mock('@repo/feature-flags', async () => {
+    const actual = await vi.importActual('@repo/feature-flags')
+    return {
+        ...actual,
+        useFlag: vi.fn(),
+    }
+})
 
-const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlag = vi.mocked(useFlag)
 
 // Server setup
 const server = setupServer()
-const queryClient = appQueryClient
+const queryClient = testAppQueryClient
 
 // Mock data constants
 const mockPreferences = {
@@ -101,7 +103,7 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
     queryClient.clear()
     mockUseFlag.mockReturnValue(true)
     server.use(...defaultHandlers)

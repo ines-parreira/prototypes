@@ -2,6 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useTitle } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import {
+    useCurrentUserLanguagePreferences,
+    useTicketsTranslatedProperties,
+} from '@repo/tickets'
 import classnames from 'classnames'
 import type { List } from 'immutable'
 import { fromJS } from 'immutable'
@@ -30,8 +34,6 @@ import {
     hasActiveView as getHasActiveView,
     getSelectedItemsIds,
 } from 'state/views/selectors'
-import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
-import { useTicketsTranslatedProperties } from 'tickets/core/hooks/translations/useTicketsTranslatedProperties'
 import { compactInteger } from 'utils'
 
 const TicketList = () => {

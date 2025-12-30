@@ -3,9 +3,9 @@ import { act, renderHook } from '@testing-library/react'
 
 import { Language } from '@gorgias/helpdesk-types'
 
-import { KeyPrefixes } from '../translations/constants'
-import type { ExtractEvent } from '../translations/types'
-import { useTicketTranslationCompleteEventHandler } from '../translations/useLiveTicketTranslationsUpdates/useTicketTranslationCompleteEventHandler'
+import { KeyPrefixes } from '../hooks/constants'
+import type { ExtractEvent } from '../hooks/types'
+import { useTicketTranslationCompleteEventHandler } from '../hooks/useLiveTicketTranslationsUpdates/useTicketTranslationCompleteEventHandler'
 
 const queryClient = new QueryClient({
     defaultOptions: {

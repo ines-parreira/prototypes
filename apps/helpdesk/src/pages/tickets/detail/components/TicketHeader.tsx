@@ -3,6 +3,12 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useTitle } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import {
+    DisplayedContent,
+    useCurrentUserLanguagePreferences,
+    useTicketMessageTranslationDisplay,
+    useTicketsTranslatedProperties,
+} from '@repo/tickets'
 import { useShortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
@@ -44,11 +50,7 @@ import {
     getShouldDisplayAllFollowUps,
     shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents,
 } from 'state/ticket/selectors'
-import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
-import { useTicketsTranslatedProperties } from 'tickets/core/hooks/translations/useTicketsTranslatedProperties'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
-import { DisplayedContent } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
-import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 import { hasRole } from 'utils'
 
 import Snooze from './Snooze'
@@ -104,9 +106,8 @@ const TicketHeader = ({
         allMessageDisplayState,
     } = useTicketMessageTranslationDisplay()
 
-    const { primary } = useCurrentUserLanguagePreferences()
-
-    const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
+    const { primary, shouldShowTranslatedContent } =
+        useCurrentUserLanguagePreferences()
     const { translationMap, updateTicketTranslatedSubject, isInitialLoading } =
         useTicketsTranslatedProperties({
             ticket_ids: [ticket.get('id')],

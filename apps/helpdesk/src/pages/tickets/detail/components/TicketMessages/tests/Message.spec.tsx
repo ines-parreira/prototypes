@@ -1,6 +1,7 @@
 import type React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { DisplayedContent, FetchingState } from '@repo/tickets'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -19,12 +20,6 @@ import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
 import { appQueryClient } from 'api/queryClient'
 import type { TicketMessage } from 'models/ticket/types'
-import type { DisplayType } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
-import {
-    DisplayedContent,
-    FetchingState,
-    TicketMessagesTranslationDisplayContext,
-} from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
 
 import MessageQuoteContext from '../../MessageQuoteContext'
 import Message from '../Message'
@@ -41,28 +36,21 @@ const mockUseFlag = require('@repo/feature-flags')
 >
 
 // Mock the translations hook
-jest.mock(
-    'tickets/core/hooks/translations/useTicketMessageTranslations',
-    () => ({
-        useTicketMessageTranslations: jest.fn(),
-    }),
-)
+jest.mock('@repo/tickets', () => ({
+    ...jest.requireActual('@repo/tickets'),
+    useTicketMessageTranslations: jest.fn(),
+    useCurrentUserLanguagePreferences: jest.fn(),
+    useTicketMessageDisplayState: jest.fn(),
+}))
 
-const mockUseTicketMessageTranslations =
-    require('tickets/core/hooks/translations/useTicketMessageTranslations')
-        .useTicketMessageTranslations as jest.MockedFunction<any>
+const mockUseTicketMessageTranslations = require('@repo/tickets')
+    .useTicketMessageTranslations as jest.MockedFunction<any>
 
-// Mock the user language preference hook
-jest.mock(
-    'tickets/core/hooks/translations/useCurrentUserLanguagePreferences',
-    () => ({
-        useCurrentUserLanguagePreferences: jest.fn(),
-    }),
-)
+const mockUseCurrentUserPreferredLanguage = require('@repo/tickets')
+    .useCurrentUserLanguagePreferences as jest.MockedFunction<any>
 
-const mockUseCurrentUserPreferredLanguage =
-    require('tickets/core/hooks/translations/useCurrentUserLanguagePreferences')
-        .useCurrentUserLanguagePreferences as jest.MockedFunction<any>
+const mockUseTicketMessageDisplayState = require('@repo/tickets')
+    .useTicketMessageDisplayState as jest.MockedFunction<any>
 
 // Create mock user with language preferences
 const mockCurrentUser = {
@@ -121,6 +109,12 @@ beforeEach(() => {
     mockUseCurrentUserPreferredLanguage.mockReturnValue({
         shouldShowTranslatedContent: jest.fn(() => true),
     })
+    mockUseTicketMessageDisplayState.mockReturnValue({
+        display: DisplayedContent.Original,
+        fetchingState: FetchingState.Idle,
+        hasRegeneratedOnce: false,
+        setTicketMessageTranslationDisplay: jest.fn(),
+    })
 })
 
 afterEach(() => {
@@ -131,22 +125,6 @@ afterEach(() => {
 afterAll(() => {
     server.close()
 })
-
-// Mock translation display context
-const mockTranslationDisplayContext = {
-    getTicketMessageTranslationDisplay: jest.fn(
-        () =>
-            ({
-                display: DisplayedContent.Original,
-                fetchingState: FetchingState.Idle,
-                hasRegeneratedOnce: false,
-            }) as DisplayType,
-    ),
-    setTicketMessageTranslationDisplay: jest.fn(),
-    allMessageDisplayState: DisplayedContent.Translated,
-    setAllTicketMessagesToOriginal: jest.fn(),
-    setAllTicketMessagesToTranslated: jest.fn(),
-}
 
 // Create mock store
 const mockStore = {
@@ -172,15 +150,9 @@ const createWrapper =
     ({ children }: { children: React.ReactNode }) => (
         <Provider store={mockStore as any}>
             <QueryClientProvider client={appQueryClient}>
-                <TicketMessagesTranslationDisplayContext.Provider
-                    value={mockTranslationDisplayContext}
-                >
-                    <MessageQuoteContext.Provider
-                        value={messageQuoteContextValue}
-                    >
-                        {children}
-                    </MessageQuoteContext.Provider>
-                </TicketMessagesTranslationDisplayContext.Provider>
+                <MessageQuoteContext.Provider value={messageQuoteContextValue}>
+                    {children}
+                </MessageQuoteContext.Provider>
             </QueryClientProvider>
         </Provider>
     )
@@ -229,13 +201,12 @@ describe('Message', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockBodyComponent.mockClear()
-        mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
-            {
-                display: DisplayedContent.Original,
-                fetchingState: FetchingState.Idle,
-                hasRegeneratedOnce: false,
-            },
-        )
+        mockUseTicketMessageDisplayState.mockReturnValue({
+            display: DisplayedContent.Original,
+            fetchingState: FetchingState.Idle,
+            hasRegeneratedOnce: false,
+            setTicketMessageTranslationDisplay: jest.fn(),
+        })
         defaultMessageQuoteContext.toggleQuote.mockClear()
     })
 
@@ -349,13 +320,12 @@ describe('Message', () => {
 
         it('should not render when no translations and fetching state is Idle', () => {
             const wrapper = createWrapper()
-            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                {
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Idle,
-                    hasRegeneratedOnce: false,
-                },
-            )
+            mockUseTicketMessageDisplayState.mockReturnValue({
+                display: DisplayedContent.Original,
+                fetchingState: FetchingState.Idle,
+                hasRegeneratedOnce: false,
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
 
             render(<Message {...defaultProps} />, { wrapper })
 
@@ -366,13 +336,12 @@ describe('Message', () => {
 
         it('should render when fetching state is Loading', () => {
             const wrapper = createWrapper()
-            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                {
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Loading,
-                    hasRegeneratedOnce: false,
-                },
-            )
+            mockUseTicketMessageDisplayState.mockReturnValue({
+                display: DisplayedContent.Original,
+                fetchingState: FetchingState.Loading,
+                hasRegeneratedOnce: false,
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
 
             render(<Message {...defaultProps} />, { wrapper })
 
@@ -392,13 +361,12 @@ describe('Message', () => {
                 getMessageTranslation: jest.fn(() => mockTranslation),
             })
 
-            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                {
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Idle,
-                    hasRegeneratedOnce: false,
-                },
-            )
+            mockUseTicketMessageDisplayState.mockReturnValue({
+                display: DisplayedContent.Original,
+                fetchingState: FetchingState.Idle,
+                hasRegeneratedOnce: false,
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
 
             render(<Message {...defaultProps} />, { wrapper })
 
@@ -422,13 +390,12 @@ describe('Message', () => {
                 getMessageTranslation: jest.fn(() => mockTranslation),
             })
 
-            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                {
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Idle,
-                    hasRegeneratedOnce: false,
-                },
-            )
+            mockUseTicketMessageDisplayState.mockReturnValue({
+                display: DisplayedContent.Original,
+                fetchingState: FetchingState.Idle,
+                hasRegeneratedOnce: false,
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
 
             render(<Message {...defaultProps} />, { wrapper })
 
@@ -441,13 +408,12 @@ describe('Message', () => {
     describe('Translation display', () => {
         it('should display original message when display type is Original', () => {
             const wrapper = createWrapper()
-            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                {
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Completed,
-                    hasRegeneratedOnce: false,
-                },
-            )
+            mockUseTicketMessageDisplayState.mockReturnValue({
+                display: DisplayedContent.Original,
+                fetchingState: FetchingState.Completed,
+                hasRegeneratedOnce: false,
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
 
             const mockTranslation = mockTicketMessageTranslation({
                 id: '456',
@@ -475,13 +441,12 @@ describe('Message', () => {
 
         it('should display translated content when display type is Translated', () => {
             const wrapper = createWrapper()
-            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                {
-                    display: DisplayedContent.Translated,
-                    fetchingState: FetchingState.Completed,
-                    hasRegeneratedOnce: false,
-                },
-            )
+            mockUseTicketMessageDisplayState.mockReturnValue({
+                display: DisplayedContent.Translated,
+                fetchingState: FetchingState.Completed,
+                hasRegeneratedOnce: false,
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
 
             const mockTranslation = mockTicketMessageTranslation({
                 id: '456',
@@ -513,13 +478,12 @@ describe('Message', () => {
 
         it('should fall back to original when display is Translated but no translation exists', () => {
             const wrapper = createWrapper()
-            mockTranslationDisplayContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                {
-                    display: DisplayedContent.Translated,
-                    fetchingState: FetchingState.Completed,
-                    hasRegeneratedOnce: false,
-                },
-            )
+            mockUseTicketMessageDisplayState.mockReturnValue({
+                display: DisplayedContent.Translated,
+                fetchingState: FetchingState.Completed,
+                hasRegeneratedOnce: false,
+                setTicketMessageTranslationDisplay: jest.fn(),
+            })
 
             render(<Message {...defaultProps} />, { wrapper })
 

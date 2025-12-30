@@ -57,6 +57,8 @@ catalogs:
     '@gorgias/knowledge-service-types': '^0.4.16'
     '@gorgias/knowledge-service-validators': '^0.2.42'
     '@tanstack/react-query': '4.36.1'
+  events:
+    '@gorgias/events': '^0.13.1'
   react:
     react: '18.2.0'
     react-dom: '18.2.0'
@@ -145,3 +147,5 @@ catalogs:
     'libphonenumber-js': '1.12.25'
   react-hook-form:
     'react-hook-form': '^7.52.1'
+  zustand:
+    'zustand': '5.0.9'

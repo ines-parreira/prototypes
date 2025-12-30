@@ -3,6 +3,7 @@ import type { ComponentProps } from 'react'
 import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, flushPromises, userEvent } from '@repo/testing'
+import { useLiveTicketTranslationsUpdates } from '@repo/tickets'
 import { shortcutManager } from '@repo/utils'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, waitFor } from '@testing-library/react'
@@ -40,7 +41,6 @@ import {
 import { triggerTicketFieldsErrors } from 'state/ticket/actions'
 import * as ticketUtils from 'state/ticket/utils'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { useLiveTicketTranslationsUpdates } from 'tickets/core/hooks/translations/useLiveTicketTranslationsUpdates/useLiveTicketTranslationsUpdates'
 import * as customFieldsUtils from 'utils/customFields'
 import { makeExecuteKeyboardAction, renderWithRouter } from 'utils/testing'
 
@@ -209,9 +209,10 @@ const mockUseKnowledgeSourceSideBar =
     require('pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar')
         .useKnowledgeSourceSideBar as jest.Mock
 
-jest.mock(
-    'tickets/core/hooks/translations/useLiveTicketTranslationsUpdates/useLiveTicketTranslationsUpdates',
-)
+jest.mock('@repo/tickets', () => ({
+    ...jest.requireActual('@repo/tickets'),
+    useLiveTicketTranslationsUpdates: jest.fn(),
+}))
 
 const mockUseLiveTicketTranslationsUpdates =
     useLiveTicketTranslationsUpdates as jest.Mock

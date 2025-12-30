@@ -19,6 +19,8 @@ export const testAppQueryClient = new QueryClient({
     defaultOptions: {
         queries: {
             retry: false,
+            staleTime: 0,
+            cacheTime: 0,
         },
         mutations: {
             retry: false,

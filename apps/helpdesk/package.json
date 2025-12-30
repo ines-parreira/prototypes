@@ -80,7 +80,7 @@
         "@gorgias/ecommerce-storage-queries": "catalog:rest-api-sdk",
         "@gorgias/event-tracker-api": "1.2.0",
         "@gorgias/event-tracker-browser": "2.0.4",
-        "@gorgias/events": "^0.13.1",
+        "@gorgias/events": "catalog:events",
         "@gorgias/help-center-client": "catalog:rest-api-sdk",
         "@gorgias/help-center-queries": "catalog:rest-api-sdk",
         "@gorgias/help-center-types": "catalog:rest-api-sdk",
@@ -242,7 +242,8 @@
         "uuid": "^9.0.1",
         "vaul": "^1.1.2",
         "zen-observable": "^0.10.0",
-        "zod": "catalog:zod"
+        "zod": "catalog:zod",
+        "zustand": "catalog:zustand"
     },
     "devDependencies": {
         "@codecov/webpack-plugin": "^0.0.1-beta.6",

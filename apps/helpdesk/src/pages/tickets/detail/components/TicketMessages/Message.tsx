@@ -1,6 +1,13 @@
 import { useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    DisplayedContent,
+    FetchingState,
+    useCurrentUserLanguagePreferences,
+    useTicketMessageDisplayState,
+    useTicketMessageTranslations,
+} from '@repo/tickets'
 import cn from 'classnames'
 
 import type {
@@ -12,15 +19,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import { hasFailedAction, isFailed, isPending } from 'models/ticket/predicates'
 import type { TicketMessage } from 'models/ticket/types'
 import { getTicket } from 'state/ticket/selectors'
-import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
-import { useTicketMessageTranslations } from 'tickets/core/hooks/translations/useTicketMessageTranslations'
 import { MessageActions } from 'tickets/ticket-detail/components/MessageActions'
 import { MessageAttachments } from 'tickets/ticket-detail/components/MessageAttachments'
-import {
-    DisplayedContent,
-    FetchingState,
-} from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
-import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
 import { useMessageQuote } from '../MessageQuoteContext'
 import Body from './Body'
@@ -65,8 +65,9 @@ export default function Message({
         ticket_id: ticketId,
     })
 
-    const { getTicketMessageTranslationDisplay } =
-        useTicketMessageTranslationDisplay()
+    const { display, fetchingState } = useTicketMessageDisplayState(
+        message?.id ?? 0,
+    )
     const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
 
     const messageTranslations = useMemo(
@@ -74,24 +75,12 @@ export default function Message({
         [message?.id, getMessageTranslation],
     )
 
-    const fetchingState = useMemo(
-        () =>
-            message?.id
-                ? getTicketMessageTranslationDisplay(message.id).fetchingState
-                : FetchingState.Idle,
-        [message?.id, getTicketMessageTranslationDisplay],
-    )
-
     const displayedMessage = useMemo(() => {
         if (!message?.id) return message
         if (!shouldShowTranslatedContent(ticket.language as Language))
             return message
 
-        const displayType = getTicketMessageTranslationDisplay(message.id)
-        if (
-            displayType.display === DisplayedContent.Translated &&
-            messageTranslations
-        ) {
+        if (display === DisplayedContent.Translated && messageTranslations) {
             return {
                 ...message,
                 translations: messageTranslations,
@@ -101,7 +90,7 @@ export default function Message({
     }, [
         message,
         messageTranslations,
-        getTicketMessageTranslationDisplay,
+        display,
         shouldShowTranslatedContent,
         ticket,
     ])

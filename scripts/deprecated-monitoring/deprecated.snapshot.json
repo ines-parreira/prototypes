@@ -1,6 +1,6 @@
 {
-  "date": "2025-12-29T13:24:29.864Z",
-  "total": 2776,
+  "date": "2025-12-30T15:23:45.468Z",
+  "total": 2778,
   "deprecated": [
     {
       "nodeType": "VariableDeclaration",
@@ -1951,6 +1951,23 @@
       ]
     },
     {
+      "nodeType": "ExportDefaultDeclaration",
+      "nodeName": "isInternalNote",
+      "comment": "*\n * @deprecated Use isInternalNote from @gorgias/tickets package instead\n * @date 2025-12-22\n * @type tickets-migration\n * Return true if the message's source type identifies an internal note\n ",
+      "count": 3,
+      "filePath": "apps/helpdesk/src/tickets/common/utils/isInternalNote.ts",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketReplyEditor.tsx",
+            "apps/helpdesk/src/state/newMessage/utils.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/components/MessageStatusIndicator.tsx"
+          ]
+        }
+      ]
+    },
+    {
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "USER_ROLES_ORDERED_BY_PRIVILEGES",
       "comment": "*\n * @deprecated Use USER_ROLES_ORDERED_BY_PRIVILEGES from @repo/utils package instead\n * @date 2025-11-18\n * @type permissions-migration\n ",
@@ -2512,11 +2529,11 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1610,
+      "count": 1609,
       "usages": [
         {
           "name": "LegacyButton",
-          "count": 717,
+          "count": 716,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/CTA.tsx",
             "apps/helpdesk/src/auto_qa/components/Dimension.tsx",
@@ -2930,7 +2947,6 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/GorgiasChatCreationWizardStepBranding.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/GorgiasChatCreationWizardStepInstallation.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/revamp/components/DiscardNewChatPrompt.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/revamp/components/steps/GorgiasChatCreationWizardStepBranding.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/components/UploadLogoModal.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationConnectStore.tsx",

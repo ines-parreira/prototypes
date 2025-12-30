@@ -1,17 +1,17 @@
 import type { ComponentProps } from 'react'
 import { useState } from 'react'
 
+import {
+    DisplayedContent,
+    FetchingState,
+    useRegenerateTicketMessageTranslations,
+    useTicketMessageDisplayState,
+} from '@repo/tickets'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
 import { IntlDisplayNames } from 'constants/languages'
 import useAppSelector from 'hooks/useAppSelector'
 import { getTicket } from 'state/ticket/selectors'
-import { useRegenerateTicketMessageTranslations } from 'tickets/core/hooks/translations/useRegenerateTicketMessageTranslations'
-import {
-    DisplayedContent,
-    FetchingState,
-} from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
-import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
 
 import { TranslationLimit } from '../TranslationLimit'
 import { TranslationLoader } from '../TranslationLoader'
@@ -29,11 +29,11 @@ export function TranslationsDropdown({ messageId }: TranslationsDropdownProps) {
     const { regenerateTicketMessageTranslations } =
         useRegenerateTicketMessageTranslations()
     const {
-        getTicketMessageTranslationDisplay,
+        display,
+        fetchingState,
+        hasRegeneratedOnce,
         setTicketMessageTranslationDisplay,
-    } = useTicketMessageTranslationDisplay()
-    const { display, fetchingState, hasRegeneratedOnce } =
-        getTicketMessageTranslationDisplay(messageId)
+    } = useTicketMessageDisplayState(messageId)
 
     async function handleRegenerateTranslation() {
         await regenerateTicketMessageTranslations(messageId)

@@ -85,25 +85,19 @@ jest.mock('@gorgias/realtime-ably', () => ({
 }))
 
 const mockShouldShowTranslatedContent = jest.fn().mockReturnValue(true)
-jest.mock(
-    'tickets/core/hooks/translations/useCurrentUserLanguagePreferences',
-    () => ({
-        useCurrentUserLanguagePreferences: () => ({
-            shouldShowTranslatedContent: mockShouldShowTranslatedContent,
-        }),
-    }),
-)
-
 const mockTranslationMap: Record<number, { subject: string; excerpt: string }> =
     {}
-jest.mock(
-    'tickets/core/hooks/translations/useTicketsTranslatedProperties',
-    () => ({
-        useTicketsTranslatedProperties: () => ({
-            translationMap: mockTranslationMap,
-        }),
+jest.mock('@repo/tickets', () => ({
+    ...jest.requireActual('@repo/tickets'),
+    useCurrentUserLanguagePreferences: () => ({
+        shouldShowTranslatedContent: mockShouldShowTranslatedContent,
     }),
-)
+    useTicketsTranslatedProperties: () => ({
+        translationMap: mockTranslationMap,
+        updateTicketTranslatedSubject: jest.fn(),
+        isInitialLoading: false,
+    }),
+}))
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({

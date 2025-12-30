@@ -1,7 +1,4 @@
-import type React from 'react'
-
-import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -10,20 +7,13 @@ import { UserSettingType } from '@gorgias/helpdesk-queries'
 import type { UserPreferencesSettingData } from '@gorgias/helpdesk-types'
 import { Language } from '@gorgias/helpdesk-types'
 
-import { appQueryClient } from 'api/queryClient'
-import type { CurrentUser } from 'pages/settings/yourProfile/types'
-
-import { useCurrentUserLanguagePreferences } from '../translations/useCurrentUserLanguagePreferences'
+import { renderHook, testAppQueryClient } from '../../tests/render.utils'
+import type { CurrentUser } from '../hooks/useCurrentUserLanguagePreferences'
+import { useCurrentUserLanguagePreferences } from '../hooks/useCurrentUserLanguagePreferences'
 
 const server = setupServer()
 
 const mockGetCurrentUser = mockGetCurrentUserHandler()
-
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={appQueryClient}>
-        {children}
-    </QueryClientProvider>
-)
 
 describe('useCurrentUserLanguagePreferences', () => {
     beforeAll(() => {
@@ -36,7 +26,7 @@ describe('useCurrentUserLanguagePreferences', () => {
 
     afterEach(() => {
         server.resetHandlers()
-        appQueryClient.clear()
+        testAppQueryClient.clear()
     })
 
     afterAll(() => {
@@ -49,12 +39,7 @@ describe('useCurrentUserLanguagePreferences', () => {
         )
         server.use(handler)
 
-        const { result } = renderHook(
-            () => useCurrentUserLanguagePreferences(),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useCurrentUserLanguagePreferences())
 
         await waitFor(() => {
             expect(result.current.primary).toBeUndefined()
@@ -74,12 +59,7 @@ describe('useCurrentUserLanguagePreferences', () => {
         )
         server.use(handler)
 
-        const { result } = renderHook(
-            () => useCurrentUserLanguagePreferences(),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useCurrentUserLanguagePreferences())
 
         await waitFor(() => {
             expect(result.current).toEqual({
@@ -110,12 +90,7 @@ describe('useCurrentUserLanguagePreferences', () => {
         )
         server.use(handler)
 
-        const { result } = renderHook(
-            () => useCurrentUserLanguagePreferences(),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useCurrentUserLanguagePreferences())
 
         await waitFor(() => {
             expect(result.current).toEqual({
@@ -146,12 +121,7 @@ describe('useCurrentUserLanguagePreferences', () => {
         )
         server.use(handler)
 
-        const { result } = renderHook(
-            () => useCurrentUserLanguagePreferences(),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useCurrentUserLanguagePreferences())
 
         await waitFor(() => {
             expect(result.current).toEqual({
@@ -187,12 +157,7 @@ describe('useCurrentUserLanguagePreferences', () => {
         )
         server.use(handler)
 
-        const { result } = renderHook(
-            () => useCurrentUserLanguagePreferences(),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useCurrentUserLanguagePreferences())
 
         await waitFor(() => {
             expect(result.current).toEqual({
@@ -214,12 +179,7 @@ describe('useCurrentUserLanguagePreferences', () => {
         )
         server.use(handler)
 
-        const { result } = renderHook(
-            () => useCurrentUserLanguagePreferences(),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useCurrentUserLanguagePreferences())
 
         await waitFor(() => {
             expect(result.current).toEqual({
@@ -250,12 +210,7 @@ describe('useCurrentUserLanguagePreferences', () => {
         )
         server.use(handler)
 
-        const { result } = renderHook(
-            () => useCurrentUserLanguagePreferences(),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useCurrentUserLanguagePreferences())
 
         await waitFor(() => {
             expect(result.current).toEqual({
@@ -285,12 +240,7 @@ describe('useCurrentUserLanguagePreferences', () => {
         )
         server.use(handler)
 
-        const { result } = renderHook(
-            () => useCurrentUserLanguagePreferences(),
-            {
-                wrapper,
-            },
-        )
+        const { result } = renderHook(() => useCurrentUserLanguagePreferences())
 
         await waitFor(() => {
             expect(result.current).toEqual({
@@ -322,9 +272,8 @@ describe('useCurrentUserLanguagePreferences', () => {
             )
             server.use(handler)
 
-            const { result } = renderHook(
-                () => useCurrentUserLanguagePreferences(),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useCurrentUserLanguagePreferences(),
             )
 
             await waitFor(() => {
@@ -353,9 +302,8 @@ describe('useCurrentUserLanguagePreferences', () => {
             )
             server.use(handler)
 
-            const { result } = renderHook(
-                () => useCurrentUserLanguagePreferences(),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useCurrentUserLanguagePreferences(),
             )
 
             await waitFor(() => {
@@ -384,9 +332,8 @@ describe('useCurrentUserLanguagePreferences', () => {
             )
             server.use(handler)
 
-            const { result } = renderHook(
-                () => useCurrentUserLanguagePreferences(),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useCurrentUserLanguagePreferences(),
             )
 
             await waitFor(() => {
@@ -415,9 +362,8 @@ describe('useCurrentUserLanguagePreferences', () => {
             )
             server.use(handler)
 
-            const { result } = renderHook(
-                () => useCurrentUserLanguagePreferences(),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useCurrentUserLanguagePreferences(),
             )
 
             await waitFor(() => {
@@ -446,9 +392,8 @@ describe('useCurrentUserLanguagePreferences', () => {
             )
             server.use(handler)
 
-            const { result } = renderHook(
-                () => useCurrentUserLanguagePreferences(),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useCurrentUserLanguagePreferences(),
             )
 
             await waitFor(() => {
@@ -477,9 +422,8 @@ describe('useCurrentUserLanguagePreferences', () => {
             )
             server.use(handler)
 
-            const { result } = renderHook(
-                () => useCurrentUserLanguagePreferences(),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useCurrentUserLanguagePreferences(),
             )
 
             await waitFor(() => {
@@ -498,9 +442,8 @@ describe('useCurrentUserLanguagePreferences', () => {
             )
             server.use(handler)
 
-            const { result } = renderHook(
-                () => useCurrentUserLanguagePreferences(),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useCurrentUserLanguagePreferences(),
             )
 
             await waitFor(() => {

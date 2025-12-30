@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
+import { useParams } from 'react-router'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type {
@@ -10,21 +11,17 @@ import type {
     TicketMessageTranslation,
 } from '@gorgias/helpdesk-types'
 
-import useAppSelector from 'hooks/useAppSelector'
-import { getTicket } from 'state/ticket/selectors'
-import {
-    DisplayedContent,
-    FetchingState,
-} from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
-import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
-
+import { useTicket } from '../../../hooks/useTicket'
+import { DisplayedContent, FetchingState } from '../../store/constants'
+import { useTicketMessageTranslationDisplay } from '../../store/useTicketMessageTranslationDisplay'
 import { KeyPrefixes } from '../constants'
 import type { ExtractEvent, TicketTranslationsQueryKeyParams } from '../types'
 
 type CachedData = HttpResponse<ListTicketMessageTranslations200> | undefined
 
 export function useTicketMessageTranslationCompleteEventHandler() {
-    const ticket = useAppSelector(getTicket)
+    const { ticketId } = useParams<{ ticketId: string }>()
+    const { data: ticket } = useTicket(Number(ticketId))
 
     const queryClient = useQueryClient()
     const {
@@ -36,6 +33,12 @@ export function useTicketMessageTranslationCompleteEventHandler() {
         (
             event: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.0'>,
         ) => {
+            if (!ticket) {
+                return
+            }
+
+            const { messages } = ticket.data
+
             const { ticket_id, ticket_message_id, language } = event.data
 
             const queryKey = queryKeys.tickets.listTicketMessageTranslations({
@@ -100,7 +103,7 @@ export function useTicketMessageTranslationCompleteEventHandler() {
                 },
             ])
 
-            const ticketFirstMessageId = ticket?.messages[0]?.id
+            const ticketFirstMessageId = messages[0]?.id
             if (ticketFirstMessageId !== ticket_message_id) {
                 return
             }
@@ -134,7 +137,7 @@ export function useTicketMessageTranslationCompleteEventHandler() {
         },
         [
             queryClient,
-            ticket?.messages,
+            ticket,
             setTicketMessageTranslationDisplay,
             getTicketMessageTranslationDisplay,
         ],

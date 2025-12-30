@@ -1,7 +1,4 @@
-import type { ReactNode } from 'react'
-
-import { QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react'
+import { act } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -12,14 +9,10 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
-import { appQueryClient } from 'api/queryClient'
-import {
-    DisplayedContent,
-    FetchingState,
-    TicketMessagesTranslationDisplayContext,
-} from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
-
-import { useRegenerateTicketMessageTranslations } from '../translations/useRegenerateTicketMessageTranslations'
+import { renderHook, testAppQueryClient } from '../../tests/render.utils'
+import { useRegenerateTicketMessageTranslations } from '../hooks/useRegenerateTicketMessageTranslations'
+import { DisplayedContent } from '../store/constants'
+import { useTicketMessageTranslationDisplay } from '../store/useTicketMessageTranslationDisplay'
 
 const mockCurrentUserWithLanguagePrefs = {
     ...mockUser(),
@@ -47,44 +40,32 @@ const mockRequestTranslation = mockRequestTicketMessageTranslationHandler()
 
 const server = setupServer()
 
-const mockSetTicketMessageTranslationDisplay = jest.fn()
-const mockGetTicketMessageTranslationDisplay = jest.fn().mockReturnValue({
-    display: DisplayedContent.Original,
-    fetchingState: FetchingState.Idle,
-    hasRegeneratedOnce: false,
-})
-
-const wrapper = ({ children }: { children: ReactNode }) => (
-    <QueryClientProvider client={appQueryClient}>
-        <TicketMessagesTranslationDisplayContext.Provider
-            value={{
-                setTicketMessageTranslationDisplay:
-                    mockSetTicketMessageTranslationDisplay,
-                getTicketMessageTranslationDisplay:
-                    mockGetTicketMessageTranslationDisplay,
-                allMessageDisplayState: DisplayedContent.Translated,
-                setAllTicketMessagesToOriginal: jest.fn(),
-                setAllTicketMessagesToTranslated: jest.fn(),
-            }}
-        >
-            {children}
-        </TicketMessagesTranslationDisplayContext.Provider>
-    </QueryClientProvider>
-)
+const mockSetTicketMessageTranslationDisplay = vi.fn()
 
 describe('useRegenerateTicketMessageTranslations', () => {
     beforeAll(() => {
         server.listen({ onUnhandledRequest: 'error' })
+        // Spy on the zustand store's setter
+        vi.spyOn(
+            useTicketMessageTranslationDisplay.getState(),
+            'setTicketMessageTranslationDisplay',
+        ).mockImplementation(mockSetTicketMessageTranslationDisplay)
     })
 
     beforeEach(() => {
+        vi.clearAllMocks()
+        mockSetTicketMessageTranslationDisplay.mockClear()
+        // Reset zustand store
+        useTicketMessageTranslationDisplay.setState({
+            ticketMessagesTranslationDisplayMap: {},
+            allMessageDisplayState: DisplayedContent.Translated,
+        })
         server.use(mockGetCurrentUser.handler, mockRequestTranslation.handler)
-        jest.clearAllMocks()
     })
 
     afterEach(() => {
         server.resetHandlers()
-        appQueryClient.clear()
+        testAppQueryClient.clear()
     })
 
     afterAll(() => {
@@ -93,9 +74,8 @@ describe('useRegenerateTicketMessageTranslations', () => {
 
     describe('regenerateTicketMessageTranslations', () => {
         it('should return a function', () => {
-            const { result } = renderHook(
-                () => useRegenerateTicketMessageTranslations(),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useRegenerateTicketMessageTranslations(),
             )
 
             expect(
@@ -111,9 +91,8 @@ describe('useRegenerateTicketMessageTranslations', () => {
 
             server.use(mockGetCurrentUserNoLang.handler)
 
-            const { result } = renderHook(
-                () => useRegenerateTicketMessageTranslations(),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useRegenerateTicketMessageTranslations(),
             )
 
             const ticketMessageId = 101
@@ -130,9 +109,8 @@ describe('useRegenerateTicketMessageTranslations', () => {
         })
 
         it('should maintain stable function reference', () => {
-            const { result, rerender } = renderHook(
-                () => useRegenerateTicketMessageTranslations(),
-                { wrapper },
+            const { result, rerender } = renderHook(() =>
+                useRegenerateTicketMessageTranslations(),
             )
 
             const firstRender =
@@ -147,9 +125,8 @@ describe('useRegenerateTicketMessageTranslations', () => {
         })
 
         it('should handle function call without errors when user has language preferences', async () => {
-            const { result } = renderHook(
-                () => useRegenerateTicketMessageTranslations(),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useRegenerateTicketMessageTranslations(),
             )
 
             const ticketMessageId = 101
@@ -171,9 +148,8 @@ describe('useRegenerateTicketMessageTranslations', () => {
 
             server.use(mockRequestTranslationFailure.handler)
 
-            const { result } = renderHook(
-                () => useRegenerateTicketMessageTranslations(),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useRegenerateTicketMessageTranslations(),
             )
 
             const ticketMessageId = 101
@@ -196,9 +172,8 @@ describe('useRegenerateTicketMessageTranslations', () => {
 
             server.use(mockNetworkError.handler)
 
-            const { result } = renderHook(
-                () => useRegenerateTicketMessageTranslations(),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useRegenerateTicketMessageTranslations(),
             )
 
             const ticketMessageId = 101

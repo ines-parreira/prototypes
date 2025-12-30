@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { sleep } from '@repo/utils'
 import { chunk, isNumber } from 'lodash'
 
 import type { DomainEvent } from '@gorgias/events'
@@ -8,17 +9,15 @@ import {
     useRequestTicketMessageTranslation,
     useRequestTicketTranslation,
 } from '@gorgias/helpdesk-queries'
-import type { Language } from '@gorgias/helpdesk-types'
+import type {
+    Language,
+    TicketMessage,
+    TicketMessageSourceType,
+} from '@gorgias/helpdesk-types'
 
-import { sleep } from 'hooks/integrations/phone/utils'
-import type { TicketMessage } from 'models/ticket/types'
-import { isInternalNote } from 'tickets/common/utils'
-import {
-    DisplayedContent,
-    FetchingState,
-} from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
-import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
-
+import { isInternalNote } from '../../../helpers/isInternalNote'
+import { DisplayedContent, FetchingState } from '../../store/constants'
+import { useTicketMessageTranslationDisplay } from '../../store/useTicketMessageTranslationDisplay'
 import { useCurrentUserLanguagePreferences } from '../useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from '../useTicketsTranslatedProperties'
 import { useTicketTranslations } from '../useTicketTranslations'
@@ -196,7 +195,12 @@ export const useLiveTicketTranslationsUpdates = ({
                     if (!message.id) return false
 
                     // We don't want to generate translations for internal notes
-                    if (message?.source && isInternalNote(message.source.type))
+                    if (
+                        message?.source &&
+                        isInternalNote(
+                            message.source.type as TicketMessageSourceType,
+                        )
+                    )
                         return false
 
                     const messageTranslation =

@@ -1,13 +1,12 @@
+import {
+    DisplayedContent,
+    FetchingState,
+    useTicketMessageTranslationDisplay,
+} from '@repo/tickets'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-
-import {
-    DisplayedContent,
-    FetchingState,
-    TicketMessagesTranslationDisplayContext,
-} from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
 
 import { TranslationsDropdown } from '../TranslationsDropdown/TranslationsDropdown'
 
@@ -25,15 +24,13 @@ const mockStore = {
 
 // Mock the useRegenerateTicketMessageTranslations hook
 const mockRegenerateTicketMessageTranslations = jest.fn()
-jest.mock(
-    'tickets/core/hooks/translations/useRegenerateTicketMessageTranslations',
-    () => ({
-        useRegenerateTicketMessageTranslations: () => ({
-            regenerateTicketMessageTranslations:
-                mockRegenerateTicketMessageTranslations,
-        }),
+jest.mock('@repo/tickets', () => ({
+    ...jest.requireActual('@repo/tickets'),
+    useRegenerateTicketMessageTranslations: () => ({
+        regenerateTicketMessageTranslations:
+            mockRegenerateTicketMessageTranslations,
     }),
-)
+}))
 
 const mockMessageId = 123
 
@@ -49,22 +46,10 @@ const mockDisplayTypeTranslated = {
     hasRegeneratedOnce: false,
 }
 
-const mockTranslationContext = {
-    getTicketMessageTranslationDisplay: jest.fn(),
-    setTicketMessageTranslationDisplay: jest.fn(),
-    allMessageDisplayState: DisplayedContent.Translated,
-    setAllTicketMessagesToOriginal: jest.fn(),
-    setAllTicketMessagesToTranslated: jest.fn(),
-}
-
 const renderWithContext = (messageId: number = mockMessageId) => {
     return render(
         <Provider store={mockStore as any}>
-            <TicketMessagesTranslationDisplayContext.Provider
-                value={mockTranslationContext}
-            >
-                <TranslationsDropdown messageId={messageId} />
-            </TicketMessagesTranslationDisplayContext.Provider>
+            <TranslationsDropdown messageId={messageId} />
         </Provider>,
     )
 }
@@ -73,9 +58,13 @@ describe('TranslationsDropdown', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockRegenerateTicketMessageTranslations.mockClear()
-        mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
-            mockDisplayTypeOriginal,
-        )
+        // Reset the zustand store state
+        useTicketMessageTranslationDisplay.setState({
+            ticketMessagesTranslationDisplayMap: {
+                [mockMessageId]: mockDisplayTypeOriginal,
+            },
+            allMessageDisplayState: DisplayedContent.Translated,
+        })
     })
 
     describe('Original content display', () => {
@@ -100,24 +89,26 @@ describe('TranslationsDropdown', () => {
                 await user.click(seeTranslationButton)
             })
 
+            const state = useTicketMessageTranslationDisplay.getState()
             expect(
-                mockTranslationContext.setTicketMessageTranslationDisplay,
-            ).toHaveBeenCalledWith([
-                {
-                    messageId: mockMessageId,
-                    display: DisplayedContent.Translated,
-                    fetchingState: FetchingState.Idle,
-                    hasRegeneratedOnce: false,
-                },
-            ])
+                state.getTicketMessageTranslationDisplay(mockMessageId),
+            ).toEqual({
+                messageId: mockMessageId,
+                display: DisplayedContent.Translated,
+                fetchingState: FetchingState.Idle,
+                hasRegeneratedOnce: false,
+            })
         })
     })
 
     describe('Translated content display', () => {
         beforeEach(() => {
-            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                mockDisplayTypeTranslated,
-            )
+            useTicketMessageTranslationDisplay.setState({
+                ticketMessagesTranslationDisplayMap: {
+                    [mockMessageId]: mockDisplayTypeTranslated,
+                },
+                allMessageDisplayState: DisplayedContent.Translated,
+            })
         })
 
         it('should show dropdown with language name', () => {
@@ -165,16 +156,15 @@ describe('TranslationsDropdown', () => {
                 )
             })
 
+            const state = useTicketMessageTranslationDisplay.getState()
             expect(
-                mockTranslationContext.setTicketMessageTranslationDisplay,
-            ).toHaveBeenCalledWith([
-                {
-                    messageId: mockMessageId,
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Completed,
-                    hasRegeneratedOnce: false,
-                },
-            ])
+                state.getTicketMessageTranslationDisplay(mockMessageId),
+            ).toEqual({
+                messageId: mockMessageId,
+                display: DisplayedContent.Original,
+                fetchingState: FetchingState.Completed,
+                hasRegeneratedOnce: false,
+            })
         })
 
         it('should toggle dropdown open and closed', async () => {
@@ -201,26 +191,32 @@ describe('TranslationsDropdown', () => {
 
     describe('Loading and error states', () => {
         it('should show loading state', () => {
-            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                {
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Loading,
-                    hasRegeneratedOnce: false,
+            useTicketMessageTranslationDisplay.setState({
+                ticketMessagesTranslationDisplayMap: {
+                    [mockMessageId]: {
+                        display: DisplayedContent.Original,
+                        fetchingState: FetchingState.Loading,
+                        hasRegeneratedOnce: false,
+                    },
                 },
-            )
+                allMessageDisplayState: DisplayedContent.Translated,
+            })
             renderWithContext()
 
             expect(screen.getByText('Translating...')).toBeInTheDocument()
         })
 
         it('should show TranslationLimit when failed with hasRegeneratedOnce', () => {
-            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                {
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Failed,
-                    hasRegeneratedOnce: true,
+            useTicketMessageTranslationDisplay.setState({
+                ticketMessagesTranslationDisplayMap: {
+                    [mockMessageId]: {
+                        display: DisplayedContent.Original,
+                        fetchingState: FetchingState.Failed,
+                        hasRegeneratedOnce: true,
+                    },
                 },
-            )
+                allMessageDisplayState: DisplayedContent.Translated,
+            })
             renderWithContext()
 
             expect(
@@ -229,13 +225,16 @@ describe('TranslationsDropdown', () => {
         })
 
         it('should not show TranslationLimit when failed without hasRegeneratedOnce', () => {
-            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                {
-                    display: DisplayedContent.Original,
-                    fetchingState: FetchingState.Failed,
-                    hasRegeneratedOnce: false,
+            useTicketMessageTranslationDisplay.setState({
+                ticketMessagesTranslationDisplayMap: {
+                    [mockMessageId]: {
+                        display: DisplayedContent.Original,
+                        fetchingState: FetchingState.Failed,
+                        hasRegeneratedOnce: false,
+                    },
                 },
-            )
+                allMessageDisplayState: DisplayedContent.Translated,
+            })
             renderWithContext()
 
             expect(
@@ -246,14 +245,25 @@ describe('TranslationsDropdown', () => {
 
     describe('Regeneration', () => {
         beforeEach(() => {
-            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                mockDisplayTypeTranslated,
-            )
+            useTicketMessageTranslationDisplay.setState({
+                ticketMessagesTranslationDisplayMap: {
+                    [mockMessageId]: mockDisplayTypeTranslated,
+                },
+                allMessageDisplayState: DisplayedContent.Translated,
+            })
         })
 
         it('should call regenerate with correct messageId and close dropdown', async () => {
             const customMessageId = 456
             const user = userEvent.setup()
+
+            useTicketMessageTranslationDisplay.setState({
+                ticketMessagesTranslationDisplayMap: {
+                    [customMessageId]: mockDisplayTypeTranslated,
+                },
+                allMessageDisplayState: DisplayedContent.Translated,
+            })
+
             const { container } = renderWithContext(customMessageId)
 
             await act(async () => {
@@ -280,13 +290,16 @@ describe('TranslationsDropdown', () => {
 
         it('should disable re-generate button when hasRegeneratedOnce is true', async () => {
             const user = userEvent.setup()
-            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                {
-                    display: DisplayedContent.Translated,
-                    fetchingState: FetchingState.Completed,
-                    hasRegeneratedOnce: true,
+            useTicketMessageTranslationDisplay.setState({
+                ticketMessagesTranslationDisplayMap: {
+                    [mockMessageId]: {
+                        display: DisplayedContent.Translated,
+                        fetchingState: FetchingState.Completed,
+                        hasRegeneratedOnce: true,
+                    },
                 },
-            )
+                allMessageDisplayState: DisplayedContent.Translated,
+            })
             renderWithContext()
 
             await act(async () => {
@@ -305,9 +318,12 @@ describe('TranslationsDropdown', () => {
 
     describe('Ticket language handling', () => {
         beforeEach(() => {
-            mockTranslationContext.getTicketMessageTranslationDisplay.mockReturnValue(
-                mockDisplayTypeTranslated,
-            )
+            useTicketMessageTranslationDisplay.setState({
+                ticketMessagesTranslationDisplayMap: {
+                    [mockMessageId]: mockDisplayTypeTranslated,
+                },
+                allMessageDisplayState: DisplayedContent.Translated,
+            })
         })
 
         it('should hide language text when ticket has no language', () => {
@@ -324,11 +340,7 @@ describe('TranslationsDropdown', () => {
 
             render(
                 <Provider store={mockStoreNoLanguage as any}>
-                    <TicketMessagesTranslationDisplayContext.Provider
-                        value={mockTranslationContext}
-                    >
-                        <TranslationsDropdown messageId={mockMessageId} />
-                    </TicketMessagesTranslationDisplayContext.Provider>
+                    <TranslationsDropdown messageId={mockMessageId} />
                 </Provider>,
             )
 
@@ -352,11 +364,7 @@ describe('TranslationsDropdown', () => {
 
             const { container } = render(
                 <Provider store={mockStoreNoLanguage as any}>
-                    <TicketMessagesTranslationDisplayContext.Provider
-                        value={mockTranslationContext}
-                    >
-                        <TranslationsDropdown messageId={mockMessageId} />
-                    </TicketMessagesTranslationDisplayContext.Provider>
+                    <TranslationsDropdown messageId={mockMessageId} />
                 </Provider>,
             )
 

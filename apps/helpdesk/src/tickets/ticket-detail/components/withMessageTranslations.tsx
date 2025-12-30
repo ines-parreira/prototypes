@@ -1,5 +1,12 @@
 import { type ComponentType, useMemo } from 'react'
 
+import {
+    DisplayedContent,
+    useCurrentUserLanguagePreferences,
+    useTicketMessageDisplayState,
+    useTicketMessageTranslations,
+} from '@repo/tickets'
+
 import type {
     Language,
     TicketMessageTranslation,
@@ -8,11 +15,6 @@ import type {
 import useAppSelector from 'hooks/useAppSelector'
 import type { TicketMessage } from 'models/ticket/types'
 import { getTicket } from 'state/ticket/selectors'
-import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
-import { useTicketMessageTranslations } from 'tickets/core/hooks/translations/useTicketMessageTranslations'
-
-import { DisplayedContent } from './context/ticketMessageTranslationDisplayContext'
-import { useTicketMessageTranslationDisplay } from './context/useTicketMessageTranslationDisplay'
 
 export type WithMessageTranslationsProps = {
     message: TicketMessage & { translations?: TicketMessageTranslation }
@@ -26,8 +28,7 @@ export function withMessageTranslations<T extends WithMessageTranslationsProps>(
         const ticket = useAppSelector(getTicket)
         const { shouldShowTranslatedContent } =
             useCurrentUserLanguagePreferences()
-        const { getTicketMessageTranslationDisplay } =
-            useTicketMessageTranslationDisplay()
+        const { display } = useTicketMessageDisplayState(props.message?.id ?? 0)
         const { getMessageTranslation } = useTicketMessageTranslations({
             ticket_id: props.ticketId,
         })
@@ -39,11 +40,9 @@ export function withMessageTranslations<T extends WithMessageTranslationsProps>(
                 return props.message
 
             const messageTranslations = getMessageTranslation(props.message.id)
-            const displayType = getTicketMessageTranslationDisplay(
-                props.message.id,
-            )
+
             if (
-                displayType.display === DisplayedContent.Translated &&
+                display === DisplayedContent.Translated &&
                 messageTranslations
             ) {
                 return {
@@ -53,7 +52,7 @@ export function withMessageTranslations<T extends WithMessageTranslationsProps>(
             }
             return props.message
         }, [
-            getTicketMessageTranslationDisplay,
+            display,
             getMessageTranslation,
             props.message,
             shouldShowTranslatedContent,

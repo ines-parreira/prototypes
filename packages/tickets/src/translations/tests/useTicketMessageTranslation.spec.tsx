@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
@@ -15,20 +15,16 @@ import {
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
-import { appQueryClient } from 'api/queryClient'
-
-import { useTicketMessageTranslation } from '../translations/useTicketMessageTranslation'
+import { testAppQueryClient } from '../../tests/render.utils'
+import { useTicketMessageTranslation } from '../hooks/useTicketMessageTranslation'
 
 // Mock the feature flag hook
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
+vi.mock('@repo/feature-flags', async () => ({
+    ...(await vi.importActual('@repo/feature-flags')),
+    useFlag: vi.fn(),
 }))
 
-const mockUseFlag = require('@repo/feature-flags')
-    .useFlag as jest.MockedFunction<
-    typeof import('@repo/feature-flags').useFlag
->
+const mockUseFlag = vi.mocked(useFlag)
 
 // Mock data
 const mockTicketMessageTranslations: TicketMessageTranslation[] = [
@@ -93,7 +89,7 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(...localHandlers)
-    appQueryClient.clear()
+    testAppQueryClient.clear()
     mockUseFlag.mockImplementation(
         (flag) => flag === FeatureFlagKey.MessagesTranslations,
     )
@@ -101,7 +97,7 @@ beforeEach(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    jest.clearAllMocks()
+    vi.clearAllMocks()
 })
 
 afterAll(() => {
@@ -109,7 +105,7 @@ afterAll(() => {
 })
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={appQueryClient}>
+    <QueryClientProvider client={testAppQueryClient}>
         {children}
     </QueryClientProvider>
 )

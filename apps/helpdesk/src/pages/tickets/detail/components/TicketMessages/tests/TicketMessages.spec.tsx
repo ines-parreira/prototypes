@@ -27,28 +27,9 @@ import {
 import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
 import TicketMessages from '../TicketMessages'
 
-jest.mock(
-    'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/TicketMessageTranslationDisplayProvider',
-    () => ({
-        TicketMessageTranslationDisplayProvider: ({
-            children,
-        }: {
-            children: React.ReactNode
-        }) => (
-            <div data-testid="ticket-message-translation-provider">
-                {children}
-            </div>
-        ),
-    }),
-)
-
-jest.mock(
-    'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/withMessageTranslations',
-    () => ({
-        withMessageTranslations: (Component: React.ComponentType<any>) =>
-            Component,
-    }),
-)
+jest.mock('tickets/ticket-detail/components/withMessageTranslations', () => ({
+    withMessageTranslations: (Component: React.ComponentType<any>) => Component,
+}))
 
 jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('state/ticket/selectors')
@@ -143,6 +124,7 @@ const defaultStore: Partial<RootState> = {
         current: {
             messages: [],
         },
+        language: 'en',
     }),
 }
 
@@ -156,6 +138,7 @@ const defaultState: Partial<RootState> = {
         current: {
             messages: [],
         },
+        language: 'en',
     }),
 }
 

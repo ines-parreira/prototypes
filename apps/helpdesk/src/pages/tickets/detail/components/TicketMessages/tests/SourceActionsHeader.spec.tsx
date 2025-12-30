@@ -2,6 +2,7 @@ import type { ReactElement } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useDebouncedValue, useElementSize } from '@repo/hooks'
+import { useTicketMessageTranslation } from '@repo/tickets'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { setupServer } from 'msw/node'
@@ -18,7 +19,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { isTicketMessageDeleted } from 'models/ticket/predicates'
 import type { Source, TicketMessage } from 'models/ticket/types'
 import * as infobarActions from 'state/infobar/actions'
-import { useTicketMessageTranslation } from 'tickets/core/hooks/translations/useTicketMessageTranslation'
 
 import SourceActionsHeader from '../SourceActionsHeader'
 
@@ -35,12 +35,11 @@ jest.mock('models/ticket/predicates', () => ({
 jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn(),
 }))
-jest.mock(
-    'tickets/core/hooks/translations/useTicketMessageTranslation',
-    () => ({
-        useTicketMessageTranslation: jest.fn(),
-    }),
-)
+jest.mock('@repo/tickets', () => ({
+    ...jest.requireActual('@repo/tickets'),
+    useTicketMessageTranslation: jest.fn(),
+    useFlag: jest.fn(),
+}))
 jest.mock(
     '../CollapsedSourceActions/CollapsedSourceActions',
     () =>

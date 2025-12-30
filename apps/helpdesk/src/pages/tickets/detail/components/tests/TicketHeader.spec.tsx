@@ -32,7 +32,6 @@ import { NotificationStatus } from 'state/notifications/types'
 import * as ticketActions from 'state/ticket/actions'
 import * as ticketSelectors from 'state/ticket/selectors'
 import type { RootState } from 'state/types'
-import { useTicketsTranslatedProperties } from 'tickets/core/hooks/translations/useTicketsTranslatedProperties'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import type Snooze from '../Snooze'
@@ -162,21 +161,23 @@ jest.mock('../TicketNavigation/hooks/useIsTicketNavigationAvailable')
 const mockUseIsTicketNavigationAvailable =
     useIsTicketNavigationAvailable as jest.Mock
 
-jest.mock('tickets/core/hooks/translations/useTicketsTranslatedProperties')
-const mockUseTicketsTranslatedProperties =
-    useTicketsTranslatedProperties as jest.Mock
-
 const useParamsMock = useParams as jest.Mock
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = useFlag as jest.Mock
 
-jest.mock(
-    'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay',
-)
-const mockUseTicketMessageTranslationDisplay = jest.requireMock(
-    'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay',
-).useTicketMessageTranslationDisplay as jest.Mock
+jest.mock('@repo/tickets', () => ({
+    ...jest.requireActual('@repo/tickets'),
+    useTicketMessageTranslationDisplay: jest.fn(),
+    useTicketMessageDisplayState: jest.fn(),
+    useTicketsTranslatedProperties: jest.fn(),
+}))
+const mockUseTicketMessageTranslationDisplay = jest.requireMock('@repo/tickets')
+    .useTicketMessageTranslationDisplay as jest.Mock
+const mockUseTicketMessageDisplayState = jest.requireMock('@repo/tickets')
+    .useTicketMessageDisplayState as jest.Mock
+const mockUseTicketsTranslatedProperties = jest.requireMock('@repo/tickets')
+    .useTicketsTranslatedProperties as jest.Mock
 
 // MSW server setup for translation testing
 const server = setupServer()
@@ -285,6 +286,14 @@ describe('<TicketHeader />', () => {
             setAllTicketMessagesToTranslated: jest.fn(),
             allMessageDisplayState: 'translated',
             getTicketMessageTranslationDisplay: jest.fn(),
+            setTicketMessageTranslationDisplay: jest.fn(),
+        })
+
+        // Default mock for useTicketMessageDisplayState
+        mockUseTicketMessageDisplayState.mockReturnValue({
+            display: 'original',
+            fetchingState: 'idle',
+            hasRegeneratedOnce: false,
             setTicketMessageTranslationDisplay: jest.fn(),
         })
     })

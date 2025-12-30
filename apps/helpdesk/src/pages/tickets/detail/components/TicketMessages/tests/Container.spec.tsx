@@ -31,13 +31,9 @@ const customer = fromJS({
 })
 
 // Mock the withMessageTranslations HOC
-jest.mock(
-    'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/withMessageTranslations',
-    () => ({
-        withMessageTranslations: (Component: React.ComponentType<any>) =>
-            Component,
-    }),
-)
+jest.mock('tickets/ticket-detail/components/withMessageTranslations', () => ({
+    withMessageTranslations: (Component: React.ComponentType<any>) => Component,
+}))
 
 // Mock the FeatureFlags consumer
 jest.mock('@repo/feature-flags', () => ({

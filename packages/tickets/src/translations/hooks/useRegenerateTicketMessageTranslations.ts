@@ -2,9 +2,8 @@ import { useCallback } from 'react'
 
 import { useRequestTicketMessageTranslation } from '@gorgias/helpdesk-queries'
 
-import { FetchingState } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
-import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
-
+import { FetchingState } from '../store/constants'
+import { useTicketMessageTranslationDisplay } from '../store/useTicketMessageTranslationDisplay'
 import { useCurrentUserLanguagePreferences } from './useCurrentUserLanguagePreferences'
 
 export function useRegenerateTicketMessageTranslations() {

@@ -21,7 +21,6 @@ import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 import { appQueryClient } from 'api/queryClient'
 import type { TicketMessage } from 'models/ticket/types'
 
-import { TicketMessageTranslationDisplayProvider } from '../TicketMessageTranslationDisplayProvider'
 import { withMessageTranslations } from '../withMessageTranslations'
 
 // Mock the feature flag hook
@@ -186,9 +185,7 @@ afterAll(() => {
 const wrapper = ({ children }: { children: React.ReactNode }) => (
     <Provider store={mockStore as any}>
         <QueryClientProvider client={appQueryClient}>
-            <TicketMessageTranslationDisplayProvider>
-                {children}
-            </TicketMessageTranslationDisplayProvider>
+            {children}
         </QueryClientProvider>
     </Provider>
 )

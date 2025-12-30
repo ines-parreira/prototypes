@@ -15,65 +15,60 @@ import {
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
-import type { TicketMessage } from 'models/ticket/types'
-import {
-    DisplayedContent,
-    FetchingState,
-    TicketMessagesTranslationDisplayContext,
-} from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
-
-import type { CurrentUser } from '../translations/useCurrentUserLanguagePreferences'
-import { useLiveTicketTranslationsUpdates } from '../translations/useLiveTicketTranslationsUpdates/useLiveTicketTranslationsUpdates'
+import type { CurrentUser } from '../hooks/useCurrentUserLanguagePreferences'
+import { useLiveTicketTranslationsUpdates } from '../hooks/useLiveTicketTranslationsUpdates/useLiveTicketTranslationsUpdates'
+import { DisplayedContent, FetchingState } from '../store/constants'
+import { useTicketMessageTranslationDisplay } from '../store/useTicketMessageTranslationDisplay'
 
 type UseLiveTicketTranslationsUpdatesParams = Parameters<
     typeof useLiveTicketTranslationsUpdates
 >[0]
 
-// Mock the feature flag hook
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
+vi.mock('@repo/feature-flags', async () => ({
+    ...(await vi.importActual('@repo/feature-flags')),
+    useFlag: vi.fn(),
 }))
 
 // Mock event handlers
-jest.mock(
-    '../translations/useLiveTicketTranslationsUpdates/useTicketTranslationCompleteEventHandler',
+vi.mock(
+    '../hooks/useLiveTicketTranslationsUpdates/useTicketTranslationCompleteEventHandler',
     () => ({
         useTicketTranslationCompleteEventHandler: () => ({
-            handleTicketTranslationCompleted: jest.fn(),
+            handleTicketTranslationCompleted: vi.fn(),
         }),
     }),
 )
 
-jest.mock(
-    '../translations/useLiveTicketTranslationsUpdates/useTicketTranslationFailedEventHandler',
+vi.mock(
+    '../hooks/useLiveTicketTranslationsUpdates/useTicketTranslationFailedEventHandler',
     () => ({
         useTicketTranslationFailedEventHandler: () => ({
-            handleTicketTranslationFailed: jest.fn(),
+            handleTicketTranslationFailed: vi.fn(),
         }),
     }),
 )
 
-jest.mock(
-    '../translations/useLiveTicketTranslationsUpdates/useTicketMessageTranslationCompleteEventHandler',
+vi.mock(
+    '../hooks/useLiveTicketTranslationsUpdates/useTicketMessageTranslationCompleteEventHandler',
     () => ({
         useTicketMessageTranslationCompleteEventHandler: () => ({
-            handleTicketMessageTranslationCompleted: jest.fn(),
+            handleTicketMessageTranslationCompleted: vi.fn(),
         }),
     }),
 )
 
-jest.mock(
-    '../translations/useLiveTicketTranslationsUpdates/useTicketMessageTranslationFailedEventHandler',
+vi.mock(
+    '../hooks/useLiveTicketTranslationsUpdates/useTicketMessageTranslationFailedEventHandler',
     () => ({
         useTicketMessageTranslationFailedEventHandler: () => ({
-            handleTicketMessageTranslationFailed: jest.fn(),
+            handleTicketMessageTranslationFailed: vi.fn(),
         }),
     }),
 )
 
-const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlag = vi.mocked(useFlag)
 
 // Server setup
 const server = setupServer()
@@ -89,22 +84,6 @@ const queryClient = new QueryClient({
         },
     },
 })
-
-// Mock context value
-const mockSetTicketMessageTranslationDisplay = jest.fn()
-const mockGetTicketMessageTranslationDisplay = jest.fn(() => ({
-    display: DisplayedContent.Original,
-    fetchingState: FetchingState.Idle,
-    hasRegeneratedOnce: false,
-}))
-
-const mockContextValue = {
-    getTicketMessageTranslationDisplay: mockGetTicketMessageTranslationDisplay,
-    setTicketMessageTranslationDisplay: mockSetTicketMessageTranslationDisplay,
-    allMessageDisplayState: DisplayedContent.Translated,
-    setAllTicketMessagesToOriginal: jest.fn(),
-    setAllTicketMessagesToTranslated: jest.fn(),
-}
 
 // Create mock ticket messages
 const mockTicketMessages: TicketMessage[] = [
@@ -276,16 +255,28 @@ const defaultHandlers = [
     mockRequestMessageTranslation.handler,
 ]
 
+// Create a spy for the store's setTicketMessageTranslationDisplay method
+const mockSetTicketMessageTranslationDisplay = vi.fn()
+
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
+    // Spy on the zustand store's setter
+    vi.spyOn(
+        useTicketMessageTranslationDisplay.getState(),
+        'setTicketMessageTranslationDisplay',
+    ).mockImplementation(mockSetTicketMessageTranslationDisplay)
 })
 
 beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
     queryClient.clear()
     mockUseFlag.mockReturnValue(true)
     mockSetTicketMessageTranslationDisplay.mockClear()
-    mockGetTicketMessageTranslationDisplay.mockClear()
+    // Reset zustand store
+    useTicketMessageTranslationDisplay.setState({
+        ticketMessagesTranslationDisplayMap: {},
+        allMessageDisplayState: DisplayedContent.Translated,
+    })
     server.use(...defaultHandlers)
 })
 
@@ -298,13 +289,7 @@ afterAll(() => {
 })
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>
-        <TicketMessagesTranslationDisplayContext.Provider
-            value={mockContextValue}
-        >
-            {children}
-        </TicketMessagesTranslationDisplayContext.Provider>
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
 describe('useLiveTicketTranslationsUpdates', () => {

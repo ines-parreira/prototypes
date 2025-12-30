@@ -1,8 +1,7 @@
 import { useCallback } from 'react'
 
-import { FetchingState } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
-import { useTicketMessageTranslationDisplay } from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/useTicketMessageTranslationDisplay'
-
+import { FetchingState } from '../../store/constants'
+import { useTicketMessageTranslationDisplay } from '../../store/useTicketMessageTranslationDisplay'
 import type { ExtractEvent } from '../types'
 
 export function useTicketMessageTranslationFailedEventHandler() {

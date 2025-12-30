@@ -2,22 +2,24 @@ import type React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
-import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { MemoryRouter, Route } from 'react-router-dom'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import { Language } from '@gorgias/helpdesk-types'
 
-import {
-    DisplayedContent,
-    FetchingState,
-    TicketMessagesTranslationDisplayContext,
-} from 'tickets/ticket-detail/components/TicketMessagesTranslationDisplay/context/ticketMessageTranslationDisplayContext'
+import { useTicket } from '../../hooks/useTicket'
+import type { ExtractEvent } from '../hooks/types'
+import { useTicketMessageTranslationCompleteEventHandler } from '../hooks/useLiveTicketTranslationsUpdates/useTicketMessageTranslationCompleteEventHandler'
+import { DisplayedContent, FetchingState } from '../store/constants'
+import { useTicketMessageTranslationDisplay } from '../store/useTicketMessageTranslationDisplay'
 
-import type { ExtractEvent } from '../translations/types'
-import { useTicketMessageTranslationCompleteEventHandler } from '../translations/useLiveTicketTranslationsUpdates/useTicketMessageTranslationCompleteEventHandler'
+// Mock useTicket to provide ticket data
+vi.mock('../../hooks/useTicket', () => ({
+    useTicket: vi.fn(),
+}))
+
+const mockUseTicket = vi.mocked(useTicket)
+const mockSetTicketMessageTranslationDisplay = vi.fn()
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -32,58 +34,43 @@ const queryClient = new QueryClient({
     },
 })
 
-const mockStore = configureMockStore([thunk])
-
-// Mock context value
-const mockSetTicketMessageTranslationDisplay = jest.fn()
-const mockGetTicketMessageTranslationDisplay = jest.fn(() => ({
-    display: DisplayedContent.Original,
-    fetchingState: FetchingState.Idle,
-    hasRegeneratedOnce: false,
-}))
-
-const mockContextValue = {
-    getTicketMessageTranslationDisplay: mockGetTicketMessageTranslationDisplay,
-    setTicketMessageTranslationDisplay: mockSetTicketMessageTranslationDisplay,
-    allMessageDisplayState: DisplayedContent.Translated,
-    setAllTicketMessagesToOriginal: jest.fn(),
-    setAllTicketMessagesToTranslated: jest.fn(),
-}
-
-const mockTicket = fromJS({
-    id: 123,
-    messages: [
-        { id: 456, body_text: 'First message' },
-        { id: 789, body_text: 'Second message' },
-    ],
-})
-
-const createWrapper = (ticketData = mockTicket) => {
-    const store = mockStore({
-        ticket: ticketData,
-    })
-
+const createWrapper = (ticketId = '123') => {
     return ({ children }: { children: React.ReactNode }) => (
-        <Provider store={store}>
-            <QueryClientProvider client={queryClient}>
-                <TicketMessagesTranslationDisplayContext.Provider
-                    value={mockContextValue}
-                >
+        <MemoryRouter initialEntries={[`/tickets/${ticketId}`]}>
+            <Route path="/tickets/:ticketId">
+                <QueryClientProvider client={queryClient}>
                     {children}
-                </TicketMessagesTranslationDisplayContext.Provider>
-            </QueryClientProvider>
-        </Provider>
+                </QueryClientProvider>
+            </Route>
+        </MemoryRouter>
     )
 }
 
 const wrapper = createWrapper()
 
 describe('useTicketMessageTranslationCompleteEventHandler', () => {
+    beforeAll(() => {
+        // Spy on the zustand store's setter
+        vi.spyOn(
+            useTicketMessageTranslationDisplay.getState(),
+            'setTicketMessageTranslationDisplay',
+        ).mockImplementation(mockSetTicketMessageTranslationDisplay)
+    })
+
     beforeEach(() => {
-        jest.clearAllMocks()
+        vi.clearAllMocks()
         queryClient.clear()
         mockSetTicketMessageTranslationDisplay.mockClear()
-        mockGetTicketMessageTranslationDisplay.mockClear()
+
+        // Default mock implementation - returns ticket with message ID 456
+        mockUseTicket.mockReturnValue({
+            data: {
+                data: {
+                    id: 123,
+                    messages: [{ id: 456 }],
+                },
+            },
+        } as any)
     })
 
     describe('hook structure', () => {
@@ -373,7 +360,7 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
                 },
             })
 
-            const invalidateQueriesSpy = jest.spyOn(
+            const invalidateQueriesSpy = vi.spyOn(
                 queryClient,
                 'invalidateQueries',
             )
@@ -430,7 +417,7 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
                 },
             })
 
-            const invalidateQueriesSpy = jest.spyOn(
+            const invalidateQueriesSpy = vi.spyOn(
                 queryClient,
                 'invalidateQueries',
             )
@@ -452,12 +439,17 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
         })
 
         it('should not invalidate queries when ticket has no messages', () => {
-            const emptyTicketWrapper = createWrapper(
-                fromJS({
-                    id: 123,
-                    messages: [],
-                }),
-            )
+            // Override mock to return ticket with empty messages array
+            mockUseTicket.mockReturnValue({
+                data: {
+                    data: {
+                        id: 123,
+                        messages: [],
+                    },
+                },
+            } as any)
+
+            const emptyTicketWrapper = createWrapper('123')
 
             const ticketTranslationsKey = [
                 'tickets',
@@ -483,7 +475,7 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
                 },
             })
 
-            const invalidateQueriesSpy = jest.spyOn(
+            const invalidateQueriesSpy = vi.spyOn(
                 queryClient,
                 'invalidateQueries',
             )
@@ -551,7 +543,7 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
                 data: { data: [] },
             })
 
-            const invalidateQueriesSpy = jest.spyOn(
+            const invalidateQueriesSpy = vi.spyOn(
                 queryClient,
                 'invalidateQueries',
             )
@@ -612,7 +604,7 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
                 data: { data: [] },
             })
 
-            const invalidateQueriesSpy = jest.spyOn(
+            const invalidateQueriesSpy = vi.spyOn(
                 queryClient,
                 'invalidateQueries',
             )

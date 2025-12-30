@@ -5,8 +5,8 @@ import { useQueryClient } from '@tanstack/react-query'
 import type { HttpResponse, Ticket } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 
-import { useTicketsLegacyBridge } from '../../utils/LegacyBridge'
-import { NotificationStatus } from '../../utils/LegacyBridge/context'
+import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
+import { NotificationStatus } from '../../../utils/LegacyBridge/context'
 
 export function useUpdateSubject(ticketId: number) {
     const { dispatchNotification } = useTicketsLegacyBridge()

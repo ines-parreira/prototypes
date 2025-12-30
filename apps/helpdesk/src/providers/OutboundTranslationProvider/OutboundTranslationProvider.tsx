@@ -8,6 +8,7 @@ import {
     useState,
 } from 'react'
 
+import type { ExtractEvent } from '@repo/tickets'
 import type { ContentState } from 'draft-js'
 import { convertToRaw, EditorState } from 'draft-js'
 
@@ -22,7 +23,6 @@ import { setTranslationState } from 'state/newMessage/actions'
 import ticketReplyCache from 'state/newMessage/ticketReplyCache'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import type { ExtractEvent } from 'tickets/core/hooks/translations/types'
 import { contentStateFromTextOrHTML } from 'utils/editor'
 
 export type OutboundTranslationData = {

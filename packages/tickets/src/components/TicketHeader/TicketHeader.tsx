@@ -1,17 +1,14 @@
-import { Link } from 'react-router-dom'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { Breadcrumb, Breadcrumbs } from '@gorgias/axiom'
-
-import { getCustomerName } from '../../helpers/getCustomerName'
 import { useTicket } from '../../hooks/useTicket'
-import { EditableBreadcrumb } from '../EditableBreadcrumb'
+import { TicketTranslationMenu } from '../../translations/components/TicketTranslationMenu'
 import { TicketActions } from '../TicketActions/TicketActions'
 import { TeamAssignee, UserAssignee } from '../TicketAssignee'
 import { TicketStatusMenu } from '../TicketMenuStatus/TicketStatusMenu'
 import { TicketPriority } from '../TicketPriority'
 import { TicketViewNavigator } from '../TicketViewNavigator/TicketViewNavigator'
 import { TrashedTicket } from '../TrashedTicket'
-import { useUpdateSubject } from './useUpdateSubject'
+import { TicketTitle } from './TicketTitle/TicketTitle'
 
 import css from './TicketHeader.less'
 
@@ -21,7 +18,7 @@ type Props = {
 
 export function TicketHeader({ ticketId }: Props) {
     const { data } = useTicket(ticketId)
-    const { updateSubject } = useUpdateSubject(ticketId)
+    const hasMessagesTranslations = useFlag(FeatureFlagKey.MessagesTranslations)
 
     const ticket = data?.data
 
@@ -37,22 +34,13 @@ export function TicketHeader({ ticketId }: Props) {
     return (
         <div className={css.container}>
             <div className={css.left}>
-                <Breadcrumbs>
-                    <Breadcrumb>
-                        <Link to={`/app/customer/${ticket.customer.id}`}>
-                            {getCustomerName(ticket.customer)}
-                        </Link>
-                    </Breadcrumb>
-                    <Breadcrumb asSlot>
-                        <EditableBreadcrumb
-                            value={ticket.subject}
-                            onChange={(value) => updateSubject(ticketId, value)}
-                        />
-                    </Breadcrumb>
-                </Breadcrumbs>
+                <TicketTitle ticket={ticket} />
             </div>
             <div className={css.right}>
                 <TrashedTicket trashedDatetime={trashed_datetime} />
+                {hasMessagesTranslations && (
+                    <TicketTranslationMenu language={ticket.language} />
+                )}
                 <TicketStatusMenu ticket={ticket} />
                 <TicketPriority
                     ticketId={ticketId}

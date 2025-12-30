@@ -2,8 +2,7 @@ import { useCallback, useEffect } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage, useToggle } from '@repo/hooks'
-
-import { useCurrentUserLanguagePreferences } from 'tickets/core/hooks/translations/useCurrentUserLanguagePreferences'
+import { useCurrentUserLanguagePreferences } from '@repo/tickets'
 
 const TRANSLATIONS_ONBOARDING_MODAL_KEY =
     'ai-translations-onboarding-modal-shown' as const
