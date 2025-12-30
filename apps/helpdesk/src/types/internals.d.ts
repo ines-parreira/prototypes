@@ -4,6 +4,10 @@ import { Page } from 'services/statusPageManager/types'
 import { GorgiasInitialState, InitialReactQueryState } from 'types'
 import { SystemMessage } from 'utils'
 
+function ObiSDK(action: 'update', payload: { isActive: boolean }): void
+function ObiSDK(action: 'startSession', payload: { planUuid: string }): void
+function ObiSDK(action: 'stopSession'): void
+
 declare global {
     interface Window {
         GORGIAS_CONSTANTS: { [key: string]: any }
@@ -85,6 +89,7 @@ declare global {
             }
             getMembership: () => Promise<string[]>
         }
+        ObiSDK?: typeof ObiSDK
         hj?: (
             method: 'event' | 'identify' | 'stateChange',
             ...data: unknown[]

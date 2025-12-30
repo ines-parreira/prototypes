@@ -67,6 +67,7 @@ function router(url: URL) {
         switch (hostname) {
             case 'growth':
                 growthRouter(pathname, searchParams)
+                break
             default:
                 throw new Error('unknown hostname')
         }
@@ -84,8 +85,27 @@ function router(url: URL) {
     }
 }
 
-function growthRouter(pathname: string, __searchParams: URLSearchParams) {
+function growthRouter(pathname: string, searchParams: URLSearchParams) {
     switch (pathname) {
+        case '/obi/activate':
+            window.ObiSDK?.('update', { isActive: true })
+            break
+        case '/obi/deactivate':
+            window.ObiSDK?.('update', { isActive: false })
+            break
+        case '/obi/startSession':
+            const planUUID = searchParams.get('planUUID')
+            if (planUUID === null) {
+                throw new Error('plan not defined')
+            }
+
+            window.ObiSDK?.('startSession', {
+                planUuid: planUUID,
+            })
+            break
+        case '/obi/stopSession':
+            window.ObiSDK?.('stopSession')
+            break
         default:
             throw new Error('unknown path')
     }

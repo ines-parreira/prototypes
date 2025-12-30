@@ -120,5 +120,85 @@ describe('useCanduRouter', () => {
                 expect.any(Object),
             )
         })
+
+        describe.each([true, false])(
+            'obi [initialised: %s]',
+            (initialised: boolean) => {
+                beforeEach(() => {
+                    window.ObiSDK = initialised ? jest.fn() : undefined
+                })
+
+                it('should activate', () => {
+                    expect(() => {
+                        router.route('growth/obi/activate')
+                    }).not.toThrow()
+
+                    expect(mockReportError).not.toHaveBeenCalled()
+                    if (initialised) {
+                        expect(window.ObiSDK).toHaveBeenCalledWith('update', {
+                            isActive: true,
+                        })
+                    }
+                })
+
+                it('should deactivate', () => {
+                    expect(() => {
+                        router.route('growth/obi/deactivate')
+                    }).not.toThrow()
+
+                    expect(mockReportError).not.toHaveBeenCalled()
+                    if (initialised) {
+                        expect(window.ObiSDK).toHaveBeenCalledWith('update', {
+                            isActive: false,
+                        })
+                    }
+                })
+
+                it('should not start a session if no plan UUID is provided', () => {
+                    router.route('growth/obi/startSession')
+
+                    expect(mockReportError).toHaveBeenCalledWith(
+                        new Error('plan not defined'),
+                        expect.any(Object),
+                    )
+                    if (initialised) {
+                        expect(window.ObiSDK).not.toHaveBeenCalled()
+                    }
+                })
+
+                it('should start a session', () => {
+                    const planUUID = '00000000-0000-0000-0000-000000000000'
+
+                    expect(() => {
+                        router.route(
+                            `growth/obi/startSession?planUUID=${planUUID}`,
+                        )
+                    }).not.toThrow()
+
+                    expect(mockReportError).not.toHaveBeenCalled()
+                    if (initialised) {
+                        expect(window.ObiSDK).toHaveBeenCalledWith(
+                            'startSession',
+                            {
+                                planUuid: planUUID,
+                            },
+                        )
+                    }
+                })
+
+                it('should stop a session', () => {
+                    expect(() => {
+                        router.route('growth/obi/stopSession')
+                    }).not.toThrow()
+
+                    expect(mockReportError).not.toHaveBeenCalled()
+                    if (initialised) {
+                        expect(window.ObiSDK).toHaveBeenCalledWith(
+                            'stopSession',
+                        )
+                    }
+                })
+            },
+        )
     })
 })

@@ -22,6 +22,7 @@ import { Main } from 'main/app'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import RoutesWrapper from 'routes'
+import { useCanduRouter } from 'routes/hooks/useCanduRouter'
 import activityTracker from 'services/activityTracker'
 import type { RootState } from 'state/types'
 import { DndProvider } from 'utils/wrappers/DndProvider'
@@ -36,6 +37,8 @@ const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
 const Root = ({ store }: Props) => {
     const [LDClient, setLDClient] = useState<LDClient>()
+
+    window.GorgiasCanduRouter = useCanduRouter()
 
     useEffectOnce(() => {
         const LDClient = getLDClient()
