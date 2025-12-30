@@ -86,6 +86,19 @@ const relatedTickets = {
     ],
 }
 
+const mockIntents = [
+    'Order::Status',
+    'Shipping::Inquiry',
+    'Product::Info',
+    'Return::Refund',
+    'Payment::Issue',
+    'Account::Login',
+    'Discount::Code',
+    'Delivery::Tracking',
+    'Product::Availability',
+    'Order::Cancellation',
+]
+
 export const ForGuidance: Story = Template.bind({})
 ForGuidance.args = {
     initialExpandedSections: ['details', 'impact', 'related-tickets'],
@@ -101,7 +114,7 @@ ForGuidance.args = {
                 tickets: { value: 42 },
                 handoverTickets: { value: 5 },
                 csat: { value: 4.2 },
-                intents: ['Order/status', 'Shipping/inquiry'],
+                intents: mockIntents,
             }}
             relatedTickets={relatedTickets}
         />
@@ -141,7 +154,7 @@ ForDocumentSnippet.args = {
                 tickets: { value: 42 },
                 handoverTickets: { value: 5 },
                 csat: { value: 4.2 },
-                intents: ['Order/status', 'Shipping/inquiry'],
+                intents: mockIntents,
             }}
             relatedTickets={relatedTickets}
         />
@@ -181,7 +194,7 @@ ForURLSnippet.args = {
                 tickets: { value: 42 },
                 handoverTickets: { value: 5 },
                 csat: { value: 4.2 },
-                intents: ['Order/status', 'Shipping/inquiry'],
+                intents: mockIntents,
             }}
             relatedTickets={relatedTickets}
         />
@@ -227,7 +240,7 @@ ForStoreSnippet.args = {
                 tickets: { value: 42 },
                 handoverTickets: { value: 5 },
                 csat: { value: 4.2 },
-                intents: ['Order/status', 'Shipping/inquiry'],
+                intents: mockIntents,
             }}
             relatedTickets={relatedTickets}
         />

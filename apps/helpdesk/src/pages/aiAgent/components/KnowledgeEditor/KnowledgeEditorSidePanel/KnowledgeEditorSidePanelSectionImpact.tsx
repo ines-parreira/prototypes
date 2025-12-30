@@ -1,4 +1,6 @@
-import { Skeleton, Tag } from '@gorgias/axiom'
+import { useState } from 'react'
+
+import { Button, Icon, Skeleton, Tag } from '@gorgias/axiom'
 
 import { KnowledgeEditorSidePanelSection } from './KnowledgeEditorSidePanelSection'
 import { KnowledgeEditorSidePanelTwoColumnsContent } from './KnowledgeEditorSidePanelTwoColumnsContent'
@@ -27,6 +29,13 @@ export const KnowledgeEditorSidePanelSectionImpact = ({
     isLoading,
     sectionId,
 }: Props) => {
+    const MAX_VISIBLE_INTENTS = 3
+    const [isIntentsExpanded, setIsIntentsExpanded] = useState(false)
+    const visibleIntents = isIntentsExpanded
+        ? intents
+        : intents?.slice(0, MAX_VISIBLE_INTENTS)
+    const hasMoreIntents = intents && intents.length > MAX_VISIBLE_INTENTS
+
     const renderValue = (metric: MetricProps | null | undefined) => {
         if (isLoading) {
             return <Skeleton key="loading" width={100} height={20} />
@@ -76,7 +85,7 @@ export const KnowledgeEditorSidePanelSectionImpact = ({
                             />
                         ) : intents && intents.length > 0 ? (
                             <div key="intents" className={css.intentsContainer}>
-                                {intents.map((intent) => (
+                                {visibleIntents?.map((intent) => (
                                     <Tag key={intent}>
                                         {intent
                                             .replace(/::/g, '/')
@@ -91,6 +100,27 @@ export const KnowledgeEditorSidePanelSectionImpact = ({
                     },
                 ]}
             />
+            {hasMoreIntents && !isLoading && (
+                <div className={css.viewAllButtonContainer}>
+                    <Button
+                        variant="tertiary"
+                        size="sm"
+                        intent={'regular'}
+                        trailingSlot={
+                            <Icon
+                                name={
+                                    isIntentsExpanded
+                                        ? 'arrow-chevron-up'
+                                        : 'arrow-chevron-down'
+                                }
+                            />
+                        }
+                        onClick={() => setIsIntentsExpanded(!isIntentsExpanded)}
+                    >
+                        {isIntentsExpanded ? 'View Less' : 'View All'}
+                    </Button>
+                </div>
+            )}
         </KnowledgeEditorSidePanelSection>
     )
 }
