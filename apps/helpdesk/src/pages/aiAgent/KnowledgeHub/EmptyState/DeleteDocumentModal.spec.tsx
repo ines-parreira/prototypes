@@ -46,6 +46,7 @@ describe('DeleteDocumentModal', () => {
     let eventCallback: (event?: Event) => void
     const mockOnRefetch = jest.fn()
     const mockOnFolderChange = jest.fn()
+    const mockOnRemoveFolderParam = jest.fn()
 
     const mockFolder: GroupedKnowledgeItem = {
         id: 'doc-1',
@@ -70,6 +71,29 @@ describe('DeleteDocumentModal', () => {
         },
     ]
 
+    const renderModal = (props?: {
+        fileIngestionLogs?: any
+        onRefetch?: () => void
+        onFolderChange?: (folder: any) => void
+        onRemoveFolderParam?: () => void
+    }) => {
+        return render(
+            <DeleteDocumentModal
+                helpCenterId={1}
+                fileIngestionLogs={
+                    props && 'fileIngestionLogs' in props
+                        ? props.fileIngestionLogs
+                        : mockFileIngestionLogs
+                }
+                onRefetch={props?.onRefetch ?? mockOnRefetch}
+                onFolderChange={props?.onFolderChange ?? mockOnFolderChange}
+                onRemoveFolderParam={
+                    props?.onRemoveFolderParam ?? mockOnRemoveFolderParam
+                }
+            />,
+        )
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
         mockDeleteIngestedFile.mockResolvedValue(undefined)
@@ -85,14 +109,7 @@ describe('DeleteDocumentModal', () => {
 
     describe('modal visibility', () => {
         it('is closed by default', () => {
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={mockFileIngestionLogs as any}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal()
 
             expect(
                 screen.queryByRole('heading', { name: 'Delete document?' }),
@@ -100,14 +117,7 @@ describe('DeleteDocumentModal', () => {
         })
 
         it('opens when OPEN_DELETE_DOCUMENT_MODAL event is dispatched', async () => {
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={mockFileIngestionLogs as any}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal()
 
             await act(() => {
                 const customEvent = new CustomEvent(
@@ -127,14 +137,7 @@ describe('DeleteDocumentModal', () => {
         })
 
         it('opens without folder data', async () => {
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={mockFileIngestionLogs as any}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal()
 
             await act(() => {
                 eventCallback?.()
@@ -148,14 +151,7 @@ describe('DeleteDocumentModal', () => {
         })
 
         it('closes when Cancel button is clicked', async () => {
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={mockFileIngestionLogs as any}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal()
 
             await act(() => {
                 const customEvent = new CustomEvent(
@@ -185,14 +181,7 @@ describe('DeleteDocumentModal', () => {
 
         it('closes modal using onOpenChange', async () => {
             const user = userEvent.setup()
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={mockFileIngestionLogs as any}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal()
 
             await act(() => {
                 const customEvent = new CustomEvent(
@@ -218,14 +207,7 @@ describe('DeleteDocumentModal', () => {
 
     describe('modal content', () => {
         it('displays warning messages', async () => {
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={mockFileIngestionLogs as any}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal()
 
             await act(() => {
                 const customEvent = new CustomEvent(
@@ -250,14 +232,7 @@ describe('DeleteDocumentModal', () => {
         })
 
         it('displays cancel and delete buttons', async () => {
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={mockFileIngestionLogs as any}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal()
 
             await act(() => {
                 const customEvent = new CustomEvent(
@@ -280,14 +255,7 @@ describe('DeleteDocumentModal', () => {
 
     describe('document deletion', () => {
         it('successfully deletes document', async () => {
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={mockFileIngestionLogs as any}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal()
 
             await act(() => {
                 const customEvent = new CustomEvent(
@@ -322,15 +290,34 @@ describe('DeleteDocumentModal', () => {
             })
         })
 
-        it('closes modal after successful deletion', async () => {
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={mockFileIngestionLogs as any}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
+        it('calls onRemoveFolderParam when document is successfully deleted', async () => {
+            renderModal()
+
+            await act(() => {
+                const customEvent = new CustomEvent(
+                    'open-delete-document-modal',
+                    {
+                        detail: mockFolder,
+                    },
+                )
+                eventCallback?.(customEvent)
+            })
+
+            await waitFor(() =>
+                screen.getByRole('heading', { name: 'Delete document?' }),
             )
+
+            const deleteButton = screen.getByRole('button', { name: 'Delete' })
+            await act(() => userEvent.click(deleteButton))
+
+            await waitFor(() => {
+                expect(mockOnRemoveFolderParam).toHaveBeenCalled()
+                expect(mockOnFolderChange).toHaveBeenCalledWith(null)
+            })
+        })
+
+        it('closes modal after successful deletion', async () => {
+            renderModal()
 
             await act(() => {
                 const customEvent = new CustomEvent(
@@ -367,14 +354,7 @@ describe('DeleteDocumentModal', () => {
                 source: 'non-existent.pdf',
             }
 
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={mockFileIngestionLogs as any}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal()
 
             await act(() => {
                 const customEvent = new CustomEvent(
@@ -409,14 +389,7 @@ describe('DeleteDocumentModal', () => {
         it('shows error notification when deletion fails', async () => {
             mockDeleteIngestedFile.mockRejectedValue(new Error('Delete failed'))
 
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={mockFileIngestionLogs as any}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal()
 
             await act(() => {
                 const customEvent = new CustomEvent(
@@ -451,14 +424,7 @@ describe('DeleteDocumentModal', () => {
         })
 
         it('does nothing when no folder is selected', async () => {
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={mockFileIngestionLogs as any}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal()
 
             await act(() => {
                 eventCallback?.()
@@ -477,14 +443,7 @@ describe('DeleteDocumentModal', () => {
         })
 
         it('handles empty fileIngestionLogs array', async () => {
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={[]}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal({ fileIngestionLogs: [] })
 
             await act(() => {
                 const customEvent = new CustomEvent(
@@ -517,14 +476,7 @@ describe('DeleteDocumentModal', () => {
         })
 
         it('handles undefined fileIngestionLogs', async () => {
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={undefined}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal({ fileIngestionLogs: undefined })
 
             await act(() => {
                 const customEvent = new CustomEvent(
@@ -557,14 +509,7 @@ describe('DeleteDocumentModal', () => {
         })
 
         it('clears selected folder when modal closes via cancel', async () => {
-            render(
-                <DeleteDocumentModal
-                    helpCenterId={1}
-                    fileIngestionLogs={mockFileIngestionLogs as any}
-                    onRefetch={mockOnRefetch}
-                    onFolderChange={mockOnFolderChange}
-                />,
-            )
+            renderModal()
 
             await act(() => {
                 const customEvent = new CustomEvent(

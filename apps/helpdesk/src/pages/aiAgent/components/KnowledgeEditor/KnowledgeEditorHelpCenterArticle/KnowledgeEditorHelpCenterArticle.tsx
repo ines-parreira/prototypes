@@ -1,8 +1,10 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { LegacyLoadingSpinner, SidePanel } from '@gorgias/axiom'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
+import { useNotify } from 'hooks/useNotify'
+import { isGorgiasApiError } from 'models/api/types'
 import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
 import type {
     ArticleWithLocalTranslation,
@@ -94,8 +96,28 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         'latest_draft',
         {
             enabled: isExisting,
+            throwOn404: true,
         },
     )
+
+    const { error: notifyError } = useNotify()
+
+    useEffect(() => {
+        // Only show error if editor is actually open and attempting to display content
+        if (getArticle.isError && isExisting && getArticle.error) {
+            // Check if it's a 404 error
+            const is404 =
+                isGorgiasApiError(getArticle.error) &&
+                getArticle.error.response.status === 404
+
+            const message = is404
+                ? 'This FAQ article is no longer available. It may have been deleted.'
+                : 'Unable to load this FAQ article. Please try again or contact support.'
+
+            notifyError(message)
+            props.onClose()
+        }
+    }, [getArticle.isError, isExisting, getArticle.error, notifyError, props])
 
     if (isExisting && (getArticle.isLoading || !getArticle.data)) {
         return (

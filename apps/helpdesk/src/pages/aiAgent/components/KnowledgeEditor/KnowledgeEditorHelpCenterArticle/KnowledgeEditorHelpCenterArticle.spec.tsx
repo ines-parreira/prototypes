@@ -1,11 +1,16 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 
+import { toImmutable } from 'common/utils'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { mockStore } from 'utils/testing'
 
 import type { InitialArticleModeValue } from './context'
 import { KnowledgeEditorHelpCenterArticle } from './KnowledgeEditorHelpCenterArticle'
+
+const mockNotifyError = jest.fn()
 
 jest.mock('@gorgias/axiom', () => ({
     SidePanel: ({
@@ -33,6 +38,17 @@ jest.mock('@gorgias/axiom', () => ({
     ),
 }))
 
+jest.mock('hooks/useNotify', () => ({
+    useNotify: () => ({
+        error: mockNotifyError,
+    }),
+}))
+
+jest.mock('models/api/types', () => ({
+    ...jest.requireActual('models/api/types'),
+    isGorgiasApiError: jest.fn(),
+}))
+
 jest.mock('models/helpCenter/queries', () => ({
     useGetHelpCenterArticle: jest.fn(() => ({
         data: {
@@ -44,6 +60,8 @@ jest.mock('models/helpCenter/queries', () => ({
             },
         },
         isLoading: false,
+        isError: false,
+        error: null,
     })),
 }))
 
@@ -100,6 +118,15 @@ jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
     ),
 }))
 
+const defaultState = {
+    integrations: toImmutable({
+        integrations: [],
+    }),
+    billing: toImmutable({
+        products: [],
+    }),
+}
+
 describe('KnowledgeEditorHelpCenterArticle', () => {
     const baseProps = {
         helpCenter: getHelpCentersResponseFixture.data[0],
@@ -110,21 +137,28 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
         onClose: jest.fn(),
     }
 
+    const renderComponent = (articleProps: any) => {
+        return render(
+            <Provider store={mockStore(defaultState)}>
+                <KnowledgeEditorHelpCenterArticle
+                    {...baseProps}
+                    article={articleProps}
+                />
+            </Provider>,
+        )
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
+        mockNotifyError.mockClear()
     })
 
     it('renders existing article with ArticleEditorContent', () => {
-        render(
-            <KnowledgeEditorHelpCenterArticle
-                {...baseProps}
-                article={{
-                    type: 'existing',
-                    initialArticleMode: 'read' as InitialArticleModeValue,
-                    articleId: 1,
-                }}
-            />,
-        )
+        renderComponent({
+            type: 'existing',
+            initialArticleMode: 'read' as InitialArticleModeValue,
+            articleId: 1,
+        })
 
         expect(
             screen.getByTestId('article-context-provider'),
@@ -133,20 +167,15 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
     })
 
     it('renders new article with ArticleEditorContent', () => {
-        render(
-            <KnowledgeEditorHelpCenterArticle
-                {...baseProps}
-                article={{
-                    type: 'new',
-                    template: {
-                        title: 'Test Article',
-                        content: 'Test Content',
-                        key: 'test-template',
-                    },
-                    onCreated: () => {},
-                }}
-            />,
-        )
+        renderComponent({
+            type: 'new',
+            template: {
+                title: 'Test Article',
+                content: 'Test Content',
+                key: 'test-template',
+            },
+            onCreated: () => {},
+        })
 
         expect(
             screen.getByTestId('article-context-provider'),
@@ -163,16 +192,11 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
             isLoading: true,
         })
 
-        render(
-            <KnowledgeEditorHelpCenterArticle
-                {...baseProps}
-                article={{
-                    type: 'existing',
-                    initialArticleMode: 'read' as InitialArticleModeValue,
-                    articleId: 1,
-                }}
-            />,
-        )
+        renderComponent({
+            type: 'existing',
+            initialArticleMode: 'read' as InitialArticleModeValue,
+            articleId: 1,
+        })
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
     })
@@ -181,16 +205,11 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
         it('can close panel for existing article', async () => {
             const user = userEvent.setup()
 
-            render(
-                <KnowledgeEditorHelpCenterArticle
-                    {...baseProps}
-                    article={{
-                        type: 'existing',
-                        initialArticleMode: 'read' as InitialArticleModeValue,
-                        articleId: 1,
-                    }}
-                />,
-            )
+            renderComponent({
+                type: 'existing',
+                initialArticleMode: 'read' as InitialArticleModeValue,
+                articleId: 1,
+            })
 
             expect(screen.getByTestId('side-panel')).toBeInTheDocument()
 
@@ -201,25 +220,177 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
         it('can close panel for new article', async () => {
             const user = userEvent.setup()
 
-            render(
-                <KnowledgeEditorHelpCenterArticle
-                    {...baseProps}
-                    article={{
-                        type: 'new',
-                        template: {
-                            title: 'Test Article',
-                            content: 'Test Content',
-                            key: 'test-template',
-                        },
-                        onCreated: () => {},
-                    }}
-                />,
-            )
+            renderComponent({
+                type: 'new',
+                template: {
+                    title: 'Test Article',
+                    content: 'Test Content',
+                    key: 'test-template',
+                },
+                onCreated: () => {},
+            })
 
             expect(screen.getByTestId('side-panel')).toBeInTheDocument()
 
             const closeButton = screen.getByTestId('close-panel-button')
             await act(() => user.click(closeButton))
+        })
+    })
+
+    it('renders existing article in edit mode', () => {
+        const mockUseGetHelpCenterArticle = jest.requireMock(
+            'models/helpCenter/queries',
+        ).useGetHelpCenterArticle
+        mockUseGetHelpCenterArticle.mockReturnValue({
+            data: {
+                id: 1,
+                translation: {
+                    title: 'Test Article',
+                    content: 'Test Content',
+                    locale: 'en-US',
+                },
+            },
+            isLoading: false,
+            isError: false,
+            error: null,
+        })
+
+        renderComponent({
+            type: 'existing',
+            initialArticleMode: 'edit' as InitialArticleModeValue,
+            articleId: 1,
+        })
+
+        expect(
+            screen.getByTestId('article-context-provider'),
+        ).toBeInTheDocument()
+        expect(screen.getByTestId('article-editor-content')).toBeInTheDocument()
+    })
+
+    it('shows loading spinner when data is null but not loading', () => {
+        const mockUseGetHelpCenterArticle = jest.requireMock(
+            'models/helpCenter/queries',
+        ).useGetHelpCenterArticle
+        mockUseGetHelpCenterArticle.mockReturnValue({
+            data: null,
+            isLoading: false,
+            isError: false,
+            error: null,
+        })
+
+        renderComponent({
+            type: 'existing',
+            initialArticleMode: 'read' as InitialArticleModeValue,
+            articleId: 1,
+        })
+
+        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
+    })
+
+    describe('Error handling', () => {
+        it('shows error notification and closes panel on 404 error', async () => {
+            const mockUseGetHelpCenterArticle = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetHelpCenterArticle
+            const mockIsGorgiasApiError =
+                jest.requireMock('models/api/types').isGorgiasApiError
+
+            const mockError = {
+                response: {
+                    status: 404,
+                    data: {
+                        error: {
+                            msg: 'Article not found',
+                        },
+                    },
+                },
+            }
+
+            mockUseGetHelpCenterArticle.mockReturnValue({
+                data: null,
+                isLoading: false,
+                isError: true,
+                error: mockError,
+            })
+
+            mockIsGorgiasApiError.mockReturnValue(true)
+
+            renderComponent({
+                type: 'existing',
+                initialArticleMode: 'read' as InitialArticleModeValue,
+                articleId: 1,
+            })
+
+            await waitFor(() => {
+                expect(mockNotifyError).toHaveBeenCalledWith(
+                    'This FAQ article is no longer available. It may have been deleted.',
+                )
+            })
+        })
+
+        it('shows generic error notification on non-404 error', async () => {
+            const mockUseGetHelpCenterArticle = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetHelpCenterArticle
+            const mockIsGorgiasApiError =
+                jest.requireMock('models/api/types').isGorgiasApiError
+
+            const mockError = {
+                response: {
+                    status: 500,
+                    data: {
+                        error: {
+                            msg: 'Internal server error',
+                        },
+                    },
+                },
+            }
+
+            mockUseGetHelpCenterArticle.mockReturnValue({
+                data: null,
+                isLoading: false,
+                isError: true,
+                error: mockError,
+            })
+
+            mockIsGorgiasApiError.mockReturnValue(true)
+
+            renderComponent({
+                type: 'existing',
+                initialArticleMode: 'read' as InitialArticleModeValue,
+                articleId: 1,
+            })
+
+            await waitFor(() => {
+                expect(mockNotifyError).toHaveBeenCalledWith(
+                    'Unable to load this FAQ article. Please try again or contact support.',
+                )
+            })
+        })
+
+        it('does not show error notification for new articles', () => {
+            const mockUseGetHelpCenterArticle = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetHelpCenterArticle
+
+            mockUseGetHelpCenterArticle.mockReturnValue({
+                data: null,
+                isLoading: false,
+                isError: true,
+                error: new Error('Some error'),
+            })
+
+            renderComponent({
+                type: 'new',
+                template: {
+                    title: 'Test Article',
+                    content: 'Test Content',
+                    key: 'test-template',
+                },
+                onCreated: () => {},
+            })
+
+            expect(mockNotifyError).not.toHaveBeenCalled()
         })
     })
 })

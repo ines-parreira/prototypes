@@ -187,6 +187,7 @@ export const useDeleteArticle = (
                         helpCenterId,
                         pathParams.id,
                     ),
+                    refetchType: 'none',
                 })
             }
             await queryClient.invalidateQueries({

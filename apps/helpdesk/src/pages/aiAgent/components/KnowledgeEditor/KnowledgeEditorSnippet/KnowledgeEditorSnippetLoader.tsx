@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
@@ -10,6 +10,7 @@ import {
 } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
+import { isGorgiasApiError } from 'models/api/types'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import {
     useGetArticleIngestionLogs,
@@ -66,8 +67,29 @@ export const KnowledgeEditorSnippetLoader = ({
     const { mutateAsync: updateTranslationMutation } =
         useUpdateArticleTranslation(helpCenterId)
 
-    const { data: articleData, isInitialLoading: isSnippetLoading } =
-        useGetHelpCenterArticle(snippetId, helpCenterId, locale)
+    const {
+        data: articleData,
+        isInitialLoading: isSnippetLoading,
+        isError,
+        error,
+    } = useGetHelpCenterArticle(snippetId, helpCenterId, locale, 'current', {
+        throwOn404: true,
+    })
+
+    useEffect(() => {
+        if (isError && error) {
+            // Check if it's a 404 error
+            const is404 =
+                isGorgiasApiError(error) && error.response.status === 404
+
+            const message = is404
+                ? 'This snippet is no longer available. It may have been deleted.'
+                : 'Unable to load this snippet. Please try again or contact support.'
+
+            notifyError(message)
+            onClose()
+        }
+    }, [isError, error, notifyError, onClose])
 
     const dateRange = useMemo(() => getLast28DaysDateRange(), [])
 

@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useHistory, useLocation } from 'react-router-dom'
 
+import { useNotify } from 'hooks/useNotify'
 import { reportError } from 'utils/errors'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
@@ -133,6 +134,9 @@ export function useKnowledgeHubUrlParams(
         },
     )
 
+    const { error: notifyError } = useNotify()
+    const hasShownFolderNotFoundError = useRef(false)
+
     const buildUrlWithParams = useCallback(
         (basePath: string) => {
             const params = new URLSearchParams()
@@ -166,6 +170,17 @@ export function useKnowledgeHubUrlParams(
         ],
     )
 
+    const removeFolderParamFromUrl = useCallback(() => {
+        // Remove folder parameter from URL
+        const params = new URLSearchParams(location.search)
+        params.delete('folder')
+        const newSearch = params.toString()
+        const newUrl = newSearch
+            ? `${history.location.pathname}?${newSearch}`
+            : history.location.pathname
+        history.replace(newUrl)
+    }, [history, location.search])
+
     // Memoize folder object creation from URL to avoid unnecessary recalculations
     const folderObjectFromUrl = useMemo(() => {
         const params = new URLSearchParams(location.search)
@@ -183,7 +198,25 @@ export function useKnowledgeHubUrlParams(
         )
 
         if (matchingItems.length === 0) {
-            // Create minimal folder object when tableData doesn't have matching items yet
+            // If tableData has loaded but no matching items found, the folder is invalid/deleted
+            if (tableData.length > 0) {
+                const isViewingArticle = isViewingArticleUrl(location.pathname)
+
+                // Only show error notification when NOT viewing an article/snippet
+                // When viewing an article, silently clear folder param to avoid double error messages
+                if (!isViewingArticle && !hasShownFolderNotFoundError.current) {
+                    notifyError(
+                        'This folder is no longer available. It may have been deleted.',
+                    )
+                    hasShownFolderNotFoundError.current = true
+                }
+
+                // Always clear invalid folder param from URL
+                removeFolderParamFromUrl()
+                return null
+            }
+
+            // Create minimal folder object when tableData hasn't loaded yet
             // This happens during initialization before tableData loads
             return {
                 source: decodedFolder,
@@ -206,7 +239,30 @@ export function useKnowledgeHubUrlParams(
             isGrouped: true,
             itemCount: matchingItems.length,
         } as GroupedKnowledgeItem
-    }, [location.search, tableData])
+    }, [
+        location.search,
+        tableData,
+        location.pathname,
+        notifyError,
+        removeFolderParamFromUrl,
+    ])
+
+    // Reset error tracking when folder param changes or is cleared
+    useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const folderParam = params.get('folder')
+
+        // Reset error tracking when folder param is removed
+        if (!folderParam) {
+            hasShownFolderNotFoundError.current = false
+            return
+        }
+
+        // Reset error tracking when a valid folder is found
+        if (folderObjectFromUrl && folderObjectFromUrl.type) {
+            hasShownFolderNotFoundError.current = false
+        }
+    }, [location.search, folderObjectFromUrl])
 
     // Sync filter state with URL when URL changes
     useEffect(() => {
@@ -221,8 +277,9 @@ export function useKnowledgeHubUrlParams(
     useEffect(() => {
         const isViewingArticle = isViewingArticleUrl(location.pathname)
 
-        // Clear folder if URL has no folder param and not viewing an article
-        if (!folderObjectFromUrl && selectedFolder && !isViewingArticle) {
+        // Clear folder if URL has no folder param
+        // This includes when viewing an article with deleted folder (folder param was removed)
+        if (!folderObjectFromUrl && selectedFolder) {
             setSelectedFolder(null)
             return
         }
@@ -344,17 +401,6 @@ export function useKnowledgeHubUrlParams(
 
         [history, location.search],
     )
-
-    const removeFolderParamFromUrl = useCallback(() => {
-        // Remove folder parameter from URL
-        const params = new URLSearchParams(location.search)
-        params.delete('folder')
-        const newSearch = params.toString()
-        const newUrl = newSearch
-            ? `${history.location.pathname}?${newSearch}`
-            : history.location.pathname
-        history.replace(newUrl)
-    }, [history, location.search])
 
     const handleSearchChange = useCallback(
         (value: string) => {

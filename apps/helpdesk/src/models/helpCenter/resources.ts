@@ -42,6 +42,7 @@ export const getHelpCenterArticle = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.GetArticle.PathParameters,
     queryParams: Paths.GetArticle.QueryParameters,
+    options?: { throwOn404?: boolean },
 ) => {
     if (!client) return null
 
@@ -53,6 +54,9 @@ export const getHelpCenterArticle = async (
         return response.data
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404) {
+            if (options?.throwOn404) {
+                throw error
+            }
             return null
         }
         throw error

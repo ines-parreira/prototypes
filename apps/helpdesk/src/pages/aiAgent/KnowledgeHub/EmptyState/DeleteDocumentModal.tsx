@@ -17,6 +17,7 @@ type Props = {
     fileIngestionLogs?: Components.Schemas.RetrieveFileIngestionLogDto[]
     onRefetch: () => void
     onFolderChange: (folder: GroupedKnowledgeItem | null) => void
+    onRemoveFolderParam: () => void
 }
 
 export const DeleteDocumentModal = ({
@@ -24,6 +25,7 @@ export const DeleteDocumentModal = ({
     fileIngestionLogs,
     onRefetch,
     onFolderChange,
+    onRemoveFolderParam,
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedFolder, setSelectedFolder] =
@@ -73,6 +75,7 @@ export const DeleteDocumentModal = ({
             await deleteIngestedFile(fileIngestionLog.id)
             setIsOpen(false)
             setSelectedFolder(null)
+            onRemoveFolderParam()
             onFolderChange(null)
             onRefetch()
 
@@ -98,6 +101,7 @@ export const DeleteDocumentModal = ({
         dispatch,
         onFolderChange,
         onRefetch,
+        onRemoveFolderParam,
     ])
 
     return (

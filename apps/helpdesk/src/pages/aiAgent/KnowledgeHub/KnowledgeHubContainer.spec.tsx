@@ -153,15 +153,20 @@ jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
 jest.mock('@repo/feature-flags')
 
-// Global variables to capture the onClose callbacks
+// Global variables to capture the onClose and onDelete callbacks
 let capturedGuidanceEditorOnClose: (() => void) | null = null
 let capturedFaqEditorOnClose: (() => void) | null = null
 let capturedSnippetEditorOnClose: (() => void) | null = null
+let capturedGuidanceEditorOnDelete: (() => void) | null = null
+let capturedFaqEditorOnDelete: (() => void) | null = null
 
 jest.mock('pages/aiAgent/KnowledgeHub/EditorWrappers', () => ({
-    GuidanceEditorWrapper: ({ isOpen, onClose }: any) => {
+    GuidanceEditorWrapper: ({ isOpen, onClose, onDelete }: any) => {
         if (isOpen && onClose) {
             capturedGuidanceEditorOnClose = onClose
+        }
+        if (isOpen && onDelete) {
+            capturedGuidanceEditorOnDelete = onDelete
         }
         return isOpen ? (
             <div data-testid="guidance-editor-wrapper">
@@ -171,9 +176,12 @@ jest.mock('pages/aiAgent/KnowledgeHub/EditorWrappers', () => ({
             </div>
         ) : null
     },
-    FaqEditorWrapper: ({ isOpen, onClose }: any) => {
+    FaqEditorWrapper: ({ isOpen, onClose, onDelete }: any) => {
         if (isOpen && onClose) {
             capturedFaqEditorOnClose = onClose
+        }
+        if (isOpen && onDelete) {
+            capturedFaqEditorOnDelete = onDelete
         }
         return isOpen ? (
             <div data-testid="faq-editor-wrapper">
@@ -2095,6 +2103,166 @@ describe('KnowledgeHubContainer', () => {
                 expect.stringMatching(/\/ai-agent\/.*\/knowledge/),
             )
             expect(mockCloseEditor).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('deleting editors', () => {
+        it('calls history.push and knowledgeEditorProps.onDelete when guidance editor is deleted', () => {
+            const mockPush = jest.fn()
+            const mockOnDelete = jest.fn()
+
+            const guidanceEditorMock = {
+                isEditorOpen: true,
+                currentGuidanceArticleId: 123,
+                guidanceMode: 'edit' as const,
+                openEditorForCreate: jest.fn(),
+                openEditorForEdit: jest.fn(),
+                closeEditor: jest.fn(),
+                knowledgeEditorProps: {
+                    shopName: 'test-shop',
+                    shopType: 'shopify',
+                    guidanceArticleId: 123,
+                    guidanceTemplate: undefined,
+                    guidanceMode: 'edit' as const,
+                    isOpen: true,
+                    onClose: jest.fn(),
+                    onCreate: jest.fn(),
+                    onUpdate: jest.fn(),
+                    onDelete: mockOnDelete,
+                    onClickPrevious: undefined,
+                    onClickNext: undefined,
+                },
+            }
+
+            // Reset the captured callback
+            capturedGuidanceEditorOnDelete = null
+
+            // Override useHistory mock
+            mockUseHistory.mockImplementation(() => ({
+                push: mockPush,
+                replace: jest.fn(),
+                goBack: jest.fn(),
+                goForward: jest.fn(),
+                go: jest.fn(),
+                block: jest.fn(),
+                listen: jest.fn(),
+                createHref: jest.fn(),
+                location: {
+                    pathname: '/app',
+                    search: '',
+                    hash: '',
+                    state: null,
+                },
+                action: 'PUSH' as const,
+                length: 1,
+            }))
+
+            // Override guidance editor mock
+            mockUseKnowledgeHubGuidanceEditor.mockReset()
+            mockUseKnowledgeHubGuidanceEditor.mockReturnValue(
+                guidanceEditorMock,
+            )
+
+            render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify the onDelete callback was captured
+            expect(capturedGuidanceEditorOnDelete).not.toBeNull()
+
+            // Call the captured onDelete callback directly
+            const onDelete = capturedGuidanceEditorOnDelete
+            if (onDelete) {
+                const onDeleteF = onDelete as () => void
+                onDeleteF()
+            }
+
+            // Verify both functions were called
+            expect(mockPush).toHaveBeenCalledTimes(1)
+            expect(mockPush).toHaveBeenCalledWith(
+                expect.stringMatching(/\/ai-agent\/.*\/knowledge/),
+            )
+            expect(mockOnDelete).toHaveBeenCalledTimes(1)
+        })
+
+        it('calls history.push and faqEditor.handleDelete when FAQ editor is deleted', () => {
+            const mockPush = jest.fn()
+            const mockHandleDelete = jest.fn()
+
+            const faqEditorMock = {
+                isEditorOpen: true,
+                currentArticleId: 456,
+                faqArticleMode: 'edit' as const,
+                initialArticleMode: 'READ' as const,
+                openEditorForCreate: jest.fn(),
+                openEditorForEdit: jest.fn(),
+                closeEditor: jest.fn(),
+                handleCreate: jest.fn(),
+                handleUpdate: jest.fn(),
+                handleDelete: mockHandleDelete,
+                handleClickPrevious: jest.fn(),
+                handleClickNext: jest.fn(),
+            }
+
+            // Reset the captured callback
+            capturedFaqEditorOnDelete = null
+
+            // Override useHistory mock
+            mockUseHistory.mockImplementation(() => ({
+                push: mockPush,
+                replace: jest.fn(),
+                goBack: jest.fn(),
+                goForward: jest.fn(),
+                go: jest.fn(),
+                block: jest.fn(),
+                listen: jest.fn(),
+                createHref: jest.fn(),
+                location: {
+                    pathname: '/app',
+                    search: '',
+                    hash: '',
+                    state: null,
+                },
+                action: 'PUSH' as const,
+                length: 1,
+            }))
+
+            // Override FAQ editor mock
+            mockUseKnowledgeHubFaqEditor.mockReset()
+            mockUseKnowledgeHubFaqEditor.mockReturnValue(faqEditorMock)
+
+            render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify the onDelete callback was captured
+            expect(capturedFaqEditorOnDelete).not.toBeNull()
+
+            // Call the captured onDelete callback directly
+            const onDelete = capturedFaqEditorOnDelete
+            if (onDelete) {
+                const onDeleteF = onDelete as () => void
+                onDeleteF()
+            }
+
+            // Verify both functions were called
+            expect(mockPush).toHaveBeenCalledTimes(1)
+            expect(mockPush).toHaveBeenCalledWith(
+                expect.stringMatching(/\/ai-agent\/.*\/knowledge/),
+            )
+            expect(mockHandleDelete).toHaveBeenCalledTimes(1)
         })
     })
 

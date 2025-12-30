@@ -1074,6 +1074,8 @@ describe('KnowledgeHubTable', () => {
                 guidanceArticle: undefined,
                 isGuidanceArticleLoading: false,
                 refetch: jest.fn(),
+                isError: false,
+                error: null,
             })
         })
 
@@ -1087,6 +1089,8 @@ describe('KnowledgeHubTable', () => {
                 } as any,
                 isGuidanceArticleLoading: false,
                 refetch: jest.fn(),
+                isError: false,
+                error: null,
             })
             renderComponent({
                 selectedFolder: {

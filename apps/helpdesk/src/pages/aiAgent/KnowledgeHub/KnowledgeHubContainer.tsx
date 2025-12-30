@@ -355,6 +355,16 @@ export const KnowledgeHubContainer = () => {
         faqEditor.closeEditor()
     }, [faqEditor, handleCloseEditorPath])
 
+    const handleDeleteFaqEditor = useCallback(() => {
+        handleCloseEditorPath()
+        faqEditor.handleDelete()
+    }, [faqEditor, handleCloseEditorPath])
+
+    const handleDeleteGuidanceEditor = useCallback(() => {
+        handleCloseEditorPath()
+        knowledgeEditorProps.onDelete()
+    }, [knowledgeEditorProps, handleCloseEditorPath])
+
     const snippetEditorClose = useCallback(() => {
         handleCloseEditorPath()
         snippetEditor.closeEditor()
@@ -622,12 +632,14 @@ export const KnowledgeHubContainer = () => {
                 urlIngestionLogs={urlIngestionLogs}
                 onRefetch={refetchKnowledgeHubArticles}
                 onFolderChange={setSelectedFolder}
+                onRemoveFolderParam={removeFolderParamFromUrl}
             />
             <DeleteDocumentModal
                 helpCenterId={snippetHelpCenterId || 0}
                 fileIngestionLogs={fileIngestionLogs}
                 onRefetch={refetchKnowledgeHubArticles}
                 onFolderChange={setSelectedFolder}
+                onRemoveFolderParam={removeFolderParamFromUrl}
             />
             <UploadDocumentModal
                 helpCenterId={snippetHelpCenterId || 0}
@@ -637,6 +649,7 @@ export const KnowledgeHubContainer = () => {
             <GuidanceEditorWrapper
                 {...knowledgeEditorProps}
                 onClose={handleCloseGuidanceEditor}
+                onDelete={handleDeleteGuidanceEditor}
             />
             <FaqEditorWrapper
                 faqHelpCenterId={faqHelpCenterId || 0}
@@ -647,7 +660,7 @@ export const KnowledgeHubContainer = () => {
                 onClose={handleCloseFaqEditor}
                 onCreate={faqEditor.handleCreate}
                 onUpdate={faqEditor.handleUpdate}
-                onDelete={faqEditor.handleDelete}
+                onDelete={handleDeleteFaqEditor}
                 versionStatus={faqEditor.versionStatus}
             />
             <SnippetEditorWrapper

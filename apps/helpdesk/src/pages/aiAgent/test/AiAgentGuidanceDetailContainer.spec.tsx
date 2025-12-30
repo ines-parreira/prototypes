@@ -123,6 +123,8 @@ describe('<AiAgentGuidanceDetail />', () => {
             guidanceArticle: guidanceArticle,
             isGuidanceArticleLoading: false,
             refetch: jest.fn(),
+            isError: false,
+            error: null,
         })
         mockedUseGuidanceAiSuggestions.mockReturnValue({
             guidanceAISuggestions: [
@@ -156,6 +158,8 @@ describe('<AiAgentGuidanceDetail />', () => {
             guidanceArticle: undefined,
             isGuidanceArticleLoading: true,
             refetch: jest.fn(),
+            isError: false,
+            error: null,
         })
 
         renderComponent()

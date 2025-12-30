@@ -348,6 +348,7 @@ describe('helpCenter mutations', () => {
             await waitFor(() => {
                 expect(queryClient.invalidateQueries).toHaveBeenCalledWith({
                     queryKey: helpCenterKeys.article(helpCenterId, articleId),
+                    refetchType: 'none',
                 })
                 expect(queryClient.invalidateQueries).toHaveBeenCalledWith({
                     queryKey: articleListKey,

@@ -133,6 +133,11 @@ jest.mock('@repo/feature-flags', () => ({
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => jest.fn())
 
+jest.mock('models/api/types', () => ({
+    ...jest.requireActual('models/api/types'),
+    isGorgiasApiError: jest.fn(),
+}))
+
 const queryClient = mockQueryClient()
 const defaultState = {
     currentUser: fromJS({
@@ -1522,6 +1527,207 @@ describe('KnowledgeEditorGuidance', () => {
             expect(
                 screen.queryByRole('heading', { name: /Unsaved changes/i }),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Error handling', () => {
+        it('shows error notification and closes panel on 404 error', async () => {
+            const mockIsGorgiasApiError =
+                jest.requireMock('models/api/types').isGorgiasApiError
+            const onClose = jest.fn()
+
+            const mockError = {
+                response: {
+                    status: 404,
+                    data: {
+                        error: {
+                            msg: 'Article not found',
+                        },
+                    },
+                },
+            }
+
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: null,
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+                isError: true,
+                error: mockError,
+            })
+
+            mockIsGorgiasApiError.mockReturnValue(true)
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={onClose}
+                        guidanceMode="edit"
+                        isOpen={true}
+                        guidanceArticles={[]}
+                    />
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(mockNotifyError).toHaveBeenCalledWith(
+                    'This article is no longer available. It may have been deleted.',
+                )
+                expect(onClose).toHaveBeenCalled()
+            })
+        })
+
+        it('shows generic error notification on non-404 error', async () => {
+            const mockIsGorgiasApiError =
+                jest.requireMock('models/api/types').isGorgiasApiError
+            const onClose = jest.fn()
+
+            const mockError = {
+                response: {
+                    status: 500,
+                    data: {
+                        error: {
+                            msg: 'Internal server error',
+                        },
+                    },
+                },
+            }
+
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: null,
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+                isError: true,
+                error: mockError,
+            })
+
+            mockIsGorgiasApiError.mockReturnValue(true)
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={onClose}
+                        guidanceMode="edit"
+                        isOpen={true}
+                        guidanceArticles={[]}
+                    />
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(mockNotifyError).toHaveBeenCalledWith(
+                    'Unable to load this article. Please try again or contact support.',
+                )
+                expect(onClose).toHaveBeenCalled()
+            })
+        })
+
+        it('does not show error notification when guidanceArticleId is not provided', () => {
+            const mockIsGorgiasApiError =
+                jest.requireMock('models/api/types').isGorgiasApiError
+
+            const mockError = new Error('Some error')
+
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: null,
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+                isError: true,
+                error: mockError,
+            })
+
+            mockIsGorgiasApiError.mockReturnValue(false)
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        onClose={jest.fn()}
+                        guidanceMode="edit"
+                        isOpen={true}
+                        guidanceArticles={[]}
+                    />
+                </Provider>,
+            )
+
+            expect(mockNotifyError).not.toHaveBeenCalled()
+        })
+
+        it('does not show error notification in create mode', () => {
+            const mockIsGorgiasApiError =
+                jest.requireMock('models/api/types').isGorgiasApiError
+
+            const mockError = new Error('Some error')
+
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: null,
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+                isError: true,
+                error: mockError,
+            })
+
+            mockIsGorgiasApiError.mockReturnValue(false)
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        onClose={jest.fn()}
+                        guidanceMode="create"
+                        isOpen={true}
+                        guidanceArticles={[]}
+                    />
+                </Provider>,
+            )
+
+            expect(mockNotifyError).not.toHaveBeenCalled()
+        })
+
+        it('shows generic error when error is not a Gorgias API error', async () => {
+            const mockIsGorgiasApiError =
+                jest.requireMock('models/api/types').isGorgiasApiError
+            const onClose = jest.fn()
+
+            const mockError = new Error('Network error')
+
+            mockUseGuidanceArticle.mockReturnValue({
+                guidanceArticle: null,
+                isGuidanceArticleLoading: false,
+                refetch: jest.fn(),
+                isError: true,
+                error: mockError,
+            })
+
+            mockIsGorgiasApiError.mockReturnValue(false)
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={onClose}
+                        guidanceMode="edit"
+                        isOpen={true}
+                        guidanceArticles={[]}
+                    />
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(mockNotifyError).toHaveBeenCalledWith(
+                    'Unable to load this article. Please try again or contact support.',
+                )
+                expect(onClose).toHaveBeenCalled()
+            })
         })
     })
 })

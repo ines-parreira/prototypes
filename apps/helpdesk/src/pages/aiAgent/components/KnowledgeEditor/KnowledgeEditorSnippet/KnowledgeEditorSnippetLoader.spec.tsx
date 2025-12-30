@@ -11,8 +11,14 @@ import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorSnippetLoader } from './KnowledgeEditorSnippetLoader'
 
+const mockNotifyError = jest.fn()
 jest.mock('hooks/useNotify', () => ({
-    useNotify: () => ({ error: jest.fn() }),
+    useNotify: () => ({ error: mockNotifyError }),
+}))
+
+jest.mock('models/api/types', () => ({
+    ...jest.requireActual('models/api/types'),
+    isGorgiasApiError: jest.fn(),
 }))
 
 jest.mock('@repo/feature-flags', () => ({
@@ -119,6 +125,7 @@ describe('KnowledgeEditorSnippetLoader', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
+        mockNotifyError.mockClear()
 
         mockedFetchResourceMetrics.mockReturnValue({
             isLoading: false,
@@ -715,6 +722,238 @@ describe('KnowledgeEditorSnippetLoader', () => {
                 timezone: 'America/New_York',
                 enabled: true,
             })
+        })
+    })
+
+    describe('Error handling', () => {
+        it('shows error notification and closes panel on 404 error', async () => {
+            const mockIsGorgiasApiError =
+                jest.requireMock('models/api/types').isGorgiasApiError
+            const onClose = jest.fn()
+
+            const mockError = {
+                response: {
+                    status: 404,
+                    data: {
+                        error: {
+                            msg: 'Article not found',
+                        },
+                    },
+                },
+            }
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetHelpCenterArticle',
+            ).mockReturnValue({
+                data: undefined,
+                isInitialLoading: false,
+                isError: true,
+                error: mockError,
+            } as ReturnType<typeof helpCenterQueries.useGetHelpCenterArticle>)
+
+            mockIsGorgiasApiError.mockReturnValue(true)
+
+            render(
+                <KnowledgeEditorSnippetLoader
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                    onClose={onClose}
+                />,
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(mockNotifyError).toHaveBeenCalledWith(
+                    'This snippet is no longer available. It may have been deleted.',
+                )
+                expect(onClose).toHaveBeenCalled()
+            })
+        })
+
+        it('shows generic error notification on non-404 error', async () => {
+            const mockIsGorgiasApiError =
+                jest.requireMock('models/api/types').isGorgiasApiError
+            const onClose = jest.fn()
+
+            const mockError = {
+                response: {
+                    status: 500,
+                    data: {
+                        error: {
+                            msg: 'Internal server error',
+                        },
+                    },
+                },
+            }
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetHelpCenterArticle',
+            ).mockReturnValue({
+                data: undefined,
+                isInitialLoading: false,
+                isError: true,
+                error: mockError,
+            } as ReturnType<typeof helpCenterQueries.useGetHelpCenterArticle>)
+
+            mockIsGorgiasApiError.mockReturnValue(true)
+
+            render(
+                <KnowledgeEditorSnippetLoader
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                    onClose={onClose}
+                />,
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(mockNotifyError).toHaveBeenCalledWith(
+                    'Unable to load this snippet. Please try again or contact support.',
+                )
+                expect(onClose).toHaveBeenCalled()
+            })
+        })
+
+        it('shows generic error when error is not a Gorgias API error', async () => {
+            const mockIsGorgiasApiError =
+                jest.requireMock('models/api/types').isGorgiasApiError
+            const onClose = jest.fn()
+
+            const mockError = new Error('Network error')
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetHelpCenterArticle',
+            ).mockReturnValue({
+                data: undefined,
+                isInitialLoading: false,
+                isError: true,
+                error: mockError,
+            } as ReturnType<typeof helpCenterQueries.useGetHelpCenterArticle>)
+
+            mockIsGorgiasApiError.mockReturnValue(false)
+
+            render(
+                <KnowledgeEditorSnippetLoader
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                    onClose={onClose}
+                />,
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(mockNotifyError).toHaveBeenCalledWith(
+                    'Unable to load this snippet. Please try again or contact support.',
+                )
+                expect(onClose).toHaveBeenCalled()
+            })
+        })
+
+        it('does not show error notification when isError is false', () => {
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetHelpCenterArticle',
+            ).mockReturnValue({
+                data: mockArticleData,
+                isInitialLoading: false,
+                isError: false,
+                error: null,
+            } as ReturnType<typeof helpCenterQueries.useGetHelpCenterArticle>)
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetArticleIngestionLogs',
+            ).mockReturnValue({
+                data: [mockArticleIngestionLog],
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof helpCenterQueries.useGetArticleIngestionLogs
+            >)
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetIngestedResource',
+            ).mockReturnValue({
+                data: null,
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof helpCenterQueries.useGetIngestedResource
+            >)
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetFileIngestion',
+            ).mockReturnValue({
+                data: null,
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof helpCenterQueries.useGetFileIngestion
+            >)
+
+            render(
+                <KnowledgeEditorSnippetLoader
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                />,
+                { wrapper },
+            )
+
+            expect(mockNotifyError).not.toHaveBeenCalled()
+        })
+
+        it('does not show error notification when error is null', () => {
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetHelpCenterArticle',
+            ).mockReturnValue({
+                data: mockArticleData,
+                isInitialLoading: false,
+                isError: true,
+                error: null,
+            } as ReturnType<typeof helpCenterQueries.useGetHelpCenterArticle>)
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetArticleIngestionLogs',
+            ).mockReturnValue({
+                data: [mockArticleIngestionLog],
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof helpCenterQueries.useGetArticleIngestionLogs
+            >)
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetIngestedResource',
+            ).mockReturnValue({
+                data: null,
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof helpCenterQueries.useGetIngestedResource
+            >)
+
+            jest.spyOn(
+                helpCenterQueries,
+                'useGetFileIngestion',
+            ).mockReturnValue({
+                data: null,
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof helpCenterQueries.useGetFileIngestion
+            >)
+
+            render(
+                <KnowledgeEditorSnippetLoader
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                />,
+                { wrapper },
+            )
+
+            expect(mockNotifyError).not.toHaveBeenCalled()
         })
     })
 })

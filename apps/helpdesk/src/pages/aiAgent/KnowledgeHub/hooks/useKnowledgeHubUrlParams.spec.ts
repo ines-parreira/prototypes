@@ -15,6 +15,15 @@ jest.mock('../../hooks/useAiAgentNavigation', () => ({
     })),
 }))
 
+jest.mock('hooks/useNotify', () => ({
+    useNotify: jest.fn(() => ({
+        error: jest.fn(),
+        success: jest.fn(),
+        info: jest.fn(),
+        warning: jest.fn(),
+    })),
+}))
+
 describe('useKnowledgeHubUrlParams', () => {
     const TEST_SHOP_NAME = 'test-shop'
     const mockTableData: GroupedKnowledgeItem[] = [
@@ -613,7 +622,7 @@ describe('useKnowledgeHubUrlParams', () => {
             )
         })
 
-        it('creates minimal folder object when not found in tableData', () => {
+        it('clears folder when not found in tableData (deleted folder)', () => {
             const unknownUrl = 'https://example.com/unknown'
             const history = createMemoryHistory({
                 initialEntries: [
@@ -628,10 +637,10 @@ describe('useKnowledgeHubUrlParams', () => {
                 },
             )
 
-            expect(result.current.selectedFolder).toMatchObject({
-                source: unknownUrl,
-                title: unknownUrl,
-            })
+            // Folder should be cleared when not found (treated as deleted)
+            expect(result.current.selectedFolder).toBeNull()
+            // URL parameter should also be removed
+            expect(history.location.search).toBe('')
         })
 
         it('updates folder using setSelectedFolder but gets reverted without URL change', () => {
@@ -654,6 +663,224 @@ describe('useKnowledgeHubUrlParams', () => {
 
             // setSelectedFolder alone doesn't update URL, so useEffect reverts it
             expect(result.current.selectedFolder).toBe(null)
+        })
+    })
+
+    describe('deleted folder validation', () => {
+        it('clears folder param from URL when folder is deleted', () => {
+            const deletedFolderUrl = 'https://example.com/deleted'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(deletedFolderUrl)}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Folder param should be removed from URL
+            expect(history.location.search).toBe('')
+            // selectedFolder should be null
+            expect(result.current.selectedFolder).toBeNull()
+        })
+
+        it('clears selectedFolder state when folder is deleted', () => {
+            const deletedFolderUrl = 'https://example.com/deleted'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(deletedFolderUrl)}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFolder).toBeNull()
+        })
+
+        it('does not show error when tableData is empty (loading state)', () => {
+            const deletedFolderUrl = 'https://example.com/deleted'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(deletedFolderUrl)}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Should create minimal folder object when tableData is empty
+            expect(result.current.selectedFolder).toMatchObject({
+                source: deletedFolderUrl,
+                title: deletedFolderUrl,
+            })
+            // URL should not be modified while loading
+            expect(history.location.search).toBe(
+                `?folder=${encodeURIComponent(deletedFolderUrl)}`,
+            )
+        })
+
+        it('silently clears folder param when viewing article with deleted folder', () => {
+            const deletedFolderUrl = 'https://example.com/deleted'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge/document/123?folder=${encodeURIComponent(deletedFolderUrl)}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Folder param should be removed from URL
+            expect(history.location.search).toBe('')
+            // selectedFolder should be null
+            expect(result.current.selectedFolder).toBeNull()
+        })
+
+        it('preserves other URL params when clearing deleted folder', () => {
+            const deletedFolderUrl = 'https://example.com/deleted'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?filter=url&folder=${encodeURIComponent(deletedFolderUrl)}&search=test`,
+                ],
+            })
+
+            renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Other params should be preserved
+            expect(history.location.search).toContain('filter=url')
+            expect(history.location.search).toContain('search=test')
+            // Folder param should be removed
+            expect(history.location.search).not.toContain('folder=')
+        })
+
+        it('handles transition from valid to deleted folder', () => {
+            const validFolderUrl = 'https://example.com/url'
+            const deletedFolderUrl = 'https://example.com/deleted'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(validFolderUrl)}`,
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Initially has valid folder
+            expect(result.current.selectedFolder).toMatchObject({
+                source: validFolderUrl,
+                type: KnowledgeType.URL,
+            })
+
+            // Navigate to deleted folder
+            act(() => {
+                history.push(
+                    `/knowledge?folder=${encodeURIComponent(deletedFolderUrl)}`,
+                )
+            })
+
+            // Folder param should be removed from URL
+            expect(history.location.search).toBe('')
+            // selectedFolder should be null
+            expect(result.current.selectedFolder).toBeNull()
+        })
+
+        it('handles folder becoming available after loading', () => {
+            const folderUrl = 'https://example.com/url'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(folderUrl)}`,
+                ],
+            })
+
+            const { result, rerender } = renderHook(
+                (props) =>
+                    useKnowledgeHubUrlParams(TEST_SHOP_NAME, props.tableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                    initialProps: { tableData: [] as GroupedKnowledgeItem[] },
+                },
+            )
+
+            // Initially has minimal folder object (tableData is empty/loading)
+            expect(result.current.selectedFolder).toMatchObject({
+                source: folderUrl,
+                title: folderUrl,
+            })
+
+            // Load tableData with the folder
+            act(() => {
+                rerender({ tableData: mockTableData })
+            })
+
+            // Should upgrade to full folder object
+            expect(result.current.selectedFolder).toMatchObject({
+                id: '1',
+                type: KnowledgeType.URL,
+                source: folderUrl,
+                isGrouped: true,
+            })
+            // URL should be preserved
+            expect(history.location.search).toContain('folder=')
+        })
+
+        it('creates minimal folder object then validates after tableData loads', () => {
+            const deletedFolderUrl = 'https://example.com/deleted'
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent(deletedFolderUrl)}`,
+                ],
+            })
+
+            const { result, rerender } = renderHook(
+                (props) =>
+                    useKnowledgeHubUrlParams(TEST_SHOP_NAME, props.tableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                    initialProps: { tableData: [] as GroupedKnowledgeItem[] },
+                },
+            )
+
+            // Initially has minimal folder object when tableData is empty
+            expect(result.current.selectedFolder).toMatchObject({
+                source: deletedFolderUrl,
+                title: deletedFolderUrl,
+            })
+
+            // Load tableData without the folder
+            act(() => {
+                rerender({ tableData: mockTableData })
+            })
+
+            // Folder should be cleared after validation
+            expect(result.current.selectedFolder).toBeNull()
+            // URL should be updated
+            expect(history.location.search).toBe('')
         })
     })
 
@@ -1723,7 +1950,7 @@ describe('useKnowledgeHubUrlParams', () => {
         })
 
         it('preserves folder parameter when clearing search params', () => {
-            const folderUrl = 'https://example.com/folder'
+            const folderUrl = 'https://example.com/url' // Use a folder that exists in mockTableData
             const history = createMemoryHistory({
                 initialEntries: [
                     `/knowledge?folder=${encodeURIComponent(folderUrl)}&search=test&inUseByAI=true`,

@@ -1,7 +1,9 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { LegacyLoadingSpinner, SidePanel } from '@gorgias/axiom'
 
+import { useNotify } from 'hooks/useNotify'
+import { isGorgiasApiError } from 'models/api/types'
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
@@ -106,16 +108,35 @@ export const KnowledgeEditorGuidance = ({
         helpCenterType: 'guidance',
     })
 
-    const { guidanceArticle, isGuidanceArticleLoading } = useGuidanceArticle({
-        guidanceHelpCenterId: guidanceHelpCenter?.id ?? 0,
-        guidanceArticleId: guidanceArticleId ?? 0,
-        locale: guidanceHelpCenter?.default_locale ?? 'en-US',
-        versionStatus: 'latest_draft',
-        enabled:
-            !!guidanceArticleId &&
-            !!guidanceHelpCenter?.id &&
-            guidanceMode !== 'create',
-    })
+    const { guidanceArticle, isGuidanceArticleLoading, isError, error } =
+        useGuidanceArticle({
+            guidanceHelpCenterId: guidanceHelpCenter?.id ?? 0,
+            guidanceArticleId: guidanceArticleId ?? 0,
+            locale: guidanceHelpCenter?.default_locale ?? 'en-US',
+            versionStatus: 'latest_draft',
+            enabled:
+                !!guidanceArticleId &&
+                !!guidanceHelpCenter?.id &&
+                guidanceMode !== 'create',
+        })
+
+    const { error: notifyError } = useNotify()
+
+    useEffect(() => {
+        // Only show error if editor is actually open and attempting to display content
+        if (isError && guidanceArticleId && error) {
+            // Check if it's a 404 error
+            const is404 =
+                isGorgiasApiError(error) && error.response.status === 404
+
+            const message = is404
+                ? 'This article is no longer available. It may have been deleted.'
+                : 'Unable to load this article. Please try again or contact support.'
+
+            notifyError(message)
+            onClose()
+        }
+    }, [isError, guidanceArticleId, error, isOpen, notifyError, onClose])
     if (!isOpen) {
         return null
     }

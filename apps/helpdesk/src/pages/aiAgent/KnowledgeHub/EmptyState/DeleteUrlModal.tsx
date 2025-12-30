@@ -16,6 +16,7 @@ type Props = {
     urlIngestionLogs?: IngestionLog[]
     onRefetch: () => void
     onFolderChange: (folder: GroupedKnowledgeItem | null) => void
+    onRemoveFolderParam: () => void
 }
 
 export const DeleteUrlModal = ({
@@ -23,6 +24,7 @@ export const DeleteUrlModal = ({
     urlIngestionLogs,
     onRefetch,
     onFolderChange,
+    onRemoveFolderParam,
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedFolder, setSelectedFolder] =
@@ -72,6 +74,7 @@ export const DeleteUrlModal = ({
             await deletePublicResource(ingestionLog.id)
             setIsOpen(false)
             setSelectedFolder(null)
+            onRemoveFolderParam()
             onFolderChange(null)
             onRefetch()
 
@@ -97,6 +100,7 @@ export const DeleteUrlModal = ({
         dispatch,
         onFolderChange,
         onRefetch,
+        onRemoveFolderParam,
     ])
 
     return (

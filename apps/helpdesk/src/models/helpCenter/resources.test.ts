@@ -1,6 +1,12 @@
+import axios from 'axios'
+
 import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 
-import { bulkCopyArticles, getKnowledgeHubArticles } from './resources'
+import {
+    bulkCopyArticles,
+    getHelpCenterArticle,
+    getKnowledgeHubArticles,
+} from './resources'
 import type {
     KnowledgeHubArticlesQueryParams,
     KnowledgeHubArticlesResponse,
@@ -269,5 +275,150 @@ describe('bulkCopyArticles', () => {
             body,
         )
         expect(result).toEqual({ copied_count: 1 })
+    })
+})
+
+describe('getHelpCenterArticle', () => {
+    const mockPathParams = {
+        id: 456,
+        help_center_id: 123,
+    }
+
+    const mockQueryParams = {
+        locale: 'en-US' as const,
+    }
+
+    const mockArticleResponse = {
+        id: 456,
+        title: 'Test Article',
+        content: 'Test content',
+    }
+
+    it('should return article data on success', async () => {
+        const mockClient = {
+            getArticle: jest.fn().mockResolvedValue({
+                data: mockArticleResponse,
+            }),
+        } as unknown as HelpCenterClient
+
+        const result = await getHelpCenterArticle(
+            mockClient,
+            mockPathParams,
+            mockQueryParams,
+        )
+
+        expect(mockClient.getArticle).toHaveBeenCalledWith({
+            ...mockPathParams,
+            ...mockQueryParams,
+        })
+        expect(result).toEqual(mockArticleResponse)
+    })
+
+    it('should return null when client is undefined', async () => {
+        const result = await getHelpCenterArticle(
+            undefined,
+            mockPathParams,
+            mockQueryParams,
+        )
+
+        expect(result).toBeNull()
+    })
+
+    it('should return null on 404 error when throwOn404 is false', async () => {
+        const mockError = {
+            isAxiosError: true,
+            response: {
+                status: 404,
+            },
+        }
+        jest.spyOn(axios, 'isAxiosError').mockReturnValue(true)
+
+        const mockClient = {
+            getArticle: jest.fn().mockRejectedValue(mockError),
+        } as unknown as HelpCenterClient
+
+        const result = await getHelpCenterArticle(
+            mockClient,
+            mockPathParams,
+            mockQueryParams,
+            { throwOn404: false },
+        )
+
+        expect(result).toBeNull()
+    })
+
+    it('should return null on 404 error when throwOn404 is not provided', async () => {
+        const mockError = {
+            isAxiosError: true,
+            response: {
+                status: 404,
+            },
+        }
+        jest.spyOn(axios, 'isAxiosError').mockReturnValue(true)
+
+        const mockClient = {
+            getArticle: jest.fn().mockRejectedValue(mockError),
+        } as unknown as HelpCenterClient
+
+        const result = await getHelpCenterArticle(
+            mockClient,
+            mockPathParams,
+            mockQueryParams,
+        )
+
+        expect(result).toBeNull()
+    })
+
+    it('should throw error on 404 when throwOn404 is true', async () => {
+        const mockError = {
+            isAxiosError: true,
+            response: {
+                status: 404,
+            },
+            message: 'Article not found',
+        }
+        jest.spyOn(axios, 'isAxiosError').mockReturnValue(true)
+
+        const mockClient = {
+            getArticle: jest.fn().mockRejectedValue(mockError),
+        } as unknown as HelpCenterClient
+
+        await expect(
+            getHelpCenterArticle(mockClient, mockPathParams, mockQueryParams, {
+                throwOn404: true,
+            }),
+        ).rejects.toEqual(mockError)
+    })
+
+    it('should throw error on non-404 errors', async () => {
+        const mockError = {
+            isAxiosError: true,
+            response: {
+                status: 500,
+            },
+            message: 'Internal Server Error',
+        }
+        jest.spyOn(axios, 'isAxiosError').mockReturnValue(true)
+
+        const mockClient = {
+            getArticle: jest.fn().mockRejectedValue(mockError),
+        } as unknown as HelpCenterClient
+
+        await expect(
+            getHelpCenterArticle(mockClient, mockPathParams, mockQueryParams),
+        ).rejects.toEqual(mockError)
+    })
+
+    it('should throw error for non-axios errors', async () => {
+        const mockError = new Error('Network Error')
+        jest.spyOn(axios, 'isAxiosError').mockReturnValue(false)
+
+        const mockClient = {
+            getArticle: jest.fn().mockRejectedValue(mockError),
+        } as unknown as HelpCenterClient
+
+        await expect(
+            getHelpCenterArticle(mockClient, mockPathParams, mockQueryParams),
+        ).rejects.toThrow('Network Error')
     })
 })

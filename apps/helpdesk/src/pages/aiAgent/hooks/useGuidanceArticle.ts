@@ -37,13 +37,16 @@ export const useGuidanceArticle = ({
         data,
         isLoading: isGuidanceArticleLoading,
         refetch,
+        isError,
+        error,
     } = useGetHelpCenterArticle(
         guidanceArticleId,
         guidanceHelpCenterId,
         locale,
         versionStatus,
         {
-            enabled,
+            enabled: enabled,
+            throwOn404: true,
             initialData: () => {
                 const articlesCache = queryClient.getQueryData(
                     helpCenterKeys.articles(
@@ -69,5 +72,11 @@ export const useGuidanceArticle = ({
         [data],
     )
 
-    return { guidanceArticle, isGuidanceArticleLoading, refetch }
+    return {
+        guidanceArticle,
+        isGuidanceArticleLoading,
+        refetch,
+        isError,
+        error,
+    }
 }

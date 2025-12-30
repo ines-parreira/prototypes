@@ -420,7 +420,7 @@ export const useGetHelpCenterArticle = (
     versionStatus: GetArticleVersionStatus = 'current',
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getHelpCenterArticle>>
-    >,
+    > & { throwOn404?: boolean },
 ) => {
     const { client } = useHelpCenterApi()
 
@@ -442,6 +442,7 @@ export const useGetHelpCenterArticle = (
                     locale: locale,
                     version_status: versionStatus,
                 },
+                { throwOn404: overrides?.throwOn404 },
             ),
         staleTime: STALE_TIME,
         ...overrides,
