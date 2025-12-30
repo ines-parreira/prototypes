@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -8,10 +8,12 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_DEFAULT_COLOR,
+    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
+} from 'config/integrations/gorgias_chat'
 import {
     GorgiasChatCreationWizardSteps,
-    GorgiasChatLauncherType,
     IntegrationType,
 } from 'models/integration/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
@@ -69,7 +71,7 @@ const minProps: React.ComponentProps<
 
 describe('<GorgiasChatCreationWizardStepBranding />', () => {
     it('renders wizard with default options selected', () => {
-        const { container, getByLabelText } = render(
+        const { container } = render(
             <MemoryRouter>
                 <Provider store={mockStore(mockStoreState)}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
@@ -85,11 +87,12 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
                 expect(input).toHaveValue(GORGIAS_CHAT_DEFAULT_COLOR),
             )
 
-        expect(getByLabelText('Icon', { selector: 'input' })).toBeChecked()
+        expect(screen.getByText('Chat launcher position')).toBeInTheDocument()
+        expect(screen.getByText('Home page logo')).toBeInTheDocument()
     })
 
     it('submits form when fields have been changed', () => {
-        const { container, getByRole, getByLabelText } = render(
+        const { container, getByRole } = render(
             <MemoryRouter>
                 <Provider store={mockStore(mockStoreState)}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
@@ -103,11 +106,9 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
             target: { value: '#f00ba5' },
         })
 
-        fireEvent.click(getByLabelText('Icon and label', { selector: 'input' }))
-
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByRole('button', { name: 'Next' }))
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
 
         expect(spy).toHaveBeenCalledTimes(1)
 
@@ -118,11 +119,9 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
         expect(form.type).toBe(IntegrationType.GorgiasChat)
         expect(form.id).toBe(1)
         expect(form.decoration.main_color).toBe('#f00ba5')
-        expect(form.decoration.conversation_color).toBe(
-            GORGIAS_CHAT_DEFAULT_COLOR,
-        )
-        expect(form.decoration.launcher.type).toBe(
-            GorgiasChatLauncherType.ICON_AND_LABEL,
+        expect(form.decoration.conversation_color).toBe('#f00ba5')
+        expect(form.decoration.position).toEqual(
+            GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
         )
         expect(form.meta.wizard.step).toBe(
             GorgiasChatCreationWizardSteps.Automate,
@@ -150,6 +149,6 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
             getByRole('button', { name: 'Save & Customize Later' }),
         ).toBeAriaDisabled()
         expect(getByRole('button', { name: 'Back' })).toBeAriaDisabled()
-        expect(getByRole('button', { name: /Next/ })).toBeAriaDisabled()
+        expect(getByRole('button', { name: /Continue/ })).toBeAriaDisabled()
     })
 })

@@ -1,0 +1,54 @@
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--xs, 8px);
+    }
+
+    .previewContainer {
+        display: flex;
+        align-items: center;
+        gap: var(--xs, 8px);
+    }
+
+    .preview {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 120px;
+        height: 40px;
+        border: 1px solid var(--border-neutral-default, #ebecef);
+        border-radius: var(--xxs, 6px);
+        background-color: var(--surface-neutral-tertiary, #f5f6f7);
+        overflow: hidden;
+    }
+
+    .previewImage {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .removeButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border: none;
+        border-radius: 50%;
+        background-color: var(--surface-neutral-secondary, #ebedf0);
+        color: var(--content-neutral-secondary, #5c6370);
+        cursor: pointer;
+        padding: 0;
+
+        &:hover {
+            background-color: var(--surface-neutral-tertiary, #dfe1e5);
+        }
+
+        i {
+            font-size: 16px;
+        }
+    }
+}

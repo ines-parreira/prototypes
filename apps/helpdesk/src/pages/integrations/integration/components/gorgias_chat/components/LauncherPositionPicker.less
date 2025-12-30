@@ -1,0 +1,40 @@
+:local {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: var(--xxs, 6px);
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        gap: var(--xxxs, 4px);
+    }
+
+    .fieldsRow {
+        display: flex;
+        gap: var(--xs, 8px);
+    }
+
+    .field {
+        width: 160px;
+    }
+
+    .pixelInputWrapper {
+        position: relative;
+
+        .pixelSuffix {
+            position: absolute;
+            right: 12px;
+            bottom: 6px;
+            color: var(--content-neutral-tertiary, #6e7686);
+            font-size: 14px;
+            line-height: 20px;
+            pointer-events: none;
+        }
+
+        input {
+            padding-right: 28px;
+        }
+    }
+}

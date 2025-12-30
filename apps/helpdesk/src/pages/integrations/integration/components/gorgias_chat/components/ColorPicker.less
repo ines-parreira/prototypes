@@ -1,0 +1,55 @@
+:local {
+    .wrapper {
+        display: inline-flex;
+        width: 191px;
+    }
+
+    .textField {
+        width: 100%;
+    }
+
+    .colorSwatch {
+        width: 16px;
+        height: 16px;
+        border-radius: var(--radius-xxxs);
+        flex-shrink: 0;
+    }
+
+    .popup {
+        background: var(--elevation-neutral-default, white);
+        box-shadow: var(--shadow-container);
+        z-index: var(--z-index-popover);
+    }
+
+    .colorGrid {
+        @choices-per-row: 7;
+        @choice-size: 30px;
+        @choice-gap: 6px;
+        border-radius: 8px;
+
+        display: grid;
+        grid-template-columns: repeat(@choices-per-row, @choice-size);
+        gap: @choice-gap;
+        padding: 6px;
+        border: 1px solid var(--border-neutral-default) !important;
+    }
+
+    .colorChoice {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 3px;
+        padding: 0;
+        cursor: pointer;
+        transition: transform 0.1s ease;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--border-focus);
+            outline-offset: 2px;
+        }
+    }
+}

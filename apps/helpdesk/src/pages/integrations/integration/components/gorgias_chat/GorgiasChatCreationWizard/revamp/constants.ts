@@ -2,7 +2,7 @@ import { GorgiasChatCreationWizardSteps } from 'models/integration/types/gorgias
 
 export const STEP_LABELS: Record<GorgiasChatCreationWizardSteps, string> = {
     [GorgiasChatCreationWizardSteps.Basics]: 'Set up the basics',
-    [GorgiasChatCreationWizardSteps.Branding]: 'Customize your chat',
+    [GorgiasChatCreationWizardSteps.Branding]: 'Brand',
     [GorgiasChatCreationWizardSteps.Automate]: 'AI Agent',
     [GorgiasChatCreationWizardSteps.Installation]: 'Install and launch',
 }

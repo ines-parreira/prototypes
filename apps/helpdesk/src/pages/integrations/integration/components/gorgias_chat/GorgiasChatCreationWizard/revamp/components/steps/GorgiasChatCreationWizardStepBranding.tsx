@@ -1,30 +1,28 @@
 import type React from 'react'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
 import { SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button, Text } from '@gorgias/axiom'
 
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
-    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
-    GORGIAS_CHAT_WIDGET_TEXTS,
+    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import Launcher from 'gorgias-design-system/Launcher/Launcher'
 import useAppDispatch from 'hooks/useAppDispatch'
+import type { GorgiasChatPosition } from 'models/integration/types'
 import {
     GorgiasChatCreationWizardSteps,
-    GorgiasChatLauncherType,
     IntegrationType,
 } from 'models/integration/types'
-import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import ColorField from 'pages/common/forms/ColorField'
-import InputField from 'pages/common/forms/input/InputField'
+import { ColorPicker } from 'pages/integrations/integration/components/gorgias_chat/components/ColorPicker'
+import { LauncherPositionPicker } from 'pages/integrations/integration/components/gorgias_chat/components/LauncherPositionPicker'
+import { LogoUpload } from 'pages/integrations/integration/components/gorgias_chat/components/LogoUpload'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 
 import { GorgiasChatCreationWizardStep } from '../../GorgiasChatCreationWizardStep'
@@ -52,19 +50,15 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
 
     const dispatch = useAppDispatch()
 
-    const launcherCustomizationRef = useRef<HTMLDivElement>(null)
-
     const { goToNextStep, goToPreviousStep } = useNavigateWizardSteps()
 
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
     const [currentMainColor, setCurrentMainColor] = useState<string>()
-    const [currentConversationColor, setCurrentConversationColor] =
+    const [currentHeaderPictureUrl, setCurrentHeaderPictureUrl] =
         useState<string>()
-
-    const [currentLauncherType, setCurrentLauncherType] =
-        useState<GorgiasChatLauncherType>()
-    const [currentLauncherLabel, setCurrentLauncherLabel] = useState<string>()
+    const [currentPosition, setCurrentPosition] =
+        useState<GorgiasChatPosition>()
 
     const mainColor =
         currentMainColor ||
@@ -72,43 +66,33 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
             ['decoration', 'main_color'],
             GORGIAS_CHAT_DEFAULT_COLOR,
         ) as string)
+    const headerPictureUrl =
+        currentHeaderPictureUrl ??
+        (integration.getIn(['decoration', 'header_picture_url']) as
+            | string
+            | undefined)
 
-    const conversationColor =
-        currentConversationColor ||
-        (integration.getIn(
-            ['decoration', 'conversation_color'],
-            GORGIAS_CHAT_DEFAULT_COLOR,
-        ) as string)
+    const savedPosition: GorgiasChatPosition | undefined = integration
+        .getIn(['decoration', 'position'])
+        ?.toJS()
 
-    const language = integration.getIn(['meta', 'language']) as string
-
-    const launcherLabel: string =
-        currentLauncherLabel ??
-        integration.getIn(
-            ['decoration', 'launcher', 'label'],
-            GORGIAS_CHAT_WIDGET_TEXTS[language]?.chatWithUs,
-        )
-
-    const launcherType =
-        currentLauncherType ||
-        (integration.getIn(
-            ['decoration', 'launcher', 'type'],
-            GorgiasChatLauncherType.ICON,
-        ) as GorgiasChatLauncherType)
+    const position: GorgiasChatPosition =
+        currentPosition ?? savedPosition ?? GORGIAS_CHAT_WIDGET_POSITION_DEFAULT
 
     const isPristine =
         currentMainColor === undefined &&
-        currentConversationColor === undefined &&
-        currentLauncherLabel === undefined &&
-        currentLauncherType === undefined
+        currentHeaderPictureUrl === undefined &&
+        currentPosition === undefined
 
     const onSave = (shouldGoToNextStep = false, isContinueLater = false) => {
         const form: SubmitForm = {
             type: IntegrationType.GorgiasChat,
             id: integration.get('id'),
             decoration: (integration.get('decoration') as Map<any, any>)
-                .set('conversation_color', conversationColor)
+                .set('conversation_color', mainColor) // Backwards compatibility: setting main color for conversation color
                 .set('main_color', mainColor)
+                .set('header_picture_url', headerPictureUrl)
+                .set('position', position)
                 .toJS(),
             meta: (integration.get('meta') as Map<any, any>)
                 .setIn(
@@ -118,17 +102,6 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                         : GorgiasChatCreationWizardSteps.Branding,
                 )
                 .toJS(),
-        }
-
-        if (launcherType === GorgiasChatLauncherType.ICON_AND_LABEL) {
-            form.decoration.launcher = {
-                type: GorgiasChatLauncherType.ICON_AND_LABEL,
-                label: launcherLabel,
-            }
-        } else if (launcherType === GorgiasChatLauncherType.ICON) {
-            form.decoration.launcher = {
-                type: GorgiasChatLauncherType.ICON,
-            }
         }
 
         return dispatch(
@@ -141,13 +114,12 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                         isContinueLater
                             ? SegmentEvent.ChatWidgetWizardSaveLaterClicked
                             : SegmentEvent.ChatWidgetWizardStepCompleted,
-                        {
-                            launcher_type: launcherType,
-                        },
                     )
 
                     setHasSubmitted(true)
-                    shouldGoToNextStep && goToNextStep()
+                    if (shouldGoToNextStep) {
+                        goToNextStep()
+                    }
                 },
                 shouldGoToNextStep,
                 'Changes saved',
@@ -166,9 +138,22 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                 step={GorgiasChatCreationWizardSteps.Branding}
                 preview={'Placeholder'}
                 footer={
-                    <>
+                    <div className={css.wizardButtons}>
+                        <div className={css.wizardNavigationButtons}>
+                            <Button
+                                onClick={goToPreviousStep}
+                                isDisabled={isSubmitting}
+                            >
+                                Back
+                            </Button>
+                            <Button
+                                onClick={() => onSave(true)}
+                                isLoading={isSubmitting}
+                            >
+                                Continue
+                            </Button>
+                        </div>
                         <Button
-                            fillStyle="ghost"
                             onClick={() =>
                                 onSave(false, true).then(() => {
                                     history.push(
@@ -177,121 +162,52 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                 })
                             }
                             isDisabled={isSubmitting}
+                            variant={'tertiary'}
                         >
                             Save &amp; Customize Later
                         </Button>
-                        <div className={css.wizardButtons}>
-                            <div className={css.wizardButtons}>
-                                <Button
-                                    intent="secondary"
-                                    onClick={goToPreviousStep}
-                                    isDisabled={isSubmitting}
-                                >
-                                    Back
-                                </Button>
-                                <Button
-                                    onClick={() => onSave(true)}
-                                    isLoading={isSubmitting}
-                                >
-                                    Next
-                                </Button>
-                            </div>
-                        </div>
-                    </>
+                    </div>
                 }
             >
                 <>
                     <div className={css.section}>
-                        <div className={css.sectionHeading}>Colors</div>
-                        <div className={css.colorPickerGroup}>
-                            <ColorField
-                                className={css.colorPicker}
-                                value={mainColor}
-                                onChange={setCurrentMainColor}
-                                label="Main color"
-                            />
-
-                            <ColorField
-                                className={css.colorPicker}
-                                value={conversationColor}
-                                onChange={setCurrentConversationColor}
-                                label="Conversation color"
-                            />
-                        </div>
+                        <Text variant="bold" size="md">
+                            Brand color
+                        </Text>
+                        <Text size="sm" color="secondary">
+                            Make your chat fit in with your brand color
+                        </Text>
+                        <ColorPicker
+                            className={css.colorPicker}
+                            value={mainColor}
+                            defaultValue={
+                                integration.getIn(
+                                    ['decoration', 'main_color'],
+                                    GORGIAS_CHAT_DEFAULT_COLOR,
+                                ) as string
+                            }
+                            onChange={setCurrentMainColor}
+                            label="Main color"
+                        />
                     </div>
                     <div className={css.section}>
-                        <div className={css.sectionHeading}>Launcher</div>
-                        <div
-                            className={css.radioButtonGroup}
-                            ref={launcherCustomizationRef}
-                        >
-                            <PreviewRadioButton
-                                isSelected={
-                                    launcherType ===
-                                    GorgiasChatLauncherType.ICON
-                                }
-                                label="Icon"
-                                preview={
-                                    <div className={css.launcherPreview}>
-                                        <Launcher
-                                            fillColor={mainColor}
-                                            shouldHideLabel
-                                        />
-                                    </div>
-                                }
-                                value={GorgiasChatLauncherType.ICON}
-                                onClick={() => {
-                                    setCurrentLauncherType(
-                                        GorgiasChatLauncherType.ICON,
-                                    )
-                                }}
-                            />
-
-                            <PreviewRadioButton
-                                isSelected={
-                                    launcherType ===
-                                    GorgiasChatLauncherType.ICON_AND_LABEL
-                                }
-                                label="Icon and label"
-                                preview={
-                                    <div
-                                        className={css.launcherPreview}
-                                        style={{
-                                            fontFamily:
-                                                GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
-                                        }}
-                                    >
-                                        <Launcher
-                                            fillColor={mainColor}
-                                            shouldHideLabel={false}
-                                            label={launcherLabel}
-                                        />
-                                    </div>
-                                }
-                                value={GorgiasChatLauncherType.ICON_AND_LABEL}
-                                onClick={() => {
-                                    setCurrentLauncherType(
-                                        GorgiasChatLauncherType.ICON_AND_LABEL,
-                                    )
-                                }}
-                            />
-                        </div>
-                        {launcherType ===
-                            GorgiasChatLauncherType.ICON_AND_LABEL && (
-                            <div className={css.launcherSettingsGrid}>
-                                <InputField
-                                    type="text"
-                                    label="Label"
-                                    value={launcherLabel}
-                                    onChange={setCurrentLauncherLabel}
-                                    isRequired
-                                    maxLength={20}
-                                    caption={`${
-                                        launcherLabel?.length || 0
-                                    }/20 characters`}
-                                />
-                            </div>
-                        )}
+                        <Text variant="bold" size="md">
+                            Home page logo
+                        </Text>
+                        <Text size="sm" color="secondary">
+                            Add a PNG, JPG or GIF horizontal logo with a
+                            transparent background.
+                        </Text>
+                        <LogoUpload
+                            url={headerPictureUrl}
+                            onChange={setCurrentHeaderPictureUrl}
+                        />
+                    </div>
+                    <div className={css.section}>
+                        <LauncherPositionPicker
+                            value={position}
+                            onChange={setCurrentPosition}
+                        />
                     </div>
                 </>
             </GorgiasChatCreationWizardStep>
