@@ -49,6 +49,9 @@ declare global {
             }) => void
             updateSSPTexts(param: Record<string, string>): void
         }
+        GorgiasCanduRouter?: {
+            route: (url: string) => void
+        }
         loadGorgiasChat?: (isAiAgentPath: boolean) => void
         GORGIAS_SUPPORT_EMAIL: string
         STRIPE_PUBLIC_KEY?: string

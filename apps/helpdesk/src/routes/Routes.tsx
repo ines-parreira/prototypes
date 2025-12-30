@@ -129,6 +129,7 @@ import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import TicketPrintContainer from 'pages/tickets/detail/TicketPrintContainer'
 import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
+import { useCanduRouter } from 'routes/hooks/useCanduRouter'
 import SettingsRoutes from 'routes/settings'
 import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/legacyBridge/useTicketLegacyBridgeFunctions'
 
@@ -171,6 +172,8 @@ export function AppRoutes() {
             window.loadGorgiasChat?.(location.pathname.includes('ai-agent'))
         }
     }, [location.pathname, isAiAgentAssistantEnabled])
+
+    window.GorgiasCanduRouter = useCanduRouter()
 
     return (
         <Switch>
