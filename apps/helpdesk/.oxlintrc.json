@@ -14,8 +14,6 @@
     },
     "ignorePatterns": [
         "build/**",
-        "scripts/copy-pubnub-worker.js",
-        "src/assets/js/**",
         "src/coverage/**",
         "src/rest_api/help_center_api/**",
         "src/rest_api/migration_api/client.generated.d.ts",

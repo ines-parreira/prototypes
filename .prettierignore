@@ -5,5 +5,3 @@ pnpm-lock.yaml
 
 ## Helpdesk
 apps/helpdesk/src/main/init/index.tsx
-apps/helpdesk/src/assets/js/**
-apps/helpdesk/scripts/copy-pubnub-worker.js

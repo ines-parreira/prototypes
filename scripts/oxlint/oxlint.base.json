@@ -106,9 +106,7 @@
         "src/rest_api/revenue_addon_api/client.generated.d.ts",
         "src/rest_api/ssp_api/client.generated.d.ts",
         "src/rest_api/workflows_api/client.generated.d.ts",
-        "src/coverage/**",
-        "src/assets/js/**",
-        "scripts/copy-pubnub-worker.js"
+        "src/coverage/**"
     ],
     "overrides": [
         {
