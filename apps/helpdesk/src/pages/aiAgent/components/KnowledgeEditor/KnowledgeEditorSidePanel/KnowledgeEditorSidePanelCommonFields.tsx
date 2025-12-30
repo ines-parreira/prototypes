@@ -3,7 +3,15 @@ import { useEffect, useState } from 'react'
 import { useCopyToClipboard, useId } from '@repo/hooks'
 import _uniqueId from 'lodash/uniqueId'
 
-import { Icon, IconSize, Tag, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    Icon,
+    IconSize,
+    LegacyTooltip,
+    Tag,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@gorgias/axiom'
 
 import { DEFAULT_LOCALE } from 'domains/reporting/pages/common/utils'
 import { selectText } from 'pages/common/components/CopyText/utils'
@@ -44,17 +52,21 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
     tooltip,
     onChange,
     isDisabled,
+    showMultiLanguageInfo,
+    multiLanguageTooltipTitle,
 }: {
     checked: boolean
     className?: string
     tooltip?: string
     onChange?: (value: boolean) => void
     isDisabled?: boolean
+    showMultiLanguageInfo?: boolean
+    multiLanguageTooltipTitle?: string
 }) => {
     const id = useId()
 
     return (
-        <>
+        <div className={css.aiAgentStatusWrapper}>
             <span id={`tooltip_${id}`}>
                 <NewToggleButton
                     color="var(--surface-inverted-default)"
@@ -67,11 +79,24 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
                 />
             </span>
             {tooltip && (
-                <Tooltip target={`tooltip_${id}`} placement="top-end">
+                <LegacyTooltip target={`tooltip_${id}`} placement="top-end">
                     {tooltip}
+                </LegacyTooltip>
+            )}
+            {showMultiLanguageInfo && multiLanguageTooltipTitle && (
+                <Tooltip delay={0} closeDelay={5000}>
+                    <TooltipTrigger>
+                        <span role="button" tabIndex={0}>
+                            <Icon name="info" color="ai" />
+                        </span>
+                    </TooltipTrigger>
+                    <TooltipContent
+                        caption={multiLanguageTooltipTitle}
+                        title=""
+                    />
                 </Tooltip>
             )}
-        </>
+        </div>
     )
 }
 
@@ -160,9 +185,9 @@ export const KnowledgeEditorSidePanelFieldSourceDocument = ({
             <span id={`tooltip_${id}`}>
                 <Icon name="download" size={IconSize.Xs} />
             </span>
-            <Tooltip target={`tooltip_${id}`} placement="top">
+            <LegacyTooltip target={`tooltip_${id}`} placement="top">
                 Click to download
-            </Tooltip>
+            </LegacyTooltip>
         </a>
     )
 }

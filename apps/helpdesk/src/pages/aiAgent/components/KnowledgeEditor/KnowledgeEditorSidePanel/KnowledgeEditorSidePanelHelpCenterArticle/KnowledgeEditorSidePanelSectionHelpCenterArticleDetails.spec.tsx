@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
+import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import { useArticleDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
@@ -13,8 +14,16 @@ jest.mock(
     }),
 )
 
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context',
+    () => ({
+        useArticleContext: jest.fn(),
+    }),
+)
+
 const mockUseArticleDetailsFromContext =
     useArticleDetailsFromContext as jest.Mock
+const mockUseArticleContext = useArticleContext as jest.Mock
 
 describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
     const renderComponent = () => {
@@ -26,6 +35,21 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
             </MemoryRouter>,
         )
     }
+
+    beforeEach(() => {
+        mockUseArticleContext.mockReturnValue({
+            state: {
+                article: {
+                    available_locales: ['en-US'],
+                },
+                currentLocale: 'en-US',
+            },
+            config: {
+                supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
+                helpCenter: { id: 1 },
+            },
+        })
+    })
 
     it('renders published article when isCurrent is true', () => {
         mockUseArticleDetailsFromContext.mockReturnValue({
@@ -170,6 +194,217 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
             expect(
                 screen.queryByRole('link', { name: /Help Center/i }),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Multi-language info icon', () => {
+        it('does not show info icon when article has single language', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: { available_locales: ['en-US'] },
+                    currentLocale: 'en-US',
+                },
+                config: {
+                    supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
+                    helpCenter: { id: 1 },
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl:
+                    'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
+                helpCenter: {
+                    label: 'My Help Center',
+                    id: 1,
+                },
+            })
+
+            renderComponent()
+
+            expect(screen.queryByLabelText('info')).not.toBeInTheDocument()
+        })
+
+        it('shows info icon for multi-language articles', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: { available_locales: ['en-US', 'fr-FR'] },
+                    currentLocale: 'en-US',
+                },
+                config: {
+                    supportedLocales: [
+                        { code: 'en-US', name: 'English (US)' },
+                        { code: 'fr-FR', name: 'French (FR)' },
+                    ],
+                    helpCenter: { id: 42 },
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl:
+                    'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
+                helpCenter: {
+                    label: 'My Help Center',
+                    id: 42,
+                },
+            })
+
+            renderComponent()
+
+            const infoIcon = screen.getByLabelText('info')
+            expect(infoIcon).toBeInTheDocument()
+        })
+
+        it('shows info icon with French locale', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: { available_locales: ['en-US', 'fr-FR'] },
+                    currentLocale: 'fr-FR',
+                },
+                config: {
+                    supportedLocales: [
+                        { code: 'en-US', name: 'English (US)' },
+                        { code: 'fr-FR', name: 'French (FR)' },
+                    ],
+                    helpCenter: { id: 42 },
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl:
+                    'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
+                helpCenter: {
+                    label: 'My Help Center',
+                    id: 42,
+                },
+            })
+
+            renderComponent()
+
+            const infoIcon = screen.getByLabelText('info')
+            expect(infoIcon).toBeInTheDocument()
+        })
+
+        it('uses locale code as fallback when locale name is not found', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: { available_locales: ['en-US', 'es-ES'] },
+                    currentLocale: 'es-ES',
+                },
+                config: {
+                    supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
+                    helpCenter: { id: 42 },
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl:
+                    'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
+                helpCenter: {
+                    label: 'My Help Center',
+                    id: 42,
+                },
+            })
+
+            renderComponent()
+
+            const infoIcon = screen.getByLabelText('info')
+            expect(infoIcon).toBeInTheDocument()
+        })
+
+        it('does not show info icon when available_locales is empty', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: { available_locales: [] },
+                    currentLocale: 'en-US',
+                },
+                config: {
+                    supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
+                    helpCenter: { id: 1 },
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl:
+                    'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
+                helpCenter: {
+                    label: 'My Help Center',
+                    id: 1,
+                },
+            })
+
+            renderComponent()
+
+            expect(screen.queryByLabelText('info')).not.toBeInTheDocument()
+        })
+
+        it('does not show info icon when article is undefined', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: undefined,
+                    currentLocale: 'en-US',
+                },
+                config: {
+                    supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
+                    helpCenter: { id: 1 },
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: undefined,
+                createdDatetime: undefined,
+                lastUpdatedDatetime: undefined,
+                articleUrl: undefined,
+                helpCenter: undefined,
+            })
+
+            renderComponent()
+
+            expect(screen.queryByLabelText('info')).not.toBeInTheDocument()
         })
     })
 })

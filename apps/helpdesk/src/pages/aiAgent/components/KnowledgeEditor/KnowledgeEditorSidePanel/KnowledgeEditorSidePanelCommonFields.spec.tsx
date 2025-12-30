@@ -371,4 +371,64 @@ describe('KnowledgeEditorSidePanelFieldAIAgentStatus extended', () => {
         )
         expect(screen.getByRole('switch')).toBeInTheDocument()
     })
+
+    describe('Multi-language info icon', () => {
+        it('does not render info icon by default', () => {
+            render(
+                <KnowledgeEditorSidePanelFieldAIAgentStatus
+                    checked={true}
+                    onChange={jest.fn()}
+                />,
+            )
+            expect(screen.queryByTestId('icon-info')).not.toBeInTheDocument()
+        })
+
+        it('does not render info icon when showMultiLanguageInfo is false', () => {
+            render(
+                <KnowledgeEditorSidePanelFieldAIAgentStatus
+                    checked={true}
+                    onChange={jest.fn()}
+                    showMultiLanguageInfo={false}
+                    multiLanguageTooltipTitle="Test tooltip"
+                />,
+            )
+            expect(screen.queryByTestId('icon-info')).not.toBeInTheDocument()
+        })
+
+        it('does not render info icon when multiLanguageTooltipTitle is undefined', () => {
+            render(
+                <KnowledgeEditorSidePanelFieldAIAgentStatus
+                    checked={true}
+                    onChange={jest.fn()}
+                    showMultiLanguageInfo={true}
+                />,
+            )
+            expect(screen.queryByTestId('icon-info')).not.toBeInTheDocument()
+        })
+
+        it('renders info icon when showMultiLanguageInfo is true and multiLanguageTooltipTitle is provided', () => {
+            render(
+                <KnowledgeEditorSidePanelFieldAIAgentStatus
+                    checked={true}
+                    onChange={jest.fn()}
+                    showMultiLanguageInfo={true}
+                    multiLanguageTooltipTitle="You're viewing the default-language version of this article: English (US). AI Agent only uses this default version."
+                />,
+            )
+            expect(screen.getByTestId('icon-info')).toBeInTheDocument()
+        })
+
+        it('renders both toggle and info icon when multi-language is enabled', () => {
+            render(
+                <KnowledgeEditorSidePanelFieldAIAgentStatus
+                    checked={true}
+                    onChange={jest.fn()}
+                    showMultiLanguageInfo={true}
+                    multiLanguageTooltipTitle="Test tooltip"
+                />,
+            )
+            expect(screen.getByRole('switch')).toBeInTheDocument()
+            expect(screen.getByTestId('icon-info')).toBeInTheDocument()
+        })
+    })
 })
