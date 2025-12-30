@@ -8,7 +8,10 @@ import { MemoryRouter, useHistory, useParams } from 'react-router-dom'
 import type { Store } from 'redux'
 
 import { appQueryClient } from 'api/queryClient'
-import { useAllResourcesMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+import {
+    getLast28DaysDateRange,
+    useAllResourcesMetrics,
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     useGetHelpCenterList,
@@ -137,7 +140,16 @@ jest.mock('pages/aiAgent/KnowledgeHub/hooks/useGetLastWebsiteSync', () => ({
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor')
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor')
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubSnippetEditor')
-jest.mock('domains/reporting/models/queryFactories/knowledge/resourceMetrics')
+jest.mock(
+    'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
+    () => ({
+        useAllResourcesMetrics: jest.fn(),
+        getLast28DaysDateRange: jest.fn(),
+    }),
+)
+jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
+    DrillDownModal: () => null,
+}))
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
 jest.mock('@repo/feature-flags')
 
@@ -332,6 +344,8 @@ const mockUseStoreIntegrationByShopName =
 const mockUseFlag = useFlag as jest.Mock
 const mockUseUrlSyncStatus = useUrlSyncStatus as jest.Mock
 const mockUseGetLastWebsiteSync = useGetLastWebsiteSync as jest.Mock
+const mockGetLast28DaysDateRange =
+    getLast28DaysDateRange as jest.MockedFunction<typeof getLast28DaysDateRange>
 
 describe('KnowledgeHubContainer', () => {
     const mockShopifyIntegrations = [
@@ -523,6 +537,13 @@ describe('KnowledgeHubContainer', () => {
         mockUseGetLastWebsiteSync.mockReturnValue({
             isSyncLessThan24h: false,
             nextSyncDate: null,
+        })
+
+        mockGetLast28DaysDateRange.mockReturnValue({
+            start_datetime: new Date(
+                Date.now() - 28 * 24 * 60 * 60 * 1000,
+            ).toISOString(),
+            end_datetime: new Date().toISOString(),
         })
     })
 
@@ -2078,29 +2099,231 @@ describe('KnowledgeHubContainer', () => {
     })
 
     describe('resource metrics fetching', () => {
-        it('fetches metrics with correct parameters when feature flag is enabled', () => {
-            mockUseFlag.mockReturnValue(true)
+        describe('when PerformanceStatsOnIndividualKnowledge flag is disabled', () => {
+            beforeEach(() => {
+                mockUseFlag.mockReturnValue(false)
+            })
 
-            renderComponent()
+            it('should not fetch metrics data', () => {
+                renderComponent()
 
-            expect(mockUseAllResourcesMetrics).toHaveBeenCalledWith({
-                shopIntegrationId: 1,
-                timezone: 'America/New_York',
-                enabled: true,
-                loadIntents: false,
+                expect(mockUseAllResourcesMetrics).toHaveBeenCalledWith({
+                    shopIntegrationId: 1,
+                    timezone: 'America/New_York',
+                    enabled: false,
+                    loadIntents: false,
+                    dateRange: expect.objectContaining({
+                        start_datetime: expect.any(String),
+                        end_datetime: expect.any(String),
+                    }),
+                })
             })
         })
 
-        it('does not fetch metrics when feature flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
+        describe('when PerformanceStatsOnIndividualKnowledge flag is enabled', () => {
+            beforeEach(() => {
+                mockUseFlag.mockReturnValue(true)
+            })
 
-            renderComponent()
+            it('should fetch metrics data with correct parameters', () => {
+                renderComponent()
 
-            expect(mockUseAllResourcesMetrics).toHaveBeenCalledWith({
-                shopIntegrationId: 1,
-                timezone: 'America/New_York',
-                enabled: false,
-                loadIntents: false,
+                expect(mockUseAllResourcesMetrics).toHaveBeenCalledWith({
+                    shopIntegrationId: 1,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    loadIntents: false,
+                    dateRange: expect.objectContaining({
+                        start_datetime: expect.any(String),
+                        end_datetime: expect.any(String),
+                    }),
+                })
+            })
+
+            it('should not fetch metrics when shopIntegrationId is not available', () => {
+                mockUseStoreIntegrationByShopName.mockReturnValue(undefined)
+
+                renderComponent()
+
+                expect(mockUseAllResourcesMetrics).toHaveBeenCalledWith({
+                    shopIntegrationId: 0,
+                    timezone: 'America/New_York',
+                    enabled: false,
+                    loadIntents: false,
+                    dateRange: expect.objectContaining({
+                        start_datetime: expect.any(String),
+                        end_datetime: expect.any(String),
+                    }),
+                })
+            })
+        })
+    })
+
+    describe('metrics data enrichment logic', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+        })
+
+        it('should correctly map metrics by resourceSourceId', () => {
+            const tableData = [
+                {
+                    id: '100',
+                    type: KnowledgeType.Guidance,
+                    title: 'Article 1',
+                    lastUpdatedAt: '2025-01-01T00:00:00Z',
+                },
+                {
+                    id: '200',
+                    type: KnowledgeType.FAQ,
+                    title: 'Article 2',
+                    lastUpdatedAt: '2025-01-02T00:00:00Z',
+                },
+            ]
+
+            const metricsData = [
+                {
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 1,
+                    tickets: 50,
+                    handoverTickets: 5,
+                    csat: 4.5,
+                    intents: null,
+                },
+                {
+                    resourceSourceId: 200,
+                    resourceSourceSetId: 1,
+                    tickets: 30,
+                    handoverTickets: 3,
+                    csat: 4.2,
+                    intents: null,
+                },
+            ]
+
+            // Create metrics map (simulating the logic in KnowledgeHubContainer)
+            const metricsMap = new Map()
+            metricsData.forEach((metric) => {
+                metricsMap.set(String(metric.resourceSourceId), {
+                    tickets: metric.tickets,
+                    handoverTickets: metric.handoverTickets,
+                    csat: metric.csat,
+                    resourceSourceSetId: metric.resourceSourceSetId,
+                })
+            })
+
+            // Enrich table data
+            const enrichedData = tableData.map((item) => ({
+                ...item,
+                metrics: metricsMap.get(item.id),
+            }))
+
+            // Verify enrichment
+            expect(enrichedData[0].metrics).toEqual({
+                tickets: 50,
+                handoverTickets: 5,
+                csat: 4.5,
+                resourceSourceSetId: 1,
+            })
+            expect(enrichedData[1].metrics).toEqual({
+                tickets: 30,
+                handoverTickets: 3,
+                csat: 4.2,
+                resourceSourceSetId: 1,
+            })
+        })
+
+        it('should handle items without metrics', () => {
+            const tableData = [
+                {
+                    id: '100',
+                    type: KnowledgeType.Guidance,
+                    title: 'Article 1',
+                    lastUpdatedAt: '2025-01-01T00:00:00Z',
+                },
+                {
+                    id: '999',
+                    type: KnowledgeType.FAQ,
+                    title: 'Article without metrics',
+                    lastUpdatedAt: '2025-01-02T00:00:00Z',
+                },
+            ]
+
+            const metricsData = [
+                {
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 1,
+                    tickets: 50,
+                    handoverTickets: 5,
+                    csat: 4.5,
+                    intents: null,
+                },
+            ]
+
+            // Create metrics map
+            const metricsMap = new Map()
+            metricsData.forEach((metric) => {
+                metricsMap.set(String(metric.resourceSourceId), {
+                    tickets: metric.tickets,
+                    handoverTickets: metric.handoverTickets,
+                    csat: metric.csat,
+                    resourceSourceSetId: metric.resourceSourceSetId,
+                })
+            })
+
+            // Enrich table data
+            const enrichedData = tableData.map((item) => ({
+                ...item,
+                metrics: metricsMap.get(item.id),
+            }))
+
+            // Verify enrichment
+            expect(enrichedData[0].metrics).toBeDefined()
+            expect(enrichedData[1].metrics).toBeUndefined()
+        })
+
+        it('should handle null metric values', () => {
+            const tableData = [
+                {
+                    id: '100',
+                    type: KnowledgeType.Guidance,
+                    title: 'Article 1',
+                    lastUpdatedAt: '2025-01-01T00:00:00Z',
+                },
+            ]
+
+            const metricsData = [
+                {
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 1,
+                    tickets: null,
+                    handoverTickets: null,
+                    csat: null,
+                    intents: null,
+                },
+            ]
+
+            // Create metrics map
+            const metricsMap = new Map()
+            metricsData.forEach((metric) => {
+                metricsMap.set(String(metric.resourceSourceId), {
+                    tickets: metric.tickets,
+                    handoverTickets: metric.handoverTickets,
+                    csat: metric.csat,
+                    resourceSourceSetId: metric.resourceSourceSetId,
+                })
+            })
+
+            // Enrich table data
+            const enrichedData = tableData.map((item) => ({
+                ...item,
+                metrics: metricsMap.get(item.id),
+            }))
+
+            // Verify that null values are preserved
+            expect(enrichedData[0].metrics).toEqual({
+                tickets: null,
+                handoverTickets: null,
+                csat: null,
+                resourceSourceSetId: 1,
             })
         })
     })

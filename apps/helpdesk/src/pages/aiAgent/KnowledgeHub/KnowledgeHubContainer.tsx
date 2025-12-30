@@ -9,6 +9,7 @@ import {
     getLast28DaysDateRange,
     useAllResourcesMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getNextSyncDate,
@@ -48,7 +49,10 @@ import { useKnowledgeHubGuidanceEditor } from 'pages/aiAgent/KnowledgeHub/hooks/
 import { KnowledgeHubHeader } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/KnowledgeHubHeader'
 import { SyncStoreDomainBanner } from 'pages/aiAgent/KnowledgeHub/SyncStoreDomainBanner'
 import { KnowledgeHubTable } from 'pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable'
-import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
+import type {
+    GroupedKnowledgeItem,
+    KnowledgeMetrics,
+} from 'pages/aiAgent/KnowledgeHub/types'
 import {
     KnowledgeType,
     mapKnowledgeVisibilityToArticleVisibility,
@@ -210,10 +214,35 @@ export const KnowledgeHubContainer = () => {
         dateRange: metricsDateRange,
     })
 
-    if (isPerformanceStatsEnabled) {
-        // eslint-disable-next-line no-console
-        console.log('useAllResourcesMetrics result:', allResourcesMetrics)
-    }
+    const isMetricsLoading = allResourcesMetrics.isLoading
+
+    // Create metrics lookup map
+    const metricsMap = useMemo(() => {
+        if (!allResourcesMetrics.data) return new Map()
+
+        const map = new Map<string, KnowledgeMetrics>()
+        allResourcesMetrics.data.forEach((metric) => {
+            // resourceSourceId maps to knowledge item.id
+            map.set(String(metric.resourceSourceId), {
+                tickets: metric.tickets,
+                handoverTickets: metric.handoverTickets,
+                csat: metric.csat,
+                resourceSourceSetId: metric.resourceSourceSetId,
+            })
+        })
+        return map
+    }, [allResourcesMetrics.data])
+
+    // Enrich table data with metrics
+    const enrichedTableData = useMemo(() => {
+        if (!isPerformanceStatsEnabled) {
+            return tableData
+        }
+        return tableData.map((item) => ({
+            ...item,
+            metrics: metricsMap.get(item.id),
+        }))
+    }, [tableData, metricsMap, isPerformanceStatsEnabled])
 
     useEffect(() => {
         if (type && id) {
@@ -540,7 +569,10 @@ export const KnowledgeHubContainer = () => {
                 />
             </Box>
             <KnowledgeHubTable
-                data={tableData}
+                data={enrichedTableData}
+                metricsDateRange={metricsDateRange}
+                isMetricsEnabled={isPerformanceStatsEnabled}
+                isMetricsLoading={isMetricsLoading}
                 isLoading={isInitialLoading || isUrlFolderSyncing}
                 onRowClick={onClick}
                 onGuidanceRowClick={handleOpenGuidanceEditor}
@@ -627,6 +659,7 @@ export const KnowledgeHubContainer = () => {
                 snippetType={snippetEditor.currentSnippetType}
                 handleVisibilityUpdate={snippetEditor.handleVisibilityUpdate}
             />
+            {isPerformanceStatsEnabled && <DrillDownModal isLegacy={false} />}
         </div>
     )
 }

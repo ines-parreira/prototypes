@@ -13,6 +13,7 @@ import {
 } from '@gorgias/axiom'
 
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
     EmptyStateNoSearchResults,
     EmptyStateWrapper,
@@ -24,6 +25,7 @@ import { getColumns } from 'pages/aiAgent/KnowledgeHub/Table/columns'
 import { InUseByAIFilter } from 'pages/aiAgent/KnowledgeHub/Table/InUseByAIFilter'
 import { ItemCount } from 'pages/aiAgent/KnowledgeHub/Table/ItemCount'
 import { LastUpdatedDateFilter } from 'pages/aiAgent/KnowledgeHub/Table/LastUpdatedDateFilter'
+import { MetricsDateRangeDisplay } from 'pages/aiAgent/KnowledgeHub/Table/MetricsDateRangeDisplay'
 import { SearchInput } from 'pages/aiAgent/KnowledgeHub/Table/SearchInput'
 import {
     filterKnowledgeItemsByDateRange,
@@ -49,6 +51,9 @@ const FILTER_OPTIONS: FilterOption[] = [
 
 type KnowledgeHubTableProps = {
     data: KnowledgeItem[]
+    metricsDateRange: { start_datetime: string; end_datetime: string }
+    isMetricsEnabled: boolean
+    isMetricsLoading?: boolean
     isLoading?: boolean
     onRowClick: (data: GroupedKnowledgeItem) => void
     onGuidanceRowClick?: (articleId: number) => void
@@ -76,6 +81,9 @@ type KnowledgeHubTableProps = {
 
 export const KnowledgeHubTable = ({
     data,
+    metricsDateRange,
+    isMetricsEnabled,
+    isMetricsLoading = false,
     isLoading = false,
     onRowClick,
     onGuidanceRowClick,
@@ -113,6 +121,9 @@ export const KnowledgeHubTable = ({
 
     const { guidanceActions: availableActions } =
         useGetGuidancesAvailableActions(shopName, shopType)
+
+    const { outcomeCustomFieldId, intentCustomFieldId } =
+        useGetCustomTicketsFieldsDefinitionData()
 
     const isSearchActive = Boolean(searchTerm)
 
@@ -237,8 +248,22 @@ export const KnowledgeHubTable = ({
             handleRowClick,
             availableActions,
             guidanceHelpCenterId,
+            isMetricsEnabled ? metricsDateRange : undefined,
+            isMetricsEnabled ? outcomeCustomFieldId : undefined,
+            isMetricsEnabled ? intentCustomFieldId : undefined,
+            isMetricsLoading,
         )
-    }, [searchTerm, handleRowClick, availableActions, guidanceHelpCenterId])
+    }, [
+        searchTerm,
+        handleRowClick,
+        availableActions,
+        guidanceHelpCenterId,
+        metricsDateRange,
+        outcomeCustomFieldId,
+        intentCustomFieldId,
+        isMetricsEnabled,
+        isMetricsLoading,
+    ])
 
     const table = useTable<GroupedKnowledgeItem>({
         data: displayData,
@@ -317,6 +342,7 @@ export const KnowledgeHubTable = ({
             className={classNames(css.tableContainer, {
                 [css.searchEmptyTable]: isSearchEmptyPage,
             })}
+            data-metrics-enabled={isMetricsEnabled}
         >
             <TableToolbar<GroupedKnowledgeItem>
                 table={table}
@@ -412,6 +438,18 @@ export const KnowledgeHubTable = ({
                             ),
                         },
                     ],
+                    right: isMetricsEnabled
+                        ? [
+                              {
+                                  key: 'metricsDateRange',
+                                  content: (
+                                      <MetricsDateRangeDisplay
+                                          dateRange={metricsDateRange}
+                                      />
+                                  ),
+                              },
+                          ]
+                        : [],
                 }}
             />
 

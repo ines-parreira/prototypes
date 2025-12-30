@@ -31,9 +31,17 @@ export type KnowledgeItem = {
     publishedVersionId?: number | null
 }
 
+export type KnowledgeMetrics = {
+    tickets: number | null
+    handoverTickets: number | null
+    csat: number | null
+    resourceSourceSetId: number
+}
+
 export type GroupedKnowledgeItem = KnowledgeItem & {
     isGrouped?: boolean
     itemCount?: number
+    metrics?: KnowledgeMetrics
 }
 
 export const typeConfig: Record<

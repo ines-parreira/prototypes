@@ -64,6 +64,15 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticle', () => ({
     })),
 }))
 
+jest.mock(
+    '@gorgias/axiom',
+    () =>
+        ({
+            ...jest.requireActual('@gorgias/axiom'),
+            Skeleton: () => <div data-testid="skeleton" />,
+        }) as typeof import('@gorgias/axiom'),
+)
+
 const mockUseFaqHelpCenter = useFaqHelpCenter as jest.MockedFunction<
     typeof useFaqHelpCenter
 >
@@ -121,6 +130,11 @@ describe('KnowledgeHubTable', () => {
 
     const defaultProps = {
         data: mockData,
+        metricsDateRange: {
+            start_datetime: '2025-01-01T00:00:00Z',
+            end_datetime: '2025-01-28T23:59:59Z',
+        },
+        isMetricsEnabled: true,
         isLoading: false,
         onRowClick: jest.fn(),
         selectedFolder: null,
@@ -1257,6 +1271,182 @@ describe('KnowledgeHubTable', () => {
             expect(
                 screen.getByRole('button', { name: /add filter/i }),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('metrics loading states', () => {
+        const dataWithMetrics = [
+            {
+                type: KnowledgeType.Guidance,
+                title: 'Return Policy',
+                lastUpdatedAt: '2024-01-20T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                id: '1',
+                metrics: {
+                    tickets: 150,
+                    handoverTickets: 25,
+                    csat: 4.5,
+                    resourceSourceSetId: 1,
+                },
+            },
+            {
+                type: KnowledgeType.FAQ,
+                title: 'Shipping FAQ',
+                lastUpdatedAt: '2024-01-10T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                id: '2',
+                metrics: {
+                    tickets: 75,
+                    handoverTickets: 10,
+                    csat: 4.2,
+                    resourceSourceSetId: 2,
+                },
+            },
+        ]
+
+        const dataWithoutMetrics = [
+            {
+                type: KnowledgeType.Guidance,
+                title: 'Return Policy',
+                lastUpdatedAt: '2024-01-20T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                id: '1',
+            },
+        ]
+
+        it('shows skeleton loaders when metrics are loading', () => {
+            renderComponent({
+                data: dataWithoutMetrics,
+                isMetricsEnabled: true,
+                isMetricsLoading: true,
+                selectedFolder: dataWithoutMetrics[0],
+            })
+
+            const skeletons = screen.getAllByTestId('skeleton')
+            expect(skeletons.length).toBeGreaterThan(0)
+        })
+
+        it('shows actual metric values when metrics have loaded', () => {
+            renderComponent({
+                data: dataWithMetrics,
+                isMetricsEnabled: true,
+                isMetricsLoading: false,
+                selectedFolder: dataWithMetrics[0],
+            })
+
+            expect(screen.getByText('150')).toBeInTheDocument()
+            expect(screen.getByText('25')).toBeInTheDocument()
+            expect(screen.getByText('4.50')).toBeInTheDocument()
+        })
+
+        it('shows CSAT as whole number without decimals when value is an integer', () => {
+            const dataWithWholeNumberCsat = [
+                {
+                    type: KnowledgeType.Guidance,
+                    title: 'Return Policy',
+                    lastUpdatedAt: '2024-01-20T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    id: '1',
+                    metrics: {
+                        tickets: 100,
+                        handoverTickets: 20,
+                        csat: 5,
+                        resourceSourceSetId: 1,
+                    },
+                },
+            ]
+
+            renderComponent({
+                data: dataWithWholeNumberCsat,
+                isMetricsEnabled: true,
+                isMetricsLoading: false,
+                selectedFolder: dataWithWholeNumberCsat[0],
+            })
+
+            expect(screen.getByText('5')).toBeInTheDocument()
+            expect(screen.queryByText('5.00')).not.toBeInTheDocument()
+        })
+
+        it('shows CSAT with 2 decimals when value has decimal places', () => {
+            const dataWithDecimalCsat = [
+                {
+                    type: KnowledgeType.Guidance,
+                    title: 'Return Policy',
+                    lastUpdatedAt: '2024-01-20T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    id: '1',
+                    metrics: {
+                        tickets: 100,
+                        handoverTickets: 20,
+                        csat: 4.5,
+                        resourceSourceSetId: 1,
+                    },
+                },
+            ]
+
+            renderComponent({
+                data: dataWithDecimalCsat,
+                isMetricsEnabled: true,
+                isMetricsLoading: false,
+                selectedFolder: dataWithDecimalCsat[0],
+            })
+
+            expect(screen.getByText('4.50')).toBeInTheDocument()
+        })
+
+        it('shows "--" placeholder when metrics are not loading and no data exists', () => {
+            renderComponent({
+                data: dataWithoutMetrics,
+                isMetricsEnabled: true,
+                isMetricsLoading: false,
+                selectedFolder: dataWithoutMetrics[0],
+            })
+
+            const placeholders = screen.getAllByText('--')
+            expect(placeholders.length).toBeGreaterThanOrEqual(3)
+        })
+
+        it('does not show skeletons when metrics are disabled', () => {
+            renderComponent({
+                data: dataWithoutMetrics,
+                isMetricsEnabled: false,
+                isMetricsLoading: true,
+                selectedFolder: dataWithoutMetrics[0],
+            })
+
+            const skeletons = screen.queryAllByTestId('skeleton')
+            expect(skeletons.length).toBe(0)
+        })
+
+        it('shows "--" for grouped items even when metrics are loading', () => {
+            const groupedData = [
+                {
+                    type: KnowledgeType.Document,
+                    title: 'Doc 1',
+                    lastUpdatedAt: '2024-01-15T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    source: 'docs.example.com',
+                    id: '1',
+                },
+                {
+                    type: KnowledgeType.Document,
+                    title: 'Doc 2',
+                    lastUpdatedAt: '2024-01-10T10:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    source: 'docs.example.com',
+                    id: '2',
+                },
+            ]
+
+            renderComponent({
+                data: groupedData,
+                isMetricsEnabled: true,
+                isMetricsLoading: true,
+            })
+
+            expect(screen.getByText('docs.example.com')).toBeInTheDocument()
+            const placeholders = screen.getAllByText('--')
+            expect(placeholders.length).toBeGreaterThanOrEqual(3)
         })
     })
 

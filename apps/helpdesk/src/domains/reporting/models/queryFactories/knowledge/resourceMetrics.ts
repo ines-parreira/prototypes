@@ -935,7 +935,9 @@ export const useAllResourcesMetrics = ({
         (loadIntents && intentsMetric.isError)
 
     const data = useMemo(() => {
-        if (isLoading || isError) return undefined
+        if (isLoading || isError) {
+            return undefined
+        }
 
         return aggregateResourceMetrics(
             ticketsMetric.data?.allData,
@@ -990,8 +992,12 @@ type UseRelatedTicketsResult = {
 
 export const getLast28DaysDateRange = () => {
     const endDate = new Date()
+    endDate.setHours(endDate.getHours() + 1, 0, 0, 0)
+
     const startDate = new Date()
     startDate.setDate(startDate.getDate() - 28)
+    startDate.setHours(startDate.getHours() + 1, 0, 0, 0)
+
     return {
         start_datetime: startDate.toISOString(),
         end_datetime: endDate.toISOString(),

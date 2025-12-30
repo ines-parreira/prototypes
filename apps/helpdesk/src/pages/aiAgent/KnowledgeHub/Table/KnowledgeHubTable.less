@@ -41,32 +41,72 @@
             height: 100%;
         }
 
-        // Column widths - checkbox column
-        table th:nth-child(1),
-        table td:nth-child(1) {
+        // Base column widths (when metrics disabled)
+        // Checkbox column (first column)
+        table th:first-child,
+        table td:first-child {
             width: 51px;
             box-sizing: border-box;
             padding-left: 26px;
             padding-right: 8px;
         }
 
-        // Title column - takes remaining space
+        // Title column - takes remaining space (second column)
         table th:nth-child(2),
         table td:nth-child(2) {
             width: auto;
             height: 40px;
         }
 
-        // Last Updated column
+        // Last Updated column (when no metrics)
         table th:nth-child(3),
         table td:nth-child(3) {
             width: 130px;
         }
 
-        // In Use by AI Agent column
+        // In Use by AI Agent column (when no metrics)
         table th:nth-child(4),
         table td:nth-child(4) {
             width: 150px;
+        }
+
+        // Metrics-enabled widths
+        &[data-metrics-enabled='true'] {
+            // Title column remains auto
+            table th:nth-child(2),
+            table td:nth-child(2) {
+                width: auto;
+            }
+
+            // Tickets column
+            table th:nth-child(3),
+            table td:nth-child(3) {
+                width: 91px;
+            }
+
+            // Handover Tickets column
+            table th:nth-child(4),
+            table td:nth-child(4) {
+                width: 134px;
+            }
+
+            // Avg CSAT column
+            table th:nth-child(5),
+            table td:nth-child(5) {
+                width: 93px;
+            }
+
+            // Last Updated column (second to last when metrics enabled)
+            table th:nth-last-child(2),
+            table td:nth-last-child(2) {
+                width: 126px;
+            }
+
+            // In Use by AI Agent column (last column)
+            table th:last-child,
+            table td:last-child {
+                width: 148px;
+            }
         }
     }
 

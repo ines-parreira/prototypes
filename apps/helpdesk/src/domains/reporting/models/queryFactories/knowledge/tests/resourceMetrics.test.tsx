@@ -2711,14 +2711,20 @@ describe('getLast28DaysDateRange', () => {
         expect(result.end_datetime).toMatch(/^\d{4}-\d{2}-\d{2}T/)
     })
 
-    it('should return end date close to current time', () => {
+    it('should return end date at end of current hour', () => {
         const result = getLast28DaysDateRange()
         const endDate = new Date(result.end_datetime)
         const now = new Date()
 
         const timeDifference = Math.abs(now.getTime() - endDate.getTime())
 
-        expect(timeDifference).toBeLessThan(5000)
+        expect(timeDifference).toBeLessThan(3600000)
+
+        expect(endDate.getMinutes()).toBe(0)
+        expect(endDate.getSeconds()).toBe(0)
+        expect(endDate.getMilliseconds()).toBe(0)
+
+        expect(endDate.getTime()).toBeGreaterThanOrEqual(now.getTime())
     })
 })
 
