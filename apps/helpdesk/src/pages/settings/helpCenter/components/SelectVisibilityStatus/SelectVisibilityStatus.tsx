@@ -50,16 +50,12 @@ const SelectVisibilityStatus = ({
     > = {
         UNLISTED: {
             title: 'Unlisted',
-            description: `${_upperFirst(
-                type,
-            )} is accessible only via direct link and is not indexed by search engines.`,
+            description: `Accessible only via direct link, not indexed by search engines or AI Agent`,
             icon: 'visibility_off',
         },
         PUBLIC: {
             title: 'Public',
-            description: `${_upperFirst(
-                type,
-            )} is public to everyone visiting your Help Center.`,
+            description: `Visible to Help Center visitors.`,
             descriptionInheritUnlisted: `${_upperFirst(
                 type,
             )} is currently only accessible via direct link because one of its parent categories is unlisted.`,

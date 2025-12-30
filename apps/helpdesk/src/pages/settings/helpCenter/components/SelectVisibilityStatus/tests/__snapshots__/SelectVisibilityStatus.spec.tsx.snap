@@ -63,7 +63,7 @@ exports[`<SelectVisibilityStatus /> should show selected option 1`] = `
             <div
               class="description"
             >
-              Article is accessible only via direct link and is not indexed by search engines.
+              Accessible only via direct link, not indexed by search engines or AI Agent
             </div>
           </div>
         </div>
@@ -88,7 +88,7 @@ exports[`<SelectVisibilityStatus /> should show selected option 1`] = `
             <div
               class="description"
             >
-              Article is public to everyone visiting your Help Center.
+              Visible to Help Center visitors.
             </div>
           </div>
         </div>

@@ -420,7 +420,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                       <div
                         class="description"
                       >
-                        Category is accessible only via direct link and is not indexed by search engines.
+                        Accessible only via direct link, not indexed by search engines or AI Agent
                       </div>
                     </div>
                   </div>
@@ -445,7 +445,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                       <div
                         class="description"
                       >
-                        Category is public to everyone visiting your Help Center.
+                        Visible to Help Center visitors.
                       </div>
                     </div>
                   </div>

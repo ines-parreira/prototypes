@@ -21,6 +21,31 @@ jest.mock(
     }),
 )
 
+jest.mock('../KnowledgeEditorSidePanelCommonFields', () => ({
+    KnowledgeEditorSidePanelFieldAIAgentStatus: ({
+        tooltip,
+        checked,
+        showMultiLanguageInfo,
+    }: {
+        tooltip: string
+        checked: boolean
+        showMultiLanguageInfo?: boolean
+    }) => (
+        <div data-testid="ai-agent-status">
+            <span data-testid="ai-agent-checked">{String(checked)}</span>
+            <span data-testid="ai-agent-tooltip">{tooltip}</span>
+            {showMultiLanguageInfo && <span aria-label="info">ℹ️</span>}
+        </div>
+    ),
+    KnowledgeEditorSidePanelFieldDateField: ({ date }: { date?: Date }) =>
+        date ? <div>{date.toISOString()}</div> : <div>-</div>,
+    KnowledgeEditorSidePanelFieldKnowledgeType: () => (
+        <div>Help Center Article</div>
+    ),
+    KnowledgeEditorSidePanelFieldURL: ({ url }: { url?: string }) =>
+        url ? <div>{url}</div> : <div>-</div>,
+}))
+
 const mockUseArticleDetailsFromContext =
     useArticleDetailsFromContext as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
@@ -405,6 +430,226 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
             renderComponent()
 
             expect(screen.queryByLabelText('info')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('AI Agent visibility tooltip (lines 43, 62, 63)', () => {
+        it('shows correct tooltip when article is unlisted (lines 43, 62, 63)', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: {
+                        available_locales: ['en-US'],
+                        isCurrent: true,
+                    },
+                    currentLocale: 'en-US',
+                },
+                config: {
+                    supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
+                    helpCenter: { id: 1 },
+                    initialArticle: {
+                        translation: {
+                            visibility_status: 'UNLISTED',
+                        },
+                    },
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl:
+                    'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
+                helpCenter: {
+                    label: 'My Help Center',
+                    id: 1,
+                },
+            })
+
+            renderComponent()
+
+            const tooltip = screen.getByTestId('ai-agent-tooltip')
+            expect(tooltip).toHaveTextContent(
+                'Publish and make articles public to enable them for AI Agent.',
+            )
+        })
+
+        it('shows correct tooltip when article is a draft', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: {
+                        available_locales: ['en-US'],
+                        isCurrent: false,
+                    },
+                    currentLocale: 'en-US',
+                },
+                config: {
+                    supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
+                    helpCenter: { id: 1 },
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 101,
+                    publishedVersionId: 100,
+                    isCurrent: false,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl: undefined,
+                helpCenter: {
+                    label: 'My Help Center',
+                    id: 1,
+                },
+            })
+
+            renderComponent()
+
+            const tooltip = screen.getByTestId('ai-agent-tooltip')
+            expect(tooltip).toHaveTextContent(
+                'Articles become available for AI Agent when published and made public.',
+            )
+        })
+
+        it('shows correct tooltip when article is published and public', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: {
+                        available_locales: ['en-US'],
+                        isCurrent: true,
+                    },
+                    currentLocale: 'en-US',
+                },
+                config: {
+                    supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
+                    helpCenter: { id: 1 },
+                    initialArticle: {
+                        translation: {
+                            visibility_status: 'PUBLIC',
+                        },
+                    },
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl:
+                    'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
+                helpCenter: {
+                    label: 'My Help Center',
+                    id: 1,
+                },
+            })
+
+            renderComponent()
+
+            const tooltip = screen.getByTestId('ai-agent-tooltip')
+            expect(tooltip).toHaveTextContent(
+                'When articles are published and public, they are always in use by AI Agent.',
+            )
+        })
+
+        it('treats undefined visibility_status as not unlisted (line 43)', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: {
+                        available_locales: ['en-US'],
+                        isCurrent: true,
+                    },
+                    currentLocale: 'en-US',
+                },
+                config: {
+                    supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
+                    helpCenter: { id: 1 },
+                    initialArticle: undefined,
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl:
+                    'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
+                helpCenter: {
+                    label: 'My Help Center',
+                    id: 1,
+                },
+            })
+
+            renderComponent()
+
+            const tooltip = screen.getByTestId('ai-agent-tooltip')
+            expect(tooltip).toHaveTextContent(
+                'When articles are published and public, they are always in use by AI Agent.',
+            )
+        })
+
+        it('checks AI Agent status correctly when unlisted (line 43)', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: {
+                        available_locales: ['en-US'],
+                        isCurrent: true,
+                    },
+                    currentLocale: 'en-US',
+                },
+                config: {
+                    supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
+                    helpCenter: { id: 1 },
+                    initialArticle: {
+                        translation: {
+                            visibility_status: 'UNLISTED',
+                        },
+                    },
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl:
+                    'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
+                helpCenter: {
+                    label: 'My Help Center',
+                    id: 1,
+                },
+            })
+
+            renderComponent()
+
+            const checked = screen.getByTestId('ai-agent-checked')
+            expect(checked).toHaveTextContent('false')
         })
     })
 })

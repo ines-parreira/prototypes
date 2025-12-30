@@ -38,6 +38,9 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
     const supportedLocales = config.supportedLocales
 
     const isPublished = article ? article.isCurrent : undefined
+    const isDraft = !article?.isCurrent
+    const isUnlisted =
+        config.initialArticle?.translation.visibility_status === 'UNLISTED'
 
     const getCurrentLocaleName = (): string => {
         const locale = supportedLocales.find(
@@ -49,6 +52,18 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
     const getMultiLanguageTooltipTitle = () => {
         const languageName = getCurrentLocaleName()
         return `You're viewing the default-language version of this article: ${languageName}. AI Agent only uses this default version. You can manage other languages articles in your Help Center.`
+    }
+
+    const getAiAgentVisibilityTooltip = () => {
+        if (isDraft) {
+            return 'Articles become available for AI Agent when published and made public.'
+        }
+
+        if (isUnlisted) {
+            return 'Publish and make articles public to enable them for AI Agent.'
+        }
+
+        return 'When articles are published and public, they are always in use by AI Agent.'
     }
 
     return (
@@ -90,12 +105,8 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
                         right: (
                             <KnowledgeEditorSidePanelFieldAIAgentStatus
                                 key="ai-agent-status"
-                                checked={isPublished ?? false}
-                                tooltip={
-                                    isPublished
-                                        ? 'Published articles are always available for AI Agent.'
-                                        : 'Articles become available for AI Agent when published.'
-                                }
+                                checked={!isDraft && !isUnlisted}
+                                tooltip={getAiAgentVisibilityTooltip()}
                                 showMultiLanguageInfo={
                                     availableLocales.length > 1
                                 }
