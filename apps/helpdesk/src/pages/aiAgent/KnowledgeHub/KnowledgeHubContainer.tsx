@@ -573,10 +573,13 @@ export const KnowledgeHubContainer = () => {
                     type="file"
                     completedCount={filePendingCount}
                 />
-                <DocumentFilters
-                    selectedFilter={selectedFilter}
-                    onFilterChange={handleDocumentFilterChange}
-                />
+
+                {!selectedFolder && (
+                    <DocumentFilters
+                        selectedFilter={selectedFilter}
+                        onFilterChange={handleDocumentFilterChange}
+                    />
+                )}
             </Box>
             <KnowledgeHubTable
                 data={enrichedTableData}
