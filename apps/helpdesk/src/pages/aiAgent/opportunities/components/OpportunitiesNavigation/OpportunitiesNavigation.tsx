@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Icon, LegacyIconButton as IconButton } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { useOpportunitiesNavigation } from 'pages/aiAgent/opportunities/hooks/useOpportunitiesNavigation'
 import type { Opportunity } from 'pages/aiAgent/opportunities/utils/mapAiArticlesToOpportunities'
@@ -41,21 +41,25 @@ export const OpportunitiesNavigation = ({
 
     return (
         <div className={css.opportunitiesNavigation}>
-            <IconButton
-                intent="secondary"
-                fillStyle="ghost"
-                icon={<Icon name="arrow-chevron-up" />}
+            <Button
+                intent="regular"
+                variant="tertiary"
+                icon="arrow-chevron-left"
                 isDisabled={navigationData.isFirst}
                 onClick={navigateBackward}
-            />
-            <IconButton
-                intent="secondary"
-                fillStyle="ghost"
-                icon={<Icon name="arrow-chevron-down" />}
+            >
+                Left navigation button
+            </Button>
+            <Button
+                intent="regular"
+                variant="tertiary"
+                icon="arrow-chevron-right"
                 isDisabled={navigationData.isLast}
                 onClick={navigateForward}
-            />
-            <div>
+            >
+                Right navigation button
+            </Button>
+            <div className={css.positionCounter}>
                 {navigationData.position + 1} of {totalCount}
             </div>
         </div>

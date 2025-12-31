@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
@@ -56,8 +57,12 @@ type Props = {
     hideHeader?: boolean
     hideFooterButtons?: boolean
     hideFooterAlerts?: boolean
+    hideAvailableForAiAgentToggle?: boolean
     onValuesChange?: (fields: GuidanceFormFields) => void
     showUnsavedChangesPrompt?: boolean
+    unsavedChangesPromptTitle?: string
+    unsavedChangesPromptBody?: React.ReactNode
+    unsavedChangesPromptPrimaryCTAText?: string
 }
 
 export const GuidanceForm = ({
@@ -74,7 +79,11 @@ export const GuidanceForm = ({
     hideFooterButtons,
     hideFooterAlerts,
     onValuesChange,
-    showUnsavedChangesPrompt = true,
+    showUnsavedChangesPrompt = false,
+    hideAvailableForAiAgentToggle,
+    unsavedChangesPromptTitle,
+    unsavedChangesPromptBody,
+    unsavedChangesPromptPrimaryCTAText,
 }: Props) => {
     const areActionsInGuidanceEnabled = useFlag<boolean>(
         FeatureFlagKey.AiAgentSupportActionInGuidance,
@@ -269,12 +278,15 @@ export const GuidanceForm = ({
 
     return (
         <>
-            {showUnsavedChangesPrompt && !isKnowledgeHubEnabled && (
+            {(showUnsavedChangesPrompt || !isKnowledgeHubEnabled) && (
                 <UnsavedChangesPrompt
                     onSave={onSave}
                     when={isFormDirty && !isLoading}
                     onDiscard={resetForm}
                     shouldRedirectAfterSave={true}
+                    title={unsavedChangesPromptTitle}
+                    body={unsavedChangesPromptBody}
+                    primaryCtaText={unsavedChangesPromptPrimaryCTAText}
                 />
             )}
 
@@ -306,7 +318,7 @@ export const GuidanceForm = ({
                     <InputField
                         label="Guidance name"
                         isRequired
-                        caption="Provide a name for this Guidance. e.g. When a customer asks for a return or exchange"
+                        caption="Use a short, scenario-based name. Example: Returns outside the policy window"
                         onChange={onNameChange}
                         name="name"
                         value={formState.name}
@@ -322,18 +334,20 @@ export const GuidanceForm = ({
                             showActionsButton={areActionsInGuidanceEnabled}
                         />
                         <Caption isValid>
-                            Provide instructions on how AI Agent should handle
-                            this situation.
+                            Describe the steps AI Agent should follow in clear,
+                            specific phrases.
                         </Caption>
                     </div>
 
-                    <ToggleField
-                        value={formState.isVisible}
-                        onChange={(val) => {
-                            void onChangeVisibility(val)
-                        }}
-                        label="Available for AI Agent"
-                    />
+                    {!hideAvailableForAiAgentToggle && (
+                        <ToggleField
+                            value={formState.isVisible}
+                            onChange={(val) => {
+                                void onChangeVisibility(val)
+                            }}
+                            label="Available for AI Agent"
+                        />
+                    )}
                 </div>
 
                 {!hideFooterButtons && (

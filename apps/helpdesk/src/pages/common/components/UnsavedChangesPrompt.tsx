@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { forwardRef, useCallback, useImperativeHandle, useRef } from 'react'
 
 import { Prompt } from 'react-router-dom'
@@ -11,6 +12,9 @@ type UnsavedChangesPromptProps = {
     onSave: () => Promise<unknown> | void
     shouldRedirectAfterSave?: boolean
     when: boolean | undefined
+    body?: ReactNode
+    title?: string
+    primaryCtaText?: string
 } & Pick<
     UnsavedChangesModalProps,
     'shouldShowDiscardButton' | 'shouldShowSaveButton' | 'body' | 'title'

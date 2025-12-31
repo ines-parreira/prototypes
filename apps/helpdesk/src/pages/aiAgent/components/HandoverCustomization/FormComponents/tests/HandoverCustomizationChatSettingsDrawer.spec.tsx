@@ -1,5 +1,5 @@
 import { userEvent } from '@repo/testing'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
 import type { GorgiasChatIntegration } from 'models/integration/types'
@@ -163,11 +163,13 @@ describe('HandoverCustomizationChatSettingsDrawer', () => {
         await userEvent.click(screen.getByRole('presentation'))
 
         expect(onClose).not.toHaveBeenCalled()
-        expect(
-            screen.queryByText(
-                /Your changes to this page will be lost if you don’t save them./i,
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /Your changes to this page will be lost if you don't save them./i,
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
     it('open the unsaved changes modal when user clicks on backdrop and there are unsaved changes for the online content', async () => {
@@ -181,11 +183,13 @@ describe('HandoverCustomizationChatSettingsDrawer', () => {
         await userEvent.click(screen.getByRole('presentation'))
 
         expect(onClose).not.toHaveBeenCalled()
-        expect(
-            screen.queryByText(
-                /Your changes to this page will be lost if you don’t save them./i,
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /Your changes to this page will be lost if you don't save them./i,
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
     it('open the unsaved changes modal when user clicks on backdrop and there are unsaved changes for the error content', async () => {
@@ -199,11 +203,13 @@ describe('HandoverCustomizationChatSettingsDrawer', () => {
         await userEvent.click(screen.getByRole('presentation'))
 
         expect(onClose).not.toHaveBeenCalled()
-        expect(
-            screen.queryByText(
-                /Your changes to this page will be lost if you don’t save them./i,
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /Your changes to this page will be lost if you don't save them./i,
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
     it.each([

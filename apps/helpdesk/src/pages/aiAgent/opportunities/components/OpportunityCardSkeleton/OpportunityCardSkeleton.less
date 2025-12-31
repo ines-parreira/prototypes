@@ -1,42 +1,37 @@
 :local {
     .card {
         display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: flex-start;
-        padding: var(--layout-spacing-s);
-        border-radius: var(--layout-spacing-xs);
+        flex-direction: column;
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: var(--spacing-xs);
         border: 1px solid transparent;
         background: var(--neutral-grey-0); // legacy
-        gap: var(--layout-spacing-xxs);
+        gap: 4px;
+        width: 100%;
+        margin-bottom: 2px;
     }
 
-    .header {
-        display: flex;
-        flex: 1;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        margin-bottom: 4px;
-        div {
-            border-radius: 4px;
-        }
+    .card:first-of-type {
+        background: var(--neutral-grey-0); // legacy
+        border-color: var(--neutral-grey-1); // legacy
     }
 
-    .infoSection {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: var(--layout-spacing-xxs);
-        width: 100%;
-        div {
-            width: 100% !important;
-        }
+    .card > :first-child {
+        height: 20px;
+    }
+
+    .card > :last-child {
+        height: 16px;
     }
 }
 
 .axiom :local {
     .card {
         background: var(--elevation-neutral-default);
+    }
+
+    .card:first-of-type {
+        background: var(--surface-neutral-primary);
+        border-color: var(--border-neutral-default);
     }
 }

@@ -1,20 +1,21 @@
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
 @import '~css/typography';
 @import '~css/util';
-@import '~@gorgias/design-tokens/dist/css/typographyTokens';
 
 :local {
     .card {
         display: flex;
-        flex-direction: row;
-        padding: var(--layout-spacing-s);
+        flex-direction: column;
+        padding: var(--spacing-sm) var(--spacing-md);
         align-items: flex-start;
         flex-shrink: 0;
-        border-radius: var(--layout-spacing-xs);
+        border-radius: var(--spacing-xs);
         border: 1px solid transparent;
         background: var(--neutral-grey-0); // legacy
         cursor: pointer;
         transition: all 0.2s ease;
-        gap: 6px;
+        gap: var(--spacing-xxs);
+        margin-bottom: 2px;
     }
 
     .cardHovered {
@@ -39,9 +40,6 @@
     }
 
     .title {
-        .body-regular();
-        line-height: 16px;
-        font-size: 12px;
         color: var(--neutral-grey-5); // legacy
         overflow: hidden;
         text-overflow: ellipsis;
@@ -51,26 +49,8 @@
 
     .infoSection {
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
-        width: 100%;
-    }
-
-    .iconSection {
-        display: flex;
-    }
-
-    .infoIcon {
-        color: var(--neutral-grey-5); // legacy
-        flex-shrink: 0;
-        font-size: 16px;
-    }
-
-    .infoText {
-        .body-semibold();
-        line-height: 16px;
-        font-size: 14px;
+        align-items: center;
+        gap: var(--spacing-xxxs);
     }
 
     .ticketCount {
@@ -81,12 +61,7 @@
         cursor: pointer;
         display: flex;
         align-items: center;
-        gap: 4px;
-    }
-
-    .ticketCountIcon {
-        font-size: 14px;
-        color: var(--neutral-grey-5); // legacy
+        gap: 2px;
     }
 }
 
@@ -96,12 +71,12 @@
     }
 
     .cardHovered {
-        background: var(--elevation-neutral-mid);
+        background: var(--hover-input);
     }
 
     .cardSelected {
         border: 1px solid var(--border-neutral-default);
-        background: var(--elevation-neutral-mid);
+        background: var(--surface-neutral-primary);
     }
 
     .cardSelectedHovered {
@@ -113,15 +88,7 @@
         color: var(--content-neutral-secondary);
     }
 
-    .infoIcon {
-        color: var(--content-neutral-secondary);
-    }
-
     .ticketCount {
-        color: var(--content-neutral-secondary);
-    }
-
-    .ticketCountIcon {
         color: var(--content-neutral-secondary);
     }
 }

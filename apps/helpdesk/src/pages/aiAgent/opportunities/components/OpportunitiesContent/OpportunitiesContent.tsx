@@ -1,10 +1,13 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
 import {
-    LegacyButton as Button,
-    LegacyTooltip as Tooltip,
+    Button,
+    Heading,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
 } from '@gorgias/axiom'
 import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
@@ -33,6 +36,7 @@ import { useAiAgentNavigation } from '../../../hooks/useAiAgentNavigation'
 import type { GuidanceFormFields } from '../../../types'
 import { OpportunityType } from '../../enums'
 import { useGuidanceCount } from '../../hooks/useGuidanceCount'
+import { useOpportunitiesSidebar } from '../../hooks/useOpportunitiesSidebar'
 import {
     buildApprovePayload,
     buildDismissPayload,
@@ -103,7 +107,9 @@ export const OpportunitiesContent = ({
         content: selectedOpportunity?.content || '',
         isVisible: true,
     })
+    const [isTitleOverflowing, setIsTitleOverflowing] = useState(false)
     const approveButtonRef = useRef<HTMLButtonElement>(null)
+    const titleRef = useRef<HTMLHeadingElement>(null)
 
     const locale = useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
@@ -116,6 +122,19 @@ export const OpportunitiesContent = ({
     const processOpportunity = useProcessOpportunity(shopIntegrationId)
 
     const showEmptyState = !opportunities || opportunities.length === 0
+    const { isSidebarVisible, setIsSidebarVisible } = useOpportunitiesSidebar()
+
+    useEffect(() => {
+        if (titleRef.current) {
+            const isOverflowing =
+                titleRef.current.scrollWidth > titleRef.current.offsetWidth
+            setIsTitleOverflowing(isOverflowing)
+        }
+    }, [selectedOpportunity?.id])
+
+    const handleShowSidebar = useCallback(() => {
+        setIsSidebarVisible(true)
+    }, [setIsSidebarVisible])
 
     const reviewArticle = useUpsertArticleTemplateReview({
         onSuccess: async (__data, [__client, __pathParameters, body]) => {
@@ -225,6 +244,42 @@ export const OpportunitiesContent = ({
         setIsDismissModalOpen(false)
     }, [])
 
+    const getOpportunityTypeLabel = (type: OpportunityType): string => {
+        switch (type) {
+            case OpportunityType.RESOLVE_CONFLICT:
+                return 'Resolve conflict'
+            case OpportunityType.FILL_KNOWLEDGE_GAP:
+            default:
+                return 'Fill knowledge gap'
+        }
+    }
+
+    const SelectedOpportunityTitle = () => {
+        const typeLabel = getOpportunityTypeLabel(
+            selectedOpportunity?.type || OpportunityType.FILL_KNOWLEDGE_GAP,
+        )
+        const titleText = `${typeLabel}: ${selectedOpportunity?.title}`
+
+        const titleElement = (
+            <Heading size="sm" className={css.title} ref={titleRef}>
+                {titleText}
+            </Heading>
+        )
+
+        if (!isTitleOverflowing) {
+            return titleElement
+        }
+
+        return (
+            <Tooltip placement="bottom">
+                <TooltipTrigger>
+                    <span className={css.title}>{titleElement}</span>
+                </TooltipTrigger>
+                <TooltipContent title={titleText} />
+            </Tooltip>
+        )
+    }
+
     const handleOpenTicketDrillDownModal = useCallback(() => {
         if (
             selectedOpportunity?.detectionObjectIds &&
@@ -295,7 +350,7 @@ export const OpportunitiesContent = ({
             dispatch(
                 notify({
                     status: NotificationStatus.Success,
-                    message: 'Guidance successfully created',
+                    message: 'Guidance saved and enabled',
                 }),
             )
 
@@ -334,12 +389,20 @@ export const OpportunitiesContent = ({
     return (
         <div className={css.containerContent}>
             <div className={css.header}>
-                <h3 className={css.title}>
-                    {selectedOpportunity?.type ===
-                    OpportunityType.FILL_KNOWLEDGE_GAP
-                        ? 'Fill knowledge gap'
-                        : 'Resolve conflict'}
-                </h3>
+                <div className={css.headerLeft}>
+                    {!isSidebarVisible && (
+                        <Button
+                            intent="regular"
+                            variant="secondary"
+                            icon="system-bar-left"
+                            size="sm"
+                            onClick={handleShowSidebar}
+                            aria-label="Show sidebar"
+                        />
+                    )}
+
+                    <SelectedOpportunityTitle />
+                </div>
                 {selectedOpportunity && (
                     <div className={css.headerActions}>
                         <OpportunitiesNavigation
@@ -348,23 +411,55 @@ export const OpportunitiesContent = ({
                             selectCertainOpportunity={selectCertainOpportunity}
                             totalCount={totalCount}
                         />
+                        <div className={css.headerActionDelimiter} />
                         <Button
-                            intent="secondary"
-                            fillStyle="ghost"
+                            variant="tertiary"
                             onClick={handleOpenDismissModal}
                         >
                             Dismiss
                         </Button>
-                        <div
-                            style={{
-                                position: 'relative',
-                                display: 'inline-block',
-                            }}
-                        >
+                        {!isLoadingGuidanceCount &&
+                        guidanceCount >= MAX_GUIDANCES ? (
+                            <Tooltip placement="top">
+                                <TooltipTrigger>
+                                    <Button
+                                        ref={approveButtonRef}
+                                        variant="primary"
+                                        leadingSlot="check"
+                                        onClick={handleApprove}
+                                        isLoading={
+                                            isLoading ||
+                                            reviewArticle.isLoading ||
+                                            isGuidanceArticleUpdating
+                                        }
+                                        isDisabled={isApproveDisabled}
+                                    >
+                                        Publish and enable
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <div>
+                                        You have reached the limit for{' '}
+                                        <a
+                                            href={routes.guidance}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={css.guidanceLink}
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            Guidance
+                                        </a>
+                                        . To save this Guidance, you must delete
+                                        or disable an existing one.
+                                    </div>
+                                </TooltipContent>
+                            </Tooltip>
+                        ) : (
                             <Button
                                 ref={approveButtonRef}
                                 className={css.approveButton}
-                                intent="primary"
+                                variant="primary"
+                                leadingSlot="check"
                                 onClick={handleApprove}
                                 isLoading={
                                     isLoading ||
@@ -373,38 +468,9 @@ export const OpportunitiesContent = ({
                                 }
                                 isDisabled={isApproveDisabled}
                             >
-                                <i className="material-icons">check</i>
-                                Approve
+                                Publish and enable
                             </Button>
-                            {!isLoadingGuidanceCount &&
-                                guidanceCount >= MAX_GUIDANCES &&
-                                approveButtonRef.current && (
-                                    <Tooltip
-                                        placement="top"
-                                        target={approveButtonRef.current}
-                                        trigger={['hover']}
-                                        delay={{ show: 0, hide: 300 }}
-                                        autohide={false}
-                                    >
-                                        <div>
-                                            You have reached the limit for{' '}
-                                            <a
-                                                href={routes.guidance}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className={css.guidanceLink}
-                                                onClick={(e) =>
-                                                    e.stopPropagation()
-                                                }
-                                            >
-                                                Guidance
-                                            </a>
-                                            . To save this Guidance, you must
-                                            delete or disable an existing one.
-                                        </div>
-                                    </Tooltip>
-                                )}
-                        </div>
+                        )}
                     </div>
                 )}
             </div>
@@ -415,7 +481,6 @@ export const OpportunitiesContent = ({
                     <div className={css.opportunityDetails}>
                         <OpportunityDetailsCard
                             type={selectedOpportunity.type}
-                            title={selectedOpportunity.title}
                             ticketCount={selectedOpportunity.ticketCount}
                             onTicketCountClick={handleOpenTicketDrillDownModal}
                         />
@@ -431,9 +496,7 @@ export const OpportunitiesContent = ({
                                     isGuidanceArticleUpdating
                                 }
                                 actionType="create"
-                                onSubmit={() => {
-                                    return Promise.resolve()
-                                }}
+                                onSubmit={handleApprove}
                                 onValuesChange={onFormValuesChange}
                                 initialFields={{
                                     name: selectedOpportunity.title,
@@ -445,7 +508,11 @@ export const OpportunitiesContent = ({
                                 hideHeader
                                 hideFooterAlerts
                                 hideFooterButtons
-                                showUnsavedChangesPrompt={false}
+                                hideAvailableForAiAgentToggle
+                                showUnsavedChangesPrompt
+                                unsavedChangesPromptTitle="Publish and enable Guidance?"
+                                unsavedChangesPromptBody="Your changes to this Guidance will be lost if you navigate elsewhere and don’t publish it."
+                                unsavedChangesPromptPrimaryCTAText="Publish and enable"
                             />
                         </div>
                     </div>

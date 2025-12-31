@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
@@ -15,6 +15,7 @@ import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
+import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
 import { useKnowledgeServiceOpportunities } from '../../hooks/useKnowledgeServiceOpportunities'
 import { useOpportunitiesTracking } from '../../hooks/useOpportunitiesTracking'
 import { useSelectedOpportunity } from '../../hooks/useSelectedOpportunity'
@@ -31,6 +32,8 @@ export const OpportunitiesLayout = () => {
     const { shopName } = useParams<{
         shopName: string
     }>()
+
+    const [isSidebarVisible, setIsSidebarVisible] = useState(true)
 
     const { storeConfiguration, isLoading: isStoreConfigLoading } =
         useAiAgentStoreConfigurationContext()
@@ -163,49 +166,61 @@ export const OpportunitiesLayout = () => {
     }, [onOpportunityPageVisited])
 
     return (
-        <div className={css.wrapper} data-ai-opportunities>
-            <div className={css.layout}>
-                <OpportunitiesSidebar
-                    opportunities={opportunities}
-                    isLoading={isLoading}
-                    onSelectOpportunity={(opp) => {
-                        if (opp) {
-                            setSelectedOpportunityId(opp.id)
+        <OpportunitiesSidebarContext.Provider
+            value={{ isSidebarVisible, setIsSidebarVisible }}
+        >
+            <div className={css.wrapper} data-ai-opportunities>
+                <div className={css.layout}>
+                    {isSidebarVisible && (
+                        <OpportunitiesSidebar
+                            opportunities={opportunities}
+                            isLoading={isLoading}
+                            onSelectOpportunity={(opp) => {
+                                if (opp) {
+                                    setSelectedOpportunityId(opp.id)
+                                }
+                            }}
+                            selectedOpportunity={selectedOpportunity}
+                            onOpportunityViewed={onOpportunityViewed}
+                            hasNextPage={
+                                useKnowledgeService ? hasNextPage : false
+                            }
+                            isFetchingNextPage={
+                                useKnowledgeService ? isFetchingNextPage : false
+                            }
+                            onEndReached={
+                                useKnowledgeService ? fetchNextPage : undefined
+                            }
+                            totalCount={
+                                useKnowledgeService ? totalCount : undefined
+                            }
+                            totalPending={
+                                useKnowledgeService ? totalPending : undefined
+                            }
+                        />
+                    )}
+                    <OpportunitiesContent
+                        key={selectedOpportunity?.key}
+                        selectedOpportunity={selectedOpportunity ?? null}
+                        shopName={shopName}
+                        shopIntegrationId={shopIntegrationId}
+                        helpCenterId={storeConfiguration?.helpCenterId ?? 0}
+                        guidanceHelpCenterId={guidanceHelpCenter?.id ?? 0}
+                        onArchive={handleArchiveArticle}
+                        onPublish={handlePublishArticle}
+                        markArticleAsReviewed={markArticleAsReviewed}
+                        opportunities={opportunities}
+                        selectCertainOpportunity={selectCertainOpportunity}
+                        onOpportunityAccepted={onOpportunityAccepted}
+                        onOpportunityDismissed={onOpportunityDismissed}
+                        useKnowledgeService={useKnowledgeService}
+                        isLoadingOpportunityDetails={
+                            isLoadingOpportunityDetails
                         }
-                    }}
-                    selectedOpportunity={selectedOpportunity}
-                    onOpportunityViewed={onOpportunityViewed}
-                    hasNextPage={useKnowledgeService ? hasNextPage : false}
-                    isFetchingNextPage={
-                        useKnowledgeService ? isFetchingNextPage : false
-                    }
-                    onEndReached={
-                        useKnowledgeService ? fetchNextPage : undefined
-                    }
-                    totalCount={useKnowledgeService ? totalCount : undefined}
-                    totalPending={
-                        useKnowledgeService ? totalPending : undefined
-                    }
-                />
-                <OpportunitiesContent
-                    key={selectedOpportunity?.key}
-                    selectedOpportunity={selectedOpportunity ?? null}
-                    shopName={shopName}
-                    shopIntegrationId={shopIntegrationId}
-                    helpCenterId={storeConfiguration?.helpCenterId ?? 0}
-                    guidanceHelpCenterId={guidanceHelpCenter?.id ?? 0}
-                    onArchive={handleArchiveArticle}
-                    onPublish={handlePublishArticle}
-                    markArticleAsReviewed={markArticleAsReviewed}
-                    opportunities={opportunities}
-                    selectCertainOpportunity={selectCertainOpportunity}
-                    onOpportunityAccepted={onOpportunityAccepted}
-                    onOpportunityDismissed={onOpportunityDismissed}
-                    useKnowledgeService={useKnowledgeService}
-                    isLoadingOpportunityDetails={isLoadingOpportunityDetails}
-                    totalCount={opportunities.length}
-                />
+                        totalCount={opportunities.length}
+                    />
+                </div>
             </div>
-        </div>
+        </OpportunitiesSidebarContext.Provider>
     )
 }

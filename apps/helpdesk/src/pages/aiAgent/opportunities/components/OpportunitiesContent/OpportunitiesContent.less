@@ -1,6 +1,6 @@
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
 @import '~css/typography';
 @import '~css/util';
-@import '~@gorgias/design-tokens/dist/css/typographyTokens';
 
 :local {
     .containerContent {
@@ -21,11 +21,11 @@
             12px 13px 18px 0 rgba(0, 0, 0, 0.04),
             3px 3px 10px 0 rgba(0, 0, 0, 0.05);
         overflow: hidden;
-        padding-bottom: var(--layout-spacing-s);
+        padding-bottom: var(--spacing-md);
 
         .header {
             width: 100%;
-            padding: 12px var(--layout-spacing-s);
+            padding: var(--spacing-md) var(--spacing-lg);
             border-bottom: 1px solid var(--neutral-grey-2); // legacy
             display: flex;
             justify-content: space-between;
@@ -34,25 +34,25 @@
             height: 56px;
         }
 
-        .approveButton {
-            background-color: var(--main-primary) !important; // legacy
-            i {
-                font-size: 20px;
-                padding-right: var(--layout-spacing-xxs);
-            }
-            &[aria-disabled='true'] {
-                background-color: var(--neutral-grey-1) !important; // legacy
-            }
+        .headerLeft {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            overflow: hidden;
         }
 
         .headerActions {
             display: flex;
-            gap: var(--layout-spacing-xs);
+            gap: var(--spacing-xs);
+        }
+
+        .headerActionDelimiter {
+            width: 1px;
+            border-radius: var(--spacing-xs);
+            border: 1px solid var(--border-neutral-default);
         }
 
         .title {
-            .heading-subsection-semibold();
-            font-size: 16px;
             margin: 0;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -60,7 +60,7 @@
         }
 
         .contentBody {
-            padding: var(--layout-spacing-s);
+            padding: var(--spacing-md) var(--spacing-lg);
             display: flex;
             flex: 1;
             min-height: 0; // Critical for allowing scroll
@@ -74,7 +74,7 @@
             display: flex;
             flex-direction: column;
             width: 100%;
-            gap: var(--layout-spacing-s);
+            gap: var(--spacing-md);
         }
 
         .guidanceFormWrapper {
@@ -108,14 +108,6 @@
 
         .header {
             border-bottom: 1px solid var(--border-neutral-default);
-        }
-
-        .approveButton {
-            background-color: var(--surface-accent-default) !important;
-
-            &[aria-disabled='true'] {
-                background-color: var(--elevation-neutral-mid) !important;
-            }
         }
 
         .contentBody {

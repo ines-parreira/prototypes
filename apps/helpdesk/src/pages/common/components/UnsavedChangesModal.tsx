@@ -1,11 +1,12 @@
-import _noop from 'lodash/noop'
+import type { ReactNode } from 'react'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
-
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import {
+    Button,
+    Modal,
+    OverlayContent,
+    OverlayHeader,
+    Text,
+} from '@gorgias/axiom'
 
 import css from './UnsavedChangesModal.less'
 
@@ -14,47 +15,53 @@ export type UnsavedChangesModalProps = {
     isOpen: boolean
     onClose: () => void
     onSave: () => Promise<void> | void
-    body?: React.ReactNode
+    body?: ReactNode
     title?: string
+    primaryCtaText?: string
     shouldShowDiscardButton?: boolean
     shouldShowSaveButton?: boolean
 }
 
-const UnsavedChangesModal: React.FC<UnsavedChangesModalProps> = ({
+const UnsavedChangesModal = ({
     onDiscard,
     onSave,
     isOpen,
     onClose,
     shouldShowDiscardButton = true,
     shouldShowSaveButton = true,
-    body = `Your changes to this page will be lost if you don’t save them.`,
+    body = `Your changes to this page will be lost if you don't save them.`,
     title = 'Save changes?',
-}) => {
+    primaryCtaText = 'Save Changes',
+}: UnsavedChangesModalProps) => {
     return (
-        <Modal isOpen={isOpen} isClosable={false} onClose={_noop}>
-            <ModalHeader title={title} />
-            <ModalBody className={css.body}>{body}</ModalBody>
-            <ModalFooter className={css.footer}>
-                <div>
-                    {shouldShowDiscardButton && (
-                        <Button
-                            fillStyle="ghost"
-                            intent="destructive"
-                            onClick={onDiscard}
-                        >
-                            Discard Changes
-                        </Button>
-                    )}
+        <Modal isOpen={isOpen} onOpenChange={onClose} size="sm">
+            <OverlayHeader title={title} />
+            <OverlayContent>
+                <div className={css.body}>
+                    {typeof body === 'string' ? <Text>{body}</Text> : body}
                 </div>
+            </OverlayContent>
+            <div className={css.footer}>
+                {shouldShowDiscardButton && (
+                    <Button
+                        variant="tertiary"
+                        intent="destructive"
+                        onClick={onDiscard}
+                    >
+                        Discard Changes
+                    </Button>
+                )}
                 <div className={css.rightButtons}>
-                    <Button intent="secondary" onClick={onClose}>
+                    <Button variant="secondary" onClick={onClose}>
                         Back To Editing
                     </Button>
                     {shouldShowSaveButton && (
-                        <Button onClick={onSave}>Save Changes</Button>
+                        <Button variant="primary" onClick={onSave}>
+                            {primaryCtaText}
+                        </Button>
                     )}
                 </div>
-            </ModalFooter>
+            </div>
         </Modal>
     )
 }

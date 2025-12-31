@@ -18,9 +18,11 @@ describe('UnsavedChangesModal', () => {
         render(<UnsavedChangesModal {...defaultProps} />)
 
         screen.getByText('Save changes?')
-        screen.getByText(
-            'Your changes to this page will be lost if you don’t save them.',
-        )
+        expect(
+            screen.getByText(
+                "Your changes to this page will be lost if you don't save them.",
+            ),
+        ).toBeInTheDocument()
         screen.getByText('Discard Changes')
         screen.getByText('Back To Editing')
         screen.getByText('Save Changes')

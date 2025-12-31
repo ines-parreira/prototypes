@@ -69,7 +69,7 @@ describe('DismissOpportunityModal', () => {
             expect(screen.getByText('Dismiss opportunity?')).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    'Dismissing this opportunity will delete the associated knowledge and cannot be undone.',
+                    'Dismissing this knowledge gap opportunity will delete the generated Guidance and cannot be undone.',
                 ),
             ).toBeInTheDocument()
         })
@@ -82,77 +82,25 @@ describe('DismissOpportunityModal', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should render cancel and dismiss buttons', () => {
+        it('should render dismiss button', () => {
             renderComponent()
 
-            expect(
-                screen.getByRole('button', { name: 'Cancel' }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('button', { name: 'Dismiss' }),
-            ).toBeInTheDocument()
+            const dismissButtons = screen.getAllByRole('button', {
+                name: 'Dismiss',
+                hidden: true,
+            })
+            expect(dismissButtons.length).toBeGreaterThan(0)
         })
 
-        it('should render reason selection dropdown', () => {
+        it('should render reason selection checkboxes', () => {
             renderComponent()
 
             expect(
-                screen.getByText('Why are you deleting this opportunity?'),
+                screen.getByText('Why are you dismissing this opportunity?'),
             ).toBeInTheDocument()
-            expect(
-                screen.getByText('Select all that apply'),
-            ).toBeInTheDocument()
-        })
-    })
 
-    describe('Cancel button behavior', () => {
-        it('should call onClose when cancel button is clicked', async () => {
-            const user = userEvent.setup()
-            renderComponent()
-
-            const cancelButton = screen.getByRole('button', { name: 'Cancel' })
-            await user.click(cancelButton)
-
-            expect(mockOnClose).toHaveBeenCalledTimes(1)
-        })
-
-        it('should reset form state when cancel is clicked after selecting reasons', async () => {
-            const user = userEvent.setup()
-            renderComponent()
-
-            // Open dropdown and select a reason
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
-
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const firstOption = screen.getAllByRole('option')[0]
-            await act(async () => {
-                await user.click(firstOption)
-            })
-
-            // Verify reason was selected by checking if dismiss button is enabled
-            await waitFor(() => {
-                const dismissButton = screen.getByRole('button', {
-                    name: 'Dismiss',
-                })
-                expect(dismissButton).not.toHaveAttribute(
-                    'aria-disabled',
-                    'true',
-                )
-            })
-
-            // Click cancel
-            const cancelButton = screen.getByRole('button', { name: 'Cancel' })
-            await act(async () => {
-                await user.click(cancelButton)
-            })
-
-            expect(mockOnClose).toHaveBeenCalledTimes(1)
+            const checkboxes = screen.getAllByRole('checkbox')
+            expect(checkboxes).toHaveLength(4)
         })
     })
 
@@ -160,48 +108,23 @@ describe('DismissOpportunityModal', () => {
         it('should be disabled initially when no reasons are selected', () => {
             renderComponent()
 
-            const dismissButton = screen.getByRole('button', {
+            const dismissButton = screen.getAllByRole('button', {
                 name: 'Dismiss',
-            })
+            })[1]
             expect(dismissButton).toHaveAttribute('aria-disabled', 'true')
-        })
-
-        it('should be disabled when no reasons are selected and not call dismiss callbacks', async () => {
-            renderComponent()
-
-            const dismissButton = screen.getByRole('button', {
-                name: 'Dismiss',
-            })
-            expect(dismissButton).toHaveAttribute('aria-disabled', 'true')
-
-            // Disabled buttons don't trigger onClick handlers, so callbacks shouldn't be called
-            expect(mockOnConfirm).not.toHaveBeenCalled()
-            expect(mockOnClose).not.toHaveBeenCalled()
         })
 
         it('should be enabled when a reason is selected', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            // Open dropdown and select a reason
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
+            const firstCheckbox = screen.getAllByRole('checkbox')[0]
+            await act(() => user.click(firstCheckbox))
 
             await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const firstOption = screen.getAllByRole('option')[0]
-            await act(async () => {
-                await user.click(firstOption)
-            })
-
-            await waitFor(() => {
-                const dismissButton = screen.getByRole('button', {
+                const dismissButton = screen.getAllByRole('button', {
                     name: 'Dismiss',
-                })
+                })[1]
                 expect(dismissButton).not.toHaveAttribute(
                     'aria-disabled',
                     'true',
@@ -209,102 +132,42 @@ describe('DismissOpportunityModal', () => {
             })
         })
 
-        it('should be disabled when "Other" is selected but no freeform text is provided', async () => {
-            const user = userEvent.setup()
-            renderComponent()
-
-            // Open dropdown and select "Other" option
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
-
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const otherOption = screen.getByText(
-                'Other (explain in additional feedback)',
-            ) // "Other" is the last option
-            await act(async () => {
-                await user.click(otherOption)
-            })
-
-            await waitFor(() => {
-                const dismissButton = screen.getByRole('button', {
-                    name: 'Dismiss',
-                })
-                expect(dismissButton).toHaveAttribute('aria-disabled', 'true')
-            })
-        })
-
         it('should be disabled when "Other" is selected and text area is empty', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            // Select "Other" option
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
+            const otherCheckbox = screen.getAllByRole('checkbox')[3]
+            await act(() => user.click(otherCheckbox))
 
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const otherOption = screen.getByText(
-                'Other (explain in additional feedback)',
-            )
-            await act(async () => {
-                await user.click(otherOption)
-            })
-
-            // Wait for textarea to appear and verify button is disabled
             await waitFor(() => {
                 expect(screen.getByRole('textbox')).toBeInTheDocument()
-                const dismissButton = screen.getByRole('button', {
+                const dismissButton = screen.getAllByRole('button', {
                     name: 'Dismiss',
-                })
+                })[1]
                 expect(dismissButton).toHaveAttribute('aria-disabled', 'true')
             })
         })
 
         it('should be enabled when "Other" is selected and freeform text is provided', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            // Select "Other" option
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
+            const otherCheckbox = screen.getAllByRole('checkbox')[3]
+            await act(() => user.click(otherCheckbox))
 
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const otherOption = screen.getByText(
-                'Other (explain in additional feedback)',
-            )
-            await act(async () => {
-                await user.click(otherOption)
-            })
-
-            // Wait for textarea to appear
             await waitFor(() => {
                 expect(screen.getByRole('textbox')).toBeInTheDocument()
             })
 
-            // Fill in the textarea
             const textarea = screen.getByRole('textbox')
-            await act(async () => {
-                await user.type(textarea, 'This is my additional feedback')
-            })
+            await act(() =>
+                user.type(textarea, 'This is my additional feedback'),
+            )
 
             await waitFor(() => {
-                const dismissButton = screen.getByRole('button', {
+                const dismissButton = screen.getAllByRole('button', {
                     name: 'Dismiss',
-                })
+                })[1]
                 expect(dismissButton).not.toHaveAttribute(
                     'aria-disabled',
                     'true',
@@ -313,41 +176,26 @@ describe('DismissOpportunityModal', () => {
         })
 
         it('should call onConfirm with feedback data and onClose when dismiss is confirmed', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            // Select a reason
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
+            const firstCheckbox = screen.getAllByRole('checkbox')[0]
+            await act(() => user.click(firstCheckbox))
 
             await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const firstOption = screen.getAllByRole('option')[0]
-            await act(async () => {
-                await user.click(firstOption)
-            })
-
-            await waitFor(() => {
-                const dismissButton = screen.getByRole('button', {
+                const dismissButton = screen.getAllByRole('button', {
                     name: 'Dismiss',
-                })
+                })[1]
                 expect(dismissButton).not.toHaveAttribute(
                     'aria-disabled',
                     'true',
                 )
             })
 
-            // Click dismiss button
-            const dismissButton = screen.getByRole('button', {
+            const dismissButton = screen.getAllByRole('button', {
                 name: 'Dismiss',
-            })
-            await act(async () => {
-                await user.click(dismissButton)
-            })
+            })[1]
+            await act(() => user.click(dismissButton))
 
             expect(mockOnConfirm).toHaveBeenCalledTimes(1)
             expect(mockOnConfirm).toHaveBeenCalledWith(
@@ -364,43 +212,28 @@ describe('DismissOpportunityModal', () => {
         })
 
         it('should call onOpportunityDismissed with correct parameters when dismiss is successful', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({ delay: null })
             renderComponent({
                 onOpportunityDismissed: mockOnOpportunityDismissed,
             })
 
-            // Select a reason
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
+            const firstCheckbox = screen.getAllByRole('checkbox')[0]
+            await act(() => user.click(firstCheckbox))
 
             await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const firstOption = screen.getAllByRole('option')[0]
-            await act(async () => {
-                await user.click(firstOption)
-            })
-
-            await waitFor(() => {
-                const dismissButton = screen.getByRole('button', {
+                const dismissButton = screen.getAllByRole('button', {
                     name: 'Dismiss',
-                })
+                })[1]
                 expect(dismissButton).not.toHaveAttribute(
                     'aria-disabled',
                     'true',
                 )
             })
 
-            // Click dismiss button
-            const dismissButton = screen.getByRole('button', {
+            const dismissButton = screen.getAllByRole('button', {
                 name: 'Dismiss',
-            })
-            await act(async () => {
-                await user.click(dismissButton)
-            })
+            })[1]
+            await act(() => user.click(dismissButton))
 
             await waitFor(() => {
                 expect(mockOnOpportunityDismissed).toHaveBeenCalledTimes(1)
@@ -418,65 +251,36 @@ describe('DismissOpportunityModal', () => {
 
             expect(screen.getByText('Dismiss opportunity?')).toBeInTheDocument()
 
-            const dismissButton = screen.getByRole('button', {
+            const dismissButton = screen.getAllByRole('button', {
                 name: 'Dismiss',
-            })
+            })[1]
             expect(dismissButton).toHaveAttribute('aria-disabled', 'true')
-        })
-
-        it('should not submit when opportunity is null', async () => {
-            renderComponent({ opportunity: null })
-
-            const dismissButton = screen.getByRole('button', {
-                name: 'Dismiss',
-            })
-            expect(dismissButton).toHaveAttribute('aria-disabled', 'true')
-
-            // Since button is disabled, the form submission won't be triggered
-            expect(mockOnConfirm).not.toHaveBeenCalled()
         })
 
         it('should handle multiple reason selection', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            // Open dropdown and select multiple reasons
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
+            const firstCheckbox = screen.getAllByRole('checkbox')[0]
+            const secondCheckbox = screen.getAllByRole('checkbox')[1]
+
+            await act(() => user.click(firstCheckbox))
+            await act(() => user.click(secondCheckbox))
 
             await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const firstOption = screen.getAllByRole('option')[0]
-            const secondOption = screen.getAllByRole('option')[1]
-
-            await act(async () => {
-                await user.click(firstOption)
-            })
-            await act(async () => {
-                await user.click(secondOption)
-            })
-
-            await waitFor(() => {
-                const dismissButton = screen.getByRole('button', {
+                const dismissButton = screen.getAllByRole('button', {
                     name: 'Dismiss',
-                })
+                })[1]
                 expect(dismissButton).not.toHaveAttribute(
                     'aria-disabled',
                     'true',
                 )
             })
 
-            // Should be able to dismiss with multiple reasons
-            const dismissButton = screen.getByRole('button', {
+            const dismissButton = screen.getAllByRole('button', {
                 name: 'Dismiss',
-            })
-            await act(async () => {
-                await user.click(dismissButton)
-            })
+            })[1]
+            await act(() => user.click(dismissButton))
 
             expect(mockOnConfirm).toHaveBeenCalled()
             expect(mockOnConfirm).toHaveBeenCalledWith(
@@ -496,96 +300,54 @@ describe('DismissOpportunityModal', () => {
         })
 
         it('should toggle reason selection correctly', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            // Open dropdown
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
+            const firstCheckbox = screen.getAllByRole('checkbox')[0]
+
+            await act(() => user.click(firstCheckbox))
 
             await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const firstOption = screen.getAllByRole('option')[0]
-
-            // Select option
-            await act(async () => {
-                await user.click(firstOption)
-            })
-
-            // Verify button is enabled
-            await waitFor(() => {
-                const dismissButton = screen.getByRole('button', {
+                const dismissButton = screen.getAllByRole('button', {
                     name: 'Dismiss',
-                })
+                })[1]
                 expect(dismissButton).not.toHaveAttribute(
                     'aria-disabled',
                     'true',
                 )
             })
 
-            // Deselect option
-            await act(async () => {
-                await user.click(firstOption)
-            })
+            await act(() => user.click(firstCheckbox))
 
-            // Dismiss button should be disabled again
             await waitFor(() => {
-                const dismissButton = screen.getByRole('button', {
+                const dismissButton = screen.getAllByRole('button', {
                     name: 'Dismiss',
-                })
+                })[1]
                 expect(dismissButton).toHaveAttribute('aria-disabled', 'true')
             })
         })
 
         it('should clear freeform text when Other option is deselected', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            // Open dropdown and select "Other" option
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
+            const otherCheckbox = screen.getAllByRole('checkbox')[3]
+            await act(() => user.click(otherCheckbox))
 
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const otherOption = screen.getByText(
-                'Other (explain in additional feedback)',
-            )
-            await act(async () => {
-                await user.click(otherOption)
-            })
-
-            // Wait for textarea to appear and type text
             await waitFor(() => {
                 expect(screen.getByRole('textbox')).toBeInTheDocument()
             })
 
             const textarea = screen.getByRole('textbox')
-            await act(async () => {
-                await user.type(textarea, 'Test feedback')
-            })
+            await act(() => user.type(textarea, 'Test feedback'))
 
-            // Deselect "Other" option
-            await act(async () => {
-                await user.click(otherOption)
-            })
+            await act(() => user.click(otherCheckbox))
 
-            // Textarea should disappear and text should be cleared
             await waitFor(() => {
                 expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
             })
 
-            // Re-select "Other" to verify text was cleared
-            await act(async () => {
-                await user.click(otherOption)
-            })
+            await act(() => user.click(otherCheckbox))
 
             await waitFor(() => {
                 const newTextarea = screen.getByRole('textbox')
@@ -593,126 +355,49 @@ describe('DismissOpportunityModal', () => {
             })
         })
 
-        it('should validate that at least one reason is selected before submission', async () => {
-            const user = userEvent.setup()
-            renderComponent()
-
-            // Try to click disabled dismiss button (shouldn't work)
-            const dismissButton = screen.getByRole('button', {
-                name: 'Dismiss',
-            })
-            expect(dismissButton).toHaveAttribute('aria-disabled', 'true')
-
-            // Select and then deselect a reason
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
-
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const firstOption = screen.getAllByRole('option')[0]
-            await act(async () => {
-                await user.click(firstOption)
-            })
-            await act(async () => {
-                await user.click(firstOption) // Deselect
-            })
-
-            // Button should still be disabled
-            await waitFor(() => {
-                expect(dismissButton).toHaveAttribute('aria-disabled', 'true')
-            })
-
-            // No callbacks should have been triggered
-            expect(mockOnConfirm).not.toHaveBeenCalled()
-        })
-
         it('should validate freeform text is required when Other is selected', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            // Select "Other" option
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
+            const otherCheckbox = screen.getAllByRole('checkbox')[3]
+            await act(() => user.click(otherCheckbox))
 
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const otherOption = screen.getByText(
-                'Other (explain in additional feedback)',
-            )
-            await act(async () => {
-                await user.click(otherOption)
-            })
-
-            // Wait for textarea to appear
             await waitFor(() => {
                 expect(screen.getByRole('textbox')).toBeInTheDocument()
             })
 
-            // Type only whitespace
             const textarea = screen.getByRole('textbox')
-            await act(async () => {
-                await user.type(textarea, '   ')
-            })
+            await act(() => user.type(textarea, '   '))
 
-            // Button should still be disabled because whitespace doesn't count
             await waitFor(() => {
-                const dismissButton = screen.getByRole('button', {
+                const dismissButton = screen.getAllByRole('button', {
                     name: 'Dismiss',
-                })
+                })[1]
                 expect(dismissButton).toHaveAttribute('aria-disabled', 'true')
             })
         })
 
         it('should send correct feedback data with multiple reasons and Other', async () => {
-            const user = userEvent.setup()
+            const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            // Open dropdown and select multiple reasons including "Other"
-            const dropdown = screen.getByRole('combobox')
-            await act(async () => {
-                await user.click(dropdown)
-            })
+            const firstCheckbox = screen.getAllByRole('checkbox')[0]
+            const otherCheckbox = screen.getAllByRole('checkbox')[3]
 
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
+            await act(() => user.click(firstCheckbox))
+            await act(() => user.click(otherCheckbox))
 
-            const allOptions = screen.getAllByRole('option')
-            const firstOption = allOptions[0] // Topic shouldn't be handled by AI Agent
-            const otherOption = allOptions[3] // Other option
-
-            await act(async () => {
-                await user.click(firstOption)
-            })
-            await act(async () => {
-                await user.click(otherOption)
-            })
-
-            // Wait for textarea and fill it
             await waitFor(() => {
                 expect(screen.getByRole('textbox')).toBeInTheDocument()
             })
 
             const textarea = screen.getByRole('textbox')
-            await act(async () => {
-                await user.type(textarea, 'Additional detailed feedback')
-            })
+            await act(() => user.type(textarea, 'Additional detailed feedback'))
 
-            // Submit
-            const dismissButton = screen.getByRole('button', {
+            const dismissButton = screen.getAllByRole('button', {
                 name: 'Dismiss',
-            })
-            await act(async () => {
-                await user.click(dismissButton)
-            })
+            })[1]
+            await act(() => user.click(dismissButton))
 
             expect(mockOnConfirm).toHaveBeenCalledWith(
                 expect.objectContaining({

@@ -4,7 +4,7 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent, screen } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { keyBy } from 'lodash'
@@ -391,7 +391,7 @@ describe('AiAgentKnowledgeContainer', () => {
         })
     })
 
-    it('should show a warning when navigating away without submitting the form', () => {
+    it('should show a warning when navigating away without submitting the form', async () => {
         renderComponent()
 
         const dropdown = screen.getByText('help center 1')
@@ -403,11 +403,13 @@ describe('AiAgentKnowledgeContainer', () => {
             history.push('/test')
         })
 
-        expect(
-            screen.getByText(
-                'Your changes to this page will be lost if you don’t save them.',
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /Your changes to this page will be lost if you don't save them./i,
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
     it('should reset the form when clicking the Cancel button', () => {

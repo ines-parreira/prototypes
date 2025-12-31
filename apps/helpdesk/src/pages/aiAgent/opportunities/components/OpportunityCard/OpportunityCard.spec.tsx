@@ -25,7 +25,7 @@ describe('OpportunityCard', () => {
     it('should render info icon', () => {
         render(<OpportunityCard {...defaultProps} />)
 
-        expect(screen.getByText('map')).toBeInTheDocument()
+        expect(screen.getByLabelText('nav-map')).toBeInTheDocument()
     })
 
     it('should apply selected styles when selected prop is true', () => {
@@ -40,12 +40,12 @@ describe('OpportunityCard', () => {
     it('should call onSelect when clicked', async () => {
         const onSelect = jest.fn()
         const user = userEvent.setup()
-        render(<OpportunityCard {...defaultProps} onSelect={onSelect} />)
+        const { container } = render(
+            <OpportunityCard {...defaultProps} onSelect={onSelect} />,
+        )
 
-        const card = screen.getByText('Test Title').parentElement?.parentElement
-        if (card) {
-            await user.click(card)
-        }
+        const card = container.firstChild as HTMLElement
+        await act(() => user.click(card))
 
         expect(onSelect).toHaveBeenCalledTimes(1)
     })
@@ -109,7 +109,7 @@ describe('OpportunityCard', () => {
         render(<OpportunityCard {...defaultProps} />)
 
         expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
-        expect(screen.getByText('map')).toBeInTheDocument()
+        expect(screen.getByLabelText('nav-map')).toBeInTheDocument()
     })
 
     it('should render with RESOLVE_CONFLICT info type when specified', () => {
@@ -121,7 +121,7 @@ describe('OpportunityCard', () => {
         )
 
         expect(screen.getByText('Resolve conflict')).toBeInTheDocument()
-        expect(screen.getByText('error_outline')).toBeInTheDocument()
+        expect(screen.getByLabelText('octagon-error')).toBeInTheDocument()
     })
 
     it('should render title with tooltip when text overflows', () => {

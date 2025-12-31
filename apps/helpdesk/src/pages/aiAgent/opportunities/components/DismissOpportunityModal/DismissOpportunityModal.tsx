@@ -1,21 +1,19 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
+import {
+    Button,
+    CheckBoxField,
+    Modal,
+    OverlayContent,
+    OverlayFooter,
+    OverlayHeader,
+    Text,
+} from '@gorgias/axiom'
 import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { Opportunity } from 'pages/aiAgent/opportunities/utils/mapAiArticlesToOpportunities'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import TextArea from 'pages/common/forms/TextArea'
 import { getCurrentUserId } from 'state/currentUser/selectors'
@@ -44,7 +42,7 @@ interface DismissOpportunityModalProps {
 
 const DISMISS_REASON_OPTIONS: Option[] = [
     {
-        label: 'Topic shouldn’t be handled by AI Agent',
+        label: 'Topic shouldn’t be handled by AI',
         value: OpportunityDismissReason.NOT_FOR_AI_AGENT,
     },
     {
@@ -56,7 +54,7 @@ const DISMISS_REASON_OPTIONS: Option[] = [
         value: OpportunityDismissReason.INCORRECT_SUGGESTION,
     },
     {
-        label: 'Other (explain in additional feedback)',
+        label: 'Other',
         value: OpportunityDismissReason.OTHER,
     },
 ]
@@ -73,14 +71,13 @@ export const DismissOpportunityModal = ({
     const [selectedReasons, setSelectedReasons] = useState<Option[]>([])
     const [freeformText, setFreeformText] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-
-    const targetRef = useRef<HTMLDivElement>(null)
-    const floatingRef = useRef<HTMLDivElement>(null)
 
     const isOtherSelected = selectedReasons.some(
         (reason) => reason.value === OpportunityDismissReason.OTHER,
     )
+
+    const isReasonSelected = (reason: Option) =>
+        selectedReasons.some((r) => reason.value === r.value)
 
     const handleReasonToggle = useCallback(
         (reason: Option) => {
@@ -109,10 +106,6 @@ export const DismissOpportunityModal = ({
         setSelectedReasons([])
         setFreeformText('')
     }, [])
-
-    const selectedLabels = useMemo(() => {
-        return selectedReasons.map((r) => r.label).join(', ')
-    }, [selectedReasons])
 
     const feedbackData = useMemo(() => {
         if (!opportunity || !userId) return { feedbackToUpsert: [] }
@@ -210,86 +203,43 @@ export const DismissOpportunityModal = ({
         (isOtherSelected && freeformText.trim() === '')
 
     return (
-        <Modal
-            isOpen={isOpen}
-            onClose={handleCancel}
-            size="small"
-            isClosable={false}
-        >
-            <ModalHeader title="Dismiss opportunity?" />
-            <ModalBody>
+        <Modal isOpen={isOpen} onOpenChange={handleCancel} size="sm">
+            <OverlayHeader title="Dismiss opportunity?" />
+            <OverlayContent>
                 <div className={css.modalContent}>
-                    <div>
-                        Dismissing this opportunity will delete the associated
-                        knowledge and cannot be undone.
-                    </div>
+                    <Text>
+                        Dismissing this knowledge gap opportunity will delete
+                        the generated Guidance and cannot be undone.
+                    </Text>
 
-                    <div className={css.dropdownContainer}>
-                        <Label>Why are you deleting this opportunity?</Label>
-                        <SelectInputBox
-                            floating={floatingRef}
-                            label={selectedLabels}
-                            onToggle={setIsDropdownOpen}
-                            placeholder="Select all that apply"
-                            ref={targetRef}
-                            aria-expanded={isDropdownOpen}
-                            aria-controls="dismiss-reasons-dropdown"
-                        >
-                            <SelectInputBoxContext.Consumer>
-                                {(context: any) => (
-                                    <Dropdown
-                                        id="dismiss-reasons-dropdown"
-                                        isMultiple
-                                        isOpen={isDropdownOpen}
-                                        onToggle={() => context?.onBlur()}
-                                        ref={floatingRef}
-                                        target={targetRef}
-                                        value={selectedReasons.map(
-                                            (reason) => reason.value,
-                                        )}
-                                    >
-                                        <DropdownBody>
-                                            {DISMISS_REASON_OPTIONS.map(
-                                                (reason) => (
-                                                    <DropdownItem
-                                                        key={reason.value}
-                                                        option={{
-                                                            label: reason.label,
-                                                            value: reason.value,
-                                                        }}
-                                                        onClick={() =>
-                                                            handleReasonToggle(
-                                                                reason,
-                                                            )
-                                                        }
-                                                    />
-                                                ),
-                                            )}
-                                        </DropdownBody>
-                                    </Dropdown>
-                                )}
-                            </SelectInputBoxContext.Consumer>
-                        </SelectInputBox>
-                    </div>
-                    {isOtherSelected && (
-                        <div>
+                    <div className={css.checkboxContainer}>
+                        <Text variant="medium">
+                            Why are you dismissing this opportunity?
+                        </Text>
+
+                        {DISMISS_REASON_OPTIONS.map((reason) => (
+                            <CheckBoxField
+                                key={reason.value}
+                                value={isReasonSelected(reason)}
+                                onChange={() => handleReasonToggle(reason)}
+                                label={reason.label}
+                            />
+                        ))}
+                        {isOtherSelected && (
                             <TextArea
-                                label="Additional feedback"
+                                placeholder="Provide additional details"
                                 value={freeformText}
                                 onChange={setFreeformText}
-                                rows={3}
-                                className={css.textArea}
+                                rows={2}
                                 isRequired={true}
                             />
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
-            </ModalBody>
-            <ModalActionsFooter>
-                <Button intent="secondary" onClick={handleCancel}>
-                    Cancel
-                </Button>
+            </OverlayContent>
+            <OverlayFooter hideCancelButton>
                 <Button
+                    variant="primary"
                     intent="destructive"
                     onClick={handleConfirm}
                     isLoading={isSubmitting}
@@ -297,7 +247,7 @@ export const DismissOpportunityModal = ({
                 >
                     Dismiss
                 </Button>
-            </ModalActionsFooter>
+            </OverlayFooter>
         </Modal>
     )
 }

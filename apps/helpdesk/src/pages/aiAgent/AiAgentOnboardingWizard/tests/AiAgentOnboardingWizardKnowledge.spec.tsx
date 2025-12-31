@@ -478,7 +478,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'Your changes to this page will be lost if you don’t save them.',
+                    /Your changes to this page will be lost if you don't save them./i,
                 ),
             ).toBeInTheDocument()
             expect(screen.getByText('Save Changes')).toBeInTheDocument()

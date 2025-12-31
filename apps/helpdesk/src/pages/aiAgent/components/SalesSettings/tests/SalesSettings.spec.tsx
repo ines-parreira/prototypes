@@ -492,11 +492,13 @@ describe('<SalesSettings />', () => {
             history.push('/test')
         })
 
-        expect(
-            screen.getByText(
-                'Your changes to this page will be lost if you don’t save them.',
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /Your changes to this page will be lost if you don't save them./i,
+                ),
+            ).toBeInTheDocument()
+        })
     })
 
     describe('Automatic discounts banner', () => {

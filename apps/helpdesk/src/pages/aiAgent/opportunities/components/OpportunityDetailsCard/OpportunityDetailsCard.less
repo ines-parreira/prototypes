@@ -1,53 +1,19 @@
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
 @import '~css/typography';
 @import '~css/util';
-@import '~@gorgias/design-tokens/dist/css/typographyTokens';
 
 :local {
-    .contentContainer {
-        width: 100%;
+    .banner {
+        background-color: var(--surface-additional-purple);
         display: flex;
-        flex-direction: column;
-        gap: var(--layout-spacing-xxs);
-        padding: var(--layout-spacing-s);
-        border-radius: var(--layout-spacing-xs);
-        border: 1px solid var(--neutral-grey-3); // legacy
-        background: var(--neutral-grey-0); // legacy
-        box-shadow: 2px 2px 16px 0 rgba(0, 0, 0, 0.05);
+        padding: var(--spacing-md);
+        gap: var(--spacing-md);
+        border-radius: var(--spacing-xs);
     }
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-    }
-
-    .title {
-        .body-semibold();
-        margin: 0;
-        color: var(--neutral-grey-6); // legacy
-    }
-
-    .description {
-        .body-regular();
-        margin: 0;
-        color: var(--neutral-grey-6); // legacy
-    }
-
-    .ticketCount {
-        .body-regular();
-        line-height: 16px;
-        font-size: 12px;
-        color: var(--neutral-grey-5); // legacy
+    .handoverTickets {
+        color: var(--content-accent-default);
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-
-    .ticketCountIcon {
-        font-size: 14px;
-        color: var(--neutral-grey-5); // legacy
     }
 }
 

@@ -2,8 +2,11 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { Virtuoso } from 'react-virtuoso'
 
+import { Button, Heading, Text } from '@gorgias/axiom'
+
 import { OPPORTUNITY_CARD_HEIGHT } from '../../constants'
 import { OPPORTUNITIES_PAGE_SIZE } from '../../hooks/useKnowledgeServiceOpportunities'
+import { useOpportunitiesSidebar } from '../../hooks/useOpportunitiesSidebar'
 import { checkAndTriggerAutoFetch } from '../../utils/autoFetchScrollChecker'
 import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunityCard } from '../OpportunityCard/OpportunityCard'
@@ -41,6 +44,11 @@ export const OpportunitiesSidebar = ({
 }: OpportunitiesSidebarProps) => {
     const virtuosoContainerRef = useRef<HTMLDivElement>(null)
     const onEndReachedRef = useRef(onEndReached)
+    const { setIsSidebarVisible } = useOpportunitiesSidebar()
+
+    const handleToggleSidebar = useCallback(() => {
+        setIsSidebarVisible(false)
+    }, [setIsSidebarVisible])
 
     useEffect(() => {
         onEndReachedRef.current = onEndReached
@@ -167,7 +175,15 @@ export const OpportunitiesSidebar = ({
     return (
         <div className={css.sidebar}>
             <div className={css.header}>
-                <h3 className={css.title}>Opportunities</h3>
+                <Button
+                    intent="regular"
+                    variant="secondary"
+                    icon="system-bar-left"
+                    size="sm"
+                    onClick={handleToggleSidebar}
+                    aria-label="Hide sidebar"
+                />
+                <Heading size="sm">Opportunities</Heading>
             </div>
             <div className={css.containerContent}>
                 {showNoOpportunitiesYet ? (
@@ -198,7 +214,11 @@ export const OpportunitiesSidebar = ({
                     </div>
                 ) : (
                     <>
-                        <div className={css.itemCount}>{itemCountText}</div>
+                        <div className={css.itemCountContainer}>
+                            <Text size="sm" variant="regular">
+                                {itemCountText}
+                            </Text>
+                        </div>
                         {isLoading ? (
                             <div className={css.cardsContainer}>
                                 {Array.from({
@@ -206,12 +226,6 @@ export const OpportunitiesSidebar = ({
                                 }).map((_, index) => (
                                     <OpportunityCardSkeleton
                                         key={`loading-skeleton-${index}`}
-                                        cardContainerClassName={
-                                            index === 0 &&
-                                            opportunities.length === 0
-                                                ? css.skeletonCard
-                                                : undefined
-                                        }
                                     />
                                 ))}
                             </div>

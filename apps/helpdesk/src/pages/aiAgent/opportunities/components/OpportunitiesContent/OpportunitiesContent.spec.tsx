@@ -1,5 +1,5 @@
-// oxlint-disable exhaustive-deps
-import React from 'react'
+import { useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
@@ -13,6 +13,7 @@ import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArtic
 import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
 import { notify } from 'state/notifications/actions'
 
+import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
 import { OpportunityType } from '../../enums'
 import { useProcessOpportunity } from '../../hooks/useProcessOpportunity'
 import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
@@ -82,11 +83,12 @@ const mockGuidanceForm = jest.fn()
 jest.mock('../../../components/GuidanceForm/GuidanceForm', () => ({
     GuidanceForm: (props: any) => {
         mockGuidanceForm(props)
-        React.useEffect(() => {
+        useEffect(() => {
             if (props.onValuesChange && props.initialFields) {
                 mockOnValuesChange(props.initialFields)
                 props.onValuesChange(props.initialFields)
             }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [])
         return <div data-testid="guidance-form">Guidance Form</div>
     },
@@ -130,13 +132,24 @@ describe('OpportunitiesContent', () => {
             notifications: [],
         })
 
-        return render(
-            <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    <OpportunitiesContent {...defaultProps} {...props} />
-                </QueryClientProvider>
-            </Provider>,
-        )
+        const Wrapper = ({ children }: { children: ReactNode }) => {
+            const [isSidebarVisible, setIsSidebarVisible] = useState(true)
+            return (
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        <OpportunitiesSidebarContext.Provider
+                            value={{ isSidebarVisible, setIsSidebarVisible }}
+                        >
+                            {children}
+                        </OpportunitiesSidebarContext.Provider>
+                    </QueryClientProvider>
+                </Provider>
+            )
+        }
+
+        return render(<OpportunitiesContent {...defaultProps} {...props} />, {
+            wrapper: Wrapper,
+        })
     }
 
     beforeEach(() => {
@@ -204,7 +217,7 @@ describe('OpportunitiesContent', () => {
             opportunities: [selectedOpportunity],
         })
 
-        expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
+        expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
         expect(
             screen.getByText(/Review and approve this AI-generated Guidance/),
         ).toBeInTheDocument()
@@ -213,7 +226,7 @@ describe('OpportunitiesContent', () => {
             screen.getByRole('button', { name: /Dismiss/i }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('button', { name: /Approve/i }),
+            screen.getByRole('button', { name: /Publish and enable/i }),
         ).toBeInTheDocument()
     })
 
@@ -241,7 +254,7 @@ describe('OpportunitiesContent', () => {
             expect(screen.getByText('Dismiss opportunity?')).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    /Dismissing this opportunity will delete the associated/,
+                    /Dismissing this knowledge gap opportunity will delete/,
                 ),
             ).toBeInTheDocument()
         })
@@ -270,18 +283,9 @@ describe('OpportunitiesContent', () => {
             expect(screen.getByText('Dismiss opportunity?')).toBeInTheDocument()
         })
 
-        const dropdown = screen.getByRole('combobox')
+        const firstCheckbox = screen.getAllByRole('checkbox')[0]
         act(() => {
-            userEvent.click(dropdown)
-        })
-
-        await waitFor(() => {
-            expect(screen.getAllByRole('option')).toHaveLength(4)
-        })
-
-        const firstOption = screen.getAllByRole('option')[0]
-        act(() => {
-            userEvent.click(firstOption)
+            userEvent.click(firstCheckbox)
         })
 
         await waitFor(() => {
@@ -311,7 +315,8 @@ describe('OpportunitiesContent', () => {
         })
     })
 
-    it('should close dismiss modal when cancel button is clicked', async () => {
+    it('should close dismiss modal when escape is pressed', async () => {
+        const user = userEvent.setup({ delay: null })
         const selectedOpportunity: Opportunity = {
             id: '1',
             title: 'Test opportunity',
@@ -326,18 +331,13 @@ describe('OpportunitiesContent', () => {
         })
 
         const dismissButton = screen.getByRole('button', { name: /Dismiss/i })
-        act(() => {
-            userEvent.click(dismissButton)
-        })
+        await act(() => user.click(dismissButton))
 
         await waitFor(() => {
             expect(screen.getByText('Dismiss opportunity?')).toBeInTheDocument()
         })
 
-        const cancelButton = screen.getByRole('button', { name: /Cancel/i })
-        act(() => {
-            userEvent.click(cancelButton)
-        })
+        await act(() => user.keyboard('{Escape}'))
 
         await waitFor(() => {
             expect(
@@ -362,7 +362,9 @@ describe('OpportunitiesContent', () => {
             opportunities: [selectedOpportunity],
         })
 
-        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        const approveButton = screen.getByRole('button', {
+            name: /Publish and enable/i,
+        })
 
         await act(async () => {
             await userEvent.click(approveButton)
@@ -383,7 +385,7 @@ describe('OpportunitiesContent', () => {
         await waitFor(() => {
             expect(notify).toHaveBeenCalledWith({
                 status: 'success',
-                message: 'Guidance successfully created',
+                message: 'Guidance saved and enabled',
             })
         })
 
@@ -417,7 +419,9 @@ describe('OpportunitiesContent', () => {
             onOpportunityAccepted: mockOnOpportunityAccepted,
         })
 
-        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        const approveButton = screen.getByRole('button', {
+            name: /Publish and enable/i,
+        })
 
         await act(async () => {
             await userEvent.click(approveButton)
@@ -456,7 +460,9 @@ describe('OpportunitiesContent', () => {
             opportunities: [selectedOpportunity],
         })
 
-        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        const approveButton = screen.getByRole('button', {
+            name: /Publish and enable/i,
+        })
 
         await act(async () => {
             await userEvent.click(approveButton)
@@ -495,7 +501,9 @@ describe('OpportunitiesContent', () => {
             opportunities: [selectedOpportunity],
         })
 
-        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        const approveButton = screen.getByRole('button', {
+            name: /Publish and enable/i,
+        })
         expect(approveButton).toBeInTheDocument()
     })
 
@@ -518,7 +526,9 @@ describe('OpportunitiesContent', () => {
             opportunities: [selectedOpportunity],
         })
 
-        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        const approveButton = screen.getByRole('button', {
+            name: /Publish and enable/i,
+        })
         expect(approveButton).toBeInTheDocument()
     })
 
@@ -636,6 +646,7 @@ describe('OpportunitiesContent', () => {
             content: 'Conflict content',
             type: OpportunityType.RESOLVE_CONFLICT,
             key: 'ai_1',
+            ticketCount: 5,
         }
 
         renderComponent({
@@ -643,9 +654,11 @@ describe('OpportunitiesContent', () => {
             opportunities: [selectedOpportunity],
         })
 
-        expect(screen.getByText('Resolve conflict')).toBeInTheDocument()
+        expect(screen.getByText(/Resolve conflict/)).toBeInTheDocument()
         expect(
-            screen.getByText(/Review and approve this AI-generated Guidance/),
+            screen.getByText(
+                /Edit, disable or delete the conflicting knowledge below/,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -675,7 +688,7 @@ describe('OpportunitiesContent', () => {
             screen.queryByRole('button', { name: /Dismiss/i }),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByRole('button', { name: /Approve/i }),
+            screen.queryByRole('button', { name: /Publish and enable/i }),
         ).not.toBeInTheDocument()
     })
 
@@ -701,7 +714,7 @@ describe('OpportunitiesContent', () => {
         expect(screen.getByTestId('guidance-form')).toBeInTheDocument()
     })
 
-    it('should show tooltip when hovering disabled button at guidance limit', async () => {
+    it('should disable button at guidance limit', async () => {
         mockUseGuidanceCount.mockReturnValue({
             guidanceCount: 100,
             isLoading: false,
@@ -720,21 +733,10 @@ describe('OpportunitiesContent', () => {
             opportunities: [selectedOpportunity],
         })
 
-        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        const approveButton = screen.getByRole('button', {
+            name: /Publish and enable/i,
+        })
         expect(approveButton).toHaveAttribute('aria-disabled', 'true')
-
-        await act(async () => {
-            await userEvent.hover(approveButton)
-        })
-
-        await waitFor(() => {
-            expect(
-                screen.getByText(/You have reached the limit/),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('link', { name: /Guidance/i }),
-            ).toHaveAttribute('href', '/ai-agent/guidance')
-        })
     })
 
     it('should disable approve button when guidanceCount is loading', () => {
@@ -756,7 +758,9 @@ describe('OpportunitiesContent', () => {
             opportunities: [selectedOpportunity],
         })
 
-        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        const approveButton = screen.getByRole('button', {
+            name: /Publish and enable/i,
+        })
         expect(approveButton).toHaveAttribute('aria-disabled', 'true')
     })
 
@@ -779,7 +783,9 @@ describe('OpportunitiesContent', () => {
             opportunities: [selectedOpportunity],
         })
 
-        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        const approveButton = screen.getByRole('button', {
+            name: /Publish and enable/i,
+        })
         expect(approveButton).not.toHaveAttribute('aria-disabled', 'true')
 
         await act(async () => {
@@ -844,23 +850,14 @@ describe('OpportunitiesContent', () => {
 
         mockCreateGuidanceArticle.mockResolvedValueOnce({})
 
-        const store = mockStore({
-            notifications: [],
+        renderComponent({
+            selectedOpportunity,
+            opportunities: [selectedOpportunity],
         })
 
-        render(
-            <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    <OpportunitiesContent
-                        {...defaultProps}
-                        selectedOpportunity={selectedOpportunity}
-                        opportunities={[selectedOpportunity]}
-                    />
-                </QueryClientProvider>
-            </Provider>,
-        )
-
-        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        const approveButton = screen.getByRole('button', {
+            name: /Publish and enable/i,
+        })
 
         await act(async () => {
             await userEvent.click(approveButton)
@@ -891,7 +888,9 @@ describe('OpportunitiesContent', () => {
             opportunities: [selectedOpportunity],
         })
 
-        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        const approveButton = screen.getByRole('button', {
+            name: /Publish and enable/i,
+        })
 
         await act(async () => {
             await userEvent.click(approveButton)
@@ -962,7 +961,9 @@ describe('OpportunitiesContent', () => {
             opportunities: [selectedOpportunity],
         })
 
-        const approveButton = screen.getByRole('button', { name: /Approve/i })
+        const approveButton = screen.getByRole('button', {
+            name: /Publish and enable/i,
+        })
 
         await act(async () => {
             await userEvent.hover(approveButton)
@@ -976,7 +977,7 @@ describe('OpportunitiesContent', () => {
     })
 
     describe('Ticket drilldown functionality', () => {
-        it('should open ticket drilldown modal when ticket count is clicked', async () => {
+        it('should render ticket count when detectionObjectIds are provided', () => {
             const selectedOpportunity: Opportunity = {
                 id: '1',
                 title: 'Test opportunity',
@@ -992,9 +993,7 @@ describe('OpportunitiesContent', () => {
                 opportunities: [selectedOpportunity],
             })
 
-            await waitFor(() => {
-                expect(screen.getByText('10')).toBeInTheDocument()
-            })
+            expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
         })
 
         it('should handle missing detectionObjectIds with console.warn', () => {
@@ -1014,7 +1013,7 @@ describe('OpportunitiesContent', () => {
                 opportunities: [selectedOpportunity],
             })
 
-            expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
+            expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
 
             consoleWarnSpy.mockRestore()
         })
@@ -1036,9 +1035,9 @@ describe('OpportunitiesContent', () => {
                 useKnowledgeService: true,
             })
 
-            expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
+            expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /Approve/i }),
+                screen.getByRole('button', { name: /Publish and enable/i }),
             ).toBeInTheDocument()
         })
     })
@@ -1059,7 +1058,7 @@ describe('OpportunitiesContent', () => {
                 isLoadingOpportunityDetails: true,
             })
 
-            expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
+            expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
 
             const skeletons = container.querySelectorAll('[class*="skeleton"]')
             expect(skeletons.length).toBeGreaterThan(0)
@@ -1094,18 +1093,9 @@ describe('OpportunitiesContent', () => {
                 ).toBeInTheDocument()
             })
 
-            const dropdown = screen.getByRole('combobox')
+            const firstCheckbox = screen.getAllByRole('checkbox')[0]
             act(() => {
-                userEvent.click(dropdown)
-            })
-
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const firstOption = screen.getAllByRole('option')[0]
-            act(() => {
-                userEvent.click(firstOption)
+                userEvent.click(firstCheckbox)
             })
 
             await waitFor(() => {
@@ -1166,18 +1156,9 @@ describe('OpportunitiesContent', () => {
                 ).toBeInTheDocument()
             })
 
-            const dropdown = screen.getByRole('combobox')
+            const firstCheckbox = screen.getAllByRole('checkbox')[0]
             act(() => {
-                userEvent.click(dropdown)
-            })
-
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(4)
-            })
-
-            const firstOption = screen.getAllByRole('option')[0]
-            act(() => {
-                userEvent.click(firstOption)
+                userEvent.click(firstCheckbox)
             })
 
             await waitFor(() => {

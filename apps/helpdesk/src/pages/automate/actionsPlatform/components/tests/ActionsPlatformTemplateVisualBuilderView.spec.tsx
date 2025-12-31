@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent, screen } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -192,7 +192,7 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
         expect(mockOnSave).toHaveBeenCalled()
     })
 
-    it('should open unsaved changes modal', () => {
+    it('should open unsaved changes modal', async () => {
         const mockOnSave = jest.fn()
 
         renderWithRouter(
@@ -236,11 +236,13 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
             fireEvent.click(screen.getByText('close'))
         })
 
-        expect(
-            screen.getByText(
-                'Your changes to this page will be lost if you don’t save them.',
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /Your changes to this page will be lost if you don't save them./i,
+                ),
+            ).toBeInTheDocument()
+        })
 
         act(() => {
             fireEvent.click(screen.getByText('Save Changes'))
@@ -303,7 +305,7 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
         expect(mockOnExit).toHaveBeenCalled()
     })
 
-    it('should discard changes', () => {
+    it('should discard changes', async () => {
         mockAreGraphsEqual.mockReturnValue(false)
 
         const mockDispatch = jest.fn()
@@ -350,11 +352,13 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
             fireEvent.click(screen.getByText('close'))
         })
 
-        expect(
-            screen.getByText(
-                'Your changes to this page will be lost if you don’t save them.',
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /Your changes to this page will be lost if you don't save them./i,
+                ),
+            ).toBeInTheDocument()
+        })
 
         act(() => {
             fireEvent.click(screen.getByText('Discard Changes'))
@@ -368,7 +372,7 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
         expect(mockOnExit).toHaveBeenCalled()
     })
 
-    it('should open unsaved changes modal & trigger errors on save', () => {
+    it('should open unsaved changes modal & trigger errors on save', async () => {
         mockAreGraphsEqual.mockReturnValue(false)
 
         const mockHandleValidate = jest
@@ -420,11 +424,13 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
             fireEvent.click(screen.getByText('close'))
         })
 
-        expect(
-            screen.getByText(
-                'Your changes to this page will be lost if you don’t save them.',
-            ),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /Your changes to this page will be lost if you don't save them./i,
+                ),
+            ).toBeInTheDocument()
+        })
 
         act(() => {
             fireEvent.click(screen.getByText('Save Changes'))

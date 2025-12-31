@@ -1,9 +1,11 @@
-import React from 'react'
+import { useState } from 'react'
+import type { ReactElement, ReactNode } from 'react'
 
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Virtuoso } from 'react-virtuoso'
 
+import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
 import { OpportunityType } from '../../enums'
 import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesSidebar } from './OpportunitiesSidebar'
@@ -13,6 +15,20 @@ const VirtuosoMock = Virtuoso as jest.Mock
 
 describe('OpportunitiesSidebar', () => {
     const mockOnSelectOpportunity = jest.fn()
+
+    const renderWithProvider = (ui: ReactElement) => {
+        const Wrapper = ({ children }: { children: ReactNode }) => {
+            const [isSidebarVisible, setIsSidebarVisible] = useState(true)
+            return (
+                <OpportunitiesSidebarContext.Provider
+                    value={{ isSidebarVisible, setIsSidebarVisible }}
+                >
+                    {children}
+                </OpportunitiesSidebarContext.Provider>
+            )
+        }
+        return render(ui, { wrapper: Wrapper })
+    }
 
     const mockOpportunities: Opportunity[] = [
         {
@@ -65,7 +81,7 @@ describe('OpportunitiesSidebar', () => {
     })
 
     it('should render sidebar header with title', () => {
-        render(
+        renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={mockOpportunities}
                 onSelectOpportunity={mockOnSelectOpportunity}
@@ -76,11 +92,10 @@ describe('OpportunitiesSidebar', () => {
             name: 'Opportunities',
         })
         expect(title).toBeInTheDocument()
-        expect(title).toHaveClass('title')
     })
 
     it('should render opportunity cards with mock data', () => {
-        render(
+        renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={mockOpportunities}
                 onSelectOpportunity={mockOnSelectOpportunity}
@@ -102,7 +117,7 @@ describe('OpportunitiesSidebar', () => {
     })
 
     it('should have proper structure with header and content sections', () => {
-        const { container } = render(
+        const { container } = renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={mockOpportunities}
                 onSelectOpportunity={mockOnSelectOpportunity}
@@ -120,7 +135,7 @@ describe('OpportunitiesSidebar', () => {
     })
 
     it('should call onSelectOpportunity with first opportunity on mount', async () => {
-        render(
+        renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={mockOpportunities}
                 onSelectOpportunity={mockOnSelectOpportunity}
@@ -141,7 +156,7 @@ describe('OpportunitiesSidebar', () => {
 
     it('should call onSelectOpportunity when a card is clicked', async () => {
         const user = userEvent.setup()
-        render(
+        renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={mockOpportunities}
                 onSelectOpportunity={mockOnSelectOpportunity}
@@ -169,7 +184,7 @@ describe('OpportunitiesSidebar', () => {
     })
 
     it('should show first card as selected by default', () => {
-        render(
+        renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={mockOpportunities}
                 onSelectOpportunity={mockOnSelectOpportunity}
@@ -184,7 +199,7 @@ describe('OpportunitiesSidebar', () => {
     })
 
     it('should show empty state when no opportunities (legacy flow)', () => {
-        render(
+        renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={[]}
                 onSelectOpportunity={mockOnSelectOpportunity}
@@ -203,7 +218,7 @@ describe('OpportunitiesSidebar', () => {
     })
 
     it('should show "No opportunities yet" empty state when totalCount is 0', () => {
-        render(
+        renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={[]}
                 onSelectOpportunity={mockOnSelectOpportunity}
@@ -224,7 +239,7 @@ describe('OpportunitiesSidebar', () => {
     })
 
     it('should show "All opportunities reviewed" empty state when totalCount > 0 and totalPending is 0', () => {
-        render(
+        renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={[]}
                 onSelectOpportunity={mockOnSelectOpportunity}
@@ -245,7 +260,7 @@ describe('OpportunitiesSidebar', () => {
     })
 
     it('should show loading state when isLoading is true', () => {
-        const { container } = render(
+        const { container } = renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={[]}
                 isLoading={true}
@@ -285,7 +300,7 @@ describe('OpportunitiesSidebar', () => {
                 ),
             )
 
-            render(
+            renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
@@ -321,7 +336,7 @@ describe('OpportunitiesSidebar', () => {
                 ),
             )
 
-            render(
+            renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
@@ -350,7 +365,7 @@ describe('OpportunitiesSidebar', () => {
                 ),
             )
 
-            const { container } = render(
+            const { container } = renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
@@ -378,7 +393,7 @@ describe('OpportunitiesSidebar', () => {
                 ),
             )
 
-            render(
+            renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
@@ -394,7 +409,7 @@ describe('OpportunitiesSidebar', () => {
         })
 
         it('should auto-select when opportunities go from empty to populated', async () => {
-            const { rerender } = render(
+            const { rerender } = renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={[]}
                     onSelectOpportunity={mockOnSelectOpportunity}
@@ -420,7 +435,7 @@ describe('OpportunitiesSidebar', () => {
         it('should setup auto-fetch effect when all conditions are met', () => {
             const mockOnEndReached = jest.fn()
 
-            const { rerender } = render(
+            const { rerender } = renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
@@ -486,7 +501,7 @@ describe('OpportunitiesSidebar', () => {
         it('should not setup auto-fetch when isLoading is true', () => {
             const mockOnEndReached = jest.fn()
 
-            const { container } = render(
+            const { container } = renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
@@ -518,7 +533,7 @@ describe('OpportunitiesSidebar', () => {
                 ),
             )
 
-            render(
+            renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
@@ -538,7 +553,7 @@ describe('OpportunitiesSidebar', () => {
         it('should not setup auto-fetch when hasNextPage is false', () => {
             const mockOnEndReached = jest.fn()
 
-            render(
+            renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
@@ -569,7 +584,7 @@ describe('OpportunitiesSidebar', () => {
                 ),
             )
 
-            render(
+            renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
@@ -593,7 +608,7 @@ describe('OpportunitiesSidebar', () => {
         it('should call onOpportunityViewed on initial mount with first opportunity', async () => {
             const mockOnOpportunityViewed = jest.fn()
 
-            render(
+            renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
@@ -622,7 +637,7 @@ describe('OpportunitiesSidebar', () => {
                 ),
             )
 
-            render(
+            renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}

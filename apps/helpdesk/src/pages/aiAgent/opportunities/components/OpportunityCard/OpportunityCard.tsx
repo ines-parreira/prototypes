@@ -2,7 +2,14 @@ import { useCallback, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    Icon,
+    type IconName,
+    Text,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@gorgias/axiom'
 
 import { OpportunityType } from '../../enums'
 
@@ -25,13 +32,9 @@ export const OpportunityCard = ({
 }: OpportunityCardProps) => {
     const [isHovered, setIsHovered] = useState(false)
     const [isTextOverflowing, setIsTextOverflowing] = useState(false)
-    const [titleRef, setTitleRef] = useState<HTMLSpanElement | null>(null)
-    const [ticketCountRef, setTicketCountRef] =
-        useState<HTMLSpanElement | null>(null)
 
     const titleCallbackRef = useCallback((node: HTMLSpanElement | null) => {
         if (node) {
-            setTitleRef(node)
             setIsTextOverflowing(node.scrollWidth > node.offsetWidth)
         }
     }, [])
@@ -40,16 +43,40 @@ export const OpportunityCard = ({
         switch (type) {
             case OpportunityType.RESOLVE_CONFLICT:
                 return {
-                    icon: 'error_outline',
+                    icon: 'octagon-error',
                     text: 'Resolve conflict',
                 }
             case OpportunityType.FILL_KNOWLEDGE_GAP:
             default:
                 return {
-                    icon: 'map',
+                    icon: 'nav-map',
                     text: 'Fill knowledge gap',
                 }
         }
+    }
+
+    const OpportunityTitle = () => {
+        const titleElement = (
+            <Text
+                size="sm"
+                variant="regular"
+                className={css.title}
+                ref={titleCallbackRef}
+            >
+                {title}
+            </Text>
+        )
+
+        if (!isTextOverflowing) {
+            return titleElement
+        }
+
+        return (
+            <Tooltip placement="top">
+                <TooltipTrigger>{titleElement}</TooltipTrigger>
+                <TooltipContent title={title} />
+            </Tooltip>
+        )
     }
 
     const infoContent = getInfoContent()
@@ -65,46 +92,37 @@ export const OpportunityCard = ({
             onMouseLeave={() => setIsHovered(false)}
             onClick={onSelect}
         >
-            <div className={css.iconSection}>
-                <i className={classNames('material-icons', css.infoIcon)}>
-                    {infoContent.icon}
-                </i>
-            </div>
-            <div className={css.infoSection}>
-                <div className={css.header}>
-                    <span className={css.infoText}>{infoContent.text}</span>
-                    {ticketCount !== undefined && (
-                        <span
-                            ref={setTicketCountRef}
-                            className={css.ticketCount}
-                        >
-                            <i
-                                className={classNames(
-                                    'material-icons',
-                                    css.ticketCountIcon,
-                                )}
-                            >
-                                forum
-                            </i>
-                            {ticketCount}
-                        </span>
-                    )}
+            <div className={css.header}>
+                <div className={css.infoSection}>
+                    <Icon
+                        name={infoContent.icon as IconName}
+                        size="sm"
+                        color="var(--content-neutral-secondary)"
+                    />
+                    <Text size="md" variant="bold">
+                        {infoContent.text}
+                    </Text>
                 </div>
-                <span ref={titleCallbackRef} className={css.title}>
-                    {title}
-                </span>
+                {ticketCount !== undefined && (
+                    <Tooltip placement="top">
+                        <TooltipTrigger>
+                            <span className={css.ticketCount}>
+                                <Icon
+                                    name="comm-chat-conversation"
+                                    size="sm"
+                                    color="var(--content-neutral-secondary)"
+                                />
+                                {ticketCount}
+                            </span>
+                        </TooltipTrigger>
+                        <TooltipContent
+                            title={`${ticketCount} related ${ticketCount > 1 ? 'tickets' : 'ticket'}`}
+                        />
+                    </Tooltip>
+                )}
             </div>
-            {isTextOverflowing && titleRef && (
-                <Tooltip placement="top" target={titleRef}>
-                    {title}
-                </Tooltip>
-            )}
-            {ticketCount !== undefined && ticketCountRef && (
-                <Tooltip placement="top" target={ticketCountRef}>
-                    {ticketCount} related{' '}
-                    {ticketCount > 1 ? 'tickets' : 'ticket'}
-                </Tooltip>
-            )}
+
+            <OpportunityTitle />
         </div>
     )
 }

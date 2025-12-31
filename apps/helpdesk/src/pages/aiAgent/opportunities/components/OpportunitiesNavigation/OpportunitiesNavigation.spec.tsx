@@ -262,7 +262,7 @@ describe('OpportunitiesNavigation', () => {
         expect(forwardIcon).toBeInTheDocument()
 
         // Check that buttons have proper accessible names from the icons
-        expect(backwardButton).toHaveAccessibleName('arrow-chevron-up')
-        expect(forwardButton).toHaveAccessibleName('arrow-chevron-down')
+        expect(backwardButton).toHaveAccessibleName('arrow-chevron-left')
+        expect(forwardButton).toHaveAccessibleName('arrow-chevron-right')
     })
 })

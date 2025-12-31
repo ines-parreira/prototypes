@@ -4,51 +4,52 @@
         flex-direction: column;
         width: 100%;
         height: 100%;
-        gap: var(--layout-spacing-s);
-    }
-
-    .opportunityCard {
-        display: flex;
-        flex-direction: column;
-        border-radius: 12px;
-        border: 1.2px solid var(--neutral-grey-3);
-        background: var(--neutral-grey-0);
-        padding: var(--layout-spacing-s);
-        box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.05);
-        gap: var(--layout-spacing-xxs);
+        gap: var(--spacing-md);
     }
 
     .guidanceNameSection {
         display: flex;
         flex-direction: column;
-        gap: var(--layout-spacing-xxs);
-        .guidanceNameSectionInput {
-            border-radius: 4px;
-            border: 1.2px solid var(--neutral-grey-3);
-            background: var(--neutral-grey-0);
-            padding: var(--layout-spacing-xs);
-            margin-top: var(--layout-spacing-xxs);
-        }
+        gap: var(--spacing-xs);
+    }
+
+    .guidanceNameSectionInput {
+        border-radius: 4px;
+        border: 1px solid var(--neutral-grey-3); // legacy
+        background: var(--neutral-grey-0); // legacy
+        padding: 6px var(--spacing-xs);
     }
 
     .instructionsSection {
         display: flex;
         flex-direction: column;
-        gap: var(--layout-spacing-xs);
-        .instructionsSectionInput {
-            display: flex;
-            flex-direction: column;
-            gap: var(--layout-spacing-xs);
-            padding: var(--layout-spacing-s);
-            border-radius: 4px;
-            border: 1.2px solid var(--neutral-grey-3);
-            background: var(--neutral-grey-0);
-            .instructionsSectionInputSeparator {
-                height: 8px;
-            }
-        }
-        .instructionsSectionBottomSeparator {
-            height: 8px;
-        }
+        gap: var(--spacing-xs);
+    }
+
+    .instructionsSectionInput {
+        height: 388px;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-md);
+        border-radius: 4px;
+        border: 1px solid var(--neutral-grey-3); // legacy
+        background: var(--neutral-grey-0); // legacy
+    }
+
+    .instructionsSectionInputSeparator {
+        height: 16px;
+    }
+}
+
+.axiom :local {
+    .guidanceNameSectionInput {
+        border-color: var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+    }
+
+    .instructionsSectionInput {
+        border-color: var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
     }
 }
