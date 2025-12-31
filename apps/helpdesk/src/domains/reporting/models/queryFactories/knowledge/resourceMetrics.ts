@@ -271,8 +271,13 @@ export const createV1DrillDownQuery = (
         ...baseQuery,
         metricName,
         measures: [] as any,
-        dimensions: [TicketDimension.TicketId, ...baseQuery.dimensions] as any,
+        dimensions: [
+            TicketDimension.TicketId,
+            TicketDimension.CreatedDatetime,
+            ...baseQuery.dimensions,
+        ] as any,
         limit: DRILLDOWN_QUERY_LIMIT,
+        order: [[TicketDimension.CreatedDatetime, OrderDirection.Desc]],
     }
 }
 
