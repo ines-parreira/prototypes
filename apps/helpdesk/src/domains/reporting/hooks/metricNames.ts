@@ -109,6 +109,30 @@ export const METRIC_NAMES = {
         'ai-sales-agent-total-product-recommendations-drill-down',
     AI_SALES_AGENT_DISCOUNT_CODES_OFFERED_DRILL_DOWN:
         'ai-sales-agent-discount-codes-offered-drill-down',
+    AI_SALES_AGENT_HANDOVER_INTERACTIONS_PER_CHANNEL:
+        'ai-sales-agent-handover-interactions-per-channel',
+    AI_SALES_AGENT_GMV_INFLUENCED_PER_CHANNEL:
+        'ai-sales-agent-gmv-influenced-per-channel',
+    AI_SALES_AGENT_TOTAL_SALES_CONVERSATIONS_PER_CHANNEL:
+        'ai-sales-agent-total-sales-conversations-per-channel',
+    AI_SALES_AGENT_AUTOMATED_SALES_CONVERSATIONS_PER_CHANNEL:
+        'ai-sales-agent-automated-sales-conversations-per-channel',
+    AI_SALES_AGENT_SNOOZED_INTERACTIONS_PER_CHANNEL:
+        'ai-sales-agent-snoozed-interactions-per-channel',
+    AI_SALES_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
+        'ai-sales-agent-handover-interactions-per-intent',
+    AI_SALES_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
+        'ai-sales-agent-snoozed-interactions-per-intent',
+    AI_AGENT_HANDOVER_INTERACTIONS_PER_CHANNEL:
+        'ai-agent-handover-interactions-per-channel',
+    AI_AGENT_SNOOZED_INTERACTIONS_PER_CHANNEL:
+        'ai-agent-snoozed-interactions-per-channel',
+    AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
+        'ai-agent-handover-interactions-per-intent',
+    AI_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
+        'ai-agent-snoozed-interactions-per-intent',
+    AI_AGENT_TOTAL_INTERACTIONS_PER_INTENT:
+        'ai-agent-total-interactions-per-intent',
     // Agent Experience
     AGENTXP_ONLINE_TIME: 'agentxp-online-time',
     AGENTXP_ONLINE_TIME_PER_AGENT: 'agentxp-online-time-per-agent',

@@ -1,4 +1,8 @@
-import type { Cube } from 'domains/reporting/models/types'
+import type { TicketCube } from 'domains/reporting/models/cubes/TicketCube'
+import type {
+    Cube,
+    JoinedCubesWithMapping,
+} from 'domains/reporting/models/types'
 
 export enum TicketCustomFieldsMeasure {
     TicketCustomFieldsTicketCount = 'TicketCustomFieldsEnriched.ticketCount',
@@ -25,4 +29,9 @@ export type TicketCustomFieldsCube = Cube<
     TicketCustomFieldsMember,
     never,
     TicketCustomFieldsTimeDimensions
+>
+
+export type TicketCustomFieldsCubeWithJoins = JoinedCubesWithMapping<
+    TicketCustomFieldsCube,
+    TicketCube
 >

@@ -6,7 +6,6 @@ import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
     HeaderRowGroup,
-    Heading,
     Icon,
     Skeleton,
     TableBodyContent,
@@ -20,70 +19,47 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
-import { usePerformanceMetricsPerFeature } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
-import type { FeatureMetrics } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
-
-import { DownloadPerformanceBreakdownButton } from './DownloadPerformanceBreakdownButton'
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import type { IntentMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics'
+import { useIntentPerformanceMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics'
 
 import css from './PerformanceBreakdownTable.less'
 
-const PLACEHOLDER_DATA: FeatureMetrics[] = [
+const PLACEHOLDER_DATA: IntentMetrics[] = [
     {
-        feature: 'AI Agent',
-        automationRate: null,
-        automatedInteractions: null,
-        handoverCount: null,
+        intentL1: 'Order',
+        intentL2: 'Status',
+        handoverInteractions: null,
+        snoozedInteractions: null,
+        successRate: null,
         costSaved: null,
-        timeSaved: null,
     },
     {
-        feature: 'Flows',
-        automationRate: null,
-        automatedInteractions: null,
-        handoverCount: null,
+        intentL1: 'Return',
+        intentL2: 'Status',
+        handoverInteractions: null,
+        snoozedInteractions: null,
+        successRate: null,
         costSaved: null,
-        timeSaved: null,
-    },
-    {
-        feature: 'Article Recommendation',
-        automationRate: null,
-        automatedInteractions: null,
-        handoverCount: null,
-        costSaved: null,
-        timeSaved: null,
-    },
-    {
-        feature: 'Order Management',
-        automationRate: null,
-        automatedInteractions: null,
-        handoverCount: null,
-        costSaved: null,
-        timeSaved: null,
     },
 ]
 
-export const PerformanceBreakdownTable = () => {
-    const {
-        data: metricsData,
-        isError,
-        loadingStates,
-    } = usePerformanceMetricsPerFeature()
-
-    const tableData: FeatureMetrics[] = useMemo(
-        () =>
-            metricsData && metricsData.length > 0
-                ? metricsData
-                : PLACEHOLDER_DATA,
-        [metricsData],
+export const IntentPerformanceBreakdownTable = () => {
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { data, loadingStates } = useIntentPerformanceMetrics(
+        cleanStatsFilters,
+        userTimezone,
     )
 
-    // Keep columns stable to prevent Skeleton animation resets
-    // loadingStates is intentionally omitted from deps to avoid recreating columns
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const columns: ColumnDef<FeatureMetrics>[] = useMemo(
+    const tableData: IntentMetrics[] = useMemo(
+        () => (data.length > 0 ? data : PLACEHOLDER_DATA),
+        [data],
+    )
+
+    const columns: ColumnDef<IntentMetrics>[] = useMemo(
         () => [
             {
-                accessorKey: 'feature',
+                accessorKey: 'intentL1',
                 header: (info) => {
                     const sortDirection = info.column.getIsSorted()
                     return (
@@ -94,7 +70,7 @@ export const PerformanceBreakdownTable = () => {
                             className={css.featureName}
                         >
                             <Text size="sm" variant="bold">
-                                Feature
+                                Intent L1
                             </Text>
                             <span
                                 style={{
@@ -115,7 +91,7 @@ export const PerformanceBreakdownTable = () => {
                         </Box>
                     )
                 },
-                meta: { displayName: 'Feature' },
+                meta: { displayName: 'Intent L1' },
                 cell: (info) => (
                     <Text size="md" variant="bold" className={css.featureName}>
                         {info.getValue() as string}
@@ -124,21 +100,14 @@ export const PerformanceBreakdownTable = () => {
                 enableHiding: false,
             },
             {
-                accessorKey: 'automationRate',
+                accessorKey: 'intentL2',
                 header: (info) => {
                     const sortDirection = info.column.getIsSorted()
                     return (
-                        <Box className={css.headerWithIcon}>
-                            <span>Overall automation rate</span>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
-                                <TooltipContent
-                                    title="Overall automation rate"
-                                    caption="The number of interactions automated by all automation features as a % of total customer interactions."
-                                />
-                            </Tooltip>
+                        <Box display="flex" alignItems="center" gap="xxxs">
+                            <Text size="sm" variant="bold">
+                                Intent L2
+                            </Text>
                             <span
                                 style={{
                                     visibility: sortDirection
@@ -158,77 +127,14 @@ export const PerformanceBreakdownTable = () => {
                         </Box>
                     )
                 },
-                meta: { displayName: 'Overall automation rate' },
-                cell: (info) => {
-                    const value = info.getValue() as number | null
-                    const feature = info.row.original.feature
-                    if (loadingStates.automationRate && value === null) {
-                        return (
-                            <Skeleton
-                                key={`${feature}-automationRate`}
-                                width="60px"
-                                height="20px"
-                            />
-                        )
-                    }
-                    return formatMetricValue(value, 'percent-precision-1')
-                },
+                meta: { displayName: 'Intent L2' },
+                cell: (info) => (
+                    <Text size="md">{info.getValue() as string}</Text>
+                ),
                 enableHiding: true,
             },
             {
-                accessorKey: 'automatedInteractions',
-                header: (info) => {
-                    const sortDirection = info.column.getIsSorted()
-                    return (
-                        <Box className={css.headerWithIcon}>
-                            <span>Automated interactions</span>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
-                                <TooltipContent
-                                    title="Automated interactions"
-                                    caption="The number of fully automated interactions solved without any human agent intervention."
-                                />
-                            </Tooltip>
-                            <span
-                                style={{
-                                    visibility: sortDirection
-                                        ? 'visible'
-                                        : 'hidden',
-                                }}
-                            >
-                                <Icon
-                                    name={
-                                        sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
-                                    }
-                                    size="xs"
-                                />
-                            </span>
-                        </Box>
-                    )
-                },
-                meta: { displayName: 'Automated interactions' },
-                cell: (info) => {
-                    const value = info.getValue() as number | null
-                    const feature = info.row.original.feature
-                    if (loadingStates.automatedInteractions && value === null) {
-                        return (
-                            <Skeleton
-                                key={`${feature}-automatedInteractions`}
-                                width="60px"
-                                height="20px"
-                            />
-                        )
-                    }
-                    return formatMetricValue(value, 'decimal')
-                },
-                enableHiding: true,
-            },
-            {
-                accessorKey: 'handoverCount',
+                accessorKey: 'handoverInteractions',
                 header: (info) => {
                     const sortDirection = info.column.getIsSorted()
                     return (
@@ -265,26 +171,124 @@ export const PerformanceBreakdownTable = () => {
                 meta: { displayName: 'Handover interactions' },
                 cell: (info) => {
                     const value = info.getValue() as number | null
-                    const feature = info.row.original.feature
-
-                    // Article Recommendation and Order Management don't have handovers
-                    if (
-                        feature === 'Article Recommendation' ||
-                        feature === 'Order Management'
-                    ) {
-                        return '-'
-                    }
-
-                    if (loadingStates.handovers && value === null) {
+                    const intentL1 = info.row.original.intentL1
+                    const intentL2 = info.row.original.intentL2
+                    if (loadingStates.handoverInteractions && value === null) {
                         return (
                             <Skeleton
-                                key={`${feature}-handoverCount`}
+                                key={`${intentL1}-${intentL2}-handoverInteractions`}
                                 width="60px"
                                 height="20px"
                             />
                         )
                     }
                     return formatMetricValue(value, 'decimal')
+                },
+                enableHiding: true,
+            },
+            {
+                accessorKey: 'snoozedInteractions',
+                header: (info) => {
+                    const sortDirection = info.column.getIsSorted()
+                    return (
+                        <Box className={css.headerWithIcon}>
+                            <span>Snoozed interactions</span>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <Icon name="info" size="xs" />
+                                </TooltipTrigger>
+                                <TooltipContent
+                                    title="Snoozed interactions"
+                                    caption="Total number of interactions where AI Agent has asked the customer a question and is waiting for their reply, temporarily pausing the ticket for a channel-dependent delay (24h for email, 10min for chat) before it closes and triggers the billing workflow."
+                                />
+                            </Tooltip>
+                            <span
+                                style={{
+                                    visibility: sortDirection
+                                        ? 'visible'
+                                        : 'hidden',
+                                }}
+                            >
+                                <Icon
+                                    name={
+                                        sortDirection === 'asc'
+                                            ? 'arrow-up'
+                                            : 'arrow-down'
+                                    }
+                                    size="xs"
+                                />
+                            </span>
+                        </Box>
+                    )
+                },
+                meta: { displayName: 'Snoozed interactions' },
+                cell: (info) => {
+                    const value = info.getValue() as number | null
+                    const intentL1 = info.row.original.intentL1
+                    const intentL2 = info.row.original.intentL2
+                    if (loadingStates.snoozedInteractions && value === null) {
+                        return (
+                            <Skeleton
+                                key={`${intentL1}-${intentL2}-snoozedInteractions`}
+                                width="60px"
+                                height="20px"
+                            />
+                        )
+                    }
+                    return formatMetricValue(value, 'decimal')
+                },
+                enableHiding: true,
+            },
+            {
+                accessorKey: 'successRate',
+                header: (info) => {
+                    const sortDirection = info.column.getIsSorted()
+                    return (
+                        <Box className={css.headerWithIcon}>
+                            <span>Success rate</span>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <Icon name="info" size="xs" />
+                                </TooltipTrigger>
+                                <TooltipContent
+                                    title="Success rate"
+                                    caption="The percentage of interactions handled by the AI Agent that are fully resolved without any human escalation."
+                                />
+                            </Tooltip>
+                            <span
+                                style={{
+                                    visibility: sortDirection
+                                        ? 'visible'
+                                        : 'hidden',
+                                }}
+                            >
+                                <Icon
+                                    name={
+                                        sortDirection === 'asc'
+                                            ? 'arrow-up'
+                                            : 'arrow-down'
+                                    }
+                                    size="xs"
+                                />
+                            </span>
+                        </Box>
+                    )
+                },
+                meta: { displayName: 'Success rate' },
+                cell: (info) => {
+                    const value = info.getValue() as number | null
+                    const intentL1 = info.row.original.intentL1
+                    const intentL2 = info.row.original.intentL2
+                    if (loadingStates.successRate && value === null) {
+                        return (
+                            <Skeleton
+                                key={`${intentL1}-${intentL2}-successRate`}
+                                width="60px"
+                                height="20px"
+                            />
+                        )
+                    }
+                    return formatMetricValue(value, 'percent-precision-1')
                 },
                 enableHiding: true,
             },
@@ -326,82 +330,23 @@ export const PerformanceBreakdownTable = () => {
                 meta: { displayName: 'Cost saved' },
                 cell: (info) => {
                     const value = info.getValue() as number | null
-                    const feature = info.row.original.feature
-
+                    const intentL1 = info.row.original.intentL1
+                    const intentL2 = info.row.original.intentL2
                     if (loadingStates.costSaved && value === null) {
                         return (
                             <Skeleton
-                                key={`${feature}-costSaved`}
-                                width="60px"
-                                height="20px"
-                            />
-                        )
-                    }
-                    if (value !== null && isNaN(value)) {
-                        return 'N/A'
-                    }
-                    return formatMetricValue(value, 'currency-precision-1')
-                },
-                enableHiding: true,
-            },
-            {
-                accessorKey: 'timeSaved',
-                header: (info) => {
-                    const sortDirection = info.column.getIsSorted()
-                    return (
-                        <Box className={css.headerWithIcon}>
-                            <span>Time saved by agents</span>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
-                                <TooltipContent
-                                    title="Time saved by agents"
-                                    caption="The time agent would have spent resolving customer inquiries without all automation features."
-                                />
-                            </Tooltip>
-                            <span
-                                style={{
-                                    visibility: sortDirection
-                                        ? 'visible'
-                                        : 'hidden',
-                                }}
-                            >
-                                <Icon
-                                    name={
-                                        sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
-                                    }
-                                    size="xs"
-                                />
-                            </span>
-                        </Box>
-                    )
-                },
-                meta: { displayName: 'Time saved by agents' },
-                cell: (info) => {
-                    const value = info.getValue() as number | null
-                    const feature = info.row.original.feature
-                    if (
-                        (loadingStates.automatedInteractions ||
-                            loadingStates.timeSaved) &&
-                        value === null
-                    ) {
-                        return (
-                            <Skeleton
-                                key={`${feature}-timeSaved`}
+                                key={`${intentL1}-${intentL2}-costSaved`}
                                 width="80px"
                                 height="20px"
                             />
                         )
                     }
-                    return formatMetricValue(value, 'duration')
+                    return formatMetricValue(value, 'currency')
                 },
                 enableHiding: true,
             },
         ],
-        // oxlint-disable-next-line exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [Object.values(loadingStates).find((value) => value === true)],
     )
 
@@ -411,76 +356,32 @@ export const PerformanceBreakdownTable = () => {
         sortingConfig: {
             enableSorting: true,
             enableMultiSort: false,
+            initialSorting: [{ id: 'intentL1', desc: true }],
         },
     })
 
-    const allDataLoaded =
-        !loadingStates.automationRate &&
-        !loadingStates.automatedInteractions &&
-        !loadingStates.handovers &&
-        !loadingStates.timeSaved
-
-    const showEmptyState =
-        allDataLoaded && !isError && (!metricsData || metricsData.length === 0)
-
     return (
-        <Box
-            display="flex"
-            flexDirection="column"
-            flex={1}
-            gap="xxxs"
-            minWidth="0px"
-        >
-            <Box className={css.header}>
-                <Heading size="sm" className={css.title}>
-                    Performance breakdown
-                </Heading>
-            </Box>
-            <Box
-                className={css.tableContainer}
-                display="flex"
-                flexDirection="column"
-                minWidth="0px"
-            >
-                <Box display="flex" justifyContent="flex-end">
-                    <DownloadPerformanceBreakdownButton />
-                </Box>
-                <TableToolbar
-                    table={table}
-                    bottomRow={{
-                        left: ['totalCount'],
-                        right: ['settings'],
-                    }}
-                />
-                <Box className={css.tableWrapper}>
-                    <TableRoot withBorder className={css.table}>
-                        <TableHeader>
-                            <HeaderRowGroup
-                                headerGroups={table.getHeaderGroups()}
-                            />
-                        </TableHeader>
-                        <TableBodyContent
-                            rows={table.getRowModel().rows}
-                            columnCount={table.getAllColumns().length}
-                            table={table}
+        <Box display="flex" flexDirection="column" minWidth="0px">
+            <TableToolbar
+                table={table}
+                bottomRow={{
+                    left: ['totalCount'],
+                    right: ['settings'],
+                }}
+            />
+            <Box className={css.tableWrapper}>
+                <TableRoot withBorder className={css.table}>
+                    <TableHeader>
+                        <HeaderRowGroup
+                            headerGroups={table.getHeaderGroups()}
                         />
-                    </TableRoot>
-                    {showEmptyState && (
-                        <Box
-                            display="flex"
-                            flexDirection="column"
-                            alignItems="center"
-                            justifyContent="center"
-                            padding="xxxl"
-                            gap="md"
-                        >
-                            <Heading size="sm">No data found</Heading>
-                            <Text size="md" color="secondary">
-                                Try to adjust your report filters.
-                            </Text>
-                        </Box>
-                    )}
-                </Box>
+                    </TableHeader>
+                    <TableBodyContent
+                        rows={table.getRowModel().rows}
+                        columnCount={table.getAllColumns().length}
+                        table={table}
+                    />
+                </TableRoot>
             </Box>
         </Box>
     )

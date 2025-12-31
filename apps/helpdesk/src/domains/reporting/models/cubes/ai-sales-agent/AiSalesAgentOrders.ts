@@ -31,6 +31,7 @@ export enum AiSalesAgentOrdersDimension {
     TicketId = 'AiSalesAgentOrders.ticketId',
     CustomerId = 'AiSalesAgentOrders.customerId',
     Source = 'AiSalesAgentOrders.source',
+    Channel = 'AiSalesAgentOrders.channel',
     JourneyId = 'AiSalesAgentOrders.journeyId',
 }
 
