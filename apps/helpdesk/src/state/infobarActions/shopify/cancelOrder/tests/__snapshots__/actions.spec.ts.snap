@@ -123,12 +123,12 @@ exports[`infobarActions.shopify.cancelOrder actions on error onInit() should not
     "payload": {
       "allowHTML": true,
       "buttons": [],
-      "closeButton": false,
       "dismissAfter": 3000,
       "dismissible": true,
       "id": 1,
       "message": "foo",
       "position": "top-center",
+      "showDismissButton": false,
       "status": "error",
     },
     "type": "reapop/upsertNotification",

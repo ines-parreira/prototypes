@@ -248,7 +248,7 @@ describe('DeleteDocumentModal', () => {
                 screen.getByRole('button', { name: 'Cancel' }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: 'Delete' }),
+                screen.getByRole('button', { name: 'Delete document' }),
             ).toBeInTheDocument()
         })
     })
@@ -271,7 +271,9 @@ describe('DeleteDocumentModal', () => {
                 screen.getByRole('heading', { name: 'Delete document?' }),
             )
 
-            const deleteButton = screen.getByRole('button', { name: 'Delete' })
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete document',
+            })
             await act(() => userEvent.click(deleteButton))
 
             await waitFor(() => {
@@ -307,7 +309,9 @@ describe('DeleteDocumentModal', () => {
                 screen.getByRole('heading', { name: 'Delete document?' }),
             )
 
-            const deleteButton = screen.getByRole('button', { name: 'Delete' })
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete document',
+            })
             await act(() => userEvent.click(deleteButton))
 
             await waitFor(() => {
@@ -333,7 +337,9 @@ describe('DeleteDocumentModal', () => {
                 screen.getByRole('heading', { name: 'Delete document?' }),
             )
 
-            const deleteButton = screen.getByRole('button', { name: 'Delete' })
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete document',
+            })
             await act(() => userEvent.click(deleteButton))
 
             await waitFor(() => {
@@ -370,7 +376,9 @@ describe('DeleteDocumentModal', () => {
                 screen.getByRole('heading', { name: 'Delete document?' }),
             )
 
-            const deleteButton = screen.getByRole('button', { name: 'Delete' })
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete document',
+            })
             await act(() => userEvent.click(deleteButton))
 
             await waitFor(() => {
@@ -405,7 +413,9 @@ describe('DeleteDocumentModal', () => {
                 screen.getByRole('heading', { name: 'Delete document?' }),
             )
 
-            const deleteButton = screen.getByRole('button', { name: 'Delete' })
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete document',
+            })
             await act(() => userEvent.click(deleteButton))
 
             await waitFor(() => {
@@ -434,7 +444,9 @@ describe('DeleteDocumentModal', () => {
                 screen.getByRole('heading', { name: 'Delete document?' }),
             )
 
-            const deleteButton = screen.getByRole('button', { name: 'Delete' })
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete document',
+            })
             await act(() => userEvent.click(deleteButton))
 
             await waitFor(() => {
@@ -459,7 +471,9 @@ describe('DeleteDocumentModal', () => {
                 screen.getByRole('heading', { name: 'Delete document?' }),
             )
 
-            const deleteButton = screen.getByRole('button', { name: 'Delete' })
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete document',
+            })
             await act(() => userEvent.click(deleteButton))
 
             await waitFor(() => {
@@ -492,7 +506,9 @@ describe('DeleteDocumentModal', () => {
                 screen.getByRole('heading', { name: 'Delete document?' }),
             )
 
-            const deleteButton = screen.getByRole('button', { name: 'Delete' })
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete document',
+            })
             await act(() => userEvent.click(deleteButton))
 
             await waitFor(() => {
@@ -536,7 +552,9 @@ describe('DeleteDocumentModal', () => {
                 screen.getByRole('heading', { name: 'Delete document?' }),
             )
 
-            const deleteButton = screen.getByRole('button', { name: 'Delete' })
+            const deleteButton = screen.getByRole('button', {
+                name: 'Delete document',
+            })
             await act(() => userEvent.click(deleteButton))
 
             expect(mockDeleteIngestedFile).not.toHaveBeenCalled()

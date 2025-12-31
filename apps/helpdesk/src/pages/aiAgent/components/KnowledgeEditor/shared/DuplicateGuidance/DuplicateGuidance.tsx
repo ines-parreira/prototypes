@@ -123,6 +123,7 @@ export const DuplicateGuidance = ({
                     notify({
                         message: 'An error occurred while duplicating guidance',
                         status: NotificationStatus.Error,
+                        showDismissButton: true,
                     }),
                 )
                 return
@@ -137,6 +138,7 @@ export const DuplicateGuidance = ({
                     message: notificationMessage,
                     status: NotificationStatus.Success,
                     allowHTML: true,
+                    showDismissButton: true,
                 }),
             )
 
@@ -151,6 +153,7 @@ export const DuplicateGuidance = ({
                 notify({
                     message: 'Failed to duplicate guidance',
                     status: NotificationStatus.Error,
+                    showDismissButton: true,
                 }),
             )
         } finally {

@@ -189,9 +189,7 @@ describe('SyncStoreDomainBanner', () => {
             )
 
             expect(
-                screen.getByText(
-                    /Your document is syncing. You will be notified once complete./,
-                ),
+                screen.getByText(/Your document is uploading./),
             ).toBeInTheDocument()
         })
 
@@ -259,9 +257,7 @@ describe('SyncStoreDomainBanner', () => {
             })
 
             expect(
-                screen.getByText(
-                    /Your document is syncing. You will be notified once complete./,
-                ),
+                screen.getByText(/Your document is uploading./),
             ).toBeInTheDocument()
         })
     })
@@ -569,9 +565,7 @@ describe('SyncStoreDomainBanner', () => {
             })
 
             expect(
-                screen.getByText(
-                    /Your document is syncing. You will be notified once complete./,
-                ),
+                screen.getByText(/Your document is uploading./),
             ).toBeInTheDocument()
         })
 
@@ -592,9 +586,7 @@ describe('SyncStoreDomainBanner', () => {
             })
 
             expect(
-                screen.getByText(
-                    /Your document is syncing. You will be notified once complete./,
-                ),
+                screen.getByText(/Your document is uploading./),
             ).toBeInTheDocument()
         })
     })

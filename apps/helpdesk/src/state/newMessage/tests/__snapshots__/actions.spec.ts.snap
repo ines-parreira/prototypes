@@ -36,7 +36,6 @@ exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_AT
     "payload": {
       "allowHTML": true,
       "buttons": [],
-      "closeButton": false,
       "dismissAfter": 9000,
       "dismissible": true,
       "id": "newMessageAddAttachmentsError",
@@ -48,6 +47,7 @@ exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_AT
                     </ul>
                 ",
       "position": "top-center",
+      "showDismissButton": false,
       "status": "error",
       "title": "We could not add all of your attachments !",
     },
@@ -83,7 +83,6 @@ exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_AT
     "payload": {
       "allowHTML": true,
       "buttons": [],
-      "closeButton": false,
       "dismissAfter": 9000,
       "dismissible": true,
       "id": "newMessageAddAttachmentsError",
@@ -95,6 +94,7 @@ exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_AT
                     </ul>
                 ",
       "position": "top-center",
+      "showDismissButton": false,
       "status": "error",
       "title": "We could not add all of your attachments !",
     },

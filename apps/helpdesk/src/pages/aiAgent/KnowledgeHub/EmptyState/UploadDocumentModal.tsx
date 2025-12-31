@@ -130,6 +130,7 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
                     notify({
                         status: NotificationStatus.Error,
                         message: `Some files were rejected. Only ${acceptedExtensions.join(', ')} files are supported.`,
+                        showDismissButton: true,
                     }),
                 )
             }
@@ -148,6 +149,7 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
                     notify({
                         status: NotificationStatus.Error,
                         message: `File too large. Upload a file smaller than ${MAX_FILE_SIZE_MB} MB.`,
+                        showDismissButton: true,
                     }),
                 )
                 return
@@ -162,6 +164,7 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
                     notify({
                         status: NotificationStatus.Error,
                         message: `Failed to upload: A file with ${file.name} name already exists. Remove or select a different file.`,
+                        showDismissButton: true,
                     }),
                 )
                 return
@@ -184,6 +187,7 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
                     notify({
                         status: NotificationStatus.Error,
                         message: `An unknown error occurred while uploading file ${file.name}.`,
+                        showDismissButton: true,
                     }),
                 )
             }
@@ -202,6 +206,7 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
                 notify({
                     status: NotificationStatus.Error,
                     message: `You can only upload a maximum of ${MAX_EXTERNAL_FILES} files.`,
+                    showDismissButton: true,
                 }),
             )
             return
@@ -266,7 +271,7 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
         <Modal
             isOpen={isOpen}
             onOpenChange={handleClose}
-            size="md"
+            size="sm"
             aria-label="Upload documents"
         >
             <OverlayHeader title="Upload documents" />
@@ -340,7 +345,7 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
                             gap="sm"
                             justifyContent="flex-end"
                         >
-                            <Button variant="secondary" onClick={handleClose}>
+                            <Button variant="tertiary" onClick={handleClose}>
                                 Cancel
                             </Button>
                             <Button

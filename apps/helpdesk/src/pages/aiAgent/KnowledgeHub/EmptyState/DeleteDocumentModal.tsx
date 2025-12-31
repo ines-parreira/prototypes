@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { Box, Button, Heading, Modal, Text } from '@gorgias/axiom'
+import { Box, Button, Modal, OverlayHeader, Text } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
@@ -66,6 +66,7 @@ export const DeleteDocumentModal = ({
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Could not find document to delete',
+                    showDismissButton: true,
                 }),
             )
             return
@@ -83,6 +84,7 @@ export const DeleteDocumentModal = ({
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Document successfully deleted',
+                    showDismissButton: true,
                 }),
             )
         } catch {
@@ -91,6 +93,7 @@ export const DeleteDocumentModal = ({
                     status: NotificationStatus.Error,
                     message:
                         'Error during document deletion. Try one more time or contact support',
+                    showDismissButton: true,
                 }),
             )
         }
@@ -111,8 +114,8 @@ export const DeleteDocumentModal = ({
             size="sm"
             aria-label="Delete document"
         >
-            <Box flexDirection="column" gap="md">
-                <Heading slot="title">Delete document?</Heading>
+            <Box flexDirection="column">
+                <OverlayHeader title="Delete document?" />
                 <Box flexDirection="column" gap="sm">
                     <Text>
                         Once deleted, this content can&apos;t be restored.
@@ -122,8 +125,8 @@ export const DeleteDocumentModal = ({
                         deleted.
                     </Text>
                 </Box>
-                <Box justifyContent="flex-end" gap="sm">
-                    <Button variant="secondary" onClick={handleCancel}>
+                <Box justifyContent="flex-end" gap="sm" marginTop="md">
+                    <Button variant="tertiary" onClick={handleCancel}>
                         Cancel
                     </Button>
                     <Button
@@ -131,7 +134,7 @@ export const DeleteDocumentModal = ({
                         intent="destructive"
                         onClick={handleConfirm}
                     >
-                        Delete
+                        Delete document
                     </Button>
                 </Box>
             </Box>

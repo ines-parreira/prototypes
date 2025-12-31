@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { Box, Button, Heading, Modal, Text } from '@gorgias/axiom'
+import { Box, Button, Modal, OverlayHeader, Text } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { IngestionLog } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
@@ -65,6 +65,7 @@ export const DeleteUrlModal = ({
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Could not find URL to delete',
+                    showDismissButton: true,
                 }),
             )
             return
@@ -82,6 +83,7 @@ export const DeleteUrlModal = ({
                 notify({
                     status: NotificationStatus.Success,
                     message: 'URL successfully deleted',
+                    showDismissButton: true,
                 }),
             )
         } catch {
@@ -90,6 +92,7 @@ export const DeleteUrlModal = ({
                     status: NotificationStatus.Error,
                     message:
                         'Error during URL deletion. Try one more time or contact support',
+                    showDismissButton: true,
                 }),
             )
         }
@@ -105,16 +108,16 @@ export const DeleteUrlModal = ({
 
     return (
         <Modal isOpen={isOpen} onOpenChange={handleCancel} size="sm">
-            <Box flexDirection="column" gap="md">
-                <Heading slot="title">Delete URL?</Heading>
+            <Box flexDirection="column">
+                <OverlayHeader title="Delete URL?" />
                 <Box flexDirection="column" gap="sm">
                     <Text>Once deleted, this content can’t be restored.</Text>
                     <Text>
                         All snippets generated from this URL will be deleted.
                     </Text>
                 </Box>
-                <Box justifyContent="flex-end" gap="sm">
-                    <Button variant="secondary" onClick={handleCancel}>
+                <Box justifyContent="flex-end" gap="sm" marginTop="md">
+                    <Button variant="tertiary" onClick={handleCancel}>
                         Cancel
                     </Button>
                     <Button
@@ -122,7 +125,7 @@ export const DeleteUrlModal = ({
                         intent="destructive"
                         onClick={handleConfirm}
                     >
-                        Delete
+                        Delete URL
                     </Button>
                 </Box>
             </Box>

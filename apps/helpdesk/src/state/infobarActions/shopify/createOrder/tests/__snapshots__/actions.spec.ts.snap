@@ -540,12 +540,12 @@ exports[`infobarActions.shopify.createOrder actions onInit() on error should cal
     "payload": {
       "allowHTML": true,
       "buttons": [],
-      "closeButton": false,
       "dismissAfter": 3000,
       "dismissible": true,
       "id": 1,
       "message": "Error while calculating draft order",
       "position": "top-center",
+      "showDismissButton": false,
       "status": "error",
     },
     "type": "reapop/upsertNotification",

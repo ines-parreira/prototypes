@@ -26,7 +26,7 @@ export const INITIAL_MESSAGE = {
     dismissible: true,
     buttons: [],
     allowHTML: false,
-    closeButton: false,
+    showDismissButton: false,
 }
 
 // clean-up notification for comparison

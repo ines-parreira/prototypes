@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Modal, Text } from '@gorgias/axiom'
+import { Box, Button, Modal, OverlayHeader, Text } from '@gorgias/axiom'
 
 import type { GroupedKnowledgeItem } from '../../types'
 
@@ -24,10 +24,10 @@ export const DeleteConfirmationModal = ({
             size="sm"
             aria-label="Delete confirmation"
         >
-            <Box flexDirection="column" gap="md">
-                <Heading slot="title">
-                    Delete {itemCount} {itemCount === 1 ? 'item' : 'items'}?
-                </Heading>
+            <Box flexDirection="column">
+                <OverlayHeader
+                    title={`Delete ${itemCount} ${itemCount === 1 ? 'item' : 'items'}?`}
+                />
                 <Box flexDirection="column" gap="sm">
                     <Text>
                         Once deleted, this content can&apos;t be restored.
@@ -37,8 +37,8 @@ export const DeleteConfirmationModal = ({
                         and your Help Center settings.
                     </Text>
                 </Box>
-                <Box justifyContent="flex-end" gap="sm">
-                    <Button variant="secondary" onClick={onCancel}>
+                <Box justifyContent="flex-end" gap="sm" marginTop={'md'}>
+                    <Button variant="tertiary" onClick={onCancel}>
                         Cancel
                     </Button>
                     <Button

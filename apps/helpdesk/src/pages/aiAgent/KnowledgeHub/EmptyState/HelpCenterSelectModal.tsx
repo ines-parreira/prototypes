@@ -5,10 +5,10 @@ import { history } from '@repo/routing'
 import {
     Box,
     Button,
-    Heading,
     Icon,
     ListItem,
     Modal,
+    OverlayHeader,
     SelectField,
     Text,
 } from '@gorgias/axiom'
@@ -58,6 +58,7 @@ export const HelpCenterSelectModal = () => {
                         message:
                             'Failed to connect Help Center. Please try again.',
                         status: NotificationStatus.Error,
+                        showDismissButton: true,
                     }),
                 )
             }
@@ -135,7 +136,7 @@ export const HelpCenterSelectModal = () => {
                     className={css.modalActions}
                 >
                     <Button
-                        variant="secondary"
+                        variant="tertiary"
                         onClick={toggleModal}
                         isDisabled={isPendingCreateOrUpdate}
                     >
@@ -164,9 +165,7 @@ export const HelpCenterSelectModal = () => {
             isDismissable
             aria-label="Connect Help Center Modal"
         >
-            <div className={css.labelSection}>
-                <Heading slot="title">Connect Help Center</Heading>
-            </div>
+            <OverlayHeader title="Connect Help Center" />
             {isSelectModal ? selectHelpCenterBody() : noHelpCenterBody()}
         </Modal>
     )

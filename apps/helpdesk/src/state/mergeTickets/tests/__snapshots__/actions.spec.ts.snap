@@ -6,12 +6,12 @@ exports[`mergeTickets actions mergeTickets should dispatch a success notificatio
     "payload": {
       "allowHTML": false,
       "buttons": [],
-      "closeButton": false,
       "dismissAfter": 3000,
       "dismissible": true,
       "id": "4fzzz",
       "message": "Tickets merged successfully",
       "position": "top-center",
+      "showDismissButton": false,
       "status": "success",
     },
     "type": "reapop/upsertNotification",

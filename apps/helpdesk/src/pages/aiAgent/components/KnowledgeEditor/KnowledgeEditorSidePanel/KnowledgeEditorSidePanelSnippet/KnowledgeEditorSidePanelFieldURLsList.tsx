@@ -11,7 +11,7 @@ export const KnowledgeEditorSidePanelFieldURLsList = ({
 }: {
     urls: string[]
 }) => {
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(true)
 
     return (
         <div className={css.container}>

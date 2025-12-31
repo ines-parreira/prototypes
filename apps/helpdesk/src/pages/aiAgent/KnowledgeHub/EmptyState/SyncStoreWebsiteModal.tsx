@@ -6,8 +6,8 @@ import { useParams } from 'react-router-dom'
 import {
     Box,
     Button,
-    Heading,
     Modal,
+    OverlayHeader,
     Text,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
@@ -95,8 +95,8 @@ export const SyncStoreWebsiteModal = ({
             size="sm"
             isDismissable
         >
-            <Box flexDirection="column" gap="md">
-                <Heading slot="title">Sync store website</Heading>
+            <Box flexDirection="column">
+                <OverlayHeader title="Sync store website" />
                 <Box flexDirection="column" gap="sm">
                     <Text>
                         {hasWebsiteSync
@@ -111,8 +111,8 @@ export const SyncStoreWebsiteModal = ({
                         </Text>
                     )}
                 </Box>
-                <Box justifyContent="flex-end" gap="sm">
-                    <Button variant="secondary" onClick={closeModal}>
+                <Box justifyContent="flex-end" gap="sm" marginTop="md">
+                    <Button variant="tertiary" onClick={closeModal}>
                         Cancel
                     </Button>
                     <Button

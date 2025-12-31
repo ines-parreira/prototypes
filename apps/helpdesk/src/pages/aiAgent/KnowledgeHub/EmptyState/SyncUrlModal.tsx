@@ -190,6 +190,7 @@ export const SyncUrlModal = ({
                 notify({
                     message: errorMessage,
                     status: NotificationStatus.Error,
+                    showDismissButton: true,
                 }),
             )
         } finally {

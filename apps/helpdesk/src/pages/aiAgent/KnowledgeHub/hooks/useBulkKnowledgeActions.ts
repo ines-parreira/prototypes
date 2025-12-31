@@ -96,6 +96,7 @@ export function useBulkKnowledgeActions(helpCenterIds: HelpCenterIds) {
                 notify({
                     message: 'Successfully deleted items',
                     status: NotificationStatus.Success,
+                    showDismissButton: true,
                 }),
             )
         } catch (error) {
@@ -105,6 +106,7 @@ export function useBulkKnowledgeActions(helpCenterIds: HelpCenterIds) {
                         ? error.response?.data.error.msg
                         : 'Failed to delete items',
                     status: NotificationStatus.Error,
+                    showDismissButton: true,
                 }),
             )
         }
@@ -137,6 +139,7 @@ export function useBulkKnowledgeActions(helpCenterIds: HelpCenterIds) {
                 notify({
                     message: `Successfully ${action} items for AI Agent`,
                     status: NotificationStatus.Success,
+                    showDismissButton: true,
                 }),
             )
         } catch (error) {
@@ -146,6 +149,7 @@ export function useBulkKnowledgeActions(helpCenterIds: HelpCenterIds) {
                         ? error.response?.data.error.msg
                         : 'Failed to update items',
                     status: NotificationStatus.Error,
+                    showDismissButton: true,
                 }),
             )
         }
