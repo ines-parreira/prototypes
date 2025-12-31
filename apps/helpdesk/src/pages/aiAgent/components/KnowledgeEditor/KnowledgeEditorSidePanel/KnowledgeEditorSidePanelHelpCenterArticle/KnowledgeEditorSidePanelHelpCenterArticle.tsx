@@ -1,4 +1,7 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import {
+    useArticleEngagementFromContext,
     useArticleImpactFromContext,
     useArticleRelatedTicketsFromContext,
 } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
@@ -7,15 +10,24 @@ import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionImpact } from '../KnowledgeEditorSidePanelSectionImpact'
 import { KnowledgeEditorSidePanelSectionRelatedTickets } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleDetails } from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
+import { KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement } from './KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleSettings } from './KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
 
 export const KnowledgeEditorSidePanelHelpCenterArticle = () => {
+    const isPerformanceStatsEnabled = useFlag(
+        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
+    )
     const impact = useArticleImpactFromContext()
+    const engagement = useArticleEngagementFromContext()
     const relatedTickets = useArticleRelatedTicketsFromContext()
 
-    const initialExpandedSections = relatedTickets
-        ? ['details', 'impact', 'relatedTickets', 'settings']
-        : ['details', 'impact', 'settings']
+    const initialExpandedSections: string[] = [
+        'details',
+        ...(isPerformanceStatsEnabled
+            ? ['impact', 'engagement', 'relatedTickets']
+            : []),
+        'settings',
+    ]
 
     return (
         <KnowledgeEditorSidePanel
@@ -23,17 +35,24 @@ export const KnowledgeEditorSidePanelHelpCenterArticle = () => {
         >
             <KnowledgeEditorSidePanelSectionHelpCenterArticleDetails sectionId="details" />
 
-            {impact && (
+            {isPerformanceStatsEnabled && (
                 <KnowledgeEditorSidePanelSectionImpact
                     {...impact}
                     sectionId="impact"
                 />
             )}
 
-            {relatedTickets && (
+            {isPerformanceStatsEnabled && (
                 <KnowledgeEditorSidePanelSectionRelatedTickets
                     {...relatedTickets}
                     sectionId="relatedTickets"
+                />
+            )}
+
+            {isPerformanceStatsEnabled && (
+                <KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement
+                    {...engagement}
+                    sectionId="engagement"
                 />
             )}
 

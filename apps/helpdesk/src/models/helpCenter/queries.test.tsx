@@ -9,6 +9,7 @@ import {
     useBulkCopyArticles,
     useBulkDeleteArticles,
     useBulkUpdateArticleTranslationVisibility,
+    useGetHelpCenterStatistics,
     useGetKnowledgeHubArticles,
 } from './queries'
 import * as resources from './resources'
@@ -818,5 +819,453 @@ describe('useBulkCopyArticles', () => {
                 shop_names: ['shop-1', 'shop-2', 'shop-3'],
             },
         )
+    })
+})
+
+describe('useGetHelpCenterStatistics', () => {
+    let queryClient: QueryClient
+    const mockGetHelpCenterStatistics = jest.spyOn(
+        resources,
+        'getHelpCenterStatistics',
+    )
+
+    const mockStatisticsResponse = [
+        {
+            articleId: 1,
+            rating: {
+                up: 150,
+                down: 30,
+            },
+        },
+        {
+            articleId: 2,
+            rating: {
+                up: 80,
+                down: 20,
+            },
+        },
+    ]
+
+    beforeEach(() => {
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: { retry: false },
+            },
+        })
+        jest.clearAllMocks()
+    })
+
+    const wrapper = ({ children }: { children: ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+
+    it('should fetch help center statistics successfully', async () => {
+        mockGetHelpCenterStatistics.mockResolvedValue(mockStatisticsResponse)
+
+        const { result } = renderHook(
+            () =>
+                useGetHelpCenterStatistics(
+                    1,
+                    {
+                        start_date: '2024-01-01',
+                        end_date: '2024-12-31',
+                        ids: [1, 2],
+                    },
+                    { enabled: true },
+                ),
+            { wrapper },
+        )
+
+        expect(result.current.isLoading).toBe(true)
+        expect(result.current.data).toBeUndefined()
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(result.current.data).toEqual(mockStatisticsResponse)
+        expect(result.current.isLoading).toBe(false)
+        expect(result.current.error).toBeNull()
+    })
+
+    it('should call getHelpCenterStatistics with correct parameters', async () => {
+        mockGetHelpCenterStatistics.mockResolvedValue(mockStatisticsResponse)
+
+        const { result } = renderHook(
+            () =>
+                useGetHelpCenterStatistics(
+                    123,
+                    {
+                        start_date: '2024-01-01',
+                        end_date: '2024-12-31',
+                        ids: [10, 20, 30],
+                    },
+                    { enabled: true },
+                ),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(mockGetHelpCenterStatistics).toHaveBeenCalledWith(
+            mockClient,
+            { help_center_id: 123 },
+            {
+                start_date: '2024-01-01',
+                end_date: '2024-12-31',
+                ids: [10, 20, 30],
+            },
+        )
+    })
+
+    it('should handle loading state correctly', async () => {
+        mockGetHelpCenterStatistics.mockImplementation(
+            () =>
+                new Promise((resolve) =>
+                    setTimeout(() => resolve(mockStatisticsResponse), 100),
+                ),
+        )
+
+        const { result } = renderHook(
+            () =>
+                useGetHelpCenterStatistics(
+                    1,
+                    {
+                        start_date: '2024-01-01',
+                        end_date: '2024-12-31',
+                    },
+                    { enabled: true },
+                ),
+            { wrapper },
+        )
+
+        expect(result.current.isLoading).toBe(true)
+        expect(result.current.data).toBeUndefined()
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(result.current.isLoading).toBe(false)
+    })
+
+    it('should handle error state', async () => {
+        const mockError = new Error('Failed to fetch statistics')
+        mockGetHelpCenterStatistics.mockRejectedValue(mockError)
+
+        const { result } = renderHook(
+            () =>
+                useGetHelpCenterStatistics(
+                    1,
+                    {
+                        start_date: '2024-01-01',
+                        end_date: '2024-12-31',
+                    },
+                    { enabled: true },
+                ),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isError).toBe(true))
+
+        expect(result.current.error).toBeTruthy()
+        expect(result.current.data).toBeUndefined()
+    })
+
+    it('should respect custom enabled override when false', async () => {
+        mockGetHelpCenterStatistics.mockResolvedValue(mockStatisticsResponse)
+
+        const { result } = renderHook(
+            () =>
+                useGetHelpCenterStatistics(
+                    1,
+                    {
+                        start_date: '2024-01-01',
+                        end_date: '2024-12-31',
+                    },
+                    { enabled: false },
+                ),
+            { wrapper },
+        )
+
+        expect(result.current.fetchStatus).toBe('idle')
+        expect(mockGetHelpCenterStatistics).not.toHaveBeenCalled()
+    })
+
+    it('should handle empty statistics response', async () => {
+        mockGetHelpCenterStatistics.mockResolvedValue([])
+
+        const { result } = renderHook(
+            () =>
+                useGetHelpCenterStatistics(
+                    1,
+                    {
+                        start_date: '2024-01-01',
+                        end_date: '2024-12-31',
+                    },
+                    { enabled: true },
+                ),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(result.current.data).toEqual([])
+        expect(result.current.data).toHaveLength(0)
+    })
+
+    it('should handle statistics with zero ratings', async () => {
+        const zeroRatingsResponse = [
+            {
+                articleId: 1,
+                rating: {
+                    up: 0,
+                    down: 0,
+                },
+            },
+        ]
+
+        mockGetHelpCenterStatistics.mockResolvedValue(zeroRatingsResponse)
+
+        const { result } = renderHook(
+            () =>
+                useGetHelpCenterStatistics(
+                    1,
+                    {
+                        start_date: '2024-01-01',
+                        end_date: '2024-12-31',
+                        ids: [1],
+                    },
+                    { enabled: true },
+                ),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(result.current.data).toEqual(zeroRatingsResponse)
+        expect(result.current.data?.[0].rating.up).toBe(0)
+        expect(result.current.data?.[0].rating.down).toBe(0)
+    })
+
+    it('should handle statistics without ids parameter', async () => {
+        mockGetHelpCenterStatistics.mockResolvedValue(mockStatisticsResponse)
+
+        const { result } = renderHook(
+            () =>
+                useGetHelpCenterStatistics(
+                    1,
+                    {
+                        start_date: '2024-01-01',
+                        end_date: '2024-12-31',
+                    },
+                    { enabled: true },
+                ),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(mockGetHelpCenterStatistics).toHaveBeenCalledWith(
+            mockClient,
+            { help_center_id: 1 },
+            {
+                start_date: '2024-01-01',
+                end_date: '2024-12-31',
+            },
+        )
+    })
+
+    it('should call onSuccess callback after successful fetch', async () => {
+        mockGetHelpCenterStatistics.mockResolvedValue(mockStatisticsResponse)
+        const onSuccess = jest.fn()
+
+        const { result } = renderHook(
+            () =>
+                useGetHelpCenterStatistics(
+                    1,
+                    {
+                        start_date: '2024-01-01',
+                        end_date: '2024-12-31',
+                    },
+                    { onSuccess, enabled: true },
+                ),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(onSuccess).toHaveBeenCalledWith(mockStatisticsResponse)
+    })
+
+    it('should call onError callback when fetch fails', async () => {
+        const mockError = new Error('Fetch failed')
+        mockGetHelpCenterStatistics.mockRejectedValue(mockError)
+        const onError = jest.fn()
+
+        renderHook(
+            () =>
+                useGetHelpCenterStatistics(
+                    1,
+                    {
+                        start_date: '2024-01-01',
+                        end_date: '2024-12-31',
+                    },
+                    { onError, enabled: true },
+                ),
+            { wrapper },
+        )
+
+        await waitFor(() => {
+            expect(onError).toHaveBeenCalledWith(mockError)
+        })
+    })
+
+    it('should handle pagination parameters', async () => {
+        mockGetHelpCenterStatistics.mockResolvedValue(mockStatisticsResponse)
+
+        const { result } = renderHook(
+            () =>
+                useGetHelpCenterStatistics(
+                    1,
+                    {
+                        start_date: '2024-01-01',
+                        end_date: '2024-12-31',
+                        page: 2,
+                        per_page: 50,
+                    },
+                    { enabled: true },
+                ),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(mockGetHelpCenterStatistics).toHaveBeenCalledWith(
+            mockClient,
+            { help_center_id: 1 },
+            {
+                start_date: '2024-01-01',
+                end_date: '2024-12-31',
+                page: 2,
+                per_page: 50,
+            },
+        )
+    })
+
+    it('should handle large number of article ids', async () => {
+        const largeIdArray = Array.from({ length: 100 }, (_, i) => i + 1)
+        mockGetHelpCenterStatistics.mockResolvedValue(mockStatisticsResponse)
+
+        const { result } = renderHook(
+            () =>
+                useGetHelpCenterStatistics(
+                    1,
+                    {
+                        start_date: '2024-01-01',
+                        end_date: '2024-12-31',
+                        ids: largeIdArray,
+                    },
+                    { enabled: true },
+                ),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(mockGetHelpCenterStatistics).toHaveBeenCalledWith(
+            mockClient,
+            { help_center_id: 1 },
+            expect.objectContaining({
+                ids: largeIdArray,
+            }),
+        )
+    })
+
+    it('should return null when client is undefined', async () => {
+        mockGetHelpCenterStatistics.mockResolvedValue(null)
+
+        const { result } = renderHook(
+            () =>
+                useGetHelpCenterStatistics(
+                    1,
+                    {
+                        start_date: '2024-01-01',
+                        end_date: '2024-12-31',
+                    },
+                    { enabled: true },
+                ),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(result.current.data).toBeNull()
+    })
+
+    it('should use correct query key', () => {
+        mockGetHelpCenterStatistics.mockResolvedValue(mockStatisticsResponse)
+
+        const queryParams = {
+            start_date: '2024-01-01',
+            end_date: '2024-12-31',
+            ids: [1, 2],
+        }
+
+        renderHook(
+            () => useGetHelpCenterStatistics(1, queryParams, { enabled: true }),
+            { wrapper },
+        )
+
+        const queries = queryClient.getQueryCache().getAll()
+        const statisticsQuery = queries.find((q) =>
+            q.queryKey.includes('statistics'),
+        )
+
+        expect(statisticsQuery?.queryKey).toEqual([
+            'help-center',
+            1,
+            'statistics',
+            queryParams,
+        ])
+    })
+
+    it('should refetch when query parameters change', async () => {
+        mockGetHelpCenterStatistics.mockResolvedValue(mockStatisticsResponse)
+
+        const { result, rerender } = renderHook(
+            ({ queryParams }) =>
+                useGetHelpCenterStatistics(1, queryParams, { enabled: true }),
+            {
+                wrapper,
+                initialProps: {
+                    queryParams: {
+                        start_date: '2024-01-01',
+                        end_date: '2024-06-30',
+                    },
+                },
+            },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+        expect(mockGetHelpCenterStatistics).toHaveBeenCalledTimes(1)
+
+        mockGetHelpCenterStatistics.mockClear()
+
+        rerender({
+            queryParams: {
+                start_date: '2024-07-01',
+                end_date: '2024-12-31',
+            },
+        })
+
+        await waitFor(() => {
+            expect(mockGetHelpCenterStatistics).toHaveBeenCalledWith(
+                mockClient,
+                { help_center_id: 1 },
+                {
+                    start_date: '2024-07-01',
+                    end_date: '2024-12-31',
+                },
+            )
+        })
     })
 })

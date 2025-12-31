@@ -41,7 +41,7 @@
                             "type": "array",
                             "items": {
                                 "type": "string",
-                                "enum": ["domain", "url"]
+                                "enum": ["domain", "file", "url"]
                             }
                         }
                     },
@@ -568,6 +568,75 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/ArticleWithLocalTranslation"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["articles"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/stats": {
+            "get": {
+                "operationId": "getStatistics",
+                "summary": "Get article statistics for a date range",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "description": "`help_center_id` parameter must be provided and must be a valid number.",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "start_date",
+                        "required": true,
+                        "in": "query",
+                        "description": "Start date for statistics aggregation (ISO 8601 format, e.g., 2024-01-01T00:00:00Z)",
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "end_date",
+                        "required": true,
+                        "in": "query",
+                        "description": "End date for statistics aggregation (ISO 8601 format, e.g., 2024-12-31T23:59:59Z)",
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "ids",
+                        "required": false,
+                        "in": "query",
+                        "description": "List of numeric ids in the form ids=1&ids=2...",
+                        "schema": {
+                            "type": "array",
+                            "items": { "type": "number" }
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ArticleStatisticsDto"
+                                    }
                                 }
                             }
                         }
@@ -5114,6 +5183,14 @@
                         "type": "string",
                         "nullable": true,
                         "description": "UID for this call. e.g. snippet_transformation_{account_name}{help_center_id}_{timestamp}"
+                    },
+                    "file_type": {
+                        "type": "string",
+                        "description": "File type (MIME type) - only for file ingestion"
+                    },
+                    "file_size_bytes": {
+                        "type": "number",
+                        "description": "File size in bytes - only for file ingestion"
                     }
                 },
                 "required": ["x-gorgias-domain", "x-execution-id"]
@@ -5142,7 +5219,10 @@
                     "id": { "type": "number" },
                     "url": { "type": "string", "nullable": true },
                     "domain": { "type": "string", "nullable": true },
-                    "source": { "type": "string", "enum": ["domain", "url"] },
+                    "source": {
+                        "type": "string",
+                        "enum": ["domain", "file", "url"]
+                    },
                     "status": {
                         "type": "string",
                         "nullable": true,
@@ -5512,6 +5592,20 @@
                     }
                 },
                 "required": ["meta", "object", "data"]
+            },
+            "ArticleStatisticsDto": {
+                "type": "object",
+                "properties": {
+                    "articleId": {
+                        "type": "number",
+                        "description": "Article ID"
+                    },
+                    "rating": {
+                        "description": "Rating statistics",
+                        "allOf": [{ "$ref": "#/components/schemas/Rating" }]
+                    }
+                },
+                "required": ["articleId", "rating"]
             },
             "BatchArticlesRequestDto": {
                 "type": "object",
@@ -6045,81 +6139,6 @@
                     "published_version_id",
                     "rating"
                 ]
-            },
-            "BulkCopyArticlesRequestDto": {
-                "type": "object",
-                "properties": {
-                    "article_ids": {
-                        "description": "Array of article IDs to copy",
-                        "example": [1, 2, 3, 100, 250],
-                        "type": "array",
-                        "items": { "type": "number" }
-                    },
-                    "shop_names": {
-                        "description": "List of shop names where to copy given articles",
-                        "example": ["shop-1, shop-2", ["shop-3"]],
-                        "type": "array",
-                        "items": { "type": "string" }
-                    }
-                },
-                "required": ["article_ids", "shop_names"]
-            },
-            "BatchDeleteArticlesRequestDto": {
-                "type": "object",
-                "properties": {
-                    "article_ids": {
-                        "description": "Array of article IDs to delete",
-                        "example": [1, 2, 3, 100, 250],
-                        "type": "array",
-                        "items": { "type": "number" }
-                    }
-                },
-                "required": ["article_ids"]
-            },
-            "BatchUpdateArticleTranslationsVisibilityRequestDto": {
-                "type": "object",
-                "properties": {
-                    "article_ids": {
-                        "description": "Array of article IDs to update translations for",
-                        "example": [1, 2, 3, 100, 250],
-                        "type": "array",
-                        "items": { "type": "number" }
-                    },
-                    "locale_code": {
-                        "type": "string",
-                        "description": "Locale code for translations to update (all articles must have translation in this locale)",
-                        "enum": [
-                            "cs-CZ",
-                            "da-DK",
-                            "nl-NL",
-                            "en-GB",
-                            "en-US",
-                            "fi-FI",
-                            "fr-CA",
-                            "fr-FR",
-                            "de-DE",
-                            "it-IT",
-                            "ja-JP",
-                            "no-NO",
-                            "pt-BR",
-                            "es-ES",
-                            "sv-SE"
-                        ],
-                        "example": "en-US"
-                    },
-                    "visibility_status": {
-                        "enum": ["GORGIAS_INTERNAL", "PUBLIC", "UNLISTED"],
-                        "type": "string",
-                        "description": "New visibility status for all translations",
-                        "example": "PUBLIC"
-                    },
-                    "is_current": {
-                        "type": "boolean",
-                        "description": "Publish immediately (true) or save as draft (false)",
-                        "default": true
-                    }
-                },
-                "required": ["article_ids", "locale_code", "visibility_status"]
             },
             "ArticleTranslationsListPageDto": {
                 "type": "object",
@@ -9708,7 +9727,10 @@
                     "id": { "type": "number" },
                     "url": { "type": "string", "nullable": true },
                     "domain": { "type": "string", "nullable": true },
-                    "source": { "type": "string", "enum": ["domain", "url"] },
+                    "source": {
+                        "type": "string",
+                        "enum": ["domain", "file", "url"]
+                    },
                     "status": {
                         "type": "string",
                         "nullable": true,

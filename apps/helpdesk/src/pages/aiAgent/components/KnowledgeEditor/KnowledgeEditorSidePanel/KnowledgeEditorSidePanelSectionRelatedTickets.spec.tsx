@@ -82,7 +82,19 @@ describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
         )
 
         expect(screen.getByText('Recent tickets')).toBeInTheDocument()
-        // When loading, the count is replaced with a skeleton
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
+    })
+
+    it('renders 0 for ticket count when ticketCount is undefined and not loading', () => {
+        renderWithStoreAndQueryClientAndRouter(
+            <KnowledgeEditorSidePanel
+                initialExpandedSections={['related-tickets']}
+            >
+                <KnowledgeEditorSidePanelSectionRelatedTickets sectionId="related-tickets" />
+            </KnowledgeEditorSidePanel>,
+        )
+
+        expect(screen.getByText('Recent tickets')).toBeInTheDocument()
+        expect(screen.getByText('0')).toBeInTheDocument()
     })
 })

@@ -177,7 +177,7 @@ declare namespace Components {
             id: number
             url: string | null
             domain: string | null
-            source: 'domain' | 'url'
+            source: 'domain' | 'file' | 'url'
             status: 'DISABLED' | 'FAILED' | 'PENDING' | 'SUCCESSFUL'
             meta: MLSnippetsIngestionMeta
         }
@@ -285,6 +285,19 @@ declare namespace Components {
                 | 'guidance-helpcenter'
                 | 'store-domain'
                 | 'url'
+        }
+        export interface ArticleStatisticsDto {
+            /**
+             * Article ID
+             */
+            articleId: number
+            /**
+             * Rating statistics
+             */
+            rating: {
+                up: number
+                down: number
+            }
         }
         export interface ArticleTemplateDto {
             key: string
@@ -514,31 +527,6 @@ declare namespace Components {
                  */
                 enabled: boolean
             }
-        }
-        export interface BulkCopyArticlesRequestDto {
-            /**
-             * Array of article IDs to copy
-             * example:
-             * [
-             *   1,
-             *   2,
-             *   3,
-             *   100,
-             *   250
-             * ]
-             */
-            article_ids: number[]
-            /**
-             * List of shop names where to copy given articles
-             * example:
-             * [
-             *   "shop-1, shop-2",
-             *   [
-             *     "shop-3"
-             *   ]
-             * ]
-             */
-            shop_names: string[]
         }
         export interface BatchArticlesRequestDto {
             /**
@@ -2301,6 +2289,14 @@ declare namespace Components {
                  * UID for this call. e.g. snippet_transformation_{account_name}{help_center_id}_{timestamp}
                  */
                 'x-execution-id': string | null
+                /**
+                 * File type (MIME type) - only for file ingestion
+                 */
+                file_type?: string
+                /**
+                 * File size in bytes - only for file ingestion
+                 */
+                file_size_bytes?: number
             } | null
         }
         export interface GetHelpCenterDto {
@@ -2720,7 +2716,7 @@ declare namespace Components {
             id: number
             url: string | null
             domain: string | null
-            source: 'domain' | 'url'
+            source: 'domain' | 'file' | 'url'
             status: 'DISABLED' | 'FAILED' | 'PENDING' | 'SUCCESSFUL'
             meta: MLSnippetsIngestionMeta
         }
@@ -2863,6 +2859,14 @@ declare namespace Components {
              * UID for this call. e.g. snippet_transformation_{account_name}{help_center_id}_{timestamp}
              */
             'x-execution-id': string | null
+            /**
+             * File type (MIME type) - only for file ingestion
+             */
+            file_type?: string
+            /**
+             * File size in bytes - only for file ingestion
+             */
+            file_size_bytes?: number
         }
         export interface MailtoReplacementConfigDto {
             emails: string[]
@@ -4380,7 +4384,7 @@ declare namespace Paths {
             export type AccountId = any
             export type HelpCenterId = number
             export type Ids = number[]
-            export type Sources = ('domain' | 'url')[]
+            export type Sources = ('domain' | 'file' | 'url')[]
         }
         export interface PathParameters {
             help_center_id: Parameters.HelpCenterId
@@ -4862,6 +4866,29 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = number[]
+        }
+    }
+    namespace GetStatistics {
+        namespace Parameters {
+            export type EndDate = string
+            export type HelpCenterId = number
+            export type Ids = number[]
+            export type Page = any
+            export type PerPage = any
+            export type StartDate = string
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+        }
+        export interface QueryParameters {
+            start_date: Parameters.StartDate
+            end_date: Parameters.EndDate
+            ids?: Parameters.Ids
+            per_page?: Parameters.PerPage
+            page?: Parameters.Page
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ArticleStatisticsDto[]
         }
     }
     namespace GetSubCategoriesPositions {
@@ -5878,6 +5905,17 @@ export interface OperationMethods {
         data?: Paths.CreateArticle.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateArticle.Responses.$201>
+    /**
+     * getStatistics - Get article statistics for a date range
+     */
+    'getStatistics'(
+        parameters: Parameters<
+            Paths.GetStatistics.QueryParameters &
+                Paths.GetStatistics.PathParameters
+        >,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetStatistics.Responses.$200>
     /**
      * getUncategorizedArticlesPositions - Retrieve uncategorized articles' positions
      */
@@ -7146,6 +7184,19 @@ export interface PathsDictionary {
             data?: Paths.CreateArticle.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateArticle.Responses.$201>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/stats']: {
+        /**
+         * getStatistics - Get article statistics for a date range
+         */
+        'get'(
+            parameters: Parameters<
+                Paths.GetStatistics.QueryParameters &
+                    Paths.GetStatistics.PathParameters
+            >,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetStatistics.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/articles/uncategorized/positions']: {
         /**

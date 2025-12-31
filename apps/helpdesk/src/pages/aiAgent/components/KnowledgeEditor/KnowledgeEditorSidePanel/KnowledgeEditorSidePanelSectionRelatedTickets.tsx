@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import type { JSX } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -23,7 +24,7 @@ type Ticket = {
 }
 
 export type Props = {
-    ticketCount: number
+    ticketCount?: number
     latest3Tickets?: Ticket[]
     isLoading?: boolean
     sectionId: string
@@ -47,7 +48,7 @@ export const KnowledgeEditorSidePanelSectionRelatedTickets = ({
     dateRange,
     outcomeCustomFieldId,
     intentCustomFieldId,
-}: Props) => {
+}: Props): JSX.Element => {
     const dispatch = useAppDispatch()
 
     const handleViewMoreClick = useCallback(() => {
@@ -83,6 +84,7 @@ export const KnowledgeEditorSidePanelSectionRelatedTickets = ({
             }}
             sectionId={sectionId}
             bottomLink={
+                ticketCount !== undefined &&
                 ticketCount > 3 &&
                 resourceSourceId &&
                 resourceSourceSetId &&
@@ -123,7 +125,7 @@ const Title = ({
     ticketCount,
     isLoading,
 }: {
-    ticketCount: number
+    ticketCount?: number
     isLoading?: boolean
 }) => (
     <span className={css.title}>
@@ -132,7 +134,7 @@ const Title = ({
             <Skeleton width={30} height={24} />
         ) : (
             <Tag color="grey" style={{ width: 'auto' }}>
-                {ticketCount}
+                {ticketCount ?? 0}
             </Tag>
         )}
     </span>

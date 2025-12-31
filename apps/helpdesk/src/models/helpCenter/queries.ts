@@ -37,6 +37,7 @@ import {
     getHelpCenterArticle,
     getHelpCenterArticles,
     getHelpCenterList,
+    getHelpCenterStatistics,
     getIngestedResource,
     getIngestionLogs,
     getKnowledgeHubArticles,
@@ -75,6 +76,15 @@ export const helpCenterKeys = {
         ].filter(Boolean), // remove undefined queryParams
     article: (helpCenterId: number, articleId: number) =>
         [...helpCenterKeys.articles(helpCenterId), articleId] as const,
+    statistics: (
+        helpCenterId: number,
+        queryParams?: Paths.GetStatistics.QueryParameters,
+    ) =>
+        [
+            ...helpCenterKeys.detail(helpCenterId),
+            'statistics',
+            queryParams,
+        ].filter(Boolean),
     getCategoryTree: (
         helpCenterId: number,
         parentCategoryId: number,
@@ -191,6 +201,29 @@ export const useGetHelpCenterArticleList = (
                 { help_center_id: helpCenterId },
                 queryParams,
             ),
+        ...overrides,
+        enabled: !!client && (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useGetHelpCenterStatistics = (
+    helpCenterId: Paths.GetStatistics.Parameters.HelpCenterId,
+    queryParams: Paths.GetStatistics.QueryParameters,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getHelpCenterStatistics>>
+    >,
+) => {
+    const { client } = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: helpCenterKeys.statistics(helpCenterId, queryParams),
+        queryFn: async () =>
+            getHelpCenterStatistics(
+                client,
+                { help_center_id: helpCenterId },
+                queryParams,
+            ),
+        staleTime: STALE_TIME,
         ...overrides,
         enabled: !!client && (overrides === undefined || overrides.enabled),
     })

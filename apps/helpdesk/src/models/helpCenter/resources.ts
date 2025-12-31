@@ -23,6 +23,21 @@ export const getHelpCenterArticles = async (
     return response.data
 }
 
+export const getHelpCenterStatistics = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.GetStatistics.PathParameters,
+    queryParams: Paths.GetStatistics.QueryParameters,
+) => {
+    if (!client) return null
+
+    const response = await client.getStatistics({
+        ...pathParams,
+        ...queryParams,
+    })
+
+    return response.data
+}
+
 export const getCategoryTree = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.GetCategoryTree.PathParameters,

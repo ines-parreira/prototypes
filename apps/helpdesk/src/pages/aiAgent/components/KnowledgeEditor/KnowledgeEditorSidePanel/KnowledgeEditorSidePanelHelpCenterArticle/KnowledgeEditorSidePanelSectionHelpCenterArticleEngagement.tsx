@@ -1,3 +1,5 @@
+import { Skeleton } from '@gorgias/axiom'
+
 import { DEFAULT_LOCALE } from 'domains/reporting/pages/common/utils'
 
 import { KnowledgeEditorSidePanelFieldPercentage } from '../KnowledgeEditorSidePanelCommonFields'
@@ -10,37 +12,45 @@ export type Props = {
     views?: number
     rating?: number // 0.0 to 1.0
     reactions?: {
-        positive: number
-        negative: number
+        up: number
+        down: number
     }
     sectionId: string
-    reportUrl?: string
+    isLoading?: boolean
 }
 
 export const KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement = ({
     views,
     rating,
     reactions,
-    reportUrl,
     sectionId,
+    isLoading,
 }: Props) => (
     <KnowledgeEditorSidePanelSection
         header={{ title: 'Engagement', subtitle: 'Last 28 days' }}
         sectionId={sectionId}
-        bottomLink={{
-            text: 'View report',
-            url: reportUrl,
-        }}
     >
         <KnowledgeEditorSidePanelTwoColumnsContent
             columns={[
                 {
                     left: 'Views',
-                    right: views ? views.toLocaleString(DEFAULT_LOCALE) : '-',
+                    right: isLoading ? (
+                        <Skeleton key="views-loading" width={100} height={20} />
+                    ) : views ? (
+                        views.toLocaleString(DEFAULT_LOCALE)
+                    ) : (
+                        '-'
+                    ),
                 },
                 {
                     left: 'Rating',
-                    right: (
+                    right: isLoading ? (
+                        <Skeleton
+                            key="rating-loading"
+                            width={100}
+                            height={20}
+                        />
+                    ) : (
                         <KnowledgeEditorSidePanelFieldPercentage
                             key="rating"
                             percentage={rating}
@@ -49,7 +59,15 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement = ({
                 },
                 {
                     left: 'Reactions',
-                    right: <Reactions key="reactions" reactions={reactions} />,
+                    right: isLoading ? (
+                        <Skeleton
+                            key="reactions-loading"
+                            width={100}
+                            height={20}
+                        />
+                    ) : (
+                        <Reactions key="reactions" reactions={reactions} />
+                    ),
                 },
             ]}
         />
@@ -58,6 +76,6 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement = ({
 
 const Reactions = ({ reactions }: Pick<Props, 'reactions'>) => (
     <div className={css.reactions}>
-        {reactions?.positive || '-'} 👍 | {reactions?.negative || '-'} 👎
+        {reactions?.up || '-'} 👍 | {reactions?.down || '-'} 👎
     </div>
 )

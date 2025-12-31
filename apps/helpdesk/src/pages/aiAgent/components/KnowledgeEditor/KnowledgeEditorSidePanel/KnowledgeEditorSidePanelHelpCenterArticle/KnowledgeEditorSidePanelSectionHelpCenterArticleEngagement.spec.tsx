@@ -10,9 +10,8 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement', () => {
                 <KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement
                     views={1208}
                     rating={0.58}
-                    reactions={{ positive: 871, negative: 635 }}
+                    reactions={{ up: 871, down: 635 }}
                     sectionId="engagement"
-                    reportUrl="https://gorgias.gorgias.com/app/views"
                 />
             </KnowledgeEditorSidePanel>,
         )
@@ -21,10 +20,6 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement', () => {
         expect(screen.getByText('1,208')).toBeInTheDocument()
         expect(screen.getByText('58%')).toBeInTheDocument()
         expect(screen.getByText('871 👍 | 635 👎')).toBeInTheDocument()
-        expect(screen.getByText('View report')).toHaveAttribute(
-            'href',
-            'https://gorgias.gorgias.com/app/views',
-        )
     })
 
     it('renders no reactions', () => {
@@ -34,6 +29,5 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement', () => {
             </KnowledgeEditorSidePanel>,
         )
         expect(screen.getByText('- 👍 | - 👎')).toBeInTheDocument()
-        expect(screen.getByText('View report')).not.toHaveAttribute('href')
     })
 })
