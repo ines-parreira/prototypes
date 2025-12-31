@@ -6,9 +6,10 @@ import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import type { Opportunity } from 'pages/aiAgent/opportunities/types'
+
 import { OpportunityDismissReason } from '../../../../tickets/detail/components/AIAgentFeedbackBar/types'
 import { OpportunityType } from '../../enums'
-import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { DismissOpportunityModal } from './DismissOpportunityModal'
 
 jest.mock('state/notifications/actions', () => ({

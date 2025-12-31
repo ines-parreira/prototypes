@@ -10,13 +10,13 @@ import thunk from 'redux-thunk'
 
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
+import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
 import { notify } from 'state/notifications/actions'
 
 import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
 import { OpportunityType } from '../../enums'
 import { useProcessOpportunity } from '../../hooks/useProcessOpportunity'
-import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesContent } from './OpportunitiesContent'
 
 jest.mock('state/notifications/actions', () => ({

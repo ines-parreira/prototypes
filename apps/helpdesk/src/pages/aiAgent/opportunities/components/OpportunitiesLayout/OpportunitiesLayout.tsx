@@ -19,7 +19,7 @@ import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarConte
 import { useKnowledgeServiceOpportunities } from '../../hooks/useKnowledgeServiceOpportunities'
 import { useOpportunitiesTracking } from '../../hooks/useOpportunitiesTracking'
 import { useSelectedOpportunity } from '../../hooks/useSelectedOpportunity'
-import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
+import type { SidebarOpportunityItem } from '../../types'
 import { mapAiArticlesToOpportunities } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesContent } from '../OpportunitiesContent/OpportunitiesContent'
 import { OpportunitiesSidebar } from '../OpportunitiesSidebar/OpportunitiesSidebar'
@@ -80,7 +80,10 @@ export const OpportunitiesLayout = () => {
         totalCount,
         totalPending,
         refetch: refetchOpportunities,
-    } = useKnowledgeServiceOpportunities(shopIntegrationId, useKnowledgeService)
+    } = useKnowledgeServiceOpportunities(
+        shopIntegrationId || 0,
+        useKnowledgeService,
+    )
 
     const {
         onOpportunityPageVisited,
@@ -92,7 +95,7 @@ export const OpportunitiesLayout = () => {
         userId,
     })
 
-    const opportunities: Opportunity[] = useMemo(() => {
+    const opportunities: SidebarOpportunityItem[] = useMemo(() => {
         if (useKnowledgeService) {
             return knowledgeServiceOpportunities
         }
@@ -109,7 +112,11 @@ export const OpportunitiesLayout = () => {
         selectedOpportunity,
         setSelectedOpportunityId,
         isLoading: isLoadingOpportunityDetails,
-    } = useSelectedOpportunity(opportunities, useKnowledgeService)
+    } = useSelectedOpportunity(
+        shopIntegrationId || 0,
+        opportunities,
+        useKnowledgeService,
+    )
 
     const selectNextOpportunity = (articleKey: string) => {
         if (selectedOpportunity?.key === articleKey) {

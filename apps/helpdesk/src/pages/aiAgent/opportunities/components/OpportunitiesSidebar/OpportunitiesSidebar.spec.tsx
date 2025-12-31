@@ -7,7 +7,11 @@ import { Virtuoso } from 'react-virtuoso'
 
 import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
 import { OpportunityType } from '../../enums'
-import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
+import type {
+    Opportunity,
+    OpportunityListItem,
+    SidebarOpportunityItem,
+} from '../../types'
 import { OpportunitiesSidebar } from './OpportunitiesSidebar'
 
 jest.mock('react-virtuoso', () => ({ Virtuoso: jest.fn() }))
@@ -69,7 +73,7 @@ describe('OpportunitiesSidebar', () => {
         VirtuosoMock.mockImplementation(
             ({ data, itemContent, components, computeItemKey }) => (
                 <div data-testid="virtuoso-mock">
-                    {data.map((item: Opportunity, index: number) => (
+                    {data.map((item: SidebarOpportunityItem, index: number) => (
                         <div key={computeItemKey?.(index, item) || item.id}>
                             {itemContent(index, item)}
                         </div>
@@ -132,26 +136,6 @@ describe('OpportunitiesSidebar', () => {
 
         const containerContent = container.querySelector('.containerContent')
         expect(containerContent).toBeInTheDocument()
-    })
-
-    it('should call onSelectOpportunity with first opportunity on mount', async () => {
-        renderWithProvider(
-            <OpportunitiesSidebar
-                opportunities={mockOpportunities}
-                onSelectOpportunity={mockOnSelectOpportunity}
-            />,
-        )
-
-        await waitFor(() => {
-            expect(mockOnSelectOpportunity).toHaveBeenCalledWith({
-                id: '1',
-                title: "What's your return policy?",
-                content:
-                    'You can request a return or exchange within 14 days of your delivery date.',
-                type: OpportunityType.FILL_KNOWLEDGE_GAP,
-                key: 'ai_1',
-            })
-        })
     })
 
     it('should call onSelectOpportunity when a card is clicked', async () => {
@@ -289,11 +273,17 @@ describe('OpportunitiesSidebar', () => {
                     endReached,
                 }) => (
                     <div data-testid="virtuoso-mock">
-                        {data.map((item: Opportunity, index: number) => (
-                            <div key={computeItemKey?.(index, item) || item.id}>
-                                {itemContent(index, item)}
-                            </div>
-                        ))}
+                        {data.map(
+                            (item: SidebarOpportunityItem, index: number) => (
+                                <div
+                                    key={
+                                        computeItemKey?.(index, item) || item.id
+                                    }
+                                >
+                                    {itemContent(index, item)}
+                                </div>
+                            ),
+                        )}
                         {components?.Footer?.()}
                         <button onClick={endReached}>Trigger End</button>
                     </div>
@@ -325,11 +315,17 @@ describe('OpportunitiesSidebar', () => {
                     endReached,
                 }) => (
                     <div data-testid="virtuoso-mock">
-                        {data.map((item: Opportunity, index: number) => (
-                            <div key={computeItemKey?.(index, item) || item.id}>
-                                {itemContent(index, item)}
-                            </div>
-                        ))}
+                        {data.map(
+                            (item: SidebarOpportunityItem, index: number) => (
+                                <div
+                                    key={
+                                        computeItemKey?.(index, item) || item.id
+                                    }
+                                >
+                                    {itemContent(index, item)}
+                                </div>
+                            ),
+                        )}
                         {components?.Footer?.()}
                         <button onClick={endReached}>Trigger End</button>
                     </div>
@@ -355,11 +351,17 @@ describe('OpportunitiesSidebar', () => {
             VirtuosoMock.mockImplementation(
                 ({ data, itemContent, components, computeItemKey }) => (
                     <div data-testid="virtuoso-mock">
-                        {data.map((item: Opportunity, index: number) => (
-                            <div key={computeItemKey?.(index, item) || item.id}>
-                                {itemContent(index, item)}
-                            </div>
-                        ))}
+                        {data.map(
+                            (item: SidebarOpportunityItem, index: number) => (
+                                <div
+                                    key={
+                                        computeItemKey?.(index, item) || item.id
+                                    }
+                                >
+                                    {itemContent(index, item)}
+                                </div>
+                            ),
+                        )}
                         {components?.Footer && <components.Footer />}
                     </div>
                 ),
@@ -383,11 +385,17 @@ describe('OpportunitiesSidebar', () => {
             VirtuosoMock.mockImplementation(
                 ({ data, itemContent, components, computeItemKey }) => (
                     <div data-testid="virtuoso-mock">
-                        {data.map((item: Opportunity, index: number) => (
-                            <div key={computeItemKey?.(index, item) || item.id}>
-                                {itemContent(index, item)}
-                            </div>
-                        ))}
+                        {data.map(
+                            (item: SidebarOpportunityItem, index: number) => (
+                                <div
+                                    key={
+                                        computeItemKey?.(index, item) || item.id
+                                    }
+                                >
+                                    {itemContent(index, item)}
+                                </div>
+                            ),
+                        )}
                         {components?.Footer && <components.Footer />}
                     </div>
                 ),
@@ -408,30 +416,6 @@ describe('OpportunitiesSidebar', () => {
             expect(skeletons.length).toBe(0)
         })
 
-        it('should auto-select when opportunities go from empty to populated', async () => {
-            const { rerender } = renderWithProvider(
-                <OpportunitiesSidebar
-                    opportunities={[]}
-                    onSelectOpportunity={mockOnSelectOpportunity}
-                />,
-            )
-
-            expect(mockOnSelectOpportunity).not.toHaveBeenCalled()
-
-            rerender(
-                <OpportunitiesSidebar
-                    opportunities={mockOpportunities}
-                    onSelectOpportunity={mockOnSelectOpportunity}
-                />,
-            )
-
-            await waitFor(() => {
-                expect(mockOnSelectOpportunity).toHaveBeenCalledWith(
-                    mockOpportunities[0],
-                )
-            })
-        })
-
         it('should setup auto-fetch effect when all conditions are met', () => {
             const mockOnEndReached = jest.fn()
 
@@ -445,8 +429,6 @@ describe('OpportunitiesSidebar', () => {
                     onEndReached={mockOnEndReached}
                 />,
             )
-
-            expect(mockOnSelectOpportunity).toHaveBeenCalled()
 
             const additionalOpportunities: Opportunity[] = [
                 {
@@ -523,11 +505,17 @@ describe('OpportunitiesSidebar', () => {
             VirtuosoMock.mockImplementation(
                 ({ data, itemContent, components, computeItemKey }) => (
                     <div data-testid="virtuoso-mock">
-                        {data.map((item: Opportunity, index: number) => (
-                            <div key={computeItemKey?.(index, item) || item.id}>
-                                {itemContent(index, item)}
-                            </div>
-                        ))}
+                        {data.map(
+                            (item: SidebarOpportunityItem, index: number) => (
+                                <div
+                                    key={
+                                        computeItemKey?.(index, item) || item.id
+                                    }
+                                >
+                                    {itemContent(index, item)}
+                                </div>
+                            ),
+                        )}
                         {components?.Footer && <components.Footer />}
                     </div>
                 ),
@@ -568,34 +556,103 @@ describe('OpportunitiesSidebar', () => {
         })
     })
 
+    describe('insight display', () => {
+        it('should display insight for OpportunityListItem (KS flow)', () => {
+            const opportunityListItems: OpportunityListItem[] = [
+                {
+                    id: '1',
+                    key: 'ks_1',
+                    insight: 'Customer frequently asks about return policy',
+                    type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                },
+            ]
+
+            renderWithProvider(
+                <OpportunitiesSidebar
+                    opportunities={opportunityListItems}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                />,
+            )
+
+            expect(
+                screen.getByText(
+                    'Customer frequently asks about return policy',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should display title for Opportunity (legacy flow)', () => {
+            const opportunities: Opportunity[] = [
+                {
+                    id: '1',
+                    key: 'ai_1',
+                    title: 'Fallback Title',
+                    content: 'Some content',
+                    type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                },
+            ]
+
+            renderWithProvider(
+                <OpportunitiesSidebar
+                    opportunities={opportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                />,
+            )
+
+            expect(screen.getByText('Fallback Title')).toBeInTheDocument()
+        })
+    })
+
     describe('onOpportunityViewed callback', () => {
-        it('should call onOpportunityViewed when card is clicked', async () => {
+        it('should call onOpportunityViewed when selectedOpportunity changes after click', async () => {
             const mockOnOpportunityViewed = jest.fn()
 
             VirtuosoMock.mockImplementation(
                 ({ data, itemContent, computeItemKey }) => (
                     <div data-testid="virtuoso-mock">
-                        {data.map((item: Opportunity, index: number) => (
-                            <div key={computeItemKey?.(index, item) || item.id}>
-                                {itemContent(index, item)}
-                            </div>
-                        ))}
+                        {data.map(
+                            (item: SidebarOpportunityItem, index: number) => (
+                                <div
+                                    key={
+                                        computeItemKey?.(index, item) || item.id
+                                    }
+                                >
+                                    {itemContent(index, item)}
+                                </div>
+                            ),
+                        )}
                     </div>
                 ),
             )
 
-            renderWithProvider(
+            const { rerender } = renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     onOpportunityViewed={mockOnOpportunityViewed}
+                    selectedOpportunity={mockOpportunities[0]}
                 />,
             )
+
+            mockOnOpportunityViewed.mockClear()
 
             const secondCard = screen.getByText(
                 'How do I access my store account?',
             )
             await act(() => userEvent.click(secondCard))
+
+            expect(mockOnSelectOpportunity).toHaveBeenCalledWith(
+                mockOpportunities[1],
+            )
+
+            rerender(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    onOpportunityViewed={mockOnOpportunityViewed}
+                    selectedOpportunity={mockOpportunities[1]}
+                />,
+            )
 
             await waitFor(() => {
                 expect(mockOnOpportunityViewed).toHaveBeenCalledWith({
@@ -605,7 +662,7 @@ describe('OpportunitiesSidebar', () => {
             })
         })
 
-        it('should call onOpportunityViewed on initial mount with first opportunity', async () => {
+        it('should call onOpportunityViewed when selectedOpportunity is provided', async () => {
             const mockOnOpportunityViewed = jest.fn()
 
             renderWithProvider(
@@ -613,6 +670,7 @@ describe('OpportunitiesSidebar', () => {
                     opportunities={mockOpportunities}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     onOpportunityViewed={mockOnOpportunityViewed}
+                    selectedOpportunity={mockOpportunities[0]}
                 />,
             )
 
@@ -628,11 +686,17 @@ describe('OpportunitiesSidebar', () => {
             VirtuosoMock.mockImplementation(
                 ({ data, itemContent, computeItemKey }) => (
                     <div data-testid="virtuoso-mock">
-                        {data.map((item: Opportunity, index: number) => (
-                            <div key={computeItemKey?.(index, item) || item.id}>
-                                {itemContent(index, item)}
-                            </div>
-                        ))}
+                        {data.map(
+                            (item: SidebarOpportunityItem, index: number) => (
+                                <div
+                                    key={
+                                        computeItemKey?.(index, item) || item.id
+                                    }
+                                >
+                                    {itemContent(index, item)}
+                                </div>
+                            ),
+                        )}
                     </div>
                 ),
             )

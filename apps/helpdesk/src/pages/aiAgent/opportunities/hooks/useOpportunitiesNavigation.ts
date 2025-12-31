@@ -1,11 +1,11 @@
-import type { Opportunity } from '../utils/mapAiArticlesToOpportunities'
+import type { Opportunity, SidebarOpportunityItem } from '../types'
 
 export const useOpportunitiesNavigation = ({
     selectedOpportunity,
     opportunities,
 }: {
     selectedOpportunity: Opportunity | null
-    opportunities: Opportunity[]
+    opportunities: SidebarOpportunityItem[]
 }) => {
     if (!selectedOpportunity || !opportunities || opportunities.length === 0) {
         return {

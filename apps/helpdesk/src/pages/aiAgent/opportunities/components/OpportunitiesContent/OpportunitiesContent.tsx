@@ -19,6 +19,10 @@ import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { DismissOpportunityModal } from 'pages/aiAgent/opportunities/components/DismissOpportunityModal/DismissOpportunityModal'
+import type {
+    Opportunity,
+    SidebarOpportunityItem,
+} from 'pages/aiAgent/opportunities/types'
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import {
@@ -42,7 +46,6 @@ import {
     buildDismissPayload,
     useProcessOpportunity,
 } from '../../hooks/useProcessOpportunity'
-import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesContentSkeleton } from '../OpportunitiesContentSkeleton/OpportunitiesContentSkeleton'
 import { OpportunitiesEmptyState } from '../OpportunitiesEmptyState/OpportunitiesEmptyState'
 import { OpportunitiesNavigation } from '../OpportunitiesNavigation/OpportunitiesNavigation'
@@ -64,7 +67,7 @@ interface OpportunitiesContentProps {
         templateKey: string,
         reviewAction: ArticleTemplateReviewAction,
     ) => void
-    opportunities?: Opportunity[]
+    opportunities?: SidebarOpportunityItem[]
     selectCertainOpportunity?: (index: number) => void
     onOpportunityAccepted?: (context: {
         opportunityId: string
@@ -189,8 +192,9 @@ export const OpportunitiesContent = ({
 
             setIsLoading(true)
             try {
-                if (useKnowledgeService) {
+                if (useKnowledgeService && shopIntegrationId) {
                     await processOpportunity.mutateAsync({
+                        shopIntegrationId,
                         opportunityId: parseInt(selectedOpportunity.id, 10),
                         data: buildDismissPayload(),
                     })
@@ -237,6 +241,7 @@ export const OpportunitiesContent = ({
             onArchive,
             dispatch,
             submitFeedback,
+            shopIntegrationId,
         ],
     )
 
@@ -317,8 +322,9 @@ export const OpportunitiesContent = ({
 
         setIsLoading(true)
         try {
-            if (useKnowledgeService) {
+            if (useKnowledgeService && shopIntegrationId) {
                 await processOpportunity.mutateAsync({
+                    shopIntegrationId,
                     opportunityId: parseInt(selectedOpportunity.id, 10),
                     data: buildApprovePayload({
                         isVisible: currentFormData.isVisible,
@@ -380,6 +386,7 @@ export const OpportunitiesContent = ({
         useKnowledgeService,
         processOpportunity,
         onArchive,
+        shopIntegrationId,
     ])
 
     if (showEmptyState) {

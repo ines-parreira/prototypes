@@ -3,13 +3,16 @@ import React from 'react'
 import { Button } from '@gorgias/axiom'
 
 import { useOpportunitiesNavigation } from 'pages/aiAgent/opportunities/hooks/useOpportunitiesNavigation'
-import type { Opportunity } from 'pages/aiAgent/opportunities/utils/mapAiArticlesToOpportunities'
+import type {
+    Opportunity,
+    SidebarOpportunityItem,
+} from 'pages/aiAgent/opportunities/types'
 
 import css from './OpportunitiesNavigation.less'
 
 interface OpportunityNavigationProps {
     selectedOpportunity: Opportunity | null
-    opportunities?: Opportunity[]
+    opportunities?: SidebarOpportunityItem[]
     selectCertainOpportunity?: (index: number) => void
     totalCount: number
 }

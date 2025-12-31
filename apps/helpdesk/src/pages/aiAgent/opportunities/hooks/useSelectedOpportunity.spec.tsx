@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { OpportunityType } from '../enums'
-import type { Opportunity } from '../utils/mapAiArticlesToOpportunities'
+import type { Opportunity, OpportunityListItem } from '../types'
 import { useFindOneOpportunity } from './useFindOneOpportunity'
 import { useSelectedOpportunity } from './useSelectedOpportunity'
 
@@ -42,9 +42,26 @@ describe('useSelectedOpportunity', () => {
         },
     ]
 
+    const mockOpportunityListItems: OpportunityListItem[] = [
+        {
+            id: '1',
+            key: 'ks_1',
+            insight: 'Customer frequently asks about return policy',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            ticketCount: 5,
+        },
+        {
+            id: '2',
+            key: 'ks_2',
+            insight: 'Customer frequently asks about shipping',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            ticketCount: 10,
+        },
+    ]
+
     const mockOpportunityDetails: Opportunity = {
         id: '1',
-        key: 'opportunity-1',
+        key: 'ks_1',
         title: 'First Opportunity with Details',
         content: 'Detailed content for first opportunity',
         type: OpportunityType.FILL_KNOWLEDGE_GAP,
@@ -56,7 +73,9 @@ describe('useSelectedOpportunity', () => {
         queryClient.clear()
     })
 
-    it('should initialize with no selected opportunity', () => {
+    const mockShopIntegrationId = 789
+
+    it('should initialize with no selected opportunity when opportunities array is empty', () => {
         const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
@@ -64,12 +83,34 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result } = renderHook(
-            () => useSelectedOpportunity(mockOpportunities, false),
+            () => useSelectedOpportunity(mockShopIntegrationId, [], false),
             { wrapper },
         )
 
         expect(result.current.selectedOpportunity).toBeNull()
         expect(result.current.selectedOpportunityId).toBeNull()
+        expect(result.current.isLoading).toBe(false)
+    })
+
+    it('should auto-select first opportunity when opportunities are provided', () => {
+        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        mockUseFindOneOpportunity.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+        })
+
+        const { result } = renderHook(
+            () =>
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    mockOpportunities,
+                    false,
+                ),
+            { wrapper },
+        )
+
+        expect(result.current.selectedOpportunity).toEqual(mockOpportunities[0])
+        expect(result.current.selectedOpportunityId).toBe('1')
         expect(result.current.isLoading).toBe(false)
     })
 
@@ -81,7 +122,12 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result } = renderHook(
-            () => useSelectedOpportunity(mockOpportunities, false),
+            () =>
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    mockOpportunities,
+                    false,
+                ),
             { wrapper },
         )
 
@@ -102,7 +148,12 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result } = renderHook(
-            () => useSelectedOpportunity(mockOpportunities, false),
+            () =>
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    mockOpportunities,
+                    false,
+                ),
             { wrapper },
         )
 
@@ -110,12 +161,16 @@ describe('useSelectedOpportunity', () => {
             result.current.setSelectedOpportunityId('1')
         })
 
-        expect(mockUseFindOneOpportunity).toHaveBeenCalledWith(1, {
-            query: {
-                enabled: false,
-                refetchOnWindowFocus: false,
+        expect(mockUseFindOneOpportunity).toHaveBeenCalledWith(
+            mockShopIntegrationId,
+            1,
+            {
+                query: {
+                    enabled: false,
+                    refetchOnWindowFocus: false,
+                },
             },
-        })
+        )
     })
 
     it('should fetch opportunity details when useKnowledgeService is true and opportunity is selected', () => {
@@ -126,7 +181,12 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result } = renderHook(
-            () => useSelectedOpportunity(mockOpportunities, true),
+            () =>
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    mockOpportunityListItems,
+                    true,
+                ),
             { wrapper },
         )
 
@@ -134,12 +194,16 @@ describe('useSelectedOpportunity', () => {
             result.current.setSelectedOpportunityId('1')
         })
 
-        expect(mockUseFindOneOpportunity).toHaveBeenCalledWith(1, {
-            query: {
-                enabled: true,
-                refetchOnWindowFocus: false,
+        expect(mockUseFindOneOpportunity).toHaveBeenCalledWith(
+            mockShopIntegrationId,
+            1,
+            {
+                query: {
+                    enabled: true,
+                    refetchOnWindowFocus: false,
+                },
             },
-        })
+        )
     })
 
     it('should not fetch opportunity details when no opportunity is selected', () => {
@@ -149,16 +213,23 @@ describe('useSelectedOpportunity', () => {
             isLoading: false,
         })
 
-        renderHook(() => useSelectedOpportunity(mockOpportunities, true), {
-            wrapper,
-        })
-
-        expect(mockUseFindOneOpportunity).toHaveBeenCalledWith(undefined, {
-            query: {
-                enabled: false,
-                refetchOnWindowFocus: false,
+        renderHook(
+            () => useSelectedOpportunity(mockShopIntegrationId, [], true),
+            {
+                wrapper,
             },
-        })
+        )
+
+        expect(mockUseFindOneOpportunity).toHaveBeenCalledWith(
+            mockShopIntegrationId,
+            undefined,
+            {
+                query: {
+                    enabled: false,
+                    refetchOnWindowFocus: false,
+                },
+            },
+        )
     })
 
     it('should show loading state when fetching opportunity details', () => {
@@ -169,7 +240,12 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result } = renderHook(
-            () => useSelectedOpportunity(mockOpportunities, true),
+            () =>
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    mockOpportunityListItems,
+                    true,
+                ),
             { wrapper },
         )
 
@@ -188,7 +264,12 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result, rerender } = renderHook(
-            () => useSelectedOpportunity(mockOpportunities, true),
+            () =>
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    mockOpportunityListItems,
+                    true,
+                ),
             { wrapper },
         )
 
@@ -210,7 +291,7 @@ describe('useSelectedOpportunity', () => {
         })
     })
 
-    it('should fallback to base opportunity when opportunity details are loading', () => {
+    it('should return null when opportunity details are loading in KS flow', () => {
         const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
@@ -218,7 +299,12 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result } = renderHook(
-            () => useSelectedOpportunity(mockOpportunities, true),
+            () =>
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    mockOpportunityListItems,
+                    true,
+                ),
             { wrapper },
         )
 
@@ -226,7 +312,7 @@ describe('useSelectedOpportunity', () => {
             result.current.setSelectedOpportunityId('1')
         })
 
-        expect(result.current.selectedOpportunity).toEqual(mockOpportunities[0])
+        expect(result.current.selectedOpportunity).toBeNull()
         expect(result.current.isLoading).toBe(true)
     })
 
@@ -238,7 +324,12 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result } = renderHook(
-            () => useSelectedOpportunity(mockOpportunities, false),
+            () =>
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    mockOpportunities,
+                    false,
+                ),
             { wrapper },
         )
 
@@ -257,7 +348,12 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result } = renderHook(
-            () => useSelectedOpportunity(mockOpportunities, false),
+            () =>
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    mockOpportunities,
+                    false,
+                ),
             { wrapper },
         )
 
@@ -274,7 +370,7 @@ describe('useSelectedOpportunity', () => {
         expect(result.current.selectedOpportunity).toEqual(mockOpportunities[1])
     })
 
-    it('should clear selected opportunity when setting id to null', () => {
+    it('should re-select first opportunity when setting id to null while opportunities exist', () => {
         const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
@@ -282,22 +378,27 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result } = renderHook(
-            () => useSelectedOpportunity(mockOpportunities, false),
+            () =>
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    mockOpportunities,
+                    false,
+                ),
             { wrapper },
         )
 
         act(() => {
-            result.current.setSelectedOpportunityId('1')
+            result.current.setSelectedOpportunityId('2')
         })
 
-        expect(result.current.selectedOpportunity).toEqual(mockOpportunities[0])
+        expect(result.current.selectedOpportunity).toEqual(mockOpportunities[1])
 
         act(() => {
             result.current.setSelectedOpportunityId(null)
         })
 
-        expect(result.current.selectedOpportunity).toBeNull()
-        expect(result.current.selectedOpportunityId).toBeNull()
+        expect(result.current.selectedOpportunity).toEqual(mockOpportunities[0])
+        expect(result.current.selectedOpportunityId).toBe('1')
     })
 
     it('should switch from base to detailed opportunity when useKnowledgeService changes', async () => {
@@ -309,7 +410,11 @@ describe('useSelectedOpportunity', () => {
 
         const { result, rerender } = renderHook(
             ({ useKnowledgeService }) =>
-                useSelectedOpportunity(mockOpportunities, useKnowledgeService),
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    mockOpportunities,
+                    useKnowledgeService,
+                ),
             {
                 wrapper,
                 initialProps: { useKnowledgeService: false },
@@ -344,7 +449,12 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result } = renderHook(
-            () => useSelectedOpportunity(mockOpportunities, false),
+            () =>
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    mockOpportunities,
+                    false,
+                ),
             { wrapper },
         )
 
@@ -363,7 +473,12 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result, rerender } = renderHook(
-            ({ opportunities }) => useSelectedOpportunity(opportunities, false),
+            ({ opportunities }) =>
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    opportunities,
+                    false,
+                ),
             {
                 wrapper,
                 initialProps: { opportunities: mockOpportunities },
@@ -402,7 +517,12 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result, rerender } = renderHook(
-            ({ opportunities }) => useSelectedOpportunity(opportunities, false),
+            ({ opportunities }) =>
+                useSelectedOpportunity(
+                    mockShopIntegrationId,
+                    opportunities,
+                    false,
+                ),
             {
                 wrapper,
                 initialProps: { opportunities: mockOpportunities },

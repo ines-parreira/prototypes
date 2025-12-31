@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
-import type { Opportunity } from 'pages/aiAgent/opportunities/utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 
 import { OpportunitiesNavigation } from './OpportunitiesNavigation'
 

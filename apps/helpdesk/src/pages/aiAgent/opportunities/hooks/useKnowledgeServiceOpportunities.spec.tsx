@@ -3,19 +3,19 @@ import type React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
-import { useFindOpportunitiesOpportunity } from '@gorgias/knowledge-service-queries'
+import { useFindOpportunitiesByShopOpportunity } from '@gorgias/knowledge-service-queries'
 import type { PaginatedOpportunities } from '@gorgias/knowledge-service-types'
 
 import { OpportunityType } from '../enums'
 import { useKnowledgeServiceOpportunities } from './useKnowledgeServiceOpportunities'
 
 jest.mock('@gorgias/knowledge-service-queries', () => ({
-    useFindOpportunitiesOpportunity: jest.fn(),
+    useFindOpportunitiesByShopOpportunity: jest.fn(),
     queryKeys: {
         opportunities: {
-            findOpportunitiesOpportunity: jest.fn(() => [
+            findOpportunitiesByShopOpportunity: jest.fn(() => [
                 'opportunities',
-                'findOpportunitiesOpportunity',
+                'findOpportunitiesByShopOpportunity',
             ]),
             all: jest.fn(() => ['opportunities']),
         },
@@ -62,6 +62,7 @@ describe('useKnowledgeServiceOpportunities', () => {
                 shopIntegrationId: 1,
                 shopName: 'shop-1',
                 detectionCount: 1,
+                insight: 'Test insight 1',
                 resources: [
                     {
                         resourceId: 'res-1',
@@ -81,6 +82,7 @@ describe('useKnowledgeServiceOpportunities', () => {
                 shopIntegrationId: 1,
                 shopName: 'shop-1',
                 detectionCount: 1,
+                insight: 'Test insight 2',
                 resources: [
                     {
                         resourceId: 'res-2',
@@ -108,7 +110,7 @@ describe('useKnowledgeServiceOpportunities', () => {
 
     it('should fetch opportunities when enabled', async () => {
         const mockUseFindOpportunities =
-            useFindOpportunitiesOpportunity as jest.Mock
+            useFindOpportunitiesByShopOpportunity as jest.Mock
         mockUseFindOpportunities.mockReturnValue({
             data: { data: mockPaginatedResponse },
             isLoading: false,
@@ -136,7 +138,7 @@ describe('useKnowledgeServiceOpportunities', () => {
 
     it('should not fetch when disabled', () => {
         const mockUseFindOpportunities =
-            useFindOpportunitiesOpportunity as jest.Mock
+            useFindOpportunitiesByShopOpportunity as jest.Mock
         mockUseFindOpportunities.mockReturnValue({
             data: null,
             isLoading: false,
@@ -149,6 +151,7 @@ describe('useKnowledgeServiceOpportunities', () => {
         })
 
         expect(mockUseFindOpportunities).toHaveBeenCalledWith(
+            123,
             expect.anything(),
             expect.objectContaining({
                 query: expect.objectContaining({
@@ -160,7 +163,7 @@ describe('useKnowledgeServiceOpportunities', () => {
 
     it('should handle pagination metadata correctly', async () => {
         const mockUseFindOpportunities =
-            useFindOpportunitiesOpportunity as jest.Mock
+            useFindOpportunitiesByShopOpportunity as jest.Mock
         mockUseFindOpportunities.mockReturnValue({
             data: { data: mockPaginatedResponse },
             isLoading: false,
@@ -181,7 +184,7 @@ describe('useKnowledgeServiceOpportunities', () => {
 
     it('should handle fetchNextPage by setting cursor', async () => {
         const mockUseFindOpportunities =
-            useFindOpportunitiesOpportunity as jest.Mock
+            useFindOpportunitiesByShopOpportunity as jest.Mock
         mockUseFindOpportunities.mockReturnValue({
             data: { data: mockPaginatedResponse },
             isLoading: false,
@@ -205,6 +208,12 @@ describe('useKnowledgeServiceOpportunities', () => {
                         {
                             id: 3,
                             opportunityType: 'FILL_KNOWLEDGE_GAP',
+                            accountId: 1,
+                            createdDatetime: '2021-01-01',
+                            shopIntegrationId: 1,
+                            shopName: 'shop-1',
+                            detectionCount: 1,
+                            insight: 'Test insight 3',
                             resources: [
                                 {
                                     resourceId: 'res-3',
@@ -212,6 +221,7 @@ describe('useKnowledgeServiceOpportunities', () => {
                                     resourceType: 'article',
                                     resourceLocale: 'en',
                                     resourceSetId: 'set-3',
+                                    resourceVersion: '1',
                                 },
                             ],
                         },
@@ -220,6 +230,7 @@ describe('useKnowledgeServiceOpportunities', () => {
                         next_cursor: null,
                         prev_cursor: 'cursor-page-1',
                         total: 50,
+                        total_pending: 25,
                     },
                 },
             },
@@ -239,7 +250,7 @@ describe('useKnowledgeServiceOpportunities', () => {
 
     it('should reset loading state on error', async () => {
         const mockUseFindOpportunities =
-            useFindOpportunitiesOpportunity as jest.Mock
+            useFindOpportunitiesByShopOpportunity as jest.Mock
         mockUseFindOpportunities.mockReturnValue({
             data: { data: mockPaginatedResponse },
             isLoading: false,
@@ -272,7 +283,7 @@ describe('useKnowledgeServiceOpportunities', () => {
 
     it('should handle empty response gracefully', () => {
         const mockUseFindOpportunities =
-            useFindOpportunitiesOpportunity as jest.Mock
+            useFindOpportunitiesByShopOpportunity as jest.Mock
         mockUseFindOpportunities.mockReturnValue({
             data: null,
             isLoading: false,
@@ -291,7 +302,7 @@ describe('useKnowledgeServiceOpportunities', () => {
 
     it('should handle invalid data structure gracefully', () => {
         const mockUseFindOpportunities =
-            useFindOpportunitiesOpportunity as jest.Mock
+            useFindOpportunitiesByShopOpportunity as jest.Mock
         mockUseFindOpportunities.mockReturnValue({
             data: {
                 data: {
@@ -300,6 +311,7 @@ describe('useKnowledgeServiceOpportunities', () => {
                         next_cursor: null,
                         prev_cursor: null,
                         total: 0,
+                        total_pending: 0,
                     },
                 },
             },

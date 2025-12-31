@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import {
     queryKeys,
-    useProcessOpportunityOpportunity,
+    useProcessOpportunityForShopOpportunity,
 } from '@gorgias/knowledge-service-queries'
 import type {
     ProcessOpportunity,
@@ -17,16 +17,16 @@ import {
 export const useProcessOpportunity = (shopIntegrationId?: number) => {
     const queryClient = useQueryClient()
 
-    return useProcessOpportunityOpportunity({
+    return useProcessOpportunityForShopOpportunity({
         mutation: {
             onSuccess: async () => {
                 if (!shopIntegrationId) return
 
                 await queryClient.invalidateQueries({
                     queryKey:
-                        queryKeys.opportunities.findOpportunitiesOpportunity({
+                        queryKeys.opportunities.findOpportunitiesByShopOpportunity(
                             shopIntegrationId,
-                        }),
+                        ),
                 })
             },
         },

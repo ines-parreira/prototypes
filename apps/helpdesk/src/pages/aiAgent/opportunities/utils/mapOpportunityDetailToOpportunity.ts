@@ -5,8 +5,12 @@ import type {
 } from '@gorgias/knowledge-service-types'
 
 import { OpportunityType } from '../enums'
-import type { Opportunity } from './mapAiArticlesToOpportunities'
+import type { Opportunity } from '../types'
 
+/**
+ * Maps a single opportunity detail response to an Opportunity object.
+ * Used for displaying in the content area.
+ */
 export const mapOpportunityDetailToOpportunity = (
     detail: FindOpportunityByIdOpportunity200,
 ): Opportunity => {

@@ -7,17 +7,18 @@ import { Button, Heading, Text } from '@gorgias/axiom'
 import { OPPORTUNITY_CARD_HEIGHT } from '../../constants'
 import { OPPORTUNITIES_PAGE_SIZE } from '../../hooks/useKnowledgeServiceOpportunities'
 import { useOpportunitiesSidebar } from '../../hooks/useOpportunitiesSidebar'
+import type { Opportunity, SidebarOpportunityItem } from '../../types'
+import { getOpportunitySidebarDisplayText } from '../../types'
 import { checkAndTriggerAutoFetch } from '../../utils/autoFetchScrollChecker'
-import type { Opportunity } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunityCard } from '../OpportunityCard/OpportunityCard'
 import { OpportunityCardSkeleton } from '../OpportunityCardSkeleton/OpportunityCardSkeleton'
 
 import css from './OpportunitiesSidebar.less'
 
 interface OpportunitiesSidebarProps {
-    opportunities: Opportunity[]
+    opportunities: SidebarOpportunityItem[]
     isLoading?: boolean
-    onSelectOpportunity: (opportunity: Opportunity | null) => void
+    onSelectOpportunity: (opportunity: SidebarOpportunityItem | null) => void
     selectedOpportunity?: Opportunity | null
     onOpportunityViewed?: (context: {
         opportunityId: string
@@ -55,20 +56,13 @@ export const OpportunitiesSidebar = ({
     }, [onEndReached])
 
     useEffect(() => {
-        if (opportunities.length > 0 && !selectedOpportunity) {
-            const initialOpportunity = opportunities[0]
-            onSelectOpportunity(initialOpportunity)
+        if (selectedOpportunity) {
             onOpportunityViewed?.({
-                opportunityId: initialOpportunity.id,
-                opportunityType: initialOpportunity.type,
+                opportunityId: selectedOpportunity.id,
+                opportunityType: selectedOpportunity.type,
             })
         }
-    }, [
-        opportunities,
-        onSelectOpportunity,
-        onOpportunityViewed,
-        selectedOpportunity,
-    ])
+    }, [onOpportunityViewed, selectedOpportunity])
 
     // we need this in case the first page is fully rendered and the content is not scrollable yet
     // the virtuoso component does not trigger the endReached event in this case
@@ -101,13 +95,9 @@ export const OpportunitiesSidebar = ({
             )
             if (opportunity) {
                 onSelectOpportunity(opportunity)
-                onOpportunityViewed?.({
-                    opportunityId: opportunity.id,
-                    opportunityType: opportunity.type,
-                })
             }
         },
-        [opportunities, onSelectOpportunity, onOpportunityViewed],
+        [opportunities, onSelectOpportunity],
     )
 
     const itemCount = isLoading ? 0 : opportunities.length
@@ -128,10 +118,10 @@ export const OpportunitiesSidebar = ({
         opportunities.length === 0
 
     const renderOpportunityCard = useCallback(
-        (_index: number, opportunity: Opportunity) => {
+        (_index: number, opportunity: SidebarOpportunityItem) => {
             return (
                 <OpportunityCard
-                    title={opportunity.title}
+                    title={getOpportunitySidebarDisplayText(opportunity)}
                     type={opportunity.type}
                     ticketCount={opportunity.ticketCount}
                     selected={selectedOpportunity?.id === opportunity.id}

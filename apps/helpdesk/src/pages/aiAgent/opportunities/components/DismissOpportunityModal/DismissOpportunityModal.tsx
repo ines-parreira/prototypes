@@ -13,7 +13,7 @@ import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import type { Opportunity } from 'pages/aiAgent/opportunities/utils/mapAiArticlesToOpportunities'
+import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import TextArea from 'pages/common/forms/TextArea'
 import { getCurrentUserId } from 'state/currentUser/selectors'

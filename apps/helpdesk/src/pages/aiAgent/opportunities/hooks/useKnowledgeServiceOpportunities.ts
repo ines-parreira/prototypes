@@ -2,16 +2,16 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
     queryKeys,
-    useFindOpportunitiesOpportunity,
+    useFindOpportunitiesByShopOpportunity,
 } from '@gorgias/knowledge-service-queries'
 
-import type { Opportunity } from '../utils/mapAiArticlesToOpportunities'
+import type { OpportunityListItem } from '../types'
 import { mapKnowledgeServiceOpportunities } from '../utils/mapKnowledgeServiceOpportunities'
 
 export const OPPORTUNITIES_PAGE_SIZE = 20
 
 interface PaginatedPage {
-    opportunities: Opportunity[]
+    opportunities: OpportunityListItem[]
     nextCursor: string | null
     prevCursor: string | null
     total: number
@@ -19,7 +19,7 @@ interface PaginatedPage {
 }
 
 export const useKnowledgeServiceOpportunities = (
-    shopIntegrationId: number | undefined,
+    shopIntegrationId: number,
     enabled: boolean,
 ) => {
     const [pages, setPages] = useState<PaginatedPage[]>([])
@@ -29,19 +29,17 @@ export const useKnowledgeServiceOpportunities = (
     const [isLoadingMore, setIsLoadingMore] = useState(false)
 
     const { data, isLoading, isError, refetch } =
-        useFindOpportunitiesOpportunity(
+        useFindOpportunitiesByShopOpportunity(
+            shopIntegrationId,
             {
-                shopIntegrationId: shopIntegrationId || 0,
                 limit: OPPORTUNITIES_PAGE_SIZE,
                 cursor: currentCursor,
             },
             {
                 query: {
                     queryKey: [
-                        ...queryKeys.opportunities.findOpportunitiesOpportunity(
-                            {
-                                shopIntegrationId: shopIntegrationId || 0,
-                            },
+                        ...queryKeys.opportunities.findOpportunitiesByShopOpportunity(
+                            shopIntegrationId,
                         ),
                         'paginated',
                         currentCursor || 'initial',

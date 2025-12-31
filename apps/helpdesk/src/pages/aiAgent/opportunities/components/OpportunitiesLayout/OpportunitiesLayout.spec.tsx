@@ -304,12 +304,14 @@ describe('OpportunitiesLayout', () => {
 
     it('should handle opportunity selection', async () => {
         const mockSetSelectedOpportunityId = jest.fn()
-        mockUseSelectedOpportunity.mockImplementation((opportunities) => ({
-            selectedOpportunity: opportunities[0] || null,
-            selectedOpportunityId: opportunities[0]?.id || null,
-            setSelectedOpportunityId: mockSetSelectedOpportunityId,
-            isLoading: false,
-        }))
+        mockUseSelectedOpportunity.mockImplementation(
+            (_shopIntegrationId: number, opportunities: any[]) => ({
+                selectedOpportunity: opportunities[0] || null,
+                selectedOpportunityId: opportunities[0]?.id || null,
+                setSelectedOpportunityId: mockSetSelectedOpportunityId,
+                isLoading: false,
+            }),
+        )
 
         renderComponent()
 
@@ -633,16 +635,16 @@ describe('OpportunitiesLayout', () => {
             {
                 id: '1',
                 key: 'ks_1',
-                title: 'KS Opportunity 1',
-                content: '',
+                insight: 'KS Opportunity 1 insight',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                ticketCount: 5,
             },
             {
                 id: '2',
                 key: 'ks_2',
-                title: 'KS Opportunity 2',
-                content: '',
+                insight: 'KS Opportunity 2 insight',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                ticketCount: 3,
             },
         ]
 
@@ -710,12 +712,14 @@ describe('OpportunitiesLayout', () => {
 
         it('should select next opportunity when archiving with knowledge service', async () => {
             const mockSetSelectedOpportunityId = jest.fn()
-            mockUseSelectedOpportunity.mockImplementation((opportunities) => ({
-                selectedOpportunity: opportunities[0] || null,
-                selectedOpportunityId: opportunities[0]?.id || null,
-                setSelectedOpportunityId: mockSetSelectedOpportunityId,
-                isLoading: false,
-            }))
+            mockUseSelectedOpportunity.mockImplementation(
+                (_shopIntegrationId: number, opportunities: any[]) => ({
+                    selectedOpportunity: opportunities[0] || null,
+                    selectedOpportunityId: opportunities[0]?.id || null,
+                    setSelectedOpportunityId: mockSetSelectedOpportunityId,
+                    isLoading: false,
+                }),
+            )
 
             const {
                 OpportunitiesContent,
@@ -766,8 +770,16 @@ describe('OpportunitiesLayout', () => {
         })
 
         it('should show loading state for opportunity details', () => {
+            const mockSelectedOpportunity = {
+                id: '1',
+                key: 'ks_1',
+                title: 'KS Opportunity 1',
+                content: 'KS Opportunity 1 content',
+                type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                ticketCount: 5,
+            }
             mockUseSelectedOpportunity.mockReturnValue({
-                selectedOpportunity: mockKnowledgeServiceOpportunities[0],
+                selectedOpportunity: mockSelectedOpportunity,
                 selectedOpportunityId: '1',
                 setSelectedOpportunityId: jest.fn(),
                 isLoading: true,

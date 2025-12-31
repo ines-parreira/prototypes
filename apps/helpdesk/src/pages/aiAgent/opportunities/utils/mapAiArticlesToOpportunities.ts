@@ -1,21 +1,16 @@
 import type { AILibraryArticleItem } from 'models/helpCenter/types'
 
 import { OpportunityType } from '../enums'
-
-export interface Opportunity {
-    id: string
-    key: string
-    title: string
-    content: string
-    type: OpportunityType
-    ticketCount?: number
-    detectionObjectIds?: string[]
-}
+import type { Opportunity } from '../types'
 
 const removeAiPrefix = (key: string): string => {
     return key.startsWith('ai_') ? key.slice(3) : key
 }
 
+/**
+ * Maps AI articles to full Opportunity objects for the legacy flow.
+ * In legacy flow, the same data is used for both sidebar and content display.
+ */
 export const mapAiArticlesToOpportunities = (
     aiArticles: AILibraryArticleItem[],
 ): Opportunity[] => {
