@@ -398,7 +398,14 @@ const BillingStartView = () => {
                             Payment Information
                         </NavLink>
                     )}
-                    <NavLink to={BILLING_PAYMENTS_HISTORY_PATH}>
+                    <NavLink
+                        to={BILLING_PAYMENTS_HISTORY_PATH}
+                        onClick={() => {
+                            logEvent(
+                                SegmentEvent.BillingPaymentHistoryTabClicked,
+                            )
+                        }}
+                    >
                         Payment History
                     </NavLink>
                 </SecondaryNavbar>

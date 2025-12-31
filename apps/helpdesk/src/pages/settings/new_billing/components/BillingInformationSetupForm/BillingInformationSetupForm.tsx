@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 
 import type { FormProps } from '@repo/forms'
 import { Form } from '@repo/forms'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import mapValues from 'lodash/mapValues'
 import type { SubmitHandler } from 'react-hook-form'
@@ -97,6 +98,10 @@ const useHandleValidSubmit = ({
     })
 
     return ({ email, address: { complete: __, ...shipping }, ...taxIds }) => {
+        logEvent(
+            SegmentEvent.BillingPaymentInformationSaveBillingInformationClicked,
+        )
+
         const payload: BillingContactUpdatePayload = {
             email,
             shipping,

@@ -435,4 +435,26 @@ describe('BillingStartView', () => {
             ).not.toBeInTheDocument()
         })
     })
+
+    describe('BillingPaymentHistoryTabClicked tracking', () => {
+        it('should track event when Payment History tab is clicked', async () => {
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithPhone,
+                {
+                    route: BILLING_BASE_PATH,
+                },
+            )
+
+            const paymentHistoryTab = screen.getByText('Payment History')
+
+            logEventMock.mockClear()
+
+            await act(() => userEvent.click(paymentHistoryTab))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingPaymentHistoryTabClicked,
+            )
+        })
+    })
 })

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
-import { useCallbackRef } from '@repo/hooks'
+import { useCallbackRef, useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import type { AxiosError } from 'axios'
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
 import moment from 'moment'
+import { useLocation } from 'react-router'
 import { Table } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -25,6 +27,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import css from './PaymentHistoryView.less'
 
 const PaymentsHistoryView = () => {
+    const { pathname } = useLocation()
     const dispatch = useAppDispatch()
     const gorgiasApi = new GorgiasApi()
     const invoices = useAppSelector(getInvoices).toJS() as Invoice[]
@@ -35,6 +38,12 @@ const PaymentsHistoryView = () => {
     )
     const [descriptionNode, setDescriptionNode] = useCallbackRef()
     useInjectStyleToCandu(descriptionNode)
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.BillingPaymentHistoryTabVisited, {
+            url: pathname,
+        })
+    })
 
     useEffect(() => {
         const getInvoices = async () => {
@@ -200,6 +209,11 @@ const PaymentsHistoryView = () => {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className={css.downloadLink}
+                                                onClick={() => {
+                                                    logEvent(
+                                                        SegmentEvent.BillingPaymentHistoryDownloadPdfClicked,
+                                                    )
+                                                }}
                                             >
                                                 Download PDF
                                             </a>
@@ -228,6 +242,9 @@ const PaymentsHistoryView = () => {
                                                         invoiceBeingPaid?.id
                                                     }
                                                     onClick={() => {
+                                                        logEvent(
+                                                            SegmentEvent.BillingPaymentHistoryRetryPaymentClicked,
+                                                        )
                                                         void retryPayment(
                                                             invoice,
                                                         )

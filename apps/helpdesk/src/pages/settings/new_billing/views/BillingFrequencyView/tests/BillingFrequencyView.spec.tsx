@@ -1,4 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
+import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -52,6 +54,9 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 
 const useFlagMock = useFlag as jest.Mock
+
+jest.mock('@repo/logging')
+const logEventMock = assumeMock(logEvent)
 
 const queryClient = mockQueryClient()
 const mockedDispatch = jest.fn()
@@ -124,6 +129,7 @@ describe('BillingFrequencyView', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        logEventMock.mockClear()
 
         // Default to testing with all features enabled
         let mockFeatureFlags = {
@@ -147,6 +153,31 @@ describe('BillingFrequencyView', () => {
             ProductType.SMS,
             ProductType.Convert,
         ])
+    })
+
+    it('should track BillingPaymentInformationBillingFrequencyVisited event on component mount', () => {
+        renderBillingFrequencyView()
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingPaymentInformationBillingFrequencyVisited,
+            { url: '/' },
+        )
+        expect(logEventMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should track BillingPaymentInformationFrequencyChanged event when frequency is changed', async () => {
+        renderBillingFrequencyView()
+
+        const yearlyRadioButton = getRadioButton(Cadence.Year)
+        expect(yearlyRadioButton).toBeInTheDocument()
+        if (!yearlyRadioButton) return
+
+        await act(() => userEvent.click(yearlyRadioButton))
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.BillingPaymentInformationFrequencyChanged,
+            { cadence: Cadence.Year },
+        )
     })
 
     it('should render', () => {

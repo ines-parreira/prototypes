@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useHistory } from 'react-router-dom'
+import { useEffectOnce } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
 import type { Plan } from 'models/billing/types'
@@ -44,6 +46,16 @@ const BillingFrequencyView = ({
     isCurrentSubscriptionCanceled,
 }: BillingFrequencyViewProps) => {
     const history = useHistory()
+    const { pathname } = useLocation()
+
+    useEffectOnce(() => {
+        logEvent(
+            SegmentEvent.BillingPaymentInformationBillingFrequencyVisited,
+            {
+                url: pathname,
+            },
+        )
+    })
 
     const {
         currentHelpdeskPlan,
@@ -172,6 +184,15 @@ const BillingFrequencyView = ({
         [allPlansByProductTypeByCadence, setSelectedCadence, setSelectedPlans],
     )
 
+    // Track frequency changes
+    useEffect(() => {
+        if (selectedCadence !== cadence) {
+            logEvent(SegmentEvent.BillingPaymentInformationFrequencyChanged, {
+                cadence: selectedCadence,
+            })
+        }
+    }, [selectedCadence, cadence])
+
     // redirect to the main page if no upgrades are possible or subscription is canceled
     const canUseQuarterlyBilling =
         useFlag(FeatureFlagKey.BillingQuarterlyFrequency) ||
@@ -260,7 +281,12 @@ const BillingFrequencyView = ({
                         anyProductChanged={anyProductChanged}
                         anyNewProductSelected={false}
                         anyDowngradedPlanSelected={false}
-                        updateSubscription={updateSubscription}
+                        updateSubscription={() => {
+                            logEvent(
+                                SegmentEvent.BillingPaymentInformationSubscriptionFrequencyUpdated,
+                            )
+                            return updateSubscription()
+                        }}
                         periodEnd={periodEnd}
                         ctaText="Update Subscription"
                         isSubscriptionUpdating={isSubscriptionUpdating}

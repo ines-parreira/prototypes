@@ -1,18 +1,22 @@
-import React from 'react'
-
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { AddressElement, useElements } from '@stripe/react-stripe-js'
 import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
-import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
+import { act } from 'react-dom/test-utils'
 
 import client from 'models/api/resources'
 import { BILLING_PAYMENT_PATH } from 'pages/settings/new_billing/constants'
 import { FormContainer } from 'pages/settings/new_billing/views/BillingAddressSetupView/components/FormContainer'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
+jest.mock('@repo/logging')
 jest.mock('@stripe/stripe-js')
 jest.mock('@stripe/react-stripe-js')
+
+const logEventMock = assumeMock(logEvent)
 
 let handleAddressChange: (event: StripeAddressElementChangeEvent) => any
 
@@ -37,6 +41,12 @@ const mockAddressValue = (event: Partial<StripeAddressElementChangeEvent>) => {
 const mockedServer = new MockAdapter(client)
 
 describe('FormContainer', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        logEventMock.mockClear()
+        mockedServer.resetHistory()
+    })
+
     const shipping = {
         name: 'John Doe',
         address: {
@@ -53,6 +63,7 @@ describe('FormContainer', () => {
     it('should submit valid billing address', async () => {
         mockedServer.onPut('/api/billing/contact/').reply(200, {})
 
+        const user = userEvent.setup()
         const { history } = renderWithStoreAndQueryClientAndRouter(
             <FormContainer
                 billingInformation={{
@@ -66,12 +77,48 @@ describe('FormContainer', () => {
 
         expect(history.location.pathname).toBe('/')
 
-        fireEvent.click(
-            screen.getByRole('button', { name: 'Save Billing Information' }),
+        await act(() =>
+            user.click(
+                screen.getByRole('button', {
+                    name: 'Save Billing Information',
+                }),
+            ),
         )
 
-        await waitFor(() => {
-            expect(history.location.pathname).toBe(BILLING_PAYMENT_PATH)
+        expect(history.location.pathname).toBe(BILLING_PAYMENT_PATH)
+    })
+
+    describe('BillingPaymentInformationSaveBillingInformationClicked tracking', () => {
+        it('should track event when Save Billing Information button is clicked', async () => {
+            mockedServer.onPut('/api/billing/contact/').reply(200, {})
+
+            const user = userEvent.setup()
+            renderWithStoreAndQueryClientAndRouter(
+                <FormContainer
+                    billingInformation={{
+                        email: 'example@gorgias.com',
+                        shipping,
+                    }}
+                />,
+            )
+
+            mockAddressValue({ complete: true, value: shipping })
+
+            logEventMock.mockClear()
+
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', {
+                        name: 'Save Billing Information',
+                    }),
+                ),
+            )
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingPaymentInformationSaveBillingInformationClicked,
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+            expect(mockedServer.history.put).toHaveLength(1)
         })
     })
 })

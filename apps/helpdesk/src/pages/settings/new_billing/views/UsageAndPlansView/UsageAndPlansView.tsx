@@ -248,6 +248,9 @@ const UsageAndPlansView = ({
                         buttonText="Update"
                         tooltipPlacement="top"
                         contactBilling={contactBilling}
+                        trackingEvent={
+                            SegmentEvent.BillingUsageAndPlansChangeFrequencyClicked
+                        }
                     />
                 </div>
             </div>

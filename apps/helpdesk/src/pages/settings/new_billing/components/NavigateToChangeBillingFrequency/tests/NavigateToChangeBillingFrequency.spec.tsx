@@ -39,6 +39,7 @@ const props: NavigateToChangeBillingFrequencyProps = {
     buttonText: 'Change Frequency',
     tooltipPlacement: 'top',
     contactBilling: contactBillingMock,
+    trackingEvent: SegmentEvent.BillingPaymentInformationChangeFrequencyClicked,
 }
 
 describe('NavigateToChangeBillingFrequency', () => {

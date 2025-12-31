@@ -285,9 +285,14 @@ const ProductPlanSelection = ({
             },
         }))
         if (plan) {
-            logEvent(SegmentEvent.BillingUsageAndPlansPanSelected, {
+            logEvent(SegmentEvent.BillingUsageAndPlansPlanSelected, {
                 product: getProductTrackingName(plan.product),
                 value: plan.num_quota_tickets,
+            })
+        } else {
+            // trigger a specific event when enterprise plan selected
+            logEvent(SegmentEvent.BillingUsageAndPlansEnterprisePlanSelected, {
+                product: getProductTrackingName(type),
             })
         }
     }

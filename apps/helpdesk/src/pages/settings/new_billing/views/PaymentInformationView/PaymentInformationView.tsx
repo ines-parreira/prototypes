@@ -53,6 +53,9 @@ const PaymentInformationView = ({
                     buttonText="Change Frequency"
                     tooltipPlacement="bottom-start"
                     contactBilling={contactBilling}
+                    trackingEvent={
+                        SegmentEvent.BillingPaymentInformationChangeFrequencyClicked
+                    }
                 />
             </Section>
             {!shouldPayWithShopify ? <BillingInformationSection /> : null}

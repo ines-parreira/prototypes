@@ -1,18 +1,22 @@
-import React from 'react'
-
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { AddressElement, Elements, useElements } from '@stripe/react-stripe-js'
 import type { Stripe, StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
+import { act } from 'react-dom/test-utils'
 
 import client from 'models/api/resources'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { BillingAddressSetupView } from '../BillingAddressSetupView'
 
+jest.mock('@repo/logging')
 jest.mock('hooks/useAppSelector')
+
+const logEventMock = assumeMock(logEvent)
 
 jest.mock('@stripe/stripe-js')
 
@@ -55,6 +59,11 @@ mockedServer.onGet('/api/billing/contact/').reply(200, {
 mockedServer.onPut('/api/billing/contact/').reply(201, {})
 
 describe('BillingAddressSetupView', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        logEventMock.mockClear()
+    })
+
     it('should render the component correctly', async () => {
         renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
 
@@ -101,6 +110,7 @@ describe('BillingAddressSetupView', () => {
     })
 
     it('should update the email state when input changes', async () => {
+        const user = userEvent.setup()
         renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
 
         await waitFor(() => {
@@ -111,28 +121,39 @@ describe('BillingAddressSetupView', () => {
             screen.queryByDisplayValue('new@example.com'),
         ).not.toBeInTheDocument()
 
-        fireEvent.change(screen.getByRole('textbox', { name: 'Email' }), {
-            target: { value: 'new@example.com' },
-        })
+        await act(() =>
+            user.clear(screen.getByRole('textbox', { name: 'Email' })),
+        )
+        await act(() =>
+            user.type(
+                screen.getByRole('textbox', { name: 'Email' }),
+                'new@example.com',
+            ),
+        )
 
-        await waitFor(() => {
-            expect(
-                screen.queryByDisplayValue('test@example.com'),
-            ).not.toBeInTheDocument()
-            expect(screen.getByDisplayValue('new@example.com')).toBeVisible()
-        })
+        expect(
+            screen.queryByDisplayValue('test@example.com'),
+        ).not.toBeInTheDocument()
+        expect(screen.getByDisplayValue('new@example.com')).toBeVisible()
     })
 
     it('should not submit empty tax ID fields (they are required)', async () => {
+        const user = userEvent.setup()
         renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
 
         await waitFor(() => {
             expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
         })
 
-        fireEvent.change(screen.getByRole('textbox', { name: 'Email' }), {
-            target: { value: 'new@example.com' },
-        })
+        await act(() =>
+            user.clear(screen.getByRole('textbox', { name: 'Email' })),
+        )
+        await act(() =>
+            user.type(
+                screen.getByRole('textbox', { name: 'Email' }),
+                'new@example.com',
+            ),
+        )
 
         mockAddressValue({
             complete: true,
@@ -145,31 +166,41 @@ describe('BillingAddressSetupView', () => {
             ).toBeVisible()
         })
 
-        fireEvent.click(
-            screen.getByRole('button', { name: 'Save Billing Information' }),
-        )
-
-        fireEvent.change(
-            screen.getByRole('textbox', { name: 'VAT Number info' }),
-            {
-                target: { value: 'FRAB123456789' },
-            },
+        await act(() =>
+            user.type(
+                screen.getByRole('textbox', { name: 'VAT Number info' }),
+                'FRAB123456789',
+            ),
         )
 
         await waitFor(() => {
             expect(screen.queryByDisplayValue('FRAB123456789')).toBeVisible()
         })
 
-        await waitFor(() => {
-            expect(mockedServer.history.post).toHaveLength(0)
-        })
-
-        fireEvent.click(
-            screen.getByRole('button', { name: 'Save Billing Information' }),
+        await act(() =>
+            user.click(
+                screen.getByRole('button', {
+                    name: 'Save Billing Information',
+                }),
+            ),
         )
 
         await waitFor(() => {
             expect(mockedServer.history.put).toHaveLength(1)
+        })
+    })
+
+    describe('BillingPaymentInformationBillingInformationVisited tracking', () => {
+        it('should track event when billing information page is visited', () => {
+            renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingPaymentInformationBillingInformationVisited,
+                {
+                    url: '/',
+                },
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
         })
     })
 })

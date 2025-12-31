@@ -1,4 +1,7 @@
-import { screen, waitFor } from '@testing-library/react'
+import { logEvent, SegmentEvent } from '@repo/logging'
+import { assumeMock } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -6,10 +9,15 @@ import client from 'models/api/resources'
 import { BillingInformationSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
+jest.mock('@repo/logging')
+
+const logEventMock = assumeMock(logEvent)
 const mockedServer = new MockAdapter(client)
 
 describe('BillingInformationSection', () => {
     beforeEach(() => {
+        jest.clearAllMocks()
+        logEventMock.mockClear()
         mockedServer.onGet('/api/billing/contact/').reply(200, {
             email: 'example@gorgias.com',
             shipping: {
@@ -73,6 +81,66 @@ describe('BillingInformationSection', () => {
                     expect(screen.getByText('Sales Tax ID:')).toBeVisible()
                 })
             })
+        })
+    })
+
+    describe('BillingPaymentInformationUpdateInformationClicked tracking', () => {
+        it('should track event when "Update Information" link is clicked', async () => {
+            renderWithQueryClientProvider(
+                <MemoryRouter>
+                    <BillingInformationSection />
+                </MemoryRouter>,
+            )
+
+            const link = await screen.findByText('Update Information')
+            expect(link).toHaveAttribute(
+                'href',
+                '/app/settings/billing/payment/billing-information',
+            )
+
+            logEventMock.mockClear()
+
+            await act(() => userEvent.click(link))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingPaymentInformationUpdateInformationClicked,
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
+        })
+
+        it('should track event when "Add Information" link is clicked', async () => {
+            mockedServer.onGet('/api/billing/contact/').reply(200, {
+                email: 'example@gorgias.com',
+                shipping: {
+                    address: {
+                        line2: '',
+                        state: '',
+                    },
+                    name: '',
+                    phone: null,
+                },
+            })
+
+            renderWithQueryClientProvider(
+                <MemoryRouter>
+                    <BillingInformationSection />
+                </MemoryRouter>,
+            )
+
+            const link = await screen.findByText('Add Information')
+            expect(link).toHaveAttribute(
+                'href',
+                '/app/settings/billing/payment/billing-information',
+            )
+
+            logEventMock.mockClear()
+
+            await act(() => userEvent.click(link))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingPaymentInformationUpdateInformationClicked,
+            )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
         })
     })
 })

@@ -2,7 +2,9 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
+import { act } from 'react-dom/test-utils'
 
 import * as uiKit from '@gorgias/axiom'
 
@@ -898,6 +900,31 @@ describe('UsageAndPlansView', () => {
                 },
             )
             expect(logEvent).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('BillingUsageAndPlansChangeFrequencyClicked tracking', () => {
+        it('should track event when Update frequency button is clicked', async () => {
+            const logEventMock = assumeMock(logEvent)
+            const user = userEvent.setup()
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                />,
+                store,
+            )
+
+            const updateButton = screen.getByText('Update')
+
+            logEventMock.mockClear()
+
+            await act(() => user.click(updateButton))
+
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansChangeFrequencyClicked,
+            )
         })
     })
 })

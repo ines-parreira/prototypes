@@ -330,7 +330,12 @@ const BillingProcessView = ({
                     anyProductChanged={anyProductChanged}
                     anyNewProductSelected={anyNewProductSelected}
                     anyDowngradedPlanSelected={!!anyDowngradedPlanSelected}
-                    updateSubscription={updateSubscription}
+                    updateSubscription={() => {
+                        logEvent(
+                            SegmentEvent.BillingUsageAndPlansUpdateSubscriptionClicked,
+                        )
+                        return updateSubscription()
+                    }}
                     startSubscription={startSubscription}
                     periodEnd={periodEnd}
                     selectedPlans={selectedPlans}

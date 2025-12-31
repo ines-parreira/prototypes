@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { Link } from 'react-router-dom'
 
 import { countries } from 'config/countries'
@@ -56,7 +57,14 @@ const Content: React.FC<{
                     address={address}
                 />
             </Description>
-            <Link to={BILLING_INFORMATION_PATH}>
+            <Link
+                to={BILLING_INFORMATION_PATH}
+                onClick={() => {
+                    logEvent(
+                        SegmentEvent.BillingPaymentInformationUpdateInformationClicked,
+                    )
+                }}
+            >
                 {hasInformation ? 'Update' : 'Add'} {'Information'}
             </Link>
         </>

@@ -1551,7 +1551,7 @@ describe('ProductPlanSelection', () => {
         })
     })
 
-    describe('BillingUsageAndPlansPanSelected tracking', () => {
+    describe('BillingUsageAndPlansPlanSelected tracking', () => {
         it('should track event when a Helpdesk plan is selected from dropdown', async () => {
             render(
                 <Provider store={store}>
@@ -1574,7 +1574,7 @@ describe('ProductPlanSelection', () => {
             await act(() => userEvent.click(starterPlanItem!))
 
             expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.BillingUsageAndPlansPanSelected,
+                SegmentEvent.BillingUsageAndPlansPlanSelected,
                 {
                     product: 'helpdesk',
                     value: starterHelpdeskPlan.num_quota_tickets,
@@ -1615,7 +1615,7 @@ describe('ProductPlanSelection', () => {
             await act(() => userEvent.click(automationPlanItem))
 
             expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.BillingUsageAndPlansPanSelected,
+                SegmentEvent.BillingUsageAndPlansPlanSelected,
                 {
                     product: 'ai_agent',
                     value: basicMonthlyAutomationPlan.num_quota_tickets,
@@ -1656,7 +1656,7 @@ describe('ProductPlanSelection', () => {
             await act(() => userEvent.click(convertPlanItem))
 
             expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.BillingUsageAndPlansPanSelected,
+                SegmentEvent.BillingUsageAndPlansPlanSelected,
                 {
                     product: 'convert',
                     value: convertPlan1.num_quota_tickets,
@@ -1665,7 +1665,7 @@ describe('ProductPlanSelection', () => {
             expect(logEventMock).toHaveBeenCalledTimes(1)
         })
 
-        it('should NOT track event when Enterprise plan is selected', async () => {
+        it('should track BillingUsageAndPlansEnterprisePlanSelected event when Enterprise plan is selected', async () => {
             render(
                 <Provider store={store}>
                     <ProductPlanSelection {...props} />
@@ -1682,10 +1682,11 @@ describe('ProductPlanSelection', () => {
 
             await act(() => userEvent.click(enterpriseItem))
 
-            expect(logEventMock).not.toHaveBeenCalledWith(
-                SegmentEvent.BillingUsageAndPlansPanSelected,
-                expect.anything(),
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.BillingUsageAndPlansEnterprisePlanSelected,
+                { product: 'helpdesk' },
             )
+            expect(logEventMock).toHaveBeenCalledTimes(1)
         })
     })
 })

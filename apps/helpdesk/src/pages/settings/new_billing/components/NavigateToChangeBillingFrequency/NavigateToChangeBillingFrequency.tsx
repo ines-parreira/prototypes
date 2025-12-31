@@ -1,4 +1,5 @@
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent } from '@repo/logging'
+import type { SegmentEvent } from '@repo/logging'
 import { Link } from 'react-router-dom'
 
 import type { LegacyTooltipProps as TooltipProps } from '@gorgias/axiom'
@@ -24,12 +25,14 @@ export type NavigateToChangeBillingFrequencyProps = {
     buttonText: string
     tooltipPlacement: TooltipProps['placement']
     contactBilling: ContactBillingCallback
+    trackingEvent: SegmentEvent
 }
 
 export default function NavigateToChangeBillingFrequency({
     buttonText,
     tooltipPlacement,
     contactBilling,
+    trackingEvent,
 }: NavigateToChangeBillingFrequencyProps) {
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
@@ -91,9 +94,7 @@ export default function NavigateToChangeBillingFrequency({
                 <Link
                     to={BILLING_PAYMENT_FREQUENCY_PATH}
                     onClick={() => {
-                        logEvent(
-                            SegmentEvent.BillingPaymentInformationChangeFrequencyClicked,
-                        )
+                        logEvent(trackingEvent)
                     }}
                 >
                     {buttonText}
