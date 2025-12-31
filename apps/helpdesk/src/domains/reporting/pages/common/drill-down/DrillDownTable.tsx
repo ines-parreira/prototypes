@@ -119,8 +119,9 @@ export const DrillDownTable: FunctionComponent<{
                         hasNextPage={hasNextPage}
                         hasPreviousPage={hasPreviousPage}
                         onPageChange={handlePageChange}
-                        options={[10, 20]}
+                        options={[10]}
                         onItemsPerPageChange={handleItemsPerPageChange}
+                        hasLinesPerPage={false}
                     />
                 </div>
             )}
