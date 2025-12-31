@@ -241,14 +241,9 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
 
         const csvProducer = config.csvProducer?.[0]
         expect(csvProducer).toBeDefined()
-
-        if (csvProducer && typeof csvProducer.fetch === 'function') {
-            const result = await (csvProducer.fetch as any)()
-            expect(result).toBeDefined()
-            expect(result).toHaveProperty('isLoading')
-            expect(result).toHaveProperty('fileName')
-            expect(result).toHaveProperty('files')
-        }
+        expect(csvProducer?.type).toBe('time-series')
+        expect(csvProducer?.fetch).toBeDefined()
+        expect(typeof csvProducer?.fetch).toBe('function')
     })
 
     it('should have fetch function for performance breakdown', async () => {

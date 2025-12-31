@@ -10,6 +10,7 @@ import { useAIAgentAutomationRateTimeSeriesData } from 'domains/reporting/hooks/
 import { useAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
+import { NUMBER_TICK_FORMATTER } from 'domains/reporting/pages/utils'
 
 import { DATE_FORMAT } from '../../constants'
 import { formatPreviousPeriod } from '../../utils/formatPreviousPeriod'
@@ -20,10 +21,7 @@ const CHART_COLOR = colors['Dataviz-purple'].$value
 
 const formatYAxisTick = (value: number) => {
     const percentage = value * 100
-    if (percentage >= 1000) {
-        return `${(percentage / 1000).toFixed(percentage % 1000 === 0 ? 0 : 1)}K`
-    }
-    return percentage.toString()
+    return NUMBER_TICK_FORMATTER.format(percentage)
 }
 
 const formatTooltipValue = (value: number) => {

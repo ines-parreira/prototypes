@@ -1,3 +1,4 @@
+import { fetchAiAgentSupportInteractionsTimeSeriesData } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTimeSeriesData'
 import { fetchAiAgentSupportInteractionsTrend } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTrend'
 import { fetchAiAgentTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useAiAgentTimeSavedByAgentsTrend'
 import { fetchDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInFirstResponseTimeTrend'
@@ -24,12 +25,6 @@ const fetchSupportAgentTrendBreakdown = async () =>
     ({
         isLoading: false,
         fileName: 'support-agent-breakdown.csv',
-        files: {},
-    }) as any
-const fetchSupportAgentTrendData = async () =>
-    ({
-        isLoading: false,
-        fileName: 'support-agent-trend.csv',
         files: {},
     }) as any
 const fetchPerformanceBreakdown = async () =>
@@ -121,11 +116,11 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
             },
             [AnalyticsAiAgentSupportAgentChart.SupportAgentTrendLineChart]: {
                 chartComponent: AnalyticsSupportAgentLineChart,
-                label: '',
+                label: 'Support interactions',
                 csvProducer: [
                     {
-                        type: DataExportFormat.Table,
-                        fetch: fetchSupportAgentTrendData,
+                        type: DataExportFormat.TimeSeries,
+                        fetch: fetchAiAgentSupportInteractionsTimeSeriesData,
                     },
                 ],
                 description: '',
