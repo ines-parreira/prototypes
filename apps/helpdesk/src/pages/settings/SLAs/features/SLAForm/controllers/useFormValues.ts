@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import {
     SLAPolicyMetricType,
     SLAPolicyMetricUnit,
@@ -14,8 +12,6 @@ export type SLAFormValues = ReturnType<typeof useFormValues>
 export default function useFormValues(
     policy?: Omit<MappedFormSLAPolicy, 'uuid'>,
 ) {
-    const isTrackTotalHitsEnabled = useFlag(FeatureFlagKey.PauseSLA)
-
     return useMemo(
         () =>
             policy
@@ -39,9 +35,7 @@ export default function useFormValues(
                       ],
                       active: policy.active,
                       target_channels: policy.target_channels,
-                      business_hours_only: isTrackTotalHitsEnabled
-                          ? policy.business_hours_only
-                          : false,
+                      business_hours_only: policy.business_hours_only,
                   }
                 : {
                       name: '',
@@ -59,10 +53,8 @@ export default function useFormValues(
                       ],
                       active: true,
                       target_channels: [],
-                      business_hours_only: isTrackTotalHitsEnabled
-                          ? true
-                          : false,
+                      business_hours_only: true,
                   },
-        [policy, isTrackTotalHitsEnabled],
+        [policy],
     )
 }

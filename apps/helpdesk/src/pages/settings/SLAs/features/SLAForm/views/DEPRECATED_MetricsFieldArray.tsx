@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+/* istanbul ignore file */
+import React, { useEffect, useState } from 'react'
 
 import {
     FormField,
@@ -6,14 +7,16 @@ import {
     useFieldArray,
     useFormContext,
 } from '@repo/forms'
+import classNames from 'classnames'
 
-import { Box, ToggleField } from '@gorgias/axiom'
 import type { CreateSLAPolicy } from '@gorgias/helpdesk-types'
 
 import Caption from 'pages/common/forms/Caption/Caption'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import settingsCss from 'pages/settings/settings.less'
 
+import TimeUnitSelectBox from './DEPRECATED_TimeUnitSelectBox'
 import NumberInputField from './NumberInputField'
-import TimeUnitSelectField from './TimeUnitSelectField'
 
 import css from './MetricsFieldArray.less'
 
@@ -30,7 +33,12 @@ const fieldTexts = {
     },
 }
 
-export function MetricsFieldArray() {
+/**
+ * @deprecated
+ * @date 2025-12-29
+ * @type sla-config-form-migration
+ */
+export default function MetricsFieldArray() {
     const { fields } = useFieldArray<CreateSLAPolicy>({
         name: 'metrics',
     })
@@ -81,19 +89,21 @@ export function MetricsFieldArray() {
     }
 
     return (
-        <Box>
-            <Box flexDirection="column" gap="sm">
+        <div className={settingsCss.mb48}>
+            <div>
                 {fields.map((field, index) => (
-                    <Box flexDirection="column" gap="xs" key={index}>
-                        <ToggleField
+                    <div className={classNames(settingsCss.mb24)} key={index}>
+                        <ToggleInput
                             caption={fieldTexts[field.name].tooltip}
-                            value={toggleState[index]}
-                            onChange={(nextValue: boolean) => {
+                            isToggled={toggleState[index]}
+                            onClick={(nextValue) => {
                                 handleToggle(nextValue, index)
                             }}
-                            label={fieldTexts[field.name].label}
-                        />
-                        <Box gap="sm">
+                            className={settingsCss.mb16}
+                        >
+                            {fieldTexts[field.name].label}
+                        </ToggleInput>
+                        <div className={css.inputGroup}>
                             <FormField
                                 name={`metrics.${index}.threshold`}
                                 field={NumberInputField}
@@ -108,15 +118,17 @@ export function MetricsFieldArray() {
                                 allowEmptyString
                                 isDisabled={!toggleState[index]}
                             />
-                            <TimeUnitSelectField
+                            <FormField
                                 name={`metrics.${index}.unit`}
+                                field={TimeUnitSelectBox}
+                                className={css.input}
                                 isDisabled={!toggleState[index]}
                             />
-                        </Box>
-                    </Box>
+                        </div>
+                    </div>
                 ))}
-            </Box>
+            </div>
             {!!error && <Caption error={error.message} />}
-        </Box>
+        </div>
     )
 }

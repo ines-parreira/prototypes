@@ -1,129 +1,67 @@
-import React, {
-    forwardRef,
-    useCallback,
-    useImperativeHandle,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import { FormField, useFormContext } from '@repo/forms'
 
-import { LegacyLabel as Label } from '@gorgias/axiom'
+import { ListItem, MultiSelectField } from '@gorgias/axiom'
 
-import { TicketChannel } from 'business/types/ticket'
-import type { Channel } from 'models/channel/types'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Caption from 'pages/common/forms/Caption/Caption'
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
 import { getChannels } from 'services/channels'
 
-import css from './ChannelSelectBox.less'
+import type { SLAFormValues } from '../controllers/useFormValues'
 
-type ChannelSelectBoxProps = {
-    value: Channel['slug'][] | undefined
-    onChange: (value: Channel['slug'][]) => void
-    error?: string
+type Option = {
+    id: string
+    name: string
 }
 
-export default forwardRef(function ChannelSelectBox(
-    { value, onChange, error }: ChannelSelectBoxProps,
-    ref,
-) {
-    const channelSelectId = 'channel-select'
-    const floatingRef = useRef<HTMLDivElement>(null)
-    const targetRef = useRef<HTMLDivElement>(null)
-    useImperativeHandle(ref, () => targetRef.current!)
-    const [isOpen, setIsOpen] = useState(false)
+const FIELD_NAME = 'target_channels'
+const PHONE_CHANNEL_SLUG = 'phone'
 
-    const channelsMap = getChannels()
-        .filter((channel) => channel.slug !== TicketChannel.Phone)
+export function ChannelSelectBox() {
+    const { watch } = useFormContext<SLAFormValues>()
+
+    const value = watch(FIELD_NAME)
+
+    const options: Option[] = getChannels()
         .sort((a, b) => a.name.localeCompare(b.name))
-        .reduce(
-            (acc, channel) => {
-                return {
-                    ...acc,
-                    [channel.slug]: {
-                        label: channel.name,
-                        value: channel.slug,
-                    },
-                }
-            },
-            {} as Record<
-                Channel['slug'],
-                { label: Channel['name']; value: Channel['slug'] }
-            >,
-        )
+        .map((channel) => ({
+            id: channel.slug,
+            name: channel.slug === PHONE_CHANNEL_SLUG ? 'Voice' : channel.name,
+        }))
 
-    const channelsLabel = useMemo(() => {
-        if (value && value.length > 5) {
-            return `${value.length} channels`
-        }
-
-        return value
-            ?.reduce((acc: string[], slug) => {
-                const channel = channelsMap[slug]
-                if (channel) {
-                    acc.push(channel.label)
-                }
-                return acc
-            }, [])
-            .join(', ')
-    }, [channelsMap, value])
-
-    const handleChannelChange = useCallback(
-        (nextValue: Channel['slug']) => {
-            if (value?.includes(nextValue)) {
-                onChange(value.filter((v) => v !== nextValue))
-            } else {
-                onChange([...(value || []), nextValue])
-            }
-        },
-        [onChange, value],
-    )
+    const hasSelection = !!value.length
+    const isVoiceChannelSelected = value.includes(PHONE_CHANNEL_SLUG)
+    const isVoiceChannelDisabled = hasSelection && !isVoiceChannelSelected
 
     return (
         <>
-            <Label className={css.label} htmlFor={channelSelectId} isRequired>
-                Channel(s)
-            </Label>
-            <SelectInputBox
-                placeholder="Select channels the SLA should apply to"
-                id={channelSelectId}
-                floating={floatingRef}
-                ref={targetRef}
-                onToggle={setIsOpen}
-                label={channelsLabel}
-                hasError={!!error}
+            <FormField
+                field={MultiSelectField<Option>}
+                isSearchable
+                label="Channels"
+                isRequired
+                placeholder="Select"
+                caption="Choose the channels this SLA should apply to. Voice cannot be combined with other channels."
+                name={FIELD_NAME}
+                items={options}
+                outputTransform={(options: Option[]) =>
+                    options.map((option) => option.id)
+                }
+                inputTransform={(value: string | string[]) =>
+                    options.filter((option) => value.includes(option.id))
+                }
             >
-                <SelectInputBoxContext.Consumer>
-                    {(context) => (
-                        <Dropdown
-                            isOpen={isOpen}
-                            onToggle={() => context!.onBlur()}
-                            ref={floatingRef}
-                            target={targetRef}
-                            value={value}
-                            isMultiple
-                        >
-                            <DropdownBody>
-                                {Object.values(channelsMap).map((channel) => {
-                                    return (
-                                        <DropdownItem
-                                            key={channel.label}
-                                            option={channel}
-                                            onClick={handleChannelChange}
-                                        />
-                                    )
-                                })}
-                            </DropdownBody>
-                        </Dropdown>
-                    )}
-                </SelectInputBoxContext.Consumer>
-            </SelectInputBox>
-            {!!error && <Caption error={error} />}
+                {(option: { id: string; name: string }) =>
+                    option.id === PHONE_CHANNEL_SLUG ? (
+                        <ListItem
+                            label={option.name}
+                            isDisabled={isVoiceChannelDisabled}
+                        />
+                    ) : (
+                        <ListItem
+                            label={option.name}
+                            isDisabled={isVoiceChannelSelected}
+                        />
+                    )
+                }
+            </FormField>
         </>
     )
-})
+}

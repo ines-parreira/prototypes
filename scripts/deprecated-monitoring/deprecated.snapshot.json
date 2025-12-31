@@ -1,6 +1,6 @@
 {
-  "date": "2025-12-30T15:23:45.468Z",
-  "total": 2778,
+  "date": "2025-12-30T17:56:08.151Z",
+  "total": 2787,
   "deprecated": [
     {
       "nodeType": "VariableDeclaration",
@@ -1002,7 +1002,7 @@
             "apps/helpdesk/src/pages/settings/new_billing/components/AutoUpgradeToggle/AutoUpgradeToggle.tsx",
             "apps/helpdesk/src/pages/settings/rules/accountRules/components/ruleEditors/ManagedRuleEditor.tsx",
             "apps/helpdesk/src/pages/settings/rules/accountRules/components/RuleRow.tsx",
-            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/MetricsFieldArray.tsx",
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_MetricsFieldArray.tsx",
             "apps/helpdesk/src/pages/settings/SLAs/features/SLAList/views/ToggleCell.tsx",
             "apps/helpdesk/src/pages/settings/yourProfile/components/ForwardingCallsPreferences.tsx"
           ]
@@ -1775,7 +1775,7 @@
             "apps/helpdesk/src/pages/common/forms/tests/ToggleInputField.spec.tsx",
             "apps/helpdesk/src/pages/settings/conditionalFields/components/ConditionForm.tsx",
             "apps/helpdesk/src/pages/settings/conditionalFields/components/tests/ConditionForm.spec.tsx",
-            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/SLAFormView.tsx"
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_SLAFormView.tsx"
           ]
         }
       ]
@@ -2145,6 +2145,54 @@
     },
     {
       "nodeType": "ExportDefaultDeclaration",
+      "nodeName": "default",
+      "comment": "*\n * @deprecated\n * @date 2025-12-29\n * @type sla-config-form-migration\n ",
+      "count": 2,
+      "filePath": "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_ChannelSelectBox.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_SLAFormView.tsx",
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/tests/DEPRECATED_ChannelSelectBox.spec.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportDefaultDeclaration",
+      "nodeName": "MetricsFieldArray",
+      "comment": "*\n * @deprecated\n * @date 2025-12-29\n * @type sla-config-form-migration\n ",
+      "count": 2,
+      "filePath": "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_MetricsFieldArray.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_SLAFormView.tsx",
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/tests/DEPRECATED_MetricsFieldArray.spec.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportDefaultDeclaration",
+      "nodeName": "SLAFormView",
+      "comment": "*\n * @deprecated\n * @date 2025-12-29\n * @type sla-config-form-migration\n ",
+      "count": 2,
+      "filePath": "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_SLAFormView.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/controllers/SLAFormController.tsx",
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/tests/DEPRECATED_SLAFormView.spec.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportDefaultDeclaration",
       "nodeName": "MultiLevelSelect",
       "comment": "*\n * @deprecated\n * @date 2024-10-04\n * @type ui-component\n ",
       "count": 2,
@@ -2386,6 +2434,36 @@
     },
     {
       "nodeType": "ExportNamedDeclaration",
+      "nodeName": "DEPRECATED_timeUnits",
+      "comment": "*\n * @deprecated\n * @date 2025-12-29\n * @type sla-config-form-migration\n ",
+      "count": 1,
+      "filePath": "apps/helpdesk/src/pages/settings/SLAs/config/time.ts",
+      "usages": [
+        {
+          "name": "DEPRECATED_timeUnits",
+          "files": [
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_TimeUnitSelectBox.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportDefaultDeclaration",
+      "nodeName": "default",
+      "comment": "*\n * @deprecated\n * @date 2025-12-29\n * @type sla-config-form-migration\n ",
+      "count": 1,
+      "filePath": "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_TimeUnitSelectBox.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_MetricsFieldArray.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
       "nodeName": "GORGIAS_AGENT_ROLE",
       "comment": "*\n * @deprecated Use UserRole enum instead from @repo/utils package\n * @date 2025-11-18\n * @type permissions-migration\n ",
       "count": 0,
@@ -2529,11 +2607,11 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1609,
+      "count": 1610,
       "usages": [
         {
           "name": "LegacyButton",
-          "count": 716,
+          "count": 717,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/CTA.tsx",
             "apps/helpdesk/src/auto_qa/components/Dimension.tsx",
@@ -3162,6 +3240,7 @@
             "apps/helpdesk/src/pages/settings/sidebar/SidebarSettings.tsx",
             "apps/helpdesk/src/pages/settings/SLAs/features/PageHeader/PageHeader.tsx",
             "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DeleteModal.tsx",
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_SLAFormView.tsx",
             "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/SLAFormView.tsx",
             "apps/helpdesk/src/pages/settings/SLAs/features/SLATemplateList/views/Templates.tsx",
             "apps/helpdesk/src/pages/settings/storeManagement/noStoresPage/NoStoresPage.tsx",
@@ -3689,7 +3768,7 @@
             "apps/helpdesk/src/pages/settings/historicalImports/Modal/form/TimeFrameField.tsx",
             "apps/helpdesk/src/pages/settings/new_billing/components/AddressForm/AddressForm.tsx",
             "apps/helpdesk/src/pages/settings/new_billing/components/AddSalesCouponModal/AddSalesCouponModal.tsx",
-            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/ChannelSelectBox.tsx",
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_ChannelSelectBox.tsx",
             "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/General/BigCommerceSettings/InformationForm.tsx",
             "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/General/MagentoSettings/InformationForm.tsx",
             "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/General/ShopifySettings/StoreInformationForm.tsx",

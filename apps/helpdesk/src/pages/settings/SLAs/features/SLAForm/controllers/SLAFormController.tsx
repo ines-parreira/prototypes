@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { toFormErrors } from '@repo/forms'
 import { useLocation, useParams } from 'react-router-dom'
 
@@ -7,7 +8,8 @@ import { validateCreateSLAPolicy } from '@gorgias/helpdesk-validators'
 import type { SLATemplate } from 'pages/settings/SLAs/config/templates'
 import Loader from 'pages/settings/SLAs/features/Loader/Loader'
 
-import SLAFormView from '../views/SLAFormView'
+import DEPRECATED_SLAFormView from '../views/DEPRECATED_SLAFormView'
+import { SLAFormView } from '../views/SLAFormView'
 import makeCreateSLAPolicyBody from './makeCreateSLAPolicyBody'
 import makeMappedFormSLAPolicy from './makeMappedFormSLAPolicy'
 import type { SLAFormValues } from './useFormValues'
@@ -19,6 +21,7 @@ export default function SLAFormController() {
     const location = useLocation<{
         template?: SLATemplate
     }>()
+    const isVoiceSLAEnabled = useFlag(FeatureFlagKey.VoiceSLA, false)
 
     const isNewPolicy = policyId === 'new'
     const { data, isLoading } = useGetSlaPolicy(
@@ -60,8 +63,17 @@ export default function SLAFormController() {
         <>
             {isLoading && !isNewPolicy ? (
                 <Loader />
-            ) : (
+            ) : isVoiceSLAEnabled ? (
                 <SLAFormView
+                    policy={data}
+                    defaultValues={defaultValues}
+                    values={values}
+                    onSubmit={handleFormSubmit}
+                    isLoading={isSubmitting}
+                    validator={validator}
+                />
+            ) : (
+                <DEPRECATED_SLAFormView
                     policy={data}
                     defaultValues={defaultValues}
                     values={values}

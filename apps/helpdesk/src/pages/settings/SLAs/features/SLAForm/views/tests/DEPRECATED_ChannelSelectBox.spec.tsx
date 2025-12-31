@@ -1,4 +1,3 @@
-import { Form } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -8,7 +7,7 @@ import type { Channel } from 'models/channel/types'
 import { getChannels } from 'services/channels'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
-import { ChannelSelectBox } from '../ChannelSelectBox'
+import ChannelSelectBox from '../DEPRECATED_ChannelSelectBox'
 
 /* the channels query doesn't seem to be available in the sdk */
 jest.mock('services/channels')
@@ -22,7 +21,7 @@ mockGetChannels.mockReturnValue([
     } as Channel,
     {
         id: '2',
-        name: 'Voice',
+        name: 'Phone',
         slug: TicketChannel.Phone,
     } as Channel,
     {
@@ -36,30 +35,19 @@ describe('ChannelSelectBox', () => {
     it('should render the component', async () => {
         const user = userEvent.setup()
         renderWithStoreAndQueryClientProvider(
-            <Form
-                defaultValues={
-                    {
-                        target_channels: [],
-                    } as any
-                }
-                onValidSubmit={jest.fn()}
-            >
-                <ChannelSelectBox />
-            </Form>,
+            <ChannelSelectBox value={[]} onChange={jest.fn()} />,
         )
 
-        expect(screen.getByText('Channels')).toBeInTheDocument()
+        expect(screen.getByText('Channel(s)')).toBeInTheDocument()
 
         await waitFor(async () => {
             await user.click(
-                screen.getByText(
-                    'Choose the channels this SLA should apply to. Voice cannot be combined with other channels.',
-                ),
+                screen.getByText('Select channels the SLA should apply to'),
             )
         })
 
         expect(screen.getByText('Channel 1')).toBeInTheDocument()
         expect(screen.getByText('Email')).toBeInTheDocument()
-        expect(screen.getByText('Voice')).toBeInTheDocument()
+        expect(screen.queryByText('Phone')).not.toBeInTheDocument()
     })
 })

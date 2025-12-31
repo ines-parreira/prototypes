@@ -8,7 +8,7 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import { timeUnits } from 'pages/settings/SLAs/config/time'
+import { DEPRECATED_timeUnits as timeUnits } from 'pages/settings/SLAs/config/time'
 
 type TimeUnitSelectBoxProps = {
     value: SLAPolicyMetricUnit | undefined
@@ -17,6 +17,11 @@ type TimeUnitSelectBoxProps = {
     className?: string
 }
 
+/**
+ * @deprecated
+ * @date 2025-12-29
+ * @type sla-config-form-migration
+ */
 export default forwardRef<HTMLDivElement, TimeUnitSelectBoxProps>(
     function TimeUnitSelectBox(
         { value, onChange, isDisabled, className }: TimeUnitSelectBoxProps,

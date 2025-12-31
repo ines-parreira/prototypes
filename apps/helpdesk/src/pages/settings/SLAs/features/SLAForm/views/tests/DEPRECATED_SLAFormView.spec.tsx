@@ -1,17 +1,15 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { screen } from '@testing-library/react'
 
 import {
     SLAPolicyMetricType,
     SLAPolicyMetricUnit,
 } from '@gorgias/helpdesk-types'
 
-import type { MappedFormSLAPolicy } from 'pages/settings/SLAs/features/SLAForm/controllers/makeMappedFormSLAPolicy'
 import { renderWithRouter } from 'utils/testing'
 
-import { SLAFormView } from '../SLAFormView'
+import SLAFormView from '../DEPRECATED_SLAFormView'
 
 const mockOnSubmit = jest.fn()
 const mockValidator = jest.fn()
@@ -76,27 +74,15 @@ describe('SLAFormView', () => {
     })
 
     it('renders the form', () => {
-        renderWithRouter(<SLAFormView {...defaultProps} />)
-
-        expect(screen.getByDisplayValue('Foo SLA')).toBeInTheDocument()
-        expect(
-            screen.getByRole('button', { name: /Save changes/i }),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByRole('button', { name: 'Cancel' }),
-        ).toBeInTheDocument()
-    })
-
-    it('renders the delete button when policy is provided', () => {
-        renderWithRouter(
-            <SLAFormView
-                {...defaultProps}
-                policy={defaultValues as unknown as MappedFormSLAPolicy}
-            />,
+        const { getByDisplayValue, getByText } = renderWithRouter(
+            <SLAFormView {...defaultProps} />,
         )
 
+        expect(getByDisplayValue('Foo SLA')).toBeInTheDocument()
+        expect(getByDisplayValue('30')).toBeInTheDocument()
+        expect(getByDisplayValue('60')).toBeInTheDocument()
         expect(
-            screen.getByRole('button', { name: 'Delete SLA' }),
+            getByText('Pause SLA timer outside of business hours'),
         ).toBeInTheDocument()
     })
 })
