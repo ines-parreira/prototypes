@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { AddressElement, Elements, useElements } from '@stripe/react-stripe-js'
 import {
@@ -14,6 +12,7 @@ import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
 import { UserRole } from 'config/types/user'
+import { billingContact } from 'fixtures/resources'
 import client from 'models/api/resources'
 import { PaymentMethodType } from 'state/billing/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
@@ -54,12 +53,12 @@ const mockAddressValue = (event: Partial<StripeAddressElementChangeEvent>) => {
 const mockedServer = new MockAdapter(client)
 
 mockedServer.onGet('/api/billing/contact/').reply(200, {
-    email: 'foo@bar.baz',
+    ...billingContact,
     shipping: {
+        ...billingContact.shipping,
         address: {
-            country: 'US',
-            postal_code: 12345,
-            state: '',
+            ...billingContact.shipping.address,
+            country: '',
         },
     },
 })
@@ -179,19 +178,20 @@ describe('<MissingBillingInformationRow />', () => {
             }),
         ).toBeVisible()
 
+        const value = {
+            name: 'John Doe',
+            address: {
+                city: 'New York',
+                country: 'US',
+                line1: '123 Main St',
+                line2: null,
+                postal_code: '12345',
+                state: 'NY',
+            },
+        }
         mockAddressValue({
             complete: true,
-            value: {
-                name: 'John Doe',
-                address: {
-                    city: 'New York',
-                    country: 'US',
-                    line1: '123 Main St',
-                    line2: null,
-                    postal_code: '12345',
-                    state: 'NY',
-                },
-            },
+            value,
         })
 
         fireEvent.click(
@@ -200,18 +200,8 @@ describe('<MissingBillingInformationRow />', () => {
 
         await waitFor(() => {
             expect(JSON.parse(mockedServer.history.put[0]?.data)).toEqual({
-                email: 'foo@bar.baz',
-                shipping: {
-                    name: 'John Doe',
-                    address: {
-                        city: 'New York',
-                        country: 'US',
-                        line1: '123 Main St',
-                        line2: null,
-                        postal_code: '12345',
-                        state: 'NY',
-                    },
-                },
+                ...billingContact,
+                shipping: value,
                 tax_ids: {},
             })
         })
