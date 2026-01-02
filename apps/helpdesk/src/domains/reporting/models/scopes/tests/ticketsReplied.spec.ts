@@ -91,6 +91,7 @@ describe('ticketsRepliedScope', () => {
                 ],
                 metricName: 'support-performance-tickets-replied-time-series',
                 scope: 'tickets-replied',
+                limit: 10_000,
             }
 
             expect(actual).toEqual(expected)

@@ -89,6 +89,7 @@ export const createdTicketsTimeseries = ticketsCreatedScope
             },
         ],
         order: [['createdDatetime', OrderDirection.Asc]] as const,
+        limit: 10_000,
     }))
 
 export const createdTicketsTimeseriesQueryV2Factory = (

@@ -92,6 +92,7 @@ describe('messagesSentScope', () => {
                 ],
                 metricName: 'support-performance-messages-sent-time-series',
                 scope: 'messages-sent',
+                limit: 10_000,
             }
 
             expect(actual).toEqual(expected)

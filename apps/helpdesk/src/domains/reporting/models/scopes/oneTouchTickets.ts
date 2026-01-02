@@ -63,6 +63,7 @@ export const oneTouchTicketsTimeseries = oneTouchTicketsScope
                 granularity: ctx.granularity,
             },
         ],
+        limit: 10_000,
     }))
 
 export const oneTouchTicketsTimeseriesQueryV2Factory = (

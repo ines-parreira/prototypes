@@ -104,6 +104,7 @@ describe('messagesReceivedScope', () => {
                 ],
                 metricName: 'support-performance-messages-received-time-series',
                 scope: 'messages-received',
+                limit: 10_000,
             }
 
             expect(actual).toEqual(expected)

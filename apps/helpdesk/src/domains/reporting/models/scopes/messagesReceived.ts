@@ -107,6 +107,7 @@ export const messagesReceivedTimeSeries = messagesReceivedScope
                 granularity: ctx.granularity,
             },
         ],
+        limit: 10_000,
     }))
 
 export const messagesReceivedTimeSeriesQueryV2Factory = (

@@ -107,6 +107,7 @@ describe('ticketsClosedScope', () => {
                 ],
                 metricName: 'support-performance-closed-tickets-time-series',
                 scope: 'tickets-closed',
+                limit: 10_000,
             }
 
             expect(actual).toEqual(expected)

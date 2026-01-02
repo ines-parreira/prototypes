@@ -106,6 +106,7 @@ export const zeroTouchTicketsTimeSeries = zeroTouchTicketsScope
                 granularity: ctx.granularity,
             },
         ],
+        limit: 10_000,
     }))
 
 export const zeroTouchTicketsTimeSeriesQueryV2Factory = (

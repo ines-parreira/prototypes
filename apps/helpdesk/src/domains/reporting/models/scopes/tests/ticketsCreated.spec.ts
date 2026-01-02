@@ -127,6 +127,7 @@ describe('ticketsCreatedScope', () => {
                 order: [['createdDatetime', 'asc']],
                 metricName: 'support-performance-tickets-created-time-series',
                 scope: 'tickets-created',
+                limit: 10_000,
             }
 
             expect(actual).toEqual(expected)

@@ -127,6 +127,7 @@ describe('oneTouchTicketsScope', () => {
                 ],
                 metricName: 'support-performance-one-touch-tickets-time-series',
                 scope: 'one-touch-tickets',
+                limit: 10_000,
             }
 
             expect(actual).toEqual(expected)

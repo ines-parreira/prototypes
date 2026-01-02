@@ -72,7 +72,7 @@ export const satisfiedOrBreachedTicketsTimeseries = ticketSLAScope
                 values: [TicketSLAStatus.Satisfied, TicketSLAStatus.Breached],
             },
         ] as any,
-        limit: 10000,
+        limit: 10_000,
     }))
 
 export const satisfiedOrBreachedTicketsTimeseriesQueryV2Factory = (

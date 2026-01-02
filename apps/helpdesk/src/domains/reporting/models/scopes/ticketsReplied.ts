@@ -52,6 +52,7 @@ export const ticketsRepliedTimeseries = ticketsRepliedScope
                 granularity: ctx.granularity,
             },
         ],
+        limit: 10_000,
     }))
 
 export const ticketsRepliedTimeseriesQueryV2Factory = (

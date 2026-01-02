@@ -52,6 +52,7 @@ export const sentMessagesTimeseries = messagesSentScope
                 granularity: ctx.granularity,
             },
         ],
+        limit: 10_000,
     }))
 
 export const sentMessagesTimeseriesQueryV2Factory = (
