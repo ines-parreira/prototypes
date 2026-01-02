@@ -9,7 +9,6 @@ import { createBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
 
 import { account } from 'fixtures/account'
 import { products } from 'fixtures/productPrices'
-import { billingContact } from 'fixtures/resources'
 import client from 'models/api/resources'
 import {
     payingWithCreditCard,
@@ -55,7 +54,7 @@ const mockInitialStoreState = {
 describe('PaymentMethodSetupView', () => {
     it('should render Loader when setup intent is loading', () => {
         mockedServer.onGet('/billing/state').reply(200, trial)
-        mockedServer.onGet('/api/billing/contact/').reply(200, billingContact)
+        mockedServer.onGet('/api/billing/contact/').reply(200, { shipping: {} })
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue(
             new Promise(() => {}),
         )
@@ -70,7 +69,7 @@ describe('PaymentMethodSetupView', () => {
 
     it('should render Loader when useBillingState is loading', () => {
         mockedServer.onGet('/billing/state').reply(() => new Promise(() => {}))
-        mockedServer.onGet('/api/billing/contact/').reply(200, billingContact)
+        mockedServer.onGet('/api/billing/contact/').reply(200, { shipping: {} })
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
             data: { client_secret: 'client-secret', id: 'id' },
         } as any)
@@ -85,16 +84,9 @@ describe('PaymentMethodSetupView', () => {
 
     it('should render StripeElementsProvider and form when setup intent and BillingState are available', async () => {
         mockedServer.onGet('/billing/state').reply(200, trial)
-        mockedServer.onGet('/api/billing/contact/').reply(200, {
-            ...billingContact,
-            shipping: {
-                ...billingContact.shipping,
-                address: {
-                    ...billingContact.shipping.address,
-                    country: '',
-                },
-            },
-        })
+        mockedServer
+            .onGet('/api/billing/contact/')
+            .reply(200, { shipping: { address: {} } })
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
             data: { client_secret: 'client-secret', id: 'id' },
         } as any)
@@ -124,7 +116,15 @@ describe('PaymentMethodSetupView', () => {
 
     it('should not render EmailInputField and StripeAddressElement if user is not missing billing information', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-        mockedServer.onGet('/api/billing/contact/').reply(200, billingContact)
+        mockedServer.onGet('/api/billing/contact/').reply(200, {
+            email: 'example@gorgias.com',
+            shipping: {
+                address: {
+                    country: 'FR',
+                    postal_code: '75001',
+                },
+            },
+        })
 
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
             data: { client_secret: 'client-secret', id: 'id' },
@@ -161,7 +161,7 @@ describe('PaymentMethodSetupView', () => {
     })
 
     it("shouldn't render Stripe elements if the setup intent's client secret isn't available", async () => {
-        mockedServer.onGet('/api/billing/contact/').reply(200, billingContact)
+        mockedServer.onGet('/api/billing/contact/').reply(200, { shipping: {} })
 
         assumeMock(createBillingPaymentMethodSetup).mockResolvedValue({
             data: { id: 'id' },

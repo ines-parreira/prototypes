@@ -6,7 +6,6 @@ import type {
     Plan,
     SubscriptionCycle,
 } from 'models/billing/types'
-import { getBillingContactSchema } from 'models/billing/validators'
 import type {
     BillingContactDetailResponse,
     BillingContactUpdatePayload,
@@ -69,15 +68,8 @@ export async function reactivateTrial() {
     return res
 }
 
-export const getBillingContact = async () => {
-    const res = await client.get<BillingContactDetailResponse>(
-        '/api/billing/contact/',
-    )
-
-    getBillingContactSchema.parse(res.data)
-
-    return res
-}
+export const getBillingContact = () =>
+    client.get<BillingContactDetailResponse>('/api/billing/contact/')
 
 export const updateBillingContact = (
     billingContact: BillingContactUpdatePayload,

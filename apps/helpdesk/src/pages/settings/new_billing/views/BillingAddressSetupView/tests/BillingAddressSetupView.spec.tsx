@@ -8,7 +8,6 @@ import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { act } from 'react-dom/test-utils'
 
-import { billingContact } from 'fixtures/resources'
 import client from 'models/api/resources'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
@@ -52,7 +51,10 @@ const mockAddressValue = (event: Partial<StripeAddressElementChangeEvent>) => {
 
 const mockedServer = new MockAdapter(client)
 
-mockedServer.onGet('/api/billing/contact/').reply(200, billingContact)
+mockedServer.onGet('/api/billing/contact/').reply(200, {
+    email: 'test@example.com',
+    shipping: {},
+})
 
 mockedServer.onPut('/api/billing/contact/').reply(201, {})
 
@@ -66,7 +68,7 @@ describe('BillingAddressSetupView', () => {
         renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
 
         await waitFor(() => {
-            expect(screen.getByDisplayValue(billingContact.email)).toBeVisible()
+            expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
         })
 
         expect(screen.getByText('Billing Information')).toBeVisible()
@@ -81,7 +83,7 @@ describe('BillingAddressSetupView', () => {
         renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
 
         await waitFor(() => {
-            expect(screen.getByDisplayValue(billingContact.email)).toBeVisible()
+            expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
         })
 
         // The initial email is valid, so it shouldn't show an email validationerror
@@ -112,7 +114,7 @@ describe('BillingAddressSetupView', () => {
         renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
 
         await waitFor(() => {
-            expect(screen.getByDisplayValue(billingContact.email)).toBeVisible()
+            expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
         })
 
         expect(
@@ -130,7 +132,7 @@ describe('BillingAddressSetupView', () => {
         )
 
         expect(
-            screen.queryByDisplayValue(billingContact.email),
+            screen.queryByDisplayValue('test@example.com'),
         ).not.toBeInTheDocument()
         expect(screen.getByDisplayValue('new@example.com')).toBeVisible()
     })
@@ -140,7 +142,7 @@ describe('BillingAddressSetupView', () => {
         renderWithStoreAndQueryClientAndRouter(<BillingAddressSetupView />)
 
         await waitFor(() => {
-            expect(screen.getByDisplayValue(billingContact.email)).toBeVisible()
+            expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
         })
 
         await act(() =>
@@ -164,11 +166,6 @@ describe('BillingAddressSetupView', () => {
             ).toBeVisible()
         })
 
-        await act(() =>
-            user.clear(
-                screen.getByRole('textbox', { name: 'VAT Number info' }),
-            ),
-        )
         await act(() =>
             user.type(
                 screen.getByRole('textbox', { name: 'VAT Number info' }),
