@@ -37,14 +37,12 @@ describe('queries.spec.tsx', () => {
                 { wrapper },
             )
 
-            await waitFor(() => result.current.isSuccess)
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
 
-            await waitFor(() => {
-                expect(result.current.data).toEqual(mockSettings)
-                expect(
-                    fetchChatsApplicationAutomationSettings,
-                ).toHaveBeenCalledWith(['appId1'])
-            })
+            expect(result.current.data).toEqual(mockSettings)
+            expect(
+                fetchChatsApplicationAutomationSettings,
+            ).toHaveBeenCalledWith(['appId1'])
         })
 
         it('should return an empty array if no application IDs are provided', async () => {
@@ -59,11 +57,9 @@ describe('queries.spec.tsx', () => {
                 { wrapper },
             )
 
-            await waitFor(() => result.current.isSuccess)
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
 
-            await waitFor(() => {
-                expect(result.current.data).toEqual([])
-            })
+            expect(result.current.data).toEqual([])
         })
     })
 })
