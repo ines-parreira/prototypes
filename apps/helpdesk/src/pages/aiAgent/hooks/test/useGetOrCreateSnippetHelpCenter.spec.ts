@@ -1,5 +1,5 @@
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 
 import { useCreateStoreSnippetHelpCenter } from 'models/aiAgent/queries'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
@@ -57,7 +57,7 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
 
         const { result } = renderUseGetOrCreateSnippetHelpCenterHook()
 
-        await waitFor(() => result.current !== null)
+        await waitFor(() => expect(result.current.helpCenter).not.toBeNull())
 
         expect(result.current).toEqual({
             helpCenter: mockHelpCenter,
@@ -80,9 +80,7 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
 
         const { result } = renderUseGetOrCreateSnippetHelpCenterHook()
 
-        await act(async () => {
-            await waitFor(() => result.current !== null)
-        })
+        await waitFor(() => expect(result.current.helpCenter).not.toBeNull())
 
         expect(createHelpCenter).toHaveBeenCalledWith([accountDomain, shopName])
         expect(result.current).toEqual({
