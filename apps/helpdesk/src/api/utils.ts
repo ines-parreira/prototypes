@@ -1,20 +1,31 @@
 import axios from 'axios'
 
-import { QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS } from 'domains/reporting/models/resources'
+import {
+    HTTP_STATUS_TOO_MANY_REQUESTS,
+    QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS,
+} from 'domains/reporting/models/resources'
 
 export const reportingRetryHandler = (failureCount: number, error: unknown) => {
     if (axios.isAxiosError(error)) {
         const statusCode = error?.response?.status
-        // Retry up to 20 times if the response is not ready (202 status code)
-        // This is to handle the case where the response is not ready and the query is still being processed
+
+        // Retry up to 20 times for 202 (query still processing)
         if (statusCode === QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS) {
             return failureCount < 20
         }
-        if (statusCode && statusCode >= 400) {
+
+        // Don't retry client errors (4xx except 429)
+        if (
+            statusCode &&
+            statusCode >= 400 &&
+            statusCode < 500 &&
+            statusCode !== HTTP_STATUS_TOO_MANY_REQUESTS
+        ) {
             return false
         }
     }
 
+    // Default: retry up to 3 times (network errors, 429 rate limit, etc.)
     return failureCount < 3
 }
 
@@ -30,10 +41,16 @@ export const reportingRetryDelayHandler = (
 ) => {
     if (axios.isAxiosError(error)) {
         const statusCode = error?.response?.status
+
+        // For 202: exponential backoff up to 16s
         if (statusCode === QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS) {
             return Math.min(1000 * 2 ** retryIndex, 16000)
         }
+        // For other errors: exponential backoff up to 8s
+        // 1s → 2s → 4s → 8s (total ~7s over 3 retries)
+        return Math.min(1000 * 2 ** retryIndex, 8000)
     }
+
     return 1000
 }
 

@@ -92,29 +92,76 @@ describe('utils', () => {
                 statusCode: 300,
                 failureCount: 0,
                 shouldRetry: true,
+                description: '3xx redirects should retry (default behavior)',
             },
             {
                 statusCode: 400,
                 failureCount: 0,
                 shouldRetry: false,
+                description: '400 Bad Request should not retry',
             },
             {
                 statusCode: 404,
                 failureCount: 0,
                 shouldRetry: false,
+                description: '404 Not Found should not retry',
+            },
+            {
+                statusCode: 429,
+                failureCount: 0,
+                shouldRetry: true,
+                description: '429 Rate Limit should retry',
+            },
+            {
+                statusCode: 429,
+                failureCount: 2,
+                shouldRetry: true,
+                description: '429 should retry up to 3 times',
+            },
+            {
+                statusCode: 429,
+                failureCount: 3,
+                shouldRetry: false,
+                description: '429 should stop after 3 attempts',
             },
             {
                 statusCode: 500,
                 failureCount: 0,
-                shouldRetry: false,
+                shouldRetry: true,
+                description: '500 Internal Server Error should retry',
+            },
+            {
+                statusCode: 500,
+                failureCount: 2,
+                shouldRetry: true,
+                description: '500 should retry up to 3 times',
             },
             {
                 statusCode: 500,
                 failureCount: 3,
                 shouldRetry: false,
+                description: '500 should stop after 3 attempts',
+            },
+            {
+                statusCode: 502,
+                failureCount: 0,
+                shouldRetry: true,
+                description: '502 Bad Gateway should retry',
+            },
+            {
+                statusCode: 503,
+                failureCount: 0,
+                shouldRetry: true,
+                description: '503 Service Unavailable should retry',
+            },
+            {
+                statusCode: 504,
+                failureCount: 0,
+                shouldRetry: true,
+                description: '504 Gateway Timeout should retry',
             },
         ])(
-            `Should retry: $shouldRetry error with status $statusCode and failure count: $failureCount`,
+            '$description (status: $statusCode, failureCount: $failureCount)',
             ({
                 statusCode,
                 failureCount,
@@ -123,6 +170,7 @@ describe('utils', () => {
                 statusCode: number
                 failureCount: number
                 shouldRetry: boolean
+                description: string
             }) => {
                 expect(
                     reportingRetryHandler(
@@ -172,15 +220,53 @@ describe('utils', () => {
 
         it.each([
             { retryIndex: 0, expectedDelay: 1000 },
-            { retryIndex: 1, expectedDelay: 1000 },
-            { retryIndex: 2, expectedDelay: 1000 },
+            { retryIndex: 1, expectedDelay: 2000 },
+            { retryIndex: 2, expectedDelay: 4000 },
+            { retryIndex: 3, expectedDelay: 8000 },
+            { retryIndex: 4, expectedDelay: 8000 },
+        ])(
+            'should return $expectedDelay ms for retry index $retryIndex with 429 status code',
+            ({ retryIndex, expectedDelay }) => {
+                expect(
+                    reportingRetryDelayHandler(
+                        retryIndex,
+                        axiosErrorWithCode(429),
+                    ),
+                ).toBe(expectedDelay)
+            },
+        )
+
+        it.each([
+            { statusCode: 500, retryIndex: 0, expectedDelay: 1000 },
+            { statusCode: 500, retryIndex: 1, expectedDelay: 2000 },
+            { statusCode: 500, retryIndex: 2, expectedDelay: 4000 },
+            { statusCode: 500, retryIndex: 3, expectedDelay: 8000 },
+            { statusCode: 502, retryIndex: 0, expectedDelay: 1000 },
+            { statusCode: 503, retryIndex: 1, expectedDelay: 2000 },
+            { statusCode: 504, retryIndex: 2, expectedDelay: 4000 },
+        ])(
+            'should return $expectedDelay ms for retry index $retryIndex with $statusCode status code',
+            ({ statusCode, retryIndex, expectedDelay }) => {
+                expect(
+                    reportingRetryDelayHandler(
+                        retryIndex,
+                        axiosErrorWithCode(statusCode),
+                    ),
+                ).toBe(expectedDelay)
+            },
+        )
+
+        it.each([
+            { retryIndex: 0, expectedDelay: 1000 },
+            { retryIndex: 1, expectedDelay: 2000 },
+            { retryIndex: 2, expectedDelay: 4000 },
         ])(
             'should return $expectedDelay ms for retry index $retryIndex with other errors',
             ({ retryIndex, expectedDelay }) => {
                 expect(
                     reportingRetryDelayHandler(
                         retryIndex,
-                        axiosErrorWithCode(500),
+                        axiosErrorWithCode(400),
                     ),
                 ).toBe(expectedDelay)
             },

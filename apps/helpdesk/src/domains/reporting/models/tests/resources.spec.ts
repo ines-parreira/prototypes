@@ -3,6 +3,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import {
+    isTransientErrorStatus,
     postEnrichedReporting,
     postReportingV1,
     postReportingV2,
@@ -506,6 +507,40 @@ describe('Reporting resources', () => {
             )
 
             consoleErrorSpy.mockRestore()
+        })
+    })
+
+    describe('isTransientErrorStatus', () => {
+        it('should return false for undefined status', () => {
+            expect(isTransientErrorStatus(undefined)).toBe(false)
+        })
+
+        it('should return true for 202 status', () => {
+            expect(isTransientErrorStatus(202)).toBe(true)
+        })
+
+        it('should return true for 429 status', () => {
+            expect(isTransientErrorStatus(429)).toBe(true)
+        })
+
+        it.each([
+            { status: 500, description: '500 Internal Server Error' },
+            { status: 502, description: '502 Bad Gateway' },
+            { status: 503, description: '503 Service Unavailable' },
+            { status: 504, description: '504 Gateway Timeout' },
+            { status: 599, description: '599 (edge of 5xx range)' },
+        ])('should return true for $description', ({ status }) => {
+            expect(isTransientErrorStatus(status)).toBe(true)
+        })
+
+        it.each([
+            { status: 200, description: '200 OK' },
+            { status: 400, description: '400 Bad Request' },
+            { status: 404, description: '404 Not Found' },
+            { status: 403, description: '403 Forbidden' },
+            { status: 600, description: '600 (outside 5xx range)' },
+        ])('should return false for $description', ({ status }) => {
+            expect(isTransientErrorStatus(status)).toBe(false)
         })
     })
 })

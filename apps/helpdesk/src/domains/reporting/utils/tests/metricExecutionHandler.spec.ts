@@ -39,6 +39,7 @@ jest.mock('utils/errors')
 const reportErrorMock = assumeMock(reportError)
 
 jest.mock('domains/reporting/models/resources', () => ({
+    ...jest.requireActual('domains/reporting/models/resources'),
     postReportingV1: jest.fn(),
     postReportingV2: jest.fn(),
     postReportingV2Query: jest.fn(),
@@ -310,13 +311,110 @@ describe('metricExecutionHandler', () => {
             expect(reportErrorMock).not.toHaveBeenCalled()
         })
 
+        it('should propagate 429 errors without reporting to Sentry', async () => {
+            postReportingV1Mock.mockResolvedValue(createMockOldResponse())
+            const axiosError = new AxiosError('Too many requests')
+            axiosError.response = {
+                status: 429,
+                data: { error: { msg: 'Rate limit exceeded' } },
+                statusText: 'Too Many Requests',
+                headers: {},
+                config: {} as any,
+            }
+            postReportingV2Mock.mockRejectedValue(axiosError)
+            postReportingV2QueryMock.mockResolvedValue(
+                createMockNextQueryResponse() as any,
+            )
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                oldPayload: mockOldPayload,
+                newPayload: mockNewPayload,
+            }
+
+            await expect(metricExecutionHandler(config)).rejects.toThrow(
+                axiosError,
+            )
+            expect(reportErrorMock).not.toHaveBeenCalled()
+        })
+
+        it.each([
+            { statusCode: 500, statusText: 'Internal Server Error' },
+            { statusCode: 502, statusText: 'Bad Gateway' },
+            { statusCode: 503, statusText: 'Service Unavailable' },
+            { statusCode: 504, statusText: 'Gateway Timeout' },
+        ])(
+            'should propagate $statusCode errors without reporting to Sentry',
+            async ({ statusCode, statusText }) => {
+                postReportingV1Mock.mockResolvedValue(createMockOldResponse())
+                const axiosError = new AxiosError('Server error')
+                axiosError.response = {
+                    status: statusCode,
+                    data: {},
+                    statusText,
+                    headers: {},
+                    config: {} as any,
+                }
+                postReportingV2Mock.mockRejectedValue(axiosError)
+                postReportingV2QueryMock.mockResolvedValue(
+                    createMockNextQueryResponse() as any,
+                )
+
+                const config: ExecuteMetricConfig = {
+                    metricName: 'test-metric',
+                    oldPayload: mockOldPayload,
+                    newPayload: mockNewPayload,
+                }
+
+                await expect(metricExecutionHandler(config)).rejects.toThrow(
+                    axiosError,
+                )
+                expect(reportErrorMock).not.toHaveBeenCalled()
+            },
+        )
+
+        it('should still report 4xx errors (except 429) to Sentry', async () => {
+            postReportingV1Mock.mockResolvedValue(createMockOldResponse())
+            const axiosError = new AxiosError('Bad request')
+            axiosError.response = {
+                status: 400,
+                data: { error: { msg: 'Invalid query parameters' } },
+                statusText: 'Bad Request',
+                headers: {},
+                config: {} as any,
+            }
+            postReportingV2Mock.mockRejectedValue(axiosError)
+            postReportingV2QueryMock.mockResolvedValue(
+                createMockNextQueryResponse() as any,
+            )
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                oldPayload: mockOldPayload,
+                newPayload: mockNewPayload,
+            }
+
+            await expect(metricExecutionHandler(config)).rejects.toThrow(
+                axiosError,
+            )
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                expect.any(Error),
+                expect.objectContaining({
+                    extra: expect.objectContaining({
+                        metricName: 'test-metric',
+                    }),
+                    tags: { team: 'crm-reporting' },
+                }),
+            )
+        })
+
         it('should report and propagate errors from v2 API', async () => {
             postReportingV1Mock.mockResolvedValue(createMockOldResponse())
-            const axiosError = new AxiosError('Server error')
+            const axiosError = new AxiosError('Forbidden')
             axiosError.response = {
-                status: 500,
+                status: 403,
                 data: {},
-                statusText: 'Internal Server Error',
+                statusText: 'Forbidden',
                 headers: {},
                 config: {} as any,
             }
@@ -346,7 +444,7 @@ describe('metricExecutionHandler', () => {
             // Verify the error message
             const errorArg = reportErrorMock.mock.calls[0][0] as Error
             expect(errorArg.message).toBe(
-                'Next function failed in live mode for test-metric: Server error',
+                'Next function failed in live mode for test-metric: Forbidden',
             )
         })
     })
