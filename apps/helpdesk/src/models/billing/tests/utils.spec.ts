@@ -13,7 +13,7 @@ import { Cadence, ProductType } from '../types'
 import {
     getCadenceMonths,
     getCadenceName,
-    getCheapestPrice,
+    getCheapestPlan,
     getFormattedAmount,
     getOverageUnitPriceFormatted,
     getPlanPriceFormatted,
@@ -73,7 +73,7 @@ describe('getFormattedAmount', () => {
 describe('getCheapestPrice', () => {
     it('returns cheapest non-null amount amongst prices', () => {
         expect(
-            getCheapestPrice(smsProduct.prices, smsProduct.prices[0].cadence),
+            getCheapestPlan(smsProduct.prices, smsProduct.prices[0].cadence),
         ).toEqual(smsProduct.prices[1]) // N.B. 0th is amount=0 so filtered out
     })
 })

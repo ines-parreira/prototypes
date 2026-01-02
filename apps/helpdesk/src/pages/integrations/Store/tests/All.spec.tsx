@@ -64,7 +64,7 @@ const store = mockStore({
     }),
 })
 
-const prices = [
+const plans = [
     {
         plan_id: INTEGRATIONS_PLAN_ID,
         integrations: 150,
@@ -89,9 +89,9 @@ describe('addRequiredPlanToIntegrations()', () => {
                 [magentoConf as unknown as IntegrationListItem],
                 [{} as Integration],
                 {},
-                prices,
+                plans,
             )[0].requiredPriceName,
-        ).toBe(prices[0].name)
+        ).toBe(plans[0].name)
     })
 })
 

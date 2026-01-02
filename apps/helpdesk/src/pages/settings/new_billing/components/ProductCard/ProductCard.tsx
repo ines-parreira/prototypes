@@ -24,7 +24,7 @@ import {
 } from 'models/billing/utils'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import {
-    getCheapestProductPrices,
+    getCheapestProductPlans,
     getCurrentHelpdeskCadence,
 } from 'state/billing/selectors'
 import type { BillingBanner, CurrentUsagePerProduct } from 'state/billing/types'
@@ -56,7 +56,7 @@ const ProductCard = ({
     autoUpgradeEnabled = false,
     scheduledToCancelAt,
 }: ProductCardProps) => {
-    const cheapestPlanByProduct = useAppSelector(getCheapestProductPrices)
+    const cheapestPlanByProduct = useAppSelector(getCheapestProductPlans)
     const cadence = useAppSelector(getCurrentHelpdeskCadence)
     const history = useHistory()
     const productInfo = getProductInfo(type, plan)

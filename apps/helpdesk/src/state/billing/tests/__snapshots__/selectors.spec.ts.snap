@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`billing selectors getAutomationPrices should return the AI Agent prices 1`] = `
+exports[`billing selectors getAvailableAutomatePlans should return the AI Agent plans 1`] = `
 [
   {
     "amount": 3000,
@@ -358,7 +358,7 @@ exports[`billing selectors getAutomationPrices should return the AI Agent prices
 ]
 `;
 
-exports[`billing selectors getAvailablePlans should return the prices 1`] = `
+exports[`billing selectors getAvailablePlans should return the available plans 1`] = `
 [
   {
     "amount": 0,
@@ -1960,7 +1960,7 @@ exports[`billing selectors getAvailablePlans should return the prices 1`] = `
 ]
 `;
 
-exports[`billing selectors getCheapestProductPrices should return the cheapest product prices 1`] = `
+exports[`billing selectors getCheapestProductPlans should return the cheapest plans for a specific product 1`] = `
 {
   "automation": {
     "amount": 3000,
@@ -2226,7 +2226,7 @@ exports[`billing selectors getCurrentProductsFeatures should return the current 
 }
 `;
 
-exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1`] = `
+exports[`billing selectors getAvailableHelpdeskPlans should return the available helpdesk plans 1`] = `
 [
   {
     "amount": 1000,

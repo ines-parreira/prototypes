@@ -33,7 +33,7 @@ import {
 import type { IntegrationListItem } from 'state/integrations/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { getCheapestPriceNameForFeature } from 'utils/paywalls'
+import { getCheapestPlanNameForFeature } from 'utils/paywalls'
 
 import Card from './Card'
 import CardsWrapper from './CardsWrapper'
@@ -60,7 +60,7 @@ export function addRequiredPlanToIntegrations(
     integrationsListItems: IntegrationListItem[],
     integrations: Integration[],
     features: Partial<Record<AccountFeature, AccountFeatureMetadata>>,
-    prices: (HelpdeskPlan | AutomatePlan)[],
+    plans: (HelpdeskPlan | AutomatePlan)[],
 ) {
     return integrationsListItems.map((integration) => {
         const requiredFeature = integration.requiredFeature
@@ -68,9 +68,9 @@ export function addRequiredPlanToIntegrations(
         if (!requiredFeature) return integration
         if (features[requiredFeature]?.enabled) return integration
 
-        const requiredPriceName = getCheapestPriceNameForFeature(
+        const requiredPriceName = getCheapestPlanNameForFeature(
             requiredFeature,
-            prices,
+            plans,
         )
         return {
             ...integration,

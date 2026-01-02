@@ -16,15 +16,15 @@ import type { RootState } from 'state/types'
 export const getStateWithHelpdeskPlan = (
     helpdeskPlan: HelpdeskPlan = basicMonthlyHelpdeskPlan,
 ) => {
-    const productsWithExtraPrice = _cloneDeep(products)
+    const productsWithExtraPlan = _cloneDeep(products)
     const helpdeskProduct =
-        productsWithExtraPrice[0] as Product<ProductType.Helpdesk>
+        productsWithExtraPlan[0] as Product<ProductType.Helpdesk>
     helpdeskProduct.prices.push(helpdeskPlan)
 
     return {
         integrations: fromJS(integrationsStateWithShopify),
         stats: initialState,
-        billing: fromJS({ ...billingState, products: productsWithExtraPrice }),
+        billing: fromJS({ ...billingState, products: productsWithExtraPlan }),
         currentAccount: fromJS({
             current_subscription: {
                 ...account.current_subscription,

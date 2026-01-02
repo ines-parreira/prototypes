@@ -11,7 +11,7 @@ import SubscriptionModal from 'pages/settings/new_billing/components/Subscriptio
 import { getDefaultConvertPlanIndex } from 'pages/settings/new_billing/utils/getDefaultConvertPlanIndex'
 import {
     getAvailableConvertPlans,
-    getCheapestConvertPrice,
+    getCheapestConvertPlan,
     getCurrentConvertPlan,
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
@@ -36,7 +36,7 @@ const ConvertSubscriptionModal = ({
 
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
-    const cheapestConvertPlan = useAppSelector(getCheapestConvertPrice)
+    const cheapestConvertPlan = useAppSelector(getCheapestConvertPlan)
     const convertAvailablePlans = useAppSelector(getAvailableConvertPlans)
     const isTrialingSubscription = useAppSelector(isTrialing)
 

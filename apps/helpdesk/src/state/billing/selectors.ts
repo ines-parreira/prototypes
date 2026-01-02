@@ -13,7 +13,7 @@ import type {
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
-import { getCheapestPrice } from 'models/billing/utils'
+import { getCheapestPlan } from 'models/billing/utils'
 import { getCurrentSubscription } from 'state/currentAccount/selectors'
 import type {
     AccountFeature,
@@ -354,25 +354,25 @@ export const getCurrentProductsUsage = createSelector(
             | undefined,
 )
 
-export const getCheapestSMSPrice = createSelector(
+export const getCheapestSMSPlan = createSelector(
     getAvailableSmsPlans,
     getCurrentHelpdeskCadence,
-    (smsPlans, cadence) => getCheapestPrice(smsPlans, cadence),
+    (smsPlans, cadence) => getCheapestPlan(smsPlans, cadence),
 )
 
-export const getCheapestVoicePrice = createSelector(
+export const getCheapestVoicePlan = createSelector(
     getAvailableVoicePlans,
     getCurrentHelpdeskCadence,
-    (voicePlans, cadence) => getCheapestPrice(voicePlans, cadence),
+    (voicePlans, cadence) => getCheapestPlan(voicePlans, cadence),
 )
 
-export const getCheapestConvertPrice = createSelector(
+export const getCheapestConvertPlan = createSelector(
     getAvailableConvertPlans,
     getCurrentHelpdeskCadence,
-    (convertPlans, cadence) => getCheapestPrice(convertPlans, cadence),
+    (convertPlans, cadence) => getCheapestPlan(convertPlans, cadence),
 )
 
-export const getCheapestProductPrices = createSelector(
+export const getCheapestProductPlans = createSelector(
     getAvailableHelpdeskPlans,
     getAvailableAutomatePlans,
     getAvailableVoicePlans,
@@ -380,7 +380,7 @@ export const getCheapestProductPrices = createSelector(
     getAvailableConvertPlans,
     getCurrentHelpdeskCadence,
     (
-        helpDeskPlans,
+        helpdeskPlans,
         automationPlans,
         voicePlans,
         smsPlans,
@@ -388,11 +388,11 @@ export const getCheapestProductPrices = createSelector(
         cadence,
     ) => {
         return {
-            helpdesk: getCheapestPrice(helpDeskPlans, cadence),
-            automation: getCheapestPrice(automationPlans, cadence),
-            voice: getCheapestPrice(voicePlans, cadence),
-            sms: getCheapestPrice(smsPlans, cadence),
-            convert: getCheapestPrice(convertPlans, cadence),
+            helpdesk: getCheapestPlan(helpdeskPlans, cadence),
+            automation: getCheapestPlan(automationPlans, cadence),
+            voice: getCheapestPlan(voicePlans, cadence),
+            sms: getCheapestPlan(smsPlans, cadence),
+            convert: getCheapestPlan(convertPlans, cadence),
         }
     },
 )

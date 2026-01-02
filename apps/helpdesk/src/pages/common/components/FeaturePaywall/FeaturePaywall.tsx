@@ -11,7 +11,7 @@ import type {
     AccountFeature,
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'
-import { getCheapestPriceNameForFeature } from 'utils/paywalls'
+import { getCheapestPlanNameForFeature } from 'utils/paywalls'
 
 import type { PaywallTheme } from '../Paywall/Paywall'
 import Paywall, { UpgradeType } from '../Paywall/Paywall'
@@ -54,7 +54,7 @@ const FeaturePaywall = ({
         ? 'Enterprise'
         : shouldKeepPlan
           ? currentHelpdeskPlanName?.split(' ')[0]
-          : getCheapestPriceNameForFeature(feature, availablePlans || {})
+          : getCheapestPlanNameForFeature(feature, availablePlans || {})
     const config = paywallConfigs[feature]!
 
     return config && requiredPlanName ? (

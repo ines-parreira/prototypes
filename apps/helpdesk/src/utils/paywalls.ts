@@ -36,7 +36,7 @@ export const convertLegacyPlanNameToPublicPlanName = (
             : (name as PlanName)
 }
 
-export const getCheapestPriceNameForFeature = (
+export const getCheapestPlanNameForFeature = (
     featureName: AccountFeature,
     plans: (HelpdeskPlan | AutomatePlan)[],
 ) => {

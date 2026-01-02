@@ -333,21 +333,21 @@ describe('billing selectors', () => {
         })
     })
 
-    describe('getCheapestSMSPrice', () => {
-        it('should return the cheapest non-zero SMS price', () => {
-            expect(selectors.getCheapestSMSPrice(state)).toEqual(smsPlan1)
+    describe('getCheapestSMSPlan', () => {
+        it('should return the cheapest non-zero SMS plan', () => {
+            expect(selectors.getCheapestSMSPlan(state)).toEqual(smsPlan1)
         })
     })
 
-    describe('getCheapestVoicePrice', () => {
-        it('should return the cheapest non-zero Voice price', () => {
-            expect(selectors.getCheapestVoicePrice(state)).toEqual(voicePlan1)
+    describe('getCheapestVoicePlan', () => {
+        it('should return the cheapest non-zero Voice plan', () => {
+            expect(selectors.getCheapestVoicePlan(state)).toEqual(voicePlan1)
         })
     })
 
-    describe('getCheapestConvertPrice', () => {
-        it('should return the cheapest non-zero Convert price', () => {
-            expect(selectors.getCheapestConvertPrice(state)).toEqual(
+    describe('getCheapestConvertPlan', () => {
+        it('should return the cheapest non-zero Convert plan', () => {
+            expect(selectors.getCheapestConvertPlan(state)).toEqual(
                 convertPlan1,
             )
         })
@@ -487,8 +487,8 @@ describe('billing selectors', () => {
         })
 
         it('should return the current plans by product without unknown plans for convert', () => {
-            // This is a case that should happen only on when account is subscribed to an internal price
-            // e.g. revenue beta testers prices
+            // This is a case that should happen only on when account is subscribed to an internal plan
+            // e.g. revenue beta testers plans
             const currentPlansByProduct = selectors.getCurrentPlansByProduct({
                 ...state,
                 currentAccount: state.currentAccount.setIn(
@@ -517,7 +517,7 @@ describe('billing selectors', () => {
     })
 
     describe('getAvailablePlans', () => {
-        it('should return the prices', () => {
+        it('should return the available plans', () => {
             expect(selectors.getAvailablePlans(state)).toMatchSnapshot()
         })
     })
@@ -536,7 +536,7 @@ describe('billing selectors', () => {
     })
 
     describe('getAvailablePlansMapByPlanId', () => {
-        it('should return the prices', () => {
+        it('should return the available plans map', () => {
             const expected = billingFixtures.billingState.products
                 .flatMap((product) => product.prices)
                 .reduce<{ [key: string]: Plan }>((acc, plan) => {
@@ -566,31 +566,31 @@ describe('billing selectors', () => {
         })
     })
 
-    describe('getHelpdeskPrices', () => {
-        it('should return the helpdesk prices', () => {
+    describe('getAvailableHelpdeskPlans', () => {
+        it('should return the available helpdesk plans', () => {
             expect(selectors.getAvailableHelpdeskPlans(state)).toMatchSnapshot()
         })
     })
 
-    describe('getAutomationPrices', () => {
-        it('should return the AI Agent prices', () => {
+    describe('getAvailableAutomatePlans', () => {
+        it('should return the AI Agent plans', () => {
             expect(selectors.getAvailableAutomatePlans(state)).toMatchSnapshot()
         })
     })
 
-    describe('getCheapestProductPrices', () => {
-        it('should return the cheapest product prices', () => {
-            const cheapestProductPrices =
-                selectors.getCheapestProductPrices(state)
-            expect(cheapestProductPrices.voice).toEqual(voicePlan1)
-            expect(cheapestProductPrices.sms).toEqual(smsPlan1)
-            expect(cheapestProductPrices.automation).toEqual(
+    describe('getCheapestProductPlans', () => {
+        it('should return the cheapest plans for a specific product', () => {
+            const cheapestProductPlans =
+                selectors.getCheapestProductPlans(state)
+            expect(cheapestProductPlans.voice).toEqual(voicePlan1)
+            expect(cheapestProductPlans.sms).toEqual(smsPlan1)
+            expect(cheapestProductPlans.automation).toEqual(
                 basicMonthlyAutomationPlan,
             )
-            expect(cheapestProductPrices.helpdesk).toEqual(starterHelpdeskPlan)
-            expect(cheapestProductPrices.convert).toEqual(convertPlan1)
+            expect(cheapestProductPlans.helpdesk).toEqual(starterHelpdeskPlan)
+            expect(cheapestProductPlans.convert).toEqual(convertPlan1)
 
-            expect(cheapestProductPrices).toMatchSnapshot()
+            expect(cheapestProductPlans).toMatchSnapshot()
         })
     })
 

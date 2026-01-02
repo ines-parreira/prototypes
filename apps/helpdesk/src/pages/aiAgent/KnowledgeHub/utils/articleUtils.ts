@@ -67,7 +67,7 @@ export function isDraft(
               'id' | 'draftVersionId' | 'publishedVersionId'
           >
         | undefined,
-): Boolean {
+): boolean {
     if (!article) {
         return false
     }
