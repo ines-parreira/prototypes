@@ -65,7 +65,7 @@ describe('useRecentItems', () => {
 
     it('should observe table', async () => {
         const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
-        await waitFor(() => result.current)
+        await waitFor(() => expect(result.current.isGettingItems).toBe(false))
 
         expect(mockObserveTable).toHaveBeenCalled()
     })
@@ -74,7 +74,7 @@ describe('useRecentItems', () => {
         const { result, unmount } = renderHook(() =>
             useRecentItems(RecentItems.Tickets),
         )
-        await waitFor(() => result.current)
+        await waitFor(() => expect(result.current.isGettingItems).toBe(false))
 
         unmount()
 
@@ -83,7 +83,7 @@ describe('useRecentItems', () => {
 
     it('should return no items by default', async () => {
         const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
-        await waitFor(() => result.current)
+        await waitFor(() => expect(result.current.isGettingItems).toBe(false))
 
         expect(result.current.items).toEqual([])
     })
@@ -92,7 +92,7 @@ describe('useRecentItems', () => {
         mockGetItems.mockResolvedValue({ 0: 'foo', 1: 'bar', 2: 'baz' })
 
         const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
-        await waitFor(() => result.current)
+        await waitFor(() => expect(result.current.isGettingItems).toBe(false))
 
         await waitFor(() => {
             expect(result.current.items).toEqual(['baz', 'bar', 'foo'])
@@ -100,12 +100,11 @@ describe('useRecentItems', () => {
     })
 
     it('should set item', async () => {
-        jest.useFakeTimers().setSystemTime(mockDate)
-
         const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
-        await waitFor(() => result.current)
+        await waitFor(() => expect(result.current.isGettingItems).toBe(false))
 
         await act(async () => {
+            jest.useFakeTimers().setSystemTime(mockDate)
             await result.current.setRecentItem({ id: 1 })
             jest.runAllTimers()
             await flushPromises()
@@ -120,15 +119,16 @@ describe('useRecentItems', () => {
     })
 
     it('should not set item twice if same item is provided', async () => {
-        jest.useFakeTimers().setSystemTime(mockDate)
-
         const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
-        await waitFor(() => result.current)
+        await waitFor(() => expect(result.current.isGettingItems).toBe(false))
 
         await act(async () => {
+            jest.useFakeTimers().setSystemTime(mockDate)
             await result.current.setRecentItem({ id: 1 })
             jest.runAllTimers()
             await flushPromises()
+
+            jest.useFakeTimers().setSystemTime(mockDate)
             await result.current.setRecentItem({ id: 1 })
             jest.runAllTimers()
             await flushPromises()
@@ -138,19 +138,20 @@ describe('useRecentItems', () => {
     })
 
     it('should set item again if same item is provided, with updated fields', async () => {
-        jest.useFakeTimers().setSystemTime(mockDate)
-
         const { result } = renderHook(() =>
             useRecentItems<any>(RecentItems.Tickets),
         )
-        await waitFor(() => result.current)
+        await waitFor(() => expect(result.current.isGettingItems).toBe(false))
 
         await act(async () => {
+            jest.useFakeTimers().setSystemTime(mockDate)
             await result.current.setRecentItem({ id: 1 })
             jest.runAllTimers()
             await flushPromises()
+
             mockLength.mockResolvedValue(1)
             mockIterate.mockResolvedValue(mockDate.toString())
+            jest.useFakeTimers().setSystemTime(mockDate)
             await result.current.setRecentItem({ id: 1, foo: 'bar' })
             jest.runAllTimers()
             await flushPromises()
@@ -163,15 +164,15 @@ describe('useRecentItems', () => {
     })
 
     it('should delete item if it already exists and rewrite with a new key', async () => {
-        jest.useFakeTimers().setSystemTime(mockDate)
         mockLength.mockResolvedValue(1)
         mockKeys.mockResolvedValue([mockDate.toString()])
         mockIterate.mockResolvedValue(mockDate.toString())
 
         const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
-        await waitFor(() => result.current)
+        await waitFor(() => expect(result.current.isGettingItems).toBe(false))
 
         await act(async () => {
+            jest.useFakeTimers().setSystemTime(mockDate)
             await result.current.setRecentItem({ id: 1 })
             jest.runAllTimers()
             await flushPromises()
@@ -187,16 +188,16 @@ describe('useRecentItems', () => {
     })
 
     it('should delete first item if there are more than maxItems', async () => {
-        jest.useFakeTimers().setSystemTime(mockDate)
         mockLength.mockResolvedValue(5)
         mockKeys.mockResolvedValue(['0', '1', '2', '3', '4'])
 
         const { result } = renderHook(() =>
             useRecentItems(RecentItems.Tickets, 5),
         )
-        await waitFor(() => result.current)
+        await waitFor(() => expect(result.current.isGettingItems).toBe(false))
 
         await act(async () => {
+            jest.useFakeTimers().setSystemTime(mockDate)
             await result.current.setRecentItem({ id: 1 })
             jest.runAllTimers()
             await flushPromises()
