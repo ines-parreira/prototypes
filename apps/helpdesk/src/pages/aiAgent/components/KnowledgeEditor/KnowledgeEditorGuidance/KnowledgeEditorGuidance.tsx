@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-import { LegacyLoadingSpinner, SidePanel } from '@gorgias/axiom'
+import { SidePanel } from '@gorgias/axiom'
 
 import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
@@ -10,6 +10,7 @@ import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/typ
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
+import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
 import { KnowledgeEditorGuidanceProvider, useGuidanceContext } from './context'
 import type { GuidanceContextConfig, GuidanceModeType } from './context'
 import { KnowledgeEditorGuidanceContent } from './KnowledgeEditorGuidanceContent'
@@ -34,7 +35,11 @@ type Props = {
     handleVisibilityUpdate?: (visibility: string) => void
 }
 
-const KnowledgeEditorGuidanceInner = () => {
+const KnowledgeEditorGuidanceInner = ({
+    isLoading,
+}: {
+    isLoading: boolean
+}) => {
     const closeHandlerRef = useRef<(() => void) | null>(null)
 
     const { playground, config, state } = useGuidanceContext()
@@ -67,21 +72,25 @@ const KnowledgeEditorGuidanceInner = () => {
             withoutPadding
             width={playground.sidePanelWidth}
         >
-            <div className={css.splitView}>
-                <div className={css.editor}>
-                    <KnowledgeEditorGuidanceContent
-                        closeHandlerRef={closeHandlerRef}
-                    />
-                </div>
-                {playground.isOpen && (
-                    <div className={css.playground}>
-                        <PlaygroundPanel
-                            onClose={playground.onClose}
-                            draftKnowledge={draftKnowledgeForPlayground}
+            {isLoading ? (
+                <KnowledgeEditorLoadingShell />
+            ) : (
+                <div className={css.splitView}>
+                    <div className={css.editor}>
+                        <KnowledgeEditorGuidanceContent
+                            closeHandlerRef={closeHandlerRef}
                         />
                     </div>
-                )}
-            </div>
+                    {playground.isOpen && (
+                        <div className={css.playground}>
+                            <PlaygroundPanel
+                                onClose={playground.onClose}
+                                draftKnowledge={draftKnowledgeForPlayground}
+                            />
+                        </div>
+                    )}
+                </div>
+            )}
         </SidePanel>
     )
 }
@@ -141,11 +150,8 @@ export const KnowledgeEditorGuidance = ({
         return null
     }
 
-    if (
-        (guidanceArticleId && isGuidanceArticleLoading) ||
-        !guidanceHelpCenter
-    ) {
-        return <LegacyLoadingSpinner size="big" />
+    if (!guidanceHelpCenter) {
+        return null
     }
 
     const config: GuidanceContextConfig = {
@@ -168,7 +174,9 @@ export const KnowledgeEditorGuidance = ({
 
     return (
         <KnowledgeEditorGuidanceProvider config={config}>
-            <KnowledgeEditorGuidanceInner />
+            <KnowledgeEditorGuidanceInner
+                isLoading={!!guidanceArticleId && isGuidanceArticleLoading}
+            />
         </KnowledgeEditorGuidanceProvider>
     )
 }

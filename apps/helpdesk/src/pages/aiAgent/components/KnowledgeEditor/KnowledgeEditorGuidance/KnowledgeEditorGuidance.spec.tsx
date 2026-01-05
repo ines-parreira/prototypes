@@ -1211,7 +1211,7 @@ describe('KnowledgeEditorGuidance', () => {
     })
 
     describe('loading states', () => {
-        it('shows loading spinner when guidance article is loading', () => {
+        it('shows loading skeleton when guidance article is loading', () => {
             mockUseGuidanceArticle.mockReturnValue({
                 guidanceArticle: undefined,
                 isGuidanceArticleLoading: true,
@@ -1232,8 +1232,7 @@ describe('KnowledgeEditorGuidance', () => {
                 </Provider>,
             )
 
-            expect(screen.getByRole('status')).toBeInTheDocument()
-            expect(screen.queryByTestId('side-panel')).not.toBeInTheDocument()
+            expect(screen.getByTestId('side-panel')).toBeInTheDocument()
         })
 
         it('does not show loading spinner in create mode even without article', () => {

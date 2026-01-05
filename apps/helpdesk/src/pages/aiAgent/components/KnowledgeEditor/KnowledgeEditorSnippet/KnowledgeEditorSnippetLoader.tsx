@@ -2,8 +2,6 @@ import { useCallback, useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
-
 import {
     getLast28DaysDateRange,
     useResourceMetrics,
@@ -23,9 +21,8 @@ import type { IngestedResourceWithArticleId } from 'pages/aiAgent/AiAgentScraped
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 import { getTimezone } from 'state/currentUser/selectors'
 
+import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
 import { KnowledgeEditorSnippetView } from './KnowledgeEditorSnippetView'
-
-import css from './KnowledgeEditorSnippet.less'
 
 type SnippetSourceData = {
     url: string
@@ -286,11 +283,7 @@ export const KnowledgeEditorSnippetLoader = ({
         isFileIngestionLogsLoading
 
     if (isLoading || !snippet) {
-        return (
-            <div className={css.loader}>
-                <LoadingSpinner size="big" />
-            </div>
-        )
+        return <KnowledgeEditorLoadingShell />
     }
 
     return (

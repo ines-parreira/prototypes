@@ -12,7 +12,7 @@ type Props = {
         title: string | React.ReactNode
         subtitle?: string
         tooltip?: string
-    }
+    } | null
     bottomLink?: {
         text: string
         url?: string
@@ -31,35 +31,37 @@ export const KnowledgeEditorSidePanelSection = ({
     return (
         <Accordion.Item value={sectionId}>
             <div className={css.section}>
-                <Accordion.ItemTrigger
-                    className={classNames(
-                        css.header,
-                        header.subtitle && css.headerWithSubtitle,
-                    )}
-                >
-                    <div className={css.titleAndSubtitle}>
-                        <div className={css.title}>
-                            {header.tooltip ? (
-                                <div className={css.titleWithTooltip}>
-                                    {header.title}
-                                    <IconTooltip className={css.tooltip}>
-                                        {header.tooltip}
-                                    </IconTooltip>
+                {header && (
+                    <Accordion.ItemTrigger
+                        className={classNames(
+                            css.header,
+                            header.subtitle && css.headerWithSubtitle,
+                        )}
+                    >
+                        <div className={css.titleAndSubtitle}>
+                            <div className={css.title}>
+                                {header.tooltip ? (
+                                    <div className={css.titleWithTooltip}>
+                                        {header.title}
+                                        <IconTooltip className={css.tooltip}>
+                                            {header.tooltip}
+                                        </IconTooltip>
+                                    </div>
+                                ) : (
+                                    header.title
+                                )}
+                            </div>
+                            {header.subtitle && (
+                                <div className={css.subtitle}>
+                                    {header.subtitle}
                                 </div>
-                            ) : (
-                                header.title
                             )}
                         </div>
-                        {header.subtitle && (
-                            <div className={css.subtitle}>
-                                {header.subtitle}
-                            </div>
-                        )}
-                    </div>
-                    <Accordion.ItemIndicator>
-                        <Icon name="arrow-chevron-down" />
-                    </Accordion.ItemIndicator>
-                </Accordion.ItemTrigger>
+                        <Accordion.ItemIndicator>
+                            <Icon name="arrow-chevron-down" />
+                        </Accordion.ItemIndicator>
+                    </Accordion.ItemTrigger>
+                )}
                 <Accordion.ItemContent className={css.content}>
                     {children}
                     {bottomLink && (

@@ -1,4 +1,10 @@
-import { createContext, useContext, useMemo, useReducer } from 'react'
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useMemo,
+    useReducer,
+} from 'react'
 
 import { usePlaygroundPanelInKnowledgeEditor } from 'pages/aiAgent/hooks/usePlaygroundPanelInKnowledgeEditor'
 
@@ -29,6 +35,23 @@ export const ArticleContextProvider = ({ config, children }: ProviderProps) => {
         articleReducer,
         createInitialState(config),
     )
+
+    // Sync article data when it loads
+    useEffect(() => {
+        if (
+            config.initialArticle &&
+            config.initialArticle.id !== state.article?.id
+        ) {
+            dispatch({
+                type: 'SWITCH_ARTICLE',
+                payload: {
+                    article: config.initialArticle,
+                    locale: config.helpCenter.default_locale,
+                    translationMode: 'existing',
+                },
+            })
+        }
+    }, [config.initialArticle, config.helpCenter.default_locale, state.article])
 
     const { isPlaygroundOpen, onTest, onClosePlayground, sidePanelWidth } =
         usePlaygroundPanelInKnowledgeEditor(state.isFullscreen)

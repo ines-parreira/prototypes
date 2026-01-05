@@ -579,7 +579,7 @@ describe('KnowledgeEditorSnippetLoader', () => {
     })
 
     describe('Loading States', () => {
-        it('shows loading spinner when article data is loading', () => {
+        it('shows loading skeleton when article data is loading', () => {
             jest.spyOn(
                 helpCenterQueries,
                 'useGetHelpCenterArticle',
@@ -588,7 +588,7 @@ describe('KnowledgeEditorSnippetLoader', () => {
                 isInitialLoading: true,
             } as ReturnType<typeof helpCenterQueries.useGetHelpCenterArticle>)
 
-            render(
+            const { container } = render(
                 <KnowledgeEditorSnippetLoader
                     {...baseProps}
                     snippetType={SnippetType.URL}
@@ -596,10 +596,14 @@ describe('KnowledgeEditorSnippetLoader', () => {
                 { wrapper },
             )
 
-            expect(screen.getByRole('status')).toBeInTheDocument()
+            // Check for skeleton loading elements
+            const skeletons = container.querySelectorAll(
+                '[data-name="skeleton"]',
+            )
+            expect(skeletons.length).toBeGreaterThan(0)
         })
 
-        it('shows loading spinner when ingestion logs are loading', () => {
+        it('shows loading skeleton when ingestion logs are loading', () => {
             jest.spyOn(
                 helpCenterQueries,
                 'useGetHelpCenterArticle',
@@ -618,7 +622,7 @@ describe('KnowledgeEditorSnippetLoader', () => {
                 typeof helpCenterQueries.useGetArticleIngestionLogs
             >)
 
-            render(
+            const { container } = render(
                 <KnowledgeEditorSnippetLoader
                     {...baseProps}
                     snippetType={SnippetType.URL}
@@ -626,7 +630,11 @@ describe('KnowledgeEditorSnippetLoader', () => {
                 { wrapper },
             )
 
-            expect(screen.getByRole('status')).toBeInTheDocument()
+            // Check for skeleton loading elements
+            const skeletons = container.querySelectorAll(
+                '[data-name="skeleton"]',
+            )
+            expect(skeletons.length).toBeGreaterThan(0)
         })
     })
 

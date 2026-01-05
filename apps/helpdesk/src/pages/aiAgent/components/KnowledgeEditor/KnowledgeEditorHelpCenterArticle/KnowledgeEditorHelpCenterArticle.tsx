@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-import { LegacyLoadingSpinner, SidePanel } from '@gorgias/axiom'
+import { SidePanel } from '@gorgias/axiom'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import { useNotify } from 'hooks/useNotify'
@@ -14,6 +14,7 @@ import type {
 } from 'models/helpCenter/types'
 
 import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
+import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
 import { ArticleEditorContent } from './ArticleEditorContent'
 import type { ArticleContextConfig, ArticleModeType } from './context'
 import { ArticleContextProvider, useArticleContext } from './context'
@@ -49,7 +50,7 @@ type Props = {
     }
 }
 
-const ArticleEditorInner = () => {
+const ArticleEditorInner = ({ isLoading }: { isLoading: boolean }) => {
     const closeHandlerRef = useRef<(() => void) | null>(null)
 
     const { playground, config } = useArticleContext()
@@ -70,16 +71,22 @@ const ArticleEditorInner = () => {
             withoutPadding
             width={playground.sidePanelWidth}
         >
-            <div className={css.splitView}>
-                <div className={css.editor}>
-                    <ArticleEditorContent closeHandlerRef={closeHandlerRef} />
-                </div>
-                {playground.isOpen && (
-                    <div className={css.playground}>
-                        <PlaygroundPanel onClose={playground.onClose} />
+            {isLoading ? (
+                <KnowledgeEditorLoadingShell />
+            ) : (
+                <div className={css.splitView}>
+                    <div className={css.editor}>
+                        <ArticleEditorContent
+                            closeHandlerRef={closeHandlerRef}
+                        />
                     </div>
-                )}
-            </div>
+                    {playground.isOpen && (
+                        <div className={css.playground}>
+                            <PlaygroundPanel onClose={playground.onClose} />
+                        </div>
+                    )}
+                </div>
+            )}
         </SidePanel>
     )
 }
@@ -119,16 +126,6 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         }
     }, [getArticle.isError, isExisting, getArticle.error, notifyError, props])
 
-    if (isExisting && (getArticle.isLoading || !getArticle.data)) {
-        return (
-            <SidePanel isOpen={true} onOpenChange={() => {}} withoutPadding>
-                <div className={css.loader}>
-                    <LegacyLoadingSpinner size="big" />
-                </div>
-            </SidePanel>
-        )
-    }
-
     const initialMode: ArticleModeType =
         article.type === 'new'
             ? 'create'
@@ -155,7 +152,7 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
 
     return (
         <ArticleContextProvider config={config}>
-            <ArticleEditorInner />
+            <ArticleEditorInner isLoading={getArticle.isFetching} />
         </ArticleContextProvider>
     )
 }

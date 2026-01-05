@@ -36,6 +36,13 @@ jest.mock('@gorgias/axiom', () => ({
     LegacyLoadingSpinner: () => (
         <div data-testid="loading-spinner">Loading</div>
     ),
+    Skeleton: ({ height, containerClassName }: any) => (
+        <div
+            data-testid="skeleton"
+            data-height={height}
+            className={containerClassName}
+        />
+    ),
 }))
 
 jest.mock('hooks/useNotify', () => ({
@@ -87,15 +94,23 @@ jest.mock('./ArticleEditorContent', () => ({
     },
 }))
 
+// Track the config passed to ArticleContextProvider
+let lastConfig: any = null
+
 jest.mock('./context', () => {
     const actual = jest.requireActual('./context')
     return {
         ...actual,
         ArticleContextProvider: ({
+            config,
             children,
         }: {
+            config: any
             children: React.ReactNode
-        }) => <div data-testid="article-context-provider">{children}</div>,
+        }) => {
+            lastConfig = config
+            return <div data-testid="article-context-provider">{children}</div>
+        },
         useArticleContext: () => ({
             playground: {
                 isOpen: false,
@@ -103,12 +118,19 @@ jest.mock('./context', () => {
                 onClose: jest.fn(),
                 sidePanelWidth: '60vw',
             },
-            config: {
+            config: lastConfig || {
                 onClose: jest.fn(),
+                isLoading: false,
             },
         }),
     }
 })
+
+jest.mock('../KnowledgeEditorLoadingShell', () => ({
+    KnowledgeEditorLoadingShell: () => (
+        <div data-testid="loading-shell">Loading Shell</div>
+    ),
+}))
 
 jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
     PlaygroundPanel: ({ onClose }: { onClose: () => void }) => (
@@ -150,6 +172,7 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        lastConfig = null
         mockNotifyError.mockClear()
     })
 
@@ -183,22 +206,71 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
         expect(screen.getByTestId('article-editor-content')).toBeInTheDocument()
     })
 
-    it('shows loading spinner while fetching existing article', () => {
-        const mockUseGetHelpCenterArticle = jest.requireMock(
-            'models/helpCenter/queries',
-        ).useGetHelpCenterArticle
-        mockUseGetHelpCenterArticle.mockReturnValue({
-            data: undefined,
-            isLoading: true,
+    describe('loading state', () => {
+        it('shows KnowledgeEditorLoadingShell when isFetching is true', () => {
+            const mockUseGetHelpCenterArticle = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetHelpCenterArticle
+            mockUseGetHelpCenterArticle.mockReturnValue({
+                data: undefined,
+                isFetching: true,
+            })
+
+            renderComponent({
+                type: 'existing',
+                initialArticleMode: 'read' as InitialArticleModeValue,
+                articleId: 1,
+            })
+
+            // Verify side panel is rendered
+            expect(screen.getByTestId('side-panel')).toBeInTheDocument()
+
+            // Verify KnowledgeEditorLoadingShell is shown (line 73)
+            expect(screen.getByTestId('loading-shell')).toBeInTheDocument()
+
+            // Verify ArticleEditorContent is NOT shown when loading
+            expect(
+                screen.queryByTestId('article-editor-content'),
+            ).not.toBeInTheDocument()
         })
 
-        renderComponent({
-            type: 'existing',
-            initialArticleMode: 'read' as InitialArticleModeValue,
-            articleId: 1,
-        })
+        it('shows ArticleEditorContent when data is loaded and not loading', () => {
+            const mockUseGetHelpCenterArticle = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetHelpCenterArticle
+            mockUseGetHelpCenterArticle.mockReturnValue({
+                data: {
+                    id: 1,
+                    translation: {
+                        title: 'Test Article',
+                        content: 'Test Content',
+                        locale: 'en-US',
+                    },
+                },
+                isFetching: false,
+            })
 
-        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
+            render(
+                <KnowledgeEditorHelpCenterArticle
+                    {...baseProps}
+                    article={{
+                        type: 'existing',
+                        initialArticleMode: 'read' as InitialArticleModeValue,
+                        articleId: 1,
+                    }}
+                />,
+            )
+
+            // Verify ArticleEditorContent is shown when loaded
+            expect(
+                screen.getByTestId('article-editor-content'),
+            ).toBeInTheDocument()
+
+            // Verify KnowledgeEditorLoadingShell is NOT shown
+            expect(
+                screen.queryByTestId('loading-shell'),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('SidePanel onOpenChange', () => {
@@ -250,7 +322,7 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                     locale: 'en-US',
                 },
             },
-            isLoading: false,
+            isFetching: false,
             isError: false,
             error: null,
         })
@@ -265,26 +337,6 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
             screen.getByTestId('article-context-provider'),
         ).toBeInTheDocument()
         expect(screen.getByTestId('article-editor-content')).toBeInTheDocument()
-    })
-
-    it('shows loading spinner when data is null but not loading', () => {
-        const mockUseGetHelpCenterArticle = jest.requireMock(
-            'models/helpCenter/queries',
-        ).useGetHelpCenterArticle
-        mockUseGetHelpCenterArticle.mockReturnValue({
-            data: null,
-            isLoading: false,
-            isError: false,
-            error: null,
-        })
-
-        renderComponent({
-            type: 'existing',
-            initialArticleMode: 'read' as InitialArticleModeValue,
-            articleId: 1,
-        })
-
-        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
     })
 
     describe('Error handling', () => {
@@ -308,7 +360,7 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
 
             mockUseGetHelpCenterArticle.mockReturnValue({
                 data: null,
-                isLoading: false,
+                isFetching: false,
                 isError: true,
                 error: mockError,
             })
@@ -348,7 +400,7 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
 
             mockUseGetHelpCenterArticle.mockReturnValue({
                 data: null,
-                isLoading: false,
+                isFetching: false,
                 isError: true,
                 error: mockError,
             })
@@ -375,7 +427,7 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
 
             mockUseGetHelpCenterArticle.mockReturnValue({
                 data: null,
-                isLoading: false,
+                isFetching: false,
                 isError: true,
                 error: new Error('Some error'),
             })
