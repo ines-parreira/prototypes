@@ -2,6 +2,9 @@ import type React from 'react'
 import { useReducer, useState } from 'react'
 
 import { SegmentEvent } from '@repo/logging'
+import { useQueryClient } from '@tanstack/react-query'
+
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -10,7 +13,10 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import {
     getCurrentAutomatePlan,
+    getCurrentConvertPlan,
     getCurrentHelpdeskPlan,
+    getCurrentSmsPlan,
+    getCurrentVoicePlan,
 } from 'state/billing/selectors'
 import type { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -88,6 +94,7 @@ const CancelProductModal = ({
     updateSubscription,
 }: CancelProductModelProps) => {
     const dispatch = useAppDispatch()
+    const queryClient = useQueryClient()
     const { cancellationStep, switchToNextStep, resetCancellationFlow } =
         useCancellationFlowStepsStateMachine()
     const [cancellationReasonsState, dispatchCancellationReasonsAction] =
@@ -102,6 +109,9 @@ const CancelProductModal = ({
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
+    const currentVoicePlan = useAppSelector(getCurrentVoicePlan)
+    const currentSmsPlan = useAppSelector(getCurrentSmsPlan)
+    const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const resetAll = () => {
         setIsFirstOpened(false)
         dispatchCancellationReasonsAction({
@@ -223,6 +233,43 @@ const CancelProductModal = ({
         }
 
         if (isCancelled) {
+            // Invalidate billing state query to refresh currentProducts from server
+            const billingStateQueryKey = queryKeys.billing.getBillingState()
+            await queryClient.invalidateQueries({
+                queryKey: billingStateQueryKey,
+            })
+
+            // Reset selectedPlans to sync with the updated currentProducts
+            // After query refetch, Redux selectors will have the fresh data
+            setSelectedPlans((prev) => ({
+                ...prev,
+                [ProductType.Helpdesk]: {
+                    ...prev[ProductType.Helpdesk],
+                    plan: currentHelpdeskPlan,
+                    isSelected: !!currentHelpdeskPlan,
+                },
+                [ProductType.Automation]: {
+                    ...prev[ProductType.Automation],
+                    plan: currentAutomatePlan,
+                    isSelected: !!currentAutomatePlan,
+                },
+                [ProductType.Voice]: {
+                    ...prev[ProductType.Voice],
+                    plan: currentVoicePlan,
+                    isSelected: !!currentVoicePlan,
+                },
+                [ProductType.SMS]: {
+                    ...prev[ProductType.SMS],
+                    plan: currentSmsPlan,
+                    isSelected: !!currentSmsPlan,
+                },
+                [ProductType.Convert]: {
+                    ...prev[ProductType.Convert],
+                    plan: currentConvertPlan,
+                    isSelected: !!currentConvertPlan,
+                },
+            }))
+
             onCancellationConfirmed?.()
             handleOnClose()
         }

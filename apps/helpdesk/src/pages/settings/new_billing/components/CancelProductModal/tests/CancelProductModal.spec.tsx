@@ -1,5 +1,6 @@
 import { SegmentEvent } from '@repo/logging'
 import { assumeMock, getLastMockCall } from '@repo/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -24,6 +25,7 @@ import { ProductType } from 'models/billing/types'
 import { cancelHelpdeskAutoRenewal } from 'state/currentAccount/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { reportCRMGrowthError } from '../../../utils/reportCRMGrowthError'
 import { sendRemoveNotificationZap } from '../../../utils/sendRemoveNotificationZap'
@@ -60,6 +62,7 @@ const store = mockStore({
     }),
     currentUser: fromJS(user),
 })
+const queryClient = mockQueryClient()
 
 jest.mock('../ProductFeaturesFOMO/ProductFeaturesFOMO', () =>
     jest.fn(() => <div data-testid="product-features-fomo"></div>),
@@ -135,6 +138,9 @@ beforeEach(() => {
     trackBillingEventMock.mockResolvedValue({} as any)
     sendRemoveNotificationZapMock.mockResolvedValue({} as any)
 
+    // Clear query client cache
+    queryClient.clear()
+
     // Set the default reducer state
     cancellationReasonsReducerMock.mockImplementation(() => DEFAULT_STATE)
     useCancellationFlowStepsStateMachineMock.mockImplementation(() => ({
@@ -192,6 +198,15 @@ const mockSelectedPlans = {
     },
 }
 
+// Helper function to render component with required providers
+const renderComponent = (ui: React.ReactElement, customStore = store) => {
+    return render(
+        <Provider store={customStore}>
+            <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
+        </Provider>,
+    )
+}
+
 describe('CancelProductModal: step 1', () => {
     beforeEach(() => {
         useCancellationFlowStepsStateMachineMock.mockImplementation(() => ({
@@ -203,19 +218,17 @@ describe('CancelProductModal: step 1', () => {
     })
 
     it('should render the product fomo features with corresponding footer', () => {
-        const { getByRole, getByTestId } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole, getByTestId } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         expect(getByTestId('product-features-fomo')).toBeInTheDocument()
@@ -244,19 +257,17 @@ describe('CancelProductModal: step 1', () => {
     it('should close the modal when the "Keep using helpdesk" button is clicked', () => {
         const mockHandleOnClose = jest.fn()
 
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={mockHandleOnClose}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
         const keepUsingHelpdeskButtonElement = getByRole('button', {
             name: 'Keep My Helpdesk Plan',
@@ -266,19 +277,17 @@ describe('CancelProductModal: step 1', () => {
     })
 
     it('should go to the next step when continue cancelling is clicked', () => {
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
         const continueCancellingButtonElement = getByRole('button', {
             name: 'Continue To Cancel',
@@ -318,19 +327,17 @@ describe('CancelProductModal: step 1', () => {
         })
 
         it('should render ProductFeaturesFOMO with correct props for non-Helpdesk product', () => {
-            const { getByTestId } = render(
-                <Provider store={store}>
-                    <CancelProductModal
-                        onClose={jest.fn()}
-                        isOpen={true}
-                        productType={productType}
-                        subscriptionProducts={subscriptionProducts}
-                        periodEnd={periodEnd}
-                        selectedPlans={mockSelectedPlans}
-                        setSelectedPlans={mockSetSelectedPlans}
-                        updateSubscription={mockUpdateSubscription}
-                    />
-                </Provider>,
+            const { getByTestId } = renderComponent(
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={true}
+                    productType={productType}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />,
             )
 
             expect(getByTestId('product-features-fomo')).toBeInTheDocument()
@@ -356,19 +363,17 @@ describe('CancelProductModal: step 2', () => {
     })
 
     it('should render the cancellation reasons with a corresponding footer and unavailable next step', () => {
-        const { getByRole, getByTestId } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole, getByTestId } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
         expect(getByTestId('cancellation-reasons')).toBeInTheDocument()
         expect(CancellationReasonsMock).toHaveBeenCalledWith(
@@ -393,19 +398,17 @@ describe('CancelProductModal: step 2', () => {
     })
 
     it('should render the cancellation reasons step with next step unavailable', () => {
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
         expect(CancellationReasonsMock).toHaveBeenCalledWith(
             {
@@ -431,19 +434,17 @@ describe('CancelProductModal: step 2', () => {
     it('should close the modal when the "Keep using helpdesk" button is clicked', () => {
         const mockHandleOnClose = jest.fn()
 
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={mockHandleOnClose}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
         const keepUsingHelpdeskButtonElement = getByRole('button', {
             name: 'Keep My Helpdesk Plan',
@@ -461,19 +462,17 @@ describe('CancelProductModal: step 2', () => {
         }
         cancellationReasonsReducerMock.mockImplementation(() => mockState)
 
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
         const continueCancellingButtonElement = getByRole('button', {
             name: 'Continue To Cancel',
@@ -502,19 +501,17 @@ describe('CancelProductModal: step 3', () => {
     })
 
     it('should render the churn mitigation offer with a corresponding footer', () => {
-        const { getByRole, getByTestId } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole, getByTestId } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
         expect(ChurnMitigationOfferMock).toHaveBeenCalledWith(
             { canduContentId: '5f5e3e3e4f3e4e001f3e4e4f' },
@@ -542,19 +539,17 @@ describe('CancelProductModal: step 3', () => {
     })
 
     it('should go to the next step when continue cancelling is clicked', async () => {
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
         const continueCancellingButtonElement = getByRole('button', {
             name: 'Continue To Cancel',
@@ -579,19 +574,17 @@ describe('CancelProductModal: step 3', () => {
         const trackingError = new Error('Failed to track event')
         trackBillingEventMock.mockRejectedValue(trackingError)
 
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         const continueCancellingButtonElement = getByRole('button', {
@@ -610,20 +603,18 @@ describe('CancelProductModal: step 3', () => {
         const zapierError = new Error('Failed to send Zapier notification')
         sendRemoveNotificationZapMock.mockRejectedValue(zapierError)
 
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={ProductType.Automation}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    currentUsage={currentProductsUsage}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={ProductType.Automation}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                currentUsage={currentProductsUsage}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         const continueCancellingButtonElement = getByRole('button', {
@@ -645,20 +636,18 @@ describe('CancelProductModal: step 3', () => {
         trackBillingEventMock.mockRejectedValue(trackingError)
         sendRemoveNotificationZapMock.mockRejectedValue(zapierError)
 
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={ProductType.Automation}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    currentUsage={currentProductsUsage}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={ProductType.Automation}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                currentUsage={currentProductsUsage}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         const continueCancellingButton = getByRole('button', {
@@ -682,19 +671,17 @@ describe('CancelProductModal: step 3', () => {
     it('should NOT update selectedPlans when continuing with Helpdesk cancellation', async () => {
         const mockSetSelectedPlansLocal = jest.fn()
 
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={ProductType.Helpdesk}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlansLocal}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={ProductType.Helpdesk}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlansLocal}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         const continueCancellingButton = getByRole('button', {
@@ -720,19 +707,17 @@ describe('CancelProductModal: step 3', () => {
             () => minimalMockState,
         )
 
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={ProductType.Helpdesk}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={ProductType.Helpdesk}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         const continueCancellingButton = getByRole('button', {
@@ -758,19 +743,17 @@ describe('CancelProductModal: step 3', () => {
     it('should close the modal when churn mitigation offer was successfully submitted', async () => {
         sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(true)
         const mockHandleOnClose = jest.fn()
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={mockHandleOnClose}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
         const acceptOfferButtonElement = getByRole('button', {
             name: 'Get My Offer',
@@ -814,19 +797,17 @@ describe('CancelProductModal: step 3', () => {
     it('should not close the modal when churn mitigation offer submission failed', async () => {
         sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(false)
         const mockHandleOnClose = jest.fn()
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={mockHandleOnClose}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
         const acceptOfferButtonElement = getByRole('button', {
             name: 'Get My Offer',
@@ -853,19 +834,17 @@ describe('CancelProductModal: step 3', () => {
         sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(false)
         const mockHandleOnClose = jest.fn()
 
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={mockHandleOnClose}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         const acceptOfferButton = getByRole('button', { name: 'Get My Offer' })
@@ -900,19 +879,17 @@ describe('CancelProductModal: step 3', () => {
         trackBillingEventMock.mockRejectedValue(trackingError)
         const mockHandleOnClose = jest.fn()
 
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={mockHandleOnClose}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         const acceptOfferButton = getByRole('button', { name: 'Get My Offer' })
@@ -954,19 +931,17 @@ describe('CancelProductModal: step 3', () => {
         sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(true)
         const mockHandleOnClose = jest.fn()
 
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={mockHandleOnClose}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         const acceptOfferButton = getByRole('button', { name: 'Get My Offer' })
@@ -1011,19 +986,17 @@ describe('CancelProductModal: step 4', () => {
     })
 
     it('should render the cancellation summary with a corresponding footer and disabled button', () => {
-        const { getByRole, getByTestId } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole, getByTestId } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         expect(CancellationSummaryMock).toHaveBeenCalledWith(
@@ -1058,19 +1031,17 @@ describe('CancelProductModal: step 4', () => {
         cancelHelpdeskAutoRenewalMock.mockReturnValueOnce(() =>
             Promise.resolve(true),
         )
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={mockHandleOnClose}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         const confirmButtonElement = getByRole('button', {
@@ -1091,19 +1062,17 @@ describe('CancelProductModal: step 4', () => {
         cancelHelpdeskAutoRenewalMock.mockReturnValueOnce(() =>
             Promise.resolve(false),
         )
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={mockHandleOnClose}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         const confirmButtonElement = getByRole('button', {
@@ -1131,20 +1100,18 @@ describe('CancelProductModal: step 4', () => {
         const mockOnCancellationConfirmed = jest.fn()
         const mockHandleOnClose = jest.fn()
 
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={mockHandleOnClose}
-                    isOpen={true}
-                    productType={ProductType.Automation}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                    onCancellationConfirmed={mockOnCancellationConfirmed}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={ProductType.Automation}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+                onCancellationConfirmed={mockOnCancellationConfirmed}
+            />,
         )
 
         const confirmButton = getByRole('button', {
@@ -1200,19 +1167,17 @@ describe('CancelProductModal: AI Agent cancellation flow', () => {
         const mockHandleOnClose = jest.fn()
         mockUpdateSubscription.mockResolvedValueOnce(undefined)
 
-        const { getByRole } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={mockHandleOnClose}
-                    isOpen={true}
-                    productType={ProductType.Automation}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={automationSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={ProductType.Automation}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={automationSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         const confirmButtonElement = getByRole('button', {
@@ -1262,20 +1227,19 @@ describe('CancelProductModal: AI Agent cancellation flow', () => {
             },
         }
 
-        const { getByRole } = render(
-            <Provider store={storeWithUsage}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={ProductType.Automation}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    currentUsage={currentUsageWithAutomation}
-                    selectedPlans={automationSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={ProductType.Automation}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                currentUsage={currentUsageWithAutomation}
+                selectedPlans={automationSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
+            storeWithUsage,
         )
 
         const continueCancellingButtonElement = getByRole('button', {
@@ -1336,20 +1300,19 @@ describe('CancelProductModal: AI Agent cancellation flow', () => {
             },
         }
 
-        const { getByRole } = render(
-            <Provider store={storeWithNoPlanNames}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={ProductType.Automation}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    currentUsage={currentUsageWithAutomation}
-                    selectedPlans={automationSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={ProductType.Automation}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                currentUsage={currentUsageWithAutomation}
+                selectedPlans={automationSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
+            storeWithNoPlanNames,
         )
 
         const continueCancellingButton = getByRole('button', {
@@ -1426,19 +1389,17 @@ describe('CancelProductModal: Convert and SMS cancellation flows', () => {
                 const mockHandleOnClose = jest.fn()
                 mockUpdateSubscription.mockResolvedValueOnce(undefined)
 
-                const { getByRole } = render(
-                    <Provider store={store}>
-                        <CancelProductModal
-                            onClose={mockHandleOnClose}
-                            isOpen={true}
-                            productType={productType}
-                            subscriptionProducts={subscriptionProducts}
-                            periodEnd={periodEnd}
-                            selectedPlans={productSelectedPlans}
-                            setSelectedPlans={mockSetSelectedPlans}
-                            updateSubscription={mockUpdateSubscription}
-                        />
-                    </Provider>,
+                const { getByRole } = renderComponent(
+                    <CancelProductModal
+                        onClose={mockHandleOnClose}
+                        isOpen={true}
+                        productType={productType}
+                        subscriptionProducts={subscriptionProducts}
+                        periodEnd={periodEnd}
+                        selectedPlans={productSelectedPlans}
+                        setSelectedPlans={mockSetSelectedPlans}
+                        updateSubscription={mockUpdateSubscription}
+                    />,
                 )
 
                 const confirmButtonElement = getByRole('button', {
@@ -1465,19 +1426,17 @@ describe('CancelProductModal: Convert and SMS cancellation flows', () => {
                     }),
                 )
 
-                const { getByRole } = render(
-                    <Provider store={store}>
-                        <CancelProductModal
-                            onClose={jest.fn()}
-                            isOpen={true}
-                            productType={productType}
-                            subscriptionProducts={subscriptionProducts}
-                            periodEnd={periodEnd}
-                            selectedPlans={productSelectedPlans}
-                            setSelectedPlans={mockSetSelectedPlans}
-                            updateSubscription={mockUpdateSubscription}
-                        />
-                    </Provider>,
+                const { getByRole } = renderComponent(
+                    <CancelProductModal
+                        onClose={jest.fn()}
+                        isOpen={true}
+                        productType={productType}
+                        subscriptionProducts={subscriptionProducts}
+                        periodEnd={periodEnd}
+                        selectedPlans={productSelectedPlans}
+                        setSelectedPlans={mockSetSelectedPlans}
+                        updateSubscription={mockUpdateSubscription}
+                    />,
                 )
 
                 const continueCancellingButtonElement = getByRole('button', {
@@ -1501,19 +1460,17 @@ describe('CancelProductModal: Convert and SMS cancellation flows', () => {
                     }),
                 )
 
-                const { getByRole } = render(
-                    <Provider store={store}>
-                        <CancelProductModal
-                            onClose={jest.fn()}
-                            isOpen={true}
-                            productType={productType}
-                            subscriptionProducts={subscriptionProducts}
-                            periodEnd={periodEnd}
-                            selectedPlans={productSelectedPlans}
-                            setSelectedPlans={mockSetSelectedPlans}
-                            updateSubscription={mockUpdateSubscription}
-                        />
-                    </Provider>,
+                const { getByRole } = renderComponent(
+                    <CancelProductModal
+                        onClose={jest.fn()}
+                        isOpen={true}
+                        productType={productType}
+                        subscriptionProducts={subscriptionProducts}
+                        periodEnd={periodEnd}
+                        selectedPlans={productSelectedPlans}
+                        setSelectedPlans={mockSetSelectedPlans}
+                        updateSubscription={mockUpdateSubscription}
+                    />,
                 )
 
                 const continueCancellingButtonElement = getByRole('button', {
@@ -1545,19 +1502,17 @@ describe('CancelProductModal: Convert and SMS cancellation flows', () => {
                     },
                 }
 
-                const { getByRole } = render(
-                    <Provider store={store}>
-                        <CancelProductModal
-                            onClose={jest.fn()}
-                            isOpen={true}
-                            productType={productType}
-                            subscriptionProducts={subscriptionProducts}
-                            periodEnd={periodEnd}
-                            selectedPlans={productSelectedPlansForTest}
-                            setSelectedPlans={mockSetSelectedPlansLocal}
-                            updateSubscription={mockUpdateSubscription}
-                        />
-                    </Provider>,
+                const { getByRole } = renderComponent(
+                    <CancelProductModal
+                        onClose={jest.fn()}
+                        isOpen={true}
+                        productType={productType}
+                        subscriptionProducts={subscriptionProducts}
+                        periodEnd={periodEnd}
+                        selectedPlans={productSelectedPlansForTest}
+                        setSelectedPlans={mockSetSelectedPlansLocal}
+                        updateSubscription={mockUpdateSubscription}
+                    />,
                 )
 
                 const continueCancellingButton = getByRole('button', {
@@ -1601,19 +1556,17 @@ describe('CancelProductModal: Modal Headers', () => {
                 resetCancellationFlow: jest.fn(),
             }))
 
-            const { getByText } = render(
-                <Provider store={store}>
-                    <CancelProductModal
-                        onClose={jest.fn()}
-                        isOpen={true}
-                        productType={productType}
-                        subscriptionProducts={subscriptionProducts}
-                        periodEnd={periodEnd}
-                        selectedPlans={mockSelectedPlans}
-                        setSelectedPlans={mockSetSelectedPlans}
-                        updateSubscription={mockUpdateSubscription}
-                    />
-                </Provider>,
+            const { getByText } = renderComponent(
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={true}
+                    productType={productType}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />,
             )
 
             expect(
@@ -1630,19 +1583,17 @@ describe('CancelProductModal: Modal Headers', () => {
                 resetCancellationFlow: jest.fn(),
             }))
 
-            const { getByText } = render(
-                <Provider store={store}>
-                    <CancelProductModal
-                        onClose={jest.fn()}
-                        isOpen={true}
-                        productType={productType}
-                        subscriptionProducts={subscriptionProducts}
-                        periodEnd={periodEnd}
-                        selectedPlans={mockSelectedPlans}
-                        setSelectedPlans={mockSetSelectedPlans}
-                        updateSubscription={mockUpdateSubscription}
-                    />
-                </Provider>,
+            const { getByText } = renderComponent(
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={true}
+                    productType={productType}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />,
             )
 
             expect(
@@ -1662,19 +1613,17 @@ describe('CancelProductModal: Modal Headers', () => {
                 completed: true,
             }))
 
-            const { getByText } = render(
-                <Provider store={store}>
-                    <CancelProductModal
-                        onClose={jest.fn()}
-                        isOpen={true}
-                        productType={productType}
-                        subscriptionProducts={subscriptionProducts}
-                        periodEnd={periodEnd}
-                        selectedPlans={mockSelectedPlans}
-                        setSelectedPlans={mockSetSelectedPlans}
-                        updateSubscription={mockUpdateSubscription}
-                    />
-                </Provider>,
+            const { getByText } = renderComponent(
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={true}
+                    productType={productType}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />,
             )
 
             expect(
@@ -1691,19 +1640,17 @@ describe('CancelProductModal: Modal Headers', () => {
                 resetCancellationFlow: jest.fn(),
             }))
 
-            const { getByText } = render(
-                <Provider store={store}>
-                    <CancelProductModal
-                        onClose={jest.fn()}
-                        isOpen={true}
-                        productType={productType}
-                        subscriptionProducts={subscriptionProducts}
-                        periodEnd={periodEnd}
-                        selectedPlans={mockSelectedPlans}
-                        setSelectedPlans={mockSetSelectedPlans}
-                        updateSubscription={mockUpdateSubscription}
-                    />
-                </Provider>,
+            const { getByText } = renderComponent(
+                <CancelProductModal
+                    onClose={jest.fn()}
+                    isOpen={true}
+                    productType={productType}
+                    subscriptionProducts={subscriptionProducts}
+                    periodEnd={periodEnd}
+                    selectedPlans={mockSelectedPlans}
+                    setSelectedPlans={mockSetSelectedPlans}
+                    updateSubscription={mockUpdateSubscription}
+                />,
             )
 
             expect(
@@ -1721,50 +1668,52 @@ describe('Modal state management', () => {
             resetCancellationFlow: resetMock,
         }))
 
-        const { rerender } = render(
-            <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
-            </Provider>,
+        const { rerender } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
         )
 
         expect(useCancellationFlowStepsStateMachineMock).toHaveBeenCalled()
 
         rerender(
             <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={false}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
+                <QueryClientProvider client={queryClient}>
+                    <CancelProductModal
+                        onClose={jest.fn()}
+                        isOpen={false}
+                        productType={productType}
+                        subscriptionProducts={subscriptionProducts}
+                        periodEnd={periodEnd}
+                        selectedPlans={mockSelectedPlans}
+                        setSelectedPlans={mockSetSelectedPlans}
+                        updateSubscription={mockUpdateSubscription}
+                    />
+                </QueryClientProvider>
             </Provider>,
         )
 
         rerender(
             <Provider store={store}>
-                <CancelProductModal
-                    onClose={jest.fn()}
-                    isOpen={true}
-                    productType={productType}
-                    subscriptionProducts={subscriptionProducts}
-                    periodEnd={periodEnd}
-                    selectedPlans={mockSelectedPlans}
-                    setSelectedPlans={mockSetSelectedPlans}
-                    updateSubscription={mockUpdateSubscription}
-                />
+                <QueryClientProvider client={queryClient}>
+                    <CancelProductModal
+                        onClose={jest.fn()}
+                        isOpen={true}
+                        productType={productType}
+                        subscriptionProducts={subscriptionProducts}
+                        periodEnd={periodEnd}
+                        selectedPlans={mockSelectedPlans}
+                        setSelectedPlans={mockSetSelectedPlans}
+                        updateSubscription={mockUpdateSubscription}
+                    />
+                </QueryClientProvider>
             </Provider>,
         )
 
