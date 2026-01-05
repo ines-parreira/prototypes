@@ -1,6 +1,6 @@
 {
-  "date": "2025-12-30T17:56:08.151Z",
-  "total": 2787,
+  "date": "2026-01-02T13:16:21.151Z",
+  "total": 2780,
   "deprecated": [
     {
       "nodeType": "VariableDeclaration",
@@ -2607,11 +2607,11 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1610,
+      "count": 1603,
       "usages": [
         {
           "name": "LegacyButton",
-          "count": 717,
+          "count": 714,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/CTA.tsx",
             "apps/helpdesk/src/auto_qa/components/Dimension.tsx",
@@ -2718,8 +2718,6 @@
             "apps/helpdesk/src/pages/aiAgent/Onboarding/components/IntegrationCard/IntegrationCard.tsx",
             "apps/helpdesk/src/pages/aiAgent/Onboarding/components/steps/EngagementStep/EngagementStepConfirmationPopup.tsx",
             "apps/helpdesk/src/pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/opportunities/components/DismissOpportunityModal/DismissOpportunityModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/opportunities/components/OpportunitiesContent/OpportunitiesContent.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/AiAgentTasks/DeleteModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/AiAgentTasks/SuccessModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/KpiSection/KpiSection.tsx",
@@ -2897,7 +2895,6 @@
             "apps/helpdesk/src/pages/common/components/TrialTryModal/TrialTryModal.tsx",
             "apps/helpdesk/src/pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal.tsx",
             "apps/helpdesk/src/pages/common/components/UniqueDiscountOfferResults/UniqueDiscountOfferResults.tsx",
-            "apps/helpdesk/src/pages/common/components/UnsavedChangesModal.tsx",
             "apps/helpdesk/src/pages/common/components/UpgradeButton/UpgradeButton.tsx",
             "apps/helpdesk/src/pages/common/components/ViewSharing/ViewSharingButton.tsx",
             "apps/helpdesk/src/pages/common/components/ViewSharing/ViewSharingModal/ViewSharingModal.tsx",
@@ -3334,7 +3331,7 @@
         },
         {
           "name": "LegacyTooltip",
-          "count": 303,
+          "count": 301,
           "files": [
             "apps/helpdesk/src/AIJourney/components/FieldPresentation/FieldPresentation.tsx",
             "apps/helpdesk/src/auto_qa/components/AutoQA.tsx",
@@ -3400,8 +3397,6 @@
             "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/EmptyState/SyncStoreWebsiteModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/EmptyState/SyncUrlModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/ActionButtons.tsx",
-            "apps/helpdesk/src/pages/aiAgent/opportunities/components/OpportunitiesContent/OpportunitiesContent.tsx",
-            "apps/helpdesk/src/pages/aiAgent/opportunities/components/OpportunityCard/OpportunityCard.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/TestSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundActionsToggle/PlaygroundActionsToggle.tsx",
             "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundInputSection/PlaygroundInputSection.tsx",
@@ -3643,7 +3638,7 @@
         },
         {
           "name": "LegacyLabel",
-          "count": 145,
+          "count": 144,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/actions/components/ActionFormInputs.tsx",
             "apps/helpdesk/src/pages/aiAgent/actions/components/SimplifiedStepBuilderSteps.tsx",
@@ -3659,7 +3654,6 @@
             "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/SmsFooterFormComponent.tsx",
             "apps/helpdesk/src/pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep.tsx",
             "apps/helpdesk/src/pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep.tsx",
-            "apps/helpdesk/src/pages/aiAgent/opportunities/components/DismissOpportunityModal/DismissOpportunityModal.tsx",
             "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformAppSelectBox.tsx",
             "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformAuthTypeSelectBox.tsx",
             "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformStepAppSelectBox.tsx",
@@ -4040,7 +4034,7 @@
         },
         {
           "name": "LegacyIconButton",
-          "count": 55,
+          "count": 54,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/CarouselNavigation.tsx",
             "apps/helpdesk/src/core/ui/flows/components/CustomFitViewControl.tsx",
@@ -4063,7 +4057,6 @@
             "apps/helpdesk/src/pages/aiAgent/components/PublicSourcesSection/PublicSourcesItem.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/StoreCustomFieldList.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/StoreTagList.tsx",
-            "apps/helpdesk/src/pages/aiAgent/opportunities/components/OpportunitiesNavigation/OpportunitiesNavigation.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/AiAgentTasks/SuccessModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/TestSection.tsx",
             "apps/helpdesk/src/pages/common/components/Drawer/Drawer.tsx",
