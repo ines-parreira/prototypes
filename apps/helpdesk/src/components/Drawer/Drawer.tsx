@@ -1,4 +1,5 @@
-import { type ComponentProps, useEffect, useLayoutEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
+import type { ComponentProps } from 'react'
 
 import { Drawer as VaulDrawer } from 'vaul'
 
@@ -46,4 +47,10 @@ function DrawerRoot({
     )
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<SidePanel />` from @gorgias/axiom instead.
+ * @date 2026-01-05
+ * @type ui-kit-migration
+ */
 export const Drawer = { ...VaulDrawer, Root: DrawerRoot }
