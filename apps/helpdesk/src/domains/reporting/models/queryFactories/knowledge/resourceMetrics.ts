@@ -1129,16 +1129,16 @@ export function useRelatedTickets({
     const isLoading =
         enabled &&
         (isMetricsFetching ||
-            ticket1.isLoading ||
-            ticket2.isLoading ||
-            ticket3.isLoading)
+            (ticketIds.length > 0 && ticket1.isLoading) ||
+            (ticketIds.length > 1 && ticket2.isLoading) ||
+            (ticketIds.length > 2 && ticket3.isLoading))
 
     const isError =
         enabled &&
         (isMetricsError ||
-            ticket1.isError ||
-            ticket2.isError ||
-            ticket3.isError)
+            (ticketIds.length > 0 && ticket1.isError) ||
+            (ticketIds.length > 1 && ticket2.isError) ||
+            (ticketIds.length > 2 && ticket3.isError))
 
     return {
         data: transformedData,

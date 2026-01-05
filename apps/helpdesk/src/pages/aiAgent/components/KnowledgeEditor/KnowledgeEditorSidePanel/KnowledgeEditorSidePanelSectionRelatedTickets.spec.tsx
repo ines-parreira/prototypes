@@ -97,4 +97,99 @@ describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
         expect(screen.getByText('Recent tickets')).toBeInTheDocument()
         expect(screen.getByText('0')).toBeInTheDocument()
     })
+
+    it('renders correctly with less than 3 tickets (1 ticket)', () => {
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
+        const testDateRange = {
+            start_datetime: new Date(
+                Date.now() - 28 * 24 * 60 * 60 * 1000,
+            ).toISOString(),
+            end_datetime: new Date().toISOString(),
+        }
+
+        renderWithStoreAndQueryClientAndRouter(
+            <KnowledgeEditorSidePanel
+                initialExpandedSections={['related-tickets']}
+            >
+                <KnowledgeEditorSidePanelSectionRelatedTickets
+                    ticketCount={1}
+                    latest3Tickets={[
+                        {
+                            id: 123,
+                            title: 'Single ticket',
+                            lastUpdatedDatetime: oneHourAgo,
+                            messageCount: 2,
+                            aiAgentOutcome:
+                                AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
+                        },
+                    ]}
+                    resourceSourceId={123}
+                    resourceSourceSetId={456}
+                    dateRange={testDateRange}
+                    outcomeCustomFieldId={789}
+                    intentCustomFieldId={101112}
+                    sectionId="related-tickets"
+                    isLoading={false}
+                />
+            </KnowledgeEditorSidePanel>,
+        )
+
+        expect(screen.getByText('Recent tickets')).toBeInTheDocument()
+        expect(screen.getByText('1')).toBeInTheDocument()
+        expect(screen.getByText('Single ticket')).toBeInTheDocument()
+        expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
+        expect(screen.queryByText('View more')).not.toBeInTheDocument()
+    })
+
+    it('renders correctly with less than 3 tickets (2 tickets)', () => {
+        const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
+        const testDateRange = {
+            start_datetime: new Date(
+                Date.now() - 28 * 24 * 60 * 60 * 1000,
+            ).toISOString(),
+            end_datetime: new Date().toISOString(),
+        }
+
+        renderWithStoreAndQueryClientAndRouter(
+            <KnowledgeEditorSidePanel
+                initialExpandedSections={['related-tickets']}
+            >
+                <KnowledgeEditorSidePanelSectionRelatedTickets
+                    ticketCount={2}
+                    latest3Tickets={[
+                        {
+                            id: 123,
+                            title: 'First ticket',
+                            lastUpdatedDatetime: oneHourAgo,
+                            messageCount: 2,
+                            aiAgentOutcome:
+                                AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
+                        },
+                        {
+                            id: 456,
+                            title: 'Second ticket',
+                            lastUpdatedDatetime: oneHourAgo,
+                            messageCount: 1,
+                            aiAgentOutcome:
+                                AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover,
+                        },
+                    ]}
+                    resourceSourceId={123}
+                    resourceSourceSetId={456}
+                    dateRange={testDateRange}
+                    outcomeCustomFieldId={789}
+                    intentCustomFieldId={101112}
+                    sectionId="related-tickets"
+                    isLoading={false}
+                />
+            </KnowledgeEditorSidePanel>,
+        )
+
+        expect(screen.getByText('Recent tickets')).toBeInTheDocument()
+        expect(screen.getByText('2')).toBeInTheDocument()
+        expect(screen.getByText('First ticket')).toBeInTheDocument()
+        expect(screen.getByText('Second ticket')).toBeInTheDocument()
+        expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
+        expect(screen.queryByText('View more')).not.toBeInTheDocument()
+    })
 })
