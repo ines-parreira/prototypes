@@ -20,6 +20,19 @@ export enum TicketInsightsTaskDimension {
     ResourceLocale = 'TicketInsightsTask.resourceLocale',
 }
 
+export enum TicketInsightsTaskMeasureV2 {
+    TicketCount = 'ticketCount',
+    AverageSurveyScore = 'averageSurveyScore',
+}
+
+export enum TicketInsightsTaskDimensionV2 {
+    TicketId = 'ticketId',
+    ResourceType = 'resourceType',
+    ResourceSourceId = 'resourceSourceId',
+    ResourceSourceSetId = 'resourceSourceSetId',
+    CustomFieldTop2LevelsValue = 'customFieldTop2LevelsValue',
+}
+
 export type TicketInsightsTaskCube = Cube<
     TicketInsightsTaskMeasure,
     TicketInsightsTaskDimension,

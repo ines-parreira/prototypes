@@ -43,7 +43,7 @@ export enum APIOnlyFilterKey {
     CreatedDatetime = 'createdDatetime',
     ResourceSourceId = 'resourceSourceId',
     ResourceSourceSetId = 'resourceSourceSetId',
-    ShopIntegrationId = 'shopIntegrationId',
+    StoreId = 'storeId',
     CallDirection = 'callDirection',
     CallTerminationStatus = 'callTerminationStatus',
     IsAnsweredByAgent = 'isAnsweredByAgent',
@@ -285,7 +285,7 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
     [APIOnlyFilterKey.CustomFieldValue]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.ResourceSourceId]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.ResourceSourceSetId]?: WithLogicalOperator<string>
-    [APIOnlyFilterKey.ShopIntegrationId]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.StoreId]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.CallDirection]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.CallTerminationStatus]?: WithExtendedLogicalOperator<string>
     [APIOnlyFilterKey.IsAnsweredByAgent]?: WithLogicalOperator<boolean>

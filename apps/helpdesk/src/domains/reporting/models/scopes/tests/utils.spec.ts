@@ -869,26 +869,26 @@ describe('utils', () => {
                 })
             })
 
-            it('should add shopIntegrationId filter when present', () => {
+            it('should add storeId filter when present', () => {
                 const scopeConfig: ScopeMeta = {
                     scope: MetricScope.TicketsOpen,
-                    filters: ['shopIntegrationId'],
+                    filters: ['storeId'],
                 }
 
                 const statFilters: ApiStatsFilters = {
                     ...basePeriodFilters,
-                    shopIntegrationId: {
+                    stores: {
                         operator: LogicalOperatorEnum.ONE_OF,
-                        values: ['111', '222'],
+                        values: [111, 222],
                     },
                 }
 
                 const result = createScopeFilters(statFilters, scopeConfig)
 
                 expect(result).toContainEqual({
-                    member: 'shopIntegrationId',
+                    member: 'storeId',
                     operator: LogicalOperatorEnum.ONE_OF,
-                    values: ['111', '222'],
+                    values: [111, 222],
                 })
             })
 

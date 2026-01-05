@@ -263,7 +263,7 @@ describe('knowledgeIntents', () => {
 
         expect(query.measures).toEqual(['ticketCount'])
         expect(query.dimensions).toEqual([
-            'top2LevelsValue',
+            'customFieldTop2LevelsValue',
             'resourceType',
             'resourceSourceId',
             'resourceSourceSetId',
@@ -286,7 +286,7 @@ describe('knowledgeIntents', () => {
         const query = knowledgeIntents.build(ctx)
 
         expect(query.order).toEqual([
-            ['top2LevelsValue', OrderDirection.Asc],
+            ['customFieldTop2LevelsValue', OrderDirection.Asc],
             ['resourceSourceSetId', OrderDirection.Asc],
             ['resourceSourceId', OrderDirection.Asc],
         ])
@@ -309,7 +309,7 @@ describe('knowledgeIntentsQueryV2Factory', () => {
 
         expect(query.measures).toEqual(['ticketCount'])
         expect(query.dimensions).toEqual([
-            'top2LevelsValue',
+            'customFieldTop2LevelsValue',
             'resourceType',
             'resourceSourceId',
             'resourceSourceSetId',

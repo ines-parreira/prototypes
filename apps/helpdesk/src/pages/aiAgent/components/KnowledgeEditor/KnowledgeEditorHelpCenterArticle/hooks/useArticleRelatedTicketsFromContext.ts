@@ -34,6 +34,7 @@ export const useArticleRelatedTicketsFromContext = ():
     const resourceImpact = useResourceMetrics({
         resourceSourceId: state.article?.id ?? 0,
         resourceSourceSetId: helpCenter.id,
+        shopIntegrationId: helpCenter.shop_integration_id ?? 0,
         timezone: timezone ?? 'UTC',
         enabled: isPerformanceStatsEnabled && !!state.article,
         dateRange,

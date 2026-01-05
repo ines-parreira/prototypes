@@ -121,7 +121,16 @@ jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
     ),
 }))
 
-jest.mock('domains/reporting/models/queryFactories/knowledge/resourceMetrics')
+jest.mock(
+    'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
+    () => ({
+        useResourceMetrics: jest.fn(),
+        getLast28DaysDateRange: jest.fn(() => ({
+            start_datetime: '2025-01-01T00:00:00.000Z',
+            end_datetime: '2025-01-28T00:00:00.000Z',
+        })),
+    }),
+)
 const mockedFetchResourceMetrics = jest.mocked(useResourceMetrics)
 
 const mockUseStoreIntegrations = jest.mocked(useStoreIntegrations)
@@ -1125,8 +1134,13 @@ describe('KnowledgeEditorGuidance', () => {
             expect(mockedFetchResourceMetrics).toHaveBeenCalledWith({
                 resourceSourceId: 1,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 0,
                 timezone: 'America/New_York',
                 enabled: false,
+                dateRange: {
+                    start_datetime: '2025-01-01T00:00:00.000Z',
+                    end_datetime: '2025-01-28T00:00:00.000Z',
+                },
             })
         })
 
@@ -1166,8 +1180,13 @@ describe('KnowledgeEditorGuidance', () => {
             expect(mockedFetchResourceMetrics).toHaveBeenCalledWith({
                 resourceSourceId: 1,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 0,
                 timezone: 'America/New_York',
                 enabled: true,
+                dateRange: {
+                    start_datetime: '2025-01-01T00:00:00.000Z',
+                    end_datetime: '2025-01-28T00:00:00.000Z',
+                },
             })
         })
     })

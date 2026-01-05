@@ -13,7 +13,9 @@ import { TicketCustomFieldsDimension } from 'domains/reporting/models/cubes/Tick
 import type { TicketInsightsTaskCubeWithJoins } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
 import {
     TicketInsightsTaskDimension,
+    TicketInsightsTaskDimensionV2,
     TicketInsightsTaskMeasure,
+    TicketInsightsTaskMeasureV2,
 } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
 import {
     knowledgeCSATQueryV2Factory,
@@ -32,6 +34,7 @@ import type {
 } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import type { Props as ImpactProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
@@ -43,9 +46,17 @@ import { KnowledgeMetric } from '../../../state/ui/stats/types'
 import { DRILLDOWN_QUERY_LIMIT } from '../../../utils/reporting'
 import { TicketDimension } from '../../cubes/TicketCube'
 
+/*
+Knowledge Hub loads statistics of all resources of a shop (guidances, HC articles, urls, etc.).
+They are not paginated because the user must be able to sort articles by a stat column and the source
+of truth is Help Center, not Clickhouse.
+*/
+export const KNOWLEDGE_QUERY_LIMIT = 10000
+
 type ResourceMetricsParams = {
     resourceSourceId: number
     resourceSourceSetId: number
+    shopIntegrationId: number
     timezone: string
     enabled?: boolean
     dateRange: {
@@ -149,12 +160,12 @@ export const createV1Query = <TCube extends Cubes = Cubes>(
         {
             member: 'TicketEnriched.periodStart',
             operator: ReportingFilterOperator.AfterDate,
-            values: [filters.period.start_datetime],
+            values: [formatReportingQueryDate(filters.period.start_datetime)],
         },
         {
             member: 'TicketEnriched.periodEnd',
             operator: ReportingFilterOperator.BeforeDate,
-            values: [filters.period.end_datetime],
+            values: [formatReportingQueryDate(filters.period.end_datetime)],
         },
         {
             member: 'TicketEnriched.isTrashed',
@@ -182,13 +193,13 @@ export const createV1Query = <TCube extends Cubes = Cubes>(
 
     // Add shop integration ID filter if present
     if (
-        filters[APIOnlyFilterKey.ShopIntegrationId] &&
-        filters[APIOnlyFilterKey.ShopIntegrationId].values.length > 0
+        filters[FilterKey.Stores] &&
+        filters[FilterKey.Stores].values.length > 0
     ) {
         baseFilters.push({
             member: TicketInsightsTaskDimension.ShopIntegrationId,
             operator: ReportingFilterOperator.Equals,
-            values: filters[APIOnlyFilterKey.ShopIntegrationId].values,
+            values: filters[FilterKey.Stores].values.map(String),
         })
     }
 
@@ -233,15 +244,7 @@ export const createV1Query = <TCube extends Cubes = Cubes>(
         measures: [measure] as TCube['measures'][],
         dimensions: dimensionsOverride as TCube['dimensions'][],
         filters: baseFilters,
-        timeDimensions: [
-            {
-                dimension: 'TicketEnriched.createdDatetime',
-                dateRange: [
-                    filters.period.start_datetime,
-                    filters.period.end_datetime,
-                ],
-            },
-        ] as ReportingQuery<TCube>['timeDimensions'],
+        timeDimensions: [],
         metricName,
         timezone,
     }
@@ -400,21 +403,36 @@ export const parseIntentsData = (
     }
 
     // Sort records by ticket count descending
+    // Support both V1 (cube-prefixed) and V2 (unprefixed) field names
     const sortedRecords = [...allData].sort((a, b) => {
-        const aCount = Number(a[TicketInsightsTaskMeasure.TicketCount]) || 0
-        const bCount = Number(b[TicketInsightsTaskMeasure.TicketCount]) || 0
+        const aCount =
+            Number(
+                a[TicketInsightsTaskMeasureV2.TicketCount] ??
+                    a[TicketInsightsTaskMeasure.TicketCount],
+            ) || 0
+        const bCount =
+            Number(
+                b[TicketInsightsTaskMeasureV2.TicketCount] ??
+                    b[TicketInsightsTaskMeasure.TicketCount],
+            ) || 0
         return bCount - aCount
     })
 
     // Extract intent values, filtering out empty/invalid ones
+    // Support both V1 (cube-prefixed) and V2 (unprefixed) field names
     return sortedRecords
-        .map(
-            (record) =>
+        .map((record) => {
+            // Try V2 API field name first, fall back to V1
+            return (
+                record[
+                    TicketInsightsTaskDimensionV2.CustomFieldTop2LevelsValue
+                ] ??
                 record[
                     TicketCustomFieldsDimension
                         .TicketCustomFieldsTop2LevelsValue
-                ],
-        )
+                ]
+            )
+        })
         .filter(
             (value): value is string =>
                 typeof value === 'string' && value !== '',
@@ -436,10 +454,13 @@ export const parseIntentsDataByResource = (
     }
 
     // Group by resourceSourceId and resourceSourceSetId combination
+    // Support both V1 (cube-prefixed) and V2 (unprefixed) field names
     const grouped = _groupBy(allData, (record) => {
         const resourceSourceId =
+            record[TicketInsightsTaskDimensionV2.ResourceSourceId] ??
             record[TicketInsightsTaskDimension.ResourceSourceId]
         const resourceSourceSetId =
+            record[TicketInsightsTaskDimensionV2.ResourceSourceSetId] ??
             record[TicketInsightsTaskDimension.ResourceSourceSetId]
         return createResourceKey(
             resourceSourceId ?? 0,
@@ -451,21 +472,35 @@ export const parseIntentsDataByResource = (
     return Object.entries(grouped).reduce(
         (acc, [key, records]) => {
             const sortedRecords = [...records].sort((a, b) => {
+                // Support both V1 and V2 field names
                 const aCount =
-                    Number(a[TicketInsightsTaskMeasure.TicketCount]) || 0
+                    Number(
+                        a[TicketInsightsTaskMeasureV2.TicketCount] ??
+                            a[TicketInsightsTaskMeasure.TicketCount],
+                    ) || 0
                 const bCount =
-                    Number(b[TicketInsightsTaskMeasure.TicketCount]) || 0
+                    Number(
+                        b[TicketInsightsTaskMeasureV2.TicketCount] ??
+                            b[TicketInsightsTaskMeasure.TicketCount],
+                    ) || 0
                 return bCount - aCount
             })
 
+            // Support both V1 (cube-prefixed) and V2 (unprefixed) field names
             acc[key] = sortedRecords
-                .map(
-                    (record) =>
+                .map((record) => {
+                    // Try V2 API field name first, fall back to V1
+                    return (
+                        record[
+                            TicketInsightsTaskDimensionV2
+                                .CustomFieldTop2LevelsValue
+                        ] ??
                         record[
                             TicketCustomFieldsDimension
                                 .TicketCustomFieldsTop2LevelsValue
-                        ],
-                )
+                        ]
+                    )
+                })
                 .filter(
                     (value): value is string =>
                         typeof value === 'string' && value !== '',
@@ -488,6 +523,7 @@ export const parseIntentsDataByResource = (
 export const useResourceMetrics = ({
     resourceSourceId,
     resourceSourceSetId,
+    shopIntegrationId,
     timezone,
     enabled = true,
     dateRange,
@@ -511,8 +547,12 @@ export const useResourceMetrics = ({
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: [String(resourceSourceSetId)],
             },
+            [FilterKey.Stores]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [shopIntegrationId],
+            },
         }
-    }, [resourceSourceId, resourceSourceSetId, dateRange])
+    }, [resourceSourceId, resourceSourceSetId, shopIntegrationId, dateRange])
 
     // Create handover-specific filters that include custom field filter for "Handover" outcome
     // Handover values can be either "Handover::With message" or "Handover::Without message"
@@ -589,6 +629,7 @@ export const useResourceMetrics = ({
         knowledgeTicketsCountQueryV2Factory({
             timezone,
             filters,
+            limit: KNOWLEDGE_QUERY_LIMIT,
         }),
         enabled,
     )
@@ -597,6 +638,7 @@ export const useResourceMetrics = ({
     const handoverTicketsV2Query = knowledgeHandoverTicketsCountQueryV2Factory({
         timezone,
         filters: handoverFilters,
+        limit: KNOWLEDGE_QUERY_LIMIT,
     })
 
     const handoverTicketsMetric = useMetric(
@@ -625,6 +667,7 @@ export const useResourceMetrics = ({
         knowledgeCSATQueryV2Factory({
             timezone,
             filters,
+            limit: KNOWLEDGE_QUERY_LIMIT,
         }),
         enabled,
     )
@@ -642,6 +685,7 @@ export const useResourceMetrics = ({
         knowledgeIntentsQueryV2Factory({
             timezone,
             filters: intentFilters,
+            limit: KNOWLEDGE_QUERY_LIMIT,
         }),
         undefined,
         enabled,
@@ -737,10 +781,13 @@ export const aggregateResourceMetrics = (
         return resourceMap.get(key)!
     }
 
+    // Support both V1 (cube-prefixed) and V2 (unprefixed) field names
     ticketsData?.forEach((record) => {
         const resourceSourceId =
+            record[TicketInsightsTaskDimensionV2.ResourceSourceId] ??
             record[TicketInsightsTaskDimension.ResourceSourceId]
         const resourceSourceSetId =
+            record[TicketInsightsTaskDimensionV2.ResourceSourceSetId] ??
             record[TicketInsightsTaskDimension.ResourceSourceSetId]
         if (resourceSourceId == null || resourceSourceSetId == null) return
 
@@ -749,13 +796,18 @@ export const aggregateResourceMetrics = (
             String(resourceSourceSetId),
         )
         resource.tickets =
-            Number(record[TicketInsightsTaskMeasure.TicketCount]) || 0
+            Number(
+                record[TicketInsightsTaskMeasureV2.TicketCount] ??
+                    record[TicketInsightsTaskMeasure.TicketCount],
+            ) || 0
     })
 
     handoverData?.forEach((record) => {
         const resourceSourceId =
+            record[TicketInsightsTaskDimensionV2.ResourceSourceId] ??
             record[TicketInsightsTaskDimension.ResourceSourceId]
         const resourceSourceSetId =
+            record[TicketInsightsTaskDimensionV2.ResourceSourceSetId] ??
             record[TicketInsightsTaskDimension.ResourceSourceSetId]
         if (resourceSourceId == null || resourceSourceSetId == null) return
 
@@ -764,13 +816,18 @@ export const aggregateResourceMetrics = (
             String(resourceSourceSetId),
         )
         resource.handoverTickets =
-            Number(record[TicketInsightsTaskMeasure.TicketCount]) || 0
+            Number(
+                record[TicketInsightsTaskMeasureV2.TicketCount] ??
+                    record[TicketInsightsTaskMeasure.TicketCount],
+            ) || 0
     })
 
     csatData?.forEach((record) => {
         const resourceSourceId =
+            record[TicketInsightsTaskDimensionV2.ResourceSourceId] ??
             record[TicketInsightsTaskDimension.ResourceSourceId]
         const resourceSourceSetId =
+            record[TicketInsightsTaskDimensionV2.ResourceSourceSetId] ??
             record[TicketInsightsTaskDimension.ResourceSourceSetId]
         if (resourceSourceId == null || resourceSourceSetId == null) return
 
@@ -779,7 +836,8 @@ export const aggregateResourceMetrics = (
             String(resourceSourceSetId),
         )
         const avgScore = Number(
-            record[TicketInsightsTaskMeasure.AvgSurveyScore],
+            record[TicketInsightsTaskMeasureV2.AverageSurveyScore] ??
+                record[TicketInsightsTaskMeasure.AvgSurveyScore],
         )
         resource.csat = avgScore ? Number(avgScore.toFixed(2)) : null
     })
@@ -818,9 +876,9 @@ export const useAllResourcesMetrics = ({
                 start_datetime: dateRange.start_datetime,
                 end_datetime: dateRange.end_datetime,
             },
-            [APIOnlyFilterKey.ShopIntegrationId]: {
+            [FilterKey.Stores]: {
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: [String(shopIntegrationId)],
+                values: [shopIntegrationId],
             },
         }
     }, [shopIntegrationId, dateRange])
@@ -871,6 +929,7 @@ export const useAllResourcesMetrics = ({
         knowledgeTicketsCountQueryV2Factory({
             timezone,
             filters,
+            limit: KNOWLEDGE_QUERY_LIMIT,
         }),
         undefined,
         enabled,
@@ -888,6 +947,7 @@ export const useAllResourcesMetrics = ({
         knowledgeHandoverTicketsCountQueryV2Factory({
             timezone,
             filters: handoverFilters,
+            limit: KNOWLEDGE_QUERY_LIMIT,
         }),
         undefined,
         enabled,
@@ -905,6 +965,7 @@ export const useAllResourcesMetrics = ({
         knowledgeCSATQueryV2Factory({
             timezone,
             filters,
+            limit: KNOWLEDGE_QUERY_LIMIT,
         }),
         undefined,
         enabled,
@@ -922,6 +983,7 @@ export const useAllResourcesMetrics = ({
         knowledgeIntentsQueryV2Factory({
             timezone,
             filters: intentFilters,
+            limit: KNOWLEDGE_QUERY_LIMIT,
         }),
         undefined,
         enabled && loadIntents,

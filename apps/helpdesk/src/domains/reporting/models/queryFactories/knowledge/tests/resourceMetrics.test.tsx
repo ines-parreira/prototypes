@@ -30,11 +30,9 @@ import type {
     ApiStatsFilters,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
-import {
-    APIOnlyFilterKey,
-    FilterKey,
-} from 'domains/reporting/models/stat/types'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useMetric')
@@ -153,34 +151,21 @@ describe('createV1Query', () => {
             expect(query.filters).toContainEqual({
                 member: 'TicketEnriched.periodStart',
                 operator: 'afterDate',
-                values: [baseStatsFilters.period.start_datetime],
+                values: [
+                    formatReportingQueryDate(
+                        baseStatsFilters.period.start_datetime,
+                    ),
+                ],
             })
             expect(query.filters).toContainEqual({
                 member: 'TicketEnriched.periodEnd',
                 operator: 'beforeDate',
-                values: [baseStatsFilters.period.end_datetime],
-            })
-        })
-
-        it('should include time dimensions', () => {
-            const query = createV1Query(
-                METRIC_NAMES.KNOWLEDGE_TICKETS,
-                resourceSourceId,
-                resourceSourceSetId,
-                baseStatsFilters,
-                timezone,
-                'TicketInsightsTask.ticketCount',
-            )
-
-            expect(query.timeDimensions).toEqual([
-                {
-                    dimension: 'TicketEnriched.createdDatetime',
-                    dateRange: [
-                        baseStatsFilters.period.start_datetime,
+                values: [
+                    formatReportingQueryDate(
                         baseStatsFilters.period.end_datetime,
-                    ],
-                },
-            ])
+                    ),
+                ],
+            })
         })
 
         it('should only include specific resource types', () => {
@@ -591,6 +576,87 @@ describe('parseIntentsData', () => {
             ])
         })
     })
+
+    describe('V2 API field names', () => {
+        it('should handle V2 field names (unprefixed)', () => {
+            const mockData = [
+                {
+                    customFieldTop2LevelsValue: 'Billing::Payment',
+                    ticketCount: '15',
+                },
+                {
+                    customFieldTop2LevelsValue: 'Support::Technical',
+                    ticketCount: '10',
+                },
+                {
+                    customFieldTop2LevelsValue: 'Shipping::Delay',
+                    ticketCount: '20',
+                },
+            ]
+
+            const result = parseIntentsData(mockData, false)
+
+            expect(result).toEqual([
+                'Shipping::Delay',
+                'Billing::Payment',
+                'Support::Technical',
+            ])
+        })
+
+        it('should handle mixed V1 and V2 field names', () => {
+            const mockData = [
+                {
+                    customFieldTop2LevelsValue: 'Intent::V2',
+                    ticketCount: '25',
+                },
+                {
+                    'TicketCustomFieldsEnriched.top2LevelsValue': 'Intent::V1',
+                    'TicketInsightsTask.ticketCount': '15',
+                },
+            ]
+
+            const result = parseIntentsData(mockData, false)
+
+            expect(result).toEqual(['Intent::V2', 'Intent::V1'])
+        })
+
+        it('should handle missing or invalid ticket counts with V2 fields', () => {
+            const mockData = [
+                {
+                    customFieldTop2LevelsValue: 'Valid::Intent',
+                    ticketCount: '10',
+                },
+                {
+                    customFieldTop2LevelsValue: 'Missing::Count',
+                },
+                {
+                    customFieldTop2LevelsValue: 'Invalid::Count',
+                    ticketCount: 'not-a-number',
+                },
+            ]
+
+            const result = parseIntentsData(mockData, false)
+
+            expect(result?.[0]).toBe('Valid::Intent')
+        })
+
+        it('should filter out empty string intents with V2 fields', () => {
+            const mockData = [
+                {
+                    customFieldTop2LevelsValue: '',
+                    ticketCount: '10',
+                },
+                {
+                    customFieldTop2LevelsValue: 'Valid::Intent',
+                    ticketCount: '5',
+                },
+            ]
+
+            const result = parseIntentsData(mockData, false)
+
+            expect(result).toEqual(['Valid::Intent'])
+        })
+    })
 })
 
 describe('parseIntentsDataByResource', () => {
@@ -799,6 +865,111 @@ describe('parseIntentsDataByResource', () => {
             const result = parseIntentsDataByResource(mockData, false)
 
             expect(result['100-200']).toEqual([])
+        })
+    })
+
+    describe('V2 API field names', () => {
+        it('should handle V2 field names (unprefixed)', () => {
+            const mockData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    customFieldTop2LevelsValue: 'Billing::Payment',
+                    ticketCount: '15',
+                },
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    customFieldTop2LevelsValue: 'Support::Technical',
+                    ticketCount: '10',
+                },
+                {
+                    resourceSourceId: '101',
+                    resourceSourceSetId: '201',
+                    customFieldTop2LevelsValue: 'Shipping::Delay',
+                    ticketCount: '20',
+                },
+            ]
+
+            const result = parseIntentsDataByResource(mockData, false)
+
+            expect(result).toEqual({
+                '100-200': ['Billing::Payment', 'Support::Technical'],
+                '101-201': ['Shipping::Delay'],
+            })
+        })
+
+        it('should handle mixed V1 and V2 field names', () => {
+            const mockData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    customFieldTop2LevelsValue: 'Intent::V2',
+                    ticketCount: '25',
+                },
+                {
+                    'TicketInsightsTask.resourceSourceId': '100',
+                    'TicketInsightsTask.resourceSourceSetId': '200',
+                    'TicketCustomFieldsEnriched.top2LevelsValue': 'Intent::V1',
+                    'TicketInsightsTask.ticketCount': '15',
+                },
+            ]
+
+            const result = parseIntentsDataByResource(mockData, false)
+
+            expect(result['100-200']).toEqual(['Intent::V2', 'Intent::V1'])
+        })
+
+        it('should sort intents by ticket count descending within each resource with V2 fields', () => {
+            const mockData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    customFieldTop2LevelsValue: 'Low::Priority',
+                    ticketCount: '5',
+                },
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    customFieldTop2LevelsValue: 'High::Priority',
+                    ticketCount: '20',
+                },
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    customFieldTop2LevelsValue: 'Medium::Priority',
+                    ticketCount: '10',
+                },
+            ]
+
+            const result = parseIntentsDataByResource(mockData, false)
+
+            expect(result['100-200']).toEqual([
+                'High::Priority',
+                'Medium::Priority',
+                'Low::Priority',
+            ])
+        })
+
+        it('should filter out empty string intents with V2 fields', () => {
+            const mockData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    customFieldTop2LevelsValue: '',
+                    ticketCount: '10',
+                },
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    customFieldTop2LevelsValue: 'Valid::Intent',
+                    ticketCount: '5',
+                },
+            ]
+
+            const result = parseIntentsDataByResource(mockData, false)
+
+            expect(result['100-200']).toEqual(['Valid::Intent'])
         })
     })
 })
@@ -1371,6 +1542,264 @@ describe('aggregateResourceMetrics', () => {
             })
         })
     })
+
+    describe('V2 API field names', () => {
+        it('should aggregate all metrics for a single resource with V2 field names', () => {
+            const ticketsData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    ticketCount: '50',
+                },
+            ]
+
+            const handoverData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    ticketCount: '5',
+                },
+            ]
+
+            const csatData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    averageSurveyScore: '4.5',
+                },
+            ]
+
+            const intentsData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    customFieldTop2LevelsValue: 'Intent::A',
+                    ticketCount: '10',
+                },
+            ]
+
+            const result = aggregateResourceMetrics(
+                ticketsData,
+                handoverData,
+                csatData,
+                intentsData,
+            )
+
+            expect(result).toEqual([
+                {
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    tickets: 50,
+                    handoverTickets: 5,
+                    csat: 4.5,
+                    intents: ['Intent::A'],
+                },
+            ])
+        })
+
+        it('should aggregate metrics for multiple resources with V2 field names', () => {
+            const ticketsData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    ticketCount: '50',
+                },
+                {
+                    resourceSourceId: '101',
+                    resourceSourceSetId: '201',
+                    ticketCount: '30',
+                },
+            ]
+
+            const handoverData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    ticketCount: '5',
+                },
+            ]
+
+            const csatData = [
+                {
+                    resourceSourceId: '101',
+                    resourceSourceSetId: '201',
+                    averageSurveyScore: '3.8',
+                },
+            ]
+
+            const result = aggregateResourceMetrics(
+                ticketsData,
+                handoverData,
+                csatData,
+                undefined,
+            )
+
+            expect(result).toHaveLength(2)
+            expect(result).toContainEqual({
+                resourceSourceId: 100,
+                resourceSourceSetId: 200,
+                tickets: 50,
+                handoverTickets: 5,
+                csat: null,
+                intents: null,
+            })
+            expect(result).toContainEqual({
+                resourceSourceId: 101,
+                resourceSourceSetId: 201,
+                tickets: 30,
+                handoverTickets: null,
+                csat: 3.8,
+                intents: null,
+            })
+        })
+
+        it('should handle mixed V1 and V2 field names', () => {
+            const ticketsData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    ticketCount: '50',
+                },
+            ]
+
+            const handoverData = [
+                {
+                    'TicketInsightsTask.resourceSourceId': '100',
+                    'TicketInsightsTask.resourceSourceSetId': '200',
+                    'TicketInsightsTask.ticketCount': '5',
+                },
+            ]
+
+            const csatData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    averageSurveyScore: '4.5',
+                },
+            ]
+
+            const intentsData = [
+                {
+                    'TicketInsightsTask.resourceSourceId': '100',
+                    'TicketInsightsTask.resourceSourceSetId': '200',
+                    'TicketCustomFieldsEnriched.top2LevelsValue': 'Intent::V1',
+                    'TicketInsightsTask.ticketCount': '10',
+                },
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    customFieldTop2LevelsValue: 'Intent::V2',
+                    ticketCount: '15',
+                },
+            ]
+
+            const result = aggregateResourceMetrics(
+                ticketsData,
+                handoverData,
+                csatData,
+                intentsData,
+            )
+
+            expect(result).toEqual([
+                {
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    tickets: 50,
+                    handoverTickets: 5,
+                    csat: 4.5,
+                    intents: ['Intent::V2', 'Intent::V1'],
+                },
+            ])
+        })
+
+        it('should round CSAT to 2 decimal places with V2 fields', () => {
+            const csatData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    averageSurveyScore: '4.567890',
+                },
+            ]
+
+            const result = aggregateResourceMetrics(
+                undefined,
+                undefined,
+                csatData,
+                undefined,
+            )
+
+            expect(result[0].csat).toBe(4.57)
+        })
+
+        it('should handle missing ticket counts as 0 with V2 fields', () => {
+            const ticketsData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    ticketCount: undefined,
+                },
+            ]
+
+            const result = aggregateResourceMetrics(
+                ticketsData,
+                undefined,
+                undefined,
+                undefined,
+            )
+
+            expect(result[0].tickets).toBe(0)
+        })
+
+        it('should skip records with null resourceSourceId with V2 fields', () => {
+            const ticketsData = [
+                {
+                    resourceSourceId: null,
+                    resourceSourceSetId: '200',
+                    ticketCount: '50',
+                },
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    ticketCount: '30',
+                },
+            ]
+
+            const result = aggregateResourceMetrics(
+                ticketsData,
+                undefined,
+                undefined,
+                undefined,
+            )
+
+            expect(result).toHaveLength(1)
+            expect(result[0].resourceSourceId).toBe(100)
+        })
+
+        it('should skip records with null resourceSourceSetId with V2 fields', () => {
+            const ticketsData = [
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: null,
+                    ticketCount: '50',
+                },
+                {
+                    resourceSourceId: '100',
+                    resourceSourceSetId: '200',
+                    ticketCount: '30',
+                },
+            ]
+
+            const result = aggregateResourceMetrics(
+                ticketsData,
+                undefined,
+                undefined,
+                undefined,
+            )
+
+            expect(result).toHaveLength(1)
+            expect(result[0].resourceSourceSetId).toBe(200)
+        })
+    })
 })
 
 describe('knowledgeCSATDrillDownQueryFactory', () => {
@@ -1467,6 +1896,7 @@ describe('useResourceMetrics', () => {
                 useResourceMetrics({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 1,
                     timezone: 'America/New_York',
                     dateRange: testDateRange,
                 }),
@@ -1500,6 +1930,7 @@ describe('useResourceMetrics', () => {
                 useResourceMetrics({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 1,
                     timezone: 'America/New_York',
                     dateRange: testDateRange,
                 }),
@@ -1546,6 +1977,7 @@ describe('useResourceMetrics', () => {
                 useResourceMetrics({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 1,
                     timezone: 'America/New_York',
                     dateRange: testDateRange,
                 }),
@@ -1577,6 +2009,7 @@ describe('useResourceMetrics', () => {
                 useResourceMetrics({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 1,
                     timezone: 'America/New_York',
                     dateRange: testDateRange,
                 }),
@@ -1605,6 +2038,7 @@ describe('useResourceMetrics', () => {
                 useResourceMetrics({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 1,
                     timezone: 'America/New_York',
                     dateRange: testDateRange,
                     enabled: false,
@@ -1653,6 +2087,7 @@ describe('useResourceMetrics', () => {
                 useResourceMetrics({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 1,
                     timezone: 'America/New_York',
                     dateRange: testDateRange,
                 }),
@@ -2372,9 +2807,9 @@ describe('createV1Query edge cases', () => {
                 start_datetime: periodStart.toISOString(),
                 end_datetime: periodEnd.toISOString(),
             },
-            [APIOnlyFilterKey.ShopIntegrationId]: {
+            [FilterKey.Stores]: {
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: [String(shopIntegrationId)],
+                values: [shopIntegrationId],
             },
         }
 
@@ -2402,7 +2837,7 @@ describe('createV1Query edge cases', () => {
                 start_datetime: periodStart.toISOString(),
                 end_datetime: periodEnd.toISOString(),
             },
-            [APIOnlyFilterKey.ShopIntegrationId]: {
+            [FilterKey.Stores]: {
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: [],
             },

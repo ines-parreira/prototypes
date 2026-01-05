@@ -58,6 +58,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
     const resourceImpact = useResourceMetrics({
         resourceSourceId: guidanceArticle?.id ?? 0,
         resourceSourceSetId: guidanceHelpCenter.id,
+        shopIntegrationId: guidanceHelpCenter.shop_integration_id ?? 0,
         timezone: timezone ?? 'UTC',
         enabled: isPerformanceStatsEnabled && !!guidanceArticle,
         dateRange,

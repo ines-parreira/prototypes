@@ -34,7 +34,16 @@ jest.mock('./KnowledgeEditorSnippetView', () => ({
     }) => <div data-testid="snippet-view">{snippet.title}</div>,
 }))
 
-jest.mock('domains/reporting/models/queryFactories/knowledge/resourceMetrics')
+jest.mock(
+    'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
+    () => ({
+        useResourceMetrics: jest.fn(),
+        getLast28DaysDateRange: jest.fn(() => ({
+            start_datetime: '2025-01-01T00:00:00.000Z',
+            end_datetime: '2025-01-28T00:00:00.000Z',
+        })),
+    }),
+)
 const mockedFetchResourceMetrics = jest.mocked(useResourceMetrics)
 
 const queryClient = mockQueryClient()
@@ -112,6 +121,7 @@ describe('KnowledgeEditorSnippetLoader', () => {
     const baseProps = {
         snippetId: 123,
         helpCenterId: 1,
+        shopIntegrationId: 0,
         locale: 'en-US' as const,
         onClose: jest.fn(),
         onClickPrevious: jest.fn(),
@@ -697,8 +707,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
             expect(mockedFetchResourceMetrics).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 0,
                 timezone: 'America/New_York',
                 enabled: false,
+                dateRange: {
+                    start_datetime: '2025-01-01T00:00:00.000Z',
+                    end_datetime: '2025-01-28T00:00:00.000Z',
+                },
             })
         })
 
@@ -727,8 +742,13 @@ describe('KnowledgeEditorSnippetLoader', () => {
             expect(mockedFetchResourceMetrics).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 0,
                 timezone: 'America/New_York',
                 enabled: true,
+                dateRange: {
+                    start_datetime: '2025-01-01T00:00:00.000Z',
+                    end_datetime: '2025-01-28T00:00:00.000Z',
+                },
             })
         })
     })

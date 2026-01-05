@@ -134,6 +134,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
             expect(mockUseResourceMetrics).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 0,
                 timezone: 'America/New_York',
                 enabled: false,
                 dateRange: mockDateRange,
@@ -189,6 +190,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
             expect(mockUseResourceMetrics).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 0,
                 timezone: 'America/New_York',
                 enabled: true,
                 dateRange: mockDateRange,
@@ -267,6 +269,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
             expect(mockUseResourceMetrics).toHaveBeenCalledWith({
                 resourceSourceId: 0,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 0,
                 timezone: 'America/New_York',
                 enabled: false,
                 dateRange: mockDateRange,
@@ -289,7 +292,12 @@ describe('useArticleRelatedTicketsFromContext', () => {
 
             expect(mockUseResourceMetrics).toHaveBeenCalledWith(
                 expect.objectContaining({
+                    resourceSourceId: 123,
+                    resourceSourceSetId: 1,
+                    shopIntegrationId: 0,
                     timezone: 'UTC',
+                    enabled: true,
+                    dateRange: mockDateRange,
                 }),
             )
 

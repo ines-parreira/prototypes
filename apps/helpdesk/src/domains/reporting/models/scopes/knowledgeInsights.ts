@@ -12,13 +12,13 @@ const knowledgeStatisticsScope = defineScope({
         'resourceType',
         'resourceSourceId',
         'resourceSourceSetId',
-        'top2LevelsValue',
+        'customFieldTop2LevelsValue',
     ],
     timeDimensions: ['createdDatetime', 'closedDatetime'],
     filters: [
         'periodStart',
         'periodEnd',
-        'customFieldId',
+        'customFields',
         'resourceSourceId',
         'resourceSourceSetId',
         'storeId',
@@ -27,7 +27,7 @@ const knowledgeStatisticsScope = defineScope({
         'ticketCount',
         'resourceSourceId',
         'resourceSourceSetId',
-        'top2LevelsValue',
+        'customFieldTop2LevelsValue',
     ],
 })
 
@@ -121,7 +121,7 @@ export const knowledgeIntents = knowledgeStatisticsScope
         const query = {
             measures: ['ticketCount'] as const,
             dimensions: [
-                'top2LevelsValue',
+                'customFieldTop2LevelsValue',
                 'resourceType',
                 'resourceSourceId',
                 'resourceSourceSetId',
@@ -132,7 +132,7 @@ export const knowledgeIntents = knowledgeStatisticsScope
             return {
                 ...query,
                 order: [
-                    ['top2LevelsValue', OrderDirection.Asc],
+                    ['customFieldTop2LevelsValue', OrderDirection.Asc],
                     ['resourceSourceSetId', OrderDirection.Asc],
                     ['resourceSourceId', OrderDirection.Asc],
                 ] as const,

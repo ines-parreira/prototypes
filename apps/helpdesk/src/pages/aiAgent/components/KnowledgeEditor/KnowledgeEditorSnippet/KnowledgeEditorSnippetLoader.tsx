@@ -33,6 +33,7 @@ type Props = {
     snippetId: number
     snippetType: SnippetType
     helpCenterId: number
+    shopIntegrationId: number
     locale: LocaleCode
     onClose: () => void
     onClickPrevious?: () => void
@@ -47,6 +48,7 @@ export const KnowledgeEditorSnippetLoader = ({
     snippetId,
     snippetType,
     helpCenterId,
+    shopIntegrationId,
     locale,
     onClose,
     onClickPrevious,
@@ -93,6 +95,7 @@ export const KnowledgeEditorSnippetLoader = ({
     const resourceImpact = useResourceMetrics({
         resourceSourceId: snippetId,
         resourceSourceSetId: helpCenterId,
+        shopIntegrationId,
         timezone: timezone ?? 'UTC',
         enabled: isPerformanceStatsEnabled,
         dateRange,

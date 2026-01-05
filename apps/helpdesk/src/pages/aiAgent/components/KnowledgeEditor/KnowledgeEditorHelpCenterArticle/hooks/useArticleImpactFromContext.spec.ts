@@ -116,6 +116,7 @@ describe('useArticleImpactFromContext', () => {
             expect(mockUseResourceMetrics).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 0,
                 timezone: 'America/New_York',
                 enabled: false,
                 dateRange: mockDateRange,
@@ -154,6 +155,7 @@ describe('useArticleImpactFromContext', () => {
             expect(mockUseResourceMetrics).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 0,
                 timezone: 'America/New_York',
                 enabled: true,
                 dateRange: mockDateRange,
@@ -174,6 +176,7 @@ describe('useArticleImpactFromContext', () => {
             expect(mockUseResourceMetrics).toHaveBeenCalledWith({
                 resourceSourceId: 0,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 0,
                 timezone: 'America/New_York',
                 enabled: false,
                 dateRange: mockDateRange,
@@ -187,10 +190,37 @@ describe('useArticleImpactFromContext', () => {
 
             expect(mockUseResourceMetrics).toHaveBeenCalledWith(
                 expect.objectContaining({
+                    resourceSourceId: 123,
+                    resourceSourceSetId: 1,
+                    shopIntegrationId: 0,
                     timezone: 'UTC',
+                    enabled: true,
                     dateRange: mockDateRange,
                 }),
             )
+        })
+
+        it('should use shop_integration_id when available', () => {
+            mockUseArticleContext.mockReturnValue({
+                ...defaultContextValue,
+                config: {
+                    helpCenter: {
+                        id: 1,
+                        shop_integration_id: 456,
+                    },
+                } as ArticleContextValue['config'],
+            })
+
+            renderHook(() => useArticleImpactFromContext())
+
+            expect(mockUseResourceMetrics).toHaveBeenCalledWith({
+                resourceSourceId: 123,
+                resourceSourceSetId: 1,
+                shopIntegrationId: 456,
+                timezone: 'America/New_York',
+                enabled: true,
+                dateRange: mockDateRange,
+            })
         })
 
         it('should return isLoading=true when metrics are loading', () => {

@@ -70,6 +70,9 @@ export const KnowledgeEditorSnippet = ({
                         snippetId={snippetId}
                         snippetType={snippetType}
                         helpCenterId={snippetHelpCenter.id}
+                        shopIntegrationId={
+                            snippetHelpCenter.shop_integration_id ?? 0
+                        }
                         locale={snippetHelpCenter.default_locale}
                         onClose={onClose}
                         onClickPrevious={onClickPrevious}

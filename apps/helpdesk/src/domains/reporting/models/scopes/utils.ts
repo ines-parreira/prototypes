@@ -254,7 +254,6 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'productId':
             case 'resourceSourceId':
             case 'resourceSourceSetId':
-            case 'shopIntegrationId':
             case 'callDirection':
             case 'callTerminationStatus':
             case 'isAnsweredByAgent':
