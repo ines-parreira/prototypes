@@ -49,7 +49,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
   "billing": Immutable.Map {
     "products": Immutable.List [
       Immutable.Map {
-        "id": "helpdesk",
         "type": "helpdesk",
         "prices": Immutable.List [
           Immutable.Map {
@@ -1075,7 +1074,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         ],
       },
       Immutable.Map {
-        "id": "automation",
         "type": "automation",
         "prices": Immutable.List [
           Immutable.Map {
@@ -1434,7 +1432,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         ],
       },
       Immutable.Map {
-        "id": "sms",
         "type": "sms",
         "prices": Immutable.List [
           Immutable.Map {
@@ -1500,7 +1497,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         ],
       },
       Immutable.Map {
-        "id": "voice",
         "type": "voice",
         "prices": Immutable.List [
           Immutable.Map {
@@ -1566,7 +1562,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         ],
       },
       Immutable.Map {
-        "id": "convert",
         "type": "convert",
         "prices": Immutable.List [
           Immutable.Map {

@@ -3254,7 +3254,6 @@ exports[`billing selectors getAvailableHelpdeskPlans should return the available
 exports[`billing selectors getProducts should return products 1`] = `
 [
   {
-    "id": "helpdesk",
     "prices": [
       {
         "amount": 1000,
@@ -4280,7 +4279,6 @@ exports[`billing selectors getProducts should return products 1`] = `
     "type": "helpdesk",
   },
   {
-    "id": "automation",
     "prices": [
       {
         "amount": 3000,
@@ -4639,7 +4637,6 @@ exports[`billing selectors getProducts should return products 1`] = `
     "type": "automation",
   },
   {
-    "id": "sms",
     "prices": [
       {
         "amount": 0,
@@ -4705,7 +4702,6 @@ exports[`billing selectors getProducts should return products 1`] = `
     "type": "sms",
   },
   {
-    "id": "voice",
     "prices": [
       {
         "amount": 0,
@@ -4771,7 +4767,6 @@ exports[`billing selectors getProducts should return products 1`] = `
     "type": "voice",
   },
   {
-    "id": "convert",
     "prices": [
       {
         "amount": 0,

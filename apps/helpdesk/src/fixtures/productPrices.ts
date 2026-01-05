@@ -912,31 +912,26 @@ export const convertAvailablePlans = [
 ].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
 
 export const helpdeskProduct: Product<ProductType.Helpdesk> = {
-    id: HELPDESK_PRODUCT_ID,
     type: ProductType.Helpdesk,
     prices: helpdeskAvailablePlans,
 }
 
 export const automationProduct: Product<ProductType.Automation> = {
-    id: AUTOMATION_PRODUCT_ID,
     type: ProductType.Automation,
     prices: automationAvailablePlans,
 }
 
 export const voiceProduct: Product<ProductType.Voice> = {
-    id: VOICE_PRODUCT_ID,
     type: ProductType.Voice,
     prices: voiceAvailablePlans,
 }
 
 export const smsProduct: Product<ProductType.SMS> = {
-    id: SMS_PRODUCT_ID,
     type: ProductType.SMS,
     prices: smsAvailablePlans,
 }
 
 export const convertProduct: Product<ProductType.Convert> = {
-    id: CONVERT_PRODUCT_ID,
     type: ProductType.Convert,
     prices: convertAvailablePlans,
 }

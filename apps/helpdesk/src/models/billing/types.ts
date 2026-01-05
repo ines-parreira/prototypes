@@ -50,7 +50,6 @@ export type PlanId = string
 export type Plan = HelpdeskPlan | AutomatePlan | SMSOrVoicePlan | ConvertPlan
 
 export type Product<T extends ProductType = ProductType> = {
-    id: string
     type: T
     prices: PlanForProductType<T>[]
 }
