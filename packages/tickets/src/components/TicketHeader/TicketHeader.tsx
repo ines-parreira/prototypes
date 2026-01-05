@@ -2,6 +2,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { useTicket } from '../../hooks/useTicket'
 import { TicketTranslationMenu } from '../../translations/components/TicketTranslationMenu'
+import { SpamTicket } from '../SpamTicket'
 import { TicketActions } from '../TicketActions/TicketActions'
 import { TeamAssignee, UserAssignee } from '../TicketAssignee'
 import { TicketStatusMenu } from '../TicketMenuStatus/TicketStatusMenu'
@@ -29,6 +30,7 @@ export function TicketHeader({ ticketId }: Props) {
         assignee_team: currentTeam,
         assignee_user: currentAssignee,
         trashed_datetime,
+        spam,
     } = ticket
 
     return (
@@ -37,6 +39,7 @@ export function TicketHeader({ ticketId }: Props) {
                 <TicketTitle ticket={ticket} />
             </div>
             <div className={css.right}>
+                {spam && <SpamTicket />}
                 <TrashedTicket trashedDatetime={trashed_datetime} />
                 {hasMessagesTranslations && (
                     <TicketTranslationMenu language={ticket.language} />
