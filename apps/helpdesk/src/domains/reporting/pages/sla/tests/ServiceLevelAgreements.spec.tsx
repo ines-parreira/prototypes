@@ -1,8 +1,7 @@
 import type { ComponentProps, PropsWithChildren } from 'react'
-import React from 'react'
 
 import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -17,10 +16,7 @@ import { AchievementRateTrendCard } from 'domains/reporting/pages/sla/components
 import { BreachedTicketsRateTrendCard } from 'domains/reporting/pages/sla/components/BreachedTicketsRateTrendCard'
 import { DownloadSLAsData } from 'domains/reporting/pages/sla/components/DownloadSLAsData'
 import { ServiceLevelAgreements } from 'domains/reporting/pages/sla/ServiceLevelAgreements'
-import {
-    SERVICE_LEVEL_AGREEMENT_PAGE_TITLE,
-    SERVICE_LEVEL_OPTIONAL_FILTERS,
-} from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
+import { SERVICE_LEVEL_OPTIONAL_FILTERS } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState, StoreDispatch } from 'state/types'
 
@@ -122,9 +118,6 @@ describe('ServiceLevelAgreements', () => {
             </Provider>,
         )
 
-        expect(
-            screen.getByText(SERVICE_LEVEL_AGREEMENT_PAGE_TITLE),
-        ).toBeInTheDocument()
         expect(AchievedAndBreachedTicketsChartMock).toHaveBeenCalled()
         expect(AchievementRateTrendCardMock).toHaveBeenCalled()
         expect(BreachedTicketsRateTrendCardMock).toHaveBeenCalled()

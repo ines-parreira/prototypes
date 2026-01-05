@@ -28,7 +28,7 @@ import LiveOverview from 'domains/reporting/pages/live/overview/LiveOverview'
 import SatisfactionReport from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReport'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
 import SelfServiceStatsPage from 'domains/reporting/pages/self-service/SelfServiceStatsPage'
-import { ServiceLevelAgreements } from 'domains/reporting/pages/sla/ServiceLevelAgreements'
+import { ServiceLevelAgreementsPage } from 'domains/reporting/pages/sla/ServiceLevelAgreementsPage'
 import SupportPerformanceAgentsReport from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReport'
 import AutoQA from 'domains/reporting/pages/support-performance/auto-qa/AutoQA'
 import { BusiestTimesOfDays } from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesOfDays'
@@ -173,8 +173,8 @@ jest.mock(
 const SatisfactionMock = assumeMock(SatisfactionReport)
 jest.mock('domains/reporting/pages/support-performance/channels/ChannelsReport')
 const ChannelsReportMock = assumeMock(ChannelsReport)
-jest.mock('domains/reporting/pages/sla/ServiceLevelAgreements')
-const ServiceLevelAgreementsMock = assumeMock(ServiceLevelAgreements)
+jest.mock('domains/reporting/pages/sla/ServiceLevelAgreementsPage')
+const ServiceLevelAgreementsPageMock = assumeMock(ServiceLevelAgreementsPage)
 jest.mock(
     'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReport',
 )
@@ -247,7 +247,7 @@ describe('StatsRoutes', () => {
             isLoading: false,
         })
         ChannelsReportMock.mockImplementation(() => <div />)
-        ServiceLevelAgreementsMock.mockImplementation(() => <div />)
+        ServiceLevelAgreementsPageMock.mockImplementation(() => <div />)
         AutoQAMock.mockImplementation(() => <div />)
         SatisfactionMock.mockImplementation(() => <div />)
         TagsMock.mockImplementation(() => <div />)
@@ -340,7 +340,7 @@ describe('StatsRoutes', () => {
         },
         {
             route: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_SERVICE_LEVEL_AGREEMENT}`,
-            mock: ServiceLevelAgreementsMock,
+            mock: ServiceLevelAgreementsPageMock,
         },
         {
             route: `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_HELP_CENTER}`,

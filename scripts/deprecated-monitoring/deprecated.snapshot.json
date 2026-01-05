@@ -1,6 +1,6 @@
 {
-  "date": "2026-01-05T11:20:29.628Z",
-  "total": 2922,
+  "date": "2026-01-05T14:16:49.899Z",
+  "total": 2920,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -1561,6 +1561,28 @@
     },
     {
       "nodeType": "ExportNamedDeclaration",
+      "nodeName": "DEPRECATED_getBillingState",
+      "comment": "*\n * @deprecated\n * @date 2021-02-01\n * @type feature-helper-fn\n ",
+      "count": 8,
+      "filePath": "apps/helpdesk/src/state/billing/selectors.ts",
+      "usages": [
+        {
+          "name": "DEPRECATED_getBillingState",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/sla/tests/ServiceLevelAgreementsPage.spec.tsx",
+            "apps/helpdesk/src/hooks/aiAgent/useAiAgentAccess.spec.tsx",
+            "apps/helpdesk/src/main/init/socketEvents/receivedEvents.ts",
+            "apps/helpdesk/src/main/init/socketEvents/tests/receivedEvents.spec.ts",
+            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightModal.spec.tsx",
+            "apps/helpdesk/src/pages/common/utils/tests/withProductEnabledPaywall.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/facebook/FacebookIntegrationDetail.tsx",
+            "apps/helpdesk/src/state/billing/tests/selectors.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
       "nodeName": "DEFAULT_LOCALE",
       "comment": "*\n * @deprecated replaced by DEFAULT_LOCALE in @repo/reporting imports\n * @date 2025-08-29\n * @type reporting-ui-kit\n ",
       "count": 7,
@@ -1660,27 +1682,6 @@
             "apps/helpdesk/src/pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal.tsx",
             "apps/helpdesk/src/pages/common/components/ViewTable/FilterTopbar.tsx",
             "apps/helpdesk/src/pages/common/components/ViewTable/ViewTable.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "ExportNamedDeclaration",
-      "nodeName": "DEPRECATED_getBillingState",
-      "comment": "*\n * @deprecated\n * @date 2021-02-01\n * @type feature-helper-fn\n ",
-      "count": 7,
-      "filePath": "apps/helpdesk/src/state/billing/selectors.ts",
-      "usages": [
-        {
-          "name": "DEPRECATED_getBillingState",
-          "files": [
-            "apps/helpdesk/src/hooks/aiAgent/useAiAgentAccess.spec.tsx",
-            "apps/helpdesk/src/main/init/socketEvents/receivedEvents.ts",
-            "apps/helpdesk/src/main/init/socketEvents/tests/receivedEvents.spec.ts",
-            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightModal.spec.tsx",
-            "apps/helpdesk/src/pages/common/utils/tests/withProductEnabledPaywall.spec.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/facebook/FacebookIntegrationDetail.tsx",
-            "apps/helpdesk/src/state/billing/tests/selectors.spec.ts"
           ]
         }
       ]
@@ -2777,7 +2778,7 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1603,
+      "count": 1600,
       "usages": [
         {
           "name": "LegacyButton",
@@ -4087,7 +4088,7 @@
         },
         {
           "name": "LegacyLoadingSpinner",
-          "count": 111,
+          "count": 108,
           "files": [
             "apps/helpdesk/src/AIJourney/components/AnalyticsCard/AnalyticsCard.tsx",
             "apps/helpdesk/src/AIJourney/components/AnalyticsData/AnalyticsData.tsx",
@@ -4127,9 +4128,6 @@
             "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/FormComponents/HandoverCustomizationChatOfflineSettingsFields.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/FormComponents/HandoverCustomizationChatOnlineSettings.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/FormComponents/HandoverCustomizationChatOnlineSettingsFields.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidance.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterArticle.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSnippet/KnowledgeEditorSnippetLoader.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorTopBar/KnowledgeEditorTopBar.tsx",
             "apps/helpdesk/src/pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeResourceLine.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/AiAgentTasks/ChatToggle.tsx",

@@ -4,7 +4,11 @@ import { useDownloadSLAsData } from 'domains/reporting/hooks/sla/useDownloadSLAs
 import { DownloadSLAsDataButton } from 'domains/reporting/pages/sla/components/DownloadSLAsDataButton'
 import { saveZippedFiles } from 'utils/file'
 
-export const DownloadSLAsData = () => {
+type Props = {
+    children: React.ReactNode
+}
+
+export const DownloadSLAsData = ({ children }: Props) => {
     const { files, fileName, isLoading } = useDownloadSLAsData()
 
     return (
@@ -16,6 +20,8 @@ export const DownloadSLAsData = () => {
                 await saveZippedFiles(files, fileName)
             }}
             disabled={isLoading}
-        />
+        >
+            {children}
+        </DownloadSLAsDataButton>
     )
 }

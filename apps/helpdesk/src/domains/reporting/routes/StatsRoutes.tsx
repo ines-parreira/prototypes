@@ -31,7 +31,7 @@ import {
     ROUTE_OLD_PERFORMANCE_BY_FEATURES,
 } from 'domains/reporting/pages/self-service/constants'
 import { SelfServiceStatsPage } from 'domains/reporting/pages/self-service/SelfServiceStatsPage'
-import { ServiceLevelAgreements } from 'domains/reporting/pages/sla/ServiceLevelAgreements'
+import { ServiceLevelAgreementsPage } from 'domains/reporting/pages/sla/ServiceLevelAgreementsPage'
 import SupportPerformanceAgentsReport from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReport'
 import AutoQA from 'domains/reporting/pages/support-performance/auto-qa/AutoQA'
 import { BusiestTimesOfDays } from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesOfDays'
@@ -276,11 +276,10 @@ export const StatsRoutes = () => {
                     path={`${path}/${STATS_ROUTES.SUPPORT_PERFORMANCE_SERVICE_LEVEL_AGREEMENT}`}
                 >
                     <Route
-                        exact
                         path={`${path}/${STATS_ROUTES.SUPPORT_PERFORMANCE_SERVICE_LEVEL_AGREEMENT}`}
                         render={() => (
                             <App
-                                content={ServiceLevelAgreements}
+                                content={ServiceLevelAgreementsPage}
                                 navbar={StatsNavbarContainer}
                             />
                         )}

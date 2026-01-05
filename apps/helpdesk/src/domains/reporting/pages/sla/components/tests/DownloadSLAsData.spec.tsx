@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
@@ -60,7 +58,9 @@ describe('DownloadSLAsData', () => {
     })
 
     it('should send event to segment and call saveReport on download data button click', async () => {
-        const { getByText } = render(<DownloadSLAsData />)
+        const { getByText } = render(
+            <DownloadSLAsData>{DOWNLOAD_DATA_BUTTON_LABEL}</DownloadSLAsData>,
+        )
 
         const button = getByText(DOWNLOAD_DATA_BUTTON_LABEL)
         await waitFor(() => {

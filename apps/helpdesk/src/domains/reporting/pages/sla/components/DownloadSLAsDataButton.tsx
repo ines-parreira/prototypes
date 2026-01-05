@@ -7,9 +7,14 @@ export const DOWNLOAD_BUTTON_TITLE = 'Download SLAs Data'
 type Props = {
     disabled: boolean
     onClick: () => void
+    children?: React.ReactNode
 }
 
-export const DownloadSLAsDataButton = ({ disabled, onClick }: Props) => {
+export const DownloadSLAsDataButton = ({
+    disabled,
+    onClick,
+    children,
+}: Props) => {
     return (
         <Button
             intent="secondary"
@@ -19,7 +24,7 @@ export const DownloadSLAsDataButton = ({ disabled, onClick }: Props) => {
             title={DOWNLOAD_BUTTON_TITLE}
             leadingIcon="file_download"
         >
-            {DOWNLOAD_DATA_BUTTON_LABEL}
+            {children ?? DOWNLOAD_DATA_BUTTON_LABEL}
         </Button>
     )
 }
