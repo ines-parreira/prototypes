@@ -161,7 +161,7 @@ export const HelpCenterSelectModal = () => {
         <Modal
             isOpen={isOpen}
             onOpenChange={toggleModal}
-            size="lg"
+            size="sm"
             isDismissable
             aria-label="Connect Help Center Modal"
         >
