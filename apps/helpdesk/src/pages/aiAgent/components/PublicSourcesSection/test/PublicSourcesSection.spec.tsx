@@ -253,7 +253,7 @@ describe('<PublicSourcesSection />', () => {
         ).toBeAriaDisabled()
         expect(
             screen.getByText(
-                'Help Center links are not supported. You can manage your Help Center separately in knowledge.',
+                'Help Center links are not supported. You can manage Help Center articles separately in Knowledge.',
             ),
         ).toBeInTheDocument()
     })
@@ -274,7 +274,7 @@ describe('<PublicSourcesSection />', () => {
         ).toBeAriaDisabled()
         expect(
             screen.getByText(
-                'Help Center links are not supported. You can manage your Help Center separately in knowledge.',
+                'Help Center links are not supported. You can manage Help Center articles separately in Knowledge.',
             ),
         ).toBeInTheDocument()
     })

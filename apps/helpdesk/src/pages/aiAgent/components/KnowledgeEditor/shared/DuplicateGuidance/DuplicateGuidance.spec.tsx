@@ -72,15 +72,11 @@ describe('DuplicateGuidance', () => {
     }
 
     const clickApply = async () => {
-        const listbox = screen.getByRole('listbox')
-        const options = within(listbox).getAllByRole('option')
-        const applyOption = options.find((option) =>
-            option.textContent?.includes('Apply'),
-        )
-        if (!applyOption) {
+        const applyButton = screen.getByRole('button', { name: /apply/i })
+        if (!applyButton) {
             throw new Error('Apply button not found')
         }
-        await act(() => userEvent.click(applyOption))
+        await act(() => userEvent.click(applyButton))
     }
 
     beforeEach(() => {
@@ -140,10 +136,15 @@ describe('DuplicateGuidance', () => {
             const listbox = screen.getByRole('listbox')
             const options = within(listbox).getAllByRole('option')
 
-            expect(options).toHaveLength(4) // 3 stores + Apply button
+            expect(options).toHaveLength(3) // 3 stores
             expect(options[0].textContent).toContain('store-1 (current)')
             expect(options[1].textContent).toContain('store-2')
             expect(options[2].textContent).toContain('store-3')
+
+            // Apply button should be in footer, not in options
+            expect(
+                screen.getByRole('button', { name: /apply/i }),
+            ).toBeInTheDocument()
         })
 
         it('should mark current store with (current) label', async () => {
@@ -186,13 +187,7 @@ describe('DuplicateGuidance', () => {
             renderComponent()
             await openDropdown()
 
-            const listbox = screen.getByRole('listbox')
-            const options = within(listbox).getAllByRole('option')
-            const applyOption = options.find((opt) =>
-                opt.textContent?.includes('Apply'),
-            )
-
-            const applyButton = within(applyOption!).getByRole('button')
+            const applyButton = screen.getByRole('button', { name: /apply/i })
             expect(applyButton).toBeDisabled()
         })
 
@@ -202,13 +197,7 @@ describe('DuplicateGuidance', () => {
 
             await selectStore('store-2')
 
-            const listbox = screen.getByRole('listbox')
-            const options = within(listbox).getAllByRole('option')
-            const applyOption = options.find((opt) =>
-                opt.textContent?.includes('Apply'),
-            )
-
-            const applyButton = within(applyOption!).getByRole('button')
+            const applyButton = screen.getByRole('button', { name: /apply/i })
             expect(applyButton).not.toBeDisabled()
         })
     })
@@ -302,13 +291,7 @@ describe('DuplicateGuidance', () => {
             await openDropdown()
 
             // Apply button should be disabled again
-            const listbox = screen.getByRole('listbox')
-            const options = within(listbox).getAllByRole('option')
-            const applyOption = options.find((opt) =>
-                opt.textContent?.includes('Apply'),
-            )
-
-            const applyButton = within(applyOption!).getByRole('button')
+            const applyButton = screen.getByRole('button', { name: /apply/i })
             expect(applyButton).toBeDisabled()
         })
 
@@ -334,24 +317,14 @@ describe('DuplicateGuidance', () => {
             await openDropdown()
 
             // Verify Apply button is disabled (no selection carried over)
-            let listbox = screen.getByRole('listbox')
-            let options = within(listbox).getAllByRole('option')
-            let applyOption = options.find((opt) =>
-                opt.textContent?.includes('Apply'),
-            )
-            let applyButton = within(applyOption!).getByRole('button')
+            let applyButton = screen.getByRole('button', { name: /apply/i })
             expect(applyButton).toBeDisabled()
 
             // Select a different store (store-3)
             await selectStore('store-3')
 
             // Verify Apply button is now enabled
-            listbox = screen.getByRole('listbox')
-            options = within(listbox).getAllByRole('option')
-            applyOption = options.find((opt) =>
-                opt.textContent?.includes('Apply'),
-            )
-            applyButton = within(applyOption!).getByRole('button')
+            applyButton = screen.getByRole('button', { name: /apply/i })
             expect(applyButton).not.toBeDisabled()
 
             // Apply the new selection
@@ -383,24 +356,14 @@ describe('DuplicateGuidance', () => {
             await openDropdown()
 
             // Apply button should be disabled (no stores selected)
-            let listbox = screen.getByRole('listbox')
-            let options = within(listbox).getAllByRole('option')
-            let applyOption = options.find((opt) =>
-                opt.textContent?.includes('Apply'),
-            )
-            let applyButton = within(applyOption!).getByRole('button')
+            let applyButton = screen.getByRole('button', { name: /apply/i })
             expect(applyButton).toBeDisabled()
 
             // Select new stores
             await selectStore('store-3')
 
             // Apply button should now be enabled
-            listbox = screen.getByRole('listbox')
-            options = within(listbox).getAllByRole('option')
-            applyOption = options.find((opt) =>
-                opt.textContent?.includes('Apply'),
-            )
-            applyButton = within(applyOption!).getByRole('button')
+            applyButton = screen.getByRole('button', { name: /apply/i })
             expect(applyButton).not.toBeDisabled()
         })
 
@@ -428,24 +391,14 @@ describe('DuplicateGuidance', () => {
             await openDropdown()
 
             // Apply button should be disabled (no stores selected)
-            let listbox = screen.getByRole('listbox')
-            let options = within(listbox).getAllByRole('option')
-            let applyOption = options.find((opt) =>
-                opt.textContent?.includes('Apply'),
-            )
-            let applyButton = within(applyOption!).getByRole('button')
+            let applyButton = screen.getByRole('button', { name: /apply/i })
             expect(applyButton).toBeDisabled()
 
             // Select new stores
             await selectStore('store-3')
 
             // Apply button should now be enabled
-            listbox = screen.getByRole('listbox')
-            options = within(listbox).getAllByRole('option')
-            applyOption = options.find((opt) =>
-                opt.textContent?.includes('Apply'),
-            )
-            applyButton = within(applyOption!).getByRole('button')
+            applyButton = screen.getByRole('button', { name: /apply/i })
             expect(applyButton).not.toBeDisabled()
         })
 

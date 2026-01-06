@@ -5,6 +5,7 @@ import { useId } from '@repo/hooks'
 import {
     Button,
     Icon,
+    ListFooter,
     ListItem,
     ListSection,
     MultiSelect,
@@ -83,26 +84,14 @@ export const DuplicateGuidance = ({
                 : item,
         )
 
-        // Add Action button as the last item so that appears at the end of the list
-        const allItems = [
-            ...storeItems,
-            {
-                id: 'apply-action',
-                name: 'Apply',
-                isAction: true,
-            },
-        ]
-
         return [
             {
                 id: 'stores',
                 name: 'Duplicate to',
-                items: allItems,
+                items: storeItems,
             },
         ]
-        // isApplyDisabled is needed to trigger re-render when button state changes
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [items, shopName, isApplyDisabled])
+    }, [items, shopName])
 
     const handleApply = useCallback(async () => {
         if (selectedStores.length === 0 || articleIds.length === 0) {
@@ -164,20 +153,10 @@ export const DuplicateGuidance = ({
 
     const handleChange = useCallback(
         (value: StoreIntegrationItem[]) => {
-            const storeSelections = value.filter((item) => !item.isAction)
-
-            const applyActionClicked = value.some((item) => item.isAction)
-
-            // This is necessary because ListItem is actually being clicked
-            if (applyActionClicked) {
-                void handleApply()
-                return
-            }
-
-            setSelectedStores(storeSelections)
-            onChange?.(storeSelections)
+            setSelectedStores(value)
+            onChange?.(value)
         },
-        [onChange, handleApply],
+        [onChange],
     )
 
     const handleOpenChange = useCallback((isOpen: boolean) => {
@@ -216,6 +195,19 @@ export const DuplicateGuidance = ({
             onSelect={handleChange as (value: StoreSection[]) => void}
             aria-label="Duplicate guidance selection"
             placement={placement}
+            footer={
+                <ListFooter>
+                    <Button
+                        intent="regular"
+                        size="sm"
+                        variant="primary"
+                        isDisabled={isApplyDisabled}
+                        onClick={handleApply}
+                    >
+                        Apply
+                    </Button>
+                </ListFooter>
+            }
         >
             {(section: StoreSection) => (
                 <ListSection
@@ -223,29 +215,9 @@ export const DuplicateGuidance = ({
                     name={section.name}
                     items={section.items}
                 >
-                    {(option: StoreIntegrationItem) => {
-                        if (option.isAction) {
-                            return (
-                                <ListItem
-                                    key={option.id}
-                                    label=""
-                                    textValue="Apply"
-                                    trailingSlot={
-                                        <Button
-                                            intent="regular"
-                                            size="sm"
-                                            variant="primary"
-                                            isDisabled={isApplyDisabled}
-                                        >
-                                            Apply
-                                        </Button>
-                                    }
-                                />
-                            )
-                        }
-
-                        return <ListItem key={option.id} label={option.name} />
-                    }}
+                    {(option: StoreIntegrationItem) => (
+                        <ListItem key={option.id} label={option.name} />
+                    )}
                 </ListSection>
             )}
         </MultiSelect>
@@ -258,7 +230,9 @@ export const DuplicateGuidance = ({
                     <TooltipTrigger>
                         <span id={buttonId}>{multiSelect}</span>
                     </TooltipTrigger>
-                    <TooltipContent>{tooltipMessage}</TooltipContent>
+                    <TooltipContent title={tooltipMessage}>
+                        {tooltipMessage}
+                    </TooltipContent>
                 </Tooltip>
             </>
         )

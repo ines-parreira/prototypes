@@ -111,7 +111,7 @@ const getInputError = (
     }
 
     if (isGorgiasHelpCenterUrl) {
-        return 'Help Center links are not supported. You can manage your Help Center separately in knowledge.'
+        return 'Help Center links are not supported. You can manage Help Center articles separately in Knowledge.'
     }
 
     if (isRootUrl) {

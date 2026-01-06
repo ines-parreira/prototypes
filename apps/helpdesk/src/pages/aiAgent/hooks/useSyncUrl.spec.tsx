@@ -327,7 +327,7 @@ describe('useSyncUrl', () => {
                     mockStoreUrl,
                 ),
             ).toBe(
-                'Help Center links are not supported. You can manage your Help Center separately in knowledge.',
+                'Help Center links are not supported. You can manage Help Center articles separately in Knowledge.',
             )
         })
 
@@ -340,7 +340,7 @@ describe('useSyncUrl', () => {
                     mockStoreUrl,
                 ),
             ).toBe(
-                'Help Center links are not supported. You can manage your Help Center separately in knowledge.',
+                'Help Center links are not supported. You can manage Help Center articles separately in Knowledge.',
             )
         })
 
@@ -467,7 +467,7 @@ describe('useSyncUrl', () => {
                     helpCenterStoreUrl,
                 ),
             ).toBe(
-                'Help Center links are not supported. You can manage your Help Center separately in knowledge.',
+                'Help Center links are not supported. You can manage Help Center articles separately in Knowledge.',
             )
         })
     })
