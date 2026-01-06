@@ -1,6 +1,11 @@
 import { useCallback, useState } from 'react'
 
+import { useFormContext } from 'react-hook-form'
+
+import { Button, LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+
 import { EngagementSettingsCardToggle } from 'pages/aiAgent/components/CustomerEngagementSettings/card/EngagementSettingsCardToggle'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { assetsUrl } from 'utils'
 
 import {
@@ -11,53 +16,114 @@ import {
     EngagementSettingsCardImage,
     EngagementSettingsCardTitle,
 } from './card/EngagementSettingsCard'
+import { EmbeddedSpqSettingsDrawer } from './EmbeddedSpqSettingsDrawer'
 
 import css from './EmbeddedSpqsSettings.less'
 
 type Props = {
     description?: string
+    shopName: string
 }
 
 export const EmbeddedSpqsSettings = ({
+    shopName,
     description = 'Show up to 3 dynamic, AI-generated questions embedded directly in product pages to resolve pre-sales questions and drive conversion.',
 }: Props) => {
-    const [isEmbeddedFaqsEnabled, setIsEmbeddedFaqsEnabled] = useState(false)
+    const [drawerOpen, setDrawerOpen] = useState(false)
+    const { watch, setValue } = useFormContext()
+    const isEmbeddedFaqsEnabled = watch('embeddedSpqEnabled')
 
-    const handleToggleChange = useCallback((newValue: boolean) => {
-        setIsEmbeddedFaqsEnabled(newValue)
+    const {
+        isLoading,
+        isPendingCreateOrUpdate,
+        storeConfiguration,
+        updateStoreConfiguration,
+    } = useAiAgentStoreConfigurationContext()
+
+    const handleToggleChange = useCallback(
+        (newValue: boolean) => {
+            setValue('embeddedSpqEnabled', newValue, { shouldDirty: true })
+        },
+        [setValue],
+    )
+
+    const handleSettingsClick = useCallback(() => {
+        setDrawerOpen(true)
     }, [])
 
-    const handleSettingsClick = useCallback(() => {}, [])
+    const handleDrawerOnClose = () => {
+        setDrawerOpen(false)
+    }
+
+    const handleSetUpButtonClick = useCallback(async () => {
+        if (!storeConfiguration) {
+            return
+        }
+
+        await updateStoreConfiguration({
+            ...storeConfiguration,
+            embeddedSpqEnabled: true,
+        })
+
+        setValue('embeddedSpqEnabled', true)
+        setDrawerOpen(true)
+    }, [storeConfiguration, updateStoreConfiguration, setValue])
+
+    const shouldDisplaySetUpButton =
+        !isLoading && !storeConfiguration?.embeddedSpqEnabled
 
     return (
-        <EngagementSettingsCard>
-            <EngagementSettingsCardContentWrapper>
-                <EngagementSettingsCardImage
-                    alt="image showing an example of embedded FAQs"
-                    src={assetsUrl(
-                        '/img/ai-agent/ai_agent_embedded_faqs_small.png',
-                    )}
-                />
+        <>
+            <EmbeddedSpqSettingsDrawer
+                isOpen={drawerOpen}
+                onClose={handleDrawerOnClose}
+                shopName={shopName}
+            />
 
-                <EngagementSettingsCardContent className={css.cardContent}>
-                    <div className={css.cardHeader}>
-                        <EngagementSettingsCardTitle>
-                            Embedded FAQs
-                        </EngagementSettingsCardTitle>
+            <EngagementSettingsCard>
+                <EngagementSettingsCardContentWrapper>
+                    <EngagementSettingsCardImage
+                        alt="image showing an example of embedded FAQs"
+                        src={assetsUrl(
+                            '/img/ai-agent/ai_agent_embedded_faqs_small.png',
+                        )}
+                    />
 
-                        <EngagementSettingsCardToggle
-                            isChecked={isEmbeddedFaqsEnabled}
-                            onChange={handleToggleChange}
-                            withBadges
-                            onSettingsClick={handleSettingsClick}
-                        ></EngagementSettingsCardToggle>
-                    </div>
+                    <EngagementSettingsCardContent className={css.cardContent}>
+                        <div className={css.cardHeader}>
+                            <EngagementSettingsCardTitle>
+                                Embedded FAQs
+                            </EngagementSettingsCardTitle>
 
-                    <EngagementSettingsCardDescription>
-                        {description}
-                    </EngagementSettingsCardDescription>
-                </EngagementSettingsCardContent>
-            </EngagementSettingsCardContentWrapper>
-        </EngagementSettingsCard>
+                            {shouldDisplaySetUpButton ? (
+                                <div className={css.setUpButton}>
+                                    {isPendingCreateOrUpdate ? (
+                                        <LoadingSpinner />
+                                    ) : (
+                                        <Button
+                                            variant="secondary"
+                                            onClick={handleSetUpButtonClick}
+                                        >
+                                            Set Up
+                                        </Button>
+                                    )}
+                                </div>
+                            ) : (
+                                <EngagementSettingsCardToggle
+                                    isChecked={isEmbeddedFaqsEnabled}
+                                    onChange={handleToggleChange}
+                                    withBadges
+                                    onSettingsClick={handleSettingsClick}
+                                ></EngagementSettingsCardToggle>
+                            )}
+                        </div>
+
+                        <EngagementSettingsCardDescription>
+                            {description}
+                        </EngagementSettingsCardDescription>
+                    </EngagementSettingsCardContent>
+                </EngagementSettingsCardContentWrapper>
+            </EngagementSettingsCard>
+        </>
     )
 }

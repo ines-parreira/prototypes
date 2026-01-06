@@ -54,6 +54,7 @@ const defaultProps = {
         salesPersuasionLevel: null,
         salesDeactivatedDatetime: null,
         isConversationStartersEnabled: false,
+        embeddedSpqEnabled: false,
         isSalesHelpOnSearchEnabled: null,
         customFieldIds: [],
         handoverEmail: null,

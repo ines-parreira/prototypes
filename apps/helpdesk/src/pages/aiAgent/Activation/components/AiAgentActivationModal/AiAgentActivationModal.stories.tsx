@@ -71,6 +71,7 @@ const dummyStoreActivation: StoreActivation = {
         salesDiscountStrategyLevel: null,
         salesPersuasionLevel: null,
         isConversationStartersEnabled: false,
+        embeddedSpqEnabled: false,
         customFieldIds: [],
         handoverEmail: null,
         handoverMethod: null,

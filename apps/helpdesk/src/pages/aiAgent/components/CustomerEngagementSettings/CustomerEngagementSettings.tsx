@@ -39,6 +39,7 @@ const customerEngagementSchema = z.object({
     isFloatingInputDesktopOnly: z.boolean(),
     isSalesHelpOnSearchEnabled: z.boolean(),
     needHelpText: z.string(),
+    embeddedSpqEnabled: z.boolean(),
 })
 
 type CustomerEngagementData = z.infer<typeof customerEngagementSchema>
@@ -100,6 +101,7 @@ export const CustomerEngagementSettings = () => {
             needHelpText: needHelpTextInitialValue ?? '',
             isSalesHelpOnSearchEnabled:
                 storeConfiguration?.isSalesHelpOnSearchEnabled ?? false,
+            embeddedSpqEnabled: storeConfiguration?.embeddedSpqEnabled ?? false,
         },
         mode: 'onChange',
         resolver: zodResolver(customerEngagementSchema),
@@ -127,6 +129,7 @@ export const CustomerEngagementSettings = () => {
                         },
                         isSalesHelpOnSearchEnabled:
                             data.isSalesHelpOnSearchEnabled,
+                        embeddedSpqEnabled: data.embeddedSpqEnabled,
                     })
 
                     if (canUpdateTexts) {
@@ -245,7 +248,9 @@ export const CustomerEngagementSettings = () => {
 
                         <div data-candu-id="ai-sales-agent-customer-engagement-settings-educational-content" />
 
-                        {isSpqSettingsEnabled && <EmbeddedSpqsSettings />}
+                        {isSpqSettingsEnabled && (
+                            <EmbeddedSpqsSettings shopName={shopName} />
+                        )}
 
                         {(!isTriggerOnSearchDisabled ||
                             initialIsSalesHelpOnSearchEnabled) && (

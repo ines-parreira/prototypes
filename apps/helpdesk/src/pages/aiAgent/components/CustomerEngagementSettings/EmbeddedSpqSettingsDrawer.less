@@ -1,0 +1,60 @@
+@import (reference) '~css/typography';
+
+:local {
+    .installInstructions {
+        display: flex;
+        flex-flow: column;
+        gap: var(--lg, 24px);
+        & h3 {
+            color: var(--Content-content-neutral-default, #1e242e);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: var(--xxxs, 4px);
+            display: flex;
+        }
+        & img {
+            width: 100%;
+        }
+
+        margin-top: var(--layout-spacing-s);
+    }
+
+    .link {
+        display: flex;
+    }
+
+    .codeSnippet {
+        padding: var(--md, 16px) var(--lg, 24px);
+        border-radius: var(--sm, 12px);
+        border: 1px solid var(--border-neutral-default, #ebecef);
+        background: var(--Elevation-elevation-neutral-bg, #fafafa);
+        box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.04);
+        display: flex;
+        flex-flow: column;
+        align-items: flex-end;
+        & pre {
+            color: var(--Content-content-neutral-default, #1e242e);
+        }
+        & button {
+            margin-bottom: var(--sm, 12px);
+        }
+    }
+
+    .kebabIcon {
+        margin: 0 var(--xxxs, 4px);
+
+        svg {
+            transform: rotate(90deg);
+        }
+    }
+
+    .quickInstallText {
+        white-space: pre-line;
+    }
+
+    // OverlayContent component is buggy, it does not support scrollable content at the moment
+    .overlayContent {
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+}

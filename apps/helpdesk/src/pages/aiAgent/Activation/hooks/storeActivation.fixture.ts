@@ -81,6 +81,7 @@ export const storeActivationFixture = (
             salesDiscountStrategyLevel: null,
             salesPersuasionLevel: null,
             isConversationStartersEnabled: false,
+            embeddedSpqEnabled: false,
             customFieldIds: [],
             salesDeactivatedDatetime: null,
             isSalesHelpOnSearchEnabled: false,

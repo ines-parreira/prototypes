@@ -134,6 +134,7 @@ const createMockStoreConfiguration = (
     salesPersuasionLevel: null,
     salesDeactivatedDatetime: null,
     isConversationStartersEnabled: false,
+    embeddedSpqEnabled: false,
     isSalesHelpOnSearchEnabled: null,
     customFieldIds: [],
     handoverMethod: null,

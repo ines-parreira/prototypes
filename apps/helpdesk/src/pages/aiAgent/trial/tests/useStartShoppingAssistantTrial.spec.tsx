@@ -120,6 +120,7 @@ describe('useStartShoppingAssistantTrial', () => {
             salesDiscountStrategyLevel: DiscountStrategy.Balanced,
             salesDiscountMax: 20,
             isConversationStartersEnabled: false,
+            embeddedSpqEnabled: false,
             isSalesHelpOnSearchEnabled: null,
             customFieldIds: [],
             handoverMethod: null,
