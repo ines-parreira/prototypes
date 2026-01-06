@@ -17,6 +17,22 @@ jest.mock(
     () => () => false,
 )
 
+jest.mock('models/selfServiceConfiguration/queries', () => ({
+    useGetSelfServiceConfiguration: () => ({
+        data: undefined,
+        isLoading: false,
+    }),
+}))
+
+jest.mock(
+    'pages/automate/common/hooks/useSelfServiceConfigurationUpdate',
+    () => ({
+        useSelfServiceConfigurationUpdate: () => ({
+            handleSelfServiceConfigurationUpdate: jest.fn(),
+        }),
+    }),
+)
+
 const mockStore = configureMockStore([thunk])
 
 const mockStoreState = {
@@ -36,6 +52,12 @@ const mockStoreState = {
             },
         ],
     }),
+    integrations: fromJS({
+        integrations: [],
+    }),
+    entities: {
+        chatsApplicationAutomationSettings: {},
+    },
 }
 
 const integration = fromJS({
@@ -55,59 +77,49 @@ const minProps: React.ComponentProps<
     integration,
 }
 
-describe('<GorgiasChatCreationWizardStepAutomate />', () => {
-    it('renders wizard placeholder', () => {
-        const { getByText } = render(
-            <MemoryRouter>
-                <Provider store={mockStore(mockStoreState)}>
-                    <Wizard steps={[GorgiasChatCreationWizardSteps.Automate]}>
-                        <GorgiasChatCreationWizardStepAutomate {...minProps} />
-                    </Wizard>
-                </Provider>
-            </MemoryRouter>,
-        )
+const renderComponent = (
+    props: Partial<
+        React.ComponentProps<typeof GorgiasChatCreationWizardStepAutomate>
+    > = {},
+) => {
+    return render(
+        <MemoryRouter>
+            <Provider store={mockStore(mockStoreState)}>
+                <Wizard steps={[GorgiasChatCreationWizardSteps.Automate]}>
+                    <GorgiasChatCreationWizardStepAutomate
+                        {...minProps}
+                        {...props}
+                    />
+                </Wizard>
+            </Provider>
+        </MemoryRouter>,
+    )
+}
 
-        expect(
-            getByText('Automate step placeholder - to be implemented'),
-        ).toBeInTheDocument()
+describe('<GorgiasChatCreationWizardStepAutomate />', () => {
+    it('renders step title', () => {
+        const { getAllByText } = renderComponent()
+
+        expect(getAllByText('Enable AI Agent').length).toBeGreaterThan(0)
     })
 
     it('renders navigation buttons', () => {
-        const { getByRole } = render(
-            <MemoryRouter>
-                <Provider store={mockStore(mockStoreState)}>
-                    <Wizard steps={[GorgiasChatCreationWizardSteps.Automate]}>
-                        <GorgiasChatCreationWizardStepAutomate {...minProps} />
-                    </Wizard>
-                </Provider>
-            </MemoryRouter>,
-        )
+        const { getByRole } = renderComponent()
 
         expect(
             getByRole('button', { name: 'Save & Customize Later' }),
         ).toBeInTheDocument()
         expect(getByRole('button', { name: 'Back' })).toBeInTheDocument()
-        expect(getByRole('button', { name: 'Next' })).toBeInTheDocument()
+        expect(getByRole('button', { name: 'Continue' })).toBeInTheDocument()
     })
 
     it('disables buttons when submitting form', () => {
-        const { getByRole } = render(
-            <MemoryRouter>
-                <Provider store={mockStore(mockStoreState)}>
-                    <Wizard steps={[GorgiasChatCreationWizardSteps.Automate]}>
-                        <GorgiasChatCreationWizardStepAutomate
-                            {...minProps}
-                            isSubmitting
-                        />
-                    </Wizard>
-                </Provider>
-            </MemoryRouter>,
-        )
+        const { getByRole } = renderComponent({ isSubmitting: true })
 
         expect(
             getByRole('button', { name: 'Save & Customize Later' }),
         ).toBeAriaDisabled()
         expect(getByRole('button', { name: 'Back' })).toBeAriaDisabled()
-        expect(getByRole('button', { name: /Next/ })).toBeAriaDisabled()
+        expect(getByRole('button', { name: /Continue/ })).toBeAriaDisabled()
     })
 })

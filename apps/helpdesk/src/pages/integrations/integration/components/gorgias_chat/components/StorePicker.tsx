@@ -32,6 +32,7 @@ type Props = {
     isDisabled?: boolean
     placeholder?: string
     error?: string
+    showHelperText?: boolean
 }
 
 export const StorePicker = ({
@@ -42,6 +43,7 @@ export const StorePicker = ({
     isDisabled,
     placeholder = 'Select a store',
     error,
+    showHelperText = true,
 }: Props) => {
     const selectedStore = useMemo(
         () =>
@@ -102,7 +104,7 @@ export const StorePicker = ({
                 isRequired
                 isDisabled={isDisabled}
                 isSearchable
-                caption={helperText}
+                caption={showHelperText ? helperText : ''}
                 error={error}
                 leadingSlot={
                     selectedStore
