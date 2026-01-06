@@ -240,31 +240,21 @@ export const PlaygroundReasoning = ({
     })
 
     useEffect(() => {
-        if (
-            loadingState === 'loading' &&
-            reasoningContent &&
-            reasoningContent.length > 0
-        ) {
-            setLoadingState('loaded')
+        const loaded = reasoningContent && reasoningContent.length > 0
+
+        if (loadingState === 'loading') {
+            if (loaded) {
+                setLoadingState('loaded')
+                return
+            }
+
+            const timeout = setTimeout(() => {
+                setLoadingState('timeout')
+            }, 30000)
+
+            return () => clearTimeout(timeout)
         }
-    }, [loadingState, reasoningContent])
-
-    useEffect(() => {
-        setIsExpanded(false)
-        setLoadingState('loading')
-    }, [messageId])
-
-    useEffect(() => {
-        if (loadingState !== 'loading') {
-            return
-        }
-
-        const timeout = setTimeout(() => {
-            setLoadingState('timeout')
-        }, 30000)
-
-        return () => clearTimeout(timeout)
-    }, [loadingState])
+    }, [loadingState, reasoningContent, messageId])
 
     const status: ReasoningStatus = useMemo(() => {
         if (loadingState === 'timeout') {
