@@ -39,9 +39,15 @@ export const WIN_BACK_STEPS = {
     steps: DEFAULT_STEPS,
 }
 
+export const WELCOME_STEPS = {
+    journeyType: JOURNEY_TYPES.WELCOME,
+    steps: DEFAULT_STEPS,
+}
+
 export const AI_JOURNEY_ONBOARDING_STEPS = [
     CART_ABANDONMENT_STEPS,
     SESSION_ABANDONMENT_STEPS,
     CAMPAIGN_STEPS,
     WIN_BACK_STEPS,
+    WELCOME_STEPS,
 ]

@@ -125,6 +125,8 @@ export const Activation = () => {
             description: `Customer ${customerName} has not purchased in a while. Feature this product to entice them back.`,
         },
         [JOURNEY_TYPES.CAMPAIGN]: null,
+        [JOURNEY_TYPES.WELCOME]: null,
+        [JOURNEY_TYPES.POST_PURCHASE]: null,
     }
 
     if (isLoading) {

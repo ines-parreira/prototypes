@@ -7,12 +7,13 @@ export const STEPS_NAMES = {
 }
 
 export const JOURNEY_TYPES = {
-    CART_ABANDONMENT: 'cart-abandoned',
-    SESSION_ABANDONMENT: 'session-abandoned',
     CAMPAIGN: 'campaign',
-    WIN_BACK: 'win-back',
+    CART_ABANDONMENT: 'cart-abandoned',
+    POST_PURCHASE: 'post-purchase',
+    SESSION_ABANDONMENT: 'session-abandoned',
     WELCOME: 'welcome',
-}
+    WIN_BACK: 'win-back',
+} as const
 
 export type JOURNEY_TYPES = (typeof JOURNEY_TYPES)[keyof typeof JOURNEY_TYPES]
 
@@ -22,16 +23,20 @@ export const JOURNEY_COMPLETE_REASON = {
 
 export const JOURNEY_TYPES_MAP_TO_URL: Record<JourneyTypeEnum, JOURNEY_TYPES> =
     {
-        [JourneyTypeEnum.CartAbandoned]: JOURNEY_TYPES.CART_ABANDONMENT,
-        [JourneyTypeEnum.SessionAbandoned]: JOURNEY_TYPES.SESSION_ABANDONMENT,
         [JourneyTypeEnum.Campaign]: JOURNEY_TYPES.CAMPAIGN,
+        [JourneyTypeEnum.CartAbandoned]: JOURNEY_TYPES.CART_ABANDONMENT,
+        [JourneyTypeEnum.PostPurchase]: JOURNEY_TYPES.POST_PURCHASE,
+        [JourneyTypeEnum.SessionAbandoned]: JOURNEY_TYPES.SESSION_ABANDONMENT,
+        [JourneyTypeEnum.Welcome]: JOURNEY_TYPES.WELCOME,
         [JourneyTypeEnum.WinBack]: JOURNEY_TYPES.WIN_BACK,
     }
 
 export const JOURNEY_TYPE_MAP_TO_STRING: Record<JourneyTypeEnum, string> = {
-    [JourneyTypeEnum.CartAbandoned]: 'Cart Abandoned',
-    [JourneyTypeEnum.SessionAbandoned]: 'Browse Abandoned',
     [JourneyTypeEnum.Campaign]: 'Campaign',
+    [JourneyTypeEnum.CartAbandoned]: 'Cart Abandoned',
+    [JourneyTypeEnum.PostPurchase]: 'Post-purchase',
+    [JourneyTypeEnum.SessionAbandoned]: 'Browse Abandoned',
+    [JourneyTypeEnum.Welcome]: 'Welcome',
     [JourneyTypeEnum.WinBack]: 'Customer Win-back',
 }
 

@@ -55,9 +55,6 @@ type AvailableJourney = {
 
 const defaultUpcomingJourneys: UpcomingJourney[] = [
     {
-        name: 'Welcome New Subscribers',
-    },
-    {
         name: 'Post-Purchase Follow-up',
     },
 ]
@@ -78,6 +75,11 @@ const defaultAvailableJourneys: AvailableJourney[] = [
         available: true,
         type: JourneyTypeEnum.WinBack,
     },
+    {
+        name: 'Welcome New Subscribers',
+        available: true,
+        type: JourneyTypeEnum.Welcome,
+    },
 ]
 
 const FILTERS = ['All', 'Active', 'Coming soon']
@@ -89,27 +91,34 @@ export const Performance = () => {
         FeatureFlagKey.AiJourneyWinBackEnabled,
     )
 
+    const isAiJourneyWelcomeFlowEnabled = useFlag(
+        FeatureFlagKey.AiJourneyWelcomeFlowEnabled,
+    )
+
     const { journeys, currentIntegration, isLoadingJourneys } =
         useJourneyContext()
 
     const { availableJourneys, upcomingJourneys } = useMemo(() => {
-        const availableJourneys = [...defaultAvailableJourneys]
-        const upcomingJourneys = [...defaultUpcomingJourneys]
+        const disabledJourneyTypes = [
+            !isAiJourneyWinBackEnabled && JourneyTypeEnum.WinBack,
+            !isAiJourneyWelcomeFlowEnabled && JourneyTypeEnum.Welcome,
+        ].filter(Boolean) as JourneyTypeEnum[]
 
-        if (!isAiJourneyWinBackEnabled) {
-            availableJourneys.splice(
-                availableJourneys.findIndex(
-                    (journey) => journey.type === JourneyTypeEnum.WinBack,
-                ),
-                1,
-            )
-            upcomingJourneys.push({
-                name: 'Customer Win-back',
-            })
-        }
+        const availableJourneys = defaultAvailableJourneys.filter(
+            (journey) => !disabledJourneyTypes.includes(journey.type),
+        )
+
+        const upcomingJourneys = [
+            ...defaultUpcomingJourneys,
+            ...defaultAvailableJourneys
+                .filter((journey) =>
+                    disabledJourneyTypes.includes(journey.type),
+                )
+                .map((journey) => ({ name: journey.name })),
+        ]
 
         return { availableJourneys, upcomingJourneys }
-    }, [isAiJourneyWinBackEnabled])
+    }, [isAiJourneyWinBackEnabled, isAiJourneyWelcomeFlowEnabled])
 
     const inactiveJourneys = availableJourneys.filter((availableJourney) => {
         return !journeys?.some(
@@ -167,9 +176,9 @@ export const Performance = () => {
             filteredInactiveJourneys = inactiveJourneys
             break
         case 'Coming soon':
-            filteredInactiveJourneys = []
         default:
             filteredInactiveJourneys = []
+            break
     }
 
     const { metrics } = useAIJourneyKpis({

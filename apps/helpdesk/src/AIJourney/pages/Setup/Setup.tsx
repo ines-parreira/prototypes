@@ -23,6 +23,7 @@ import {
     MessagesToSendField,
     MessageWithDiscountCodeField,
     PhoneNumberField,
+    WaitTimeField,
 } from './fields'
 import { AudienceSelect } from './fields/AudienceSelect/AudienceSelect'
 import { CampaignTitle } from './fields/CampaignTitle/CampaignTitle'
@@ -38,6 +39,7 @@ const Fields = {
     ExcludeAudience: 'exclude_audience',
     InactiveDays: 'inactive_days',
     CoolDownDays: 'cooldown_days',
+    WaitTime: 'wait_time',
 }
 
 type Fields = (typeof Fields)[keyof typeof Fields]
@@ -56,6 +58,12 @@ export const JOURNEY_TYPES_TO_FIELDS: Record<JOURNEY_TYPES, Fields[]> = {
         Fields.IncludeAudience,
         Fields.ExcludeAudience,
     ],
+    [JOURNEY_TYPES.WELCOME]: [
+        Fields.FollowUps,
+        Fields.SendImage,
+        Fields.WaitTime,
+    ],
+    [JOURNEY_TYPES.POST_PURCHASE]: [],
 }
 
 type SetupProps = {
@@ -125,6 +133,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
     >()
     const [inactiveDays, setInactiveDays] = useState<number>()
     const [cooldownDays, setCooldownDays] = useState<number | null>()
+    const [waitTimeMinutes, setWaitTimeMinutes] = useState<number>(0)
     const [showValidationErrors, setShowValidationErrors] = useState(false)
 
     useEffect(() => {
@@ -146,6 +155,9 @@ export const Setup = ({ journeyType }: SetupProps) => {
             }
             if ('inactive_days' in journeyParams) {
                 setInactiveDays(journeyParams.inactive_days ?? 30)
+            }
+            if ('wait_time_minutes' in journeyParams) {
+                setWaitTimeMinutes(journeyParams.wait_time_minutes ?? 0)
             }
         }
     }, [journeyParams])
@@ -209,6 +221,10 @@ export const Setup = ({ journeyType }: SetupProps) => {
 
     const handleUpdateCooldownDays = (newValue: number | null) => {
         setCooldownDays(newValue)
+    }
+
+    const handleUpdateWaitTimeMinutes = (newValue: number) => {
+        setWaitTimeMinutes(newValue)
     }
 
     const {
@@ -310,6 +326,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     phoneNumberValue,
                     inactiveDays,
                     cooldownDays,
+                    waitTimeMinutes,
                 })
                 setIsVisible(false)
                 history.push(
@@ -330,6 +347,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     phoneNumberValue,
                     inactiveDays,
                     cooldownDays,
+                    waitTimeMinutes,
                 })
                 setIsVisible(false)
                 history.push(
@@ -360,6 +378,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
         shouldDisableButton,
         inactiveDays,
         cooldownDays,
+        waitTimeMinutes,
     ])
 
     const getRedirectLinkOnCancel = () => {
@@ -429,6 +448,13 @@ export const Setup = ({ journeyType }: SetupProps) => {
                         onChange={setDiscountCodeThreshold}
                     />
                 )}
+
+            {fields.includes(Fields.WaitTime) && (
+                <WaitTimeField
+                    value={waitTimeMinutes}
+                    onChange={handleUpdateWaitTimeMinutes}
+                />
+            )}
 
             {fields.includes(Fields.IncludeAudience) && (
                 <AudienceSelect

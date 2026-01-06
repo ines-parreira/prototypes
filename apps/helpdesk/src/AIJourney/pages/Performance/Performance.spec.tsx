@@ -299,8 +299,8 @@ describe('<Performance />', () => {
                 screen.queryByText('Customer Win-back'),
             ).not.toBeInTheDocument()
             expect(
-                screen.getAllByText('Welcome New Subscribers').length,
-            ).toEqual(2)
+                screen.queryByText('Welcome New Subscribers'),
+            ).not.toBeInTheDocument()
             expect(
                 screen.getAllByText('Post-Purchase Follow-up').length,
             ).toEqual(2)

@@ -586,6 +586,9 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                             },
                         ],
                     },
+                    inactiveDays: undefined,
+                    cooldownDays: undefined,
+                    waitTimeMinutes: 0,
                 })
             })
         })
@@ -715,6 +718,9 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                         sms_sender_integration_id: 1,
                         sms_sender_number: '+15551234567',
                         include_image: false,
+                        inactive_days: undefined,
+                        cooldown_days: undefined,
+                        wait_time_minutes: 0,
                     },
                 })
             })
@@ -916,6 +922,9 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     discount_code_message_threshold: 2,
                     sms_sender_number: '+15551234567',
                     include_image: false,
+                    inactive_days: undefined,
+                    cooldown_days: undefined,
+                    wait_time_minutes: 0,
                 },
             })
 
@@ -1051,6 +1060,9 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     sms_sender_number: '+15551234567',
                     discount_code_message_threshold: 2,
                     include_image: false,
+                    inactive_days: undefined,
+                    cooldown_days: undefined,
+                    wait_time_minutes: 0,
                 },
             })
         })
@@ -1127,6 +1139,9 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     sms_sender_integration_id: 1,
                     sms_sender_number: '+15551234567',
                     include_image: false,
+                    inactive_days: undefined,
+                    cooldown_days: undefined,
+                    wait_time_minutes: 0,
                 },
             })
         })
@@ -1478,6 +1493,293 @@ describe('<Setup journeyType={JOURNEY_TYPES.WIN_BACK} />', () => {
                     expectedValue.toString(),
                 )
             },
+        )
+    })
+})
+
+describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
+    const mockHandleUpdate = jest.fn()
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+
+        mockUseJourneyUpdateHandler.mockImplementation(() => ({
+            handleUpdate: mockHandleUpdate,
+        }))
+        const mockCreateJourneyMutateAsync = jest.fn().mockResolvedValue({})
+        const mockUpdateMutateAsync = jest.fn().mockResolvedValue({})
+
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: undefined,
+            currentIntegration: undefined,
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'welcome',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector.name === 'getCurrentAccountState') {
+                return fromJS(account)
+            }
+            return {
+                '1': mockPhoneNumbers['1'],
+                '2': {
+                    ...mockPhoneNumbers['2'],
+                    name: 'Regular Phone 2',
+                },
+            }
+        })
+
+        mockUseSmsIntegrations.mockReturnValue({
+            data: [
+                { sms_integration_id: 1, store_integration_id: 1 },
+                { sms_integration_id: 2, store_integration_id: 2 },
+            ],
+            isLoading: false,
+            error: null,
+        })
+
+        mockUseCreateNewJourney.mockImplementation(() => ({
+            mutateAsync: mockCreateJourneyMutateAsync,
+            isError: false,
+            isLoading: false,
+        }))
+
+        mockUseUpdateJourney.mockImplementation(() => ({
+            mutateAsync: mockUpdateMutateAsync,
+            isError: false,
+            isLoading: false,
+        }))
+
+        mockUseAudienceLists.mockReturnValue({
+            data: { data: [] },
+            isLoading: false,
+        })
+        mockUseAudienceSegments.mockReturnValue({
+            data: { data: [] },
+            isLoading: false,
+        })
+    })
+
+    const mockStore = configureMockStore([thunk])({
+        currentAccount: fromJS(account),
+    })
+
+    it('should render wait time field for welcome journey', () => {
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(
+            screen.getByText('Wait time before triggering flow'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Time in minutes to wait before sending the first message',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should display existing wait_time_minutes when editing welcome journey', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                id: 'welcome-journey-123',
+                type: 'welcome',
+                state: 'active',
+                configuration: {
+                    max_follow_up_messages: 2,
+                    offer_discount: false,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                    include_image: false,
+                    wait_time_minutes: 15,
+                },
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'welcome',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const waitTimeInput = screen.getByDisplayValue('15')
+        expect(waitTimeInput).toBeInTheDocument()
+    })
+
+    it('should default wait_time_minutes to 0 when not set', () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: undefined,
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'welcome',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const waitTimeInput = screen.getByDisplayValue('0')
+        expect(waitTimeInput).toBeInTheDocument()
+    })
+
+    it('should call handleCreate with wait_time_minutes when creating welcome journey', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: undefined,
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'welcome',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        const mockMutateAsync = jest
+            .fn()
+            .mockResolvedValue({ id: 'welcome-journey-123' })
+        mockUseCreateNewJourney.mockImplementation(() => ({
+            mutateAsync: mockMutateAsync,
+            isError: false,
+            isLoading: false,
+        }))
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const user = userEvent.setup()
+
+        await act(async () => {
+            await user.click(screen.getByText('Select'))
+        })
+        await act(async () => {
+            await user.click(screen.getByText('+1 555-123-4567'))
+        })
+
+        const waitTimeInput = screen.getByDisplayValue('0')
+        await act(async () => {
+            await user.clear(waitTimeInput)
+            await user.type(waitTimeInput, '30')
+        })
+
+        const button = screen.getByTestId('ai-journey-button')
+        await act(async () => {
+            await user.click(button)
+        })
+
+        await waitFor(() => {
+            expect(mockMutateAsync).toHaveBeenCalledTimes(1)
+        })
+
+        expect(mockMutateAsync).toHaveBeenCalledWith({
+            params: {
+                store_integration_id: 1,
+                store_name: 'shopify-store',
+                type: 'welcome',
+                campaign: undefined,
+                excluded_audience_list_ids: undefined,
+                included_audience_list_ids: undefined,
+            },
+            journeyConfigs: {
+                max_follow_up_messages: 0,
+                offer_discount: false,
+                max_discount_percent: undefined,
+                sms_sender_integration_id: 1,
+                sms_sender_number: '+15551234567',
+                discount_code_message_threshold: undefined,
+                include_image: false,
+                inactive_days: undefined,
+                cooldown_days: undefined,
+                wait_time_minutes: 30,
+            },
+        })
+    })
+
+    it('should call handleUpdate with wait_time_minutes when updating welcome journey', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                id: 'welcome-journey-123',
+                type: 'welcome',
+                state: 'active',
+                message_instructions: null,
+                configuration: {
+                    max_follow_up_messages: 2,
+                    offer_discount: false,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                    include_image: false,
+                    wait_time_minutes: 15,
+                },
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'welcome',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const button = screen.getByTestId('ai-journey-button')
+        await act(async () => {
+            await userEvent.click(button)
+        })
+
+        await waitFor(() => {
+            expect(mockHandleUpdate).toHaveBeenCalledTimes(1)
+        })
+
+        expect(mockHandleUpdate).toHaveBeenCalledWith(
+            expect.objectContaining({
+                waitTimeMinutes: 15,
+            }),
         )
     })
 })

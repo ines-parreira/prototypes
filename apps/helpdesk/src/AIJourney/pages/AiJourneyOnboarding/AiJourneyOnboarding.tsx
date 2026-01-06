@@ -40,6 +40,8 @@ export const AiJourneyOnboarding = ({
     ]
 
     const titleMapping = {
+        [JOURNEY_TYPES.WELCOME]: 'Welcome flow',
+        [JOURNEY_TYPES.POST_PURCHASE]: 'Post-purchase flow',
         [JOURNEY_TYPES.CART_ABANDONMENT]: 'SMS Cart Abandoned flow',
         [JOURNEY_TYPES.SESSION_ABANDONMENT]: 'SMS Browse Abandoned flow',
         [JOURNEY_TYPES.WIN_BACK]: 'Customer Win-back flow',

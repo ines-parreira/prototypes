@@ -29,6 +29,7 @@ type HandleCreateParams = {
     phoneNumberValue?: NewPhoneNumber
     inactiveDays?: number | null
     cooldownDays?: number | null
+    waitTimeMinutes?: number
 }
 
 export const useJourneyCreateHandler = ({
@@ -53,6 +54,7 @@ export const useJourneyCreateHandler = ({
             phoneNumberValue,
             inactiveDays,
             cooldownDays,
+            waitTimeMinutes,
         }: HandleCreateParams) => {
             try {
                 if (!integrationId || !integrationName) {
@@ -91,6 +93,7 @@ export const useJourneyCreateHandler = ({
                         include_image: includeImage,
                         inactive_days: inactiveDays,
                         cooldown_days: cooldownDays,
+                        wait_time_minutes: waitTimeMinutes,
                     },
                 })
 

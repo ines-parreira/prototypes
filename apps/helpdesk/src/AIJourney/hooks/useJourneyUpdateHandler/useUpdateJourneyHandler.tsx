@@ -6,6 +6,7 @@ import type {
     JourneyConfigurationApiDTO,
     JourneyStatusEnum,
     PatchJourneyBody,
+    WelcomeFlowConfigurationApiDTO,
     WinbackJourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
 
@@ -38,6 +39,7 @@ type HandleUpdateParams = {
     phoneNumberValue?: NewPhoneNumber
     inactiveDays?: number | null
     cooldownDays?: number | null
+    waitTimeMinutes?: number
 }
 
 export const useJourneyUpdateHandler = ({
@@ -65,6 +67,7 @@ export const useJourneyUpdateHandler = ({
             phoneNumberValue,
             inactiveDays,
             cooldownDays,
+            waitTimeMinutes,
         }: HandleUpdateParams) => {
             try {
                 const entityId = id || journeyId
@@ -83,7 +86,8 @@ export const useJourneyUpdateHandler = ({
 
                 const journeyConfigs:
                     | JourneyConfigurationApiDTO
-                    | WinbackJourneyConfigurationApiDTO = {
+                    | WinbackJourneyConfigurationApiDTO
+                    | WelcomeFlowConfigurationApiDTO = {
                     max_follow_up_messages: followUpValue,
                     offer_discount: isDiscountEnabled,
                     max_discount_percent: discountValue
@@ -95,6 +99,7 @@ export const useJourneyUpdateHandler = ({
                     include_image: includeImage,
                     inactive_days: inactiveDays,
                     cooldown_days: cooldownDays,
+                    wait_time_minutes: waitTimeMinutes,
                 }
 
                 const shouldUpdateConfigs = Object.values(journeyConfigs).some(

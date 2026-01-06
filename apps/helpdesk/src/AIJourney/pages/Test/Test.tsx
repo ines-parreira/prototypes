@@ -148,7 +148,10 @@ export const Test = () => {
         )
     }
 
-    const textContent = {
+    const textContent: Record<
+        JOURNEY_TYPES,
+        { name: string; description: string; productSelect: string }
+    > = {
         [JOURNEY_TYPES.CART_ABANDONMENT]: {
             name: 'Preview your abandoned cart messages',
             description:
@@ -172,6 +175,17 @@ export const Test = () => {
             description:
                 'See the messages your customers would receive if they bought something from your store but haven’t returned in a while.',
             productSelect: 'Select a product to feature',
+        },
+        [JOURNEY_TYPES.WELCOME]: {
+            name: 'Preview your welcome messages',
+            description:
+                'See the messages your customers would receive when they subscribe.',
+            productSelect: '',
+        },
+        [JOURNEY_TYPES.POST_PURCHASE]: {
+            name: 'Preview your post-purchase messages',
+            description: '',
+            productSelect: '',
         },
     }
 
