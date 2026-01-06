@@ -5,6 +5,7 @@ import type { MutationOverrides } from '../../types/query'
 import {
     deactivateAccount,
     extendTrial,
+    fetchSubscription,
     getAiAgentGeneration6Plan,
     getBillingContact,
     getBillingState,
@@ -50,6 +51,22 @@ export const useSalesCoupons = (
 ) => {
     return useQuery({
         ...getCouponsForSalesQuery,
+        ...overrides,
+    })
+}
+
+export const getSubscriptionQuery = {
+    queryKey: ['subscription'] as const,
+    queryFn: fetchSubscription,
+}
+
+export type UseSubscription = Awaited<ReturnType<typeof fetchSubscription>>
+
+export const useSubscription = (
+    overrides?: UseQueryOptions<UseSubscription>,
+) => {
+    return useQuery({
+        ...getSubscriptionQuery,
         ...overrides,
     })
 }

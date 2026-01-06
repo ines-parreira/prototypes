@@ -329,13 +329,13 @@ const CancelProductModal = ({
         }
 
         // Mark the product as removed in pending changes (except for Helpdesk)
+        // Keep the plan object so anyProductChanged can detect the cancellation
         if (productType !== ProductType.Helpdesk) {
             setSelectedPlans((prev) => ({
                 ...prev,
                 [productType]: {
                     ...prev[productType],
                     isSelected: false,
-                    plan: undefined,
                 },
             }))
         }

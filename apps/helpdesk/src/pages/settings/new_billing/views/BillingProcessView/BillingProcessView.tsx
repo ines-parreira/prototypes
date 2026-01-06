@@ -157,10 +157,9 @@ const BillingProcessView = ({
 
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
-    const productCancellationsState = useProductCancellations()
+    const productCancellationsQuery = useProductCancellations()
     const cancellationsByPlanId =
-        productCancellationsState.value ?? new Map<string, string>()
-
+        productCancellationsQuery.data ?? new Map<string, string>()
     // on page unload, remove error notification
     useEffect(() => {
         return () => {

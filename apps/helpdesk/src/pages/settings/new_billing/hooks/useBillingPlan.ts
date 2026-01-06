@@ -8,6 +8,7 @@ import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
+import { getSubscriptionQuery } from 'models/billing/queries'
 import type { ProductInfo } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import {
@@ -522,7 +523,10 @@ export const useBillingPlans = ({
         }
 
         if (isVettedForPhone) {
-            if (selectedPlans[ProductType.Voice]?.plan?.product) {
+            if (
+                selectedPlans[ProductType.Voice].isSelected &&
+                selectedPlans[ProductType.Voice]?.plan?.product
+            ) {
                 const plan = selectedPlans[ProductType.Voice]?.plan
 
                 if (plan) {
@@ -530,7 +534,10 @@ export const useBillingPlans = ({
                 }
             }
 
-            if (selectedPlans[ProductType.SMS]?.plan?.product) {
+            if (
+                selectedPlans[ProductType.SMS].isSelected &&
+                selectedPlans[ProductType.SMS]?.plan?.product
+            ) {
                 const plan = selectedPlans[ProductType.SMS]?.plan
 
                 if (plan) {
@@ -625,6 +632,10 @@ export const useBillingPlans = ({
                             notifications,
                         ),
                     )
+                    // Invalidate subscription to refresh "Active until" badges and derived data
+                    void queryClient.invalidateQueries({
+                        queryKey: getSubscriptionQuery.queryKey,
+                    })
                 }
             } catch (error) {
                 dispatchBillingError(error)
@@ -647,6 +658,7 @@ export const useBillingPlans = ({
         anyProductChanged,
         dispatch,
         dispatchBillingError,
+        queryClient,
     ])
 
     const updateSubscription = useCallback(() => {

@@ -122,8 +122,8 @@ const UsageAndPlansView = ({
         ? PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP
         : undefined
 
-    const productCancellationsState = useProductCancellations()
-    const cancellationsByPlanId = productCancellationsState.value || new Map()
+    const productCancellationsQuery = useProductCancellations()
+    const cancellationsByPlanId = productCancellationsQuery.data ?? new Map()
 
     useEffect(() => {
         if (isTrialingSubscription) {

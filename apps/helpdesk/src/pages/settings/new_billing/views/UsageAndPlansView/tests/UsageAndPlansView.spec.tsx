@@ -183,8 +183,8 @@ describe('UsageAndPlansView', () => {
         mockUseProductCancellations.mockReturnValue({
             loading: false,
             error: undefined,
-            value: new Map(),
-        })
+            data: new Map(),
+        } as any)
     })
 
     it('should render with active subscription containing Helpdesk and Convert products', () => {
@@ -802,6 +802,77 @@ describe('UsageAndPlansView', () => {
         expect(screen.getByText('Update')).toHaveAttribute(
             'href',
             BILLING_PAYMENT_FREQUENCY_PATH,
+        )
+    })
+
+    it('should pass cancellation date to ProductCard when product has scheduled cancellation', () => {
+        mockUseProductCancellations.mockReturnValue({
+            data: new Map([
+                [basicMonthlyHelpdeskPlan.plan_id, '2025-12-31T23:59:59Z'],
+            ]),
+        } as any)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={mockedUsage}
+            />,
+            store,
+        )
+
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            1,
+            expect.objectContaining({
+                type: ProductType.Helpdesk,
+                scheduledToCancelAt: '2025-12-31T23:59:59Z',
+            }),
+            {},
+        )
+
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            2,
+            expect.objectContaining({
+                type: ProductType.Automation,
+                scheduledToCancelAt: null,
+            }),
+            {},
+        )
+    })
+
+    it('should pass different cancellation dates to ProductCards for multiple products', () => {
+        mockUseProductCancellations.mockReturnValue({
+            data: new Map([
+                [basicMonthlyHelpdeskPlan.plan_id, '2025-12-31T23:59:59Z'],
+                [convertPlan1.plan_id, '2025-11-30T23:59:59Z'],
+            ]),
+        } as any)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={mockedUsage}
+            />,
+            store,
+        )
+
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            1,
+            expect.objectContaining({
+                type: ProductType.Helpdesk,
+                scheduledToCancelAt: '2025-12-31T23:59:59Z',
+            }),
+            {},
+        )
+
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            5,
+            expect.objectContaining({
+                type: ProductType.Convert,
+                scheduledToCancelAt: '2025-11-30T23:59:59Z',
+            }),
+            {},
         )
     })
 

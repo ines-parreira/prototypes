@@ -1,31 +1,35 @@
-import { useAsyncFn, useEffectOnce } from '@repo/hooks'
+import { useMemo } from 'react'
 
-import { fetchSubscription } from 'models/billing/resources'
+import { useSubscription } from 'models/billing/queries'
 import type { PlanId } from 'models/billing/types'
 
 export default function useProductCancellations() {
-    const [state, doFetch] = useAsyncFn(async () => {
-        const sub = await fetchSubscription()
+    const subscriptionQuery = useSubscription()
+
+    const cancellationsByPlanId = useMemo(() => {
+        if (!subscriptionQuery.data) {
+            return new Map<PlanId, string>()
+        }
+
+        const sub = subscriptionQuery.data
+        const map = new Map<PlanId, string>()
 
         // Map plan_id -> cancellation_date for products scheduled to be cancelled
-        const cancellationsByPlanId = new Map<PlanId, string>()
-
         ;(sub.downgrades || []).forEach((downgrade) => {
             // Only care about cancellations: when scheduled_plan is null
             if (downgrade.scheduled_plan === null) {
-                cancellationsByPlanId.set(
+                map.set(
                     downgrade.current_plan_id,
                     sub.current_billing_cycle_end_datetime,
                 )
             }
         })
 
-        return cancellationsByPlanId
-    }, [])
+        return map
+    }, [subscriptionQuery.data])
 
-    useEffectOnce(() => {
-        void doFetch()
-    })
-
-    return state
+    return {
+        ...subscriptionQuery,
+        data: cancellationsByPlanId,
+    }
 }

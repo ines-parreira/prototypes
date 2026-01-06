@@ -99,10 +99,8 @@ const storeInitialState = {
 describe('UsageAndPlansView', () => {
     beforeEach(() => {
         mockUseProductCancellations.mockReturnValue({
-            loading: false,
-            error: undefined,
-            value: new Map(),
-        })
+            data: new Map(),
+        } as any)
         logEventMock.mockClear()
     })
 
@@ -321,12 +319,10 @@ describe('UsageAndPlansView', () => {
     })
 
     describe('Product cancellations hook integration', () => {
-        it('should render correctly while cancellations are loading', async () => {
+        it('should handle unavailable cancellations data gracefully', async () => {
             mockUseProductCancellations.mockReturnValue({
-                loading: true,
-                error: undefined,
-                value: undefined,
-            })
+                data: undefined,
+            } as any)
             mockedServer
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)
@@ -355,45 +351,10 @@ describe('UsageAndPlansView', () => {
             expect(screen.getAllByText('Helpdesk')[0]).toBeInTheDocument()
         })
 
-        it('should render correctly when cancellations fetch fails', async () => {
-            mockUseProductCancellations.mockReturnValue({
-                loading: false,
-                error: new Error('Failed to fetch cancellations'),
-                value: undefined,
-            })
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithCreditCard)
-
-            renderWithStoreAndQueryClientAndRouter(
-                <BillingProcessView
-                    currentUsage={currentProductsUsage}
-                    contactBilling={jest.fn()}
-                    dispatchBillingError={jest.fn()}
-                    setDefaultMessage={jest.fn()}
-                    setIsModalOpen={jest.fn()}
-                    periodEnd="2021-01-01"
-                    isTrialing={false}
-                    isCurrentSubscriptionCanceled={false}
-                />,
-                storeInitialState,
-            )
-
-            await waitFor(() => {
-                expect(
-                    screen.queryByText('See Plans Details'),
-                ).toBeInTheDocument()
-            })
-
-            expect(screen.getAllByText('Helpdesk')[0]).toBeInTheDocument()
-        })
-
         it('should render without cancellation badges when no products are scheduled to cancel', async () => {
             mockUseProductCancellations.mockReturnValue({
-                loading: false,
-                error: undefined,
-                value: new Map(),
-            })
+                data: new Map(),
+            } as any)
             mockedServer
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)
@@ -465,10 +426,8 @@ describe('UsageAndPlansView', () => {
                 it('should display cancellation badge when product has scheduled cancellation', async () => {
                     const cancellationDate = '2025-12-31T23:59:59Z'
                     mockUseProductCancellations.mockReturnValue({
-                        loading: false,
-                        error: undefined,
-                        value: new Map([[plan.plan_id, cancellationDate]]),
-                    })
+                        data: new Map([[plan.plan_id, cancellationDate]]),
+                    } as any)
 
                     const storeForProduct = {
                         ...storeInitialState,
@@ -539,10 +498,8 @@ describe('UsageAndPlansView', () => {
 
                 it('should pass null when product exists but has no scheduled cancellation', async () => {
                     mockUseProductCancellations.mockReturnValue({
-                        loading: false,
-                        error: undefined,
-                        value: new Map(),
-                    })
+                        data: new Map(),
+                    } as any)
 
                     const storeForProduct = {
                         ...storeInitialState,
@@ -619,16 +576,14 @@ describe('UsageAndPlansView', () => {
             const automationCancellation = '2025-11-30T23:59:59Z'
 
             mockUseProductCancellations.mockReturnValue({
-                loading: false,
-                error: undefined,
-                value: new Map([
+                data: new Map([
                     [basicMonthlyHelpdeskPlan.plan_id, helpdeskCancellation],
                     [
                         basicMonthlyAutomationPlan.plan_id,
                         automationCancellation,
                     ],
                 ]),
-            })
+            } as any)
 
             const storeWithMultipleProducts = {
                 ...storeInitialState,
@@ -690,15 +645,13 @@ describe('UsageAndPlansView', () => {
 
         it('should pass null when no current plan exists for product', async () => {
             mockUseProductCancellations.mockReturnValue({
-                loading: false,
-                error: undefined,
-                value: new Map([
+                data: new Map([
                     [
                         basicMonthlyAutomationPlan.plan_id,
                         '2025-12-31T23:59:59Z',
                     ],
                 ]),
-            })
+            } as any)
 
             const storeWithoutAutomation = {
                 ...storeInitialState,
@@ -758,10 +711,8 @@ describe('UsageAndPlansView', () => {
     describe('Edge cases', () => {
         it('should handle undefined value from hook gracefully', async () => {
             mockUseProductCancellations.mockReturnValue({
-                loading: false,
-                error: undefined,
-                value: undefined,
-            })
+                data: undefined,
+            } as any)
 
             mockedServer
                 .onGet('/billing/state')
@@ -792,16 +743,14 @@ describe('UsageAndPlansView', () => {
 
         it('should display different cancellation dates for different products', async () => {
             mockUseProductCancellations.mockReturnValue({
-                loading: false,
-                error: undefined,
-                value: new Map([
+                data: new Map([
                     [basicMonthlyHelpdeskPlan.plan_id, '2025-12-31T23:59:59Z'],
                     [
                         basicMonthlyAutomationPlan.plan_id,
                         '2025-06-30T23:59:59Z',
                     ],
                 ]),
-            })
+            } as any)
 
             const storeWithBothProducts = {
                 ...storeInitialState,
@@ -863,10 +812,8 @@ describe('UsageAndPlansView', () => {
 
         it('should handle scenario with no products subscribed', async () => {
             mockUseProductCancellations.mockReturnValue({
-                loading: false,
-                error: undefined,
-                value: undefined,
-            })
+                data: undefined,
+            } as any)
 
             const storeWithNoProducts = {
                 billing: fromJS({

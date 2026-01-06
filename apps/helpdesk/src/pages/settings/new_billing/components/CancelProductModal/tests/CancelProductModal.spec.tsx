@@ -1531,10 +1531,10 @@ describe('CancelProductModal: Convert and SMS cancellation flows', () => {
                 )
 
                 // Verify the callback updates the product to not selected
+                // Plan object is retained for cancellation detection
                 expect(result[productType]).toEqual({
                     ...productSelectedPlansForTest[productType],
                     isSelected: false,
-                    plan: undefined,
                 })
             })
         },
