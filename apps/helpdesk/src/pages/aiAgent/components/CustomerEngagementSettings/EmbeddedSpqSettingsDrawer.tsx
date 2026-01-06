@@ -16,6 +16,7 @@ import spqManualInstallStep1 from 'assets/img/spq/spq-manual-install-step-1.png'
 import spqManualInstallStep2 from 'assets/img/spq/spq-manual-install-step-2.png'
 import spqManualInstallStep3 from 'assets/img/spq/spq-manual-install-step-3.png'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { getGorgiasMainThemeAppExtensionId } from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -26,7 +27,8 @@ enum InstallationMethods {
     Manual = 'manual',
 }
 
-const SHOPIFY_THEME_EXTENSION_LINK_BASE = 'https://shopify.com'
+const BLOCK_ID = `${getGorgiasMainThemeAppExtensionId()}/spq`
+const SHOPIFY_THEME_EXTENSION_LINK_BASE = `https://{shopName}.myshopify.com/admin/themes/current/editor?template=product&addAppBlockId=${BLOCK_ID}&target=mainSection`
 
 const QuickInstallationContent = ({ shopName }: { shopName: string }) => {
     return (

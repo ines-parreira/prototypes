@@ -1,6 +1,6 @@
 {
-  "date": "2026-01-05T14:16:49.899Z",
-  "total": 2920,
+  "date": "2026-01-06T14:46:12.705Z",
+  "total": 2921,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -2778,7 +2778,7 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1600,
+      "count": 1601,
       "usages": [
         {
           "name": "LegacyButton",
@@ -4088,7 +4088,7 @@
         },
         {
           "name": "LegacyLoadingSpinner",
-          "count": 108,
+          "count": 109,
           "files": [
             "apps/helpdesk/src/AIJourney/components/AnalyticsCard/AnalyticsCard.tsx",
             "apps/helpdesk/src/AIJourney/components/AnalyticsData/AnalyticsData.tsx",
@@ -4121,6 +4121,7 @@
             "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/components/RecommendationRuleCard.tsx",
             "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AnalyticsAiAgentStatsPaywall.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/AiAgentView/AiAgentView.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/EmbeddedSpqsSettings.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceList/GuidanceList.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceTopRecommendations/GuidanceTopRecommendations.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/FormComponents/HandoverCustomizationChatFallbackSettingsFields.tsx",
