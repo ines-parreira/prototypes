@@ -19,6 +19,7 @@ const knowledgeStatisticsScope = defineScope({
         'periodStart',
         'periodEnd',
         'customFields',
+        'customFieldId',
         'resourceSourceId',
         'resourceSourceSetId',
         'storeId',

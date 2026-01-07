@@ -17,6 +17,7 @@ import {
     TicketInsightsTaskMeasure,
     TicketInsightsTaskMeasureV2,
 } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
+import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import {
     knowledgeCSATQueryV2Factory,
     knowledgeHandoverTicketsCountQueryV2Factory,
@@ -576,6 +577,9 @@ export const useResourceMetrics = ({
     const intentFilters: ApiStatsFilters = useMemo(() => {
         return {
             ...filters,
+            [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator([
+                intentCustomFieldId,
+            ]),
             [FilterKey.CustomFields]: [
                 {
                     customFieldId: intentCustomFieldId,
@@ -902,6 +906,9 @@ export const useAllResourcesMetrics = ({
     const intentFilters: ApiStatsFilters = useMemo(() => {
         return {
             ...filters,
+            [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator([
+                intentCustomFieldId,
+            ]),
             [FilterKey.CustomFields]: [
                 {
                     customFieldId: intentCustomFieldId,
