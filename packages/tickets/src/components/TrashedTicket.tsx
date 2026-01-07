@@ -8,6 +8,8 @@ import {
     TooltipTrigger,
 } from '@gorgias/axiom'
 
+import css from './TrashedTicket.less'
+
 export function TrashedTicket({
     trashedDatetime,
 }: {
@@ -22,6 +24,7 @@ export function TrashedTicket({
                     role="button"
                     color={Color.Red}
                     leadingSlot={<Icon name={IconName.TrashEmpty} size="sm" />}
+                    className={css.trashedTicket}
                 >
                     Trash
                 </Tag>
