@@ -158,6 +158,43 @@ export const usePerformanceMetricsPerFeature =
             ticketHandleTime.isError ||
             automationRateByFeature.isError
 
+        const isZeroOrMissing = (value?: number | null) =>
+            value == null || value === 0 || Number.isNaN(value)
+
+        const isEmpty = useMemo(() => {
+            if (isLoading) return false
+
+            const allAutomationRatesZero =
+                automationRateByFeature.data?.every(
+                    (item) => item.value === 0,
+                ) ?? true
+
+            return (
+                isZeroOrMissing(ticketHandleTime.data?.value) &&
+                isZeroOrMissing(aiAgentInteractions.data?.value) &&
+                isZeroOrMissing(aiAgentHandovers.data?.value) &&
+                isZeroOrMissing(flowsInteractions.data?.value) &&
+                isZeroOrMissing(flowsHandovers.data?.value) &&
+                isZeroOrMissing(
+                    articleRecommendationInteractions.data?.value,
+                ) &&
+                isZeroOrMissing(orderManagementInteractions.data?.value) &&
+                isZeroOrMissing(costSavedPerInteraction) &&
+                allAutomationRatesZero
+            )
+        }, [
+            isLoading,
+            ticketHandleTime.data?.value,
+            aiAgentInteractions.data?.value,
+            aiAgentHandovers.data?.value,
+            flowsInteractions.data?.value,
+            flowsHandovers.data?.value,
+            articleRecommendationInteractions.data?.value,
+            orderManagementInteractions.data?.value,
+            costSavedPerInteraction,
+            automationRateByFeature.data,
+        ])
+
         const aiAgentMetrics = useMemo(() => {
             const handleTimeValue = ticketHandleTime.data?.value ?? null
             const interactions = aiAgentInteractions.data?.value ?? null
@@ -292,13 +329,17 @@ export const usePerformanceMetricsPerFeature =
         ])
 
         const data = useMemo(
-            () => [
-                aiAgentMetrics,
-                articleRecommendationMetrics,
-                flowsMetrics,
-                orderManagementMetrics,
-            ],
+            () =>
+                isEmpty
+                    ? []
+                    : [
+                          aiAgentMetrics,
+                          articleRecommendationMetrics,
+                          flowsMetrics,
+                          orderManagementMetrics,
+                      ],
             [
+                isEmpty,
                 aiAgentMetrics,
                 flowsMetrics,
                 articleRecommendationMetrics,

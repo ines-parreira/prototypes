@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 
 import { Box, Heading, Skeleton, Text } from '@gorgias/axiom'
 
+import { NOT_AVAILABLE_PLACEHOLDER } from '../../../constants'
 import { formatMetricValueOrString } from '../../../utils/helpers'
 import { TrendBadge } from '../../TrendBadge/TrendBadge'
 import type { MetricTrendFormat, TrendDirection } from '../types'
@@ -46,7 +47,10 @@ export const ChartHeader = ({
     const showMetricsDropdown = metrics && metrics.length > 1 && onMetricChange
 
     const formatValue = formatMetricValueOrString({ metricFormat, currency })
-    const formattedValue = value !== undefined ? formatValue(value) : undefined
+    const formattedValue =
+        value !== undefined ? formatValue(value) : NOT_AVAILABLE_PLACEHOLDER
+
+    const hasData = !isLoading && !!value
 
     return (
         <Box flexDirection="column" gap="xxxs" className={css.header}>
@@ -69,7 +73,7 @@ export const ChartHeader = ({
                         </Text>
                     )}
                 </Box>
-                {chartControls && (
+                {hasData && chartControls && (
                     <Box display="flex" gap="xxxs">
                         {chartControls}
                     </Box>
@@ -92,15 +96,17 @@ export const ChartHeader = ({
                     <Heading size="xl" className={css.value}>
                         {formattedValue}
                     </Heading>
-                    <TrendBadge
-                        value={value}
-                        prevValue={prevValue}
-                        metricFormat={metricFormat}
-                        currency={currency}
-                        interpretAs={interpretAs}
-                        tooltipData={tooltipData}
-                        size="md"
-                    />
+                    {hasData && (
+                        <TrendBadge
+                            value={value}
+                            prevValue={prevValue}
+                            metricFormat={metricFormat}
+                            currency={currency}
+                            interpretAs={interpretAs}
+                            tooltipData={tooltipData}
+                            size="md"
+                        />
+                    )}
                 </Box>
             )}
         </Box>

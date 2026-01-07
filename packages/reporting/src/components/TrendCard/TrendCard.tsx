@@ -3,6 +3,7 @@ import { memo, useState } from 'react'
 
 import { Box, Skeleton, Text } from '@gorgias/axiom'
 
+import { NOT_AVAILABLE_PLACEHOLDER } from '../../constants'
 import type { MetricTrend, MetricTrendFormat, TooltipData } from '../../types'
 import { formatMetricValue } from '../../utils/helpers'
 import { MetricCard } from '../MetricCard/MetricCard'
@@ -41,6 +42,8 @@ export const TrendCard = memo<TrendCardProps>(
         const { data } = trend
         const [isHovered, setIsHovered] = useState(false)
 
+        const hasData = !isLoading && !!data?.value
+
         return (
             <div
                 onMouseEnter={() => setIsHovered(true)}
@@ -68,15 +71,17 @@ export const TrendCard = memo<TrendCardProps>(
                                                 : 52
                                         }
                                     />
-                                ) : (
+                                ) : hasData ? (
                                     formatMetricValue(
                                         data?.value,
                                         metricFormat,
                                         currency,
                                     )
+                                ) : (
+                                    NOT_AVAILABLE_PLACEHOLDER
                                 )}
                             </span>
-                            {isLoading ? (
+                            {isLoading && (
                                 <Box
                                     display="flex"
                                     alignItems="center"
@@ -89,7 +94,8 @@ export const TrendCard = memo<TrendCardProps>(
                                     />
                                     <Text size="xs">%</Text>
                                 </Box>
-                            ) : (
+                            )}
+                            {hasData && (
                                 <TrendBadge
                                     value={data?.value}
                                     prevValue={data?.prevValue}

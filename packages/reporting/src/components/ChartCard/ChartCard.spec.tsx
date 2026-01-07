@@ -27,7 +27,7 @@ describe('ChartCard', () => {
     describe('rendering', () => {
         it('should render with title and children', () => {
             render(
-                <ChartCard title="My Chart">
+                <ChartCard title="My Chart" value={100}>
                     <DonutChart data={mockData} />
                 </ChartCard>,
             )
@@ -76,7 +76,7 @@ describe('ChartCard', () => {
 
         it('should render children (chart component)', () => {
             render(
-                <ChartCard title="My Chart">
+                <ChartCard title="My Chart" value={100}>
                     <div data-testid="custom-chart">Custom Chart Content</div>
                 </ChartCard>,
             )
@@ -91,7 +91,11 @@ describe('ChartCard', () => {
             const controls = <button>Toggle Chart</button>
 
             render(
-                <ChartCard title="My Chart" chartControls={controls}>
+                <ChartCard
+                    title="My Chart"
+                    value={100}
+                    chartControls={controls}
+                >
                     <DonutChart data={mockData} />
                 </ChartCard>,
             )
@@ -101,7 +105,7 @@ describe('ChartCard', () => {
 
         it('should not render chart controls when not provided', () => {
             render(
-                <ChartCard title="My Chart">
+                <ChartCard title="My Chart" value={100}>
                     <div data-testid="custom-chart">Custom Chart</div>
                 </ChartCard>,
             )
@@ -119,7 +123,7 @@ describe('ChartCard', () => {
 
         it('should not show metric selector when metrics list is empty', () => {
             render(
-                <ChartCard title="My Chart" metrics={[]}>
+                <ChartCard title="My Chart" value={100} metrics={[]}>
                     <DonutChart data={mockData} />
                 </ChartCard>,
             )
@@ -133,6 +137,7 @@ describe('ChartCard', () => {
             render(
                 <ChartCard
                     title="Single Metric"
+                    value={100}
                     metrics={[{ id: '1', label: 'Single Metric' }]}
                 >
                     <DonutChart data={mockData} />
@@ -149,6 +154,7 @@ describe('ChartCard', () => {
             render(
                 <ChartCard
                     title="Metric 1"
+                    value={100}
                     metrics={mockMetrics}
                     onMetricChange={mockOnMetricChange}
                 >
@@ -164,7 +170,7 @@ describe('ChartCard', () => {
 
         it('should not show metric selector when metrics prop is not provided', () => {
             render(
-                <ChartCard title="My Chart">
+                <ChartCard title="My Chart" value={100}>
                     <DonutChart data={mockData} />
                 </ChartCard>,
             )
@@ -178,7 +184,7 @@ describe('ChartCard', () => {
     describe('card container', () => {
         it('should render Card component', () => {
             const { container } = render(
-                <ChartCard title="My Chart">
+                <ChartCard title="My Chart" value={100}>
                     <DonutChart data={mockData} />
                 </ChartCard>,
             )
@@ -284,7 +290,7 @@ describe('ChartCard', () => {
 
         it('should render with minimal props', () => {
             render(
-                <ChartCard title="Minimal Chart">
+                <ChartCard title="Minimal Chart" value={100}>
                     <div>Chart Content</div>
                 </ChartCard>,
             )
@@ -293,7 +299,7 @@ describe('ChartCard', () => {
             expect(screen.getByText('Chart Content')).toBeInTheDocument()
         })
 
-        it('should render without value but with prevValue', () => {
+        it('should show empty state when no value provided', () => {
             render(
                 <ChartCard title="My Chart" prevValue={90}>
                     <DonutChart data={mockData} />
@@ -301,6 +307,10 @@ describe('ChartCard', () => {
             )
 
             expect(screen.getByText('My Chart')).toBeInTheDocument()
+            expect(screen.getByText('No data found')).toBeInTheDocument()
+            expect(
+                screen.getByText('Try to adjust your report filters.'),
+            ).toBeInTheDocument()
         })
 
         it('should render with interpretAs as neutral (default)', () => {

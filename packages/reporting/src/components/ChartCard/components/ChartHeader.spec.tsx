@@ -33,14 +33,14 @@ describe('ChartHeader', () => {
             expect(screen.getByText('1,234')).toBeInTheDocument()
         })
 
-        it('should not render value when value is undefined', () => {
+        it('should render placeholder when value is undefined', () => {
             const { container } = render(<ChartHeader title="Test Chart" />)
 
             const headings = container.querySelectorAll(
                 'h1, h2, h3, h4, h5, h6',
             )
             expect(headings.length).toBe(1)
-            expect(headings[0].textContent).toBe('')
+            expect(headings[0].textContent).toBe('-')
         })
     })
 
@@ -215,20 +215,34 @@ describe('ChartHeader', () => {
     })
 
     describe('chart controls', () => {
-        it('should render chart controls when provided', () => {
+        it('should render chart controls when provided with data', () => {
             const controls = <button>Toggle Chart</button>
 
-            render(<ChartHeader title="Test Chart" chartControls={controls} />)
+            render(
+                <ChartHeader
+                    title="Test Chart"
+                    value={100}
+                    chartControls={controls}
+                />,
+            )
 
             expect(screen.getByText('Toggle Chart')).toBeInTheDocument()
         })
 
         it('should not render chart controls when not provided', () => {
-            render(<ChartHeader title="Test Chart" />)
+            render(<ChartHeader title="Test Chart" value={100} />)
 
             expect(
                 screen.queryByRole('button', { name: /toggle/i }),
             ).not.toBeInTheDocument()
+        })
+
+        it('should not render chart controls when no data', () => {
+            const controls = <button>Toggle Chart</button>
+
+            render(<ChartHeader title="Test Chart" chartControls={controls} />)
+
+            expect(screen.queryByText('Toggle Chart')).not.toBeInTheDocument()
         })
 
         it('should render multiple chart controls', () => {
@@ -239,7 +253,13 @@ describe('ChartHeader', () => {
                 </>
             )
 
-            render(<ChartHeader title="Test Chart" chartControls={controls} />)
+            render(
+                <ChartHeader
+                    title="Test Chart"
+                    value={100}
+                    chartControls={controls}
+                />,
+            )
 
             expect(screen.getByText('Control 1')).toBeInTheDocument()
             expect(screen.getByText('Control 2')).toBeInTheDocument()
@@ -351,6 +371,7 @@ describe('ChartHeader', () => {
             render(
                 <ChartHeader
                     title="Metric 1"
+                    value={100}
                     metrics={mockMetrics}
                     onMetricChange={mockOnMetricChange}
                     chartControls={controls}

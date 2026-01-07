@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { Card } from '@gorgias/axiom'
+import { Box, Card, Heading, Text } from '@gorgias/axiom'
 
 import { ChartHeader } from './components/ChartHeader'
 import type { MetricTrendFormat, TrendDirection } from './types'
@@ -43,6 +43,8 @@ export const ChartCard = ({
     tooltipData,
     isLoading,
 }: ChartCardProps) => {
+    const noData = !isLoading && !value
+
     return (
         <Card flex={1} p="lg" gap="xxl" className={css.cardContainer}>
             <ChartHeader
@@ -58,7 +60,24 @@ export const ChartCard = ({
                 tooltipData={tooltipData}
                 isLoading={isLoading}
             />
-            {children}
+            {noData ? (
+                <Box
+                    height="274px"
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    marginBottom="xxl"
+                    gap="xs"
+                >
+                    <Heading size="sm">No data found</Heading>
+                    <Text size="md" color="secondary">
+                        Try to adjust your report filters.
+                    </Text>
+                </Box>
+            ) : (
+                children
+            )}
         </Card>
     )
 }

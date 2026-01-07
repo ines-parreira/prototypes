@@ -63,19 +63,22 @@ const PLACEHOLDER_DATA: FeatureMetrics[] = [
 ]
 
 export const PerformanceBreakdownTable = () => {
-    const {
-        data: metricsData,
-        isError,
-        loadingStates,
-    } = usePerformanceMetricsPerFeature()
+    const { data: metricsData, loadingStates } =
+        usePerformanceMetricsPerFeature()
 
-    const tableData: FeatureMetrics[] = useMemo(
-        () =>
-            metricsData && metricsData.length > 0
-                ? metricsData
-                : PLACEHOLDER_DATA,
-        [metricsData],
+    const allLoadingComplete = !Object.values(loadingStates).some(
+        (state) => state === true,
     )
+
+    const tableData: FeatureMetrics[] = useMemo(() => {
+        if (metricsData && metricsData.length > 0) {
+            return metricsData
+        }
+        if (allLoadingComplete) {
+            return []
+        }
+        return PLACEHOLDER_DATA
+    }, [metricsData, allLoadingComplete])
 
     // Keep columns stable to prevent Skeleton animation resets
     // loadingStates is intentionally omitted from deps to avoid recreating columns
@@ -421,7 +424,7 @@ export const PerformanceBreakdownTable = () => {
         !loadingStates.timeSaved
 
     const showEmptyState =
-        allDataLoaded && !isError && (!metricsData || metricsData.length === 0)
+        allDataLoaded && (!metricsData || metricsData.length === 0)
 
     return (
         <Box
@@ -454,32 +457,36 @@ export const PerformanceBreakdownTable = () => {
                 />
                 <Box className={css.tableWrapper}>
                     <TableRoot withBorder className={css.table}>
-                        <TableHeader>
-                            <HeaderRowGroup
-                                headerGroups={table.getHeaderGroups()}
-                            />
-                        </TableHeader>
-                        <TableBodyContent
-                            rows={table.getRowModel().rows}
-                            columnCount={table.getAllColumns().length}
-                            table={table}
-                        />
+                        {showEmptyState ? (
+                            <Box
+                                width="100%"
+                                display="flex"
+                                flexDirection="column"
+                                alignItems="center"
+                                justifyContent="center"
+                                padding="xxxl"
+                                gap="xs"
+                            >
+                                <Heading size="sm">No data found</Heading>
+                                <Text size="md" color="secondary">
+                                    Try to adjust your report filters.
+                                </Text>
+                            </Box>
+                        ) : (
+                            <>
+                                <TableHeader>
+                                    <HeaderRowGroup
+                                        headerGroups={table.getHeaderGroups()}
+                                    />
+                                </TableHeader>
+                                <TableBodyContent
+                                    rows={table.getRowModel().rows}
+                                    columnCount={table.getAllColumns().length}
+                                    table={table}
+                                />
+                            </>
+                        )}
                     </TableRoot>
-                    {showEmptyState && (
-                        <Box
-                            display="flex"
-                            flexDirection="column"
-                            alignItems="center"
-                            justifyContent="center"
-                            padding="xxxl"
-                            gap="md"
-                        >
-                            <Heading size="sm">No data found</Heading>
-                            <Text size="md" color="secondary">
-                                Try to adjust your report filters.
-                            </Text>
-                        </Box>
-                    )}
                 </Box>
             </Box>
         </Box>
