@@ -5,4 +5,11 @@
         margin-right: var(--spacing-md);
         justify-content: space-between;
     }
+
+    .buttonGroup {
+        // Prevent text wrapping in button group items
+        :global(button) {
+            white-space: nowrap !important;
+        }
+    }
 }

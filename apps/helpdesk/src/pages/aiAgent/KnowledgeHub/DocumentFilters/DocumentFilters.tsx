@@ -46,33 +46,39 @@ export const DocumentFilters = ({
 
     return (
         <div className={css.container}>
-            <ButtonGroup
-                onSelectionChange={(type) => {
-                    const selected = filters.find((f) => f.label === type)
-                    onFilterChange(selected?.type || null)
-                }}
-                selectedKey={
-                    selectedFilter
-                        ? typeConfig[selectedFilter].label
-                        : 'All content'
-                }
-            >
-                {filters.map((filter, index) => {
-                    return (
-                        <Fragment key={filter.type || 'all'}>
-                            <ButtonGroupItem
-                                id={filter.label}
-                                leadingSlot={
-                                    filter.icon && <Icon name={filter.icon} />
-                                }
-                            >
-                                {filter.label}
-                            </ButtonGroupItem>
-                            {index === 0 && <Separator direction="vertical" />}
-                        </Fragment>
-                    )
-                })}
-            </ButtonGroup>
+            <div className={css.buttonGroup}>
+                <ButtonGroup
+                    onSelectionChange={(type) => {
+                        const selected = filters.find((f) => f.label === type)
+                        onFilterChange(selected?.type || null)
+                    }}
+                    selectedKey={
+                        selectedFilter
+                            ? typeConfig[selectedFilter].label
+                            : 'All content'
+                    }
+                >
+                    {filters.map((filter, index) => {
+                        return (
+                            <Fragment key={filter.type || 'all'}>
+                                <ButtonGroupItem
+                                    id={filter.label}
+                                    leadingSlot={
+                                        filter.icon && (
+                                            <Icon name={filter.icon} />
+                                        )
+                                    }
+                                >
+                                    {filter.label}
+                                </ButtonGroupItem>
+                                {index === 0 && (
+                                    <Separator direction="vertical" />
+                                )}
+                            </Fragment>
+                        )
+                    })}
+                </ButtonGroup>
+            </div>
             {selectedFilter === KnowledgeType.FAQ && (
                 <Button
                     variant="secondary"
