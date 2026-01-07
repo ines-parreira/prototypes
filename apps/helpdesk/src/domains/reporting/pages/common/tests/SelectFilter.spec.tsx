@@ -423,5 +423,17 @@ describe('<SelectFilter />', () => {
 
             expect(getByText('All channels')).toBeInTheDocument()
         })
+
+        it('should not display items without labels', () => {
+            const { container } = render(
+                <SelectFilter.Item
+                    key="test"
+                    label=""
+                    value="value-undefined"
+                />,
+            )
+
+            expect(container).toBeEmptyDOMElement()
+        })
     })
 })

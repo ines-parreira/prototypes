@@ -79,7 +79,7 @@ const Item = ({ label, value, icon }: ItemProps) => {
         SelectFilterItemContext,
     )
 
-    if (!isDisplayed(label)) {
+    if (!label || !isDisplayed(label)) {
         return null
     }
 
