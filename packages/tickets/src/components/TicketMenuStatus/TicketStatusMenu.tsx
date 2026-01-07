@@ -14,6 +14,7 @@ import {
     Menu,
     MenuItem,
     MenuPlacement,
+    MenuSize,
     SubMenu,
 } from '@gorgias/axiom'
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
@@ -127,6 +128,7 @@ export function TicketStatusMenu({ ticket }: TicketStatusMenuProps) {
             trigger={<TicketStatusTrigger ticket={ticket} />}
             selectionMode="single"
             selectedKeys={new Set([status])}
+            size={MenuSize.Sm}
         >
             <>
                 <MenuItem
