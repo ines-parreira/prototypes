@@ -2083,4 +2083,275 @@ describe('useKnowledgeHubUrlParams', () => {
             expect(history.location.search).toBe('')
         })
     })
+
+    describe('history navigation behavior', () => {
+        it('updateUrlWithFolderParam uses history.push to create new entry', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+            const pushSpy = jest.spyOn(history, 'push')
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            expect(pushSpy).toHaveBeenCalledTimes(1)
+            expect(pushSpy).toHaveBeenCalledWith(
+                expect.stringContaining('folder='),
+            )
+
+            pushSpy.mockRestore()
+        })
+
+        it('handleDocumentFilterChange uses history.push to create new entry', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+            const pushSpy = jest.spyOn(history, 'push')
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.handleDocumentFilterChange(KnowledgeType.URL)
+            })
+
+            expect(pushSpy).toHaveBeenCalledTimes(1)
+            expect(pushSpy).toHaveBeenCalledWith('/knowledge?filter=url')
+
+            pushSpy.mockRestore()
+        })
+
+        it('removeFolderParamFromUrl uses history.push to create new entry', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/knowledge?folder=${encodeURIComponent('https://example.com')}`,
+                ],
+            })
+            const pushSpy = jest.spyOn(history, 'push')
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.removeFolderParamFromUrl()
+            })
+
+            expect(pushSpy).toHaveBeenCalledTimes(1)
+            expect(pushSpy).toHaveBeenCalledWith('/knowledge')
+
+            pushSpy.mockRestore()
+        })
+
+        it('setSearchTerm uses history.push to create new entry', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+            const pushSpy = jest.spyOn(history, 'push')
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setSearchTerm('test query')
+            })
+
+            expect(pushSpy).toHaveBeenCalledTimes(1)
+            expect(pushSpy).toHaveBeenCalledWith('/knowledge?search=test+query')
+
+            pushSpy.mockRestore()
+        })
+
+        it('setDateRange uses history.push to create new entry', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+            const pushSpy = jest.spyOn(history, 'push')
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setDateRange('2024-01-01', '2024-12-31')
+            })
+
+            expect(pushSpy).toHaveBeenCalledTimes(1)
+            expect(pushSpy).toHaveBeenCalledWith(
+                '/knowledge?startDate=2024-01-01&endDate=2024-12-31',
+            )
+
+            pushSpy.mockRestore()
+        })
+
+        it('setInUseByAIFilter uses history.push to create new entry', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+            const pushSpy = jest.spyOn(history, 'push')
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.setInUseByAIFilter(true)
+            })
+
+            expect(pushSpy).toHaveBeenCalledTimes(1)
+            expect(pushSpy).toHaveBeenCalledWith('/knowledge?inUseByAI=true')
+
+            pushSpy.mockRestore()
+        })
+
+        it('clearSearchParams uses history.push to create new entry', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?search=test&inUseByAI=true'],
+            })
+            const pushSpy = jest.spyOn(history, 'push')
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            act(() => {
+                result.current.clearSearchParams()
+            })
+
+            expect(pushSpy).toHaveBeenCalledTimes(1)
+            expect(pushSpy).toHaveBeenCalledWith('/knowledge')
+
+            pushSpy.mockRestore()
+        })
+
+        it('browser back button works after folder selection', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Initial state - no folder
+            expect(result.current.selectedFolder).toBeNull()
+            expect(history.location.search).toBe('')
+
+            // Select a folder
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            // Folder should be selected
+            expect(history.location.search).toContain('folder=')
+
+            // Go back
+            act(() => {
+                history.goBack()
+            })
+
+            // Should return to initial state
+            expect(history.location.search).toBe('')
+        })
+
+        it('browser back button works after filter change', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Initial state - no filter
+            expect(result.current.selectedFilter).toBeNull()
+            expect(history.location.search).toBe('')
+
+            // Set a filter
+            act(() => {
+                result.current.handleDocumentFilterChange(KnowledgeType.FAQ)
+            })
+
+            // Filter should be set
+            expect(result.current.selectedFilter).toBe(KnowledgeType.FAQ)
+            expect(history.location.search).toBe('?filter=faq')
+
+            // Go back
+            act(() => {
+                history.goBack()
+            })
+
+            // Should return to initial state
+            expect(result.current.selectedFilter).toBeNull()
+            expect(history.location.search).toBe('')
+        })
+
+        it('history length increases with each navigation action', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const initialLength = history.length
+
+            // Each action should increase history length
+            act(() => {
+                result.current.handleDocumentFilterChange(KnowledgeType.URL)
+            })
+
+            expect(history.length).toBe(initialLength + 1)
+
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            expect(history.length).toBe(initialLength + 2)
+
+            act(() => {
+                result.current.setSearchTerm('test')
+            })
+
+            expect(history.length).toBe(initialLength + 3)
+        })
+    })
 })

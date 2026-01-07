@@ -178,7 +178,7 @@ export function useKnowledgeHubUrlParams(
         const newUrl = newSearch
             ? `${history.location.pathname}?${newSearch}`
             : history.location.pathname
-        history.replace(newUrl)
+        history.push(newUrl)
     }, [history, location.search])
 
     // Memoize folder object creation from URL to avoid unnecessary recalculations
@@ -380,7 +380,7 @@ export function useKnowledgeHubUrlParams(
             const newUrl = newSearch
                 ? `${history.location.pathname}?${newSearch}`
                 : history.location.pathname
-            history.replace(newUrl)
+            history.push(newUrl)
         },
         [selectedFolder, setSelectedFilter, history, location.search],
     )
@@ -396,7 +396,7 @@ export function useKnowledgeHubUrlParams(
             const newUrl = newSearch
                 ? `${history.location.pathname}?${newSearch}`
                 : history.location.pathname
-            history.replace(newUrl)
+            history.push(newUrl)
         },
 
         [history, location.search],
@@ -414,7 +414,7 @@ export function useKnowledgeHubUrlParams(
             const newUrl = params.toString()
                 ? `${history.location.pathname}?${params.toString()}`
                 : history.location.pathname
-            history.replace(newUrl)
+            history.push(newUrl)
         },
         [history, location.search],
     )
@@ -436,7 +436,7 @@ export function useKnowledgeHubUrlParams(
             const newUrl = params.toString()
                 ? `${history.location.pathname}?${params.toString()}`
                 : history.location.pathname
-            history.replace(newUrl)
+            history.push(newUrl)
         },
         [history, location.search],
     )
@@ -453,7 +453,7 @@ export function useKnowledgeHubUrlParams(
             const newUrl = params.toString()
                 ? `${history.location.pathname}?${params.toString()}`
                 : history.location.pathname
-            history.replace(newUrl)
+            history.push(newUrl)
         },
         [history, location.search],
     )
@@ -484,7 +484,7 @@ export function useKnowledgeHubUrlParams(
         const newUrl = newSearch
             ? `${history.location.pathname}?${newSearch}`
             : history.location.pathname
-        history.replace(newUrl)
+        history.push(newUrl)
     }, [history, location.search])
 
     return {
