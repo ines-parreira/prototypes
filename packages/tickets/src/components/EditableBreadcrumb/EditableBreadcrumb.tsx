@@ -27,7 +27,7 @@ export function EditableBreadcrumb({ value, onChange }: Props) {
         <div className={css.container} onMouseDown={handleMouseDown}>
             <span
                 contentEditable
-                className={cn(css.content, 'typography-regular-sm')}
+                className={cn(css.content, 'typography-medium-md')}
                 ref={subjectRef}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
