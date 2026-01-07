@@ -1,6 +1,8 @@
 :local {
     .knowledgeEditorContainer {
         height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .knowledgeEditor {
@@ -10,12 +12,15 @@
         flex: 1 0 0;
         align-self: stretch;
         height: 100%;
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
 
     .editorContainer {
         width: 100%;
         display: flex;
         flex-direction: column;
+        flex: 1;
     }
 
     .splitView {
@@ -30,6 +35,8 @@
         min-width: 0;
         height: 100%;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
     }
 
     .playgroundSection {
