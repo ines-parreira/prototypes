@@ -1229,6 +1229,7 @@ type UseRelatedTicketsWithDrilldownParams = {
     timezone: string
     enabled: boolean
     ticketCount: number
+    ticketCountIsLoading: boolean
     dateRange: {
         start_datetime: string
         end_datetime: string
@@ -1248,6 +1249,7 @@ export function useRelatedTicketsWithDrilldown({
     timezone,
     enabled,
     ticketCount,
+    ticketCountIsLoading,
     dateRange,
 }: UseRelatedTicketsWithDrilldownParams): UseRelatedTicketsWithDrilldownResult {
     const { outcomeCustomFieldId, intentCustomFieldId } =
@@ -1264,7 +1266,9 @@ export function useRelatedTicketsWithDrilldown({
     return useMemo(() => {
         if (!enabled) return undefined
 
-        if (relatedTicketsData.isLoading) {
+        const isLoading = ticketCountIsLoading || relatedTicketsData.isLoading
+
+        if (isLoading) {
             return {
                 ticketCount,
                 isLoading: true,
@@ -1283,7 +1287,7 @@ export function useRelatedTicketsWithDrilldown({
         return {
             ticketCount,
             latest3Tickets: relatedTicketsData.data ?? undefined,
-            isLoading: relatedTicketsData.isLoading,
+            isLoading: false,
             resourceSourceId,
             resourceSourceSetId,
             dateRange,
@@ -1292,6 +1296,7 @@ export function useRelatedTicketsWithDrilldown({
         }
     }, [
         enabled,
+        ticketCountIsLoading,
         relatedTicketsData.isLoading,
         relatedTicketsData.data,
         ticketCount,

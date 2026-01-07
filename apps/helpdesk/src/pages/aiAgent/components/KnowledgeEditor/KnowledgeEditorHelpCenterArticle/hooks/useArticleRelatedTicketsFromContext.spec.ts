@@ -142,6 +142,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
                 timezone: 'America/New_York',
                 enabled: false,
                 ticketCount: 42,
+                ticketCountIsLoading: false,
                 dateRange: mockDateRange,
             })
         })
@@ -196,6 +197,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
                 timezone: 'America/New_York',
                 enabled: true,
                 ticketCount: 42,
+                ticketCountIsLoading: false,
                 dateRange: mockDateRange,
             })
         })
@@ -271,6 +273,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
                 timezone: 'America/New_York',
                 enabled: false,
                 ticketCount: 42,
+                ticketCountIsLoading: false,
                 dateRange: mockDateRange,
             })
         })

@@ -123,6 +123,7 @@ describe('useKnowledgeRelatedTickets', () => {
                 timezone: 'America/New_York',
                 enabled: false,
                 ticketCount: 42,
+                ticketCountIsLoading: false,
                 dateRange: mockDateRange,
             })
         })
@@ -214,6 +215,7 @@ describe('useKnowledgeRelatedTickets', () => {
                 timezone: 'America/New_York',
                 enabled: true,
                 ticketCount: 42,
+                ticketCountIsLoading: false,
                 dateRange: mockDateRange,
             })
         })
@@ -347,6 +349,72 @@ describe('useKnowledgeRelatedTickets', () => {
             expect(resourceMetricsCall.dateRange).toBe(
                 relatedTicketsCall.dateRange,
             )
+        })
+
+        describe('loading state coordination', () => {
+            it('should pass resourceMetrics loading state to useRelatedTicketsWithDrilldown', () => {
+                mockUseResourceMetrics.mockReturnValue({
+                    data: { tickets: { value: 42 } },
+                    isLoading: true,
+                })
+
+                renderHook(() =>
+                    useKnowledgeRelatedTickets({
+                        resourceSourceId: 123,
+                        resourceSourceSetId: 1,
+                        shopIntegrationId: 456,
+                    }),
+                )
+
+                expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        ticketCountIsLoading: true,
+                    }),
+                )
+            })
+
+            it('should pass resourceMetrics not loading when complete', () => {
+                mockUseResourceMetrics.mockReturnValue({
+                    data: { tickets: { value: 42 } },
+                    isLoading: false,
+                })
+
+                renderHook(() =>
+                    useKnowledgeRelatedTickets({
+                        resourceSourceId: 123,
+                        resourceSourceSetId: 1,
+                        shopIntegrationId: 456,
+                    }),
+                )
+
+                expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        ticketCountIsLoading: false,
+                    }),
+                )
+            })
+
+            it('should pass loading state even when resourceImpact data is undefined', () => {
+                mockUseResourceMetrics.mockReturnValue({
+                    data: undefined,
+                    isLoading: true,
+                })
+
+                renderHook(() =>
+                    useKnowledgeRelatedTickets({
+                        resourceSourceId: 123,
+                        resourceSourceSetId: 1,
+                        shopIntegrationId: 456,
+                    }),
+                )
+
+                expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        ticketCountIsLoading: true,
+                        ticketCount: 0,
+                    }),
+                )
+            })
         })
 
         describe('enabled parameter', () => {

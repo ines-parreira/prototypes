@@ -62,6 +62,7 @@ export const useKnowledgeRelatedTickets = ({
         timezone: timezone ?? 'UTC',
         enabled: isEnabled,
         ticketCount: resourceImpact.data?.tickets?.value ?? 0,
+        ticketCountIsLoading: resourceImpact.isLoading,
         dateRange,
     })
 
