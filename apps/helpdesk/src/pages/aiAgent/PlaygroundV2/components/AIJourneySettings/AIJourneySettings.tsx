@@ -78,7 +78,14 @@ export const AIJourneySettings: React.FC = () => {
 
     const flowsOptions = flows
         // playground does not cover winback for the moment
-        .filter((j) => j.type !== JourneyTypeEnum.WinBack)
+        .filter(
+            (j) =>
+                [
+                    JourneyTypeEnum.CartAbandoned.toString(),
+                    JourneyTypeEnum.Campaign.toString(),
+                    JourneyTypeEnum.SessionAbandoned.toString(),
+                ].indexOf(j.type) > -1,
+        )
         .map((journey) => ({
             id: journey.id,
             label: getJourneyLabel(journey.type),
