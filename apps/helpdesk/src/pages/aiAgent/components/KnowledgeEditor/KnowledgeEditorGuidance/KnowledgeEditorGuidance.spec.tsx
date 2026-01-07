@@ -5,7 +5,10 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
-import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+import {
+    useRelatedTicketsWithDrilldown,
+    useResourceMetrics,
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
@@ -125,6 +128,7 @@ jest.mock(
     'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
     () => ({
         useResourceMetrics: jest.fn(),
+        useRelatedTicketsWithDrilldown: jest.fn(),
         getLast28DaysDateRange: jest.fn(() => ({
             start_datetime: '2025-01-01T00:00:00.000Z',
             end_datetime: '2025-01-28T00:00:00.000Z',
@@ -132,6 +136,9 @@ jest.mock(
     }),
 )
 const mockedFetchResourceMetrics = jest.mocked(useResourceMetrics)
+const mockedUseRelatedTicketsWithDrilldown = jest.mocked(
+    useRelatedTicketsWithDrilldown,
+)
 
 const mockUseStoreIntegrations = jest.mocked(useStoreIntegrations)
 
@@ -203,6 +210,20 @@ describe('KnowledgeEditorGuidance', () => {
                     'Product/Question',
                 ],
             },
+        })
+
+        mockedUseRelatedTicketsWithDrilldown.mockReturnValue({
+            ticketCount: 0,
+            latest3Tickets: [],
+            isLoading: false,
+            resourceSourceId: 0,
+            resourceSourceSetId: 0,
+            dateRange: {
+                start_datetime: '2025-01-01T00:00:00.000Z',
+                end_datetime: '2025-01-28T00:00:00.000Z',
+            },
+            outcomeCustomFieldId: 0,
+            intentCustomFieldId: 0,
         })
     })
 

@@ -3,7 +3,10 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
-import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+import {
+    useRelatedTicketsWithDrilldown,
+    useResourceMetrics,
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import * as helpCenterQueries from 'models/helpCenter/queries'
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -38,6 +41,7 @@ jest.mock(
     'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
     () => ({
         useResourceMetrics: jest.fn(),
+        useRelatedTicketsWithDrilldown: jest.fn(),
         getLast28DaysDateRange: jest.fn(() => ({
             start_datetime: '2025-01-01T00:00:00.000Z',
             end_datetime: '2025-01-28T00:00:00.000Z',
@@ -45,6 +49,9 @@ jest.mock(
     }),
 )
 const mockedFetchResourceMetrics = jest.mocked(useResourceMetrics)
+const mockedUseRelatedTicketsWithDrilldown = jest.mocked(
+    useRelatedTicketsWithDrilldown,
+)
 
 const queryClient = mockQueryClient()
 const store = mockStore({
@@ -159,6 +166,20 @@ describe('KnowledgeEditorSnippetLoader', () => {
                     'Product/Question',
                 ],
             },
+        })
+
+        mockedUseRelatedTicketsWithDrilldown.mockReturnValue({
+            ticketCount: 0,
+            latest3Tickets: [],
+            isLoading: false,
+            resourceSourceId: 0,
+            resourceSourceSetId: 0,
+            dateRange: {
+                start_datetime: '2025-01-01T00:00:00.000Z',
+                end_datetime: '2025-01-28T00:00:00.000Z',
+            },
+            outcomeCustomFieldId: 0,
+            intentCustomFieldId: 0,
         })
     })
 

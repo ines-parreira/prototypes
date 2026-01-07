@@ -22,6 +22,7 @@ import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 import { getTimezone } from 'state/currentUser/selectors'
 
 import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
+import { useSnippetRelatedTickets } from './hooks/useSnippetRelatedTickets'
 import { KnowledgeEditorSnippetView } from './KnowledgeEditorSnippetView'
 
 type SnippetSourceData = {
@@ -99,6 +100,12 @@ export const KnowledgeEditorSnippetLoader = ({
         timezone: timezone ?? 'UTC',
         enabled: isPerformanceStatsEnabled,
         dateRange,
+    })
+
+    const relatedTickets = useSnippetRelatedTickets({
+        snippetId,
+        helpCenterId,
+        shopIntegrationId,
     })
 
     const {
@@ -309,6 +316,9 @@ export const KnowledgeEditorSnippetLoader = ({
                           isLoading: resourceImpact.isLoading,
                       }
                     : undefined
+            }
+            relatedTickets={
+                isPerformanceStatsEnabled ? relatedTickets : undefined
             }
         />
     )

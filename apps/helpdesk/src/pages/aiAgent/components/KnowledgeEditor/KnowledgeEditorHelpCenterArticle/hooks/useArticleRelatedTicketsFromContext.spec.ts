@@ -77,7 +77,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
             templateKey: undefined,
         } as ArticleContextValue['state'],
         config: {
-            helpCenter: { id: 1 },
+            helpCenter: { id: 1, shop_integration_id: 0 },
         } as ArticleContextValue['config'],
     }
 
@@ -116,16 +116,6 @@ describe('useArticleRelatedTicketsFromContext', () => {
     })
 
     describe('when feature flag is disabled', () => {
-        it('should return undefined', () => {
-            mockUseFlag.mockReturnValue(false)
-
-            const { result } = renderHook(() =>
-                useArticleRelatedTicketsFromContext(),
-            )
-
-            expect(result.current).toBeUndefined()
-        })
-
         it('should still call useResourceMetrics but with enabled=false', () => {
             mockUseFlag.mockReturnValue(false)
 

@@ -18,6 +18,7 @@ import { useGuidanceContext } from './context'
 import { useGuidanceAutoSave } from './context/useGuidanceAutoSave'
 import { useToggleVisibility } from './context/useToggleVisibility'
 import { KnowledgeEditorGuidanceEditView } from './edit/KnowledgeEditorGuidanceEditView'
+import { useGuidanceRelatedTicketsFromContext } from './hooks/useGuidanceRelatedTicketsFromContext'
 import { KnowledgeEditorGuidanceVersionBanner } from './KnowledgeEditorGuidanceVersionBanner'
 import { KnowledgeEditorGuidanceDeleteModal } from './modals/KnowledgeEditorGuidanceDeleteModal'
 import { KnowledgeEditorGuidanceDiscardDraftModal } from './modals/KnowledgeEditorGuidanceDiscardDraftModal'
@@ -63,6 +64,8 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
         enabled: isPerformanceStatsEnabled && !!guidanceArticle,
         dateRange,
     })
+
+    const relatedTickets = useGuidanceRelatedTicketsFromContext()
 
     const impact = useMemo(
         () =>
@@ -188,6 +191,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                                         : !state.guidance?.isCurrent,
                             }}
                             impact={impact}
+                            relatedTickets={relatedTickets}
                         />
                     )}
                 </div>

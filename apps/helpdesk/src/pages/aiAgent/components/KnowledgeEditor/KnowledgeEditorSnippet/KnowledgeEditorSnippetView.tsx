@@ -4,6 +4,7 @@ import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillD
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 
 import type { Props as ImpactProps } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
+import type { Props as RelatedTicketsProps } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionRelatedTickets'
 import { KnowledgeEditorSidePanelDocumentSnippet } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelDocumentSnippet'
 import { KnowledgeEditorSidePanelStoreSnippet } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelStoreSnippet'
 import { KnowledgeEditorSidePanelURLSnippet } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelURLSnippet'
@@ -52,6 +53,7 @@ type Props = {
     isFullscreen: boolean
     snippet: Snippet
     impact?: Omit<ImpactProps, 'sectionId'>
+    relatedTickets?: Omit<RelatedTicketsProps, 'sectionId'>
 }
 
 export const KnowledgeEditorSnippetView = ({
@@ -64,6 +66,7 @@ export const KnowledgeEditorSnippetView = ({
     snippet,
     isFullscreen,
     impact,
+    relatedTickets,
 }: Props) => {
     const [isDetailsView, setIsDetailsView] = useState(true)
     const onToggleDetailsView = () => {
@@ -104,6 +107,7 @@ export const KnowledgeEditorSnippetView = ({
                             url: snippet.source,
                         }}
                         impact={impact}
+                        relatedTickets={relatedTickets}
                     />
                 )
             case SnippetType.Document:
@@ -115,6 +119,7 @@ export const KnowledgeEditorSnippetView = ({
                             googleStorageUrl: snippet.googleStorageUrl,
                         }}
                         impact={impact}
+                        relatedTickets={relatedTickets}
                     />
                 )
             case SnippetType.Store:
@@ -125,6 +130,7 @@ export const KnowledgeEditorSnippetView = ({
                             urls: snippet.sources,
                         }}
                         impact={impact}
+                        relatedTickets={relatedTickets}
                     />
                 )
         }
