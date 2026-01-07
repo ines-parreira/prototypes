@@ -18,14 +18,18 @@
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
         "@gorgias/design-tokens": "catalog:axiom",
+        "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "react": "catalog:react",
         "react-dom": "catalog:react",
-        "classnames": "catalog:styles"
+        "classnames": "catalog:styles",
+        "moment": "catalog:moment"
     },
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
         "@gorgias/design-tokens": "catalog:axiom",
+        "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
+        "@tanstack/react-query": "catalog:rest-api-sdk",
         "@testing-library/dom": "catalog:test",
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",
@@ -36,6 +40,7 @@
         "@types/react-dom": "catalog:react",
         "@vitest/coverage-v8": "catalog:test",
         "classnames": "catalog:styles",
+        "moment": "catalog:moment",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "react": "catalog:react",

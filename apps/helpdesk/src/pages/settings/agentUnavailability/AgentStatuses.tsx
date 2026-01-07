@@ -1,17 +1,65 @@
+import { AgentStatusesTable, useAgentStatuses } from '@repo/agent-status'
+import { Link } from 'react-router-dom'
+
+import { Banner, Box, Button, Icon } from '@gorgias/axiom'
+
 import PageHeader from 'pages/common/components/PageHeader'
 
-import css from '../settings.less'
-
-export default function AgentStatuses() {
+function AgentUnavailabilityStatuses() {
+    const { data, isLoading, isError, refetch } = useAgentStatuses()
     return (
-        <div className="full-width">
-            <PageHeader title="Agent statuses" />
-
-            <div className={css.pageContainer}>
-                <div className={css.contentWrapper}>
-                    <p>Agent statuses page</p>
-                </div>
-            </div>
-        </div>
+        <>
+            <Box flexDirection="column" flex={1} gap="sm">
+                <PageHeader title="Agent unavailability">
+                    <Box gap="xs">
+                        <Button
+                            onClick={() => {}}
+                            variant="tertiary"
+                            trailingSlot={<Icon name="external-link" />}
+                        >
+                            Learning resources
+                        </Button>
+                        <Button onClick={() => {}}>Create status</Button>
+                    </Box>
+                </PageHeader>
+                <Box
+                    flexDirection="column"
+                    paddingLeft="lg"
+                    paddingRight="lg"
+                    gap="md"
+                >
+                    <p>
+                        Create and manage agent unavailable statuses to better
+                        track team activity and improve visibility into how time
+                        is spent. You can track this{' '}
+                        <Link to="/app/stats/live-agents">here</Link>.
+                    </p>
+                    {isError && (
+                        <Banner
+                            variant="inline"
+                            intent="destructive"
+                            title="Failed to load custom statuses"
+                            description="Something went wrong when fetching custom statuses. System statuses are still available below."
+                        >
+                            <Button
+                                onClick={() => refetch()}
+                                variant="secondary"
+                                size="sm"
+                            >
+                                Retry
+                            </Button>
+                        </Banner>
+                    )}
+                </Box>
+                <AgentStatusesTable
+                    data={data}
+                    isLoading={isLoading}
+                    onEdit={() => {}}
+                    onDelete={() => {}}
+                />
+            </Box>
+        </>
     )
 }
+
+export default AgentUnavailabilityStatuses

@@ -286,8 +286,8 @@ describe('SettingsNavbar', () => {
         })
     })
 
-    describe('Agent Statuses menu item', () => {
-        it('should show Agent Statuses menu item when CustomAgentUnavailableStatuses flag is enabled', () => {
+    describe('Agent Unavailability menu item', () => {
+        it('should show Agent Unavailability menu item when CustomAgentUnavailableStatuses flag is enabled', () => {
             mockUseFlag.mockImplementation((key) => {
                 if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
                     return true
@@ -297,18 +297,20 @@ describe('SettingsNavbar', () => {
 
             renderComponent()
 
-            expect(screen.getByText('Agent Statuses')).toBeInTheDocument()
+            expect(screen.getByText('Agent unavailability')).toBeInTheDocument()
         })
 
-        it('should hide Agent Statuses menu item when CustomAgentUnavailableStatuses flag is disabled', () => {
+        it('should hide Agent Unavailability menu item when CustomAgentUnavailableStatuses flag is disabled', () => {
             mockUseFlag.mockImplementation(() => false)
 
             renderComponent()
 
-            expect(screen.queryByText('Agent Statuses')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Agent unavailability'),
+            ).not.toBeInTheDocument()
         })
 
-        it('should render Agent Statuses link with correct href', () => {
+        it('should render Agent Unavailability link with correct href', () => {
             mockUseFlag.mockImplementation((key) => {
                 if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
                     return true
@@ -319,7 +321,7 @@ describe('SettingsNavbar', () => {
             renderComponent()
 
             const agentStatusesLink = screen.getByRole('link', {
-                name: /agent statuses/i,
+                name: /agent unavailability/i,
             })
 
             expect(agentStatusesLink).toHaveAttribute(
@@ -328,7 +330,7 @@ describe('SettingsNavbar', () => {
             )
         })
 
-        it('should not render Agent Statuses for non-admin users', () => {
+        it('should not render Agent Unavailability for non-admin users', () => {
             mockUseFlag.mockImplementation((key) => {
                 if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
                     return true
@@ -347,7 +349,9 @@ describe('SettingsNavbar', () => {
 
             renderComponent(nonAdminStore)
 
-            expect(screen.queryByText('Agent Statuses')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Agent unavailability'),
+            ).not.toBeInTheDocument()
         })
     })
 })

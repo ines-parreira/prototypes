@@ -265,7 +265,7 @@ const SettingsNavbar = () => {
                         {isAgentUnavailabilityEnabled && (
                             <Item
                                 to="agent-statuses"
-                                text="Agent Statuses"
+                                text="Agent unavailability"
                                 requiredRole={UserRole.Admin}
                             />
                         )}

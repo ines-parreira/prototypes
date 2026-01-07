@@ -100,6 +100,7 @@
         "@knocklabs/react": "^0.7.31",
         "@reduxjs/toolkit": "^1.9.7",
         "@repo/customer": "workspace:*",
+        "@repo/agent-status": "workspace:*",
         "@repo/feature-flags": "workspace:*",
         "@repo/forms": "workspace:*",
         "@repo/logging": "workspace:*",
