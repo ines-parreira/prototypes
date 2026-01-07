@@ -1732,6 +1732,45 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
         })
     })
 
+    it('should show error when wait time exceeds maximum of 7 days', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: undefined,
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'welcome',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const user = userEvent.setup()
+
+        const waitTimeInput = screen.getByDisplayValue('0')
+        await act(async () => {
+            await user.clear(waitTimeInput)
+            await user.type(waitTimeInput, '10081')
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'Please enter wait time between 0 and 10080 minutes (7 days)',
+                ),
+            ).toBeInTheDocument()
+        })
+    })
+
     it('should call handleUpdate with wait_time_minutes when updating welcome journey', async () => {
         mockUseJourneyContext.mockReturnValue({
             journeyData: {

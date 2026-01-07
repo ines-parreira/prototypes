@@ -8,12 +8,14 @@ import css from './MinutesInput.less'
 type MinutesInputProps = {
     value?: number
     isDisabled?: boolean
+    max?: number
     onChange?: (value: number) => void
     onValidationChange?: (isValid: boolean) => void
 }
 
 export const MinutesInput = ({
     value,
+    max,
     isDisabled = false,
     onChange = () => {},
     onValidationChange = () => {},
@@ -55,6 +57,7 @@ export const MinutesInput = ({
                 className={inputClass}
                 type="number"
                 min={0}
+                max={max}
                 step={1}
                 value={value}
                 onChange={handleChange}
