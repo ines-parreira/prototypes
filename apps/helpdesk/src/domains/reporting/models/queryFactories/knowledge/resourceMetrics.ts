@@ -1043,6 +1043,7 @@ type RelatedTicket = {
 type UseRelatedTicketsParams = {
     resourceSourceId: number
     resourceSourceSetId: number
+    shopIntegrationId: number
     timezone: string
     enabled: boolean
     dateRange: {
@@ -1078,21 +1079,26 @@ export const getLast28DaysDateRange = () => {
 export function useRelatedTickets({
     resourceSourceId,
     resourceSourceSetId,
+    shopIntegrationId,
     timezone,
     enabled,
     dateRange,
 }: UseRelatedTicketsParams): UseRelatedTicketsResult {
     const { outcomeCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
 
-    // Create filters with provided date range
+    // Create filters with provided date range and shop integration ID
     const filters: ApiStatsFilters = useMemo(() => {
         return {
             [FilterKey.Period]: {
                 start_datetime: dateRange.start_datetime,
                 end_datetime: dateRange.end_datetime,
             },
+            [FilterKey.Stores]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [shopIntegrationId],
+            },
         }
-    }, [dateRange])
+    }, [dateRange, shopIntegrationId])
 
     // Create the query
     const query = useMemo(
@@ -1226,6 +1232,7 @@ export type RelatedTicketsWithDrilldown = {
 type UseRelatedTicketsWithDrilldownParams = {
     resourceSourceId: number
     resourceSourceSetId: number
+    shopIntegrationId: number
     timezone: string
     enabled: boolean
     ticketCount: number
@@ -1246,6 +1253,7 @@ type UseRelatedTicketsWithDrilldownResult =
 export function useRelatedTicketsWithDrilldown({
     resourceSourceId,
     resourceSourceSetId,
+    shopIntegrationId,
     timezone,
     enabled,
     ticketCount,
@@ -1258,6 +1266,7 @@ export function useRelatedTicketsWithDrilldown({
     const relatedTicketsData = useRelatedTickets({
         resourceSourceId,
         resourceSourceSetId,
+        shopIntegrationId,
         timezone,
         enabled,
         dateRange,

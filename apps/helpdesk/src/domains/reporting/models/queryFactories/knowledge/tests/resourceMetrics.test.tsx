@@ -3186,6 +3186,7 @@ describe('useRelatedTickets', () => {
                 useRelatedTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: false,
                     dateRange: testDateRange,
@@ -3215,6 +3216,7 @@ describe('useRelatedTickets', () => {
                 useRelatedTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: true,
                     dateRange: testDateRange,
@@ -3247,6 +3249,7 @@ describe('useRelatedTickets', () => {
                 useRelatedTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: true,
                     dateRange: testDateRange,
@@ -3274,6 +3277,7 @@ describe('useRelatedTickets', () => {
                 useRelatedTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: true,
                     dateRange: testDateRange,
@@ -3303,6 +3307,7 @@ describe('useRelatedTickets', () => {
                 useRelatedTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: true,
                     dateRange: testDateRange,
@@ -3366,6 +3371,7 @@ describe('useRelatedTickets', () => {
                 useRelatedTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: true,
                     dateRange: testDateRange,
@@ -3421,6 +3427,7 @@ describe('useRelatedTickets', () => {
                 useRelatedTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: true,
                     dateRange: testDateRange,
@@ -3464,6 +3471,7 @@ describe('useRelatedTickets', () => {
                 useRelatedTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: true,
                     dateRange: testDateRange,
@@ -3512,6 +3520,7 @@ describe('useRelatedTickets', () => {
                 useRelatedTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: true,
                     dateRange: testDateRange,
@@ -3546,6 +3555,7 @@ describe('useRelatedTicketsWithDrilldown', () => {
                 useRelatedTicketsWithDrilldown({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: false,
                     ticketCount: 10,
@@ -3575,6 +3585,7 @@ describe('useRelatedTicketsWithDrilldown', () => {
                 useRelatedTicketsWithDrilldown({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: true,
                     ticketCount: 10,
@@ -3612,6 +3623,7 @@ describe('useRelatedTicketsWithDrilldown', () => {
                 useRelatedTicketsWithDrilldown({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: true,
                     ticketCount: 0,
@@ -3659,6 +3671,7 @@ describe('useRelatedTicketsWithDrilldown', () => {
                 useRelatedTicketsWithDrilldown({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: true,
                     ticketCount: 5,
@@ -3705,6 +3718,7 @@ describe('useRelatedTicketsWithDrilldown', () => {
                 useRelatedTicketsWithDrilldown({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
+                    shopIntegrationId: 456,
                     timezone: 'America/New_York',
                     enabled: true,
                     ticketCount: 5,

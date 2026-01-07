@@ -139,6 +139,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
             expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 0,
                 timezone: 'America/New_York',
                 enabled: false,
                 ticketCount: 42,
@@ -194,6 +195,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
             expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 0,
                 timezone: 'America/New_York',
                 enabled: true,
                 ticketCount: 42,
@@ -270,6 +272,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
             expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith({
                 resourceSourceId: 0,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 0,
                 timezone: 'America/New_York',
                 enabled: false,
                 ticketCount: 42,

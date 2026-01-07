@@ -120,6 +120,7 @@ describe('useKnowledgeRelatedTickets', () => {
             expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 456,
                 timezone: 'America/New_York',
                 enabled: false,
                 ticketCount: 42,
@@ -212,6 +213,7 @@ describe('useKnowledgeRelatedTickets', () => {
             expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 456,
                 timezone: 'America/New_York',
                 enabled: true,
                 ticketCount: 42,

@@ -59,6 +59,7 @@ export const useKnowledgeRelatedTickets = ({
     const relatedTickets = useRelatedTicketsWithDrilldown({
         resourceSourceId,
         resourceSourceSetId,
+        shopIntegrationId,
         timezone: timezone ?? 'UTC',
         enabled: isEnabled,
         ticketCount: resourceImpact.data?.tickets?.value ?? 0,
