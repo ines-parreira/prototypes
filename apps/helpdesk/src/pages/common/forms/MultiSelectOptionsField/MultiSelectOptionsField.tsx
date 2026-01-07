@@ -38,6 +38,12 @@ type Props = {
     dropdownClassName?: string
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<MultiSelectField />` from @gorgias/axiom instead.
+ * @date 2026-01-06
+ * @type ui-kit-migration
+ */
 export default function MultiSelectOptionsField(props: Props) {
     const {
         allowCustomOptions = false,

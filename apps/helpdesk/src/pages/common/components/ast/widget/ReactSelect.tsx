@@ -28,6 +28,12 @@ type Props = {
 
 type Option = SelectOption | SelectValue
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<SelectField />` from @gorgias/axiom instead.
+ * @date 2026-01-06
+ * @type ui-kit-migration
+ */
 export default class Select extends Component<Props> {
     static defaultProps = {
         onSearchChange: _noop,

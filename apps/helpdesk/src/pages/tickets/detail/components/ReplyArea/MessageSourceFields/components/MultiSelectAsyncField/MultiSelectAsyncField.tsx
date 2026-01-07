@@ -51,6 +51,13 @@ type State = {
     isLoading: boolean
     isInputFocused: boolean
 }
+
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<MultiSelectField />` from @gorgias/axiom instead.
+ * @date 2026-01-06
+ * @type ui-kit-migration
+ */
 class MultiSelectAsyncField extends Component<Props, State> {
     static defaultProps: Pick<Props, 'allowCreate' | 'disabled' | 'required'> =
         {

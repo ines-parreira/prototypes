@@ -28,6 +28,12 @@ type Props = {
     isDisabled?: boolean
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<TextField />` from @gorgias/axiom instead.
+ * @date 2026-01-06
+ * @type ui-kit-migration
+ */
 export default function TextField({
     id,
     label,
