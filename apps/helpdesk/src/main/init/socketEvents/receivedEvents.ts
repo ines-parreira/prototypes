@@ -18,6 +18,7 @@ import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
 import type { UseListVoiceCalls } from 'models/voiceCall/queries'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
 import { isVoiceCall } from 'models/voiceCall/types'
+import { throttledUpdateCustomerCache } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers'
 import { ActivityEvents, logActivityEvent } from 'services/activityTracker'
 import type { SocketManager } from 'services/socketManager/socketManager'
 import type {
@@ -103,6 +104,14 @@ const receivedEvents: ReceivedEvent[] = [
                     (json as CustomerUpdatedEvent).customer,
                 ),
             )
+
+            const customerId = (json as CustomerUpdatedEvent)?.customer?.get(
+                'id',
+            )
+
+            if (customerId) {
+                throttledUpdateCustomerCache(customerId)
+            }
         },
     },
     {
@@ -150,7 +159,13 @@ const receivedEvents: ReceivedEvent[] = [
             if (ticket.is_unread) {
                 reduxStore.dispatch(chatsActions.markChatAsUnread(ticket.id))
             }
+
             reduxStore.dispatch(ticketActions.mergeTicket(ticket) as any)
+
+            const customerId = ticket?.customer?.id
+            if (customerId) {
+                throttledUpdateCustomerCache(customerId)
+            }
         },
     },
     {

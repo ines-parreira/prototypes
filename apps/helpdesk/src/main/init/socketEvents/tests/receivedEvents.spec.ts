@@ -69,6 +69,8 @@ import { handleViewsCount } from 'state/views/actions'
 import { isViewSharedWithUser } from 'state/views/utils'
 import { isCurrentlyOnTicket } from 'utils'
 
+import { throttledUpdateCustomerCache } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers'
+
 import receivedEvents from '../receivedEvents'
 
 //$TsFixMe remove once init.js is migrated
@@ -83,6 +85,15 @@ jest.mock('state/entities/viewsCount/actions')
 jest.mock('state/ticket/actions')
 jest.mock('state/currentUser/actions')
 jest.mock('services/activityTracker')
+jest.mock(
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers',
+    () => ({
+        ...jest.requireActual(
+            'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers',
+        ),
+        throttledUpdateCustomerCache: jest.fn(),
+    }),
+)
 
 jest.mock('common/store', () => {
     /* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-member-access */
@@ -939,6 +950,13 @@ describe('receivedEvents', () => {
 
             expect(refetchSpy).toHaveBeenCalled()
         })
+
+        it('should call try to invalidate customer query cache', () => {
+            handler.onReceive({
+                ticket: { id: 1, customer: { id: 123 } },
+            } as any)
+            expect(throttledUpdateCustomerCache).toHaveBeenCalledWith(123)
+        })
     })
 
     describe('agent-availability-updated', () => {
@@ -957,6 +975,39 @@ describe('receivedEvents', () => {
                 true,
             )
             expect(chatActions.fetchChatsThrottled).toHaveBeenCalled()
+        })
+    })
+
+    describe('customer-updated', () => {
+        const handler = _find(receivedEvents, {
+            name: 'customer-updated',
+        }) as ReceivedEvent
+
+        it('should dispatch mergeCustomer action and call throttledUpdateCustomerCache with customer id', () => {
+            const customer = fromJS({
+                id: 456,
+                name: 'John Doe',
+                email: 'john@example.com',
+            })
+
+            handler.onReceive({
+                event: { type: 'customer-updated' },
+                customer,
+            })
+
+            expect(ticketActions.mergeCustomer).toHaveBeenCalledWith(customer)
+            expect(throttledUpdateCustomerCache).toHaveBeenCalledWith(
+                customer.get('id'),
+            )
+        })
+
+        it('should not break on non-customer / incorrect event data', () => {
+            handler.onReceive({
+                event: { type: 'customer-updated' },
+                customer: fromJS(undefined),
+            })
+
+            expect(throttledUpdateCustomerCache).not.toHaveBeenCalled()
         })
     })
 

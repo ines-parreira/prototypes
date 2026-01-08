@@ -10,6 +10,7 @@ import type { Integration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import type { ImmutableSource, Source, Template } from 'models/widget/types'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import { useWidgetData } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers'
 import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import { canDisplayWidget } from 'pages/common/components/infobar/utils'
 import { EditionContext } from 'providers/infobar/EditionContext'
@@ -64,6 +65,11 @@ const InfobarWidgets = ({
     const integrations = useAppSelector(getIntegrations)
     const widgetState = useAppSelector(getWidgetsState)
     const { isEditing } = useContext(EditionContext)
+
+    const path = getSourcePathFromContext(context, 'integrations') as string[]
+
+    const integrationData = useWidgetData({ source, path })
+
     if (!widgets) {
         return null
     }
@@ -71,15 +77,6 @@ const InfobarWidgets = ({
     const className = classnames(css.widgetsList, {
         editing: isEditing,
     })
-
-    const genericSourcePath = getSourcePathFromContext(
-        context,
-        'integrations',
-    ) as string[]
-    const integrationDatas = source.getIn(
-        genericSourcePath,
-        fromJS([]),
-    ) as List<Map<string, unknown>>
 
     const widgetsWithoutIntegration = widgets.filter((widget) =>
         [
@@ -94,7 +91,7 @@ const InfobarWidgets = ({
     const displayList: DisplayList = []
 
     if (!isEditing) {
-        integrationDatas.forEach((_, integrationId) => {
+        integrationData.forEach((_, integrationId) => {
             if (typeof integrationId === 'undefined') return
             displayList.push({
                 type: 'data',
@@ -121,7 +118,7 @@ const InfobarWidgets = ({
         widgets,
         displayList,
         integrations,
-        genericSourcePath,
+        path,
         isEditing,
     })
 
@@ -208,14 +205,14 @@ function getPreparedDisplayList({
     widgets,
     displayList,
     integrations,
-    genericSourcePath,
+    path,
     isEditing,
 }: {
     source: Map<string, unknown>
     widgets: List<Map<string, unknown>>
     displayList: DisplayList
     integrations: Integration[]
-    genericSourcePath: string[]
+    path: string[]
     isEditing?: boolean
 }) {
     let preparedDisplayList: PreparedDisplayList = []
@@ -226,7 +223,7 @@ function getPreparedDisplayList({
     displayList.forEach((item) => {
         let widget: Map<string, unknown> = fromJS({})
         let integration: Integration | undefined
-        let sourcePath = genericSourcePath.slice()
+        let sourcePath = path.slice()
 
         if (item.type === 'widget') {
             widget = item.widget || widget
@@ -395,7 +392,7 @@ function getPreparedDisplayList({
                     unknown
                 >,
                 type: 'placeholder',
-                absolutePath: genericSourcePath,
+                absolutePath: path,
             })
         })
 

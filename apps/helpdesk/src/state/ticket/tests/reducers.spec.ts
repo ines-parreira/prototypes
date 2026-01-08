@@ -1089,6 +1089,163 @@ describe('ticket reducers', () => {
                 ...newReplyOptions,
             })
         })
+
+        it('should keep old ticket.customer.integrations when key is missing', () => {
+            const integrationsValue = {
+                123: {
+                    type: 'shopify',
+                    name: 'My Store',
+                },
+            }
+
+            const newState = reducer(
+                initialState.mergeDeep(ticket).mergeDeep({
+                    customer: {
+                        integrations: integrationsValue,
+                    },
+                }),
+                {
+                    type: types.MERGE_TICKET,
+                    ticket: ticket.mergeDeep({
+                        customer: {
+                            id: ticket.getIn(['customer', 'id']),
+                        },
+                    }),
+                } as unknown as GorgiasAction,
+            )
+
+            expect(newState.getIn(['customer', 'integrations'])).toEqual(
+                fromJS(integrationsValue),
+            )
+        })
+
+        it('should update ticket.customer.integrations when new value is provided', () => {
+            const oldIntegrationsValue = {
+                123: {
+                    type: 'shopify',
+                    name: 'Old Store',
+                },
+            }
+            const newIntegrationsValue = {
+                123: {
+                    type: 'shopify',
+                    name: 'New Store',
+                },
+                456: {
+                    type: 'bigcommerce',
+                    name: 'Big Store',
+                },
+            }
+
+            const newState = reducer(
+                initialState.mergeDeep(ticket).mergeDeep({
+                    customer: {
+                        integrations: oldIntegrationsValue,
+                    },
+                }),
+                {
+                    type: types.MERGE_TICKET,
+                    ticket: ticket.mergeDeep({
+                        customer: {
+                            id: ticket.getIn(['customer', 'id']),
+                            integrations: newIntegrationsValue,
+                        },
+                    }),
+                } as unknown as GorgiasAction,
+            )
+
+            expect(newState.getIn(['customer', 'integrations'])).toEqual(
+                fromJS(newIntegrationsValue),
+            )
+        })
+
+        it('should not preserve integrations when customer IDs do not match', () => {
+            const integrationsValue = {
+                123: {
+                    type: 'shopify',
+                    name: 'My Store',
+                },
+            }
+
+            const newState = reducer(
+                initialState.mergeDeep(ticket).mergeDeep({
+                    customer: {
+                        id: 1,
+                        integrations: integrationsValue,
+                    },
+                }),
+                {
+                    type: types.MERGE_TICKET,
+                    ticket: ticket.mergeDeep({
+                        customer: {
+                            id: 999, // Different customer ID
+                            integrations: null,
+                        },
+                    }),
+                } as unknown as GorgiasAction,
+            )
+
+            // Should not preserve old integrations because customer ID changed
+            expect(newState.getIn(['customer', 'integrations'])).toBeNull()
+        })
+
+        it('should not preserve old integrations when new value is explicitly null', () => {
+            const integrationsValue = {
+                123: {
+                    type: 'shopify',
+                    name: 'My Store',
+                },
+            }
+
+            const newState = reducer(
+                initialState.mergeDeep(ticket).mergeDeep({
+                    customer: {
+                        integrations: integrationsValue,
+                    },
+                }),
+                {
+                    type: types.MERGE_TICKET,
+                    ticket: ticket.mergeDeep({
+                        customer: {
+                            id: ticket.getIn(['customer', 'id']),
+                            integrations: null,
+                        },
+                    }),
+                } as unknown as GorgiasAction,
+            )
+
+            expect(newState.getIn(['customer', 'integrations'])).toBeNull()
+        })
+
+        it('should not preserve old integrations when new value is empty object', () => {
+            const integrationsValue = {
+                123: {
+                    type: 'shopify',
+                    name: 'My Store',
+                },
+            }
+
+            const newState = reducer(
+                initialState.mergeDeep(ticket).mergeDeep({
+                    customer: {
+                        integrations: integrationsValue,
+                    },
+                }),
+                {
+                    type: types.MERGE_TICKET,
+                    ticket: ticket.mergeDeep({
+                        customer: {
+                            id: ticket.getIn(['customer', 'id']),
+                            integrations: {},
+                        },
+                    }),
+                } as unknown as GorgiasAction,
+            )
+
+            expect(newState.getIn(['customer', 'integrations'])).toEqual(
+                fromJS({}),
+            )
+        })
     })
 
     describe('handle MERGE_CUSTOMER', () => {
@@ -1223,6 +1380,106 @@ describe('ticket reducers', () => {
                 )
             },
         )
+
+        it('should keep old customer.integrations when key is missing', () => {
+            const newName = 'John Doe'
+            const integrationsValue = {
+                123: {
+                    type: 'shopify',
+                    name: 'My Store',
+                },
+            }
+
+            const newState = reducer(
+                initialState.mergeDeep({
+                    customer: {
+                        id: 1,
+                        name: 'Romain',
+                        integrations: integrationsValue,
+                    },
+                }),
+                {
+                    type: types.MERGE_CUSTOMER,
+                    customer: {
+                        id: 1,
+                        name: newName,
+                    },
+                } as unknown as GorgiasAction,
+            )
+
+            expect(newState.getIn(['customer', 'name'])).toEqual(newName)
+            expect(newState.getIn(['customer', 'integrations'])).toEqual(
+                fromJS(integrationsValue),
+            )
+        })
+
+        it('should update customer.integrations when new value is provided', () => {
+            const newName = 'John Doe'
+            const oldIntegrationsValue = {
+                123: {
+                    type: 'shopify',
+                    name: 'Old Store',
+                },
+            }
+            const newIntegrationsValue = {
+                123: {
+                    type: 'shopify',
+                    name: 'New Store',
+                },
+                456: {
+                    type: 'bigcommerce',
+                    name: 'Big Store',
+                },
+            }
+
+            const newState = reducer(
+                initialState.mergeDeep({
+                    customer: {
+                        id: 1,
+                        name: 'Romain',
+                        integrations: oldIntegrationsValue,
+                    },
+                }),
+                {
+                    type: types.MERGE_CUSTOMER,
+                    customer: {
+                        id: 1,
+                        name: newName,
+                        integrations: newIntegrationsValue,
+                    },
+                } as unknown as GorgiasAction,
+            )
+
+            expect(newState.getIn(['customer', 'name'])).toEqual(newName)
+            expect(newState.getIn(['customer', 'integrations'])).toEqual(
+                fromJS(newIntegrationsValue),
+            )
+        })
+
+        it('should not preserve old integrations when old value is null', () => {
+            const newName = 'John Doe'
+
+            const newState = reducer(
+                initialState.mergeDeep({
+                    customer: {
+                        id: 1,
+                        name: 'Romain',
+                        integrations: null,
+                    },
+                }),
+                {
+                    type: types.MERGE_CUSTOMER,
+                    customer: {
+                        id: 1,
+                        name: newName,
+                        integrations: null,
+                    },
+                } as unknown as GorgiasAction,
+            )
+
+            expect(newState.getIn(['customer', 'name'])).toEqual(newName)
+            expect(newState.getIn(['customer', 'integrations'])).toBeNull()
+        })
     })
 
     describe('handle MERGE_CUSTOMER_EXTERNAL_DATA', () => {

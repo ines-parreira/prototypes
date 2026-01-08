@@ -494,8 +494,14 @@ export default function reducer(
             for (const dataKey of [
                 CUSTOMER_EXTERNAL_DATA_KEY,
                 CUSTOMER_ECOMMERCE_DATA_KEY,
+                'integrations',
             ]) {
-                if (ticket?.getIn(['customer', dataKey])) continue
+                if (
+                    dataKey === 'integrations' &&
+                    ticket?.hasIn(['customer', dataKey])
+                ) {
+                    continue
+                } else if (ticket?.getIn(['customer', dataKey])) continue
 
                 const newCustomerId = ticket?.getIn(['customer', 'id'])
                 const oldCustomerId = state.getIn(['customer', 'id'])
@@ -592,8 +598,14 @@ export default function reducer(
             for (const dataKey of [
                 CUSTOMER_EXTERNAL_DATA_KEY,
                 CUSTOMER_ECOMMERCE_DATA_KEY,
+                'integrations',
             ]) {
-                if (customerData.get(dataKey)) continue
+                if (
+                    dataKey === 'integrations' &&
+                    customerData.hasIn(['integrations'])
+                ) {
+                    continue
+                } else if (customerData.get(dataKey)) continue
 
                 const oldData = state.getIn(['customer', dataKey])
                 if (oldData) {

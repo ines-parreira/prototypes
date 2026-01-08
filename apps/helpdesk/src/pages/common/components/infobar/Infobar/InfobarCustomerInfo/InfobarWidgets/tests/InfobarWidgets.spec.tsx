@@ -1,4 +1,5 @@
 import { assumeMock } from '@repo/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -18,6 +19,7 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import { WidgetEnvironment } from 'state/widgets/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import Widget from 'Widgets/modules/Widget'
 
 import InfobarWidgets, {
@@ -27,6 +29,7 @@ import Placeholder from '../widgets/Placeholder'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
+const queryClient = mockQueryClient()
 
 jest.mock('../widgets/Placeholder')
 const mockedPlaceholder = assumeMock(Placeholder)
@@ -293,11 +296,13 @@ describe('InfobarWidgets component', () => {
     it("should not display anything if there's no widgets", () => {
         const { container } = render(
             <Provider store={store}>
-                <InfobarWidgets
-                    widgets={null}
-                    context={WidgetEnvironment.Ticket}
-                    source={baseSource}
-                />
+                <QueryClientProvider client={queryClient}>
+                    <InfobarWidgets
+                        widgets={null}
+                        context={WidgetEnvironment.Ticket}
+                        source={baseSource}
+                    />
+                </QueryClientProvider>
             </Provider>,
         )
 
@@ -307,14 +312,16 @@ describe('InfobarWidgets component', () => {
     it('should display integrations with data and 3rd party / standalone widget in non-editing mode', () => {
         render(
             <Provider store={store}>
-                <EditionContext.Provider value={{ isEditing: false }}>
-                    <InfobarWidgets
-                        widgets={baseWidgets}
-                        context={WidgetEnvironment.Ticket}
-                        source={baseSource}
-                        displayTabs
-                    />
-                </EditionContext.Provider>
+                <QueryClientProvider client={queryClient}>
+                    <EditionContext.Provider value={{ isEditing: false }}>
+                        <InfobarWidgets
+                            widgets={baseWidgets}
+                            context={WidgetEnvironment.Ticket}
+                            source={baseSource}
+                            displayTabs
+                        />
+                    </EditionContext.Provider>
+                </QueryClientProvider>
             </Provider>,
         )
 
@@ -358,13 +365,15 @@ describe('InfobarWidgets component', () => {
     it('should display all possible widgets in editing mode', () => {
         render(
             <Provider store={store}>
-                <EditionContext.Provider value={{ isEditing: true }}>
-                    <InfobarWidgets
-                        widgets={baseWidgets}
-                        context={WidgetEnvironment.Ticket}
-                        source={baseSource}
-                    />
-                </EditionContext.Provider>
+                <QueryClientProvider client={queryClient}>
+                    <EditionContext.Provider value={{ isEditing: true }}>
+                        <InfobarWidgets
+                            widgets={baseWidgets}
+                            context={WidgetEnvironment.Ticket}
+                            source={baseSource}
+                        />
+                    </EditionContext.Provider>
+                </QueryClientProvider>
             </Provider>,
         )
         expect(
@@ -397,14 +406,16 @@ describe('InfobarWidgets component', () => {
 
         render(
             <Provider store={store}>
-                <EditionContext.Provider value={{ isEditing: false }}>
-                    <InfobarWidgets
-                        widgets={standaloneWidgets}
-                        context={WidgetEnvironment.Ticket}
-                        source={baseSource}
-                        displayTabs
-                    />
-                </EditionContext.Provider>
+                <QueryClientProvider client={queryClient}>
+                    <EditionContext.Provider value={{ isEditing: false }}>
+                        <InfobarWidgets
+                            widgets={standaloneWidgets}
+                            context={WidgetEnvironment.Ticket}
+                            source={baseSource}
+                            displayTabs
+                        />
+                    </EditionContext.Provider>
+                </QueryClientProvider>
             </Provider>,
         )
 
@@ -421,13 +432,15 @@ describe('InfobarWidgets component', () => {
         const isEditionValue = { isEditing: true }
         const { rerender } = render(
             <Provider store={store}>
-                <EditionContext.Provider value={isEditionValue}>
-                    <InfobarWidgets
-                        widgets={baseWidgets}
-                        context={WidgetEnvironment.Ticket}
-                        source={baseSource}
-                    />
-                </EditionContext.Provider>
+                <QueryClientProvider client={queryClient}>
+                    <EditionContext.Provider value={isEditionValue}>
+                        <InfobarWidgets
+                            widgets={baseWidgets}
+                            context={WidgetEnvironment.Ticket}
+                            source={baseSource}
+                        />
+                    </EditionContext.Provider>
+                </QueryClientProvider>
             </Provider>,
         )
 
@@ -440,13 +453,15 @@ describe('InfobarWidgets component', () => {
 
         rerender(
             <Provider store={store}>
-                <EditionContext.Provider value={isEditionValue}>
-                    <InfobarWidgets
-                        widgets={baseWidgets}
-                        context={WidgetEnvironment.Ticket}
-                        source={newSource}
-                    />
-                </EditionContext.Provider>
+                <QueryClientProvider client={queryClient}>
+                    <EditionContext.Provider value={isEditionValue}>
+                        <InfobarWidgets
+                            widgets={baseWidgets}
+                            context={WidgetEnvironment.Ticket}
+                            source={newSource}
+                        />
+                    </EditionContext.Provider>
+                </QueryClientProvider>
             </Provider>,
         )
         expect(mockedWidget.mock.calls.length).toBe(0)
