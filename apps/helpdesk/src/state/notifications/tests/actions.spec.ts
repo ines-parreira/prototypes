@@ -244,5 +244,94 @@ describe('actions', () => {
             const expectedActions = store.getActions()
             expect(expectedActions).toMatchSnapshot()
         })
+
+        it('should use default CTA when notification.CTA is not provided', () => {
+            const messageNotification = 'Account usage notification'
+            store.dispatch(
+                handleUsageBanner({
+                    newAccountStatus: 'active',
+                    currentAccountStatus: 'active',
+                    notification: {
+                        id: 'usage-banner',
+                        type: AlertBannerTypes.Warning,
+                        message: messageNotification,
+                    },
+                }),
+            )
+            const expectedActions = store.getActions()
+            expect(expectedActions).toMatchObject([
+                {
+                    type: types.upsertNotification,
+                    payload: expect.objectContaining({
+                        CTA: {
+                            type: 'internal',
+                            text: 'Go to billing page',
+                            to: '/app/settings/billing',
+                        },
+                    }),
+                },
+            ])
+        })
+
+        it('should use notification.CTA when provided', () => {
+            const messageNotification = 'Custom notification with CTA'
+            const customCTA = {
+                type: 'internal' as const,
+                text: 'View Details',
+                to: '/app/settings/account',
+            }
+            store.dispatch(
+                handleUsageBanner({
+                    newAccountStatus: 'active',
+                    currentAccountStatus: 'active',
+                    notification: {
+                        id: 'custom-banner',
+                        type: AlertBannerTypes.Warning,
+                        message: messageNotification,
+                        CTA: customCTA,
+                    },
+                }),
+            )
+            const expectedActions = store.getActions()
+            expect(expectedActions).toMatchObject([
+                {
+                    type: types.upsertNotification,
+                    payload: expect.objectContaining({
+                        CTA: customCTA,
+                    }),
+                },
+            ])
+        })
+
+        it('should use external CTA when provided from notification', () => {
+            const messageNotification = 'External link notification'
+            const externalCTA = {
+                type: 'external' as const,
+                text: 'Learn More',
+                href: 'https://example.com/help',
+                opensInNewTab: true,
+            }
+            store.dispatch(
+                handleUsageBanner({
+                    newAccountStatus: 'active',
+                    currentAccountStatus: 'active',
+                    notification: {
+                        id: 'external-banner',
+                        type: AlertBannerTypes.Info,
+                        message: messageNotification,
+                        CTA: externalCTA,
+                    },
+                }),
+            )
+            const expectedActions = store.getActions()
+            expect(expectedActions).toMatchObject([
+                {
+                    type: types.upsertNotification,
+                    payload: expect.objectContaining({
+                        CTA: externalCTA,
+                    }),
+                },
+            ])
+        })
     })
 })

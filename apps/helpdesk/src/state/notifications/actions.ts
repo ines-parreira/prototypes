@@ -165,6 +165,12 @@ export const handleUsageBanner =
         }
 
         if (notification) {
+            const defaultCTA = {
+                type: 'internal' as const,
+                text: 'Go to billing page',
+                to: '/app/settings/billing',
+            }
+
             void dispatch(
                 notify({
                     id: USAGE_NOTIFICATION_BANNER,
@@ -175,11 +181,7 @@ export const handleUsageBanner =
                             ? AlertBannerTypes.Critical
                             : AlertBannerTypes.Warning,
                     message: notification.message,
-                    CTA: {
-                        type: 'internal',
-                        text: 'Go to billing page',
-                        to: '/app/settings/billing',
-                    },
+                    CTA: notification.CTA ? notification.CTA : defaultCTA,
                 }),
             )
         }
