@@ -23,7 +23,7 @@ export default function TicketVoiceCallOutboundStatus({ voiceCall }: Props) {
                     <div>Waiting for </div>
                     <VoiceCallCustomerLabel
                         customerId={voiceCall.customer_id}
-                        phoneNumber={voiceCall.phone_number_source}
+                        phoneNumber={voiceCall.phone_number_destination}
                     />
                     ...
                 </div>
@@ -62,7 +62,7 @@ export default function TicketVoiceCallOutboundStatus({ voiceCall }: Props) {
                     <div className={css.errorStatus}>Unanswered by </div>
                     <VoiceCallCustomerLabel
                         customerId={voiceCall.customer_id}
-                        phoneNumber={voiceCall.phone_number_source}
+                        phoneNumber={voiceCall.phone_number_destination}
                     />
                 </div>
             )

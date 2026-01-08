@@ -63,12 +63,19 @@ describe('TicketVoiceCallOutboundStatus', () => {
             const { getByText, container } = renderComponent({
                 customer_id: '123',
                 phone_number_source: '+1234567890',
+                phone_number_destination: '+0987654321',
             })
             expect(getByText(expectedText)).toBeInTheDocument()
             const agentLabel = container.querySelector(
                 '[data-interactable="true"]',
             )
             expect(agentLabel).not.toBeInTheDocument()
+            if (displayStatus !== VoiceCallDisplayStatus.Failed) {
+                const customerLabel = container.querySelector('[data-phone]')
+                expect(customerLabel?.getAttribute('data-phone')).toBe(
+                    '+0987654321',
+                )
+            }
         },
     )
 
