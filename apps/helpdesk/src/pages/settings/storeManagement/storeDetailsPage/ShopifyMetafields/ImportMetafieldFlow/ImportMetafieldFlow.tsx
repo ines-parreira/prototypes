@@ -2,6 +2,8 @@ import React, { useCallback, useMemo } from 'react'
 
 import pluralize from 'pluralize'
 
+import { Box } from '@gorgias/axiom'
+
 import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -14,6 +16,7 @@ import { useFieldSelection } from './hooks/useFieldSelection'
 import { useImportMetafields } from './hooks/useImportMetafields'
 import { useImportWizard } from './hooks/useImportWizard'
 import ImportableCategories from './ImportableCategories/ImportableCategories'
+import ImportDisclaimer from './ImportDisclaimer/ImportDisclaimer'
 import MetafieldsImportList from './MetafieldsImportList/MetafieldsImportList'
 
 import styles from './ImportMetafieldFlow.less'
@@ -103,6 +106,11 @@ export default function ImportMetafieldFlow({
                 className={styles.categoriesModalHeader}
                 title="Import Shopify metafields to Gorgias"
             />
+            {allSelectedFields?.length > 0 && (
+                <Box padding="md">
+                    <ImportDisclaimer />
+                </Box>
+            )}
             <ModalBody>
                 {step === 'categories' ? (
                     <ImportableCategories

@@ -1,7 +1,10 @@
 import type { ReactNode } from 'react'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
+
+import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import orderIcon from 'assets/img/icons/order-icon.svg'
 
@@ -19,6 +22,11 @@ export default function MetafieldsContainer({
     onOpened,
 }: Props) {
     const [isOpen, setIsOpen] = useState(false)
+    const headerRef = useRef<HTMLDivElement>(null)
+    const enableShopifyMetafieldIngestion = useFlag(
+        FeatureFlagKey.EnableShopifyMetafieldsIngestionUI,
+        false,
+    )
     const onClick = () => {
         setIsOpen(!isOpen)
         if (!isOpen) {
@@ -27,7 +35,7 @@ export default function MetafieldsContainer({
     }
     return (
         <div className={css.container}>
-            <div className={css.header}>
+            <div className={css.header} ref={headerRef}>
                 <img alt={'Metafields'} src={orderIcon} className={css.icon} />
                 <span className={css.title}>{title}</span>
                 <span
@@ -46,6 +54,13 @@ export default function MetafieldsContainer({
                     )}
                 </span>
             </div>
+            {enableShopifyMetafieldIngestion && (
+                <Tooltip placement="top-end" target={headerRef}>
+                    Shopify metafields apply only to new or updated customers
+                    and orders. Anything created before the import won&apos;t be
+                    updated retroactively.
+                </Tooltip>
+            )}
             <div className={css.content}>{isOpen && children}</div>
         </div>
     )

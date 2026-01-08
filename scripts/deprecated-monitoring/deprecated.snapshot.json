@@ -1,6 +1,6 @@
 {
-  "date": "2026-01-07T17:06:53.689Z",
-  "total": 3031,
+  "date": "2026-01-08T10:38:06.967Z",
+  "total": 3033,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -3128,7 +3128,7 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1472,
+      "count": 1474,
       "usages": [
         {
           "name": "LegacyButton",
@@ -3723,7 +3723,7 @@
         },
         {
           "name": "LegacyTooltip",
-          "count": 301,
+          "count": 302,
           "files": [
             "apps/helpdesk/src/AIJourney/components/FieldPresentation/FieldPresentation.tsx",
             "apps/helpdesk/src/auto_qa/components/AutoQA.tsx",
@@ -4024,6 +4024,7 @@
             "apps/helpdesk/src/timeline/TicketFields.tsx",
             "apps/helpdesk/src/Widgets/modules/Shopify/components/EditableListField.tsx",
             "apps/helpdesk/src/Widgets/modules/Shopify/modules/Metafields/components/MetafieldFields.tsx",
+            "apps/helpdesk/src/Widgets/modules/Shopify/modules/Metafields/components/MetafieldsContainer.tsx",
             "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/modules/OrderForm/components/OrderTable.tsx",
             "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/modules/OrderForm/components/OrderTotals.tsx"
           ]
@@ -4537,7 +4538,7 @@
         },
         {
           "name": "LegacyBanner",
-          "count": 38,
+          "count": 39,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/AlertBanner.tsx",
             "apps/helpdesk/src/domains/reporting/pages/automate/aiSalesAgent/components/SalesOverview.tsx",
@@ -4573,6 +4574,7 @@
             "apps/helpdesk/src/pages/settings/businessHours/EditCustomBusinessHoursIntegrationsSection.tsx",
             "apps/helpdesk/src/pages/settings/businessHours/EditCustomBusinessHoursPage.tsx",
             "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/General/ShopifySettings/SyncNotificationNew.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/ImportMetafieldFlow/ImportDisclaimer/ImportDisclaimer.tsx",
             "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/ImportMetafieldFlow/MaxMetafieldsImportedBanner/MaxFieldsImportedBanner.tsx",
             "apps/helpdesk/src/pages/standalone/components/HandoverWebhookFields.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/Error.tsx",
