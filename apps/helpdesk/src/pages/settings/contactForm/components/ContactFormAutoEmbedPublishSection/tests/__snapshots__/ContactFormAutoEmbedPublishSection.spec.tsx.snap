@@ -44,7 +44,7 @@ exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - connected to a no
         <span
           class="typography-bold-md ui-text-text-d239"
           data-name="text"
-          style="text-align: left;"
+          style="text-align: left; text-wrap: nowrap;"
         >
           <strong>
             Embed Form
@@ -99,7 +99,7 @@ exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - connected to a sh
         <span
           class="typography-bold-md ui-text-text-d239"
           data-name="text"
-          style="text-align: left;"
+          style="text-align: left; text-wrap: nowrap;"
         >
           <strong>
             Embed Form
@@ -185,7 +185,7 @@ exports[`<ContactFormAutoEmbedPublishSection /> Contact Form - not connected to 
         <span
           class="typography-bold-md ui-text-text-d239"
           data-name="text"
-          style="text-align: left;"
+          style="text-align: left; text-wrap: nowrap;"
         >
           <strong>
             Embed Form

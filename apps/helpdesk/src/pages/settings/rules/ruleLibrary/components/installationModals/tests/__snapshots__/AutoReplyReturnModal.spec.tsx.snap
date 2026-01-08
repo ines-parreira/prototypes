@@ -158,7 +158,7 @@ exports[`<AutoReplyReturnModal/> should render the instalation modal when AI Age
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Start a return
@@ -345,7 +345,7 @@ exports[`<AutoReplyReturnModal/> should render the instalation modal when AI Age
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Start a return

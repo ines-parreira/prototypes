@@ -203,7 +203,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
                   <span
                     class="typography-bold-md ui-text-text-d239"
                     data-name="text"
-                    style="text-align: left;"
+                    style="text-align: left; text-wrap: nowrap;"
                   >
                     <strong>
                       Connect BigCommerce
@@ -492,7 +492,7 @@ exports[`<BigCommerce/> List should render 1`] = `
               <span
                 class="typography-bold-md ui-text-text-d239"
                 data-name="text"
-                style="text-align: left;"
+                style="text-align: left; text-wrap: nowrap;"
               >
                 <strong>
                   Connect BigCommerce

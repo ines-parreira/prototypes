@@ -47,7 +47,7 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a non-
           <span
             class="typography-bold-md ui-text-text-d239"
             data-name="text"
-            style="text-align: left;"
+            style="text-align: left; text-wrap: nowrap;"
           >
             <strong>
               Embed Help Center
@@ -145,7 +145,7 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
           <span
             class="typography-bold-md ui-text-text-d239"
             data-name="text"
-            style="text-align: left;"
+            style="text-align: left; text-wrap: nowrap;"
           >
             <strong>
               Embed Help Center
@@ -204,7 +204,7 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
           <span
             class="typography-bold-md ui-text-text-d239"
             data-name="text"
-            style="text-align: left;"
+            style="text-align: left; text-wrap: nowrap;"
           >
             <strong>
               Embed Help Center

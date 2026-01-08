@@ -678,7 +678,7 @@ exports[`<MigrationStateModal /> snapshots Connected 1`] = `
                 <span
                   class="typography-bold-md ui-text-text-d239"
                   data-name="text"
-                  style="text-align: left;"
+                  style="text-align: left; text-wrap: nowrap;"
                 >
                   <strong>
                     Start migrating
@@ -1104,7 +1104,7 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                 <span
                   class="typography-bold-md ui-text-text-d239"
                   data-name="text"
-                  style="text-align: left;"
+                  style="text-align: left; text-wrap: nowrap;"
                 >
                   <strong>
                     Loading
@@ -1351,7 +1351,7 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
                 <span
                   class="typography-bold-md ui-text-text-d239"
                   data-name="text"
-                  style="text-align: left;"
+                  style="text-align: left; text-wrap: nowrap;"
                 >
                   <strong>
                     Loading
@@ -1504,7 +1504,7 @@ exports[`<MigrationStateModal /> snapshots Migration start loading 1`] = `
                 <span
                   class="typography-bold-md ui-text-text-d239"
                   data-name="text"
-                  style="text-align: left;"
+                  style="text-align: left; text-wrap: nowrap;"
                 >
                   <strong>
                     Start migrating
@@ -2153,7 +2153,7 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
                 <span
                   class="typography-bold-md ui-text-text-d239"
                   data-name="text"
-                  style="text-align: left;"
+                  style="text-align: left; text-wrap: nowrap;"
                 >
                   <strong>
                     Finish

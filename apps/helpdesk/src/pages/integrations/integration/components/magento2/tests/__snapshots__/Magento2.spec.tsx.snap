@@ -220,7 +220,7 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
                   <span
                     class="typography-bold-md ui-text-text-d239"
                     data-name="text"
-                    style="text-align: left;"
+                    style="text-align: left; text-wrap: nowrap;"
                   >
                     <strong>
                       Connect 
@@ -462,7 +462,7 @@ exports[`<Magento2/> Integration should render 1`] = `
                   <span
                     class="typography-bold-md ui-text-text-d239"
                     data-name="text"
-                    style="text-align: left;"
+                    style="text-align: left; text-wrap: nowrap;"
                   >
                     <strong>
                       Update Connection
@@ -552,7 +552,7 @@ exports[`<Magento2/> List should render 1`] = `
               <span
                 class="typography-bold-md ui-text-text-d239"
                 data-name="text"
-                style="text-align: left;"
+                style="text-align: left; text-wrap: nowrap;"
               >
                 <strong>
                   Connect 
@@ -803,7 +803,7 @@ exports[`<Magento2/> New should render 1`] = `
                   <span
                     class="typography-bold-md ui-text-text-d239"
                     data-name="text"
-                    style="text-align: left;"
+                    style="text-align: left; text-wrap: nowrap;"
                   >
                     <strong>
                       Connect App

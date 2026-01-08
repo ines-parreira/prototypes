@@ -23,7 +23,7 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
         <span
           class="typography-bold-md ui-text-text-d239"
           data-name="text"
-          style="text-align: left;"
+          style="text-align: left; text-wrap: nowrap;"
         >
           <strong>
             Foo
@@ -97,7 +97,7 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
         <span
           class="typography-bold-md ui-text-text-d239"
           data-name="text"
-          style="text-align: left;"
+          style="text-align: left; text-wrap: nowrap;"
         >
           <strong>
             Bar
@@ -125,7 +125,7 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
         <span
           class="typography-bold-md ui-text-text-d239"
           data-name="text"
-          style="text-align: left;"
+          style="text-align: left; text-wrap: nowrap;"
         >
           <strong>
             Baz

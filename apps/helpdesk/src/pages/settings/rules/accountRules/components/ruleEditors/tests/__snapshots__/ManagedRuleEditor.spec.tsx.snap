@@ -2678,7 +2678,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                 <span
                   class="typography-bold-md ui-text-text-d239"
                   data-name="text"
-                  style="text-align: left;"
+                  style="text-align: left; text-wrap: nowrap;"
                 >
                   <strong>
                     Start a return

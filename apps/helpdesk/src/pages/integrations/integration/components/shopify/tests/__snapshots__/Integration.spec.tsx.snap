@@ -197,7 +197,7 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
                   <span
                     class="typography-bold-md ui-text-text-d239"
                     data-name="text"
-                    style="text-align: left;"
+                    style="text-align: left; text-wrap: nowrap;"
                   >
                     <strong>
                       Update Connection

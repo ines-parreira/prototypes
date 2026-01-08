@@ -696,7 +696,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 <span
                   class="typography-bold-md ui-text-text-d239"
                   data-name="text"
-                  style="text-align: left;"
+                  style="text-align: left; text-wrap: nowrap;"
                 >
                   <strong>
                     Save Changes

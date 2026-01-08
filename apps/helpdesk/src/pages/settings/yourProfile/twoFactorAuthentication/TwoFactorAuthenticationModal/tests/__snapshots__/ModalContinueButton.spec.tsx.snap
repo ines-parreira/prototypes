@@ -22,7 +22,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
       <span
         class="typography-bold-md ui-text-text-d239"
         data-name="text"
-        style="text-align: left;"
+        style="text-align: left; text-wrap: nowrap;"
       >
         <strong>
           Continue
@@ -65,7 +65,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
       <span
         class="typography-bold-md ui-text-text-d239"
         data-name="text"
-        style="text-align: left;"
+        style="text-align: left; text-wrap: nowrap;"
       >
         <strong>
           Continue
@@ -108,7 +108,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
       <span
         class="typography-bold-md ui-text-text-d239"
         data-name="text"
-        style="text-align: left;"
+        style="text-align: left; text-wrap: nowrap;"
       >
         <strong>
           I Have Saved My Codes
@@ -150,7 +150,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button disa
       <span
         class="typography-bold-md ui-text-text-d239"
         data-name="text"
-        style="text-align: left;"
+        style="text-align: left; text-wrap: nowrap;"
       >
         <strong>
           Continue
@@ -182,7 +182,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button disa
       <span
         class="typography-bold-md ui-text-text-d239"
         data-name="text"
-        style="text-align: left;"
+        style="text-align: left; text-wrap: nowrap;"
       >
         <strong>
           Continue
@@ -214,7 +214,7 @@ exports[`<ModalContinueButton /> render() should render the Continue button disa
       <span
         class="typography-bold-md ui-text-text-d239"
         data-name="text"
-        style="text-align: left;"
+        style="text-align: left; text-wrap: nowrap;"
       >
         <strong>
           I Have Saved My Codes
@@ -245,7 +245,7 @@ exports[`<ModalContinueButton /> render() should render the appropriate Continue
       <span
         class="typography-bold-md ui-text-text-d239"
         data-name="text"
-        style="text-align: left;"
+        style="text-align: left; text-wrap: nowrap;"
       >
         <strong>
           Continue
@@ -276,7 +276,7 @@ exports[`<ModalContinueButton /> render() should render the appropriate Continue
       <span
         class="typography-bold-md ui-text-text-d239"
         data-name="text"
-        style="text-align: left;"
+        style="text-align: left; text-wrap: nowrap;"
       >
         <strong>
           Continue
@@ -307,7 +307,7 @@ exports[`<ModalContinueButton /> render() should render the appropriate Continue
       <span
         class="typography-bold-md ui-text-text-d239"
         data-name="text"
-        style="text-align: left;"
+        style="text-align: left; text-wrap: nowrap;"
       >
         <strong>
           I Have Saved My Codes

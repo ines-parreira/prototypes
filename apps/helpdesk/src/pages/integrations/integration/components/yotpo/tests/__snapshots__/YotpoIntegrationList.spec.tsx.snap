@@ -51,7 +51,7 @@ exports[`<YotpoIntegrationList/> render() should not render an integration cause
             <span
               class="typography-bold-md ui-text-text-d239"
               data-name="text"
-              style="text-align: left;"
+              style="text-align: left; text-wrap: nowrap;"
             >
               <strong>
                 Add Yotpo account
@@ -153,7 +153,7 @@ exports[`<YotpoIntegrationList/> render() should render a deactivated integratio
             <span
               class="typography-bold-md ui-text-text-d239"
               data-name="text"
-              style="text-align: left;"
+              style="text-align: left; text-wrap: nowrap;"
             >
               <strong>
                 Add Yotpo account
@@ -294,7 +294,7 @@ exports[`<YotpoIntegrationList/> render() should render a loader because the int
             <span
               class="typography-bold-md ui-text-text-d239"
               data-name="text"
-              style="text-align: left;"
+              style="text-align: left; text-wrap: nowrap;"
             >
               <strong>
                 Add Yotpo account
@@ -428,7 +428,7 @@ exports[`<YotpoIntegrationList/> render() should render the Yotpo integration 1`
             <span
               class="typography-bold-md ui-text-text-d239"
               data-name="text"
-              style="text-align: left;"
+              style="text-align: left; text-wrap: nowrap;"
             >
               <strong>
                 Add Yotpo account

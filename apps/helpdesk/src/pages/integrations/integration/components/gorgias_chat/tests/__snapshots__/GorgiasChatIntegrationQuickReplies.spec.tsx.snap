@@ -206,7 +206,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                   <span
                     class="typography-bold-md ui-text-text-d239"
                     data-name="text"
-                    style="text-align: left;"
+                    style="text-align: left; text-wrap: nowrap;"
                   >
                     <strong>
                       Save Changes
@@ -665,7 +665,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                   <span
                     class="typography-bold-md ui-text-text-d239"
                     data-name="text"
-                    style="text-align: left;"
+                    style="text-align: left; text-wrap: nowrap;"
                   >
                     <strong>
                       Save Changes

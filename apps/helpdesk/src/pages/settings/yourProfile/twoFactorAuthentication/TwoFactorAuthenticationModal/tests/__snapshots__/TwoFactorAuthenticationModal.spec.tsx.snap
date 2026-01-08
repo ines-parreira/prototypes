@@ -373,7 +373,7 @@ abcdefgh16"
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         I Have Saved My Codes
@@ -598,7 +598,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Continue
@@ -833,7 +833,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Continue
@@ -1057,7 +1057,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Continue
@@ -1288,7 +1288,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Continue
@@ -1496,7 +1496,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Continue
@@ -1704,7 +1704,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Continue
@@ -1918,7 +1918,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Continue
@@ -2132,7 +2132,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with app 
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Continue
@@ -2360,7 +2360,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Continue
@@ -2532,7 +2532,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Continue
@@ -2703,7 +2703,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Continue

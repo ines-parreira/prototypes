@@ -212,7 +212,7 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
               <span
                 class="typography-bold-md ui-text-text-d239"
                 data-name="text"
-                style="text-align: left;"
+                style="text-align: left; text-wrap: nowrap;"
               >
                 <strong>
                   Add SMS
@@ -447,7 +447,7 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
               <span
                 class="typography-bold-md ui-text-text-d239"
                 data-name="text"
-                style="text-align: left;"
+                style="text-align: left; text-wrap: nowrap;"
               >
                 <strong>
                   Add SMS
@@ -674,7 +674,7 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
               <span
                 class="typography-bold-md ui-text-text-d239"
                 data-name="text"
-                style="text-align: left;"
+                style="text-align: left; text-wrap: nowrap;"
               >
                 <strong>
                   Add SMS

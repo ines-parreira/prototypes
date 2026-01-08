@@ -304,7 +304,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Got it
@@ -920,7 +920,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
                     <span
                       class="typography-bold-md ui-text-text-d239"
                       data-name="text"
-                      style="text-align: left;"
+                      style="text-align: left; text-wrap: nowrap;"
                     >
                       <strong>
                         Got it
