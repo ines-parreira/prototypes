@@ -17,8 +17,11 @@ export const nonEmptyChannels = (
             return acc
         }
 
+        const channelDimension =
+            metricDataOrChannels.data.dimensions?.[0] ?? CHANNEL_DIMENSION
+
         metricDataOrChannels.data.allData
-            .map((data) => data[CHANNEL_DIMENSION])
+            .map((data) => data[channelDimension])
             .filter(notEmpty)
             .forEach((channel) => {
                 acc[channel] = true
