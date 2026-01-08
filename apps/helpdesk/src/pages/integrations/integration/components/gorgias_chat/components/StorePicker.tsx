@@ -1,5 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
+import classNames from 'classnames'
+
 import { ListItem, SelectField } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
 
@@ -10,6 +12,8 @@ import type {
 import { IntegrationType } from 'models/integration/types'
 
 import useThemeAppExtensionInstallation from '../hooks/useThemeAppExtensionInstallation'
+
+import css from './StorePicker.less'
 
 const getStoreIconName = (type: StoreIntegration['type']): IconName => {
     switch (type) {
@@ -33,6 +37,8 @@ type Props = {
     placeholder?: string
     error?: string
     showHelperText?: boolean
+    label?: string
+    size?: 'sm' | 'md' | 'full'
 }
 
 export const StorePicker = ({
@@ -44,6 +50,8 @@ export const StorePicker = ({
     placeholder = 'Select a store',
     error,
     showHelperText = true,
+    label = 'Connect a store',
+    size = 'md',
 }: Props) => {
     const selectedStore = useMemo(
         () =>
@@ -93,12 +101,17 @@ export const StorePicker = ({
     }, [shouldUseThemeAppExtensionInstallation])
 
     return (
-        <div role="listbox" aria-label="Store selection">
+        <div
+            className={classNames(css.storePickerWrapper, css[size])}
+            aria-label="Store selection"
+            role="listbox"
+        >
             <SelectField
                 items={storeIntegrations}
                 value={selectedStore}
+                maxHeight={300}
                 onChange={(store) => onChange(store.id)}
-                label="Connect a store"
+                label={label}
                 aria-label="Select a store to connect"
                 placeholder={placeholder}
                 isRequired

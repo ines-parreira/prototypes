@@ -164,7 +164,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                             isDisabled={isSubmitting}
                             variant={'tertiary'}
                         >
-                            Save &amp; Customize Later
+                            {'Save & Customize Later'}
                         </Button>
                     </div>
                 }

@@ -478,7 +478,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                 }
                                 isDisabled={isSubmitting}
                             >
-                                Save &amp; Customize Later
+                                {'Save & Customize Later'}
                             </Button>
                         ) : (
                             <Link to="/app/settings/channels/gorgias_chat">
@@ -515,19 +515,18 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                             caption="Give your chat a name for internal reference. This title won't be visible to customers."
                         />
                     </div>
-                    <div className={css.constrainedInput}>
-                        <LanguagePicker
-                            languages={languagePickerLanguages}
-                            availableLanguages={availableLanguages}
-                            onSelectLanguageChange={handleLanguageChange}
-                            isMultiLanguageEnabled={chatMultiLanguagesEnabled}
-                            label={
-                                chatMultiLanguagesEnabled
-                                    ? 'Default language'
-                                    : 'Language'
-                            }
-                        />
-                    </div>
+                    <LanguagePicker
+                        languages={languagePickerLanguages}
+                        availableLanguages={availableLanguages}
+                        onSelectLanguageChange={handleLanguageChange}
+                        isMultiLanguageEnabled={chatMultiLanguagesEnabled}
+                        label={
+                            chatMultiLanguagesEnabled
+                                ? 'Default language'
+                                : 'Language'
+                        }
+                        size="sm"
+                    />
                     <div>
                         <Text
                             variant="bold"
@@ -579,44 +578,39 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                         </RadioGroup>
                         {isStoreRequired && (
                             <>
-                                <div className={css.constrainedInput}>
-                                    <StorePicker
-                                        selectedStoreIntegrationId={
-                                            storeIntegration
-                                                ? storeIntegration.id
-                                                : null
-                                        }
-                                        gorgiasChatIntegrations={
-                                            gorgiasChatIntegrations
-                                        }
-                                        storeIntegrations={storeIntegrations}
-                                        onChange={(
-                                            storeIntegrationId: number,
-                                        ) => {
-                                            const selectedStore =
-                                                storeIntegrations.find(
-                                                    (integration) =>
-                                                        integration.id ===
-                                                        storeIntegrationId,
-                                                )
-
-                                            setCurrentStoreIntegration(
-                                                selectedStore,
+                                <StorePicker
+                                    selectedStoreIntegrationId={
+                                        storeIntegration
+                                            ? storeIntegration.id
+                                            : null
+                                    }
+                                    gorgiasChatIntegrations={
+                                        gorgiasChatIntegrations
+                                    }
+                                    storeIntegrations={storeIntegrations}
+                                    onChange={(storeIntegrationId: number) => {
+                                        const selectedStore =
+                                            storeIntegrations.find(
+                                                (integration) =>
+                                                    integration.id ===
+                                                    storeIntegrationId,
                                             )
 
-                                            if (!name && selectedStore) {
-                                                setCurrentName(
-                                                    selectedStore.name,
-                                                )
-                                            }
-                                        }}
-                                        error={
-                                            hasStoreError
-                                                ? 'This field is required.'
-                                                : undefined
+                                        setCurrentStoreIntegration(
+                                            selectedStore,
+                                        )
+
+                                        if (!name && selectedStore) {
+                                            setCurrentName(selectedStore.name)
                                         }
-                                    />
-                                </div>
+                                    }}
+                                    error={
+                                        hasStoreError
+                                            ? 'This field is required.'
+                                            : undefined
+                                    }
+                                    size="sm"
+                                />
 
                                 {storeIntegration &&
                                     isStoreOfShopifyType &&

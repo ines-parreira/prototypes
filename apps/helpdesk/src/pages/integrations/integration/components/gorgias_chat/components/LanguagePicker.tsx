@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import classNames from 'classnames'
+
 import { Button, ListItem, Select, SelectField, Tag } from '@gorgias/axiom'
 
 import { Language as LanguageEnum } from 'constants/languages'
@@ -19,6 +21,7 @@ type LanguagePickerProps = {
     onSelectLanguageChange: (languages: Language[]) => void
     isMultiLanguageEnabled?: boolean
     label?: string
+    size?: 'sm' | 'md' | 'full'
 }
 
 const mapLanguage = (language: Language): Language => {
@@ -42,6 +45,7 @@ export function LanguagePicker({
     onSelectLanguageChange,
     isMultiLanguageEnabled = true,
     label = 'Default language',
+    size = 'md',
 }: LanguagePickerProps) {
     const mappedLanguages = useMemo(() => {
         return availableLanguages.map(mapLanguage)
@@ -129,7 +133,7 @@ export function LanguagePicker({
 
     return (
         <div
-            className={css.languagePickerWrapper}
+            className={classNames(css.languagePickerWrapper, css[size])}
             role="group"
             aria-label="Language selection"
         >
@@ -138,6 +142,7 @@ export function LanguagePicker({
                 value={defaultLanguage}
                 onChange={onDefaultLanguageChange}
                 label={label}
+                maxHeight={300}
                 isRequired
                 isSearchable
                 aria-label="Select default language"

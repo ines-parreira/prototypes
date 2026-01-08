@@ -17,6 +17,7 @@ import WizardStep from 'pages/common/components/wizard/WizardStep'
 import GorgiasChatCreationWizardStepAutomate from './components/steps/GorgiasChatCreationWizardStepAutomate'
 import GorgiasChatCreationWizardStepBasics from './components/steps/GorgiasChatCreationWizardStepBasics'
 import GorgiasChatCreationWizardStepBranding from './components/steps/GorgiasChatCreationWizardStepBranding'
+import { GorgiasChatCreationWizardStepInstallation } from './components/steps/GorgiasChatCreationWizardStepInstallation'
 
 import css from './GorgiasChatCreationWizard.less'
 
@@ -118,6 +119,16 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
                                 name={GorgiasChatCreationWizardSteps.Automate}
                             >
                                 <GorgiasChatCreationWizardStepAutomate
+                                    isSubmitting={isSubmitting}
+                                    integration={integration}
+                                />
+                            </WizardStep>
+                            <WizardStep
+                                name={
+                                    GorgiasChatCreationWizardSteps.Installation
+                                }
+                            >
+                                <GorgiasChatCreationWizardStepInstallation
                                     isSubmitting={isSubmitting}
                                     integration={integration}
                                 />

@@ -291,7 +291,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                                 Continue
                             </Button>
                         </div>
-
                         <Button
                             variant="tertiary"
                             onClick={() =>
@@ -303,7 +302,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                             }
                             isDisabled={isFormSubmitting}
                         >
-                            Save &amp; Customize Later
+                            {'Save & Customize Later'}
                         </Button>
                     </div>
                 }
@@ -312,8 +311,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                     <div className={css.section}>
                         <StorePicker
                             selectedStoreIntegrationId={
-                                (storeIntegration && storeIntegration?.id) ??
-                                null
+                                storeIntegration?.id ?? null
                             }
                             gorgiasChatIntegrations={gorgiasChatIntegrations}
                             storeIntegrations={storeIntegrations}
