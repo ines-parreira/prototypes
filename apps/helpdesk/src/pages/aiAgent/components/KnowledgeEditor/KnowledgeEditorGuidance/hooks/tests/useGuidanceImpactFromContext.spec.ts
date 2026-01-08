@@ -1,0 +1,271 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { renderHook } from '@testing-library/react'
+
+import {
+    getLast28DaysDateRange,
+    useResourceMetrics,
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+import useAppSelector from 'hooks/useAppSelector'
+import type { GuidanceContextValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context/types'
+import type { MetricProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
+import type { GuidanceArticle } from 'pages/aiAgent/types'
+
+import { useGuidanceContext } from '../../context'
+import { useGuidanceImpactFromContext } from '../useGuidanceImpactFromContext'
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
+
+jest.mock(
+    'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
+    () => ({
+        useResourceMetrics: jest.fn(),
+        getLast28DaysDateRange: jest.fn(),
+    }),
+)
+
+jest.mock('hooks/useAppSelector', () => jest.fn())
+
+jest.mock('../../context', () => ({
+    useGuidanceContext: jest.fn(),
+}))
+
+const mockUseFlag = useFlag as jest.Mock
+const mockUseResourceMetrics = useResourceMetrics as jest.Mock
+const mockGetLast28DaysDateRange = getLast28DaysDateRange as jest.Mock
+const mockUseAppSelector = useAppSelector as jest.Mock
+const mockUseGuidanceContext = useGuidanceContext as jest.Mock
+
+describe('useGuidanceImpactFromContext', () => {
+    const mockGuidanceArticle: GuidanceArticle = {
+        id: 123,
+        title: 'Test Guidance',
+        content: '<p>Test content</p>',
+        locale: 'en-US',
+        visibility: 'PUBLIC',
+        createdDatetime: '2024-01-01T00:00:00Z',
+        lastUpdated: '2024-01-01T00:00:00Z',
+        templateKey: null,
+        isCurrent: true,
+        draftVersionId: null,
+        publishedVersionId: 1,
+    }
+
+    const defaultContextValue: Partial<GuidanceContextValue> = {
+        guidanceArticle: mockGuidanceArticle,
+        config: {
+            guidanceHelpCenter: {
+                id: 1,
+                shop_integration_id: 456,
+            },
+        } as GuidanceContextValue['config'],
+    }
+
+    const mockMetricsData = {
+        tickets: { value: 10, onClick: undefined } as MetricProps,
+        handoverTickets: { value: 5, onClick: undefined } as MetricProps,
+        csat: { value: 4.5, onClick: undefined } as MetricProps,
+        intents: ['Intent 1', 'Intent 2'],
+    }
+
+    const mockDateRange = {
+        since: '2025-01-01',
+        until: '2025-01-28',
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+
+        mockUseAppSelector.mockReturnValue('America/New_York')
+        mockUseGuidanceContext.mockReturnValue(defaultContextValue)
+        mockGetLast28DaysDateRange.mockReturnValue(mockDateRange)
+        mockUseResourceMetrics.mockReturnValue({
+            data: mockMetricsData,
+            isLoading: false,
+        })
+    })
+
+    describe('when feature flag is disabled', () => {
+        it('should return undefined', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            const { result } = renderHook(() => useGuidanceImpactFromContext())
+
+            expect(result.current).toBeUndefined()
+        })
+
+        it('should still call useResourceMetrics but with enabled=false', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            renderHook(() => useGuidanceImpactFromContext())
+
+            expect(mockUseResourceMetrics).toHaveBeenCalledWith({
+                resourceSourceId: 123,
+                resourceSourceSetId: 1,
+                shopIntegrationId: 456,
+                timezone: 'America/New_York',
+                enabled: false,
+                dateRange: mockDateRange,
+            })
+        })
+    })
+
+    describe('when feature flag is enabled', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+        })
+
+        it('should return guidance impact data', () => {
+            const { result } = renderHook(() => useGuidanceImpactFromContext())
+
+            expect(result.current).toEqual({
+                tickets: mockMetricsData.tickets,
+                handoverTickets: mockMetricsData.handoverTickets,
+                csat: mockMetricsData.csat,
+                intents: mockMetricsData.intents,
+                isLoading: false,
+            })
+        })
+
+        it('should call useFlag with correct feature flag key', () => {
+            renderHook(() => useGuidanceImpactFromContext())
+
+            expect(mockUseFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
+            )
+        })
+
+        it('should call useResourceMetrics with enabled=true when guidanceArticle exists', () => {
+            renderHook(() => useGuidanceImpactFromContext())
+
+            expect(mockUseResourceMetrics).toHaveBeenCalledWith({
+                resourceSourceId: 123,
+                resourceSourceSetId: 1,
+                shopIntegrationId: 456,
+                timezone: 'America/New_York',
+                enabled: true,
+                dateRange: mockDateRange,
+            })
+        })
+
+        it('should call useResourceMetrics with enabled=false when guidanceArticle is undefined', () => {
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextValue,
+                guidanceArticle: undefined,
+            })
+
+            renderHook(() => useGuidanceImpactFromContext())
+
+            expect(mockUseResourceMetrics).toHaveBeenCalledWith({
+                resourceSourceId: 0,
+                resourceSourceSetId: 1,
+                shopIntegrationId: 456,
+                timezone: 'America/New_York',
+                enabled: false,
+                dateRange: mockDateRange,
+            })
+        })
+
+        it('should use UTC as default timezone when selector returns undefined', () => {
+            mockUseAppSelector.mockReturnValue(undefined)
+
+            renderHook(() => useGuidanceImpactFromContext())
+
+            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    timezone: 'UTC',
+                }),
+            )
+        })
+
+        it('should use 0 for shop_integration_id when not available', () => {
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextValue,
+                config: {
+                    guidanceHelpCenter: {
+                        id: 1,
+                        shop_integration_id: null,
+                    },
+                } as GuidanceContextValue['config'],
+            })
+
+            renderHook(() => useGuidanceImpactFromContext())
+
+            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    shopIntegrationId: 0,
+                }),
+            )
+        })
+
+        it('should return isLoading=true when metrics are loading', () => {
+            mockUseResourceMetrics.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+            })
+
+            const { result } = renderHook(() => useGuidanceImpactFromContext())
+
+            expect(result.current?.isLoading).toBe(true)
+        })
+
+        it('should return undefined for metrics when data is not available', () => {
+            mockUseResourceMetrics.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() => useGuidanceImpactFromContext())
+
+            expect(result.current).toEqual({
+                tickets: undefined,
+                handoverTickets: undefined,
+                csat: undefined,
+                intents: undefined,
+                isLoading: false,
+            })
+        })
+    })
+
+    describe('memoization', () => {
+        it('should return same reference when dependencies do not change', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            const { result, rerender } = renderHook(() =>
+                useGuidanceImpactFromContext(),
+            )
+
+            const firstResult = result.current
+            rerender()
+            const secondResult = result.current
+
+            expect(firstResult).toBe(secondResult)
+        })
+
+        it('should return new reference when resourceImpact changes', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            const { result, rerender } = renderHook(() =>
+                useGuidanceImpactFromContext(),
+            )
+
+            const firstResult = result.current
+
+            mockUseResourceMetrics.mockReturnValue({
+                data: {
+                    ...mockMetricsData,
+                    tickets: { value: 20, onClick: undefined },
+                },
+                isLoading: false,
+            })
+
+            rerender()
+            const secondResult = result.current
+
+            expect(firstResult).not.toBe(secondResult)
+            expect(secondResult?.tickets?.value).toBe(20)
+        })
+    })
+})

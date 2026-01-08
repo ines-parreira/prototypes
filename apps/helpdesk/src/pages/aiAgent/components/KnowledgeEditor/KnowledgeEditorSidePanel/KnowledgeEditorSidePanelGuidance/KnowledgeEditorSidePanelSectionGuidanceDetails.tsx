@@ -1,3 +1,5 @@
+import { useGuidanceDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
+
 import {
     KnowledgeEditorSidePanelFieldAIAgentStatus,
     KnowledgeEditorSidePanelFieldDateField,
@@ -10,21 +12,20 @@ import { KnowledgeEditorSidePanelTwoColumnsContent } from '../KnowledgeEditorSid
 import css from '../KnowledgeEditorSidePanelCommonFields.less'
 
 export type Props = {
-    aiAgentStatus: {
-        value: boolean
-        onChange: (value: boolean) => void
-        tooltip?: string
-    }
-    createdDatetime?: Date
-    lastUpdatedDatetime?: Date
     sectionId: string
-    isUpdating: boolean
-    isDraft?: boolean
 }
 
-export const KnowledgeEditorSidePanelSectionGuidanceDetails = (
-    props: Props,
-) => {
+export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
+    sectionId,
+}: Props) => {
+    const {
+        aiAgentStatus,
+        createdDatetime,
+        lastUpdatedDatetime,
+        isUpdating,
+        isDraft,
+    } = useGuidanceDetailsFromContext()
+
     const columns = [
         {
             left: 'Type',
@@ -35,29 +36,25 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = (
                 />
             ),
         },
-        ...(props.isDraft !== undefined
-            ? [
-                  {
-                      left: 'Status',
-                      right: (
-                          <KnowledgeEditorSidePanelFieldStatus
-                              key="status"
-                              isDraft={props.isDraft}
-                          />
-                      ),
-                  },
-              ]
-            : []),
+        {
+            left: 'Status',
+            right: (
+                <KnowledgeEditorSidePanelFieldStatus
+                    key="status"
+                    isDraft={isDraft}
+                />
+            ),
+        },
         {
             left: 'In use by AI Agent',
             right: (
                 <KnowledgeEditorSidePanelFieldAIAgentStatus
                     key="ai-agent-status"
-                    checked={props.aiAgentStatus.value}
+                    checked={aiAgentStatus.value}
                     className={css.extraLeftMargin}
-                    onChange={props.aiAgentStatus.onChange}
-                    isDisabled={props.isUpdating}
-                    tooltip={props.aiAgentStatus.tooltip}
+                    onChange={aiAgentStatus.onChange}
+                    isDisabled={isUpdating}
+                    tooltip={aiAgentStatus.tooltip}
                 />
             ),
         },
@@ -65,7 +62,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = (
             left: 'Created',
             right: (
                 <KnowledgeEditorSidePanelFieldDateField
-                    date={props.createdDatetime}
+                    date={createdDatetime}
                     key="created"
                 />
             ),
@@ -74,7 +71,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = (
             left: 'Last updated',
             right: (
                 <KnowledgeEditorSidePanelFieldDateField
-                    date={props.lastUpdatedDatetime}
+                    date={lastUpdatedDatetime}
                     key="last-updated"
                 />
             ),
@@ -84,7 +81,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = (
     return (
         <KnowledgeEditorSidePanelSection
             header={{ title: 'Details' }}
-            sectionId={props.sectionId}
+            sectionId={sectionId}
         >
             <KnowledgeEditorSidePanelTwoColumnsContent columns={columns} />
         </KnowledgeEditorSidePanelSection>

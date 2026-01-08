@@ -8,7 +8,6 @@ import { Router } from 'react-router'
 import configureMockStore from 'redux-mock-store'
 
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
-import { KnowledgeEditorSidePanelGuidance } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelGuidance'
 import { KnowledgeEditorSidePanelURLSnippet } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelURLSnippet'
 
 import { KnowledgeEditorSidePanel } from './KnowledgeEditorSidePanel'
@@ -98,45 +97,6 @@ const mockIntents = [
     'Product::Availability',
     'Order::Cancellation',
 ]
-
-export const ForGuidance: Story = Template.bind({})
-ForGuidance.args = {
-    initialExpandedSections: ['details', 'impact', 'related-tickets'],
-    children: (
-        <KnowledgeEditorSidePanelGuidance
-            details={{
-                aiAgentStatus: { value: true, onChange: () => {} },
-                createdDatetime: new Date('2025-06-17'),
-                lastUpdatedDatetime: new Date('2025-06-17'),
-                isUpdating: false,
-            }}
-            impact={{
-                tickets: { value: 42 },
-                handoverTickets: { value: 5 },
-                csat: { value: 4.2 },
-                intents: mockIntents,
-            }}
-            relatedTickets={relatedTickets}
-        />
-    ),
-}
-
-export const ForNewGuidance: Story = Template.bind({})
-ForNewGuidance.args = {
-    initialExpandedSections: ['details', 'impact', 'related-tickets'],
-    children: (
-        <KnowledgeEditorSidePanelGuidance
-            details={{
-                aiAgentStatus: { value: true, onChange: () => {} },
-                createdDatetime: new Date('2025-06-17'),
-                lastUpdatedDatetime: new Date('2025-06-17'),
-                isUpdating: false,
-            }}
-            impact={{}}
-            relatedTickets={{ ticketCount: 0 }}
-        />
-    ),
-}
 
 export const ForDocumentSnippet: Story = Template.bind({})
 ForDocumentSnippet.args = {

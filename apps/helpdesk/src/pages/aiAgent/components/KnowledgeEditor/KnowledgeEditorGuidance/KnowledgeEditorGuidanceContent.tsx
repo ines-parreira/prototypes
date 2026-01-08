@@ -1,24 +1,14 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
-import {
-    getLast28DaysDateRange,
-    useResourceMetrics,
-} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
-import useAppSelector from 'hooks/useAppSelector'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
-import { getTimezone } from 'state/currentUser/selectors'
 
 import { KnowledgeEditorSidePanelGuidance } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelGuidance'
 import { KnowledgeEditorTopBar } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBar'
 import { GuidanceToolbarControls } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
 import { useGuidanceContext } from './context'
 import { useGuidanceAutoSave } from './context/useGuidanceAutoSave'
-import { useToggleVisibility } from './context/useToggleVisibility'
 import { KnowledgeEditorGuidanceEditView } from './edit/KnowledgeEditorGuidanceEditView'
-import { useGuidanceRelatedTicketsFromContext } from './hooks/useGuidanceRelatedTicketsFromContext'
 import { KnowledgeEditorGuidanceVersionBanner } from './KnowledgeEditorGuidanceVersionBanner'
 import { KnowledgeEditorGuidanceDeleteModal } from './modals/KnowledgeEditorGuidanceDeleteModal'
 import { KnowledgeEditorGuidanceDiscardDraftModal } from './modals/KnowledgeEditorGuidanceDiscardDraftModal'
@@ -32,57 +22,17 @@ type Props = {
 }
 
 export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
-    const isPerformanceStatsEnabled = useFlag(
-        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
-    )
-    const timezone = useAppSelector(getTimezone)
-
     const { state, dispatch, config, guidanceArticle, hasPendingChanges } =
         useGuidanceContext()
 
-    const {
-        shopName,
-        shopType,
-        guidanceHelpCenter,
-        onClickPrevious,
-        onClickNext,
-        onClose,
-    } = config
+    const { shopName, shopType, onClickPrevious, onClickNext, onClose } = config
 
     const { guidanceActions } = useGetGuidancesAvailableActions(
         shopName,
         shopType,
     )
 
-    const dateRange = useMemo(() => getLast28DaysDateRange(), [])
-
-    const resourceImpact = useResourceMetrics({
-        resourceSourceId: guidanceArticle?.id ?? 0,
-        resourceSourceSetId: guidanceHelpCenter.id,
-        shopIntegrationId: guidanceHelpCenter.shop_integration_id ?? 0,
-        timezone: timezone ?? 'UTC',
-        enabled: isPerformanceStatsEnabled && !!guidanceArticle,
-        dateRange,
-    })
-
-    const relatedTickets = useGuidanceRelatedTicketsFromContext()
-
-    const impact = useMemo(
-        () =>
-            isPerformanceStatsEnabled
-                ? {
-                      tickets: resourceImpact.data?.tickets,
-                      handoverTickets: resourceImpact.data?.handoverTickets,
-                      csat: resourceImpact.data?.csat,
-                      intents: resourceImpact.data?.intents,
-                      isLoading: resourceImpact.isLoading,
-                  }
-                : undefined,
-        [isPerformanceStatsEnabled, resourceImpact],
-    )
-
     const { onChangeField } = useGuidanceAutoSave()
-    const { toggleVisibility, isAtLimit, limitMessage } = useToggleVisibility()
 
     const isDisabled = state.isUpdating || state.isAutoSaving
 
@@ -166,33 +116,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                     </div>
 
                     {state.isDetailsView && (
-                        <KnowledgeEditorSidePanelGuidance
-                            details={{
-                                aiAgentStatus: {
-                                    value: state.visibility,
-                                    onChange: toggleVisibility,
-                                    tooltip:
-                                        isAtLimit && !state.visibility
-                                            ? limitMessage
-                                            : undefined,
-                                },
-                                createdDatetime: guidanceArticle
-                                    ? new Date(guidanceArticle.createdDatetime)
-                                    : undefined,
-                                lastUpdatedDatetime: guidanceArticle
-                                    ? new Date(guidanceArticle.lastUpdated)
-                                    : undefined,
-                                isUpdating:
-                                    isDisabled ||
-                                    (isAtLimit && !state.visibility),
-                                isDraft:
-                                    state.guidance?.isCurrent === undefined
-                                        ? false
-                                        : !state.guidance?.isCurrent,
-                            }}
-                            impact={impact}
-                            relatedTickets={relatedTickets}
-                        />
+                        <KnowledgeEditorSidePanelGuidance />
                     )}
                 </div>
             </div>

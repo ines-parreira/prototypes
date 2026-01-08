@@ -1,4 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -26,18 +25,6 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: (key: string) => mockUseFlag(key),
 }))
 
-// Mock resource metrics
-const mockUseResourceMetrics = jest.fn()
-jest.mock(
-    'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
-    () => ({
-        ...jest.requireActual(
-            'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
-        ),
-        useResourceMetrics: jest.fn((params) => mockUseResourceMetrics(params)),
-    }),
-)
-
 // Mock useGetGuidancesAvailableActions
 jest.mock(
     'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
@@ -54,15 +41,13 @@ jest.mock('pages/aiAgent/components/GuidanceEditor/variables', () => ({
     guidanceVariables: [],
 }))
 
-// Mock KnowledgeEditorSidePanelGuidance to capture props
-const mockSidePanelGuidance = jest.fn()
+// Mock KnowledgeEditorSidePanelGuidance - no longer receives props, fetches data via hooks
 jest.mock(
     '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelGuidance',
     () => ({
-        KnowledgeEditorSidePanelGuidance: (props: any) => {
-            mockSidePanelGuidance(props)
-            return <div data-testid="side-panel-guidance">Side Panel</div>
-        },
+        KnowledgeEditorSidePanelGuidance: () => (
+            <div data-testid="side-panel-guidance">Side Panel</div>
+        ),
     }),
 )
 
@@ -196,36 +181,10 @@ describe('KnowledgeEditorGuidanceContent', () => {
         jest.clearAllMocks()
         queryClient.clear()
         mockUseFlag.mockReturnValue(false)
-        mockUseResourceMetrics.mockReturnValue({
-            isLoading: false,
-            isError: false,
-            data: undefined,
-        })
     })
 
-    describe('impact calculation (line 68)', () => {
-        it('should pass undefined impact when performance stats flag is disabled (line 68)', () => {
-            // Feature flag is disabled
-            mockUseFlag.mockImplementation((key: string) => {
-                if (
-                    key === FeatureFlagKey.PerformanceStatsOnIndividualKnowledge
-                ) {
-                    return false
-                }
-                return false
-            })
-
-            mockUseResourceMetrics.mockReturnValue({
-                isLoading: false,
-                isError: false,
-                data: {
-                    tickets: { value: 156, onClick: undefined },
-                    handoverTickets: { value: 12, onClick: undefined },
-                    csat: { value: 4.5, onClick: undefined },
-                    intents: ['Order/Status', 'Shipping/Inquiry'],
-                },
-            })
-
+    describe('side panel rendering', () => {
+        it('should render side panel when isDetailsView is true (default)', () => {
             const closeHandlerRef = { current: null }
 
             render(
@@ -238,266 +197,9 @@ describe('KnowledgeEditorGuidanceContent', () => {
                 </Wrapper>,
             )
 
-            // Verify side panel is rendered with isDetailsView true (default)
             expect(
                 screen.getByTestId('side-panel-guidance'),
             ).toBeInTheDocument()
-
-            // Check that impact is undefined when flag is disabled
-            const callArgs = mockSidePanelGuidance.mock.calls[0][0]
-            expect(callArgs.impact).toBeUndefined()
-        })
-
-        it('should pass impact with data when performance stats flag is enabled (line 68)', () => {
-            // Feature flag is enabled
-            mockUseFlag.mockImplementation((key: string) => {
-                if (
-                    key === FeatureFlagKey.PerformanceStatsOnIndividualKnowledge
-                ) {
-                    return true
-                }
-                return false
-            })
-
-            const mockResourceMetricsData = {
-                tickets: { value: 156, onClick: undefined },
-                handoverTickets: { value: 12, onClick: undefined },
-                csat: { value: 4.5, onClick: undefined },
-                intents: ['Order/Status', 'Shipping/Inquiry'],
-            }
-
-            mockUseResourceMetrics.mockReturnValue({
-                isLoading: false,
-                isError: false,
-                data: mockResourceMetricsData,
-            })
-
-            const closeHandlerRef = { current: null }
-
-            render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider config={baseConfig}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
-            )
-
-            // Verify side panel is rendered
-            expect(
-                screen.getByTestId('side-panel-guidance'),
-            ).toBeInTheDocument()
-
-            // Check that impact contains the data when flag is enabled
-            expect(mockSidePanelGuidance).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    impact: {
-                        tickets: mockResourceMetricsData.tickets,
-                        handoverTickets:
-                            mockResourceMetricsData.handoverTickets,
-                        csat: mockResourceMetricsData.csat,
-                        intents: mockResourceMetricsData.intents,
-                        isLoading: false,
-                    },
-                }),
-            )
-        })
-
-        it('should pass impact with loading state when performance stats flag is enabled and data is loading (line 68)', () => {
-            // Feature flag is enabled
-            mockUseFlag.mockImplementation((key: string) => {
-                if (
-                    key === FeatureFlagKey.PerformanceStatsOnIndividualKnowledge
-                ) {
-                    return true
-                }
-                return false
-            })
-
-            mockUseResourceMetrics.mockReturnValue({
-                isLoading: true,
-                isError: false,
-                data: undefined,
-            })
-
-            const closeHandlerRef = { current: null }
-
-            render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider config={baseConfig}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
-            )
-
-            // Check that impact contains loading state when flag is enabled
-            const callArgs = mockSidePanelGuidance.mock.calls[0][0]
-            expect(callArgs.impact).toEqual({
-                tickets: undefined,
-                handoverTickets: undefined,
-                csat: undefined,
-                intents: undefined,
-                isLoading: true,
-            })
-        })
-
-        it('should pass impact with partial data when performance stats flag is enabled (line 68)', () => {
-            // Feature flag is enabled
-            mockUseFlag.mockImplementation((key: string) => {
-                if (
-                    key === FeatureFlagKey.PerformanceStatsOnIndividualKnowledge
-                ) {
-                    return true
-                }
-                return false
-            })
-
-            // Only partial data available
-            const partialData = {
-                tickets: { value: 100, onClick: undefined },
-                handoverTickets: undefined,
-                csat: undefined,
-                intents: undefined,
-            }
-
-            mockUseResourceMetrics.mockReturnValue({
-                isLoading: false,
-                isError: false,
-                data: partialData,
-            })
-
-            const closeHandlerRef = { current: null }
-
-            render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider config={baseConfig}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
-            )
-
-            // Check that impact contains partial data when flag is enabled
-            expect(mockSidePanelGuidance).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    impact: {
-                        tickets: partialData.tickets,
-                        handoverTickets: undefined,
-                        csat: undefined,
-                        intents: undefined,
-                        isLoading: false,
-                    },
-                }),
-            )
-        })
-    })
-
-    describe('useResourceMetrics hook call', () => {
-        it('should call useResourceMetrics with correct parameters', () => {
-            mockUseFlag.mockReturnValue(true)
-
-            const closeHandlerRef = { current: null }
-
-            render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider config={baseConfig}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
-            )
-
-            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    resourceSourceId: guidanceArticle.id,
-                    resourceSourceSetId: mockGuidanceHelpCenter.id,
-                    timezone: 'America/New_York',
-                    enabled: true,
-                }),
-            )
-        })
-
-        it('should disable useResourceMetrics when feature flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-
-            const closeHandlerRef = { current: null }
-
-            render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider config={baseConfig}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
-            )
-
-            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    enabled: false,
-                }),
-            )
-        })
-
-        it('should disable useResourceMetrics when guidanceArticle is null', () => {
-            mockUseFlag.mockReturnValue(true)
-
-            const configWithoutArticle: GuidanceContextConfig = {
-                shopName: 'Test Shop',
-                shopType: 'Test Shop Type',
-                guidanceHelpCenter: mockGuidanceHelpCenter,
-                guidanceArticle: undefined,
-                guidanceArticles: [],
-                initialMode: 'create',
-                onClose: jest.fn(),
-            }
-
-            const closeHandlerRef = { current: null }
-
-            render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider
-                        config={configWithoutArticle}
-                    >
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
-            )
-
-            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    enabled: false,
-                }),
-            )
-        })
-
-        it('should use guidanceHelpCenter.id when available', () => {
-            mockUseFlag.mockReturnValue(true)
-
-            const closeHandlerRef = { current: null }
-
-            render(
-                <Wrapper>
-                    <KnowledgeEditorGuidanceProvider config={baseConfig}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </KnowledgeEditorGuidanceProvider>
-                </Wrapper>,
-            )
-
-            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    resourceSourceSetId: mockGuidanceHelpCenter.id,
-                }),
-            )
         })
     })
 
