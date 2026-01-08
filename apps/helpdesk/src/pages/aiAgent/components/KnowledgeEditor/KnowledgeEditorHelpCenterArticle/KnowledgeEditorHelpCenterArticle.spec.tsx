@@ -207,13 +207,13 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
     })
 
     describe('loading state', () => {
-        it('shows KnowledgeEditorLoadingShell when isFetching is true', () => {
+        it('shows KnowledgeEditorLoadingShell when isLoading is true', () => {
             const mockUseGetHelpCenterArticle = jest.requireMock(
                 'models/helpCenter/queries',
             ).useGetHelpCenterArticle
             mockUseGetHelpCenterArticle.mockReturnValue({
                 data: undefined,
-                isFetching: true,
+                isLoading: true,
             })
 
             renderComponent({
@@ -247,7 +247,7 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                         locale: 'en-US',
                     },
                 },
-                isFetching: false,
+                isLoading: false,
             })
 
             render(

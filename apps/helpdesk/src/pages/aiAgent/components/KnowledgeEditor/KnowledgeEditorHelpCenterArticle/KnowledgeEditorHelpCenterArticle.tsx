@@ -152,7 +152,9 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
 
     return (
         <ArticleContextProvider config={config}>
-            <ArticleEditorInner isLoading={getArticle.isFetching} />
+            <ArticleEditorInner
+                isLoading={!!articleId && getArticle.isLoading}
+            />
         </ArticleContextProvider>
     )
 }
