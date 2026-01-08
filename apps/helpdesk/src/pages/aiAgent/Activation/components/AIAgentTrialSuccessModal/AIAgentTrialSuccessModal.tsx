@@ -2,7 +2,7 @@ import type React from 'react'
 
 import classNames from 'classnames'
 
-import { LegacyBadge as Badge, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyBadge as Badge, Button } from '@gorgias/axiom'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'

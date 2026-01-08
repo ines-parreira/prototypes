@@ -6,14 +6,31 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
 >
   <button
     aria-disabled="false"
-    class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
+    class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+    data-name="button"
+    data-rac=""
+    data-react-aria-pressable="true"
+    id="react-aria-:r0:"
+    tabindex="0"
     type="button"
   >
-    <span
-      class="ui-button-content-cef1"
+    <div
+      class="ui-button-surface-a432"
     >
-      Foo
-    </span>
+      <span
+        class="ui-button-content-a432"
+      >
+        <span
+          class="typography-bold-md ui-text-text-d239"
+          data-name="text"
+          style="text-align: left;"
+        >
+          <strong>
+            Foo
+          </strong>
+        </span>
+      </span>
+    </div>
   </button>
   <span
     class="wrapper center isNested group horizontal"
@@ -63,25 +80,59 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
   </span>
   <button
     aria-disabled="false"
-    class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
+    class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+    data-name="button"
+    data-rac=""
+    data-react-aria-pressable="true"
+    id="react-aria-:r2:"
+    tabindex="0"
     type="button"
   >
-    <span
-      class="ui-button-content-cef1"
+    <div
+      class="ui-button-surface-a432"
     >
-      Bar
-    </span>
+      <span
+        class="ui-button-content-a432"
+      >
+        <span
+          class="typography-bold-md ui-text-text-d239"
+          data-name="text"
+          style="text-align: left;"
+        >
+          <strong>
+            Bar
+          </strong>
+        </span>
+      </span>
+    </div>
   </button>
   <button
     aria-disabled="false"
-    class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
+    class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+    data-name="button"
+    data-rac=""
+    data-react-aria-pressable="true"
+    id="react-aria-:r4:"
+    tabindex="0"
     type="button"
   >
-    <span
-      class="ui-button-content-cef1"
+    <div
+      class="ui-button-surface-a432"
     >
-      Baz
-    </span>
+      <span
+        class="ui-button-content-a432"
+      >
+        <span
+          class="typography-bold-md ui-text-text-d239"
+          data-name="text"
+          style="text-align: left;"
+        >
+          <strong>
+            Baz
+          </strong>
+        </span>
+      </span>
+    </div>
   </button>
 </span>
 `;

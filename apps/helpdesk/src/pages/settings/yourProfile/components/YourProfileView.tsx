@@ -13,7 +13,7 @@ import { Form, FormGroup, FormText } from 'reactstrap'
 
 import {
     Avatar,
-    LegacyButton as Button,
+    Button,
     LegacyLabel as Label,
     LegacySelectField as SelectField,
     LegacyToggleField as ToggleField,

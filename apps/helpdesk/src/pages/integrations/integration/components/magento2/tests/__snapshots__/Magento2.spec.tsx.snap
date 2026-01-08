@@ -203,15 +203,32 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
           >
             <button
               aria-disabled="false"
-              class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
+              class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+              data-name="button"
+              data-rac=""
+              data-react-aria-pressable="true"
+              id="react-aria-:r0:"
+              tabindex="0"
               type="button"
             >
-              <span
-                class="ui-button-content-cef1"
+              <div
+                class="ui-button-surface-a432"
               >
-                Connect 
-                magento2
-              </span>
+                <span
+                  class="ui-button-content-a432"
+                >
+                  <span
+                    class="typography-bold-md ui-text-text-d239"
+                    data-name="text"
+                    style="text-align: left;"
+                  >
+                    <strong>
+                      Connect 
+                      magento2
+                    </strong>
+                  </span>
+                </span>
+              </div>
             </button>
           </a>
         </div>
@@ -427,14 +444,32 @@ exports[`<Magento2/> Integration should render 1`] = `
           <div>
             <button
               aria-disabled="true"
-              class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
+              class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+              data-disabled="true"
+              data-name="button"
+              data-rac=""
+              data-react-aria-pressable="true"
+              disabled=""
+              id="react-aria-:r2:"
               type="button"
             >
-              <span
-                class="ui-button-content-cef1"
+              <div
+                class="ui-button-surface-a432"
               >
-                Update Connection
-              </span>
+                <span
+                  class="ui-button-content-a432"
+                >
+                  <span
+                    class="typography-bold-md ui-text-text-d239"
+                    data-name="text"
+                    style="text-align: left;"
+                  >
+                    <strong>
+                      Update Connection
+                    </strong>
+                  </span>
+                </span>
+              </div>
             </button>
             <button
               aria-disabled="false"
@@ -500,15 +535,32 @@ exports[`<Magento2/> List should render 1`] = `
       >
         <button
           aria-disabled="false"
-          class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
+          class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+          data-name="button"
+          data-rac=""
+          data-react-aria-pressable="true"
+          id="react-aria-:r6:"
+          tabindex="0"
           type="button"
         >
-          <span
-            class="ui-button-content-cef1"
+          <div
+            class="ui-button-surface-a432"
           >
-            Connect 
-            magento2
-          </span>
+            <span
+              class="ui-button-content-a432"
+            >
+              <span
+                class="typography-bold-md ui-text-text-d239"
+                data-name="text"
+                style="text-align: left;"
+              >
+                <strong>
+                  Connect 
+                  magento2
+                </strong>
+              </span>
+            </span>
+          </div>
         </button>
       </a>
     </div>
@@ -733,14 +785,32 @@ exports[`<Magento2/> New should render 1`] = `
           <div>
             <button
               aria-disabled="true"
-              class="ui-button-wrapper-cef1 mr-2 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
+              class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+              data-disabled="true"
+              data-name="button"
+              data-rac=""
+              data-react-aria-pressable="true"
+              disabled=""
+              id="react-aria-:r4:"
               type="button"
             >
-              <span
-                class="ui-button-content-cef1"
+              <div
+                class="ui-button-surface-a432"
               >
-                Connect App
-              </span>
+                <span
+                  class="ui-button-content-a432"
+                >
+                  <span
+                    class="typography-bold-md ui-text-text-d239"
+                    data-name="text"
+                    style="text-align: left;"
+                  >
+                    <strong>
+                      Connect App
+                    </strong>
+                  </span>
+                </span>
+              </div>
             </button>
           </div>
         </form>

@@ -15,14 +15,31 @@ exports[`<TeamList /> should render with data 1`] = `
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
+        class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
+        id="react-aria-:r2:"
+        tabindex="0"
         type="button"
       >
-        <span
-          class="ui-button-content-cef1"
+        <div
+          class="ui-button-surface-a432"
         >
-          Create Team
-        </span>
+          <span
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-md ui-text-text-d239"
+              data-name="text"
+              style="text-align: left;"
+            >
+              <strong>
+                Create Team
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
     </div>
   </div>

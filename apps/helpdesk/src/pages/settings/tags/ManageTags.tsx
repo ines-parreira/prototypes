@@ -9,7 +9,7 @@ import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Form, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 import type {
     CursorPaginationMeta,
     ListTagsParams,

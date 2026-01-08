@@ -7,7 +7,7 @@ import { Link, useHistory } from 'react-router-dom'
 
 import {
     LegacyBadge as Badge,
-    LegacyButton as Button,
+    Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 

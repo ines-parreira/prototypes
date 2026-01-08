@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { fromJS } from 'immutable'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

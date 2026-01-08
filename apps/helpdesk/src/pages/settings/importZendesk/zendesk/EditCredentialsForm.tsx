@@ -5,10 +5,7 @@ import classNames from 'classnames'
 import { fromJS } from 'immutable'
 import { Form } from 'reactstrap'
 
-import {
-    LegacyButton as Button,
-    LegacyTooltip as Tooltip,
-} from '@gorgias/axiom'
+import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

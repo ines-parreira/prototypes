@@ -4,7 +4,7 @@ import { useState } from 'react'
 import classNames from 'classnames'
 import { Form, FormGroup, Label } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { states } from 'config/states'
 import { states as countries } from 'fixtures/states'

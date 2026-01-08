@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form, Label } from 'reactstrap'
 
 import {
-    LegacyButton as Button,
+    Button,
     LegacyToggleField as ToggleField,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'

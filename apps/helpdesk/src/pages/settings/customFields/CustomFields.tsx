@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 import type { ListCustomFieldsParams } from '@gorgias/helpdesk-queries'
 
 import { AI_MANAGED_TYPES, OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'

@@ -6,7 +6,7 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Form } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'

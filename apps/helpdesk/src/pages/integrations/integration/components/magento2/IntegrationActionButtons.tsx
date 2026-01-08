@@ -1,6 +1,6 @@
 import type { Map } from 'immutable'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'

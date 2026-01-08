@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import ProgressTracker from '../ProgressTracker'
 import TrackerCircle from '../TrackerCircle'
@@ -19,12 +19,8 @@ describe('ProgressTracker', () => {
         stepTrackerColor: '#C34CED',
         cta: (
             <>
-                <Button fillStyle="fill" intent="secondary" size="medium">
-                    Back
-                </Button>
-                <Button fillStyle="fill" intent="primary" size="medium">
-                    Next
-                </Button>
+                <Button variant="secondary">Back</Button>
+                <Button variant="primary">Next</Button>
             </>
         ),
     }

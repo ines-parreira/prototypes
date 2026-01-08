@@ -3,7 +3,7 @@ import React from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 
@@ -105,11 +105,12 @@ describe('Dimension', () => {
                 ticketId={1}
             />,
         )
-        const content = document.querySelector(
-            'button[area-label="expand_accuracy"]',
-        )
 
-        fireEvent.click(content!)
+        const expandButton = screen.getByRole('button', {
+            name: /Accuracy/,
+        })
+        fireEvent.click(expandButton)
+
         const textArea = container.getElementsByClassName('textarea')[0]
         fireEvent.focus(textArea)
         expect(
@@ -164,14 +165,14 @@ describe('Dimension', () => {
             />,
         )
 
-        const expandButton = document.querySelector(
-            `button[area-label="expand_${dimensionName}"]`,
-        )
+        const expandButton = screen.getByRole('button', {
+            name: /Communication/,
+        })
 
         expect(expandButton).toBeInTheDocument()
         expect(expandButton).toHaveAttribute('aria-expanded', 'false')
 
-        fireEvent.click(expandButton as HTMLButtonElement)
+        fireEvent.click(expandButton)
 
         expect(expandButton).toHaveAttribute('aria-expanded', 'true')
         expect(logEvent).toHaveBeenCalledWith(
@@ -195,9 +196,9 @@ describe('Dimension', () => {
             />,
         )
 
-        const expandButton = document.querySelector(
-            `button[area-label="expand_${dimensionName}"]`,
-        )
+        const expandButton = screen.getByRole('button', {
+            name: /Communication/,
+        })
 
         expect(expandButton).toBeInTheDocument()
         expect(expandButton).toHaveAttribute('aria-expanded', 'true')

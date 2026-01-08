@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import { Emoji } from 'emoji-mart'
 import { Link } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'

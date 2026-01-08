@@ -1,7 +1,7 @@
 import { history } from '@repo/routing'
 import classNames from 'classnames'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { StoreConfiguration } from 'models/aiAgent/types'

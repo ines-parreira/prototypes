@@ -3,7 +3,7 @@ import React from 'react'
 
 import type { Meta, StoryFn } from '@storybook/react'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { Drawer } from 'pages/common/components/Drawer/Drawer'
 

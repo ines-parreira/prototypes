@@ -5,7 +5,7 @@ import { history } from '@repo/routing'
 import { isEmpty } from 'lodash'
 import { Container, Row } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useAppDispatch from 'hooks/useAppDispatch'

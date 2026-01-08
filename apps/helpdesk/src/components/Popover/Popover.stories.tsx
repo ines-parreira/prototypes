@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 
 import type { Meta, StoryFn } from '@storybook/react'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import Popover from './Popover'
 

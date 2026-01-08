@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { produce } from 'immer'
 import _isEqual from 'lodash/isEqual'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import navbarPreview from 'assets/img/presentationals/navbar_settings.png'
 import useAppDispatch from 'hooks/useAppDispatch'

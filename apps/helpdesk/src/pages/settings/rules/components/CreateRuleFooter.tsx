@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import ruleTemplates from 'assets/img/presentationals/rule-templates.png'
 

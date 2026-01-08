@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import _noop from 'lodash/noop'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import NumberInput from 'pages/common/forms/input/NumberInput'
 
@@ -13,10 +13,10 @@ describe('<InputGroup />', () => {
     it('should render a group input wrapper', () => {
         const { container } = render(
             <InputGroup>
-                <Button intent="secondary">Foo</Button>
+                <Button variant="secondary">Foo</Button>
                 <NumberInput onChange={_noop} />
-                <Button intent="secondary">Bar</Button>
-                <Button intent="secondary">Baz</Button>
+                <Button variant="secondary">Bar</Button>
+                <Button variant="secondary">Baz</Button>
             </InputGroup>,
         )
 

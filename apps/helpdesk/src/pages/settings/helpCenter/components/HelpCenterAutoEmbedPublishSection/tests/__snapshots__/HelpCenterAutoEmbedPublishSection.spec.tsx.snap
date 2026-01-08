@@ -28,15 +28,33 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a non-
     </div>
     <button
       aria-disabled="true"
-      class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
+      class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+      data-disabled="true"
+      data-name="button"
+      data-rac=""
+      data-react-aria-pressable="true"
       data-testid="help-center-auto-embed-card__embed-button"
+      disabled=""
+      id="react-aria-:r2:"
       type="button"
     >
-      <span
-        class="ui-button-content-cef1"
+      <div
+        class="ui-button-surface-a432"
       >
-        Embed Help Center
-      </span>
+        <span
+          class="ui-button-content-a432"
+        >
+          <span
+            class="typography-bold-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left;"
+          >
+            <strong>
+              Embed Help Center
+            </strong>
+          </span>
+        </span>
+      </div>
     </button>
   </div>
 </div>
@@ -108,15 +126,33 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
     </div>
     <button
       aria-disabled="true"
-      class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
+      class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+      data-disabled="true"
+      data-name="button"
+      data-rac=""
+      data-react-aria-pressable="true"
       data-testid="help-center-auto-embed-card__embed-button"
+      disabled=""
+      id="react-aria-:re:"
       type="button"
     >
-      <span
-        class="ui-button-content-cef1"
+      <div
+        class="ui-button-surface-a432"
       >
-        Embed Help Center
-      </span>
+        <span
+          class="ui-button-content-a432"
+        >
+          <span
+            class="typography-bold-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left;"
+          >
+            <strong>
+              Embed Help Center
+            </strong>
+          </span>
+        </span>
+      </div>
     </button>
   </div>
 </div>
@@ -150,15 +186,32 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
     </div>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
+      class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+      data-name="button"
+      data-rac=""
+      data-react-aria-pressable="true"
       data-testid="help-center-auto-embed-card__embed-button"
+      id="react-aria-:r6:"
+      tabindex="0"
       type="button"
     >
-      <span
-        class="ui-button-content-cef1"
+      <div
+        class="ui-button-surface-a432"
       >
-        Embed Help Center
-      </span>
+        <span
+          class="ui-button-content-a432"
+        >
+          <span
+            class="typography-bold-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left;"
+          >
+            <strong>
+              Embed Help Center
+            </strong>
+          </span>
+        </span>
+      </div>
     </button>
   </div>
 </div>

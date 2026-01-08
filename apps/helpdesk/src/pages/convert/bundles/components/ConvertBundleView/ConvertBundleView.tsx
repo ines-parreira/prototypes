@@ -4,7 +4,7 @@ import type { List } from 'immutable'
 import { useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,

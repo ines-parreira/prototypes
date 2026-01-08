@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'

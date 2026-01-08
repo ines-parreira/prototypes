@@ -1,6 +1,6 @@
 import { Link, useRouteMatch } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
 import { AutomateFeatures } from 'pages/automate/common/types'

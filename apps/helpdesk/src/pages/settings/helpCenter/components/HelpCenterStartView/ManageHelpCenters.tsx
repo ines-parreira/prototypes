@@ -4,7 +4,7 @@ import { keyBy as _keyBy } from 'lodash'
 import moment from 'moment'
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

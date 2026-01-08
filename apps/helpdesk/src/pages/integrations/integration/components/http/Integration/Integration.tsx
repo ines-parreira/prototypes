@@ -9,7 +9,7 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Container, Form, FormGroup, FormText } from 'reactstrap'
 
-import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
+import { Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { ContentType, HttpMethod } from 'models/api/types'
 import { EventType } from 'models/event/types'

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useLocalStorage, useTitle } from '@repo/hooks'
 import { Link } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import logoRecharge from 'assets/img/integrations/recharge.svg'
 import logoShopify from 'assets/img/integrations/shopify.svg'

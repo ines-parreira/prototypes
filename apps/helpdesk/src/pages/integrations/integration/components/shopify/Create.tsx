@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 import { Col, Container, Form, Row } from 'reactstrap'
 
-import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
+import { Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Caption from 'pages/common/forms/Caption/Caption'

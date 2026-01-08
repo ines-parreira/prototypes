@@ -1,4 +1,4 @@
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import css from './EmptyState.less'
 

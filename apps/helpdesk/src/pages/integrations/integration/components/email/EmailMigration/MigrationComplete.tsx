@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import migrationCompleteIcon from 'assets/img/integrations/email-migration-complete.svg'
 

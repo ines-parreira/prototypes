@@ -1,7 +1,7 @@
 import type { List as ImmutableList, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import Loader from 'pages/common/components/Loader/Loader'
 

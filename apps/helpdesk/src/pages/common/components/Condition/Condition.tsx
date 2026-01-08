@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 
 import { capitalize } from 'lodash'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'

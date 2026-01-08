@@ -417,7 +417,7 @@ describe('HTTP Integration', () => {
             )
 
             const submitButton = screen.getByRole('button', {
-                name: /Loading.*Add integration/i,
+                name: /Add integration/,
             })
             expect(submitButton).toHaveAttribute('aria-disabled', 'true')
         })

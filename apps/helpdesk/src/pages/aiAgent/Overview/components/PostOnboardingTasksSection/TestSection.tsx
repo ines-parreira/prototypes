@@ -4,7 +4,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
 import {
-    LegacyButton as Button,
+    Button,
     Heading,
     LegacyIconButton as IconButton,
     Text,

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { useModalManager } from 'hooks/useModalManager'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

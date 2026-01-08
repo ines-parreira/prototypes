@@ -7,7 +7,7 @@ import { fromJS } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Col, Container, Form, FormGroup, Label, Row } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

@@ -287,14 +287,31 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
+                class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+                data-name="button"
+                data-rac=""
+                data-react-aria-pressable="true"
+                id="react-aria-:r4:"
+                tabindex="0"
                 type="button"
               >
-                <span
-                  class="ui-button-content-cef1"
+                <div
+                  class="ui-button-surface-a432"
                 >
-                  Got it
-                </span>
+                  <span
+                    class="ui-button-content-a432"
+                  >
+                    <span
+                      class="typography-bold-md ui-text-text-d239"
+                      data-name="text"
+                      style="text-align: left;"
+                    >
+                      <strong>
+                        Got it
+                      </strong>
+                    </span>
+                  </span>
+                </div>
               </button>
             </div>
           </div>
@@ -823,7 +840,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
   </div>
   <div
     data-floating-ui-portal=""
-    id=":r5:"
+    id=":r7:"
   />
   <div
     aria-describedby="modal-8-desc"
@@ -886,14 +903,31 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
             >
               <button
                 aria-disabled="false"
-                class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
+                class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+                data-name="button"
+                data-rac=""
+                data-react-aria-pressable="true"
+                id="react-aria-:r8:"
+                tabindex="0"
                 type="button"
               >
-                <span
-                  class="ui-button-content-cef1"
+                <div
+                  class="ui-button-surface-a432"
                 >
-                  Got it
-                </span>
+                  <span
+                    class="ui-button-content-a432"
+                  >
+                    <span
+                      class="typography-bold-md ui-text-text-d239"
+                      data-name="text"
+                      style="text-align: left;"
+                    >
+                      <strong>
+                        Got it
+                      </strong>
+                    </span>
+                  </span>
+                </div>
               </button>
             </div>
           </div>

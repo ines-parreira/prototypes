@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { IntegrationType } from 'models/integration/constants'
 import AutomateListView from 'pages/automate/common/components/AutomateListView'

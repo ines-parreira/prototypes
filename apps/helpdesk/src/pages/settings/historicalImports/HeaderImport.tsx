@@ -1,7 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 
-import { Box, LegacyButton as Button } from '@gorgias/axiom'
+import { Box, Button } from '@gorgias/axiom'
 
 import IconLink from 'core/ui/components/IconLink'
 import PageHeader from 'pages/common/components/PageHeader'

@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { getIntegrationConfig } from 'state/integrations/helpers'
 

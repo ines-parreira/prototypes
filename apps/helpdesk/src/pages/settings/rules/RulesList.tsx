@@ -7,7 +7,7 @@ import _debounce from 'lodash/debounce'
 import { useHistory } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

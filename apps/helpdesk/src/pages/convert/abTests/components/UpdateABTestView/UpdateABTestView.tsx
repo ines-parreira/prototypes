@@ -3,7 +3,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import classnames from 'classnames'
 import { useParams } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useListABTests } from 'models/convert/abTest/queries'

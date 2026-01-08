@@ -8,7 +8,7 @@ import ReactPlayer from 'react-player'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
-import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
+import { Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
 import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'

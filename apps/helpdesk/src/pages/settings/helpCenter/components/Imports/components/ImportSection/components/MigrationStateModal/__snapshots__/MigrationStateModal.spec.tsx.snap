@@ -661,14 +661,31 @@ exports[`<MigrationStateModal /> snapshots Connected 1`] = `
           />
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-cef1 w-100 ui-button-fill-cef1 ui-button-primary-cef1"
+            class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+            data-name="button"
+            data-rac=""
+            data-react-aria-pressable="true"
+            id="react-aria-:r0:"
+            tabindex="0"
             type="button"
           >
-            <span
-              class="ui-button-content-cef1"
+            <div
+              class="ui-button-surface-a432"
             >
-              Start migrating
-            </span>
+              <span
+                class="ui-button-content-a432"
+              >
+                <span
+                  class="typography-bold-md ui-text-text-d239"
+                  data-name="text"
+                  style="text-align: left;"
+                >
+                  <strong>
+                    Start migrating
+                  </strong>
+                </span>
+              </span>
+            </div>
           </button>
         </div>
       </div>
@@ -1068,45 +1085,43 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
           />
           <button
             aria-disabled="true"
-            class="ui-button-wrapper-cef1 w-100 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
+            class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432 ui-button-isloading-a432 ui-button-isdisabled-a432"
+            data-disabled="true"
+            data-name="button"
+            data-pending="true"
+            data-rac=""
+            data-react-aria-pressable="true"
+            disabled=""
+            id="react-aria-:r6:"
             type="button"
           >
-            <svg
-              class="ui-loadingspinner-spinner-fc79 ui-loadingspinner-gloom-fc79 ui-buttonspinner-spinner-a731"
-              data-name="loading-spinner"
-              height="22"
-              preserveAspectRatio="xMidYMid meet"
-              role="status"
-              viewBox="0 0 20 20"
-              width="22"
+            <div
+              class="ui-button-surface-a432"
             >
-              <circle
-                class="ui-loadingspinner-dot-fc79"
-                cx="10"
-                cy="10"
-                fill="none"
-                r="6"
-                stroke-width="2"
-              />
-              <circle
-                class="ui-loadingspinner-circle-fc79"
-                cx="10"
-                cy="10"
-                fill="none"
-                r="6"
-                stroke-width="2"
-              />
               <span
-                class="sr-only"
+                class="ui-button-content-a432"
               >
-                Loading...
+                <span
+                  class="typography-bold-md ui-text-text-d239"
+                  data-name="text"
+                  style="text-align: left;"
+                >
+                  <strong>
+                    Loading
+                  </strong>
+                </span>
+                <div
+                  aria-busy="true"
+                  aria-label="Loading..."
+                  class="ui-buttonloader-loader-eacb ui-buttonloader-primary-eacb"
+                  role="status"
+                >
+                  <div
+                    class="ui-buttonloader-indicator-eacb"
+                  />
+                </div>
               </span>
-            </svg>
-            <span
-              class="ui-button-content-cef1"
-            >
-              Loading
-            </span>
+            </div>
           </button>
         </div>
       </div>
@@ -1317,45 +1332,43 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
           />
           <button
             aria-disabled="true"
-            class="ui-button-wrapper-cef1 w-100 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
+            class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432 ui-button-isloading-a432 ui-button-isdisabled-a432"
+            data-disabled="true"
+            data-name="button"
+            data-pending="true"
+            data-rac=""
+            data-react-aria-pressable="true"
+            disabled=""
+            id="react-aria-:r4:"
             type="button"
           >
-            <svg
-              class="ui-loadingspinner-spinner-fc79 ui-loadingspinner-gloom-fc79 ui-buttonspinner-spinner-a731"
-              data-name="loading-spinner"
-              height="22"
-              preserveAspectRatio="xMidYMid meet"
-              role="status"
-              viewBox="0 0 20 20"
-              width="22"
+            <div
+              class="ui-button-surface-a432"
             >
-              <circle
-                class="ui-loadingspinner-dot-fc79"
-                cx="10"
-                cy="10"
-                fill="none"
-                r="6"
-                stroke-width="2"
-              />
-              <circle
-                class="ui-loadingspinner-circle-fc79"
-                cx="10"
-                cy="10"
-                fill="none"
-                r="6"
-                stroke-width="2"
-              />
               <span
-                class="sr-only"
+                class="ui-button-content-a432"
               >
-                Loading...
+                <span
+                  class="typography-bold-md ui-text-text-d239"
+                  data-name="text"
+                  style="text-align: left;"
+                >
+                  <strong>
+                    Loading
+                  </strong>
+                </span>
+                <div
+                  aria-busy="true"
+                  aria-label="Loading..."
+                  class="ui-buttonloader-loader-eacb ui-buttonloader-primary-eacb"
+                  role="status"
+                >
+                  <div
+                    class="ui-buttonloader-indicator-eacb"
+                  />
+                </div>
               </span>
-            </svg>
-            <span
-              class="ui-button-content-cef1"
-            >
-              Loading
-            </span>
+            </div>
           </button>
         </div>
       </div>
@@ -1472,45 +1485,43 @@ exports[`<MigrationStateModal /> snapshots Migration start loading 1`] = `
           />
           <button
             aria-disabled="true"
-            class="ui-button-wrapper-cef1 w-100 ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
+            class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432 ui-button-isloading-a432"
+            data-disabled="true"
+            data-name="button"
+            data-pending="true"
+            data-rac=""
+            data-react-aria-pressable="true"
+            disabled=""
+            id="react-aria-:r2:"
             type="button"
           >
-            <svg
-              class="ui-loadingspinner-spinner-fc79 ui-loadingspinner-gloom-fc79 ui-buttonspinner-spinner-a731"
-              data-name="loading-spinner"
-              height="22"
-              preserveAspectRatio="xMidYMid meet"
-              role="status"
-              viewBox="0 0 20 20"
-              width="22"
+            <div
+              class="ui-button-surface-a432"
             >
-              <circle
-                class="ui-loadingspinner-dot-fc79"
-                cx="10"
-                cy="10"
-                fill="none"
-                r="6"
-                stroke-width="2"
-              />
-              <circle
-                class="ui-loadingspinner-circle-fc79"
-                cx="10"
-                cy="10"
-                fill="none"
-                r="6"
-                stroke-width="2"
-              />
               <span
-                class="sr-only"
+                class="ui-button-content-a432"
               >
-                Loading...
+                <span
+                  class="typography-bold-md ui-text-text-d239"
+                  data-name="text"
+                  style="text-align: left;"
+                >
+                  <strong>
+                    Start migrating
+                  </strong>
+                </span>
+                <div
+                  aria-busy="true"
+                  aria-label="Loading..."
+                  class="ui-buttonloader-loader-eacb ui-buttonloader-primary-eacb"
+                  role="status"
+                >
+                  <div
+                    class="ui-buttonloader-indicator-eacb"
+                  />
+                </div>
               </span>
-            </svg>
-            <span
-              class="ui-button-content-cef1"
-            >
-              Start migrating
-            </span>
+            </div>
           </button>
         </div>
       </div>
@@ -2125,14 +2136,31 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
           />
           <button
             aria-disabled="false"
-            class="ui-button-wrapper-cef1 w-100 ui-button-fill-cef1 ui-button-primary-cef1"
+            class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+            data-name="button"
+            data-rac=""
+            data-react-aria-pressable="true"
+            id="react-aria-:r8:"
+            tabindex="0"
             type="button"
           >
-            <span
-              class="ui-button-content-cef1"
+            <div
+              class="ui-button-surface-a432"
             >
-              Finish
-            </span>
+              <span
+                class="ui-button-content-a432"
+              >
+                <span
+                  class="typography-bold-md ui-text-text-d239"
+                  data-name="text"
+                  style="text-align: left;"
+                >
+                  <strong>
+                    Finish
+                  </strong>
+                </span>
+              </span>
+            </div>
           </button>
         </div>
       </div>

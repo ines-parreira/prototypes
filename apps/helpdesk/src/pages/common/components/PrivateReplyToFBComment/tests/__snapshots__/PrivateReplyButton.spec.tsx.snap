@@ -6,22 +6,40 @@ exports[`<PrivateReplyButton/> render should render a disabled button 1`] = `
 >
   <button
     aria-disabled="true"
-    class="ui-button-wrapper-cef1 container button ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
+    class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+    data-disabled="true"
+    data-name="button"
+    data-rac=""
+    data-react-aria-pressable="true"
+    disabled=""
+    id="react-aria-:r2:"
     type="button"
   >
-    <span
-      class="ui-button-content-cef1"
+    <div
+      class="ui-button-surface-a432"
     >
-      <div
-        class="logoWrapper"
+      <span
+        class="ui-button-content-a432"
       >
-        <div
-          class="logo messengerIcon disabled"
-          style="mask-image: url(test-file-stub);"
-        />
-      </div>
-      Message
-    </span>
+        <span
+          class="typography-bold-md ui-text-text-d239"
+          data-name="text"
+          style="text-align: left;"
+        >
+          <strong>
+            <div
+              class="logoWrapper"
+            >
+              <div
+                class="logo messengerIcon disabled"
+                style="mask-image: url(test-file-stub);"
+              />
+            </div>
+            Message
+          </strong>
+        </span>
+      </span>
+    </div>
   </button>
 </div>
 `;
@@ -32,22 +50,40 @@ exports[`<PrivateReplyButton/> render should render a disabled button 2`] = `
 >
   <button
     aria-disabled="true"
-    class="ui-button-wrapper-cef1 container button ui-button-fill-cef1 ui-button-primary-cef1 ui-button-isdisabled-cef1"
+    class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+    data-disabled="true"
+    data-name="button"
+    data-rac=""
+    data-react-aria-pressable="true"
+    disabled=""
+    id="react-aria-:r4:"
     type="button"
   >
-    <span
-      class="ui-button-content-cef1"
+    <div
+      class="ui-button-surface-a432"
     >
-      <div
-        class="logoWrapper"
+      <span
+        class="ui-button-content-a432"
       >
-        <div
-          class="logo messengerIcon disabled"
-          style="mask-image: url(test-file-stub);"
-        />
-      </div>
-      Message
-    </span>
+        <span
+          class="typography-bold-md ui-text-text-d239"
+          data-name="text"
+          style="text-align: left;"
+        >
+          <strong>
+            <div
+              class="logoWrapper"
+            >
+              <div
+                class="logo messengerIcon disabled"
+                style="mask-image: url(test-file-stub);"
+              />
+            </div>
+            Message
+          </strong>
+        </span>
+      </span>
+    </div>
   </button>
 </div>
 `;
@@ -58,22 +94,39 @@ exports[`<PrivateReplyButton/> render should render the button 1`] = `
 >
   <button
     aria-disabled="false"
-    class="ui-button-wrapper-cef1 container button ui-button-fill-cef1 ui-button-primary-cef1"
+    class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+    data-name="button"
+    data-rac=""
+    data-react-aria-pressable="true"
+    id="react-aria-:r0:"
+    tabindex="0"
     type="submit"
   >
-    <span
-      class="ui-button-content-cef1"
+    <div
+      class="ui-button-surface-a432"
     >
-      <div
-        class="logoWrapper"
+      <span
+        class="ui-button-content-a432"
       >
-        <div
-          class="logo messengerIcon"
-          style="mask-image: url(test-file-stub);"
-        />
-      </div>
-      Message
-    </span>
+        <span
+          class="typography-bold-md ui-text-text-d239"
+          data-name="text"
+          style="text-align: left;"
+        >
+          <strong>
+            <div
+              class="logoWrapper"
+            >
+              <div
+                class="logo messengerIcon"
+                style="mask-image: url(test-file-stub);"
+              />
+            </div>
+            Message
+          </strong>
+        </span>
+      </span>
+    </div>
   </button>
 </div>
 `;

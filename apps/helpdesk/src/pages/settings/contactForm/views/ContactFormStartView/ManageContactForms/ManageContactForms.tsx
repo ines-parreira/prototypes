@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import type { ContactForm } from 'models/contactForm/types'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'

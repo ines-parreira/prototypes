@@ -2,7 +2,7 @@ import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

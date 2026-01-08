@@ -10,7 +10,7 @@ import type { RouteComponentProps } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container, Table } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { isChannel } from 'config'
 import { IntegrationType } from 'models/integration/types'

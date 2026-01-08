@@ -5,7 +5,7 @@ import { useLocalStorage } from '@repo/hooks'
 import { history } from '@repo/routing'
 import { useLocation } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'

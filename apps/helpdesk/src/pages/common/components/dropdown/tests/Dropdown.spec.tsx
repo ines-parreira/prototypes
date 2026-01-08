@@ -3,7 +3,7 @@ import React, { useRef } from 'react'
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import Dropdown, { DropdownContext } from '../Dropdown'
 

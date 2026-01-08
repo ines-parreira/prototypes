@@ -3,7 +3,7 @@ import React, { Component, createRef } from 'react'
 
 import classnames from 'classnames'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import type { UploadType } from 'common/types'
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'

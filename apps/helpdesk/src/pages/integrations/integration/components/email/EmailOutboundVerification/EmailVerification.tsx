@@ -4,7 +4,7 @@ import { history } from '@repo/routing'
 
 import {
     LegacyBadge as Badge,
-    LegacyButton as Button,
+    Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 

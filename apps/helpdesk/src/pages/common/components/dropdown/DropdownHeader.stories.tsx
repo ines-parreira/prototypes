@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import _noop from 'lodash/noop'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import Dropdown from './Dropdown'
 import DropdownBody from './DropdownBody'

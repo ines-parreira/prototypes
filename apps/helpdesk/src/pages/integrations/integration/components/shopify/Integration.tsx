@@ -5,7 +5,7 @@ import type { Map } from 'immutable'
 import { Col, Container, Row } from 'reactstrap'
 
 import {
-    LegacyButton as Button,
+    Button,
     LegacyLabel as Label,
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'

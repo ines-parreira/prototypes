@@ -7,7 +7,7 @@ import { history } from '@repo/routing'
 import { List } from 'immutable'
 import { useParams } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
