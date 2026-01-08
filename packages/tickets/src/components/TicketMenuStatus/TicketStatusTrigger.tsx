@@ -37,7 +37,9 @@ export const TicketStatusTrigger = forwardRef<
                         ref={ref}
                         aria-label="Ticket status menu"
                         leadingSlot={<Icon name={IconName.CircleCheck} />}
-                        trailingSlot={<Icon name={IconName.ArrowChevronDown} />}
+                        trailingSlot={
+                            <Icon name={IconName.ArrowChevronDown} size="sm" />
+                        }
                         color={StatusButtonColor.Grey}
                     >
                         Closed
@@ -60,7 +62,9 @@ export const TicketStatusTrigger = forwardRef<
                                 color={Color.Blue}
                             />
                         }
-                        trailingSlot={<Icon name={IconName.ArrowChevronDown} />}
+                        trailingSlot={
+                            <Icon name={IconName.ArrowChevronDown} size="sm" />
+                        }
                         color={StatusButtonColor.Blue}
                     >
                         {getRemainingSnoozeTime(ticket.snooze_datetime)}
@@ -80,7 +84,9 @@ export const TicketStatusTrigger = forwardRef<
                         leadingSlot={
                             <Icon name={IconName.Inbox} color={Color.Purple} />
                         }
-                        trailingSlot={<Icon name={IconName.ArrowChevronDown} />}
+                        trailingSlot={
+                            <Icon name={IconName.ArrowChevronDown} size="sm" />
+                        }
                         color={StatusButtonColor.Purple}
                     >
                         Open
