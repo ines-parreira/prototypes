@@ -1,25 +1,50 @@
-import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
-import { ldClientMock } from 'jest-launchdarkly-mock'
+import type { LDClient } from 'launchdarkly-js-client-sdk'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { fetchFlag } from 'core/flags/fetchFlag'
+import { FeatureFlagKey } from '../featureFlagKey'
+import { fetchFlag } from '../fetchFlag'
+import { getLDClient } from '../launchdarkly'
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    getLDClient: jest.fn(),
+const createLDClientMock = () => {
+    const mock = {
+        track: vi.fn(),
+        identify: vi.fn(),
+        allFlags: vi.fn(),
+        close: vi.fn(),
+        flush: vi.fn(),
+        getContext: vi.fn(),
+        off: vi.fn(),
+        on: vi.fn(),
+        setStreaming: vi.fn(),
+        variation: vi.fn(),
+        variationDetail: vi.fn(),
+        waitForInitialization: vi.fn(),
+        waitUntilGoalsReady: vi.fn(),
+        waitUntilReady: vi.fn(),
+    }
+    return mock
+}
+
+vi.mock('../launchdarkly', () => ({
+    getLDClient: vi.fn(),
 }))
 
-const getLDClientMock = getLDClient as jest.Mock
+const getLDClientMock = vi.mocked(getLDClient)
 
 describe('fetchFlag', () => {
     const testFlag = FeatureFlagKey.ReportingP1MetricMigration
+    let ldClientMock: ReturnType<typeof createLDClientMock>
     let initialisePromise: Promise<unknown>
 
     beforeEach(() => {
-        jest.clearAllMocks()
+        vi.clearAllMocks()
+        ldClientMock = createLDClientMock()
         initialisePromise = Promise.resolve()
         ldClientMock.variation.mockReturnValue(false)
-        ldClientMock.waitForInitialization.mockReturnValue(initialisePromise)
-        getLDClientMock.mockReturnValue(ldClientMock)
+        ldClientMock.waitForInitialization.mockReturnValue(
+            initialisePromise as Promise<void>,
+        )
+        getLDClientMock.mockReturnValue(ldClientMock as unknown as LDClient)
     })
 
     it('should return the flag value from the client when successful', async () => {
@@ -49,9 +74,9 @@ describe('fetchFlag', () => {
         const defaultValue = 'off'
         const error = new Error('Initialization failed')
         ldClientMock.waitForInitialization.mockRejectedValue(error)
-        const consoleErrorSpy = jest
+        const consoleErrorSpy = vi
             .spyOn(console, 'error')
-            .mockImplementation()
+            .mockImplementation(() => {})
 
         const result = await fetchFlag(testFlag, defaultValue)
 
@@ -71,9 +96,9 @@ describe('fetchFlag', () => {
         ldClientMock.variation.mockImplementation(() => {
             throw error
         })
-        const consoleErrorSpy = jest
+        const consoleErrorSpy = vi
             .spyOn(console, 'error')
-            .mockImplementation()
+            .mockImplementation(() => {})
 
         const result = await fetchFlag(testFlag, defaultValue)
 

@@ -18,8 +18,12 @@ import { BillableTicketDatasetMeasure } from 'domains/reporting/models/cubes/aut
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AUTOMATION_RATE_LABEL } from 'domains/reporting/pages/self-service/constants'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 jest.mock('domains/reporting/hooks/automate/timeSeries')
+jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
+jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
 const useAutomationDatasetTimeSeriesMock = assumeMock(
     useAutomationDatasetTimeSeries,
 )
@@ -32,8 +36,18 @@ const fetchAutomationDatasetTimeSeriesMock = assumeMock(
 const fetchBillableTicketDatasetTimeSeriesMock = assumeMock(
     fetchBillableTicketDatasetTimeSeries,
 )
+const getNewStatsFeatureFlagMigrationMock = assumeMock(
+    getNewStatsFeatureFlagMigration,
+)
+const useGetNewStatsFeatureFlagMigrationMock = assumeMock(
+    useGetNewStatsFeatureFlagMigration,
+)
 
 describe('useAutomationRateTimeSeriesData', () => {
+    beforeEach(() => {
+        getNewStatsFeatureFlagMigrationMock.mockResolvedValue('off')
+        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
+    })
     const statsFilters: StatsFilters = {
         period: {
             start_datetime: moment()

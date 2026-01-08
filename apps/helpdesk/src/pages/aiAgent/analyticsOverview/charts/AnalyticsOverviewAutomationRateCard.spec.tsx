@@ -1,34 +1,35 @@
+import type { MigrationStage } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
-import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { postReportingV2 } from 'domains/reporting/models/resources'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
+import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { AnalyticsOverviewAutomationRateCard } from './AnalyticsOverviewAutomationRateCard'
 
-jest.mock('domains/reporting/models/resources')
-const mockPostReporting = jest.mocked(postReportingV2)
+jest.mock('domains/reporting/utils/metricExecutionHandler')
+const mockMetricExecutionHandler = assumeMock(metricExecutionHandler)
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-const mockUseStatsFilters = jest.mocked(useStatsFilters)
+const mockUseStatsFilters = assumeMock(useStatsFilters)
 
 jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
-const mockGetNewStatsFeatureFlagMigration = jest.mocked(
+const mockGetNewStatsFeatureFlagMigration = assumeMock(
     getNewStatsFeatureFlagMigration,
 )
 
 jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
-const mockUseGetNewStatsFeatureFlagMigration = jest.mocked(
+const mockUseGetNewStatsFeatureFlagMigration = assumeMock(
     useGetNewStatsFeatureFlagMigration,
 )
 
 jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
-const mockUseAIAgentUserId = jest.mocked(useAIAgentUserId)
+const mockUseAIAgentUserId = assumeMock(useAIAgentUserId)
 
 describe('AnalyticsOverviewAutomationRateCard', () => {
     const mockFilters: StatsFilters = {
@@ -57,7 +58,7 @@ describe('AnalyticsOverviewAutomationRateCard', () => {
             'complete' as MigrationStage,
         )
 
-        mockPostReporting.mockResolvedValue({
+        mockMetricExecutionHandler.mockResolvedValue({
             data: {
                 data: [
                     {

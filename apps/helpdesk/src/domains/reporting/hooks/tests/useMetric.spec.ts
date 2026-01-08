@@ -15,10 +15,21 @@ import {
 } from 'domains/reporting/models/queries'
 import { medianFirstResponseTime } from 'domains/reporting/models/scopes/firstResponseTime'
 import type { ReportingQuery } from 'domains/reporting/models/types'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 jest.mock('domains/reporting/models/queries')
+jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
+jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
+
 const usePostReportingV2Mock = assumeMock(usePostReportingV2)
 const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
+const getNewStatsFeatureFlagMigrationMock = assumeMock(
+    getNewStatsFeatureFlagMigration,
+)
+const useGetNewStatsFeatureFlagMigrationMock = assumeMock(
+    useGetNewStatsFeatureFlagMigration,
+)
 
 describe('Metric', () => {
     const defaultReporting = {
@@ -46,6 +57,7 @@ describe('Metric', () => {
     describe('useMetric', () => {
         beforeEach(() => {
             usePostReportingV2Mock.mockReturnValue(defaultReporting)
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
         })
 
         it('should return isFetching=false when no queries are fetching', () => {
@@ -186,6 +198,7 @@ describe('Metric', () => {
             fetchPostReportingV2Mock.mockResolvedValue({
                 data: { ...defaultReporting, data: rawResponse },
             } as unknown as ReturnType<typeof fetchPostReportingV2>)
+            getNewStatsFeatureFlagMigrationMock.mockResolvedValue('off')
         })
 
         it('should return isFetching=false when no queries are fetching', async () => {

@@ -18,6 +18,8 @@ import {
     fetchGmvInfluencedTrendInUSD,
     useGmvInfluencedTrendInUSD,
 } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const timezone = 'UTC'
@@ -47,6 +49,15 @@ jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReportingV2)
 const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
 
+jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
+jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
+const getNewStatsFeatureFlagMigrationMock = assumeMock(
+    getNewStatsFeatureFlagMigration,
+)
+const useGetNewStatsFeatureFlagMigrationMock = assumeMock(
+    useGetNewStatsFeatureFlagMigration,
+)
+
 jest.useFakeTimers()
 
 describe('gmvInfluencedRateTrend', () => {
@@ -54,6 +65,11 @@ describe('gmvInfluencedRateTrend', () => {
         isFetching: false,
         isError: false,
     } as UseQueryResult
+
+    beforeEach(() => {
+        getNewStatsFeatureFlagMigrationMock.mockResolvedValue('off')
+        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
+    })
 
     describe('useGmvInfluecedTrend', () => {
         it('should return correct metric data when the query resolves', async () => {

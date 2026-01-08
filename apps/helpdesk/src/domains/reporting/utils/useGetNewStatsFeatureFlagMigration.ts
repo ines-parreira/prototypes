@@ -1,6 +1,7 @@
+import type { MigrationStage } from '@repo/feature-flags'
+
 import { useGetFeatureFlagMigration } from 'core/flags/hooks/useGetFeatureFlagMigration'
 import { resolveMetricFlag } from 'core/flags/utils/newApiMetricFlags'
-import type { MigrationStage } from 'core/flags/utils/readMigration'
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
 
 /**

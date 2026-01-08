@@ -1,6 +1,7 @@
-import { fetchFlag } from 'core/flags/fetchFlag'
+import { fetchFlag } from '@repo/feature-flags'
+import type { MigrationStage } from '@repo/feature-flags'
+
 import { resolveMetricFlag } from 'core/flags/utils/newApiMetricFlags'
-import type { MigrationStage } from 'core/flags/utils/readMigration'
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
 
 /**

@@ -12,10 +12,21 @@ import {
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import type { ReportingQuery } from 'domains/reporting/models/types'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 jest.mock('domains/reporting/models/queries')
+jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
+jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
+
 const usePostReportingV2Mock = assumeMock(usePostReportingV2)
 const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
+const getNewStatsFeatureFlagMigrationMock = assumeMock(
+    getNewStatsFeatureFlagMigration,
+)
+const useGetNewStatsFeatureFlagMigrationMock = assumeMock(
+    useGetNewStatsFeatureFlagMigration,
+)
 
 const defaultReporting = {
     isFetching: false,
@@ -32,6 +43,7 @@ const defaultQuery: ReportingQuery<HelpdeskMessageCubeWithJoins> = {
 describe('useMetricTrend', () => {
     beforeEach(() => {
         usePostReportingV2Mock.mockReturnValue(defaultReporting)
+        useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
     })
 
     it('should return isFetching=false when no queries are fetching', () => {
@@ -289,6 +301,7 @@ describe('fetchMetricTrend', () => {
         fetchPostReportingV2Mock.mockResolvedValue({
             data: defaultReporting,
         } as any)
+        getNewStatsFeatureFlagMigrationMock.mockResolvedValue('off')
     })
 
     it('should fetch both queries', async () => {

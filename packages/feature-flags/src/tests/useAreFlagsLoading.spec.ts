@@ -1,46 +1,31 @@
-import { getLDClient } from '@repo/feature-flags'
-import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
-import { ldClientMock } from 'jest-launchdarkly-mock'
+import { act, renderHook } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import useAreFlagsLoading from '../useAreFlagsLoading'
+import { ensureInitialization } from '../launchDarklyInitialization'
+import { useAreFlagsLoading } from '../useAreFlagsLoading'
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    getLDClient: jest.fn(),
+vi.mock('../launchDarklyInitialization', () => ({
+    ensureInitialization: vi.fn(),
 }))
 
-jest.mock('../../utils/launchDarklyInitialization', () => ({
-    ensureInitialization: jest.fn(),
-}))
-
-const getLDClientMock = getLDClient as jest.Mock
+const ensureInitializationMock = vi.mocked(ensureInitialization)
 
 describe('useAreFlagsLoading', () => {
     let initialisePromise: Promise<unknown>
     let initialiseResolve: (value?: unknown) => void
-    let ensureInitializationMock: jest.Mock
 
     beforeEach(() => {
-        // Import the mocked function
-        const {
-            ensureInitialization,
-        } = require('../../utils/launchDarklyInitialization')
-        ensureInitializationMock = ensureInitialization as jest.Mock
-
         initialisePromise = new Promise((resolve) => {
             initialiseResolve = resolve
         })
 
-        // Mock the shared initialization function
-        ensureInitializationMock.mockReturnValue(initialisePromise)
-
-        ldClientMock.waitForInitialization.mockReturnValue(initialisePromise)
-        getLDClientMock.mockReturnValue(ldClientMock)
+        ensureInitializationMock.mockReturnValue(
+            initialisePromise as Promise<void>,
+        )
     })
 
     afterEach(() => {
-        jest.clearAllMocks()
+        vi.clearAllMocks()
     })
 
     it('should return true initially', () => {
@@ -63,7 +48,7 @@ describe('useAreFlagsLoading', () => {
     })
 
     it('should return false even if initialization fails', async () => {
-        const consoleSpy = jest
+        const consoleSpy = vi
             .spyOn(console, 'error')
             .mockImplementation(() => {})
 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -43,7 +41,11 @@ import type {
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AUTOMATION_RATE_LABEL } from 'domains/reporting/pages/self-service/constants'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+
+jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
+jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
 
 const queryClient = mockQueryClient()
 const timezone = 'UTC'
@@ -149,6 +151,9 @@ const fetchAllAutomatedInteractionsMock = assumeMock(
 )
 const fetchBillableTicketsExcludingAIAgentMock = assumeMock(
     fetchBillableTicketsExcludingAIAgent,
+)
+const useGetNewStatsFeatureFlagMigrationMock = assumeMock(
+    useGetNewStatsFeatureFlagMigration,
 )
 
 describe('useAutomationDatasetV2', () => {
@@ -313,6 +318,10 @@ describe('useAutomationDatasetV2', () => {
     }
 
     describe('useAutomateMetricsTrendV2', () => {
+        beforeEach(() => {
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
+        })
+
         it('should calculate automation rate correctly', async () => {
             useFilteredAutomatedInteractionsMock.mockReturnValue({
                 data: filteredAutomatedInteractions,

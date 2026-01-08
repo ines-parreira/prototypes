@@ -33,8 +33,6 @@ jest.mock('hooks/aiAgent/useAiAgentAccess')
 const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
 mockUseAiAgentAccess.mockReturnValue({ hasAccess: false, isLoading: false })
 
-jest.mock('core/flags/hooks/useAreFlagsLoading', () => () => false)
-
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 ;(useAiAgentAccess as jest.Mock).mockReturnValue({
     hasAccess: true,

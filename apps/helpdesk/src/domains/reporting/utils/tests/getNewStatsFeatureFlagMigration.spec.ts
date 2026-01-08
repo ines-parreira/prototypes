@@ -1,13 +1,16 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
+import { FeatureFlagKey, fetchFlag } from '@repo/feature-flags'
+import type { MigrationStage } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 
-import { fetchFlag } from 'core/flags/fetchFlag'
 import { resolveMetricFlag } from 'core/flags/utils/newApiMetricFlags'
-import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 
-jest.mock('core/flags/fetchFlag')
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    fetchFlag: jest.fn(),
+}))
+
 jest.mock('core/flags/utils/newApiMetricFlags')
 
 const fetchFlagMocked = assumeMock(fetchFlag)

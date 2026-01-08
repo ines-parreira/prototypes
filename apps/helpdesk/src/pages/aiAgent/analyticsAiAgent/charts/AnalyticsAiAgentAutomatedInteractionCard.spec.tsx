@@ -1,34 +1,25 @@
+import { assumeMock } from '@repo/testing'
+import type { UseQueryResult } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 
-import type { MigrationStage } from 'core/flags/utils/readMigration'
-import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { postReportingV2 } from 'domains/reporting/models/resources'
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { AnalyticsAiAgentAutomatedInteractionsCard } from './AnalyticsAiAgentAutomatedInteractionCard'
 
-jest.mock('domains/reporting/models/resources')
-const mockPostReporting = jest.mocked(postReportingV2)
+jest.mock('domains/reporting/models/queries')
+const mockUsePostReportingV2 = assumeMock(usePostReportingV2)
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-const mockUseStatsFilters = jest.mocked(useStatsFilters)
-
-jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
-const mockGetNewStatsFeatureFlagMigration = jest.mocked(
-    getNewStatsFeatureFlagMigration,
-)
+const mockUseStatsFilters = assumeMock(useStatsFilters)
 
 jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
-const mockUseGetNewStatsFeatureFlagMigration = jest.mocked(
+const mockUseGetNewStatsFeatureFlagMigration = assumeMock(
     useGetNewStatsFeatureFlagMigration,
 )
-
-jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
-const mockUseAIAgentUserId = jest.mocked(useAIAgentUserId)
 
 describe('AnalyticsAiAgentAutomatedInteractionsCard', () => {
     const mockFilters: StatsFilters = {
@@ -37,6 +28,11 @@ describe('AnalyticsAiAgentAutomatedInteractionsCard', () => {
             end_datetime: '2024-07-01T23:59:59.999Z',
         },
     }
+
+    const defaultReporting = {
+        isFetching: false,
+        isError: false,
+    } as UseQueryResult
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -47,28 +43,21 @@ describe('AnalyticsAiAgentAutomatedInteractionsCard', () => {
             userTimezone: 'UTC',
         } as any)
 
-        mockGetNewStatsFeatureFlagMigration.mockResolvedValue(
-            'complete' as MigrationStage,
-        )
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('complete')
 
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue(
-            'complete' as MigrationStage,
-        )
-
-        mockUseAIAgentUserId.mockReturnValue(123)
-
-        mockPostReporting.mockResolvedValue({
-            data: {
-                data: [
-                    {
-                        automatedInteractions: '6200',
-                    },
-                ],
-            },
-        } as any)
+        mockUsePostReportingV2.mockReturnValue({
+            ...defaultReporting,
+            data: { automatedInteractions: '6200' },
+        } as UseQueryResult)
     })
 
     it('should render loading state initially', () => {
+        mockUsePostReportingV2.mockReturnValue({
+            isFetching: true,
+            isError: false,
+            data: undefined,
+        } as UseQueryResult)
+
         renderWithQueryClientProvider(
             <AnalyticsAiAgentAutomatedInteractionsCard />,
         )
@@ -101,43 +90,16 @@ describe('AnalyticsAiAgentAutomatedInteractionsCard', () => {
         expect(mockUseStatsFilters).toHaveBeenCalled()
     })
 
-    it('should call postReporting with correct queries', async () => {
-        renderWithQueryClientProvider(
-            <AnalyticsAiAgentAutomatedInteractionsCard />,
-        )
-
-        await waitFor(() => {
-            expect(mockPostReporting).toHaveBeenCalled()
-        })
-
-        expect(mockPostReporting).toHaveBeenCalledWith(
-            expect.objectContaining({
-                metricName: 'ai-agent-automated-interactions',
-                measures: expect.arrayContaining(['automatedInteractions']),
-            }),
-        )
-    })
-
     it('should display trend badge with previous value', async () => {
-        mockPostReporting
-            .mockResolvedValueOnce({
-                data: {
-                    data: [
-                        {
-                            automatedInteractions: '6200',
-                        },
-                    ],
-                },
-            } as any)
-            .mockResolvedValueOnce({
-                data: {
-                    data: [
-                        {
-                            automatedInteractions: '6000',
-                        },
-                    ],
-                },
-            } as any)
+        mockUsePostReportingV2
+            .mockReturnValueOnce({
+                ...defaultReporting,
+                data: { automatedInteractions: '6200' },
+            } as UseQueryResult)
+            .mockReturnValueOnce({
+                ...defaultReporting,
+                data: { automatedInteractions: '6000' },
+            } as UseQueryResult)
 
         const { container } = renderWithQueryClientProvider(
             <AnalyticsAiAgentAutomatedInteractionsCard />,

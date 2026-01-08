@@ -1,7 +1,7 @@
+import { readMigration } from '@repo/feature-flags'
 import { AxiosError } from 'axios'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { readMigration } from 'core/flags/utils/readMigration'
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'

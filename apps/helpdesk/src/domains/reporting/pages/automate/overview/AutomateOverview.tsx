@@ -1,10 +1,13 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useAreFlagsLoading,
+    useFlag,
+} from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import type { PaywallConfig } from 'config/paywalls'
 import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
-import { useAreFlagsLoading } from 'core/flags'
 import AutomateOverviewContent from 'domains/reporting/pages/automate/overview/AutomateOverviewContent'
 import {
     PAGE_TITLE_AUTOMATE_PAYWALL,

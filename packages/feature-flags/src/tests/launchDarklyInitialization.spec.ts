@@ -1,28 +1,57 @@
-import { ldClientMock } from 'jest-launchdarkly-mock'
+import type { LDClient } from 'launchdarkly-js-client-sdk'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { getLDClient } from '../launchdarkly'
+
+const createLDClientMock = () => {
+    const mock = {
+        track: vi.fn(),
+        identify: vi.fn(),
+        allFlags: vi.fn(),
+        close: vi.fn(),
+        flush: vi.fn(),
+        getContext: vi.fn(),
+        off: vi.fn(),
+        on: vi.fn(),
+        setStreaming: vi.fn(),
+        variation: vi.fn(),
+        variationDetail: vi.fn(),
+        waitForInitialization: vi.fn(),
+        waitUntilGoalsReady: vi.fn(),
+        waitUntilReady: vi.fn(),
+    }
+    return mock
+}
+
+vi.mock('../launchdarkly', () => ({
+    getLDClient: vi.fn(),
+}))
+
+const getLDClientMock = vi.mocked(getLDClient)
 
 describe('ensureInitialization', () => {
+    let ldClientMock: ReturnType<typeof createLDClientMock>
     let initialisePromise: Promise<unknown>
     let initialiseResolve: (value?: unknown) => void
 
     beforeEach(() => {
-        jest.clearAllMocks()
+        vi.clearAllMocks()
 
-        // Clear any cached promises
-        jest.resetModules()
+        // Reset the module to clear any cached promises
+        vi.resetModules()
 
-        // Mock the module after resetModules
-        jest.doMock('@repo/feature-flags', () => ({
-            getLDClient: jest.fn().mockReturnValue(ldClientMock),
-        }))
-
+        ldClientMock = createLDClientMock()
         initialisePromise = new Promise((resolve) => {
             initialiseResolve = resolve
         })
-        ldClientMock.waitForInitialization.mockReturnValue(initialisePromise)
+        ldClientMock.waitForInitialization.mockReturnValue(
+            initialisePromise as Promise<void>,
+        )
+        getLDClientMock.mockReturnValue(ldClientMock as unknown as LDClient)
     })
 
     afterEach(() => {
-        jest.clearAllMocks()
+        vi.clearAllMocks()
     })
 
     it('should call waitForInitialization on first call', async () => {
@@ -69,7 +98,7 @@ describe('ensureInitialization', () => {
     })
 
     it('should reject when initialization fails', async () => {
-        const consoleSpy = jest
+        const consoleSpy = vi
             .spyOn(console, 'error')
             .mockImplementation(() => {})
 
@@ -92,7 +121,7 @@ describe('ensureInitialization', () => {
     })
 
     it('should reset promise cache after failure and allow retry', async () => {
-        const consoleSpy = jest
+        const consoleSpy = vi
             .spyOn(console, 'error')
             .mockImplementation(() => {})
 
@@ -111,7 +140,9 @@ describe('ensureInitialization', () => {
         const successPromise = new Promise((resolve) => {
             initialiseResolve = resolve
         })
-        ldClientMock.waitForInitialization.mockReturnValue(successPromise)
+        ldClientMock.waitForInitialization.mockReturnValue(
+            successPromise as Promise<void>,
+        )
 
         const promise2 = ensureInitialization()
         expect(promise1).not.toBe(promise2)

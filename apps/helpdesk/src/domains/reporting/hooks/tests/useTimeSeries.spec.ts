@@ -1,8 +1,8 @@
+import type { MigrationStage } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import type { AxiosResponse } from 'axios'
 import moment from 'moment/moment'
 
-import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
@@ -49,13 +49,18 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'domains/reporting/models/types'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 jest.mock('domains/reporting/models/queries')
+jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
 jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
 
 const usePostReportingV2Mock = assumeMock(usePostReportingV2)
 const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
+const getNewStatsFeatureFlagMigrationMock = assumeMock(
+    getNewStatsFeatureFlagMigration,
+)
 const useGetNewStatsFeatureFlagMigrationMock = assumeMock(
     useGetNewStatsFeatureFlagMigration,
 )
@@ -312,6 +317,7 @@ describe('useTimeSeries', () => {
             fetchPostReportingV2Mock.mockResolvedValue({
                 data: { data: defaultData },
             } as any)
+            getNewStatsFeatureFlagMigrationMock.mockResolvedValue('off')
         })
         it('should use fetchPostReportingV2 and return formatted data', async () => {
             const result = await fetchTimeSeries(defaultQuery)
@@ -1330,6 +1336,10 @@ describe('TimeSeriesPerDimension', () => {
     })
 
     describe('fetchTimeSeriesPerDimension', () => {
+        beforeEach(() => {
+            getNewStatsFeatureFlagMigrationMock.mockResolvedValue('off')
+        })
+
         it('should return separate time series per dimension value', async () => {
             fetchPostReportingV2Mock.mockResolvedValue({
                 data: defaultResult,

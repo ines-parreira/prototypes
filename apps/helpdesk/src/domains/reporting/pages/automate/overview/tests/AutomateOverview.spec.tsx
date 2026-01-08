@@ -1,6 +1,10 @@
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useAreFlagsLoading,
+    useFlag,
+} from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
@@ -155,14 +159,14 @@ const useAutomationRateByFeatureMock = jest.requireMock(
     'pages/aiAgent/analyticsOverview/hooks/useAutomationRateByFeature',
 ).useAutomationRateByFeature
 
-jest.mock('@repo/feature-flags')
 jest.mock('domains/reporting/hooks/metricTrends')
 const mockUseTicketHandleTimeTrend = jest.requireMock(
     'domains/reporting/hooks/metricTrends',
 ).useTicketHandleTimeTrend
 
-jest.mock('core/flags')
+jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
+const useAreFlagsLoadingMock = assumeMock(useAreFlagsLoading)
 
 jest.mock(
     'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend',
@@ -321,6 +325,7 @@ describe('<AutomateOverview />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        useAreFlagsLoadingMock.mockReturnValue(false)
         useFlagMock.mockImplementation((flag) => {
             if (flag === FeatureFlagKey.AutomateOverviewChannelsFilter)
                 return true
@@ -993,10 +998,7 @@ describe('<AutomateOverview />', () => {
 
     describe('Feature flags loading state', () => {
         it('should return null when flags are loading', () => {
-            jest.spyOn(
-                require('core/flags'),
-                'useAreFlagsLoading',
-            ).mockReturnValue(true)
+            useAreFlagsLoadingMock.mockReturnValue(true)
 
             const { container } = render(
                 <Provider store={mockStore(defaultState)}>
@@ -1016,10 +1018,7 @@ describe('<AutomateOverview />', () => {
             )
 
             try {
-                jest.spyOn(
-                    require('core/flags'),
-                    'useAreFlagsLoading',
-                ).mockReturnValue(false)
+                useAreFlagsLoadingMock.mockReturnValue(false)
                 useFlagMock.mockImplementation((flag) => {
                     if (
                         flag ===

@@ -1,7 +1,6 @@
-import type { FeatureFlagKey } from '@repo/feature-flags'
+import type { FeatureFlagKey, MigrationStage } from '@repo/feature-flags'
 import { useFlag } from '@repo/feature-flags'
 
-import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { reportError } from 'utils/errors'
 
 const ALLOWED_VALUES: Set<MigrationStage> = new Set([

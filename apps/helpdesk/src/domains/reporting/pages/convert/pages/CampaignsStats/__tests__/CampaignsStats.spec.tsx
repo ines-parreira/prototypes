@@ -1,3 +1,4 @@
+import { useAreFlagsLoading } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory } from 'history'
@@ -6,7 +7,6 @@ import { Provider } from 'react-redux'
 import type routerDom from 'react-router-dom'
 import { Route, useParams } from 'react-router-dom'
 
-import useAreFlagsLoading from 'core/flags/hooks/useAreFlagsLoading'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { useGetCampaignsForStore } from 'domains/reporting/pages/convert/hooks/useGetCampaignsForStore'
@@ -69,8 +69,8 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
 
-jest.mock('core/flags/hooks/useAreFlagsLoading')
-const useAreFlagsLoadingMock = jest.mocked(useAreFlagsLoading)
+jest.mock('@repo/feature-flags')
+const useAreFlagsLoadingMock = assumeMock(useAreFlagsLoading)
 
 jest.mock(
     'domains/reporting/hooks/support-performance/useStatsFilters',

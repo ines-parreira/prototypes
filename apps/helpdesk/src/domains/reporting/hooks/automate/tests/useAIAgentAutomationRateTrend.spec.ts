@@ -16,10 +16,12 @@ import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automat
 import { aiAgentAutomatedInteractionsQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
 import { aiAgentAutomatedInteractionsQueryV2Factory } from 'domains/reporting/models/scopes/automatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')
 jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
 jest.mock('domains/reporting/hooks/automate/automateStatsCalculatedTrends')
+jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
 
 const mockFilters: StatsFilters = {
     period: {
@@ -34,6 +36,7 @@ describe('useAIAgentAutomationRateTrend', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         ;(useAIAgentUserId as jest.Mock).mockReturnValue(12345)
+        ;(getNewStatsFeatureFlagMigration as jest.Mock).mockResolvedValue('off')
     })
 
     const mockTrendData = {
@@ -204,6 +207,7 @@ describe('useAIAgentAutomationRateTrend', () => {
 describe('fetchAIAgentAutomationRateTrend', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        ;(getNewStatsFeatureFlagMigration as jest.Mock).mockResolvedValue('off')
     })
 
     const mockTrendData = {

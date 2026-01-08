@@ -45,5 +45,3 @@ export async function readMigration<T>(
     if (authoritative.status === 'rejected') throw authoritative.reason
     return authoritative.value
 }
-
-export default readMigration

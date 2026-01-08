@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { ensureInitialization } from '../utils/launchDarklyInitialization'
+import { ensureInitialization } from './launchDarklyInitialization'
 
 /**
  * Hook that returns whether LaunchDarkly flags are ready to be used.
@@ -9,7 +9,7 @@ import { ensureInitialization } from '../utils/launchDarklyInitialization'
  *
  * @returns boolean indicating if flags are ready
  */
-export default function useAreFlagsLoading(): boolean {
+export function useAreFlagsLoading(): boolean {
     const [areFlagsLoading, setAreFlagsLoading] = useState(true)
 
     useEffect(() => {

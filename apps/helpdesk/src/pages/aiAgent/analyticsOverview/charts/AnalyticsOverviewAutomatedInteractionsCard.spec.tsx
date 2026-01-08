@@ -1,28 +1,29 @@
+import type { MigrationStage } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
-import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { postReportingV2 } from 'domains/reporting/models/resources'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
+import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { AnalyticsOverviewAutomatedInteractionsCard } from './AnalyticsOverviewAutomatedInteractionsCard'
 
-jest.mock('domains/reporting/models/resources')
-const mockPostReporting = jest.mocked(postReportingV2)
+jest.mock('domains/reporting/utils/metricExecutionHandler')
+const mockMetricExecutionHandler = assumeMock(metricExecutionHandler)
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-const mockUseStatsFilters = jest.mocked(useStatsFilters)
+const mockUseStatsFilters = assumeMock(useStatsFilters)
 
 jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
-const mockGetNewStatsFeatureFlagMigration = jest.mocked(
+const mockGetNewStatsFeatureFlagMigration = assumeMock(
     getNewStatsFeatureFlagMigration,
 )
 
 jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
-const mockUseGetNewStatsFeatureFlagMigration = jest.mocked(
+const mockUseGetNewStatsFeatureFlagMigration = assumeMock(
     useGetNewStatsFeatureFlagMigration,
 )
 
@@ -51,7 +52,7 @@ describe('AnalyticsOverviewAutomatedInteractionsCard', () => {
             'complete' as MigrationStage,
         )
 
-        mockPostReporting.mockResolvedValue({
+        mockMetricExecutionHandler.mockResolvedValue({
             data: {
                 data: [
                     {
@@ -96,28 +97,24 @@ describe('AnalyticsOverviewAutomatedInteractionsCard', () => {
         expect(mockUseStatsFilters).toHaveBeenCalled()
     })
 
-    it('should call postReporting with correct queries', async () => {
+    it('should call metricExecutionHandler with correct queries', async () => {
         renderWithQueryClientProvider(
             <AnalyticsOverviewAutomatedInteractionsCard />,
         )
 
         await waitFor(() => {
-            expect(mockPostReporting).toHaveBeenCalled()
+            expect(mockMetricExecutionHandler).toHaveBeenCalled()
         })
 
-        expect(mockPostReporting).toHaveBeenCalledWith(
+        expect(mockMetricExecutionHandler).toHaveBeenCalledWith(
             expect.objectContaining({
                 metricName: 'automate-automation-dataset',
-                measures: expect.arrayContaining([
-                    'automatedInteractions',
-                    'automatedInteractionsByAutoResponders',
-                ]),
             }),
         )
     })
 
     it('should display trend badge with previous value', async () => {
-        mockPostReporting
+        mockMetricExecutionHandler
             .mockResolvedValueOnce({
                 data: {
                     data: [

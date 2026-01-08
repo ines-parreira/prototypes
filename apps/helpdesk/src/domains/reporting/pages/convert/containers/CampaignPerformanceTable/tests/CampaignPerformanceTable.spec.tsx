@@ -18,8 +18,6 @@ import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import * as useIsConvertPerformanceViewEnabled from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 import { renderWithStore } from 'utils/testing'
 
-jest.mock('core/flags/hooks/useAreFlagsLoading', () => () => false)
-
 jest.mock('domains/reporting/pages/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 

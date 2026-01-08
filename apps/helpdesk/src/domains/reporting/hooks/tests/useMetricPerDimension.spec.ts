@@ -1,8 +1,8 @@
+import type { MigrationStage } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
-import type { MigrationStage } from 'core/flags/utils/readMigration'
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { defaultEnrichmentFields } from 'domains/reporting/hooks/useDrillDownData'
 import type {

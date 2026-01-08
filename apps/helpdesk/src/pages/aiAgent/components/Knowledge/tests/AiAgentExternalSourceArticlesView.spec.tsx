@@ -42,8 +42,6 @@ jest.mock('@repo/routing', () => ({
     },
 }))
 
-jest.mock('core/flags/hooks/useAreFlagsLoading', () => () => false)
-
 const mockUseLocation = assumeMock(useLocation)
 const mockUseParams = assumeMock(useParams)
 const mockUseGetHelpCenterArticle = assumeMock(useGetHelpCenterArticle)

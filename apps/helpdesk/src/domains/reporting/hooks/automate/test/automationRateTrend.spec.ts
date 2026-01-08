@@ -18,9 +18,20 @@ import {
     useAutomationRateTrend,
 } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
+jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
+jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
+
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
+const getNewStatsFeatureFlagMigrationMock = assumeMock(
+    getNewStatsFeatureFlagMigration,
+)
+const useGetNewStatsFeatureFlagMigrationMock = assumeMock(
+    useGetNewStatsFeatureFlagMigration,
+)
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')
 const fetchFilteredAutomatedInteractionsMock = assumeMock(
@@ -98,6 +109,7 @@ describe('AutomationRateTrend', () => {
     describe('useAutomationRateTrend', () => {
         beforeEach(() => {
             useAIAgentUserIdMock.mockReturnValue(aiAgentUserId)
+            useGetNewStatsFeatureFlagMigrationMock.mockReturnValue('off')
             fetchFilteredAutomatedInteractionsMock.mockResolvedValue({
                 data: filteredAutomatedInteractions,
                 isFetching: false,
@@ -174,6 +186,7 @@ describe('AutomationRateTrend', () => {
 
     describe('fetchAutomationRateTrend', () => {
         beforeEach(() => {
+            getNewStatsFeatureFlagMigrationMock.mockResolvedValue('off')
             fetchFilteredAutomatedInteractionsMock.mockResolvedValue({
                 data: filteredAutomatedInteractions,
                 isFetching: false,
