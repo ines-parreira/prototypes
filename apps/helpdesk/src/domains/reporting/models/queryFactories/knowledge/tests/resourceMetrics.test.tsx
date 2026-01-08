@@ -1200,7 +1200,7 @@ describe('aggregateResourceMetrics', () => {
     })
 
     describe('CSAT handling', () => {
-        it('should round CSAT to 2 decimal places', () => {
+        it('should round CSAT to 1 decimal place', () => {
             const csatData = [
                 {
                     'TicketInsightsTask.resourceSourceId': '100',
@@ -1216,7 +1216,83 @@ describe('aggregateResourceMetrics', () => {
                 undefined,
             )
 
-            expect(result[0].csat).toBe(4.57)
+            expect(result[0].csat).toBe(4.6)
+        })
+
+        it('should set CSAT to null when avgScore is 0', () => {
+            const csatData = [
+                {
+                    'TicketInsightsTask.resourceSourceId': '100',
+                    'TicketInsightsTask.resourceSourceSetId': '200',
+                    'TicketInsightsTask.avgSurveyScore': '0',
+                },
+            ]
+
+            const result = aggregateResourceMetrics(
+                undefined,
+                undefined,
+                csatData,
+                undefined,
+            )
+
+            expect(result[0].csat).toBeNull()
+        })
+
+        it('should set CSAT to null when avgScore is empty string', () => {
+            const csatData = [
+                {
+                    'TicketInsightsTask.resourceSourceId': '100',
+                    'TicketInsightsTask.resourceSourceSetId': '200',
+                    'TicketInsightsTask.avgSurveyScore': '',
+                },
+            ]
+
+            const result = aggregateResourceMetrics(
+                undefined,
+                undefined,
+                csatData,
+                undefined,
+            )
+
+            expect(result[0].csat).toBeNull()
+        })
+
+        it('should set CSAT to null when avgScore is null', () => {
+            const csatData = [
+                {
+                    'TicketInsightsTask.resourceSourceId': '100',
+                    'TicketInsightsTask.resourceSourceSetId': '200',
+                    'TicketInsightsTask.avgSurveyScore': null,
+                },
+            ]
+
+            const result = aggregateResourceMetrics(
+                undefined,
+                undefined,
+                csatData,
+                undefined,
+            )
+
+            expect(result[0].csat).toBeNull()
+        })
+
+        it('should set CSAT to null when avgScore is undefined', () => {
+            const csatData = [
+                {
+                    'TicketInsightsTask.resourceSourceId': '100',
+                    'TicketInsightsTask.resourceSourceSetId': '200',
+                    'TicketInsightsTask.avgSurveyScore': undefined,
+                },
+            ]
+
+            const result = aggregateResourceMetrics(
+                undefined,
+                undefined,
+                csatData,
+                undefined,
+            )
+
+            expect(result[0].csat).toBeNull()
         })
     })
 
@@ -1712,7 +1788,7 @@ describe('aggregateResourceMetrics', () => {
             ])
         })
 
-        it('should round CSAT to 2 decimal places with V2 fields', () => {
+        it('should round CSAT to 1 decimal place with V2 fields', () => {
             const csatData = [
                 {
                     resourceSourceId: '100',
@@ -1728,7 +1804,7 @@ describe('aggregateResourceMetrics', () => {
                 undefined,
             )
 
-            expect(result[0].csat).toBe(4.57)
+            expect(result[0].csat).toBe(4.6)
         })
 
         it('should handle missing ticket counts as 0 with V2 fields', () => {
@@ -2059,7 +2135,7 @@ describe('useResourceMetrics', () => {
         )
     })
 
-    it('should round CSAT to 2 decimal places', () => {
+    it('should round CSAT to 1 decimal place', () => {
         ;(useMetric as jest.Mock)
             .mockReturnValueOnce({
                 isFetching: false,
@@ -2094,7 +2170,7 @@ describe('useResourceMetrics', () => {
             { wrapper },
         )
 
-        expect(result.current.data?.csat?.value).toBe(4.57)
+        expect(result.current.data?.csat?.value).toBe(4.6)
     })
 })
 

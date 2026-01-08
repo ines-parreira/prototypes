@@ -221,7 +221,7 @@ describe('KnowledgeEditorGuidanceContent', () => {
                 data: {
                     tickets: { value: 156, onClick: undefined },
                     handoverTickets: { value: 12, onClick: undefined },
-                    csat: { value: 4.53, onClick: undefined },
+                    csat: { value: 4.5, onClick: undefined },
                     intents: ['Order/Status', 'Shipping/Inquiry'],
                 },
             })
@@ -262,7 +262,7 @@ describe('KnowledgeEditorGuidanceContent', () => {
             const mockResourceMetricsData = {
                 tickets: { value: 156, onClick: undefined },
                 handoverTickets: { value: 12, onClick: undefined },
-                csat: { value: 4.53, onClick: undefined },
+                csat: { value: 4.5, onClick: undefined },
                 intents: ['Order/Status', 'Shipping/Inquiry'],
             }
 

@@ -222,7 +222,7 @@ export const getColumns = (
                                   : null
                           const formattedCsat = Number.isInteger(csat)
                               ? csat.toString()
-                              : csat.toFixed(2)
+                              : csat.toFixed(1)
 
                           return (
                               <DrillDownModalTrigger

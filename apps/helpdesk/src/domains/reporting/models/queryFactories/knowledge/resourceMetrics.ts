@@ -743,7 +743,7 @@ export const useResourceMetrics = ({
                           : null,
                       csat: csatMetric.data?.value
                           ? {
-                                value: Number(csatMetric.data.value.toFixed(2)),
+                                value: Number(csatMetric.data.value.toFixed(1)),
                                 onClick: createOnClick(
                                     KnowledgeMetric.CSAT,
                                     'CSAT',
@@ -843,7 +843,7 @@ export const aggregateResourceMetrics = (
             record[TicketInsightsTaskMeasureV2.AverageSurveyScore] ??
                 record[TicketInsightsTaskMeasure.AvgSurveyScore],
         )
-        resource.csat = avgScore ? Number(avgScore.toFixed(2)) : null
+        resource.csat = avgScore ? Number(avgScore.toFixed(1)) : null
     })
 
     const intentsByResource = parseIntentsDataByResource(intentsData, false)

@@ -297,13 +297,13 @@ describe('getColumns - Metrics Columns', () => {
     describe('Avg CSAT Column', () => {
         const AVG_CSAT_COLUMN_INDEX = 4
 
-        it('should display CSAT formatted to 2 decimal places', () => {
+        it('should display CSAT formatted to 1 decimal place', () => {
             const item = createMockItem({
                 metrics: createMockMetrics({ csat: 4.567 }),
             })
 
             renderCell(item, AVG_CSAT_COLUMN_INDEX, mockMetricsDateRange)
-            expect(screen.getByText('4.57')).toBeInTheDocument()
+            expect(screen.getByText('4.6')).toBeInTheDocument()
         })
 
         it('should render DrillDownModalTrigger when CSAT is available and dateRange is provided', () => {
@@ -346,11 +346,11 @@ describe('getColumns - Metrics Columns', () => {
             expect(screen.getByText('0')).toBeInTheDocument()
         })
 
-        it('should display CSAT with trailing zeros when needed', () => {
+        it('should display CSAT formatted to 1 decimal place', () => {
             const item = createMockItem()
 
             renderCell(item, AVG_CSAT_COLUMN_INDEX, mockMetricsDateRange)
-            expect(screen.getByText('4.50')).toBeInTheDocument()
+            expect(screen.getByText('4.5')).toBeInTheDocument()
         })
 
         it('should display "--" when CSAT metric is null', () => {

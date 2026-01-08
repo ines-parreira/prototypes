@@ -1340,7 +1340,7 @@ describe('KnowledgeHubTable', () => {
 
             expect(screen.getByText('150')).toBeInTheDocument()
             expect(screen.getByText('25')).toBeInTheDocument()
-            expect(screen.getByText('4.50')).toBeInTheDocument()
+            expect(screen.getByText('4.5')).toBeInTheDocument()
         })
 
         it('shows CSAT as whole number without decimals when value is an integer', () => {
@@ -1371,7 +1371,7 @@ describe('KnowledgeHubTable', () => {
             expect(screen.queryByText('5.00')).not.toBeInTheDocument()
         })
 
-        it('shows CSAT with 2 decimals when value has decimal places', () => {
+        it('shows CSAT with 1 decimal when value has decimal places', () => {
             const dataWithDecimalCsat = [
                 {
                     type: KnowledgeType.Guidance,
@@ -1395,7 +1395,7 @@ describe('KnowledgeHubTable', () => {
                 selectedFolder: dataWithDecimalCsat[0],
             })
 
-            expect(screen.getByText('4.50')).toBeInTheDocument()
+            expect(screen.getByText('4.5')).toBeInTheDocument()
         })
 
         it('shows "--" placeholder when metrics are not loading and no data exists', () => {
