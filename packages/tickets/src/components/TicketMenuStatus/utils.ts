@@ -38,14 +38,14 @@ export function getRemainingSnoozeTime(snoozeDateTime: string | null): string {
     const minutes = duration.minutes()
 
     if (days > 0) {
-        return `${days} day${days > 1 ? 's' : ''} ${hours} hour${hours !== 1 ? 's' : ''}`
+        return `${days}d ${hours}hr`
     }
 
     if (hours > 0) {
-        return `${hours} hour${hours > 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''}`
+        return `${hours}hr ${minutes}m`
     }
 
-    return `${minutes} minute${minutes !== 1 ? 's' : ''}`
+    return `${minutes}m`
 }
 
 export function getSnoozeTooltipTitle(snoozeDateTime: string | null): string {
