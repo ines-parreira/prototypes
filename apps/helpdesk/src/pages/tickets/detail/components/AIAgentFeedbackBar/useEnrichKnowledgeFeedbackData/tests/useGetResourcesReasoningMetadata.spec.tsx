@@ -558,6 +558,7 @@ describe('useGetResourcesReasoningMetadata', () => {
             },
             'test-store',
             mockResourceData,
+            undefined,
         )
 
         expect(getResourceMetadata).toHaveBeenCalledWith(
@@ -568,6 +569,7 @@ describe('useGetResourcesReasoningMetadata', () => {
             },
             'test-store',
             mockResourceData,
+            undefined,
         )
     })
 

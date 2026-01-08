@@ -30,6 +30,7 @@ jest.mock('models/workflows/queries', () => ({
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     getLDClient: jest.fn(),
+    useFlag: jest.fn(() => false),
 }))
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
@@ -45,6 +46,8 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
             `/file/${ingestionId}/${id}`,
         questionsContentDetail: (id: number) => `/questions/content/${id}`,
         productsDetail: (id: number) => `/products/content/${id}`,
+        knowledgeArticle: (type: string, id: number) =>
+            `/knowledge/${type}/${id}`,
     })),
 }))
 
@@ -1093,6 +1096,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual({
@@ -1112,6 +1116,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual({
@@ -1131,6 +1136,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual({
@@ -1149,6 +1155,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual({
@@ -1167,6 +1174,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual({
@@ -1185,6 +1193,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1199,6 +1208,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual({
@@ -1217,6 +1227,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual({
@@ -1235,6 +1246,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual({
@@ -1253,6 +1265,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual({
@@ -1271,6 +1284,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1285,6 +1299,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1299,6 +1314,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 null,
+                false,
             )
 
             expect(result).toBe(null)
@@ -1313,6 +1329,7 @@ describe('utils', () => {
                 },
                 '',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual({
@@ -1331,6 +1348,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1350,6 +1368,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutQuestions,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1364,6 +1383,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1383,6 +1403,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutSourceItems,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1402,12 +1423,13 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutHelpCenter,
+                false,
             )
 
             expect(result).toEqual({
                 title: 'Article 1',
                 content: 'Content 1',
-                url: '',
+                url: undefined,
                 helpCenterId: 100,
             })
         })
@@ -1426,12 +1448,13 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithMismatchedHelpCenter,
+                false,
             )
 
             expect(result).toEqual({
                 title: 'Article 1',
                 content: 'Content 1',
-                url: '',
+                url: undefined,
                 helpCenterId: 100,
             })
         })
@@ -1450,6 +1473,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutGuidance,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1469,6 +1493,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutSourceItems,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1488,6 +1513,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutQuestions,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1507,6 +1533,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutFiles,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1526,6 +1553,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutActions,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1545,6 +1573,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutProducts,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1564,6 +1593,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutProducts,
+                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1590,6 +1620,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithGuidanceNoTitle,
+                false,
             )
 
             expect(result).toEqual({
@@ -1614,6 +1645,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithActionNoName,
+                false,
             )
 
             expect(result).toEqual({
@@ -1643,6 +1675,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithArticleNoTitle,
+                false,
             )
 
             expect(result).toEqual({
@@ -1673,6 +1706,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithArticleNoContent,
+                false,
             )
 
             expect(result).toEqual({
@@ -1704,6 +1738,7 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithGuidanceNoContent,
+                false,
             )
 
             expect(result).toEqual({
@@ -1723,6 +1758,7 @@ describe('utils', () => {
                 },
                 '',
                 mockResourceData,
+                false,
             )
 
             expect(result).toEqual({
@@ -1803,6 +1839,7 @@ describe('utils', () => {
                     },
                     shopName,
                     mockResourceData,
+                    false,
                 )
 
                 expect(result).toEqual(expected)

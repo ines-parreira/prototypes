@@ -56,6 +56,8 @@ jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     getAiAgentNavigationRoutes: jest.fn(() => ({
+        knowledgeArticle: (type: string, id: number) =>
+            `mock/knowledge/${type}/${id}`,
         guidanceArticleEdit: (id: number) => `/mock/guidance/edit/${id}`,
         articleEdit: (id: number) => `/mock/article/edit/${id}`,
         urlArticlesDetail: (ingestionId: number, articleId: number) =>

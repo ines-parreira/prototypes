@@ -1,5 +1,7 @@
 import { useMemo, useRef } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import type {
     FeedbackExecutionsItem,
     FindFeedbackResult,
@@ -18,6 +20,7 @@ import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNaviga
 import type { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import type { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipleStoreWebsiteQuestions'
 import type { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
+import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
 
 import type { FreeForm, KnowledgeResource, SuggestedResource } from '../types'
 import {
@@ -360,6 +363,7 @@ export const getResourceMetadata = (
             ReturnType<typeof useGetProductsByIdsFromIntegration>['data']
         >
     } | null,
+    isKnowledgeHubEnabled: boolean,
 ) => {
     const aiAgentRoutes = shopName
         ? getAiAgentNavigationRoutes(shopName)
@@ -396,11 +400,18 @@ export const getResourceMetadata = (
                 article &&
                 getHelpCenterArticleUrl(article, helpCenter)
 
+            const knowledgeHubUrl = aiAgentRoutes?.knowledgeArticle(
+                KnowledgeType.FAQ,
+                idAsNumber,
+            )
+
             return article
                 ? {
                       title: article.translation.title ?? '',
                       content: article.translation.content ?? '',
-                      url: articleUrl ?? '',
+                      url: isKnowledgeHubEnabled
+                          ? knowledgeHubUrl
+                          : (articleUrl ?? undefined),
                       helpCenterId: article.helpCenterId,
                   }
                 : getEmptyMetadata()
@@ -424,15 +435,24 @@ export const getResourceMetadata = (
                 (snippet) => snippet.id === idAsNumber,
             )
 
+            const externalSnippetUrl =
+                aiAgentRoutes?.urlArticlesDetail(
+                    snippet?.ingestionId ?? 0,
+                    parseInt(id),
+                ) ?? ''
+
+            const knowledgeHubUrl = aiAgentRoutes?.knowledgeArticle(
+                KnowledgeType.URL,
+                idAsNumber,
+            )
+
             if (snippet) {
                 return {
                     title: snippet.title,
                     content: snippet.title,
-                    url:
-                        aiAgentRoutes?.urlArticlesDetail(
-                            snippet.ingestionId,
-                            parseInt(id),
-                        ) ?? '',
+                    url: isKnowledgeHubEnabled
+                        ? knowledgeHubUrl
+                        : externalSnippetUrl,
                 }
             }
             return getEmptyMetadata()
@@ -441,13 +461,22 @@ export const getResourceMetadata = (
             const storeWebsiteQuestion = storeWebsiteQuestions?.find(
                 (question) => question.article_id === idAsNumber,
             )
+
+            const storeWebsiteSnippetUrl =
+                aiAgentRoutes?.questionsContentDetail(parseInt(id)) ?? ''
+
+            const knowledgeHubUrl = aiAgentRoutes?.knowledgeArticle(
+                KnowledgeType.Domain,
+                idAsNumber,
+            )
+
             if (storeWebsiteQuestion) {
                 return {
                     title: storeWebsiteQuestion.title,
                     content: storeWebsiteQuestion.title,
-                    url:
-                        aiAgentRoutes?.questionsContentDetail(parseInt(id)) ??
-                        '',
+                    url: isKnowledgeHubEnabled
+                        ? knowledgeHubUrl
+                        : storeWebsiteSnippetUrl,
                 }
             }
             return getEmptyMetadata()
@@ -456,15 +485,25 @@ export const getResourceMetadata = (
             const fileSnippet = ingestedFiles
                 ?.filter((file) => file.ingestionStatus === 'SUCCESSFUL')
                 .find((fileSnippet) => fileSnippet.id === idAsNumber)
+
+            const fileSnippetUrl =
+                aiAgentRoutes?.fileArticlesDetail(
+                    fileSnippet?.ingestionId ?? 0,
+                    parseInt(id),
+                ) ?? ''
+
+            const knowledgeHubUrl = aiAgentRoutes?.knowledgeArticle(
+                KnowledgeType.Document,
+                idAsNumber,
+            )
+
             return fileSnippet
                 ? {
                       title: fileSnippet.title,
                       content: fileSnippet.title,
-                      url:
-                          aiAgentRoutes?.fileArticlesDetail(
-                              fileSnippet.ingestionId,
-                              parseInt(id),
-                          ) ?? '',
+                      url: isKnowledgeHubEnabled
+                          ? knowledgeHubUrl
+                          : fileSnippetUrl,
                   }
                 : getEmptyMetadata()
         }
@@ -576,6 +615,11 @@ export const useProcessResources = (
         >
     } | null,
 ) => {
+    const isKnowledgeHubEnabled = useFlag(
+        FeatureFlagKey.KnowledgeHubEnabled,
+        false,
+    )
+
     const previousValueRef = useRef<{
         knowledgeResources: KnowledgeResource[]
         suggestedResources: SuggestedResource[]
@@ -623,6 +667,7 @@ export const useProcessResources = (
                     },
                     shopName,
                     resourceData,
+                    isKnowledgeHubEnabled,
                 )
 
                 if (!metadata) {
@@ -669,6 +714,7 @@ export const useProcessResources = (
                                 resourceData.isLoading
                                     ? previousResourceDataRef.current
                                     : resourceData,
+                                isKnowledgeHubEnabled,
                             )
                             if (
                                 !metadata ||
@@ -724,7 +770,7 @@ export const useProcessResources = (
             previousResourceDataRef.current = resourceData
         }
         return output
-    }, [executions, shopName, resourceData])
+    }, [executions, shopName, resourceData, isKnowledgeHubEnabled])
 }
 
 export const useExtractDistinctProductIdsFromResources = (

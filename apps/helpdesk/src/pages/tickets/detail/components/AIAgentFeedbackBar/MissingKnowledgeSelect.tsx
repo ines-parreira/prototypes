@@ -1,6 +1,7 @@
 import type { RefObject } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
@@ -82,6 +83,11 @@ const MissingKnowledgeSelect = ({
     const [values, setValues] = useState<string[]>([])
     const [isLoading, setIsLoading] = useState<boolean | undefined>(undefined)
 
+    const isKnowledgeHubEnabled = useFlag(
+        FeatureFlagKey.KnowledgeHubEnabled,
+        false,
+    )
+
     const ticket = useAppSelector(getTicketState)
     const currentUser = useAppSelector((state) => state.currentUser)
     const ticketId: number = ticket.get('id')
@@ -117,6 +123,7 @@ const MissingKnowledgeSelect = ({
                         },
                         shopName,
                         resourcesData,
+                        isKnowledgeHubEnabled,
                     ),
                     label: `${SIMPLIFIED_RESOURCE_LABELS.guidance}${guidance.title}`,
                     value: guidance.id.toString(),
@@ -144,6 +151,7 @@ const MissingKnowledgeSelect = ({
                         },
                         shopName,
                         resourcesData,
+                        isKnowledgeHubEnabled,
                     ),
                     label: `${SIMPLIFIED_RESOURCE_LABELS.action}${action.name}`,
                     value: action.id.toString(),
@@ -169,6 +177,7 @@ const MissingKnowledgeSelect = ({
                         },
                         shopName,
                         resourcesData,
+                        isKnowledgeHubEnabled,
                     ),
                     label: `${SIMPLIFIED_RESOURCE_LABELS.article}${article.translation.title}`,
                     value: article.id.toString(),
@@ -195,6 +204,7 @@ const MissingKnowledgeSelect = ({
                         },
                         shopName,
                         resourcesData,
+                        isKnowledgeHubEnabled,
                     ),
                     resource: question,
                     label: `${SIMPLIFIED_RESOURCE_LABELS.store_website}${question.title}`,
@@ -222,6 +232,7 @@ const MissingKnowledgeSelect = ({
                         },
                         shopName,
                         resourcesData,
+                        isKnowledgeHubEnabled,
                     )
 
                     return {
@@ -254,6 +265,7 @@ const MissingKnowledgeSelect = ({
                         },
                         shopName,
                         resourcesData,
+                        isKnowledgeHubEnabled,
                     )
 
                     return {
@@ -274,6 +286,7 @@ const MissingKnowledgeSelect = ({
         snippetHelpCenterId,
         knowledgeResources,
         shopName,
+        isKnowledgeHubEnabled,
     ])
 
     const makeLabelsUnique = useCallback((choices: ChoiceOption[]) => {
