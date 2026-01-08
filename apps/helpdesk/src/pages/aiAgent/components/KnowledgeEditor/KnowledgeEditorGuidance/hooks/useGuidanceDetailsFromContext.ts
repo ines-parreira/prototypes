@@ -22,7 +22,7 @@ const getAiAgentStatusTooltip = (
     limitMessage: string,
 ): string | undefined => {
     if (isDraft) {
-        return 'You can only change this setting on a published version.'
+        return 'Only published versions can be enabled for AI Agent. Publish this version to enable it for AI Agent.'
     }
     if (isAtLimit && !visibility) {
         return limitMessage

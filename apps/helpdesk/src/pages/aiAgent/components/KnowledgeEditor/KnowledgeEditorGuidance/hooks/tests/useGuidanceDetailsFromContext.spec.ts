@@ -166,7 +166,7 @@ describe('useGuidanceDetailsFromContext', () => {
                 )
 
                 expect(result.current.aiAgentStatus.tooltip).toBe(
-                    'You can only change this setting on a published version.',
+                    'Only published versions can be enabled for AI Agent. Publish this version to enable it for AI Agent.',
                 )
             })
 
@@ -195,7 +195,7 @@ describe('useGuidanceDetailsFromContext', () => {
                 )
 
                 expect(result.current.aiAgentStatus.tooltip).toBe(
-                    'You can only change this setting on a published version.',
+                    'Only published versions can be enabled for AI Agent. Publish this version to enable it for AI Agent.',
                 )
             })
         })
