@@ -452,6 +452,8 @@ describe('KnowledgeHub Table Utils', () => {
                 title: 'Unlisted Item',
                 lastUpdatedAt: '2025-01-02T00:00:00Z',
                 inUseByAI: KnowledgeVisibility.UNLISTED,
+                publishedVersionId: 1,
+                draftVersionId: 1,
                 id: '2',
             },
             {
@@ -486,12 +488,13 @@ describe('KnowledgeHub Table Utils', () => {
             expect(result[1].inUseByAI).toBe(KnowledgeVisibility.PUBLIC)
         })
 
-        it('returns only UNLISTED items when filter is false', () => {
+        it('returns items not in use by AI when filter is false', () => {
             const result = filterKnowledgeItemsByInUseByAI(items, false)
 
-            expect(result).toHaveLength(1)
+            expect(result).toHaveLength(2)
             expect(result[0].id).toBe('2')
             expect(result[0].inUseByAI).toBe(KnowledgeVisibility.UNLISTED)
+            expect(result[1].id).toBe('4')
         })
 
         it('excludes items without inUseByAI property when filtering', () => {
@@ -539,6 +542,8 @@ describe('KnowledgeHub Table Utils', () => {
                     title: 'Item 2',
                     lastUpdatedAt: '2025-01-02T00:00:00Z',
                     inUseByAI: KnowledgeVisibility.UNLISTED,
+                    publishedVersionId: 1,
+                    draftVersionId: 1,
                     id: '2',
                 },
             ]
@@ -557,6 +562,133 @@ describe('KnowledgeHub Table Utils', () => {
 
             expect(unlistedResult).toHaveLength(1)
             expect(unlistedResult[0].inUseByAI).toBe('unlisted')
+        })
+
+        it('FAQ: requires both published version ID AND public visibility to be in use', () => {
+            const faqItems = [
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'Published and Public',
+                    lastUpdatedAt: '2025-01-01T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    publishedVersionId: 1,
+                    draftVersionId: 1,
+                    id: '1',
+                },
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'Published but Unlisted',
+                    lastUpdatedAt: '2025-01-02T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.UNLISTED,
+                    publishedVersionId: 1,
+                    draftVersionId: 1,
+                    id: '2',
+                },
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'Has published version with draft changes and Public',
+                    lastUpdatedAt: '2025-01-03T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    publishedVersionId: 1,
+                    draftVersionId: 2,
+                    id: '3',
+                },
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'Never Published but Public',
+                    lastUpdatedAt: '2025-01-04T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    draftVersionId: 1,
+                    id: '4',
+                },
+            ]
+
+            const inUseResult = filterKnowledgeItemsByInUseByAI(faqItems, true)
+            const notInUseResult = filterKnowledgeItemsByInUseByAI(
+                faqItems,
+                false,
+            )
+
+            expect(inUseResult).toHaveLength(2)
+            expect(inUseResult[0].id).toBe('1')
+            expect(inUseResult[1].id).toBe('3')
+
+            expect(notInUseResult).toHaveLength(2)
+            expect(notInUseResult[0].id).toBe('2')
+            expect(notInUseResult[1].id).toBe('4')
+        })
+
+        it('FAQ: published article with public visibility is in use by AI', () => {
+            const faqItems = [
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'Published and Public',
+                    lastUpdatedAt: '2025-01-01T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    publishedVersionId: 1,
+                    draftVersionId: 1,
+                    id: '1',
+                },
+            ]
+
+            const result = filterKnowledgeItemsByInUseByAI(faqItems, true)
+
+            expect(result).toHaveLength(1)
+            expect(result[0].id).toBe('1')
+        })
+
+        it('FAQ: article with published version ID and draft changes but public visibility IS in use by AI', () => {
+            const faqItems = [
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'Has published version with draft changes and Public',
+                    lastUpdatedAt: '2025-01-01T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    publishedVersionId: 1,
+                    draftVersionId: 2,
+                    id: '1',
+                },
+            ]
+
+            const result = filterKnowledgeItemsByInUseByAI(faqItems, true)
+
+            expect(result).toHaveLength(1)
+            expect(result[0].id).toBe('1')
+        })
+
+        it('FAQ: published article with unlisted visibility is NOT in use by AI', () => {
+            const faqItems = [
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'Published but Unlisted',
+                    lastUpdatedAt: '2025-01-01T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.UNLISTED,
+                    publishedVersionId: 1,
+                    draftVersionId: 1,
+                    id: '1',
+                },
+            ]
+
+            const result = filterKnowledgeItemsByInUseByAI(faqItems, true)
+
+            expect(result).toHaveLength(0)
+        })
+
+        it('FAQ: article without published version ID even with public visibility is NOT in use by AI', () => {
+            const faqItems = [
+                {
+                    type: KnowledgeType.FAQ,
+                    title: 'Never Published but Public',
+                    lastUpdatedAt: '2025-01-01T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    draftVersionId: 1,
+                    id: '1',
+                },
+            ]
+
+            const result = filterKnowledgeItemsByInUseByAI(faqItems, true)
+
+            expect(result).toHaveLength(0)
         })
     })
 })

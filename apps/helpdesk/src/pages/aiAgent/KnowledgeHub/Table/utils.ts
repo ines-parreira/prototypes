@@ -5,7 +5,10 @@ import type {
     GroupedKnowledgeItem,
     KnowledgeItem,
 } from 'pages/aiAgent/KnowledgeHub/types'
-import { KnowledgeVisibility } from 'pages/aiAgent/KnowledgeHub/types'
+import {
+    KnowledgeType,
+    KnowledgeVisibility,
+} from 'pages/aiAgent/KnowledgeHub/types'
 
 export const groupKnowledgeItemsBySource = (
     items: KnowledgeItem[],
@@ -106,9 +109,20 @@ export const filterKnowledgeItemsByInUseByAI = (
         return items
     }
 
-    const targetVisibility = inUseByAIValue
-        ? KnowledgeVisibility.PUBLIC
-        : KnowledgeVisibility.UNLISTED
+    return items.filter((item) => {
+        // For FAQ (Help Center articles), check both conditions:
+        // 1. Article must have a published version (not only draft)
+        // 2. Article must have public visibility
+        let isInUse: boolean
+        if (item.type === KnowledgeType.FAQ) {
+            isInUse =
+                !!item.publishedVersionId &&
+                item.inUseByAI === KnowledgeVisibility.PUBLIC
+        } else {
+            // For other types, use visibility status
+            isInUse = item.inUseByAI === KnowledgeVisibility.PUBLIC
+        }
 
-    return items.filter((item) => item.inUseByAI === targetVisibility)
+        return inUseByAIValue ? isInUse : !isInUse
+    })
 }

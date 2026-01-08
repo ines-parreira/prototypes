@@ -18,7 +18,6 @@ import {
     KnowledgeType,
     KnowledgeVisibility,
 } from 'pages/aiAgent/KnowledgeHub/types'
-import { isDraft } from 'pages/aiAgent/KnowledgeHub/utils/articleUtils'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { TitleCell } from './TitleCell'
@@ -274,17 +273,14 @@ export const getColumns = (
                         )
                     }
 
-                    // For FAQ (Help Center articles), use isDraft to determine status
-                    // Articles are in use by AI only when published (not draft)
+                    // For FAQ (Help Center articles), check both conditions:
+                    // 1. Article must have a published version (not only draft)
+                    // 2. Article must have public visibility
                     let isInUse: boolean
                     if (row.type === KnowledgeType.FAQ) {
-                        const article = {
-                            id: Number(row.id),
-                            title: row.title,
-                            draftVersionId: row.draftVersionId,
-                            publishedVersionId: row.publishedVersionId,
-                        }
-                        isInUse = !isDraft(article)
+                        isInUse =
+                            !!row.publishedVersionId &&
+                            row.inUseByAI === KnowledgeVisibility.PUBLIC
                     } else {
                         // For other types, use visibility status
                         const visibility = info.getValue() as
