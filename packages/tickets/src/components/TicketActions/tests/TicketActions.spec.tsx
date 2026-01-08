@@ -84,7 +84,7 @@ describe('TicketActions', () => {
 
     async function openMenu(user: ReturnType<typeof render>['user']) {
         const button = screen.getByRole('button', {
-            name: /dots-kebab-vertical/i,
+            name: /dots-meatballs-horizontal/i,
         })
         await act(() => user.click(button))
         return button
@@ -94,7 +94,7 @@ describe('TicketActions', () => {
         render(<TicketActions {...defaultProps} />)
 
         const button = screen.getByRole('button', {
-            name: /dots-kebab-vertical/i,
+            name: /dots-meatballs-horizontal/i,
         })
         expect(button).toBeInTheDocument()
     })
@@ -253,7 +253,7 @@ describe('TicketActions', () => {
             const { user } = render(<TicketActions {...defaultProps} />)
 
             const button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
+                name: /dots-meatballs-horizontal/i,
             })
             await act(() => user.click(button))
 
@@ -267,7 +267,7 @@ describe('TicketActions', () => {
             )
 
             const button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
+                name: /dots-meatballs-horizontal/i,
             })
             await act(() => user.click(button))
 
@@ -298,7 +298,7 @@ describe('TicketActions', () => {
             })
 
             const button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
+                name: /dots-meatballs-horizontal/i,
             })
             await act(() => user.click(button))
 
@@ -337,7 +337,7 @@ describe('TicketActions', () => {
             )
 
             const button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
+                name: /dots-meatballs-horizontal/i,
             })
             await act(() => user.click(button))
 
@@ -364,7 +364,7 @@ describe('TicketActions', () => {
             })
 
             const button = screen.getByRole('button', {
-                name: /dots-kebab-vertical/i,
+                name: /dots-meatballs-horizontal/i,
             })
             await act(() => user.click(button))
 

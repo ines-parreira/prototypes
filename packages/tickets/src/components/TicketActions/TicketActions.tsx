@@ -87,7 +87,7 @@ export function TicketActions(ticket: TicketActionsProps) {
                         slot="button"
                         size="sm"
                         variant="tertiary"
-                        icon={IconName.DotsKebabVertical}
+                        icon={IconName.DotsMeatballsHorizontal}
                     />
                 }
             >
