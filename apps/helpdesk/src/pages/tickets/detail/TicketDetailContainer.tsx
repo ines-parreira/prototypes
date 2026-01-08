@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useAsyncFn, useEffectOnce, useKey, usePrevious } from '@repo/hooks'
+import {
+    useAsyncFn,
+    useEffectOnce,
+    useIsMobileResolution,
+    useKey,
+    usePrevious,
+} from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useLiveTicketTranslationsUpdates } from '@repo/tickets'
 import { shortcutManager } from '@repo/utils'
@@ -21,7 +27,6 @@ import {
     TicketStatus,
 } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import { useSearch } from 'hooks/useSearch'

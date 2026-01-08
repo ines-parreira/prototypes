@@ -1,4 +1,4 @@
-import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
+import { useIsMobileResolution } from '@repo/hooks'
 
 export function useDesktopOnlyShowGlobalNavFeatureFlag() {
     const isMobileResolution = useIsMobileResolution()

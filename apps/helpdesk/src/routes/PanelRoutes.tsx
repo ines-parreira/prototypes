@@ -1,12 +1,11 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useWindowSize } from '@repo/hooks'
+import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
 import { TicketsLegacyBridgeProvider } from '@repo/tickets'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { Handle, PanelGroup, Panels } from 'core/layout/panels'
 import { GlobalNavigationPanel } from 'core/navigation'
 import { ContentPanels } from 'core/ui'
-import { useIsMobileResolution } from 'hooks/useIsMobileResolution'
 import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/legacyBridge/useTicketLegacyBridgeFunctions'
 import { useOnToggleUnread } from 'tickets/dtp'
 import { TicketsNavbarPanel } from 'tickets/navigation'

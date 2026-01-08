@@ -1,6 +1,4 @@
-import React from 'react'
-
-import { useWindowSize } from '@repo/hooks'
+import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -11,7 +9,6 @@ import { account } from 'fixtures/account'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import { useIsMobileResolution } from 'hooks/useIsMobileResolution'
 import { type VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
@@ -22,16 +19,15 @@ jest.mock('core/navigation', () => ({
     GlobalNavigationPanel: () => <div>GlobalNavigationPanel</div>,
 }))
 jest.mock('hooks/integrations/phone/useVoiceDevice')
-jest.mock('hooks/useIsMobileResolution', () => ({
-    useIsMobileResolution: jest.fn(),
-}))
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
-const useIsMobileResolutionMock = assumeMock(useIsMobileResolution)
+
 jest.mock('@repo/hooks', () => ({
     ...jest.requireActual('@repo/hooks'),
     useWindowSize: jest.fn(),
+    useIsMobileResolution: jest.fn(),
 }))
 const useWindowSizeMock = assumeMock(useWindowSize)
+const useIsMobileResolutionMock = assumeMock(useIsMobileResolution)
 jest.mock('common/navigation/hooks/useNavBar/useNavBar')
 const useNavBarMock = assumeMock(useNavBar)
 jest.mock('split-ticket-view-toggle')

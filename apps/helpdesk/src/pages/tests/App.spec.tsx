@@ -1,12 +1,12 @@
 import type React from 'react'
 
+import { useIsMobileResolution } from '@repo/hooks'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { store } from 'common/store'
-import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 
 import App from '../App'
 
@@ -16,7 +16,10 @@ jest.mock('@repo/navigation', () => ({
 }))
 const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 
-jest.mock('hooks/useIsMobileResolution/useIsMobileResolution')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useIsMobileResolution: jest.fn(),
+}))
 jest.mock('common/navigation', () => ({
     GlobalNavigation: jest.fn(() => <div data-testid="global-navigation" />),
 }))

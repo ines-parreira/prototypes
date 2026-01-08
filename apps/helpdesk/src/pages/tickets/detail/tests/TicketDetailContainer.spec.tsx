@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
+import { useIsMobileResolution } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, flushPromises, userEvent } from '@repo/testing'
 import { useLiveTicketTranslationsUpdates } from '@repo/tickets'
@@ -142,11 +143,11 @@ const spiedMergeFieldsStateWithMacroValues = assumeMock(
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const useSplitTicketViewMock = useSplitTicketView as jest.Mock
 
-jest.mock('hooks/useIsMobileResolution/useIsMobileResolution', () =>
-    jest.fn(() => false),
-)
-const mockUseIsMobileResolution =
-    require('hooks/useIsMobileResolution/useIsMobileResolution') as jest.Mock
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useIsMobileResolution: jest.fn(() => false),
+}))
+const mockUseIsMobileResolution = useIsMobileResolution as jest.Mock
 
 const mockGoToPreviousTicket = jest.fn()
 jest.mock(
