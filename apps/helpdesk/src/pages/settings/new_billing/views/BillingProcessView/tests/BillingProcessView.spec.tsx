@@ -386,13 +386,6 @@ describe('UsageAndPlansView', () => {
     describe('Product-specific cancellations', () => {
         describe.each([
             {
-                productType: ProductType.Helpdesk,
-                productName: 'Helpdesk',
-                plan: basicMonthlyHelpdeskPlan,
-                productId: HELPDESK_PRODUCT_ID,
-                usageKey: 'helpdesk' as const,
-            },
-            {
                 productType: ProductType.Automation,
                 productName: 'Automation',
                 plan: basicMonthlyAutomationPlan,
@@ -435,10 +428,7 @@ describe('UsageAndPlansView', () => {
                             invoices: [],
                             products,
                             currentProductsUsage: {
-                                helpdesk:
-                                    usageKey === 'helpdesk'
-                                        ? currentProductsUsage.helpdesk
-                                        : null,
+                                helpdesk: null,
                                 automation:
                                     usageKey === 'automation'
                                         ? currentProductsUsage.automation
@@ -507,10 +497,7 @@ describe('UsageAndPlansView', () => {
                             invoices: [],
                             products,
                             currentProductsUsage: {
-                                helpdesk:
-                                    usageKey === 'helpdesk'
-                                        ? currentProductsUsage.helpdesk
-                                        : null,
+                                helpdesk: null,
                                 automation:
                                     usageKey === 'automation'
                                         ? currentProductsUsage.automation
@@ -572,16 +559,16 @@ describe('UsageAndPlansView', () => {
         )
 
         it('should display cancellation badges for multiple products', async () => {
-            const helpdeskCancellation = '2025-12-31T23:59:59Z'
-            const automationCancellation = '2025-11-30T23:59:59Z'
+            const automationCancellation = '2025-12-31T23:59:59Z'
+            const convertCancellation = '2025-11-30T23:59:59Z'
 
             mockUseProductCancellations.mockReturnValue({
                 data: new Map([
-                    [basicMonthlyHelpdeskPlan.plan_id, helpdeskCancellation],
                     [
                         basicMonthlyAutomationPlan.plan_id,
                         automationCancellation,
                     ],
+                    [convertPlan1.plan_id, convertCancellation],
                 ]),
             } as any)
 
@@ -595,7 +582,7 @@ describe('UsageAndPlansView', () => {
                         automation: currentProductsUsage.automation,
                         voice: null,
                         sms: null,
-                        convert: null,
+                        convert: currentProductsUsage.convert,
                     },
                 }),
                 currentAccount: fromJS({
@@ -605,6 +592,7 @@ describe('UsageAndPlansView', () => {
                                 basicMonthlyHelpdeskPlan.plan_id,
                             [AUTOMATION_PRODUCT_ID]:
                                 basicMonthlyAutomationPlan.plan_id,
+                            [CONVERT_PRODUCT_ID]: convertPlan1.plan_id,
                         },
                         scheduled_to_cancel_at: null,
                     },
@@ -744,7 +732,7 @@ describe('UsageAndPlansView', () => {
         it('should display different cancellation dates for different products', async () => {
             mockUseProductCancellations.mockReturnValue({
                 data: new Map([
-                    [basicMonthlyHelpdeskPlan.plan_id, '2025-12-31T23:59:59Z'],
+                    [smsPlan1.plan_id, '2025-12-31T23:59:59Z'],
                     [
                         basicMonthlyAutomationPlan.plan_id,
                         '2025-06-30T23:59:59Z',
@@ -761,7 +749,7 @@ describe('UsageAndPlansView', () => {
                         helpdesk: currentProductsUsage.helpdesk,
                         automation: currentProductsUsage.automation,
                         voice: null,
-                        sms: null,
+                        sms: currentProductsUsage.sms,
                         convert: null,
                     },
                 }),
@@ -772,6 +760,7 @@ describe('UsageAndPlansView', () => {
                                 basicMonthlyHelpdeskPlan.plan_id,
                             [AUTOMATION_PRODUCT_ID]:
                                 basicMonthlyAutomationPlan.plan_id,
+                            [SMS_PRODUCT_ID]: smsPlan1.plan_id,
                         },
                         scheduled_to_cancel_at: null,
                     },

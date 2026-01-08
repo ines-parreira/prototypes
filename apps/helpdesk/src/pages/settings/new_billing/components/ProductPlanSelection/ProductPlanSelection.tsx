@@ -386,9 +386,6 @@ const ProductPlanSelection = ({
                 </Button>
             )
         }
-        if (scheduledToCancelAt) {
-            return <></>
-        }
         if (type === ProductType.Automation) {
             return (
                 <Button
@@ -406,6 +403,7 @@ const ProductPlanSelection = ({
                             setIsCancelAAOModalOpen(true)
                         }
                     }}
+                    isDisabled={!!scheduledToCancelAt}
                 >
                     Remove product
                 </Button>
@@ -423,6 +421,7 @@ const ProductPlanSelection = ({
                         )
                         handleConvertClose()
                     }}
+                    isDisabled={!!scheduledToCancelAt}
                 >
                     Remove product
                 </Button>
@@ -443,6 +442,7 @@ const ProductPlanSelection = ({
                         )
                         setIsCancellationFlowOpen(true)
                     }}
+                    isDisabled={!!scheduledToCancelAt}
                 >
                     Remove product
                 </Button>
@@ -463,6 +463,7 @@ const ProductPlanSelection = ({
                         )
                         setIsCancellationFlowOpen(true)
                     }}
+                    isDisabled={!!scheduledToCancelAt}
                 >
                     Remove product
                 </Button>
@@ -503,7 +504,9 @@ const ProductPlanSelection = ({
                             onChange={handleSelectProductPlan}
                             showSelectedOption
                             dropdownMenuClassName={css.select}
-                            disabled={!editingAvailable}
+                            disabled={
+                                !editingAvailable || !!scheduledToCancelAt
+                            }
                         />
                         <div className={css.counter}>
                             <div>

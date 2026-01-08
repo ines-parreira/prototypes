@@ -1201,8 +1201,8 @@ describe('ProductPlanSelection', () => {
                     }
                 })
 
-                it('should hide Remove product button when scheduledToCancelAt is set', () => {
-                    const { queryByRole } = render(
+                it('should disable Remove product button when scheduledToCancelAt is set', () => {
+                    const { getByRole } = render(
                         <Provider store={store}>
                             <ProductPlanSelection
                                 {...productProps}
@@ -1212,11 +1212,11 @@ describe('ProductPlanSelection', () => {
                     )
 
                     expect(
-                        queryByRole('button', { name: 'Remove product' }),
-                    ).not.toBeInTheDocument()
+                        getByRole('button', { name: 'Remove product' }),
+                    ).toBeAriaDisabled()
                 })
 
-                it('should show Remove product button when scheduledToCancelAt is null', () => {
+                it('should enable Remove product button when scheduledToCancelAt is null', () => {
                     const { getByRole } = render(
                         <Provider store={store}>
                             <ProductPlanSelection
@@ -1228,10 +1228,10 @@ describe('ProductPlanSelection', () => {
 
                     expect(
                         getByRole('button', { name: 'Remove product' }),
-                    ).toBeInTheDocument()
+                    ).not.toBeAriaDisabled()
                 })
 
-                it('should show Remove product button when scheduledToCancelAt is undefined', () => {
+                it('should enable Remove product button when scheduledToCancelAt is undefined', () => {
                     const { getByRole } = render(
                         <Provider store={store}>
                             <ProductPlanSelection {...productProps} />
@@ -1240,10 +1240,98 @@ describe('ProductPlanSelection', () => {
 
                     expect(
                         getByRole('button', { name: 'Remove product' }),
-                    ).toBeInTheDocument()
+                    ).not.toBeAriaDisabled()
                 })
             },
         )
+
+        describe('Whole subscription cancellation', () => {
+            it('should display active until badge when whole subscription is scheduled to cancel for Helpdesk', () => {
+                const { getByText } = render(
+                    <Provider store={store}>
+                        <ProductPlanSelection
+                            {...props}
+                            scheduledToCancelAt="2025-12-31T23:59:59Z"
+                        />
+                    </Provider>,
+                )
+
+                expect(
+                    getByText(/Active until December 31, 2025/i),
+                ).toBeInTheDocument()
+            })
+
+            it('should display active until badge when whole subscription is scheduled to cancel for Convert', () => {
+                const convertProps = {
+                    ...props,
+                    type: ProductType.Convert,
+                    currentPlan: convertPlan1,
+                    availablePlans: [convertPlan1],
+                    selectedPlans: {
+                        ...selectedPlans,
+                        convert: {
+                            plan: convertPlan1,
+                            isSelected: true,
+                        },
+                    },
+                }
+
+                const { getByText } = render(
+                    <Provider store={store}>
+                        <ProductPlanSelection
+                            {...convertProps}
+                            scheduledToCancelAt="2025-11-30T23:59:59Z"
+                        />
+                    </Provider>,
+                )
+
+                expect(
+                    getByText(/Active until November 30, 2025/i),
+                ).toBeInTheDocument()
+            })
+
+            it('should not display active until badge when no cancellation is scheduled', () => {
+                const { queryByText } = render(
+                    <Provider store={store}>
+                        <ProductPlanSelection
+                            {...props}
+                            scheduledToCancelAt={null}
+                        />
+                    </Provider>,
+                )
+
+                expect(queryByText(/Active until/i)).not.toBeInTheDocument()
+            })
+
+            it('should disable Remove product button when whole subscription is cancelled', () => {
+                const automationProps = {
+                    ...props,
+                    type: ProductType.Automation,
+                    currentPlan: basicMonthlyAutomationPlan,
+                    availablePlans: [basicMonthlyAutomationPlan],
+                    selectedPlans: {
+                        ...selectedPlans,
+                        automation: {
+                            plan: basicMonthlyAutomationPlan,
+                            isSelected: true,
+                        },
+                    },
+                }
+
+                const { getByRole } = render(
+                    <Provider store={store}>
+                        <ProductPlanSelection
+                            {...automationProps}
+                            scheduledToCancelAt="2025-12-31T23:59:59Z"
+                        />
+                    </Provider>,
+                )
+
+                expect(
+                    getByRole('button', { name: 'Remove product' }),
+                ).toBeAriaDisabled()
+            })
+        })
     })
 
     describe('BillingUsageAndPlansCancelAutoRenewalClicked tracking', () => {

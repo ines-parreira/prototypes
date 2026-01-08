@@ -312,7 +312,7 @@ describe('UsageAndPlansView', () => {
                 plan: basicMonthlyHelpdeskPlan,
                 usage: mockedUsage[ProductType.Helpdesk],
                 isDisabled: false,
-                scheduledToCancelAt: null,
+                scheduledToCancelAt: '2024-01-14T22:40:22+00:00',
             },
             {},
         )
@@ -354,7 +354,7 @@ describe('UsageAndPlansView', () => {
                 usage: mockedUsage[ProductType.Convert],
                 isDisabled: false,
                 autoUpgradeEnabled: false,
-                scheduledToCancelAt: null,
+                scheduledToCancelAt: '2024-01-14T22:40:22+00:00',
             },
             {},
         )
@@ -808,9 +808,25 @@ describe('UsageAndPlansView', () => {
     it('should pass cancellation date to ProductCard when product has scheduled cancellation', () => {
         mockUseProductCancellations.mockReturnValue({
             data: new Map([
-                [basicMonthlyHelpdeskPlan.plan_id, '2025-12-31T23:59:59Z'],
+                [basicMonthlyAutomationPlan.plan_id, '2025-12-31T23:59:59Z'],
             ]),
         } as any)
+
+        const alteredStore = {
+            billing: fromJS(mockedBilling),
+            integrations: fromJS(mockedIntegrations),
+            currentAccount: fromJS({
+                ...mockedAccount,
+                current_subscription: {
+                    ...mockedAccount.current_subscription,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicMonthlyAutomationPlan.plan_id,
+                    },
+                },
+            }),
+        }
 
         renderWithStoreAndQueryClientAndRouter(
             <UsageAndPlansView
@@ -818,14 +834,14 @@ describe('UsageAndPlansView', () => {
                 periodEnd="2021-01-01"
                 currentUsage={mockedUsage}
             />,
-            store,
+            alteredStore,
         )
 
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             1,
             expect.objectContaining({
                 type: ProductType.Helpdesk,
-                scheduledToCancelAt: '2025-12-31T23:59:59Z',
+                scheduledToCancelAt: null,
             }),
             {},
         )
@@ -834,7 +850,7 @@ describe('UsageAndPlansView', () => {
             2,
             expect.objectContaining({
                 type: ProductType.Automation,
-                scheduledToCancelAt: null,
+                scheduledToCancelAt: '2025-12-31T23:59:59Z',
             }),
             {},
         )
@@ -843,10 +859,27 @@ describe('UsageAndPlansView', () => {
     it('should pass different cancellation dates to ProductCards for multiple products', () => {
         mockUseProductCancellations.mockReturnValue({
             data: new Map([
-                [basicMonthlyHelpdeskPlan.plan_id, '2025-12-31T23:59:59Z'],
+                [basicMonthlyAutomationPlan.plan_id, '2025-12-31T23:59:59Z'],
                 [convertPlan1.plan_id, '2025-11-30T23:59:59Z'],
             ]),
         } as any)
+
+        const alteredStore = {
+            billing: fromJS(mockedBilling),
+            integrations: fromJS(mockedIntegrations),
+            currentAccount: fromJS({
+                ...mockedAccount,
+                current_subscription: {
+                    ...mockedAccount.current_subscription,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                        [AUTOMATION_PRODUCT_ID]:
+                            basicMonthlyAutomationPlan.plan_id,
+                        [CONVERT_PRODUCT_ID]: convertPlan1.plan_id,
+                    },
+                },
+            }),
+        }
 
         renderWithStoreAndQueryClientAndRouter(
             <UsageAndPlansView
@@ -854,13 +887,13 @@ describe('UsageAndPlansView', () => {
                 periodEnd="2021-01-01"
                 currentUsage={mockedUsage}
             />,
-            store,
+            alteredStore,
         )
 
         expect(ProductCardMock).toHaveBeenNthCalledWith(
-            1,
+            2,
             expect.objectContaining({
-                type: ProductType.Helpdesk,
+                type: ProductType.Automation,
                 scheduledToCancelAt: '2025-12-31T23:59:59Z',
             }),
             {},
@@ -874,6 +907,148 @@ describe('UsageAndPlansView', () => {
             }),
             {},
         )
+    })
+
+    describe('Whole subscription cancellation', () => {
+        it('should pass subscription-level cancellation date to Helpdesk product', () => {
+            const alteredStore = {
+                billing: fromJS(mockedBilling),
+                integrations: fromJS(mockedIntegrations),
+                currentAccount: fromJS({
+                    ...mockedAccount,
+                    current_subscription: {
+                        ...mockedAccount.current_subscription,
+                        scheduled_to_cancel_at: '2025-12-31T23:59:59Z',
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                alteredStore,
+            )
+
+            expect(ProductCardMock).toHaveBeenNthCalledWith(
+                1,
+                expect.objectContaining({
+                    type: ProductType.Helpdesk,
+                    scheduledToCancelAt: '2025-12-31T23:59:59Z',
+                }),
+                {},
+            )
+        })
+
+        it('should pass subscription-level cancellation date to all products when subscription is cancelled', () => {
+            const alteredStore = {
+                billing: fromJS(mockedBilling),
+                integrations: fromJS(mockedIntegrations),
+                currentAccount: fromJS({
+                    ...mockedAccount,
+                    current_subscription: {
+                        ...mockedAccount.current_subscription,
+                        scheduled_to_cancel_at: '2025-11-30T23:59:59Z',
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.plan_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.plan_id,
+                            [CONVERT_PRODUCT_ID]: convertPlan1.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                alteredStore,
+            )
+
+            expect(ProductCardMock).toHaveBeenNthCalledWith(
+                1,
+                expect.objectContaining({
+                    type: ProductType.Helpdesk,
+                    scheduledToCancelAt: '2025-11-30T23:59:59Z',
+                }),
+                {},
+            )
+
+            expect(ProductCardMock).toHaveBeenNthCalledWith(
+                2,
+                expect.objectContaining({
+                    type: ProductType.Automation,
+                    scheduledToCancelAt: '2025-11-30T23:59:59Z',
+                }),
+                {},
+            )
+
+            expect(ProductCardMock).toHaveBeenNthCalledWith(
+                5,
+                expect.objectContaining({
+                    type: ProductType.Convert,
+                    scheduledToCancelAt: '2025-11-30T23:59:59Z',
+                }),
+                {},
+            )
+        })
+
+        it('should pass null to products when no subscription cancellation is scheduled', () => {
+            const alteredStore = {
+                billing: fromJS(mockedBilling),
+                integrations: fromJS(mockedIntegrations),
+                currentAccount: fromJS({
+                    ...mockedAccount,
+                    current_subscription: {
+                        ...mockedAccount.current_subscription,
+                        scheduled_to_cancel_at: null,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.plan_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                alteredStore,
+            )
+
+            expect(ProductCardMock).toHaveBeenNthCalledWith(
+                1,
+                expect.objectContaining({
+                    type: ProductType.Helpdesk,
+                    scheduledToCancelAt: null,
+                }),
+                {},
+            )
+
+            expect(ProductCardMock).toHaveBeenNthCalledWith(
+                2,
+                expect.objectContaining({
+                    type: ProductType.Automation,
+                    scheduledToCancelAt: null,
+                }),
+                {},
+            )
+        })
     })
 
     it('should trigger call for meet AI agent notification if it has an active AI Agent subscription', () => {

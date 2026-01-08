@@ -389,9 +389,8 @@ const BillingProcessView = ({
                             updateSubscription={updateSubscription}
                             scheduledToCancelAt={
                                 currentHelpdeskPlan
-                                    ? cancellationsByPlanId.get(
-                                          currentHelpdeskPlan.plan_id,
-                                      ) || null
+                                    ? currentSubscriptionScheduledToCancelAt ||
+                                      null
                                     : null
                             }
                         />
@@ -413,9 +412,10 @@ const BillingProcessView = ({
                             updateSubscription={updateSubscription}
                             scheduledToCancelAt={
                                 currentAutomatePlan
-                                    ? cancellationsByPlanId.get(
+                                    ? currentSubscriptionScheduledToCancelAt ||
+                                      cancellationsByPlanId.get(
                                           currentAutomatePlan.plan_id,
-                                      ) || null
+                                      )
                                     : null
                             }
                         />
@@ -436,9 +436,11 @@ const BillingProcessView = ({
                             updateSubscription={updateSubscription}
                             scheduledToCancelAt={
                                 currentVoicePlan
-                                    ? cancellationsByPlanId.get(
+                                    ? currentSubscriptionScheduledToCancelAt ||
+                                      cancellationsByPlanId.get(
                                           currentVoicePlan.plan_id,
-                                      ) || null
+                                      ) ||
+                                      null
                                     : null
                             }
                         />
@@ -459,9 +461,11 @@ const BillingProcessView = ({
                             updateSubscription={updateSubscription}
                             scheduledToCancelAt={
                                 currentSmsPlan
-                                    ? cancellationsByPlanId.get(
+                                    ? currentSubscriptionScheduledToCancelAt ||
+                                      cancellationsByPlanId.get(
                                           currentSmsPlan.plan_id,
-                                      ) || null
+                                      ) ||
+                                      null
                                     : null
                             }
                         />
@@ -482,9 +486,11 @@ const BillingProcessView = ({
                             updateSubscription={updateSubscription}
                             scheduledToCancelAt={
                                 currentConvertPlan
-                                    ? cancellationsByPlanId.get(
+                                    ? currentSubscriptionScheduledToCancelAt ||
+                                      cancellationsByPlanId.get(
                                           currentConvertPlan.plan_id,
-                                      ) || null
+                                      ) ||
+                                      null
                                     : null
                             }
                         />

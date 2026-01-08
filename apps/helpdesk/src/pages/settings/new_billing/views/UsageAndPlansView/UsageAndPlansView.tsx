@@ -270,9 +270,7 @@ const UsageAndPlansView = ({
                         }
                         scheduledToCancelAt={
                             currentHelpdeskPlan
-                                ? cancellationsByPlanId.get(
-                                      currentHelpdeskPlan.plan_id,
-                                  ) || null
+                                ? scheduledToCancelAt || null
                                 : null
                         }
                     />
@@ -285,9 +283,11 @@ const UsageAndPlansView = ({
                         }
                         scheduledToCancelAt={
                             currentAutomatePlan
-                                ? cancellationsByPlanId.get(
+                                ? scheduledToCancelAt ||
+                                  cancellationsByPlanId.get(
                                       currentAutomatePlan.plan_id,
-                                  ) || null
+                                  ) ||
+                                  null
                                 : null
                         }
                     />
@@ -303,9 +303,11 @@ const UsageAndPlansView = ({
                         disabledTooltip={disabledTooltip}
                         scheduledToCancelAt={
                             currentVoicePlan
-                                ? cancellationsByPlanId.get(
+                                ? scheduledToCancelAt ||
+                                  cancellationsByPlanId.get(
                                       currentVoicePlan.plan_id,
-                                  ) || null
+                                  ) ||
+                                  null
                                 : null
                         }
                     />
@@ -321,9 +323,11 @@ const UsageAndPlansView = ({
                         disabledTooltip={disabledTooltip}
                         scheduledToCancelAt={
                             currentSmsPlan
-                                ? cancellationsByPlanId.get(
+                                ? scheduledToCancelAt ||
+                                  cancellationsByPlanId.get(
                                       currentSmsPlan.plan_id,
-                                  ) || null
+                                  ) ||
+                                  null
                                 : null
                         }
                     />
@@ -340,9 +344,11 @@ const UsageAndPlansView = ({
                         )}
                         scheduledToCancelAt={
                             currentConvertPlan
-                                ? cancellationsByPlanId.get(
+                                ? scheduledToCancelAt ||
+                                  cancellationsByPlanId.get(
                                       currentConvertPlan.plan_id,
-                                  ) || null
+                                  ) ||
+                                  null
                                 : null
                         }
                     />
