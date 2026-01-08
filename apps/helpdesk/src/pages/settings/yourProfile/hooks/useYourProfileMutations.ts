@@ -9,6 +9,8 @@ import type {
 } from '@gorgias/helpdesk-types'
 import { UserSettingType } from '@gorgias/helpdesk-types'
 
+import { normalizeUserName } from 'common/utils'
+
 import { useUpdateCurrentUserProfile } from '../hooks/useUpdateCurrentUserProfile'
 import {
     useCreateCurrentUserProfileSettings,
@@ -127,6 +129,10 @@ export function useYourProfileMutations({
             formValues,
             includedKeys,
         ) as UpdateUserBody
+
+        if (normalizedValues.name) {
+            normalizedValues.name = normalizeUserName(normalizedValues.name)
+        }
 
         await updateCurrentUser(normalizedValues)
     }, [formValues, updateCurrentUser, isGorgiasAgent])

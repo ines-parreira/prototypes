@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import classnames from 'classnames'
 import { useParams } from 'react-router-dom'
 
+import { normalizeUserName } from 'common/utils'
 import type { UserDraft } from 'config/types/user'
 import { UserRole } from 'config/types/user'
 import { useCreateAgent } from 'hooks/agents/useCreateAgent'
@@ -70,7 +71,7 @@ export const Detail = () => {
     const onSubmit = (e: FormEvent) => {
         e.preventDefault()
         const form: UserDraft = {
-            name: name.trim(),
+            name: normalizeUserName(name),
         }
 
         if (!isInternal) {
