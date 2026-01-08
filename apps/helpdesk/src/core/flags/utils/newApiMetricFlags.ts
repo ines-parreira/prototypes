@@ -36,8 +36,9 @@ export const P2_SCOPES: MetricScope[] = [
     MetricScope.ZeroTouchTickets,
     MetricScope.VoiceCalls,
     MetricScope.VoiceCallsSummary,
-    MetricScope.KnowledgeInsights,
 ]
+
+export const P3_SCOPES: MetricScope[] = [MetricScope.KnowledgeInsights]
 
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()
 
@@ -55,6 +56,15 @@ P2_SCOPES.forEach((scope) => {
         METRIC_TO_FLAG_MAP.set(
             metricName,
             FeatureFlagKey.ReportingP2MetricMigration,
+        )
+    })
+})
+
+P3_SCOPES.forEach((scope) => {
+    METRIC_NAMES_BY_SCOPE[scope].forEach((metricName) => {
+        METRIC_TO_FLAG_MAP.set(
+            metricName,
+            FeatureFlagKey.ReportingP3MetricMigration,
         )
     })
 })

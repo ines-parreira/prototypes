@@ -43,4 +43,10 @@ describe('resolveMetricFlag', () => {
             ),
         ).toBe(FeatureFlagKey.ReportingUnsortedMetricMigration)
     })
+
+    it('should return the correct flag for P3 metrics', () => {
+        expect(resolveMetricFlag(METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS)).toBe(
+            FeatureFlagKey.ReportingP3MetricMigration,
+        )
+    })
 })
