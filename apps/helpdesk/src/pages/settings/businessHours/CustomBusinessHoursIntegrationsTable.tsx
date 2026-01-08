@@ -52,6 +52,7 @@ const BUSINESS_HOURS_CHANNEL_INTEGRATION_TYPES = [
     IntegrationType.WhatsApp,
     IntegrationType.GorgiasChat,
     IntegrationType.Twitter,
+    IntegrationType.App,
 ]
 
 export default function CustomBusinessHoursIntegrationsTable({

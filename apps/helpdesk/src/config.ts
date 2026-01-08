@@ -611,6 +611,21 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         privacyPolicy: '',
         setupGuide: '',
     },
+    {
+        type: IntegrationType.App,
+        title: 'More Applications',
+        description: '',
+        benefits: [],
+        categories: [Category.SOCIAL],
+        longDescription: '',
+        screenshots: [],
+        pricingPlan: PricingPlan.FREE,
+        pricingDetails: '',
+        pricingLink: '',
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
+        privacyPolicy: '',
+        setupGuide: '',
+    },
 ]
 
 const CHANNELS = [

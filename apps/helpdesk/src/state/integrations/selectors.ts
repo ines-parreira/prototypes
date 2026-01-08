@@ -115,7 +115,9 @@ export const getIntegrationsList = createSelector(
             (accumulator: IntegrationListItem[], description) => {
                 if (
                     isChannel(description.type) ||
-                    description.type === IntegrationType.Http
+                    [IntegrationType.Http, IntegrationType.App].includes(
+                        description.type,
+                    )
                 )
                     return accumulator
                 let count = 0

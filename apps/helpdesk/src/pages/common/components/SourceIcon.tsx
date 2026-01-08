@@ -130,6 +130,9 @@ const sourceTypeToIcon = (sourceType?: ChannelLike) => {
             icon.custom = true
             icon.name = 'whatsapp'
             break
+        case IntegrationType.App:
+            icon.name = 'apps'
+            break
         case AUTOMATE_ICON:
             icon.name = 'bolt'
             break

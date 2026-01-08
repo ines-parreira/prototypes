@@ -4,6 +4,7 @@ import { render } from '@testing-library/react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { channels as mockChannels } from 'fixtures/channels'
+import { IntegrationType } from 'models/integration/types'
 import { getChannelBySlug } from 'services/channels'
 import { SYSTEM_SOURCE_TYPES, USABLE_SOURCE_TYPES } from 'tickets/common/config'
 
@@ -51,5 +52,13 @@ describe('SourceIcon component', () => {
         expect(image.getAttribute('src')).toEqual(
             getChannelBySlug('tiktok-shop')?.logo_url,
         )
+    })
+
+    it('should show apps icon for App integration type', () => {
+        const { container } = render(<SourceIcon type={IntegrationType.App} />)
+        const icon = container.querySelector('i')
+        expect(icon).toBeInTheDocument()
+        expect(icon).toHaveClass('material-icons')
+        expect(icon?.textContent).toBe('apps')
     })
 })

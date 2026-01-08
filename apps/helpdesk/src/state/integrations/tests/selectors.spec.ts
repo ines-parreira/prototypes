@@ -42,6 +42,8 @@ import {
     getIntegrationChannel,
     getIntegrations,
     getIntegrationsByAppId,
+    getIntegrationsCountPerType,
+    getIntegrationsList,
     getIntegrationsState,
     getIsChatIntegrationStatusError,
     getIsChatIntegrationStatusLoading,
@@ -1085,5 +1087,486 @@ describe('integrations selectors', () => {
                 )
             },
         )
+    })
+
+    describe('getIntegrationsCountPerType()', () => {
+        it('should count active integrations by type', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.Email,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Email,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 3,
+                            type: IntegrationType.Gmail,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 4,
+                            type: IntegrationType.Shopify,
+                            deactivated_datetime: null,
+                        },
+                    ],
+                }),
+            } as RootState
+
+            const result = getIntegrationsCountPerType(state)
+
+            expect(result).toEqual({
+                [IntegrationType.Email]: 2,
+                [IntegrationType.Gmail]: 1,
+                [IntegrationType.Shopify]: 1,
+            })
+        })
+
+        it('should exclude deactivated integrations from count', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.Email,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Email,
+                            deactivated_datetime:
+                                '2023-07-18T17:20:05.655015+00:00',
+                        },
+                        {
+                            id: 3,
+                            type: IntegrationType.Email,
+                            deactivated_datetime: null,
+                        },
+                    ],
+                }),
+            } as RootState
+
+            const result = getIntegrationsCountPerType(state)
+
+            expect(result).toEqual({
+                [IntegrationType.Email]: 2,
+            })
+        })
+
+        it('should return empty object when no integrations exist', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [],
+                }),
+            } as RootState
+
+            const result = getIntegrationsCountPerType(state)
+
+            expect(result).toEqual({})
+        })
+    })
+
+    describe('getIntegrationsList()', () => {
+        it('should return integration list with correct counts', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.Shopify,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Shopify,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 3,
+                            type: IntegrationType.Facebook,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 4,
+                            type: IntegrationType.BigCommerce,
+                            deactivated_datetime: null,
+                        },
+                    ],
+                }),
+            } as RootState
+
+            const result = getIntegrationsList(state)
+
+            // Find Shopify integration
+            const shopifyIntegration = result.find(
+                (item) => item.type === IntegrationType.Shopify,
+            )
+            expect(shopifyIntegration).toBeDefined()
+            expect(shopifyIntegration?.count).toBe(2)
+
+            // Find Facebook integration
+            const facebookIntegration = result.find(
+                (item) => item.type === IntegrationType.Facebook,
+            )
+            expect(facebookIntegration).toBeDefined()
+            expect(facebookIntegration?.count).toBe(1)
+        })
+
+        it('should exclude channel integrations from the list', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.Email,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Phone,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 3,
+                            type: IntegrationType.Sms,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 4,
+                            type: IntegrationType.GorgiasChat,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 5,
+                            type: IntegrationType.Shopify,
+                            deactivated_datetime: null,
+                        },
+                    ],
+                }),
+            } as RootState
+
+            const result = getIntegrationsList(state)
+
+            // Channel types should not appear in the list
+            // CHANNELS = [Email, Phone, Sms, GorgiasChat]
+            const hasEmail = result.some(
+                (item) => item.type === IntegrationType.Email,
+            )
+            const hasPhone = result.some(
+                (item) => item.type === IntegrationType.Phone,
+            )
+            const hasSms = result.some(
+                (item) => item.type === IntegrationType.Sms,
+            )
+            const hasGorgiasChat = result.some(
+                (item) => item.type === IntegrationType.GorgiasChat,
+            )
+
+            // These are all channels, so they should be filtered out
+            expect(hasEmail).toBe(false)
+            expect(hasPhone).toBe(false)
+            expect(hasSms).toBe(false)
+            expect(hasGorgiasChat).toBe(false)
+
+            // But non-channel types should be present
+            const hasShopify = result.some(
+                (item) => item.type === IntegrationType.Shopify,
+            )
+            expect(hasShopify).toBe(true)
+        })
+
+        it('should exclude Http integration type from the list', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.Http,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Shopify,
+                            deactivated_datetime: null,
+                        },
+                    ],
+                }),
+            } as RootState
+
+            const result = getIntegrationsList(state)
+
+            // Http type should not appear in the list
+            const hasHttp = result.some(
+                (item) => item.type === IntegrationType.Http,
+            )
+            expect(hasHttp).toBe(false)
+
+            // But other non-channel types should still be there
+            const hasShopify = result.some(
+                (item) => item.type === IntegrationType.Shopify,
+            )
+            expect(hasShopify).toBe(true)
+        })
+
+        it('should exclude App integration type from the list', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.App,
+                            application_id: '64785607477d0a11fc731bfa',
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Shopify,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 3,
+                            type: IntegrationType.Facebook,
+                            deactivated_datetime: null,
+                        },
+                    ],
+                }),
+            } as RootState
+
+            const result = getIntegrationsList(state)
+
+            // App type should not appear in the list
+            const hasApp = result.some(
+                (item) => item.type === IntegrationType.App,
+            )
+            expect(hasApp).toBe(false)
+
+            // But other non-channel types should still be there
+            const hasShopify = result.some(
+                (item) => item.type === IntegrationType.Shopify,
+            )
+            const hasFacebook = result.some(
+                (item) => item.type === IntegrationType.Facebook,
+            )
+            expect(hasShopify).toBe(true)
+            expect(hasFacebook).toBe(true)
+        })
+
+        it('should count multiple integrations of the same type correctly', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.Shopify,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Shopify,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 3,
+                            type: IntegrationType.Shopify,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 4,
+                            type: IntegrationType.Facebook,
+                            deactivated_datetime: null,
+                        },
+                    ],
+                }),
+            } as RootState
+
+            const result = getIntegrationsCountPerType(state)
+            const list = getIntegrationsList(state)
+
+            // Check counts are correct
+            expect(result[IntegrationType.Shopify]).toBe(3)
+            expect(result[IntegrationType.Facebook]).toBe(1)
+
+            // Shopify integration should show count of 3
+            const shopifyIntegration = list.find(
+                (item) => item.type === IntegrationType.Shopify,
+            )
+            expect(shopifyIntegration?.count).toBe(3)
+        })
+
+        it('should return zero count for integration types with no instances', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.Facebook,
+                            deactivated_datetime: null,
+                        },
+                    ],
+                }),
+            } as RootState
+
+            const result = getIntegrationsList(state)
+
+            // Shopify should exist in the list with count 0 (no Shopify integrations)
+            const shopifyIntegration = result.find(
+                (item) => item.type === IntegrationType.Shopify,
+            )
+            expect(shopifyIntegration).toBeDefined()
+            expect(shopifyIntegration?.count).toBe(0)
+        })
+
+        it('should only count active integrations', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.Shopify,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Shopify,
+                            deactivated_datetime:
+                                '2023-07-18T17:20:05.655015+00:00',
+                        },
+                        {
+                            id: 3,
+                            type: IntegrationType.Facebook,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 4,
+                            type: IntegrationType.Facebook,
+                            deactivated_datetime:
+                                '2023-07-18T17:20:05.655015+00:00',
+                        },
+                    ],
+                }),
+            } as RootState
+
+            const result = getIntegrationsList(state)
+
+            // Shopify integration should only count active ones
+            const shopifyIntegration = result.find(
+                (item) => item.type === IntegrationType.Shopify,
+            )
+            expect(shopifyIntegration?.count).toBe(1) // Only 1 active Shopify
+
+            // Facebook should also only count active ones
+            const facebookIntegration = result.find(
+                (item) => item.type === IntegrationType.Facebook,
+            )
+            expect(facebookIntegration?.count).toBe(1) // Only 1 active Facebook
+        })
+
+        it('should preserve integration config properties in the result', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.Shopify,
+                            deactivated_datetime: null,
+                        },
+                    ],
+                }),
+            } as RootState
+
+            const result = getIntegrationsList(state)
+
+            const shopifyIntegration = result.find(
+                (item) => item.type === IntegrationType.Shopify,
+            )
+
+            expect(shopifyIntegration).toBeDefined()
+            expect(shopifyIntegration).toHaveProperty('title')
+            expect(shopifyIntegration).toHaveProperty('description')
+            expect(shopifyIntegration).toHaveProperty('type')
+            expect(shopifyIntegration).toHaveProperty('count')
+        })
+
+        it('should return empty list when state has no integrations', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [],
+                }),
+            } as RootState
+
+            const result = getIntegrationsList(state)
+
+            // Should still return integration configs, but all with count 0
+            expect(result.length).toBeGreaterThan(0)
+            expect(result.every((item) => item.count === 0)).toBe(true)
+        })
+
+        it('should exclude both App and Http types from the list', () => {
+            const state = {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.App,
+                            application_id: 'app-123',
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Http,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 3,
+                            type: IntegrationType.Email,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 4,
+                            type: IntegrationType.Shopify,
+                            deactivated_datetime: null,
+                        },
+                        {
+                            id: 5,
+                            type: IntegrationType.Phone,
+                            deactivated_datetime: null,
+                        },
+                    ],
+                }),
+            } as RootState
+
+            const result = getIntegrationsList(state)
+
+            // App and Http should not appear
+            const hasApp = result.some(
+                (item) => item.type === IntegrationType.App,
+            )
+            const hasHttp = result.some(
+                (item) => item.type === IntegrationType.Http,
+            )
+            expect(hasApp).toBe(false)
+            expect(hasHttp).toBe(false)
+
+            // Channels (Email, Phone) should also not appear
+            const hasEmail = result.some(
+                (item) => item.type === IntegrationType.Email,
+            )
+            const hasPhone = result.some(
+                (item) => item.type === IntegrationType.Phone,
+            )
+            expect(hasEmail).toBe(false)
+            expect(hasPhone).toBe(false)
+
+            // But non-channel, non-App, non-Http types should be present
+            const hasShopify = result.some(
+                (item) => item.type === IntegrationType.Shopify,
+            )
+            expect(hasShopify).toBe(true)
+        })
     })
 })

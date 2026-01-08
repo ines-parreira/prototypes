@@ -477,6 +477,40 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         })
     })
 
+    it('should search for integrations by App channel when selecting More Applications from the dropdown', async () => {
+        const user = userEvent.setup()
+
+        let receivedChannelsParam: string | undefined
+        const queryHandler = mockListIntegrationsForBusinessHoursHandler(
+            async ({ request }) => {
+                const url = new URL(request.url)
+                receivedChannelsParam =
+                    url.searchParams.get('channels') ?? undefined
+                return HttpResponse.json(mockListResponse)
+            },
+        )
+
+        server.use(queryHandler.handler, mockAccountSettingsHandler.handler)
+
+        renderComponent()
+
+        const allChannelsDropdown = await screen.findByRole('button', {
+            name: /all channels/i,
+        })
+        await act(async () => {
+            await user.click(allChannelsDropdown)
+        })
+
+        const appOption = await screen.findByText('More Applications')
+        await act(async () => {
+            await user.click(appOption)
+        })
+
+        await waitFor(() => {
+            expect(receivedChannelsParam).toBe('app')
+        })
+    })
+
     it('should search for integrations by store when selecting a store from the dropdown', async () => {
         const user = userEvent.setup()
 
