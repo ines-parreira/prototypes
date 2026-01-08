@@ -69,7 +69,7 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
         <div className={css.aiAgentStatusWrapper}>
             <span id={`tooltip_${id}`}>
                 <NewToggleButton
-                    color="var(--surface-inverted-default)"
+                    color="var(--content-accent-default)"
                     checked={checked}
                     isDisabled={!onChange || isDisabled}
                     onChange={onChange ?? (() => {})}
