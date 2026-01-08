@@ -47,12 +47,12 @@ export const useGetPostStoreInstallationStepsPure = (
         queryFn: () => getPostStoreInstallationSteps(params),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
+        ...overrides,
         enabled:
             !!params.accountId &&
             !!params.shopName &&
             !!params.shopType &&
             (overrides?.enabled ?? true),
-        ...overrides,
     })
 }
 
