@@ -25,7 +25,7 @@ export const MetricsDateRangeDisplay = ({
     }
 
     return (
-        <Text size="sm" className={css.dateRange}>
+        <Text size="sm" variant="medium" className={css.dateRange}>
             Metrics from {formatMetricsDateRange(dateRange)}
         </Text>
     )
