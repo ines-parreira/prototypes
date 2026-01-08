@@ -11,7 +11,8 @@ import {
 import { useDeleteModal } from './useDeleteModal'
 
 export const KnowledgeEditorGuidanceDeleteModal = () => {
-    const { isOpen, isDeleting, onClose, onDelete } = useDeleteModal()
+    const { isOpen, isDeleting, hasBothVersions, onClose, onDelete } =
+        useDeleteModal()
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose}>
@@ -19,9 +20,9 @@ export const KnowledgeEditorGuidanceDeleteModal = () => {
             <OverlayContent>
                 <Box paddingBottom="md">
                     <Text>
-                        Once deleted, this content can’t be restored. Both the
-                        draft and the published version will be permanently
-                        deleted.
+                        Once deleted, this content can&apos;t be restored.
+                        {hasBothVersions &&
+                            ' Both the draft and the published version will be permanently deleted.'}
                     </Text>
                 </Box>
             </OverlayContent>

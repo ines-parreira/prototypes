@@ -84,6 +84,26 @@ describe('useGuidanceDetailsFromContext', () => {
             )
         })
 
+        it('should return false when viewing a draft even if visibility is true', () => {
+            const draftGuidance = {
+                ...mockGuidanceArticle,
+                isCurrent: false,
+            }
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextValue,
+                state: {
+                    ...defaultState,
+                    visibility: true,
+                    guidance: draftGuidance,
+                },
+                guidanceArticle: draftGuidance,
+            })
+
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.aiAgentStatus.value).toBe(false)
+        })
+
         describe('tooltip', () => {
             it('should return undefined when not at limit and not a draft', () => {
                 const { result } = renderHook(() =>

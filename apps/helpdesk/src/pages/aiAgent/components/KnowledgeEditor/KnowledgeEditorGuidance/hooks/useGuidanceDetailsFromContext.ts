@@ -43,7 +43,7 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
     return useMemo(
         () => ({
             aiAgentStatus: {
-                value: state.visibility,
+                value: isDraft ? false : state.visibility,
                 onChange: toggleVisibility,
                 tooltip: getAiAgentStatusTooltip(
                     isDraft,

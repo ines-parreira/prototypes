@@ -416,12 +416,87 @@ describe('useDeleteModal', () => {
         })
     })
 
+    describe('hasBothVersions', () => {
+        it('should return true when both draft and published versions exist', () => {
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    guidance: {
+                        ...mockGuidance,
+                        publishedVersionId: 1,
+                        draftVersionId: 2,
+                    },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            const { result } = renderHook(() => useDeleteModal())
+
+            expect(result.current.hasBothVersions).toBe(true)
+        })
+
+        it('should return false when only draft version exists', () => {
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    guidance: {
+                        ...mockGuidance,
+                        publishedVersionId: null,
+                        draftVersionId: 1,
+                    },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            const { result } = renderHook(() => useDeleteModal())
+
+            expect(result.current.hasBothVersions).toBe(false)
+        })
+
+        it('should return false when draft and published are the same', () => {
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    guidance: {
+                        ...mockGuidance,
+                        publishedVersionId: 1,
+                        draftVersionId: 1,
+                    },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            const { result } = renderHook(() => useDeleteModal())
+
+            expect(result.current.hasBothVersions).toBe(false)
+        })
+
+        it('should return false when guidance is undefined', () => {
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    guidance: undefined,
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            const { result } = renderHook(() => useDeleteModal())
+
+            expect(result.current.hasBothVersions).toBe(false)
+        })
+    })
+
     describe('return value shape', () => {
         it('should return all expected properties', () => {
             const { result } = renderHook(() => useDeleteModal())
 
             expect(result.current).toHaveProperty('isOpen')
             expect(result.current).toHaveProperty('isDeleting')
+            expect(result.current).toHaveProperty('hasBothVersions')
             expect(result.current).toHaveProperty('onClose')
             expect(result.current).toHaveProperty('onDelete')
             expect(typeof result.current.onClose).toBe('function')

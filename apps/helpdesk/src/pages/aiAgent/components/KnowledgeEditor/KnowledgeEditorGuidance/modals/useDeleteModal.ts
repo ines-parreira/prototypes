@@ -35,9 +35,14 @@ export const useDeleteModal = () => {
         notifyError,
     ])
 
+    const hasBothVersions =
+        !!state.guidance?.publishedVersionId &&
+        state.guidance?.draftVersionId !== state.guidance?.publishedVersionId
+
     return {
         isOpen: state.activeModal === 'delete',
         isDeleting: state.isUpdating,
+        hasBothVersions,
         onClose: () => dispatch({ type: 'CLOSE_MODAL' }),
         onDelete,
     }

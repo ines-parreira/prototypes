@@ -434,16 +434,97 @@ describe('useDeleteArticleModal', () => {
         })
     })
 
+    describe('hasBothVersions', () => {
+        it('should return true when both draft and published versions exist', () => {
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        article: {
+                            ...mockArticle,
+                            translation: {
+                                ...mockTranslation,
+                                published_version_id: 1,
+                                draft_version_id: 2,
+                            },
+                        },
+                    },
+                }),
+            )
+
+            const { result } = renderHook(() => useDeleteArticleModal())
+
+            expect(result.current.hasBothVersions).toBe(true)
+        })
+
+        it('should return false when only draft version exists', () => {
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        article: {
+                            ...mockArticle,
+                            translation: {
+                                ...mockTranslation,
+                                published_version_id: null,
+                                draft_version_id: 1,
+                            },
+                        },
+                    },
+                }),
+            )
+
+            const { result } = renderHook(() => useDeleteArticleModal())
+
+            expect(result.current.hasBothVersions).toBe(false)
+        })
+
+        it('should return false when draft and published are the same', () => {
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        article: {
+                            ...mockArticle,
+                            translation: {
+                                ...mockTranslation,
+                                published_version_id: 1,
+                                draft_version_id: 1,
+                            },
+                        },
+                    },
+                }),
+            )
+
+            const { result } = renderHook(() => useDeleteArticleModal())
+
+            expect(result.current.hasBothVersions).toBe(false)
+        })
+
+        it('should return false when article is undefined', () => {
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        article: undefined,
+                    },
+                }),
+            )
+
+            const { result } = renderHook(() => useDeleteArticleModal())
+
+            expect(result.current.hasBothVersions).toBe(false)
+        })
+    })
+
     describe('return value shape', () => {
         it('should return all expected properties', () => {
             const { result } = renderHook(() => useDeleteArticleModal())
 
             expect(result.current).toHaveProperty('isOpen')
             expect(result.current).toHaveProperty('isDeleting')
+            expect(result.current).toHaveProperty('hasBothVersions')
             expect(result.current).toHaveProperty('onClose')
             expect(result.current).toHaveProperty('onDelete')
             expect(typeof result.current.isOpen).toBe('boolean')
             expect(typeof result.current.isDeleting).toBe('boolean')
+            expect(typeof result.current.hasBothVersions).toBe('boolean')
             expect(typeof result.current.onClose).toBe('function')
             expect(typeof result.current.onDelete).toBe('function')
         })

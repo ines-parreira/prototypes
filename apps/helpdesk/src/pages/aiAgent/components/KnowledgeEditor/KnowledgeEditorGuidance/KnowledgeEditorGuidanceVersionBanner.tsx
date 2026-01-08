@@ -23,8 +23,7 @@ export function KnowledgeEditorGuidanceVersionBanner() {
         return (
             <div className={css.bannerWrapper}>
                 <Banner
-                    type={AlertType.Ai}
-                    icon={null}
+                    type={AlertType.Info}
                     fillStyle="fill"
                     className={css.bannerClassName}
                 >

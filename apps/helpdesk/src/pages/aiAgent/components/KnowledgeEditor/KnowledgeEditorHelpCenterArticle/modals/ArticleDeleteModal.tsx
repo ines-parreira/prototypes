@@ -11,7 +11,8 @@ import {
 import { useDeleteArticleModal } from './useDeleteArticleModal'
 
 export const ArticleDeleteModal = () => {
-    const { isOpen, isDeleting, onClose, onDelete } = useDeleteArticleModal()
+    const { isOpen, isDeleting, hasBothVersions, onClose, onDelete } =
+        useDeleteArticleModal()
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose}>
@@ -19,9 +20,9 @@ export const ArticleDeleteModal = () => {
             <OverlayContent>
                 <Box paddingBottom="md">
                     <Text>
-                        Once deleted, this content can&apos;t be restored. Both
-                        the draft and the published version will be permanently
-                        deleted.
+                        Once deleted, this content can&apos;t be restored.
+                        {hasBothVersions &&
+                            ' Both the draft and the published version will be permanently deleted.'}
                     </Text>
                 </Box>
             </OverlayContent>

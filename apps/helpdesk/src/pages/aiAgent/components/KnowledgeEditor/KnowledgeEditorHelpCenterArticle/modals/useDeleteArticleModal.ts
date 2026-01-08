@@ -41,9 +41,15 @@ export const useDeleteArticleModal = () => {
         notifyError,
     ])
 
+    const { published_version_id, draft_version_id } =
+        state.article?.translation ?? {}
+    const hasBothVersions =
+        !!published_version_id && draft_version_id !== published_version_id
+
     return {
         isOpen: state.activeModal === 'delete-article',
         isDeleting: state.isUpdating,
+        hasBothVersions,
         onClose: () => dispatch({ type: 'CLOSE_MODAL' }),
         onDelete,
     }
