@@ -30,13 +30,13 @@ export const EmptyStates = ({
     onFaqEditorOpen?: () => void
 }) => {
     return (
-        <Box flexDirection="column" gap="xxl">
+        <Box flexDirection="column" gap="xl">
             {/* Top row*/}
             <Box
                 flexDirection={'column'}
                 gap="md"
                 alignItems={titleAlignment}
-                w={544}
+                width="100%"
             >
                 <Heading size={'sm'}>Create new content</Heading>
                 <Box flexDirection={'row'} gap="md">
@@ -47,7 +47,7 @@ export const EmptyStates = ({
                                 OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
                             )
                         }}
-                        gap="xxxs"
+                        gap="xs"
                     >
                         <div className={css.cardTitle}>
                             <Text size={'md'} variant={'bold'}>
@@ -79,7 +79,7 @@ export const EmptyStates = ({
                                 onFaqEditorOpen?.()
                             }
                         }}
-                        gap="xxxs"
+                        gap="xs"
                     >
                         <div className={css.cardTitle}>
                             <Text size={'md'} variant={'bold'}>
@@ -103,17 +103,15 @@ export const EmptyStates = ({
                 </Box>
             </Box>
             {/* Bottom row*/}
-            <Box flexDirection={'column'} gap="md">
-                <Heading size={'sm'} className={css.titleTextAlignment}>
-                    Sync or upload external content
-                </Heading>
+            <Box flexDirection={'column'} gap="md" width="100%">
+                <Heading size={'sm'}>Sync or upload external content</Heading>
                 <Box flexDirection={'row'} gap="md">
                     {!hasWebsiteSync && (
                         <Card
                             onClick={() => {
                                 openSyncStoreWebsiteModal()
                             }}
-                            gap="xxxs"
+                            gap="xs"
                         >
                             <div className={css.cardTitle}>
                                 <Text size={'md'} variant={'bold'}>
@@ -138,7 +136,7 @@ export const EmptyStates = ({
                         onClick={() => {
                             openSyncUrlModal()
                         }}
-                        gap="xxxs"
+                        gap="xs"
                     >
                         <div className={css.cardTitle}>
                             <Text size={'md'} variant={'bold'}>
@@ -160,7 +158,7 @@ export const EmptyStates = ({
                         onClick={() => {
                             openUploadDocumentModal()
                         }}
-                        gap="xxxs"
+                        gap="xs"
                     >
                         <div className={css.cardTitle}>
                             <Text size={'md'} variant={'bold'}>
