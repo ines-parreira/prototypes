@@ -1,14 +1,24 @@
 :local {
     .knowledgeEditorContainer {
         height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     .knowledgeEditor {
         display: flex;
-        justify-content: flex-end;
-        align-items: flex-start;
         flex: 1 0 0;
         align-self: stretch;
         height: 100%;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .editorContainer {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+        overflow-y: auto;
     }
 }

@@ -155,13 +155,15 @@ export const KnowledgeEditorSnippetView = ({
                 />
             </KnowledgeEditorTopBar>
             <div className={css.knowledgeEditor}>
-                <KnowledgeEditorSnippetReadView
-                    title={snippet.title}
-                    content={snippet.content}
-                    sourceLabel={getSourceDisplay()}
-                    sourceUrl={getSourceUrl()}
-                    snippetType={snippet.type}
-                />
+                <div className={css.editorContainer}>
+                    <KnowledgeEditorSnippetReadView
+                        title={snippet.title}
+                        content={snippet.content}
+                        sourceLabel={getSourceDisplay()}
+                        sourceUrl={getSourceUrl()}
+                        snippetType={snippet.type}
+                    />
+                </div>
                 {isDetailsView && renderSidePanel()}
             </div>
         </div>
