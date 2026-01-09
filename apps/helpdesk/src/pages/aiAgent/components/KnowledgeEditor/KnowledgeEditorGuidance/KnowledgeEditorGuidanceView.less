@@ -7,20 +7,19 @@
 
     .knowledgeEditor {
         display: flex;
-        justify-content: flex-end;
-        align-items: flex-start;
         flex: 1 0 0;
         align-self: stretch;
         height: 100%;
-        overflow-y: scroll;
-        overflow-x: hidden;
+        min-height: 0;
+        overflow: hidden;
     }
 
     .editorContainer {
-        width: 100%;
         display: flex;
         flex-direction: column;
         flex: 1;
+        min-width: 0;
+        overflow-y: auto;
     }
 
     .splitView {
