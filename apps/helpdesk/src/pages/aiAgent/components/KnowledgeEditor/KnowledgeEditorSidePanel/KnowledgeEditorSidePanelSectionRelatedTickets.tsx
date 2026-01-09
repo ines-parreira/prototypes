@@ -160,7 +160,9 @@ const TicketCard = ({ ticket }: { ticket: Ticket }) => (
                 <span className={css.ticketCardIcon}>
                     <Icon name="comm-mail" size={IconSize.Sm} />
                 </span>
-                {ticket.title}
+                <span className={css.ticketCardTitleSubject}>
+                    {ticket.title}
+                </span>
             </div>
             <div className={css.ticketCardLastUpdatedDatetime}>
                 <RelativeTime
