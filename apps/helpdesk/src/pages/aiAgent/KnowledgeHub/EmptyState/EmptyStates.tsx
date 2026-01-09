@@ -62,12 +62,14 @@ export const EmptyStates = ({
                                 </Box>
                             </Text>
                         </div>
-                        <div className={css.cardDescription}>
-                            <Text size={'sm'}>
-                                Instruct AI Agent to handle customer requests
-                                and follow internal processes.
-                            </Text>
-                        </div>
+                        <Text
+                            size={'sm'}
+                            as="p"
+                            className={css.cardDescription}
+                        >
+                            Instruct AI Agent to handle customer requests and
+                            follow internal processes.
+                        </Text>
                     </Card>
                     <Card
                         onClick={() => {
@@ -93,12 +95,14 @@ export const EmptyStates = ({
                                 </Box>
                             </Text>
                         </div>
-                        <div className={css.cardDescription}>
-                            <Text size={'sm'}>
-                                Let AI Agent use published Help Center articles
-                                as knowledge.
-                            </Text>
-                        </div>
+                        <Text
+                            size={'sm'}
+                            as="p"
+                            className={css.cardDescription}
+                        >
+                            Let AI Agent use published Help Center articles as
+                            knowledge.
+                        </Text>
                     </Card>
                 </Box>
             </Box>
@@ -126,9 +130,13 @@ export const EmptyStates = ({
                                     </Box>
                                 </Text>
                             </div>
-                            <div className={css.cardDescription}>
-                                <Text size={'sm'}>Sync your site content</Text>
-                            </div>
+                            <Text
+                                size={'sm'}
+                                as="p"
+                                className={css.cardDescription}
+                            >
+                                Sync your site content
+                            </Text>
                         </Card>
                     )}
 
@@ -150,9 +158,13 @@ export const EmptyStates = ({
                                 </Box>
                             </Text>
                         </div>
-                        <div className={css.cardDescription}>
-                            <Text size={'sm'}>Sync single-page URLs</Text>
-                        </div>
+                        <Text
+                            size={'sm'}
+                            as="p"
+                            className={css.cardDescription}
+                        >
+                            Sync single-page URLs
+                        </Text>
                     </Card>
                     <Card
                         onClick={() => {
@@ -173,9 +185,13 @@ export const EmptyStates = ({
                                 </Box>
                             </Text>
                         </div>
-                        <div className={css.cardDescription}>
-                            <Text size={'sm'}>Upload external files</Text>
-                        </div>
+                        <Text
+                            size={'sm'}
+                            as="p"
+                            className={css.cardDescription}
+                        >
+                            Upload external files
+                        </Text>
                     </Card>
                 </Box>
             </Box>
