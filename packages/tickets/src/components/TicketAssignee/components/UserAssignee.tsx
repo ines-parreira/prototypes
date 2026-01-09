@@ -10,6 +10,8 @@ import {
     LegacyLoadingSpinner as LoadingSpinner,
     Select,
     StatusButton,
+    Tooltip,
+    TooltipContent,
 } from '@gorgias/axiom'
 import type { TicketUser } from '@gorgias/helpdesk-queries'
 
@@ -94,37 +96,46 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
                 const label = user ? user.name : selectedText
 
                 return (
-                    <StatusButton
-                        ref={ref}
-                        leadingSlot={
-                            isUpdatingUser || isLoading ? (
-                                <LoadingSpinner size={16} />
-                            ) : user ? (
-                                <div>
-                                    <Avatar
-                                        name={user.name || ''}
-                                        url={profilePictureUrl ?? undefined}
-                                        size="sm"
-                                    />
-                                </div>
-                            ) : (
-                                <Icon name="user" size="sm" />
-                            )
-                        }
-                        trailingSlot={
-                            <Icon
-                                name={
-                                    isOpen
-                                        ? 'arrow-chevron-up'
-                                        : 'arrow-chevron-down'
-                                }
-                                size="xs"
-                            />
-                        }
-                        className={css.trigger}
-                    >
-                        {isPlaceholder ? 'Unassigned' : label}
-                    </StatusButton>
+                    <Tooltip placement="bottom">
+                        <StatusButton
+                            ref={ref}
+                            leadingSlot={
+                                isUpdatingUser || isLoading ? (
+                                    <LoadingSpinner size={16} />
+                                ) : user ? (
+                                    <div>
+                                        <Avatar
+                                            name={user.name || ''}
+                                            url={profilePictureUrl ?? undefined}
+                                            size="sm"
+                                        />
+                                    </div>
+                                ) : (
+                                    <Icon name="user" size="sm" />
+                                )
+                            }
+                            trailingSlot={
+                                <Icon
+                                    name={
+                                        isOpen
+                                            ? 'arrow-chevron-up'
+                                            : 'arrow-chevron-down'
+                                    }
+                                    size="xs"
+                                />
+                            }
+                            className={css.trigger}
+                        >
+                            {isPlaceholder ? 'Unassigned' : label}
+                        </StatusButton>
+                        <TooltipContent
+                            title={
+                                isPlaceholder
+                                    ? 'Assign agent'
+                                    : 'Assigned agent'
+                            }
+                        />
+                    </Tooltip>
                 )
             }}
         >

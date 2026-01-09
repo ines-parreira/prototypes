@@ -41,7 +41,7 @@ export function TicketTranslationMenu({ ticket }: TicketTranslationMenuProps) {
     if (!shouldShowTranslationMenu) return null
 
     return (
-        <Tooltip>
+        <Tooltip placement="bottom">
             <Menu
                 aria-label="Ticket translations menu"
                 placement="bottom right"

@@ -10,6 +10,8 @@ import {
     LegacyLoadingSpinner as LoadingSpinner,
     Select,
     StatusButton,
+    Tooltip,
+    TooltipContent,
 } from '@gorgias/axiom'
 import type { TicketTeam } from '@gorgias/helpdesk-queries'
 
@@ -89,37 +91,44 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
                     ? teamsMap.get(selectedOption?.id)?.decoration?.emoji
                     : null
                 return (
-                    <StatusButton
-                        ref={ref}
-                        leadingSlot={
-                            isUpdatingTeam || isLoading ? (
-                                <LoadingSpinner size={16} />
-                            ) : !!emoji ? (
-                                <span
-                                    style={{
-                                        display: 'flex',
-                                    }}
-                                >
-                                    <Emoji emoji={emoji} size={16} />{' '}
-                                </span>
-                            ) : (
-                                <Icon name="users" size="sm" />
-                            )
-                        }
-                        trailingSlot={
-                            <Icon
-                                name={
-                                    isOpen
-                                        ? 'arrow-chevron-up'
-                                        : 'arrow-chevron-down'
-                                }
-                                size="xs"
-                            />
-                        }
-                        className={css.trigger}
-                    >
-                        {isPlaceholder ? 'No team' : selectedText}
-                    </StatusButton>
+                    <Tooltip placement="bottom">
+                        <StatusButton
+                            ref={ref}
+                            leadingSlot={
+                                isUpdatingTeam || isLoading ? (
+                                    <LoadingSpinner size={16} />
+                                ) : !!emoji ? (
+                                    <span
+                                        style={{
+                                            display: 'flex',
+                                        }}
+                                    >
+                                        <Emoji emoji={emoji} size={16} />{' '}
+                                    </span>
+                                ) : (
+                                    <Icon name="users" size="sm" />
+                                )
+                            }
+                            trailingSlot={
+                                <Icon
+                                    name={
+                                        isOpen
+                                            ? 'arrow-chevron-up'
+                                            : 'arrow-chevron-down'
+                                    }
+                                    size="xs"
+                                />
+                            }
+                            className={css.trigger}
+                        >
+                            {isPlaceholder ? 'No team' : selectedText}
+                        </StatusButton>
+                        <TooltipContent
+                            title={
+                                isPlaceholder ? 'Assign team' : 'Assigned team'
+                            }
+                        />
+                    </Tooltip>
                 )
             }}
         >

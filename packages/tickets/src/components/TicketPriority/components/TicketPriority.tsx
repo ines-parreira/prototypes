@@ -8,6 +8,8 @@ import {
     LegacyLoadingSpinner as LoadingSpinner,
     Select,
     StatusButton,
+    Tooltip,
+    TooltipContent,
 } from '@gorgias/axiom'
 import type { TicketPriority as TicketPriorityType } from '@gorgias/helpdesk-queries'
 
@@ -59,28 +61,31 @@ export function TicketPriority({ ticketId, currentPriority }: Props) {
                 const { icon, color } = PRIORITY_ICON_MAP[priority]
 
                 return (
-                    <StatusButton
-                        ref={ref}
-                        leadingSlot={
-                            isUpdatingPriority ? (
-                                <LoadingSpinner size={16} />
-                            ) : (
-                                <Icon name={icon} size="sm" color={color} />
-                            )
-                        }
-                        trailingSlot={
-                            <Icon
-                                name={
-                                    isOpen
-                                        ? 'arrow-chevron-up'
-                                        : 'arrow-chevron-down'
-                                }
-                                size="xs"
-                            />
-                        }
-                    >
-                        {isPlaceholder ? 'Normal' : selectedText}
-                    </StatusButton>
+                    <Tooltip placement="bottom">
+                        <StatusButton
+                            ref={ref}
+                            leadingSlot={
+                                isUpdatingPriority ? (
+                                    <LoadingSpinner size={16} />
+                                ) : (
+                                    <Icon name={icon} size="sm" color={color} />
+                                )
+                            }
+                            trailingSlot={
+                                <Icon
+                                    name={
+                                        isOpen
+                                            ? 'arrow-chevron-up'
+                                            : 'arrow-chevron-down'
+                                    }
+                                    size="xs"
+                                />
+                            }
+                        >
+                            {isPlaceholder ? 'Normal' : selectedText}
+                        </StatusButton>
+                        <TooltipContent title="Change priority" />
+                    </Tooltip>
                 )
             }}
         >

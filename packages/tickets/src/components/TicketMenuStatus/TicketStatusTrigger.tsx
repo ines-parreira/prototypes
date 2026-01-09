@@ -32,7 +32,7 @@ export const TicketStatusTrigger = forwardRef<
     switch (status) {
         case TicketStatus.Closed:
             return (
-                <Tooltip placement="bottom right">
+                <Tooltip placement="bottom">
                     <StatusButton
                         ref={ref}
                         aria-label="Ticket status menu"
@@ -52,7 +52,7 @@ export const TicketStatusTrigger = forwardRef<
             )
         case TicketStatus.Snoozed:
             return (
-                <Tooltip placement="bottom right">
+                <Tooltip placement="bottom">
                     <StatusButton
                         ref={ref}
                         aria-label="Ticket status menu"
@@ -77,7 +77,7 @@ export const TicketStatusTrigger = forwardRef<
             )
         default:
             return (
-                <Tooltip placement="bottom right">
+                <Tooltip placement="bottom">
                     <StatusButton
                         ref={ref}
                         aria-label="Ticket status menu"
