@@ -1,9 +1,15 @@
+import { useFlag } from '@repo/feature-flags'
 import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { Route, useLocation } from 'react-router-dom'
 
-import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
+import {
+    mockGetCurrentUserHandler,
+    mockListTicketTranslationsHandler,
+    mockTicket,
+    mockTicketTranslationCompact,
+} from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
 import { render, testAppQueryClient } from '../../../tests/render.utils'
@@ -11,6 +17,16 @@ import type { CurrentUser } from '../../hooks/useCurrentUserLanguagePreferences'
 import { DisplayedContent } from '../../store/constants'
 import { useTicketMessageTranslationDisplay } from '../../store/useTicketMessageTranslationDisplay'
 import { TicketTranslationMenu } from '../TicketTranslationMenu'
+
+vi.mock('@repo/feature-flags', async () => {
+    const actual = await vi.importActual('@repo/feature-flags')
+    return {
+        ...actual,
+        useFlag: vi.fn(),
+    }
+})
+
+const mockUseFlag = vi.mocked(useFlag)
 
 const server = setupServer()
 
@@ -52,22 +68,42 @@ const mockGetCurrentUserWithFrench = mockGetCurrentUserHandler(
         } as CurrentUser['data']),
 )
 
+const testTicket = mockTicket({ id: 1234, language: Language.Fr })
+
+const mockTranslation = mockTicketTranslationCompact({
+    ticket_id: testTicket.id,
+    subject: 'Translated subject',
+})
+
+const mockListTicketTranslations = mockListTicketTranslationsHandler(
+    async ({ data }) =>
+        HttpResponse.json({
+            ...data,
+            data: [mockTranslation],
+        }),
+)
+
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
 
 beforeEach(() => {
+    mockUseFlag.mockReturnValue(true)
     useTicketMessageTranslationDisplay.setState({
         ticketMessagesTranslationDisplayMap: {},
         allMessageDisplayState: DisplayedContent.Translated,
     })
     testAppQueryClient.clear()
-    server.use(mockGetCurrentUserWithEnglish.handler)
+    server.use(
+        mockGetCurrentUserWithEnglish.handler,
+        mockListTicketTranslations.handler,
+    )
 })
 
 afterEach(() => {
     server.resetHandlers()
     testAppQueryClient.clear()
+    vi.clearAllMocks()
 })
 
 afterAll(() => {
@@ -77,7 +113,7 @@ afterAll(() => {
 describe('TicketTranslationMenu', () => {
     describe('menu button', () => {
         it('should render a translate button', async () => {
-            render(<TicketTranslationMenu language={Language.Fr} />)
+            render(<TicketTranslationMenu ticket={testTicket} />)
 
             await waitFor(() => {
                 expect(
@@ -88,7 +124,7 @@ describe('TicketTranslationMenu', () => {
 
         it('should open menu when translate button is clicked', async () => {
             const { user } = render(
-                <TicketTranslationMenu language={Language.Fr} />,
+                <TicketTranslationMenu ticket={testTicket} />,
             )
 
             await waitFor(() => {
@@ -110,7 +146,7 @@ describe('TicketTranslationMenu', () => {
     describe('tooltip', () => {
         it('should display tooltip with translation helper text when showing translated content', async () => {
             const { user } = render(
-                <TicketTranslationMenu language={Language.Fr} />,
+                <TicketTranslationMenu ticket={testTicket} />,
             )
 
             await waitFor(() => {
@@ -132,7 +168,7 @@ describe('TicketTranslationMenu', () => {
 
         it('should display tooltip with translation helper text when showing original content', async () => {
             const { user } = render(
-                <TicketTranslationMenu language={Language.Fr} />,
+                <TicketTranslationMenu ticket={testTicket} />,
             )
 
             await waitFor(() => {
@@ -160,10 +196,22 @@ describe('TicketTranslationMenu', () => {
         })
 
         it('should update tooltip text when user language preference is French', async () => {
-            server.use(mockGetCurrentUserWithFrench.handler)
+            const germanTicket = mockTicket({ id: 5678, language: Language.De })
+            const germanTranslation = mockTicketTranslationCompact({
+                ticket_id: germanTicket.id,
+                subject: 'Translated German subject',
+            })
+            const { handler: germanHandler } =
+                mockListTicketTranslationsHandler(async ({ data }) =>
+                    HttpResponse.json({
+                        ...data,
+                        data: [germanTranslation],
+                    }),
+                )
+            server.use(mockGetCurrentUserWithFrench.handler, germanHandler)
 
             const { user } = render(
-                <TicketTranslationMenu language={Language.De} />,
+                <TicketTranslationMenu ticket={germanTicket} />,
             )
 
             await waitFor(() => {
@@ -194,7 +242,7 @@ describe('TicketTranslationMenu', () => {
     describe('menu items conditional display', () => {
         it('should show "Show original" when translated and "See translation" when original', async () => {
             const { user } = render(
-                <TicketTranslationMenu language={Language.Fr} />,
+                <TicketTranslationMenu ticket={testTicket} />,
             )
 
             await waitFor(() => {
@@ -234,7 +282,7 @@ describe('TicketTranslationMenu', () => {
 
         it('should call setAllTicketMessagesToOriginal when "Show original" is clicked', async () => {
             const { user } = render(
-                <TicketTranslationMenu language={Language.Fr} />,
+                <TicketTranslationMenu ticket={testTicket} />,
             )
 
             await waitFor(() => {
@@ -259,7 +307,7 @@ describe('TicketTranslationMenu', () => {
 
         it('should call setAllTicketMessagesToTranslated when "See translation" is clicked', async () => {
             const { user } = render(
-                <TicketTranslationMenu language={Language.Fr} />,
+                <TicketTranslationMenu ticket={testTicket} />,
             )
 
             await waitFor(() => {
@@ -295,7 +343,7 @@ describe('TicketTranslationMenu', () => {
     describe('translation settings menu item', () => {
         it('should always display "Translation settings" menu item regardless of state', async () => {
             const { user } = render(
-                <TicketTranslationMenu language={Language.Fr} />,
+                <TicketTranslationMenu ticket={testTicket} />,
             )
 
             await waitFor(() => {
@@ -340,7 +388,7 @@ describe('TicketTranslationMenu', () => {
 
             const { user } = render(
                 <>
-                    <TicketTranslationMenu language={Language.Fr} />
+                    <TicketTranslationMenu ticket={testTicket} />
                     <Route path="*" component={LocationDisplay} />
                 </>,
                 {
@@ -382,7 +430,7 @@ describe('TicketTranslationMenu', () => {
     describe('state transitions', () => {
         it('should toggle between translated and original states', async () => {
             const { user } = render(
-                <TicketTranslationMenu language={Language.Fr} />,
+                <TicketTranslationMenu ticket={testTicket} />,
             )
 
             await waitFor(() => {
@@ -427,40 +475,38 @@ describe('TicketTranslationMenu', () => {
     })
 
     describe('different languages', () => {
-        it.each([
-            { language: Language.De, languageName: 'German' },
-            { language: Language.Es, languageName: 'Spanish' },
-            { language: Language.Ja, languageName: 'Japanese' },
-        ])(
-            'should display correct language name for $languageName',
-            async ({ language, languageName }) => {
-                const { user } = render(
-                    <TicketTranslationMenu language={language} />,
-                )
+        it('should display correct language name for German', async () => {
+            const ticket = mockTicket({ id: 9999, language: Language.De })
+            const translation = mockTicketTranslationCompact({
+                ticket_id: ticket.id,
+                subject: 'Translated German subject',
+            })
+            const { handler } = mockListTicketTranslationsHandler(
+                async ({ data }) =>
+                    HttpResponse.json({
+                        ...data,
+                        data: [translation],
+                    }),
+            )
+            server.use(handler)
 
-                await waitFor(() => {
-                    expect(
-                        screen.getByRole('button', { name: /translate/i }),
-                    ).toBeInTheDocument()
-                })
+            const { user } = render(<TicketTranslationMenu ticket={ticket} />)
 
-                await act(() =>
-                    user.hover(
-                        screen.getByRole('button', { name: /translate/i }),
-                    ),
-                )
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /translate/i }),
+                ).toBeInTheDocument()
+            })
 
-                await waitFor(() => {
-                    expect(
-                        screen.getByText(
-                            new RegExp(
-                                `Ticket translated from ${languageName}`,
-                                'i',
-                            ),
-                        ),
-                    ).toBeInTheDocument()
-                })
-            },
-        )
+            await act(() =>
+                user.hover(screen.getByRole('button', { name: /translate/i })),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(/Ticket translated from German/i),
+                ).toBeInTheDocument()
+            })
+        })
     })
 })

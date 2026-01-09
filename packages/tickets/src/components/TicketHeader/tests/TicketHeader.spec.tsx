@@ -7,10 +7,12 @@ import {
     mockGetCurrentUserHandler,
     mockGetTicketHandler,
     mockListTeamsHandler,
+    mockListTicketTranslationsHandler,
     mockListUsersHandler,
     mockSearchTicketsHandler,
     mockTicket,
     mockTicketCustomer,
+    mockTicketTranslationCompact,
     mockUpdateTicketHandler,
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
@@ -34,6 +36,7 @@ const server = setupServer()
 const mockListTeams = mockListTeamsHandler()
 const mockListUsers = mockListUsersHandler()
 const mockSearchTickets = mockSearchTicketsHandler()
+const mockListTicketTranslations = mockListTicketTranslationsHandler()
 
 const mockLanguagePreferencesEnglish = {
     id: 2,
@@ -80,6 +83,7 @@ beforeEach(() => {
         mockGetCurrentUser.handler,
         mockGetTicket.handler,
         mockSearchTickets.handler,
+        mockListTicketTranslations.handler,
     )
 })
 
@@ -257,9 +261,22 @@ describe('TicketHeader', () => {
                 }),
             )
 
+            const mockTranslation = mockTicketTranslationCompact({
+                ticket_id: defaultMockTicket.id,
+                subject: 'Translated French subject',
+            })
+            const { handler: translationHandler } =
+                mockListTicketTranslationsHandler(async ({ data }) =>
+                    HttpResponse.json({
+                        ...data,
+                        data: [mockTranslation],
+                    }),
+                )
+
             server.use(
                 mockGetCurrentUserWithTranslations.handler,
                 ticketHandler,
+                translationHandler,
             )
 
             mockUseFlag.mockReturnValue(true)
@@ -270,9 +287,11 @@ describe('TicketHeader', () => {
                 expect(screen.getByText('John Doe')).toBeInTheDocument()
             })
 
-            expect(
-                screen.getByRole('button', { name: /translate/i }),
-            ).toBeInTheDocument()
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /translate/i }),
+                ).toBeInTheDocument()
+            })
         })
     })
 

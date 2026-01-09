@@ -11,19 +11,18 @@ import {
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
-import type { Language } from '@gorgias/helpdesk-types'
+import type { Ticket } from '@gorgias/helpdesk-types'
 
+import { useTicketTranslationHelper } from '../hooks/useTicketTranslationHelper'
+import { useTicketTranslationMenuDisplay } from '../hooks/useTicketTranslationMenuDisplay'
 import { DisplayedContent } from '../store/constants'
 import { useTicketMessageTranslationDisplay } from '../store/useTicketMessageTranslationDisplay'
-import { useTicketTranslationHelper } from './useTicketTranslationHelper'
 
 type TicketTranslationMenuProps = {
-    language: Language
+    ticket: Ticket
 }
 
-export function TicketTranslationMenu({
-    language,
-}: TicketTranslationMenuProps) {
+export function TicketTranslationMenu({ ticket }: TicketTranslationMenuProps) {
     const history = useHistory()
     const {
         setAllTicketMessagesToOriginal,
@@ -31,12 +30,15 @@ export function TicketTranslationMenu({
         allMessageDisplayState,
     } = useTicketMessageTranslationDisplay()
 
-    const helper = useTicketTranslationHelper(language)
+    const shouldShowTranslationMenu = useTicketTranslationMenuDisplay(ticket)
+    const helper = useTicketTranslationHelper(ticket.language)
     const isTranslated = allMessageDisplayState === DisplayedContent.Translated
 
     const handleTranslationSettingsClick = useCallback(() => {
         history.push('/app/settings/profile#translation-settings')
     }, [history])
+
+    if (!shouldShowTranslationMenu) return null
 
     return (
         <Tooltip>

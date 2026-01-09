@@ -42,7 +42,7 @@ export function TicketHeader({ ticketId }: Props) {
                 {spam && <SpamTicket />}
                 <TrashedTicket trashedDatetime={trashed_datetime} />
                 {hasMessagesTranslations && (
-                    <TicketTranslationMenu language={ticket.language} />
+                    <TicketTranslationMenu ticket={ticket} />
                 )}
                 <TicketStatusMenu ticket={ticket} />
                 <TicketPriority

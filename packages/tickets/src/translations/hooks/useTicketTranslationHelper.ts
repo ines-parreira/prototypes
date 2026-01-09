@@ -4,9 +4,9 @@ import { IntlDisplayNames } from '@repo/utils'
 
 import type { Language } from '@gorgias/helpdesk-types'
 
-import { useCurrentUserLanguagePreferences } from '../hooks/useCurrentUserLanguagePreferences'
 import { DisplayedContent } from '../store/constants'
 import { useTicketMessageTranslationDisplay } from '../store/useTicketMessageTranslationDisplay'
+import { useCurrentUserLanguagePreferences } from './useCurrentUserLanguagePreferences'
 
 export const useTicketTranslationHelper = (language: Language | null) => {
     const { primary } = useCurrentUserLanguagePreferences()
