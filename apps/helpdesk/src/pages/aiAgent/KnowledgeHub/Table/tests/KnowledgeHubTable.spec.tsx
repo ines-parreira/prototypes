@@ -1454,6 +1454,70 @@ describe('KnowledgeHubTable', () => {
         })
     })
 
+    describe('pagination visibility', () => {
+        const createMockItems = (count: number) =>
+            Array.from({ length: count }, (_, i) => ({
+                type: KnowledgeType.Guidance,
+                title: `Item ${i + 1}`,
+                lastUpdatedAt: '2024-01-20T10:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                id: String(i + 1),
+            }))
+
+        const getPaginationToolbar = () => {
+            const paginationContainer =
+                document.querySelector('.pagination') ||
+                document.querySelector('[class*="pagination"]')
+            return paginationContainer?.querySelector(
+                '[data-name="table-toolbar"]',
+            )
+        }
+
+        it('should not show pagination when there are 10 or fewer items', () => {
+            const items = createMockItems(10)
+
+            renderComponent({
+                data: items,
+                selectedFolder: items[0],
+            })
+
+            expect(getPaginationToolbar()).not.toBeInTheDocument()
+        })
+
+        it('should show pagination when there are more than 10 items', () => {
+            const items = createMockItems(15)
+
+            renderComponent({
+                data: items,
+                selectedFolder: items[0],
+            })
+
+            expect(getPaginationToolbar()).toBeInTheDocument()
+        })
+
+        it('should not show pagination when there are 5 items', () => {
+            const items = createMockItems(5)
+
+            renderComponent({
+                data: items,
+                selectedFolder: items[0],
+            })
+
+            expect(getPaginationToolbar()).not.toBeInTheDocument()
+        })
+
+        it('should show pagination when there are exactly 11 items', () => {
+            const items = createMockItems(11)
+
+            renderComponent({
+                data: items,
+                selectedFolder: items[0],
+            })
+
+            expect(getPaginationToolbar()).toBeInTheDocument()
+        })
+    })
+
     describe('InUseByAI filter', () => {
         const mixedVisibilityData = [
             {

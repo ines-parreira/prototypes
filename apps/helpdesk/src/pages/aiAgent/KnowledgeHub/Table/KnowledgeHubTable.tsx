@@ -477,7 +477,7 @@ export const KnowledgeHubTable = ({
                 />
             </TableRoot>
             <div className={css.pagination}>
-                {!isSearchEmptyPage && (
+                {!isSearchEmptyPage && displayData.length > 10 && (
                     <TableToolbar<GroupedKnowledgeItem>
                         table={table}
                         bottomRow={{ right: ['pagination'] }}
