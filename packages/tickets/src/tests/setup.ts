@@ -1,3 +1,7 @@
+import { afterEach } from 'vitest'
+
+import { testAppQueryClient } from './render.utils'
+
 global.IntersectionObserver = class IntersectionObserver {
     constructor() {}
     disconnect() {}
@@ -14,3 +18,7 @@ global.ResizeObserver = class ResizeObserver {
     observe() {}
     unobserve() {}
 } as any
+
+afterEach(() => {
+    testAppQueryClient.clear()
+})
