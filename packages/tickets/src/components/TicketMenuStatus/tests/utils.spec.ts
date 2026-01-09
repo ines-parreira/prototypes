@@ -1,6 +1,6 @@
 import { CalendarDate } from '@internationalized/date'
 import moment from 'moment'
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { Ticket } from '@gorgias/helpdesk-types'
 
@@ -14,6 +14,13 @@ import {
 } from '../utils'
 
 describe('getTicketStatus', () => {
+    beforeEach(() => {
+        vi.useFakeTimers()
+    })
+
+    afterEach(() => {
+        vi.useRealTimers()
+    })
     it.each([
         {
             snooze_datetime: moment().add(1, 'hour').toISOString(),
@@ -49,6 +56,14 @@ describe('getTicketStatus', () => {
 })
 
 describe('getRemainingSnoozeTime', () => {
+    beforeEach(() => {
+        vi.useFakeTimers()
+    })
+
+    afterEach(() => {
+        vi.useRealTimers()
+    })
+
     it('should return empty string when snoozeDateTime is null', () => {
         expect(getRemainingSnoozeTime(null)).toBe('')
     })
@@ -116,6 +131,14 @@ describe('getRemainingSnoozeTime', () => {
 })
 
 describe('getSnoozeTooltipTitle', () => {
+    beforeEach(() => {
+        vi.useFakeTimers()
+    })
+
+    afterEach(() => {
+        vi.useRealTimers()
+    })
+
     it('should return empty string when snoozeDateTime is null', () => {
         expect(getSnoozeTooltipTitle(null)).toBe('')
     })
@@ -152,6 +175,14 @@ describe('getSnoozeTooltipTitle', () => {
 })
 
 describe('getClosedDateTitle', () => {
+    beforeEach(() => {
+        vi.useFakeTimers()
+    })
+
+    afterEach(() => {
+        vi.useRealTimers()
+    })
+
     it('should return empty string when closedDateTime is null', () => {
         expect(getClosedDateTitle(null)).toBe('')
     })
@@ -186,6 +217,14 @@ describe('getClosedDateTitle', () => {
 })
 
 describe('disableDatesBeforeToday', () => {
+    beforeEach(() => {
+        vi.useFakeTimers()
+    })
+
+    afterEach(() => {
+        vi.useRealTimers()
+    })
+
     it.each([
         { offset: -1, expected: true, description: 'yesterday' },
         { offset: 0, expected: false, description: 'today' },
