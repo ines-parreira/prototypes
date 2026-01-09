@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 
 import { Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+
+import { useIsTruncated } from 'pages/common/hooks/useIsTruncated'
 
 import css from './TruncatedTextWithTooltip.less'
 
@@ -17,28 +19,18 @@ export const TruncatedTextWithTooltip = ({
     className,
 }: TruncatedTextWithTooltipProps) => {
     const textRef = useRef<HTMLDivElement>(null)
-    const [isTruncated, setIsTruncated] = useState(false)
-
-    useEffect(() => {
-        const element = textRef.current
-        if (element) {
-            setIsTruncated(element.scrollWidth > element.clientWidth)
-        }
-    }, [tooltipContent])
-
-    const content = (
-        <div ref={textRef} className={`${css.truncated} ${className || ''}`}>
-            {children}
-        </div>
-    )
-
-    if (!isTruncated) {
-        return content
-    }
+    const isTruncated = useIsTruncated(textRef, tooltipContent)
 
     return (
-        <Tooltip delay={0}>
-            <TooltipTrigger>{content}</TooltipTrigger>
+        <Tooltip delay={0} isDisabled={!isTruncated}>
+            <TooltipTrigger>
+                <div
+                    ref={textRef}
+                    className={`${css.truncated} ${className || ''}`}
+                >
+                    {children}
+                </div>
+            </TooltipTrigger>
             <TooltipContent>
                 <div className={css.tooltipContent}>{tooltipContent}</div>
             </TooltipContent>
