@@ -1,5 +1,5 @@
 import { DateFormatType, TimeFormatType } from '@repo/utils'
-import { waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -65,8 +65,11 @@ describe('useCustomerLocalTime', () => {
         const { result } = renderHook(() =>
             useCustomerLocalTime(customer as TicketCustomer),
         )
-        await waitFor(() => {
-            expect(result.current).toBeNull()
+
+        await act(async () => {
+            await waitFor(() => {
+                expect(result.current).toBeNull()
+            })
         })
     })
 
@@ -87,9 +90,11 @@ describe('useCustomerLocalTime', () => {
             useCustomerLocalTime(customer as TicketCustomer),
         )
 
-        await waitFor(() => {
-            // System time is 12:00 UTC, with -05:00 offset it should be 7:00 AM
-            expect(result.current).toBe('07:00 AM')
+        await act(async () => {
+            await waitFor(() => {
+                // System time is 12:00 UTC, with -05:00 offset it should be 7:00 AM
+                expect(result.current).toBe('07:00 AM')
+            })
         })
     })
 })

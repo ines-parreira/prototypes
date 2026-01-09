@@ -145,35 +145,25 @@ describe('TicketTranslationMenu', () => {
 
     describe('tooltip', () => {
         it('should display tooltip with translation helper text when showing translated content', async () => {
-            const { user } = render(
-                <TicketTranslationMenu ticket={testTicket} />,
-            )
+            render(<TicketTranslationMenu ticket={testTicket} />)
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('button', { name: /translate/i }),
-                ).toBeInTheDocument()
-            })
-
-            await act(() =>
-                user.hover(screen.getByRole('button', { name: /translate/i })),
-            )
-
-            await waitFor(() => {
-                expect(
-                    screen.getByText(/Ticket translated from French/i),
+                    screen.getByRole('button', {
+                        name: /Ticket translated from French/i,
+                    }),
                 ).toBeInTheDocument()
             })
         })
 
         it('should display tooltip with translation helper text when showing original content', async () => {
-            const { user } = render(
-                <TicketTranslationMenu ticket={testTicket} />,
-            )
+            render(<TicketTranslationMenu ticket={testTicket} />)
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('button', { name: /translate/i }),
+                    screen.getByRole('button', {
+                        name: /Ticket translated from French/i,
+                    }),
                 ).toBeInTheDocument()
             })
 
@@ -184,13 +174,11 @@ describe('TicketTranslationMenu', () => {
                 })
             })
 
-            await act(() =>
-                user.hover(screen.getByRole('button', { name: /translate/i })),
-            )
-
             await waitFor(() => {
                 expect(
-                    screen.getByText(/Translate ticket to English/i),
+                    screen.getByRole('button', {
+                        name: /Translate ticket to English/i,
+                    }),
                 ).toBeInTheDocument()
             })
         })
@@ -210,13 +198,13 @@ describe('TicketTranslationMenu', () => {
                 )
             server.use(mockGetCurrentUserWithFrench.handler, germanHandler)
 
-            const { user } = render(
-                <TicketTranslationMenu ticket={germanTicket} />,
-            )
+            render(<TicketTranslationMenu ticket={germanTicket} />)
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('button', { name: /translate/i }),
+                    screen.getByRole('button', {
+                        name: /Ticket translated from German/i,
+                    }),
                 ).toBeInTheDocument()
             })
 
@@ -227,13 +215,11 @@ describe('TicketTranslationMenu', () => {
                 })
             })
 
-            await act(() =>
-                user.hover(screen.getByRole('button', { name: /translate/i })),
-            )
-
             await waitFor(() => {
                 expect(
-                    screen.getByText(/Translate ticket to French/i),
+                    screen.getByRole('button', {
+                        name: /Translate ticket to French/i,
+                    }),
                 ).toBeInTheDocument()
             })
         })

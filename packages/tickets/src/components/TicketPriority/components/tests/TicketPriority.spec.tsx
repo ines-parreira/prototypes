@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -89,10 +89,14 @@ describe('TicketPriority', () => {
         )
 
         const select = await waitUntilLoaded()
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         const highOptions = await screen.findAllByText('High')
-        await user.click(highOptions[highOptions.length - 1])
+        await act(async () => {
+            await user.click(highOptions[highOptions.length - 1])
+        })
 
         await waitForUpdateTicketRequest(async (request) => {
             const body = await request.clone().json()
@@ -133,10 +137,14 @@ describe('TicketPriority', () => {
         const select = await waitUntilLoaded()
         expect(select).not.toBeDisabled()
 
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         const highOptions = await screen.findAllByText('High')
-        await user.click(highOptions[highOptions.length - 1])
+        await act(async () => {
+            await user.click(highOptions[highOptions.length - 1])
+        })
 
         await waitFor(() => {
             expect(select).toBeDisabled()

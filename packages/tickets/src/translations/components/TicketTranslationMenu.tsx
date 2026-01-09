@@ -43,7 +43,7 @@ export function TicketTranslationMenu({ ticket }: TicketTranslationMenuProps) {
     return (
         <Tooltip placement="bottom">
             <Menu
-                aria-label="Ticket translations menu"
+                aria-label="Translation menu"
                 placement="bottom right"
                 trigger={
                     <Button
@@ -51,6 +51,7 @@ export function TicketTranslationMenu({ ticket }: TicketTranslationMenuProps) {
                         size="sm"
                         variant="secondary"
                         icon="translate"
+                        aria-label={helper}
                     />
                 }
             >

@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -138,7 +138,9 @@ describe('UserAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         await waitFor(() => {
             const options = screen.getAllByRole('option')
@@ -162,7 +164,9 @@ describe('UserAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         await waitFor(() => {
             const randomUserTexts = screen.getAllByText('Random User')
@@ -179,10 +183,14 @@ describe('UserAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         const yourselfOptions = await screen.findAllByText('Assign yourself')
-        await user.click(yourselfOptions[yourselfOptions.length - 1])
+        await act(async () => {
+            await user.click(yourselfOptions[yourselfOptions.length - 1])
+        })
 
         await waitForUpdateTicketRequest(async (request) => {
             const body = await request.clone().json()
@@ -201,10 +209,14 @@ describe('UserAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         const janeOptions = await screen.findAllByText('Jane Smith')
-        await user.click(janeOptions[janeOptions.length - 1])
+        await act(async () => {
+            await user.click(janeOptions[janeOptions.length - 1])
+        })
 
         await waitForUpdateTicketRequest(async (request) => {
             const body = await request.clone().json()
@@ -226,10 +238,14 @@ describe('UserAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         const unassignedOptions = await screen.findAllByText('Unassigned')
-        await user.click(unassignedOptions[unassignedOptions.length - 1])
+        await act(async () => {
+            await user.click(unassignedOptions[unassignedOptions.length - 1])
+        })
 
         await waitForUpdateTicketRequest(async (request) => {
             const body = await request.clone().json()
@@ -267,10 +283,14 @@ describe('UserAssignee', () => {
         const select = await waitUntilLoaded()
         expect(select).not.toBeDisabled()
 
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         const yourselfOptions = await screen.findAllByText('Assign yourself')
-        await user.click(yourselfOptions[yourselfOptions.length - 1])
+        await act(async () => {
+            await user.click(yourselfOptions[yourselfOptions.length - 1])
+        })
 
         await waitFor(() => {
             expect(select).toBeDisabled()
@@ -287,19 +307,27 @@ describe('UserAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         const searchInput = await screen.findByRole('searchbox')
-        await user.type(searchInput, 'test search')
+        await act(async () => {
+            await user.type(searchInput, 'test search')
+        })
 
         expect(searchInput).toHaveValue('test search')
 
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
         await waitFor(() => {
             expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
         })
 
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
         const searchInputAfterReopen = await screen.findByRole('searchbox')
 
         expect(searchInputAfterReopen).toHaveValue('')

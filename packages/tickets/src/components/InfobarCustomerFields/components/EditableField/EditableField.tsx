@@ -12,6 +12,7 @@ type EditableFieldProps<T extends string | number> = {
     className?: string
     autoFocus?: boolean
     onBlur?: () => void
+    ariaLabel?: string
 } & (T extends string
     ? {
           type?: 'text'
@@ -39,6 +40,7 @@ export function EditableField<T extends string | number = string | number>(
         maxValue,
         autoFocus,
         onBlur,
+        ariaLabel,
     } = props
 
     const [inputValue, setInputValue] = useState<T | undefined>(value)
@@ -132,6 +134,7 @@ export function EditableField<T extends string | number = string | number>(
                     error={error}
                     minValue={minValue}
                     maxValue={maxValue}
+                    aria-label={ariaLabel ?? placeholder}
                 />
             )
         }
@@ -149,6 +152,7 @@ export function EditableField<T extends string | number = string | number>(
                 onBlur={handleFieldBlur}
                 autoFocus={autoFocus ?? isEditing}
                 error={error}
+                aria-label={ariaLabel ?? placeholder}
             />
         )
     }

@@ -116,11 +116,16 @@ export function MultiLevelSelect(props: Props) {
                         variant="secondary"
                         size="sm"
                         value={label || placeholder}
+                        aria-label={
+                            ariaLabel
+                                ? `${ariaLabel} selected value`
+                                : placeholder
+                        }
                     />
                 </SelectTrigger>
             )
         },
-        [selectedValue, placeholder],
+        [selectedValue, placeholder, ariaLabel],
     )
 
     return (

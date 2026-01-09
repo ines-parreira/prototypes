@@ -35,6 +35,7 @@ export function CustomCustomerFieldInput({
                     field.definition.input_settings.placeholder || '+ Add'
                 }
                 className={className}
+                ariaLabel={field.label}
             />
         )
     }
@@ -53,6 +54,7 @@ export function CustomCustomerFieldInput({
                     field.definition.input_settings.placeholder || '+ Add'
                 }
                 className={className}
+                ariaLabel={field.label}
             />
         )
     }
@@ -70,6 +72,7 @@ export function CustomCustomerFieldInput({
                     selectedValue={value as TreeValue}
                     onSelect={onChange}
                     placeholder="+ Add"
+                    ariaLabel={field.label}
                 />
             </div>
         )

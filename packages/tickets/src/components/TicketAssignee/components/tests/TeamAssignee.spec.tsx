@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -107,7 +107,9 @@ describe('TeamAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         await waitFor(() => {
             const randomTeamTexts = screen.getAllByText('Random Team')
@@ -131,12 +133,16 @@ describe('TeamAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         const supportOption = screen.getByRole('option', {
             name: 'Support',
         })
-        await user.click(supportOption)
+        await act(async () => {
+            await user.click(supportOption)
+        })
 
         await waitForUpdateTicketRequest(async (request) => {
             const body = await request.clone().json()
@@ -158,13 +164,17 @@ describe('TeamAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         const noTeamOption = screen
             .getAllByRole('option')
             .find((option) => option.textContent?.includes('No team'))
 
-        await user.click(noTeamOption!)
+        await act(async () => {
+            await user.click(noTeamOption!)
+        })
 
         await waitForUpdateTicketRequest(async (request) => {
             const body = await request.clone().json()
@@ -202,12 +212,16 @@ describe('TeamAssignee', () => {
         const select = await waitUntilLoaded()
         expect(select).not.toBeDisabled()
 
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         const supportOption = screen.getByRole('option', {
             name: 'Support',
         })
-        await user.click(supportOption)
+        await act(async () => {
+            await user.click(supportOption)
+        })
 
         await waitFor(() => {
             expect(select).toBeDisabled()
@@ -224,19 +238,27 @@ describe('TeamAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
 
         const searchInput = await screen.findByRole('searchbox')
-        await user.type(searchInput, 'test search')
+        await act(async () => {
+            await user.type(searchInput, 'test search')
+        })
 
         expect(searchInput).toHaveValue('test search')
 
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
         await waitFor(() => {
             expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
         })
 
-        await user.click(select)
+        await act(async () => {
+            await user.click(select)
+        })
         const searchInputAfterReopen = await screen.findByRole('searchbox')
 
         expect(searchInputAfterReopen).toHaveValue('')

@@ -71,6 +71,7 @@ export function InfobarBaseCustomerFields({
                         value={note || ''}
                         onValueChange={handleNoteChange}
                         placeholder="+ Add"
+                        ariaLabel="Note"
                     />
                 </FieldRow>
             </OverflowListItem>
@@ -131,6 +132,7 @@ export function InfobarBaseCustomerFields({
                                         )}
                                     />
                                 )}
+                                ariaLabel="Phone"
                             >
                                 <VoiceFieldMenuItems
                                     phoneAddress={channel.address || ''}
@@ -156,6 +158,7 @@ export function InfobarBaseCustomerFields({
                             validator={(value) =>
                                 validateChannelField('phone', value)
                             }
+                            ariaLabel="Phone"
                         />
                     </FieldRow>
                 </OverflowListItem>
@@ -207,6 +210,7 @@ export function InfobarBaseCustomerFields({
                                             tooltipText="Send email as new ticket"
                                         />
                                     )}
+                                    ariaLabel="Email"
                                 >
                                     {hasDraft ? (
                                         <SubMenu
@@ -257,6 +261,7 @@ export function InfobarBaseCustomerFields({
                             validator={(value) =>
                                 validateChannelField('email', value)
                             }
+                            ariaLabel="Email"
                         />
                     </FieldRow>
                 </OverflowListItem>

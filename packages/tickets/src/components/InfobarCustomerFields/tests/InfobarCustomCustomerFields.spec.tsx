@@ -44,39 +44,42 @@ afterAll(() => {
 
 const customerId = 123
 
-const textField = mockCustomField({
-    id: 1,
-    label: 'Company',
-    object_type: ObjectType.Customer,
-    definition: mockTextDataTypeDefinition({
-        input_settings: mockTextInputSettings({
-            input_type: InputSettingsTextInputType.Input,
+const createTextField = () =>
+    mockCustomField({
+        id: 1,
+        label: 'Company',
+        object_type: ObjectType.Customer,
+        definition: mockTextDataTypeDefinition({
+            input_settings: mockTextInputSettings({
+                input_type: InputSettingsTextInputType.Input,
+            }),
         }),
-    }),
-})
+    })
 
-const numberField = mockCustomField({
-    id: 2,
-    label: 'Age',
-    object_type: ObjectType.Customer,
-    definition: mockNumberDataTypeDefinition({
-        input_settings: mockNumberInputSettings({
-            input_type: InputSettingsNumberInputType.InputNumber,
+const createNumberField = () =>
+    mockCustomField({
+        id: 2,
+        label: 'Age',
+        object_type: ObjectType.Customer,
+        definition: mockNumberDataTypeDefinition({
+            input_settings: mockNumberInputSettings({
+                input_type: InputSettingsNumberInputType.InputNumber,
+            }),
         }),
-    }),
-})
+    })
 
-const dropdownField = mockCustomField({
-    id: 3,
-    label: 'Status',
-    object_type: ObjectType.Customer,
-    definition: mockTextDataTypeDefinition({
-        input_settings: mockDropdownInputSettingsSettings({
-            input_type: DropdownInputSettingsSettingsInputType.Dropdown,
-            choices: ['active', 'inactive'],
+const createDropdownField = () =>
+    mockCustomField({
+        id: 3,
+        label: 'Status',
+        object_type: ObjectType.Customer,
+        definition: mockTextDataTypeDefinition({
+            input_settings: mockDropdownInputSettingsSettings({
+                input_type: DropdownInputSettingsSettingsInputType.Dropdown,
+                choices: ['active', 'inactive'],
+            }),
         }),
-    }),
-})
+    })
 
 const setupMocks = (
     fields: ReturnType<typeof mockCustomField>[],
@@ -115,6 +118,10 @@ const TestComponent = () => {
 
 describe('InfobarCustomCustomerFields', () => {
     it('should render custom fields', async () => {
+        const textField = createTextField()
+        const numberField = createNumberField()
+        const dropdownField = createDropdownField()
+
         setupMocks(
             [textField, numberField, dropdownField],
             [

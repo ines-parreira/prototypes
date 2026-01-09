@@ -165,11 +165,15 @@ describe('CustomCustomerField', () => {
             const inputs = await screen.findAllByDisplayValue('+ Add')
             const input = inputs[0]
 
-            await user.click(input)
+            await act(async () => {
+                await user.click(input)
+            })
 
             const activeOptions = await screen.findAllByText('active')
 
-            await user.click(activeOptions[activeOptions.length - 1])
+            await act(async () => {
+                await user.click(activeOptions[activeOptions.length - 1])
+            })
 
             await waitForUpdateRequest(async (request) => {
                 const url = new URL(request.url)

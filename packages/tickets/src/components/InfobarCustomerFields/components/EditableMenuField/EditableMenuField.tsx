@@ -26,6 +26,7 @@ type EditableMenuFieldProps = {
     name: string
     onDelete?: () => void
     children?: ReactNode
+    ariaLabel?: string
 }
 
 export function EditableMenuField(props: EditableMenuFieldProps) {
@@ -39,6 +40,7 @@ export function EditableMenuField(props: EditableMenuFieldProps) {
         name,
         onDelete,
         children,
+        ariaLabel,
     } = props
 
     const [isEditing, setIsEditing] = useState(false)
@@ -72,6 +74,7 @@ export function EditableMenuField(props: EditableMenuFieldProps) {
                     className={className}
                     autoFocus={isEditing}
                     onBlur={handleBlur}
+                    ariaLabel={ariaLabel}
                 />
             </div>
         )
