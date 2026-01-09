@@ -662,6 +662,25 @@ describe('useArticleToolbar', () => {
             expect(result.current).toHaveProperty('canEdit')
             expect(result.current).toHaveProperty('editDisabledReason')
             expect(result.current).toHaveProperty('onTest')
+            expect(result.current).toHaveProperty('isPlaygroundOpen')
+        })
+    })
+
+    describe('isPlaygroundOpen', () => {
+        it('should return isPlaygroundOpen based on playground.isOpen', () => {
+            const contextWithPlaygroundOpen = createMockContext()
+            contextWithPlaygroundOpen.playground.isOpen = true
+            mockUseArticleContext.mockReturnValue(contextWithPlaygroundOpen)
+
+            const { result } = renderHook(() => useArticleToolbar())
+
+            expect(result.current.isPlaygroundOpen).toBe(true)
+        })
+
+        it('should return false when playground is closed', () => {
+            const { result } = renderHook(() => useArticleToolbar())
+
+            expect(result.current.isPlaygroundOpen).toBe(false)
         })
     })
 })

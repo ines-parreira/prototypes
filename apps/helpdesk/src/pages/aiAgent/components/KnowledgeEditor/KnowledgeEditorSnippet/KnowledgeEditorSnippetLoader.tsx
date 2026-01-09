@@ -41,6 +41,7 @@ type Props = {
     onClickNext?: () => void
     onUpdated?: () => void
     isFullscreen: boolean
+    isPlaygroundOpen?: boolean
     onToggleFullscreen: () => void
     onTest: () => void
     handleVisibilityUpdate?: (visibility: string) => void
@@ -55,6 +56,7 @@ export const KnowledgeEditorSnippetLoader = ({
     onClickPrevious,
     onClickNext,
     isFullscreen,
+    isPlaygroundOpen,
     onToggleFullscreen,
     onTest,
     handleVisibilityUpdate,
@@ -305,6 +307,7 @@ export const KnowledgeEditorSnippetLoader = ({
             onToggleAIAgentEnabled={onToggleAIAgentEnabled}
             onTest={onTest}
             isFullscreen={isFullscreen}
+            isPlaygroundOpen={isPlaygroundOpen}
             snippet={snippet}
             impact={
                 isPerformanceStatsEnabled

@@ -22,6 +22,7 @@ export type KnowledgeHubHeaderProps = {
     isSyncButtonDisabled?: boolean
     isDeleteButtonDisabled?: boolean
     syncTooltipMessage?: string
+    isPlaygroundOpen?: boolean
 }
 
 export const KnowledgeHubHeader = ({
@@ -36,6 +37,7 @@ export const KnowledgeHubHeader = ({
     isSyncButtonDisabled,
     isDeleteButtonDisabled,
     syncTooltipMessage,
+    isPlaygroundOpen,
 }: KnowledgeHubHeaderProps) => {
     const hasLeftSection = !!data
     const hasRightSection = true // Right section always has content
@@ -73,6 +75,7 @@ export const KnowledgeHubHeader = ({
                         isSyncButtonDisabled={isSyncButtonDisabled}
                         isDeleteButtonDisabled={isDeleteButtonDisabled}
                         syncTooltipMessage={syncTooltipMessage}
+                        isPlaygroundOpen={isPlaygroundOpen}
                     />
                 </div>
             </div>

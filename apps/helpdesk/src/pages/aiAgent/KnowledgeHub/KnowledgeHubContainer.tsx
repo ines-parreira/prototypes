@@ -370,7 +370,7 @@ export const KnowledgeHubContainer = () => {
         snippetEditor.closeEditor()
     }, [snippetEditor, handleCloseEditorPath])
 
-    const { openPlayground } = usePlaygroundPanel()
+    const { openPlayground, isPlaygroundOpen } = usePlaygroundPanel()
 
     const { isSyncLessThan24h, nextSyncDate } = useGetLastWebsiteSync(
         storeDomainIngestionLog,
@@ -553,6 +553,7 @@ export const KnowledgeHubContainer = () => {
                 isSyncButtonDisabled={isSyncButtonDisabled}
                 isDeleteButtonDisabled={isDeleteButtonDisabled}
                 syncTooltipMessage={syncTooltipMessage}
+                isPlaygroundOpen={isPlaygroundOpen}
             />
             <Box paddingLeft="lg" paddingRight="lg" flexDirection="column">
                 <SyncStoreDomainBanner

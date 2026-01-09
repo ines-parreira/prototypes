@@ -39,6 +39,7 @@ export type GuidanceToolbarData = {
     canEdit: boolean
     editDisabledReason: string | undefined
     onTest: () => void
+    isPlaygroundOpen: boolean
 }
 
 export const useGuidanceToolbar = (): GuidanceToolbarData => {
@@ -190,6 +191,7 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         canEdit,
         editDisabledReason,
         onTest: playground.onTest,
+        isPlaygroundOpen: playground.isOpen,
     }
 }
 

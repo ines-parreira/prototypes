@@ -19,6 +19,7 @@ type HeaderActionsProps = {
     isSyncButtonDisabled?: boolean
     isDeleteButtonDisabled?: boolean
     syncTooltipMessage?: string
+    isPlaygroundOpen?: boolean
 }
 
 export const HeaderActions = ({
@@ -32,20 +33,13 @@ export const HeaderActions = ({
     isSyncButtonDisabled = false,
     isDeleteButtonDisabled = false,
     syncTooltipMessage,
+    isPlaygroundOpen = false,
 }: HeaderActionsProps) => {
     const id = useId()
     const syncButtonId = `sync-button-${id}`
     if (!data) {
         return (
             <>
-                <button
-                    className={classNames(css.button, css.secondaryButton)}
-                    onClick={onTest}
-                    disabled={isTestButtonDisabled}
-                    aria-label="Test knowledge"
-                >
-                    Test
-                </button>
                 <button
                     className={classNames(css.button, css.primaryButton)}
                     onClick={onAddKnowledge}
@@ -54,6 +48,16 @@ export const HeaderActions = ({
                 >
                     <Icon name="add-plus" /> <span>New knowledge</span>
                 </button>
+                {!isPlaygroundOpen && (
+                    <button
+                        className={classNames(css.button, css.secondaryButton)}
+                        onClick={onTest}
+                        disabled={isTestButtonDisabled}
+                        aria-label="Test knowledge"
+                    >
+                        Test
+                    </button>
+                )}
             </>
         )
     }

@@ -79,6 +79,7 @@ export const KnowledgeEditorSnippet = ({
                         onClickNext={onClickNext}
                         onUpdated={onUpdated}
                         isFullscreen={isFullscreen}
+                        isPlaygroundOpen={isPlaygroundOpen}
                         onToggleFullscreen={onToggleFullscreen}
                         onTest={onTest}
                         handleVisibilityUpdate={handleVisibilityUpdate}

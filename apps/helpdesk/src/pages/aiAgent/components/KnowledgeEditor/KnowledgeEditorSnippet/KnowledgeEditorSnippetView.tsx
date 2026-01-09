@@ -50,6 +50,7 @@ type Props = {
     onToggleAIAgentEnabled: () => Promise<void>
 
     isFullscreen: boolean
+    isPlaygroundOpen?: boolean
     snippet: Snippet
     impact?: Omit<ImpactProps, 'sectionId'>
     relatedTickets?: Omit<RelatedTicketsProps, 'sectionId'>
@@ -64,6 +65,7 @@ export const KnowledgeEditorSnippetView = ({
     onToggleAIAgentEnabled,
     snippet,
     isFullscreen,
+    isPlaygroundOpen,
     impact,
     relatedTickets,
 }: Props) => {
@@ -147,7 +149,10 @@ export const KnowledgeEditorSnippetView = ({
                 isDetailsView={isDetailsView}
                 onToggleDetailsView={onToggleDetailsView}
             >
-                <KnowledgeEditorTopBarSnippetControls onTest={onTest} />
+                <KnowledgeEditorTopBarSnippetControls
+                    onTest={onTest}
+                    isPlaygroundOpen={isPlaygroundOpen}
+                />
             </KnowledgeEditorTopBar>
             <div className={css.knowledgeEditor}>
                 <KnowledgeEditorSnippetReadView

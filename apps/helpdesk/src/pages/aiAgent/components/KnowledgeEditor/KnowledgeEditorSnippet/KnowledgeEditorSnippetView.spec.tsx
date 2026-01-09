@@ -215,4 +215,47 @@ describe('KnowledgeEditorSnippetView', () => {
 
         expect(screen.getByText('Test Store Snippet')).toBeInTheDocument()
     })
+
+    describe('TestButton visibility based on isPlaygroundOpen', () => {
+        it('should show Test button when isPlaygroundOpen is false', () => {
+            renderWithProvider(
+                <KnowledgeEditorSnippetView
+                    {...baseProps}
+                    snippet={urlSnippet}
+                    isPlaygroundOpen={false}
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /test/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should hide Test button when isPlaygroundOpen is true', () => {
+            renderWithProvider(
+                <KnowledgeEditorSnippetView
+                    {...baseProps}
+                    snippet={urlSnippet}
+                    isPlaygroundOpen={true}
+                />,
+            )
+
+            expect(
+                screen.queryByRole('button', { name: /test/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show Test button by default when isPlaygroundOpen is not provided', () => {
+            renderWithProvider(
+                <KnowledgeEditorSnippetView
+                    {...baseProps}
+                    snippet={urlSnippet}
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /test/i }),
+            ).toBeInTheDocument()
+        })
+    })
 })

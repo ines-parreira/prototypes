@@ -30,6 +30,7 @@ export const GuidanceToolbarControls = () => {
         canEdit,
         editDisabledReason,
         onTest,
+        isPlaygroundOpen,
     } = useGuidanceToolbar()
 
     const {
@@ -80,7 +81,9 @@ export const GuidanceToolbarControls = () => {
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
                     />
-                    <TestButton onTest={onTest} disabled={isDisabled} />
+                    {!isPlaygroundOpen && (
+                        <TestButton onTest={onTest} disabled={isDisabled} />
+                    )}
                 </>
             )
 
@@ -106,7 +109,9 @@ export const GuidanceToolbarControls = () => {
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
                     />
-                    <TestButton onTest={onTest} disabled={isDisabled} />
+                    {!isPlaygroundOpen && (
+                        <TestButton onTest={onTest} disabled={isDisabled} />
+                    )}
                 </>
             )
 
@@ -139,7 +144,9 @@ export const GuidanceToolbarControls = () => {
                     >
                         Publish
                     </button>
-                    <TestButton onTest={onTest} disabled={isDisabled} />
+                    {!isPlaygroundOpen && (
+                        <TestButton onTest={onTest} disabled={isDisabled} />
+                    )}
                 </>
             )
 
@@ -153,7 +160,9 @@ export const GuidanceToolbarControls = () => {
                     >
                         Publish
                     </button>
-                    <TestButton onTest={onTest} disabled={isDisabled} />
+                    {!isPlaygroundOpen && (
+                        <TestButton onTest={onTest} disabled={isDisabled} />
+                    )}
                 </>
             )
 
@@ -179,10 +188,12 @@ export const GuidanceToolbarControls = () => {
                     >
                         Publish
                     </button>
-                    <TestButton
-                        onTest={onTest}
-                        disabled={isCreateMode || isDisabled}
-                    />
+                    {!isPlaygroundOpen && (
+                        <TestButton
+                            onTest={onTest}
+                            disabled={isCreateMode || isDisabled}
+                        />
+                    )}
                 </>
             )
         }

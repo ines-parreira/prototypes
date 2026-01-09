@@ -710,8 +710,12 @@ describe('KnowledgeEditorGuidance', () => {
                 expect(queryByTestId('playground-panel')).toBeInTheDocument()
             })
 
+            // Test button is hidden when playground is open, so use the Close Playground button
+            const closePlaygroundButton = screen.getByRole('button', {
+                name: /close playground/i,
+            })
             await act(async () => {
-                fireEvent.click(testButton)
+                fireEvent.click(closePlaygroundButton)
             })
 
             await waitFor(() => {

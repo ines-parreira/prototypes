@@ -28,6 +28,7 @@ export type ArticleToolbarData = {
     canEdit: boolean
     editDisabledReason: string | undefined
     onTest: () => void
+    isPlaygroundOpen: boolean
 }
 
 export const useArticleToolbar = (): ArticleToolbarData => {
@@ -145,6 +146,7 @@ export const useArticleToolbar = (): ArticleToolbarData => {
         canEdit,
         editDisabledReason,
         onTest: playground.onTest,
+        isPlaygroundOpen: playground.isOpen,
     }
 }
 

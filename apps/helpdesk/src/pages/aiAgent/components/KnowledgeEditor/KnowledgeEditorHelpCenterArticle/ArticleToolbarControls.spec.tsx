@@ -24,6 +24,7 @@ describe('ArticleToolbarControls', () => {
             isFormValid: boolean
             canEdit: boolean
             editDisabledReason: string | undefined
+            isPlaygroundOpen: boolean
         }> = {},
     ) => ({
         state: overrides.state ?? { type: 'draft-edit' },
@@ -38,6 +39,7 @@ describe('ArticleToolbarControls', () => {
         canEdit: overrides.canEdit ?? true,
         editDisabledReason: overrides.editDisabledReason,
         onTest: mockOnTest,
+        isPlaygroundOpen: overrides.isPlaygroundOpen ?? false,
     })
 
     beforeEach(() => {
@@ -505,6 +507,106 @@ describe('ArticleToolbarControls', () => {
 
             expect(
                 screen.getByRole('button', { name: /edit/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('TestButton visibility based on isPlaygroundOpen', () => {
+        it('should hide TestButton when isPlaygroundOpen is true in published-with-draft state', () => {
+            mockUseArticleToolbar.mockReturnValue(
+                createMockToolbar({
+                    state: { type: 'published-with-draft' },
+                    isPlaygroundOpen: true,
+                }),
+            )
+            render(<ArticleToolbarControls />)
+
+            expect(
+                screen.queryByRole('button', { name: /test/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should hide TestButton when isPlaygroundOpen is true in published-without-draft state', () => {
+            mockUseArticleToolbar.mockReturnValue(
+                createMockToolbar({
+                    state: { type: 'published-without-draft' },
+                    isPlaygroundOpen: true,
+                }),
+            )
+            render(<ArticleToolbarControls />)
+
+            expect(
+                screen.queryByRole('button', { name: /test/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should hide TestButton when isPlaygroundOpen is true in draft-view state', () => {
+            mockUseArticleToolbar.mockReturnValue(
+                createMockToolbar({
+                    state: { type: 'draft-view' },
+                    isPlaygroundOpen: true,
+                }),
+            )
+            render(<ArticleToolbarControls />)
+
+            expect(
+                screen.queryByRole('button', { name: /test/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should hide TestButton when isPlaygroundOpen is true in published-without-draft-edit state', () => {
+            mockUseArticleToolbar.mockReturnValue(
+                createMockToolbar({
+                    state: { type: 'published-without-draft-edit' },
+                    isPlaygroundOpen: true,
+                }),
+            )
+            render(<ArticleToolbarControls />)
+
+            expect(
+                screen.queryByRole('button', { name: /test/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should hide TestButton when isPlaygroundOpen is true in draft-edit state', () => {
+            mockUseArticleToolbar.mockReturnValue(
+                createMockToolbar({
+                    state: { type: 'draft-edit' },
+                    isPlaygroundOpen: true,
+                }),
+            )
+            render(<ArticleToolbarControls />)
+
+            expect(
+                screen.queryByRole('button', { name: /test/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should hide TestButton when isPlaygroundOpen is true in create state', () => {
+            mockUseArticleToolbar.mockReturnValue(
+                createMockToolbar({
+                    state: { type: 'create' },
+                    isPlaygroundOpen: true,
+                }),
+            )
+            render(<ArticleToolbarControls />)
+
+            expect(
+                screen.queryByRole('button', { name: /test/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show TestButton when isPlaygroundOpen is false', () => {
+            mockUseArticleToolbar.mockReturnValue(
+                createMockToolbar({
+                    state: { type: 'published-without-draft' },
+                    isPlaygroundOpen: false,
+                }),
+            )
+            render(<ArticleToolbarControls />)
+
+            expect(
+                screen.getByRole('button', { name: /test/i }),
             ).toBeInTheDocument()
         })
     })

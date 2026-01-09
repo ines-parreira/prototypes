@@ -19,6 +19,7 @@ export const ArticleToolbarControls = () => {
         canEdit,
         editDisabledReason,
         onTest,
+        isPlaygroundOpen,
     } = useArticleToolbar()
 
     const { onClickEdit, onClickPublish, onOpenDeleteModal, onDiscard } =
@@ -36,7 +37,9 @@ export const ArticleToolbarControls = () => {
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
                     />
-                    <TestButton onTest={onTest} disabled={isDisabled} />
+                    {!isPlaygroundOpen && (
+                        <TestButton onTest={onTest} disabled={isDisabled} />
+                    )}
                 </>
             )
 
@@ -51,7 +54,9 @@ export const ArticleToolbarControls = () => {
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
                     />
-                    <TestButton onTest={onTest} disabled={isDisabled} />
+                    {!isPlaygroundOpen && (
+                        <TestButton onTest={onTest} disabled={isDisabled} />
+                    )}
                 </>
             )
 
@@ -73,7 +78,9 @@ export const ArticleToolbarControls = () => {
                     >
                         Publish
                     </button>
-                    <TestButton onTest={onTest} disabled={isDisabled} />
+                    {!isPlaygroundOpen && (
+                        <TestButton onTest={onTest} disabled={isDisabled} />
+                    )}
                 </>
             )
 
@@ -87,7 +94,9 @@ export const ArticleToolbarControls = () => {
                     >
                         Publish
                     </button>
-                    <TestButton onTest={onTest} disabled={isDisabled} />
+                    {!isPlaygroundOpen && (
+                        <TestButton onTest={onTest} disabled={isDisabled} />
+                    )}
                 </>
             )
 
@@ -111,10 +120,12 @@ export const ArticleToolbarControls = () => {
                     >
                         Publish
                     </button>
-                    <TestButton
-                        onTest={onTest}
-                        disabled={isCreateMode || isDisabled}
-                    />
+                    {!isPlaygroundOpen && (
+                        <TestButton
+                            onTest={onTest}
+                            disabled={isCreateMode || isDisabled}
+                        />
+                    )}
                 </>
             )
         }

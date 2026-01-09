@@ -8,9 +8,13 @@ import css from './KnowledgeEditorTopBarControls.less'
 
 type Props = {
     onTest: () => void
+    isPlaygroundOpen?: boolean
 }
 
-export const KnowledgeEditorTopBarSnippetControls = (props: Props) => (
+export const KnowledgeEditorTopBarSnippetControls = ({
+    onTest,
+    isPlaygroundOpen = false,
+}: Props) => (
     <>
         <button
             className={classNames(
@@ -22,6 +26,6 @@ export const KnowledgeEditorTopBarSnippetControls = (props: Props) => (
         >
             <Icon name="lock" aria-label="editing disabled" /> Edit
         </button>
-        <TestButton onTest={props.onTest} disabled={false} />
+        {!isPlaygroundOpen && <TestButton onTest={onTest} disabled={false} />}
     </>
 )

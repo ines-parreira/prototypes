@@ -302,5 +302,50 @@ describe('useGuidanceToolbar', () => {
             expect(result.current.canEdit).toBe(false)
             expect(result.current.editDisabledReason).toBeDefined()
         })
+
+        it('should return isPlaygroundOpen based on playground.isOpen', () => {
+            jest.mocked(useGuidanceContext).mockReturnValue({
+                state: {
+                    guidance: { id: 1 },
+                    guidanceMode: 'read',
+                    isUpdating: false,
+                    isAutoSaving: false,
+                },
+                dispatch: mockDispatch,
+                isFormValid: true,
+                canEdit: true,
+                config: {
+                    guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                    onCopyFn: mockOnCopyFn,
+                },
+                hasDraft: false,
+                playground: {
+                    isOpen: true,
+                    onTest: mockOnTest,
+                    onClose: jest.fn(),
+                    sidePanelWidth: '100%',
+                },
+            } as any)
+
+            const { result } = renderHook(() => useGuidanceToolbar())
+
+            expect(result.current.isPlaygroundOpen).toBe(true)
+        })
+
+        it('should return isPlaygroundOpen as false when playground.isOpen is false', () => {
+            const { result } = renderHook(() => useGuidanceToolbar())
+
+            expect(result.current.isPlaygroundOpen).toBe(false)
+        })
+    })
+
+    describe('onTest', () => {
+        it('should call playground.onTest', () => {
+            const { result } = renderHook(() => useGuidanceToolbar())
+
+            result.current.onTest()
+
+            expect(mockOnTest).toHaveBeenCalled()
+        })
     })
 })
