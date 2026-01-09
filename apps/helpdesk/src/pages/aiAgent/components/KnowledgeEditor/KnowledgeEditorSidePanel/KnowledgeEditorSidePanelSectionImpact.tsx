@@ -63,7 +63,7 @@ export const KnowledgeEditorSidePanelSectionImpact = ({
                 title: 'Impact',
                 subtitle: 'Last 28 days',
                 tooltip:
-                    'Performance in tickets where this knowledge was used by AI Agent.',
+                    'Performance in tickets where this knowledge was used by AI Agent in the last 28 days.',
             }}
             sectionId={sectionId}
         >

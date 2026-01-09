@@ -1,9 +1,14 @@
 import classNames from 'classnames'
 
-import { Icon } from '@gorgias/axiom'
+import {
+    Icon,
+    IconSize,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@gorgias/axiom'
 
 import { Accordion } from 'components/Accordion/Accordion'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
 import css from './KnowledgeEditorSidePanelSection.less'
 
@@ -39,9 +44,17 @@ export const KnowledgeEditorSidePanelSection = ({
                                 {header.tooltip ? (
                                     <div className={css.titleWithTooltip}>
                                         {header.title}
-                                        <IconTooltip className={css.tooltip}>
-                                            {header.tooltip}
-                                        </IconTooltip>
+                                        <Tooltip>
+                                            <TooltipTrigger>
+                                                <Icon
+                                                    name="info"
+                                                    size={IconSize.Xs}
+                                                />
+                                            </TooltipTrigger>
+                                            <TooltipContent
+                                                title={header.tooltip}
+                                            />
+                                        </Tooltip>
                                     </div>
                                 ) : (
                                     header.title
