@@ -89,17 +89,17 @@
         }
 
         // Metrics-enabled widths
-        // Minimum total width: 51px + 150px + 91px + 134px + 93px + 126px + 148px = 793px
+        // Minimum total width: 51px + 300px + 91px + 134px + 93px + 126px + 148px = 843px
         &[data-metrics-enabled='true'] {
             table {
-                min-width: 793px;
+                min-width: 943px;
             }
 
             // Title column remains auto
             table th:nth-child(2),
             table td:nth-child(2) {
                 width: auto;
-                min-width: 150px;
+                min-width: 300px;
             }
 
             // Tickets column
@@ -176,7 +176,7 @@
 
     .quantity {
         display: flex;
-        min-width: 76px;
+        min-width: 100px;
         flex-direction: row;
         justify-content: center;
         align-items: center;
