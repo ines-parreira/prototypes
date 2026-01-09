@@ -138,19 +138,17 @@ describe('useGuidanceAutoSave', () => {
                 result.current.onChangeField('title', 'New Title')
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith({
-                type: 'SET_TITLE',
-                payload: 'New Title',
-            })
-            expect(mockDispatch).not.toHaveBeenCalledWith({
-                type: 'SET_AUTO_SAVING',
-                payload: true,
-            })
+            // Should not dispatch anything when in read mode (early return)
+            expect(mockDispatch).not.toHaveBeenCalled()
         })
 
-        it('should not trigger autosave when title is empty', () => {
+        it('should use "Untitled" as title when title is empty but content is present', () => {
             ;(useGuidanceContext as jest.Mock).mockReturnValue({
-                state: { ...defaultState, title: '' },
+                state: {
+                    ...defaultState,
+                    title: '',
+                    savedSnapshot: { title: '', content: '' },
+                },
                 dispatch: mockDispatch,
                 config: defaultConfig,
             })
@@ -161,7 +159,14 @@ describe('useGuidanceAutoSave', () => {
                 result.current.onChangeField('content', 'New Content')
             })
 
-            expect(mockDispatch).not.toHaveBeenCalledWith({
+            // Should set title to "Untitled"
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_TITLE',
+                payload: 'Untitled',
+            })
+
+            // Should trigger autosave with "Untitled" as title
+            expect(mockDispatch).toHaveBeenCalledWith({
                 type: 'SET_AUTO_SAVING',
                 payload: true,
             })

@@ -173,16 +173,32 @@ export const useGuidanceAutoSave = () => {
 
     const onChangeField = useCallback(
         (field: 'title' | 'content', value: string) => {
+            if (state.guidanceMode === 'read') return
+
+            let newTitle = field === 'title' ? value : state.title
+            const newContent = field === 'content' ? value : state.content
+
+            // If content is present but title is empty, use "Untitled" as temporary title
+            // Only do this when the content field is being changed, not the title field
+            const shouldUseUntitled =
+                field === 'content' &&
+                newTitle.trim() === '' &&
+                newContent.trim() !== ''
+            if (shouldUseUntitled) {
+                newTitle = 'Untitled'
+            }
+
+            // Dispatch the state updates
             if (field === 'title') {
                 dispatch({ type: 'SET_TITLE', payload: value })
             } else {
                 dispatch({ type: 'SET_CONTENT', payload: value })
             }
 
-            if (state.guidanceMode === 'read') return
-
-            const newTitle = field === 'title' ? value : state.title
-            const newContent = field === 'content' ? value : state.content
+            // If we're using "Untitled" as temporary title, also update the title state
+            if (shouldUseUntitled) {
+                dispatch({ type: 'SET_TITLE', payload: 'Untitled' })
+            }
 
             const isValid = newTitle.trim() !== '' && newContent.trim() !== ''
             if (!isValid) {

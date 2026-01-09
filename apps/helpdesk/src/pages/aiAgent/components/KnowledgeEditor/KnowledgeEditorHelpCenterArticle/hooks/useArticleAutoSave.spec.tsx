@@ -242,23 +242,18 @@ describe('useArticleAutoSave', () => {
                 result.current.onChangeField('title', 'New Title')
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith({
-                type: 'SET_TITLE',
-                payload: 'New Title',
-            })
-            expect(mockDispatch).not.toHaveBeenCalledWith({
-                type: 'SET_AUTO_SAVING',
-                payload: true,
-            })
+            // Should not dispatch anything when in read mode (early return)
+            expect(mockDispatch).not.toHaveBeenCalled()
         })
 
-        it('does not trigger auto-save when title is empty', () => {
+        it('does not trigger auto-save when title is whitespace only and content is empty', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
+                    content: '',
                     savedSnapshot: {
                         title: 'Old Title',
-                        content: 'Old content',
+                        content: '',
                     },
                 },
             })
@@ -297,6 +292,40 @@ describe('useArticleAutoSave', () => {
             })
 
             expect(mockDispatch).not.toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVING',
+                payload: true,
+            })
+        })
+
+        it('uses "Untitled" as title when title is empty but content is present', () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    title: '',
+                    content: '',
+                    savedSnapshot: {
+                        title: '',
+                        content: '',
+                    },
+                },
+            })
+            mockContext.dispatch = mockDispatch
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            const { result } = renderHook(() => useArticleAutoSave())
+
+            act(() => {
+                result.current.onChangeField('content', 'New Content')
+            })
+
+            // Should set title to "Untitled"
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_TITLE',
+                payload: 'Untitled',
+            })
+
+            // Should trigger autosave with "Untitled" as title
+            expect(mockDispatch).toHaveBeenCalledWith({
                 type: 'SET_AUTO_SAVING',
                 payload: true,
             })

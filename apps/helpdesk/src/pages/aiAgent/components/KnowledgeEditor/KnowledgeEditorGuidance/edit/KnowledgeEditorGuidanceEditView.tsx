@@ -37,6 +37,7 @@ export const KnowledgeEditorGuidanceEditView = ({
             name="name"
             value={title}
             maxLength={135}
+            placeholder="Untitled"
         />
         <div className={css.editorContainer}>
             <GuidanceEditor
