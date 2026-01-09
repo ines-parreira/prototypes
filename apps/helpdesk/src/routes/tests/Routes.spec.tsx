@@ -673,7 +673,7 @@ describe('<Routes/>', () => {
             },
             {
                 from: '/app/automation/shopify/test-shop/knowledge',
-                to: '/app/ai-agent/shopify/test-shop/knowledge',
+                to: '/app/ai-agent/shopify/test-shop/knowledge/sources',
             },
             {
                 from: '/app/automation/shopify/test-shop/guidance',
