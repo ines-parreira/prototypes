@@ -358,10 +358,10 @@ export const knowledgeCSATDrillDownQueryFactory = (
 }
 
 /**
- * Query factory to fetch the first 3 related ticket IDs for knowledge resources
+ * Query factory to fetch the first 3 recent ticket IDs for knowledge resources
  * Returns the 3 most recent tickets ordered by creation date descending
  */
-export const knowledgeRelatedTicketsQueryFactory = (
+export const knowledgeRecentTicketsQueryFactory = (
     filters: ApiStatsFilters,
     timezone: string,
     resourceSourceId: number,
@@ -1037,9 +1037,9 @@ export const useAllResourcesMetrics = ({
 }
 
 /**
- * Type definitions for related tickets
+ * Type definitions for recent tickets
  */
-type RelatedTicket = {
+type RecentTicket = {
     id: number
     title: string
     lastUpdatedDatetime: Date
@@ -1047,7 +1047,7 @@ type RelatedTicket = {
     aiAgentOutcome: AI_AGENT_OUTCOME_DISPLAY_LABELS
 }
 
-type UseRelatedTicketsParams = {
+type UseRecentTicketsParams = {
     resourceSourceId: number
     resourceSourceSetId: number
     shopIntegrationId: number
@@ -1059,8 +1059,8 @@ type UseRelatedTicketsParams = {
     }
 }
 
-type UseRelatedTicketsResult = {
-    data: RelatedTicket[] | null
+type UseRecentTicketsResult = {
+    data: RecentTicket[] | null
     isLoading: boolean
     isError: boolean
 }
@@ -1080,17 +1080,17 @@ export const getLast28DaysDateRange = () => {
 }
 
 /**
- * Hook to fetch and transform the latest 3 related tickets for a knowledge resource
+ * Hook to fetch and transform the latest 3 recent tickets for a knowledge resource
  * Uses enrichment to get full ticket details (title, datetime, custom fields, etc.)
  */
-export function useRelatedTickets({
+export function useRecentTickets({
     resourceSourceId,
     resourceSourceSetId,
     shopIntegrationId,
     timezone,
     enabled,
     dateRange,
-}: UseRelatedTicketsParams): UseRelatedTicketsResult {
+}: UseRecentTicketsParams): UseRecentTicketsResult {
     const { outcomeCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
 
     // Create filters with provided date range and shop integration ID
@@ -1110,7 +1110,7 @@ export function useRelatedTickets({
     // Create the query
     const query = useMemo(
         () =>
-            knowledgeRelatedTicketsQueryFactory(
+            knowledgeRecentTicketsQueryFactory(
                 filters,
                 timezone,
                 resourceSourceId,
@@ -1222,9 +1222,9 @@ export function useRelatedTickets({
     }
 }
 
-export type RelatedTicketsWithDrilldown = {
+export type RecentTicketsWithDrilldown = {
     ticketCount: number
-    latest3Tickets?: RelatedTicket[]
+    latest3Tickets?: RecentTicket[]
     isLoading: boolean
     resourceSourceId: number
     resourceSourceSetId: number
@@ -1236,7 +1236,7 @@ export type RelatedTicketsWithDrilldown = {
     intentCustomFieldId: number
 }
 
-type UseRelatedTicketsWithDrilldownParams = {
+type UseRecentTicketsWithDrilldownParams = {
     resourceSourceId: number
     resourceSourceSetId: number
     shopIntegrationId: number
@@ -1250,14 +1250,14 @@ type UseRelatedTicketsWithDrilldownParams = {
     }
 }
 
-type UseRelatedTicketsWithDrilldownResult =
-    | RelatedTicketsWithDrilldown
+type UseRecentTicketsWithDrilldownResult =
+    | RecentTicketsWithDrilldown
     | undefined
 
 /**
- * Hook to fetch related tickets data with drilldown information
+ * Hook to fetch recent tickets data with drilldown information
  */
-export function useRelatedTicketsWithDrilldown({
+export function useRecentTicketsWithDrilldown({
     resourceSourceId,
     resourceSourceSetId,
     shopIntegrationId,
@@ -1266,11 +1266,11 @@ export function useRelatedTicketsWithDrilldown({
     ticketCount,
     ticketCountIsLoading,
     dateRange,
-}: UseRelatedTicketsWithDrilldownParams): UseRelatedTicketsWithDrilldownResult {
+}: UseRecentTicketsWithDrilldownParams): UseRecentTicketsWithDrilldownResult {
     const { outcomeCustomFieldId, intentCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
-    const relatedTicketsData = useRelatedTickets({
+    const recentTicketsData = useRecentTickets({
         resourceSourceId,
         resourceSourceSetId,
         shopIntegrationId,
@@ -1282,7 +1282,7 @@ export function useRelatedTicketsWithDrilldown({
     return useMemo(() => {
         if (!enabled) return undefined
 
-        const isLoading = ticketCountIsLoading || relatedTicketsData.isLoading
+        const isLoading = ticketCountIsLoading || recentTicketsData.isLoading
 
         if (isLoading) {
             return {
@@ -1296,13 +1296,13 @@ export function useRelatedTicketsWithDrilldown({
             }
         }
 
-        if (ticketCount === 0 && !relatedTicketsData.data) {
+        if (ticketCount === 0 && !recentTicketsData.data) {
             return undefined
         }
 
         return {
             ticketCount,
-            latest3Tickets: relatedTicketsData.data ?? undefined,
+            latest3Tickets: recentTicketsData.data ?? undefined,
             isLoading: false,
             resourceSourceId,
             resourceSourceSetId,
@@ -1313,8 +1313,8 @@ export function useRelatedTicketsWithDrilldown({
     }, [
         enabled,
         ticketCountIsLoading,
-        relatedTicketsData.isLoading,
-        relatedTicketsData.data,
+        recentTicketsData.isLoading,
+        recentTicketsData.data,
         ticketCount,
         resourceSourceId,
         resourceSourceSetId,

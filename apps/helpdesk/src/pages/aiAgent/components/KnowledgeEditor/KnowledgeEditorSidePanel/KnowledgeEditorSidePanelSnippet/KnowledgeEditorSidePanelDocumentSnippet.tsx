@@ -5,21 +5,21 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import type { Props as ImpactProps } from '../KnowledgeEditorSidePanelSectionImpact'
 import { KnowledgeEditorSidePanelSectionImpact } from '../KnowledgeEditorSidePanelSectionImpact'
-import type { Props as RelatedTicketsProps } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
-import { KnowledgeEditorSidePanelSectionRelatedTickets } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
+import type { Props as RecentTicketsProps } from '../KnowledgeEditorSidePanelSectionRecentTickets'
+import { KnowledgeEditorSidePanelSectionRecentTickets } from '../KnowledgeEditorSidePanelSectionRecentTickets'
 import type { Props as DocumentSnippetDetailsProps } from './KnowledgeEditorSidePanelSectionDocumentSnippetDetails'
 import { KnowledgeEditorSidePanelSectionDocumentSnippetDetails } from './KnowledgeEditorSidePanelSectionDocumentSnippetDetails'
 
 type Props = {
     details: Omit<DocumentSnippetDetailsProps, 'sectionId'>
     impact?: Omit<ImpactProps, 'sectionId'>
-    relatedTickets?: Omit<RelatedTicketsProps, 'sectionId'>
+    recentTickets?: Omit<RecentTicketsProps, 'sectionId'>
 }
 
 export const KnowledgeEditorSidePanelDocumentSnippet = ({
     details,
     impact,
-    relatedTickets,
+    recentTickets,
 }: Props): JSX.Element => {
     const isPerformanceStatsEnabled = useFlag(
         FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
@@ -47,8 +47,8 @@ export const KnowledgeEditorSidePanelDocumentSnippet = ({
             )}
 
             {isPerformanceStatsEnabled && (
-                <KnowledgeEditorSidePanelSectionRelatedTickets
-                    {...relatedTickets}
+                <KnowledgeEditorSidePanelSectionRecentTickets
+                    {...recentTickets}
                     sectionId="related-tickets"
                 />
             )}

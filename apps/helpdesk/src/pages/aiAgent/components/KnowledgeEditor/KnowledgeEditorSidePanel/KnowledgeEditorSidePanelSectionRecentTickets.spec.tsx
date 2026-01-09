@@ -4,9 +4,9 @@ import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automat
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { KnowledgeEditorSidePanel } from './KnowledgeEditorSidePanel'
-import { KnowledgeEditorSidePanelSectionRelatedTickets } from './KnowledgeEditorSidePanelSectionRelatedTickets'
+import { KnowledgeEditorSidePanelSectionRecentTickets } from './KnowledgeEditorSidePanelSectionRecentTickets'
 
-describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
+describe('KnowledgeEditorSidePanelSectionRecentTickets', () => {
     it('renders', () => {
         const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
         const testDateRange = {
@@ -20,7 +20,7 @@ describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
             <KnowledgeEditorSidePanel
                 initialExpandedSections={['related-tickets']}
             >
-                <KnowledgeEditorSidePanelSectionRelatedTickets
+                <KnowledgeEditorSidePanelSectionRecentTickets
                     ticketCount={4}
                     latest3Tickets={[
                         {
@@ -73,7 +73,7 @@ describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
             <KnowledgeEditorSidePanel
                 initialExpandedSections={['related-tickets']}
             >
-                <KnowledgeEditorSidePanelSectionRelatedTickets
+                <KnowledgeEditorSidePanelSectionRecentTickets
                     ticketCount={0}
                     isLoading={true}
                     sectionId="related-tickets"
@@ -90,7 +90,7 @@ describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
             <KnowledgeEditorSidePanel
                 initialExpandedSections={['related-tickets']}
             >
-                <KnowledgeEditorSidePanelSectionRelatedTickets sectionId="related-tickets" />
+                <KnowledgeEditorSidePanelSectionRecentTickets sectionId="related-tickets" />
             </KnowledgeEditorSidePanel>,
         )
 
@@ -111,7 +111,7 @@ describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
             <KnowledgeEditorSidePanel
                 initialExpandedSections={['related-tickets']}
             >
-                <KnowledgeEditorSidePanelSectionRelatedTickets
+                <KnowledgeEditorSidePanelSectionRecentTickets
                     ticketCount={1}
                     latest3Tickets={[
                         {
@@ -154,7 +154,7 @@ describe('KnowledgeEditorSidePanelSectionRelatedTickets', () => {
             <KnowledgeEditorSidePanel
                 initialExpandedSections={['related-tickets']}
             >
-                <KnowledgeEditorSidePanelSectionRelatedTickets
+                <KnowledgeEditorSidePanelSectionRecentTickets
                     ticketCount={2}
                     latest3Tickets={[
                         {

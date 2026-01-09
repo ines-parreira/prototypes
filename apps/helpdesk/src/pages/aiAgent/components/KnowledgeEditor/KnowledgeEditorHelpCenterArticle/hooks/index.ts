@@ -2,8 +2,8 @@ export { useArticleImpactFromContext } from './useArticleImpactFromContext'
 export type { ArticleImpactData } from './useArticleImpactFromContext'
 export { useArticleEngagementFromContext } from './useArticleEngagementFromContext'
 export type { ArticleEngagementData } from './useArticleEngagementFromContext'
-export { useArticleRelatedTicketsFromContext } from './useArticleRelatedTicketsFromContext'
-export type { ArticleRelatedTicketsData } from './useArticleRelatedTicketsFromContext'
+export { useArticleRecentTicketsFromContext } from './useArticleRecentTicketsFromContext'
+export type { ArticleRecentTicketsData } from './useArticleRecentTicketsFromContext'
 export { useArticleToolbar } from './useArticleToolbar'
 export type {
     ArticleToolbarData,

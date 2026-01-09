@@ -13,7 +13,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { KnowledgeEditorSidePanelSection } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSection'
 import RelativeTime from 'pages/common/components/RelativeTime'
 
-import css from './KnowledgeEditorSidePanelSectionRelatedTickets.less'
+import css from './KnowledgeEditorSidePanelSectionRecentTickets.less'
 
 type Ticket = {
     id: number
@@ -38,7 +38,7 @@ export type Props = {
     intentCustomFieldId?: number
 }
 
-export const KnowledgeEditorSidePanelSectionRelatedTickets = ({
+export const KnowledgeEditorSidePanelSectionRecentTickets = ({
     sectionId,
     ticketCount,
     latest3Tickets,

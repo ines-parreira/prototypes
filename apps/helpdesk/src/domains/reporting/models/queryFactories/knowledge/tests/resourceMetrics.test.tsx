@@ -17,13 +17,13 @@ import {
     getLast28DaysDateRange,
     knowledgeCSATDrillDownQueryFactory,
     knowledgeHandoverTicketsDrillDownQueryFactory,
-    knowledgeRelatedTicketsQueryFactory,
+    knowledgeRecentTicketsQueryFactory,
     knowledgeTicketsDrillDownQueryFactory,
     parseIntentsData,
     parseIntentsDataByResource,
     useAllResourcesMetrics,
-    useRelatedTickets,
-    useRelatedTicketsWithDrilldown,
+    useRecentTickets,
+    useRecentTicketsWithDrilldown,
     useResourceMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import type {
@@ -3117,7 +3117,7 @@ describe('knowledgeHandoverTicketsDrillDownQueryFactory', () => {
     })
 })
 
-describe('knowledgeRelatedTicketsQueryFactory', () => {
+describe('knowledgeRecentTicketsQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.clone().add(7, 'days')
     const resourceSourceId = 123
@@ -3132,7 +3132,7 @@ describe('knowledgeRelatedTicketsQueryFactory', () => {
     }
 
     it('should set limit to 3 for related tickets', () => {
-        const query = knowledgeRelatedTicketsQueryFactory(
+        const query = knowledgeRecentTicketsQueryFactory(
             statsFilters,
             timezone,
             resourceSourceId,
@@ -3143,7 +3143,7 @@ describe('knowledgeRelatedTicketsQueryFactory', () => {
     })
 
     it('should include order by CreatedDatetime descending', () => {
-        const query = knowledgeRelatedTicketsQueryFactory(
+        const query = knowledgeRecentTicketsQueryFactory(
             statsFilters,
             timezone,
             resourceSourceId,
@@ -3156,7 +3156,7 @@ describe('knowledgeRelatedTicketsQueryFactory', () => {
     })
 
     it('should include TicketId dimension', () => {
-        const query = knowledgeRelatedTicketsQueryFactory(
+        const query = knowledgeRecentTicketsQueryFactory(
             statsFilters,
             timezone,
             resourceSourceId,
@@ -3167,7 +3167,7 @@ describe('knowledgeRelatedTicketsQueryFactory', () => {
     })
 
     it('should use KNOWLEDGE_TICKETS metric', () => {
-        const query = knowledgeRelatedTicketsQueryFactory(
+        const query = knowledgeRecentTicketsQueryFactory(
             statsFilters,
             timezone,
             resourceSourceId,
@@ -3178,7 +3178,7 @@ describe('knowledgeRelatedTicketsQueryFactory', () => {
     })
 
     it('should include resource filters', () => {
-        const query = knowledgeRelatedTicketsQueryFactory(
+        const query = knowledgeRecentTicketsQueryFactory(
             statsFilters,
             timezone,
             resourceSourceId,
@@ -3239,7 +3239,7 @@ describe('getLast28DaysDateRange', () => {
     })
 })
 
-describe('useRelatedTickets', () => {
+describe('useRecentTickets', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
@@ -3259,7 +3259,7 @@ describe('useRelatedTickets', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTickets({
+                useRecentTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,
@@ -3289,7 +3289,7 @@ describe('useRelatedTickets', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTickets({
+                useRecentTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,
@@ -3322,7 +3322,7 @@ describe('useRelatedTickets', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTickets({
+                useRecentTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,
@@ -3350,7 +3350,7 @@ describe('useRelatedTickets', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTickets({
+                useRecentTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,
@@ -3380,7 +3380,7 @@ describe('useRelatedTickets', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTickets({
+                useRecentTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,
@@ -3444,7 +3444,7 @@ describe('useRelatedTickets', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTickets({
+                useRecentTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,
@@ -3500,7 +3500,7 @@ describe('useRelatedTickets', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTickets({
+                useRecentTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,
@@ -3544,7 +3544,7 @@ describe('useRelatedTickets', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTickets({
+                useRecentTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,
@@ -3593,7 +3593,7 @@ describe('useRelatedTickets', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTickets({
+                useRecentTickets({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,
@@ -3608,7 +3608,7 @@ describe('useRelatedTickets', () => {
     })
 })
 
-describe('useRelatedTicketsWithDrilldown', () => {
+describe('useRecentTicketsWithDrilldown', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
@@ -3628,7 +3628,7 @@ describe('useRelatedTicketsWithDrilldown', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTicketsWithDrilldown({
+                useRecentTicketsWithDrilldown({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,
@@ -3658,7 +3658,7 @@ describe('useRelatedTicketsWithDrilldown', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTicketsWithDrilldown({
+                useRecentTicketsWithDrilldown({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,
@@ -3696,7 +3696,7 @@ describe('useRelatedTicketsWithDrilldown', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTicketsWithDrilldown({
+                useRecentTicketsWithDrilldown({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,
@@ -3744,7 +3744,7 @@ describe('useRelatedTicketsWithDrilldown', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTicketsWithDrilldown({
+                useRecentTicketsWithDrilldown({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,
@@ -3791,7 +3791,7 @@ describe('useRelatedTicketsWithDrilldown', () => {
 
         const { result } = renderHook(
             () =>
-                useRelatedTicketsWithDrilldown({
+                useRecentTicketsWithDrilldown({
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     shopIntegrationId: 456,

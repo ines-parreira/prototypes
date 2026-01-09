@@ -24,7 +24,7 @@ jest.mock(
                 isLoading: false,
             }),
         ),
-        useGuidanceRelatedTicketsFromContext: jest.fn(() => {
+        useGuidanceRecentTicketsFromContext: jest.fn(() => {
             const testDate = new Date('2025-06-17')
             const testDateRange = {
                 start_datetime: new Date(

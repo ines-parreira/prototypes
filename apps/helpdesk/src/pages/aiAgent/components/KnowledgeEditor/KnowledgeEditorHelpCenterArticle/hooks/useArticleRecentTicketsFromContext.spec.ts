@@ -3,14 +3,14 @@ import { renderHook } from '@testing-library/react'
 
 import {
     getLast28DaysDateRange,
-    useRelatedTicketsWithDrilldown,
+    useRecentTicketsWithDrilldown,
     useResourceMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context/ArticleContext'
 import type { ArticleContextValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context/types'
 
-import { useArticleRelatedTicketsFromContext } from './useArticleRelatedTicketsFromContext'
+import { useArticleRecentTicketsFromContext } from './useArticleRecentTicketsFromContext'
 
 jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
@@ -24,7 +24,7 @@ jest.mock(
     'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
     () => ({
         useResourceMetrics: jest.fn(),
-        useRelatedTicketsWithDrilldown: jest.fn(),
+        useRecentTicketsWithDrilldown: jest.fn(),
         getLast28DaysDateRange: jest.fn(),
     }),
 )
@@ -40,13 +40,13 @@ jest.mock(
 
 const mockUseFlag = useFlag as jest.Mock
 const mockUseResourceMetrics = useResourceMetrics as jest.Mock
-const mockUseRelatedTicketsWithDrilldown =
-    useRelatedTicketsWithDrilldown as jest.Mock
+const mockUseRecentTicketsWithDrilldown =
+    useRecentTicketsWithDrilldown as jest.Mock
 const mockGetLast28DaysDateRange = getLast28DaysDateRange as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
 
-describe('useArticleRelatedTicketsFromContext', () => {
+describe('useArticleRecentTicketsFromContext', () => {
     const mockArticle = {
         id: 123,
         translation: {
@@ -91,7 +91,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
         handoverTickets: { value: 10 },
     }
 
-    const mockRelatedTicketsData = {
+    const mockRecentTicketsData = {
         tickets: [
             { id: 1, subject: 'Ticket 1' },
             { id: 2, subject: 'Ticket 2' },
@@ -110,16 +110,14 @@ describe('useArticleRelatedTicketsFromContext', () => {
             data: mockResourceMetricsData,
             isLoading: false,
         })
-        mockUseRelatedTicketsWithDrilldown.mockReturnValue(
-            mockRelatedTicketsData,
-        )
+        mockUseRecentTicketsWithDrilldown.mockReturnValue(mockRecentTicketsData)
     })
 
     describe('when feature flag is disabled', () => {
         it('should still call useResourceMetrics but with enabled=false', () => {
             mockUseFlag.mockReturnValue(false)
 
-            renderHook(() => useArticleRelatedTicketsFromContext())
+            renderHook(() => useArticleRecentTicketsFromContext())
 
             expect(mockUseResourceMetrics).toHaveBeenCalledWith({
                 resourceSourceId: 123,
@@ -131,12 +129,12 @@ describe('useArticleRelatedTicketsFromContext', () => {
             })
         })
 
-        it('should still call useRelatedTicketsWithDrilldown but with enabled=false', () => {
+        it('should still call useRecentTicketsWithDrilldown but with enabled=false', () => {
             mockUseFlag.mockReturnValue(false)
 
-            renderHook(() => useArticleRelatedTicketsFromContext())
+            renderHook(() => useArticleRecentTicketsFromContext())
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith({
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
                 shopIntegrationId: 0,
@@ -156,14 +154,14 @@ describe('useArticleRelatedTicketsFromContext', () => {
 
         it('should return related tickets data', () => {
             const { result } = renderHook(() =>
-                useArticleRelatedTicketsFromContext(),
+                useArticleRecentTicketsFromContext(),
             )
 
-            expect(result.current).toEqual(mockRelatedTicketsData)
+            expect(result.current).toEqual(mockRecentTicketsData)
         })
 
         it('should call useFlag with correct feature flag key', () => {
-            renderHook(() => useArticleRelatedTicketsFromContext())
+            renderHook(() => useArticleRecentTicketsFromContext())
 
             expect(mockUseFlag).toHaveBeenCalledWith(
                 FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
@@ -171,13 +169,13 @@ describe('useArticleRelatedTicketsFromContext', () => {
         })
 
         it('should call getLast28DaysDateRange to calculate date range', () => {
-            renderHook(() => useArticleRelatedTicketsFromContext())
+            renderHook(() => useArticleRecentTicketsFromContext())
 
             expect(mockGetLast28DaysDateRange).toHaveBeenCalled()
         })
 
         it('should call useResourceMetrics with enabled=true when article exists', () => {
-            renderHook(() => useArticleRelatedTicketsFromContext())
+            renderHook(() => useArticleRecentTicketsFromContext())
 
             expect(mockUseResourceMetrics).toHaveBeenCalledWith({
                 resourceSourceId: 123,
@@ -189,10 +187,10 @@ describe('useArticleRelatedTicketsFromContext', () => {
             })
         })
 
-        it('should call useRelatedTicketsWithDrilldown with enabled=true when article exists', () => {
-            renderHook(() => useArticleRelatedTicketsFromContext())
+        it('should call useRecentTicketsWithDrilldown with enabled=true when article exists', () => {
+            renderHook(() => useArticleRecentTicketsFromContext())
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith({
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
                 shopIntegrationId: 0,
@@ -204,15 +202,15 @@ describe('useArticleRelatedTicketsFromContext', () => {
             })
         })
 
-        it('should pass ticket count from resourceImpact to useRelatedTicketsWithDrilldown', () => {
+        it('should pass ticket count from resourceImpact to useRecentTicketsWithDrilldown', () => {
             mockUseResourceMetrics.mockReturnValue({
                 data: { tickets: { value: 99 } },
                 isLoading: false,
             })
 
-            renderHook(() => useArticleRelatedTicketsFromContext())
+            renderHook(() => useArticleRecentTicketsFromContext())
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                 expect.objectContaining({
                     ticketCount: 99,
                 }),
@@ -225,9 +223,9 @@ describe('useArticleRelatedTicketsFromContext', () => {
                 isLoading: false,
             })
 
-            renderHook(() => useArticleRelatedTicketsFromContext())
+            renderHook(() => useArticleRecentTicketsFromContext())
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                 expect.objectContaining({
                     ticketCount: 0,
                 }),
@@ -240,9 +238,9 @@ describe('useArticleRelatedTicketsFromContext', () => {
                 isLoading: false,
             })
 
-            renderHook(() => useArticleRelatedTicketsFromContext())
+            renderHook(() => useArticleRecentTicketsFromContext())
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                 expect.objectContaining({
                     ticketCount: 0,
                 }),
@@ -258,7 +256,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
                 },
             })
 
-            renderHook(() => useArticleRelatedTicketsFromContext())
+            renderHook(() => useArticleRecentTicketsFromContext())
 
             expect(mockUseResourceMetrics).toHaveBeenCalledWith({
                 resourceSourceId: 0,
@@ -269,7 +267,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
                 dateRange: mockDateRange,
             })
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith({
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith({
                 resourceSourceId: 0,
                 resourceSourceSetId: 1,
                 shopIntegrationId: 0,
@@ -284,7 +282,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
         it('should use UTC as default timezone when selector returns undefined', () => {
             mockUseAppSelector.mockReturnValue(undefined)
 
-            renderHook(() => useArticleRelatedTicketsFromContext())
+            renderHook(() => useArticleRecentTicketsFromContext())
 
             expect(mockUseResourceMetrics).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -297,7 +295,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
                 }),
             )
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                 expect.objectContaining({
                     timezone: 'UTC',
                 }),
@@ -305,16 +303,16 @@ describe('useArticleRelatedTicketsFromContext', () => {
         })
 
         it('should pass the same dateRange to both hooks', () => {
-            renderHook(() => useArticleRelatedTicketsFromContext())
+            renderHook(() => useArticleRecentTicketsFromContext())
 
             const resourceMetricsCall = mockUseResourceMetrics.mock.calls[0][0]
-            const relatedTicketsCall =
-                mockUseRelatedTicketsWithDrilldown.mock.calls[0][0]
+            const recentTicketsCall =
+                mockUseRecentTicketsWithDrilldown.mock.calls[0][0]
 
             expect(resourceMetricsCall.dateRange).toBe(mockDateRange)
-            expect(relatedTicketsCall.dateRange).toBe(mockDateRange)
+            expect(recentTicketsCall.dateRange).toBe(mockDateRange)
             expect(resourceMetricsCall.dateRange).toBe(
-                relatedTicketsCall.dateRange,
+                recentTicketsCall.dateRange,
             )
         })
     })
@@ -324,7 +322,7 @@ describe('useArticleRelatedTicketsFromContext', () => {
             mockUseFlag.mockReturnValue(true)
 
             const { rerender } = renderHook(() =>
-                useArticleRelatedTicketsFromContext(),
+                useArticleRecentTicketsFromContext(),
             )
 
             const firstCall = mockGetLast28DaysDateRange.mock.calls.length

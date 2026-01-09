@@ -4,14 +4,14 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import {
     getLast28DaysDateRange,
-    useRelatedTicketsWithDrilldown,
+    useRecentTicketsWithDrilldown,
     useResourceMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
-import type { Props as RelatedTicketsProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionRelatedTickets'
+import type { Props as RecentTicketsProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionRecentTickets'
 import { getTimezone } from 'state/currentUser/selectors'
 
-export type KnowledgeRelatedTicketsData = Omit<RelatedTicketsProps, 'sectionId'>
+export type KnowledgeRecentTicketsData = Omit<RecentTicketsProps, 'sectionId'>
 
 type Params = {
     resourceSourceId: number
@@ -21,20 +21,20 @@ type Params = {
 }
 
 /**
- * Base hook for fetching related tickets for any knowledge item (article, guidance, or snippet).
+ * Base hook for fetching recent tickets for any knowledge item (article, guidance, or snippet).
  *
  * @param resourceSourceId - The ID of the knowledge item (article, guidance, or snippet)
  * @param resourceSourceSetId - The ID of the help center
  * @param shopIntegrationId - The ID of the shop
  * @param enabled - Whether to fetch data (default: true)
- * @returns Related tickets data or undefined if feature flag is disabled
+ * @returns Recent tickets data or undefined if feature flag is disabled
  */
-export const useKnowledgeRelatedTickets = ({
+export const useKnowledgeRecentTickets = ({
     resourceSourceId,
     resourceSourceSetId,
     shopIntegrationId,
     enabled = true,
-}: Params): KnowledgeRelatedTicketsData | undefined => {
+}: Params): KnowledgeRecentTicketsData | undefined => {
     const isPerformanceStatsEnabled = useFlag(
         FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
     )
@@ -55,8 +55,8 @@ export const useKnowledgeRelatedTickets = ({
         dateRange,
     })
 
-    // Fetch related tickets with drilldown data
-    const relatedTickets = useRelatedTicketsWithDrilldown({
+    // Fetch recent tickets with drilldown data
+    const recentTickets = useRecentTicketsWithDrilldown({
         resourceSourceId,
         resourceSourceSetId,
         shopIntegrationId,
@@ -67,5 +67,5 @@ export const useKnowledgeRelatedTickets = ({
         dateRange,
     })
 
-    return relatedTickets
+    return recentTickets
 }

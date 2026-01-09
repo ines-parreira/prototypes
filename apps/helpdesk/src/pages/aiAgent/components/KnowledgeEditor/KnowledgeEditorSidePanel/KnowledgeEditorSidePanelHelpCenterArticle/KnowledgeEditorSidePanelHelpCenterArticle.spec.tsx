@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import {
     useArticleEngagementFromContext,
     useArticleImpactFromContext,
-    useArticleRelatedTicketsFromContext,
+    useArticleRecentTicketsFromContext,
 } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
 
 import { KnowledgeEditorSidePanelHelpCenterArticle } from './KnowledgeEditorSidePanelHelpCenterArticle'
@@ -22,7 +22,7 @@ jest.mock(
     () => ({
         useArticleImpactFromContext: jest.fn(),
         useArticleEngagementFromContext: jest.fn(),
-        useArticleRelatedTicketsFromContext: jest.fn(),
+        useArticleRecentTicketsFromContext: jest.fn(),
     }),
 )
 
@@ -51,13 +51,13 @@ jest.mock('../KnowledgeEditorSidePanelSectionImpact', () => ({
     }) => <div data-testid={`section-${sectionId}`}>Impact Section</div>,
 }))
 
-jest.mock('../KnowledgeEditorSidePanelSectionRelatedTickets', () => ({
-    KnowledgeEditorSidePanelSectionRelatedTickets: ({
+jest.mock('../KnowledgeEditorSidePanelSectionRecentTickets', () => ({
+    KnowledgeEditorSidePanelSectionRecentTickets: ({
         sectionId,
     }: {
         sectionId: string
     }) => (
-        <div data-testid={`section-${sectionId}`}>Related Tickets Section</div>
+        <div data-testid={`section-${sectionId}`}>Recent Tickets Section</div>
     ),
 }))
 
@@ -99,9 +99,9 @@ const mockUseArticleEngagementFromContext =
     useArticleEngagementFromContext as jest.MockedFunction<
         typeof useArticleEngagementFromContext
     >
-const mockUseArticleRelatedTicketsFromContext =
-    useArticleRelatedTicketsFromContext as jest.MockedFunction<
-        typeof useArticleRelatedTicketsFromContext
+const mockUseArticleRecentTicketsFromContext =
+    useArticleRecentTicketsFromContext as jest.MockedFunction<
+        typeof useArticleRecentTicketsFromContext
     >
 
 describe('KnowledgeEditorSidePanelHelpCenterArticle', () => {
@@ -109,7 +109,7 @@ describe('KnowledgeEditorSidePanelHelpCenterArticle', () => {
         jest.clearAllMocks()
         mockUseArticleImpactFromContext.mockReturnValue(undefined)
         mockUseArticleEngagementFromContext.mockReturnValue(undefined)
-        mockUseArticleRelatedTicketsFromContext.mockReturnValue(undefined)
+        mockUseArticleRecentTicketsFromContext.mockReturnValue(undefined)
     })
 
     describe('when feature flag is enabled', () => {
@@ -131,7 +131,7 @@ describe('KnowledgeEditorSidePanelHelpCenterArticle', () => {
                 reactions: { up: 90, down: 10 },
                 isLoading: false,
             })
-            mockUseArticleRelatedTicketsFromContext.mockReturnValue({
+            mockUseArticleRecentTicketsFromContext.mockReturnValue({
                 ticketCount: 10,
                 latest3Tickets: [],
                 resourceSourceId: 123,
@@ -150,7 +150,7 @@ describe('KnowledgeEditorSidePanelHelpCenterArticle', () => {
             expect(screen.getByTestId('section-details')).toBeInTheDocument()
             expect(screen.getByTestId('section-impact')).toBeInTheDocument()
             expect(
-                screen.getByTestId('section-relatedTickets'),
+                screen.getByTestId('section-recentTickets'),
             ).toBeInTheDocument()
             expect(screen.getByTestId('section-engagement')).toBeInTheDocument()
             expect(screen.getByTestId('section-settings')).toBeInTheDocument()
@@ -162,7 +162,7 @@ describe('KnowledgeEditorSidePanelHelpCenterArticle', () => {
             expect(
                 screen.getByTestId('initial-expanded-sections'),
             ).toHaveTextContent(
-                'details,impact,engagement,relatedTickets,settings',
+                'details,impact,engagement,recentTickets,settings',
             )
         })
 
@@ -172,7 +172,7 @@ describe('KnowledgeEditorSidePanelHelpCenterArticle', () => {
             expect(screen.getByTestId('section-details')).toBeInTheDocument()
             expect(screen.getByTestId('section-impact')).toBeInTheDocument()
             expect(
-                screen.getByTestId('section-relatedTickets'),
+                screen.getByTestId('section-recentTickets'),
             ).toBeInTheDocument()
             expect(screen.getByTestId('section-engagement')).toBeInTheDocument()
             expect(screen.getByTestId('section-settings')).toBeInTheDocument()
@@ -192,7 +192,7 @@ describe('KnowledgeEditorSidePanelHelpCenterArticle', () => {
                 screen.queryByTestId('section-impact'),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByTestId('section-relatedTickets'),
+                screen.queryByTestId('section-recentTickets'),
             ).not.toBeInTheDocument()
             expect(
                 screen.queryByTestId('section-engagement'),

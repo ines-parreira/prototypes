@@ -51,7 +51,7 @@ describe('KnowledgeEditorSidePanelURLSnippet', () => {
                     csat: { value: 3.2 },
                     intents: ['Billing/Payment', 'Shipping/Inquiry'],
                 }}
-                relatedTickets={{
+                recentTickets={{
                     ticketCount: 2,
                     latest3Tickets: [
                         {

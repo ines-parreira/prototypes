@@ -58,7 +58,7 @@ const Template: StoryFn<ComponentProps<typeof KnowledgeEditorSidePanel>> = (
 
 const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
 
-const relatedTickets = {
+const recentTickets = {
     ticketCount: 4,
     latest3Tickets: [
         {
@@ -116,7 +116,7 @@ ForDocumentSnippet.args = {
                 csat: { value: 4.2 },
                 intents: mockIntents,
             }}
-            relatedTickets={relatedTickets}
+            recentTickets={recentTickets}
         />
     ),
 }
@@ -134,7 +134,7 @@ ForNewDocumentSnippet.args = {
                 googleStorageUrl: 'https://storage.googleapis.com/doc.pdf',
             }}
             impact={{}}
-            relatedTickets={{ ticketCount: 0 }}
+            recentTickets={{ ticketCount: 0 }}
         />
     ),
 }
@@ -156,7 +156,7 @@ ForURLSnippet.args = {
                 csat: { value: 4.2 },
                 intents: mockIntents,
             }}
-            relatedTickets={relatedTickets}
+            recentTickets={recentTickets}
         />
     ),
 }
@@ -173,7 +173,7 @@ ForNewURLSnippet.args = {
                 url: 'https://www.google.com',
             }}
             impact={{}}
-            relatedTickets={{ ticketCount: 0 }}
+            recentTickets={{ ticketCount: 0 }}
         />
     ),
 }
@@ -202,7 +202,7 @@ ForStoreSnippet.args = {
                 csat: { value: 4.2 },
                 intents: mockIntents,
             }}
-            relatedTickets={relatedTickets}
+            recentTickets={recentTickets}
         />
     ),
 }

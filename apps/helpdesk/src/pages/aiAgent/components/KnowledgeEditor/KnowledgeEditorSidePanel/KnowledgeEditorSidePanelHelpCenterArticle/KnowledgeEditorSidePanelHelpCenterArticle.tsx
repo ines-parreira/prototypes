@@ -3,12 +3,12 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import {
     useArticleEngagementFromContext,
     useArticleImpactFromContext,
-    useArticleRelatedTicketsFromContext,
+    useArticleRecentTicketsFromContext,
 } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionImpact } from '../KnowledgeEditorSidePanelSectionImpact'
-import { KnowledgeEditorSidePanelSectionRelatedTickets } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
+import { KnowledgeEditorSidePanelSectionRecentTickets } from '../KnowledgeEditorSidePanelSectionRecentTickets'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleDetails } from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement } from './KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleSettings } from './KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
@@ -19,12 +19,12 @@ export const KnowledgeEditorSidePanelHelpCenterArticle = () => {
     )
     const impact = useArticleImpactFromContext()
     const engagement = useArticleEngagementFromContext()
-    const relatedTickets = useArticleRelatedTicketsFromContext()
+    const recentTickets = useArticleRecentTicketsFromContext()
 
     const initialExpandedSections: string[] = [
         'details',
         ...(isPerformanceStatsEnabled
-            ? ['impact', 'engagement', 'relatedTickets']
+            ? ['impact', 'engagement', 'recentTickets']
             : []),
         'settings',
     ]
@@ -43,9 +43,9 @@ export const KnowledgeEditorSidePanelHelpCenterArticle = () => {
             )}
 
             {isPerformanceStatsEnabled && (
-                <KnowledgeEditorSidePanelSectionRelatedTickets
-                    {...relatedTickets}
-                    sectionId="relatedTickets"
+                <KnowledgeEditorSidePanelSectionRecentTickets
+                    {...recentTickets}
+                    sectionId="recentTickets"
                 />
             )}
 

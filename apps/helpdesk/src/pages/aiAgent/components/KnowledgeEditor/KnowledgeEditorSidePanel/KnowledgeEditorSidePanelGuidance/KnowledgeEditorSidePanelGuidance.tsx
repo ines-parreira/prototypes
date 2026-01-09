@@ -2,12 +2,12 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import {
     useGuidanceImpactFromContext,
-    useGuidanceRelatedTicketsFromContext,
+    useGuidanceRecentTicketsFromContext,
 } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionImpact } from '../KnowledgeEditorSidePanelSectionImpact'
-import { KnowledgeEditorSidePanelSectionRelatedTickets } from '../KnowledgeEditorSidePanelSectionRelatedTickets'
+import { KnowledgeEditorSidePanelSectionRecentTickets } from '../KnowledgeEditorSidePanelSectionRecentTickets'
 import { KnowledgeEditorSidePanelSectionGuidanceDetails } from './KnowledgeEditorSidePanelSectionGuidanceDetails'
 
 export const KnowledgeEditorSidePanelGuidance = () => {
@@ -15,7 +15,7 @@ export const KnowledgeEditorSidePanelGuidance = () => {
         FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
     )
     const impact = useGuidanceImpactFromContext()
-    const relatedTickets = useGuidanceRelatedTicketsFromContext()
+    const recentTickets = useGuidanceRecentTicketsFromContext()
 
     const initialExpandedSections: string[] = [
         'details',
@@ -36,8 +36,8 @@ export const KnowledgeEditorSidePanelGuidance = () => {
             )}
 
             {isPerformanceStatsEnabled && (
-                <KnowledgeEditorSidePanelSectionRelatedTickets
-                    {...relatedTickets}
+                <KnowledgeEditorSidePanelSectionRecentTickets
+                    {...recentTickets}
                     sectionId="related-tickets"
                 />
             )}

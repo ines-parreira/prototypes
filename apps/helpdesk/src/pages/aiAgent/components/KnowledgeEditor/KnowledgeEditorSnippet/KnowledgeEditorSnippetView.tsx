@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 
 import type { Props as ImpactProps } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
-import type { Props as RelatedTicketsProps } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionRelatedTickets'
+import type { Props as RecentTicketsProps } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionRecentTickets'
 import { KnowledgeEditorSidePanelDocumentSnippet } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelDocumentSnippet'
 import { KnowledgeEditorSidePanelStoreSnippet } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelStoreSnippet'
 import { KnowledgeEditorSidePanelURLSnippet } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelURLSnippet'
@@ -53,7 +53,7 @@ type Props = {
     isPlaygroundOpen?: boolean
     snippet: Snippet
     impact?: Omit<ImpactProps, 'sectionId'>
-    relatedTickets?: Omit<RelatedTicketsProps, 'sectionId'>
+    recentTickets?: Omit<RecentTicketsProps, 'sectionId'>
 }
 
 export const KnowledgeEditorSnippetView = ({
@@ -67,7 +67,7 @@ export const KnowledgeEditorSnippetView = ({
     isFullscreen,
     isPlaygroundOpen,
     impact,
-    relatedTickets,
+    recentTickets,
 }: Props) => {
     const [isDetailsView, setIsDetailsView] = useState(true)
     const onToggleDetailsView = () => {
@@ -108,7 +108,7 @@ export const KnowledgeEditorSnippetView = ({
                             url: snippet.source,
                         }}
                         impact={impact}
-                        relatedTickets={relatedTickets}
+                        recentTickets={recentTickets}
                     />
                 )
             case SnippetType.Document:
@@ -120,7 +120,7 @@ export const KnowledgeEditorSnippetView = ({
                             googleStorageUrl: snippet.googleStorageUrl,
                         }}
                         impact={impact}
-                        relatedTickets={relatedTickets}
+                        recentTickets={recentTickets}
                     />
                 )
             case SnippetType.Store:
@@ -131,7 +131,7 @@ export const KnowledgeEditorSnippetView = ({
                             urls: snippet.sources,
                         }}
                         impact={impact}
-                        relatedTickets={relatedTickets}
+                        recentTickets={recentTickets}
                     />
                 )
         }

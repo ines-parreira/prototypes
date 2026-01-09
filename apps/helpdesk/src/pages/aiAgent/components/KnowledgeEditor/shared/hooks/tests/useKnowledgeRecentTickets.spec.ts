@@ -3,12 +3,12 @@ import { renderHook } from '@testing-library/react'
 
 import {
     getLast28DaysDateRange,
-    useRelatedTicketsWithDrilldown,
+    useRecentTicketsWithDrilldown,
     useResourceMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 
-import { useKnowledgeRelatedTickets } from '../useKnowledgeRelatedTickets'
+import { useKnowledgeRecentTickets } from '../useKnowledgeRecentTickets'
 
 jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
@@ -22,7 +22,7 @@ jest.mock(
     'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
     () => ({
         useResourceMetrics: jest.fn(),
-        useRelatedTicketsWithDrilldown: jest.fn(),
+        useRecentTicketsWithDrilldown: jest.fn(),
         getLast28DaysDateRange: jest.fn(),
     }),
 )
@@ -31,12 +31,12 @@ jest.mock('hooks/useAppSelector', () => jest.fn())
 
 const mockUseFlag = useFlag as jest.Mock
 const mockUseResourceMetrics = useResourceMetrics as jest.Mock
-const mockUseRelatedTicketsWithDrilldown =
-    useRelatedTicketsWithDrilldown as jest.Mock
+const mockUseRecentTicketsWithDrilldown =
+    useRecentTicketsWithDrilldown as jest.Mock
 const mockGetLast28DaysDateRange = getLast28DaysDateRange as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
 
-describe('useKnowledgeRelatedTickets', () => {
+describe('useKnowledgeRecentTickets', () => {
     const mockDateRange = {
         since: '2025-01-01',
         until: '2025-01-28',
@@ -47,7 +47,7 @@ describe('useKnowledgeRelatedTickets', () => {
         handoverTickets: { value: 10 },
     }
 
-    const mockRelatedTicketsData = {
+    const mockRecentTicketsData = {
         tickets: [
             { id: 1, subject: 'Ticket 1' },
             { id: 2, subject: 'Ticket 2' },
@@ -65,9 +65,7 @@ describe('useKnowledgeRelatedTickets', () => {
             data: mockResourceMetricsData,
             isLoading: false,
         })
-        mockUseRelatedTicketsWithDrilldown.mockReturnValue(
-            mockRelatedTicketsData,
-        )
+        mockUseRecentTicketsWithDrilldown.mockReturnValue(mockRecentTicketsData)
     })
 
     describe('when feature flag is disabled', () => {
@@ -77,7 +75,7 @@ describe('useKnowledgeRelatedTickets', () => {
 
         it('should call useFlag with correct feature flag key', () => {
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
@@ -91,7 +89,7 @@ describe('useKnowledgeRelatedTickets', () => {
 
         it('should still call useResourceMetrics but with enabled=false', () => {
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
@@ -108,16 +106,16 @@ describe('useKnowledgeRelatedTickets', () => {
             })
         })
 
-        it('should still call useRelatedTicketsWithDrilldown but with enabled=false', () => {
+        it('should still call useRecentTicketsWithDrilldown but with enabled=false', () => {
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
                 }),
             )
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith({
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
                 shopIntegrationId: 456,
@@ -131,7 +129,7 @@ describe('useKnowledgeRelatedTickets', () => {
 
         it('should respect enabled parameter even when feature flag is disabled', () => {
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
@@ -145,7 +143,7 @@ describe('useKnowledgeRelatedTickets', () => {
                 }),
             )
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                 expect.objectContaining({
                     enabled: false,
                 }),
@@ -160,19 +158,19 @@ describe('useKnowledgeRelatedTickets', () => {
 
         it('should return related tickets data', () => {
             const { result } = renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
                 }),
             )
 
-            expect(result.current).toEqual(mockRelatedTicketsData)
+            expect(result.current).toEqual(mockRecentTicketsData)
         })
 
         it('should call getLast28DaysDateRange to calculate date range', () => {
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
@@ -184,7 +182,7 @@ describe('useKnowledgeRelatedTickets', () => {
 
         it('should call useResourceMetrics with correct parameters', () => {
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
@@ -201,16 +199,16 @@ describe('useKnowledgeRelatedTickets', () => {
             })
         })
 
-        it('should call useRelatedTicketsWithDrilldown with correct parameters', () => {
+        it('should call useRecentTicketsWithDrilldown with correct parameters', () => {
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
                 }),
             )
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith({
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
                 shopIntegrationId: 456,
@@ -222,21 +220,21 @@ describe('useKnowledgeRelatedTickets', () => {
             })
         })
 
-        it('should pass ticket count from resourceImpact to useRelatedTicketsWithDrilldown', () => {
+        it('should pass ticket count from resourceImpact to useRecentTicketsWithDrilldown', () => {
             mockUseResourceMetrics.mockReturnValue({
                 data: { tickets: { value: 99 } },
                 isLoading: false,
             })
 
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
                 }),
             )
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                 expect.objectContaining({
                     ticketCount: 99,
                 }),
@@ -250,14 +248,14 @@ describe('useKnowledgeRelatedTickets', () => {
             })
 
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
                 }),
             )
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                 expect.objectContaining({
                     ticketCount: 0,
                 }),
@@ -271,14 +269,14 @@ describe('useKnowledgeRelatedTickets', () => {
             })
 
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
                 }),
             )
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                 expect.objectContaining({
                     ticketCount: 0,
                 }),
@@ -289,7 +287,7 @@ describe('useKnowledgeRelatedTickets', () => {
             mockUseAppSelector.mockReturnValue(undefined)
 
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
@@ -302,7 +300,7 @@ describe('useKnowledgeRelatedTickets', () => {
                 }),
             )
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                 expect.objectContaining({
                     timezone: 'UTC',
                 }),
@@ -313,7 +311,7 @@ describe('useKnowledgeRelatedTickets', () => {
             mockUseAppSelector.mockReturnValue(null)
 
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
@@ -326,7 +324,7 @@ describe('useKnowledgeRelatedTickets', () => {
                 }),
             )
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                 expect.objectContaining({
                     timezone: 'UTC',
                 }),
@@ -335,7 +333,7 @@ describe('useKnowledgeRelatedTickets', () => {
 
         it('should pass the same dateRange to both hooks', () => {
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
@@ -343,32 +341,32 @@ describe('useKnowledgeRelatedTickets', () => {
             )
 
             const resourceMetricsCall = mockUseResourceMetrics.mock.calls[0][0]
-            const relatedTicketsCall =
-                mockUseRelatedTicketsWithDrilldown.mock.calls[0][0]
+            const recentTicketsCall =
+                mockUseRecentTicketsWithDrilldown.mock.calls[0][0]
 
             expect(resourceMetricsCall.dateRange).toBe(mockDateRange)
-            expect(relatedTicketsCall.dateRange).toBe(mockDateRange)
+            expect(recentTicketsCall.dateRange).toBe(mockDateRange)
             expect(resourceMetricsCall.dateRange).toBe(
-                relatedTicketsCall.dateRange,
+                recentTicketsCall.dateRange,
             )
         })
 
         describe('loading state coordination', () => {
-            it('should pass resourceMetrics loading state to useRelatedTicketsWithDrilldown', () => {
+            it('should pass resourceMetrics loading state to useRecentTicketsWithDrilldown', () => {
                 mockUseResourceMetrics.mockReturnValue({
                     data: { tickets: { value: 42 } },
                     isLoading: true,
                 })
 
                 renderHook(() =>
-                    useKnowledgeRelatedTickets({
+                    useKnowledgeRecentTickets({
                         resourceSourceId: 123,
                         resourceSourceSetId: 1,
                         shopIntegrationId: 456,
                     }),
                 )
 
-                expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+                expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                     expect.objectContaining({
                         ticketCountIsLoading: true,
                     }),
@@ -382,14 +380,14 @@ describe('useKnowledgeRelatedTickets', () => {
                 })
 
                 renderHook(() =>
-                    useKnowledgeRelatedTickets({
+                    useKnowledgeRecentTickets({
                         resourceSourceId: 123,
                         resourceSourceSetId: 1,
                         shopIntegrationId: 456,
                     }),
                 )
 
-                expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+                expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                     expect.objectContaining({
                         ticketCountIsLoading: false,
                     }),
@@ -403,14 +401,14 @@ describe('useKnowledgeRelatedTickets', () => {
                 })
 
                 renderHook(() =>
-                    useKnowledgeRelatedTickets({
+                    useKnowledgeRecentTickets({
                         resourceSourceId: 123,
                         resourceSourceSetId: 1,
                         shopIntegrationId: 456,
                     }),
                 )
 
-                expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+                expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                     expect.objectContaining({
                         ticketCountIsLoading: true,
                         ticketCount: 0,
@@ -422,7 +420,7 @@ describe('useKnowledgeRelatedTickets', () => {
         describe('enabled parameter', () => {
             it('should respect enabled=true parameter', () => {
                 renderHook(() =>
-                    useKnowledgeRelatedTickets({
+                    useKnowledgeRecentTickets({
                         resourceSourceId: 123,
                         resourceSourceSetId: 1,
                         shopIntegrationId: 456,
@@ -436,7 +434,7 @@ describe('useKnowledgeRelatedTickets', () => {
                     }),
                 )
 
-                expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+                expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                     expect.objectContaining({
                         enabled: true,
                     }),
@@ -445,7 +443,7 @@ describe('useKnowledgeRelatedTickets', () => {
 
             it('should respect enabled=false parameter', () => {
                 renderHook(() =>
-                    useKnowledgeRelatedTickets({
+                    useKnowledgeRecentTickets({
                         resourceSourceId: 123,
                         resourceSourceSetId: 1,
                         shopIntegrationId: 456,
@@ -459,7 +457,7 @@ describe('useKnowledgeRelatedTickets', () => {
                     }),
                 )
 
-                expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+                expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                     expect.objectContaining({
                         enabled: false,
                     }),
@@ -468,7 +466,7 @@ describe('useKnowledgeRelatedTickets', () => {
 
             it('should default to enabled=true when parameter is not provided', () => {
                 renderHook(() =>
-                    useKnowledgeRelatedTickets({
+                    useKnowledgeRecentTickets({
                         resourceSourceId: 123,
                         resourceSourceSetId: 1,
                         shopIntegrationId: 456,
@@ -481,7 +479,7 @@ describe('useKnowledgeRelatedTickets', () => {
                     }),
                 )
 
-                expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+                expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                     expect.objectContaining({
                         enabled: true,
                     }),
@@ -492,7 +490,7 @@ describe('useKnowledgeRelatedTickets', () => {
         describe('different resource types', () => {
             it('should work with article IDs', () => {
                 renderHook(() =>
-                    useKnowledgeRelatedTickets({
+                    useKnowledgeRecentTickets({
                         resourceSourceId: 456,
                         resourceSourceSetId: 2,
                         shopIntegrationId: 789,
@@ -509,7 +507,7 @@ describe('useKnowledgeRelatedTickets', () => {
 
             it('should work with snippet IDs', () => {
                 renderHook(() =>
-                    useKnowledgeRelatedTickets({
+                    useKnowledgeRecentTickets({
                         resourceSourceId: 789,
                         resourceSourceSetId: 3,
                         shopIntegrationId: 456,
@@ -526,7 +524,7 @@ describe('useKnowledgeRelatedTickets', () => {
 
             it('should work with guidance IDs', () => {
                 renderHook(() =>
-                    useKnowledgeRelatedTickets({
+                    useKnowledgeRecentTickets({
                         resourceSourceId: 101,
                         resourceSourceSetId: 4,
                         shopIntegrationId: 456,
@@ -548,7 +546,7 @@ describe('useKnowledgeRelatedTickets', () => {
             mockUseFlag.mockReturnValue(true)
 
             const { rerender } = renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
@@ -570,7 +568,7 @@ describe('useKnowledgeRelatedTickets', () => {
 
             const { rerender } = renderHook(
                 ({ resourceSourceId }) =>
-                    useKnowledgeRelatedTickets({
+                    useKnowledgeRecentTickets({
                         resourceSourceId,
                         resourceSourceSetId: 1,
                         shopIntegrationId: 456,
@@ -598,7 +596,7 @@ describe('useKnowledgeRelatedTickets', () => {
 
         it('should handle resourceSourceId of 0', () => {
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 0,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
@@ -614,7 +612,7 @@ describe('useKnowledgeRelatedTickets', () => {
 
         it('should handle resourceSourceSetId of 0', () => {
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 0,
                     shopIntegrationId: 456,
@@ -635,14 +633,14 @@ describe('useKnowledgeRelatedTickets', () => {
             })
 
             renderHook(() =>
-                useKnowledgeRelatedTickets({
+                useKnowledgeRecentTickets({
                     resourceSourceId: 123,
                     resourceSourceSetId: 1,
                     shopIntegrationId: 456,
                 }),
             )
 
-            expect(mockUseRelatedTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
                 expect.objectContaining({
                     ticketCount: -5,
                 }),
