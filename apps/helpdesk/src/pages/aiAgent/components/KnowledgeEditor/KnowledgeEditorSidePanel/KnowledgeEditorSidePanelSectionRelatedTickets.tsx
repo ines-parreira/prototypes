@@ -3,7 +3,7 @@ import type { JSX } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Icon, IconSize, Skeleton, Tag } from '@gorgias/axiom'
+import { Button, Icon, IconSize, Skeleton, Tag } from '@gorgias/axiom'
 
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
@@ -83,17 +83,21 @@ export const KnowledgeEditorSidePanelSectionRelatedTickets = ({
                 subtitle: 'Last 28 days',
             }}
             sectionId={sectionId}
-            bottomLink={
+            bottomElement={
                 ticketCount !== undefined &&
                 ticketCount > 3 &&
                 resourceSourceId &&
                 resourceSourceSetId &&
-                dateRange
-                    ? {
-                          text: 'View more',
-                          onClick: handleViewMoreClick,
-                      }
-                    : undefined
+                dateRange ? (
+                    <Button
+                        variant="tertiary"
+                        size="sm"
+                        intent="regular"
+                        onClick={handleViewMoreClick}
+                    >
+                        View more
+                    </Button>
+                ) : undefined
             }
         >
             {isLoading ? (
@@ -133,7 +137,11 @@ const Title = ({
         {isLoading ? (
             <Skeleton width={30} height={24} />
         ) : (
-            <Tag color="grey" style={{ width: 'auto' }}>
+            <Tag
+                color="grey"
+                style={{ width: 'auto' }}
+                className={css.titleTag}
+            >
                 {ticketCount ?? 0}
             </Tag>
         )}

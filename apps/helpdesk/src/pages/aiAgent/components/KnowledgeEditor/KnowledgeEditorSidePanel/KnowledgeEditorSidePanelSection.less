@@ -56,40 +56,9 @@
         width: 100%;
     }
 
-    .bottomLink {
-        margin-top: var(--spacing-sm);
+    .bottomElement {
+        margin-top: var(--spacing-xxs);
         display: flex;
         justify-content: flex-start;
-
-        > a,
-        > span,
-        > button {
-            height: 22px;
-            padding: 0 6px 0 8px;
-            display: flex;
-            justify-content: end;
-            width: fit-content;
-            align-items: center;
-            gap: var(--spacing-xxxs);
-            color: var(--content-neutral-default);
-            .caption-semibold();
-        }
-    }
-
-    .bottomLinkButton {
-        all: unset;
-        cursor: pointer;
-        color: inherit;
-        font: inherit;
-        font-weight: bold;
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-
-    .disabledBottomLink {
-        opacity: 0.5;
-        cursor: default;
     }
 }

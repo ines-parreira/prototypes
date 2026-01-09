@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Icon, IconSize } from '@gorgias/axiom'
+import { Icon } from '@gorgias/axiom'
 
 import { Accordion } from 'components/Accordion/Accordion'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
@@ -13,18 +13,14 @@ type Props = {
         subtitle?: string
         tooltip?: string
     } | null
-    bottomLink?: {
-        text: string
-        url?: string
-        onClick?: () => void
-    }
+    bottomElement?: React.ReactNode
     children: React.ReactNode
     sectionId: string
 }
 
 export const KnowledgeEditorSidePanelSection = ({
     header,
-    bottomLink,
+    bottomElement,
     children,
     sectionId,
 }: Props) => {
@@ -64,45 +60,8 @@ export const KnowledgeEditorSidePanelSection = ({
                 )}
                 <Accordion.ItemContent className={css.content}>
                     {children}
-                    {bottomLink && (
-                        <div
-                            className={classNames(
-                                css.bottomLink,
-                                !bottomLink.url &&
-                                    !bottomLink.onClick &&
-                                    css.disabledBottomLink,
-                            )}
-                        >
-                            {bottomLink.onClick ? (
-                                <button
-                                    type="button"
-                                    className={css.bottomLinkButton}
-                                    onClick={bottomLink.onClick}
-                                >
-                                    {bottomLink.text}
-                                </button>
-                            ) : bottomLink.url ? (
-                                <a
-                                    href={bottomLink.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {bottomLink.text}{' '}
-                                    <Icon
-                                        name="external-link"
-                                        size={IconSize.Sm}
-                                    />
-                                </a>
-                            ) : (
-                                <span>
-                                    {bottomLink.text}{' '}
-                                    <Icon
-                                        name="external-link"
-                                        size={IconSize.Sm}
-                                    />
-                                </span>
-                            )}
-                        </div>
+                    {bottomElement && (
+                        <div className={css.bottomElement}>{bottomElement}</div>
                     )}
                 </Accordion.ItemContent>
             </div>
