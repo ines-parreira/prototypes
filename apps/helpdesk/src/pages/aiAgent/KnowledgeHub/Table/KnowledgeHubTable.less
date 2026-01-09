@@ -24,6 +24,16 @@
 
         > [data-name='table-toolbar'] {
             padding-left: var(--spacing-lg);
+
+            // Prevent text wrapping in toolbar items
+            [data-name='box'] {
+                white-space: nowrap;
+            }
+
+            p,
+            span {
+                white-space: nowrap;
+            }
         }
 
         button[slot='button'][aria-label='Items per page'] {

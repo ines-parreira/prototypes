@@ -1,29 +1,42 @@
 :local {
     .container {
         width: 100%;
-        margin-top: var(--spacing-md);
     }
 
     .editor {
         :global {
             .fr-toolbar {
                 border: none;
+                background-color: var(--surface-neutral-secondary) !important;
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
+                display: flex !important;
+                flex-wrap: nowrap !important;
+            }
+
+            .fr-btn-grp {
+                flex-shrink: 0 !important;
+            }
+
+            .fr-separator {
+                flex-shrink: 0 !important;
             }
 
             .fr-wrapper {
                 border: none !important;
+                background: none !important;
             }
 
             .fr-second-toolbar {
                 display: none;
             }
 
-            .fr-toolbar {
-                background-color: var(--surface-neutral-secondary) !important;
+            .fr-newline {
+                display: none !important;
             }
 
-            .fr-wrapper {
-                background: none !important;
+            .fr-more-toolbar {
+                display: none !important;
             }
         }
     }
