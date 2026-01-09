@@ -3,6 +3,7 @@ import type { ComponentProps } from 'react'
 import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock, userEvent } from '@repo/testing'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -42,6 +43,9 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
 }))
 const useFlagMock = jest.mocked(useFlag)
+
+jest.mock('@repo/tickets')
+const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
 jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({
     __esModule: true,
@@ -141,6 +145,7 @@ describe('<TicketInfobarContainer />', () => {
         store.dispatch = jest.fn()
 
         useFlagMock.mockReturnValue(false)
+        useHelpdeskV2MS1FlagMock.mockReturnValue(false)
 
         useHasAIAgentMock.mockReturnValue(true)
         getCurrentUserMock.mockReturnValue(
@@ -189,7 +194,7 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     it('should not render the navbar if the UI Vision MS1 flag is enabled', () => {
-        useFlagMock.mockReturnValue(true)
+        useHelpdeskV2MS1FlagMock.mockReturnValue(true)
 
         renderWithRouter(
             <Provider store={store}>

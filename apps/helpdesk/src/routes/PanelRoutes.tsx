@@ -1,6 +1,9 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
-import { TicketsLegacyBridgeProvider } from '@repo/tickets'
+import {
+    TicketsLegacyBridgeProvider,
+    useHelpdeskV2MS1Flag,
+} from '@repo/tickets'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { Handle, PanelGroup, Panels } from 'core/layout/panels'
@@ -31,7 +34,7 @@ export default function PanelRoutes() {
     const hasRedirectDeprecatedTicketRoutes = useFlag(
         FeatureFlagKey.RedirectDeprecatedTicketRoutes,
     )
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const { width } = useWindowSize()
     const { onToggleUnread, registerOnToggleUnread } = useOnToggleUnread()
     const isMobileResolution = useIsMobileResolution()

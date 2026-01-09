@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import Clipboard from 'clipboard'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -87,7 +88,7 @@ const InfobarCustomerInfo = ({
     onEditCustomer,
     onSyncToShopify,
 }: OwnProps) => {
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const dispatch = useAppDispatch()
     const hasIntegrations =

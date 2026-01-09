@@ -1,5 +1,5 @@
-import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
@@ -25,8 +25,8 @@ const useTicketIsAfterFeedbackCollectionPeriodMock = assumeMock(
     useTicketIsAfterFeedbackCollectionPeriod,
 )
 
-jest.mock('@repo/feature-flags')
-const useFlagMock = assumeMock(useFlag)
+jest.mock('@repo/tickets')
+const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
 jest.mock('../AutoQASkeleton', () => () => <div>Loading...</div>)
 jest.mock('../Dimension', () => () => <p>Dimension</p>)
@@ -46,7 +46,7 @@ describe('AutoQA', () => {
         useHasAgentPrivilegesMock.mockReturnValue(true)
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValue(true)
         useAppSelectorMock.mockReturnValue({ id: 1, status: TicketStatus.Open })
-        useFlagMock.mockReturnValue(false)
+        useHelpdeskV2MS1FlagMock.mockReturnValue(false)
         useAutoQAMock.mockReturnValue({
             changeHandlers: [],
             dimensions: [],
@@ -250,7 +250,7 @@ describe('AutoQA', () => {
 
     describe('UIVisionMilestone1 feature flag', () => {
         it('should render star icon', () => {
-            useFlagMock.mockReturnValue(true)
+            useHelpdeskV2MS1FlagMock.mockReturnValue(true)
 
             const { container } = renderWithRouter(<AutoQA />)
             const titleWrapper = container.querySelector(
@@ -262,7 +262,7 @@ describe('AutoQA', () => {
         })
 
         it('should apply hasUIVisionMS1 class to container when UIVisionMilestone1 is enabled', () => {
-            useFlagMock.mockReturnValue(true)
+            useHelpdeskV2MS1FlagMock.mockReturnValue(true)
 
             const { container } = renderWithRouter(<AutoQA />)
             const containerDiv = container.querySelector(
@@ -273,7 +273,7 @@ describe('AutoQA', () => {
         })
 
         it('should not apply hasUIVisionMS1 class to container when UIVisionMilestone1 is disabled', () => {
-            useFlagMock.mockReturnValue(false)
+            useHelpdeskV2MS1FlagMock.mockReturnValue(false)
 
             const { container } = renderWithRouter(<AutoQA />)
             const containerDiv = container.querySelector(

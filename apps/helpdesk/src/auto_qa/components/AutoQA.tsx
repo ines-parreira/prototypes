@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import cn from 'classnames'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
@@ -36,7 +36,8 @@ export default function AutoQA() {
         useAutoQA(ticket.id)
     const isAfterFeedbackCollectionPeriod =
         useTicketIsAfterFeedbackCollectionPeriod()
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
 
     const lastUpdatedString = useMemo(
         () => moment(lastUpdated).calendar(),

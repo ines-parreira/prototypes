@@ -1,7 +1,7 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import cn from 'classnames'
 
 import {
@@ -46,7 +46,7 @@ export default function Dimension({
     const [isSelectOpen, setIsSelectOpen] = useState(false)
     const floatingRef = useRef<HTMLDivElement>(null)
     const selectRef = useRef<HTMLDivElement>(null)
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
 
     const predictionLabel = useMemo(
         () =>

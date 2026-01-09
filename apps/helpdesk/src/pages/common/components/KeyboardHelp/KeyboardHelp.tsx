@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import {
     shortcuts as allShortcuts,
     shortcutManager,
@@ -19,7 +19,7 @@ import css from './KeyboardHelp.less'
 
 export default function KeyboardHelp() {
     const [isOpen, setisOpen] = useState(false)
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
 
     const shortcuts = useMemo(() => {
         return hasUIVisionMS1 ? allShortcuts : omit(allShortcuts, 'Infobar')

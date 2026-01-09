@@ -1,5 +1,6 @@
 import { useFlag } from '@repo/feature-flags'
 import { useTicketInfobarNavigation } from '@repo/navigation'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import { render, screen } from '@testing-library/react'
 import { useLocation, useParams } from 'react-router-dom'
 
@@ -28,7 +29,9 @@ const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 
 jest.mock('@repo/tickets', () => ({
     TicketHeader: () => <div>TicketHeader</div>,
+    useHelpdeskV2MS1Flag: jest.fn(),
 }))
+const useHelpdeskV2MS1FlagMock = jest.mocked(useHelpdeskV2MS1Flag)
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -111,6 +114,7 @@ describe('TicketDetailWithInfobar', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         useFlagMock.mockReturnValue(false)
+        useHelpdeskV2MS1FlagMock.mockReturnValue(false)
         useParamsMock.mockReturnValue({ ticketId: '1234' })
         useLocationMock.mockReturnValue({ state: {} })
         useTicketInfobarNavigationMock.mockReturnValue({ isExpanded: true })
@@ -193,7 +197,7 @@ describe('TicketDetailWithInfobar', () => {
         })
 
         it('should render the ticket header and the infobar navigation when the flag is enabled', () => {
-            useFlagMock.mockReturnValue(true)
+            useHelpdeskV2MS1FlagMock.mockReturnValue(true)
             render(<TicketDetailWithInfobar />)
 
             expect(screen.getByText('TicketHeader')).toBeInTheDocument()
@@ -208,7 +212,7 @@ describe('TicketDetailWithInfobar', () => {
         })
 
         it('should render the ticket infobar if the flag is enabled and it is expanded', () => {
-            useFlagMock.mockReturnValue(true)
+            useHelpdeskV2MS1FlagMock.mockReturnValue(true)
             render(<TicketDetailWithInfobar />)
             expect(
                 screen.getByText('TicketInfobarContainer'),
@@ -216,7 +220,7 @@ describe('TicketDetailWithInfobar', () => {
         })
 
         it('should not render the ticket infobar if the flag is enabled but it is not expanded', () => {
-            useFlagMock.mockReturnValue(true)
+            useHelpdeskV2MS1FlagMock.mockReturnValue(true)
             useTicketInfobarNavigationMock.mockReturnValue({
                 isExpanded: false,
             })

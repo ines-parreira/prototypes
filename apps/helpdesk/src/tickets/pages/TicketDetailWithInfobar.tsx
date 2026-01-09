@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useTicketInfobarNavigation } from '@repo/navigation'
-import { TicketHeader } from '@repo/tickets'
+import { TicketHeader, useHelpdeskV2MS1Flag } from '@repo/tickets'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { Handle, Panel } from 'core/layout/panels'
@@ -42,7 +41,7 @@ export function TicketDetailWithInfobar({ onToggleUnread }: Props) {
 }
 
 function TicketDetailContent({ onToggleUnread }: Props) {
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const { ticketId: ticketIdParam } = useParams<{ ticketId: string }>()
     const { isExpanded } = useTicketInfobarNavigation()
     const { mode } = useKnowledgeSourceSideBar()

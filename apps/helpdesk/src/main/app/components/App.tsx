@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
 
@@ -64,7 +65,7 @@ export default function App({ children }: Props) {
             emailMigrationBanner: false,
         },
     )
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
 
     useApplyTheme()
     useAppShortcuts()

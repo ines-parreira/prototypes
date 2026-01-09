@@ -1,13 +1,13 @@
 import type { KeyboardEvent } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import {
     InfobarTicketCustomerDetails,
     InfobarTicketDetails,
+    useHelpdeskV2MS1Flag,
 } from '@repo/tickets'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
@@ -75,7 +75,7 @@ export const Infobar = ({
     widgets,
     isOnNewLayout,
 }: Props) => {
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const location = useLocation()
     const dispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)

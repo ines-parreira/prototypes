@@ -1,4 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import classnames from 'classnames'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -90,7 +91,7 @@ const TicketHeaderWrapper = ({
 }: Props) => {
     const ticket = useAppSelector((state) => state.ticket)
     const hasMessagesTranslation = useFlag(FeatureFlagKey.MessagesTranslations)
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
 
     const isExistingTicket = !!ticket.get('id')
 

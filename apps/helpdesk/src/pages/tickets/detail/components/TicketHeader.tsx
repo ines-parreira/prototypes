@@ -6,6 +6,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import {
     DisplayedContent,
     useCurrentUserLanguagePreferences,
+    useHelpdeskV2MS1Flag,
     useTicketMessageTranslationDisplay,
     useTicketsTranslatedProperties,
 } from '@repo/tickets'
@@ -98,7 +99,7 @@ const TicketHeader = ({
         getShouldDisplayAuditLogEvents,
     )
     const enableAITicketSummary = useFlag(FeatureFlagKey.AITicketSummary)
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const smartFollowUpsEnabled = useFlag(FeatureFlagKey.SmartFollowUps)
     const {
         setAllTicketMessagesToOriginal,

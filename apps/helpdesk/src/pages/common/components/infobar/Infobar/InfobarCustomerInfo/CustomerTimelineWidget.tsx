@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -120,7 +120,7 @@ const TimelineFieldButton = ({
 }
 
 export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const {
         isOpen,
         openTimeline,

@@ -1,6 +1,6 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
 
@@ -27,7 +27,7 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
 }))
-jest.mock('@repo/feature-flags')
+jest.mock('@repo/tickets')
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector', () => jest.fn((selector) => selector()))
 jest.mock('state/widgets/selectors', () => ({
@@ -50,7 +50,7 @@ const getContextMock = assumeMock(getContext)
 const useTicketListDataMock = assumeMock(useTicketList)
 const useTimelinePanelMock = assumeMock(useTimelinePanel)
 const useParamsMock = assumeMock(useParams)
-const useFlagMock = assumeMock(useFlag)
+const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
 describe('CustomerTimelineButton', () => {
     const dispatchMock = jest.fn()
@@ -95,7 +95,7 @@ describe('CustomerTimelineButton', () => {
         useParamsMock.mockReturnValue({
             ticketId: '1',
         })
-        useFlagMock.mockReturnValue(false) // Default: feature flag disabled
+        useHelpdeskV2MS1FlagMock.mockReturnValue(false) // Default: feature flag disabled
     })
 
     it('should display a loading spinner when history is loading', () => {
@@ -327,12 +327,7 @@ describe('CustomerTimelineButton', () => {
 
     describe('UIVisionMilestone1 feature flag', () => {
         beforeEach(() => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.UIVisionMilestone1) {
-                    return true
-                }
-                return false
-            })
+            useHelpdeskV2MS1FlagMock.mockReturnValue(true)
         })
 
         it('should render field-style UI when feature flag is enabled', () => {
@@ -490,7 +485,7 @@ describe('CustomerTimelineButton', () => {
         })
 
         it('should not render field-style UI when feature flag is disabled', () => {
-            useFlagMock.mockReturnValue(false)
+            useHelpdeskV2MS1FlagMock.mockReturnValue(false)
 
             render(<CustomerTimelineWidget {...defaultProps} />)
 

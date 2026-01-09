@@ -33,3 +33,6 @@ export { DisplayedContent, FetchingState } from './translations/store/constants'
 export type { CurrentUser } from './translations/hooks/useCurrentUserLanguagePreferences'
 export type { ExtractEvent } from './translations/hooks/types'
 export type { DisplayType } from './translations/store/constants'
+
+export { useHelpdeskV2MS1Flag } from './feature-flags/useHelpdeskV2MS1Flag'
+export { useHelpdeskV2MS1Dot5Flag } from './feature-flags/useHelpdeskV2MS1-5Flag'

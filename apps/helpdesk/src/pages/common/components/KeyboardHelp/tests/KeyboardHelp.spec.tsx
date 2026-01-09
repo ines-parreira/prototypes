@@ -1,5 +1,5 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import { shortcuts } from '@repo/utils'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
@@ -7,8 +7,8 @@ import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import KeyboardHelp from '../KeyboardHelp'
 
-jest.mock('@repo/feature-flags')
-const useFlagMock = assumeMock(useFlag)
+jest.mock('@repo/tickets')
+const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
 const badgeContentMock = 'badgeContentMock'
 
@@ -84,11 +84,7 @@ describe('<KeyboardHelp />', () => {
     })
 
     it('should render Infobar shortcuts when UIVisionMilestone1 flag is true', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.UIVisionMilestone1) {
-                return true
-            }
-        })
+        useHelpdeskV2MS1FlagMock.mockReturnValue(true)
 
         render(<KeyboardHelp />)
 
@@ -102,11 +98,7 @@ describe('<KeyboardHelp />', () => {
     })
 
     it('should not render Infobar shortcuts when UIVisionMilestone1 flag is false', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.UIVisionMilestone1) {
-                return false
-            }
-        })
+        useHelpdeskV2MS1FlagMock.mockReturnValue(false)
 
         render(<KeyboardHelp />)
 

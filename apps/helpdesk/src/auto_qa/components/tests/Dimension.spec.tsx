@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
@@ -16,8 +16,8 @@ jest.mock('@repo/logging', () => ({
     SegmentEvent: { AutoQATicketInteraction: 'auto-qa-ticket-interaction' },
 }))
 
-jest.mock('@repo/feature-flags')
-const useFlagMock = assumeMock(useFlag)
+jest.mock('@repo/tickets')
+const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
 describe('Dimension', () => {
     const defaultDimension = {
@@ -32,11 +32,7 @@ describe('Dimension', () => {
     } as TicketQAScoreDimension
 
     beforeEach(() => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.UIVisionMilestone1) {
-                return true
-            }
-        })
+        useHelpdeskV2MS1FlagMock.mockReturnValue(true)
     })
 
     it('should render the component', () => {
@@ -234,11 +230,7 @@ describe('Dimension', () => {
         })
 
         it('should not apply hasUIVisionMS1 class to container when UIVisionMilestone1 is disabled', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.UIVisionMilestone1) {
-                    return false
-                }
-            })
+            useHelpdeskV2MS1FlagMock.mockReturnValue(false)
 
             const onChange = jest.fn()
 

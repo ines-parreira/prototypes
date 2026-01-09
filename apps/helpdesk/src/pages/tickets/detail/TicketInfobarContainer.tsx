@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
@@ -63,7 +63,7 @@ export const TicketInfobarContainer = ({
     sources,
     widgets,
 }: Props) => {
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const params = useParams<{ ticketId: string }>()
     const [preferredTab, setPreferredTab] = useSearchParam('activeTab')
     const dispatch = useAppDispatch()
