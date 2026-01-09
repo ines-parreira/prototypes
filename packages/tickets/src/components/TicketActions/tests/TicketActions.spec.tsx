@@ -908,11 +908,8 @@ describe('TicketActions', () => {
                 .getByText('Target Ticket Subject')
                 .closest('tr')
 
-            const selectInput = ticketRow?.querySelector(
-                'input[type="radio"], input[type="checkbox"]',
-            )
-            if (selectInput) {
-                await act(() => user.click(selectInput as HTMLElement))
+            if (ticketRow) {
+                await act(() => user.click(ticketRow))
             }
 
             await waitFor(
@@ -995,11 +992,8 @@ describe('TicketActions', () => {
 
             const ticketRow = screen.getByText('Target Ticket').closest('tr')
 
-            const selectInput = ticketRow?.querySelector(
-                'input[type="radio"], input[type="checkbox"]',
-            )
-            if (selectInput) {
-                await act(() => user.click(selectInput as HTMLElement))
+            if (ticketRow) {
+                await act(() => user.click(ticketRow))
             }
 
             await waitFor(

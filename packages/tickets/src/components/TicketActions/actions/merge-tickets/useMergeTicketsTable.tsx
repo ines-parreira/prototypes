@@ -1,6 +1,5 @@
-import type { CellContext, ColumnDef, RowSelectionState } from '@gorgias/axiom'
+import type { CellContext, ColumnDef } from '@gorgias/axiom'
 import {
-    createSelectableColumn,
     Text,
     Tooltip,
     TooltipContent,
@@ -83,55 +82,48 @@ function ChannelCell(info: CellContext<TicketsSearchListDataItem, unknown>) {
     )
 }
 
-const baseColumns: ColumnDef<TicketsSearchListDataItem>[] = [
-    {
-        accessorFn: ({ subject, excerpt }) => ({
-            subject,
-            excerpt,
-        }),
-        header: 'Subject',
-        cell: SubjectCell,
-    },
-    {
-        accessorKey: 'customer',
-        header: 'Customer',
-        cell: CustomerNameCell,
-    },
-    {
-        accessorKey: 'channel',
-        header: 'Channel',
-        cell: ChannelCell,
-    },
-    {
-        accessorKey: 'created_datetime',
-        header: 'Created',
-        cell: (info) => (
-            <Text>
-                {new Date(info.getValue() as string).toLocaleDateString()}
-            </Text>
-        ),
-    },
-]
-
 export const mergeTicketsTableColumns: ColumnDef<TicketsSearchListDataItem>[] =
-    [createSelectableColumn<TicketsSearchListDataItem>(), ...baseColumns]
+    [
+        {
+            accessorFn: ({ subject, excerpt }) => ({
+                subject,
+                excerpt,
+            }),
+            header: 'Subject',
+            cell: SubjectCell,
+        },
+        {
+            accessorKey: 'customer',
+            header: 'Customer',
+            cell: CustomerNameCell,
+        },
+        {
+            accessorKey: 'channel',
+            header: 'Channel',
+            cell: ChannelCell,
+        },
+        {
+            accessorKey: 'created_datetime',
+            header: 'Created',
+            cell: (info) => (
+                <Text>
+                    {new Date(info.getValue() as string).toLocaleDateString()}
+                </Text>
+            ),
+        },
+    ]
 
 type UseMergeTicketsTableParams = {
     tickets: TicketsSearchListDataItem[]
-    onRowSelectionChange: (newSelection: RowSelectionState) => void
 }
 
-export function useMergeTicketsTable({
-    tickets,
-    onRowSelectionChange,
-}: UseMergeTicketsTableParams) {
+export function useMergeTicketsTable({ tickets }: UseMergeTicketsTableParams) {
     return useTable({
         data: tickets,
         columns: mergeTicketsTableColumns,
         selectionConfig: {
             enableRowSelection: true,
             enableMultiRowSelection: false,
-            onRowSelectionChange,
         },
     })
 }

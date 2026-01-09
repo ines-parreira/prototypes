@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from 'react'
 
 import type { ValueOf } from '@repo/types'
 
-import type { RowSelectionState } from '@gorgias/axiom'
 import {
     Box,
     Button,
@@ -71,24 +70,9 @@ export function MergeTicketsModal({
 
     const { mergeTickets } = useMergeTickets(ticket.id)
 
-    const handleRowSelectionChange = useCallback(
-        (newSelection: RowSelectionState) => {
-            const selectedTicketIndex = Number(Object.keys(newSelection)[0])
-
-            if (isNaN(selectedTicketIndex)) {
-                setSelectedTicketId(null)
-                setFinalTicket(null)
-                return
-            }
-            const selectedTicket = (
-                tickets?.data.data as TicketsSearchListDataItem[]
-            )?.[selectedTicketIndex]
-
-            if (!selectedTicket || !selectedTicket.id) {
-                setSelectedTicketId(null)
-                setFinalTicket(null)
-                return
-            }
+    const handleRowClick = useCallback(
+        (selectedTicket: TicketsSearchListDataItem) => {
+            if (!selectedTicket.id) return
 
             let finalTicket: MergeTicketsBody = {}
             const subject = selectedTicket.subject ?? ticket.subject
@@ -115,17 +99,11 @@ export function MergeTicketsModal({
             setSelectedTicketId(selectedTicket.id)
             setSelectedTab(MergeTicketsModalTabs.FieldsSelection)
         },
-        [
-            tickets?.data.data,
-            ticket.subject,
-            ticket.customer?.id,
-            ticket.assignee_user?.id,
-        ],
+        [ticket.subject, ticket.customer?.id, ticket.assignee_user?.id],
     )
 
     const table = useMergeTicketsTable({
         tickets: (tickets?.data.data as TicketsSearchListDataItem[]) ?? [],
-        onRowSelectionChange: handleRowSelectionChange,
     })
 
     const handleSearchQueryChange = useCallback(
@@ -205,6 +183,7 @@ export function MergeTicketsModal({
                                 subject={ticket.subject}
                                 searchQuery={searchQuery}
                                 setSearchQuery={handleSearchQueryChange}
+                                onRowClick={handleRowClick}
                             />
                         </StepperTabPanel>
                         <StepperTabPanel

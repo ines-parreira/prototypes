@@ -8,6 +8,7 @@ import {
     Text,
     TextField,
 } from '@gorgias/axiom'
+import type { TicketsSearchListDataItem } from '@gorgias/helpdesk-types'
 
 import type { useMergeTicketsTable } from './useMergeTicketsTable'
 import { mergeTicketsTableColumns } from './useMergeTicketsTable'
@@ -18,6 +19,7 @@ type MergeTicketsModalSearchTabProps = {
     setSearchQuery: (searchQuery: string) => void
     table: ReturnType<typeof useMergeTicketsTable>
     isFetching: boolean
+    onRowClick: (row: TicketsSearchListDataItem) => void
 }
 
 export function MergeTicketsModalSearchTab({
@@ -26,6 +28,7 @@ export function MergeTicketsModalSearchTab({
     setSearchQuery,
     table,
     isFetching,
+    onRowClick,
 }: MergeTicketsModalSearchTabProps) {
     return (
         <Box
@@ -56,6 +59,7 @@ export function MergeTicketsModalSearchTab({
                     table={table}
                     rows={table.getRowModel().rows}
                     columnCount={mergeTicketsTableColumns.length}
+                    onRowClick={onRowClick}
                 />
             </TableRoot>
         </Box>
