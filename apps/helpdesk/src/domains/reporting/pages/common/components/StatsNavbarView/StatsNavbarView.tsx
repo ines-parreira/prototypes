@@ -66,6 +66,7 @@ export function StatsNavbarView() {
                     <StatsNavSectionItem
                         to={`${STATS_ROUTE_PREFIX}live-voice`}
                         className={css.statsLink}
+                        id="live-voice"
                     >
                         Voice
                         {!hasVoiceFeature && <UpgradeIcon />}

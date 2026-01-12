@@ -38,6 +38,9 @@ export const NavigationSectionItem = forwardRef(function NavigationSectionItem<
             ref={ref}
             data-selected={isSelected}
             data-display-type={displayType}
+            {...(props.id
+                ? { 'data-candu-id': `navbar-section-item-${props.id}` }
+                : {})}
             className={classNames(css.item, className)}
         >
             {children}

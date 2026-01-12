@@ -74,6 +74,7 @@ export default function LiveVoiceCallTable({ voiceCalls, isLoading }: Props) {
             <DashboardGridCell>
                 <ChartCard
                     title={LIVE_VOICE_CALLS_TITLE}
+                    canduId="live-voice-calls-card"
                     noPadding
                     titleExtra={
                         <ToggleButton.Wrapper

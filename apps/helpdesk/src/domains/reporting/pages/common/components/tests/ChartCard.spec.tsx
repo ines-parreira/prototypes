@@ -46,4 +46,23 @@ describe('<ChartCard />', () => {
         expect(screen.getByText(title)).toBeInTheDocument()
         expect(screen.getByText('ChartsActionMenu')).toBeInTheDocument()
     })
+
+    it('should add data-candu-id attribute when canduId prop is provided', () => {
+        const title = 'Metric title'
+        const canduId = 'metric-card'
+
+        const { container } = render(
+            <ChartCard
+                hint={{ title: 'metric hint' }}
+                title={title}
+                canduId={canduId}
+            >
+                Metric
+            </ChartCard>,
+        )
+
+        expect(
+            container.querySelector(`[data-candu-id="${canduId}-title"]`),
+        ).toBeInTheDocument()
+    })
 })

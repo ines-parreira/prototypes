@@ -18,6 +18,7 @@ type Props = {
     title: ReactNode
     titleExtra?: ReactNode
     noPadding?: boolean
+    canduId?: string
 } & DashboardChartProps
 
 export default function ChartCard({
@@ -29,6 +30,7 @@ export default function ChartCard({
     noPadding = false,
     chartId,
     dashboard,
+    canduId,
 }: Props) {
     return (
         <Card
@@ -36,7 +38,10 @@ export default function ChartCard({
                 [css.noPadding]: noPadding,
             })}
         >
-            <div className={css.titleWrapper}>
+            <div
+                className={css.titleWrapper}
+                {...(canduId ? { 'data-candu-id': `${canduId}-title` } : {})}
+            >
                 <div className={css.title}>
                     <span>{title}</span>
                     {hint && (
