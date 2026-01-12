@@ -12,6 +12,14 @@ export {
 } from './hooks'
 
 export type { AgentStatusWithSystem, DurationOption } from './types'
+export { CreateAgentStatusModal } from './components/CreateAgentStatusModal/CreateAgentStatusModal'
+export type { CreateAgentStatusModalProps } from './components/CreateAgentStatusModal/types'
+
+export { StatusDurationSelect } from './components/StatusDurationSelect'
+export type { StatusDurationSelectProps } from './components/StatusDurationSelect'
+
+// Hooks
+export { useCreateAgentStatus } from './hooks/useCreateAgentStatus'
 
 export {
     AgentStatusLegacyBridgeProvider,

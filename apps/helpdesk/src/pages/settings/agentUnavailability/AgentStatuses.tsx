@@ -1,20 +1,44 @@
+import { useCallback, useState } from 'react'
+
 import {
     AgentStatusesTable,
     AgentStatusLegacyBridgeProvider,
+    CreateAgentStatusModal,
     DeleteStatusConfirmationModal,
     useAgentStatuses,
+    useCreateAgentStatus,
     useDeleteCustomUserAvailabilityStatusModal,
 } from '@repo/agent-status'
 import { Link } from 'react-router-dom'
 
 import { Banner, Box, Button, Icon } from '@gorgias/axiom'
+import type { CreateCustomUserAvailabilityStatus } from '@gorgias/helpdesk-types'
 
+import { useNotify } from 'hooks/useNotify'
 import PageHeader from 'pages/common/components/PageHeader'
-
-import { useAgentStatusLegacyBridgeFunctions } from './useAgentStatusLegacyBridgeFunctions'
+import { useAgentStatusLegacyBridgeFunctions } from 'pages/settings/agentUnavailability/useAgentStatusLegacyBridgeFunctions'
 
 function AgentUnavailabilityStatuses() {
     const { data, isLoading, isError, refetch } = useAgentStatuses()
+
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+
+    const notify = useNotify()
+    const { mutateAsync: createStatusAsync, isLoading: isPending } =
+        useCreateAgentStatus()
+
+    const handleCreateStatus = useCallback(
+        async (data: CreateCustomUserAvailabilityStatus) => {
+            try {
+                await createStatusAsync({ data })
+                setIsCreateModalOpen(false)
+                notify.success('Status created successfully')
+            } catch {
+                notify.error('Failed to create status')
+            }
+        },
+        [notify, setIsCreateModalOpen, createStatusAsync],
+    )
     const bridgeFunctions = useAgentStatusLegacyBridgeFunctions()
     const { deleteModalState, openStatusDeleteModal, closeStatusDeleteModal } =
         useDeleteCustomUserAvailabilityStatusModal()
@@ -25,13 +49,15 @@ function AgentUnavailabilityStatuses() {
                 <PageHeader title="Agent unavailability">
                     <Box gap="xs">
                         <Button
-                            onClick={() => {}}
+                            onClick={() => setIsCreateModalOpen(true)}
                             variant="tertiary"
                             trailingSlot={<Icon name="external-link" />}
                         >
                             Learning resources
                         </Button>
-                        <Button onClick={() => {}}>Create status</Button>
+                        <Button onClick={() => setIsCreateModalOpen(true)}>
+                            Create status
+                        </Button>
                     </Box>
                 </PageHeader>
                 <Box
@@ -70,6 +96,12 @@ function AgentUnavailabilityStatuses() {
                     onDelete={openStatusDeleteModal}
                 />
             </Box>
+            <CreateAgentStatusModal
+                isOpen={isCreateModalOpen}
+                onOpenChange={setIsCreateModalOpen}
+                onCreate={handleCreateStatus}
+                isLoading={isPending}
+            />
 
             {deleteModalState.statusId && (
                 <DeleteStatusConfirmationModal

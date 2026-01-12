@@ -352,6 +352,52 @@ describe('AgentUnavailabilityStatuses', () => {
         })
     })
 
+    it('should open modal when Create status button is clicked', async () => {
+        renderComponent()
+
+        const createButton = screen.getByRole('button', {
+            name: /Create status/i,
+        })
+        await act(() => userEvent.click(createButton))
+
+        // Modal should be visible - check for modal heading
+        await waitFor(() => {
+            expect(
+                screen.getByRole('heading', { name: /^Create status$/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should close modal when Cancel is clicked', async () => {
+        renderComponent()
+
+        // Open modal
+        const createButton = screen.getByRole('button', {
+            name: /Create status/i,
+        })
+        await act(() => userEvent.click(createButton))
+
+        // Wait for modal to open - check for modal heading
+        await waitFor(() => {
+            expect(
+                screen.getByRole('heading', { name: /^Create status$/i }),
+            ).toBeInTheDocument()
+        })
+
+        // Close modal
+        const cancelButton = screen.getAllByRole('button', {
+            name: /Cancel/i,
+        })[0]
+        await act(() => userEvent.click(cancelButton))
+
+        // Modal should be closed - heading should not be visible
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('heading', { name: /^Create status$/i }),
+            ).not.toBeInTheDocument()
+        })
+    })
+
     describe('Delete Functionality', () => {
         it('should open delete modal when delete button is clicked', async () => {
             const user = userEvent.setup()
