@@ -128,14 +128,14 @@
     */
     --TEMP_neutral5: hsl(0, 0%, 9%);
     --TEMP_shopifyBadgeColor: #5abf2a;
-}
 
-.axiom {
-    .light,
-    .dark {
+    :global(.axiom) {
         --navbar-link-hover-background-color: var(--surface-neutral-tertiary);
         --navbar-block-toggle-active-background-color: var(
             --surface-neutral-tertiary
         );
+
+        --scrollbar-thumb: var(--surface-neutral-tertiary) !important;
+        --scrollbar-track: transparent !important;
     }
 }

@@ -24,19 +24,27 @@
 }
 
 :global {
-    scrollbar-color: var(--neutral-grey-3) var(--neutral-grey-2); // legacy
-    scrollbar-width: thin;
+    scrollbar-color: var(--neutral-grey-3) transparent; // legacy
+    scrollbar-width: thin !important;
 }
 
 .axiom {
     *:hover > ::-webkit-scrollbar {
-        background: var(--surface-neutral-tertiary);
+        background: var(--scrollbar-track);
     }
 
     ::-webkit-scrollbar-thumb {
-        background: var(--surface-neutral-tertiary);
+        background: var(--scrollbar-thumb);
     }
 
-    scrollbar-color: var(--surface-neutral-tertiary)
-        var(--surface-neutral-tertiary);
+    *:hover > ::-webkit-scrollbar-thumb {
+        visibility: visible;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--scrollbar-track);
+    }
+
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: thin !important;
 }

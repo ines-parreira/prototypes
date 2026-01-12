@@ -199,6 +199,8 @@
 
     .nav-dropdown-wrapper {
         border-bottom: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-default);
+        z-index: 10;
     }
 
     .title {
@@ -206,15 +208,8 @@
     }
 
     .navbar-content {
-        scrollbar-color: var(--surface-neutral-tertiary)
-            var(--elevation-neutral-default);
-
         &::-webkit-scrollbar-thumb {
-            background: var(--surface-neutral-tertiary);
-        }
-
-        &::-webkit-scrollbar-track {
-            background-color: var(--elevation-neutral-default);
+            visibility: initial !important; // Always visible
         }
     }
 
