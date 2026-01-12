@@ -1,10 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import {
-    FeatureFlagKey,
-    useAreFlagsLoading,
-    useFlag,
-} from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
@@ -100,9 +96,6 @@ jest.mock('domains/reporting/hooks/automate/automationTrends')
 const useFilteredAutomatedInteractionsMock = assumeMock(
     useFilteredAutomatedInteractions,
 )
-const mockUseTrendFromMultipleMetricsTrend = jest.requireMock(
-    'domains/reporting/hooks/automate/automationTrends',
-).useTrendFromMultipleMetricsTrend
 
 jest.mock('domains/reporting/pages/common/components/TrendBadge')
 const trendBadgeMock = assumeMock(TrendBadge)
@@ -160,13 +153,9 @@ const useAutomationRateByFeatureMock = jest.requireMock(
 ).useAutomationRateByFeature
 
 jest.mock('domains/reporting/hooks/metricTrends')
-const mockUseTicketHandleTimeTrend = jest.requireMock(
-    'domains/reporting/hooks/metricTrends',
-).useTicketHandleTimeTrend
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
-const useAreFlagsLoadingMock = assumeMock(useAreFlagsLoading)
 
 jest.mock(
     'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend',
@@ -325,7 +314,6 @@ describe('<AutomateOverview />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        useAreFlagsLoadingMock.mockReturnValue(false)
         useFlagMock.mockImplementation((flag) => {
             if (flag === FeatureFlagKey.AutomateOverviewChannelsFilter)
                 return true
@@ -993,72 +981,6 @@ describe('<AutomateOverview />', () => {
             )
 
             expect(TimeSavedByAgentsKPIChartMock).toHaveBeenCalled()
-        })
-    })
-
-    describe('Feature flags loading state', () => {
-        it('should return null when flags are loading', () => {
-            useAreFlagsLoadingMock.mockReturnValue(true)
-
-            const { container } = render(
-                <Provider store={mockStore(defaultState)}>
-                    <QueryClientProvider client={queryClient}>
-                        <AutomateOverview />
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            expect(container.firstChild).toBeNull()
-        })
-
-        it('should render AnalyticsOverviewLayout when AiAgentAnalyticsDashboardsNewScreens flag is enabled', () => {
-            const useStatsFiltersSpy = jest.spyOn(
-                require('domains/reporting/hooks/support-performance/useStatsFilters'),
-                'useStatsFilters',
-            )
-
-            try {
-                useAreFlagsLoadingMock.mockReturnValue(false)
-                useFlagMock.mockImplementation((flag) => {
-                    if (
-                        flag ===
-                        FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens
-                    )
-                        return true
-                    return false
-                })
-
-                useStatsFiltersSpy.mockReturnValue({
-                    cleanStatsFilters: {
-                        period: { from: '2024-01-01', to: '2024-01-31' },
-                    },
-                    userTimezone: 'UTC',
-                } as any)
-
-                mockUseTicketHandleTimeTrend.mockReturnValue({
-                    data: { value: 1.5 },
-                    isFetching: false,
-                    isError: false,
-                })
-
-                mockUseTrendFromMultipleMetricsTrend.mockReturnValue({
-                    data: { value: 100 },
-                    isFetching: false,
-                    isError: false,
-                })
-
-                const { container } = render(
-                    <Provider store={mockStore(defaultState)}>
-                        <QueryClientProvider client={queryClient}>
-                            <AutomateOverview />
-                        </QueryClientProvider>
-                    </Provider>,
-                )
-
-                expect(container.querySelector('.analyticsOverviewLayout'))
-            } finally {
-                useStatsFiltersSpy.mockRestore()
-            }
         })
     })
 

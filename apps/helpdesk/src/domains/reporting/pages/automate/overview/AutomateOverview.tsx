@@ -1,8 +1,3 @@
-import {
-    FeatureFlagKey,
-    useAreFlagsLoading,
-    useFlag,
-} from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
@@ -14,7 +9,6 @@ import {
     PAGE_TITLE_OVERVIEW,
 } from 'domains/reporting/pages/self-service/constants'
 import SelfServiceStatsPagePaywallCustomCta from 'domains/reporting/pages/self-service/SelfServiceStatsPagePaywallCustomCta'
-import { AnalyticsOverviewLayout } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewLayout/AnalyticsOverviewLayout'
 import withStoreIntegration from 'pages/automate/common/utils/withStoreIntegrations'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -24,23 +18,10 @@ import { AccountFeature } from 'state/currentAccount/types'
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 
 export function AutomateOverview() {
-    const areFlagsLoading = useAreFlagsLoading()
-    const isAnalyticsDashboardsNewScreensEnabled = useFlag(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens,
-    )
-
     useEffectOnce(() => {
         logEvent(SegmentEvent.AutomateOverviewPageViewed)
         logEvent(SegmentEvent.StatAutomateOverviewPageViewed)
     })
-
-    if (areFlagsLoading) {
-        return null
-    }
-
-    if (isAnalyticsDashboardsNewScreensEnabled) {
-        return <AnalyticsOverviewLayout />
-    }
 
     return <AutomateOverviewContent />
 }

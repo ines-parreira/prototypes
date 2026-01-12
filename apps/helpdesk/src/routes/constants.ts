@@ -12,6 +12,8 @@ export const BASE_VOICE_OF_CUSTOMER_PATH = '/app/voice-of-customer'
 
 export const STATS_ROUTES = {
     AI_SALES_AGENT_OVERVIEW: 'ai-sales-agent/overview',
+    ANALYTICS_AI_AGENT: 'analytics-ai-agent',
+    ANALYTICS_OVERVIEW: 'analytics-overview',
     AUTOMATE_AI_AGENTS: 'automate-ai-agent',
     AUTOMATE_OVERVIEW: 'automate-overview',
     AI_AGENT_OVERVIEW: 'ai-agent-overview',

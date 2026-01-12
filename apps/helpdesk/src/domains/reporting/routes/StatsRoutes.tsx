@@ -49,6 +49,7 @@ import VoiceOverview from 'domains/reporting/pages/voice/pages/VoiceOverview'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import AnalyticsAiAgentStatsPaywall from 'pages/aiAgent/analyticsAiAgent/components/AnalyticsAiAgentStatsPaywall'
+import { AnalyticsOverviewStatsPaywall } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewStatsPaywall/AnalyticsOverviewStatsPaywall'
 import { SalesPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware'
 import App from 'pages/App'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
@@ -452,6 +453,34 @@ export const StatsRoutes = () => {
                     <Route
                         exact
                         path={`${path}/${STATS_ROUTES.AI_AGENT}`}
+                        render={() => (
+                            <App
+                                navbar={StatsNavbarContainer}
+                                content={AnalyticsAiAgentStatsPaywall}
+                            />
+                        )}
+                    />
+                </ProtectedRoute>
+                <ProtectedRoute
+                    path={`${path}/${STATS_ROUTES.ANALYTICS_OVERVIEW}`}
+                >
+                    <Route
+                        exact
+                        path={`${path}/${STATS_ROUTES.ANALYTICS_OVERVIEW}`}
+                        render={() => (
+                            <App
+                                navbar={StatsNavbarContainer}
+                                content={AnalyticsOverviewStatsPaywall}
+                            />
+                        )}
+                    />
+                </ProtectedRoute>
+                <ProtectedRoute
+                    path={`${path}/${STATS_ROUTES.ANALYTICS_AI_AGENT}`}
+                >
+                    <Route
+                        exact
+                        path={`${path}/${STATS_ROUTES.ANALYTICS_AI_AGENT}`}
                         render={() => (
                             <App
                                 navbar={StatsNavbarContainer}
