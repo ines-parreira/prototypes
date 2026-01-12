@@ -50,7 +50,7 @@ export const getColumns: GetColumnsFunction = ({ onEdit, onDelete }) => [
     {
         id: 'actions',
         cell: (info) => {
-            const { id, name, is_system } = info.row.original
+            const { name, is_system } = info.row.original
 
             return (
                 <Box gap="xs">
@@ -80,7 +80,7 @@ export const getColumns: GetColumnsFunction = ({ onEdit, onDelete }) => [
                         <Button
                             variant="tertiary"
                             icon="trash-empty"
-                            onClick={() => onDelete([id])}
+                            onClick={() => onDelete(info.row.original)}
                             isDisabled={is_system}
                             aria-label={
                                 is_system

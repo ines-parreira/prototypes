@@ -165,7 +165,7 @@ describe('useAgentStatusTable', () => {
                 (props: {
                     data: AgentStatusWithSystem[]
                     onEdit: (status: AgentStatusWithSystem) => void
-                    onDelete: (ids: string[]) => void
+                    onDelete: (status: AgentStatusWithSystem) => void
                 }) => useAgentStatusTable(props),
                 {
                     initialProps: {
@@ -197,7 +197,7 @@ describe('useAgentStatusTable', () => {
                 (props: {
                     data: AgentStatusWithSystem[]
                     onEdit: (status: AgentStatusWithSystem) => void
-                    onDelete: (ids: string[]) => void
+                    onDelete: (status: AgentStatusWithSystem) => void
                 }) => useAgentStatusTable(props),
                 {
                     initialProps: defaultOptions,

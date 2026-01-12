@@ -10,7 +10,7 @@ export type AgentStatusesTableProps = {
     /** Function to edit a status, cannot edit system statuses */
     onEdit: (status: AgentStatusWithSystem) => void
     /** Function to delete a status, cannot delete system statuses */
-    onDelete: (ids: AgentStatusWithSystem['id'][]) => void
+    onDelete: (status: AgentStatusWithSystem) => void
 }
 
 export type GetColumnsFunction = (

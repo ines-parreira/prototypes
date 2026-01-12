@@ -1,14 +1,26 @@
-import { AgentStatusesTable, useAgentStatuses } from '@repo/agent-status'
+import {
+    AgentStatusesTable,
+    AgentStatusLegacyBridgeProvider,
+    DeleteStatusConfirmationModal,
+    useAgentStatuses,
+    useDeleteCustomUserAvailabilityStatusModal,
+} from '@repo/agent-status'
 import { Link } from 'react-router-dom'
 
 import { Banner, Box, Button, Icon } from '@gorgias/axiom'
 
 import PageHeader from 'pages/common/components/PageHeader'
 
+import { useAgentStatusLegacyBridgeFunctions } from './useAgentStatusLegacyBridgeFunctions'
+
 function AgentUnavailabilityStatuses() {
     const { data, isLoading, isError, refetch } = useAgentStatuses()
+    const bridgeFunctions = useAgentStatusLegacyBridgeFunctions()
+    const { deleteModalState, openStatusDeleteModal, closeStatusDeleteModal } =
+        useDeleteCustomUserAvailabilityStatusModal()
+
     return (
-        <>
+        <AgentStatusLegacyBridgeProvider {...bridgeFunctions}>
             <Box flexDirection="column" flex={1} gap="sm">
                 <PageHeader title="Agent unavailability">
                     <Box gap="xs">
@@ -55,10 +67,19 @@ function AgentUnavailabilityStatuses() {
                     data={data}
                     isLoading={isLoading}
                     onEdit={() => {}}
-                    onDelete={() => {}}
+                    onDelete={openStatusDeleteModal}
                 />
             </Box>
-        </>
+
+            {deleteModalState.statusId && (
+                <DeleteStatusConfirmationModal
+                    isOpen={deleteModalState.isOpen}
+                    onOpenChange={closeStatusDeleteModal}
+                    statusId={deleteModalState.statusId}
+                    statusName={deleteModalState.statusName || 'this status'}
+                />
+            )}
+        </AgentStatusLegacyBridgeProvider>
     )
 }
 

@@ -9,7 +9,7 @@ import type { AgentStatusWithSystem } from '../types'
 export type UseAgentStatusTableOptions = {
     data: AgentStatusWithSystem[]
     onEdit: (status: AgentStatusWithSystem) => void
-    onDelete: (ids: AgentStatusWithSystem['id'][]) => void
+    onDelete: (ids: AgentStatusWithSystem) => void
 }
 
 export type UseAgentStatusTableReturn = {

@@ -247,7 +247,12 @@ describe('AgentStatusesTable', () => {
 
             await act(() => user.click(deleteButton))
 
-            expect(onDelete).toHaveBeenCalledWith(['2'])
+            expect(onDelete).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    id: '2',
+                    name: 'Lunch break',
+                }),
+            )
             expect(onDelete).toHaveBeenCalledTimes(1)
         })
 

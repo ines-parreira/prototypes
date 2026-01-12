@@ -3,7 +3,10 @@ import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { mockListCustomUserAvailabilityStatusesHandler } from '@gorgias/helpdesk-mocks'
+import {
+    mockDeleteCustomUserAvailabilityStatusHandler,
+    mockListCustomUserAvailabilityStatusesHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
@@ -346,6 +349,240 @@ describe('AgentUnavailabilityStatuses', () => {
             await act(() => user.click(learningResourcesButton))
 
             expect(learningResourcesButton).toBeInTheDocument()
+        })
+    })
+
+    describe('Delete Functionality', () => {
+        it('should open delete modal when delete button is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Lunch break')).toBeInTheDocument()
+            })
+
+            const deleteButton = screen.getByRole('button', {
+                name: /delete lunch break status/i,
+            })
+
+            await act(() => user.click(deleteButton))
+
+            await waitFor(() => {
+                expect(screen.getByText('Delete status?')).toBeInTheDocument()
+            })
+
+            expect(
+                screen.getByText(/You are about to delete/),
+            ).toBeInTheDocument()
+
+            const modal = screen.getByRole('dialog')
+            expect(modal).toHaveTextContent('Lunch break')
+        })
+
+        it('should close delete modal when Cancel is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Lunch break')).toBeInTheDocument()
+            })
+
+            const deleteButton = screen.getByRole('button', {
+                name: /delete lunch break status/i,
+            })
+            await act(() => user.click(deleteButton))
+
+            await waitFor(() => {
+                expect(screen.getByText('Delete status?')).toBeInTheDocument()
+            })
+
+            const cancelButton = screen.getByRole('button', {
+                name: /^Cancel$/i,
+            })
+            await act(() => user.click(cancelButton))
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Delete status?'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should not open delete modal for system statuses', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Unavailable')).toBeInTheDocument()
+            })
+
+            const deleteButton = screen.getByRole('button', {
+                name: /cannot delete system status unavailable/i,
+            })
+
+            expect(deleteButton).toBeDisabled()
+
+            await act(() => user.click(deleteButton))
+
+            expect(screen.queryByText('Delete status?')).not.toBeInTheDocument()
+        })
+
+        it('should display correct status name in modal for different statuses', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Meeting')).toBeInTheDocument()
+            })
+
+            const deleteButton = screen.getByRole('button', {
+                name: /delete meeting status/i,
+            })
+
+            await act(() => user.click(deleteButton))
+
+            await waitFor(() => {
+                expect(screen.getByText('Delete status?')).toBeInTheDocument()
+            })
+
+            expect(
+                screen.getByText(/You are about to delete/),
+            ).toBeInTheDocument()
+
+            const modal = screen.getByRole('dialog')
+            expect(modal).toBeInTheDocument()
+            expect(modal).toHaveTextContent('Meeting')
+        })
+
+        it('should keep modal open and statuses visible after opening', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Lunch break')).toBeInTheDocument()
+            })
+
+            const deleteButton = screen.getByRole('button', {
+                name: /delete lunch break status/i,
+            })
+
+            await act(() => user.click(deleteButton))
+
+            await waitFor(() => {
+                expect(screen.getByText('Delete status?')).toBeInTheDocument()
+            })
+
+            expect(screen.getByText('Unavailable')).toBeInTheDocument()
+            expect(screen.getByText('On a call')).toBeInTheDocument()
+            expect(screen.getByText('Call wrap-up')).toBeInTheDocument()
+        })
+
+        it('should delete status and update list on confirmation', async () => {
+            const mockDeleteHandler =
+                mockDeleteCustomUserAvailabilityStatusHandler()
+
+            const mockUpdatedListHandler =
+                mockListCustomUserAvailabilityStatusesHandler(
+                    async ({ data }) =>
+                        HttpResponse.json({
+                            ...data,
+                            data: [
+                                {
+                                    id: '2',
+                                    name: 'Meeting',
+                                    duration_unit: null,
+                                    duration_value: null,
+                                    created_datetime: '2024-01-02T00:00:00Z',
+                                    updated_datetime: '2024-01-02T00:00:00Z',
+                                },
+                            ],
+                        }),
+                )
+
+            server.use(mockDeleteHandler.handler)
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Lunch break')).toBeInTheDocument()
+            })
+
+            const deleteButton = screen.getByRole('button', {
+                name: /delete lunch break status/i,
+            })
+
+            await act(() => user.click(deleteButton))
+
+            await waitFor(() => {
+                expect(screen.getByText('Delete status?')).toBeInTheDocument()
+            })
+
+            server.use(mockUpdatedListHandler.handler)
+
+            const confirmDeleteButton = screen.getByRole('button', {
+                name: /Delete status/i,
+            })
+
+            await act(() => user.click(confirmDeleteButton))
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Delete status?'),
+                ).not.toBeInTheDocument()
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Lunch break'),
+                ).not.toBeInTheDocument()
+            })
+
+            expect(screen.getByText('Meeting')).toBeInTheDocument()
+        })
+
+        it('should show error notification when delete fails', async () => {
+            const mockDeleteHandler =
+                mockDeleteCustomUserAvailabilityStatusHandler(async () =>
+                    HttpResponse.json(
+                        { error: { msg: 'Delete failed' } } as unknown as null,
+                        { status: 500 },
+                    ),
+                )
+            server.use(mockDeleteHandler.handler)
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await waitFor(() => {
+                expect(
+                    screen.getAllByText('Lunch break').length,
+                ).toBeGreaterThan(0)
+            })
+
+            const deleteButton = screen.getByRole('button', {
+                name: /delete lunch break status/i,
+            })
+
+            await act(() => user.click(deleteButton))
+
+            await waitFor(() => {
+                expect(screen.getByText('Delete status?')).toBeInTheDocument()
+            })
+
+            const confirmDeleteButton = screen.getByRole('button', {
+                name: /Delete status/i,
+            })
+
+            await act(() => user.click(confirmDeleteButton))
+
+            await waitFor(() => {
+                expect(
+                    screen.getAllByText('Lunch break').length,
+                ).toBeGreaterThan(0)
+            })
+
+            expect(screen.getByText('Delete status?')).toBeInTheDocument()
         })
     })
 })
