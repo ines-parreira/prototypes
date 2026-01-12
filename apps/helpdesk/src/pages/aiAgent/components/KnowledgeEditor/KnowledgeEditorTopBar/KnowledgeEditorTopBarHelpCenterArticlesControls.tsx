@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import { Button } from '@gorgias/axiom'
 
 import {
     CancelButton,
@@ -6,8 +6,6 @@ import {
     EditIconButton,
     TestButton,
 } from './KnowledgeEditorTopBarCommonControls'
-
-import css from './KnowledgeEditorTopBarControls.less'
 
 export enum ArticleModes {
     READ = 'read',
@@ -59,21 +57,21 @@ const EditDraftControls = (
             disabled={props.disabled ?? false}
         />
 
-        <button
-            className={classNames(css.button, css.secondaryButton)}
+        <Button
             onClick={props.onSaveDraft}
-            disabled={props.onSaveDraft === undefined || props.disabled}
+            isDisabled={props.onSaveDraft === undefined || props.disabled}
+            variant="secondary"
         >
             Save draft
-        </button>
+        </Button>
 
-        <button
-            className={classNames(css.button, css.primaryButton)}
+        <Button
             onClick={props.onSaveAndPublish}
-            disabled={props.onSaveAndPublish === undefined || props.disabled}
+            isDisabled={props.onSaveAndPublish === undefined || props.disabled}
+            variant="primary"
         >
             Publish
-        </button>
+        </Button>
     </>
 )
 
@@ -86,13 +84,13 @@ const EditPublishedControls = (
             disabled={props.disabled ?? false}
         />
 
-        <button
-            className={classNames(css.button, css.primaryButton)}
+        <Button
             onClick={props.onSaveAndPublish}
-            disabled={props.onSaveAndPublish === undefined || props.disabled}
+            isDisabled={props.onSaveAndPublish === undefined || props.disabled}
+            variant="primary"
         >
             Publish
-        </button>
+        </Button>
     </>
 )
 

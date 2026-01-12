@@ -13,7 +13,7 @@ describe('KnowledgeEditorTopBarSnippetControls', () => {
     it('renders read mode with disabled edit button', () => {
         render(<KnowledgeEditorTopBarSnippetControls onTest={onTest} />)
 
-        expect(screen.getByText('Edit')).toBeDisabled()
+        expect(screen.getByRole('button', { name: /edit/i })).toBeDisabled()
     })
 
     it('should render Test button when isPlaygroundOpen is false', () => {

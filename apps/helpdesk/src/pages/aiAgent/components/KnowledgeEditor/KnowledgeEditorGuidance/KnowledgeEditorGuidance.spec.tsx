@@ -390,7 +390,7 @@ describe('KnowledgeEditorGuidance', () => {
         expect(publishButton).toBeDisabled()
         // Delete draft button is available
         expect(
-            screen.getByRole('button', { name: 'delete draft' }),
+            screen.getByRole('button', { name: 'Delete' }),
         ).toBeInTheDocument()
     })
 
@@ -578,7 +578,7 @@ describe('KnowledgeEditorGuidance', () => {
 
         // Publish and Test buttons should be disabled in create mode
         expect(screen.getByRole('button', { name: 'Publish' })).toBeDisabled()
-        expect(screen.getByRole('button', { name: 'test' })).toBeDisabled()
+        expect(screen.getByRole('button', { name: 'Test' })).toBeDisabled()
     })
 
     it('disables Publish button when form is invalid in edit mode', () => {
@@ -636,7 +636,7 @@ describe('KnowledgeEditorGuidance', () => {
         )
 
         const deleteDraftButton = screen.getByRole('button', {
-            name: 'delete draft',
+            name: 'Delete',
         })
         act(() => {
             fireEvent.click(deleteDraftButton)

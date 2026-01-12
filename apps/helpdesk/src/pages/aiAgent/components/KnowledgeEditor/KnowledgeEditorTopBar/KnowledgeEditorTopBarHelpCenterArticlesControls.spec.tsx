@@ -29,7 +29,7 @@ describe('KnowledgeEditorTopBarHelpCenterArticlesControls', () => {
 
             expect(onDelete).toHaveBeenCalled()
 
-            fireEvent.click(screen.getByRole('button', { name: 'test' }))
+            fireEvent.click(screen.getByRole('button', { name: 'Test' }))
 
             expect(onTest).toHaveBeenCalled()
         })
@@ -46,7 +46,7 @@ describe('KnowledgeEditorTopBarHelpCenterArticlesControls', () => {
 
             expect(screen.getByRole('button', { name: 'edit' })).toBeEnabled()
             expect(screen.getByRole('button', { name: 'delete' })).toBeEnabled()
-            expect(screen.getByRole('button', { name: 'test' })).toBeEnabled()
+            expect(screen.getByRole('button', { name: 'Test' })).toBeEnabled()
         })
 
         it('renders read mode disabled', () => {
@@ -64,7 +64,7 @@ describe('KnowledgeEditorTopBarHelpCenterArticlesControls', () => {
             expect(
                 screen.getByRole('button', { name: 'delete' }),
             ).toBeDisabled()
-            expect(screen.getByRole('button', { name: 'test' })).toBeDisabled()
+            expect(screen.getByRole('button', { name: 'Test' })).toBeDisabled()
         })
     })
 
@@ -84,7 +84,7 @@ describe('KnowledgeEditorTopBarHelpCenterArticlesControls', () => {
                 />,
             )
 
-            fireEvent.click(screen.getByRole('button', { name: 'cancel' }))
+            fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
 
             expect(onCancel).toHaveBeenCalled()
 
@@ -107,7 +107,7 @@ describe('KnowledgeEditorTopBarHelpCenterArticlesControls', () => {
                 />,
             )
 
-            expect(screen.getByRole('button', { name: 'cancel' })).toBeEnabled()
+            expect(screen.getByRole('button', { name: 'Cancel' })).toBeEnabled()
             expect(
                 screen.getByRole('button', { name: 'Save draft' }),
             ).toBeEnabled()
@@ -128,7 +128,7 @@ describe('KnowledgeEditorTopBarHelpCenterArticlesControls', () => {
             )
 
             expect(
-                screen.getByRole('button', { name: 'cancel' }),
+                screen.getByRole('button', { name: 'Cancel' }),
             ).toBeDisabled()
             expect(
                 screen.getByRole('button', { name: 'Save draft' }),
@@ -153,7 +153,7 @@ describe('KnowledgeEditorTopBarHelpCenterArticlesControls', () => {
                 />,
             )
 
-            fireEvent.click(screen.getByRole('button', { name: 'cancel' }))
+            fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
 
             expect(onCancel).toHaveBeenCalled()
 
@@ -173,7 +173,7 @@ describe('KnowledgeEditorTopBarHelpCenterArticlesControls', () => {
             )
 
             expect(
-                screen.getByRole('button', { name: 'cancel' }),
+                screen.getByRole('button', { name: 'Cancel' }),
             ).toBeDisabled()
             expect(
                 screen.getByRole('button', { name: 'Publish' }),
@@ -189,7 +189,7 @@ describe('KnowledgeEditorTopBarHelpCenterArticlesControls', () => {
                 />,
             )
 
-            expect(screen.getByRole('button', { name: 'cancel' })).toBeEnabled()
+            expect(screen.getByRole('button', { name: 'Cancel' })).toBeEnabled()
             expect(
                 screen.getByRole('button', { name: 'Publish' }),
             ).toBeEnabled()

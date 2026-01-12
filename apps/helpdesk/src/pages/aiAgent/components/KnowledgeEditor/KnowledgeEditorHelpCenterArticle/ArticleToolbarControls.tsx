@@ -1,4 +1,4 @@
-import classNames from 'classnames'
+import { Button } from '@gorgias/axiom'
 
 import {
     DeleteButton,
@@ -7,8 +7,6 @@ import {
     TestButton,
 } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarCommonControls'
 import { useArticleToolbar } from './hooks/useArticleToolbar'
-
-import css from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarControls.less'
 
 export const ArticleToolbarControls = () => {
     const {
@@ -71,13 +69,13 @@ export const ArticleToolbarControls = () => {
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
                     />
-                    <button
-                        className={classNames(css.button, css.primaryButton)}
+                    <Button
                         onClick={isFormValid ? onClickPublish : undefined}
-                        disabled={!isFormValid || isDisabled}
+                        isDisabled={!isFormValid || isDisabled}
+                        variant="primary"
                     >
                         Publish
-                    </button>
+                    </Button>
                     {!isPlaygroundOpen && (
                         <TestButton onTest={onTest} disabled={isDisabled} />
                     )}
@@ -87,13 +85,13 @@ export const ArticleToolbarControls = () => {
         case 'published-without-draft-edit':
             return (
                 <>
-                    <button
-                        className={classNames(css.button, css.primaryButton)}
+                    <Button
                         onClick={isFormValid ? onClickPublish : undefined}
-                        disabled={true}
+                        isDisabled={true}
+                        variant="primary"
                     >
                         Publish
-                    </button>
+                    </Button>
                     {!isPlaygroundOpen && (
                         <TestButton onTest={onTest} disabled={isDisabled} />
                     )}
@@ -109,17 +107,17 @@ export const ArticleToolbarControls = () => {
                         onDelete={onDiscard}
                         disabled={isDisabled}
                     />
-                    <button
-                        className={classNames(css.button, css.primaryButton)}
+                    <Button
                         onClick={
                             !isCreateMode && isFormValid
                                 ? onClickPublish
                                 : undefined
                         }
-                        disabled={isCreateMode || !isFormValid || isDisabled}
+                        isDisabled={isCreateMode || !isFormValid || isDisabled}
+                        variant="primary"
                     >
                         Publish
-                    </button>
+                    </Button>
                     {!isPlaygroundOpen && (
                         <TestButton
                             onTest={onTest}

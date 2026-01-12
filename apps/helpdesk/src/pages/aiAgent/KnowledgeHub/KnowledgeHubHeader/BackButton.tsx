@@ -1,10 +1,6 @@
-import classNames from 'classnames'
-
-import { Icon } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
-
-import css from './KnowledgeHubHeader.less'
 
 type BackButtonProps = {
     onBack: () => void
@@ -16,16 +12,11 @@ export const BackButton = ({ data, onBack }: BackButtonProps) => {
         return null
     }
     return (
-        <div
+        <Button
             onClick={onBack}
             aria-label="Back to Knowledge Hub"
-            className={classNames(
-                css.button,
-                css.iconOnlyButton,
-                css.backButton,
-            )}
-        >
-            <Icon name="arrow-chevron-left" size="md" />
-        </div>
+            variant="secondary"
+            icon="arrow-chevron-left"
+        />
     )
 }

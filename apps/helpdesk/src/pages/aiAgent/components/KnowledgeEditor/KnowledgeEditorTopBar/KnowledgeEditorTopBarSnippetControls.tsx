@@ -1,10 +1,6 @@
-import classNames from 'classnames'
-
-import { Icon } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { TestButton } from './KnowledgeEditorTopBarCommonControls'
-
-import css from './KnowledgeEditorTopBarControls.less'
 
 type Props = {
     onTest: () => void
@@ -16,16 +12,9 @@ export const KnowledgeEditorTopBarSnippetControls = ({
     isPlaygroundOpen = false,
 }: Props) => (
     <>
-        <button
-            className={classNames(
-                css.button,
-                css.ghostButton,
-                css.iconWithTextButton,
-            )}
-            disabled
-        >
-            <Icon name="lock" aria-label="editing disabled" /> Edit
-        </button>
+        <Button variant="secondary" isDisabled leadingSlot="lock">
+            Edit
+        </Button>
         {!isPlaygroundOpen && <TestButton onTest={onTest} disabled={false} />}
     </>
 )

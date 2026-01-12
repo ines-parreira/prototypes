@@ -64,7 +64,7 @@ describe('KnowledgeHubHeader', () => {
                 screen.getByRole('button', { name: /test knowledge/i }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /add new knowledge/i }),
+                screen.getByRole('button', { name: /new knowledge/i }),
             ).toBeInTheDocument()
         })
 
@@ -85,7 +85,7 @@ describe('KnowledgeHubHeader', () => {
             renderComponent({ data: null, onAddKnowledge })
 
             const addButton = screen.getByRole('button', {
-                name: /add new knowledge/i,
+                name: /new knowledge/i,
             })
             await userEvent.click(addButton)
 
@@ -108,7 +108,7 @@ describe('KnowledgeHubHeader', () => {
             })
 
             const addButton = screen.getByRole('button', {
-                name: /add new knowledge/i,
+                name: /new knowledge/i,
             })
             expect(addButton).toBeDisabled()
         })
@@ -195,7 +195,7 @@ describe('KnowledgeHubHeader', () => {
                 screen.queryByRole('button', { name: /test knowledge/i }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: /add new knowledge/i }),
+                screen.queryByRole('button', { name: /new knowledge/i }),
             ).not.toBeInTheDocument()
         })
     })

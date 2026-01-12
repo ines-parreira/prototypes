@@ -1,8 +1,4 @@
-import classNames from 'classnames'
-
-import { Icon, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
-
-import css from './KnowledgeEditorTopBarControls.less'
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
 
 export const EditIconButton = (props: {
     onEdit?: () => void
@@ -12,14 +8,13 @@ export const EditIconButton = (props: {
     const isDisabled = props.disabled || !props.onEdit
 
     const button = (
-        <button
-            className={classNames(css.icon, css.secondaryButton)}
+        <Button
             onClick={props.onEdit}
             aria-label="edit"
-            disabled={isDisabled}
-        >
-            <Icon name="edit-pencil" />
-        </button>
+            isDisabled={isDisabled}
+            variant="secondary"
+            icon="edit-pencil"
+        />
     )
 
     if (props.disabledReason && !props.onEdit) {
@@ -38,82 +33,77 @@ export const DeleteIconButton = (props: {
     onDelete: () => void
     disabled?: boolean
 }) => (
-    <button
-        className={classNames(css.icon, css.secondaryButton)}
+    <Button
         onClick={props.onDelete}
         aria-label="delete"
-        disabled={props.disabled}
-    >
-        <Icon name="trash-empty" />
-    </button>
+        isDisabled={props.disabled}
+        variant="secondary"
+        icon="trash-empty"
+    />
 )
 
 export const CancelButton = (props: {
     onCancel: () => void
     disabled?: boolean
 }) => (
-    <button
-        className={classNames(css.button, css.ghostButton)}
+    <Button
         onClick={props.onCancel}
-        aria-label="cancel"
-        disabled={props.disabled}
+        isDisabled={props.disabled}
+        variant="secondary"
     >
         Cancel
-    </button>
+    </Button>
 )
 
 export const DeleteDraftButton = (props: {
     onDelete: () => void
     disabled?: boolean
 }) => (
-    <button
-        className={classNames(css.button, css.destructiveButtonNoBorder)}
+    <Button
         onClick={props.onDelete}
-        aria-label="delete draft"
-        disabled={props.disabled}
+        isDisabled={props.disabled}
+        variant="tertiary"
+        intent="destructive"
     >
         Delete
-    </button>
+    </Button>
 )
 
 export const CopyIconButton = (props: {
     onCopy: () => void
     disabled?: boolean
 }) => (
-    <button
-        className={classNames(css.icon, css.secondaryButton)}
+    <Button
         onClick={props.onCopy}
-        aria-label="copy"
-        disabled={props.disabled}
-    >
-        <Icon name="copy" />
-    </button>
+        isDisabled={props.disabled}
+        variant="secondary"
+        icon="copy"
+    />
 )
 
 export const DeleteButton = (props: {
     onDelete?: () => void
     disabled?: boolean
 }) => (
-    <button
-        className={classNames(css.icon, css.destructiveButton)}
+    <Button
         onClick={props.onDelete}
         aria-label="delete"
-        disabled={props.disabled || !props.onDelete}
-    >
-        <Icon name="trash-empty" />
-    </button>
+        isDisabled={props.disabled || !props.onDelete}
+        variant="secondary"
+        intent="destructive"
+        icon="trash-empty"
+    />
 )
 
 export const TestButton = (props: {
     onTest: () => void
     disabled?: boolean
 }) => (
-    <button
-        className={classNames(css.button, css.secondaryButton)}
+    <Button
         onClick={props.onTest}
-        aria-label="test"
-        disabled={props.disabled}
+        isDisabled={props.disabled}
+        variant="secondary"
     >
         Test
-    </button>
+    </Button>
 )

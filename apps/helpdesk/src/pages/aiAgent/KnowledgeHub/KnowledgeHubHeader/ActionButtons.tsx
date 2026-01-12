@@ -1,12 +1,9 @@
 import { useId } from '@repo/hooks'
-import classNames from 'classnames'
 
-import { Icon, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
-
-import css from './KnowledgeHubHeader.less'
 
 type HeaderActionsProps = {
     data: GroupedKnowledgeItem | null
@@ -40,24 +37,24 @@ export const HeaderActions = ({
     if (!data) {
         return (
             <>
-                <button
-                    className={classNames(css.button, css.primaryButton)}
-                    onClick={onAddKnowledge}
-                    disabled={isAddKnowledgeButtonDisabled}
-                    aria-label="Add new knowledge"
-                >
-                    <Icon name="add-plus" /> <span>New knowledge</span>
-                </button>
                 {!isPlaygroundOpen && (
-                    <button
-                        className={classNames(css.button, css.secondaryButton)}
+                    <Button
                         onClick={onTest}
-                        disabled={isTestButtonDisabled}
+                        isDisabled={isTestButtonDisabled}
                         aria-label="Test knowledge"
+                        variant="secondary"
                     >
                         Test
-                    </button>
+                    </Button>
                 )}
+                <Button
+                    onClick={onAddKnowledge}
+                    isDisabled={isAddKnowledgeButtonDisabled}
+                    variant="primary"
+                    leadingSlot="add-plus"
+                >
+                    New knowledge
+                </Button>
             </>
         )
     }
@@ -66,16 +63,15 @@ export const HeaderActions = ({
         case KnowledgeType.Domain:
             return (
                 <>
-                    <button
+                    <Button
                         id={syncButtonId}
-                        className={classNames(css.button, css.secondaryButton)}
                         onClick={onSync}
-                        disabled={isSyncButtonDisabled}
-                        aria-label="Sync store website"
+                        isDisabled={isSyncButtonDisabled}
+                        variant="secondary"
+                        leadingSlot="arrows-reload-alt-1"
                     >
-                        <Icon name="arrows-reload-alt-1" />{' '}
-                        <span>Sync store website</span>
-                    </button>
+                        Sync store website
+                    </Button>
                     {syncTooltipMessage && (
                         <Tooltip target={syncButtonId}>
                             {syncTooltipMessage}
@@ -86,49 +82,40 @@ export const HeaderActions = ({
         case KnowledgeType.URL:
             return (
                 <>
-                    <button
+                    <Button
                         id={syncButtonId}
-                        className={classNames(css.button, css.secondaryButton)}
                         onClick={onSync}
-                        disabled={isSyncButtonDisabled}
-                        aria-label="Sync URL"
+                        isDisabled={isSyncButtonDisabled}
+                        variant="secondary"
+                        leadingSlot="arrows-reload-alt-1"
                     >
-                        <Icon name="arrows-reload-alt-1" />{' '}
-                        <span>Sync URL</span>
-                    </button>
+                        Sync URL
+                    </Button>
                     {syncTooltipMessage && (
                         <Tooltip target={syncButtonId}>
                             {syncTooltipMessage}
                         </Tooltip>
                     )}
-                    <button
-                        className={classNames(
-                            css.button,
-                            css.iconOnlyButton,
-                            css.destructiveButton,
-                        )}
+                    <Button
                         onClick={onDelete}
-                        disabled={isDeleteButtonDisabled}
+                        isDisabled={isDeleteButtonDisabled}
                         aria-label="Delete URL"
-                    >
-                        <Icon size={'md'} name="trash-empty" />
-                    </button>
+                        variant="secondary"
+                        intent="destructive"
+                        icon="trash-empty"
+                    />
                 </>
             )
         case KnowledgeType.Document:
             return (
-                <button
-                    className={classNames(
-                        css.button,
-                        css.iconOnlyButton,
-                        css.destructiveButton,
-                    )}
+                <Button
                     onClick={onDelete}
-                    disabled={isDeleteButtonDisabled}
+                    isDisabled={isDeleteButtonDisabled}
                     aria-label="Delete document"
-                >
-                    <Icon size={'md'} name="trash-empty" />
-                </button>
+                    variant="secondary"
+                    intent="destructive"
+                    icon="trash-empty"
+                />
             )
     }
 

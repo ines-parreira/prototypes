@@ -84,7 +84,7 @@ describe('ArticleToolbarControls', () => {
                 screen.queryByRole('button', { name: /publish/i }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: /delete draft/i }),
+                screen.queryByRole('button', { name: 'Delete' }),
             ).not.toBeInTheDocument()
         })
 
@@ -310,10 +310,10 @@ describe('ArticleToolbarControls', () => {
                 screen.queryByRole('button', { name: /^edit$/i }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: /^delete$/i }),
+                screen.queryByRole('button', { name: 'Delete' }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: /delete draft/i }),
+                screen.queryByRole('button', { name: 'Delete' }),
             ).not.toBeInTheDocument()
         })
 
@@ -349,7 +349,7 @@ describe('ArticleToolbarControls', () => {
             render(<ArticleToolbarControls />)
 
             expect(
-                screen.getByRole('button', { name: /delete draft/i }),
+                screen.getByRole('button', { name: 'Delete' }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /publish/i }),
@@ -366,7 +366,7 @@ describe('ArticleToolbarControls', () => {
                 screen.queryByRole('button', { name: /^edit$/i }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: /^delete$/i }),
+                screen.queryByRole('button', { name: 'delete' }),
             ).not.toBeInTheDocument()
         })
 
@@ -374,9 +374,7 @@ describe('ArticleToolbarControls', () => {
             const user = userEvent.setup()
             render(<ArticleToolbarControls />)
 
-            await user.click(
-                screen.getByRole('button', { name: /delete draft/i }),
-            )
+            await user.click(screen.getByRole('button', { name: 'Delete' }))
 
             expect(mockOnDiscard).toHaveBeenCalled()
         })
@@ -414,7 +412,7 @@ describe('ArticleToolbarControls', () => {
             render(<ArticleToolbarControls />)
 
             expect(
-                screen.getByRole('button', { name: /delete draft/i }),
+                screen.getByRole('button', { name: 'Delete' }),
             ).toBeDisabled()
             expect(
                 screen.getByRole('button', { name: /publish/i }),
@@ -446,7 +444,7 @@ describe('ArticleToolbarControls', () => {
             render(<ArticleToolbarControls />)
 
             expect(
-                screen.getByRole('button', { name: /delete draft/i }),
+                screen.getByRole('button', { name: 'Delete' }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /publish/i }),
@@ -474,9 +472,7 @@ describe('ArticleToolbarControls', () => {
             const user = userEvent.setup()
             render(<ArticleToolbarControls />)
 
-            await user.click(
-                screen.getByRole('button', { name: /delete draft/i }),
-            )
+            await user.click(screen.getByRole('button', { name: 'Delete' }))
 
             expect(mockOnDiscard).toHaveBeenCalled()
         })

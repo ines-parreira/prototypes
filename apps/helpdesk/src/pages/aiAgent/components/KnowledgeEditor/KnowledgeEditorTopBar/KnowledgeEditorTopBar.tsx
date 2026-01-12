@@ -1,11 +1,12 @@
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
-import classNames from 'classnames'
 
 import {
+    Box,
     Button,
     Icon,
     IconSize,
     LegacyLoadingSpinner as LoadingSpinner,
+    Separator,
     Tooltip,
     TooltipContent,
     TooltipTrigger,
@@ -17,7 +18,6 @@ import type { GuidanceMode } from './KnowledgeEditorTopBarGuidanceControls'
 import { KnowledgeEditorTopBarTitle } from './KnowledgeEditorTopBarTitle'
 
 import css from './KnowledgeEditorTopBar.less'
-import controlsCss from './KnowledgeEditorTopBarControls.less'
 
 type Props = {
     onClickPrevious?: () => void
@@ -65,34 +65,26 @@ export const KnowledgeEditorTopBar = (props: Props) => {
             data-name={'knowledge-editor-top-bar-container'}
         >
             {(props.onClickPrevious || props.onClickNext) && (
-                <div className={css.navigationControls}>
+                <Box gap="xs">
                     {props.onClickPrevious && (
-                        <button
-                            className={classNames(
-                                controlsCss.icon,
-                                controlsCss.ghostButton,
-                            )}
+                        <Button
                             onClick={props.onClickPrevious}
-                            disabled={props.disabled}
+                            isDisabled={props.disabled}
                             aria-label="previous"
-                        >
-                            <Icon name="arrow-chevron-left" />
-                        </button>
+                            variant="secondary"
+                            icon="arrow-chevron-left"
+                        />
                     )}
                     {props.onClickNext && (
-                        <button
-                            className={classNames(
-                                controlsCss.icon,
-                                controlsCss.ghostButton,
-                            )}
+                        <Button
                             onClick={props.onClickNext}
-                            disabled={props.disabled}
+                            isDisabled={props.disabled}
                             aria-label="next"
-                        >
-                            <Icon name="arrow-chevron-right" />
-                        </button>
+                            variant="secondary"
+                            icon="arrow-chevron-right"
+                        />
                     )}
-                </div>
+                </Box>
             )}
             <div className={css.title}>
                 <KnowledgeEditorTopBarTitle
@@ -129,40 +121,29 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                     )}
             </div>
 
-            <div className={controlsCss.container}>
+            <Box gap="xs">
                 {props.children && (
                     <>
                         {props.children}
-                        <button
-                            className={classNames(
-                                controlsCss.icon,
-                                controlsCss.ghostButton,
-                            )}
+                        <Button
                             onClick={props.onToggleDetailsView}
                             aria-label={
                                 props.isDetailsView
                                     ? 'collapse side panel'
                                     : 'expand side panel'
                             }
-                            disabled={props.disabled}
-                        >
-                            <Icon
-                                name={
-                                    props.isDetailsView
-                                        ? 'system-bar-collapse'
-                                        : 'system-bar-expand'
-                                }
-                                size={'lg'}
-                            />
-                        </button>
-                        <div className={controlsCss.separator} />
+                            isDisabled={props.disabled}
+                            variant="tertiary"
+                            icon={
+                                props.isDetailsView
+                                    ? 'system-bar-collapse'
+                                    : 'system-bar-expand'
+                            }
+                        />
+                        <Separator direction="vertical" />
                     </>
                 )}
                 <Button
-                    className={classNames(
-                        controlsCss.icon,
-                        controlsCss.secondaryButton,
-                    )}
                     onClick={props.onToggleFullscreen}
                     aria-label={
                         props.isFullscreen ? 'leave fullscreen' : 'fullscreen'
@@ -175,17 +156,13 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                 />
 
                 <Button
-                    className={classNames(
-                        controlsCss.icon,
-                        controlsCss.secondaryButton,
-                    )}
                     onClick={props.onClose}
                     aria-label="close"
                     isDisabled={props.disabled}
                     variant="tertiary"
                     icon="close"
                 />
-            </div>
+            </Box>
         </div>
     )
 }

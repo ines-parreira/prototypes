@@ -1,6 +1,4 @@
-import classNames from 'classnames'
-
-import { Button, Icon } from '@gorgias/axiom'
+import { Button } from '@gorgias/axiom'
 
 import { useGuidanceContext } from '../KnowledgeEditorGuidance/context'
 import { DuplicateGuidance } from '../shared/DuplicateGuidance/DuplicateGuidance'
@@ -13,8 +11,6 @@ import {
     TestButton,
 } from './KnowledgeEditorTopBarCommonControls'
 import { useGuidanceToolbar } from './useGuidanceToolbar'
-
-import css from './KnowledgeEditorTopBarControls.less'
 
 export type GuidanceMode =
     | { mode: 'read' }
@@ -50,13 +46,10 @@ export const GuidanceToolbarControls = () => {
         <Button
             ref={ref}
             slot="button"
-            intent="regular"
-            size="md"
             variant="secondary"
             isDisabled={isDisabled}
-        >
-            <Icon name="copy" />
-        </Button>
+            icon="copy"
+        />
     )
     switch (toolbarState.type) {
         case 'published-with-draft':
@@ -137,13 +130,12 @@ export const GuidanceToolbarControls = () => {
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
                     />
-                    <button
-                        className={classNames(css.button, css.primaryButton)}
+                    <Button
                         onClick={isFormValid ? onClickPublish : undefined}
-                        disabled={!isFormValid || isDisabled}
+                        isDisabled={!isFormValid || isDisabled}
                     >
                         Publish
-                    </button>
+                    </Button>
                     {!isPlaygroundOpen && (
                         <TestButton onTest={onTest} disabled={isDisabled} />
                     )}
@@ -153,13 +145,12 @@ export const GuidanceToolbarControls = () => {
         case 'published-without-draft-edit':
             return (
                 <>
-                    <button
-                        className={classNames(css.button, css.primaryButton)}
+                    <Button
                         onClick={isFormValid ? onClickPublish : undefined}
-                        disabled={true}
+                        isDisabled={true}
                     >
                         Publish
-                    </button>
+                    </Button>
                     {!isPlaygroundOpen && (
                         <TestButton onTest={onTest} disabled={isDisabled} />
                     )}
@@ -177,17 +168,16 @@ export const GuidanceToolbarControls = () => {
                         }
                         disabled={isDisabled}
                     />
-                    <button
-                        className={classNames(css.button, css.primaryButton)}
+                    <Button
                         onClick={
                             !isCreateMode && isFormValid
                                 ? onClickPublish
                                 : undefined
                         }
-                        disabled={isCreateMode || !isFormValid || isDisabled}
+                        isDisabled={isCreateMode || !isFormValid || isDisabled}
                     >
                         Publish
-                    </button>
+                    </Button>
                     {!isPlaygroundOpen && (
                         <TestButton
                             onTest={onTest}
