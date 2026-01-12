@@ -7,6 +7,7 @@ import {
     HeaderRowGroup,
     TableBodyContent,
     TableHeader,
+    TablePagination,
     TableRoot,
     TableToolbar,
     useTable,
@@ -275,7 +276,7 @@ export const KnowledgeHubTable = ({
         paginationConfig: {
             enablePagination: true,
             manualPagination: false,
-            pageSize: 10,
+            pageSize: 50,
             initialPageIndex: 0,
         },
         selectionConfig: {
@@ -479,13 +480,25 @@ export const KnowledgeHubTable = ({
             <div
                 className={classNames(
                     css.pagination,
-                    (displayData.length <= 10 || isSearchEmptyPage) &&
+                    (displayData.length <= 50 || isSearchEmptyPage) &&
                         css.hidden,
                 )}
             >
                 <TableToolbar<GroupedKnowledgeItem>
                     table={table}
-                    bottomRow={{ right: ['pagination'] }}
+                    bottomRow={{
+                        right: [
+                            {
+                                key: 'pagination',
+                                content: (
+                                    <TablePagination
+                                        table={table}
+                                        pageSizeOptions={[50, 100]}
+                                    />
+                                ),
+                            },
+                        ],
+                    }}
                 />
             </div>
         </div>

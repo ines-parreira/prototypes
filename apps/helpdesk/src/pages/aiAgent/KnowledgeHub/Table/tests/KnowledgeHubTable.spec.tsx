@@ -1477,8 +1477,8 @@ describe('KnowledgeHubTable', () => {
             return container.className.includes('hidden')
         }
 
-        it('should not show pagination when there are 10 or fewer items', () => {
-            const items = createMockItems(10)
+        it('should not show pagination when there are 50 or fewer items', () => {
+            const items = createMockItems(50)
 
             renderComponent({
                 data: items,
@@ -1488,30 +1488,8 @@ describe('KnowledgeHubTable', () => {
             expect(isPaginationHidden()).toBe(true)
         })
 
-        it('should show pagination when there are more than 10 items', () => {
-            const items = createMockItems(15)
-
-            renderComponent({
-                data: items,
-                selectedFolder: items[0],
-            })
-
-            expect(isPaginationHidden()).toBe(false)
-        })
-
-        it('should not show pagination when there are 5 items', () => {
-            const items = createMockItems(5)
-
-            renderComponent({
-                data: items,
-                selectedFolder: items[0],
-            })
-
-            expect(isPaginationHidden()).toBe(true)
-        })
-
-        it('should show pagination when there are exactly 11 items', () => {
-            const items = createMockItems(11)
+        it('should show pagination when there are more than 50 items', () => {
+            const items = createMockItems(51)
 
             renderComponent({
                 data: items,
