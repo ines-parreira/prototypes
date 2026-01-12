@@ -69,7 +69,6 @@
     }
 
     .emptyState {
-        .caption-regular();
         color: var(--neutral-grey-6); // legacy
     }
 
@@ -79,6 +78,7 @@
         display: flex;
         align-items: center;
         padding: var(--spacing-xs) 10px var(--spacing-xs) var(--spacing-md);
+        width: 100%;
     }
 
     .cardsContainer {
@@ -116,15 +116,6 @@
         background: var(--elevation-neutral-default) !important;
     }
 
-    .emptyState {
-        h3 {
-            color: var(--content-neutral-default);
-        }
-        p {
-            color: var(--content-neutral-secondary);
-        }
-    }
-
     .header {
         border-bottom: 1px solid var(--border-neutral-default);
     }
@@ -134,7 +125,7 @@
     }
 
     .emptyState {
-        color: var(--content-neutral-default);
+        color: var(--content-neutral-secondary);
     }
 
     .itemCount {

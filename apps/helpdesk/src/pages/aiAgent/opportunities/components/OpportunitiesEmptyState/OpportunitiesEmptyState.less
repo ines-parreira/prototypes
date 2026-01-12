@@ -1,30 +1,25 @@
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
 @import '~css/typography';
 @import '~css/util';
-@import '~@gorgias/design-tokens/dist/css/typographyTokens';
 
 :local {
     .containerContent {
         display: flex;
-        flex: 1;
+        padding: var(--spacing-md) var(--spacing-lg);
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        border-radius: 12px;
-        border: 1px solid var(--neutral-grey-2); // legacy
-        background: var(--neutral-grey-1); // legacy
-        box-shadow: 4px 4px 16px 0 rgba(22, 22, 22, 0.1);
-        svg {
-            color: var(--neutral-grey-3); // legacy
-        }
+        gap: var(--spacing-md);
+        flex: 1;
+        align-self: center;
+        max-width: 600px;
     }
-}
 
-.axiom :local {
-    .containerContent {
-        border: 1px solid var(--border-neutral-default);
-        background: var(--elevation-neutral-mid);
+    .mediaFrame {
+        width: 224px;
+        height: 163px;
 
-        svg {
-            color: var(--surface-neutral-tertiary);
-        }
+        // TODO: Remove background when media is available from design team
+        background: #ebecef;
     }
 }

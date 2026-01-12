@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
+import { useOpportunityPageState } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
@@ -29,8 +30,9 @@ import css from './OpportunitiesLayout.less'
 const PRELOAD_THRESHOLD = 5
 
 export const OpportunitiesLayout = () => {
-    const { shopName } = useParams<{
+    const { shopName, shopType } = useParams<{
         shopName: string
+        shopType: string
     }>()
 
     const [isSidebarVisible, setIsSidebarVisible] = useState(true)
@@ -59,6 +61,14 @@ export const OpportunitiesLayout = () => {
     const accountId = useAppSelector(getCurrentAccountId)
     const userId = useAppSelector(getCurrentUserId)
 
+    const opportunityPageState = useOpportunityPageState({
+        helpCenterId: storeConfiguration?.helpCenterId ?? 0,
+        locale,
+        shopName: shopName ?? '',
+        accountId,
+        shopType: shopType ?? '',
+    })
+
     const {
         articles: aiArticles,
         isLoading: isLoadingAiArticles,
@@ -77,8 +87,6 @@ export const OpportunitiesLayout = () => {
         hasNextPage,
         fetchNextPage,
         preloadNextPage,
-        totalCount,
-        totalPending,
         refetch: refetchOpportunities,
     } = useKnowledgeServiceOpportunities(
         shopIntegrationId || 0,
@@ -164,13 +172,15 @@ export const OpportunitiesLayout = () => {
         selectNextOpportunity(articleKey)
     }
 
-    const isLoading =
-        isStoreConfigLoading ||
-        (useKnowledgeService ? isLoadingKnowledgeService : isLoadingAiArticles)
-
     useEffect(() => {
         onOpportunityPageVisited()
     }, [onOpportunityPageVisited])
+
+    const isLoading =
+        isStoreConfigLoading ||
+        isLoadingAiArticles ||
+        isLoadingKnowledgeService ||
+        isLoadingOpportunityDetails
 
     return (
         <OpportunitiesSidebarContext.Provider
@@ -180,8 +190,9 @@ export const OpportunitiesLayout = () => {
                 <div className={css.layout}>
                     {isSidebarVisible && (
                         <OpportunitiesSidebar
-                            opportunities={opportunities}
                             isLoading={isLoading}
+                            opportunitiesPageState={opportunityPageState}
+                            opportunities={opportunities}
                             onSelectOpportunity={(opp) => {
                                 if (opp) {
                                     setSelectedOpportunityId(opp.id)
@@ -198,16 +209,11 @@ export const OpportunitiesLayout = () => {
                             onEndReached={
                                 useKnowledgeService ? fetchNextPage : undefined
                             }
-                            totalCount={
-                                useKnowledgeService ? totalCount : undefined
-                            }
-                            totalPending={
-                                useKnowledgeService ? totalPending : undefined
-                            }
                         />
                     )}
                     <OpportunitiesContent
                         key={selectedOpportunity?.key}
+                        opportunitiesPageState={opportunityPageState}
                         selectedOpportunity={selectedOpportunity ?? null}
                         shopName={shopName}
                         shopIntegrationId={shopIntegrationId}

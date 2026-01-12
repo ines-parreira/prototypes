@@ -20,6 +20,7 @@ import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { DismissOpportunityModal } from 'pages/aiAgent/opportunities/components/DismissOpportunityModal/DismissOpportunityModal'
+import type { OpportunityPageState } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
 import type {
     Opportunity,
     SidebarOpportunityItem,
@@ -81,6 +82,7 @@ interface OpportunitiesContentProps {
     useKnowledgeService: boolean
     isLoadingOpportunityDetails: boolean
     totalCount: number
+    opportunitiesPageState: OpportunityPageState
 }
 
 export const OpportunitiesContent = ({
@@ -99,6 +101,7 @@ export const OpportunitiesContent = ({
     useKnowledgeService,
     isLoadingOpportunityDetails,
     totalCount,
+    opportunitiesPageState,
 }: OpportunitiesContentProps) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -125,7 +128,6 @@ export const OpportunitiesContent = ({
 
     const processOpportunity = useProcessOpportunity(shopIntegrationId)
 
-    const showEmptyState = !opportunities || opportunities.length === 0
     const { isSidebarVisible, setIsSidebarVisible } = useOpportunitiesSidebar()
 
     useEffect(() => {
@@ -390,8 +392,30 @@ export const OpportunitiesContent = ({
         shopIntegrationId,
     ])
 
-    if (showEmptyState) {
-        return <OpportunitiesEmptyState />
+    if (opportunitiesPageState.isLoading || isLoadingOpportunityDetails) {
+        return (
+            <div className={css.containerContent}>
+                <div className={css.header}>
+                    <div className={css.skeletonHeader}>
+                        <Skeleton height={24} />
+                    </div>
+                </div>
+                <div className={css.contentBody}>
+                    <OpportunitiesContentSkeleton />
+                </div>
+            </div>
+        )
+    }
+
+    if (opportunitiesPageState.showEmptyState || !selectedOpportunity) {
+        return (
+            <div className={css.containerContent}>
+                <div className={css.header}></div>
+                <OpportunitiesEmptyState
+                    opportunitiesPageState={opportunitiesPageState}
+                />
+            </div>
+        )
     }
 
     return (
@@ -497,9 +521,7 @@ export const OpportunitiesContent = ({
             </div>
 
             <div className={css.contentBody}>
-                {isLoadingOpportunityDetails ? (
-                    <OpportunitiesContentSkeleton />
-                ) : selectedOpportunity ? (
+                {selectedOpportunity && (
                     <div className={css.opportunityDetails}>
                         <OpportunityDetailsCard
                             type={selectedOpportunity.type}
@@ -538,8 +560,6 @@ export const OpportunitiesContent = ({
                             />
                         </div>
                     </div>
-                ) : (
-                    <OpportunitiesEmptyState />
                 )}
             </div>
 

@@ -7,6 +7,10 @@ import { Virtuoso } from 'react-virtuoso'
 
 import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
 import { OpportunityType } from '../../enums'
+import {
+    type OpportunityPageState,
+    State,
+} from '../../hooks/useOpportunityPageState'
 import type {
     Opportunity,
     OpportunityListItem,
@@ -16,6 +20,37 @@ import { OpportunitiesSidebar } from './OpportunitiesSidebar'
 
 jest.mock('react-virtuoso', () => ({ Virtuoso: jest.fn() }))
 const VirtuosoMock = Virtuoso as jest.Mock
+
+const mockOpportunityPageState: OpportunityPageState = {
+    state: State.HAS_OPPORTUNITIES,
+    isLoading: false,
+    title: 'Opportunities',
+    description: '',
+    media: null,
+    primaryCta: null,
+    showEmptyState: false,
+}
+
+const mockLoadingPageState: OpportunityPageState = {
+    state: State.LOADING,
+    isLoading: true,
+    title: '',
+    description: '',
+    media: null,
+    primaryCta: null,
+    showEmptyState: false,
+}
+
+const mockEmptyPageState: OpportunityPageState = {
+    state: State.ENABLED_NO_OPPORTUNITIES,
+    isLoading: false,
+    title: 'AI Agent is learning from your conversations',
+    description:
+        "As AI Agent handles more conversations, we'll surface opportunities to improve its accuracy and coverage. Check back soon!",
+    media: '/assets/images/ai-agent/opportunities/learning.svg',
+    primaryCta: null,
+    showEmptyState: true,
+}
 
 describe('OpportunitiesSidebar', () => {
     const mockOnSelectOpportunity = jest.fn()
@@ -88,6 +123,7 @@ describe('OpportunitiesSidebar', () => {
         renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={mockOpportunities}
+                opportunitiesPageState={mockOpportunityPageState}
                 onSelectOpportunity={mockOnSelectOpportunity}
             />,
         )
@@ -102,6 +138,7 @@ describe('OpportunitiesSidebar', () => {
         renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={mockOpportunities}
+                opportunitiesPageState={mockOpportunityPageState}
                 onSelectOpportunity={mockOnSelectOpportunity}
             />,
         )
@@ -124,6 +161,7 @@ describe('OpportunitiesSidebar', () => {
         const { container } = renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={mockOpportunities}
+                opportunitiesPageState={mockOpportunityPageState}
                 onSelectOpportunity={mockOnSelectOpportunity}
             />,
         )
@@ -143,6 +181,7 @@ describe('OpportunitiesSidebar', () => {
         renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={mockOpportunities}
+                opportunitiesPageState={mockOpportunityPageState}
                 onSelectOpportunity={mockOnSelectOpportunity}
             />,
         )
@@ -171,6 +210,7 @@ describe('OpportunitiesSidebar', () => {
         renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={mockOpportunities}
+                opportunitiesPageState={mockOpportunityPageState}
                 onSelectOpportunity={mockOnSelectOpportunity}
                 selectedOpportunity={mockOpportunities[0]}
             />,
@@ -182,71 +222,29 @@ describe('OpportunitiesSidebar', () => {
         expect(firstCard).toHaveClass('cardSelected')
     })
 
-    it('should show empty state when no opportunities (legacy flow)', () => {
+    it('should show empty state when showEmptyState is true', () => {
         renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={[]}
+                opportunitiesPageState={mockEmptyPageState}
                 onSelectOpportunity={mockOnSelectOpportunity}
             />,
         )
 
         const emptyTitle = screen.getByRole('heading', {
-            name: 'No opportunities yet',
+            name: 'Opportunities',
         })
         expect(emptyTitle).toBeInTheDocument()
 
-        const description = screen.getByText(
-            'AI Agent will start finding opportunities to improve as it learns from conversations with your customers',
-        )
-        expect(description).toBeInTheDocument()
-    })
-
-    it('should show "No opportunities yet" empty state when totalCount is 0', () => {
-        renderWithProvider(
-            <OpportunitiesSidebar
-                opportunities={[]}
-                onSelectOpportunity={mockOnSelectOpportunity}
-                totalCount={0}
-                totalPending={0}
-            />,
-        )
-
-        const emptyTitle = screen.getByRole('heading', {
-            name: 'No opportunities yet',
-        })
-        expect(emptyTitle).toBeInTheDocument()
-
-        const description = screen.getByText(
-            'AI Agent will start finding opportunities to improve as it learns from conversations with your customers',
-        )
-        expect(description).toBeInTheDocument()
-    })
-
-    it('should show "All opportunities reviewed" empty state when totalCount > 0 and totalPending is 0', () => {
-        renderWithProvider(
-            <OpportunitiesSidebar
-                opportunities={[]}
-                onSelectOpportunity={mockOnSelectOpportunity}
-                totalCount={10}
-                totalPending={0}
-            />,
-        )
-
-        const emptyTitle = screen.getByRole('heading', {
-            name: /You've reviewed all opportunities/i,
-        })
-        expect(emptyTitle).toBeInTheDocument()
-
-        const description = screen.getByText(
-            /Check back soon for new opportunities to improve AI Agent's knowledge and performance/i,
-        )
-        expect(description).toBeInTheDocument()
+        const emptyText = screen.getByText('No opportunities')
+        expect(emptyText).toBeInTheDocument()
     })
 
     it('should show loading state when isLoading is true', () => {
         const { container } = renderWithProvider(
             <OpportunitiesSidebar
                 opportunities={[]}
+                opportunitiesPageState={mockOpportunityPageState}
                 isLoading={true}
                 onSelectOpportunity={mockOnSelectOpportunity}
             />,
@@ -293,6 +291,7 @@ describe('OpportunitiesSidebar', () => {
             renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     hasNextPage={true}
                     onEndReached={mockOnEndReached}
@@ -335,6 +334,7 @@ describe('OpportunitiesSidebar', () => {
             renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     hasNextPage={false}
                     onEndReached={mockOnEndReached}
@@ -370,6 +370,7 @@ describe('OpportunitiesSidebar', () => {
             const { container } = renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     hasNextPage={true}
                     isFetchingNextPage={true}
@@ -404,6 +405,7 @@ describe('OpportunitiesSidebar', () => {
             renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     hasNextPage={true}
                     isFetchingNextPage={false}
@@ -422,10 +424,10 @@ describe('OpportunitiesSidebar', () => {
             const { rerender } = renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     hasNextPage={true}
                     isFetchingNextPage={false}
-                    isLoading={false}
                     onEndReached={mockOnEndReached}
                 />,
             )
@@ -467,10 +469,10 @@ describe('OpportunitiesSidebar', () => {
                         ...mockOpportunities,
                         ...additionalOpportunities,
                     ]}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     hasNextPage={true}
                     isFetchingNextPage={false}
-                    isLoading={false}
                     onEndReached={mockOnEndReached}
                 />,
             )
@@ -486,10 +488,11 @@ describe('OpportunitiesSidebar', () => {
             const { container } = renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
+                    opportunitiesPageState={mockLoadingPageState}
+                    isLoading={true}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     hasNextPage={true}
                     isFetchingNextPage={false}
-                    isLoading={true}
                     onEndReached={mockOnEndReached}
                 />,
             )
@@ -524,10 +527,10 @@ describe('OpportunitiesSidebar', () => {
             renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     hasNextPage={true}
                     isFetchingNextPage={true}
-                    isLoading={false}
                     onEndReached={mockOnEndReached}
                 />,
             )
@@ -544,10 +547,10 @@ describe('OpportunitiesSidebar', () => {
             renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     hasNextPage={false}
                     isFetchingNextPage={false}
-                    isLoading={false}
                     onEndReached={mockOnEndReached}
                 />,
             )
@@ -570,6 +573,7 @@ describe('OpportunitiesSidebar', () => {
             renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={opportunityListItems}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                 />,
             )
@@ -595,6 +599,7 @@ describe('OpportunitiesSidebar', () => {
             renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={opportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                 />,
             )
@@ -628,6 +633,7 @@ describe('OpportunitiesSidebar', () => {
             const { rerender } = renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     onOpportunityViewed={mockOnOpportunityViewed}
                     selectedOpportunity={mockOpportunities[0]}
@@ -648,6 +654,7 @@ describe('OpportunitiesSidebar', () => {
             rerender(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     onOpportunityViewed={mockOnOpportunityViewed}
                     selectedOpportunity={mockOpportunities[1]}
@@ -668,6 +675,7 @@ describe('OpportunitiesSidebar', () => {
             renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                     onOpportunityViewed={mockOnOpportunityViewed}
                     selectedOpportunity={mockOpportunities[0]}
@@ -704,6 +712,7 @@ describe('OpportunitiesSidebar', () => {
             renderWithProvider(
                 <OpportunitiesSidebar
                     opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
                     onSelectOpportunity={mockOnSelectOpportunity}
                 />,
             )

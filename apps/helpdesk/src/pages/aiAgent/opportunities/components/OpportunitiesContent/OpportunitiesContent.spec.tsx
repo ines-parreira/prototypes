@@ -16,6 +16,10 @@ import { notify } from 'state/notifications/actions'
 
 import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
 import { OpportunityType } from '../../enums'
+import {
+    type OpportunityPageState,
+    State,
+} from '../../hooks/useOpportunityPageState'
 import { useProcessOpportunity } from '../../hooks/useProcessOpportunity'
 import { OpportunitiesContent } from './OpportunitiesContent'
 
@@ -97,6 +101,27 @@ jest.mock('../../../components/GuidanceForm/GuidanceForm', () => ({
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
+const mockOpportunityPageState: OpportunityPageState = {
+    state: State.HAS_OPPORTUNITIES,
+    isLoading: false,
+    title: 'Opportunities',
+    description: '',
+    media: null,
+    primaryCta: null,
+    showEmptyState: false,
+}
+
+const mockEmptyPageState: OpportunityPageState = {
+    state: State.ENABLED_NO_OPPORTUNITIES,
+    isLoading: false,
+    title: 'AI Agent is learning from your conversations',
+    description:
+        "As AI Agent handles more conversations, we'll surface opportunities to improve its accuracy and coverage. Check back soon!",
+    media: '/assets/images/ai-agent/opportunities/learning.svg',
+    primaryCta: null,
+    showEmptyState: true,
+}
+
 describe('OpportunitiesContent', () => {
     const mockCreateGuidanceArticle = jest.fn()
     const mockReviewArticleMutate = jest.fn()
@@ -119,6 +144,7 @@ describe('OpportunitiesContent', () => {
         useKnowledgeService: false,
         isLoadingOpportunityDetails: false,
         totalCount: 10,
+        opportunitiesPageState: mockEmptyPageState,
     }
 
     const queryClient = new QueryClient({
@@ -189,18 +215,19 @@ describe('OpportunitiesContent', () => {
         mockProcessOpportunity.mockResolvedValue({})
     })
 
-    it('should render content header with title', () => {
-        const { container } = renderComponent()
-
-        const svg = container.querySelector('svg')
-        expect(svg).toBeInTheDocument()
-    })
-
     it('should render empty state when no opportunity is selected', () => {
-        const { container } = renderComponent()
+        renderComponent()
 
-        const svg = container.querySelector('svg')
-        expect(svg).toBeInTheDocument()
+        expect(
+            screen.getByRole('heading', {
+                name: 'AI Agent is learning from your conversations',
+            }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                /As AI Agent handles more conversations, we'll surface opportunities/,
+            ),
+        ).toBeInTheDocument()
     })
 
     it('should render opportunity details and action buttons when selected', () => {
@@ -215,6 +242,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
@@ -242,6 +270,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const dismissButton = screen.getByRole('button', { name: /Dismiss/i })
@@ -272,6 +301,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const dismissButton = screen.getByRole('button', { name: /Dismiss/i })
@@ -328,6 +358,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const dismissButton = screen.getByRole('button', { name: /Dismiss/i })
@@ -360,6 +391,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
@@ -417,6 +449,7 @@ describe('OpportunitiesContent', () => {
             selectedOpportunity,
             opportunities: [selectedOpportunity],
             onOpportunityAccepted: mockOnOpportunityAccepted,
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
@@ -458,6 +491,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
@@ -499,6 +533,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
@@ -524,6 +559,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
@@ -544,6 +580,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         expect(mockOnValuesChange).toHaveBeenCalledWith({
@@ -561,6 +598,7 @@ describe('OpportunitiesContent', () => {
                 content: 'Test',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
             },
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const onSuccessCallback = (useUpsertArticleTemplateReview as jest.Mock)
@@ -589,6 +627,7 @@ describe('OpportunitiesContent', () => {
                 content: 'Test',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
             },
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const onSuccessCallback = (useUpsertArticleTemplateReview as jest.Mock)
@@ -621,6 +660,7 @@ describe('OpportunitiesContent', () => {
                 content: 'Test',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
             },
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const onErrorCallback = (useUpsertArticleTemplateReview as jest.Mock)
@@ -652,6 +692,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         expect(screen.getByText(/Resolve conflict/)).toBeInTheDocument()
@@ -676,6 +717,7 @@ describe('OpportunitiesContent', () => {
             opportunities: [selectedOpportunity],
             shopName: 'my-shop',
             helpCenterId: 123,
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         expect(screen.getByTestId('guidance-form')).toBeInTheDocument()
@@ -709,6 +751,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         expect(screen.getByTestId('guidance-form')).toBeInTheDocument()
@@ -731,6 +774,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
@@ -756,6 +800,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
@@ -781,6 +826,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
@@ -811,6 +857,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const formProps = mockGuidanceForm.mock.calls[0][0]
@@ -853,6 +900,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
@@ -886,6 +934,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
@@ -923,6 +972,7 @@ describe('OpportunitiesContent', () => {
             selectedOpportunity,
             opportunities: [selectedOpportunity],
             onOpportunityDismissed: undefined,
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const dismissButton = screen.getByRole('button', { name: /Dismiss/i })
@@ -959,6 +1009,7 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
@@ -991,6 +1042,7 @@ describe('OpportunitiesContent', () => {
             renderComponent({
                 selectedOpportunity,
                 opportunities: [selectedOpportunity],
+                opportunitiesPageState: mockOpportunityPageState,
             })
 
             expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
@@ -1011,6 +1063,7 @@ describe('OpportunitiesContent', () => {
             renderComponent({
                 selectedOpportunity,
                 opportunities: [selectedOpportunity],
+                opportunitiesPageState: mockOpportunityPageState,
             })
 
             expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
@@ -1033,6 +1086,7 @@ describe('OpportunitiesContent', () => {
                 selectedOpportunity,
                 opportunities: [selectedOpportunity],
                 useKnowledgeService: true,
+                opportunitiesPageState: mockOpportunityPageState,
             })
 
             expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
@@ -1056,6 +1110,7 @@ describe('OpportunitiesContent', () => {
                 selectedOpportunity,
                 opportunities: [selectedOpportunity],
                 isLoadingOpportunityDetails: true,
+                opportunitiesPageState: mockOpportunityPageState,
             })
 
             expect(
@@ -1080,6 +1135,7 @@ describe('OpportunitiesContent', () => {
             renderComponent({
                 selectedOpportunity,
                 opportunities: [selectedOpportunity],
+                opportunitiesPageState: mockOpportunityPageState,
             })
 
             const dismissButton = screen.getByRole('button', {
@@ -1143,6 +1199,7 @@ describe('OpportunitiesContent', () => {
             renderComponent({
                 selectedOpportunity,
                 opportunities: [selectedOpportunity],
+                opportunitiesPageState: mockOpportunityPageState,
             })
 
             const dismissButton = screen.getByRole('button', {

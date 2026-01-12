@@ -101,7 +101,7 @@ describe('DismissOpportunityModal', () => {
             ).toBeInTheDocument()
 
             const checkboxes = screen.getAllByRole('checkbox')
-            expect(checkboxes).toHaveLength(4)
+            expect(checkboxes).toHaveLength(5)
         })
     })
 
@@ -137,7 +137,7 @@ describe('DismissOpportunityModal', () => {
             const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            const otherCheckbox = screen.getAllByRole('checkbox')[3]
+            const otherCheckbox = screen.getAllByRole('checkbox')[4]
             await act(() => user.click(otherCheckbox))
 
             await waitFor(() => {
@@ -153,7 +153,7 @@ describe('DismissOpportunityModal', () => {
             const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            const otherCheckbox = screen.getAllByRole('checkbox')[3]
+            const otherCheckbox = screen.getAllByRole('checkbox')[4]
             await act(() => user.click(otherCheckbox))
 
             await waitFor(() => {
@@ -332,7 +332,7 @@ describe('DismissOpportunityModal', () => {
             const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            const otherCheckbox = screen.getAllByRole('checkbox')[3]
+            const otherCheckbox = screen.getAllByRole('checkbox')[4]
             await act(() => user.click(otherCheckbox))
 
             await waitFor(() => {
@@ -360,7 +360,7 @@ describe('DismissOpportunityModal', () => {
             const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            const otherCheckbox = screen.getAllByRole('checkbox')[3]
+            const otherCheckbox = screen.getAllByRole('checkbox')[4]
             await act(() => user.click(otherCheckbox))
 
             await waitFor(() => {
@@ -383,7 +383,7 @@ describe('DismissOpportunityModal', () => {
             renderComponent()
 
             const firstCheckbox = screen.getAllByRole('checkbox')[0]
-            const otherCheckbox = screen.getAllByRole('checkbox')[3]
+            const otherCheckbox = screen.getAllByRole('checkbox')[4]
 
             await act(() => user.click(firstCheckbox))
             await act(() => user.click(otherCheckbox))

@@ -16,6 +16,10 @@ import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/compon
 
 import { OpportunityType } from '../../enums'
 import { useKnowledgeServiceOpportunities } from '../../hooks/useKnowledgeServiceOpportunities'
+import {
+    State,
+    useOpportunityPageState,
+} from '../../hooks/useOpportunityPageState'
 import { useSelectedOpportunity } from '../../hooks/useSelectedOpportunity'
 import { mapAiArticlesToOpportunities } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesLayout } from './OpportunitiesLayout'
@@ -74,6 +78,17 @@ jest.mock('../../hooks/useSelectedOpportunity', () => ({
     useSelectedOpportunity: jest.fn(),
 }))
 
+jest.mock('../../hooks/useOpportunityPageState', () => ({
+    useOpportunityPageState: jest.fn(),
+    State: {
+        LOADING: 'LOADING',
+        HAS_OPPORTUNITIES: 'HAS_OPPORTUNITIES',
+        ENABLED_NO_OPPORTUNITIES: 'ENABLED_NO_OPPORTUNITIES',
+        DISABLED_NEEDS_ENABLE: 'DISABLED_NEEDS_ENABLE',
+        DISABLED_NEEDS_SETUP: 'DISABLED_NEEDS_SETUP',
+    },
+}))
+
 jest.mock('pages/aiAgent/hooks/useShopIntegrationId', () => ({
     useShopIntegrationId: jest.fn(),
 }))
@@ -85,9 +100,13 @@ jest.mock('@repo/feature-flags', () => ({
 
 jest.mock('../OpportunitiesSidebar/OpportunitiesSidebar', () => ({
     OpportunitiesSidebar: jest.fn(
-        ({ opportunities, onSelectOpportunity, isLoading }: any) => (
+        ({
+            opportunities,
+            onSelectOpportunity,
+            opportunitiesPageState,
+        }: any) => (
             <div data-testid="opportunities-sidebar">
-                {isLoading && <div>Loading...</div>}
+                {opportunitiesPageState?.isLoading && <div>Loading...</div>}
                 {opportunities.map((opp: any) => (
                     <button
                         key={opp.id}
@@ -138,6 +157,7 @@ const mockUseKnowledgeServiceOpportunities = assumeMock(
     useKnowledgeServiceOpportunities,
 )
 const mockUseSelectedOpportunity = assumeMock(useSelectedOpportunity)
+const mockUseOpportunityPageState = assumeMock(useOpportunityPageState)
 const mockUseShopIntegrationId = assumeMock(useShopIntegrationId)
 const mockUseFlag = assumeMock(useFlag)
 
@@ -245,6 +265,15 @@ describe('OpportunitiesLayout', () => {
             setSelectedOpportunityId: jest.fn(),
             isLoading: false,
         }))
+        mockUseOpportunityPageState.mockReturnValue({
+            state: State.HAS_OPPORTUNITIES,
+            isLoading: false,
+            title: 'Opportunities',
+            description: '',
+            media: null,
+            primaryCta: null,
+            showEmptyState: false,
+        })
     })
 
     it('should render sidebar and content components', () => {
@@ -272,9 +301,14 @@ describe('OpportunitiesLayout', () => {
     })
 
     it('should show loading state when any data is loading', () => {
-        ;(useAiAgentStoreConfigurationContext as jest.Mock).mockReturnValue({
-            storeConfiguration: mockStoreConfiguration,
+        mockUseOpportunityPageState.mockReturnValue({
+            state: State.LOADING,
             isLoading: true,
+            title: '',
+            description: '',
+            media: null,
+            primaryCta: null,
+            showEmptyState: false,
         })
 
         renderComponent()
@@ -291,10 +325,14 @@ describe('OpportunitiesLayout', () => {
     })
 
     it('should show loading when AI articles are loading', () => {
-        ;(useHelpCenterAIArticlesLibrary as jest.Mock).mockReturnValue({
-            articles: [],
+        mockUseOpportunityPageState.mockReturnValue({
+            state: State.LOADING,
             isLoading: true,
-            markArticleAsReviewed: mockMarkArticleAsReviewed,
+            title: '',
+            description: '',
+            media: null,
+            primaryCta: null,
+            showEmptyState: false,
         })
 
         renderComponent()
@@ -570,7 +608,10 @@ describe('OpportunitiesLayout', () => {
                         type: OpportunityType.FILL_KNOWLEDGE_GAP,
                     }),
                 ]),
-                isLoading: false,
+                opportunitiesPageState: expect.objectContaining({
+                    isLoading: false,
+                    state: 'HAS_OPPORTUNITIES',
+                }),
                 onSelectOpportunity: expect.any(Function),
             }),
             expect.anything(),

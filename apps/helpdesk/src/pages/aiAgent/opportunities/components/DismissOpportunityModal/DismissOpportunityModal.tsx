@@ -54,6 +54,10 @@ const DISMISS_REASON_OPTIONS: Option[] = [
         value: OpportunityDismissReason.INCORRECT_SUGGESTION,
     },
     {
+        label: 'Opportunity is irrelevant',
+        value: OpportunityDismissReason.IRRELEVANT_OPPORTUNITY,
+    },
+    {
         label: 'Other',
         value: OpportunityDismissReason.OTHER,
     },

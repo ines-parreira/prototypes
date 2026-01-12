@@ -103,6 +103,19 @@ jest.mock('../hooks/useSelectedOpportunity', () => ({
     })),
 }))
 
+jest.mock('../hooks/useOpportunityPageState', () => ({
+    useOpportunityPageState: jest.fn(() => ({
+        state: 'ENABLED_NO_OPPORTUNITIES',
+        isLoading: false,
+        title: 'AI Agent is learning from your conversations',
+        description:
+            "As AI Agent handles more conversations, we'll surface opportunities to improve its accuracy and coverage. Check back soon!",
+        media: '/assets/images/ai-agent/opportunities/learning.svg',
+        primaryCta: null,
+        showEmptyState: true,
+    })),
+}))
+
 jest.mock('pages/aiAgent/hooks/useShopIntegrationId', () => ({
     useShopIntegrationId: jest.fn(() => undefined),
 }))
@@ -270,7 +283,7 @@ describe('AiAgentOpportunities', () => {
     })
 
     it('should render OpportunitiesSidebar and OpportunitiesContent', () => {
-        const { getByText, getAllByText } = render(
+        const { getByText, getAllByText, getByRole } = render(
             <TestWrapper>
                 <AiAgentOpportunities />
             </TestWrapper>,
@@ -279,10 +292,14 @@ describe('AiAgentOpportunities', () => {
         const opportunities = getAllByText('Opportunities')
         expect(opportunities).toHaveLength(1)
 
-        expect(getByText('No opportunities yet')).toBeInTheDocument()
+        expect(
+            getByRole('heading', {
+                name: 'AI Agent is learning from your conversations',
+            }),
+        ).toBeInTheDocument()
         expect(
             getByText(
-                'AI Agent will start finding opportunities to improve as it learns from conversations with your customers',
+                /As AI Agent handles more conversations, we'll surface opportunities/,
             ),
         ).toBeInTheDocument()
     })

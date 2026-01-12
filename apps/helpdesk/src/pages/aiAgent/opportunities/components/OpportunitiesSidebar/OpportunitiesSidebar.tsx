@@ -2,7 +2,9 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { Virtuoso } from 'react-virtuoso'
 
-import { Button, Heading, Text } from '@gorgias/axiom'
+import { Button, Heading, Skeleton, Text } from '@gorgias/axiom'
+
+import type { OpportunityPageState } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
 
 import { OPPORTUNITY_CARD_HEIGHT } from '../../constants'
 import { OPPORTUNITIES_PAGE_SIZE } from '../../hooks/useKnowledgeServiceOpportunities'
@@ -17,6 +19,7 @@ import css from './OpportunitiesSidebar.less'
 
 interface OpportunitiesSidebarProps {
     opportunities: SidebarOpportunityItem[]
+    opportunitiesPageState: OpportunityPageState
     isLoading?: boolean
     onSelectOpportunity: (opportunity: SidebarOpportunityItem | null) => void
     selectedOpportunity?: Opportunity | null
@@ -27,12 +30,11 @@ interface OpportunitiesSidebarProps {
     hasNextPage?: boolean
     isFetchingNextPage?: boolean
     onEndReached?: () => void
-    totalCount?: number
-    totalPending?: number
 }
 
 export const OpportunitiesSidebar = ({
     opportunities,
+    opportunitiesPageState,
     isLoading = false,
     onSelectOpportunity,
     selectedOpportunity,
@@ -40,8 +42,6 @@ export const OpportunitiesSidebar = ({
     hasNextPage = false,
     isFetchingNextPage = false,
     onEndReached,
-    totalCount,
-    totalPending,
 }: OpportunitiesSidebarProps) => {
     const virtuosoContainerRef = useRef<HTMLDivElement>(null)
     const onEndReachedRef = useRef(onEndReached)
@@ -68,7 +68,7 @@ export const OpportunitiesSidebar = ({
     // the virtuoso component does not trigger the endReached event in this case
     useEffect(() => {
         if (
-            !isLoading &&
+            !opportunitiesPageState.isLoading &&
             !isFetchingNextPage &&
             hasNextPage &&
             onEndReachedRef.current &&
@@ -86,7 +86,12 @@ export const OpportunitiesSidebar = ({
             }, 100)
             return () => clearTimeout(timeoutId)
         }
-    }, [opportunities.length, isLoading, isFetchingNextPage, hasNextPage])
+    }, [
+        opportunities.length,
+        opportunitiesPageState.isLoading,
+        isFetchingNextPage,
+        hasNextPage,
+    ])
 
     const handleSelectCard = useCallback(
         (opportunityId: string) => {
@@ -100,22 +105,10 @@ export const OpportunitiesSidebar = ({
         [opportunities, onSelectOpportunity],
     )
 
-    const itemCount = isLoading ? 0 : opportunities.length
+    const itemCount = opportunitiesPageState.isLoading
+        ? 0
+        : opportunities.length
     const itemCountText = itemCount === 1 ? '1 item' : `${itemCount} items`
-
-    const showNoOpportunitiesYet =
-        !isLoading && totalCount !== undefined && totalCount === 0
-    const showAllOpportunitiesReviewed =
-        !isLoading &&
-        totalCount !== undefined &&
-        totalPending !== undefined &&
-        totalCount > 0 &&
-        totalPending === 0
-    const showLegacyEmptyState =
-        !isLoading &&
-        totalCount === undefined &&
-        totalPending === undefined &&
-        opportunities.length === 0
 
     const renderOpportunityCard = useCallback(
         (_index: number, opportunity: SidebarOpportunityItem) => {
@@ -162,6 +155,46 @@ export const OpportunitiesSidebar = ({
         [renderFooter],
     )
 
+    if (isLoading) {
+        return (
+            <div className={css.sidebar}>
+                <div className={css.header}>
+                    <Heading size="sm">Opportunities</Heading>
+                </div>
+
+                <div className={css.itemCountContainer}>
+                    <Skeleton height={16} width={50} />
+                </div>
+
+                <div className={css.cardsContainer}>
+                    {Array.from({
+                        length: OPPORTUNITIES_PAGE_SIZE,
+                    }).map((_, index) => (
+                        <OpportunityCardSkeleton
+                            key={`loading-skeleton-${index}`}
+                        />
+                    ))}
+                </div>
+            </div>
+        )
+    }
+
+    if (opportunitiesPageState.showEmptyState) {
+        return (
+            <div className={css.sidebar}>
+                <div className={css.header}>
+                    <Heading size="sm">Opportunities</Heading>
+                </div>
+
+                <div className={css.emptyState}>
+                    <Text size="sm" variant="regular">
+                        No opportunities
+                    </Text>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className={css.sidebar}>
             <div className={css.header}>
@@ -176,71 +209,29 @@ export const OpportunitiesSidebar = ({
                 <Heading size="sm">Opportunities</Heading>
             </div>
             <div className={css.containerContent}>
-                {showNoOpportunitiesYet ? (
-                    <div className={css.emptyState}>
-                        <h3 className={css.title}>No opportunities yet</h3>
-                        <p className={css.description}>
-                            AI Agent will start finding opportunities to improve
-                            as it learns from conversations with your customers
-                        </p>
+                <>
+                    <div className={css.itemCountContainer}>
+                        <Text size="sm" variant="regular">
+                            {itemCountText}
+                        </Text>
                     </div>
-                ) : showAllOpportunitiesReviewed ? (
-                    <div className={css.emptyState}>
-                        <h3 className={css.title}>
-                            You&apos;ve reviewed all opportunities
-                        </h3>
-                        <p className={css.description}>
-                            Check back soon for new opportunities to improve AI
-                            Agent&apos;s knowledge and performance
-                        </p>
+                    <div
+                        className={css.virtuosoContainer}
+                        ref={virtuosoContainerRef}
+                    >
+                        <Virtuoso
+                            data={opportunities}
+                            itemContent={renderOpportunityCard}
+                            computeItemKey={(_index, opportunity) =>
+                                opportunity.id
+                            }
+                            endReached={handleEndReached}
+                            atBottomThreshold={OPPORTUNITY_CARD_HEIGHT * 2}
+                            fixedItemHeight={OPPORTUNITY_CARD_HEIGHT}
+                            components={virtuosoComponents}
+                        />
                     </div>
-                ) : showLegacyEmptyState ? (
-                    <div className={css.emptyState}>
-                        <h3 className={css.title}>No opportunities yet</h3>
-                        <p className={css.description}>
-                            AI Agent will start finding opportunities to improve
-                            as it learns from conversations with your customers
-                        </p>
-                    </div>
-                ) : (
-                    <>
-                        <div className={css.itemCountContainer}>
-                            <Text size="sm" variant="regular">
-                                {itemCountText}
-                            </Text>
-                        </div>
-                        {isLoading ? (
-                            <div className={css.cardsContainer}>
-                                {Array.from({
-                                    length: OPPORTUNITIES_PAGE_SIZE,
-                                }).map((_, index) => (
-                                    <OpportunityCardSkeleton
-                                        key={`loading-skeleton-${index}`}
-                                    />
-                                ))}
-                            </div>
-                        ) : (
-                            <div
-                                className={css.virtuosoContainer}
-                                ref={virtuosoContainerRef}
-                            >
-                                <Virtuoso
-                                    data={opportunities}
-                                    itemContent={renderOpportunityCard}
-                                    computeItemKey={(_index, opportunity) =>
-                                        opportunity.id
-                                    }
-                                    endReached={handleEndReached}
-                                    atBottomThreshold={
-                                        OPPORTUNITY_CARD_HEIGHT * 2
-                                    }
-                                    fixedItemHeight={OPPORTUNITY_CARD_HEIGHT}
-                                    components={virtuosoComponents}
-                                />
-                            </div>
-                        )}
-                    </>
-                )}
+                </>
             </div>
         </div>
     )
