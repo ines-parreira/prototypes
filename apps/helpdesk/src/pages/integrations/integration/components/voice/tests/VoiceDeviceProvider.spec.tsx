@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, render, waitFor } from '@testing-library/react'
 import { Device } from '@twilio/voice-sdk'
@@ -17,11 +18,16 @@ import VoiceDeviceProvider from '../VoiceDeviceProvider'
 jest.mock('hooks/integrations/phone/utils')
 jest.mock('hooks/useHasPhone')
 jest.mock('utils/device')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useLocalStorage: jest.fn(),
+}))
 
 const useHasPhoneMock = assumeMock(useHasPhone)
 const isDesktopDeviceMock = assumeMock(isDesktopDevice)
 const connectDeviceMock = assumeMock(connectDevice)
 const disconnectDeviceMock = assumeMock(disconnectDevice)
+const useLocalStorageMock = assumeMock(useLocalStorage)
 
 const mockStore = configureMockStore()
 
@@ -43,6 +49,17 @@ const wrapper = ({ children }: { children?: React.ReactNode }) => (
 )
 
 describe('VoiceDeviceProvider', () => {
+    const setLastUsedIntegrationMock = jest.fn()
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        useLocalStorageMock.mockReturnValue([
+            '',
+            setLastUsedIntegrationMock,
+            jest.fn(),
+        ])
+    })
+
     it('should render children', () => {
         const { getByText } = renderComponent()
 
@@ -164,5 +181,39 @@ describe('VoiceDeviceProvider', () => {
                 disconnectDeviceCalls + 1,
             ),
         )
+    })
+
+    describe('Last used integration tracking', () => {
+        beforeEach(() => {
+            useHasPhoneMock.mockReturnValue(true)
+            isDesktopDeviceMock.mockReturnValue(true)
+        })
+
+        it('should save integration_id to localStorage when call is set', async () => {
+            let result: { current: VoiceDeviceContextState }
+
+            act(() => {
+                const hookResult = renderHook(useVoiceDevice, {
+                    wrapper,
+                })
+                result = hookResult.result
+            })
+
+            const mockCall = {
+                customParameters: new Map([
+                    ['integration_id', 'test-integration-123'],
+                ]),
+            } as any
+
+            act(() => {
+                result.current.actions.setCall(mockCall)
+            })
+
+            await waitFor(() => {
+                expect(setLastUsedIntegrationMock).toHaveBeenCalledWith(
+                    'test-integration-123',
+                )
+            })
+        })
     })
 })

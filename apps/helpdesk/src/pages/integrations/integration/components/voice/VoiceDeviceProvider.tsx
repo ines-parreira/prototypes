@@ -3,6 +3,7 @@ import { useEffect, useMemo, useReducer } from 'react'
 
 import type { Dispatch } from '@reduxjs/toolkit'
 import { bindActionCreators } from '@reduxjs/toolkit'
+import { useLocalStorage } from '@repo/hooks'
 import { Device } from '@twilio/voice-sdk'
 
 import { useErrorHandling } from 'hooks/integrations/phone/useErrorHandling'
@@ -14,6 +15,7 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasPhone from 'hooks/useHasPhone'
+import { LAST_USED_INTEGRATION_STORAGE_KEY } from 'pages/integrations/integration/components/voice/constants'
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 import { isActive } from 'state/currentUser/selectors'
 import { initialState } from 'state/twilio/voiceDevice'
@@ -33,6 +35,10 @@ export default function VoiceDeviceProvider({
     const isAgentActive = useAppSelector(isActive)
     const isDesktop = isDesktopDevice()
     const hasPhone = useHasPhone()
+    const [, setLastUsedIntegration] = useLocalStorage(
+        LAST_USED_INTEGRATION_STORAGE_KEY,
+        '',
+    )
 
     const appDispatch = useAppDispatch()
 
@@ -42,6 +48,18 @@ export default function VoiceDeviceProvider({
     )
 
     useErrorHandling(state, actions)
+
+    useEffect(() => {
+        if (!state.call) {
+            return
+        }
+
+        const integrationId = state.call.customParameters.get('integration_id')
+
+        if (integrationId) {
+            setLastUsedIntegration(integrationId)
+        }
+    }, [state.call, setLastUsedIntegration])
 
     useEffect(() => {
         const unregister = registerCallStateCallback(() => {

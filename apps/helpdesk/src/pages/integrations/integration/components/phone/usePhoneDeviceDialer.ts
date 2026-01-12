@@ -1,10 +1,12 @@
 import { useState } from 'react'
 
+import { useLocalStorage } from '@repo/hooks'
 import type { CountryCode } from 'libphonenumber-js'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { PhoneIntegration } from 'models/integration/types/phone'
 import type { UserSearchResult } from 'models/search/types'
+import { LAST_USED_INTEGRATION_STORAGE_KEY } from 'pages/integrations/integration/components/voice/constants'
 import { getCountryFromPhoneNumber } from 'pages/phoneNumbers/utils'
 import { getPhoneIntegrations } from 'state/integrations/selectors'
 
@@ -33,8 +35,15 @@ export default function usePhoneDeviceDialer({
     }
 
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
+    const [lastUsedIntegrationId] = useLocalStorage(
+        LAST_USED_INTEGRATION_STORAGE_KEY,
+        '',
+    )
+    const lastUsedIntegration = phoneIntegrations.find(
+        (integration) => integration.id === Number(lastUsedIntegrationId),
+    )
     const [selectedIntegration, setSelectedIntegration] = useState(
-        phoneIntegrations[0],
+        lastUsedIntegration || phoneIntegrations[0],
     )
     const { getPhoneNumberById } = usePhoneNumbers()
 

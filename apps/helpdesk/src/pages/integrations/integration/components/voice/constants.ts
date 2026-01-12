@@ -61,3 +61,6 @@ export const DEFAULT_QUEUE_VALUES: UpdateVoiceQueue | CreateVoiceQueue = {
 
 export const CALL_RECORDING_NOTIFICATION_LEARN_MORE_URL =
     'https://docs.gorgias.com/en-US/call-recording-296968'
+
+export const LAST_USED_INTEGRATION_STORAGE_KEY =
+    'helpdesk-last-used-phone-integration'

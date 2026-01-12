@@ -1,3 +1,4 @@
+import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import type { CountryCode } from 'libphonenumber-js'
@@ -15,11 +16,16 @@ jest.mock('hooks/useAppSelector')
 jest.mock('../useDialerOutboundCall')
 jest.mock('../usePhoneNumbers')
 jest.mock('pages/phoneNumbers/utils')
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useLocalStorage: jest.fn(),
+}))
 
 const useAppSelectorMock = assumeMock(useAppSelector)
 const useDialerOutboundCallMock = assumeMock(useDialerOutboundCall)
 const usePhoneNumbersMock = assumeMock(usePhoneNumbers)
 const getCountryFromPhoneNumberMock = assumeMock(getCountryFromPhoneNumber)
+const useLocalStorageMock = assumeMock(useLocalStorage)
 
 describe('usePhoneDeviceDialer', () => {
     const mockPhoneIntegrations: PhoneIntegration[] = [
@@ -71,6 +77,7 @@ describe('usePhoneDeviceDialer', () => {
             phone_number: '+12125551234',
         })
         getCountryFromPhoneNumberMock.mockReturnValue('US' as CountryCode)
+        useLocalStorageMock.mockReturnValue(['', jest.fn(), jest.fn()])
     })
 
     it('should initialize with default values', () => {
@@ -82,6 +89,38 @@ describe('usePhoneDeviceDialer', () => {
         expect(result.current.selectedIntegration).toEqual(
             mockPhoneIntegrations[0],
         )
+    })
+
+    describe('last used integration', () => {
+        it('should use last used integration from localStorage when available', () => {
+            useLocalStorageMock.mockReturnValue(['2', jest.fn(), jest.fn()])
+
+            const { result } = setup()
+
+            expect(result.current.selectedIntegration).toEqual(
+                mockPhoneIntegrations[1],
+            )
+        })
+
+        it('should fallback to first integration when last used integration ID does not match any integration', () => {
+            useLocalStorageMock.mockReturnValue(['999', jest.fn(), jest.fn()])
+
+            const { result } = setup()
+
+            expect(result.current.selectedIntegration).toEqual(
+                mockPhoneIntegrations[0],
+            )
+        })
+
+        it('should use first integration when no last used integration ID is stored', () => {
+            useLocalStorageMock.mockReturnValue(['', jest.fn(), jest.fn()])
+
+            const { result } = setup()
+
+            expect(result.current.selectedIntegration).toEqual(
+                mockPhoneIntegrations[0],
+            )
+        })
     })
 
     describe('handleCall', () => {
