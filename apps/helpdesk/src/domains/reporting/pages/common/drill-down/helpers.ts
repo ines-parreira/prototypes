@@ -535,6 +535,12 @@ export const getDrillDownQuery = (
                         end_datetime:
                             knowledgeMetricData.dateRange.end_datetime,
                     },
+                    ...(knowledgeMetricData.shopIntegrationId && {
+                        [FilterKey.Stores]: {
+                            operator: LogicalOperatorEnum.ONE_OF,
+                            values: [knowledgeMetricData.shopIntegrationId],
+                        },
+                    }),
                 }
                 return knowledgeTicketsDrillDownQueryFactory(
                     filtersWithPeriod,
@@ -570,6 +576,12 @@ export const getDrillDownQuery = (
                             ],
                         },
                     ],
+                    ...(knowledgeMetricData.shopIntegrationId && {
+                        [FilterKey.Stores]: {
+                            operator: LogicalOperatorEnum.ONE_OF,
+                            values: [knowledgeMetricData.shopIntegrationId],
+                        },
+                    }),
                 }
                 return knowledgeHandoverTicketsDrillDownQueryFactory(
                     filtersWithHandover,
@@ -594,6 +606,12 @@ export const getDrillDownQuery = (
                         end_datetime:
                             knowledgeMetricData.dateRange.end_datetime,
                     },
+                    ...(knowledgeMetricData.shopIntegrationId && {
+                        [FilterKey.Stores]: {
+                            operator: LogicalOperatorEnum.ONE_OF,
+                            values: [knowledgeMetricData.shopIntegrationId],
+                        },
+                    }),
                 }
                 return knowledgeCSATDrillDownQueryFactory(
                     filtersWithPeriod,

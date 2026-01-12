@@ -593,6 +593,7 @@ describe('getDrillDownQuery', () => {
             metricName: KnowledgeMetric.Tickets,
             resourceSourceId: 123,
             resourceSourceSetId: 456,
+            shopIntegrationId: 789,
             dateRange: {
                 start_datetime: '2025-01-15T00:00:00.000',
                 end_datetime: '2025-01-20T23:59:59.000',
@@ -602,6 +603,7 @@ describe('getDrillDownQuery', () => {
             metricName: KnowledgeMetric.HandoverTickets,
             resourceSourceId: 123,
             resourceSourceSetId: 456,
+            shopIntegrationId: 789,
             dateRange: {
                 start_datetime: '2025-01-15T00:00:00.000',
                 end_datetime: '2025-01-20T23:59:59.000',
@@ -612,6 +614,7 @@ describe('getDrillDownQuery', () => {
             metricName: KnowledgeMetric.CSAT,
             resourceSourceId: 123,
             resourceSourceSetId: 456,
+            shopIntegrationId: 789,
             dateRange: {
                 start_datetime: '2025-01-15T00:00:00.000',
                 end_datetime: '2025-01-20T23:59:59.000',
@@ -1539,6 +1542,7 @@ describe('getDrillDownQuery', () => {
             metricName: KnowledgeMetric.Tickets,
             resourceSourceId: 123,
             resourceSourceSetId: 456,
+            shopIntegrationId: 789,
             dateRange,
         }
 
@@ -1547,6 +1551,10 @@ describe('getDrillDownQuery', () => {
         expect(knowledgeTicketsDrillDownQueryFactoryMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 period: dateRange,
+                stores: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [789],
+                },
             }),
             timezone,
             123,
@@ -1573,6 +1581,7 @@ describe('getDrillDownQuery', () => {
             metricName: KnowledgeMetric.HandoverTickets,
             resourceSourceId: 123,
             resourceSourceSetId: 456,
+            shopIntegrationId: 789,
             dateRange,
             outcomeCustomFieldId,
         }
@@ -1584,6 +1593,10 @@ describe('getDrillDownQuery', () => {
         ).toHaveBeenCalledWith(
             expect.objectContaining({
                 period: dateRange,
+                stores: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [789],
+                },
             }),
             timezone,
             123,
@@ -1609,6 +1622,7 @@ describe('getDrillDownQuery', () => {
             metricName: KnowledgeMetric.CSAT,
             resourceSourceId: 123,
             resourceSourceSetId: 456,
+            shopIntegrationId: 789,
             dateRange,
         }
 
@@ -1617,6 +1631,10 @@ describe('getDrillDownQuery', () => {
         expect(knowledgeCSATDrillDownQueryFactoryMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 period: dateRange,
+                stores: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [789],
+                },
             }),
             timezone,
             123,

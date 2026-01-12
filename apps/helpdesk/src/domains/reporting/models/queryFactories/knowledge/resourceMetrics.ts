@@ -611,13 +611,20 @@ export const useResourceMetrics = ({
                     title,
                     resourceSourceId,
                     resourceSourceSetId,
+                    shopIntegrationId,
                     dateRange,
                     ...(outcomeId && { outcomeCustomFieldId: outcomeId }),
                     ...(intentId && { intentCustomFieldId: intentId }),
                 }
                 dispatch(setMetricData(metricData))
             },
-        [dispatch, resourceSourceId, resourceSourceSetId, dateRange],
+        [
+            dispatch,
+            resourceSourceId,
+            resourceSourceSetId,
+            shopIntegrationId,
+            dateRange,
+        ],
     )
 
     // Fetch tickets count
@@ -1228,6 +1235,7 @@ export type RecentTicketsWithDrilldown = {
     isLoading: boolean
     resourceSourceId: number
     resourceSourceSetId: number
+    shopIntegrationId: number
     dateRange: {
         start_datetime: string
         end_datetime: string
@@ -1290,6 +1298,7 @@ export function useRecentTicketsWithDrilldown({
                 isLoading: true,
                 resourceSourceId,
                 resourceSourceSetId,
+                shopIntegrationId,
                 dateRange,
                 outcomeCustomFieldId,
                 intentCustomFieldId,
@@ -1306,6 +1315,7 @@ export function useRecentTicketsWithDrilldown({
             isLoading: false,
             resourceSourceId,
             resourceSourceSetId,
+            shopIntegrationId,
             dateRange,
             outcomeCustomFieldId,
             intentCustomFieldId,
@@ -1318,6 +1328,7 @@ export function useRecentTicketsWithDrilldown({
         ticketCount,
         resourceSourceId,
         resourceSourceSetId,
+        shopIntegrationId,
         dateRange,
         outcomeCustomFieldId,
         intentCustomFieldId,

@@ -30,6 +30,7 @@ export type Props = {
     sectionId: string
     resourceSourceId?: number
     resourceSourceSetId?: number
+    shopIntegrationId?: number
     dateRange?: {
         start_datetime: string
         end_datetime: string
@@ -45,6 +46,7 @@ export const KnowledgeEditorSidePanelSectionRecentTickets = ({
     isLoading,
     resourceSourceId,
     resourceSourceSetId,
+    shopIntegrationId,
     dateRange,
     outcomeCustomFieldId,
     intentCustomFieldId,
@@ -59,6 +61,7 @@ export const KnowledgeEditorSidePanelSectionRecentTickets = ({
             title: 'Recent tickets',
             resourceSourceId,
             resourceSourceSetId,
+            shopIntegrationId: shopIntegrationId ?? 0,
             dateRange,
             outcomeCustomFieldId,
             intentCustomFieldId,
@@ -69,6 +72,7 @@ export const KnowledgeEditorSidePanelSectionRecentTickets = ({
         dispatch,
         resourceSourceId,
         resourceSourceSetId,
+        shopIntegrationId,
         dateRange,
         outcomeCustomFieldId,
         intentCustomFieldId,

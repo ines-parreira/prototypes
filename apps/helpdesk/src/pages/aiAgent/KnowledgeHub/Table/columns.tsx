@@ -31,6 +31,7 @@ export const getColumns = (
     outcomeCustomFieldId?: number,
     intentCustomFieldId?: number,
     isMetricsLoading: boolean = false,
+    shopIntegrationId?: number,
 ): ColumnDef<GroupedKnowledgeItem>[] => {
     // Base columns - always present
     const baseColumns: ColumnDef<GroupedKnowledgeItem>[] = [
@@ -88,6 +89,8 @@ export const getColumns = (
                                         resourceSourceId: Number(row.id),
                                         resourceSourceSetId:
                                             metrics.resourceSourceSetId,
+                                        shopIntegrationId:
+                                            shopIntegrationId ?? 0,
                                         dateRange: metricsDateRange,
                                         ...(outcomeCustomFieldId && {
                                             outcomeCustomFieldId,
@@ -151,6 +154,8 @@ export const getColumns = (
                                         resourceSourceId: Number(row.id),
                                         resourceSourceSetId:
                                             metrics.resourceSourceSetId,
+                                        shopIntegrationId:
+                                            shopIntegrationId ?? 0,
                                         dateRange: metricsDateRange,
                                         ...(outcomeCustomFieldId && {
                                             outcomeCustomFieldId,
@@ -210,6 +215,8 @@ export const getColumns = (
                                         resourceSourceId: Number(row.id),
                                         resourceSourceSetId:
                                             metrics.resourceSourceSetId,
+                                        shopIntegrationId:
+                                            shopIntegrationId ?? 0,
                                         dateRange: metricsDateRange,
                                         ...(outcomeCustomFieldId && {
                                             outcomeCustomFieldId,

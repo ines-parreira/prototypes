@@ -128,6 +128,7 @@ describe('<DrillDownInfoBar />', () => {
                 metricName: KnowledgeMetric.CSAT,
                 resourceSourceId: 1,
                 resourceSourceSetId: 1,
+                shopIntegrationId: 789,
                 dateRange: {
                     start_datetime: '2023-01-01T00:00:00.000',
                     end_datetime: '2023-12-31T23:59:59.999',

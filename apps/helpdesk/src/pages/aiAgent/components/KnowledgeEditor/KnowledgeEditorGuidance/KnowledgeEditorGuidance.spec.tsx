@@ -218,6 +218,7 @@ describe('KnowledgeEditorGuidance', () => {
             isLoading: false,
             resourceSourceId: 0,
             resourceSourceSetId: 0,
+            shopIntegrationId: 0,
             dateRange: {
                 start_datetime: '2025-01-01T00:00:00.000Z',
                 end_datetime: '2025-01-28T00:00:00.000Z',
