@@ -18,6 +18,7 @@ import { AnalyticsSupportAgentLineChart } from './charts/AnalyticsAiAgentLineCha
 import { AnalyticsSupportAgentPerformanceTable } from './charts/AnalyticsAiAgentPerformanceTable/AnalyticsSupportAgentPerformanceTable'
 import { AnalyticsAiAgentSupportInteractionsCard } from './charts/AnalyticsAiAgentSupportInteractionsCard'
 import { AnalyticsAiAgentTimeSavedCard } from './charts/AnalyticsAiAgentTimeSavedCard'
+import { SupportInteractionsComboChart } from './components/SupportInteractionsComboChart/SupportInteractionsComboChart'
 
 // Mock fetch functions - these will be replaced with real data fetchers later
 const fetchCostSavedTrend = async () => ({ value: 2800, trend: 0.02 }) as any
@@ -40,6 +41,7 @@ export enum AnalyticsAiAgentSupportAgentChart {
     SupportInteractionsCard = 'support_interactions_card',
     DecreaseInFRTCard = 'decrease_in_first_resolution_time_card',
     SupportAgentTrendComboChart = 'support_agent_trend_combo_chart',
+    SupportInteractionsComboChart = 'support_interactions_combo_chart',
     SupportAgentTrendLineChart = 'support_agent_trend_line_chart',
     PerformanceTable = 'performance_table',
 }
@@ -112,6 +114,22 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                     },
                 ],
                 description: '',
+                chartType: ChartType.Graph,
+            },
+            [AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart]: {
+                chartComponent: SupportInteractionsComboChart,
+                label: 'Support interactions breakdown',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Table,
+                        fetch: async () => ({
+                            isLoading: false,
+                            fileName: 'support-interactions.csv',
+                            files: {},
+                        }),
+                    },
+                ],
+                description: 'Support interactions by intent',
                 chartType: ChartType.Graph,
             },
             [AnalyticsAiAgentSupportAgentChart.SupportAgentTrendLineChart]: {

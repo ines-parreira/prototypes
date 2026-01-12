@@ -1,8 +1,8 @@
 import { screen, waitFor } from '@testing-library/react'
 
-import { useAiAgentSupportInteractionsTrend } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTrend'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { useAiAgentSupportInteractionsMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportInteractionsMetric'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { AnalyticsAiAgentSupportInteractionsCard } from './AnalyticsAiAgentSupportInteractionsCard'
@@ -10,9 +10,11 @@ import { AnalyticsAiAgentSupportInteractionsCard } from './AnalyticsAiAgentSuppo
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const mockUseStatsFilters = jest.mocked(useStatsFilters)
 
-jest.mock('domains/reporting/hooks/automate/useAiAgentSupportInteractionsTrend')
-const mockUseAiAgentSupportInteractionsTrend = jest.mocked(
-    useAiAgentSupportInteractionsTrend,
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportInteractionsMetric',
+)
+const mockUseAiAgentSupportInteractionsMetric = jest.mocked(
+    useAiAgentSupportInteractionsMetric,
 )
 
 describe('AnalyticsAiAgentSupportInteractionsCard', () => {
@@ -32,10 +34,12 @@ describe('AnalyticsAiAgentSupportInteractionsCard', () => {
             userTimezone: 'UTC',
         } as any)
 
-        mockUseAiAgentSupportInteractionsTrend.mockReturnValue({
+        mockUseAiAgentSupportInteractionsMetric.mockReturnValue({
             isFetching: false,
             isError: false,
+            isFieldsAvailable: true,
             data: {
+                label: 'Support interactions',
                 value: 3900,
                 prevValue: 3600,
             },
@@ -43,12 +47,14 @@ describe('AnalyticsAiAgentSupportInteractionsCard', () => {
     })
 
     it('should render loading state initially', () => {
-        mockUseAiAgentSupportInteractionsTrend.mockReturnValue({
+        mockUseAiAgentSupportInteractionsMetric.mockReturnValue({
             isFetching: true,
             isError: false,
+            isFieldsAvailable: true,
             data: {
-                value: 0,
-                prevValue: 0,
+                label: 'Support interactions',
+                value: null,
+                prevValue: null,
             },
         })
 

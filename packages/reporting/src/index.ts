@@ -23,6 +23,7 @@ export {
     type ChartType,
     type TimeSeriesDataItem,
 } from './components/ChartCard'
+export { HorizontalBarChart } from './components/HorizontalBarChart/HorizontalBarChart'
 export {
     TimeSeriesChart,
     renderTimeSeriesTooltipContent,

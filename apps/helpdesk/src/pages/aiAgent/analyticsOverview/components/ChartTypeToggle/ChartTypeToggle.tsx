@@ -1,15 +1,20 @@
 import type { ChartType } from '@repo/reporting'
 
 import { ButtonGroup, ButtonGroupItem, Icon } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 
 interface ChartTypeToggleProps {
     chartType: ChartType
     onChartTypeChange: (chartType: ChartType) => void
+    firstButtonIcon?: IconName
+    secondButtonIcon?: IconName
 }
 
 export const ChartTypeToggle = ({
     chartType,
     onChartTypeChange,
+    firstButtonIcon,
+    secondButtonIcon,
 }: ChartTypeToggleProps) => {
     return (
         <ButtonGroup
@@ -19,10 +24,10 @@ export const ChartTypeToggle = ({
             }
         >
             <ButtonGroupItem id="donut" aria-label="Show donut chart">
-                <Icon name="chart-pie" />
+                <Icon name={firstButtonIcon || 'chart-pie'} />
             </ButtonGroupItem>
             <ButtonGroupItem id="bar" aria-label="Show bar chart">
-                <Icon name="chart-bar-vertical" />
+                <Icon name={secondButtonIcon || 'chart-bar-vertical'} />
             </ButtonGroupItem>
         </ButtonGroup>
     )

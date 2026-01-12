@@ -17,6 +17,10 @@ import type { ChartDataItem } from '../ChartCard/types'
 import { assignColorsToData } from '../ChartCard/utils/colorUtils'
 import { DonutChartLegend } from './components/DonutChartLegend'
 import { DonutChartTooltip } from './components/DonutChartTooltip'
+import {
+    DonutChartHoverProvider,
+    useDonutChartHover,
+} from './context/DonutChartHoverContext'
 
 import css from './DonutChart.less'
 
@@ -55,8 +59,8 @@ export const renderActiveShape = (props: any) => {
         <Sector
             cx={cx}
             cy={cy}
-            innerRadius={innerRadius}
-            outerRadius={outerRadius + ACTIVE_SHAPE_RADIUS_OFFSET}
+            innerRadius={innerRadius - ACTIVE_SHAPE_RADIUS_OFFSET}
+            outerRadius={outerRadius}
             startAngle={startAngle}
             endAngle={endAngle}
             fill={fill}
@@ -87,6 +91,132 @@ export const renderTooltipContent =
         )
     }
 
+const DonutChartInner = ({
+    containerHeight,
+    containerWidth,
+    data,
+    period,
+    valueFormatter,
+}: Omit<DonutChartProps, 'isLoading'>) => {
+    const [hiddenSegments, setHiddenSegments] = useState<Set<string>>(new Set())
+    const [activeIndex, setActiveIndex] = useState<number | null>(null)
+    const onPieMouseMove = useTooltipPosition()
+    const { hoveredLegendItem } = useDonutChartHover()
+
+    const dataWithColors = assignColorsToData(data)
+
+    const toggleSegment = (name: string) => {
+        setHiddenSegments((prev) => {
+            const next = new Set(prev)
+            const visibleCount = dataWithColors.length - prev.size
+
+            if (next.has(name)) {
+                next.delete(name)
+            } else {
+                if (visibleCount === 1) {
+                    return new Set()
+                }
+                next.add(name)
+            }
+            return next
+        })
+    }
+
+    const visibleData = dataWithColors.filter(
+        (item) => !hiddenSegments.has(item.name),
+    )
+
+    const totalValue = visibleData.reduce(
+        (sum, item) => sum + (item.value ?? 0),
+        0,
+    )
+
+    const dataWithPercentages = dataWithColors.map((item) => ({
+        ...item,
+        legendValue: visibleData.find((i) => i.name === item.name)
+            ? `${(((item.value ?? 0) / totalValue) * 100).toFixed(2)}%`
+            : '0%',
+        percentage: valueFormatter
+            ? valueFormatter(item.value ?? 0)
+            : (item.value ?? 0),
+    }))
+
+    const legendHoveredIndex = hoveredLegendItem
+        ? visibleData.findIndex((item) => item.name === hoveredLegendItem)
+        : null
+
+    const effectiveActiveIndex =
+        legendHoveredIndex !== null && legendHoveredIndex !== -1
+            ? legendHoveredIndex
+            : activeIndex
+
+    return (
+        <Box
+            flexDirection="column"
+            width={containerWidth}
+            height={containerHeight}
+            gap="lg"
+        >
+            <Box
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="space-between"
+                className={css.chartWrapper}
+            >
+                <Box className={css.chartContainer}>
+                    <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
+                        <PieChart onMouseMove={onPieMouseMove}>
+                            <Pie
+                                data={visibleData}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={INNER_RADIUS}
+                                outerRadius={OUTER_RADIUS}
+                                paddingAngle={PADDING_ANGLE}
+                                dataKey="value"
+                                cornerRadius={CORNER_RADIUS}
+                                activeShape={renderActiveShape}
+                                // @ts-expect-error - activeIndex is supported by Recharts but not in types
+                                activeIndex={effectiveActiveIndex ?? undefined}
+                                onMouseEnter={(_, index) =>
+                                    setActiveIndex(index)
+                                }
+                                onMouseLeave={() => setActiveIndex(null)}
+                            >
+                                {visibleData.map((entry, index) => (
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={entry.color}
+                                        opacity={
+                                            effectiveActiveIndex === null ||
+                                            effectiveActiveIndex === index
+                                                ? 1
+                                                : 0.3
+                                        }
+                                        stroke="transparent"
+                                    />
+                                ))}
+                            </Pie>
+                            <Tooltip
+                                content={renderTooltipContent(
+                                    valueFormatter,
+                                    period,
+                                )}
+                            />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </Box>
+
+                <DonutChartLegend
+                    items={dataWithPercentages}
+                    hiddenSegments={hiddenSegments}
+                    onToggleSegment={toggleSegment}
+                />
+            </Box>
+        </Box>
+    )
+}
+
 export const DonutChart = ({
     containerHeight,
     containerWidth,
@@ -95,12 +225,6 @@ export const DonutChart = ({
     isLoading = false,
     valueFormatter,
 }: DonutChartProps) => {
-    const [hiddenSegments, setHiddenSegments] = useState<Set<string>>(new Set())
-    const [activeIndex, setActiveIndex] = useState<number | null>(null)
-    const onPieMouseMove = useTooltipPosition()
-
-    const dataWithColors = assignColorsToData(data)
-
     if (isLoading) {
         return (
             <Box
@@ -152,103 +276,15 @@ export const DonutChart = ({
         )
     }
 
-    const toggleSegment = (name: string) => {
-        setHiddenSegments((prev) => {
-            const next = new Set(prev)
-            const visibleCount = dataWithColors.length - prev.size
-
-            if (next.has(name)) {
-                next.delete(name)
-            } else {
-                if (visibleCount === 1) {
-                    return new Set()
-                }
-                next.add(name)
-            }
-            return next
-        })
-    }
-
-    const visibleData = dataWithColors.filter(
-        (item) => !hiddenSegments.has(item.name),
-    )
-
-    const totalValue = visibleData.reduce(
-        (sum, item) => sum + (item.value ?? 0),
-        0,
-    )
-
-    const dataWithPercentages = dataWithColors.map((item) => ({
-        ...item,
-        legendValue: visibleData.find((i) => i.name === item.name)
-            ? `${(((item.value ?? 0) / totalValue) * 100).toFixed(2)}%`
-            : '0%',
-        percentage: valueFormatter
-            ? valueFormatter(item.value ?? 0)
-            : (item.value ?? 0),
-    }))
-
     return (
-        <Box
-            flexDirection="column"
-            width={containerWidth}
-            height={containerHeight}
-            gap="lg"
-        >
-            <Box
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="space-between"
-                className={css.chartWrapper}
-            >
-                <Box className={css.chartContainer}>
-                    <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
-                        <PieChart onMouseMove={onPieMouseMove}>
-                            <Pie
-                                data={visibleData}
-                                cx="50%"
-                                cy="50%"
-                                innerRadius={INNER_RADIUS}
-                                outerRadius={OUTER_RADIUS}
-                                paddingAngle={PADDING_ANGLE}
-                                dataKey="value"
-                                cornerRadius={CORNER_RADIUS}
-                                activeShape={renderActiveShape}
-                                onMouseEnter={(_, index) =>
-                                    setActiveIndex(index)
-                                }
-                                onMouseLeave={() => setActiveIndex(null)}
-                            >
-                                {visibleData.map((entry, index) => (
-                                    <Cell
-                                        key={`cell-${index}`}
-                                        fill={entry.color}
-                                        opacity={
-                                            activeIndex === null ||
-                                            activeIndex === index
-                                                ? 1
-                                                : 0.3
-                                        }
-                                        stroke="transparent"
-                                    />
-                                ))}
-                            </Pie>
-                            <Tooltip
-                                content={renderTooltipContent(
-                                    valueFormatter,
-                                    period,
-                                )}
-                            />
-                        </PieChart>
-                    </ResponsiveContainer>
-                </Box>
-
-                <DonutChartLegend
-                    items={dataWithPercentages}
-                    hiddenSegments={hiddenSegments}
-                    onToggleSegment={toggleSegment}
-                />
-            </Box>
-        </Box>
+        <DonutChartHoverProvider>
+            <DonutChartInner
+                containerHeight={containerHeight}
+                containerWidth={containerWidth}
+                data={data}
+                period={period}
+                valueFormatter={valueFormatter}
+            />
+        </DonutChartHoverProvider>
     )
 }

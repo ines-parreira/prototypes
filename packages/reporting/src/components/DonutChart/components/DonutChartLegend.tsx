@@ -1,4 +1,8 @@
-import { Box, Button, Text } from '@gorgias/axiom'
+import { useCallback, useEffect, useRef, useState } from 'react'
+
+import { Box } from '@gorgias/axiom'
+
+import { DonutChartLegendItem } from './DonutChartLegendItem'
 
 import css from '../DonutChart.less'
 
@@ -15,65 +19,85 @@ type DonutChartLegendProps = {
     onToggleSegment: (name: string) => void
 }
 
+const TWO_COLUMN_BREAKPOINT = 400
+
 export const DonutChartLegend = ({
     items,
     hiddenSegments,
     onToggleSegment,
 }: DonutChartLegendProps) => {
+    const containerRef = useRef<HTMLDivElement>(null)
+    const [useTwoColumns, setUseTwoColumns] = useState(false)
+
+    const checkContainerWidth = useCallback(() => {
+        if (containerRef.current) {
+            const width = containerRef.current.offsetWidth
+            setUseTwoColumns(width >= TWO_COLUMN_BREAKPOINT)
+        }
+    }, [])
+
+    useEffect(() => {
+        checkContainerWidth()
+
+        const resizeObserver = new ResizeObserver(() => {
+            checkContainerWidth()
+        })
+
+        if (containerRef.current) {
+            resizeObserver.observe(containerRef.current)
+        }
+
+        return () => {
+            resizeObserver.disconnect()
+        }
+    }, [checkContainerWidth])
+
+    const leftColumnItems = items.filter((_, index) => index % 2 === 0)
+    const rightColumnItems = items.filter((_, index) => index % 2 === 1)
+
     return (
-        <Box flexDirection="column" className={css.legend}>
-            {items.map((item) => {
-                const isHidden = hiddenSegments.has(item.name)
-                return (
-                    <Button
-                        key={item.name}
-                        size="sm"
-                        variant="tertiary"
-                        onClick={() => onToggleSegment(item.name)}
-                    >
-                        <Box
-                            display="flex"
-                            alignItems="center"
-                            gap="xs"
-                            className={css.legendLabel}
-                        >
-                            <span
-                                className={css.legendDot}
-                                style={{
-                                    backgroundColor: item.color,
-                                    opacity: isHidden ? 0.3 : 1,
-                                }}
+        <div ref={containerRef} className={css.legend}>
+            {useTwoColumns ? (
+                <div className={css.legendGrid}>
+                    <div className={css.legendColumn}>
+                        {leftColumnItems.map((item) => (
+                            <DonutChartLegendItem
+                                key={item.name}
+                                name={item.name}
+                                color={item.color}
+                                legendValue={item.legendValue}
+                                isHidden={hiddenSegments.has(item.name)}
+                                onToggle={() => onToggleSegment(item.name)}
                             />
-                            <span
-                                style={{
-                                    opacity: isHidden ? 0.5 : 1,
-                                }}
-                            >
-                                <Text
-                                    size="sm"
-                                    variant="regular"
-                                    className={css.legendText}
-                                >
-                                    {item.name}
-                                </Text>
-                            </span>
-                            <span
-                                style={{
-                                    opacity: isHidden ? 0.5 : 1,
-                                }}
-                            >
-                                <Text
-                                    size="sm"
-                                    variant="regular"
-                                    className={css.legendValue}
-                                >
-                                    {item.legendValue}
-                                </Text>
-                            </span>
-                        </Box>
-                    </Button>
-                )
-            })}
-        </Box>
+                        ))}
+                    </div>
+                    <div className={css.legendColumn}>
+                        {rightColumnItems.map((item) => (
+                            <DonutChartLegendItem
+                                key={item.name}
+                                name={item.name}
+                                color={item.color}
+                                legendValue={item.legendValue}
+                                isHidden={hiddenSegments.has(item.name)}
+                                onToggle={() => onToggleSegment(item.name)}
+                            />
+                        ))}
+                    </div>
+                </div>
+            ) : (
+                <Box flexDirection="column">
+                    {items.map((item) => (
+                        <DonutChartLegendItem
+                            key={item.name}
+                            name={item.name}
+                            color={item.color}
+                            legendValue={item.legendValue}
+                            isHidden={hiddenSegments.has(item.name)}
+                            onToggle={() => onToggleSegment(item.name)}
+                        />
+                    ))}
+                </Box>
+            )}
+        </div>
     )
 }

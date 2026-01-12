@@ -421,10 +421,10 @@ describe('ChartHeader', () => {
             expect(skeletons.length).toBeGreaterThan(0)
         })
 
-        it('should render skeleton with percentage sign when loading', () => {
+        it('should render multiple skeletons when loading', () => {
             render(<ChartHeader title="Test Chart" isLoading={true} />)
 
-            expect(screen.getByText('%')).toBeInTheDocument()
+            expect(screen.getAllByLabelText('Loading').length).toBe(2)
         })
 
         it('should not render value when loading', () => {

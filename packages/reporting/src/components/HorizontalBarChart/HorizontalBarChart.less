@@ -1,0 +1,152 @@
+:local {
+    .chartContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .barGroupContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            width: var(--spacing-xs);
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: transparent;
+            border-radius: var(--spacing-xxs);
+        }
+
+        &.scrollable {
+            padding-right: var(--spacing-xs);
+
+            &::-webkit-scrollbar-thumb {
+                background: var(--border-neutral-default);
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: var(--border-neutral-tertiary);
+            }
+        }
+
+        scrollbar-width: thin;
+        scrollbar-color: transparent transparent;
+
+        &.scrollable {
+            scrollbar-color: var(--border-neutral-default) transparent;
+        }
+    }
+
+    .chartWrapper {
+        width: 100%;
+
+        :global {
+            .recharts-wrapper {
+                outline: none !important;
+
+                &:focus {
+                    outline: none !important;
+                }
+            }
+
+            .recharts-surface {
+                outline: none !important;
+
+                &:focus {
+                    outline: none !important;
+                }
+            }
+        }
+    }
+
+    .barGroup {
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxxs);
+    }
+
+    .barLabel {
+        letter-spacing: 0.12px;
+    }
+
+    .barValue {
+        letter-spacing: 0.12px;
+    }
+
+    .showMoreButton {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxxs);
+        padding: 0 var(--spacing-xxs);
+        background: none;
+        border: none;
+        cursor: pointer;
+        border-radius: var(--spacing-xxs);
+        height: 24px;
+        color: var(--content-neutral-default);
+        width: fit-content;
+
+        &:hover {
+            background-color: var(--surface-neutral-tertiary);
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .tooltip {
+        background-color: var(--surface-inverted-default);
+        border-radius: var(--spacing-xs);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        padding: var(--spacing-xxs) var(--spacing-xs);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xxxs);
+    }
+
+    .tooltipText {
+        color: var(--content-inverted-default);
+    }
+
+    .tooltipValue {
+        font-weight: bold;
+        color: var(--content-inverted-default);
+    }
+
+    .tooltipPeriod {
+        color: var(--surface-neutral-tertiary);
+    }
+
+    .legendDot {
+        width: 10px;
+        height: 10px;
+        border-radius: var(--spacing-xxxs);
+        flex-shrink: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .chartSkeleton {
+        div[data-name='skeleton'] {
+            display: flex;
+            flex: 1;
+            width: 100%;
+
+            span {
+                display: flex !important;
+                flex: 1 !important;
+                width: 100% !important;
+            }
+        }
+    }
+}

@@ -18,6 +18,15 @@ export const METRIC_NAMES = {
     AI_AGENT_TOUCHED_TICKET_TOTAL_COUNT: 'ai-agent-touched-ticket-total-count',
     AI_AGENT_AUTOMATION_RATE: 'ai-agent-automation-rate',
     AI_AGENT_OVERALL_AUTOMATION_RATE: 'ai-agent-overall-automation-rate',
+    AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
+        'ai-agent-handover-interactions-per-intent',
+    AI_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
+        'ai-agent-snoozed-interactions-per-intent',
+    AI_AGENT_TOTAL_INTERACTIONS_PER_INTENT:
+        'ai-agent-total-interactions-per-intent',
+    AI_AGENT_SUPPORT_INTERACTIONS_PER_CHANNEL:
+        'ai-agent-support-interactions-per-channel',
+    AI_AGENT_SUPPORT_INTERACTIONS_TOTAL: 'ai-agent-support-interactions-total',
 
     // AI Journey
     AI_JOURNEY_GMV_INFLUENCED: 'ai-journey-gmv-influenced',
@@ -127,12 +136,6 @@ export const METRIC_NAMES = {
         'ai-agent-handover-interactions-per-channel',
     AI_AGENT_SNOOZED_INTERACTIONS_PER_CHANNEL:
         'ai-agent-snoozed-interactions-per-channel',
-    AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
-        'ai-agent-handover-interactions-per-intent',
-    AI_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
-        'ai-agent-snoozed-interactions-per-intent',
-    AI_AGENT_TOTAL_INTERACTIONS_PER_INTENT:
-        'ai-agent-total-interactions-per-intent',
     // Agent Experience
     AGENTXP_ONLINE_TIME: 'agentxp-online-time',
     AGENTXP_ONLINE_TIME_PER_AGENT: 'agentxp-online-time-per-agent',

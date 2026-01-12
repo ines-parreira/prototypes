@@ -88,7 +88,6 @@ export const ChartHeader = ({
                             width={14}
                             style={{ marginTop: '5px' }}
                         />
-                        <Text size="xs">%</Text>
                     </Box>
                 </Box>
             ) : (

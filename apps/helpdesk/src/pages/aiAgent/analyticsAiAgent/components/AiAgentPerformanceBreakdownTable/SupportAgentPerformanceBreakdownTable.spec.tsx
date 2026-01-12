@@ -1,124 +1,149 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
+
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import * as useIntentPerformanceMetricsModule from 'pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics'
+import * as useSupportAgentChannelPerformanceMetricsModule from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentChannelPerformanceMetrics'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
 import { SupportAgentPerformanceBreakdownTable } from './SupportAgentPerformanceBreakdownTable'
 
+jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentChannelPerformanceMetrics',
+)
+jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics')
+jest.mock(
+    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+)
+jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
+
+const mockUseStatsFilters = useStatsFilters as jest.MockedFunction<
+    typeof useStatsFilters
+>
+const mockUseSupportAgentChannelPerformanceMetrics =
+    useSupportAgentChannelPerformanceMetricsModule.useSupportAgentChannelPerformanceMetrics as jest.MockedFunction<
+        typeof useSupportAgentChannelPerformanceMetricsModule.useSupportAgentChannelPerformanceMetrics
+    >
+const mockUseIntentPerformanceMetrics =
+    useIntentPerformanceMetricsModule.useIntentPerformanceMetrics as jest.MockedFunction<
+        typeof useIntentPerformanceMetricsModule.useIntentPerformanceMetrics
+    >
+const mockUseGetCustomTicketsFieldsDefinitionData =
+    useGetCustomTicketsFieldsDefinitionData as jest.MockedFunction<
+        typeof useGetCustomTicketsFieldsDefinitionData
+    >
+const mockUseMoneySavedPerInteractionWithAutomate =
+    useMoneySavedPerInteractionWithAutomate as jest.MockedFunction<
+        typeof useMoneySavedPerInteractionWithAutomate
+    >
+
+const createWrapper = () => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: { retry: false },
+        },
+    })
+    return ({ children }: { children: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+}
+
 describe('SupportAgentPerformanceBreakdownTable', () => {
-    it('should render the table heading', () => {
-        render(<SupportAgentPerformanceBreakdownTable />)
+    beforeEach(() => {
+        jest.clearAllMocks()
+
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                startDate: '2024-01-01',
+                endDate: '2024-01-31',
+            },
+            userTimezone: 'UTC',
+        } as any)
+
+        mockUseGetCustomTicketsFieldsDefinitionData.mockReturnValue({
+            intentCustomFieldId: 5253,
+            outcomeCustomFieldId: 5254,
+            sentimentCustomFieldId: null,
+        })
+
+        mockUseMoneySavedPerInteractionWithAutomate.mockReturnValue(10)
+
+        mockUseSupportAgentChannelPerformanceMetrics.mockReturnValue({
+            data: [],
+            isLoading: false,
+            isError: false,
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+            },
+        })
+
+        mockUseIntentPerformanceMetrics.mockReturnValue({
+            data: [],
+            isLoading: false,
+            isError: false,
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                successRate: false,
+                costSaved: false,
+            },
+        })
+    })
+
+    it('should render the component with heading', () => {
+        render(<SupportAgentPerformanceBreakdownTable />, {
+            wrapper: createWrapper(),
+        })
 
         expect(screen.getByText('Performance breakdown')).toBeInTheDocument()
     })
 
-    it('should render button group for filtering', () => {
-        render(<SupportAgentPerformanceBreakdownTable />)
+    it('should render tab buttons for Channel and Intent', () => {
+        render(<SupportAgentPerformanceBreakdownTable />, {
+            wrapper: createWrapper(),
+        })
 
-        expect(screen.getByText('Channel')).toBeInTheDocument()
-        expect(screen.getByText('Intent')).toBeInTheDocument()
-    })
-
-    it('should render the correct number of rows', () => {
-        render(<SupportAgentPerformanceBreakdownTable />)
-
-        expect(screen.getByText('Order')).toBeInTheDocument()
-        expect(screen.getAllByText('Product').length).toBeGreaterThan(0)
-        expect(screen.getByText('Return')).toBeInTheDocument()
-        expect(screen.getByText('Shipping')).toBeInTheDocument()
-        expect(screen.getByText('Warranty')).toBeInTheDocument()
-    })
-
-    it('should render table with all column headers', () => {
-        render(<SupportAgentPerformanceBreakdownTable />)
-
-        expect(screen.getByText('Intent L1')).toBeInTheDocument()
-        expect(screen.getByText('Intent L2')).toBeInTheDocument()
         expect(
-            screen.getByText('AI Agent interactions share'),
+            screen.getByRole('radio', { name: /Channel/i }),
         ).toBeInTheDocument()
-        expect(screen.getByText('Automated interactions')).toBeInTheDocument()
+        expect(
+            screen.getByRole('radio', { name: /Intent/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('should default to Channel tab', () => {
+        render(<SupportAgentPerformanceBreakdownTable />, {
+            wrapper: createWrapper(),
+        })
+
+        const channelButton = screen.getByRole('radio', { name: /Channel/i })
+        expect(channelButton).toHaveAttribute('aria-checked', 'true')
+    })
+
+    it('should render a table', () => {
+        render(<SupportAgentPerformanceBreakdownTable />, {
+            wrapper: createWrapper(),
+        })
+
+        const table = screen.getByRole('table')
+        expect(table).toBeInTheDocument()
+    })
+
+    it('should render Channel table headers without Shopping Assistant columns', () => {
+        render(<SupportAgentPerformanceBreakdownTable />, {
+            wrapper: createWrapper(),
+        })
+
         expect(screen.getByText('Handover interactions')).toBeInTheDocument()
         expect(screen.getByText('Snoozed interactions')).toBeInTheDocument()
-        expect(screen.getByText('Success rate')).toBeInTheDocument()
-    })
-
-    it('should render correct data for Order row', () => {
-        render(<SupportAgentPerformanceBreakdownTable />)
-
-        expect(screen.getByText('Order')).toBeInTheDocument()
-        expect(screen.getAllByText('Status').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('10%').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('600').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('100').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('10').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('25%').length).toBeGreaterThan(0)
-    })
-
-    it('should render correct data for Product Details row', () => {
-        render(<SupportAgentPerformanceBreakdownTable />)
-
-        expect(screen.getByText('Details')).toBeInTheDocument()
-        expect(screen.getAllByText('2%').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('450').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('30').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('3').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('60%').length).toBeGreaterThan(0)
-    })
-
-    it('should render correct data for Product Issues row', () => {
-        render(<SupportAgentPerformanceBreakdownTable />)
-
-        expect(screen.getByText('Issues')).toBeInTheDocument()
-        expect(screen.getAllByText('299').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('20%').length).toBeGreaterThan(0)
-    })
-
-    it('should render correct data for Return row', () => {
-        render(<SupportAgentPerformanceBreakdownTable />)
-
-        expect(screen.getByText('Return')).toBeInTheDocument()
-        expect(screen.getAllByText('Status').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('5%').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('150').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('5').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('2').length).toBeGreaterThan(0)
-    })
-
-    it('should render correct data for Shipping row', () => {
-        render(<SupportAgentPerformanceBreakdownTable />)
-
-        expect(screen.getByText('Shipping')).toBeInTheDocument()
-        expect(screen.getByText('Information')).toBeInTheDocument()
-        expect(screen.getAllByText('1%').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('100').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('4').length).toBeGreaterThan(0)
-    })
-
-    it('should render correct data for Warranty row', () => {
-        render(<SupportAgentPerformanceBreakdownTable />)
-
-        expect(screen.getByText('Warranty')).toBeInTheDocument()
-        expect(screen.getByText('Claim')).toBeInTheDocument()
-        expect(screen.getAllByText('4%').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('40').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('1').length).toBeGreaterThan(0)
-    })
-
-    it('should render TableToolbar component', () => {
-        render(<SupportAgentPerformanceBreakdownTable />)
-
-        expect(screen.getByText('6 items')).toBeInTheDocument()
-    })
-
-    it('should have settings button in toolbar', () => {
-        render(<SupportAgentPerformanceBreakdownTable />)
-
-        const buttons = screen.getAllByRole('button')
-        expect(buttons.length).toBeGreaterThan(0)
-    })
-
-    it('should render all info icons for column headers', () => {
-        const { container } = render(<SupportAgentPerformanceBreakdownTable />)
-
-        const infoIcons = container.querySelectorAll('[aria-label="info"]')
-        expect(infoIcons.length).toBeGreaterThan(0)
+        expect(screen.queryByText('Total sales')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('% automated by Shopping assistant'),
+        ).not.toBeInTheDocument()
     })
 })

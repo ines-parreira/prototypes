@@ -2,6 +2,7 @@ import type { Cube } from 'domains/reporting/models/types'
 
 export enum AIAgentInteractionsBySkillDatasetDimension {
     BillableType = 'AIAgentAutomatedInteractions.billableType',
+    Channel = 'AIAgentAutomatedInteractions.channel',
     AutomationEventCreatedDatetime = 'AIAgentAutomatedInteractions.automationEventCreatedDatetime',
 }
 

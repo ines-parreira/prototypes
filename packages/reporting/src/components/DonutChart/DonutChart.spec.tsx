@@ -338,7 +338,7 @@ describe('DonutChart', () => {
             ).toBeInTheDocument()
         })
 
-        it('should apply radius offset to outer radius', () => {
+        it('should apply radius offset to inner radius', () => {
             const props = {
                 cx: 100,
                 cy: 100,
@@ -353,7 +353,8 @@ describe('DonutChart', () => {
             const result = renderActiveShape(props)
 
             expect(result).toBeTruthy()
-            expect(result.props.outerRadius).toBe(100)
+            expect(result.props.innerRadius).toBe(55)
+            expect(result.props.outerRadius).toBe(95)
         })
     })
 

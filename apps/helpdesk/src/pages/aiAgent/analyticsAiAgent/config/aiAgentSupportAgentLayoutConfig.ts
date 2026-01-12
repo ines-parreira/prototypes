@@ -34,7 +34,7 @@ export const ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT: DashboardLayoutConfig = {
             items: [
                 {
                     chartId:
-                        AnalyticsAiAgentSupportAgentChart.SupportAgentTrendComboChart,
+                        AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart,
                     gridSize: 6,
                 },
                 {

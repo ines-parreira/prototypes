@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { memo, useState } from 'react'
 
-import { Box, Skeleton, Text } from '@gorgias/axiom'
+import { Box, Skeleton } from '@gorgias/axiom'
 
 import { NOT_AVAILABLE_PLACEHOLDER } from '../../constants'
 import type { MetricTrend, MetricTrendFormat, TooltipData } from '../../types'
@@ -92,7 +92,6 @@ export const TrendCard = memo<TrendCardProps>(
                                         width={14}
                                         style={{ marginTop: '5px' }}
                                     />
-                                    <Text size="xs">%</Text>
                                 </Box>
                             )}
                             {hasData && (

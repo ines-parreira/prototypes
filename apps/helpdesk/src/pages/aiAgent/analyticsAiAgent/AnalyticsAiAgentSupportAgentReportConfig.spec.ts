@@ -121,7 +121,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
     it('should have all chart configs defined', () => {
         const charts = AnalyticsAiAgentSupportAgentReportConfig.charts
 
-        expect(Object.keys(charts)).toHaveLength(7)
+        expect(Object.keys(charts)).toHaveLength(8)
         expect(
             charts[AnalyticsAiAgentSupportAgentChart.TimeSavedCard],
         ).toBeDefined()
@@ -137,6 +137,11 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
         expect(
             charts[
                 AnalyticsAiAgentSupportAgentChart.SupportAgentTrendComboChart
+            ],
+        ).toBeDefined()
+        expect(
+            charts[
+                AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart
             ],
         ).toBeDefined()
         expect(
@@ -264,6 +269,41 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
             expect(result).toHaveProperty('isLoading')
             expect(result).toHaveProperty('fileName')
             expect(result).toHaveProperty('files')
+        }
+    })
+
+    it('should have support interactions combo chart config', () => {
+        const config =
+            AnalyticsAiAgentSupportAgentReportConfig.charts[
+                AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Support interactions breakdown')
+        expect(config.description).toBe('Support interactions by intent')
+        expect(config.chartType).toBe(ChartType.Graph)
+    })
+
+    it('should have fetch function for support interactions combo chart', async () => {
+        const config =
+            AnalyticsAiAgentSupportAgentReportConfig.charts[
+                AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart
+            ]
+
+        expect(config.csvProducer).toBeDefined()
+        expect(config.csvProducer).toHaveLength(1)
+
+        const csvProducer = config.csvProducer?.[0]
+        expect(csvProducer).toBeDefined()
+        expect(csvProducer?.type).toBe(DataExportFormat.Table)
+
+        if (csvProducer && typeof csvProducer.fetch === 'function') {
+            const result = await (csvProducer.fetch as any)()
+            expect(result).toBeDefined()
+            expect(result).toHaveProperty('isLoading')
+            expect(result).toHaveProperty('fileName')
+            expect(result).toHaveProperty('files')
+            expect(result.fileName).toBe('support-interactions.csv')
         }
     })
 })
