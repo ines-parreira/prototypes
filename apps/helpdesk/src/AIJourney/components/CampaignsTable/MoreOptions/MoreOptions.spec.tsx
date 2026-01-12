@@ -15,6 +15,12 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
+const mockUseFlag = jest.fn()
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: (key: string) => mockUseFlag(key),
+}))
+
 describe('<MoreOptions />', () => {
     const defaultProps = {
         shopName: 'test-shop',
@@ -29,6 +35,8 @@ describe('<MoreOptions />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFlag.mockImplementation(() => true)
+        delete (window as any).USER_IMPERSONATED
     })
 
     describe('Options visibility based on state', () => {
@@ -329,6 +337,63 @@ describe('<MoreOptions />', () => {
             }
 
             expect(handleChangeStatus).toHaveBeenCalledWith('scheduled')
+        })
+    })
+
+    describe('Send option feature flag', () => {
+        it('should show Send option when feature flag is enabled', async () => {
+            mockUseFlag.mockImplementation(() => true)
+
+            const user = userEvent.setup()
+            renderWithRouter(
+                <MoreOptions
+                    {...defaultProps}
+                    state={JourneyCampaignStateEnum.Draft}
+                />,
+            )
+
+            const trigger = screen.getByLabelText('Open options')
+            await user.click(trigger)
+
+            expect(screen.getAllByText('Send').length).toBeGreaterThan(0)
+        })
+
+        it('should not show Send option when feature flag is disabled and user is not impersonated', async () => {
+            mockUseFlag.mockImplementation(() => false)
+
+            const user = userEvent.setup()
+            renderWithRouter(
+                <MoreOptions
+                    {...defaultProps}
+                    state={JourneyCampaignStateEnum.Draft}
+                />,
+            )
+
+            const trigger = screen.getByLabelText('Open options')
+            await user.click(trigger)
+
+            expect(screen.queryByText('Send')).not.toBeInTheDocument()
+            expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('Delete').length).toBeGreaterThan(0)
+        })
+
+        it('should show Send option when user is impersonated even if feature flag is disabled', async () => {
+            mockUseFlag.mockImplementation(() => false)
+            ;(window as any).USER_IMPERSONATED = true
+
+            const user = userEvent.setup()
+            renderWithRouter(
+                <MoreOptions
+                    {...defaultProps}
+                    state={JourneyCampaignStateEnum.Draft}
+                />,
+            )
+
+            const trigger = screen.getByLabelText('Open options')
+            await user.click(trigger)
+
+            expect(screen.getAllByText('Send').length).toBeGreaterThan(0)
         })
     })
 })

@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory } from 'react-router-dom'
 
 import { ListItem, Select, SelectTrigger } from '@gorgias/axiom'
@@ -67,6 +68,9 @@ export const MoreOptions = ({
     handleDuplicateClick: () => void
 }) => {
     const history = useHistory()
+    const isAiJourneyCampaignSendingEnabled = useFlag(
+        FeatureFlagKey.AiJourneyCampaignSendingEnabled,
+    )
 
     const handleAction = useCallback(
         (option: OptionEntry) => {
@@ -116,11 +120,17 @@ export const MoreOptions = ({
             .map((option) => {
                 switch (option) {
                     case Options.Send:
-                        return {
-                            icon: 'comm-send',
-                            id: option,
-                            name: 'Send',
+                        if (
+                            isAiJourneyCampaignSendingEnabled ||
+                            window.USER_IMPERSONATED
+                        ) {
+                            return {
+                                icon: 'comm-send',
+                                id: option,
+                                name: 'Send',
+                            }
                         }
+                        return null
                     case Options.Pause:
                         return {
                             icon: 'media-pause-circle',
@@ -162,7 +172,7 @@ export const MoreOptions = ({
                 }
             })
             .filter((option): option is OptionEntry => option !== null)
-    }, [state])
+    }, [state, isAiJourneyCampaignSendingEnabled])
 
     if (options.length === 0) {
         return null
