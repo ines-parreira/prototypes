@@ -83,38 +83,42 @@ export function MetricsFieldArray() {
     return (
         <Box>
             <Box flexDirection="column" gap="sm">
-                {fields.map((field, index) => (
-                    <Box flexDirection="column" gap="xs" key={index}>
-                        <ToggleField
-                            caption={fieldTexts[field.name].tooltip}
-                            value={toggleState[index]}
-                            onChange={(nextValue: boolean) => {
-                                handleToggle(nextValue, index)
-                            }}
-                            label={fieldTexts[field.name].label}
-                        />
-                        <Box gap="sm">
-                            <FormField
-                                name={`metrics.${index}.threshold`}
-                                field={NumberInputField}
-                                isRequired
-                                hasControls={false}
-                                placeholder={
-                                    String(tempThresholdValues[index] || '') ||
-                                    '0'
-                                }
-                                min={1}
-                                wrapperClassName={css.input}
-                                allowEmptyString
-                                isDisabled={!toggleState[index]}
+                {fields.map((field, index) => {
+                    if (field.name === 'WAIT_TIME') return null
+                    return (
+                        <Box flexDirection="column" gap="xs" key={index}>
+                            <ToggleField
+                                caption={fieldTexts[field.name].tooltip}
+                                value={toggleState[index]}
+                                onChange={(nextValue: boolean) => {
+                                    handleToggle(nextValue, index)
+                                }}
+                                label={fieldTexts[field.name].label}
                             />
-                            <TimeUnitSelectField
-                                name={`metrics.${index}.unit`}
-                                isDisabled={!toggleState[index]}
-                            />
+                            <Box gap="sm">
+                                <FormField
+                                    name={`metrics.${index}.threshold`}
+                                    field={NumberInputField}
+                                    isRequired
+                                    hasControls={false}
+                                    placeholder={
+                                        String(
+                                            tempThresholdValues[index] || '',
+                                        ) || '0'
+                                    }
+                                    min={1}
+                                    wrapperClassName={css.input}
+                                    allowEmptyString
+                                    isDisabled={!toggleState[index]}
+                                />
+                                <TimeUnitSelectField
+                                    name={`metrics.${index}.unit`}
+                                    isDisabled={!toggleState[index]}
+                                />
+                            </Box>
                         </Box>
-                    </Box>
-                ))}
+                    )
+                })}
             </Box>
             {!!error && <Caption error={error.message} />}
         </Box>

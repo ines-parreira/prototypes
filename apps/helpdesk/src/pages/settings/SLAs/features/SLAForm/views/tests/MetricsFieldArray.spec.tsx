@@ -26,6 +26,27 @@ describe('<MetricsFieldArray />', () => {
         expect(screen.getByText('Resolution time')).toBeInTheDocument()
     })
 
+    it('should not render WAIT_TIME metric field', () => {
+        render(
+            <Form
+                defaultValues={{
+                    metrics: [
+                        { id: '1', name: 'FRT' },
+                        { id: '2', name: 'RT' },
+                        { id: '3', name: 'WAIT_TIME' },
+                    ],
+                }}
+                onValidSubmit={jest.fn()}
+            >
+                <MetricsFieldArray />
+            </Form>,
+        )
+
+        expect(screen.getByText('First response time')).toBeInTheDocument()
+        expect(screen.getByText('Resolution time')).toBeInTheDocument()
+        expect(screen.getAllByRole('switch')).toHaveLength(2)
+    })
+
     describe('handleToggle', () => {
         it('should clear threshold value when toggling off a metric', async () => {
             const user = userEvent.setup()

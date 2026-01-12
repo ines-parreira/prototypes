@@ -91,42 +91,49 @@ export default function MetricsFieldArray() {
     return (
         <div className={settingsCss.mb48}>
             <div>
-                {fields.map((field, index) => (
-                    <div className={classNames(settingsCss.mb24)} key={index}>
-                        <ToggleInput
-                            caption={fieldTexts[field.name].tooltip}
-                            isToggled={toggleState[index]}
-                            onClick={(nextValue) => {
-                                handleToggle(nextValue, index)
-                            }}
-                            className={settingsCss.mb16}
+                {fields.map((field, index) => {
+                    if (field.name === 'WAIT_TIME') return null
+                    return (
+                        <div
+                            className={classNames(settingsCss.mb24)}
+                            key={index}
                         >
-                            {fieldTexts[field.name].label}
-                        </ToggleInput>
-                        <div className={css.inputGroup}>
-                            <FormField
-                                name={`metrics.${index}.threshold`}
-                                field={NumberInputField}
-                                isRequired
-                                hasControls={false}
-                                placeholder={
-                                    String(tempThresholdValues[index] || '') ||
-                                    '0'
-                                }
-                                min={1}
-                                wrapperClassName={css.input}
-                                allowEmptyString
-                                isDisabled={!toggleState[index]}
-                            />
-                            <FormField
-                                name={`metrics.${index}.unit`}
-                                field={TimeUnitSelectBox}
-                                className={css.input}
-                                isDisabled={!toggleState[index]}
-                            />
+                            <ToggleInput
+                                caption={fieldTexts[field.name].tooltip}
+                                isToggled={toggleState[index]}
+                                onClick={(nextValue) => {
+                                    handleToggle(nextValue, index)
+                                }}
+                                className={settingsCss.mb16}
+                            >
+                                {fieldTexts[field.name].label}
+                            </ToggleInput>
+                            <div className={css.inputGroup}>
+                                <FormField
+                                    name={`metrics.${index}.threshold`}
+                                    field={NumberInputField}
+                                    isRequired
+                                    hasControls={false}
+                                    placeholder={
+                                        String(
+                                            tempThresholdValues[index] || '',
+                                        ) || '0'
+                                    }
+                                    min={1}
+                                    wrapperClassName={css.input}
+                                    allowEmptyString
+                                    isDisabled={!toggleState[index]}
+                                />
+                                <FormField
+                                    name={`metrics.${index}.unit`}
+                                    field={TimeUnitSelectBox}
+                                    className={css.input}
+                                    isDisabled={!toggleState[index]}
+                                />
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    )
+                })}
             </div>
             {!!error && <Caption error={error.message} />}
         </div>
