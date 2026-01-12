@@ -12,21 +12,6 @@ describe('InUseByAIFilter', () => {
         mockOnClear.mockClear()
     })
 
-    it('renders FilterButton with default text when value is null', () => {
-        render(
-            <InUseByAIFilter
-                value={null}
-                onChange={mockOnChange}
-                onClear={mockOnClear}
-            />,
-        )
-
-        const button = screen.getByRole('button')
-        expect(button).toBeInTheDocument()
-        expect(button).toHaveTextContent(/in use by ai agent/i)
-        expect(button).toHaveTextContent(/select value\.\.\./i)
-    })
-
     it('renders FilterButton with "True" when value is true', () => {
         render(
             <InUseByAIFilter
@@ -128,18 +113,6 @@ describe('InUseByAIFilter', () => {
         await act(() => userEvent.click(clearButton))
 
         expect(mockOnClear).toHaveBeenCalledTimes(1)
-    })
-
-    it('does not show clear button when value is null', () => {
-        render(
-            <InUseByAIFilter
-                value={null}
-                onChange={mockOnChange}
-                onClear={mockOnClear}
-            />,
-        )
-
-        expect(screen.queryByLabelText(/close/i)).not.toBeInTheDocument()
     })
 
     it('shows clear button when value is true', () => {

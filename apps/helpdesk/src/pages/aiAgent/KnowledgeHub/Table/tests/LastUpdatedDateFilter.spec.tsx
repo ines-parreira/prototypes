@@ -78,19 +78,6 @@ describe('LastUpdatedDateFilter', () => {
         expect(clearButton).toBeInTheDocument()
     })
 
-    it('does not show clear button when no dates are selected', () => {
-        render(
-            <LastUpdatedDateFilter
-                startDate={null}
-                endDate={null}
-                onChange={mockOnChange}
-                onClear={mockOnClear}
-            />,
-        )
-
-        expect(screen.queryByLabelText(/close/i)).not.toBeInTheDocument()
-    })
-
     it('formats date range correctly', () => {
         const startDate = moment('2025-06-15').toISOString()
         const endDate = moment('2025-11-26').toISOString()

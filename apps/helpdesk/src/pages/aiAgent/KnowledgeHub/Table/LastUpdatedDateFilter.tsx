@@ -120,7 +120,7 @@ export const LastUpdatedDateFilter = ({
                     <FilterButton
                         label="Last updated date"
                         {...renderProps}
-                        onClear={startDate || endDate ? handleClear : undefined}
+                        onClear={handleClear}
                     >
                         <FilterValue value={filterValue} />
                     </FilterButton>

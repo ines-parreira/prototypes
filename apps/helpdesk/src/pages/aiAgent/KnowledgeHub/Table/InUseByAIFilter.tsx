@@ -45,7 +45,7 @@ export const InUseByAIFilter = ({
             <FilterButton
                 label="In use by AI Agent"
                 onClick={handleToggle}
-                onClear={value !== null ? handleClear : undefined}
+                onClear={handleClear}
                 ref={buttonRef}
             >
                 <FilterValue value={filterValue} />
