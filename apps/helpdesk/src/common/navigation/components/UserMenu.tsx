@@ -24,7 +24,6 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import AvailabilityToggle from './AvailabilityToggle'
 import { AxiomMigrationToggle } from './AxiomMigrationToggle'
 import NavbarLink from './NavbarLink'
-import OfficeHours from './OfficeHours'
 import ThemeMenu from './ThemeMenu'
 
 import css from './UserMenu.less'
@@ -156,7 +155,6 @@ export default function UserMenu({ onClose }: Props) {
                             Learn
                         </DropdownItemLabel>
                     </button>
-                    <OfficeHours onToggleDropdown={onClose} />
                     <NavbarLink
                         to="/app/referral-program"
                         onClick={() => {

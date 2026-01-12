@@ -68,7 +68,6 @@ jest.mock('../AxiomMigrationToggle', () => ({
     AxiomMigrationToggle: () => <div>AxiomMigrationToggle</div>,
 }))
 jest.mock('../MainNavigation', () => () => <div>MainNavigation</div>)
-jest.mock('../OfficeHours', () => () => <div>OfficeHours</div>)
 jest.mock('../ThemeMenu', () => () => <div>ThemeMenu</div>)
 
 jest.mock('state/currentUser/selectors', () => ({
@@ -115,7 +114,6 @@ describe('UserMenu', () => {
         expect(screen.getByText('Your profile')).toBeInTheDocument()
         expect(screen.getByText('Gorgias updates')).toBeInTheDocument()
         expect(screen.getByText('Learn')).toBeInTheDocument()
-        expect(screen.getByText('OfficeHours')).toBeInTheDocument()
         expect(screen.getByText('Refer a friend & earn')).toBeInTheDocument()
         expect(screen.getByText('Log out')).toBeInTheDocument()
     })
