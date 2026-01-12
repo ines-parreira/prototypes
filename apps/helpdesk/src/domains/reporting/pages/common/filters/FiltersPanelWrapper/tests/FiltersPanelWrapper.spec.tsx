@@ -152,7 +152,7 @@ describe('FiltersPanelWrapper with mocked children', () => {
         )
     })
 
-    it('should pass optionalFilters through usePermittedFilters to FiltersPanel', () => {
+    it('should pass optionalFilters to FiltersPanel', () => {
         const optionalFilters = [FilterKey.Channels, FilterKey.Tags]
         renderWithStore(
             <FiltersPanelWrapper optionalFilters={optionalFilters} />,
@@ -161,7 +161,7 @@ describe('FiltersPanelWrapper with mocked children', () => {
 
         expect(MockFiltersPanel).toHaveBeenCalledWith(
             expect.objectContaining({
-                optionalFilters: expect.any(Array),
+                optionalFilters,
             }),
         )
     })

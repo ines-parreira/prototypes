@@ -1,6 +1,5 @@
 import type { ReactElement } from 'react'
 
-import { usePermittedFilters } from 'domains/reporting/hooks/filters/usePermittedFilters'
 import type { FiltersPanelProps } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import { FiltersPanel } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import css from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper.less'
@@ -28,25 +27,24 @@ export const FiltersPanelWrapper = ({
     compact = false,
 }: FiltersPanelWrapperProps): ReactElement => {
     const shouldHideFilters = useAppSelector(getHideFiltersPanelOptionalFilters)
-    const permittedFilters = usePermittedFilters(optionalFilters)
 
     return (
         <div className={css.outerWrapper}>
             <div className={compact ? css.wrapperCompact : css.wrapper}>
                 <FiltersPanel
                     filterSettingsOverrides={filterSettingsOverrides}
-                    optionalFilters={permittedFilters}
+                    optionalFilters={optionalFilters}
                     persistentFilters={persistentFilters}
                     applicableFilters={[
                         ...(persistentFilters || []),
-                        ...permittedFilters,
+                        ...optionalFilters,
                     ]}
                     shouldHideFilters={shouldHideFilters}
                     compact={compact}
                 />
                 {withSavedFilters && (
                     <SavedFiltersActions
-                        optionalFilters={permittedFilters}
+                        optionalFilters={optionalFilters}
                         shouldHideFilters={shouldHideFilters}
                         pinnedFilter={pinnedFilter}
                     />
@@ -55,7 +53,7 @@ export const FiltersPanelWrapper = ({
             {withSavedFilters && (
                 <SavedFiltersPanel
                     persistentFilters={persistentFilters}
-                    optionalFilters={permittedFilters}
+                    optionalFilters={optionalFilters}
                     pinnedFilter={pinnedFilter}
                 />
             )}
