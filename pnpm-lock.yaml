@@ -7,8 +7,8 @@ settings:
 catalogs:
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit':
-      specifier: 0.1.14
-      version: 0.1.14
+      specifier: 0.1.23
+      version: 0.1.23
   axiom:
     '@gorgias/axiom':
       specifier: 0.146.0
@@ -426,7 +426,7 @@ importers:
         version: 3.4.7
       '@gorgias/analytics-ui-kit':
         specifier: catalog:analytics-ui-kit
-        version: 0.1.14(@gorgias/design-tokens@0.11.4)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
+        version: 0.1.23(classnames@2.2.6)(core-js@3.42.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.146.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
@@ -2093,7 +2093,7 @@ importers:
     devDependencies:
       '@gorgias/analytics-ui-kit':
         specifier: catalog:analytics-ui-kit
-        version: 0.1.14(@gorgias/design-tokens@0.11.4)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)
+        version: 0.1.23(classnames@2.2.6)(core-js@3.42.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens':
         specifier: catalog:axiom
         version: 0.11.4
@@ -3895,14 +3895,14 @@ packages:
     resolution: {integrity: sha512-j5C6NyfKevIxsfLK8KwO1C0vvP7k1+h4A9cFpc+cr6mEwCc1sPkr17dzh0Ke6k9U5pQccAQoXdcNBl3IYa4+ZQ==}
     deprecated: the package is rather renamed to @formatjs/ecma-abstract with some changes in functionality (primarily selectUnit is removed and we don't plan to make any further changes to this package
 
-  '@gorgias/analytics-ui-kit@0.1.14':
-    resolution: {integrity: sha512-8C0xO2juGGWIYE7tIGoXLQCaQSc3Rg5n5jRjP99/eVIpBd+3U4VLd+Y42dVXGCiyN59Bw05AGnLrUXcYTht/QQ==, tarball: https://npm.pkg.github.com/download/@gorgias/analytics-ui-kit/0.1.14/6d3cbcd0dfaadc28764c19982333602c42f35dac}
-    engines: {node: '>=18'}
+  '@gorgias/analytics-ui-kit@0.1.23':
+    resolution: {integrity: sha512-IB/NwtAmLENOtN1g7vh7s3BMi1HjDMFM3VTnGZOfuXicP+ZR9YtHUTYnNpIYUkv6DQwvoSv+hyhRLJMoDudmGA==, tarball: https://npm.pkg.github.com/download/@gorgias/analytics-ui-kit/0.1.23/b0723ac5d6281eb53f2daf51c5fb30343dd342a1}
+    engines: {node: '>=22'}
     peerDependencies:
-      '@gorgias/design-tokens': ^0.3.1
       classnames: ^2.3.2
       core-js: ^3.36
       react: ^17
+      react-dom: ^17
 
   '@gorgias/axiom@0.146.0':
     resolution: {integrity: sha512-9rM0wmhyBYCoTXqzpY4bjKsL0Ebp6IujkTqHLIv71ck+a0Ce9o3zJwysTFOpACIWMUPZzYkgy5Ni4JPcgDl+Fw==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.146.0/af91ebdb850b7a267c7bf490fef9caf98428cf97}
@@ -15875,12 +15875,12 @@ snapshots:
     dependencies:
       emojis-list: 3.0.0
 
-  '@gorgias/analytics-ui-kit@0.1.14(@gorgias/design-tokens@0.11.4)(classnames@2.2.6)(core-js@3.42.0)(react@18.2.0)':
+  '@gorgias/analytics-ui-kit@0.1.23(classnames@2.2.6)(core-js@3.42.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@gorgias/design-tokens': 0.11.4
       classnames: 2.2.6
       core-js: 3.42.0
       react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
 
   '@gorgias/axiom@0.146.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
     dependencies:
