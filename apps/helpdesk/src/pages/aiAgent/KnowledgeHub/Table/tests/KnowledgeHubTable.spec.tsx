@@ -1464,13 +1464,17 @@ describe('KnowledgeHubTable', () => {
                 id: String(i + 1),
             }))
 
-        const getPaginationToolbar = () => {
-            const paginationContainer =
+        const getPaginationContainer = () => {
+            return (
                 document.querySelector('.pagination') ||
                 document.querySelector('[class*="pagination"]')
-            return paginationContainer?.querySelector(
-                '[data-name="table-toolbar"]',
             )
+        }
+
+        const isPaginationHidden = () => {
+            const container = getPaginationContainer()
+            if (!container) return true
+            return container.className.includes('hidden')
         }
 
         it('should not show pagination when there are 10 or fewer items', () => {
@@ -1481,7 +1485,7 @@ describe('KnowledgeHubTable', () => {
                 selectedFolder: items[0],
             })
 
-            expect(getPaginationToolbar()).not.toBeInTheDocument()
+            expect(isPaginationHidden()).toBe(true)
         })
 
         it('should show pagination when there are more than 10 items', () => {
@@ -1492,7 +1496,7 @@ describe('KnowledgeHubTable', () => {
                 selectedFolder: items[0],
             })
 
-            expect(getPaginationToolbar()).toBeInTheDocument()
+            expect(isPaginationHidden()).toBe(false)
         })
 
         it('should not show pagination when there are 5 items', () => {
@@ -1503,7 +1507,7 @@ describe('KnowledgeHubTable', () => {
                 selectedFolder: items[0],
             })
 
-            expect(getPaginationToolbar()).not.toBeInTheDocument()
+            expect(isPaginationHidden()).toBe(true)
         })
 
         it('should show pagination when there are exactly 11 items', () => {
@@ -1514,7 +1518,7 @@ describe('KnowledgeHubTable', () => {
                 selectedFolder: items[0],
             })
 
-            expect(getPaginationToolbar()).toBeInTheDocument()
+            expect(isPaginationHidden()).toBe(false)
         })
     })
 

@@ -476,13 +476,17 @@ export const KnowledgeHubTable = ({
                     }}
                 />
             </TableRoot>
-            <div className={css.pagination}>
-                {!isSearchEmptyPage && displayData.length > 10 && (
-                    <TableToolbar<GroupedKnowledgeItem>
-                        table={table}
-                        bottomRow={{ right: ['pagination'] }}
-                    />
+            <div
+                className={classNames(
+                    css.pagination,
+                    (displayData.length <= 10 || isSearchEmptyPage) &&
+                        css.hidden,
                 )}
+            >
+                <TableToolbar<GroupedKnowledgeItem>
+                    table={table}
+                    bottomRow={{ right: ['pagination'] }}
+                />
             </div>
         </div>
     )
