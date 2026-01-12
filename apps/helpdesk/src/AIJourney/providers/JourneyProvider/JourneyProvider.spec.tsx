@@ -132,7 +132,12 @@ describe('<JourneyProvider />', () => {
 
     it('provides journey data and loading state', async () => {
         mockUseIntegrations.mockReturnValue({
-            currentIntegration: { id: 1, name: 'test-shop', type: 'shopify' },
+            currentIntegration: {
+                id: 1,
+                name: 'test-shop',
+                type: 'shopify',
+                meta: { currency: 'USD' },
+            },
             isLoading: false,
         })
         mockUseJourneyData.mockReturnValue({
@@ -244,6 +249,7 @@ describe('<JourneyProvider />', () => {
                     id: 1,
                     name: 'test-shop',
                     type: 'shopify',
+                    meta: { currency: 'USD' },
                 },
                 isLoading: false,
             })
@@ -273,6 +279,7 @@ describe('<JourneyProvider />', () => {
                     id: 1,
                     name: 'test-shop',
                     type: 'shopify',
+                    meta: { currency: 'USD' },
                 },
                 isLoading: false,
             })
@@ -301,6 +308,7 @@ describe('<JourneyProvider />', () => {
                     id: 1,
                     name: 'test-shop',
                     type: 'shopify',
+                    meta: { currency: 'USD' },
                 },
                 isLoading: false,
             })
@@ -329,6 +337,7 @@ describe('<JourneyProvider />', () => {
                     id: 1,
                     name: 'test-shop',
                     type: 'shopify',
+                    meta: { currency: 'USD' },
                 },
                 isLoading: false,
             })

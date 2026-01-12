@@ -6,8 +6,8 @@ import { connect } from 'react-redux'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import Filter from 'domains/reporting/pages/common/components/Filter'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
-import { emptyFilter } from 'domains/reporting/pages/common/filters/helpers'
 import type { DropdownOption } from 'domains/reporting/pages/types'
 import { getStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
@@ -23,6 +23,14 @@ type Props = {
 export const JOURNEY_TYPE_FILTER_VALUES = {
     CAMPAIGN: 'campaign',
     FLOW: 'flow',
+}
+
+const emptyFilter = {
+    operator: LogicalOperatorEnum.ONE_OF,
+    values: [
+        JOURNEY_TYPE_FILTER_VALUES.CAMPAIGN,
+        JOURNEY_TYPE_FILTER_VALUES.FLOW,
+    ],
 }
 
 export const JourneyTypeFilter = ({

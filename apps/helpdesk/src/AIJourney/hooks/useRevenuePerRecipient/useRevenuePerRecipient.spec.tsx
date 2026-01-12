@@ -6,13 +6,11 @@ import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 import { useRevenuePerRecipient } from './useRevenuePerRecipient'
 
 jest.mock('domains/reporting/hooks/useMetricTrend')
 jest.mock('domains/reporting/hooks/useTimeSeries')
-jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
 
 describe('useRevenuePerRecipient', () => {
     const mockUserTimezone = 'America/New_York'
@@ -23,46 +21,50 @@ describe('useRevenuePerRecipient', () => {
         },
     }
 
-    beforeEach(() => {
-        ;(useCurrency as jest.Mock).mockReturnValue({ currency: 'USD' })
-    })
-
     afterEach(() => {
         jest.clearAllMocks()
     })
 
     it('should calculate revenue per recipient correctly', () => {
-        ;(useMetricTrend as jest.Mock).mockImplementation((args) => {
-            const measures = args.measures[0]
-            if (measures === AiSalesAgentOrdersMeasure.GmvUsd) {
+        let metricTrendCallCount = 0
+        ;(useMetricTrend as jest.Mock).mockImplementation(() => {
+            metricTrendCallCount++
+            if (metricTrendCallCount === 1) {
                 return {
                     data: { value: 1000, prevValue: 500 },
                     isFetching: false,
                 }
             }
 
-            if (measures === AiSalesAgentConversationsMeasure.Count) {
+            if (metricTrendCallCount === 2) {
                 return {
                     data: { value: 50, prevValue: 25 },
                     isFetching: false,
                 }
             }
+
+            return {
+                data: null,
+                isFetching: false,
+            }
         })
-        ;(useTimeSeries as jest.Mock).mockImplementation((args) => {
-            const measures = args.measures[0]
-            if (measures === AiSalesAgentOrdersMeasure.GmvUsd) {
+
+        let timeSeriesCallCount = 0
+        ;(useTimeSeries as jest.Mock).mockImplementation(() => {
+            timeSeriesCallCount++
+            if (timeSeriesCallCount === 1) {
                 return {
                     data: [
                         [
                             {
                                 dateTime: '2025-07-03',
                                 value: 500,
-                                label: AiSalesAgentOrdersMeasure.GmvUsd,
+                                label: AiSalesAgentOrdersMeasure.Gmv,
                             },
                             {
                                 dateTime: '2025-07-10',
                                 value: 1000,
-                                label: AiSalesAgentOrdersMeasure.GmvUsd,
+                                label: AiSalesAgentOrdersMeasure.Gmv,
                             },
                         ],
                     ] satisfies TimeSeriesDataItem[][],
@@ -70,7 +72,7 @@ describe('useRevenuePerRecipient', () => {
                 }
             }
 
-            if (measures === AiSalesAgentConversationsMeasure.Count) {
+            if (timeSeriesCallCount === 2) {
                 return {
                     data: [
                         [
@@ -89,6 +91,11 @@ describe('useRevenuePerRecipient', () => {
                     isFetching: false,
                 }
             }
+
+            return {
+                data: undefined,
+                isFetching: false,
+            }
         })
 
         const { result } = renderHook(() =>
@@ -96,6 +103,7 @@ describe('useRevenuePerRecipient', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )
@@ -109,12 +117,12 @@ describe('useRevenuePerRecipient', () => {
         expect(result.current.series).toEqual([
             {
                 dateTime: '2025-07-03',
-                label: 'AiSalesAgentOrders.gmvUsd',
+                label: 'AiSalesAgentOrders.gmv',
                 value: 20,
             },
             {
                 dateTime: '2025-07-10',
-                label: 'AiSalesAgentOrders.gmvUsd',
+                label: 'AiSalesAgentOrders.gmv',
                 value: 20,
             },
         ])
@@ -135,6 +143,7 @@ describe('useRevenuePerRecipient', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )
@@ -144,20 +153,26 @@ describe('useRevenuePerRecipient', () => {
     })
 
     it('should return 0 when recipients value is 0', () => {
-        ;(useMetricTrend as jest.Mock).mockImplementation((args) => {
-            const measures = args.measures[0]
-            if (measures === AiSalesAgentOrdersMeasure.GmvUsd) {
+        let metricTrendCallCount = 0
+        ;(useMetricTrend as jest.Mock).mockImplementation(() => {
+            metricTrendCallCount++
+            if (metricTrendCallCount === 1) {
                 return {
                     data: { value: 1000, prevValue: 500 },
                     isFetching: false,
                 }
             }
 
-            if (measures === AiSalesAgentConversationsMeasure.Count) {
+            if (metricTrendCallCount === 2) {
                 return {
                     data: { value: 0, prevValue: 0 },
                     isFetching: false,
                 }
+            }
+
+            return {
+                data: null,
+                isFetching: false,
             }
         })
         ;(useTimeSeries as jest.Mock).mockReturnValue({
@@ -170,6 +185,7 @@ describe('useRevenuePerRecipient', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )
@@ -192,6 +208,7 @@ describe('useRevenuePerRecipient', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )
@@ -200,20 +217,26 @@ describe('useRevenuePerRecipient', () => {
     })
 
     it('should handle edge case of previous value being 0', () => {
-        ;(useMetricTrend as jest.Mock).mockImplementation((args) => {
-            const measures = args.measures[0]
-            if (measures === AiSalesAgentOrdersMeasure.GmvUsd) {
+        let metricTrendCallCount = 0
+        ;(useMetricTrend as jest.Mock).mockImplementation(() => {
+            metricTrendCallCount++
+            if (metricTrendCallCount === 1) {
                 return {
                     data: { value: 1000, prevValue: 0 },
                     isFetching: false,
                 }
             }
 
-            if (measures === AiSalesAgentConversationsMeasure.Count) {
+            if (metricTrendCallCount === 2) {
                 return {
                     data: { value: 50, prevValue: 25 },
                     isFetching: false,
                 }
+            }
+
+            return {
+                data: null,
+                isFetching: false,
             }
         })
         ;(useTimeSeries as jest.Mock).mockReturnValue({
@@ -226,6 +249,7 @@ describe('useRevenuePerRecipient', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )

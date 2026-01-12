@@ -23,7 +23,6 @@ import { useJourneyContext } from 'AIJourney/providers'
 import { useCreateNewJourney } from 'AIJourney/queries'
 import { useDeleteJourney } from 'AIJourney/queries/useDeleteJourney/useDeleteJourney'
 import { getJourneyData } from 'AIJourney/queries/useJourneyData/useJourneyData'
-import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 import CancelCampaignConfirmation from './CancelCampaignConfirmation/CancelCampaignConfirmation'
 import EmptyCampaignsState from './EmptyCampaignsState/EmptyCampaignsState'
@@ -53,10 +52,8 @@ export default function CampaignsTable<TData, TValue>({
         string | undefined
     >()
 
-    const { currency } = useCurrency()
-
     const history = useHistory()
-    const { shopName } = useJourneyContext()
+    const { shopName, currency } = useJourneyContext()
 
     const createNewJourney = useCreateNewJourney()
 

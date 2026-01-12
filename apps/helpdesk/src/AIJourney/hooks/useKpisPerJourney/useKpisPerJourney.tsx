@@ -24,10 +24,12 @@ export const useKpisPerJourney = ({
     integrationId,
     journeyId,
     filters,
+    currency,
 }: {
     integrationId: string
     journeyId?: string
     filters: FilterType
+    currency: string
 }) => {
     const granularity = ReportingGranularity.Week
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
@@ -36,6 +38,7 @@ export const useKpisPerJourney = ({
         integrationId,
         userTimezone,
         filters,
+        currency,
         granularity,
         journeyId ? [journeyId] : undefined,
     )

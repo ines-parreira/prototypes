@@ -112,8 +112,8 @@ describe('JourneysFilter', () => {
 
             expect(screen.getByText(JOURNEYS_FILTER_NAME)).toBeInTheDocument()
 
-            fireEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
-            fireEvent.click(screen.getByText('Campaigns'))
+            fireEvent.click(screen.getByText('Campaigns, Flows'))
+            fireEvent.click(screen.getByText('Flows')) // unselect flows
 
             expect(spy).toHaveBeenCalledWith({
                 journeyType: {

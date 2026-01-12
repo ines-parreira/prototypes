@@ -8,20 +8,15 @@ import {
     AiSalesAgentConversationsMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 import { useAIJourneyResponseRate } from './useAIJourneyResponseRate'
 
 jest.mock('domains/reporting/hooks/useMetricTrend')
 jest.mock('domains/reporting/hooks/useTimeSeries')
-jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
 
 describe('useAIJourneyResponseRate', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useCurrency as jest.Mock).mockReturnValue({
-            currency: 'USD',
-        })
     })
 
     const mockFilters = {
@@ -109,7 +104,6 @@ describe('useAIJourneyResponseRate', () => {
         expect(result.current).toEqual({
             label: 'Response Rate',
             value: 50,
-            currency: 'USD',
             isLoading: false,
             interpretAs: 'more-is-better',
             metricFormat: 'percent-precision-1',
@@ -155,7 +149,6 @@ describe('useAIJourneyResponseRate', () => {
         )
 
         expect(result.current).toEqual({
-            currency: 'USD',
             interpretAs: 'more-is-better',
             isLoading: true,
             label: 'Response Rate',
@@ -170,30 +163,5 @@ describe('useAIJourneyResponseRate', () => {
                 title: 'Response Rate',
             },
         })
-    })
-
-    it('should correctly use the currency from useCurrency hook', () => {
-        ;(useMetricTrend as jest.Mock).mockReturnValue({
-            data: { value: 50, prevValue: 25 },
-            isFetching: false,
-        })
-        ;(useTimeSeries as jest.Mock).mockReturnValue({
-            data: [],
-            isFetching: false,
-        })
-        ;(useCurrency as jest.Mock).mockReturnValue({
-            currency: 'EUR',
-        })
-
-        const { result } = renderHook(() =>
-            useAIJourneyResponseRate(
-                '123',
-                'UTC',
-                mockFilters,
-                ReportingGranularity.Week,
-            ),
-        )
-
-        expect(result.current.currency).toBe('EUR')
     })
 })

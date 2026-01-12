@@ -6,20 +6,15 @@ import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 import { useClickThroughRate } from './useClickThroughRate'
 
 jest.mock('domains/reporting/hooks/useMetricTrend')
 jest.mock('domains/reporting/hooks/useTimeSeries')
-jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
 
 describe('useClickThroughRate', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useCurrency as jest.Mock).mockReturnValue({
-            currency: 'USD',
-        })
     })
 
     const mockFilters = {
@@ -74,7 +69,6 @@ describe('useClickThroughRate', () => {
         expect(result.current).toEqual({
             label: 'Click Through Rate',
             value: 100,
-            currency: 'USD',
             isLoading: false,
             interpretAs: 'more-is-better',
             metricFormat: 'percent-precision-1',
@@ -120,7 +114,6 @@ describe('useClickThroughRate', () => {
         )
 
         expect(result.current).toEqual({
-            currency: 'USD',
             interpretAs: 'more-is-better',
             isLoading: true,
             label: 'Click Through Rate',
@@ -136,32 +129,6 @@ describe('useClickThroughRate', () => {
                 shopName: 'shopName',
             },
         })
-    })
-
-    it('should correctly use the currency from useCurrency hook', () => {
-        ;(useMetricTrend as jest.Mock).mockReturnValue({
-            data: { value: 100, prevValue: 50 },
-            isFetching: false,
-        })
-        ;(useTimeSeries as jest.Mock).mockReturnValue({
-            data: [],
-            isFetching: false,
-        })
-        ;(useCurrency as jest.Mock).mockReturnValue({
-            currency: 'EUR',
-        })
-
-        const { result } = renderHook(() =>
-            useClickThroughRate(
-                '123',
-                'UTC',
-                mockFilters,
-                ReportingGranularity.Week,
-                'shopName',
-            ),
-        )
-
-        expect(result.current.currency).toBe('EUR')
     })
 
     it('should include drilldown with journeyId when provided', () => {

@@ -59,6 +59,7 @@ describe('useKpisPerJourney', () => {
                 integrationId: '123',
                 journeyId: 'journey-id',
                 filters,
+                currency: 'USD',
             }),
         )
 
@@ -83,6 +84,7 @@ describe('useKpisPerJourney', () => {
                 integrationId: '123',
                 journeyId: 'journey-id',
                 filters,
+                currency: 'USD',
             }),
         )
 
@@ -90,6 +92,7 @@ describe('useKpisPerJourney', () => {
             '123',
             'America/New_York',
             filters,
+            'USD',
             ReportingGranularity.Week,
             ['journey-id'],
         )
@@ -119,6 +122,7 @@ describe('useKpisPerJourney', () => {
                 integrationId: '123',
                 journeyId: 'journey-id',
                 filters,
+                currency: 'USD',
             }),
         )
 
@@ -129,6 +133,7 @@ describe('useKpisPerJourney', () => {
             '123',
             'Europe/London',
             expect.any(Object),
+            'USD',
             ReportingGranularity.Week,
             ['journey-id'],
         )
@@ -158,6 +163,7 @@ describe('useKpisPerJourney', () => {
                 integrationId: '123',
                 journeyId: 'journey-id',
                 filters,
+                currency: 'USD',
             }),
         )
 
@@ -168,6 +174,7 @@ describe('useKpisPerJourney', () => {
             '123',
             'Europe/London',
             expect.any(Object),
+            'USD',
             ReportingGranularity.Week,
             ['journey-id'],
         )

@@ -58,7 +58,7 @@ export const metricColumns: ColumnDef<JourneyApiDTO, unknown>[] = [
                 <Box gap="xs">
                     {formatMetricValue(
                         info.getValue() as number,
-                        'currency-precision-1',
+                        'currency',
                         meta.currency,
                     )}
                 </Box>
@@ -83,7 +83,7 @@ export const metricColumns: ColumnDef<JourneyApiDTO, unknown>[] = [
                 <Box gap="xs">
                     {formatMetricValue(
                         info.getValue() as number,
-                        'currency-precision-1',
+                        'currency',
                         meta.currency,
                     )}
                 </Box>
@@ -99,7 +99,7 @@ export const metricColumns: ColumnDef<JourneyApiDTO, unknown>[] = [
                 <Box gap="xs">
                     {formatMetricValue(
                         info.getValue() as number,
-                        'currency-precision-1',
+                        'currency',
                         meta.currency,
                     )}
                 </Box>

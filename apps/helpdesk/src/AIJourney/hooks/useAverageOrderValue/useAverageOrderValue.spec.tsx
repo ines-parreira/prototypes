@@ -5,13 +5,11 @@ import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 import { useAverageOrderValue } from './useAverageOrderValue'
 
 jest.mock('domains/reporting/hooks/useMetricTrend')
 jest.mock('domains/reporting/hooks/useTimeSeries')
-jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
 
 describe('useAverageOrderValue', () => {
     const mockUserTimezone = 'America/New_York'
@@ -23,7 +21,7 @@ describe('useAverageOrderValue', () => {
     }
 
     beforeEach(() => {
-        ;(useCurrency as jest.Mock).mockReturnValue({ currency: 'USD' })
+        jest.clearAllMocks()
     })
 
     afterEach(() => {
@@ -33,7 +31,7 @@ describe('useAverageOrderValue', () => {
     it('should calculate average order value correctly', () => {
         ;(useMetricTrend as jest.Mock).mockImplementation((args) => {
             const measures = args.measures[0]
-            if (measures === AiSalesAgentOrdersMeasure.GmvUsd) {
+            if (measures === AiSalesAgentOrdersMeasure.Gmv) {
                 return {
                     data: { value: 1000, prevValue: 500 },
                     isFetching: false,
@@ -46,22 +44,27 @@ describe('useAverageOrderValue', () => {
                     isFetching: false,
                 }
             }
+
+            return {
+                data: null,
+                isFetching: false,
+            }
         })
         ;(useTimeSeries as jest.Mock).mockImplementation((args) => {
             const measures = args.measures[0]
-            if (measures === AiSalesAgentOrdersMeasure.GmvUsd) {
+            if (measures === AiSalesAgentOrdersMeasure.Gmv) {
                 return {
                     data: [
                         [
                             {
                                 dateTime: '2025-07-03',
                                 value: 500,
-                                label: AiSalesAgentOrdersMeasure.GmvUsd,
+                                label: AiSalesAgentOrdersMeasure.Gmv,
                             },
                             {
                                 dateTime: '2025-07-10',
                                 value: 1000,
-                                label: AiSalesAgentOrdersMeasure.GmvUsd,
+                                label: AiSalesAgentOrdersMeasure.Gmv,
                             },
                         ],
                     ] satisfies TimeSeriesDataItem[][],
@@ -88,6 +91,11 @@ describe('useAverageOrderValue', () => {
                     isFetching: false,
                 }
             }
+
+            return {
+                data: undefined,
+                isFetching: false,
+            }
         })
 
         const { result } = renderHook(() =>
@@ -95,6 +103,7 @@ describe('useAverageOrderValue', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )
@@ -108,12 +117,12 @@ describe('useAverageOrderValue', () => {
         expect(result.current.series).toEqual([
             {
                 dateTime: '2025-07-03',
-                label: 'AiSalesAgentOrders.gmvUsd',
+                label: 'AiSalesAgentOrders.gmv',
                 value: 50,
             },
             {
                 dateTime: '2025-07-10',
-                label: 'AiSalesAgentOrders.gmvUsd',
+                label: 'AiSalesAgentOrders.gmv',
                 value: 50,
             },
         ])
@@ -134,6 +143,7 @@ describe('useAverageOrderValue', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )
@@ -145,7 +155,7 @@ describe('useAverageOrderValue', () => {
     it('should return 0 when orders value is 0', () => {
         ;(useMetricTrend as jest.Mock).mockImplementation((args) => {
             const measures = args.measures[0]
-            if (measures === AiSalesAgentOrdersMeasure.GmvUsd) {
+            if (measures === AiSalesAgentOrdersMeasure.Gmv) {
                 return {
                     data: { value: 1000, prevValue: 500 },
                     isFetching: false,
@@ -158,6 +168,11 @@ describe('useAverageOrderValue', () => {
                     isFetching: false,
                 }
             }
+
+            return {
+                data: null,
+                isFetching: false,
+            }
         })
         ;(useTimeSeries as jest.Mock).mockReturnValue({
             data: undefined,
@@ -169,6 +184,7 @@ describe('useAverageOrderValue', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )
@@ -191,6 +207,7 @@ describe('useAverageOrderValue', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )
@@ -201,7 +218,7 @@ describe('useAverageOrderValue', () => {
     it('should handle edge case of previous value being 0', () => {
         ;(useMetricTrend as jest.Mock).mockImplementation((args) => {
             const measures = args.measures[0]
-            if (measures === AiSalesAgentOrdersMeasure.GmvUsd) {
+            if (measures === AiSalesAgentOrdersMeasure.Gmv) {
                 return {
                     data: { value: 1000, prevValue: 0 },
                     isFetching: false,
@@ -214,6 +231,11 @@ describe('useAverageOrderValue', () => {
                     isFetching: false,
                 }
             }
+
+            return {
+                data: null,
+                isFetching: false,
+            }
         })
         ;(useTimeSeries as jest.Mock).mockReturnValue({
             data: undefined,
@@ -225,6 +247,7 @@ describe('useAverageOrderValue', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )

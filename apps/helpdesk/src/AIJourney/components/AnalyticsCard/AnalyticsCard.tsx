@@ -54,7 +54,7 @@ export const AnalyticsCard = ({
         journey.state || JourneyStatusEnum.Draft,
     )
 
-    const { journeyData } = useJourneyContext()
+    const { journeyData, currency } = useJourneyContext()
 
     const { type: journeyType } = journey
 
@@ -62,6 +62,7 @@ export const AnalyticsCard = ({
         integrationId: integrationId.toString(),
         journeyId: journey.id,
         filters,
+        currency,
     })
 
     const totalConversations = useAIJourneyTotalConversations(

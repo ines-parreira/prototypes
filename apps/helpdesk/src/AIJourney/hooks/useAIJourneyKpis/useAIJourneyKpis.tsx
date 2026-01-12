@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 
 import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
+import { useJourneyContext } from 'AIJourney/providers'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
@@ -43,6 +44,7 @@ export const useAIJourneyKpis = ({
     journeyIds,
 }: UseAIJourneyKpisParams) => {
     const dispatch = useAppDispatch()
+    const { currency } = useJourneyContext()
 
     const granularity = ReportingGranularity.Week
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
@@ -62,6 +64,7 @@ export const useAIJourneyKpis = ({
         integrationId,
         userTimezone,
         filters,
+        currency,
         granularity,
         journeyIds,
     )

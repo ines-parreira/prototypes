@@ -17,7 +17,6 @@ import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 export const useClickThroughRate = (
     integrationId: string,
@@ -27,8 +26,6 @@ export const useClickThroughRate = (
     shopName: string,
     journeyIds?: string[],
 ): MetricProps => {
-    const { currency } = useCurrency()
-
     const { data: totalUniqClicks, isFetching: isFetchingTotalUniqClicks } =
         useMetricTrend(
             aiJourneyUniqClicksQueryFactory(
@@ -134,7 +131,6 @@ export const useClickThroughRate = (
         series: clickThroughRateTimeSeries,
         interpretAs: 'more-is-better',
         metricFormat: 'percent-precision-1',
-        currency,
         isLoading:
             isFetchingTotalUniqClicks ||
             isFetchingTotalContactsEnrolled ||

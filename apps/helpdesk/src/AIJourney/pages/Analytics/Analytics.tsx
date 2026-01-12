@@ -40,7 +40,7 @@ export const Analytics = () => {
         userTimezone,
         granularity,
     } = useStatsFilters()
-    const { journeys, campaigns, isLoading, currentIntegration } =
+    const { journeys, campaigns, currency, isLoading, currentIntegration } =
         useJourneyContext()
     const integrationId = useMemo(() => {
         return (currentIntegration?.id || 0).toString()
@@ -77,6 +77,7 @@ export const Analytics = () => {
         integrationId,
         userTimezone,
         filters,
+        currency,
         granularity,
         journeysIdsToFilter,
     )
@@ -125,6 +126,7 @@ export const Analytics = () => {
         integrationId,
         userTimezone,
         filters,
+        currency,
         granularity,
         journeysIdsToFilter,
     )
@@ -132,6 +134,7 @@ export const Analytics = () => {
         integrationId,
         userTimezone,
         filters,
+        currency,
         granularity,
         journeysIdsToFilter,
     )

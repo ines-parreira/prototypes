@@ -397,6 +397,7 @@ describe('<Analytics />', () => {
             campaigns,
             currentIntegration: { id: 286584 },
             shopName: 'shopify-store',
+            currency: 'USD',
             isLoading: false,
             journeyType: 'cart_abandoned',
             storeConfiguration: {
@@ -436,6 +437,7 @@ describe('<Analytics />', () => {
             expect.any(String),
             expect.any(Object),
             expect.any(String),
+            expect.any(String),
             [1, 2],
         )
     })
@@ -451,6 +453,7 @@ describe('<Analytics />', () => {
             campaigns: [{ id: 3, name: 'Campaign 1' }],
             currentIntegration: { id: 286584 },
             shopName: 'shopify-store',
+            currency: 'USD',
             isLoading: false,
             journeyType: 'cart_abandoned',
             storeConfiguration: {
@@ -490,6 +493,7 @@ describe('<Analytics />', () => {
             expect.any(String),
             expect.any(Object),
             expect.any(String),
+            expect.any(String),
             [1, 2],
         )
     })
@@ -500,6 +504,7 @@ describe('<Analytics />', () => {
             campaigns: [{ id: 2, name: 'Campaign 1' }],
             currentIntegration: { id: 286584 },
             shopName: 'shopify-store',
+            currency: 'USD',
             isLoading: false,
             journeyType: 'cart_abandoned',
             storeConfiguration: {
@@ -538,6 +543,7 @@ describe('<Analytics />', () => {
             expect.any(String),
             expect.any(String),
             expect.any(Object),
+            expect.any(String),
             expect.any(String),
             [],
         )

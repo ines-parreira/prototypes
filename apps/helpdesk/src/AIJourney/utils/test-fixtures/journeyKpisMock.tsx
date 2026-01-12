@@ -9,34 +9,34 @@ export const journeyKpisMock: MetricProps[] = [
             {
                 dateTime: '2025-08-11T00:00:00.000',
                 value: 0,
-                label: 'AiSalesAgentOrders.gmvUsd',
+                label: 'AiSalesAgentOrders.gmv',
             },
             {
                 dateTime: '2025-08-18T00:00:00.000',
                 value: 59.99,
-                label: 'AiSalesAgentOrders.gmvUsd',
+                label: 'AiSalesAgentOrders.gmv',
                 rawData: {
                     'AiSalesAgentOrders.currency': 'USD',
                     'AiSalesAgentOrders.periodStart.week':
                         '2025-08-18T00:00:00.000',
                     'AiSalesAgentOrders.periodStart': '2025-08-18T00:00:00.000',
-                    'AiSalesAgentOrders.gmvUsd': '59.99',
+                    'AiSalesAgentOrders.gmv': '59.99',
                 },
             },
             {
                 dateTime: '2025-08-25T00:00:00.000',
                 value: 0,
-                label: 'AiSalesAgentOrders.gmvUsd',
+                label: 'AiSalesAgentOrders.gmv',
             },
             {
                 dateTime: '2025-09-01T00:00:00.000',
                 value: 0,
-                label: 'AiSalesAgentOrders.gmvUsd',
+                label: 'AiSalesAgentOrders.gmv',
             },
             {
                 dateTime: '2025-09-08T00:00:00.000',
                 value: 0,
-                label: 'AiSalesAgentOrders.gmvUsd',
+                label: 'AiSalesAgentOrders.gmv',
             },
         ],
         interpretAs: 'more-is-better',

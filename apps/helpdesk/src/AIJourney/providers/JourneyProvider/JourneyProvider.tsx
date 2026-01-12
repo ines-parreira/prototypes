@@ -25,6 +25,7 @@ type JourneyContextType = {
     campaigns: JourneyApiDTO[] | undefined
     journeyData: JourneyDetailApiDTO | undefined
     currentIntegration: Integration | undefined
+    currency: string
     shopName: string
     isLoading: boolean
     isLoadingJourneys: boolean
@@ -54,6 +55,11 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
 
     const { currentIntegration, isLoading: isLoadingIntegrations } =
         useIntegrations(shopName)
+
+    const currency = useMemo(
+        () => currentIntegration?.meta.currency as string,
+        [currentIntegration],
+    )
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = useMemo(
@@ -128,6 +134,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             journeys,
             journeyData,
             campaigns,
+            currency,
             currentIntegration,
             shopName,
             isLoading,
@@ -141,6 +148,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             journeys,
             journeyData,
             campaigns,
+            currency,
             currentIntegration,
             shopName,
             isLoading,

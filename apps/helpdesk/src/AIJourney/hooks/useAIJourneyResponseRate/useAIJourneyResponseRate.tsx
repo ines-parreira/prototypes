@@ -16,7 +16,6 @@ import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 import type { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
@@ -27,8 +26,6 @@ export const useAIJourneyResponseRate = (
     granularity: ReportingGranularity,
     journeyIds?: string[],
 ): MetricProps => {
-    const { currency } = useCurrency()
-
     const { data: repliedMessagesData, isFetching: isFetchingRepliedMessages } =
         useMetricTrend(
             aiJourneyRepliedMessagesQueryFactory(
@@ -136,7 +133,6 @@ export const useAIJourneyResponseRate = (
         series: conversionRateTimeSeries,
         interpretAs: 'more-is-better',
         metricFormat: 'percent-precision-1',
-        currency,
         isLoading:
             isFetchingRepliedMessages ||
             isFetchingtotalContactsEnrolled ||

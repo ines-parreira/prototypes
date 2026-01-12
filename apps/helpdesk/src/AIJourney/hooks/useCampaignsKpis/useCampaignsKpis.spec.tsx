@@ -21,6 +21,12 @@ jest.mock('AIJourney/hooks/useAIJourneyResponseRate/useAIJourneyResponseRate')
 jest.mock(
     'AIJourney/hooks/useAIJourneyRevenuePerRecipient/useAIJourneyRevenuePerRecipient',
 )
+jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
+    ...jest.requireActual(
+        'AIJourney/providers/JourneyProvider/JourneyProvider',
+    ),
+    useJourneyContext: jest.fn(),
+}))
 
 describe('useCampaignsKpis', () => {
     const mockUseAppSelector = useAppSelector as jest.Mock
@@ -30,6 +36,9 @@ describe('useCampaignsKpis', () => {
     const mockUseAIJourneyResponseRate = useAIJourneyResponseRate as jest.Mock
     const mockUseAIJourneyRevenuePerRecipient =
         useAIJourneyRevenuePerRecipient as jest.Mock
+    const mockUseJourneyContext =
+        require('AIJourney/providers/JourneyProvider/JourneyProvider')
+            .useJourneyContext as jest.Mock
     const filters = {
         period: {
             start_datetime: '2025-08-07T00:00:00.000Z',
@@ -61,6 +70,10 @@ describe('useCampaignsKpis', () => {
         mockUseAIJourneyResponseRate.mockReturnValue({
             label: 'Response rate',
             value: 10,
+        })
+
+        mockUseJourneyContext.mockReturnValue({
+            currency: 'USD',
         })
     })
 
@@ -106,6 +119,7 @@ describe('useCampaignsKpis', () => {
             '123',
             'America/New_York',
             filters,
+            'USD',
             ReportingGranularity.Week,
             journeyIds,
         )
@@ -152,6 +166,7 @@ describe('useCampaignsKpis', () => {
             '123',
             'Europe/London',
             expect.any(Object),
+            'USD',
             ReportingGranularity.Week,
             journeyIds,
         )

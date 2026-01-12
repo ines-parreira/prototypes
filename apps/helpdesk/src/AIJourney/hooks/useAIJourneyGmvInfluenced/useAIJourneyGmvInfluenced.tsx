@@ -12,18 +12,16 @@ import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 export const useAIJourneyGmvInfluenced = (
     integrationId: string,
     userTimezone: string,
     filters: FilterType,
+    currency: string,
     granularity: ReportingGranularity,
     journeyIds?: string[],
 ): MetricProps => {
-    const { currency } = useCurrency()
-
-    const { data: tendData, isFetching: isFetchingTred } = useMetricTrend(
+    const { data: trendData, isFetching: isFetchingTred } = useMetricTrend(
         aiJourneyGmvInfluencedQueryFactory(
             integrationId,
             filters,
@@ -54,8 +52,8 @@ export const useAIJourneyGmvInfluenced = (
 
     return {
         label: 'Total Revenue',
-        value: tendData?.value || 0,
-        prevValue: tendData?.prevValue,
+        value: trendData?.value || 0,
+        prevValue: trendData?.prevValue,
         series: gmvInfluencedTimeSeriesData?.[0] ?? [],
         interpretAs: 'more-is-better',
         metricFormat: 'currency',

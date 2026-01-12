@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react'
 
+import { useJourneyContext } from 'AIJourney/providers'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
@@ -21,9 +22,13 @@ jest.mock('../useClickThroughRate/useClickThroughRate')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('../useAIJourneyResponseRate/useAIJourneyResponseRate')
 jest.mock('../useAIJourneyOptOutRate/useAIJourneyOptOutRate')
+jest.mock('AIJourney/providers', () => ({
+    useJourneyContext: jest.fn(),
+}))
 
 describe('useAIJourneyKpis', () => {
     const mockUseAppSelector = useAppSelector as jest.Mock
+    const mockUseJourneyContext = useJourneyContext as jest.Mock
     const mockUseAIJourneyGmvInfluenced = useAIJourneyGmvInfluenced as jest.Mock
     const mockUseAIJourneyTotalOrders = useAIJourneyTotalOrders as jest.Mock
     const mockUseAIJourneyConversionRate =
@@ -40,6 +45,10 @@ describe('useAIJourneyKpis', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+
+        mockUseJourneyContext.mockReturnValue({
+            currency: 'USD',
+        })
 
         mockUseAppSelector.mockReturnValue({
             userTimezone: 'America/New_York',
@@ -119,6 +128,7 @@ describe('useAIJourneyKpis', () => {
             '123',
             'America/New_York',
             filters,
+            'USD',
             ReportingGranularity.Week,
             undefined,
         )
@@ -182,6 +192,7 @@ describe('useAIJourneyKpis', () => {
             '123',
             'Europe/London',
             expect.any(Object),
+            'USD',
             ReportingGranularity.Week,
             undefined,
         )

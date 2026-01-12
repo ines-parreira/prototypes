@@ -5,13 +5,11 @@ import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 import { useAIJourneyGmvInfluenced } from './useAIJourneyGmvInfluenced'
 
 jest.mock('domains/reporting/hooks/useMetricTrend')
 jest.mock('domains/reporting/hooks/useTimeSeries')
-jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
 jest.mock(
     'domains/reporting/models/queryFactories/ai-sales-agent/metrics',
     () => ({
@@ -31,7 +29,7 @@ describe('useAIJourneyGmvInfluenced', () => {
     }
 
     beforeEach(() => {
-        ;(useCurrency as jest.Mock).mockReturnValue({ currency: 'USD' })
+        jest.clearAllMocks()
     })
 
     afterEach(() => {
@@ -53,6 +51,7 @@ describe('useAIJourneyGmvInfluenced', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )
@@ -77,6 +76,7 @@ describe('useAIJourneyGmvInfluenced', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )
@@ -102,6 +102,7 @@ describe('useAIJourneyGmvInfluenced', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )
@@ -127,6 +128,7 @@ describe('useAIJourneyGmvInfluenced', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )
@@ -142,27 +144,22 @@ describe('useAIJourneyGmvInfluenced', () => {
             },
             isFetching: false,
         })
-        ;(useTimeSeries as jest.Mock).mockImplementation((args) => {
-            const measures = args.measures[0]
-            if (measures === AiSalesAgentOrdersMeasure.GmvUsd) {
-                return {
-                    data: [
-                        [
-                            {
-                                dateTime: '2025-07-03',
-                                value: 100,
-                                label: AiSalesAgentOrdersMeasure.GmvUsd,
-                            },
-                            {
-                                dateTime: '2025-07-10',
-                                value: 10,
-                                label: AiSalesAgentOrdersMeasure.GmvUsd,
-                            },
-                        ],
-                    ] satisfies TimeSeriesDataItem[][],
-                    isFetching: false,
-                }
-            }
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: [
+                [
+                    {
+                        dateTime: '2025-07-03',
+                        value: 100,
+                        label: AiSalesAgentOrdersMeasure.Gmv,
+                    },
+                    {
+                        dateTime: '2025-07-10',
+                        value: 10,
+                        label: AiSalesAgentOrdersMeasure.Gmv,
+                    },
+                ],
+            ] satisfies TimeSeriesDataItem[][],
+            isFetching: false,
         })
 
         const { result } = renderHook(() =>
@@ -170,6 +167,7 @@ describe('useAIJourneyGmvInfluenced', () => {
                 '123',
                 mockUserTimezone,
                 mockFilters,
+                'USD',
                 ReportingGranularity.Week,
             ),
         )
@@ -177,12 +175,12 @@ describe('useAIJourneyGmvInfluenced', () => {
         expect(result.current.series).toEqual([
             {
                 dateTime: '2025-07-03',
-                label: 'AiSalesAgentOrders.gmvUsd',
+                label: 'AiSalesAgentOrders.gmv',
                 value: 100,
             },
             {
                 dateTime: '2025-07-10',
-                label: 'AiSalesAgentOrders.gmvUsd',
+                label: 'AiSalesAgentOrders.gmv',
                 value: 10,
             },
         ])
