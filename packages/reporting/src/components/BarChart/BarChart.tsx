@@ -24,6 +24,7 @@ type BarChartProps = {
     data: ChartDataItem[]
     isLoading?: boolean
     valueFormatter?: (value: number) => string
+    yAxisFormatter?: (value: number) => string
     period?: {
         start_datetime: string
         end_datetime: string
@@ -60,6 +61,7 @@ export const BarChart = ({
     data,
     isLoading = false,
     valueFormatter,
+    yAxisFormatter,
     period,
 }: BarChartProps) => {
     const dataWithColors = assignColorsToData(data)
@@ -120,6 +122,7 @@ export const BarChart = ({
                         tick={{ fontSize: 12 }}
                         tickLine={false}
                         axisLine={false}
+                        tickFormatter={yAxisFormatter}
                     />
                     <Tooltip
                         content={renderBarTooltipContent(

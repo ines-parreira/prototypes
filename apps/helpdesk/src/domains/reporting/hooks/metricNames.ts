@@ -132,6 +132,8 @@ export const METRIC_NAMES = {
         'ai-sales-agent-handover-interactions-per-intent',
     AI_SALES_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
         'ai-sales-agent-snoozed-interactions-per-intent',
+    AI_SALES_AGENT_GMV_BY_INFLUENCED_PRODUCT:
+        'ai-sales-agent-gmv-by-influenced-product',
     AI_AGENT_HANDOVER_INTERACTIONS_PER_CHANNEL:
         'ai-agent-handover-interactions-per-channel',
     AI_AGENT_SNOOZED_INTERACTIONS_PER_CHANNEL:

@@ -711,3 +711,36 @@ export const averageDiscountPercentageQueryFactory = (
     ],
     timezone,
 })
+
+export const gmvByInfluencedProductQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AiSalesAgentOrdersCube> => ({
+    measures: [AiSalesAgentOrdersMeasure.Gmv],
+    dimensions: [
+        AiSalesAgentOrdersDimension.InfluencedProductId,
+        AiSalesAgentOrdersDimension.IntegrationId,
+        AiSalesAgentOrdersDimension.Currency,
+    ],
+    filters: [
+        {
+            member: AiSalesAgentOrdersDimension.IsInfluenced,
+            operator: ReportingFilterOperator.Equals,
+            values: ['1'],
+        },
+        {
+            member: AiSalesAgentOrdersDimension.InfluencedProductId,
+            operator: ReportingFilterOperator.Set,
+            values: [],
+        },
+        ...baseAISalesAgentOrdersFilters,
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentOrdersDefaultFiltersMembers,
+            filters,
+        ),
+    ],
+    order: [[AiSalesAgentOrdersMeasure.Gmv, OrderDirection.Desc]],
+    limit: 10,
+    timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_GMV_BY_INFLUENCED_PRODUCT,
+})
