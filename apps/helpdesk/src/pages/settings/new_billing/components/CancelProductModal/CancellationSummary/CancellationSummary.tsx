@@ -7,16 +7,16 @@ import {
     getPlanPriceFormatted,
     getProductInfo,
 } from 'models/billing/utils'
+import type { ProductToPlan } from 'state/billing/types'
 
 import SummaryBody from '../UI/SummaryBody'
 import SummaryHeader from '../UI/SummaryHeader'
 import type { SummaryItemData } from '../UI/types'
-import type { SubscriptionProducts } from './types'
 
 import css from './CancellationSummary.less'
 
 type CancellationSummaryProps = {
-    subscriptionProducts: SubscriptionProducts
+    subscriptionProducts: ProductToPlan
     cancellingProducts: ProductType[]
     periodEnd: string
 }

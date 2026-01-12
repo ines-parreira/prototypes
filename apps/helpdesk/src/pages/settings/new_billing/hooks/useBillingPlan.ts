@@ -38,7 +38,7 @@ import {
     getCurrentVoicePlan,
     getIsVettedForPhone,
 } from 'state/billing/selectors'
-import type { ProductData } from 'state/billing/types'
+import type { ProductToPlanId } from 'state/billing/types'
 import {
     setCurrentSubscription,
     updateSubscriptionsForPlans,
@@ -462,7 +462,7 @@ export const useBillingPlans = ({
     ])
 
     const handleStripePlansChange = useCallback(async () => {
-        const plansToBeUpdated: ProductData = {}
+        const plansToBeUpdated: ProductToPlanId = {}
         const notifications: Notification[] = []
 
         const isPlanCadenceChanged =

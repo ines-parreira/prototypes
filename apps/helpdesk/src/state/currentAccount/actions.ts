@@ -18,7 +18,7 @@ import type { GorgiasApiError } from 'models/api/types'
 import { isGorgiasApiError } from 'models/api/types'
 import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import GorgiasApi from 'services/gorgiasApi'
-import type { ProductData, Subscription } from 'state/billing/types'
+import type { ProductToPlanId, Subscription } from 'state/billing/types'
 import * as constants from 'state/currentAccount/constants'
 import {
     getAgentsTableConfigSettingsJS,
@@ -212,10 +212,14 @@ export function submitProductInsightsTableConfigView(
     }
 }
 
+type SubscriptionUpdateResponse = {
+    products: ProductToPlanId
+}
+
 export function updateSubscription(subscription: Subscription) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
-            .put<Record<string, string>>(
+            .put<SubscriptionUpdateResponse>(
                 '/api/billing/subscription/',
                 subscription,
             )
@@ -246,11 +250,11 @@ export function updateSubscription(subscription: Subscription) {
 }
 
 export function updateSubscriptionsForPlans(
-    products: ProductData,
+    products: ProductToPlanId,
     notifications: Notification[],
 ) {
     return async (dispatch: StoreDispatch): Promise<void> => {
-        const response = await client.put<Record<string, string>>(
+        const response = await client.put<SubscriptionUpdateResponse>(
             '/api/billing/subscription/',
             {
                 prices: Object.values(products),
@@ -350,13 +354,17 @@ export const resendVerificationEmail =
         }
     }
 
+export type cancelHelpdeskAutoRenewalResponse = {
+    scheduled_to_cancel_at: string
+}
+
 export function cancelHelpdeskAutoRenewal(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _selectedPlans?: SelectedPlans,
 ) {
     return (dispatch: StoreDispatch): Promise<boolean> => {
         return client
-            .post<Record<string, string>>(
+            .post<cancelHelpdeskAutoRenewalResponse>(
                 '/api/billing/subscription/cancel/',
                 {},
             )

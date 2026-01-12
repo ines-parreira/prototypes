@@ -1,6 +1,12 @@
 import type { Map } from 'immutable'
 
-import type { Product, ProductType } from 'models/billing/types'
+import type {
+    HelpdeskPlan,
+    Plan,
+    PlanId,
+    Product,
+    ProductType,
+} from 'models/billing/types'
 import type { AlertType } from 'pages/common/components/Alert/Alert'
 
 export type CurrentUsagePerProduct = {
@@ -143,9 +149,16 @@ export type BillingBanner = {
     type: AlertType
 }
 
-export type ProductData = {
-    [key: string]: string
+export type ProductToPlanId = Partial<{
+    [key in ProductType]: PlanId
+}>
+
+export type ProductToPlan = {
+    [key in ProductType]: Plan | null
+} & {
+    [ProductType.Helpdesk]: HelpdeskPlan
 }
+
 export interface ErrorResponse {
     response?: {
         data?: {

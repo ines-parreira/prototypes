@@ -18,7 +18,7 @@ import {
     getCurrentSmsPlan,
     getCurrentVoicePlan,
 } from 'state/billing/selectors'
-import type { CurrentProductsUsages } from 'state/billing/types'
+import type { CurrentProductsUsages, ProductToPlan } from 'state/billing/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'
@@ -34,7 +34,6 @@ import CancellationReasons from './CancellationReasons'
 import CancellationReasonsFooter from './CancellationReasons/CancellationReasonsFooter'
 import CancellationSummary from './CancellationSummary'
 import CancellationSummaryFooter from './CancellationSummary/CancellationSummaryFooter'
-import type { SubscriptionProducts } from './CancellationSummary/types'
 import ChurnMitigationOffer from './ChurnMitigationOffer'
 import ChurnMitigationOfferFooter from './ChurnMitigationOffer/ChurnMitigationOfferFooter'
 import { CancellationFlowStep } from './constants'
@@ -55,7 +54,7 @@ type CancelProductModelProps = {
     onClose: () => void
     isOpen: boolean
     productType: ProductType
-    subscriptionProducts: SubscriptionProducts
+    subscriptionProducts: ProductToPlan
     periodEnd: string
     currentUsage?: CurrentProductsUsages
     selectedPlans: SelectedPlans
