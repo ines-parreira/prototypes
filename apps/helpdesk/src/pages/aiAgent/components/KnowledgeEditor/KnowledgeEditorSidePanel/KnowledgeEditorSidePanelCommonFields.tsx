@@ -14,6 +14,7 @@ import {
 } from '@gorgias/axiom'
 
 import { DEFAULT_LOCALE } from 'domains/reporting/pages/common/utils'
+import type { GuidanceModeType } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context/types'
 import { selectText } from 'pages/common/components/CopyText/utils'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 
@@ -216,10 +217,18 @@ export const KnowledgeEditorSidePanelFieldPercentage = ({
 
 export const KnowledgeEditorSidePanelFieldStatus = ({
     isDraft,
+    mode,
 }: {
     isDraft: boolean
-}) => (
-    <Tag color={isDraft ? 'grey' : 'green'}>
-        {isDraft ? 'Draft' : 'Published'}
-    </Tag>
-)
+    mode?: GuidanceModeType
+}) => {
+    if (mode === 'create') {
+        return <span>-</span>
+    }
+
+    return (
+        <Tag color={isDraft ? 'grey' : 'green'}>
+            {isDraft ? 'Draft' : 'Published'}
+        </Tag>
+    )
+}

@@ -40,6 +40,7 @@ describe('useGuidanceDetailsFromContext', () => {
         guidance: mockGuidanceArticle,
         isUpdating: false,
         isAutoSaving: false,
+        guidanceMode: 'edit' as const,
     }
 
     const defaultContextValue: Partial<GuidanceContextValue> = {
@@ -411,6 +412,41 @@ describe('useGuidanceDetailsFromContext', () => {
         })
     })
 
+    describe('guidanceMode', () => {
+        it('should return create mode from state', () => {
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextValue,
+                state: { ...defaultState, guidanceMode: 'create' },
+            })
+
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.guidanceMode).toBe('create')
+        })
+
+        it('should return edit mode from state', () => {
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextValue,
+                state: { ...defaultState, guidanceMode: 'edit' },
+            })
+
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.guidanceMode).toBe('edit')
+        })
+
+        it('should return read mode from state', () => {
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextValue,
+                state: { ...defaultState, guidanceMode: 'read' },
+            })
+
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.guidanceMode).toBe('read')
+        })
+    })
+
     describe('return value shape', () => {
         it('should return all expected properties', () => {
             const { result } = renderHook(() => useGuidanceDetailsFromContext())
@@ -423,6 +459,7 @@ describe('useGuidanceDetailsFromContext', () => {
             expect(result.current).toHaveProperty('lastUpdatedDatetime')
             expect(result.current).toHaveProperty('isUpdating')
             expect(result.current).toHaveProperty('isDraft')
+            expect(result.current).toHaveProperty('guidanceMode')
         })
     })
 })

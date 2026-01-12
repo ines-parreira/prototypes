@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { useGuidanceContext } from '../context'
+import type { GuidanceModeType } from '../context/types'
 import { useToggleVisibility } from '../context/useToggleVisibility'
 
 export type GuidanceDetailsData = {
@@ -13,6 +14,7 @@ export type GuidanceDetailsData = {
     lastUpdatedDatetime?: Date
     isUpdating: boolean
     isDraft: boolean
+    guidanceMode: GuidanceModeType
 }
 
 const getAiAgentStatusTooltip = (
@@ -61,6 +63,7 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
             isUpdating:
                 isDisabled || isDraft || (isAtLimit && !state.visibility),
             isDraft,
+            guidanceMode: state.guidanceMode,
         }),
         [
             state.visibility,
@@ -70,6 +73,7 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
             limitMessage,
             isDraft,
             isDisabled,
+            state.guidanceMode,
         ],
     )
 }

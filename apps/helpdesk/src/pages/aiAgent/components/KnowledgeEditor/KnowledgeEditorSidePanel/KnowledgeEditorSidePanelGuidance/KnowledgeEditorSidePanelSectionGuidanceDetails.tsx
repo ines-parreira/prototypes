@@ -24,6 +24,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
         lastUpdatedDatetime,
         isUpdating,
         isDraft,
+        guidanceMode,
     } = useGuidanceDetailsFromContext()
 
     const columns = [
@@ -42,6 +43,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
                 <KnowledgeEditorSidePanelFieldStatus
                     key="status"
                     isDraft={isDraft}
+                    mode={guidanceMode}
                 />
             ),
         },

@@ -294,6 +294,58 @@ describe('KnowledgeEditorSidePanelFieldStatus', () => {
         render(<KnowledgeEditorSidePanelFieldStatus isDraft={false} />)
         expect(screen.getByText('Published')).toBeInTheDocument()
     })
+
+    it('renders dash when mode is create', () => {
+        const { container } = render(
+            <KnowledgeEditorSidePanelFieldStatus
+                isDraft={false}
+                mode="create"
+            />,
+        )
+        expect(container.textContent).toBe('-')
+        expect(screen.queryByText('Draft')).not.toBeInTheDocument()
+        expect(screen.queryByText('Published')).not.toBeInTheDocument()
+    })
+
+    it('renders dash when mode is create regardless of isDraft value', () => {
+        const { container } = render(
+            <KnowledgeEditorSidePanelFieldStatus
+                isDraft={true}
+                mode="create"
+            />,
+        )
+        expect(container.textContent).toBe('-')
+        expect(screen.queryByText('Draft')).not.toBeInTheDocument()
+        expect(screen.queryByText('Published')).not.toBeInTheDocument()
+    })
+
+    it('renders Draft when mode is edit and isDraft is true', () => {
+        render(
+            <KnowledgeEditorSidePanelFieldStatus isDraft={true} mode="edit" />,
+        )
+        expect(screen.getByText('Draft')).toBeInTheDocument()
+    })
+
+    it('renders Published when mode is edit and isDraft is false', () => {
+        render(
+            <KnowledgeEditorSidePanelFieldStatus isDraft={false} mode="edit" />,
+        )
+        expect(screen.getByText('Published')).toBeInTheDocument()
+    })
+
+    it('renders Draft when mode is read and isDraft is true', () => {
+        render(
+            <KnowledgeEditorSidePanelFieldStatus isDraft={true} mode="read" />,
+        )
+        expect(screen.getByText('Draft')).toBeInTheDocument()
+    })
+
+    it('renders Published when mode is read and isDraft is false', () => {
+        render(
+            <KnowledgeEditorSidePanelFieldStatus isDraft={false} mode="read" />,
+        )
+        expect(screen.getByText('Published')).toBeInTheDocument()
+    })
 })
 
 describe('KnowledgeEditorSidePanelFieldSourceDocument', () => {
