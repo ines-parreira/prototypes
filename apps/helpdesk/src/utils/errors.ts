@@ -1,5 +1,10 @@
 import type { GorgiasUIEnv } from '@repo/utils'
-import { isDevelopment, isProduction, isStaging } from '@repo/utils'
+import {
+    getEnvironment,
+    isDevelopment,
+    isProduction,
+    isStaging,
+} from '@repo/utils'
 import * as Sentry from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
 import type { ScopeContext } from '@sentry/types'
@@ -76,14 +81,92 @@ export function initErrorReporter({
     })
 }
 
-export function reportError(error: unknown, options?: Partial<ScopeContext>) {
+export function reportError(
+    error: Error | unknown,
+    options?: Partial<ScopeContext>,
+) {
+    const errorObj = error instanceof Error ? error : new Error(String(error))
+
     if (isDevelopment() || isStaging()) {
-        console.error(error)
+        console.error(errorObj)
         if (options?.extra) {
             console.error(ERROR_EXTRA_CONSOLE_LOG_MESSAGE, options.extra)
         }
     }
     if (isStaging() || isProduction()) {
-        Sentry.captureException(error, options)
+        Sentry.captureException(errorObj, getAdditionalErrorInfo(errorObj))
+    }
+}
+
+export function getAdditionalErrorInfo(errorObj: Error = new Error()) {
+    try {
+        const callerInfo = getCallerInfo(errorObj)
+        return {
+            extra: {
+                environment: getEnvironment(),
+                // Caller information
+                caller_function: callerInfo.functionName,
+                caller_file: callerInfo.fileName,
+                caller_line: callerInfo.lineNumber,
+                caller_column: callerInfo.columnNumber,
+                // DOM state
+                document_ready_state: document.readyState,
+                page_visible: document.visibilityState === 'visible',
+                page_hidden: document.hidden,
+                focused_element: document.activeElement?.tagName,
+                focused_element_id: document.activeElement?.id,
+                // Browser capabilities
+                cookies_enabled: navigator.cookieEnabled,
+                // Page info
+                url: window.location.href,
+                pathname: window.location.pathname,
+                search: Object.fromEntries(
+                    new URLSearchParams(window.location.search),
+                ),
+                title: document.title,
+                referrer: document.referrer,
+            },
+        }
+    } catch {
+        return {
+            extra: {
+                info_error: 'Failed to get additional error info',
+            },
+        }
+    }
+}
+
+export function getCallerInfo(error: Error = new Error()) {
+    const stack = error.stack || ''
+    const stackLines = stack.split('\n')
+
+    // Skip first 3 lines (Error, getCallerInfo, reportError)
+    const callerLine = stackLines[3]
+    // Parse stack trace
+    // Chrome: "at functionName (file.js:line:col)"
+    // Firefox: "functionName@file.js:line:col"
+    const chromeMatch = callerLine.match(/at\s+(.+?)\s+\((.+?):(\d+):(\d+)\)/)
+    const firefoxMatch = callerLine.match(/(.+?)@(.+?):(\d+):(\d+)/)
+
+    if (chromeMatch) {
+        return {
+            functionName: chromeMatch[1].trim(),
+            fileName: chromeMatch[2],
+            lineNumber: parseInt(chromeMatch[3]),
+            columnNumber: parseInt(chromeMatch[4]),
+        }
+    } else if (firefoxMatch) {
+        return {
+            functionName: firefoxMatch[1].trim(),
+            fileName: firefoxMatch[2],
+            lineNumber: parseInt(firefoxMatch[3]),
+            columnNumber: parseInt(firefoxMatch[4]),
+        }
+    }
+    return {
+        functionName: 'unknown',
+        fileName: 'unknown',
+        lineNumber: 0,
+        columnNumber: 0,
     }
 }

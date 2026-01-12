@@ -16,6 +16,8 @@ import {
     ACCOUNT_DOMAIN_TAG,
     DENY_URLS,
     ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
+    getAdditionalErrorInfo,
+    getCallerInfo,
     IGNORED_ERRORS,
     initErrorReporter,
     LANGUAGE_TAG,
@@ -137,9 +139,25 @@ describe('errors util', () => {
 
     describe('reportError', () => {
         const testError = Error('Test error')
+        const callerInfo = getCallerInfo(testError)
         const defaultOptions: Partial<ScopeContext> = {
             extra: {
-                foo: 'bar',
+                caller_function: callerInfo.functionName,
+                caller_file: callerInfo.fileName,
+                caller_line: callerInfo.lineNumber,
+                caller_column: callerInfo.columnNumber,
+                cookies_enabled: true,
+                document_ready_state: 'complete',
+                environment: 'staging',
+                focused_element: 'BODY',
+                focused_element_id: '',
+                page_hidden: false,
+                page_visible: true,
+                pathname: '/',
+                referrer: '',
+                search: {},
+                title: '',
+                url: 'http://localhost/',
             },
         }
 
@@ -162,10 +180,9 @@ describe('errors util', () => {
             reportError(testError, defaultOptions)
 
             expect(consoleErrorMock).not.toHaveBeenCalled()
-            expect(captureExceptionMock).toHaveBeenCalledWith(
-                testError,
-                defaultOptions,
-            )
+            expect(captureExceptionMock).toHaveBeenCalledWith(testError, {
+                extra: { ...defaultOptions.extra, environment: 'production' },
+            })
         })
 
         it('should report error to Sentry and display error on the console in staging environment', () => {
@@ -182,6 +199,128 @@ describe('errors util', () => {
                 ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
                 defaultOptions.extra,
             )
+        })
+    })
+
+    describe('getAdditionalErrorInfo', () => {
+        it('should return error info with minimal data when called without error', () => {
+            const result = getAdditionalErrorInfo()
+
+            expect(result).toHaveProperty('extra')
+            expect(result.extra).toMatchObject({
+                environment: expect.any(String),
+                document_ready_state: expect.any(String),
+                page_visible: expect.any(Boolean),
+                page_hidden: expect.any(Boolean),
+                cookies_enabled: expect.any(Boolean),
+                url: expect.any(String),
+                pathname: expect.any(String),
+                title: expect.any(String),
+            })
+        })
+
+        it('should return error info with caller details and environment data', () => {
+            const testError = new Error('Test error')
+            const result = getAdditionalErrorInfo(testError)
+
+            expect(result).toHaveProperty('extra')
+            expect(result.extra).toMatchObject({
+                environment: expect.any(String),
+                caller_function: expect.any(String),
+                caller_file: expect.any(String),
+                caller_line: expect.any(Number),
+                caller_column: expect.any(Number),
+                document_ready_state: expect.any(String),
+                page_visible: expect.any(Boolean),
+                page_hidden: expect.any(Boolean),
+                cookies_enabled: expect.any(Boolean),
+                url: expect.any(String),
+                pathname: expect.any(String),
+                title: expect.any(String),
+            })
+        })
+
+        it('should capture focused element tagName and id when element has id', () => {
+            const mockElement = document.createElement('input')
+            mockElement.id = 'test-input'
+            Object.defineProperty(document, 'activeElement', {
+                value: mockElement,
+                configurable: true,
+            })
+
+            const testError = new Error('Test error')
+            const result = getAdditionalErrorInfo(testError)
+
+            expect(result.extra.focused_element).toBe('INPUT')
+            expect(result.extra.focused_element_id).toBe('test-input')
+        })
+
+        it('should capture focused element tagName when element has no id', () => {
+            const mockElement = document.createElement('button')
+            Object.defineProperty(document, 'activeElement', {
+                value: mockElement,
+                configurable: true,
+            })
+
+            const testError = new Error('Test error')
+            const result = getAdditionalErrorInfo(testError)
+
+            expect(result.extra.focused_element).toBe('BUTTON')
+            expect(result.extra.focused_element_id).toBe('')
+        })
+
+        it('should handle undefined activeElement', () => {
+            Object.defineProperty(document, 'activeElement', {
+                value: undefined,
+                configurable: true,
+            })
+
+            const testError = new Error('Test error')
+            const result = getAdditionalErrorInfo(testError)
+
+            expect(result.extra.focused_element).toBeUndefined()
+            expect(result.extra.focused_element_id).toBeUndefined()
+        })
+
+        it('should return error info object when getCallerInfo throws', () => {
+            const mockError = {
+                stack: undefined,
+            } as Error
+
+            const result = getAdditionalErrorInfo(mockError)
+
+            expect(result).toHaveProperty('extra')
+            expect(result.extra.info_error).toBe(
+                'Failed to get additional error info',
+            )
+        })
+    })
+
+    describe('getCallerInfo', () => {
+        it('should call getCallerInfo without error', () => {
+            const result = getCallerInfo()
+
+            expect(result).toHaveProperty('functionName')
+            expect(result).toHaveProperty('fileName')
+            expect(result).toHaveProperty('lineNumber')
+            expect(result).toHaveProperty('columnNumber')
+        })
+        it('should parse Firefox stack trace format', () => {
+            const mockError = {
+                stack: `Error: Test error
+someFunction@http://example.com/file.js:42:10
+anotherFunction@http://example.com/other.js:100:5
+testFunction@http://example.com/test.js:25:15`,
+            } as Error
+
+            const result = getCallerInfo(mockError)
+
+            expect(result).toEqual({
+                functionName: 'testFunction',
+                fileName: 'http://example.com/test.js',
+                lineNumber: 25,
+                columnNumber: 15,
+            })
         })
     })
 })
