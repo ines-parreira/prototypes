@@ -72,7 +72,6 @@
         "@types/react-dom": "catalog:react",
         "@types/react-router": "catalog:react-router",
         "@types/react-router-dom": "catalog:react-router",
-        "@types/classnames": "catalog:styles",
         "@vitest/coverage-v8": "catalog:test",
         "classnames": "catalog:styles",
         "lodash": "catalog:lodash",

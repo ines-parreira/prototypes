@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import type { CustomField } from '@gorgias/helpdesk-types'
 
@@ -19,9 +19,6 @@ export function CustomCustomerField({
     value: queryValue,
     customerId,
 }: CustomCustomerFieldProps) {
-    const [previousQueryValue, setPreviousQueryValue] = useState<
-        CustomFieldValue | undefined
-    >(queryValue)
     const [currentValue, setCurrentValue] = useState<
         CustomFieldValue | undefined
     >(queryValue)
@@ -29,45 +26,60 @@ export function CustomCustomerField({
     const { updateOrDeleteCustomerFieldValue } =
         useUpdateOrDeleteCustomCustomerFieldValue(customerId)
 
-    const mutate = (value: CustomFieldValue | undefined) => {
-        return updateOrDeleteCustomerFieldValue({
-            fieldId: field.id,
-            value,
-        })
-    }
+    const mutate = useCallback(
+        (value: CustomFieldValue | undefined) => {
+            return updateOrDeleteCustomerFieldValue({
+                fieldId: field.id,
+                value,
+            })
+        },
+        [field.id, updateOrDeleteCustomerFieldValue],
+    )
 
-    const handleChange = (newValue: CustomFieldValue | undefined) => {
-        if (isNumberInput(field)) {
-            const numberValue = getNumberOrUndefined(newValue)
-            setCurrentValue(numberValue)
-            return mutate(numberValue)
-        }
+    const handleChange = useCallback(
+        (newValue: CustomFieldValue | undefined) => {
+            /**
+             * We only save text input values on the text input blur event to avoid
+             * unnecessary API calls when the user is typing.
+             */
+            if (isTextInput(field)) {
+                const textValue = newValue?.toString()
+                setCurrentValue(textValue)
+                return
+            }
 
-        if (isTextInput(field)) {
-            const textValue = newValue?.toString().trim()
-            setCurrentValue(textValue)
-            return mutate(textValue)
-        }
+            if (isNumberInput(field)) {
+                const numberValue = getNumberOrUndefined(newValue)
+                setCurrentValue(numberValue)
+                return mutate(numberValue)
+            }
 
-        // Dropdown field
-        setCurrentValue(newValue)
-        mutate(newValue)
-    }
+            // Dropdown field
+            setCurrentValue(newValue)
+            mutate(newValue)
+        },
+        [field, mutate],
+    )
 
-    // Update the local value when the query value changes
-    useEffect(() => {
-        if (queryValue !== previousQueryValue) {
-            setPreviousQueryValue(queryValue)
-            setCurrentValue(queryValue)
-        }
-    }, [queryValue, previousQueryValue])
+    const handleBlur = useCallback(
+        (newValue: CustomFieldValue | undefined) => {
+            if (isTextInput(field)) {
+                const textValue = newValue?.toString()?.trim()
+                setCurrentValue(textValue)
+                return mutate(textValue)
+            }
+        },
+        [field, mutate],
+    )
 
     return (
-        <FieldRow label={field.label}>
+        <FieldRow fieldId={`custom-field-${field.id}`} label={field.label}>
             <CustomCustomerFieldInput
+                id={`custom-field-${field.id}`}
                 field={field}
                 value={currentValue}
                 onChange={handleChange}
+                onBlur={handleBlur}
             />
         </FieldRow>
     )

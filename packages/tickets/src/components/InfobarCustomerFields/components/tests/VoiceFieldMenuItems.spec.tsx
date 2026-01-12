@@ -74,6 +74,7 @@ function TestWrapper(props: TestWrapperProps) {
         <EditableMenuField
             value={props.phoneAddress}
             onValueChange={() => {}}
+            onBlur={() => {}}
             renderTrigger={(value) => (
                 <TriggerLabel label={formatPhoneNumberInternational(value)} />
             )}

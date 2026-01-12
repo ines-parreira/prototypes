@@ -17,8 +17,10 @@ import { CopyButton } from './CopyButton'
 import css from './EditableMenuField.less'
 
 type EditableMenuFieldProps = {
+    id?: string
     value?: string
     onValueChange: (value: string) => unknown
+    onBlur: (value: string) => void
     placeholder?: string
     renderTrigger: (value: string) => ReactElement
     validator?: (value: string) => string | undefined
@@ -31,8 +33,10 @@ type EditableMenuFieldProps = {
 
 export function EditableMenuField(props: EditableMenuFieldProps) {
     const {
+        id,
         value,
         onValueChange,
+        onBlur,
         placeholder = '+ Add',
         renderTrigger,
         validator,
@@ -54,19 +58,23 @@ export function EditableMenuField(props: EditableMenuFieldProps) {
     const handleValueChange = useCallback(
         (newValue: string) => {
             onValueChange(newValue)
-            setIsEditing(false)
         },
         [onValueChange],
     )
 
-    const handleBlur = useCallback(() => {
-        setIsEditing(false)
-    }, [])
+    const handleBlur = useCallback(
+        (value: string) => {
+            onBlur(value)
+            setIsEditing(false)
+        },
+        [onBlur],
+    )
 
     if (isEditing || !value) {
         return (
             <div ref={fieldRef}>
                 <EditableField
+                    id={id}
                     value={value}
                     onValueChange={handleValueChange}
                     placeholder={placeholder}
@@ -83,6 +91,7 @@ export function EditableMenuField(props: EditableMenuFieldProps) {
     return (
         <div>
             <Menu
+                aria-labelledby={id}
                 aria-label="Field actions"
                 trigger={
                     <div className={css.triggerContainer}>

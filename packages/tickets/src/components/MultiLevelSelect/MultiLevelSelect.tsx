@@ -15,6 +15,7 @@ import { useOptionsTree } from './hooks/useOptionsTree'
 import type { Option, TreeValue } from './types'
 
 type Props = {
+    id?: string
     choices: TreeValue[]
     placeholder?: string
     isDisabled?: boolean
@@ -26,6 +27,7 @@ type Props = {
 
 export function MultiLevelSelect(props: Props) {
     const {
+        id,
         choices,
         selectedValue,
         onSelect,
@@ -130,6 +132,7 @@ export function MultiLevelSelect(props: Props) {
 
     return (
         <Select
+            aria-labelledby={id}
             items={selectOptions}
             placeholder={placeholder}
             isDisabled={isDisabled}

@@ -16,10 +16,10 @@ import type { TicketCustomer, User } from '@gorgias/helpdesk-types'
 import { render, testAppQueryClient } from '../../../tests/render.utils'
 import { InfobarBaseCustomerFields } from '../InfobarBaseCustomerFields'
 
+const mockPush = vi.fn()
+
 const { useHistory } = vi.hoisted(() => ({
-    useHistory: vi.fn().mockReturnValue({
-        history: vi.fn(),
-    }),
+    useHistory: vi.fn(),
 }))
 
 vi.mock('react-router-dom', async () => {
@@ -34,6 +34,11 @@ const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    mockPush.mockClear()
+    useHistory.mockReturnValue({ push: mockPush })
 })
 
 afterEach(() => {
@@ -116,17 +121,21 @@ const setupMocks = (customer: TicketCustomer, userSettings = [{}]) => {
     )
 }
 
-const TestComponent = () => {
+const TestComponent = ({ customer }: { customer: TicketCustomer }) => {
     return (
-        <OverflowList>
-            <InfobarBaseCustomerFields ticketId={ticketId} />
+        <OverflowList nonExpandedLineCount={7}>
+            <InfobarBaseCustomerFields
+                ticketId={ticketId}
+                customer={customer}
+            />
         </OverflowList>
     )
 }
 
 describe('InfobarBaseCustomerFields', () => {
     it('should render all basic fields', async () => {
-        setupMocks(createMockCustomer(), [
+        const customer = createMockCustomer()
+        setupMocks(customer, [
             {
                 type: 'preferences',
                 data: {
@@ -136,7 +145,7 @@ describe('InfobarBaseCustomerFields', () => {
             },
         ])
 
-        render(<TestComponent />)
+        render(<TestComponent customer={customer} />)
 
         expect(await screen.findByText('Note')).toBeInTheDocument()
         expect(screen.getByText('Location')).toBeInTheDocument()
@@ -146,15 +155,14 @@ describe('InfobarBaseCustomerFields', () => {
     })
 
     it('should not render location when not available', async () => {
-        setupMocks(
-            createMockCustomer({
-                meta: {
-                    location_info: {},
-                },
-            }),
-        )
+        const customer = createMockCustomer({
+            meta: {
+                location_info: {},
+            },
+        })
+        setupMocks(customer)
 
-        render(<TestComponent />)
+        render(<TestComponent customer={customer} />)
 
         await screen.findByText('Note')
 
@@ -162,26 +170,25 @@ describe('InfobarBaseCustomerFields', () => {
     })
 
     it('should render multiple phone channels with label only on first', async () => {
-        setupMocks(
-            createMockCustomer({
-                channels: [
-                    {
-                        id: 1,
-                        address: '+1234567890',
-                        type: 'phone',
-                        preferred: true,
-                    },
-                    {
-                        id: 2,
-                        address: '+0987654321',
-                        type: 'phone',
-                        preferred: false,
-                    },
-                ],
-            } as TicketCustomer),
-        )
+        const customer = createMockCustomer({
+            channels: [
+                {
+                    id: 1,
+                    address: '+1234567890',
+                    type: 'phone',
+                    preferred: true,
+                },
+                {
+                    id: 2,
+                    address: '+0987654321',
+                    type: 'phone',
+                    preferred: false,
+                },
+            ],
+        } as TicketCustomer)
+        setupMocks(customer)
 
-        render(<TestComponent />)
+        render(<TestComponent customer={customer} />)
 
         await screen.findByText('Note')
 
@@ -193,26 +200,25 @@ describe('InfobarBaseCustomerFields', () => {
     })
 
     it('should render multiple email channels with label only on first', async () => {
-        setupMocks(
-            createMockCustomer({
-                channels: [
-                    {
-                        id: 1,
-                        address: 'primary@example.com',
-                        type: 'email',
-                        preferred: true,
-                    },
-                    {
-                        id: 2,
-                        address: 'secondary@example.com',
-                        type: 'email',
-                        preferred: false,
-                    },
-                ],
-            } as TicketCustomer),
-        )
+        const customer = createMockCustomer({
+            channels: [
+                {
+                    id: 1,
+                    address: 'primary@example.com',
+                    type: 'email',
+                    preferred: true,
+                },
+                {
+                    id: 2,
+                    address: 'secondary@example.com',
+                    type: 'email',
+                    preferred: false,
+                },
+            ],
+        } as TicketCustomer)
+        setupMocks(customer)
 
-        render(<TestComponent />)
+        render(<TestComponent customer={customer} />)
 
         await screen.findByText('Note')
 
@@ -224,32 +230,31 @@ describe('InfobarBaseCustomerFields', () => {
     })
 
     it('should render other channel types with formatted and grouped labels', async () => {
-        setupMocks(
-            createMockCustomer({
-                channels: [
-                    {
-                        id: 1,
-                        address: '+15555555555',
-                        type: 'whatsapp',
-                        preferred: false,
-                    },
-                    {
-                        id: 2,
-                        address: '+16666666666',
-                        type: 'whatsapp',
-                        preferred: false,
-                    },
-                    {
-                        id: 3,
-                        address: 'foo-address',
-                        type: 'foo-bar',
-                        preferred: false,
-                    },
-                ],
-            } as TicketCustomer),
-        )
+        const customer = createMockCustomer({
+            channels: [
+                {
+                    id: 1,
+                    address: '+15555555555',
+                    type: 'whatsapp',
+                    preferred: false,
+                },
+                {
+                    id: 2,
+                    address: '+16666666666',
+                    type: 'whatsapp',
+                    preferred: false,
+                },
+                {
+                    id: 3,
+                    address: 'foo-address',
+                    type: 'foo-bar',
+                    preferred: false,
+                },
+            ],
+        } as TicketCustomer)
+        setupMocks(customer)
 
-        render(<TestComponent />)
+        render(<TestComponent customer={customer} />)
 
         await screen.findByText('Note')
 
@@ -261,16 +266,14 @@ describe('InfobarBaseCustomerFields', () => {
     })
 
     describe('Draft ticket functionality', () => {
-        async function openEmailMenu() {
+        async function openEmailMenu(user: ReturnType<typeof render>['user']) {
             await waitFor(() => {
                 expect(screen.getByText('test@example.com')).toBeInTheDocument()
             })
 
             const emailText = screen.getByText('test@example.com')
 
-            act(() => {
-                fireEvent.click(emailText)
-            })
+            await act(() => user.click(emailText))
 
             await waitFor(() => {
                 expect(screen.getByText('Send email')).toBeInTheDocument()
@@ -280,7 +283,7 @@ describe('InfobarBaseCustomerFields', () => {
         async function openDraftSubmenu(
             user: ReturnType<typeof render>['user'],
         ) {
-            await openEmailMenu()
+            await openEmailMenu(user)
 
             const sendEmailItems = screen.getAllByText('Send email')
             const sendEmailButton = sendEmailItems[sendEmailItems.length - 1]
@@ -295,12 +298,13 @@ describe('InfobarBaseCustomerFields', () => {
         }
 
         it('should show draft-related menu items when a draft exists', async () => {
-            setupMocks(createMockCustomer())
+            const customer = createMockCustomer()
+            setupMocks(customer)
 
             const onResumeDraft = vi.fn()
             const onDiscardDraft = vi.fn()
 
-            const { user } = render(<TestComponent />, {
+            const { user } = render(<TestComponent customer={customer} />, {
                 handleTicketDraft: {
                     hasDraft: true,
                     onResumeDraft,
@@ -322,12 +326,13 @@ describe('InfobarBaseCustomerFields', () => {
         })
 
         it('should call onResumeDraft when "Resume draft" is clicked', async () => {
-            setupMocks(createMockCustomer())
+            const customer = createMockCustomer()
+            setupMocks(customer)
 
             const onResumeDraft = vi.fn()
             const onDiscardDraft = vi.fn()
 
-            const { user } = render(<TestComponent />, {
+            const { user } = render(<TestComponent customer={customer} />, {
                 handleTicketDraft: {
                     hasDraft: true,
                     onResumeDraft,
@@ -340,9 +345,7 @@ describe('InfobarBaseCustomerFields', () => {
             await openDraftSubmenu(user)
 
             const resumeButton = await screen.findByText('Resume draft')
-            act(() => {
-                fireEvent.click(resumeButton)
-            })
+            await act(() => user.click(resumeButton))
 
             expect(onResumeDraft).toHaveBeenCalledTimes(1)
         })
@@ -354,7 +357,7 @@ describe('InfobarBaseCustomerFields', () => {
             const onResumeDraft = vi.fn()
             const onDiscardDraft = vi.fn()
 
-            const { user } = render(<TestComponent />, {
+            const { user } = render(<TestComponent customer={customer} />, {
                 handleTicketDraft: {
                     hasDraft: true,
                     onResumeDraft,
@@ -369,9 +372,7 @@ describe('InfobarBaseCustomerFields', () => {
             const discardButton = await screen.findByText(
                 'Discard and create new ticket',
             )
-            act(() => {
-                fireEvent.click(discardButton)
-            })
+            await act(() => user.click(discardButton))
 
             expect(onDiscardDraft).toHaveBeenCalledTimes(1)
             expect(onDiscardDraft).toHaveBeenCalledWith(
@@ -393,15 +394,10 @@ describe('InfobarBaseCustomerFields', () => {
             const customer = createMockCustomer()
             setupMocks(customer)
 
-            const mockPush = vi.fn()
-            useHistory.mockReturnValue({
-                push: mockPush,
-            })
-
             const onResumeDraft = vi.fn()
             const onDiscardDraft = vi.fn()
 
-            render(<TestComponent />, {
+            const { user } = render(<TestComponent customer={customer} />, {
                 handleTicketDraft: {
                     hasDraft: false,
                     onResumeDraft,
@@ -411,7 +407,7 @@ describe('InfobarBaseCustomerFields', () => {
 
             await screen.findByText('Note')
 
-            await openEmailMenu()
+            await openEmailMenu(user)
 
             expect(await screen.findByText('Send email')).toBeInTheDocument()
 
@@ -423,9 +419,11 @@ describe('InfobarBaseCustomerFields', () => {
                 screen.queryByText('Discard and create new ticket'),
             ).not.toBeInTheDocument()
 
-            const sendEmailButton = await screen.findByText('Send email')
+            const sendEmailMenuItem = await screen.findByRole('menuitem', {
+                name: /send email/i,
+            })
             act(() => {
-                fireEvent.click(sendEmailButton)
+                fireEvent.click(sendEmailMenuItem)
             })
 
             expect(mockPush).toHaveBeenCalledTimes(1)

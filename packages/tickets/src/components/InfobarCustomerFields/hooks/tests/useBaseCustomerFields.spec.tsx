@@ -1,10 +1,6 @@
-import { waitFor } from '@testing-library/react'
-import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import {
-    mockGetTicketHandler,
-    mockTicket,
     mockTicketCustomer,
     mockUpdateCustomerHandler,
 } from '@gorgias/helpdesk-mocks'
@@ -32,70 +28,51 @@ afterAll(() => {
 })
 
 describe('useBaseCustomerFields', () => {
-    it('should return customer data from ticket', async () => {
-        const ticket = mockTicket({
-            id: 123,
-            customer: mockTicketCustomer({
-                id: 456,
-                name: 'John Doe',
-                email: 'john@example.com',
-                channels: [
-                    {
-                        id: 1,
-                        address: 'john@example.com',
-                        type: 'email',
-                        preferred: true,
-                    } as TicketCustomerChannel,
-                ],
-                note: 'Customer note',
-            }),
+    it('should initialize with customer data', async () => {
+        const customer = mockTicketCustomer({
+            id: 456,
+            name: 'John Doe',
+            email: 'john@example.com',
+            channels: [
+                {
+                    id: 1,
+                    address: 'john@example.com',
+                    type: 'email',
+                    preferred: true,
+                } as TicketCustomerChannel,
+            ],
+            note: 'Customer note',
         })
 
-        const mockGetTicket = mockGetTicketHandler(async () =>
-            HttpResponse.json(ticket),
+        const { result } = renderHook(() =>
+            useBaseCustomerFields({ ticketId: '123', customer }),
         )
 
-        server.use(mockGetTicket.handler)
-
-        const { result } = renderHook(() => useBaseCustomerFields('123'))
-
-        await waitFor(() => {
-            expect(result.current.customer).toBeDefined()
-            expect(result.current.customer?.id).toBe(456)
-            expect(result.current.customer?.name).toBe('John Doe')
-            expect(result.current.customer?.note).toBe('Customer note')
-        })
+        expect(result.current.note).toBe('Customer note')
+        expect(result.current.emailChannels).toHaveLength(1)
+        expect(result.current.emailChannels[0].address).toBe('john@example.com')
     })
 
-    it('should call handleNoteChange with correct note value', async () => {
-        const ticket = mockTicket({
-            id: 123,
-            customer: mockTicketCustomer({
-                id: 456,
-                name: 'John Doe',
-                email: 'john@example.com',
-                channels: [],
-                note: 'Old note',
-            }),
+    it('should call handleNoteBlur with correct note value', async () => {
+        const customer = mockTicketCustomer({
+            id: 456,
+            name: 'John Doe',
+            email: 'john@example.com',
+            channels: [],
+            note: 'Old note',
         })
-
-        const mockGetTicket = mockGetTicketHandler(async () =>
-            HttpResponse.json(ticket),
-        )
 
         const mockUpdateCustomer = mockUpdateCustomerHandler()
 
-        server.use(mockGetTicket.handler, mockUpdateCustomer.handler)
+        server.use(mockUpdateCustomer.handler)
 
-        const { result } = renderHook(() => useBaseCustomerFields('123'))
-
-        await waitFor(() => {
-            expect(result.current.customer).toBeDefined()
-        })
+        const { result } = renderHook(() =>
+            useBaseCustomerFields({ ticketId: '123', customer }),
+        )
 
         const waitForRequest = mockUpdateCustomer.waitForRequest(server)
 
-        result.current.handleNoteChange('New note')
+        result.current.handleNoteBlur('New note')
 
         await waitForRequest(async (request) => {
             const body = await request.clone().json()
@@ -103,42 +80,33 @@ describe('useBaseCustomerFields', () => {
         })
     })
 
-    it('should add new channel when handleChannelChange is called with null channelId', async () => {
-        const ticket = mockTicket({
-            id: 123,
-            customer: mockTicketCustomer({
-                id: 456,
-                name: 'John Doe',
-                email: 'john@example.com',
-                channels: [
-                    {
-                        id: 1,
-                        address: 'john@example.com',
-                        type: 'email',
-                        preferred: true,
-                    } as TicketCustomerChannel,
-                ],
-                note: '',
-            }),
+    it('should add new channel when createChannel is called', async () => {
+        const customer = mockTicketCustomer({
+            id: 456,
+            name: 'John Doe',
+            email: 'john@example.com',
+            channels: [
+                {
+                    id: 1,
+                    address: 'john@example.com',
+                    type: 'email',
+                    preferred: true,
+                } as TicketCustomerChannel,
+            ],
+            note: '',
         })
-
-        const mockGetTicket = mockGetTicketHandler(async () =>
-            HttpResponse.json(ticket),
-        )
 
         const mockUpdateCustomer = mockUpdateCustomerHandler()
 
-        server.use(mockGetTicket.handler, mockUpdateCustomer.handler)
+        server.use(mockUpdateCustomer.handler)
 
-        const { result } = renderHook(() => useBaseCustomerFields('123'))
-
-        await waitFor(() => {
-            expect(result.current.customer).toBeDefined()
-        })
+        const { result } = renderHook(() =>
+            useBaseCustomerFields({ ticketId: '123', customer }),
+        )
 
         const waitForRequest = mockUpdateCustomer.waitForRequest(server)
 
-        result.current.handleChannelChange(null, 'phone', '+1234567890')
+        result.current.createChannel('phone', '+1234567890')
 
         await waitForRequest(async (request) => {
             const body = await request.clone().json()
@@ -151,48 +119,39 @@ describe('useBaseCustomerFields', () => {
         })
     })
 
-    it('should update existing channel when handleChannelChange is called with existing channelId', async () => {
-        const ticket = mockTicket({
-            id: 123,
-            customer: mockTicketCustomer({
-                id: 456,
-                name: 'John Doe',
-                email: 'old@example.com',
-                channels: [
-                    {
-                        id: 1,
-                        address: 'old@example.com',
-                        type: 'email',
-                        preferred: true,
-                    } as TicketCustomerChannel,
-                    {
-                        id: 2,
-                        address: '+1234567890',
-                        type: 'phone',
-                        preferred: false,
-                    } as TicketCustomerChannel,
-                ],
-                note: '',
-            }),
+    it('should update existing channel when updateChannel is called', async () => {
+        const customer = mockTicketCustomer({
+            id: 456,
+            name: 'John Doe',
+            email: 'old@example.com',
+            channels: [
+                {
+                    id: 1,
+                    address: 'old@example.com',
+                    type: 'email',
+                    preferred: true,
+                } as TicketCustomerChannel,
+                {
+                    id: 2,
+                    address: '+1234567890',
+                    type: 'phone',
+                    preferred: false,
+                } as TicketCustomerChannel,
+            ],
+            note: '',
         })
-
-        const mockGetTicket = mockGetTicketHandler(async () =>
-            HttpResponse.json(ticket),
-        )
 
         const mockUpdateCustomer = mockUpdateCustomerHandler()
 
-        server.use(mockGetTicket.handler, mockUpdateCustomer.handler)
+        server.use(mockUpdateCustomer.handler)
 
-        const { result } = renderHook(() => useBaseCustomerFields('123'))
-
-        await waitFor(() => {
-            expect(result.current.customer).toBeDefined()
-        })
+        const { result } = renderHook(() =>
+            useBaseCustomerFields({ ticketId: '123', customer }),
+        )
 
         const waitForRequest = mockUpdateCustomer.waitForRequest(server)
 
-        result.current.handleChannelChange(1, 'email', 'new@example.com')
+        result.current.updateChannel(1, 'new@example.com')
 
         await waitForRequest(async (request) => {
             const body = await request.clone().json()
@@ -205,48 +164,39 @@ describe('useBaseCustomerFields', () => {
         })
     })
 
-    it('should delete channel when handleChannelChange is called with empty address', async () => {
-        const ticket = mockTicket({
-            id: 123,
-            customer: mockTicketCustomer({
-                id: 456,
-                name: 'John Doe',
-                email: 'john@example.com',
-                channels: [
-                    {
-                        id: 1,
-                        address: 'john@example.com',
-                        type: 'email',
-                        preferred: true,
-                    } as TicketCustomerChannel,
-                    {
-                        id: 2,
-                        address: '+1234567890',
-                        type: 'phone',
-                        preferred: false,
-                    } as TicketCustomerChannel,
-                ],
-                note: '',
-            }),
+    it('should delete channel when deleteChannel is called', async () => {
+        const customer = mockTicketCustomer({
+            id: 456,
+            name: 'John Doe',
+            email: 'john@example.com',
+            channels: [
+                {
+                    id: 1,
+                    address: 'john@example.com',
+                    type: 'email',
+                    preferred: true,
+                } as TicketCustomerChannel,
+                {
+                    id: 2,
+                    address: '+1234567890',
+                    type: 'phone',
+                    preferred: false,
+                } as TicketCustomerChannel,
+            ],
+            note: '',
         })
-
-        const mockGetTicket = mockGetTicketHandler(async () =>
-            HttpResponse.json(ticket),
-        )
 
         const mockUpdateCustomer = mockUpdateCustomerHandler()
 
-        server.use(mockGetTicket.handler, mockUpdateCustomer.handler)
+        server.use(mockUpdateCustomer.handler)
 
-        const { result } = renderHook(() => useBaseCustomerFields('123'))
-
-        await waitFor(() => {
-            expect(result.current.customer).toBeDefined()
-        })
+        const { result } = renderHook(() =>
+            useBaseCustomerFields({ ticketId: '123', customer }),
+        )
 
         const waitForRequest = mockUpdateCustomer.waitForRequest(server)
 
-        result.current.handleChannelChange(2, 'phone', '')
+        result.current.deleteChannel(2)
 
         await waitForRequest(async (request) => {
             const body = await request.clone().json()

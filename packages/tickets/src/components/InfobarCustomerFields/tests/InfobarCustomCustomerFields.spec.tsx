@@ -44,6 +44,12 @@ afterAll(() => {
 
 const customerId = 123
 
+const mockCustomer = {
+    id: customerId,
+    name: 'Test Customer',
+    email: 'test@example.com',
+} as any
+
 const createTextField = () =>
     mockCustomField({
         id: 1,
@@ -111,7 +117,7 @@ const setupMocks = (
 const TestComponent = () => {
     return (
         <OverflowList nonExpandedLineCount={3}>
-            <InfobarCustomCustomerFields customerId={customerId} />
+            <InfobarCustomCustomerFields customer={mockCustomer} />
         </OverflowList>
     )
 }

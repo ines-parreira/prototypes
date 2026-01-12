@@ -1,75 +1,57 @@
-import React from 'react'
+import { OverflowListItem, Text } from '@gorgias/axiom'
+import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
-import { useHistory } from 'react-router-dom'
-
-import {
-    IconName,
-    MenuItem,
-    OverflowListItem,
-    SubMenu,
-    Text,
-} from '@gorgias/axiom'
-
-import { useTicketsLegacyBridge } from '../../utils/LegacyBridge/useTicketsLegacyBridge'
-import {
-    formatPhoneNumberInternational,
-    validateChannelField,
-} from '../../utils/validation'
+import { validateChannelField } from '../../utils/validation'
 import { EditableField } from './components/EditableField'
-import { EditableMenuField } from './components/EditableMenuField'
+import { EmailChannelField } from './components/EmailChannelField'
 import { FieldRow } from './components/FieldRow'
-import { TriggerLabel } from './components/TriggerLabel'
-import { VoiceFieldMenuItems } from './components/VoiceFieldMenuItems'
+import { OtherChannelField } from './components/OtherChannelField'
+import { PhoneChannelField } from './components/PhoneChannelField'
 import {
     useBaseCustomerFields,
-    useCustomerChannels,
     useCustomerLocalTime,
     useCustomerLocation,
 } from './hooks'
-import { usePhoneAndSMSIntegrations } from './hooks/usePhoneAndSMSIntegrations'
 
 import css from './InfobarCustomerFields.less'
 
-function formatChannelTypeLabel(type: string): string {
-    return type
-        .split('-')
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ')
-}
-
 interface InfobarBaseCustomerFieldsProps {
+    customer: TicketCustomer
     ticketId: string
 }
 
 export function InfobarBaseCustomerFields({
+    customer,
     ticketId,
 }: InfobarBaseCustomerFieldsProps) {
-    const { customer, handleNoteChange, handleChannelChange } =
-        useBaseCustomerFields(ticketId)
-    const { handleTicketDraft } = useTicketsLegacyBridge()
-    const { hasDraft, onResumeDraft, onDiscardDraft } = handleTicketDraft
-    const history = useHistory()
+    const {
+        emailChannels,
+        phoneChannels,
+        otherChannels,
+        handleChannelChange,
+        updateChannel,
+        createChannel,
+        deleteChannel,
+        fields,
+        setFields,
+        note,
+        setNote,
+        handleNoteBlur,
+    } = useBaseCustomerFields({ ticketId, customer })
 
     const { location } = useCustomerLocation(customer)
-    const { emailChannels, phoneChannels, otherChannels } = useCustomerChannels(
-        customer?.channels,
-    )
-    const localTime = useCustomerLocalTime(customer)
-    const { phoneIntegrations, smsIntegrations, phoneNumbers, isLoading } =
-        usePhoneAndSMSIntegrations()
-    const note = customer?.note
 
-    if (!customer) {
-        return null
-    }
+    const localTime = useCustomerLocalTime(customer)
 
     return (
         <>
             <OverflowListItem className={css.overflowListItem}>
-                <FieldRow label="Note">
+                <FieldRow fieldId="note-field" label="Note">
                     <EditableField
-                        value={note || ''}
-                        onValueChange={handleNoteChange}
+                        id="note-field"
+                        value={note}
+                        onValueChange={setNote}
+                        onBlur={handleNoteBlur}
                         placeholder="+ Add"
                         ariaLabel="Note"
                     />
@@ -103,57 +85,33 @@ export function InfobarBaseCustomerFields({
             )}
             {phoneChannels.length > 0 ? (
                 phoneChannels.map((channel, index) => (
-                    <OverflowListItem
+                    <PhoneChannelField
+                        index={index}
                         key={channel.id}
-                        className={css.overflowListItem}
-                    >
-                        <FieldRow label={index === 0 ? 'Phone' : null}>
-                            <EditableMenuField
-                                value={channel.address || ''}
-                                onValueChange={(value) =>
-                                    handleChannelChange(
-                                        channel.id,
-                                        'phone',
-                                        value,
-                                    )
-                                }
-                                placeholder="+ Add"
-                                validator={(value) =>
-                                    validateChannelField('phone', value)
-                                }
-                                name="number"
-                                onDelete={() =>
-                                    handleChannelChange(channel.id, 'phone', '')
-                                }
-                                renderTrigger={(value) => (
-                                    <TriggerLabel
-                                        label={formatPhoneNumberInternational(
-                                            value,
-                                        )}
-                                    />
-                                )}
-                                ariaLabel="Phone"
-                            >
-                                <VoiceFieldMenuItems
-                                    phoneAddress={channel.address || ''}
-                                    customerId={customer.id.toString()}
-                                    customerName={customer.name || ''}
-                                    phoneIntegrations={phoneIntegrations}
-                                    smsIntegrations={smsIntegrations}
-                                    phoneNumbers={phoneNumbers}
-                                    isLoading={isLoading}
-                                />
-                            </EditableMenuField>
-                        </FieldRow>
-                    </OverflowListItem>
+                        customer={customer}
+                        channel={channel}
+                        onChannelChange={(value) =>
+                            handleChannelChange(channel.id, value)
+                        }
+                        onChannelBlur={(value) =>
+                            updateChannel(channel.id, value)
+                        }
+                        onChannelDelete={() => deleteChannel(channel.id)}
+                    />
                 ))
             ) : (
                 <OverflowListItem className={css.overflowListItem}>
-                    <FieldRow label="Phone">
+                    <FieldRow fieldId="custom-phone-field" label="Phone">
                         <EditableField<string>
+                            id="custom-phone-field"
+                            value={fields.phone}
                             onValueChange={(value) =>
-                                handleChannelChange(null, 'phone', value)
+                                setFields((prevFields) => ({
+                                    ...prevFields,
+                                    phone: value,
+                                }))
                             }
+                            onBlur={(value) => createChannel('phone', value)}
                             placeholder="+ Add"
                             validator={(value) =>
                                 validateChannelField('phone', value)
@@ -164,99 +122,34 @@ export function InfobarBaseCustomerFields({
                 </OverflowListItem>
             )}
             {emailChannels.length > 0 ? (
-                emailChannels.map((channel, index) => {
-                    const createTicketLocation = {
-                        pathname: `/app/ticket/new`,
-                        search: `?customer=${customer.id}`,
-                        state: {
-                            receiver: {
-                                name: customer.name || '',
-                                address: channel.address || '',
-                            },
-                            _navigationKey: Date.now(),
-                        },
-                    }
-
-                    return (
-                        <OverflowListItem
-                            key={channel.id}
-                            className={css.overflowListItem}
-                        >
-                            <FieldRow label={index === 0 ? 'Email' : null}>
-                                <EditableMenuField
-                                    value={channel.address || ''}
-                                    onValueChange={(value) =>
-                                        handleChannelChange(
-                                            channel.id,
-                                            'email',
-                                            value,
-                                        )
-                                    }
-                                    placeholder="+ Add"
-                                    validator={(value) =>
-                                        validateChannelField('email', value)
-                                    }
-                                    name="email"
-                                    onDelete={() =>
-                                        handleChannelChange(
-                                            channel.id,
-                                            'email',
-                                            '',
-                                        )
-                                    }
-                                    renderTrigger={(value) => (
-                                        <TriggerLabel
-                                            label={value}
-                                            tooltipText="Send email as new ticket"
-                                        />
-                                    )}
-                                    ariaLabel="Email"
-                                >
-                                    {hasDraft ? (
-                                        <SubMenu
-                                            label="Send email"
-                                            leadingSlot={IconName.CommMail}
-                                        >
-                                            <MenuItem
-                                                label="A draft ticket already exists"
-                                                isDisabled
-                                            />
-                                            <MenuItem
-                                                label="Resume draft"
-                                                onAction={onResumeDraft}
-                                            />
-                                            <MenuItem
-                                                label="Discard and create new ticket"
-                                                onAction={() =>
-                                                    onDiscardDraft(
-                                                        createTicketLocation,
-                                                    )
-                                                }
-                                            />
-                                        </SubMenu>
-                                    ) : (
-                                        <MenuItem
-                                            label="Send email"
-                                            leadingSlot={IconName.CommMail}
-                                            onAction={() =>
-                                                history.push(
-                                                    createTicketLocation,
-                                                )
-                                            }
-                                        />
-                                    )}
-                                </EditableMenuField>
-                            </FieldRow>
-                        </OverflowListItem>
-                    )
-                })
+                emailChannels.map((channel, index) => (
+                    <EmailChannelField
+                        index={index}
+                        key={channel.id}
+                        customer={customer}
+                        channel={channel}
+                        onChannelChange={(value) =>
+                            handleChannelChange(channel.id, value)
+                        }
+                        onChannelBlur={(value) =>
+                            updateChannel(channel.id, value)
+                        }
+                        onChannelDelete={() => deleteChannel(channel.id)}
+                    />
+                ))
             ) : (
                 <OverflowListItem className={css.overflowListItem}>
-                    <FieldRow label="Email">
+                    <FieldRow fieldId="custom-email-field" label="Email">
                         <EditableField<string>
+                            id="custom-email-field"
+                            value={fields.email}
                             onValueChange={(value) =>
-                                handleChannelChange(null, 'email', value)
+                                setFields((prevFields) => ({
+                                    ...prevFields,
+                                    email: value,
+                                }))
                             }
+                            onBlur={(value) => createChannel('email', value)}
                             placeholder="+ Add"
                             validator={(value) =>
                                 validateChannelField('email', value)
@@ -266,34 +159,14 @@ export function InfobarBaseCustomerFields({
                     </FieldRow>
                 </OverflowListItem>
             )}
-            {otherChannels.map((channel, index) => {
-                const showLabel =
-                    index === 0 ||
-                    otherChannels[index - 1].type !== channel.type
-
-                return (
-                    <OverflowListItem
-                        key={channel.id}
-                        className={css.overflowListItem}
-                    >
-                        <FieldRow
-                            label={
-                                showLabel
-                                    ? formatChannelTypeLabel(channel.type)
-                                    : null
-                            }
-                        >
-                            <Text
-                                size="sm"
-                                overflow="ellipsis"
-                                className={css.fieldValue}
-                            >
-                                {channel.address}
-                            </Text>
-                        </FieldRow>
-                    </OverflowListItem>
-                )
-            })}
+            {otherChannels.map((channel, index) => (
+                <OtherChannelField
+                    key={channel.id}
+                    channel={channel}
+                    index={index}
+                    otherChannels={otherChannels}
+                />
+            ))}
         </>
     )
 }

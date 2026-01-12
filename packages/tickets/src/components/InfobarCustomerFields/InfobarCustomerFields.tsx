@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useParams } from 'react-router-dom'
 
 import {
@@ -8,7 +6,7 @@ import {
     OverflowListShowMore,
 } from '@gorgias/axiom'
 
-import { useBaseCustomerFields } from './hooks/useBaseCustomerFields'
+import { useGetTicketData } from '../InfobarTicketDetails/components/InfobarTicketDetailsTags/hooks/useGetTicketData'
 import { InfobarBaseCustomerFields } from './InfobarBaseCustomerFields'
 import { InfobarCustomCustomerFields } from './InfobarCustomCustomerFields'
 
@@ -16,7 +14,8 @@ import css from './InfobarCustomerFields.less'
 
 export function InfobarCustomerFields() {
     const { ticketId } = useParams<{ ticketId: string }>()
-    const { customer } = useBaseCustomerFields(ticketId!)
+    const { data: ticket } = useGetTicketData(ticketId)
+    const customer = ticket?.data?.customer
 
     if (!ticketId || !customer) {
         return null
@@ -24,19 +23,15 @@ export function InfobarCustomerFields() {
 
     return (
         <OverflowList className={css.overflowList} nonExpandedLineCount={7}>
-            <InfobarCustomCustomerFields customerId={customer.id} />
-            <InfobarBaseCustomerFields ticketId={ticketId} />
-
-            <OverflowListShowMore
-                // @ts-ignore - this will be added as a valid prop
-                leadingSlot="arrow-chevron-down"
-            >
+            <InfobarCustomCustomerFields customer={customer} />
+            <InfobarBaseCustomerFields
+                ticketId={ticketId}
+                customer={customer}
+            />
+            <OverflowListShowMore leadingSlot="arrow-chevron-down">
                 Show more
             </OverflowListShowMore>
-            <OverflowListShowLess
-                // @ts-ignore - this will be added as a valid prop
-                leadingSlot="arrow-chevron-up"
-            >
+            <OverflowListShowLess leadingSlot="arrow-chevron-up">
                 Show less
             </OverflowListShowLess>
         </OverflowList>

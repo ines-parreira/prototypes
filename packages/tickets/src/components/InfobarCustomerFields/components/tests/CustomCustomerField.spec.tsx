@@ -4,10 +4,13 @@ import { setupServer } from 'msw/node'
 import { describe, expect, it } from 'vitest'
 
 import {
+    mockCustomerCustomField,
     mockCustomerCustomFieldWithValue,
     mockCustomField,
     mockDeleteCustomerCustomFieldValueHandler,
     mockDropdownInputSettingsSettings,
+    mockListCustomerCustomFieldsValuesHandler,
+    mockListCustomerCustomFieldsValuesResponse,
     mockTextDataTypeDefinition,
     mockTextInputSettings,
     mockUpdateCustomerCustomFieldValueHandler,
@@ -22,6 +25,15 @@ import { render, testAppQueryClient } from '../../../../tests/render.utils'
 import { CustomCustomerField } from '../CustomCustomerField'
 
 const customerId = 123
+
+const mockListCustomerCustomFieldsValues =
+    mockListCustomerCustomFieldsValuesHandler(async () => {
+        return HttpResponse.json(
+            mockListCustomerCustomFieldsValuesResponse({
+                data: [],
+            }),
+        )
+    })
 
 const mockUpdateCustomerCustomFieldValue =
     mockUpdateCustomerCustomFieldValueHandler(async () => {
@@ -45,6 +57,7 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(
+        mockListCustomerCustomFieldsValues.handler,
         mockUpdateCustomerCustomFieldValue.handler,
         mockDeleteCustomerCustomFieldValue.handler,
     )
@@ -115,6 +128,24 @@ describe('CustomCustomerField', () => {
         })
 
         it('should delete field value when cleared', async () => {
+            const { handler: listHandler } =
+                mockListCustomerCustomFieldsValuesHandler(async () => {
+                    return HttpResponse.json(
+                        mockListCustomerCustomFieldsValuesResponse({
+                            data: [
+                                mockCustomerCustomFieldWithValue({
+                                    field: mockCustomerCustomField({
+                                        id: textField.id,
+                                        label: textField.label,
+                                    }),
+                                    value: 'Initial Value',
+                                }),
+                            ],
+                        }),
+                    )
+                })
+            server.use(listHandler)
+
             const waitForDeleteRequest =
                 mockDeleteCustomerCustomFieldValue.waitForRequest(server)
 

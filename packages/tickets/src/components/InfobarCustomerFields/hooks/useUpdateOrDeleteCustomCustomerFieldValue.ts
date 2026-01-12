@@ -13,12 +13,16 @@ import {
 import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
 import { NotificationStatus } from '../../../utils/LegacyBridge/context'
 import { isCustomFieldValueEmpty } from '../utils'
+import { useCustomerCustomFieldValues } from './useCustomerCustomFieldValues'
 
 export function useUpdateOrDeleteCustomCustomerFieldValue(customerId: number) {
     const { dispatchNotification } = useTicketsLegacyBridge()
     const queryClient = useQueryClient()
     const queryKey =
         queryKeys.customers.listCustomerCustomFieldsValues(customerId)
+
+    const { data: { data: customerCustomFieldsValue = [] } = {} } =
+        useCustomerCustomFieldValues(customerId)
 
     const { mutateAsync: mutateAsyncUpdate } =
         useUpdateCustomerCustomFieldValue({
@@ -29,7 +33,7 @@ export function useUpdateOrDeleteCustomCustomerFieldValue(customerId: number) {
             },
         })
 
-    const { mutateAsync: mutateAsyncDelete, isLoading } =
+    const { mutateAsync: mutateAsyncDelete } =
         useDeleteCustomerCustomFieldValue({
             mutation: {
                 onMutate: async () => {
@@ -48,6 +52,18 @@ export function useUpdateOrDeleteCustomCustomerFieldValue(customerId: number) {
                     !('value' in params) ||
                     isCustomFieldValueEmpty(params.value)
                 ) {
+                    /**
+                     * Case where the user has only never set a value for the field
+                     * for example, focusing & then leaving the field without setting a value.
+                     * This avoid us trying to delete non-existent field value
+                     */
+                    const field = customerCustomFieldsValue.find(
+                        (field) => field.field?.id === params.fieldId,
+                    )
+                    if (!field) {
+                        return
+                    }
+
                     await mutateAsyncDelete({
                         customerId,
                         id: params.fieldId,
@@ -76,11 +92,11 @@ export function useUpdateOrDeleteCustomCustomerFieldValue(customerId: number) {
             queryKey,
             dispatchNotification,
             customerId,
+            customerCustomFieldsValue,
         ],
     )
 
     return {
         updateOrDeleteCustomerFieldValue,
-        isLoading,
     }
 }

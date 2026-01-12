@@ -54,7 +54,6 @@ export function useCustomerChannels(
 
         // Single-pass iteration
         for (const channel of channels) {
-            if (!channel.address) continue
             if (
                 EXCLUDED_CHANNEL_TYPES.includes(
                     channel.type as ExcludedChannelType,

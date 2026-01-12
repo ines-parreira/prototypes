@@ -1,4 +1,5 @@
 import { OverflowListItem } from '@gorgias/axiom'
+import type { TicketCustomer } from '@gorgias/helpdesk-types'
 import { ObjectType } from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinitions } from '../../hooks/useCustomFieldDefinitions'
@@ -9,11 +10,11 @@ import type { CustomFieldValue } from './types'
 import css from './InfobarCustomerFields.less'
 
 interface InfobarCustomCustomerFieldsProps {
-    customerId: number
+    customer: TicketCustomer
 }
 
 export function InfobarCustomCustomerFields({
-    customerId,
+    customer,
 }: InfobarCustomCustomerFieldsProps) {
     const {
         data: definitionsData,
@@ -28,7 +29,7 @@ export function InfobarCustomCustomerFields({
         data: valuesData,
         isLoading: isValuesLoading,
         isError: isValueError,
-    } = useCustomerCustomFieldValues(customerId)
+    } = useCustomerCustomFieldValues(customer.id)
 
     const isLoading = isDefinitionLoading || isValuesLoading
     const isError = isDefinitionError || isValueError
@@ -42,25 +43,23 @@ export function InfobarCustomCustomerFields({
 
     return (
         <>
-            {customFieldDefinitions.map((field) => {
-                return (
-                    <OverflowListItem
-                        key={field.id}
-                        className={css.overflowListItem}
-                    >
-                        <CustomCustomerField
-                            field={field}
-                            value={
-                                customFieldValues.find(
-                                    ({ field: valueField }) =>
-                                        field.id === valueField.id,
-                                )?.value as CustomFieldValue
-                            }
-                            customerId={customerId}
-                        />
-                    </OverflowListItem>
-                )
-            })}
+            {customFieldDefinitions.map((field) => (
+                <OverflowListItem
+                    key={field.id}
+                    className={css.overflowListItem}
+                >
+                    <CustomCustomerField
+                        field={field}
+                        value={
+                            customFieldValues.find(
+                                ({ field: valueField }) =>
+                                    field.id === valueField.id,
+                            )?.value as CustomFieldValue
+                        }
+                        customerId={customer.id}
+                    />
+                </OverflowListItem>
+            ))}
         </>
     )
 }

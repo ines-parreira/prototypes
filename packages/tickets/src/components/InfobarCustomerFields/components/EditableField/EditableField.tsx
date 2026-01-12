@@ -1,17 +1,16 @@
-import type { MouseEvent } from 'react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { NumberField, TextField } from '@gorgias/axiom'
 
 type EditableFieldProps<T extends string | number> = {
-    value?: T
+    id?: string
+    value: T | undefined
     onValueChange: (value: T) => unknown
+    onBlur?: (value: T) => void
     placeholder?: string
-    renderDisplay?: (value: T, onClick: () => void) => React.ReactNode
     validator?: (value: T) => string | undefined
     className?: string
     autoFocus?: boolean
-    onBlur?: () => void
     ariaLabel?: string
 } & (T extends string
     ? {
@@ -29,10 +28,10 @@ export function EditableField<T extends string | number = string | number>(
     props: EditableFieldProps<T>,
 ) {
     const {
+        id,
         value,
         onValueChange,
         placeholder = '+ Add',
-        renderDisplay,
         validator,
         className,
         type = 'text',
@@ -43,48 +42,25 @@ export function EditableField<T extends string | number = string | number>(
         ariaLabel,
     } = props
 
-    const [inputValue, setInputValue] = useState<T | undefined>(value)
-    const [isEditing, setIsEditing] = useState(false)
     const [error, setError] = useState<string | undefined>()
-    const prevValueRef = useRef(value)
-
-    useEffect(() => {
-        if (
-            !isEditing &&
-            inputValue !== undefined &&
-            value !== prevValueRef.current
-        ) {
-            setInputValue(value)
-        }
-        prevValueRef.current = value
-    }, [value, isEditing, inputValue])
 
     const handleChange = useCallback(
         (value: T) => {
-            setInputValue(value)
+            onValueChange(value)
             if (error) {
                 setError(undefined)
             }
         },
-        [error],
+        [error, onValueChange],
     )
 
     const handleSubmit = useCallback(() => {
-        if (inputValue === undefined) {
-            setIsEditing(false)
+        if (value === undefined) {
             return true
         }
 
         const finalValue =
-            type === 'text' && typeof inputValue === 'string'
-                ? inputValue.trim()
-                : inputValue
-
-        if (finalValue === value || (!finalValue && !value)) {
-            setIsEditing(false)
-            setError(undefined)
-            return true
-        }
+            type === 'text' && typeof value === 'string' ? value.trim() : value
 
         if (validator) {
             const validationError = validator(finalValue as string & number)
@@ -94,68 +70,56 @@ export function EditableField<T extends string | number = string | number>(
             }
         }
 
+        if (finalValue === value || (!finalValue && !value)) {
+            setError(undefined)
+            return true
+        }
+
         setError(undefined)
-        setInputValue(finalValue as T)
         onValueChange(finalValue as T)
-        setIsEditing(false)
         return true
-    }, [inputValue, value, validator, onValueChange, type])
-
-    const handleClick = useCallback((e?: MouseEvent) => {
-        e?.preventDefault()
-        setIsEditing(true)
-    }, [])
-
-    const handleFieldFocus = useCallback(() => {
-        setIsEditing(true)
-    }, [])
+    }, [value, validator, onValueChange, type])
 
     const handleFieldBlur = useCallback(() => {
-        setIsEditing(false)
         const success = handleSubmit()
         if (success) {
-            onBlur?.()
+            onBlur?.(value as T)
         }
-    }, [handleSubmit, onBlur])
+    }, [handleSubmit, onBlur, value])
 
-    if (!renderDisplay || isEditing || error || !inputValue) {
-        if (type === 'number') {
-            return (
-                <NumberField
-                    className={className}
-                    value={inputValue as number}
-                    onChange={(value) => handleChange(value as T)}
-                    placeholder={placeholder}
-                    size="sm"
-                    variant="secondary"
-                    onFocus={handleFieldFocus}
-                    onBlur={handleFieldBlur}
-                    autoFocus={autoFocus ?? isEditing}
-                    error={error}
-                    minValue={minValue}
-                    maxValue={maxValue}
-                    aria-label={ariaLabel ?? placeholder}
-                />
-            )
-        }
-
+    if (type === 'number') {
         return (
-            <TextField
+            <NumberField
+                id={id}
                 className={className}
-                type="text"
-                value={inputValue as string}
+                value={value as number}
                 onChange={(value) => handleChange(value as T)}
                 placeholder={placeholder}
                 size="sm"
                 variant="secondary"
-                onFocus={handleFieldFocus}
-                onBlur={handleFieldBlur}
-                autoFocus={autoFocus ?? isEditing}
+                autoFocus={autoFocus}
                 error={error}
                 aria-label={ariaLabel ?? placeholder}
+                minValue={minValue}
+                maxValue={maxValue}
             />
         )
     }
 
-    return <>{renderDisplay(inputValue ?? value, handleClick)}</>
+    return (
+        <TextField
+            id={id}
+            className={className}
+            type="text"
+            value={value as string}
+            onChange={(value) => handleChange(value as T)}
+            placeholder={placeholder}
+            size="sm"
+            variant="secondary"
+            onBlur={handleFieldBlur}
+            autoFocus={autoFocus}
+            error={error}
+            aria-label={ariaLabel ?? placeholder}
+        />
+    )
 }

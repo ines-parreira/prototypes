@@ -1,11 +1,13 @@
-/**
- * Datetime formatting constants
- *
- * Migrated from: apps/helpdesk/src/constants/datetime.ts
- *
- * Note: The original file in the helpdesk app is still in use.
- * In a future PR, all usages in the helpdesk app will be updated to import from @repo/utils.
- */
+export const DurationInMs = {
+    FiveMinutes: 5 * 60 * 1000,
+    FifteenMinutes: 15 * 60 * 1000,
+    ThirtyMinutes: 30 * 60 * 1000,
+    OneHour: 60 * 60 * 1000,
+    OneDay: 24 * 60 * 60 * 1000,
+    OneWeek: 7 * 24 * 60 * 60 * 1000,
+    OneMonth: 30 * 24 * 60 * 60 * 1000,
+    OneYear: 365 * 24 * 60 * 60 * 1000,
+} as const
 
 export enum DateFormatType {
     en_GB = 'en_GB',

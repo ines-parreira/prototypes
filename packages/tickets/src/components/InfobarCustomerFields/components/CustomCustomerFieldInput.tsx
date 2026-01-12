@@ -13,24 +13,30 @@ import {
 import { EditableField } from './EditableField/EditableField'
 
 interface CustomCustomerFieldInputProps {
+    id?: string
     field: CustomField
     value?: CustomFieldValue
     onChange: (nextValue: CustomFieldValue | undefined) => void
+    onBlur?: (nextValue: CustomFieldValue | undefined) => void
     className?: string
 }
 
 export function CustomCustomerFieldInput({
+    id,
     field,
     value,
     onChange,
+    onBlur,
     className,
 }: CustomCustomerFieldInputProps) {
     if (isTextInput(field)) {
         return (
             <EditableField
+                id={id}
                 type="text"
-                value={value as string}
+                value={(value as string | undefined) ?? ''}
                 onValueChange={onChange}
+                onBlur={onBlur}
                 placeholder={
                     field.definition.input_settings.placeholder || '+ Add'
                 }
@@ -45,9 +51,11 @@ export function CustomCustomerFieldInput({
 
         return (
             <EditableField
+                id={id}
                 type="number"
                 value={getNumberOrUndefined(value)}
-                onValueChange={(nextValue) => onChange(nextValue)}
+                onValueChange={onChange}
+                onBlur={onBlur}
                 minValue={toNumberOrUndefined(min)}
                 maxValue={toNumberOrUndefined(max)}
                 placeholder={
@@ -68,6 +76,7 @@ export function CustomCustomerFieldInput({
         return (
             <div className={className}>
                 <MultiLevelSelect
+                    id={id}
                     choices={choices}
                     selectedValue={value as TreeValue}
                     onSelect={onChange}

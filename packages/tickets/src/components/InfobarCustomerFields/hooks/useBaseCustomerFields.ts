@@ -1,78 +1,128 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 import type {
+    TicketCustomer,
     TicketCustomerChannel,
     UpdateCustomerBodyChannelsItem,
 } from '@gorgias/helpdesk-queries'
 
-import { useGetTicketData } from '../../InfobarTicketDetails/components/InfobarTicketDetailsTags/hooks/useGetTicketData'
+import { useCustomerChannels } from './useCustomerChannels'
 import { useUpdateCustomer } from './useUpdateCustomer'
 
-export function useBaseCustomerFields(ticketId: string) {
-    const { data: ticket } = useGetTicketData(ticketId)
-    const customer = ticket?.data?.customer
+type ChannelType = 'email' | 'phone'
+
+type BaseCustomerFieldsEmptyFields = Record<ChannelType, string>
+
+type BaseCustomerFieldsParams = {
+    ticketId: string
+    customer: TicketCustomer
+}
+export function useBaseCustomerFields({
+    ticketId,
+    customer,
+}: BaseCustomerFieldsParams) {
+    const [note, setNote] = useState<string>(customer.note ?? '')
+    const [fields, setFields] = useState<BaseCustomerFieldsEmptyFields>({
+        phone: '',
+        email: '',
+    })
+    const [channels, setChannels] = useState<TicketCustomerChannel[]>(
+        customer.channels ?? [],
+    )
+
+    const sortedChannels = useCustomerChannels(channels)
 
     const { updateCustomer } = useUpdateCustomer(ticketId, customer?.id ?? 0)
 
-    const handleNoteChange = useCallback(
+    const handleNoteBlur = useCallback(
         async (value: string) => {
+            setNote(value)
             await updateCustomer({ note: value })
         },
         [updateCustomer],
     )
 
+    const updateChannels = useCallback(
+        (channelId: number, address: string) =>
+            channels.map((channel) => {
+                if (channel.id === channelId) {
+                    return {
+                        ...channel,
+                        address,
+                    }
+                }
+                return channel
+            }),
+        [channels],
+    )
+
     const handleChannelChange = useCallback(
-        async (
-            channelId: number | null,
-            channelType: 'email' | 'phone',
-            newAddress: string,
-        ) => {
-            if (!customer) return
+        async (channelId: number, address: string) => {
+            const updatedChannels = updateChannels(channelId, address)
+            setChannels(updatedChannels)
+        },
+        [updateChannels],
+    )
 
-            let updatedChannels
-
-            if (channelId === null) {
-                updatedChannels = [
-                    ...customer.channels,
-                    {
-                        address: newAddress,
-                        type: channelType,
-                        preferred: false,
-                    },
-                ]
-            } else {
-                updatedChannels =
-                    customer.channels?.reduce(
-                        (
-                            acc: TicketCustomerChannel[],
-                            channel: TicketCustomerChannel,
-                        ) => {
-                            if (channel.id === channelId) {
-                                if (newAddress && !!newAddress.trim()) {
-                                    acc.push({
-                                        ...channel,
-                                        address: newAddress,
-                                    })
-                                }
-                            } else {
-                                acc.push(channel)
-                            }
-                            return acc
-                        },
-                        [],
-                    ) || []
+    const createChannel = useCallback(
+        async (type: ChannelType, address: string) => {
+            if (address.trim().length === 0) {
+                return
             }
+            const updatedChannels = [
+                ...channels,
+                {
+                    address,
+                    type,
+                    preferred: false,
+                } as TicketCustomerChannel,
+            ]
+            setChannels(updatedChannels)
+            await updateCustomer({
+                channels: updatedChannels as UpdateCustomerBodyChannelsItem[],
+            })
+            setFields((prevFields) => ({
+                ...prevFields,
+                [type]: '',
+            }))
+        },
+        [channels, updateCustomer, setFields],
+    )
 
+    const updateChannel = useCallback(
+        async (channelId: number, address: string) => {
+            const updatedChannels = updateChannels(channelId, address)
+            setChannels(updatedChannels)
             await updateCustomer({
                 channels: updatedChannels as UpdateCustomerBodyChannelsItem[],
             })
         },
-        [customer, updateCustomer],
+        [updateCustomer, updateChannels],
+    )
+
+    const deleteChannel = useCallback(
+        async (channelId: number) => {
+            const updatedChannels = channels.filter(
+                (channel) => channel.id !== channelId,
+            )
+            setChannels(updatedChannels)
+            await updateCustomer({
+                channels: updatedChannels as UpdateCustomerBodyChannelsItem[],
+            })
+        },
+        [channels, updateCustomer],
     )
 
     return {
-        customer,
-        handleNoteChange,
+        ...sortedChannels,
+        note,
+        setNote,
+        handleNoteBlur,
+        fields,
+        setFields,
         handleChannelChange,
+        createChannel,
+        updateChannel,
+        deleteChannel,
     }
 }

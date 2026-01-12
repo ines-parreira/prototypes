@@ -1,4 +1,6 @@
-import { act } from '@testing-library/react'
+import React from 'react'
+
+import { act, waitFor } from '@testing-library/react'
 
 import { render } from '../../../../../tests/render.utils'
 import { EditableField } from '../EditableField'
@@ -16,6 +18,7 @@ describe('EditableField', () => {
 
         const { getByPlaceholderText } = render(
             <EditableField
+                value=""
                 onValueChange={onValueChange}
                 placeholder="+ Add note"
             />,
@@ -38,50 +41,25 @@ describe('EditableField', () => {
         expect(getByDisplayValue('Test value')).toBeInTheDocument()
     })
 
-    it('should call onValueChange when value is changed and field is blurred', async () => {
+    it('should call onValueChange on every keystroke', async () => {
         const onValueChange = vi.fn()
 
-        const { user, getByDisplayValue } = render(
+        const { user, getByPlaceholderText } = render(
             <EditableField
-                value="Initial value"
+                value=""
                 onValueChange={onValueChange}
                 placeholder="+ Add"
             />,
         )
 
-        const input = getByDisplayValue('Initial value')
+        const input = getByPlaceholderText('+ Add')
 
         await act(async () => {
-            await user.clear(input)
-            await user.type(input, 'New value')
+            await user.type(input, 'New')
         })
 
-        act(() => input.blur())
-
-        expect(onValueChange).toHaveBeenCalledWith('New value')
-    })
-
-    it('should not call onValueChange when value is unchanged', async () => {
-        const onValueChange = vi.fn()
-
-        const { user, getByDisplayValue } = render(
-            <EditableField
-                value="Test value"
-                onValueChange={onValueChange}
-                placeholder="+ Add"
-            />,
-        )
-
-        const input = getByDisplayValue('Test value')
-
-        await act(async () => {
-            await user.clear(input)
-            await user.type(input, 'Test value')
-        })
-
-        act(() => input.blur())
-
-        expect(onValueChange).not.toHaveBeenCalled()
+        expect(onValueChange).toHaveBeenCalled()
+        expect(onValueChange.mock.calls.length).toBeGreaterThan(0)
     })
 
     it('should not call onValueChange when empty value is submitted and current value is also empty', async () => {
@@ -102,169 +80,116 @@ describe('EditableField', () => {
         expect(onValueChange).not.toHaveBeenCalled()
     })
 
-    it('should trim whitespace before submitting', async () => {
-        const onValueChange = vi.fn()
+    it('should trim whitespace on blur', async () => {
+        function ControlledField() {
+            const [value, setValue] = React.useState('')
+            return (
+                <EditableField
+                    value={value}
+                    onValueChange={setValue}
+                    placeholder="+ Add"
+                />
+            )
+        }
 
-        const { user, getByDisplayValue } = render(
-            <EditableField
-                value="Test"
-                onValueChange={onValueChange}
-                placeholder="+ Add"
-            />,
-        )
+        const { user, getByPlaceholderText } = render(<ControlledField />)
 
-        const input = getByDisplayValue('Test')
+        const input = getByPlaceholderText('+ Add')
 
         await act(async () => {
-            await user.clear(input)
             await user.type(input, '  New value  ')
+            input.blur()
         })
 
-        act(() => input.blur())
-
-        expect(onValueChange).toHaveBeenCalledWith('New value')
+        expect(input).toHaveValue('New value')
     })
 
-    it('should show validation error when validator returns error message', async () => {
+    it('should show validation error when validator returns error message on blur', async () => {
         const onValueChange = vi.fn()
 
-        const { user, getByDisplayValue, getByText } = render(
+        const { user, getByPlaceholderText } = render(
             <EditableField
-                value="test@example.com"
+                value=""
                 onValueChange={onValueChange}
                 validator={mockValidator}
                 placeholder="+ Add"
             />,
         )
 
-        const input = getByDisplayValue('test@example.com')
+        const input = getByPlaceholderText('+ Add')
 
         await act(async () => {
-            await user.clear(input)
             await user.type(input, 'invalid-email')
         })
 
-        act(() => input.blur())
+        expect(input).toHaveAttribute('aria-invalid', 'false')
 
-        expect(getByText('Invalid email address')).toBeInTheDocument()
-        expect(onValueChange).not.toHaveBeenCalled()
+        await act(async () => {
+            input.blur()
+        })
+
+        await waitFor(() => {
+            expect(input).toHaveAttribute('aria-invalid', 'true')
+        })
     })
 
     it('should clear validation error when user starts typing', async () => {
         const onValueChange = vi.fn()
 
-        const { user, getByDisplayValue, getByText, queryByText } = render(
+        const { user, getByPlaceholderText } = render(
             <EditableField
-                value="test@example.com"
+                value=""
                 onValueChange={onValueChange}
                 validator={mockValidator}
                 placeholder="+ Add"
             />,
         )
 
-        const input = getByDisplayValue('test@example.com')
+        const input = getByPlaceholderText('+ Add')
 
         await act(async () => {
-            await user.clear(input)
             await user.type(input, 'invalid')
         })
 
-        act(() => input.blur())
+        await act(async () => {
+            input.blur()
+        })
 
-        expect(getByText('Invalid email address')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(input).toHaveAttribute('aria-invalid', 'true')
+        })
 
         await act(async () => {
             await user.type(input, '@')
         })
 
-        expect(queryByText('Invalid email address')).not.toBeInTheDocument()
+        expect(input).toHaveAttribute('aria-invalid', 'false')
     })
 
-    it('should call onValueChange when validation passes', async () => {
-        const onValueChange = vi.fn()
+    it('should call onValueChange during typing and pass validation on blur', async () => {
+        function ControlledField() {
+            const [value, setValue] = React.useState('')
+            return (
+                <EditableField
+                    value={value}
+                    onValueChange={setValue}
+                    validator={mockValidator}
+                    placeholder="+ Add"
+                />
+            )
+        }
 
-        const { user, getByDisplayValue } = render(
-            <EditableField
-                value="test@example.com"
-                onValueChange={onValueChange}
-                validator={mockValidator}
-                placeholder="+ Add"
-            />,
-        )
+        const { user, getByPlaceholderText } = render(<ControlledField />)
 
-        const input = getByDisplayValue('test@example.com')
+        const input = getByPlaceholderText('+ Add')
 
         await act(async () => {
-            await user.clear(input)
             await user.type(input, 'new@example.com')
+            input.blur()
         })
 
-        act(() => input.blur())
-
         expect(mockValidator).toHaveBeenLastCalledWith('new@example.com')
-        expect(onValueChange).toHaveBeenCalledWith('new@example.com')
-    })
-
-    it('should render custom display when renderDisplay is provided', () => {
-        const onValueChange = vi.fn()
-        const renderDisplay = vi.fn((value: string) => (
-            <div>Custom: {value}</div>
-        ))
-
-        const { getByText } = render(
-            <EditableField
-                value="Test value"
-                onValueChange={onValueChange}
-                renderDisplay={renderDisplay}
-                placeholder="+ Add"
-            />,
-        )
-
-        expect(getByText('Custom: Test value')).toBeInTheDocument()
-    })
-
-    it('should switch to edit mode when custom display is clicked', async () => {
-        const onValueChange = vi.fn()
-        const renderDisplay = vi.fn((value: string, onClick: () => void) => (
-            <button type="button" onClick={onClick}>
-                trigger
-            </button>
-        ))
-
-        const { user, getByRole, getByDisplayValue } = render(
-            <EditableField
-                value="Test value"
-                onValueChange={onValueChange}
-                renderDisplay={renderDisplay}
-                placeholder="+ Add"
-            />,
-        )
-
-        const button = getByRole('button', { name: 'trigger' })
-
-        await act(() => user.click(button))
-
-        expect(getByDisplayValue('Test value')).toBeInTheDocument()
-    })
-
-    it('should render TextField when renderDisplay is provided but value is empty', () => {
-        const onValueChange = vi.fn()
-        const renderDisplay = vi.fn((value: string) => (
-            <div>Custom: {value}</div>
-        ))
-
-        const { getByPlaceholderText, queryByText } = render(
-            <EditableField
-                value=""
-                onValueChange={onValueChange}
-                renderDisplay={renderDisplay}
-                placeholder="+ Add note"
-            />,
-        )
-
-        expect(getByPlaceholderText('+ Add note')).toBeInTheDocument()
-        expect(queryByText(/Custom:/)).not.toBeInTheDocument()
-        expect(renderDisplay).not.toHaveBeenCalled()
+        expect(input).toHaveAttribute('aria-invalid', 'false')
     })
 
     it('should update input value when prop value changes', () => {
@@ -289,34 +214,5 @@ describe('EditableField', () => {
         )
 
         expect(getByDisplayValue('Updated value')).toBeInTheDocument()
-    })
-
-    it('should not update input value when editing', async () => {
-        const onValueChange = vi.fn()
-
-        const { user, rerender, getByDisplayValue } = render(
-            <EditableField
-                value="Initial value"
-                onValueChange={onValueChange}
-                placeholder="+ Add"
-            />,
-        )
-
-        const input = getByDisplayValue('Initial value')
-
-        await act(async () => {
-            await user.clear(input)
-            await user.type(input, 'User typing...')
-        })
-
-        rerender(
-            <EditableField
-                value="External update"
-                onValueChange={onValueChange}
-                placeholder="+ Add"
-            />,
-        )
-
-        expect(getByDisplayValue('User typing...')).toBeInTheDocument()
     })
 })

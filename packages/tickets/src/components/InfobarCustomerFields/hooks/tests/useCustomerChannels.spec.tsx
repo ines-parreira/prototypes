@@ -85,23 +85,6 @@ describe('useCustomerChannels', () => {
         expect(result.current.otherChannels).toHaveLength(0)
     })
 
-    it('should filter out channels without address', () => {
-        const channels = [
-            {
-                id: 1,
-                address: 'test@example.com',
-                type: 'email',
-                preferred: false,
-            },
-            { id: 3, address: null, type: 'phone', preferred: false },
-        ] as TicketCustomerChannel[]
-
-        const { result } = renderHook(() => useCustomerChannels(channels))
-
-        expect(result.current.emailChannels).toHaveLength(1)
-        expect(result.current.phoneChannels).toHaveLength(0)
-    })
-
     it('should sort channels alphabetically by address', () => {
         const channels: TicketCustomerChannel[] = [
             {
