@@ -94,7 +94,7 @@ export const TitleCell = ({
             }
         >
             <Box gap="xs" alignItems="center" className={css.titleCell}>
-                <Icon size="md" name={getIcon()} />
+                <Icon size="sm" name={getIcon()} />
                 <TruncatedTextWithTooltip tooltipContent={title}>
                     <Text>{highlightText(title, searchTerm)}</Text>
                 </TruncatedTextWithTooltip>
