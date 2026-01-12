@@ -25,7 +25,7 @@ describe('ShoppingAssistantPerformanceBreakdownTable', () => {
 
         expect(screen.getByText('Trigger on search')).toBeInTheDocument()
         expect(
-            screen.getByText('Suggested product questions'),
+            screen.getByText('AI FAQs: Floating above chat'),
         ).toBeInTheDocument()
         expect(screen.getByText('Ask anything input')).toBeInTheDocument()
         expect(screen.getByText('Chat interaction')).toBeInTheDocument()
@@ -59,7 +59,7 @@ describe('ShoppingAssistantPerformanceBreakdownTable', () => {
         render(<ShoppingAssistantPerformanceBreakdownTable />)
 
         expect(
-            screen.getByText('Suggested product questions'),
+            screen.getByText('AI FAQs: Floating above chat'),
         ).toBeInTheDocument()
         expect(screen.getAllByText('1998').length).toBeGreaterThan(0)
         expect(screen.getAllByText('60%').length).toBeGreaterThan(0)

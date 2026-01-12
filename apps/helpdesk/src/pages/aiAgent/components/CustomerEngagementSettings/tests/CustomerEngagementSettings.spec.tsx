@@ -1,19 +1,28 @@
+import type { ReactNode } from 'react'
+
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, waitFor, within } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { act } from 'react-dom/test-utils'
+import { FormProvider, useForm } from 'react-hook-form'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { LanguageChat } from 'constants/languages'
 import { integrationsState } from 'fixtures/integrations'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import * as chatColorHook from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import type {
+    Texts,
+    TextsPerLanguage,
+} from 'rest_api/gorgias_chat_protected_api/types'
 import * as IntegrationsActions from 'state/integrations/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -29,11 +38,156 @@ let history = createMemoryHistory({
     initialEntries: ['/shopify/test-store/customer-engagement'],
 })
 
-const renderComponent = () =>
-    renderWithRouter(
+const FormWrapper = ({
+    children,
+    onSave,
+}: {
+    children: ReactNode
+    onSave: (data: Record<string, unknown>) => Promise<void>
+}) => {
+    const { storeConfiguration: currentStoreConfig } =
+        mockedUseAiAgentStoreConfigurationContext()
+    const methods = useForm({
+        defaultValues: {
+            isConversationStartersEnabled:
+                currentStoreConfig?.isConversationStartersEnabled ?? false,
+            isAskAnythingInputEnabled:
+                currentStoreConfig?.floatingChatInputConfiguration?.isEnabled ??
+                false,
+            isFloatingInputDesktopOnly:
+                currentStoreConfig?.floatingChatInputConfiguration
+                    ?.isDesktopOnly ?? false,
+            needHelpText: 'Need help? Ask us anything!',
+            isSalesHelpOnSearchEnabled:
+                currentStoreConfig?.isSalesHelpOnSearchEnabled ?? false,
+            embeddedSpqEnabled: currentStoreConfig?.embeddedSpqEnabled ?? false,
+        },
+    })
+    const {
+        handleSubmit,
+        formState: { isDirty, isSubmitting },
+        reset,
+    } = methods
+    return (
+        <FormProvider {...methods}>
+            <UnsavedChangesPrompt
+                onSave={handleSubmit(onSave)}
+                when={isDirty}
+                onDiscard={reset}
+                shouldRedirectAfterSave
+            />
+            <button
+                aria-disabled={!isDirty || isSubmitting}
+                onClick={handleSubmit(onSave)}
+                type="submit"
+            >
+                Save Changes
+            </button>
+            <button onClick={() => reset()} type="button">
+                Discard Changes
+            </button>
+            {children}
+        </FormProvider>
+    )
+}
+
+const createOnSave = () => {
+    return async (data: Record<string, unknown>) => {
+        const {
+            storeConfiguration: currentStoreConfig,
+            updateStoreConfiguration,
+        } = mockedUseAiAgentStoreConfigurationContext()
+
+        if (currentStoreConfig) {
+            try {
+                await updateStoreConfiguration({
+                    ...currentStoreConfig,
+                    isConversationStartersEnabled:
+                        data.isConversationStartersEnabled as boolean,
+                    floatingChatInputConfiguration: {
+                        ...currentStoreConfig?.floatingChatInputConfiguration,
+                        isEnabled: data.isAskAnythingInputEnabled as boolean,
+                        isDesktopOnly:
+                            data.isFloatingInputDesktopOnly as boolean,
+                        needHelpText:
+                            (data.needHelpText as string) || undefined,
+                    },
+                    isSalesHelpOnSearchEnabled:
+                        data.isSalesHelpOnSearchEnabled as boolean,
+                })
+
+                if (currentStoreConfig.monitoredChatIntegrations.length === 1) {
+                    const { needHelpText } = data
+
+                    const meta: Record<string, string> = {}
+                    const texts: Record<string, string> = {}
+                    const sspTexts: Record<string, string> = needHelpText
+                        ? { needHelp: String(needHelpText) }
+                        : {}
+
+                    const textsPerLanguage: TextsPerLanguage = {
+                        meta,
+                        sspTexts,
+                        texts,
+                    }
+
+                    const allTexts: Texts = {
+                        [LanguageChat.Czech]: textsPerLanguage,
+                        [LanguageChat.Danish]: textsPerLanguage,
+                        [LanguageChat.Dutch]: textsPerLanguage,
+                        [LanguageChat.EnglishUs]: textsPerLanguage,
+                        [LanguageChat.FrenchCa]: textsPerLanguage,
+                        [LanguageChat.FrenchFr]: textsPerLanguage,
+                        [LanguageChat.German]: textsPerLanguage,
+                        [LanguageChat.Italian]: textsPerLanguage,
+                        [LanguageChat.Norwegian]: textsPerLanguage,
+                        [LanguageChat.Spanish]: textsPerLanguage,
+                        [LanguageChat.Swedish]: textsPerLanguage,
+                        [LanguageChat.EnglishGb]: textsPerLanguage,
+                        [LanguageChat.Finnish]: textsPerLanguage,
+                        [LanguageChat.PortugueseBrazil]: textsPerLanguage,
+                        [LanguageChat.Japanese]: textsPerLanguage,
+                    }
+
+                    await IntegrationsActions.updateApplicationTexts(
+                        '',
+                        allTexts,
+                    )
+                }
+
+                store.dispatch({
+                    type: 'notifications/notify',
+                    payload: {
+                        message: CHANGES_SAVED_SUCCESS,
+                        status: NotificationStatus.Success,
+                    },
+                })
+            } catch {
+                store.dispatch({
+                    type: 'notifications/notify',
+                    payload: {
+                        status: NotificationStatus.Error,
+                        message:
+                            'Failed to save customer engagement configuration state',
+                    },
+                })
+            }
+        }
+    }
+}
+
+const renderComponent = () => {
+    const onSave = createOnSave()
+    return renderWithRouter(
         <Provider store={store}>
             <QueryClientProvider client={queryClient}>
-                <CustomerEngagementSettings />
+                <FormWrapper onSave={onSave}>
+                    <CustomerEngagementSettings
+                        primaryLanguage="en-US"
+                        translations={{}}
+                        onSave={onSave}
+                    />
+                </FormWrapper>
             </QueryClientProvider>
         </Provider>,
         {
@@ -42,6 +196,7 @@ const renderComponent = () =>
             history,
         },
     )
+}
 
 type RenderComponentReturn = ReturnType<typeof renderComponent>
 
@@ -137,7 +292,7 @@ const mockUpdateStoreConfiguration = jest
 
 const getConversationStartersSwitch = (container: HTMLElement) => {
     const rowContent = within(container).getByText(
-        'Suggested product questions',
+        'AI FAQs: Floating above chat',
     )
 
     return within(rowContent.closest('.cardContentWrapper')!).getByRole(
@@ -249,13 +404,16 @@ describe('CustomerEngagementSettings', () => {
         click(saveButton)
 
         await waitFor(() => {
-            expect(mockUpdateApplicationTexts).toHaveBeenCalledWith('', {
-                'en-US': {
-                    meta: {},
-                    sspTexts: { needHelp: 'Need help? Ask us anything!' },
-                    texts: {},
-                },
-            })
+            expect(mockUpdateApplicationTexts).toHaveBeenCalledWith(
+                '',
+                expect.objectContaining({
+                    'en-US': {
+                        meta: {},
+                        sspTexts: { needHelp: 'Need help? Ask us anything!' },
+                        texts: {},
+                    },
+                }),
+            )
         })
     })
 
@@ -526,13 +684,16 @@ describe('CustomerEngagementSettings', () => {
             fireEvent.click(saveButton)
 
             await waitFor(() => {
-                expect(mockUpdateApplicationTexts).toHaveBeenCalledWith('', {
-                    'en-US': {
-                        meta: {},
-                        sspTexts: { needHelp: undefined },
-                        texts: {},
-                    },
-                })
+                expect(mockUpdateApplicationTexts).toHaveBeenCalledWith(
+                    '',
+                    expect.objectContaining({
+                        'en-US': {
+                            meta: {},
+                            sspTexts: {},
+                            texts: {},
+                        },
+                    }),
+                )
             })
         })
     })

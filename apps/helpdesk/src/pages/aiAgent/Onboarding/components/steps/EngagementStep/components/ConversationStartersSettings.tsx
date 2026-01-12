@@ -26,7 +26,7 @@ type Props = {
 }
 
 export const ConversationStartersSettings = ({
-    description = 'Show up to 3 dynamic, AI-generated questions on product pages, based on what shoppers are most likely to ask—automatically generated from your product content—to resolve doubts quickly and drive more conversions.',
+    description = 'Show up to 3 AI-generated questions above chat to answer common shopper questions and start conversations.',
     isEnabled,
     gmv,
     isGmvLoading,
@@ -62,7 +62,7 @@ export const ConversationStartersSettings = ({
                 <EngagementSettingsCardContent>
                     <div className={css.cardHeader}>
                         <EngagementSettingsCardTitle>
-                            Suggested product questions
+                            AI FAQs: Floating above chat
                         </EngagementSettingsCardTitle>
 
                         <EngagementSettingsCardImpact

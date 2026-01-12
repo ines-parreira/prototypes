@@ -39,7 +39,7 @@ const TABLE_DATA: PerformanceData[] = [
         costPerInteraction: '$10',
     },
     {
-        engagementFeature: 'Suggested product questions',
+        engagementFeature: 'AI FAQs: Floating above chat',
         automatedInteractions: 1998,
         successRate: '60%',
         ordersInfluenced: 10,

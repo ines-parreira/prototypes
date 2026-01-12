@@ -194,7 +194,9 @@ describe('EmbeddedSpqsSettings - Functions', () => {
             expect(
                 screen.queryByRole('button', { name: 'Set Up' }),
             ).not.toBeInTheDocument()
-            expect(screen.getByText('Embedded FAQs')).toBeInTheDocument()
+            expect(
+                screen.getByText('AI FAQs: Embedded in page'),
+            ).toBeInTheDocument()
         })
     })
 
@@ -386,7 +388,7 @@ describe('EmbeddedSpqsSettings - Functions', () => {
 
             expect(
                 within(screen.getByRole('dialog')).getByText(
-                    /Embedded product questions/i,
+                    /AI FAQs: Embedded in page/i,
                 ),
             ).toBeInTheDocument()
         })
@@ -418,7 +420,9 @@ describe('EmbeddedSpqsSettings - Functions', () => {
 
             await act(() => user.click(settingsButton))
 
-            await act(() => user.click(screen.getByText(/Insert Code Block/i)))
+            await act(() =>
+                user.click(screen.getByText(/Insert code snippet/i)),
+            )
 
             const copyCodeButton = screen.getByTestId(
                 'embedded-spq-copy-button',
@@ -431,7 +435,7 @@ describe('EmbeddedSpqsSettings - Functions', () => {
             )
 
             expect(mockNotify).toHaveBeenCalledWith({
-                message: 'Code successfully copied.',
+                message: 'Code copied!',
                 dismissAfter: 3000,
                 status: 'success',
             })
@@ -477,6 +481,51 @@ describe('EmbeddedSpqsSettings - Functions', () => {
             await act(() => user.click(closeButton))
 
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Edit in Shopify button', () => {
+        it('should render Edit in Shopify link with external link icon and open in new tab', async () => {
+            const user = userEvent.setup()
+
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    embeddedSpqEnabled: true,
+                } as StoreConfiguration,
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: mockCreateStoreConfiguration,
+                isPendingCreateOrUpdate: false,
+            })
+
+            render(
+                <FormWrapper defaultValues={{ embeddedSpqEnabled: true }}>
+                    <EmbeddedSpqsSettings shopName={'test-store'} />
+                </FormWrapper>,
+            )
+
+            const settingsButton = screen.getByRole('button', {
+                name: /open settings/i,
+            })
+
+            await act(() => user.click(settingsButton))
+
+            const editInShopifyLink = screen.getByRole('link', {
+                name: /edit in shopify/i,
+            })
+
+            expect(editInShopifyLink).toHaveAttribute('target', '_blank')
+            expect(editInShopifyLink).toHaveAttribute(
+                'rel',
+                'noopener noreferrer',
+            )
+            expect(editInShopifyLink).toHaveAttribute(
+                'href',
+                expect.stringContaining('test-store.myshopify.com'),
+            )
+
+            const externalLinkIcon = editInShopifyLink.querySelector('svg')
+            expect(externalLinkIcon).toBeInTheDocument()
         })
     })
 })

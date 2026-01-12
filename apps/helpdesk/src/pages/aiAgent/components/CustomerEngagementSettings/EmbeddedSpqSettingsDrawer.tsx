@@ -1,9 +1,10 @@
 import { useCallback, useRef, useState } from 'react'
 
 import { useCopyToClipboard } from '@repo/hooks'
-import classNames from 'classnames'
 
 import {
+    Banner,
+    Box,
     Button,
     ButtonGroup,
     ButtonGroupItem,
@@ -33,31 +34,40 @@ const SHOPIFY_THEME_EXTENSION_LINK_BASE = `https://{shopName}.myshopify.com/admi
 const QuickInstallationContent = ({ shopName }: { shopName: string }) => {
     return (
         <>
-            <div className={css.listItem}>
-                Easily add suggested product questions to your product pages.
-                Select the widget in your Shopify editor, then customize the
-                look and feel to match your store.
-                <br />
-                <br />
-                Note that turning off this feature won&apos;t remove the code
-                from your website. To permanently delete the widget, delete the
-                code snippet from your website.
-                <br />
-                <br />
-                <Button
-                    as="a"
-                    trailingSlot="external-link"
-                    intent="regular"
-                    variant="primary"
-                    data-testid="embedded-spq-copy-button"
-                    href={SHOPIFY_THEME_EXTENSION_LINK_BASE.replace(
-                        '{shopName}',
-                        shopName,
-                    )}
-                >
-                    Edit in Shopify
-                </Button>
-            </div>
+            <Box className={css.listItem} flexDirection="column" gap={12}>
+                Help shoppers get answers faster by embedding AI FAQs in your
+                product pages. Use your Shopify editor to place the widget and
+                customize it to match your store.
+                <Box>
+                    <Button
+                        as="a"
+                        trailingSlot="external-link"
+                        intent="regular"
+                        variant="primary"
+                        data-testid="embedded-spq-copy-button"
+                        href={SHOPIFY_THEME_EXTENSION_LINK_BASE.replace(
+                            '{shopName}',
+                            shopName,
+                        )}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Edit in Shopify
+                    </Button>
+                </Box>
+                <Box>
+                    <Banner
+                        icon="info"
+                        intent="info"
+                        isClosable={false}
+                        title="Turning off this feature won’t remove the code from your site"
+                    >
+                        Shoppers won&apos;t see the AI FAQs, but the code will
+                        stay in your Shopify theme. To remove them completely,
+                        delete the code snippet from your theme.
+                    </Banner>
+                </Box>
+            </Box>
         </>
     )
 }
@@ -75,7 +85,7 @@ const ManualInstallationContent = ({ shopName }: { shopName: string }) => {
 
         dispatch(
             notify({
-                message: 'Code successfully copied.',
+                message: 'Code copied!',
                 dismissAfter: 3000,
                 status: NotificationStatus.Success,
             }),
@@ -84,57 +94,79 @@ const ManualInstallationContent = ({ shopName }: { shopName: string }) => {
 
     return (
         <>
-            <div className={css.listItem}>
-                <h3>
-                    1. Go in shopify&nbsp;
-                    <a
-                        className={css.link}
-                        href={`https://admin.shopify.com/store/${shopName}/themes`}
-                        target="_blank"
-                    >
-                        Themes <Icon name="external-link" />
-                    </a>
-                </h3>
-                <img src={spqManualInstallStep1} alt="Go to shopify them"></img>
-            </div>
+            <Box flexDirection="column" gap={24} className={css.manualSteps}>
+                <Box flexDirection="column" gap={4}>
+                    <Box>
+                        <h3>
+                            1. In Shopify, go to&nbsp;
+                            <a
+                                className={css.link}
+                                href={`https://admin.shopify.com/store/${shopName}/themes`}
+                                target="_blank"
+                            >
+                                Themes <Icon name="external-link" />
+                            </a>
+                        </h3>
+                    </Box>
+                    <Box>
+                        <img
+                            alt="Go to shopify theme"
+                            src={spqManualInstallStep1}
+                        />
+                    </Box>
+                </Box>
 
-            <div className={css.listItem}>
-                <h3>
-                    2. Next to Edit theme, tap{' '}
-                    <span className={css.kebabIcon}>
-                        <Icon name="dots-kebab-vertical" />
-                    </span>{' '}
-                    and click Edit Code
-                </h3>
-                <img
-                    src={spqManualInstallStep2}
-                    alt="Click on edit theme"
-                ></img>
-            </div>
+                <Box flexDirection="column" gap={4}>
+                    <Box>
+                        <h3>
+                            2. Next to Edit theme, tap
+                            <span className={css.kebabIcon}>
+                                <Icon name="dots-kebab-vertical" />
+                            </span>
+                            and click Edit Code
+                        </h3>
+                    </Box>
+                    <Box>
+                        <img
+                            alt="Click on edit theme"
+                            src={spqManualInstallStep2}
+                        />
+                    </Box>
+                </Box>
 
-            <div className={css.listItem}>
-                <h3>3. Find your product page template filed</h3>
-                <img
-                    src={spqManualInstallStep3}
-                    alt="Find product page template file"
-                ></img>
-            </div>
+                <Box flexDirection="column" gap={4}>
+                    <Box>
+                        <h3>3. Find your page template</h3>
+                    </Box>
+                    <Box>
+                        <img
+                            alt="Find your page template"
+                            src={spqManualInstallStep3}
+                        />
+                    </Box>
+                </Box>
 
-            <div className={classNames(css.listItem, 'axiom')}>
-                <h3>4. Copy and paste this code snippet</h3>
-                <div className={css.codeSnippet}>
-                    <Button
-                        leadingSlot="copy"
-                        intent="regular"
-                        variant="primary"
-                        data-testid="embedded-spq-copy-button"
-                        onClick={handleCopyCode}
-                    >
-                        Copy code
-                    </Button>
-                    <pre>{spqScript.current}</pre>
-                </div>
-            </div>
+                <Box flexDirection="column" gap={4}>
+                    <Box>
+                        <h3>4. Copy and paste this code snippet</h3>
+                    </Box>
+                    <Box>
+                        <div className={css.codeSnippet}>
+                            <Button
+                                leadingSlot="copy"
+                                intent="regular"
+                                variant="primary"
+                                data-testid="embedded-spq-copy-button"
+                                onClick={handleCopyCode}
+                                size="sm"
+                            >
+                                Copy code
+                            </Button>
+                            <pre>{spqScript.current}</pre>
+                        </div>
+                    </Box>
+                </Box>
+            </Box>
         </>
     )
 }
@@ -155,7 +187,7 @@ export const EmbeddedSpqSettingsDrawer = ({
     return (
         <SidePanel isOpen={isOpen} onOpenChange={onClose}>
             <OverlayHeader
-                title="Embedded product questions"
+                title="AI FAQs: Embedded in page"
                 description={
                     <>
                         <ButtonGroup
@@ -167,10 +199,10 @@ export const EmbeddedSpqSettingsDrawer = ({
                             <ButtonGroupItem
                                 id={InstallationMethods.QuickInstall}
                             >
-                                Shopify Quick Install
+                                Shopify quick install
                             </ButtonGroupItem>
                             <ButtonGroupItem id={InstallationMethods.Manual}>
-                                Insert code block
+                                Insert code snippet
                             </ButtonGroupItem>
                         </ButtonGroup>
                     </>

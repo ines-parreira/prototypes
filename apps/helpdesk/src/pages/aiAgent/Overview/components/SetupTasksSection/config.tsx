@@ -67,7 +67,7 @@ export const TASK_CONFIG_TEMPLATES: Record<
         },
         {
             stepName: StepName.ENABLE_SUGGESTED_PRODUCTS,
-            displayName: `Turn on 'Suggested product questions'  to reduce buying friction`,
+            displayName: `Turn on 'AI FAQs: Floating above chat' to reduce buying friction`,
             bodyComponent: PrepareSuggestedProductsBody,
         },
         {

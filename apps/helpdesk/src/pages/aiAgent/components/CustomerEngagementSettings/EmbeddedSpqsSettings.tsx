@@ -25,9 +25,12 @@ type Props = {
     shopName: string
 }
 
+const DEFAULT_DESCRIPTION =
+    'Show up to 3 dynamic, AI-generated questions embedded directly in product pages to resolve pre-sales questions and drive conversion.'
+
 export const EmbeddedSpqsSettings = ({
     shopName,
-    description = 'Show up to 3 dynamic, AI-generated questions embedded directly in product pages to resolve pre-sales questions and drive conversion.',
+    description = DEFAULT_DESCRIPTION,
 }: Props) => {
     const [drawerOpen, setDrawerOpen] = useState(false)
     const { watch, setValue } = useFormContext()
@@ -92,7 +95,7 @@ export const EmbeddedSpqsSettings = ({
                     <EngagementSettingsCardContent className={css.cardContent}>
                         <div className={css.cardHeader}>
                             <EngagementSettingsCardTitle>
-                                Embedded FAQs
+                                AI FAQs: Embedded in page
                             </EngagementSettingsCardTitle>
 
                             {shouldDisplaySetUpButton ? (
