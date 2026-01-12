@@ -16,6 +16,7 @@ import {
 import { render } from '../../../../../tests/render.utils'
 import { useTicketFields } from '../hooks/useTicketFields'
 import { InfobarTicketFields } from '../InfobarTicketFields'
+import { useTicketFieldsStore } from '../store/useTicketFieldsStore'
 
 vi.mock('../hooks/useTicketFields')
 
@@ -23,6 +24,7 @@ const mockuseTicketFields = vi.mocked(useTicketFields)
 
 describe('InfobarTicketFields', () => {
     beforeEach(() => {
+        useTicketFieldsStore.getState().resetFields()
         vi.clearAllMocks()
     })
 
@@ -30,12 +32,19 @@ describe('InfobarTicketFields', () => {
         mockuseTicketFields.mockReturnValue({
             ticketFields: [],
             isLoading: true,
-            isInitializing: true,
-            isLoadingDefinitions: false,
-            conditionsLoading: false,
         })
 
-        render(<InfobarTicketFields ticketId="123" />)
+        const fields = useTicketFieldsStore.getState().fields
+        const onFieldChange = vi.fn()
+        const onFieldBlur = vi.fn()
+
+        render(
+            <InfobarTicketFields
+                fields={fields}
+                onFieldChange={onFieldChange}
+                onFieldBlur={onFieldBlur}
+            />,
+        )
 
         const skeleton = screen.getByLabelText('Loading')
         expect(skeleton).toBeInTheDocument()
@@ -45,12 +54,19 @@ describe('InfobarTicketFields', () => {
         mockuseTicketFields.mockReturnValue({
             ticketFields: [],
             isLoading: false,
-            isInitializing: false,
-            isLoadingDefinitions: false,
-            conditionsLoading: false,
         })
 
-        const { container } = render(<InfobarTicketFields ticketId="123" />)
+        const fields = useTicketFieldsStore.getState().fields
+        const onFieldChange = vi.fn()
+        const onFieldBlur = vi.fn()
+
+        const { container } = render(
+            <InfobarTicketFields
+                fields={fields}
+                onFieldChange={onFieldChange}
+                onFieldBlur={onFieldBlur}
+            />,
+        )
 
         expect(container.firstChild).toBeNull()
     })
@@ -89,12 +105,19 @@ describe('InfobarTicketFields', () => {
         mockuseTicketFields.mockReturnValue({
             ticketFields: mockFields,
             isLoading: false,
-            isInitializing: false,
-            isLoadingDefinitions: false,
-            conditionsLoading: false,
         })
 
-        render(<InfobarTicketFields ticketId="123" />)
+        const fields = useTicketFieldsStore.getState().fields
+        const onFieldChange = vi.fn()
+        const onFieldBlur = vi.fn()
+
+        render(
+            <InfobarTicketFields
+                fields={fields}
+                onFieldChange={onFieldChange}
+                onFieldBlur={onFieldBlur}
+            />,
+        )
 
         expect(screen.getByText('Issue Type')).toBeInTheDocument()
         expect(screen.getByText('Priority')).toBeInTheDocument()
@@ -120,17 +143,77 @@ describe('InfobarTicketFields', () => {
         mockuseTicketFields.mockReturnValue({
             ticketFields: mockFields,
             isLoading: false,
-            isInitializing: false,
-            isLoadingDefinitions: false,
-            conditionsLoading: false,
         })
 
-        const { container } = render(<InfobarTicketFields ticketId="123" />)
+        const fields = useTicketFieldsStore.getState().fields
+        const onFieldChange = vi.fn()
+        const onFieldBlur = vi.fn()
+
+        const { container } = render(
+            <InfobarTicketFields
+                fields={fields}
+                onFieldChange={onFieldChange}
+                onFieldBlur={onFieldBlur}
+            />,
+        )
 
         const overflowList = container.querySelector(
             '[data-name="overflow-list"]',
         )
         expect(overflowList).toBeInTheDocument()
         expect(screen.getByText('Show more')).toBeInTheDocument()
+    })
+
+    it('should render fields with error state', () => {
+        const mockFields = [
+            {
+                fieldDefinition: mockCustomField({
+                    id: 1,
+                    label: 'Field 1',
+                    object_type: ObjectType.Ticket,
+                    definition: mockTextDataTypeDefinition({
+                        input_settings: mockTextInputSettings({
+                            input_type: InputSettingsTextInputType.Input,
+                        }),
+                    }),
+                }),
+                isRequired: true,
+            },
+            {
+                fieldDefinition: mockCustomField({
+                    id: 2,
+                    label: 'Field 2',
+                    object_type: ObjectType.Ticket,
+                    definition: mockTextDataTypeDefinition({
+                        input_settings: mockTextInputSettings({
+                            input_type: InputSettingsTextInputType.Input,
+                        }),
+                    }),
+                }),
+                isRequired: true,
+            },
+        ]
+
+        mockuseTicketFields.mockReturnValue({
+            ticketFields: mockFields,
+            isLoading: false,
+        })
+
+        useTicketFieldsStore.getState().updateFieldError(2, true)
+
+        const fields = useTicketFieldsStore.getState().fields
+        const onFieldChange = vi.fn()
+        const onFieldBlur = vi.fn()
+
+        render(
+            <InfobarTicketFields
+                fields={fields}
+                onFieldChange={onFieldChange}
+                onFieldBlur={onFieldBlur}
+            />,
+        )
+
+        expect(screen.getByText('Field 1')).toBeInTheDocument()
+        expect(screen.getByText('Field 2')).toBeInTheDocument()
     })
 })

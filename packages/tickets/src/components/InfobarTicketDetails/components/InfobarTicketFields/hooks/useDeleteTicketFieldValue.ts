@@ -16,28 +16,23 @@ export function useDeleteTicketFieldValue(ticketId: number) {
         mutation: {
             onMutate: async ({ id: fieldId }) => {
                 await queryClient.cancelQueries({ queryKey })
-
                 const previewTicketFieldsValuesResult =
                     queryClient.getQueryData<ListTicketCustomFieldsResult>(
                         queryKey,
                     )
-
                 if (!previewTicketFieldsValuesResult) {
                     return
                 }
-
                 const updatedTicketFieldsValuesResult = updateResult(
                     previewTicketFieldsValuesResult,
                     previewTicketFieldsValuesResult.data.data.filter(
                         (field) => field.id !== fieldId,
                     ),
                 )
-
                 queryClient.setQueryData<ListTicketCustomFieldsResult>(
                     queryKey,
                     updatedTicketFieldsValuesResult,
                 )
-
                 return {
                     previewTicketFieldsValuesResult,
                     updatedTicketFieldsValuesResult,

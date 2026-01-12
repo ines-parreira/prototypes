@@ -54,6 +54,7 @@ export function CopyButton({ value, isVisible }: CopyButtonProps) {
         <Tooltip isOpen={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
             <TooltipTrigger>
                 <span
+                    role="button"
                     onPointerDown={handleCopyClick}
                     onMouseLeave={handleMouseLeave}
                     className={classnames({

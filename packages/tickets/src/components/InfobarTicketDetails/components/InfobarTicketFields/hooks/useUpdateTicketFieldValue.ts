@@ -38,7 +38,6 @@ export function useUpdateTicketFieldValue(ticketId: number) {
                 if (!previewTicketFieldsValuesResult || !fieldDefinition) {
                     return
                 }
-
                 if (previewTicketFieldsValuesResult?.data.data.length === 0) {
                     const updatedTicketFieldsValuesResult = updateResult(
                         previewTicketFieldsValuesResult,
@@ -53,13 +52,11 @@ export function useUpdateTicketFieldValue(ticketId: number) {
                         queryKey,
                         updatedTicketFieldsValuesResult,
                     )
-
                     return {
                         previewTicketFieldsValuesResult,
                         updatedTicketFieldsValuesResult,
                     }
                 }
-
                 const updatedTicketFieldsValuesResult = updateResult(
                     previewTicketFieldsValuesResult,
                     previewTicketFieldsValuesResult.data.data.reduce<
@@ -77,12 +74,10 @@ export function useUpdateTicketFieldValue(ticketId: number) {
                         return [...acc, field]
                     }, []),
                 )
-
                 queryClient.setQueryData<ListTicketCustomFieldsResult>(
                     queryKey,
                     updatedTicketFieldsValuesResult,
                 )
-
                 return {
                     previewTicketFieldsValuesResult,
                     updatedTicketFieldsValuesResult,

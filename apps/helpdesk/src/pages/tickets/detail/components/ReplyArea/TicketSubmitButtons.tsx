@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react'
 import { useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useCloseTicket } from '@repo/tickets'
 import { shortcutManager, shortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
@@ -71,6 +73,7 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
     const dispatch = useAppDispatch()
 
     const { isTranslationPending } = useOutboundTranslationContext()
+    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
 
     const hasContent = useAppSelector(getHasContent)
     const currentUserPreferences = useAppSelector(getPreferences)
@@ -79,6 +82,7 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
     const canSend = useAppSelector(getCanSend)
     const hasContentlessAction = useAppSelector(getHasContentlessAction)
     const ticket = useAppSelector((state) => state.ticket)
+    const { closeTicket } = useCloseTicket(Number(ticket.get('id')))
 
     const tip = useMemo(() => _sample(TIPS), [])
 
@@ -95,6 +99,25 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
         )
         return dispatch(submitSetting(newPreferences.toJS(), false))
     }, [currentUserPreferences, dispatch])
+
+    const handleSendAndCloseTicket = useCallback(() => {
+        if (!hasUIVisionMS1) {
+            trackSendAndClosedClicked()
+            setTicketStatus(TicketStatus.Closed)
+        } else {
+            if (!ticket.get('id')) {
+                return
+            }
+            trackSendAndClosedClicked()
+            closeTicket()
+        }
+    }, [
+        trackSendAndClosedClicked,
+        setTicketStatus,
+        hasUIVisionMS1,
+        closeTicket,
+        ticket,
+    ])
 
     const isLoading = newMessage.getIn([
         '_internal',
@@ -175,10 +198,7 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
                         type="submit"
                         intent="secondary"
                         isDisabled={isButtonDisabled}
-                        onClick={() => {
-                            trackSendAndClosedClicked()
-                            setTicketStatus(TicketStatus.Closed)
-                        }}
+                        onClick={handleSendAndCloseTicket}
                         isLoading={isLoading}
                     >
                         {`${text} & Close`}
@@ -190,10 +210,7 @@ export function TicketSubmitButtons({ setTicketStatus }: Props) {
                         confirmationContent={titleConfirmation}
                         intent="secondary"
                         isDisabled={isButtonDisabled}
-                        onConfirm={() => {
-                            trackSendAndClosedClicked()
-                            setTicketStatus(TicketStatus.Closed)
-                        }}
+                        onConfirm={handleSendAndCloseTicket}
                         isLoading={isLoading}
                     >
                         {`${text} & Close`}

@@ -3,8 +3,8 @@ import type { ReactNode } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { InfobarTicketDetailsTags } from './components/InfobarTicketDetailsTags/InfobarTicketDetailsTags'
-import { InfobarTicketFields } from './components/InfobarTicketFields/InfobarTicketFields'
 import { InfobarTicketDetailsHeader } from './components/InforbarTicketDetailsHeader'
+import { TicketInfobarTicketFields } from './components/TicketInfobarTicketFields'
 
 import css from './InfobarTicketDetails.less'
 
@@ -25,7 +25,7 @@ export function InfobarTicketDetails({
         <div className={css.container}>
             <InfobarTicketDetailsHeader ticketSummaryIcon={ticketSummaryIcon} />
             <InfobarTicketDetailsTags ticketId={ticketId} />
-            <InfobarTicketFields ticketId={ticketId} />
+            <TicketInfobarTicketFields ticketId={ticketId} />
         </div>
     )
 }

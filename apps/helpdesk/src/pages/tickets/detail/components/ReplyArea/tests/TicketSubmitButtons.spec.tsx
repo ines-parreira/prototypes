@@ -1,10 +1,12 @@
 import type { ComponentProps } from 'react'
-import React from 'react'
 
+import { TicketsLegacyBridgeProvider } from '@repo/tickets'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import type { Map as ImmutableMap } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -18,6 +20,10 @@ import TicketSubmitButtons from '../TicketSubmitButtons'
 jest.mock('lodash/sample', () => (array: unknown[]) => array[0])
 jest.mock('pages/common/components/button/ConfirmButton')
 jest.mock('providers/OutboundTranslationProvider')
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 
 jest.mock(
     'pages/common/components/button/ConfirmButton',
@@ -46,10 +52,68 @@ const mockContext = {
     isTranslationPending: false,
 }
 
+const testQueryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+            staleTime: 0,
+            cacheTime: 0,
+        },
+        mutations: {
+            retry: false,
+        },
+    },
+})
+
+const legacyBridgeProps = {
+    dispatchNotification: jest.fn(),
+    dispatchDismissNotification: jest.fn(),
+    dispatchAuditLogEvents: jest.fn(),
+    dispatchHideAuditLogEvents: jest.fn(),
+    toggleQuickReplies: jest.fn(),
+    onToggleUnread: jest.fn(),
+    ticketViewNavigation: {
+        shouldDisplay: false,
+        shouldUseLegacyFunctions: false,
+        previousTicketId: undefined,
+        nextTicketId: undefined,
+        legacyGoToPrevTicket: jest.fn(),
+        isPreviousEnabled: false,
+        legacyGoToNextTicket: jest.fn(),
+        isNextEnabled: false,
+    },
+    handleTicketDraft: {
+        hasDraft: false,
+        onResumeDraft: jest.fn(),
+        onDiscardDraft: jest.fn(),
+    },
+    makeOutboundCall: jest.fn(),
+    voiceDevice: {
+        device: {},
+        call: null,
+    },
+}
+
 describe('<TicketSubmitButtons />', () => {
     beforeEach(() => {
         mockUseOutboundTranslationContext.mockReturnValue(mockContext)
+        testQueryClient.clear()
     })
+
+    const renderComponent = (store: any) => {
+        return render(
+            <MemoryRouter>
+                <Provider store={store}>
+                    <TicketsLegacyBridgeProvider {...legacyBridgeProps}>
+                        <QueryClientProvider client={testQueryClient}>
+                            <TicketSubmitButtons setTicketStatus={jest.fn()} />
+                        </QueryClientProvider>
+                    </TicketsLegacyBridgeProvider>
+                </Provider>
+            </MemoryRouter>,
+        )
+    }
+
     const state = {
         newMessage: fromJS({
             newMessage: {
@@ -81,51 +145,39 @@ describe('<TicketSubmitButtons />', () => {
     const ticketWithSubject = createTicket([MacroActionName.SetSubject])
 
     it('should render buttons with a filled ticket', () => {
-        const { container } = render(
-            <Provider store={mockStore(state)}>
-                <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>,
-        )
+        const { container } = renderComponent(mockStore(state))
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should hide tips', () => {
-        const { queryByText } = render(
-            <Provider
-                store={mockStore({
-                    ...state,
-                    currentUser: fromJS({
-                        settings: [
-                            {
-                                type: 'preferences',
-                                data: {
-                                    hide_tips: true,
-                                },
+        const { queryByText } = renderComponent(
+            mockStore({
+                ...state,
+                currentUser: fromJS({
+                    settings: [
+                        {
+                            type: 'preferences',
+                            data: {
+                                hide_tips: true,
                             },
-                        ],
-                    }),
-                })}
-            >
-                <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>,
+                        },
+                    ],
+                }),
+            }),
         )
         expect(queryByText(/Press/)).not.toBeInTheDocument()
     })
 
     it('should render buttons with an empty ticket', () => {
-        const { getAllByText } = render(
-            <Provider
-                store={mockStore({
-                    ...state,
-                    newMessage: fromJS({
-                        newMessage: {
-                            body_text: '',
-                        },
-                    }),
-                })}
-            >
-                <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>,
+        const { getAllByText } = renderComponent(
+            mockStore({
+                ...state,
+                newMessage: fromJS({
+                    newMessage: {
+                        body_text: '',
+                    },
+                }),
+            }),
         )
         const disabledButtons = getAllByText(/ConfirmButtonMock/)
         expect(disabledButtons).toHaveLength(2)
@@ -134,19 +186,15 @@ describe('<TicketSubmitButtons />', () => {
     })
 
     it("should render buttons with content that can't be sent", () => {
-        const { getAllByText } = render(
-            <Provider
-                store={mockStore({
-                    ...state,
-                    newMessage: fromJS({
-                        newMessage: {
-                            body_text: '',
-                        },
-                    }),
-                })}
-            >
-                <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>,
+        const { getAllByText } = renderComponent(
+            mockStore({
+                ...state,
+                newMessage: fromJS({
+                    newMessage: {
+                        body_text: '',
+                    },
+                }),
+            }),
         )
         const disabledButtons = getAllByText(/ConfirmButtonMock/)
         expect(disabledButtons).toHaveLength(2)
@@ -155,20 +203,16 @@ describe('<TicketSubmitButtons />', () => {
     })
 
     it('should render buttons with contentless action', () => {
-        const { getAllByRole } = render(
-            <Provider
-                store={mockStore({
-                    ...state,
-                    newMessage: fromJS({
-                        newMessage: {
-                            body_text: '',
-                        },
-                    }),
-                    ticket: ticketWithSubject,
-                })}
-            >
-                <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>,
+        const { getAllByRole } = renderComponent(
+            mockStore({
+                ...state,
+                newMessage: fromJS({
+                    newMessage: {
+                        body_text: '',
+                    },
+                }),
+                ticket: ticketWithSubject,
+            }),
         )
         const buttons = getAllByRole('button', { name: /Apply Macro/ })
         expect(buttons[0]).toBeInTheDocument()
@@ -178,20 +222,16 @@ describe('<TicketSubmitButtons />', () => {
     })
 
     it('should render buttons with contentless action and message content', () => {
-        const { getAllByRole } = render(
-            <Provider
-                store={mockStore({
-                    ...state,
-                    newMessage: fromJS({
-                        newMessage: {
-                            body_text: 'abc',
-                        },
-                    }),
-                    ticket: ticketWithSubject,
-                })}
-            >
-                <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>,
+        const { getAllByRole } = renderComponent(
+            mockStore({
+                ...state,
+                newMessage: fromJS({
+                    newMessage: {
+                        body_text: 'abc',
+                    },
+                }),
+                ticket: ticketWithSubject,
+            }),
         )
         const buttons = getAllByRole('button', { name: /Send/ })
         expect(buttons[0]).toBeInTheDocument()
@@ -201,15 +241,11 @@ describe('<TicketSubmitButtons />', () => {
     })
 
     it('should not render confirm popover', () => {
-        const { queryByText } = render(
-            <Provider
-                store={mockStore({
-                    ...state,
-                    ticket: ticketWithSubject,
-                })}
-            >
-                <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>,
+        const { queryByText } = renderComponent(
+            mockStore({
+                ...state,
+                ticket: ticketWithSubject,
+            }),
         )
 
         expect(queryByText(/ConfirmButtonMock/)).not.toBeInTheDocument()
@@ -221,11 +257,7 @@ describe('<TicketSubmitButtons />', () => {
             isTranslationPending: true,
         })
 
-        const { getAllByRole } = render(
-            <Provider store={mockStore(state)}>
-                <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>,
-        )
+        const { getAllByRole } = renderComponent(mockStore(state))
 
         const buttons = getAllByRole('button', { name: /Send/ })
 

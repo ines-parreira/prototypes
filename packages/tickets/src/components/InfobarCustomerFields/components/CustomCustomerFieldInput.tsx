@@ -19,6 +19,7 @@ interface CustomCustomerFieldInputProps {
     onChange: (nextValue: CustomFieldValue | undefined) => void
     onBlur?: (nextValue: CustomFieldValue | undefined) => void
     className?: string
+    isInvalid?: boolean
 }
 
 export function CustomCustomerFieldInput({
@@ -28,6 +29,7 @@ export function CustomCustomerFieldInput({
     onChange,
     onBlur,
     className,
+    isInvalid,
 }: CustomCustomerFieldInputProps) {
     if (isTextInput(field)) {
         return (
@@ -42,6 +44,7 @@ export function CustomCustomerFieldInput({
                 }
                 className={className}
                 ariaLabel={field.label}
+                isInvalid={isInvalid}
             />
         )
     }
@@ -63,6 +66,7 @@ export function CustomCustomerFieldInput({
                 }
                 className={className}
                 ariaLabel={field.label}
+                isInvalid={isInvalid}
             />
         )
     }
@@ -82,6 +86,7 @@ export function CustomCustomerFieldInput({
                     onSelect={onChange}
                     placeholder="+ Add"
                     ariaLabel={field.label}
+                    isInvalid={isInvalid}
                 />
             </div>
         )

@@ -47,7 +47,7 @@ describe('useTicketFieldsStore', () => {
     })
 
     describe('updateFieldValue', () => {
-        it('should update only the value of a field', () => {
+        it('should update only the value of a field and clear error state', () => {
             const store = useTicketFieldsStore.getState()
 
             store.updateFieldValue(1, 'new value')
@@ -56,10 +56,11 @@ describe('useTicketFieldsStore', () => {
             expect(fields[1]).toEqual({
                 id: 1,
                 value: 'new value',
+                hasError: false,
             })
         })
 
-        it('should preserve other field properties when updating value', () => {
+        it('should clear error state when updating value', () => {
             const store = useTicketFieldsStore.getState()
 
             store.updateFieldState({
@@ -74,7 +75,7 @@ describe('useTicketFieldsStore', () => {
             expect(fields[1]).toEqual({
                 id: 1,
                 value: 'updated value',
-                hasError: true,
+                hasError: false,
             })
         })
 
@@ -85,24 +86,28 @@ describe('useTicketFieldsStore', () => {
             expect(useTicketFieldsStore.getState().fields[1]).toEqual({
                 id: 1,
                 value: 'text',
+                hasError: false,
             })
 
             store.updateFieldValue(2, 42)
             expect(useTicketFieldsStore.getState().fields[2]).toEqual({
                 id: 2,
                 value: 42,
+                hasError: false,
             })
 
             store.updateFieldValue(3, true)
             expect(useTicketFieldsStore.getState().fields[3]).toEqual({
                 id: 3,
                 value: true,
+                hasError: false,
             })
 
             store.updateFieldValue(1, undefined)
             expect(useTicketFieldsStore.getState().fields[1]).toEqual({
                 id: 1,
                 value: undefined,
+                hasError: false,
             })
         })
     })

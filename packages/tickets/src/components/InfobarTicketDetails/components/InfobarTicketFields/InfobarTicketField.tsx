@@ -4,90 +4,39 @@ import { OverflowListItem } from '@gorgias/axiom'
 
 import { CustomCustomerFieldInput } from '../../../InfobarCustomerFields/components/CustomCustomerFieldInput'
 import { FieldRow } from '../../../InfobarCustomerFields/components/FieldRow'
-import {
-    getNumberOrUndefined,
-    isNumberInput,
-    isTextInput,
-} from '../../../InfobarCustomerFields/utils'
 import type { VisibleTicketField } from './hooks/useFilteredTicketFields'
-import { useUpdateOrDeleteTicketFieldValue } from './hooks/useUpdateOrDeleteTicketFieldValue'
-import { useTicketFieldsStore } from './store/useTicketFieldsStore'
-import type { CustomFieldValue } from './store/useTicketFieldsStore'
-import { useTicketFieldStore } from './store/useTicketFieldStore'
+import type {
+    CustomFieldState,
+    CustomFieldValue,
+} from './store/useTicketFieldsStore'
+import type { FieldEventHandlerParams } from './utils/constants'
 
 import css from './InfobarTicketFields.less'
 
 type InfobarTicketFieldProps = {
     field: VisibleTicketField
-    ticketId: number
+    fieldState: CustomFieldState
+    onFieldChange: ({ field, nextValue }: FieldEventHandlerParams) => void
+    onFieldBlur: ({ field, nextValue }: FieldEventHandlerParams) => void
 }
 
 export function InfobarTicketField({
     field,
-    ticketId,
+    fieldState,
+    onFieldChange,
+    onFieldBlur,
 }: InfobarTicketFieldProps) {
-    const { fieldState } = useTicketFieldStore(field.fieldDefinition.id)
-    const updateFieldValue = useTicketFieldsStore(
-        (state) => state.updateFieldValue,
-    )
-
-    const { updateOrDeleteCustomerFieldValue } =
-        useUpdateOrDeleteTicketFieldValue(ticketId)
-
     const handleChange = useCallback(
-        (newValue: CustomFieldValue | undefined) => {
-            /**
-             * We only save text input values on the text input blur event to avoid
-             * unnecessary API calls when the user is typing.
-             */
-            if (isTextInput(field.fieldDefinition)) {
-                const textValue = newValue?.toString()
-                updateFieldValue(field.fieldDefinition.id, textValue)
-                return
-            }
-
-            /**
-             * The Axiom NumberField component onChange event triggers when the
-             * user leaves the input, we which enable us to save the change here
-             */
-            if (isNumberInput(field.fieldDefinition)) {
-                const numberValue = getNumberOrUndefined(newValue)
-                updateFieldValue(field.fieldDefinition.id, numberValue)
-                return updateOrDeleteCustomerFieldValue({
-                    fieldId: field.fieldDefinition.id,
-                    value: numberValue,
-                })
-            }
-
-            updateFieldValue(field.fieldDefinition.id, newValue)
-            return updateOrDeleteCustomerFieldValue({
-                fieldId: field.fieldDefinition.id,
-                value: newValue,
-            })
+        (nextValue: CustomFieldValue | undefined) => {
+            onFieldChange({ field, nextValue })
         },
-        [
-            field.fieldDefinition,
-            updateFieldValue,
-            updateOrDeleteCustomerFieldValue,
-        ],
+        [field, onFieldChange],
     )
-
     const handleBlur = useCallback(
-        (newValue: CustomFieldValue | undefined) => {
-            if (isTextInput(field.fieldDefinition)) {
-                const textValue = newValue?.toString()?.trim()
-                updateFieldValue(field.fieldDefinition.id, textValue)
-                return updateOrDeleteCustomerFieldValue({
-                    fieldId: field.fieldDefinition.id,
-                    value: textValue,
-                })
-            }
+        (nextValue: CustomFieldValue | undefined) => {
+            onFieldBlur({ field, nextValue })
         },
-        [
-            field.fieldDefinition,
-            updateFieldValue,
-            updateOrDeleteCustomerFieldValue,
-        ],
+        [field, onFieldBlur],
     )
 
     return (
@@ -103,6 +52,7 @@ export function InfobarTicketField({
                     value={fieldState?.value}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    isInvalid={fieldState?.hasError}
                 />
             </FieldRow>
         </OverflowListItem>

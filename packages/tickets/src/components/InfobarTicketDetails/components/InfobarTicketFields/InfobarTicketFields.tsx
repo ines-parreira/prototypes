@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useState } from 'react'
 
 import {
     OverflowList,
@@ -7,42 +7,28 @@ import {
     Skeleton,
 } from '@gorgias/axiom'
 
+import { useDefaultExpandedLineCount } from './hooks/useDefaultExpandedLineCount'
 import { useTicketFields } from './hooks/useTicketFields'
 import { InfobarTicketField } from './InfobarTicketField'
-import { useTicketFieldsStore } from './store/useTicketFieldsStore'
+import type { TicketFieldsState } from './store/useTicketFieldsStore'
+import type { FieldEventHandlerParams } from './utils/constants'
 
 import css from './InfobarTicketFields.less'
 
 type InfobarTicketFieldsProps = {
-    ticketId: string
+    onFieldChange: ({ field, nextValue }: FieldEventHandlerParams) => void
+    onFieldBlur: ({ field, nextValue }: FieldEventHandlerParams) => void
+    fields: TicketFieldsState
 }
 
-export function InfobarTicketFields({ ticketId }: InfobarTicketFieldsProps) {
-    const { ticketFields, isLoading } = useTicketFields(ticketId)
-
-    const fields = useTicketFieldsStore((state) => state.fields)
-
-    const hasAttemptedToCloseTicket = useTicketFieldsStore(
-        (state) => state.hasAttemptedToCloseTicket,
-    )
-    const setHasAttemptedToCloseTicket = useTicketFieldsStore(
-        (state) => state.setHasAttemptedToCloseTicket,
-    )
-
-    const hasErroredFields = useMemo(
-        () => Object.values(fields).some((field) => field.hasError),
-        [fields],
-    )
-
-    useEffect(() => {
-        if (hasAttemptedToCloseTicket && hasErroredFields) {
-            setHasAttemptedToCloseTicket(false)
-        }
-    }, [
-        hasAttemptedToCloseTicket,
-        hasErroredFields,
-        setHasAttemptedToCloseTicket,
-    ])
+export function InfobarTicketFields({
+    fields,
+    onFieldChange,
+    onFieldBlur,
+}: InfobarTicketFieldsProps) {
+    const [isExpanded, setIsExpanded] = useState(false)
+    const { ticketFields, isLoading } = useTicketFields()
+    const defaultLineCount = useDefaultExpandedLineCount(fields)
 
     if (isLoading) {
         return <Skeleton count={3} />
@@ -55,13 +41,18 @@ export function InfobarTicketFields({ ticketId }: InfobarTicketFieldsProps) {
     return (
         <OverflowList
             className={css.overflowList}
-            nonExpandedLineCount={ticketFields.length}
+            nonExpandedLineCount={defaultLineCount}
+            isExpanded={isExpanded}
+            onExpandedChange={setIsExpanded}
+            key={`ticket-fields-overflow-list-${defaultLineCount}-${isExpanded}`}
         >
             {ticketFields.map((ticketField) => (
                 <InfobarTicketField
                     key={ticketField.fieldDefinition.id}
                     field={ticketField}
-                    ticketId={Number(ticketId)}
+                    fieldState={fields[ticketField.fieldDefinition.id] ?? {}}
+                    onFieldChange={onFieldChange}
+                    onFieldBlur={onFieldBlur}
                 />
             ))}
             <OverflowListShowMore leadingSlot="arrow-chevron-down">

@@ -20,7 +20,9 @@ export function TriggerLabel({ label, tooltipText }: TriggerLabelProps) {
 
     return (
         <Tooltip>
-            <TooltipTrigger>{textElement}</TooltipTrigger>
+            <TooltipTrigger>
+                <span role="button">{textElement}</span>
+            </TooltipTrigger>
             <TooltipContent title={tooltipText} />
         </Tooltip>
     )

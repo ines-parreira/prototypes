@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash'
 import { create } from 'zustand'
 
 export type CustomFieldValue = string | number | boolean
@@ -36,7 +37,7 @@ type TicketFieldsStore = {
     resetFields: () => void
 }
 
-export const useTicketFieldsStore = create<TicketFieldsStore>((set) => ({
+export const useTicketFieldsStore = create<TicketFieldsStore>((set, get) => ({
     fields: {},
     hasAttemptedToCloseTicket: false,
     updateFieldState: (fieldState) =>
@@ -54,6 +55,7 @@ export const useTicketFieldsStore = create<TicketFieldsStore>((set) => ({
                     ...state.fields[id],
                     id,
                     value,
+                    hasError: false,
                 },
             },
         })),
@@ -81,6 +83,37 @@ export const useTicketFieldsStore = create<TicketFieldsStore>((set) => ({
         })),
     setHasAttemptedToCloseTicket: (value) =>
         set({ hasAttemptedToCloseTicket: value }),
-    initializeFields: (fields) => set({ fields }),
+    initializeFields: (newFields) => {
+        const currentFields = get().fields
+        if (isEmpty(currentFields) && isEmpty(newFields)) {
+            return
+        }
+
+        // Resetting the current fields
+        if (!isEmpty(currentFields) && isEmpty(newFields)) {
+            return set({ fields: {} })
+        }
+
+        // Merge the new fields with the current fields which have an errors state
+        // We do this to prevent the sync from SDK cache update to the Zustand store
+        // from resetting the fields to their default error state on the change.
+        // This prevents all errors state from being cleared by one input change
+        const currentFieldsWithErrors = Object.keys(
+            currentFields,
+        ).reduce<TicketFieldsState>((acc, key) => {
+            const currentField = currentFields[key]
+            if (currentField.hasError) {
+                acc[key] = currentField
+            }
+            return acc
+        }, {} as TicketFieldsState)
+
+        const mergedFields = {
+            ...currentFieldsWithErrors,
+            ...newFields,
+        }
+
+        return set({ fields: mergedFields })
+    },
     resetFields: () => set({ fields: {}, hasAttemptedToCloseTicket: false }),
 }))

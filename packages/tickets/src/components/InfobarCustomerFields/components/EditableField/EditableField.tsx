@@ -12,6 +12,7 @@ type EditableFieldProps<T extends string | number> = {
     className?: string
     autoFocus?: boolean
     ariaLabel?: string
+    isInvalid?: boolean
 } & (T extends string
     ? {
           type?: 'text'
@@ -40,6 +41,7 @@ export function EditableField<T extends string | number = string | number>(
         autoFocus,
         onBlur,
         ariaLabel,
+        isInvalid,
     } = props
 
     const [error, setError] = useState<string | undefined>()
@@ -90,6 +92,7 @@ export function EditableField<T extends string | number = string | number>(
     if (type === 'number') {
         return (
             <NumberField
+                aria-label={ariaLabel ?? placeholder}
                 id={id}
                 className={className}
                 value={value as number}
@@ -99,9 +102,9 @@ export function EditableField<T extends string | number = string | number>(
                 variant="secondary"
                 autoFocus={autoFocus}
                 error={error}
-                aria-label={ariaLabel ?? placeholder}
                 minValue={minValue}
                 maxValue={maxValue}
+                isInvalid={isInvalid}
             />
         )
     }
@@ -110,6 +113,7 @@ export function EditableField<T extends string | number = string | number>(
         <TextField
             id={id}
             className={className}
+            aria-label={ariaLabel ?? placeholder}
             type="text"
             value={value as string}
             onChange={(value) => handleChange(value as T)}
@@ -119,7 +123,7 @@ export function EditableField<T extends string | number = string | number>(
             onBlur={handleFieldBlur}
             autoFocus={autoFocus}
             error={error}
-            aria-label={ariaLabel ?? placeholder}
+            isInvalid={isInvalid}
         />
     )
 }

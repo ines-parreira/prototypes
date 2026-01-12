@@ -2,6 +2,9 @@ import type { ValueOf } from '@repo/types'
 
 import { ManagedTicketFieldType } from '@gorgias/helpdesk-types'
 
+import type { CustomFieldValue } from '../../../../InfobarCustomerFields/types'
+import type { VisibleTicketField } from '../hooks/useFilteredTicketFields'
+
 export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
 
 export const AITicketManagedTypes = {
@@ -13,3 +16,8 @@ export const AITicketManagedTypes = {
 } as const satisfies Record<string, ManagedTicketFieldType>
 
 export type AITicketManagedType = ValueOf<typeof AITicketManagedTypes>
+
+export type FieldEventHandlerParams = {
+    field: VisibleTicketField
+    nextValue: CustomFieldValue | undefined
+}

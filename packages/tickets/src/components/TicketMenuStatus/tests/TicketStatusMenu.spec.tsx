@@ -5,6 +5,8 @@ import { setupServer } from 'msw/node'
 import {
     mockGetCurrentUserHandler,
     mockGetTicketHandler,
+    mockListCustomFieldConditionsHandler,
+    mockListCustomFieldsHandler,
     mockTicket,
     mockUpdateTicketHandler,
     mockUser,
@@ -64,10 +66,31 @@ const mockGetCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
     ),
 )
 
+const mockListCustomFields = mockListCustomFieldsHandler(async () =>
+    HttpResponse.json({
+        data: [],
+        meta: { next_cursor: null, prev_cursor: null, total_resources: 0 },
+        object: 'list',
+        uri: '/api/custom-fields',
+    }),
+)
+
+const mockListCustomFieldConditions = mockListCustomFieldConditionsHandler(
+    async () =>
+        HttpResponse.json({
+            data: [],
+            meta: { next_cursor: null, prev_cursor: null, total_resources: 0 },
+            object: 'list',
+            uri: '/api/custom-field-conditions',
+        }),
+)
+
 const server = setupServer(
     mockGetTicket.handler,
     mockUpdateTicket.handler,
     mockGetCurrentUser.handler,
+    mockListCustomFields.handler,
+    mockListCustomFieldConditions.handler,
 )
 
 beforeAll(() => {
@@ -214,11 +237,8 @@ describe('TicketStatus', () => {
             })
         })
 
-        it('should show alert and close menu when "Close" option is clicked', async () => {
+        it('should close menu when "Close" option is clicked', async () => {
             const { user } = render(<TicketStatusMenu ticket={openTicket} />)
-            const alertSpy = vi
-                .spyOn(window, 'alert')
-                .mockImplementation(() => {})
 
             await openMenu(user)
 
@@ -226,11 +246,8 @@ describe('TicketStatus', () => {
             await act(() => user.click(closeOption))
 
             await waitFor(() => {
-                expect(alertSpy).toHaveBeenCalled()
                 expect(screen.queryByText('Close')).not.toBeInTheDocument()
             })
-
-            alertSpy.mockRestore()
         })
     })
 

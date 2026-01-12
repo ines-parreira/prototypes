@@ -6,6 +6,8 @@ import { setupServer } from 'msw/node'
 import {
     mockGetCurrentUserHandler,
     mockGetTicketHandler,
+    mockListCustomFieldConditionsHandler,
+    mockListCustomFieldsHandler,
     mockListTeamsHandler,
     mockListTicketTranslationsHandler,
     mockListUsersHandler,
@@ -37,6 +39,23 @@ const mockListTeams = mockListTeamsHandler()
 const mockListUsers = mockListUsersHandler()
 const mockSearchTickets = mockSearchTicketsHandler()
 const mockListTicketTranslations = mockListTicketTranslationsHandler()
+const mockListCustomFields = mockListCustomFieldsHandler(async () =>
+    HttpResponse.json({
+        data: [],
+        meta: { next_cursor: null, prev_cursor: null, total_resources: 0 },
+        object: 'list',
+        uri: '/api/custom-fields',
+    }),
+)
+const mockListCustomFieldConditions = mockListCustomFieldConditionsHandler(
+    async () =>
+        HttpResponse.json({
+            data: [],
+            meta: { next_cursor: null, prev_cursor: null, total_resources: 0 },
+            object: 'list',
+            uri: '/api/custom-field-conditions',
+        }),
+)
 
 const mockLanguagePreferencesEnglish = {
     id: 2,
@@ -84,6 +103,8 @@ beforeEach(() => {
         mockGetTicket.handler,
         mockSearchTickets.handler,
         mockListTicketTranslations.handler,
+        mockListCustomFields.handler,
+        mockListCustomFieldConditions.handler,
     )
 })
 

@@ -9,7 +9,10 @@ import {
     usePrevious,
 } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { useLiveTicketTranslationsUpdates } from '@repo/tickets'
+import {
+    useLiveTicketTranslationsUpdates,
+    useTicketFieldsValidation,
+} from '@repo/tickets'
 import { shortcutManager } from '@repo/utils'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -125,6 +128,7 @@ export const TicketDetailContainer = ({
     onToggleUnread,
 }: Props) => {
     const dispatch = useAppDispatch()
+    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
     const { ticketId: ticketIdParam } = useParams<{ ticketId: string }>()
     const { customer: customerId } = useSearch<{ customer?: string }>()
     const ticketIdParamRef = useRef(ticketIdParam)
@@ -224,6 +228,7 @@ export const TicketDetailContainer = ({
     ])
 
     const { checkTicketFieldErrors } = useTicketFieldsCheck(ticketId)
+    const { validateTicketFields } = useTicketFieldsValidation(ticketId)
 
     useEffect(() => {
         if (
@@ -370,6 +375,10 @@ export const TicketDetailContainer = ({
         action,
         resetMessage = true,
     }: SubmitArgs) => {
+        const { hasErrors } = validateTicketFields()
+        if (hasUIVisionMS1 && hasErrors && ticketIdParam !== 'new') {
+            return
+        }
         if (
             status === TicketStatus.Closed &&
             checkTicketFieldErrors({ includeMacro: true })

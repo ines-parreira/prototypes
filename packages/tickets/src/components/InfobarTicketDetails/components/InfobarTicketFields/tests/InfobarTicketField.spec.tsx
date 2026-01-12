@@ -13,21 +13,38 @@ import type { VisibleTicketField } from '../hooks/useFilteredTicketFields'
 import { InfobarTicketField } from '../InfobarTicketField'
 import { useTicketFieldsStore } from '../store/useTicketFieldsStore'
 
-vi.mock('../hooks/useUpdateOrDeleteTicketFieldValue', () => ({
-    useUpdateOrDeleteTicketFieldValue: () => ({
-        updateOrDeleteCustomerFieldValue: vi.fn().mockResolvedValue(undefined),
-    }),
-}))
+function TestWrapper({ field }: { field: VisibleTicketField }) {
+    const fields = useTicketFieldsStore((state) => state.fields)
+    const fieldState = fields[field.fieldDefinition.id]
 
-const renderWithOverflowList = (
-    field: VisibleTicketField,
-    ticketId: number,
-) => {
-    return render(
+    const onFieldChange = ({ nextValue }: { nextValue: any }) => {
+        useTicketFieldsStore
+            .getState()
+            .updateFieldValue(field.fieldDefinition.id, nextValue)
+    }
+
+    const onFieldBlur = ({ nextValue }: { nextValue: any }) => {
+        const trimmedValue =
+            typeof nextValue === 'string' ? nextValue.trim() : nextValue
+        useTicketFieldsStore
+            .getState()
+            .updateFieldValue(field.fieldDefinition.id, trimmedValue)
+    }
+
+    return (
         <OverflowList nonExpandedLineCount={5}>
-            <InfobarTicketField field={field} ticketId={ticketId} />
-        </OverflowList>,
+            <InfobarTicketField
+                field={field}
+                fieldState={fieldState}
+                onFieldChange={onFieldChange}
+                onFieldBlur={onFieldBlur}
+            />
+        </OverflowList>
     )
+}
+
+const renderWithOverflowList = (field: VisibleTicketField) => {
+    return render(<TestWrapper field={field} />)
 }
 
 describe('InfobarTicketField', () => {
@@ -59,7 +76,7 @@ describe('InfobarTicketField', () => {
                 value: undefined,
             })
 
-            renderWithOverflowList(textField, 123)
+            renderWithOverflowList(textField)
 
             expect(screen.getByText('Issue Type')).toBeInTheDocument()
             expect(
@@ -70,7 +87,7 @@ describe('InfobarTicketField', () => {
         it('should display existing value from store', () => {
             useTicketFieldsStore.getState().updateFieldValue(1, 'Bug')
 
-            renderWithOverflowList(textField, 123)
+            renderWithOverflowList(textField)
 
             const input = screen.getByPlaceholderText(
                 'Enter issue type',
@@ -84,7 +101,7 @@ describe('InfobarTicketField', () => {
                 value: undefined,
             })
 
-            const { user } = renderWithOverflowList(textField, 123)
+            const { user } = renderWithOverflowList(textField)
 
             const input = screen.getByPlaceholderText('Enter issue type')
 
@@ -107,7 +124,7 @@ describe('InfobarTicketField', () => {
                 value: undefined,
             })
 
-            renderWithOverflowList(requiredField, 123)
+            renderWithOverflowList(requiredField)
 
             expect(screen.getByText('Issue Type')).toBeInTheDocument()
         })
@@ -138,7 +155,7 @@ describe('InfobarTicketField', () => {
                 value: undefined,
             })
 
-            renderWithOverflowList(numberField, 123)
+            renderWithOverflowList(numberField)
 
             expect(screen.getByText('Priority Level')).toBeInTheDocument()
             expect(
@@ -149,7 +166,7 @@ describe('InfobarTicketField', () => {
         it('should display existing numeric value from store', () => {
             useTicketFieldsStore.getState().updateFieldValue(2, 5)
 
-            renderWithOverflowList(numberField, 123)
+            renderWithOverflowList(numberField)
 
             const input = screen.getByPlaceholderText(
                 'Enter priority',
@@ -163,7 +180,7 @@ describe('InfobarTicketField', () => {
                 value: undefined,
             })
 
-            const { user } = renderWithOverflowList(numberField, 123)
+            const { user } = renderWithOverflowList(numberField)
 
             const input = screen.getByPlaceholderText('Enter priority')
 
@@ -203,7 +220,7 @@ describe('InfobarTicketField', () => {
                 value: undefined,
             })
 
-            const { user } = renderWithOverflowList(textField, 123)
+            const { user } = renderWithOverflowList(textField)
 
             const input = screen.getByPlaceholderText('Add notes')
 

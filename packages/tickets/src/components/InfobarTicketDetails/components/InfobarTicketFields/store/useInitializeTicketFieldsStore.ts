@@ -1,6 +1,10 @@
 import { useEffect } from 'react'
 
 import { useTicketCustomFieldsValues } from '../hooks/useTicketCustomFieldsValues'
+import type {
+    CustomFieldValue,
+    TicketFieldsState,
+} from './useTicketFieldsStore'
 import { useTicketFieldsStore } from './useTicketFieldsStore'
 
 export const useInitializeTicketFieldsStore = (ticketId: string) => {
@@ -15,25 +19,29 @@ export const useInitializeTicketFieldsStore = (ticketId: string) => {
     } = useTicketCustomFieldsValues(Number(ticketId))
 
     useEffect(() => {
-        if (!isLoading && !isError && ticketCustomFieldsValue.length > 0) {
-            const fieldsState = ticketCustomFieldsValue.reduce(
-                (acc, { field, value }) => {
-                    if (!field) {
-                        return acc
-                    }
-                    acc[field.id] = {
-                        id: field.id,
-                        value,
-                        hasError: false,
-                        prediction: undefined,
-                    }
-                    return acc
-                },
-                {} as Record<string, any>,
-            )
-
-            initializeFields(fieldsState)
+        if (isLoading || isError) {
+            return
         }
+
+        const fieldsState = ticketCustomFieldsValue.reduce<TicketFieldsState>(
+            (acc, { field, value }) => {
+                if (!field) {
+                    return acc
+                }
+
+                acc[field.id] = {
+                    id: field.id,
+                    value: value as CustomFieldValue,
+                    hasError: false,
+                    prediction: undefined,
+                }
+
+                return acc
+            },
+            {},
+        )
+
+        initializeFields(fieldsState)
     }, [ticketCustomFieldsValue, isLoading, isError, initializeFields])
 
     return { isLoading, isError }

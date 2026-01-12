@@ -38,7 +38,7 @@ export function TicketStatusMenu({ ticket }: TicketStatusMenuProps) {
 
     const { snoozeTicket } = useSnoozeTicket(ticket.id)
     const { openTicket } = useOpenTicket(ticket.id)
-    const { closeTicket } = useCloseTicket()
+    const { closeTicket } = useCloseTicket(ticket.id)
 
     const handleSnoozeChange = useCallback(
         async (
