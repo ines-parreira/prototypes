@@ -39,8 +39,24 @@ export const useUrlSyncStatus = ({
             return IngestionLogStatus.Pending
         }
 
+        if (latestUrlIngestionLog?.status === IngestionLogStatus.Successful) {
+            const syncTime = latestUrlIngestionLog.latest_sync
+            if (syncTime) {
+                const syncDate = new Date(syncTime)
+                const cutoffDate = new Date('2026-01-12T00:00:00Z')
+
+                if (syncDate < cutoffDate) {
+                    return undefined
+                }
+            }
+        }
+
         return latestUrlIngestionLog?.status
-    }, [urlIngestionLogs, latestUrlIngestionLog?.status])
+    }, [
+        urlIngestionLogs,
+        latestUrlIngestionLog?.status,
+        latestUrlIngestionLog?.latest_sync,
+    ])
 
     const syncingUrls = useMemo(() => {
         return (

@@ -62,6 +62,26 @@ export const useGetStoreDomainIngestionLog = ({
         storeDomainIngestionLogs,
     )
 
+    const status = useMemo(() => {
+        if (!storeDomainIngestionLog?.status) {
+            return undefined
+        }
+
+        if (storeDomainIngestionLog.status === IngestionLogStatus.Successful) {
+            const syncTime = storeDomainIngestionLog.latest_sync
+            if (syncTime) {
+                const syncDate = new Date(syncTime)
+                const cutoffDate = new Date('2026-01-12T00:00:00Z')
+
+                if (syncDate < cutoffDate) {
+                    return undefined
+                }
+            }
+        }
+
+        return storeDomainIngestionLog.status
+    }, [storeDomainIngestionLog?.status, storeDomainIngestionLog?.latest_sync])
+
     useEffect(() => {
         if (error) {
             reportError(error, {
@@ -75,7 +95,7 @@ export const useGetStoreDomainIngestionLog = ({
 
     return {
         storeDomainIngestionLog,
-        status: storeDomainIngestionLog?.status,
+        status,
         isGetIngestionLogsLoading,
     }
 }

@@ -201,17 +201,17 @@ describe('useFileIngestionStatus', () => {
                         {
                             id: 1,
                             status: IngestionLogStatus.Successful,
-                            uploaded_datetime: '2024-01-03',
+                            uploaded_datetime: '2026-01-15T00:00:00Z',
                         },
                         {
                             id: 2,
                             status: IngestionLogStatus.Failed,
-                            uploaded_datetime: '2024-01-01',
+                            uploaded_datetime: '2026-01-13T00:00:00Z',
                         },
                         {
                             id: 3,
                             status: IngestionLogStatus.Successful,
-                            uploaded_datetime: '2024-01-02',
+                            uploaded_datetime: '2026-01-14T00:00:00Z',
                         },
                     ],
                 },
@@ -673,12 +673,12 @@ describe('useFileIngestionStatus', () => {
                         {
                             id: 1,
                             status: IngestionLogStatus.Successful,
-                            uploaded_datetime: '2024-01-01',
+                            uploaded_datetime: '2026-01-13T00:00:00Z',
                         },
                         {
                             id: 2,
                             status: IngestionLogStatus.Failed,
-                            uploaded_datetime: '2024-01-01',
+                            uploaded_datetime: '2026-01-13T00:00:00Z',
                         },
                     ],
                 },
@@ -707,6 +707,162 @@ describe('useFileIngestionStatus', () => {
             )
 
             expect(result.current.fileIngestionLogs).toEqual([])
+        })
+    })
+
+    describe('cutoff date filtering', () => {
+        it('returns undefined status for successful uploads before cutoff date (Jan 12, 2026)', () => {
+            mockUseGetFileIngestion.mockReturnValue({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            status: IngestionLogStatus.Successful,
+                            uploaded_datetime: '2026-01-11T23:59:59Z',
+                        },
+                    ],
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () => useFileIngestionStatus({ helpCenterId: 1 }),
+                { wrapper: createWrapper() },
+            )
+
+            fileUploadEventCallback?.()
+
+            expect(result.current.fileIngestionStatus).toBeUndefined()
+        })
+
+        it('returns successful status for uploads on or after cutoff date (Jan 12, 2026)', () => {
+            mockUseGetFileIngestion.mockReturnValue({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            status: IngestionLogStatus.Successful,
+                            uploaded_datetime: '2026-01-12T00:00:00Z',
+                        },
+                    ],
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () => useFileIngestionStatus({ helpCenterId: 1 }),
+                { wrapper: createWrapper() },
+            )
+
+            fileUploadEventCallback?.()
+
+            expect(result.current.fileIngestionStatus).toBe(
+                IngestionLogStatus.Successful,
+            )
+        })
+
+        it('returns successful status for recent uploads after cutoff date', () => {
+            mockUseGetFileIngestion.mockReturnValue({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            status: IngestionLogStatus.Successful,
+                            uploaded_datetime: '2026-01-15T10:30:00Z',
+                        },
+                    ],
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () => useFileIngestionStatus({ helpCenterId: 1 }),
+                { wrapper: createWrapper() },
+            )
+
+            fileUploadEventCallback?.()
+
+            expect(result.current.fileIngestionStatus).toBe(
+                IngestionLogStatus.Successful,
+            )
+        })
+
+        it('does not filter failed status regardless of date', () => {
+            mockUseGetFileIngestion.mockReturnValue({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            status: IngestionLogStatus.Failed,
+                            uploaded_datetime: '2026-01-01T00:00:00Z',
+                        },
+                    ],
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () => useFileIngestionStatus({ helpCenterId: 1 }),
+                { wrapper: createWrapper() },
+            )
+
+            fileUploadEventCallback?.()
+
+            expect(result.current.fileIngestionStatus).toBe(
+                IngestionLogStatus.Failed,
+            )
+        })
+
+        it('does not filter pending status regardless of date', () => {
+            mockUseGetFileIngestion.mockReturnValue({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            status: IngestionLogStatus.Pending,
+                            uploaded_datetime: '2026-01-01T00:00:00Z',
+                        },
+                    ],
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () => useFileIngestionStatus({ helpCenterId: 1 }),
+                { wrapper: createWrapper() },
+            )
+
+            fileUploadEventCallback?.()
+
+            expect(result.current.fileIngestionStatus).toBe(
+                IngestionLogStatus.Pending,
+            )
+        })
+
+        it('returns undefined when uploaded_datetime is missing on successful status', () => {
+            mockUseGetFileIngestion.mockReturnValue({
+                data: {
+                    data: [
+                        {
+                            id: 1,
+                            status: IngestionLogStatus.Successful,
+                            uploaded_datetime: null,
+                        },
+                    ],
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () => useFileIngestionStatus({ helpCenterId: 1 }),
+                { wrapper: createWrapper() },
+            )
+
+            fileUploadEventCallback?.()
+
+            expect(result.current.fileIngestionStatus).toBe(
+                IngestionLogStatus.Successful,
+            )
         })
     })
 })

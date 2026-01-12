@@ -183,4 +183,168 @@ describe('useGetStoreDomainIngestionLog', () => {
         const interval = capturedQueryOptions?.refetchInterval(mockedLogs)
         expect(interval).toBe(false)
     })
+
+    describe('cutoff date filtering', () => {
+        it('returns undefined status for successful syncs before cutoff date (Jan 12, 2026)', () => {
+            const mockedLogs = [
+                {
+                    source: 'domain',
+                    url: 'https://store.example.com',
+                    status: 'SUCCESSFUL',
+                    latest_sync: '2026-01-11T23:59:59Z',
+                },
+            ]
+            mockUseGetIngestionLogs.mockReturnValue({
+                data: mockedLogs,
+                error: null,
+                isLoading: false,
+            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+
+            const { result } = renderHook(
+                () =>
+                    useGetStoreDomainIngestionLog({
+                        helpCenterId: 1,
+                        storeUrl: 'https://store.example.com',
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.status).toBeUndefined()
+        })
+
+        it('returns successful status for syncs on or after cutoff date (Jan 12, 2026)', () => {
+            const mockedLogs = [
+                {
+                    source: 'domain',
+                    url: 'https://store.example.com',
+                    status: 'SUCCESSFUL',
+                    latest_sync: '2026-01-12T00:00:00Z',
+                },
+            ]
+            mockUseGetIngestionLogs.mockReturnValue({
+                data: mockedLogs,
+                error: null,
+                isLoading: false,
+            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+
+            const { result } = renderHook(
+                () =>
+                    useGetStoreDomainIngestionLog({
+                        helpCenterId: 1,
+                        storeUrl: 'https://store.example.com',
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.status).toBe('SUCCESSFUL')
+        })
+
+        it('returns successful status for recent syncs after cutoff date', () => {
+            const mockedLogs = [
+                {
+                    source: 'domain',
+                    url: 'https://store.example.com',
+                    status: 'SUCCESSFUL',
+                    latest_sync: '2026-01-15T10:30:00Z',
+                },
+            ]
+            mockUseGetIngestionLogs.mockReturnValue({
+                data: mockedLogs,
+                error: null,
+                isLoading: false,
+            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+
+            const { result } = renderHook(
+                () =>
+                    useGetStoreDomainIngestionLog({
+                        helpCenterId: 1,
+                        storeUrl: 'https://store.example.com',
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.status).toBe('SUCCESSFUL')
+        })
+
+        it('does not filter failed status regardless of date', () => {
+            const mockedLogs = [
+                {
+                    source: 'domain',
+                    url: 'https://store.example.com',
+                    status: 'FAILED',
+                    latest_sync: '2026-01-01T00:00:00Z',
+                },
+            ]
+            mockUseGetIngestionLogs.mockReturnValue({
+                data: mockedLogs,
+                error: null,
+                isLoading: false,
+            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+
+            const { result } = renderHook(
+                () =>
+                    useGetStoreDomainIngestionLog({
+                        helpCenterId: 1,
+                        storeUrl: 'https://store.example.com',
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.status).toBe('FAILED')
+        })
+
+        it('does not filter pending status regardless of date', () => {
+            const mockedLogs = [
+                {
+                    source: 'domain',
+                    url: 'https://store.example.com',
+                    status: 'PENDING',
+                    latest_sync: '2026-01-01T00:00:00Z',
+                },
+            ]
+            mockUseGetIngestionLogs.mockReturnValue({
+                data: mockedLogs,
+                error: null,
+                isLoading: false,
+            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+
+            const { result } = renderHook(
+                () =>
+                    useGetStoreDomainIngestionLog({
+                        helpCenterId: 1,
+                        storeUrl: 'https://store.example.com',
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.status).toBe('PENDING')
+        })
+
+        it('returns successful status when latest_sync is missing', () => {
+            const mockedLogs = [
+                {
+                    source: 'domain',
+                    url: 'https://store.example.com',
+                    status: 'SUCCESSFUL',
+                    latest_sync: null,
+                },
+            ]
+            mockUseGetIngestionLogs.mockReturnValue({
+                data: mockedLogs,
+                error: null,
+                isLoading: false,
+            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+
+            const { result } = renderHook(
+                () =>
+                    useGetStoreDomainIngestionLog({
+                        helpCenterId: 1,
+                        storeUrl: 'https://store.example.com',
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.status).toBe('SUCCESSFUL')
+        })
+    })
 })

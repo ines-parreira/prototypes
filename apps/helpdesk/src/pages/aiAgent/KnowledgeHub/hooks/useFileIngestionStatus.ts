@@ -90,6 +90,18 @@ export const useFileIngestionStatus = ({
         )
         if (hasPending) return IngestionLogStatus.Pending
 
+        if (latestFileIngestionLog?.status === IngestionLogStatus.Successful) {
+            const uploadTime = latestFileIngestionLog.uploaded_datetime
+            if (uploadTime) {
+                const uploadDate = new Date(uploadTime)
+                const cutoffDate = new Date('2026-01-12T00:00:00Z')
+
+                if (uploadDate < cutoffDate) {
+                    return undefined
+                }
+            }
+        }
+
         return latestFileIngestionLog?.status
     }, [fileIngestionLogs, latestFileIngestionLog])
 

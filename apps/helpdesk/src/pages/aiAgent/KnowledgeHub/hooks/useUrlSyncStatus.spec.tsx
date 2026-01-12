@@ -1035,4 +1035,190 @@ describe('useUrlSyncStatus', () => {
             )
         })
     })
+
+    describe('cutoff date filtering', () => {
+        it('returns undefined status for successful syncs before cutoff date (Jan 12, 2026)', () => {
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: IngestionLogStatus.Successful,
+                    created_datetime: '2026-01-11T23:59:59Z',
+                    latest_sync: '2026-01-11T23:59:59Z',
+                },
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Successful,
+                        created_datetime: '2026-01-11T23:59:59Z',
+                        latest_sync: '2026-01-11T23:59:59Z',
+                    },
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useUrlSyncStatus(defaultParams),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current.syncStatus).toBeUndefined()
+        })
+
+        it('returns successful status for syncs on or after cutoff date (Jan 12, 2026)', () => {
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: IngestionLogStatus.Successful,
+                    created_datetime: '2026-01-12T00:00:00Z',
+                    latest_sync: '2026-01-12T00:00:00Z',
+                },
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Successful,
+                        created_datetime: '2026-01-12T00:00:00Z',
+                        latest_sync: '2026-01-12T00:00:00Z',
+                    },
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useUrlSyncStatus(defaultParams),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current.syncStatus).toBe(
+                IngestionLogStatus.Successful,
+            )
+        })
+
+        it('returns successful status for recent syncs after cutoff date', () => {
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: IngestionLogStatus.Successful,
+                    created_datetime: '2026-01-15T10:30:00Z',
+                    latest_sync: '2026-01-15T10:30:00Z',
+                },
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Successful,
+                        created_datetime: '2026-01-15T10:30:00Z',
+                        latest_sync: '2026-01-15T10:30:00Z',
+                    },
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useUrlSyncStatus(defaultParams),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current.syncStatus).toBe(
+                IngestionLogStatus.Successful,
+            )
+        })
+
+        it('does not filter failed status regardless of date', () => {
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: IngestionLogStatus.Failed,
+                    created_datetime: '2026-01-01T00:00:00Z',
+                    latest_sync: '2026-01-01T00:00:00Z',
+                },
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Failed,
+                        created_datetime: '2026-01-01T00:00:00Z',
+                        latest_sync: '2026-01-01T00:00:00Z',
+                    },
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useUrlSyncStatus(defaultParams),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current.syncStatus).toBe(IngestionLogStatus.Failed)
+        })
+
+        it('does not filter pending status regardless of date', () => {
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: IngestionLogStatus.Pending,
+                    created_datetime: '2026-01-01T00:00:00Z',
+                },
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Pending,
+                        created_datetime: '2026-01-01T00:00:00Z',
+                    },
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useUrlSyncStatus(defaultParams),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current.syncStatus).toBe(IngestionLogStatus.Pending)
+        })
+
+        it('returns undefined when latest_sync is missing on successful status', () => {
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: IngestionLogStatus.Successful,
+                    created_datetime: '2026-01-15T00:00:00Z',
+                    latest_sync: null,
+                },
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Successful,
+                        created_datetime: '2026-01-15T00:00:00Z',
+                        latest_sync: null,
+                    },
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useUrlSyncStatus(defaultParams),
+                {
+                    wrapper: createWrapper(),
+                },
+            )
+
+            expect(result.current.syncStatus).toBe(
+                IngestionLogStatus.Successful,
+            )
+        })
+    })
 })
