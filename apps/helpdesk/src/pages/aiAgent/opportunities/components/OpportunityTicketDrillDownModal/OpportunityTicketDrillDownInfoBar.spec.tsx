@@ -55,61 +55,49 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
         it('should display total tickets when under limit', () => {
             renderComponent()
 
-            expect(screen.getByText('50')).toBeInTheDocument()
             expect(
-                screen.getByText(/tickets are displayed/i),
+                screen.getByText(/Displaying last 50 tickets/i),
             ).toBeInTheDocument()
         })
 
         it('should display single ticket correctly', () => {
             renderComponent({ totalTickets: 1 })
 
-            expect(screen.getByText('1')).toBeInTheDocument()
             expect(
-                screen.getByText(/tickets are displayed/i),
+                screen.getByText(/Displaying last 1 tickets/i),
             ).toBeInTheDocument()
         })
 
         it('should display zero tickets', () => {
             renderComponent({ totalTickets: 0 })
 
-            expect(screen.getByText('0')).toBeInTheDocument()
             expect(
-                screen.getByText(/tickets are displayed/i),
+                screen.getByText(/Displaying last 0 tickets/i),
             ).toBeInTheDocument()
         })
 
         it('should display limit message when at or over 100 tickets', () => {
             renderComponent({ totalTickets: 100 })
 
-            expect(screen.getByText('100')).toBeInTheDocument()
             expect(
-                screen.getByText(/displaying \(first\)/i),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByText(/tickets used to compute the metric/i),
+                screen.getByText(/Displaying last 100 tickets/i),
             ).toBeInTheDocument()
         })
 
         it('should display limit message when over 100 tickets', () => {
             renderComponent({ totalTickets: 150 })
 
-            expect(screen.getByText('100')).toBeInTheDocument()
             expect(
-                screen.getByText(/displaying \(first\)/i),
+                screen.getByText(/Displaying last 100 tickets/i),
             ).toBeInTheDocument()
         })
 
         it('should display correct message just below limit', () => {
             renderComponent({ totalTickets: 99 })
 
-            expect(screen.getByText('99')).toBeInTheDocument()
             expect(
-                screen.getByText(/tickets are displayed/i),
+                screen.getByText(/Displaying last 99 tickets/i),
             ).toBeInTheDocument()
-            expect(
-                screen.queryByText(/displaying \(first\)/i),
-            ).not.toBeInTheDocument()
         })
     })
 
@@ -119,20 +107,8 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
 
             expect(screen.getByText('Fetching tickets...')).toBeInTheDocument()
             expect(
-                screen.queryByText(/tickets are displayed/i),
+                screen.queryByText(/Displaying last/i),
             ).not.toBeInTheDocument()
-        })
-
-        it('should not display info icon when loading', () => {
-            renderComponent({ isLoading: true })
-
-            expect(screen.queryByText('info')).not.toBeInTheDocument()
-        })
-
-        it('should display info icon when not loading', () => {
-            renderComponent()
-
-            expect(screen.getByText('info')).toBeInTheDocument()
         })
     })
 
@@ -141,7 +117,7 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             renderComponent()
 
             const downloadButton = screen.getByRole('button', {
-                name: /download all Tickets/i,
+                name: /export all tickets/i,
             })
             expect(downloadButton).toBeInTheDocument()
         })
@@ -151,7 +127,7 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             renderComponent({ onDownload })
 
             const downloadButton = screen.getByRole('button', {
-                name: /download all Tickets/i,
+                name: /export all tickets/i,
             })
             await userEvent.click(downloadButton)
 
@@ -171,7 +147,7 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             renderComponent({ isLoading: true })
 
             const downloadButton = screen.getByRole('button', {
-                name: /download all Tickets/i,
+                name: /export all tickets/i,
             })
             expect(downloadButton).toHaveAttribute('aria-disabled', 'true')
         })
@@ -180,9 +156,9 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             renderComponent()
 
             const downloadButton = screen.getByRole('button', {
-                name: /download all Tickets/i,
+                name: /export all tickets/i,
             })
-            expect(downloadButton).toBeEnabled()
+            expect(downloadButton).not.toHaveAttribute('aria-disabled', 'true')
         })
 
         it('should display "Loading" text when downloading', () => {
@@ -190,7 +166,7 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
 
             expect(screen.getByText('Loading')).toBeInTheDocument()
             expect(
-                screen.queryByText('Download All Tickets'),
+                screen.queryByText('Export all tickets'),
             ).not.toBeInTheDocument()
         })
 
@@ -198,7 +174,7 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             renderComponent()
 
             const button = screen.getByRole('button', {
-                name: /download all tickets/i,
+                name: /export all tickets/i,
             })
             expect(button).toBeInTheDocument()
         })
@@ -209,10 +185,11 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             const { container } = renderComponent()
 
             expect(container.firstElementChild).toBeInTheDocument()
-            expect(screen.getByText('info')).toBeInTheDocument()
-            expect(screen.getByText('50')).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /download/i }),
+                screen.getByText(/Displaying last 50 tickets/i),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /export/i }),
             ).toBeInTheDocument()
         })
 
@@ -222,7 +199,7 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             expect(container.firstElementChild).toBeInTheDocument()
             expect(screen.getByText('Fetching tickets...')).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /download/i }),
+                screen.getByRole('button', { name: /export/i }),
             ).toBeInTheDocument()
         })
 
@@ -230,7 +207,9 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             const { container } = renderComponent({ isDownloading: true })
 
             expect(container.firstElementChild).toBeInTheDocument()
-            expect(screen.getByText('50')).toBeInTheDocument()
+            expect(
+                screen.getByText(/Displaying last 50 tickets/i),
+            ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /loading/i }),
             ).toBeInTheDocument()
@@ -241,9 +220,8 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
         it('should handle very large ticket counts', () => {
             renderComponent({ totalTickets: 99999 })
 
-            expect(screen.getByText('100')).toBeInTheDocument()
             expect(
-                screen.getByText(/displaying \(first\)/i),
+                screen.getByText(/Displaying last 100 tickets/i),
             ).toBeInTheDocument()
         })
 
@@ -275,7 +253,7 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             renderComponent()
 
             const button = screen.getByRole('button', {
-                name: /download all tickets/i,
+                name: /export all tickets/i,
             })
             expect(button).toHaveAccessibleName()
         })
@@ -284,7 +262,7 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             renderComponent({ isLoading: true })
 
             const button = screen.getByRole('button', {
-                name: /download all Tickets/i,
+                name: /export all tickets/i,
             })
             expect(button).toHaveAttribute('aria-disabled', 'true')
         })
@@ -368,7 +346,7 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             expect(
                 screen.queryByText('Download Requested'),
             ).not.toBeInTheDocument()
-            expect(screen.getByText('Download All Tickets')).toBeInTheDocument()
+            expect(screen.getByText('Export all tickets')).toBeInTheDocument()
         })
     })
 })

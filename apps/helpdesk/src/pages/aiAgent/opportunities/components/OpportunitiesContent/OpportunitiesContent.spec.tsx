@@ -1058,7 +1058,9 @@ describe('OpportunitiesContent', () => {
                 isLoadingOpportunityDetails: true,
             })
 
-            expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
+            expect(
+                screen.queryByText(/Fill knowledge gap/),
+            ).not.toBeInTheDocument()
 
             const skeletons = container.querySelectorAll('[class*="skeleton"]')
             expect(skeletons.length).toBeGreaterThan(0)

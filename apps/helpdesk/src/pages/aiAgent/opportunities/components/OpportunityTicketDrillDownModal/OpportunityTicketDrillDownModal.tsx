@@ -2,23 +2,25 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { useListTickets } from '@gorgias/helpdesk-queries'
+import {
+    Box,
+    Button,
+    Heading,
+    Icon,
+    Modal,
+    ModalSize,
+    Pagination,
+    Tag,
+} from '@gorgias/axiom'
+import { ListTicketsOrderBy, useListTickets } from '@gorgias/helpdesk-queries'
 import type { TicketCompact } from '@gorgias/helpdesk-types'
 
 import type { TicketChannel, TicketStatus } from 'business/types/ticket'
-import type { User } from 'config/types/user'
-import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
-import { AgentAvatar } from 'domains/reporting/pages/common/AgentAvatar'
 import { DrillDownTableContentSkeleton } from 'domains/reporting/pages/common/components/Table/DrillDownTableContentSkeleton'
-import TruncateMultilineCellContent from 'domains/reporting/pages/common/components/TruncateMultilineCellContent'
 import css from 'domains/reporting/pages/common/drill-down/DrillDownTable.less'
 import { DrillDownTicketDetailsCell } from 'domains/reporting/pages/common/drill-down/DrillDownTicketDetailsCell'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useExportOpportunityTickets } from 'pages/aiAgent/opportunities/hooks/useExportOpportunityTickets'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import { NumberedPagination } from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -32,23 +34,13 @@ import { OpportunityTicketDrillDownInfoBar } from './OpportunityTicketDrillDownI
 
 import localCss from './OpportunityTicketDrillDownModal.less'
 
-const TICKETS_PER_PAGE = 20
+const TICKETS_PER_PAGE = 10
 const NOT_AVAILABLE_PLACEHOLDER = '-'
 
 const columnWidths = {
-    ticket: 280,
-    outcome: 180,
-    assignee: 180,
-    created: 180,
-    intent: 180,
-}
-
-const tooltipHints = {
-    outcome:
-        'Current resolution or result of the ticket after being processed by AI Agent. It may be different from what the outcome was at the end of selected timeframe.',
-    assignee:
-        'The current assignee is displayed in this column. It may be different from who the assignee was at the end of the selected timeframe.',
-    intent: 'The primary topic or issue identified by AI Agent for this ticket.',
+    ticket: 460,
+    outcome: 140,
+    created: 160,
 }
 
 interface OpportunityTicketDrillDownModalProps {
@@ -72,9 +64,10 @@ export const OpportunityTicketDrillDownModal = ({
         resetState: resetExportState,
     } = useExportOpportunityTickets()
 
+    const reversedTicketIds = [...ticketIds].reverse()
     const startIndex = (currentPage - 1) * TICKETS_PER_PAGE
     const endIndex = startIndex + TICKETS_PER_PAGE
-    const currentTicketIds = ticketIds.slice(startIndex, endIndex)
+    const currentTicketIds = reversedTicketIds.slice(startIndex, endIndex)
 
     const numericTicketIds = currentTicketIds.map((id) => Number(id))
 
@@ -82,6 +75,7 @@ export const OpportunityTicketDrillDownModal = ({
         {
             ticket_ids: numericTicketIds,
             limit: TICKETS_PER_PAGE,
+            order_by: ListTicketsOrderBy.CreatedDatetimeDesc,
         },
         {
             query: {
@@ -91,8 +85,7 @@ export const OpportunityTicketDrillDownModal = ({
         },
     )
 
-    const { outcomeCustomFieldId, intentCustomFieldId } =
-        useGetCustomTicketsFieldsDefinitionData()
+    const { outcomeCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
 
     const tickets = useMemo(() => data?.data.data ?? [], [data])
     const pagesCount = Math.ceil(ticketIds.length / TICKETS_PER_PAGE)
@@ -113,22 +106,23 @@ export const OpportunityTicketDrillDownModal = ({
         [outcomeCustomFieldId],
     )
 
-    const getIntent = useCallback(
-        (ticket: TicketCompact): string | undefined => {
-            if (!intentCustomFieldId || !ticket.custom_fields) return undefined
-            const field = ticket.custom_fields[intentCustomFieldId]
-            return field?.value as string | undefined
-        },
-        [intentCustomFieldId],
-    )
-
     const handleTicketClick = useCallback((ticketId: number) => {
         window.open(`/app/ticket/${ticketId}`, '_blank')
     }, [])
 
-    const handlePageChange = useCallback((page: number) => {
-        setCurrentPage(page)
-    }, [])
+    const handlePageChange = useCallback(
+        (direction: 'next' | 'previous') => {
+            setCurrentPage((prev) => {
+                if (direction === 'next' && prev < pagesCount) {
+                    return prev + 1
+                } else if (direction === 'previous' && prev > 1) {
+                    return prev - 1
+                }
+                return prev
+            })
+        },
+        [pagesCount],
+    )
 
     const handleDownload = useCallback(async () => {
         await exportTickets(ticketIds)
@@ -137,15 +131,27 @@ export const OpportunityTicketDrillDownModal = ({
     const columnWidthsForSkeleton = [
         columnWidths.ticket,
         columnWidths.outcome,
-        columnWidths.assignee,
         columnWidths.created,
-        columnWidths.intent,
     ].map((width) => width - 40)
 
     return (
-        <Modal size="huge" isOpen={isOpen} onClose={onClose}>
-            <ModalHeader title={'Related tickets'} />
-            <ModalBody className="p-0">
+        <Modal size={ModalSize.Lg} isOpen={isOpen} onOpenChange={onClose}>
+            <Box flexDirection="column" gap="md">
+                <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    gap="md"
+                >
+                    <Heading size="md">Handover tickets</Heading>
+                    <Button
+                        icon={<Icon name="close" />}
+                        variant="tertiary"
+                        size="md"
+                        aria-label="Close modal"
+                        onClick={onClose}
+                    />
+                </Box>
                 <OpportunityTicketDrillDownInfoBar
                     totalTickets={ticketIds.length}
                     isLoading={isLoading}
@@ -160,205 +166,119 @@ export const OpportunityTicketDrillDownModal = ({
                         localCss.tableContainer,
                     )}
                 >
-                    <TableWrapper className={css.table}>
-                        <TableHead>
-                            <HeaderCellProperty
-                                title="Ticket"
-                                width={columnWidths.ticket}
-                                className={css.headerCell}
-                            />
-                            <HeaderCellProperty
-                                title="Outcome"
-                                width={columnWidths.outcome}
-                                className={css.headerCell}
-                                tooltip={tooltipHints.outcome}
-                            />
-                            <HeaderCellProperty
-                                title="Assignee"
-                                width={columnWidths.assignee}
-                                className={css.headerCell}
-                                tooltip={tooltipHints.assignee}
-                            />
-                            <HeaderCellProperty
-                                title="Created"
-                                width={columnWidths.created}
-                                className={css.headerCell}
-                            />
-                            <HeaderCellProperty
-                                title="Intent"
-                                width={columnWidths.intent}
-                                className={css.headerCell}
-                                tooltip={tooltipHints.intent}
-                            />
-                        </TableHead>
-                        <TableBody>
-                            {isLoading ? (
-                                <DrillDownTableContentSkeleton
-                                    columnWidths={columnWidthsForSkeleton}
-                                    rowCount={currentTicketIds.length}
+                    <div
+                        className={classNames(
+                            css.tableBorder,
+                            localCss.tableBorder,
+                        )}
+                    >
+                        <TableWrapper className={css.table}>
+                            <TableHead>
+                                <HeaderCellProperty
+                                    title="Ticket"
+                                    width={columnWidths.ticket}
+                                    className={localCss.headerCell}
+                                    titleClassName={localCss.headerCellTitle}
                                 />
-                            ) : (
-                                tickets.map((ticket) => {
-                                    const outcome = getOutcome(ticket)
-                                    const intent = getIntent(ticket)
+                                <HeaderCellProperty
+                                    title="Outcome"
+                                    width={columnWidths.outcome}
+                                    className={localCss.headerCell}
+                                    titleClassName={localCss.headerCellTitle}
+                                />
+                                <HeaderCellProperty
+                                    title="Date"
+                                    width={columnWidths.created}
+                                    className={localCss.headerCell}
+                                    titleClassName={localCss.headerCellTitle}
+                                />
+                            </TableHead>
+                            <TableBody>
+                                {isLoading ? (
+                                    <DrillDownTableContentSkeleton
+                                        columnWidths={columnWidthsForSkeleton}
+                                        rowCount={currentTicketIds.length}
+                                    />
+                                ) : (
+                                    tickets.map((ticket) => {
+                                        const outcome = getOutcome(ticket)
 
-                                    return (
-                                        <TableBodyRow
-                                            key={ticket.id}
-                                            className={classNames(
-                                                css.tableRow,
-                                                {
-                                                    [css.isHighlighted]:
-                                                        ticket.is_unread ===
-                                                        true,
-                                                },
-                                            )}
-                                            onClick={() =>
-                                                handleTicketClick(ticket.id)
-                                            }
-                                        >
-                                            <DrillDownTicketDetailsCell
-                                                ticketDetails={{
-                                                    id: ticket.id,
-                                                    subject: ticket.subject,
-                                                    description:
-                                                        ticket.excerpt ?? '',
-                                                    status:
-                                                        (ticket.status as TicketStatus) ??
-                                                        null,
-                                                    channel:
-                                                        (ticket.channel as TicketChannel) ??
-                                                        null,
-                                                    isRead:
-                                                        ticket.is_unread ===
-                                                        false,
-                                                    contactReason: null,
-                                                    created:
-                                                        ticket.created_datetime,
-                                                }}
-                                                bodyCellProps={{
-                                                    width: columnWidths.ticket,
-                                                }}
-                                            />
-                                            <BodyCell
-                                                width={columnWidths.outcome}
-                                            >
-                                                {outcome ? (
-                                                    <TruncateMultilineCellContent
-                                                        className={
-                                                            css.multiLineOutcome
-                                                        }
-                                                        maxLines={
-                                                            outcome
-                                                                ? outcome.split(
-                                                                      DROPDOWN_NESTING_DELIMITER,
-                                                                  ).length
-                                                                : 1
-                                                        }
-                                                        tooltip={outcome}
-                                                        value={outcome}
-                                                        splitDelimiter={
-                                                            DROPDOWN_NESTING_DELIMITER
-                                                        }
-                                                        level1ClassName={
-                                                            localCss.level1Bold
-                                                        }
-                                                        sublevelsClassName={
-                                                            css.sublevels
-                                                        }
-                                                    />
-                                                ) : (
-                                                    <span
-                                                        className={css.noData}
-                                                    >
-                                                        {
-                                                            NOT_AVAILABLE_PLACEHOLDER
-                                                        }
-                                                    </span>
-                                                )}
-                                            </BodyCell>
-                                            <BodyCell
-                                                width={columnWidths.assignee}
-                                                className={
-                                                    localCss.boldAssignee
+                                        return (
+                                            <TableBodyRow
+                                                key={ticket.id}
+                                                onClick={() =>
+                                                    handleTicketClick(ticket.id)
                                                 }
                                             >
-                                                {ticket.assignee_user ? (
-                                                    <AgentAvatar
-                                                        agent={
-                                                            ticket.assignee_user as User
+                                                <DrillDownTicketDetailsCell
+                                                    ticketDetails={{
+                                                        id: ticket.id,
+                                                        subject: ticket.subject,
+                                                        description:
+                                                            ticket.excerpt ??
+                                                            '',
+                                                        status:
+                                                            (ticket.status as TicketStatus) ??
+                                                            null,
+                                                        channel:
+                                                            (ticket.channel as TicketChannel) ??
+                                                            null,
+                                                        isRead: false,
+                                                        contactReason: null,
+                                                        created:
+                                                            ticket.created_datetime,
+                                                    }}
+                                                    bodyCellProps={{
+                                                        width: columnWidths.ticket,
+                                                    }}
+                                                />
+                                                <BodyCell
+                                                    width={columnWidths.outcome}
+                                                >
+                                                    <Tag
+                                                        color={
+                                                            outcome ===
+                                                            'Automated'
+                                                                ? 'green'
+                                                                : 'orange'
                                                         }
-                                                        avatarSize={24}
-                                                        className={css.agent}
-                                                    />
-                                                ) : (
-                                                    NOT_AVAILABLE_PLACEHOLDER
-                                                )}
-                                            </BodyCell>
-                                            <BodyCell
-                                                width={columnWidths.created}
-                                                className={localCss.boldDate}
-                                            >
-                                                {ticket.created_datetime ? (
-                                                    <DatetimeLabel
-                                                        dateTime={
-                                                            ticket.created_datetime
-                                                        }
-                                                    />
-                                                ) : (
-                                                    NOT_AVAILABLE_PLACEHOLDER
-                                                )}
-                                            </BodyCell>
-                                            <BodyCell
-                                                width={columnWidths.intent}
-                                            >
-                                                {intent ? (
-                                                    <TruncateMultilineCellContent
-                                                        className={
-                                                            css.multiLineOutcome
-                                                        }
-                                                        value={intent}
-                                                        maxLines={
-                                                            intent.split(
-                                                                DROPDOWN_NESTING_DELIMITER,
-                                                            ).length
-                                                        }
-                                                        splitDelimiter={
-                                                            DROPDOWN_NESTING_DELIMITER
-                                                        }
-                                                        level1ClassName={
-                                                            localCss.level1Bold
-                                                        }
-                                                        sublevelsClassName={
-                                                            css.sublevels
-                                                        }
-                                                    />
-                                                ) : (
-                                                    <span
-                                                        className={css.noData}
                                                     >
-                                                        {
-                                                            NOT_AVAILABLE_PLACEHOLDER
-                                                        }
-                                                    </span>
-                                                )}
-                                            </BodyCell>
-                                        </TableBodyRow>
-                                    )
-                                })
-                            )}
-                        </TableBody>
-                    </TableWrapper>
+                                                        {outcome ??
+                                                            NOT_AVAILABLE_PLACEHOLDER}
+                                                    </Tag>
+                                                </BodyCell>
+                                                <BodyCell
+                                                    width={columnWidths.created}
+                                                >
+                                                    {ticket.created_datetime ? (
+                                                        <DatetimeLabel
+                                                            dateTime={
+                                                                ticket.created_datetime
+                                                            }
+                                                        />
+                                                    ) : (
+                                                        NOT_AVAILABLE_PLACEHOLDER
+                                                    )}
+                                                </BodyCell>
+                                            </TableBodyRow>
+                                        )
+                                    })
+                                )}
+                            </TableBody>
+                        </TableWrapper>
+                    </div>
                 </div>
                 {pagesCount > 1 && (
-                    <NumberedPagination
-                        count={pagesCount}
-                        page={currentPage}
-                        onChange={handlePageChange}
-                        className={css.pagination}
-                    />
+                    <div className={localCss.pagination}>
+                        <Pagination
+                            hasNextPage={pagesCount > currentPage}
+                            hasPreviousPage={currentPage > 1}
+                            onPageChange={handlePageChange}
+                            hasLinesPerPage={false}
+                        />
+                    </div>
                 )}
-            </ModalBody>
+            </Box>
         </Modal>
     )
 }

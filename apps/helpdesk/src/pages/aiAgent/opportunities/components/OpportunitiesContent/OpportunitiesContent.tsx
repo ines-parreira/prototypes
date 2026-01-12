@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import {
     Button,
     Heading,
+    Skeleton,
     Tooltip,
     TooltipContent,
     TooltipTrigger,
@@ -396,41 +397,86 @@ export const OpportunitiesContent = ({
     return (
         <div className={css.containerContent}>
             <div className={css.header}>
-                <div className={css.headerLeft}>
-                    {!isSidebarVisible && (
-                        <Button
-                            intent="regular"
-                            variant="secondary"
-                            icon="system-bar-left"
-                            size="sm"
-                            onClick={handleShowSidebar}
-                            aria-label="Show sidebar"
-                        />
-                    )}
+                {isLoadingOpportunityDetails ? (
+                    <div className={css.skeletonHeader}>
+                        <Skeleton height={24} />
+                    </div>
+                ) : (
+                    <>
+                        <div className={css.headerLeft}>
+                            {!isSidebarVisible && (
+                                <Button
+                                    intent="regular"
+                                    variant="secondary"
+                                    icon="system-bar-left"
+                                    size="sm"
+                                    onClick={handleShowSidebar}
+                                    aria-label="Show sidebar"
+                                />
+                            )}
 
-                    <SelectedOpportunityTitle />
-                </div>
-                {selectedOpportunity && (
-                    <div className={css.headerActions}>
-                        <OpportunitiesNavigation
-                            opportunities={opportunities}
-                            selectedOpportunity={selectedOpportunity}
-                            selectCertainOpportunity={selectCertainOpportunity}
-                            totalCount={totalCount}
-                        />
-                        <div className={css.headerActionDelimiter} />
-                        <Button
-                            variant="tertiary"
-                            onClick={handleOpenDismissModal}
-                        >
-                            Dismiss
-                        </Button>
-                        {!isLoadingGuidanceCount &&
-                        guidanceCount >= MAX_GUIDANCES ? (
-                            <Tooltip placement="top">
-                                <TooltipTrigger>
+                            <SelectedOpportunityTitle />
+                        </div>
+                        {selectedOpportunity && (
+                            <div className={css.headerActions}>
+                                <OpportunitiesNavigation
+                                    opportunities={opportunities}
+                                    selectedOpportunity={selectedOpportunity}
+                                    selectCertainOpportunity={
+                                        selectCertainOpportunity
+                                    }
+                                    totalCount={totalCount}
+                                />
+                                <div className={css.headerActionDelimiter} />
+                                <Button
+                                    variant="tertiary"
+                                    onClick={handleOpenDismissModal}
+                                >
+                                    Dismiss
+                                </Button>
+                                {!isLoadingGuidanceCount &&
+                                guidanceCount >= MAX_GUIDANCES ? (
+                                    <Tooltip placement="top">
+                                        <TooltipTrigger>
+                                            <Button
+                                                ref={approveButtonRef}
+                                                variant="primary"
+                                                leadingSlot="check"
+                                                onClick={handleApprove}
+                                                isLoading={
+                                                    isLoading ||
+                                                    reviewArticle.isLoading ||
+                                                    isGuidanceArticleUpdating
+                                                }
+                                                isDisabled={isApproveDisabled}
+                                            >
+                                                Publish and enable
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <div>
+                                                You have reached the limit for{' '}
+                                                <a
+                                                    href={routes.guidance}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className={css.guidanceLink}
+                                                    onClick={(e) =>
+                                                        e.stopPropagation()
+                                                    }
+                                                >
+                                                    Guidance
+                                                </a>
+                                                . To save this Guidance, you
+                                                must delete or disable an
+                                                existing one.
+                                            </div>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                ) : (
                                     <Button
                                         ref={approveButtonRef}
+                                        className={css.approveButton}
                                         variant="primary"
                                         leadingSlot="check"
                                         onClick={handleApprove}
@@ -443,44 +489,13 @@ export const OpportunitiesContent = ({
                                     >
                                         Publish and enable
                                     </Button>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    <div>
-                                        You have reached the limit for{' '}
-                                        <a
-                                            href={routes.guidance}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className={css.guidanceLink}
-                                            onClick={(e) => e.stopPropagation()}
-                                        >
-                                            Guidance
-                                        </a>
-                                        . To save this Guidance, you must delete
-                                        or disable an existing one.
-                                    </div>
-                                </TooltipContent>
-                            </Tooltip>
-                        ) : (
-                            <Button
-                                ref={approveButtonRef}
-                                className={css.approveButton}
-                                variant="primary"
-                                leadingSlot="check"
-                                onClick={handleApprove}
-                                isLoading={
-                                    isLoading ||
-                                    reviewArticle.isLoading ||
-                                    isGuidanceArticleUpdating
-                                }
-                                isDisabled={isApproveDisabled}
-                            >
-                                Publish and enable
-                            </Button>
+                                )}
+                            </div>
                         )}
-                    </div>
+                    </>
                 )}
             </div>
+
             <div className={css.contentBody}>
                 {isLoadingOpportunityDetails ? (
                     <OpportunitiesContentSkeleton />

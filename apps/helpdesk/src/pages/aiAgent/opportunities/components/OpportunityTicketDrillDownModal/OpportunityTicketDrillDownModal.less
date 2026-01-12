@@ -1,35 +1,41 @@
 :local {
-    .level1Bold {
-        font-weight: 600 !important;
-        font-size: 14px !important;
-        margin-bottom: 2px;
-    }
-
     .tableContainer {
         overflow-x: hidden;
     }
 
-    .boldDate {
-        font-weight: 600 !important;
+    .tableBorder {
+        overflow-y: auto;
 
+        table {
+            margin-bottom: 0;
+        }
+
+        // Override BodyCell padding for first and last cells
         :global {
-            time {
-                font-weight: 600 !important;
+            td[class*='wrapper']:first-of-type > div,
+            td[class*='wrapper']:first-of-type > a > div {
+                padding-left: var(--spacing-md) !important;
+            }
+
+            td[class*='wrapper']:last-of-type > div,
+            td[class*='wrapper']:last-of-type > a > div {
+                padding-right: var(--spacing-md) !important;
             }
         }
     }
 
-    .boldCell {
-        font-weight: 600 !important;
+    .headerCell {
+        padding: var(--spacing-xs) var(--spacing-md) !important;
     }
 
-    .boldAssignee {
-        font-weight: 600 !important;
+    .pagination {
+        display: flex;
+        justify-content: flex-end;
+    }
+}
 
-        :global {
-            span {
-                font-weight: 600 !important;
-            }
-        }
+.axiom :local {
+    .headerCellTitle {
+        color: var(--content-neutral-secondary);
     }
 }

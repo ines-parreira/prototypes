@@ -180,19 +180,19 @@ describe('OpportunityTicketDrillDownModal', () => {
 
     it('should render modal with correct title', () => {
         renderComponent()
-        expect(screen.getByText('Related tickets')).toBeInTheDocument()
+        expect(screen.getByText('Handover tickets')).toBeInTheDocument()
     })
 
     it('should render download button with correct text', () => {
         renderComponent()
-        const downloadText = screen.getByText(/download all tickets/i)
+        const downloadText = screen.getByText(/export all tickets/i)
         expect(downloadText).toBeInTheDocument()
     })
 
     it('should render download button', () => {
         renderComponent()
         const downloadButton = screen.getByRole('button', {
-            name: /download/i,
+            name: /export/i,
         })
         expect(downloadButton).toBeInTheDocument()
     })
@@ -201,12 +201,10 @@ describe('OpportunityTicketDrillDownModal', () => {
         renderComponent()
         expect(screen.getByText('Ticket')).toBeInTheDocument()
         expect(screen.getByText('Outcome')).toBeInTheDocument()
-        expect(screen.getByText('Assignee')).toBeInTheDocument()
-        expect(screen.getByText('Created')).toBeInTheDocument()
-        expect(screen.getByText('Intent')).toBeInTheDocument()
+        expect(screen.getByText('Date')).toBeInTheDocument()
     })
 
-    it('should not render pagination when there are 20 or fewer tickets', () => {
+    it('should not render pagination when there are 10 or fewer tickets', () => {
         renderComponent()
         expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
     })
@@ -216,7 +214,7 @@ describe('OpportunityTicketDrillDownModal', () => {
             String(205500 + i),
         )
         renderComponent({ ticketIds: manyTicketIds })
-        expect(screen.getByText('Related tickets')).toBeInTheDocument()
+        expect(screen.getByText('Handover tickets')).toBeInTheDocument()
     })
 
     it('should not fetch tickets when modal is closed', () => {
@@ -226,7 +224,7 @@ describe('OpportunityTicketDrillDownModal', () => {
 
     it('should render with empty ticket list', () => {
         renderComponent({ ticketIds: [] })
-        expect(screen.getByText('Related tickets')).toBeInTheDocument()
+        expect(screen.getByText('Handover tickets')).toBeInTheDocument()
     })
 
     it('should render modal body with table', () => {
@@ -244,54 +242,11 @@ describe('OpportunityTicketDrillDownModal', () => {
             })
         })
 
-        it('should display assignee name', async () => {
-            renderComponent()
-
-            await waitFor(() => {
-                expect(screen.getByText('AI Agents')).toBeInTheDocument()
-            })
-        })
-
         it('should display formatted outcome', async () => {
             renderComponent()
 
             await waitFor(() => {
-                expect(screen.getByText(/Close/)).toBeInTheDocument()
-            })
-        })
-
-        it('should display intent', async () => {
-            renderComponent()
-
-            await waitFor(() => {
-                expect(
-                    screen.getByText('Promotion & Discount'),
-                ).toBeInTheDocument()
-            })
-        })
-
-        it('should handle missing assignee', async () => {
-            const ticketsWithoutAssignee = [
-                {
-                    ...mockTickets[0],
-                    assignee_user: null,
-                },
-            ]
-
-            server.use(
-                mockListTicketsHandler(async () =>
-                    HttpResponse.json(
-                        mockListTicketsResponse({
-                            data: ticketsWithoutAssignee,
-                        }),
-                    ),
-                ).handler,
-            )
-
-            renderComponent()
-
-            await waitFor(() => {
-                expect(screen.getByText('-')).toBeInTheDocument()
+                expect(screen.getByText('Automated')).toBeInTheDocument()
             })
         })
 
@@ -308,36 +263,6 @@ describe('OpportunityTicketDrillDownModal', () => {
                     HttpResponse.json(
                         mockListTicketsResponse({
                             data: ticketsWithoutOutcome,
-                        }),
-                    ),
-                ).handler,
-            )
-
-            renderComponent()
-
-            await waitFor(() => {
-                expect(screen.getAllByText('-')).toHaveLength(2)
-            })
-        })
-
-        it('should handle missing intent', async () => {
-            const ticketsWithoutIntent = [
-                {
-                    ...mockTickets[0],
-                    custom_fields: {
-                        123: {
-                            id: 123,
-                            value: 'Close::With message',
-                        },
-                    },
-                },
-            ]
-
-            server.use(
-                mockListTicketsHandler(async () =>
-                    HttpResponse.json(
-                        mockListTicketsResponse({
-                            data: ticketsWithoutIntent,
                         }),
                     ),
                 ).handler,
@@ -404,7 +329,7 @@ describe('OpportunityTicketDrillDownModal', () => {
     })
 
     describe('Pagination', () => {
-        it('should render pagination when there are more than 20 tickets', async () => {
+        it('should render pagination when there are more than 10 tickets', async () => {
             const manyTicketIds = Array.from({ length: 25 }, (_, i) =>
                 String(205500 + i),
             )
@@ -414,12 +339,12 @@ describe('OpportunityTicketDrillDownModal', () => {
                 expect(screen.getByText('Test Ticket 1')).toBeInTheDocument()
             })
 
-            const pagination = screen.getByText('1')
-            expect(pagination).toBeInTheDocument()
+            const nextButton = screen.getByRole('button', { name: /next/i })
+            expect(nextButton).toBeInTheDocument()
         })
 
-        it('should change page when pagination is clicked', async () => {
-            const manyTicketIds = Array.from({ length: 45 }, (_, i) =>
+        it('should change page when pagination next is clicked', async () => {
+            const manyTicketIds = Array.from({ length: 25 }, (_, i) =>
                 String(205500 + i),
             )
 
@@ -432,8 +357,8 @@ describe('OpportunityTicketDrillDownModal', () => {
             const page2Tickets: TicketCompact[] = [
                 {
                     ...mockTickets[0],
-                    id: 205520,
-                    subject: 'Test Ticket 21',
+                    id: 205511,
+                    subject: 'Test Ticket 11',
                 },
             ]
 
@@ -447,14 +372,147 @@ describe('OpportunityTicketDrillDownModal', () => {
                 ).handler,
             )
 
-            const page2Button = screen.getByText('2')
+            const nextButton = screen.getByRole('button', { name: /next/i })
             await act(async () => {
-                await userEvent.click(page2Button)
+                await userEvent.click(nextButton)
             })
 
             await waitFor(() => {
-                expect(screen.getByText('Test Ticket 21')).toBeInTheDocument()
+                expect(screen.getByText('Test Ticket 11')).toBeInTheDocument()
             })
+        })
+
+        it('should change page when pagination previous is clicked', async () => {
+            const manyTicketIds = Array.from({ length: 25 }, (_, i) =>
+                String(205500 + i),
+            )
+
+            renderComponent({ ticketIds: manyTicketIds })
+
+            await waitFor(() => {
+                expect(screen.getByText('Test Ticket 1')).toBeInTheDocument()
+            })
+
+            // Go to page 2 first
+            const page2Tickets: TicketCompact[] = [
+                {
+                    ...mockTickets[0],
+                    id: 205511,
+                    subject: 'Test Ticket 11',
+                },
+            ]
+
+            server.use(
+                mockListTicketsHandler(async () =>
+                    HttpResponse.json(
+                        mockListTicketsResponse({
+                            data: page2Tickets,
+                        }),
+                    ),
+                ).handler,
+            )
+
+            const nextButton = screen.getByRole('button', { name: /next/i })
+            await act(async () => {
+                await userEvent.click(nextButton)
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Test Ticket 11')).toBeInTheDocument()
+            })
+
+            // Go back to page 1
+            const page1Tickets: TicketCompact[] = [
+                {
+                    ...mockTickets[0],
+                    id: 205507,
+                    subject: 'Test Ticket 1',
+                },
+            ]
+
+            server.use(
+                mockListTicketsHandler(async () =>
+                    HttpResponse.json(
+                        mockListTicketsResponse({
+                            data: page1Tickets,
+                        }),
+                    ),
+                ).handler,
+            )
+
+            const previousButton = screen.getByRole('button', {
+                name: /previous/i,
+            })
+            await act(async () => {
+                await userEvent.click(previousButton)
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Test Ticket 1')).toBeInTheDocument()
+            })
+        })
+
+        it('should not change page when clicking next on last page', async () => {
+            const manyTicketIds = Array.from({ length: 15 }, (_, i) =>
+                String(205500 + i),
+            )
+
+            renderComponent({ ticketIds: manyTicketIds })
+
+            await waitFor(() => {
+                expect(screen.getByText('Test Ticket 1')).toBeInTheDocument()
+            })
+
+            // Go to page 2 (last page)
+            const page2Tickets: TicketCompact[] = [
+                {
+                    ...mockTickets[0],
+                    id: 205511,
+                    subject: 'Test Ticket 11',
+                },
+            ]
+
+            server.use(
+                mockListTicketsHandler(async () =>
+                    HttpResponse.json(
+                        mockListTicketsResponse({
+                            data: page2Tickets,
+                        }),
+                    ),
+                ).handler,
+            )
+
+            const nextButton = screen.getByRole('button', { name: /next/i })
+            await act(async () => {
+                await userEvent.click(nextButton)
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Test Ticket 11')).toBeInTheDocument()
+            })
+
+            // Try to go to next page when on last page
+            const nextButtonAfter = screen.getByRole('button', {
+                name: /next/i,
+            })
+            expect(nextButtonAfter).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should not change page when clicking previous on first page', async () => {
+            const manyTicketIds = Array.from({ length: 25 }, (_, i) =>
+                String(205500 + i),
+            )
+
+            renderComponent({ ticketIds: manyTicketIds })
+
+            await waitFor(() => {
+                expect(screen.getByText('Test Ticket 1')).toBeInTheDocument()
+            })
+
+            const previousButton = screen.getByRole('button', {
+                name: /previous/i,
+            })
+            expect(previousButton).toHaveAttribute('aria-disabled', 'true')
         })
     })
 
@@ -466,7 +524,7 @@ describe('OpportunityTicketDrillDownModal', () => {
         it('should show download button', () => {
             renderComponent()
             const downloadButton = screen.getByRole('button', {
-                name: /download/i,
+                name: /export/i,
             })
             expect(downloadButton).toBeInTheDocument()
         })
@@ -479,7 +537,7 @@ describe('OpportunityTicketDrillDownModal', () => {
             })
 
             const downloadButton = screen.getByRole('button', {
-                name: /download/i,
+                name: /export/i,
             })
 
             await act(async () => {
@@ -507,7 +565,7 @@ describe('OpportunityTicketDrillDownModal', () => {
             renderComponent()
 
             const downloadButton = screen.getByRole('button', {
-                name: /download all tickets/i,
+                name: /export all tickets/i,
             })
 
             act(() => {
@@ -517,7 +575,7 @@ describe('OpportunityTicketDrillDownModal', () => {
             await waitFor(() => {
                 expect(
                     screen.getByRole('button', {
-                        name: /download all tickets/i,
+                        name: /export all tickets/i,
                     }),
                 ).toBeInTheDocument()
             })
@@ -526,12 +584,16 @@ describe('OpportunityTicketDrillDownModal', () => {
         it('should reset export state when modal is closed', async () => {
             const { rerender } = renderComponent()
 
-            const downloadButton = screen.getByRole('button', {
-                name: /download/i,
+            await waitFor(() => {
+                expect(screen.getByText('Test Ticket 1')).toBeInTheDocument()
             })
 
-            act(() => {
-                userEvent.click(downloadButton)
+            const downloadButton = screen.getByRole('button', {
+                name: /export/i,
+            })
+
+            await act(async () => {
+                await userEvent.click(downloadButton)
             })
 
             await waitFor(() => {
@@ -551,7 +613,7 @@ describe('OpportunityTicketDrillDownModal', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.queryByText('Related tickets'),
+                    screen.queryByText('Handover tickets'),
                 ).not.toBeInTheDocument()
             })
         })
@@ -560,7 +622,7 @@ describe('OpportunityTicketDrillDownModal', () => {
     describe('Loading state', () => {
         it('should show skeleton while loading tickets', () => {
             renderComponent()
-            expect(screen.getByText('Related tickets')).toBeInTheDocument()
+            expect(screen.getByText('Handover tickets')).toBeInTheDocument()
         })
     })
 
@@ -569,59 +631,18 @@ describe('OpportunityTicketDrillDownModal', () => {
             const onClose = jest.fn()
             renderComponent({ onClose })
 
-            const closeButtons = screen.getAllByRole('button')
-            const closeButton = closeButtons.find((button) =>
-                button.textContent?.includes('close'),
-            )
+            const closeButton = screen.getByRole('button', {
+                name: /close modal/i,
+            })
             expect(closeButton).toBeInTheDocument()
 
             await act(async () => {
-                await userEvent.click(closeButton!)
+                await userEvent.click(closeButton)
             })
 
             expect(onClose).toHaveBeenCalled()
         })
     })
-
-    describe('Ticket highlighting', () => {
-        it('should highlight unread tickets', async () => {
-            const unreadTicket: TicketCompact = {
-                ...mockTickets[0],
-                is_unread: true,
-            }
-
-            server.use(
-                mockListTicketsHandler(async () =>
-                    HttpResponse.json(
-                        mockListTicketsResponse({
-                            data: [unreadTicket],
-                        }),
-                    ),
-                ).handler,
-            )
-
-            renderComponent()
-
-            await waitFor(() => {
-                expect(screen.getByText('Test Ticket 1')).toBeInTheDocument()
-            })
-
-            const ticketRow = screen.getByText('Test Ticket 1').closest('tr')
-            expect(ticketRow).toHaveClass('isHighlighted')
-        })
-
-        it('should not highlight read tickets', async () => {
-            renderComponent()
-
-            await waitFor(() => {
-                expect(screen.getByText('Test Ticket 1')).toBeInTheDocument()
-            })
-
-            const ticketRow = screen.getByText('Test Ticket 1').closest('tr')
-            expect(ticketRow).not.toHaveClass('isHighlighted')
-        })
-    })
-
     describe('Custom fields', () => {
         it('should handle tickets without custom_fields', async () => {
             const ticketsWithoutFields = [
@@ -645,76 +666,6 @@ describe('OpportunityTicketDrillDownModal', () => {
 
             await waitFor(() => {
                 expect(screen.getByText('Test Ticket 1')).toBeInTheDocument()
-            })
-        })
-
-        it('should render hierarchical intent with delimiter', async () => {
-            const ticketsWithHierarchicalIntent = [
-                {
-                    ...mockTickets[0],
-                    custom_fields: {
-                        123: {
-                            id: 123,
-                            value: 'Close::With message',
-                        },
-                        124: {
-                            id: 124,
-                            value: 'Return::Information::Other',
-                        },
-                    },
-                },
-            ]
-
-            server.use(
-                mockListTicketsHandler(async () =>
-                    HttpResponse.json(
-                        mockListTicketsResponse({
-                            data: ticketsWithHierarchicalIntent,
-                        }),
-                    ),
-                ).handler,
-            )
-
-            renderComponent()
-
-            await waitFor(() => {
-                expect(screen.getByText('Return')).toBeInTheDocument()
-                expect(screen.getByText('Information')).toBeInTheDocument()
-                expect(screen.getByText('Other')).toBeInTheDocument()
-            })
-        })
-
-        it('should render simple intent without delimiter', async () => {
-            const ticketsWithSimpleIntent = [
-                {
-                    ...mockTickets[0],
-                    custom_fields: {
-                        123: {
-                            id: 123,
-                            value: 'Close::With message',
-                        },
-                        124: {
-                            id: 124,
-                            value: 'Simple Intent',
-                        },
-                    },
-                },
-            ]
-
-            server.use(
-                mockListTicketsHandler(async () =>
-                    HttpResponse.json(
-                        mockListTicketsResponse({
-                            data: ticketsWithSimpleIntent,
-                        }),
-                    ),
-                ).handler,
-            )
-
-            renderComponent()
-
-            await waitFor(() => {
-                expect(screen.getByText('Simple Intent')).toBeInTheDocument()
             })
         })
     })

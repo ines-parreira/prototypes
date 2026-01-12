@@ -1,32 +1,13 @@
 :local {
     .wrapper {
-        background-color: var(--main-primary-0) !important;
-        border-bottom: 1px solid var(--main-primary-1) !important;
-
-        :global {
-            .material-icons {
-                color: var(--main-primary);
-            }
-
-            [class*='ui-button-content-'] {
-                color: var(--main-primary) !important;
-                span {
-                    font-family:
-                        'Inter', 'Helvetica Neue', Arial, Helvetica, sans-serif !important;
-                }
-            }
-
-            [class*='ui-buttonslot-icon-'] i {
-                color: var(--main-primary) !important;
-            }
-        }
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        height: 34px;
     }
 
-    .iconWrapper {
-        :global {
-            .material-icons {
-                color: var(--main-primary);
-            }
-        }
+    .text {
+        color: var(--content-neutral-tertiary);
     }
 }

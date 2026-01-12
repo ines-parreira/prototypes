@@ -1,16 +1,19 @@
-import classNames from 'classnames'
-
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import {
+    Button,
+    ButtonSize,
+    Text,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
-import css from 'domains/reporting/pages/common/drill-down/LegacyDrillDownInfobar.less'
 import useAppSelector from 'hooks/useAppSelector'
 import { useRunningJobs } from 'jobs'
-import Loader from 'pages/common/components/Loader/Loader'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'
 
-import localCss from './OpportunityTicketDrillDownInfoBar.less'
+import css from './OpportunityTicketDrillDownInfoBar.less'
 
 const DRILLDOWN_QUERY_LIMIT = 100
 const DOWNLOAD_REQUESTED_LABEL = 'Download Requested'
@@ -19,7 +22,6 @@ const NO_PERMISSIONS_CONTENT =
     "You don't have enough permissions to download this content."
 const OPERATION_IN_PROGRESS_CONTENT =
     'A long-running job (e.g., ticket export, bulk action) is currently in progress on your account. Please wait until it is finished before requesting a new export.'
-const tooltipTargetID = 'download-opportunity-tickets-tooltip'
 
 interface OpportunityTicketDrillDownInfoBarProps {
     totalTickets: number
@@ -32,18 +34,9 @@ interface OpportunityTicketDrillDownInfoBarProps {
 
 const getInfoLabel = (totalResults: number) => {
     if (totalResults < DRILLDOWN_QUERY_LIMIT) {
-        return (
-            <>
-                <strong>{totalResults}</strong> tickets are displayed.
-            </>
-        )
+        return `Displaying last ${totalResults} tickets`
     }
-    return (
-        <>
-            Displaying (first) <strong>{DRILLDOWN_QUERY_LIMIT}</strong> tickets
-            used to compute the metric.
-        </>
-    )
+    return `Displaying last ${DRILLDOWN_QUERY_LIMIT} tickets`
 }
 
 export const OpportunityTicketDrillDownInfoBar = ({
@@ -79,49 +72,48 @@ export const OpportunityTicketDrillDownInfoBar = ({
         if (isDownloadRequested && !isDownloadError) {
             return DOWNLOAD_REQUESTED_LABEL
         }
-        return 'Download All Tickets'
+        return 'Export all tickets'
     }
 
     return (
-        <div className={classNames(css.wrapper, localCss.wrapper)}>
-            <div className={classNames(css.icon, localCss.iconWrapper)}>
-                {isLoading ? (
-                    <Loader size="14px" minHeight="14px" />
-                ) : (
-                    <i className="material-icons">info</i>
-                )}
-            </div>
-            <div className={css.text}>
+        <div className={css.wrapper}>
+            <Text size="sm" variant="medium" className={css.text}>
                 {isLoading ? resultsPlaceholder : getInfoLabel(totalTickets)}
-            </div>
+            </Text>
 
-            <Tooltip>
-                <TooltipTrigger>
-                    <Button
-                        id={tooltipTargetID}
-                        isDisabled={isDisabled}
-                        variant="tertiary"
-                        leadingSlot={getButtonIcon()}
-                        className={
-                            isDownloadRequested && !isDownloadError
-                                ? localCss.successButton
-                                : localCss.downloadButton
+            {isDisabled && (
+                <Tooltip>
+                    <TooltipTrigger>
+                        <Button
+                            size={ButtonSize.Sm}
+                            isDisabled={true}
+                            variant="primary"
+                            leadingSlot={getButtonIcon()}
+                        >
+                            {getButtonText()}
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent
+                        title={
+                            running !== false
+                                ? OPERATION_IN_PROGRESS_CONTENT
+                                : NO_PERMISSIONS_CONTENT
                         }
-                        {...(!isDownloadRequested && {
-                            onClick: onDownload,
-                        })}
-                    >
-                        {getButtonText()}
-                    </Button>
-                </TooltipTrigger>
-                <TooltipContent
-                    title={
-                        running !== false
-                            ? OPERATION_IN_PROGRESS_CONTENT
-                            : NO_PERMISSIONS_CONTENT
-                    }
-                />
-            </Tooltip>
+                    />
+                </Tooltip>
+            )}
+            {!isDisabled && (
+                <Button
+                    size={ButtonSize.Sm}
+                    variant="primary"
+                    leadingSlot={getButtonIcon()}
+                    {...(!isDownloadRequested && {
+                        onClick: onDownload,
+                    })}
+                >
+                    {getButtonText()}
+                </Button>
+            )}
         </div>
     )
 }

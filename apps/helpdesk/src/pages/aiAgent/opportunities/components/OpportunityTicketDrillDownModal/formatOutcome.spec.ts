@@ -15,6 +15,10 @@ describe('formatOutcome', () => {
         it('should return undefined when outcome is empty string', () => {
             expect(formatOutcome('')).toBeUndefined()
         })
+
+        it('should return undefined when outcome is null', () => {
+            expect(formatOutcome(null as unknown as undefined)).toBeUndefined()
+        })
     })
 
     describe('handover outcomes', () => {
@@ -32,9 +36,7 @@ describe('formatOutcome', () => {
 
             const result = formatOutcome(outcome)
 
-            expect(result).toBe(
-                `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover}${DROPDOWN_NESTING_DELIMITER}${level2}`,
-            )
+            expect(result).toBe(AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover)
         })
 
         it('should handle handover outcome with custom level 2 text', () => {
@@ -43,9 +45,7 @@ describe('formatOutcome', () => {
 
             const result = formatOutcome(outcome)
 
-            expect(result).toBe(
-                `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover}${DROPDOWN_NESTING_DELIMITER}${level2}`,
-            )
+            expect(result).toBe(AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover)
         })
 
         it('should handle handover with empty level 2', () => {
@@ -63,9 +63,7 @@ describe('formatOutcome', () => {
 
             const result = formatOutcome(outcome)
 
-            expect(result).toBe(
-                `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated}${DROPDOWN_NESTING_DELIMITER}${outcome}`,
-            )
+            expect(result).toBe(AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated)
         })
 
         it('should format automated outcome with nested levels', () => {
@@ -73,9 +71,7 @@ describe('formatOutcome', () => {
 
             const result = formatOutcome(outcome)
 
-            expect(result).toBe(
-                `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated}${DROPDOWN_NESTING_DELIMITER}${outcome}`,
-            )
+            expect(result).toBe(AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated)
         })
 
         it('should format automated outcome with multiple nested levels', () => {
@@ -83,8 +79,17 @@ describe('formatOutcome', () => {
 
             const result = formatOutcome(outcome)
 
-            expect(result).toBe(
-                `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated}${DROPDOWN_NESTING_DELIMITER}${outcome}`,
+            expect(result).toBe(AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated)
+        })
+
+        it('should return Automated for outcome that does not start with handover prefix', () => {
+            const outcome = 'Resolved'
+
+            const result = formatOutcome(outcome)
+
+            expect(result).toBe(AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated)
+            expect(outcome.startsWith(CUSTOM_FIELD_AI_AGENT_HANDOVER)).toBe(
+                false,
             )
         })
     })
@@ -95,9 +100,7 @@ describe('formatOutcome', () => {
 
             const result = formatOutcome(outcome)
 
-            expect(result).toBe(
-                `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated}${DROPDOWN_NESTING_DELIMITER}${outcome}`,
-            )
+            expect(result).toBe(AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated)
         })
 
         it('should handle outcome starting with handover prefix check', () => {
@@ -113,8 +116,17 @@ describe('formatOutcome', () => {
 
             const result = formatOutcome(outcome)
 
-            expect(result).toBe(
-                `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated}${DROPDOWN_NESTING_DELIMITER}${outcome}`,
+            expect(result).toBe(AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated)
+        })
+
+        it('should return Automated when outcome contains but does not start with handover prefix', () => {
+            const outcome = `Prefix_${CUSTOM_FIELD_AI_AGENT_HANDOVER}`
+
+            const result = formatOutcome(outcome)
+
+            expect(result).toBe(AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated)
+            expect(outcome.startsWith(CUSTOM_FIELD_AI_AGENT_HANDOVER)).toBe(
+                false,
             )
         })
 
@@ -123,9 +135,7 @@ describe('formatOutcome', () => {
 
             const result = formatOutcome(outcome)
 
-            expect(result).toBe(
-                `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated}${DROPDOWN_NESTING_DELIMITER}${outcome}`,
-            )
+            expect(result).toBe(AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated)
         })
 
         it('should handle special characters in outcome', () => {
@@ -133,37 +143,7 @@ describe('formatOutcome', () => {
 
             const result = formatOutcome(outcome)
 
-            expect(result).toBe(
-                `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated}${DROPDOWN_NESTING_DELIMITER}${outcome}`,
-            )
-        })
-    })
-
-    describe('delimiter behavior', () => {
-        it('should preserve original delimiter positions for automated outcomes', () => {
-            const level1 = 'Level1'
-            const level2 = 'Level2'
-            const level3 = 'Level3'
-            const outcome = `${level1}${DROPDOWN_NESTING_DELIMITER}${level2}${DROPDOWN_NESTING_DELIMITER}${level3}`
-
-            const result = formatOutcome(outcome)
-
-            expect(result).toContain(level1)
-            expect(result).toContain(level2)
-            expect(result).toContain(level3)
-            expect(result?.split(DROPDOWN_NESTING_DELIMITER).length).toBe(4)
-        })
-
-        it('should maintain delimiter for handover with level 2', () => {
-            const level2 = 'Reason for handover'
-            const outcome = `${CUSTOM_FIELD_AI_AGENT_HANDOVER}${DROPDOWN_NESTING_DELIMITER}${level2}`
-
-            const result = formatOutcome(outcome)
-
-            const parts = result?.split(DROPDOWN_NESTING_DELIMITER)
-            expect(parts).toHaveLength(2)
-            expect(parts?.[0]).toBe(AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover)
-            expect(parts?.[1]).toBe(level2)
+            expect(result).toBe(AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated)
         })
     })
 })
