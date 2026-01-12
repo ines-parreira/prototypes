@@ -48,20 +48,22 @@
 .axiom {
     .form-control {
         border: 1px solid var(--border-neutral-default);
-        background-color: var(--elevation-neutral-default);
+        background-color: transparent !important;
 
         &:focus {
-            background-color: var(--elevation-neutral-default);
+            background-color: var(--hover-input) !important;
         }
 
         &:disabled,
         &[readonly] {
-            background-color: var(--surface-neutral-tertiary);
+            background-color: var(--surface-neutral-primary) !important;
+            opacity: 0.5 !important;
+            border-color: var(--border-neutral-default) !important;
         }
     }
 
     .input-group-text {
         border-color: var(--border-neutral-default);
-        background-color: var(--surface-neutral-secondary);
+        background-color: var(--elevation-neutral-default);
     }
 }

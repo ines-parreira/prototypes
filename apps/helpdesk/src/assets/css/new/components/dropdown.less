@@ -77,8 +77,9 @@
 
 .axiom {
     .dropdown-menu {
-        border-color: var(--border-neutral-default);
-        background-color: var(--elevation-neutral-default);
+        border-color: var(--border-neutral-default) !important;
+        background-color: var(--elevation-neutral-mid) !important;
+        border-radius: var(--spacing-sm) !important;
     }
 
     .dropdown-item {
@@ -86,6 +87,7 @@
         &:active,
         &:focus {
             background-color: var(--hover-default);
+            border-radius: var(--spacing-xxxs);
         }
     }
 

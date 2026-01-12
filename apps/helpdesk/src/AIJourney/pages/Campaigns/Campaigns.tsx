@@ -118,7 +118,7 @@ export const Campaigns = () => {
                 metrics={metrics}
                 isLoading={isLoadingCampaigns || isLoadingMetrics}
             />
-            <Card gap="md">
+            <Card gap="md" elevation="mid">
                 <Heading size="md">Campaigns</Heading>
                 <CampaignsTable
                     columns={visibleColumns}

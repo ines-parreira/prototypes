@@ -287,6 +287,14 @@ pre {
     }
 
     .btn {
+        &.disabled {
+            opacity: 0.5 !important;
+        }
+
+        .btn-secondary {
+            background-color: green !important;
+        }
+
         &.btn-loading {
             &:after {
                 border-color: var(--border-neutral-default) transparent

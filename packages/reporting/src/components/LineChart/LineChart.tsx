@@ -58,7 +58,7 @@ export const LineChart = ({
     const transformedData = toChartData(data)
 
     return (
-        <Card>
+        <Card elevation="mid">
             <Box
                 flexDirection="column"
                 width={containerWidth}
