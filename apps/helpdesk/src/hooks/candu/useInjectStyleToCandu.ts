@@ -1,11 +1,7 @@
 import { useCallback, useEffect } from 'react'
 
 const useInjectStyleToCandu = <T extends HTMLElement>(ref: T | null) => {
-    const injectStyle = useCallback((element: Element) => {
-        const sheet = new CSSStyleSheet()
-
-        sheet.replaceSync(
-            `
+    const canduStyles = `
             .candu-typography {
                 --color: var(--neutral-grey-6) !important;
             }
@@ -30,18 +26,47 @@ const useInjectStyleToCandu = <T extends HTMLElement>(ref: T | null) => {
                 &:hover {
                     --color: var(--main-primary-3) !important;
                 }
-            }`,
-        )
+            }`
 
-        if (element.shadowRoot) {
-            element.shadowRoot.adoptedStyleSheets = [
-                sheet as unknown as CSSStyleSheet,
-            ]
-        }
-    }, [])
+    const injectStyle = useCallback(
+        (element: Element) => {
+            if (!element.shadowRoot) {
+                return
+            }
+
+            const supportsAdoptedStyleSheets =
+                typeof CSSStyleSheet !== 'undefined' &&
+                CSSStyleSheet.prototype.replaceSync
+
+            if (supportsAdoptedStyleSheets) {
+                try {
+                    const sheet = new CSSStyleSheet()
+                    sheet.replaceSync(canduStyles)
+                    element.shadowRoot.adoptedStyleSheets = [
+                        sheet as unknown as CSSStyleSheet,
+                    ]
+                    return
+                } catch {
+                    // Fall through to fallback method
+                }
+            }
+
+            // Fallback for Safari 16.1 and other browsers that don't support adoptedStyleSheets
+            const existingStyle = element.shadowRoot.querySelector(
+                'style[data-candu-injected]',
+            )
+            if (!existingStyle) {
+                const styleElement = document.createElement('style')
+                styleElement.setAttribute('data-candu-injected', 'true')
+                styleElement.textContent = canduStyles
+                element.shadowRoot.prepend(styleElement)
+            }
+        },
+        [canduStyles],
+    )
 
     useEffect(() => {
-        if (ref?.lastElementChild && ref.lastElementChild.shadowRoot) {
+        if (ref?.lastElementChild) {
             injectStyle(ref.lastElementChild)
         }
 
@@ -49,7 +74,7 @@ const useInjectStyleToCandu = <T extends HTMLElement>(ref: T | null) => {
             mutations.forEach((mutation) => {
                 const element = mutation.addedNodes.item(0)
 
-                if (element instanceof Element && element.shadowRoot) {
+                if (element instanceof Element) {
                     injectStyle(element)
                 }
             })
