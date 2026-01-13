@@ -120,10 +120,7 @@ export const TestSection = ({
                 <Text size="md" variant="regular">
                     {stepMetadata.stepDescription}
                 </Text>
-                <Button
-                    className={css.testButton}
-                    onClick={handleOpenPlayground}
-                >
+                <Button variant="primary" onClick={handleOpenPlayground}>
                     Test
                 </Button>
             </div>
