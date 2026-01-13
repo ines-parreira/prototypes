@@ -1,4 +1,8 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useAreFlagsLoading,
+    useFlag,
+} from '@repo/feature-flags'
 import { toFormErrors } from '@repo/forms'
 import { useLocation, useParams } from 'react-router-dom'
 
@@ -22,6 +26,7 @@ export default function SLAFormController() {
         template?: SLATemplate
     }>()
     const isVoiceSLAEnabled = useFlag(FeatureFlagKey.VoiceSLA, false)
+    const areFlagsLoading = useAreFlagsLoading()
 
     const isNewPolicy = policyId === 'new'
     const { data, isLoading } = useGetSlaPolicy(
@@ -61,7 +66,7 @@ export default function SLAFormController() {
 
     return (
         <>
-            {isLoading && !isNewPolicy ? (
+            {(isLoading && !isNewPolicy) || areFlagsLoading ? (
                 <Loader />
             ) : isVoiceSLAEnabled ? (
                 <SLAFormView

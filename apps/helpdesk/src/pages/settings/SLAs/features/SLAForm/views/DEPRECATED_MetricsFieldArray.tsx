@@ -20,7 +20,7 @@ import NumberInputField from './NumberInputField'
 
 import css from './MetricsFieldArray.less'
 
-const fieldTexts = {
+const fieldTexts: Record<string, { label: string; tooltip: string }> = {
     FRT: {
         label: 'First response time',
         tooltip:

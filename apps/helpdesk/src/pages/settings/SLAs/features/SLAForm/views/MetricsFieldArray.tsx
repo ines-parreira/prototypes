@@ -17,7 +17,7 @@ import TimeUnitSelectField from './TimeUnitSelectField'
 
 import css from './MetricsFieldArray.less'
 
-const fieldTexts = {
+const fieldTexts: Record<string, { label: string; tooltip: string }> = {
     FRT: {
         label: 'First response time',
         tooltip:
@@ -119,8 +119,8 @@ export function MetricsFieldArray() {
                         </Box>
                     )
                 })}
+                {!!error && <Caption error={error.message} />}
             </Box>
-            {!!error && <Caption error={error.message} />}
         </Box>
     )
 }

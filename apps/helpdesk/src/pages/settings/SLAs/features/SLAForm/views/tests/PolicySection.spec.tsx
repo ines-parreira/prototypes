@@ -67,12 +67,18 @@ describe('<PolicySection />', () => {
     )
 
     describe('when voice channel is selected', () => {
-        it('should render with voice-specific description and no MetricsFieldArray', () => {
+        it('should render with voice-specific fields and no MetricsFieldArray', () => {
             render(
                 <Form
                     defaultValues={{
                         target_channels: ['phone'],
-                        metrics: [],
+                        target: 0.9,
+                        metrics: [
+                            {
+                                threshold: 60,
+                                unit: 'second',
+                            },
+                        ],
                         business_hours_only: false,
                         active: false,
                     }}
@@ -88,6 +94,16 @@ describe('<PolicySection />', () => {
                     'Set the percentage of calls that should be answered within a specific time',
                 ),
             ).toBeInTheDocument()
+            expect(
+                screen.getByRole('textbox', { name: /target/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('textbox', { name: /threshold/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getAllByDisplayValue('Seconds')[0],
+            ).toBeInTheDocument()
+
             expect(
                 screen.queryByText('MetricsFieldArray'),
             ).not.toBeInTheDocument()

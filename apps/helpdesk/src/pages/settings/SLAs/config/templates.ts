@@ -1,3 +1,8 @@
+import {
+    SLAPolicyMetricType,
+    SLAPolicyMetricUnit,
+} from '@gorgias/helpdesk-types'
+
 import type { MappedFormSLAPolicy } from 'pages/settings/SLAs/features/SLAForm/controllers/makeMappedFormSLAPolicy'
 
 export type SLATemplate = Omit<MappedFormSLAPolicy, 'uuid'> & {
@@ -7,10 +12,26 @@ export type SLATemplate = Omit<MappedFormSLAPolicy, 'uuid'> & {
 
 export const TEMPLATES_LIST: SLATemplate[] = [
     {
+        name: 'Voice',
+        description: 'Measure how quickly your team answers inbound calls.',
+        target_channels: ['phone'],
+        target: 0.9,
+        metrics: {
+            [SLAPolicyMetricType.WaitTime]: {
+                threshold: 1,
+                unit: SLAPolicyMetricUnit.Minute,
+            },
+        },
+        icon: 'phone',
+        active: true,
+        business_hours_only: true,
+    },
+    {
         name: 'Chat',
         description:
             'Provide customers with best-in-class chat support by using the suggested SLA settings for chat.',
         target_channels: ['chat'],
+        target: undefined,
         metrics: {
             FRT: {
                 threshold: 1,
@@ -30,6 +51,7 @@ export const TEMPLATES_LIST: SLATemplate[] = [
         description:
             'Provide customers with best-in-class email support by using the suggested SLA settings for email.',
         target_channels: ['email'],
+        target: undefined,
         metrics: {
             FRT: {
                 threshold: 1,
@@ -61,6 +83,7 @@ export const TEMPLATES_LIST: SLATemplate[] = [
             'twitter',
             'twitter-direct-message',
         ],
+        target: undefined,
         metrics: {
             FRT: {
                 threshold: 30,

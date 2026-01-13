@@ -7,6 +7,7 @@ import {
     SLAPolicyMetricUnit,
 } from '@gorgias/helpdesk-types'
 
+import type { MappedFormSLAPolicy } from 'pages/settings/SLAs/features/SLAForm/controllers/makeMappedFormSLAPolicy'
 import { renderWithRouter } from 'utils/testing'
 
 import SLAFormView from '../DEPRECATED_SLAFormView'
@@ -39,6 +40,7 @@ const defaultValues = {
             threshold: undefined,
         },
     ],
+    target: undefined,
     active: true,
     target_channels: [],
     business_hours_only: false,
@@ -84,5 +86,26 @@ describe('SLAFormView', () => {
         expect(
             getByText('Pause SLA timer outside of business hours'),
         ).toBeInTheDocument()
+    })
+
+    it('redirects to SLA list if voice policy is provided', () => {
+        const voicePolicy: MappedFormSLAPolicy = {
+            target_channels: ['phone'],
+            target: 0.9,
+            metrics: {
+                [SLAPolicyMetricType.WaitTime]: {
+                    threshold: 1,
+                    unit: SLAPolicyMetricUnit.Minute,
+                },
+            },
+            active: true,
+            business_hours_only: true,
+        } as MappedFormSLAPolicy
+
+        const { container } = renderWithRouter(
+            <SLAFormView {...defaultProps} policy={voicePolicy} />,
+        )
+
+        expect(container.textContent).toBe('')
     })
 })

@@ -2,6 +2,8 @@ import { FormField, useFormContext } from '@repo/forms'
 
 import { Box, Heading, Text, ToggleField } from '@gorgias/axiom'
 
+import { VoicePolicyFields } from 'pages/settings/SLAs/features/SLAForm/views/VoicePolicyFields'
+
 import type { SLAFormValues } from '../controllers/useFormValues'
 import { MetricsFieldArray } from './MetricsFieldArray'
 
@@ -29,7 +31,13 @@ export function PolicySection() {
             </div>
 
             <Box flexDirection="column" gap="sm">
-                {!isVoiceChannelSelected && <MetricsFieldArray />}
+                {isVoiceChannelSelected ? (
+                    <VoicePolicyFields />
+                ) : (
+                    <MetricsFieldArray />
+                )}
+            </Box>
+            <Box flexDirection="column" gap="sm">
                 <FormField
                     name="business_hours_only"
                     field={ToggleField}

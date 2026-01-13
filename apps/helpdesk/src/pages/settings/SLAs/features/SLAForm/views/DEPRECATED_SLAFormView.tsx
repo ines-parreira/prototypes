@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { FormValidator } from '@repo/forms'
 import { Form, FormField, FormSubmitButton } from '@repo/forms'
 import { history } from '@repo/routing'
+import { Redirect } from 'react-router'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -44,6 +45,13 @@ export default function SLAFormView({
     validator,
 }: SLAFormViewProps) {
     const [isArchiveModalOpen, setArchiveModalOpen] = useState(false)
+
+    if (
+        policy?.metrics.WAIT_TIME &&
+        Object.keys(policy?.metrics ?? {}).length < 2
+    ) {
+        return <Redirect to="/app/settings/sla" />
+    }
 
     return (
         <div className={css.page}>

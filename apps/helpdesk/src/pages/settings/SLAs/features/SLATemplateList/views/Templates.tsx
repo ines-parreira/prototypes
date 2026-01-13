@@ -1,3 +1,6 @@
+import { useMemo } from 'react'
+
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 
@@ -13,7 +16,7 @@ import css from './Templates.less'
 
 export default function Templates({
     className,
-    templates,
+    templates: allTemplates,
     showSeeAllTemplates,
 }: {
     className?: string
@@ -21,6 +24,18 @@ export default function Templates({
     showSeeAllTemplates?: boolean
     templates: SLATemplate[]
 }) {
+    const isVoiceSLAEnabled = useFlag(FeatureFlagKey.VoiceSLA, false)
+
+    const templates = useMemo(
+        () =>
+            isVoiceSLAEnabled
+                ? allTemplates
+                : allTemplates.filter(
+                      (template) => !template.target_channels.includes('phone'),
+                  ),
+        [allTemplates, isVoiceSLAEnabled],
+    )
+
     return (
         <div className={classNames(css.wrapper, className)}>
             {templates.map(({ icon, description, ...template }) => (

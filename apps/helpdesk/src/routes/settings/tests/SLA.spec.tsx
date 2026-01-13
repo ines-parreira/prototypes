@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
@@ -72,7 +72,7 @@ describe('SLA', () => {
         'should call renderer and Route with correct props when voiceSLAFeatureFlag is OFF',
         ({ callOrder, path, exact, component }) => {
             useFlagMock.mockImplementation((flagName: string) => {
-                if (flagName === 'voiceSLAFeatureFlag') {
+                if (flagName === FeatureFlagKey.VoiceSLA) {
                     return false
                 }
             })
@@ -124,7 +124,7 @@ describe('SLA', () => {
         'should call renderer and Route with correct props',
         ({ callOrder, path, exact, component }) => {
             useFlagMock.mockImplementation((flagName: string) => {
-                if (flagName === 'voiceSLAFeatureFlag') {
+                if (flagName === FeatureFlagKey.VoiceSLA) {
                     return true
                 }
             })

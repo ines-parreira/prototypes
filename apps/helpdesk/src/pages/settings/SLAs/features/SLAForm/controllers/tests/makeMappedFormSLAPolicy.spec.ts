@@ -1,3 +1,4 @@
+import { mockSLAPolicy } from '@gorgias/helpdesk-mocks'
 import type { SLAPolicy } from '@gorgias/helpdesk-queries'
 import {
     SLAPolicyMetricType,
@@ -31,6 +32,37 @@ describe('makeMappedFormSLAPolicy', () => {
         const result = makeMappedFormSLAPolicy(slaPolicy3)
 
         expect(result).toEqual(expectedMappedPolicy)
+    })
+
+    it('should map voice SLA policy correctly', () => {
+        const policy = mockSLAPolicy({
+            target_channels: ['phone'],
+            target: 0.75,
+            metrics: [
+                {
+                    name: SLAPolicyMetricType.WaitTime,
+                    threshold: 45,
+                    unit: SLAPolicyMetricUnit.Second,
+                },
+            ],
+            deactivated_datetime: null,
+        })
+
+        const expectedMappedPolicy = {
+            target_channels: policy.target_channels,
+            target: policy.target,
+            active: true,
+            metrics: {
+                [SLAPolicyMetricType.WaitTime]: {
+                    threshold: 45,
+                    unit: SLAPolicyMetricUnit.Second,
+                },
+            },
+        }
+
+        const result = makeMappedFormSLAPolicy(policy)
+
+        expect(result).toEqual(expect.objectContaining(expectedMappedPolicy))
     })
 
     it('should set active to false if deactivated_datetime is not null', () => {

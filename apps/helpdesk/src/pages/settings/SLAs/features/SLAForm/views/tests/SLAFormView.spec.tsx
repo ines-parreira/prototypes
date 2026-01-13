@@ -43,6 +43,7 @@ const defaultValues = {
     ],
     active: true,
     target_channels: [],
+    target: null,
     business_hours_only: false,
 }
 
