@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import { Button } from '@gorgias/axiom'
 
@@ -38,7 +38,18 @@ export const OpportunitiesNavigation = ({
         }
     }
 
-    if (!selectedOpportunity || !opportunities || opportunities.length === 0) {
+    const isSidebarOpportunityLoaded = useMemo(() => {
+        return opportunities?.some(
+            (opportunity) => opportunity.id === selectedOpportunity?.id,
+        )
+    }, [opportunities, selectedOpportunity])
+
+    if (
+        !selectedOpportunity ||
+        !opportunities ||
+        opportunities.length === 0 ||
+        !isSidebarOpportunityLoaded
+    ) {
         return null
     }
 

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
@@ -30,10 +30,12 @@ import css from './OpportunitiesLayout.less'
 const PRELOAD_THRESHOLD = 5
 
 export const OpportunitiesLayout = () => {
-    const { shopName, shopType } = useParams<{
+    const { shopName, shopType, opportunityId } = useParams<{
         shopName: string
         shopType: string
+        opportunityId?: string
     }>()
+    const history = useHistory()
 
     const [isSidebarVisible, setIsSidebarVisible] = useState(true)
 
@@ -118,12 +120,14 @@ export const OpportunitiesLayout = () => {
 
     const {
         selectedOpportunity,
+        selectedOpportunityId,
         setSelectedOpportunityId,
         isLoading: isLoadingOpportunityDetails,
     } = useSelectedOpportunity(
         shopIntegrationId || 0,
         opportunities,
         useKnowledgeService,
+        opportunityId,
     )
 
     const selectNextOpportunity = (articleKey: string) => {
@@ -176,11 +180,16 @@ export const OpportunitiesLayout = () => {
         onOpportunityPageVisited()
     }, [onOpportunityPageVisited])
 
+    useEffect(() => {
+        if (selectedOpportunityId && selectedOpportunityId !== opportunityId) {
+            const basePath = `/app/ai-agent/${shopType}/${shopName}/opportunities`
+            history.replace(`${basePath}/${selectedOpportunityId}`)
+        }
+    }, [selectedOpportunityId, opportunityId, shopType, shopName, history])
+
     const isLoading =
         isStoreConfigLoading ||
-        isLoadingAiArticles ||
-        isLoadingKnowledgeService ||
-        isLoadingOpportunityDetails
+        (useKnowledgeService ? isLoadingKnowledgeService : isLoadingAiArticles)
 
     return (
         <OpportunitiesSidebarContext.Provider

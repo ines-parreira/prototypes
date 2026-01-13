@@ -139,7 +139,12 @@ export const useActionDrivenNavbarSections = () => {
             const integrationType = pathMatch
                 ? pathMatch[1]
                 : currentIntegrationType
-            const restOfPath = pathMatch ? pathMatch[2] : ''
+            let restOfPath = pathMatch ? pathMatch[2] : ''
+
+            // Strip dynamic IDs from paths when switching stores
+            // Only removes segments that look like IDs (all digits or UUID-like patterns)
+            // e.g., "opportunities/123" -> "opportunities", "products/456" -> "products"
+            restOfPath = restOfPath.replace(/\/(\d+|[a-f0-9-]{8,})$/, '')
 
             const isActivated = getStoreActivationStatus(shopName)
             const nextPath = isActivated

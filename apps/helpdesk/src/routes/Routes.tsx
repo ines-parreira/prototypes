@@ -658,6 +658,10 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             exact
                             component={AiAgentOpportunities}
                         />
+                        <Route
+                            path={`${path}/opportunities/:opportunityId`}
+                            component={AiAgentOpportunities}
+                        />
                     </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary
                         section="ai-agent-products"

@@ -479,7 +479,8 @@ export const OpportunitiesContent = ({
                                         </TooltipTrigger>
                                         <TooltipContent>
                                             <div>
-                                                You have reached the limit for{' '}
+                                                You currently have{' '}
+                                                {MAX_GUIDANCES}{' '}
                                                 <a
                                                     href={routes.guidance}
                                                     target="_blank"
@@ -490,9 +491,9 @@ export const OpportunitiesContent = ({
                                                     }
                                                 >
                                                     Guidance
-                                                </a>
-                                                . To save this Guidance, you
-                                                must delete or disable an
+                                                </a>{' '}
+                                                enabled. To publish and enable
+                                                this Guidance, disable an
                                                 existing one.
                                             </div>
                                         </TooltipContent>

@@ -8,16 +8,11 @@ export const useSelectedOpportunity = (
     shopIntegrationId: number,
     opportunities: SidebarOpportunityItem[],
     useKnowledgeService: boolean,
+    initialOpportunityId?: string,
 ) => {
     const [selectedOpportunityId, setSelectedOpportunityId] = useState<
         string | null
-    >(null)
-
-    useEffect(() => {
-        if (!selectedOpportunityId && opportunities.length) {
-            setSelectedOpportunityId(opportunities[0].id)
-        }
-    }, [opportunities, selectedOpportunityId])
+    >(initialOpportunityId || null)
 
     const baseSelectedOpportunity = useMemo(
         () =>
@@ -28,14 +23,16 @@ export const useSelectedOpportunity = (
 
     const shouldFetchDetails =
         useKnowledgeService &&
-        !!baseSelectedOpportunity &&
-        !isOpportunity(baseSelectedOpportunity)
+        !!selectedOpportunityId &&
+        (!baseSelectedOpportunity || !isOpportunity(baseSelectedOpportunity))
 
-    const { data: opportunityDetails, isLoading } = useFindOneOpportunity(
+    const {
+        data: opportunityDetails,
+        isLoading,
+        isError,
+    } = useFindOneOpportunity(
         shopIntegrationId,
-        baseSelectedOpportunity
-            ? parseInt(baseSelectedOpportunity.id, 10)
-            : undefined,
+        selectedOpportunityId ? parseInt(selectedOpportunityId, 10) : undefined,
         {
             query: {
                 enabled: shouldFetchDetails,
@@ -44,16 +41,29 @@ export const useSelectedOpportunity = (
         },
     )
 
-    const selectedOpportunity: Opportunity | null = useMemo(() => {
-        if (!baseSelectedOpportunity) {
-            return null
-        }
+    useEffect(() => {
+        if (!opportunities.length) return
 
+        if (
+            (initialOpportunityId && !isLoading && isError) ||
+            !selectedOpportunityId
+        ) {
+            setSelectedOpportunityId(opportunities[0].id)
+        }
+    }, [
+        opportunities,
+        selectedOpportunityId,
+        initialOpportunityId,
+        isLoading,
+        isError,
+    ])
+
+    const selectedOpportunity: Opportunity | null = useMemo(() => {
         if (useKnowledgeService) {
             return opportunityDetails || null
         }
 
-        if (isOpportunity(baseSelectedOpportunity)) {
+        if (baseSelectedOpportunity && isOpportunity(baseSelectedOpportunity)) {
             return baseSelectedOpportunity
         }
 

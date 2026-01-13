@@ -539,4 +539,134 @@ describe('useSelectedOpportunity', () => {
 
         expect(result.current.selectedOpportunity).toBeNull()
     })
+
+    describe('URL parameter handling', () => {
+        it('should initialize with initialOpportunityId from URL', () => {
+            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            mockUseFindOneOpportunity.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useSelectedOpportunity(
+                        mockShopIntegrationId,
+                        mockOpportunities,
+                        false,
+                        '2',
+                    ),
+                { wrapper },
+            )
+
+            expect(result.current.selectedOpportunityId).toBe('2')
+            expect(result.current.selectedOpportunity).toEqual(
+                mockOpportunities[1],
+            )
+        })
+
+        it('should fetch opportunity details from API when initialOpportunityId is not in loaded list', () => {
+            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            mockUseFindOneOpportunity.mockReturnValue({
+                data: mockOpportunityDetails,
+                isLoading: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useSelectedOpportunity(
+                        mockShopIntegrationId,
+                        mockOpportunityListItems,
+                        true,
+                        '999',
+                    ),
+                { wrapper },
+            )
+
+            expect(mockUseFindOneOpportunity).toHaveBeenCalledWith(
+                mockShopIntegrationId,
+                999,
+                {
+                    query: {
+                        enabled: true,
+                        refetchOnWindowFocus: false,
+                    },
+                },
+            )
+            expect(result.current.selectedOpportunityId).toBe('999')
+        })
+
+        it('should fallback to first opportunity when initialOpportunityId fetch fails', async () => {
+            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            mockUseFindOneOpportunity.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: true,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useSelectedOpportunity(
+                        mockShopIntegrationId,
+                        mockOpportunityListItems,
+                        true,
+                        '999',
+                    ),
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(result.current.selectedOpportunityId).toBe('1')
+            })
+        })
+
+        it('should not fallback when no opportunities are available', () => {
+            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            mockUseFindOneOpportunity.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: true,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useSelectedOpportunity(
+                        mockShopIntegrationId,
+                        [],
+                        true,
+                        '999',
+                    ),
+                { wrapper },
+            )
+
+            expect(result.current.selectedOpportunityId).toBe('999')
+        })
+
+        it('should display opportunity details when accessing via direct URL', async () => {
+            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            mockUseFindOneOpportunity.mockReturnValue({
+                data: mockOpportunityDetails,
+                isLoading: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useSelectedOpportunity(
+                        mockShopIntegrationId,
+                        [],
+                        true,
+                        '1',
+                    ),
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(result.current.selectedOpportunity).toEqual(
+                    mockOpportunityDetails,
+                )
+            })
+        })
+    })
 })

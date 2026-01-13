@@ -492,5 +492,60 @@ describe('useActionDrivenNavbarSections', () => {
                 '/app/ai-agent/shopify/teststore2',
             )
         })
+
+        it('should strip numeric IDs from path when switching stores', () => {
+            Object.defineProperty(window, 'location', {
+                value: {
+                    pathname:
+                        '/app/ai-agent/shopify/teststore1/opportunities/123',
+                },
+                writable: true,
+            })
+            mockUseLocation.mockReturnValue({
+                pathname: '/app/ai-agent/shopify/teststore1/opportunities/123',
+                search: '',
+                hash: '',
+                state: null,
+                key: 'test',
+            })
+
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            act(() => {
+                result.current.handleStoreSelect('teststore2')
+            })
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/teststore2/opportunities',
+            )
+        })
+
+        it('should strip UUID-like IDs from path when switching stores', () => {
+            Object.defineProperty(window, 'location', {
+                value: {
+                    pathname:
+                        '/app/ai-agent/shopify/teststore1/intents/abc-123-def',
+                },
+                writable: true,
+            })
+            mockUseLocation.mockReturnValue({
+                pathname:
+                    '/app/ai-agent/shopify/teststore1/intents/abc-123-def',
+                search: '',
+                hash: '',
+                state: null,
+                key: 'test',
+            })
+
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            act(() => {
+                result.current.handleStoreSelect('teststore2')
+            })
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/teststore2/intents',
+            )
+        })
     })
 })
