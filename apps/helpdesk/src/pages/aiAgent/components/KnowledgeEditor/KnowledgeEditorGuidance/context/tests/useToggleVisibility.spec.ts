@@ -267,4 +267,41 @@ describe('useToggleVisibility', () => {
             payload: true,
         })
     })
+
+    it('does not dispatch MARK_AS_SAVED when toggling visibility', async () => {
+        const dispatch = jest.fn()
+        mockUpdateGuidanceArticle.mockResolvedValue({
+            id: 1,
+            title: 'Test',
+            content: 'Test content',
+            visibility: 'PUBLIC',
+        })
+
+        jest.spyOn(GuidanceContext, 'useGuidanceContext').mockReturnValue({
+            state: mockState,
+            dispatch,
+            config: mockConfig,
+            canEdit: true,
+            guidanceArticle: mockConfig.guidanceArticle,
+            hasPendingChanges: false,
+            playground: {} as any,
+            isFormValid: true,
+            hasDraft: false,
+        })
+
+        const { result } = renderHook(() => useToggleVisibility())
+
+        await act(async () => {
+            await result.current.toggleVisibility()
+        })
+
+        expect(dispatch).not.toHaveBeenCalledWith(
+            expect.objectContaining({ type: 'MARK_AS_SAVED' }),
+        )
+
+        expect(dispatch).toHaveBeenCalledWith({
+            type: 'SET_VISIBILITY',
+            payload: true,
+        })
+    })
 })

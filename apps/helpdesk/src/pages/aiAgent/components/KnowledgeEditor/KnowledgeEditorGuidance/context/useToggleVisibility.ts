@@ -5,7 +5,6 @@ import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArtic
 
 import { useGuidanceContext } from './KnowledgeEditorGuidanceContext'
 import { useGuidanceLimit } from './useGuidanceLimit'
-import { fromArticleTranslationResponse } from './utils'
 
 export const useToggleVisibility = () => {
     const { error: notifyError } = useNotify()
@@ -50,16 +49,9 @@ export const useToggleVisibility = () => {
             )
 
             if (response) {
-                dispatch({
-                    type: 'MARK_AS_SAVED',
-                    payload: {
-                        title: response.title,
-                        content: response.content,
-                        guidance: fromArticleTranslationResponse(response, {
-                            id: state.guidance.id,
-                        }),
-                    },
-                })
+                // NOTE: we are not calling MARK_AS_SAVED here because changing visibility
+                // doesn't create a new version and modifies the structure in place. Ideally the API should return the current version
+                // where it is applied, although it doesn't do that now.
                 dispatch({ type: 'SET_VISIBILITY', payload: !state.visibility })
                 onUpdateFn?.()
                 handleVisibilityUpdate?.(newVisibility)

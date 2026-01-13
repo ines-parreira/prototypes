@@ -42,7 +42,16 @@ export function guidanceReducer(
             }
 
         case 'SET_VISIBILITY':
-            return { ...state, visibility: action.payload }
+            return {
+                ...state,
+                visibility: action.payload,
+                guidance: state.guidance
+                    ? {
+                          ...state.guidance,
+                          visibility: action.payload ? 'PUBLIC' : 'UNLISTED',
+                      }
+                    : undefined,
+            }
 
         case 'RESET_FORM':
             return {

@@ -276,6 +276,43 @@ describe('guidanceReducer', () => {
 
             expect(result.visibility).toBe(false)
         })
+
+        it('should update guidance.visibility to PUBLIC when setting visibility to true', () => {
+            const stateNotVisible = {
+                ...initialState,
+                visibility: false,
+                guidance: { ...mockGuidance, visibility: 'UNLISTED' as const },
+            }
+            const result = guidanceReducer(stateNotVisible, {
+                type: 'SET_VISIBILITY',
+                payload: true,
+            })
+
+            expect(result.guidance?.visibility).toBe('PUBLIC')
+        })
+
+        it('should update guidance.visibility to UNLISTED when setting visibility to false', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_VISIBILITY',
+                payload: false,
+            })
+
+            expect(result.guidance?.visibility).toBe('UNLISTED')
+        })
+
+        it('should handle undefined guidance gracefully', () => {
+            const stateWithoutGuidance = {
+                ...initialState,
+                guidance: undefined,
+            }
+            const result = guidanceReducer(stateWithoutGuidance, {
+                type: 'SET_VISIBILITY',
+                payload: true,
+            })
+
+            expect(result.visibility).toBe(true)
+            expect(result.guidance).toBeUndefined()
+        })
     })
 
     describe('RESET_FORM', () => {
