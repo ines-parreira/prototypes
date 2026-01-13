@@ -2,6 +2,15 @@ import { act, renderHook } from '@testing-library/react'
 
 import { usePlaygroundPanelInKnowledgeEditor } from './usePlaygroundPanelInKnowledgeEditor'
 
+// Mock useScreenSize hook
+jest.mock('panels/hooks/useScreenSize', () => ({
+    __esModule: true,
+    default: jest.fn(() => [1920, 1080]),
+}))
+
+const mockUseScreenSize = require('panels/hooks/useScreenSize')
+    .default as jest.Mock
+
 describe('usePlaygroundPanelInKnowledgeEditor', () => {
     describe('initial state', () => {
         it('should initialize with playground closed', () => {
@@ -17,7 +26,7 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 usePlaygroundPanelInKnowledgeEditor(false),
             )
 
-            expect(result.current.sidePanelWidth).toBe('66vw')
+            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
         })
 
         it('should calculate side panel width for fullscreen mode', () => {
@@ -67,7 +76,7 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 usePlaygroundPanelInKnowledgeEditor(false),
             )
 
-            expect(result.current.sidePanelWidth).toBe('66vw')
+            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
 
             act(() => {
                 result.current.onTest()
@@ -125,17 +134,17 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 result.current.onClosePlayground()
             })
 
-            expect(result.current.sidePanelWidth).toBe('66vw')
+            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
         })
     })
 
     describe('sidePanelWidth calculation', () => {
-        it('should return 66vw when neither fullscreen nor playground is open', () => {
+        it('should return calc(max(918px, 66vw)) when neither fullscreen nor playground is open', () => {
             const { result } = renderHook(() =>
                 usePlaygroundPanelInKnowledgeEditor(false),
             )
 
-            expect(result.current.sidePanelWidth).toBe('66vw')
+            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
         })
 
         it('should return 100vw when fullscreen is enabled but playground is closed', () => {
@@ -179,7 +188,7 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 { initialProps: { isFullscreen: false } },
             )
 
-            expect(result.current.sidePanelWidth).toBe('66vw')
+            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
 
             rerender({ isFullscreen: true })
 
@@ -339,7 +348,90 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
 
             rerender({ isFullscreen: false })
 
-            expect(result.current.sidePanelWidth).toBe('66vw')
+            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
+        })
+    })
+
+    describe('viewport width responsive behavior', () => {
+        beforeEach(() => {
+            mockUseScreenSize.mockReturnValue([1920, 1080])
+        })
+
+        it('should use calc(max(918px, 66vw)) when viewport >= 918px and not fullscreen', () => {
+            mockUseScreenSize.mockReturnValue([1920, 1080])
+
+            const { result } = renderHook(() =>
+                usePlaygroundPanelInKnowledgeEditor(false),
+            )
+
+            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
+        })
+
+        it('should use 100vw when viewport < 918px (auto-fullscreen)', () => {
+            mockUseScreenSize.mockReturnValue([900, 600])
+
+            const { result } = renderHook(() =>
+                usePlaygroundPanelInKnowledgeEditor(false),
+            )
+
+            expect(result.current.sidePanelWidth).toBe('100vw')
+        })
+
+        it('should prioritize manual fullscreen over viewport-based logic', () => {
+            mockUseScreenSize.mockReturnValue([1920, 1080])
+
+            const { result } = renderHook(() =>
+                usePlaygroundPanelInKnowledgeEditor(true),
+            )
+
+            expect(result.current.sidePanelWidth).toBe('100vw')
+        })
+
+        it('should prioritize playground width over viewport-based fullscreen', () => {
+            mockUseScreenSize.mockReturnValue([900, 600])
+
+            const { result } = renderHook(() =>
+                usePlaygroundPanelInKnowledgeEditor(false),
+            )
+
+            // Initially should be 100vw due to viewport < 918px
+            expect(result.current.sidePanelWidth).toBe('100vw')
+
+            // When playground opens, should be 98vw
+            act(() => {
+                result.current.onTest()
+            })
+
+            expect(result.current.sidePanelWidth).toBe('98vw')
+
+            // When playground closes, should go back to 100vw
+            act(() => {
+                result.current.onClosePlayground()
+            })
+
+            expect(result.current.sidePanelWidth).toBe('100vw')
+        })
+
+        it('should respond to viewport width changes', () => {
+            mockUseScreenSize.mockReturnValue([1920, 1080])
+
+            const { result, rerender } = renderHook(() =>
+                usePlaygroundPanelInKnowledgeEditor(false),
+            )
+
+            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
+
+            // Simulate viewport shrinking below 918px
+            mockUseScreenSize.mockReturnValue([900, 600])
+            rerender()
+
+            expect(result.current.sidePanelWidth).toBe('100vw')
+
+            // Simulate viewport expanding above 918px
+            mockUseScreenSize.mockReturnValue([1920, 1080])
+            rerender()
+
+            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
         })
     })
 })

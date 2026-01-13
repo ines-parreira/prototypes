@@ -2,6 +2,8 @@ import { useCallback, useMemo, useState } from 'react'
 
 import type { SizeValue } from '@gorgias/axiom'
 
+import useScreenSize from 'panels/hooks/useScreenSize'
+
 /**
  * Custom hook that manages the playground panel state for Knowledge Editor components.
  * This hook encapsulates the logic for opening/closing the playground panel and
@@ -16,6 +18,7 @@ import type { SizeValue } from '@gorgias/axiom'
  */
 export const usePlaygroundPanelInKnowledgeEditor = (isFullscreen: boolean) => {
     const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false)
+    const [windowWidth] = useScreenSize()
 
     const onTest = useCallback(() => {
         setIsPlaygroundOpen((prev) => !prev)
@@ -26,15 +29,25 @@ export const usePlaygroundPanelInKnowledgeEditor = (isFullscreen: boolean) => {
     }, [])
 
     const sidePanelWidth = useMemo((): SizeValue => {
-        let width: SizeValue = '66vw'
-        if (isFullscreen) {
-            width = '100vw'
-        }
+        // When playground is open, always use 98vw
         if (isPlaygroundOpen) {
-            width = '98vw'
+            return '98vw'
         }
-        return width
-    }, [isFullscreen, isPlaygroundOpen])
+
+        // When user manually enables fullscreen, use 100vw
+        if (isFullscreen) {
+            return '100vw'
+        }
+
+        // When viewport < 918px, auto-enable fullscreen
+        if (windowWidth < 918) {
+            return '100vw'
+        }
+
+        // Otherwise, use responsive width with 918px minimum
+        // This maintains 66vw on larger screens, but never goes below 918px
+        return 'calc(max(918px, 66vw))'
+    }, [isFullscreen, isPlaygroundOpen, windowWidth])
 
     return {
         isPlaygroundOpen,
