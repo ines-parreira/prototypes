@@ -137,7 +137,7 @@ describe('<GuidanceList />', () => {
             }),
         ]
 
-        const { container } = renderWithRedux(
+        renderWithRedux(
             <GuidanceList
                 guidanceArticles={guidanceArticles}
                 currentStoreIntegrationId={1}
@@ -147,12 +147,11 @@ describe('<GuidanceList />', () => {
             />,
         )
 
-        fireEvent.mouseOver(
-            container.querySelector('img[alt="action logo"]') as HTMLElement,
-        )
+        const badge = screen.getByText('2').closest('span')
+        fireEvent.mouseOver(badge as HTMLElement)
 
         await waitFor(() => {
-            expect(screen.getByText('Action 1, Action 2')).toBeInTheDocument()
+            expect(screen.getByText(/Action 1, Action 2/)).toBeInTheDocument()
         })
 
         expect(screen.getByText('First guidance')).toBeInTheDocument()

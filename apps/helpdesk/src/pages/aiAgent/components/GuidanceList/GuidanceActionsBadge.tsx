@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { Icon, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import actionsIcon from 'assets/img/icons/guidance-actions.svg'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { guidanceActionRegex } from 'pages/common/draftjs/plugins/guidanceActions/utils'
@@ -49,13 +48,7 @@ export const GuidanceActionsBadge = ({
 
     return (
         <span className={css.guidanceActionsBadge} ref={setSpanRef}>
-            <img
-                src={actionsIcon}
-                alt="action logo"
-                className={css.actionLogo}
-                width={14}
-                height={14}
-            />
+            <Icon name={'webhook'} size="sm" />
             {numActions}
             {spanRef && (
                 <Tooltip target={spanRef} placement="top">
