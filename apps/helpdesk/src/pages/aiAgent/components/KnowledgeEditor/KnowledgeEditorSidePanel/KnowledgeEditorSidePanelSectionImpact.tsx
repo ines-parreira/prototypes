@@ -38,7 +38,7 @@ export const KnowledgeEditorSidePanelSectionImpact = ({
 
     const renderValue = (metric: MetricProps | null | undefined) => {
         if (isLoading) {
-            return <Skeleton key="loading" width={100} height={20} />
+            return <Skeleton key="loading" width={100} height={16} />
         }
         if (!metric || metric.value === undefined) return '-'
         if (!metric.onClick) return metric.value
@@ -81,7 +81,7 @@ export const KnowledgeEditorSidePanelSectionImpact = ({
                             <Skeleton
                                 key="intents-loading"
                                 width={100}
-                                height={20}
+                                height={16}
                             />
                         ) : intents && intents.length > 0 ? (
                             <div key="intents" className={css.intentsContainer}>
