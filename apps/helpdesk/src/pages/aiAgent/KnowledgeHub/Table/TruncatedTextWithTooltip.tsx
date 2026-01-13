@@ -31,9 +31,7 @@ export const TruncatedTextWithTooltip = ({
                     {children}
                 </div>
             </TooltipTrigger>
-            <TooltipContent>
-                <div className={css.tooltipContent}>{tooltipContent}</div>
-            </TooltipContent>
+            <TooltipContent caption={tooltipContent}></TooltipContent>
         </Tooltip>
     )
 }
