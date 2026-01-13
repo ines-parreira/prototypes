@@ -1,8 +1,12 @@
 :local {
-    .languagePickerWrapper {
+    .wrapper {
         display: flex;
         flex-direction: column;
         gap: var(--spacing-xs);
+    }
+    .languagePickerWrapper {
+        display: flex;
+        flex-direction: column;
     }
 
     .sm {
@@ -23,5 +27,14 @@
         align-items: flex-start;
         flex-wrap: wrap;
         gap: var(--spacing-xs);
+        margin-top: 2px;
+    }
+
+    .helperText {
+        color: var(--content-neutral-tertiary);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+        letter-spacing: 0.12px;
     }
 }

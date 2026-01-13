@@ -101,40 +101,44 @@ export const StorePicker = ({
     }, [shouldUseThemeAppExtensionInstallation])
 
     return (
-        <div
-            className={classNames(css.storePickerWrapper, css[size])}
-            aria-label="Store selection"
-            role="listbox"
-        >
-            <SelectField
-                items={storeIntegrations}
-                value={selectedStore}
-                maxHeight={300}
-                onChange={(store) => onChange(store.id)}
-                label={label}
-                aria-label="Select a store to connect"
-                placeholder={placeholder}
-                isRequired
-                isDisabled={isDisabled}
-                isSearchable
-                caption={showHelperText ? helperText : ''}
-                error={error}
-                leadingSlot={
-                    selectedStore
-                        ? getStoreIconName(selectedStore?.type)
-                        : undefined
-                }
+        <>
+            <div
+                className={classNames(css.storePickerWrapper, css[size])}
+                aria-label="Store selection"
+                role="listbox"
             >
-                {(store) => (
-                    <ListItem
-                        id={store.id}
-                        leadingSlot={getStoreIconName(store.type)}
-                        label={store.name}
-                        caption={getCaption(store)}
-                        textValue={store.name}
-                    />
-                )}
-            </SelectField>
-        </div>
+                <SelectField
+                    items={storeIntegrations}
+                    value={selectedStore}
+                    maxHeight={300}
+                    onChange={(store) => onChange(store.id)}
+                    label={label}
+                    aria-label="Select a store to connect"
+                    placeholder={placeholder}
+                    isRequired
+                    isDisabled={isDisabled}
+                    isSearchable
+                    error={error}
+                    leadingSlot={
+                        selectedStore
+                            ? getStoreIconName(selectedStore?.type)
+                            : undefined
+                    }
+                >
+                    {(store) => (
+                        <ListItem
+                            id={store.id}
+                            leadingSlot={getStoreIconName(store.type)}
+                            label={store.name}
+                            caption={getCaption(store)}
+                            textValue={store.name}
+                        />
+                    )}
+                </SelectField>
+            </div>
+            {showHelperText && (
+                <span className={css.helperText}>{helperText}</span>
+            )}
+        </>
     )
 }

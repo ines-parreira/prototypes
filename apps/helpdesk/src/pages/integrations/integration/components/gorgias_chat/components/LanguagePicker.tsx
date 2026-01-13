@@ -132,61 +132,71 @@ export function LanguagePicker({
     )
 
     return (
-        <div
-            className={classNames(css.languagePickerWrapper, css[size])}
-            role="group"
-            aria-label="Language selection"
-        >
-            <SelectField
-                items={mappedLanguages}
-                value={defaultLanguage}
-                onChange={onDefaultLanguageChange}
-                label={label}
-                maxHeight={300}
-                isRequired
-                isSearchable
-                aria-label="Select default language"
-                caption="Select the main language for your chat."
+        <div className={css.wrapper}>
+            <div
+                className={classNames(css.languagePickerWrapper, css[size])}
+                role="group"
+                aria-label="Language selection"
             >
-                {(language: Language) => (
-                    <ListItem id={language.id} label={language.label} />
-                )}
-            </SelectField>
-
-            {isMultiLanguageEnabled && filteredList.length > 0 && (
-                <Select
-                    items={filteredList}
-                    onSelect={onSelectLanguage}
+                <SelectField
+                    items={mappedLanguages}
+                    value={defaultLanguage}
+                    onChange={onDefaultLanguageChange}
+                    label={label}
+                    maxHeight={300}
+                    isRequired
                     isSearchable
-                    aria-label="Add more languages"
-                    placeholder="Search languages"
-                    trigger={({ ref }) => (
-                        <Button
-                            variant="tertiary"
-                            ref={ref}
-                            slot="trigger"
-                            leadingSlot="add"
-                            size="sm"
-                        >
-                            Add More Languages
-                        </Button>
-                    )}
+                    aria-label="Select default language"
                 >
-                    {(language) => (
+                    {(language: Language) => (
                         <ListItem id={language.id} label={language.label} />
                     )}
-                </Select>
-            )}
+                </SelectField>
+            </div>
+            <span className={css.helperText}>
+                Select the main language for your chat. Add more languages as
+                needed.
+            </span>
+            <div
+                className={classNames(css.languagePickerWrapper, css[size])}
+                role="group"
+                aria-label="Language selection"
+            >
+                {isMultiLanguageEnabled && filteredList.length > 0 && (
+                    <Select
+                        items={filteredList}
+                        onSelect={onSelectLanguage}
+                        isSearchable
+                        aria-label="Add more languages"
+                        placeholder="Search languages"
+                        trigger={({ ref }) => (
+                            <Button
+                                variant="tertiary"
+                                ref={ref}
+                                slot="trigger"
+                                leadingSlot="add"
+                                size="sm"
+                            >
+                                Add More Languages
+                            </Button>
+                        )}
+                    >
+                        {(language) => (
+                            <ListItem id={language.id} label={language.label} />
+                        )}
+                    </Select>
+                )}
 
-            {isMultiLanguageEnabled && selectedLanguages.length > 0 && (
-                <div
-                    className={css.languageList}
-                    role="list"
-                    aria-label="Selected additional languages"
-                >
-                    {selectedLanguageTags}
-                </div>
-            )}
+                {isMultiLanguageEnabled && selectedLanguages.length > 0 && (
+                    <div
+                        className={css.languageList}
+                        role="list"
+                        aria-label="Selected additional languages"
+                    >
+                        {selectedLanguageTags}
+                    </div>
+                )}
+            </div>
         </div>
     )
 }

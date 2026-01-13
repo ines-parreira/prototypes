@@ -44,7 +44,9 @@ describe('<LanguagePicker />', () => {
         render(<LanguagePicker {...defaultProps} />)
 
         expect(
-            screen.getByText('Select the main language for your chat.'),
+            screen.getByText(
+                'Select the main language for your chat. Add more languages as needed.',
+            ),
         ).toBeInTheDocument()
     })
 
