@@ -7,7 +7,7 @@ import { MemoryRouter, Route } from 'react-router-dom'
 import { mockListMetafieldDefinitionsHandler } from '@gorgias/helpdesk-mocks'
 import type { MetafieldDefinition } from '@gorgias/helpdesk-types'
 
-import { useMetafields } from './useMetafields'
+import { useImportableMetafields } from './useImportableMetafields'
 
 const mockMetafieldDefinitions: MetafieldDefinition[] = [
     {
@@ -17,7 +17,7 @@ const mockMetafieldDefinitions: MetafieldDefinition[] = [
         namespace: 'custom',
         key: 'delivery_type',
         ownerType: 'Order',
-        isPinned: true,
+        isPinned: false,
         isVisible: true,
     },
     {
@@ -27,7 +27,7 @@ const mockMetafieldDefinitions: MetafieldDefinition[] = [
         namespace: 'custom',
         key: 'vip',
         ownerType: 'Customer',
-        isPinned: true,
+        isPinned: false,
         isVisible: true,
     },
 ]
@@ -42,7 +42,7 @@ const mockListMetafieldDefinitions = mockListMetafieldDefinitionsHandler(
         }),
 )
 
-describe('useMetafields', () => {
+describe('useImportableMetafields', () => {
     let queryClient: QueryClient
     const mockIntegrationId = '123'
 
@@ -83,7 +83,7 @@ describe('useMetafields', () => {
     })
 
     it('should return metafields data transformed to Field type', async () => {
-        const { result } = renderHook(() => useMetafields(), {
+        const { result } = renderHook(() => useImportableMetafields(), {
             wrapper,
         })
 
@@ -111,7 +111,7 @@ describe('useMetafields', () => {
     })
 
     it('should return loading state initially', () => {
-        const { result } = renderHook(() => useMetafields(), {
+        const { result } = renderHook(() => useImportableMetafields(), {
             wrapper,
         })
 
@@ -129,7 +129,7 @@ describe('useMetafields', () => {
         )
         server.use(handler)
 
-        const { result } = renderHook(() => useMetafields(), {
+        const { result } = renderHook(() => useImportableMetafields(), {
             wrapper,
         })
 

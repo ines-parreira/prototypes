@@ -1,20 +1,20 @@
-import type { MetafieldType } from '../MetafieldTypeItem/MetafieldTypeItem'
+import type { MetafieldType } from '@gorgias/helpdesk-types'
 
 const supportedTypes: MetafieldType[] = [
-    'single_line_text',
-    'multi_line_text',
+    'single_line_text_field',
+    'multi_line_text_field',
     'date_time',
     'date',
     'dimension',
     'volume',
     'weight',
-    'decimal',
-    'integer',
-    'company',
-    'customer',
-    'product',
-    'collection',
-    'product_variant',
+    'number_decimal',
+    'number_integer',
+    'company_reference',
+    'customer_reference',
+    'product_reference',
+    'collection_reference',
+    'variant_reference', // productVariant
     'boolean',
     'color',
     'id',

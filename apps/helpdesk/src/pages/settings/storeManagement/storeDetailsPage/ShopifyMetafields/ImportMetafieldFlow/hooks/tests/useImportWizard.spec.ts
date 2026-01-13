@@ -17,10 +17,10 @@ describe('useImportWizard', () => {
             const { result } = renderHook(() => useImportWizard())
 
             act(() => {
-                result.current.selectCategory('customer')
+                result.current.selectCategory('Customer')
             })
 
-            expect(result.current.selectedCategory).toBe('customer')
+            expect(result.current.selectedCategory).toBe('Customer')
             expect(result.current.step).toBe('metafields')
         })
 
@@ -28,21 +28,21 @@ describe('useImportWizard', () => {
             const { result } = renderHook(() => useImportWizard())
 
             act(() => {
-                result.current.selectCategory('order')
+                result.current.selectCategory('Order')
             })
 
-            expect(result.current.selectedCategory).toBe('order')
+            expect(result.current.selectedCategory).toBe('Order')
             expect(result.current.step).toBe('metafields')
         })
 
-        it('should handle draft_order category selection', () => {
+        it('should handle DraftOrder category selection', () => {
             const { result } = renderHook(() => useImportWizard())
 
             act(() => {
-                result.current.selectCategory('draft_order')
+                result.current.selectCategory('DraftOrder')
             })
 
-            expect(result.current.selectedCategory).toBe('draft_order')
+            expect(result.current.selectedCategory).toBe('DraftOrder')
             expect(result.current.step).toBe('metafields')
         })
 
@@ -50,16 +50,16 @@ describe('useImportWizard', () => {
             const { result } = renderHook(() => useImportWizard())
 
             act(() => {
-                result.current.selectCategory('customer')
+                result.current.selectCategory('Customer')
             })
 
-            expect(result.current.selectedCategory).toBe('customer')
+            expect(result.current.selectedCategory).toBe('Customer')
 
             act(() => {
-                result.current.selectCategory('order')
+                result.current.selectCategory('Order')
             })
 
-            expect(result.current.selectedCategory).toBe('order')
+            expect(result.current.selectedCategory).toBe('Order')
             expect(result.current.step).toBe('metafields')
         })
     })
@@ -69,11 +69,11 @@ describe('useImportWizard', () => {
             const { result } = renderHook(() => useImportWizard())
 
             act(() => {
-                result.current.selectCategory('customer')
+                result.current.selectCategory('Customer')
             })
 
             expect(result.current.step).toBe('metafields')
-            expect(result.current.selectedCategory).toBe('customer')
+            expect(result.current.selectedCategory).toBe('Customer')
 
             act(() => {
                 result.current.backToCategories()
@@ -100,11 +100,11 @@ describe('useImportWizard', () => {
             const { result } = renderHook(() => useImportWizard())
 
             act(() => {
-                result.current.selectCategory('customer')
+                result.current.selectCategory('Customer')
             })
 
             expect(result.current.step).toBe('metafields')
-            expect(result.current.selectedCategory).toBe('customer')
+            expect(result.current.selectedCategory).toBe('Customer')
 
             act(() => {
                 result.current.reset()
@@ -133,11 +133,11 @@ describe('useImportWizard', () => {
             expect(result.current.step).toBe('categories')
 
             act(() => {
-                result.current.selectCategory('customer')
+                result.current.selectCategory('Customer')
             })
 
             expect(result.current.step).toBe('metafields')
-            expect(result.current.selectedCategory).toBe('customer')
+            expect(result.current.selectedCategory).toBe('Customer')
 
             act(() => {
                 result.current.backToCategories()
@@ -147,11 +147,11 @@ describe('useImportWizard', () => {
             expect(result.current.selectedCategory).toBeNull()
 
             act(() => {
-                result.current.selectCategory('order')
+                result.current.selectCategory('Order')
             })
 
             expect(result.current.step).toBe('metafields')
-            expect(result.current.selectedCategory).toBe('order')
+            expect(result.current.selectedCategory).toBe('Order')
         })
     })
 
@@ -159,7 +159,7 @@ describe('useImportWizard', () => {
         it('should return current state for unknown action types', () => {
             const currentState = {
                 step: 'metafields' as const,
-                selectedCategory: 'customer' as const,
+                selectedCategory: 'Customer' as const,
             }
 
             const result = wizardReducer(currentState, {

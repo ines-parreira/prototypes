@@ -1,5 +1,5 @@
 import type { Field } from '../MetafieldsTable/types'
-import type { MetafieldCategory } from '../types'
+import type { SupportedCategories } from '../types'
 import { isAtMaxFields } from './isAtMaxFields'
 
 describe('isAtMaxFields', () => {
@@ -11,7 +11,7 @@ describe('isAtMaxFields', () => {
         (_description, fields) => {
             const result = isAtMaxFields(
                 fields as unknown as Field[],
-                'customer',
+                'Customer',
             )
             expect(result).toBe(false)
         },
@@ -19,31 +19,31 @@ describe('isAtMaxFields', () => {
 
     it.each<{
         fieldCount: number
-        category: MetafieldCategory
+        category: SupportedCategories
         expected: boolean
         description: string
     }>([
         {
             fieldCount: 5,
-            category: 'customer',
+            category: 'Customer',
             expected: false,
             description: 'has less than 10 fields',
         },
         {
             fieldCount: 9,
-            category: 'order',
+            category: 'Order',
             expected: false,
             description: 'has exactly 9 fields',
         },
         {
             fieldCount: 10,
-            category: 'draft_order',
+            category: 'DraftOrder',
             expected: true,
             description: 'has exactly 10 fields',
         },
         {
             fieldCount: 15,
-            category: 'customer',
+            category: 'Customer',
             expected: true,
             description: 'has more than 10 fields',
         },
@@ -68,17 +68,17 @@ describe('isAtMaxFields', () => {
                 id: `customer-field-${i}`,
                 name: `Customer Field ${i}`,
                 type: 'single_line_text_field' as const,
-                category: 'customer' as const,
+                category: 'Customer' as const,
             })),
             ...Array.from({ length: 3 }, (_, i) => ({
                 id: `order-field-${i}`,
                 name: `Order Field ${i}`,
                 type: 'single_line_text_field' as const,
-                category: 'order' as const,
+                category: 'Order' as const,
             })),
         ]
 
-        const result = isAtMaxFields(fields as unknown as Field[], 'order')
+        const result = isAtMaxFields(fields as unknown as Field[], 'Order')
         expect(result).toBe(false)
     })
 })

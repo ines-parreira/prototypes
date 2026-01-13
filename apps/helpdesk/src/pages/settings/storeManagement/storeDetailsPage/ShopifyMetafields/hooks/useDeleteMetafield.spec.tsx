@@ -12,14 +12,14 @@ describe('useDeleteMetafield', () => {
         {
             id: '1',
             name: 'Field 1',
-            type: 'single_line_text',
+            type: 'single_line_text_field',
             category: 'order',
             isVisible: true,
         },
         {
             id: '2',
             name: 'Field 2',
-            type: 'multi_line_text',
+            type: 'multi_line_text_field',
             category: 'customer',
             isVisible: false,
         },
@@ -65,7 +65,7 @@ describe('useDeleteMetafield', () => {
             {
                 id: '1',
                 name: 'Field 1',
-                type: 'single_line_text',
+                type: 'single_line_text_field',
                 category: 'order',
                 isVisible: true,
             },
@@ -92,7 +92,7 @@ describe('useDeleteMetafield', () => {
             {
                 id: '2',
                 name: 'Field 2',
-                type: 'multi_line_text',
+                type: 'multi_line_text_field',
                 category: 'customer',
                 isVisible: false,
             },
@@ -119,14 +119,14 @@ describe('useDeleteMetafield', () => {
             {
                 id: '1',
                 name: 'Field 1',
-                type: 'single_line_text',
+                type: 'single_line_text_field',
                 category: 'order',
                 isVisible: true,
             },
             {
                 id: '2',
                 name: 'Field 2',
-                type: 'multi_line_text',
+                type: 'multi_line_text_field',
                 category: 'customer',
                 isVisible: false,
             },

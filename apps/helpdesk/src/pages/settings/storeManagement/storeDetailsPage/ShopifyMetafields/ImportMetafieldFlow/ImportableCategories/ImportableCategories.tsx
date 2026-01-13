@@ -5,19 +5,19 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import type { MetafieldCategory } from '../../types'
+import type { SupportedCategories } from '../../types'
 
 import styles from './ImportableCategories.less'
 
 type CategoryItem = {
     label: string
-    value: MetafieldCategory
+    value: SupportedCategories
     selectCount: number
 }
 
 type ImportableCategoriesProps = {
     categories: CategoryItem[]
-    onCategorySelect: (category: MetafieldCategory) => void
+    onCategorySelect: (category: SupportedCategories) => void
     onImport: () => void
 }
 

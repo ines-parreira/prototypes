@@ -1,91 +1,35 @@
 import cn from 'classnames'
 
 import { Icon, type IconName, Text } from '@gorgias/axiom'
+import type { MetafieldType } from '@gorgias/helpdesk-types'
 
 import css from './MetafieldTypeItem.less'
-
-export type MetafieldType =
-    | 'single_line_text'
-    | 'multi_line_text'
-    | 'date_time'
-    | 'date'
-    | 'dimension'
-    | 'volume'
-    | 'weight'
-    | 'decimal'
-    | 'integer'
-    | 'company'
-    | 'customer'
-    | 'product'
-    | 'collection'
-    | 'product_variant'
-    | 'boolean'
-    | 'color'
-    | 'id'
-    | 'rating'
-    | 'url'
-    | 'money'
-    | 'link'
-    | 'json'
-    | 'file'
-    | 'rich_text'
-    | 'page'
-    | 'meta_object'
-    | 'mixed_reference'
-
-export enum MetafieldEnum {
-    SingleLineText = 'single_line_text',
-    MultiLineText = 'multi_line_text',
-    DateTime = 'date_time',
-    Date = 'date',
-    Dimension = 'dimension',
-    Volume = 'volume',
-    Weight = 'weight',
-    Decimal = 'decimal',
-    Integer = 'integer',
-    Company = 'company',
-    Customer = 'customer',
-    Product = 'product',
-    Collection = 'collection',
-    ProductVariant = 'product_variant',
-    Boolean = 'boolean',
-    Color = 'color',
-    Id = 'id',
-    Rating = 'rating',
-    Url = 'url',
-    Money = 'money',
-    Link = 'link',
-    Json = 'json',
-    File = 'file',
-    RichText = 'rich_text',
-    Page = 'page',
-    MetaObject = 'meta_object',
-    MixedReference = 'mixed_reference',
-}
 
 export interface MetafieldTypeItemProps {
     type: MetafieldType
     disabled?: boolean
 }
 
-export const typeConfig: Record<
-    MetafieldType,
-    { icon: IconName; label: string }
+export const typeConfig: Partial<
+    Record<MetafieldType, { icon: IconName; label: string }>
 > = {
-    single_line_text: { icon: 'font', label: 'Single-line text' },
-    multi_line_text: { icon: 'text-align-left', label: 'Multi-line text' },
+    single_line_text_field: { icon: 'font', label: 'Single-line text' },
+    multi_line_text_field: {
+        icon: 'text-align-left',
+        label: 'Multi-line text',
+    },
     date_time: { icon: 'calendar-event', label: 'Date and time' },
     date: { icon: 'calendar', label: 'Date' },
     dimension: { icon: 'ruler', label: 'Dimension' },
     volume: { icon: 'chart-bar-vertical', label: 'Volume' },
     weight: { icon: 'scale', label: 'Weight' },
-    decimal: { icon: 'percent', label: 'Decimal' },
-    integer: { icon: 'hashtag', label: 'Integer' },
-    company: { icon: 'nav-building-alt-4', label: 'Company' },
-    customer: { icon: 'user', label: 'Customer' },
-    product: { icon: 'shopping-bag', label: 'Product' },
-    collection: { icon: 'shopping-cart', label: 'Collection' },
-    product_variant: { icon: 'tag', label: 'Product variant' },
+    number_decimal: { icon: 'percent', label: 'Decimal' },
+    number_integer: { icon: 'hashtag', label: 'Integer' },
+    company_reference: { icon: 'nav-building-alt-4', label: 'Company' },
+    customer_reference: { icon: 'user', label: 'Customer' },
+    product_reference: { icon: 'shopping-bag', label: 'Product' },
+    collection_reference: { icon: 'shopping-cart', label: 'Collection' },
+    variant_reference: { icon: 'tag', label: 'Product variant' },
     boolean: { icon: 'swicht-left', label: 'True or false' },
     color: { icon: 'palette', label: 'Color' },
     id: { icon: 'user-card-id', label: 'ID' },
@@ -94,10 +38,10 @@ export const typeConfig: Record<
     money: { icon: 'credit-card', label: 'Money' },
     link: { icon: 'link-horizontal', label: 'Link' },
     json: { icon: 'data-object', label: 'JSON' },
-    file: { icon: 'data-object', label: 'File' },
-    rich_text: { icon: 'data-object', label: 'Rich text' },
-    page: { icon: 'data-object', label: 'Page' },
-    meta_object: { icon: 'data-object', label: 'Metaobject' },
+    file_reference: { icon: 'data-object', label: 'File' },
+    rich_text_field: { icon: 'data-object', label: 'Rich text' },
+    page_reference: { icon: 'data-object', label: 'Page' },
+    metaobject_reference: { icon: 'data-object', label: 'Metaobject' },
     mixed_reference: { icon: 'data-object', label: 'Mixed reference' },
 }
 

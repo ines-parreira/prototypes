@@ -1,14 +1,15 @@
-import type { MetafieldType } from '../MetafieldTypeItem/MetafieldTypeItem'
+import type { MetafieldType } from '@gorgias/helpdesk-types'
+
 import { getMetafieldTypeLabel } from './getMetafieldTypeLabel'
 
 describe('getMetafieldTypeLabel', () => {
-    it('should return "Single-line text" for single_line_text type', () => {
-        const result = getMetafieldTypeLabel('single_line_text')
+    it('should return "Single-line text" for single_line_text_field type', () => {
+        const result = getMetafieldTypeLabel('single_line_text_field')
         expect(result).toBe('Single-line text')
     })
 
-    it('should return "Multi-line text" for multi_line_text type', () => {
-        const result = getMetafieldTypeLabel('multi_line_text')
+    it('should return "Multi-line text" for multi_line_text_field type', () => {
+        const result = getMetafieldTypeLabel('multi_line_text_field')
         expect(result).toBe('Multi-line text')
     })
 
@@ -17,13 +18,13 @@ describe('getMetafieldTypeLabel', () => {
         expect(result).toBe('Date and time')
     })
 
-    it('should return "Integer" for integer type', () => {
-        const result = getMetafieldTypeLabel('integer')
+    it('should return "Integer" for number_integer type', () => {
+        const result = getMetafieldTypeLabel('number_integer')
         expect(result).toBe('Integer')
     })
 
-    it('should return "Product variant" for product_variant type', () => {
-        const result = getMetafieldTypeLabel('product_variant')
+    it('should return "Product variant" for variant_reference type', () => {
+        const result = getMetafieldTypeLabel('variant_reference')
         expect(result).toBe('Product variant')
     })
 

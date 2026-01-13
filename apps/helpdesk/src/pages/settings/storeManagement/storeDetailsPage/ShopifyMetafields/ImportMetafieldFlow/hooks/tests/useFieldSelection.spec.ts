@@ -7,16 +7,16 @@ describe('useFieldSelection', () => {
     const mockCustomerField: Field = {
         id: 'customer-1',
         name: 'Customer Field',
-        type: 'integer',
-        category: 'customer',
+        type: 'number_integer',
+        category: 'Customer',
         isVisible: true,
     }
 
     const mockOrderField: Field = {
         id: 'order-1',
         name: 'Order Field',
-        type: 'integer',
-        category: 'order',
+        type: 'number_integer',
+        category: 'Order',
         isVisible: true,
     }
 
@@ -24,7 +24,7 @@ describe('useFieldSelection', () => {
         id: 'draft-order-1',
         name: 'Draft Order Field',
         type: 'boolean',
-        category: 'draft_order',
+        category: 'DraftOrder',
         isVisible: false,
     }
 
@@ -33,14 +33,14 @@ describe('useFieldSelection', () => {
             const { result } = renderHook(() => useFieldSelection())
 
             act(() => {
-                result.current.updateSelection('customer', [mockCustomerField])
+                result.current.updateSelection('Customer', [mockCustomerField])
             })
 
-            expect(result.current.selectedFieldsByCategory.customer).toEqual([
+            expect(result.current.selectedFieldsByCategory.Customer).toEqual([
                 mockCustomerField,
             ])
-            expect(result.current.selectedFieldsByCategory.order).toEqual([])
-            expect(result.current.selectedFieldsByCategory.draft_order).toEqual(
+            expect(result.current.selectedFieldsByCategory.Order).toEqual([])
+            expect(result.current.selectedFieldsByCategory.DraftOrder).toEqual(
                 [],
             )
         })
@@ -53,28 +53,28 @@ describe('useFieldSelection', () => {
             ]
 
             act(() => {
-                result.current.updateSelection('customer', multipleFields)
+                result.current.updateSelection('Customer', multipleFields)
             })
 
-            expect(result.current.selectedFieldsByCategory.customer).toEqual(
+            expect(result.current.selectedFieldsByCategory.Customer).toEqual(
                 multipleFields,
             )
-            expect(result.current.getSelectionCount('customer')).toBe(2)
+            expect(result.current.getSelectionCount('Customer')).toBe(2)
         })
 
         it('should handle empty array to clear selection', () => {
             const { result } = renderHook(() => useFieldSelection())
 
             act(() => {
-                result.current.updateSelection('customer', [mockCustomerField])
+                result.current.updateSelection('Customer', [mockCustomerField])
             })
 
             act(() => {
-                result.current.updateSelection('customer', [])
+                result.current.updateSelection('Customer', [])
             })
 
-            expect(result.current.selectedFieldsByCategory.customer).toEqual([])
-            expect(result.current.getSelectionCount('customer')).toBe(0)
+            expect(result.current.selectedFieldsByCategory.Customer).toEqual([])
+            expect(result.current.getSelectionCount('Customer')).toBe(0)
         })
     })
 
@@ -82,7 +82,7 @@ describe('useFieldSelection', () => {
         it('should return empty array for category with no selection', () => {
             const { result } = renderHook(() => useFieldSelection())
 
-            expect(result.current.getSelectionForCategory('customer')).toEqual(
+            expect(result.current.getSelectionForCategory('Customer')).toEqual(
                 [],
             )
         })
@@ -91,10 +91,10 @@ describe('useFieldSelection', () => {
             const { result } = renderHook(() => useFieldSelection())
 
             act(() => {
-                result.current.updateSelection('order', [mockOrderField])
+                result.current.updateSelection('Order', [mockOrderField])
             })
 
-            expect(result.current.getSelectionForCategory('order')).toEqual([
+            expect(result.current.getSelectionForCategory('Order')).toEqual([
                 mockOrderField,
             ])
         })
@@ -103,14 +103,14 @@ describe('useFieldSelection', () => {
             const { result } = renderHook(() => useFieldSelection())
 
             act(() => {
-                result.current.updateSelection('customer', [mockCustomerField])
-                result.current.updateSelection('order', [mockOrderField])
+                result.current.updateSelection('Customer', [mockCustomerField])
+                result.current.updateSelection('Order', [mockOrderField])
             })
 
-            expect(result.current.getSelectionForCategory('customer')).toEqual([
+            expect(result.current.getSelectionForCategory('Customer')).toEqual([
                 mockCustomerField,
             ])
-            expect(result.current.getSelectionForCategory('order')).toEqual([
+            expect(result.current.getSelectionForCategory('Order')).toEqual([
                 mockOrderField,
             ])
         })
@@ -120,40 +120,40 @@ describe('useFieldSelection', () => {
         it('should return 0 for category with no selection', () => {
             const { result } = renderHook(() => useFieldSelection())
 
-            expect(result.current.getSelectionCount('customer')).toBe(0)
+            expect(result.current.getSelectionCount('Customer')).toBe(0)
         })
 
         it('should return correct count for category with selection', () => {
             const { result } = renderHook(() => useFieldSelection())
 
             act(() => {
-                result.current.updateSelection('customer', [
+                result.current.updateSelection('Customer', [
                     mockCustomerField,
                     { ...mockCustomerField, id: 'customer-2' },
                     { ...mockCustomerField, id: 'customer-3' },
                 ])
             })
 
-            expect(result.current.getSelectionCount('customer')).toBe(3)
+            expect(result.current.getSelectionCount('Customer')).toBe(3)
         })
 
         it('should update count when selection changes', () => {
             const { result } = renderHook(() => useFieldSelection())
 
             act(() => {
-                result.current.updateSelection('order', [mockOrderField])
+                result.current.updateSelection('Order', [mockOrderField])
             })
 
-            expect(result.current.getSelectionCount('order')).toBe(1)
+            expect(result.current.getSelectionCount('Order')).toBe(1)
 
             act(() => {
-                result.current.updateSelection('order', [
+                result.current.updateSelection('Order', [
                     mockOrderField,
                     { ...mockOrderField, id: 'order-2' },
                 ])
             })
 
-            expect(result.current.getSelectionCount('order')).toBe(2)
+            expect(result.current.getSelectionCount('Order')).toBe(2)
         })
     })
 
@@ -168,7 +168,7 @@ describe('useFieldSelection', () => {
             const { result } = renderHook(() => useFieldSelection())
 
             act(() => {
-                result.current.updateSelection('customer', [mockCustomerField])
+                result.current.updateSelection('Customer', [mockCustomerField])
             })
 
             expect(result.current.allSelectedFields).toEqual([
@@ -180,9 +180,9 @@ describe('useFieldSelection', () => {
             const { result } = renderHook(() => useFieldSelection())
 
             act(() => {
-                result.current.updateSelection('customer', [mockCustomerField])
-                result.current.updateSelection('order', [mockOrderField])
-                result.current.updateSelection('draft_order', [
+                result.current.updateSelection('Customer', [mockCustomerField])
+                result.current.updateSelection('Order', [mockOrderField])
+                result.current.updateSelection('DraftOrder', [
                     mockDraftOrderField,
                 ])
             })
@@ -201,25 +201,25 @@ describe('useFieldSelection', () => {
             const { result } = renderHook(() => useFieldSelection())
 
             act(() => {
-                result.current.updateSelection('customer', [mockCustomerField])
+                result.current.updateSelection('Customer', [mockCustomerField])
             })
 
             act(() => {
-                result.current.clearSelectionForCategory('customer')
+                result.current.clearSelectionForCategory('Customer')
             })
 
-            expect(result.current.selectedFieldsByCategory.customer).toEqual([])
-            expect(result.current.getSelectionCount('customer')).toBe(0)
+            expect(result.current.selectedFieldsByCategory.Customer).toEqual([])
+            expect(result.current.getSelectionCount('Customer')).toBe(0)
         })
 
         it('should be safe to call on already empty category', () => {
             const { result } = renderHook(() => useFieldSelection())
 
             act(() => {
-                result.current.clearSelectionForCategory('customer')
+                result.current.clearSelectionForCategory('Customer')
             })
 
-            expect(result.current.selectedFieldsByCategory.customer).toEqual([])
+            expect(result.current.selectedFieldsByCategory.Customer).toEqual([])
         })
     })
 
@@ -228,9 +228,9 @@ describe('useFieldSelection', () => {
             const { result } = renderHook(() => useFieldSelection())
 
             act(() => {
-                result.current.updateSelection('customer', [mockCustomerField])
-                result.current.updateSelection('order', [mockOrderField])
-                result.current.updateSelection('draft_order', [
+                result.current.updateSelection('Customer', [mockCustomerField])
+                result.current.updateSelection('Order', [mockOrderField])
+                result.current.updateSelection('DraftOrder', [
                     mockDraftOrderField,
                 ])
             })
@@ -240,9 +240,9 @@ describe('useFieldSelection', () => {
             })
 
             expect(result.current.selectedFieldsByCategory).toEqual({
-                customer: [],
-                order: [],
-                draft_order: [],
+                Customer: [],
+                Order: [],
+                DraftOrder: [],
             })
             expect(result.current.allSelectedFields).toEqual([])
         })
@@ -255,9 +255,9 @@ describe('useFieldSelection', () => {
             })
 
             expect(result.current.selectedFieldsByCategory).toEqual({
-                customer: [],
-                order: [],
-                draft_order: [],
+                Customer: [],
+                Order: [],
+                DraftOrder: [],
             })
         })
     })

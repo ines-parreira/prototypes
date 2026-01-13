@@ -14,14 +14,14 @@ const mockMetafieldsData = [
         id: '1',
         name: 'Customer Email',
         type: 'single_line_text',
-        category: 'customer',
+        category: 'Customer',
         isVisible: true,
     },
     {
         id: '2',
         name: 'Order Notes',
         type: 'multi_line_text',
-        category: 'order',
+        category: 'Order',
         isVisible: false,
     },
 ]

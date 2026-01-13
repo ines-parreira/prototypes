@@ -1,9 +1,15 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { type MetafieldCategory } from '../../types'
+import { type SupportedCategories } from '../../types'
 import { mockImportableFields } from './data'
 import MetafieldsImportList from './MetafieldsImportList'
+
+jest.mock('../../hooks/useImportableMetafields')
+
+const { useImportableMetafields } = jest.requireMock(
+    '../../hooks/useImportableMetafields',
+)
 
 const mockOnSelectionChange = jest.fn()
 const mockOnBack = jest.fn()
@@ -12,12 +18,18 @@ const mockOnContinue = jest.fn()
 describe('MetafieldsImportList', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        useImportableMetafields.mockReturnValue({
+            data: mockImportableFields,
+            isLoading: false,
+            isError: false,
+            error: null,
+        })
     })
 
     it('should render with correct category headings', () => {
         render(
             <MetafieldsImportList
-                category="customer"
+                category="Customer"
                 selectedMetafields={[]}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -38,7 +50,7 @@ describe('MetafieldsImportList', () => {
     it('should not display MaxFieldsImportedBanner when maxFieldsImported is false', () => {
         render(
             <MetafieldsImportList
-                category="customer"
+                category="Customer"
                 selectedMetafields={[]}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -55,7 +67,7 @@ describe('MetafieldsImportList', () => {
     it('should display MaxFieldsImportedBanner when maxFieldsImported is true', () => {
         render(
             <MetafieldsImportList
-                category="customer"
+                category="Customer"
                 selectedMetafields={[]}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -72,7 +84,7 @@ describe('MetafieldsImportList', () => {
     it('should filter data by category', () => {
         render(
             <MetafieldsImportList
-                category="customer"
+                category="Customer"
                 selectedMetafields={[]}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -81,10 +93,10 @@ describe('MetafieldsImportList', () => {
         )
 
         const customerField = mockImportableFields.find(
-            (field) => field.category === 'customer',
+            (field) => field.category === 'Customer',
         )
         const orderField = mockImportableFields.find(
-            (field) => field.category === 'order',
+            (field) => field.category === 'Order',
         )
 
         expect(screen.getByText(customerField!.name)).toBeInTheDocument()
@@ -96,7 +108,7 @@ describe('MetafieldsImportList', () => {
 
         render(
             <MetafieldsImportList
-                category="customer"
+                category="Customer"
                 selectedMetafields={[]}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -116,12 +128,12 @@ describe('MetafieldsImportList', () => {
     it('should call onContinue when Continue button is clicked', async () => {
         const user = userEvent.setup()
         const selectedFields = mockImportableFields.filter(
-            (field) => field.category === 'customer',
+            (field) => field.category === 'Customer',
         )
 
         render(
             <MetafieldsImportList
-                category="customer"
+                category="Customer"
                 selectedMetafields={selectedFields}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -141,7 +153,7 @@ describe('MetafieldsImportList', () => {
     it('should disable Continue button when no items are selected', () => {
         render(
             <MetafieldsImportList
-                category="customer"
+                category="Customer"
                 selectedMetafields={[]}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -158,12 +170,12 @@ describe('MetafieldsImportList', () => {
 
     it('should enable Continue button when items are selected', () => {
         const selectedFields = mockImportableFields.filter(
-            (field) => field.category === 'customer',
+            (field) => field.category === 'Customer',
         )
 
         render(
             <MetafieldsImportList
-                category="customer"
+                category="Customer"
                 selectedMetafields={selectedFields}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -180,12 +192,12 @@ describe('MetafieldsImportList', () => {
 
     it('should initialize table with selected metafields', () => {
         const selectedFields = mockImportableFields.filter(
-            (field) => field.category === 'customer',
+            (field) => field.category === 'Customer',
         )
 
         render(
             <MetafieldsImportList
-                category="customer"
+                category="Customer"
                 selectedMetafields={selectedFields}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -207,7 +219,7 @@ describe('MetafieldsImportList', () => {
 
         render(
             <MetafieldsImportList
-                category="draft_order"
+                category="DraftOrder"
                 selectedMetafields={[]}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -216,7 +228,7 @@ describe('MetafieldsImportList', () => {
         )
 
         const draftOrderFields = mockImportableFields.filter(
-            (field) => field.category === 'draft_order',
+            (field) => field.category === 'DraftOrder',
         )
         const firstField = draftOrderFields[0]
         const secondField = draftOrderFields[1]
@@ -235,12 +247,12 @@ describe('MetafieldsImportList', () => {
 
     it('should display select count in toolbar', () => {
         const selectedFields = mockImportableFields.filter(
-            (field) => field.category === 'draft_order',
+            (field) => field.category === 'DraftOrder',
         )
 
         render(
             <MetafieldsImportList
-                category="draft_order"
+                category="DraftOrder"
                 selectedMetafields={selectedFields}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -256,7 +268,7 @@ describe('MetafieldsImportList', () => {
 
         render(
             <MetafieldsImportList
-                category="draft_order"
+                category="DraftOrder"
                 selectedMetafields={[]}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -293,12 +305,12 @@ describe('MetafieldsImportList', () => {
     it('should handle deselecting a row', async () => {
         const user = userEvent.setup()
         const selectedFields = mockImportableFields.filter(
-            (field) => field.category === 'customer',
+            (field) => field.category === 'Customer',
         )
 
         render(
             <MetafieldsImportList
-                category="customer"
+                category="Customer"
                 selectedMetafields={selectedFields}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -324,12 +336,12 @@ describe('MetafieldsImportList', () => {
     it('should limit selection to 10 items when select all is clicked', async () => {
         const user = userEvent.setup()
         const importedFields = mockImportableFields
-            .filter((field) => field.category === 'draft_order')
+            .filter((field) => field.category === 'DraftOrder')
             .slice(0, 5)
 
         render(
             <MetafieldsImportList
-                category="draft_order"
+                category="DraftOrder"
                 selectedMetafields={[]}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -356,7 +368,7 @@ describe('MetafieldsImportList', () => {
 
         render(
             <MetafieldsImportList
-                category="draft_order"
+                category="DraftOrder"
                 selectedMetafields={[]}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -380,12 +392,12 @@ describe('MetafieldsImportList', () => {
 
     it('should disable checkbox when limit is reached for unselected field', () => {
         const importedFields = mockImportableFields
-            .filter((field) => field.category === 'draft_order')
+            .filter((field) => field.category === 'DraftOrder')
             .slice(0, 10)
 
         render(
             <MetafieldsImportList
-                category="draft_order"
+                category="DraftOrder"
                 selectedMetafields={[]}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -407,16 +419,16 @@ describe('MetafieldsImportList', () => {
 
     it('should not disable checkbox for already selected field when limit is reached', () => {
         const selectedFields = mockImportableFields
-            .filter((field) => field.category === 'draft_order')
+            .filter((field) => field.category === 'DraftOrder')
             .slice(0, 1)
 
         const importedFields = mockImportableFields
-            .filter((field) => field.category === 'draft_order')
+            .filter((field) => field.category === 'DraftOrder')
             .slice(1, 10)
 
         render(
             <MetafieldsImportList
-                category="draft_order"
+                category="DraftOrder"
                 selectedMetafields={selectedFields}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -435,12 +447,12 @@ describe('MetafieldsImportList', () => {
 
     it('should disable unsupported field type checkbox regardless of limit', () => {
         const unsupportedField = mockImportableFields.find(
-            (field) => field.type === 'page',
+            (field) => field.type === 'page_reference',
         )!
 
         render(
             <MetafieldsImportList
-                category={unsupportedField.category as MetafieldCategory}
+                category={unsupportedField.category as SupportedCategories}
                 selectedMetafields={[]}
                 onSelectionChange={mockOnSelectionChange}
                 onBack={mockOnBack}
@@ -463,7 +475,7 @@ describe('MetafieldsImportList', () => {
         it('should render the Type filter component', () => {
             render(
                 <MetafieldsImportList
-                    category="draft_order"
+                    category="DraftOrder"
                     selectedMetafields={[]}
                     onSelectionChange={mockOnSelectionChange}
                     onBack={mockOnBack}
@@ -477,7 +489,7 @@ describe('MetafieldsImportList', () => {
         it('should render filter with correct metafield type options', () => {
             render(
                 <MetafieldsImportList
-                    category="draft_order"
+                    category="DraftOrder"
                     selectedMetafields={[]}
                     onSelectionChange={mockOnSelectionChange}
                     onBack={mockOnBack}
@@ -488,7 +500,7 @@ describe('MetafieldsImportList', () => {
             expect(screen.getByText('Type')).toBeInTheDocument()
             const draftOrderFields = mockImportableFields
                 .slice(0, 10)
-                .filter((field) => field.category === 'draft_order')
+                .filter((field) => field.category === 'DraftOrder')
             draftOrderFields.forEach((field) => {
                 expect(screen.getByText(field.name)).toBeInTheDocument()
             })

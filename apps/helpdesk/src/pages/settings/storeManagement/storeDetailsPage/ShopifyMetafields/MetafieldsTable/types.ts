@@ -1,6 +1,5 @@
 import type { TableMeta } from '@gorgias/axiom'
-
-import type { MetafieldType } from '../MetafieldTypeItem/MetafieldTypeItem'
+import type { MetafieldType } from '@gorgias/helpdesk-types'
 
 export type Field = {
     id: string

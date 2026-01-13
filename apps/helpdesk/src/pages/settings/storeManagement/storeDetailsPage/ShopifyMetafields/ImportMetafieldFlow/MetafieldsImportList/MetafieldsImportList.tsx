@@ -18,24 +18,24 @@ import {
     Text,
     useTable,
 } from '@gorgias/axiom'
+import { MetafieldType } from '@gorgias/helpdesk-types'
 
 import { MAX_FIELDS_PER_CATEGORY } from '../../constants'
+import { useImportableMetafields } from '../../hooks/useImportableMetafields'
 import { useMetafieldsFiltersHandler } from '../../hooks/useMetafieldsFiltersHandler'
 import type { Field } from '../../MetafieldsTable/types'
-import { MetafieldEnum } from '../../MetafieldTypeItem/MetafieldTypeItem'
-import type { MetafieldCategory } from '../../types'
+import type { SupportedCategories } from '../../types'
 import { getCategoryLabel } from '../../utils/getCategoryLabel'
 import { getMetafieldTypeLabel } from '../../utils/getMetafieldTypeLabel'
 import { isSupportedMetafieldType } from '../../utils/isSupportedMetafieldType'
 import { useFilteredMetafields } from '../hooks/useFilteredMetafields'
 import MaxFieldsImportedBanner from '../MaxMetafieldsImportedBanner/MaxFieldsImportedBanner'
 import { getCheckboxColumn, staticColumns } from './Columns'
-import { mockImportableFields } from './data'
 
 import styles from './MetafieldsImportList.less'
 
 type MetafieldsImportListProps = {
-    category: MetafieldCategory
+    category: SupportedCategories
     selectedMetafields: Field[]
     onSelectionChange: (selectedFields: Field[]) => void
     onBack: () => void
@@ -44,7 +44,7 @@ type MetafieldsImportListProps = {
     importedFields?: Field[]
 }
 
-const metafieldTypeOptions = Object.values(MetafieldEnum).map((type) => ({
+const metafieldTypeOptions = Object.values(MetafieldType).map((type) => ({
     id: type,
     type,
     label: getMetafieldTypeLabel(type),
@@ -59,8 +59,10 @@ export default function MetafieldsImportList({
     isAtMaxFields,
     importedFields = [],
 }: MetafieldsImportListProps) {
+    const { data: importableMetafields, isLoading } = useImportableMetafields()
+
     const filteredData = useFilteredMetafields({
-        data: mockImportableFields,
+        data: importableMetafields,
         category,
     })
 
@@ -215,6 +217,7 @@ export default function MetafieldsImportList({
                     </TableHeader>
 
                     <TableBodyContent
+                        isLoading={isLoading}
                         rows={table.getRowModel().rows}
                         columnCount={columns.length}
                         table={table}

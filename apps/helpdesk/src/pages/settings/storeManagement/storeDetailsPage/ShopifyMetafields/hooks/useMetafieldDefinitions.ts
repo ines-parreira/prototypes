@@ -1,0 +1,48 @@
+import {
+    type MetafieldDefinition,
+    useListMetafieldDefinitions,
+} from '@gorgias/helpdesk-queries'
+
+import type { Field } from '../MetafieldsTable/types'
+
+type UseMetafieldDefinitionsOptions = {
+    integrationId: number
+    pinned: boolean
+}
+
+export function transformMetafieldDefinitionToField(
+    definition: MetafieldDefinition,
+): Field {
+    return {
+        id: definition.id,
+        name: definition.name,
+        type: definition.type as Field['type'],
+        category: definition.ownerType,
+        isVisible: definition.isVisible,
+    }
+}
+
+export function useMetafieldDefinitions({
+    integrationId,
+    pinned,
+}: UseMetafieldDefinitionsOptions) {
+    const queryResult = useListMetafieldDefinitions(
+        integrationId,
+        { pinned },
+        {
+            query: {
+                select: (response) =>
+                    (response?.data?.data || []).map((definition) =>
+                        transformMetafieldDefinitionToField(definition),
+                    ),
+            },
+        },
+    )
+
+    return {
+        data: queryResult.data ?? [],
+        isLoading: queryResult.isLoading,
+        isError: queryResult.isError,
+        error: queryResult.error,
+    }
+}

@@ -6,12 +6,11 @@ import {
     Icon,
     Text,
 } from '@gorgias/axiom'
+import type { MetafieldType } from '@gorgias/helpdesk-types'
 
 import { MAX_FIELDS_PER_CATEGORY } from '../../constants'
 import type { Field } from '../../MetafieldsTable/types'
-import MetafieldTypeItem, {
-    type MetafieldType,
-} from '../../MetafieldTypeItem/MetafieldTypeItem'
+import MetafieldTypeItem from '../../MetafieldTypeItem/MetafieldTypeItem'
 import { getCheckboxContent } from '../../utils/getCheckboxContent'
 import { isSupportedMetafieldType } from '../../utils/isSupportedMetafieldType'
 import { shouldShowLimitTooltip } from '../../utils/shouldShowLimitTooltip'

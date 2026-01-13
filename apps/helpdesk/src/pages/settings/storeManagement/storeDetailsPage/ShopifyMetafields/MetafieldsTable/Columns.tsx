@@ -7,11 +7,11 @@ import {
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
+import type { MetafieldType } from '@gorgias/helpdesk-types'
 
 import CategoryChip from '../CategoryChip/CategoryChip'
-import type { MetafieldType } from '../MetafieldTypeItem/MetafieldTypeItem'
 import MetafieldTypeItem from '../MetafieldTypeItem/MetafieldTypeItem'
-import type { MetafieldCategory } from '../types'
+import type { SupportedCategories } from '../types'
 import VisibilityChip from '../VisibilityChip/VisibilityChip'
 import type { Field, MetafieldsTableMeta } from './types'
 
@@ -39,7 +39,7 @@ export const columns: ColumnDef<Field>[] = [
         header: 'Category',
         enableSorting: false,
         cell: (info) => (
-            <CategoryChip category={info.getValue() as MetafieldCategory} />
+            <CategoryChip category={info.getValue() as SupportedCategories} />
         ),
         filterFn: 'equalsString',
     },

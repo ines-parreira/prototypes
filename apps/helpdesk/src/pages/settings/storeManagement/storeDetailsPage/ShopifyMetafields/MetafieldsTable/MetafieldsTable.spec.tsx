@@ -25,22 +25,22 @@ const mockFields: Field[] = [
     {
         id: '1',
         name: 'Customer Email',
-        type: 'single_line_text',
-        category: 'customer',
+        type: 'single_line_text_field',
+        category: 'Customer',
         isVisible: true,
     },
     {
         id: '2',
         name: 'Order Notes',
-        type: 'multi_line_text',
-        category: 'order',
+        type: 'multi_line_text_field',
+        category: 'Order',
         isVisible: false,
     },
     {
         id: '3',
         name: 'Draft Date',
         type: 'date',
-        category: 'draft_order',
+        category: 'DraftOrder',
         isVisible: true,
     },
 ]
@@ -222,7 +222,7 @@ describe('MetafieldsTable', () => {
             {
                 id: '4',
                 name: 'Product SKU',
-                type: 'single_line_text',
+                type: 'single_line_text_field',
                 category: 'product',
             } as Field,
         ]

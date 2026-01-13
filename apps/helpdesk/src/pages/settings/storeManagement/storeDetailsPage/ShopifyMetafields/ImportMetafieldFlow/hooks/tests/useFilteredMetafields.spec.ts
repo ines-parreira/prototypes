@@ -7,16 +7,16 @@ describe('useFilteredMetafields', () => {
     const mockCustomerField: Field = {
         id: 'customer-1',
         name: 'Customer Field',
-        type: 'single_line_text',
-        category: 'customer',
+        type: 'single_line_text_field',
+        category: 'Customer',
         isVisible: true,
     }
 
     const mockOrderField: Field = {
         id: 'order-1',
         name: 'Order Field',
-        type: 'integer',
-        category: 'order',
+        type: 'number_integer',
+        category: 'Order',
         isVisible: true,
     }
 
@@ -24,7 +24,7 @@ describe('useFilteredMetafields', () => {
         id: 'draft-order-1',
         name: 'Draft Order Field',
         type: 'boolean',
-        category: 'draft_order',
+        category: 'DraftOrder',
         isVisible: false,
     }
 
@@ -41,7 +41,7 @@ describe('useFilteredMetafields', () => {
             const { result } = renderHook(() =>
                 useFilteredMetafields({
                     data: mockData,
-                    category: 'customer',
+                    category: 'Customer',
                 }),
             )
 
@@ -60,7 +60,7 @@ describe('useFilteredMetafields', () => {
             const { result } = renderHook(() =>
                 useFilteredMetafields({
                     data: mockData,
-                    category: 'order',
+                    category: 'Order',
                 }),
             )
 
@@ -75,7 +75,7 @@ describe('useFilteredMetafields', () => {
             const { result } = renderHook(() =>
                 useFilteredMetafields({
                     data: mockData,
-                    category: 'draft_order',
+                    category: 'DraftOrder',
                 }),
             )
 
@@ -89,7 +89,7 @@ describe('useFilteredMetafields', () => {
             const { result } = renderHook(() =>
                 useFilteredMetafields({
                     data: [mockCustomerField],
-                    category: 'order',
+                    category: 'Order',
                 }),
             )
 
@@ -100,7 +100,7 @@ describe('useFilteredMetafields', () => {
             const { result } = renderHook(() =>
                 useFilteredMetafields({
                     data: [],
-                    category: 'customer',
+                    category: 'Customer',
                 }),
             )
 
@@ -117,7 +117,7 @@ describe('useFilteredMetafields', () => {
             const { result } = renderHook(() =>
                 useFilteredMetafields({
                     data: allCustomerFields,
-                    category: 'customer',
+                    category: 'Customer',
                 }),
             )
 

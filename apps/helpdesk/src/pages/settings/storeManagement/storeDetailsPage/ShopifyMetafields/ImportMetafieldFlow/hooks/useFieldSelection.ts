@@ -1,14 +1,14 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import type { Field } from '../../MetafieldsTable/types'
-import type { MetafieldCategory } from '../../types'
+import type { SupportedCategories } from '../../types'
 
-type SelectionByCategory = Record<MetafieldCategory, Field[]>
+type SelectionByCategory = Record<SupportedCategories, Field[]>
 
 const INITIAL_SELECTION: SelectionByCategory = {
-    customer: [],
-    order: [],
-    draft_order: [],
+    Customer: [],
+    Order: [],
+    DraftOrder: [],
 }
 
 export function useFieldSelection() {
@@ -16,7 +16,7 @@ export function useFieldSelection() {
         useState<SelectionByCategory>(INITIAL_SELECTION)
 
     const updateSelection = useCallback(
-        (category: MetafieldCategory, fields: Field[]) => {
+        (category: SupportedCategories, fields: Field[]) => {
             setSelectedFieldsByCategory((prev) => ({
                 ...prev,
                 [category]: fields,
@@ -25,11 +25,13 @@ export function useFieldSelection() {
         [],
     )
 
-    const getSelectionForCategory = (category: MetafieldCategory): Field[] => {
+    const getSelectionForCategory = (
+        category: SupportedCategories,
+    ): Field[] => {
         return selectedFieldsByCategory[category]
     }
 
-    const getSelectionCount = (category: MetafieldCategory): number => {
+    const getSelectionCount = (category: SupportedCategories): number => {
         return selectedFieldsByCategory[category].length
     }
 
@@ -38,7 +40,7 @@ export function useFieldSelection() {
     }, [selectedFieldsByCategory])
 
     const clearSelectionForCategory = useCallback(
-        (category: MetafieldCategory) => {
+        (category: SupportedCategories) => {
             setSelectedFieldsByCategory((prev) => ({
                 ...prev,
                 [category]: [],

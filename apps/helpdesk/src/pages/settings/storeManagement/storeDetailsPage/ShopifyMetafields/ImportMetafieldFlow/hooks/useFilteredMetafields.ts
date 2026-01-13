@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
 
 import type { Field } from '../../MetafieldsTable/types'
-import type { MetafieldCategory } from '../../types'
+import type { SupportedCategories } from '../../types'
 
 type UseFilteredMetafieldsParams = {
     data: Field[]
-    category: MetafieldCategory
+    category: SupportedCategories
 }
 
 export function useFilteredMetafields({

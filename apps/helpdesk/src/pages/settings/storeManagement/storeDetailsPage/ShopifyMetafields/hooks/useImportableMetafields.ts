@@ -2,13 +2,11 @@ import { useParams } from 'react-router-dom'
 
 import { useMetafieldDefinitions } from './useMetafieldDefinitions'
 
-export const METAFIELDS_QUERY_KEY = ['metafields']
-
-export function useMetafields() {
+export function useImportableMetafields() {
     const { id } = useParams<{ id: string }>()
 
     return useMetafieldDefinitions({
         integrationId: Number(id),
-        pinned: true,
+        pinned: false,
     })
 }

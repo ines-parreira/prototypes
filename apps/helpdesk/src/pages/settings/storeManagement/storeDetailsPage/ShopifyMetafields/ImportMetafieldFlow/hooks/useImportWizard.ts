@@ -1,13 +1,13 @@
 import { useReducer } from 'react'
 
-import type { MetafieldCategory } from '../../types'
+import type { SupportedCategories } from '../../types'
 
 type WizardState =
     | { step: 'categories'; selectedCategory: null }
-    | { step: 'metafields'; selectedCategory: MetafieldCategory }
+    | { step: 'metafields'; selectedCategory: SupportedCategories }
 
 type WizardAction =
-    | { type: 'SELECT_CATEGORY'; category: MetafieldCategory }
+    | { type: 'SELECT_CATEGORY'; category: SupportedCategories }
     | { type: 'BACK_TO_CATEGORIES' }
     | { type: 'RESET' }
 
@@ -37,7 +37,7 @@ export function wizardReducer(
 export function useImportWizard() {
     const [state, dispatch] = useReducer(wizardReducer, initialState)
 
-    const selectCategory = (category: MetafieldCategory) => {
+    const selectCategory = (category: SupportedCategories) => {
         dispatch({ type: 'SELECT_CATEGORY', category })
     }
 

@@ -1,11 +1,12 @@
 import { render, screen } from '@testing-library/react'
 
-import type { MetafieldType } from './MetafieldTypeItem'
+import type { MetafieldType } from '@gorgias/helpdesk-types'
+
 import MetafieldTypeItem from './MetafieldTypeItem'
 
 describe('MetafieldTypeItem', () => {
-    it('renders with correct icon and label for single_line_text type', () => {
-        render(<MetafieldTypeItem type="single_line_text" />)
+    it('renders with correct icon and label for single_line_text_field type', () => {
+        render(<MetafieldTypeItem type="single_line_text_field" />)
 
         expect(screen.getByText('Single-line text')).toBeInTheDocument()
     })
@@ -23,14 +24,14 @@ describe('MetafieldTypeItem', () => {
     })
 
     it('sets aria-disabled attribute on icon when disabled', () => {
-        render(<MetafieldTypeItem type="single_line_text" disabled />)
+        render(<MetafieldTypeItem type="single_line_text_field" disabled />)
 
         const icon = screen.getByRole('img', { hidden: true })
         expect(icon).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('does not set aria-disabled attribute on icon when not disabled', () => {
-        render(<MetafieldTypeItem type="single_line_text" />)
+        render(<MetafieldTypeItem type="single_line_text_field" />)
 
         const icon = screen.getByRole('img', { hidden: true })
         expect(icon).not.toHaveAttribute('aria-disabled')

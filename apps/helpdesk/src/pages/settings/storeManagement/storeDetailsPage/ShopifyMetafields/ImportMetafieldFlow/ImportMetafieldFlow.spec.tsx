@@ -11,11 +11,15 @@ jest.mock('./hooks/useImportWizard')
 jest.mock('./hooks/useFieldSelection')
 jest.mock('./hooks/useImportMetafields')
 jest.mock('hooks/useNotify')
+jest.mock('../hooks/useImportableMetafields')
 
 const { useImportWizard } = jest.requireMock('./hooks/useImportWizard')
 const { useFieldSelection } = jest.requireMock('./hooks/useFieldSelection')
 const { useImportMetafields } = jest.requireMock('./hooks/useImportMetafields')
 const { useNotify } = jest.requireMock('hooks/useNotify')
+const { useImportableMetafields } = jest.requireMock(
+    '../hooks/useImportableMetafields',
+)
 
 describe('ImportMetafieldFlow', () => {
     const queryClient = new QueryClient({
@@ -78,6 +82,12 @@ describe('ImportMetafieldFlow', () => {
             success: mockSuccess,
             error: mockError,
         })
+        useImportableMetafields.mockReturnValue({
+            data: mockImportableFields,
+            isLoading: false,
+            isError: false,
+            error: null,
+        })
 
         mockGetSelectionCount.mockReturnValue(0)
         mockGetSelectionForCategory.mockReturnValue([])
@@ -126,8 +136,8 @@ describe('ImportMetafieldFlow', () => {
 
         it('should display selection counts on categories', () => {
             mockGetSelectionCount.mockImplementation((category) => {
-                if (category === 'order') return 3
-                if (category === 'customer') return 5
+                if (category === 'Order') return 3
+                if (category === 'Customer') return 5
                 return 0
             })
 
@@ -149,7 +159,7 @@ describe('ImportMetafieldFlow', () => {
 
         it('should show import button when at least one selection exists', () => {
             mockGetSelectionCount.mockImplementation((category) => {
-                if (category === 'order') return 2
+                if (category === 'Order') return 2
                 return 0
             })
 
@@ -171,7 +181,7 @@ describe('ImportMetafieldFlow', () => {
             await act(() => user.click(chevronButton!))
 
             expect(mockSelectCategory).toHaveBeenCalledTimes(1)
-            expect(mockSelectCategory).toHaveBeenCalledWith('order')
+            expect(mockSelectCategory).toHaveBeenCalledWith('Order')
         })
     })
 
@@ -180,7 +190,7 @@ describe('ImportMetafieldFlow', () => {
             useImportWizard.mockReturnValue({
                 ...defaultWizardState,
                 step: 'list',
-                selectedCategory: 'customer',
+                selectedCategory: 'Customer',
             })
 
             renderComponent({ isOpen: true, onClose: mockOnClose })
@@ -204,7 +214,7 @@ describe('ImportMetafieldFlow', () => {
             useImportWizard.mockReturnValue({
                 ...defaultWizardState,
                 step: 'list',
-                selectedCategory: 'order',
+                selectedCategory: 'Order',
             })
 
             renderComponent({ isOpen: true, onClose: mockOnClose })
@@ -216,21 +226,21 @@ describe('ImportMetafieldFlow', () => {
             await act(() => user.click(backButton))
 
             expect(mockClearSelectionForCategory).toHaveBeenCalledTimes(1)
-            expect(mockClearSelectionForCategory).toHaveBeenCalledWith('order')
+            expect(mockClearSelectionForCategory).toHaveBeenCalledWith('Order')
             expect(mockBackToCategories).toHaveBeenCalledTimes(1)
         })
 
         it('should call backToCategories when continue button is clicked', async () => {
             const user = userEvent.setup()
             const selectedFields = mockImportableFields.filter(
-                (field) => field.category === 'customer',
+                (field) => field.category === 'Customer',
             )
             mockGetSelectionForCategory.mockReturnValue(selectedFields)
 
             useImportWizard.mockReturnValue({
                 ...defaultWizardState,
                 step: 'list',
-                selectedCategory: 'customer',
+                selectedCategory: 'Customer',
             })
 
             renderComponent({ isOpen: true, onClose: mockOnClose })
@@ -246,19 +256,19 @@ describe('ImportMetafieldFlow', () => {
 
         it('should pass selected metafields to MetafieldsImportList', () => {
             const selectedFields = mockImportableFields.filter(
-                (field) => field.category === 'customer',
+                (field) => field.category === 'Customer',
             )
             mockGetSelectionForCategory.mockReturnValue(selectedFields)
 
             useImportWizard.mockReturnValue({
                 ...defaultWizardState,
                 step: 'list',
-                selectedCategory: 'customer',
+                selectedCategory: 'Customer',
             })
 
             renderComponent({ isOpen: true, onClose: mockOnClose })
 
-            expect(mockGetSelectionForCategory).toHaveBeenCalledWith('customer')
+            expect(mockGetSelectionForCategory).toHaveBeenCalledWith('Customer')
 
             const checkboxes = screen.getAllByRole('checkbox')
             const dataCheckboxes = checkboxes.filter(
@@ -274,7 +284,7 @@ describe('ImportMetafieldFlow', () => {
             useImportWizard.mockReturnValue({
                 ...defaultWizardState,
                 step: 'list',
-                selectedCategory: 'draft_order',
+                selectedCategory: 'DraftOrder',
             })
 
             renderComponent({ isOpen: true, onClose: mockOnClose })
@@ -289,7 +299,7 @@ describe('ImportMetafieldFlow', () => {
             })
 
             const callArgs = mockUpdateSelection.mock.calls[0]
-            expect(callArgs[0]).toBe('draft_order')
+            expect(callArgs[0]).toBe('DraftOrder')
             expect(callArgs[1]).toHaveLength(1)
         })
     })
@@ -303,8 +313,8 @@ describe('ImportMetafieldFlow', () => {
             ]
 
             mockGetSelectionCount.mockImplementation((category) => {
-                if (category === 'order') return 1
-                if (category === 'customer') return 1
+                if (category === 'Order') return 1
+                if (category === 'Customer') return 1
                 return 0
             })
 
@@ -425,8 +435,8 @@ describe('ImportMetafieldFlow', () => {
             ]
 
             mockGetSelectionCount.mockImplementation((category) => {
-                if (category === 'order') return 2
-                if (category === 'customer') return 1
+                if (category === 'Order') return 2
+                if (category === 'Customer') return 1
                 return 0
             })
 
@@ -460,7 +470,7 @@ describe('ImportMetafieldFlow', () => {
             const selectedFields = [mockImportableFields[0]]
 
             mockGetSelectionCount.mockImplementation((category) => {
-                if (category === 'customer') return 1
+                if (category === 'Customer') return 1
                 return 0
             })
 
@@ -495,18 +505,18 @@ describe('ImportMetafieldFlow', () => {
         it('should pass categoriesWithCount with correct selection counts', () => {
             mockGetSelectionCount.mockImplementation((category) => {
                 const counts = {
-                    customer: 2,
-                    order: 5,
-                    draft_order: 0,
+                    Customer: 2,
+                    Order: 5,
+                    DraftOrder: 0,
                 } as Record<string, number>
                 return counts[category] || 0
             })
 
             renderComponent({ isOpen: true, onClose: mockOnClose })
 
-            expect(mockGetSelectionCount).toHaveBeenCalledWith('customer')
-            expect(mockGetSelectionCount).toHaveBeenCalledWith('order')
-            expect(mockGetSelectionCount).toHaveBeenCalledWith('draft_order')
+            expect(mockGetSelectionCount).toHaveBeenCalledWith('Customer')
+            expect(mockGetSelectionCount).toHaveBeenCalledWith('Order')
+            expect(mockGetSelectionCount).toHaveBeenCalledWith('DraftOrder')
 
             expect(screen.getByText('2 selected')).toBeInTheDocument()
             expect(screen.getByText('5 selected')).toBeInTheDocument()
@@ -535,7 +545,7 @@ describe('ImportMetafieldFlow', () => {
             useImportWizard.mockReturnValue({
                 ...defaultWizardState,
                 step: 'list',
-                selectedCategory: 'order',
+                selectedCategory: 'Order',
             })
 
             renderComponent({ isOpen: true, onClose: mockOnClose })

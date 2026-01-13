@@ -3,20 +3,24 @@ import React from 'react'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import type { MetafieldCategory } from '../../types'
+import type { SupportedCategories } from '../../types'
 import ImportableCategories from './ImportableCategories'
 
 describe('ImportableCategories', () => {
     const mockCategories = [
         {
             label: 'Customer',
-            value: 'customer' as MetafieldCategory,
+            value: 'Customer' as SupportedCategories,
             selectCount: 0,
         },
-        { label: 'Order', value: 'order' as MetafieldCategory, selectCount: 5 },
+        {
+            label: 'Order',
+            value: 'Order' as SupportedCategories,
+            selectCount: 5,
+        },
         {
             label: 'Draft Order',
-            value: 'draft_order' as MetafieldCategory,
+            value: 'DraftOrder' as SupportedCategories,
             selectCount: 0,
         },
     ]
@@ -102,6 +106,6 @@ describe('ImportableCategories', () => {
         await act(() => user.click(chevronButton!))
 
         expect(mockOnCategorySelect).toHaveBeenCalledTimes(1)
-        expect(mockOnCategorySelect).toHaveBeenCalledWith('order')
+        expect(mockOnCategorySelect).toHaveBeenCalledWith('Order')
     })
 })

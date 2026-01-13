@@ -2,13 +2,13 @@ import cn from 'classnames'
 
 import { Text } from '@gorgias/axiom'
 
-import type { MetafieldCategory } from '../types'
+import type { SupportedCategories } from '../types'
 import { getCategoryLabel } from '../utils/getCategoryLabel'
 
 import styles from './CategoryChip.less'
 
 type CategoryChipProps = {
-    category: MetafieldCategory
+    category: SupportedCategories
 }
 
 export default function CategoryChip({ category }: CategoryChipProps) {
@@ -16,8 +16,8 @@ export default function CategoryChip({ category }: CategoryChipProps) {
         <div
             className={cn(
                 styles.category,
-                category === 'customer' && styles.customer,
-                category === 'draft_order' && styles.draftOrder,
+                category === 'Customer' && styles.customer,
+                category === 'DraftOrder' && styles.draftOrder,
             )}
         >
             <Text variant="bold">{getCategoryLabel(category)}</Text>

@@ -1,22 +1,22 @@
-import type { MetafieldCategory } from './types'
+import type { SupportedCategories } from './types'
 
 export type CategoryDefinition = {
     label: string
-    value: MetafieldCategory
+    value: SupportedCategories
 }
 
 export const METAFIELD_CATEGORIES: CategoryDefinition[] = [
     {
         label: 'Customer',
-        value: 'customer',
+        value: 'Customer',
     },
     {
         label: 'Order',
-        value: 'order',
+        value: 'Order',
     },
     {
         label: 'Draft Order',
-        value: 'draft_order',
+        value: 'DraftOrder',
     },
 ]
 
