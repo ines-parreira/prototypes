@@ -49,7 +49,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
         return locale?.name ?? currentLocale
     }
 
-    const getMultiLanguageTooltipTitle = () => {
+    const getMultiLanguageTooltip = () => {
         const languageName = getCurrentLocaleName()
         return `You're viewing the default-language version of this article: ${languageName}. AI Agent only uses this default version. You can manage other languages articles in your Help Center.`
     }
@@ -110,7 +110,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
                                 showMultiLanguageInfo={
                                     availableLocales.length > 1
                                 }
-                                multiLanguageTooltipTitle={getMultiLanguageTooltipTitle()}
+                                multiLanguageTooltip={getMultiLanguageTooltip()}
                             />
                         ),
                     },

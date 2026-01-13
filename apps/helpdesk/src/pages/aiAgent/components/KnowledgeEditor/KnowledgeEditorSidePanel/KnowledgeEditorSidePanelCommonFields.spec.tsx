@@ -441,13 +441,13 @@ describe('KnowledgeEditorSidePanelFieldAIAgentStatus extended', () => {
                     checked={true}
                     onChange={jest.fn()}
                     showMultiLanguageInfo={false}
-                    multiLanguageTooltipTitle="Test tooltip"
+                    multiLanguageTooltip="Test tooltip"
                 />,
             )
             expect(screen.queryByTestId('icon-info')).not.toBeInTheDocument()
         })
 
-        it('does not render info icon when multiLanguageTooltipTitle is undefined', () => {
+        it('does not render info icon when multiLanguageTooltip is undefined', () => {
             render(
                 <KnowledgeEditorSidePanelFieldAIAgentStatus
                     checked={true}
@@ -458,13 +458,13 @@ describe('KnowledgeEditorSidePanelFieldAIAgentStatus extended', () => {
             expect(screen.queryByTestId('icon-info')).not.toBeInTheDocument()
         })
 
-        it('renders info icon when showMultiLanguageInfo is true and multiLanguageTooltipTitle is provided', () => {
+        it('renders info icon when showMultiLanguageInfo is true and multiLanguageTooltip is provided', () => {
             render(
                 <KnowledgeEditorSidePanelFieldAIAgentStatus
                     checked={true}
                     onChange={jest.fn()}
                     showMultiLanguageInfo={true}
-                    multiLanguageTooltipTitle="You're viewing the default-language version of this article: English (US). AI Agent only uses this default version."
+                    multiLanguageTooltip="You're viewing the default-language version of this article: English (US). AI Agent only uses this default version."
                 />,
             )
             expect(screen.getByTestId('icon-info')).toBeInTheDocument()
@@ -476,7 +476,7 @@ describe('KnowledgeEditorSidePanelFieldAIAgentStatus extended', () => {
                     checked={true}
                     onChange={jest.fn()}
                     showMultiLanguageInfo={true}
-                    multiLanguageTooltipTitle="Test tooltip"
+                    multiLanguageTooltip="Test tooltip"
                 />,
             )
             expect(screen.getByRole('switch')).toBeInTheDocument()

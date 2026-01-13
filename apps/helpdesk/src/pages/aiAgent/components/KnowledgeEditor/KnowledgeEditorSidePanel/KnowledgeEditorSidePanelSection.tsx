@@ -52,7 +52,7 @@ export const KnowledgeEditorSidePanelSection = ({
                                                 />
                                             </TooltipTrigger>
                                             <TooltipContent
-                                                title={header.tooltip}
+                                                caption={header.tooltip}
                                             />
                                         </Tooltip>
                                     </div>

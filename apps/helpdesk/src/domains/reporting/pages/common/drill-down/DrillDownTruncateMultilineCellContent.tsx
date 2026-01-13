@@ -81,7 +81,7 @@ export function DrillDownTruncateMultilineCellContent({
     return (
         <Tooltip placement="top">
             <TooltipTrigger>{contentElement}</TooltipTrigger>
-            <TooltipContent title={tooltipContent} />
+            <TooltipContent caption={tooltipContent} />
         </Tooltip>
     )
 }

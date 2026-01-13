@@ -39,7 +39,7 @@ export function DrillDownHeaderCellWithTooltip({
                                 return (
                                     <Tooltip placement="top">
                                         <TooltipTrigger>{icon}</TooltipTrigger>
-                                        <TooltipContent title={tooltip} />
+                                        <TooltipContent caption={tooltip} />
                                     </Tooltip>
                                 )
                             }
@@ -85,7 +85,7 @@ export function DrillDownHeaderCellWithTooltip({
                             return (
                                 <Tooltip placement="top">
                                     <TooltipTrigger>{icon}</TooltipTrigger>
-                                    <TooltipContent title={String(tooltip)} />
+                                    <TooltipContent caption={String(tooltip)} />
                                 </Tooltip>
                             )
                         })()}

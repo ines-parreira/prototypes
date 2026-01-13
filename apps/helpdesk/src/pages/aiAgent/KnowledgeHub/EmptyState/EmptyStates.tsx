@@ -38,7 +38,7 @@ export const EmptyStates = ({
                 alignItems={titleAlignment}
                 width="100%"
             >
-                <Heading size={'sm'}>Create new content</Heading>
+                <Heading size={'md'}>Create new content</Heading>
                 <Box flexDirection={'row'} gap="md">
                     <Card
                         elevation="default"
@@ -107,8 +107,13 @@ export const EmptyStates = ({
                 </Box>
             </Box>
             {/* Bottom row*/}
-            <Box flexDirection={'column'} gap="md" width="100%">
-                <Heading size={'sm'}>Sync or upload external content</Heading>
+            <Box
+                flexDirection={'column'}
+                gap="md"
+                alignItems={titleAlignment}
+                width="100%"
+            >
+                <Heading size={'md'}>Sync or upload external content</Heading>
                 <Box flexDirection={'row'} gap="md">
                     {!hasWebsiteSync && (
                         <Card

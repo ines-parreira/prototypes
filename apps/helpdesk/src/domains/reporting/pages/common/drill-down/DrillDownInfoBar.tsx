@@ -188,7 +188,7 @@ export const DrillDownInfoBar = ({
                             {getButtonText()}
                         </Button>
                     </TooltipTrigger>
-                    {isDisabled && <TooltipContent title={tooltipMessage} />}
+                    {isDisabled && <TooltipContent caption={tooltipMessage} />}
                 </Tooltip>
             )}
         </Box>

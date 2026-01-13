@@ -54,7 +54,7 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
     onChange,
     isDisabled,
     showMultiLanguageInfo,
-    multiLanguageTooltipTitle,
+    multiLanguageTooltip,
 }: {
     checked: boolean
     className?: string
@@ -62,7 +62,7 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
     onChange?: (value: boolean) => void
     isDisabled?: boolean
     showMultiLanguageInfo?: boolean
-    multiLanguageTooltipTitle?: string
+    multiLanguageTooltip?: string
 }) => {
     const id = useId()
 
@@ -80,17 +80,14 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
                     {tooltip}
                 </LegacyTooltip>
             )}
-            {showMultiLanguageInfo && multiLanguageTooltipTitle && (
+            {showMultiLanguageInfo && multiLanguageTooltip && (
                 <Tooltip delay={0} closeDelay={5000}>
                     <TooltipTrigger>
                         <span role="button" tabIndex={0}>
                             <Icon name="info" color="ai" />
                         </span>
                     </TooltipTrigger>
-                    <TooltipContent
-                        caption={multiLanguageTooltipTitle}
-                        title=""
-                    />
+                    <TooltipContent caption={multiLanguageTooltip} />
                 </Tooltip>
             )}
         </div>
