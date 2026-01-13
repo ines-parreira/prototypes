@@ -124,7 +124,7 @@ export function TicketStatusMenu({ ticket }: TicketStatusMenuProps) {
         <Menu
             isOpen={isOpen}
             onOpenChange={handleMenuOpenChange}
-            placement={MenuPlacement.BottomRight}
+            placement={MenuPlacement.BottomLeft}
             trigger={<TicketStatusTrigger ticket={ticket} />}
             selectionMode="single"
             selectedKeys={new Set([status])}
