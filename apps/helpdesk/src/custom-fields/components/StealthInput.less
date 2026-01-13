@@ -50,22 +50,47 @@
 
 .axiom :local {
     .baseStyles {
-        border: 1px solid var(--border-neutral-default);
+        border: none;
+        font-family: Inter;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+        letter-spacing: 0.01em;
 
         &::placeholder {
-            color: var(--content-neutral-secondary);
+            color: var(--content-neutral-tertiary);
+        }
+
+        &:hover,
+        &:focus {
+            background-color: var(--hover-default);
         }
     }
 
     .stealth {
         color: var(--content-neutral-default);
+
+        &:hover,
+        &:focus {
+            background-color: var(--hover-default);
+        }
     }
 
     .valid {
-        border: 1px solid var(--border-neutral-default);
+        border: none;
+
+        &:hover,
+        &:focus {
+            background-color: var(--hover-default);
+        }
     }
 
     .invalid {
         border: 1px solid var(--border-error-primary);
+
+        &:hover,
+        &:focus {
+            background-color: var(--hover-default);
+        }
     }
 }

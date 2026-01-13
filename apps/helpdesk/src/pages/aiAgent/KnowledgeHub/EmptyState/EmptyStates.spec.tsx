@@ -139,18 +139,18 @@ describe('EmptyStates', () => {
         })
 
         it('applies center alignment by default', () => {
-            const { container } = render(<EmptyStates helpCenterId={null} />)
+            render(<EmptyStates helpCenterId={null} />)
 
-            const headings = container.querySelectorAll('h4')
+            const headings = screen.getAllByRole('heading')
             expect(headings.length).toBeGreaterThan(0)
         })
 
         it('applies custom alignment when provided', () => {
-            const { container } = render(
+            render(
                 <EmptyStates titleAlignment="flex-start" helpCenterId={null} />,
             )
 
-            const headings = container.querySelectorAll('h4')
+            const headings = screen.getAllByRole('heading')
             expect(headings.length).toBeGreaterThan(0)
         })
     })
