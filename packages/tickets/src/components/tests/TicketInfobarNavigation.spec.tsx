@@ -1,3 +1,4 @@
+import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import * as repoNavigation from '@repo/navigation'
 import { shortcutManager } from '@repo/utils'
 import { act, screen } from '@testing-library/react'
@@ -5,6 +6,13 @@ import type { Mock, MockInstance } from 'vitest'
 
 import { render } from '../../tests/render.utils'
 import { TicketInfobarNavigation } from '../TicketInfobarNavigation'
+
+vi.mock('@repo/feature-flags', async (importOriginal) => ({
+    ...(await importOriginal()),
+    useHelpdeskV2MS2Flag: vi.fn(),
+}))
+
+const mockUseHelpdeskV2MS2Flag = vi.mocked(useHelpdeskV2MS2Flag)
 
 const { TicketInfobarTab } = repoNavigation
 
@@ -16,6 +24,7 @@ describe('TicketInfobarNavigation', () => {
     beforeEach(() => {
         onChangeTab = vi.fn()
         onToggle = vi.fn()
+        mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
 
         useTicketInfobarNavigationMock = vi.spyOn(
             repoNavigation,
@@ -72,6 +81,35 @@ describe('TicketInfobarNavigation', () => {
         await act(() => user.click(button!))
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AutoQA)
+    })
+
+    it('should render the "Shopify" tab when `useHelpdeskV2MS2Flag` returns true', () => {
+        mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+        render(<TicketInfobarNavigation />)
+
+        const button = screen.getByLabelText('vendor-shopify-colored')
+        expect(button).toBeInTheDocument()
+    })
+
+    it('should not render the "Shopify" tab when `useHelpdeskV2MS2Flag` returns false', () => {
+        mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
+        render(<TicketInfobarNavigation />)
+
+        const button = screen.queryByLabelText('vendor-shopify-colored')
+        expect(button).not.toBeInTheDocument()
+    })
+
+    it('should change to the "Shopify" tab when that icon is clicked', async () => {
+        mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+        const { user } = render(<TicketInfobarNavigation />)
+
+        const button = screen
+            .getByLabelText('vendor-shopify-colored')
+            .closest('button')
+
+        await act(() => user.click(button!))
+
+        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Shopify)
     })
 
     describe('Expand/Collapse button', () => {

@@ -57,6 +57,10 @@ jest.mock('auto_qa', () => ({
     AutoQA: () => <div>AutoQA Component</div>,
 }))
 
+jest.mock('@repo/customer', () => ({
+    ShopifyCustomer: () => <div>ShopifyCustomer Component</div>,
+}))
+
 jest.mock('state/currentUser/selectors')
 const getCurrentUserMock = assumeMock(getCurrentUser)
 
@@ -491,5 +495,25 @@ describe('<TicketInfobarContainer />', () => {
         )
 
         expect(screen.getByText('Infobar')).toBeInTheDocument()
+    })
+    it('should render ShopifyCustomer component when Shopify tab is active', () => {
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.Shopify,
+            onChangeTab,
+        })
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            },
+        )
+
+        expect(
+            screen.getByText('ShopifyCustomer Component'),
+        ).toBeInTheDocument()
     })
 })

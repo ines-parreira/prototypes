@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 
 import {
@@ -33,6 +34,7 @@ export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
     const { activeTab, isExpanded, onChangeTab, onToggle } =
         useTicketInfobarNavigation()
     useTicketInfobarNavigationShortcuts()
+    const hasUIVisionMilestone2 = useHelpdeskV2MS2Flag()
 
     const items = useMemo(
         (): TicketInfobarNavigationItem[] => [
@@ -52,6 +54,17 @@ export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
                     onChangeTab(TicketInfobarTab.Customer)
                 },
             },
+            ...(hasUIVisionMilestone2
+                ? [
+                      {
+                          name: TicketInfobarTab.Shopify,
+                          icon: 'vendor-shopify-colored',
+                          onClick: () => {
+                              onChangeTab(TicketInfobarTab.Shopify)
+                          },
+                      } satisfies TicketInfobarNavigationItem,
+                  ]
+                : []),
             ...(hasAIFeedback
                 ? [
                       {
@@ -71,7 +84,13 @@ export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
                 },
             },
         ],
-        [hasAIFeedback, onChangeTab, onToggle, isExpanded],
+        [
+            hasAIFeedback,
+            onChangeTab,
+            onToggle,
+            isExpanded,
+            hasUIVisionMilestone2,
+        ],
     )
 
     return (

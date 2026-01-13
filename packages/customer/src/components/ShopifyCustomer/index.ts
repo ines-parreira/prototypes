@@ -1,0 +1,1 @@
+export { ShopifyCustomer } from './ShopifyCustomer'

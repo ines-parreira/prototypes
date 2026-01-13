@@ -1,1 +1,0 @@
-export { ShopifyCustomerInfo } from './ShopifyCustomerInfo'

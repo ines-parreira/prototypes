@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
+import { ShopifyCustomer } from '@repo/customer'
 import { logEvent, logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets'
@@ -185,7 +186,10 @@ export const TicketInfobarContainer = ({
                 handleTicketMessage()
             }
 
-            if (tab === TicketInfobarTab.Customer) {
+            if (
+                tab === TicketInfobarTab.Customer ||
+                tab === TicketInfobarTab.Shopify
+            ) {
                 resetTicketMessage()
             }
         },
@@ -256,6 +260,10 @@ export const TicketInfobarContainer = ({
             ) : activeTab === TicketInfobarTab.AutoQA ? (
                 <div className={css.autoQaContainer}>
                     <AutoQA />
+                </div>
+            ) : activeTab === TicketInfobarTab.Shopify ? (
+                <div className={css.shopifyContainer}>
+                    <ShopifyCustomer />
                 </div>
             ) : (
                 <div
