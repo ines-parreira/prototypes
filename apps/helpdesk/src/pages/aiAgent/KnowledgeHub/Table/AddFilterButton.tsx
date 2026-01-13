@@ -37,6 +37,7 @@ export const AddFilterButton = ({ options, onOptionSelect }: Props) => {
                 size="sm"
                 trailingSlot={<Icon name="arrow-chevron-down" />}
                 as="button"
+                data-candu-id="knowledge-hub-add-filter"
             >
                 {ADD_FILTER_BUTTON_LABEL}
             </Button>

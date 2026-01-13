@@ -162,4 +162,19 @@ describe('AddFilterButton', () => {
 
         expect(button).toBeInTheDocument()
     })
+
+    it('has correct data-candu-id attribute', () => {
+        render(
+            <AddFilterButton
+                options={mockOptions}
+                onOptionSelect={mockOnOptionSelect}
+            />,
+        )
+
+        const button = screen.getByRole('button', { name: /add filter/i })
+        expect(button).toHaveAttribute(
+            'data-candu-id',
+            'knowledge-hub-add-filter',
+        )
+    })
 })
