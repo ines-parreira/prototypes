@@ -273,7 +273,7 @@ jest.mock(
             syncTooltipMessage,
         }: any) => (
             <div>
-                <button onClick={onAddKnowledge}>Add Knowledge</button>
+                <button onClick={onAddKnowledge}>Create content</button>
                 {data && <button onClick={onBack}>Back</button>}
                 {data && (
                     <button
@@ -712,7 +712,7 @@ describe('KnowledgeHubContainer', () => {
             renderComponent()
 
             expect(
-                screen.queryByRole('heading', { name: 'Create new content' }),
+                screen.queryByRole('heading', { name: 'Create something new' }),
             ).not.toBeInTheDocument()
         })
     })
@@ -757,32 +757,32 @@ describe('KnowledgeHubContainer', () => {
     })
 
     describe('modal behavior', () => {
-        it('opens Add Knowledge modal when Add Knowledge button is clicked', async () => {
+        it('opens Create content modal when Create content button is clicked', async () => {
             const user = userEvent.setup()
             renderComponent()
 
             expect(
-                screen.queryByRole('heading', { name: 'Add knowledge' }),
+                screen.queryByRole('heading', { name: 'Create content' }),
             ).not.toBeInTheDocument()
 
-            await act(() => user.click(screen.getByText('Add Knowledge')))
+            await act(() => user.click(screen.getByText('Create content')))
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('heading', { name: 'Add knowledge' }),
+                    screen.getByRole('heading', { name: 'Create content' }),
                 ).toBeInTheDocument()
             })
         })
 
-        it('closes Add Knowledge modal when OPEN_SYNC_WEBSITE_MODAL event is dispatched', async () => {
+        it('closes Create content modal when OPEN_SYNC_WEBSITE_MODAL event is dispatched', async () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await act(() => user.click(screen.getByText('Add Knowledge')))
+            await act(() => user.click(screen.getByText('Create content')))
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('heading', { name: 'Add knowledge' }),
+                    screen.getByRole('heading', { name: 'Create content' }),
                 ).toBeInTheDocument()
             })
 
@@ -790,7 +790,7 @@ describe('KnowledgeHubContainer', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.queryByRole('heading', { name: 'Add knowledge' }),
+                    screen.queryByRole('heading', { name: 'Create content' }),
                 ).not.toBeInTheDocument()
             })
         })
@@ -799,25 +799,25 @@ describe('KnowledgeHubContainer', () => {
             renderComponent()
 
             expect(
-                screen.queryByRole('heading', { name: 'Add knowledge' }),
+                screen.queryByRole('heading', { name: 'Create content' }),
             ).not.toBeInTheDocument()
 
             dispatchDocumentEvent(OPEN_SYNC_WEBSITE_MODAL)
 
             expect(
-                screen.queryByRole('heading', { name: 'Add knowledge' }),
+                screen.queryByRole('heading', { name: 'Create content' }),
             ).not.toBeInTheDocument()
         })
 
-        it('closes Add Knowledge modal when modal open state changes to false', async () => {
+        it('closes Create content modal when modal open state changes to false', async () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await act(() => user.click(screen.getByText('Add Knowledge')))
+            await act(() => user.click(screen.getByText('Create content')))
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('heading', { name: 'Add knowledge' }),
+                    screen.getByRole('heading', { name: 'Create content' }),
                 ).toBeInTheDocument()
             })
 
@@ -825,20 +825,20 @@ describe('KnowledgeHubContainer', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.queryByRole('heading', { name: 'Add knowledge' }),
+                    screen.queryByRole('heading', { name: 'Create content' }),
                 ).not.toBeInTheDocument()
             })
         })
 
-        it('closes Add Knowledge modal when OPEN_SYNC_URL_MODAL event is dispatched', async () => {
+        it('closes Create content modal when OPEN_SYNC_URL_MODAL event is dispatched', async () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await act(() => user.click(screen.getByText('Add Knowledge')))
+            await act(() => user.click(screen.getByText('Create content')))
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('heading', { name: 'Add knowledge' }),
+                    screen.getByRole('heading', { name: 'Create content' }),
                 ).toBeInTheDocument()
             })
 
@@ -846,7 +846,7 @@ describe('KnowledgeHubContainer', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.queryByRole('heading', { name: 'Add knowledge' }),
+                    screen.queryByRole('heading', { name: 'Create content' }),
                 ).not.toBeInTheDocument()
             })
         })

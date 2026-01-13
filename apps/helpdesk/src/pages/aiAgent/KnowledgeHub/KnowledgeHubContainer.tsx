@@ -612,7 +612,7 @@ export const KnowledgeHubContainer = () => {
                 isOpen={isAddKnowledgeModalOpen}
                 onOpenChange={onKnowledgeModalOpenChange}
             >
-                <OverlayHeader title="Add knowledge" />
+                <OverlayHeader title="Create content" />
                 <EmptyStates
                     hasWebsiteSync={hasWebsiteSync}
                     titleAlignment="flex-start"

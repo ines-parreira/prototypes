@@ -57,14 +57,14 @@ describe('KnowledgeHubHeader', () => {
             expect(backButton).not.toBeInTheDocument()
         })
 
-        it('renders Test and New knowledge buttons', () => {
+        it('renders Test and Create content buttons', () => {
             renderComponent({ data: null })
 
             expect(
                 screen.getByRole('button', { name: /test knowledge/i }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /new knowledge/i }),
+                screen.getByRole('button', { name: /create content/i }),
             ).toBeInTheDocument()
         })
 
@@ -80,12 +80,12 @@ describe('KnowledgeHubHeader', () => {
             expect(onTest).toHaveBeenCalledTimes(1)
         })
 
-        it('calls onAddKnowledge when New knowledge button is clicked', async () => {
+        it('calls onAddKnowledge when Create content button is clicked', async () => {
             const onAddKnowledge = jest.fn()
             renderComponent({ data: null, onAddKnowledge })
 
             const addButton = screen.getByRole('button', {
-                name: /new knowledge/i,
+                name: /create content/i,
             })
             await userEvent.click(addButton)
 
@@ -101,14 +101,14 @@ describe('KnowledgeHubHeader', () => {
             expect(testButton).toBeDisabled()
         })
 
-        it('disables New knowledge button when isAddKnowledgeButtonDisabled is true', () => {
+        it('disables Create content button when isAddKnowledgeButtonDisabled is true', () => {
             renderComponent({
                 data: null,
                 isAddKnowledgeButtonDisabled: true,
             })
 
             const addButton = screen.getByRole('button', {
-                name: /new knowledge/i,
+                name: /create content/i,
             })
             expect(addButton).toBeDisabled()
         })
@@ -188,14 +188,14 @@ describe('KnowledgeHubHeader', () => {
             expect(syncButton).toBeDisabled()
         })
 
-        it('does not render Test or New knowledge buttons', () => {
+        it('does not render Test or Create content buttons', () => {
             renderComponent({ data: storeWebsiteData })
 
             expect(
                 screen.queryByRole('button', { name: /test knowledge/i }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: /new knowledge/i }),
+                screen.queryByRole('button', { name: /create content/i }),
             ).not.toBeInTheDocument()
         })
     })

@@ -51,9 +51,8 @@ export const HeaderActions = ({
                     onClick={onAddKnowledge}
                     isDisabled={isAddKnowledgeButtonDisabled}
                     variant="primary"
-                    leadingSlot="add-plus"
                 >
-                    New knowledge
+                    Create content
                 </Button>
             </>
         )

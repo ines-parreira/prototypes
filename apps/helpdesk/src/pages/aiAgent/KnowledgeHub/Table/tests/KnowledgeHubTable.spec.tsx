@@ -220,7 +220,7 @@ describe('KnowledgeHubTable', () => {
             renderComponent({ data: [] })
 
             expect(
-                screen.getByRole('heading', { name: 'Create new content' }),
+                screen.getByRole('heading', { name: 'Create something new' }),
             ).toBeInTheDocument()
             expect(screen.getByText('Guidance')).toBeInTheDocument()
             expect(
@@ -544,11 +544,13 @@ describe('KnowledgeHubTable', () => {
                 renderComponent({ data: [], selectedTypeFilter: null })
 
                 expect(
-                    screen.getByRole('heading', { name: 'Create new content' }),
+                    screen.getByRole('heading', {
+                        name: 'Create something new',
+                    }),
                 ).toBeInTheDocument()
                 expect(
                     screen.getByRole('heading', {
-                        name: 'Sync or upload external content',
+                        name: 'Bring in existing content',
                     }),
                 ).toBeInTheDocument()
             })
@@ -758,7 +760,7 @@ describe('KnowledgeHubTable', () => {
 
                 expect(
                     screen.queryByRole('heading', {
-                        name: 'Create new content',
+                        name: 'Create something new',
                     }),
                 ).not.toBeInTheDocument()
             })
@@ -771,7 +773,7 @@ describe('KnowledgeHubTable', () => {
 
                 expect(
                     screen.queryByRole('heading', {
-                        name: 'Create new content',
+                        name: 'Create something new',
                     }),
                 ).not.toBeInTheDocument()
 
@@ -788,7 +790,9 @@ describe('KnowledgeHubTable', () => {
                 )
 
                 expect(
-                    screen.getByRole('heading', { name: 'Create new content' }),
+                    screen.getByRole('heading', {
+                        name: 'Create something new',
+                    }),
                 ).toBeInTheDocument()
             })
         })

@@ -65,20 +65,20 @@ beforeEach(() => {
 
 describe('EmptyStates', () => {
     describe('EmptyStates (main component)', () => {
-        it('renders create new content section', () => {
+        it('renders create something new section', () => {
             render(<EmptyStates helpCenterId={null} />)
 
             expect(
-                screen.getByRole('heading', { name: 'Create new content' }),
+                screen.getByRole('heading', { name: 'Create something new' }),
             ).toBeInTheDocument()
         })
 
-        it('renders sync or upload external content section', () => {
+        it('renders bring in existing content section', () => {
             render(<EmptyStates helpCenterId={null} />)
 
             expect(
                 screen.getByRole('heading', {
-                    name: 'Sync or upload external content',
+                    name: 'Bring in existing content',
                 }),
             ).toBeInTheDocument()
         })
@@ -344,7 +344,7 @@ describe('EmptyStates', () => {
             )
 
             expect(
-                screen.getByRole('heading', { name: 'Create new content' }),
+                screen.getByRole('heading', { name: 'Create something new' }),
             ).toBeInTheDocument()
         })
 
@@ -716,7 +716,7 @@ describe('EmptyStates', () => {
             )
 
             expect(
-                screen.getByRole('heading', { name: 'Create new content' }),
+                screen.getByRole('heading', { name: 'Create something new' }),
             ).toBeInTheDocument()
         })
     })
