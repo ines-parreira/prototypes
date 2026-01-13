@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
@@ -48,12 +48,24 @@ const getLocalesOptions = (
         }),
     )
 
+const SAVED_STATE_DURATION_MS = 4000
+
 export const useSettingsAutoSave = () => {
     const { state, dispatch, config, hasPendingContentChanges } =
         useArticleContext()
     const { helpCenter, supportedLocales, categories, onUpdatedFn } = config
     const { error: notifyError } = useNotify()
     const [isSettingsAutoSaving, setIsSettingsAutoSaving] = useState(false)
+    const [showSavedState, setShowSavedState] = useState(false)
+    const savedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+    useEffect(() => {
+        return () => {
+            if (savedTimeoutRef.current) {
+                clearTimeout(savedTimeoutRef.current)
+            }
+        }
+    }, [])
 
     const { mutateAsync: updateTranslationMutation } =
         useUpdateArticleTranslation(helpCenter.id)
@@ -234,6 +246,14 @@ export const useSettingsAutoSave = () => {
                         payload: response.data,
                     })
                     onUpdatedFn?.()
+
+                    setShowSavedState(true)
+                    if (savedTimeoutRef.current) {
+                        clearTimeout(savedTimeoutRef.current)
+                    }
+                    savedTimeoutRef.current = setTimeout(() => {
+                        setShowSavedState(false)
+                    }, SAVED_STATE_DURATION_MS)
                 }
             } catch {
                 notifyError('An error occurred while saving the settings.')
@@ -348,20 +368,29 @@ export const useSettingsAutoSave = () => {
         ],
     )
 
+    const isCreationMode = state.articleMode === 'create' && !state.article?.id
+
     const autoSave = useMemo(
         () => ({
             state: isSettingsAutoSaving
                 ? AutoSaveState.SAVING
-                : AutoSaveState.SAVED,
+                : showSavedState
+                  ? AutoSaveState.SAVED
+                  : AutoSaveState.INITIAL,
             updatedAt: state.article?.translation.updated_datetime
                 ? new Date(state.article.translation.updated_datetime)
                 : undefined,
         }),
-        [isSettingsAutoSaving, state.article?.translation.updated_datetime],
+        [
+            isSettingsAutoSaving,
+            showSavedState,
+            state.article?.translation.updated_datetime,
+        ],
     )
 
     return {
         settingsProps,
         autoSave,
+        isCreationMode,
     }
 }

@@ -14,10 +14,12 @@ export const SeoMetaDescription = ({
     defaultDescription,
     metaDescription,
     onChangeMetaDescription,
+    isDisabled: isDisabledProp = false,
 }: {
     defaultDescription: string
     metaDescription: string
     onChangeMetaDescription?: (metaDescription: string | null) => void
+    isDisabled?: boolean
 }) => {
     const {
         isChecked,
@@ -43,12 +45,17 @@ export const SeoMetaDescription = ({
     }
 
     return (
-        <div className={classNames(css.seoField, css['seoField--description'])}>
+        <div
+            className={classNames(css.seoField, css['seoField--description'], {
+                [css.disabled]: isDisabledProp,
+            })}
+        >
             <div className={css.seoField__checkbox}>
                 <CheckBoxField
                     value={isChecked}
                     onChange={onCheckboxChange}
                     label="Use as meta description"
+                    isDisabled={isDisabledProp}
                 />
             </div>
 
@@ -66,7 +73,7 @@ export const SeoMetaDescription = ({
                                 css.seoField__control,
                                 css['seoField__control--textarea'],
                             )}
-                            isDisabled={isDisabled}
+                            isDisabled={isDisabled || isDisabledProp}
                             isRequired={isRequired}
                             error={
                                 showError ? 'This field is required' : undefined

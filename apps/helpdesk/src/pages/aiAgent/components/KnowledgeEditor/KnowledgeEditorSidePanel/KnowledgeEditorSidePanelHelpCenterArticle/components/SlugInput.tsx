@@ -16,12 +16,14 @@ export type SlugInputProps = {
     slug: string
     onChangeSlug: (slug: string) => void
     articleId: number
+    isDisabled?: boolean
 }
 
 export const SlugInput = ({
     slug,
     onChangeSlug,
     articleId,
+    isDisabled = false,
 }: NonNullable<SlugInputProps>) => {
     const slugTooltipId = useId()
     const [inputValue, setInputValue] = useState<string>(slug)
@@ -60,6 +62,7 @@ export const SlugInput = ({
                         className={css.slugInput}
                         error={hasError ? 'This field is required' : undefined}
                         isRequired
+                        isDisabled={isDisabled}
                         aria-label="Slug"
                         trailingSlot={
                             <div className={css.trailingSlot}>

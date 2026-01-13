@@ -315,6 +315,14 @@
         }
     }
 
+    .autoSaveBadgeMinimal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--neutral-grey-5); // legacy
+        cursor: default;
+    }
+
     .skeletonContainer {
         display: flex;
         align-items: center;
@@ -430,6 +438,10 @@
 
     .autoSaveBadge {
         background: var(--surface-neutral-tertiary);
+        color: var(--content-neutral-secondary);
+    }
+
+    .autoSaveBadgeMinimal {
         color: var(--content-neutral-secondary);
     }
 }

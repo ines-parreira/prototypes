@@ -12,10 +12,12 @@ export const SeoMetaTitle = ({
     title,
     metaTitle,
     onChangeMetaTitle,
+    isDisabled: isDisabledProp = false,
 }: {
     title: string
     metaTitle: string
     onChangeMetaTitle?: (metaTitle: string | null) => void
+    isDisabled?: boolean
 }) => {
     const shouldUseTitle = !metaTitle
 
@@ -47,7 +49,7 @@ export const SeoMetaTitle = ({
     return (
         <div
             className={classNames(css.seoField, css.seoFieldMetaTitleGap, {
-                [css.disabled]: isChecked,
+                [css.disabled]: isChecked || isDisabledProp,
             })}
         >
             <div className={css.seoField__checkbox}>
@@ -55,6 +57,7 @@ export const SeoMetaTitle = ({
                     value={isChecked}
                     onChange={onCheckboxChange}
                     label="Use current title as meta title"
+                    isDisabled={isDisabledProp}
                 />
             </div>
 
@@ -65,7 +68,7 @@ export const SeoMetaTitle = ({
                         value={value}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        isDisabled={isDisabled}
+                        isDisabled={isDisabled || isDisabledProp}
                         isRequired={isRequired}
                         error={showError ? 'This field is required' : undefined}
                         className={classNames(

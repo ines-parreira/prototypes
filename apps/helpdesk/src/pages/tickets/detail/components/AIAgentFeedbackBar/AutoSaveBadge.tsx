@@ -22,6 +22,7 @@ type AutoSaveBadgeProps = {
     updatedAt?: Date
     savedIcon?: React.ReactNode
     tooltipPlacement?: ComponentProps<typeof Tooltip>['placement']
+    variant?: 'default' | 'minimal'
 }
 
 const AutoSaveBadge = ({
@@ -29,6 +30,7 @@ const AutoSaveBadge = ({
     updatedAt,
     savedIcon,
     tooltipPlacement,
+    variant = 'default',
 }: AutoSaveBadgeProps) => {
     const badgeRef = useRef<HTMLDivElement>(null)
     const [isStaleSaved, setIsStaleSaved] = useState(false)
@@ -67,25 +69,34 @@ const AutoSaveBadge = ({
 
     const defaultSavedIcon = <i className={cn('material-icons')}>check</i>
 
+    const isMinimal = variant === 'minimal'
+    const showMinimalIconOnly = isMinimal && isStaleSaved && showSaved
+
     return (
         <>
-            <Badge
-                ref={badgeRef}
-                className={css.autoSaveBadge}
-                upperCase={false}
-            >
-                {showSaving && <LoadingSpinner size="small" />}
-
-                {showSaved && (savedIcon ?? defaultSavedIcon)}
-
-                <div
-                    className={cn(css.text, {
-                        [css.hidden]: !showSaving && !showSavedText,
-                    })}
+            {showMinimalIconOnly ? (
+                <span ref={badgeRef} className={css.autoSaveBadgeMinimal}>
+                    {savedIcon ?? defaultSavedIcon}
+                </span>
+            ) : (
+                <Badge
+                    ref={badgeRef}
+                    className={css.autoSaveBadge}
+                    upperCase={false}
                 >
-                    {showSaving ? 'Saving' : showSavedText ? 'Saved' : null}
-                </div>
-            </Badge>
+                    {showSaving && <LoadingSpinner size="small" />}
+
+                    {showSaved && (savedIcon ?? defaultSavedIcon)}
+
+                    <div
+                        className={cn(css.text, {
+                            [css.hidden]: !showSaving && !showSavedText,
+                        })}
+                    >
+                        {showSaving ? 'Saving' : showSavedText ? 'Saved' : null}
+                    </div>
+                </Badge>
+            )}
             {isTooltipEnabled && (
                 <Tooltip target={badgeRef} placement={tooltipPlacement}>
                     <span>

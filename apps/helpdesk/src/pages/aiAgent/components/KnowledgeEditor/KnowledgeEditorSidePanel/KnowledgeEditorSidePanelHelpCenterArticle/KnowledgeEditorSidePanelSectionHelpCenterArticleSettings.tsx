@@ -21,7 +21,7 @@ export type Props = {
 export const KnowledgeEditorSidePanelSectionHelpCenterArticleSettings = ({
     sectionId,
 }: Props) => {
-    const { settingsProps, autoSave } = useSettingsAutoSave()
+    const { settingsProps, autoSave, isCreationMode } = useSettingsAutoSave()
     const {
         category,
         excerpt,
@@ -36,12 +36,15 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleSettings = ({
     const headerTitle = (
         <div className={css.headerWithBadge}>
             <span>Settings</span>
-            <AutoSaveBadge
-                state={autoSave.state}
-                updatedAt={autoSave.updatedAt}
-                savedIcon={<Icon name="cloud-check" size={IconSize.Md} />}
-                tooltipPlacement="top-start"
-            />
+            {!isCreationMode && (
+                <AutoSaveBadge
+                    state={autoSave.state}
+                    updatedAt={autoSave.updatedAt}
+                    savedIcon={<Icon name="cloud-check" size={IconSize.Md} />}
+                    tooltipPlacement="top-start"
+                    variant="minimal"
+                />
+            )}
         </div>
     )
 
@@ -59,7 +62,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleSettings = ({
                             categoryTitlesById={category.categoryTitlesById}
                             options={category.categoryOptions}
                             onChange={category.onChangeCategory}
-                            isDisabled={false}
+                            isDisabled={isCreationMode}
                         />
                     </div>
                 </div>
@@ -86,6 +89,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleSettings = ({
                             isParentUnlisted={visibility.isParentUnlisted}
                             type="article"
                             className={css.visibilitySelect}
+                            isDisabled={isCreationMode}
                         />
                     </div>
                 </div>
@@ -96,6 +100,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleSettings = ({
                             slug={slug.slug}
                             onChangeSlug={slug.onChangeSlug}
                             articleId={slug.articleId}
+                            isDisabled={isCreationMode}
                         />
                     )}
 
@@ -105,10 +110,12 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleSettings = ({
                         onChangeMetaTitle={
                             metaTitle?.onChangeMetaTitle ?? undefined
                         }
+                        isDisabled={isCreationMode}
                     />
                     <ExcerptInput
                         excerpt={excerpt?.excerpt ?? ''}
                         onChangeExcerpt={excerpt?.onChangeExcerpt ?? undefined}
+                        isDisabled={isCreationMode}
                     />
 
                     <SeoMetaDescription
@@ -118,6 +125,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleSettings = ({
                             metaDescription?.onChangeMetaDescription ??
                             undefined
                         }
+                        isDisabled={isCreationMode}
                     />
                 </div>
             </div>

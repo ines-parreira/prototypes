@@ -8,11 +8,13 @@ import css from '../KnowledgeEditorSidePanelSectionHelpCenterArticleSettings.les
 export type ExcerptInputProps = {
     excerpt: string
     onChangeExcerpt?: (excerpt: string) => void
+    isDisabled?: boolean
 }
 
 export const ExcerptInput = ({
     excerpt,
     onChangeExcerpt,
+    isDisabled = false,
 }: ExcerptInputProps) => {
     const [inputValue, setInputValue] = useState<string>(excerpt)
 
@@ -36,7 +38,7 @@ export const ExcerptInput = ({
                 name="excerpt"
                 maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
                 className={css.excerptInput}
-                isDisabled={!onChangeExcerpt}
+                isDisabled={isDisabled || !onChangeExcerpt}
                 label="Description"
             />
             <div className={css.caption}>

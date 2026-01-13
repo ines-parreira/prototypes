@@ -196,4 +196,97 @@ describe('AutoSaveBadge', () => {
             expect(lastCall[0].placement).toBeUndefined()
         })
     })
+
+    describe('minimal variant', () => {
+        it('should render badge during saving state', () => {
+            render(
+                <AutoSaveBadge
+                    state={AutoSaveState.SAVING}
+                    variant="minimal"
+                />,
+            )
+
+            expect(screen.getByText('Saving')).toBeInTheDocument()
+            expect(screen.getByText('Spinner')).toBeInTheDocument()
+        })
+
+        it('should render badge with "Saved" text immediately after save', async () => {
+            const updatedAt = new Date()
+            render(
+                <AutoSaveBadge
+                    state={AutoSaveState.SAVED}
+                    updatedAt={updatedAt}
+                    variant="minimal"
+                />,
+            )
+
+            expect(screen.getByText('Saved')).toBeInTheDocument()
+        })
+
+        it('should transition to icon-only (no badge) after stale timeout', async () => {
+            const updatedAt = new Date()
+            const { container } = render(
+                <AutoSaveBadge
+                    state={AutoSaveState.SAVED}
+                    updatedAt={updatedAt}
+                    variant="minimal"
+                />,
+            )
+
+            act(() => {
+                jest.advanceTimersByTime(3000)
+            })
+
+            await waitFor(() => {
+                expect(screen.queryByText('Saved')).not.toBeInTheDocument()
+                expect(screen.getByText('check')).toBeInTheDocument()
+                expect(
+                    container.querySelector('.autoSaveBadgeMinimal'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should render custom icon in minimal mode', async () => {
+            const updatedAt = new Date()
+            const customIcon = <div data-testid="custom-icon">Custom Icon</div>
+            const { container } = render(
+                <AutoSaveBadge
+                    state={AutoSaveState.SAVED}
+                    updatedAt={updatedAt}
+                    savedIcon={customIcon}
+                    variant="minimal"
+                />,
+            )
+
+            act(() => {
+                jest.advanceTimersByTime(3000)
+            })
+
+            await waitFor(() => {
+                expect(screen.getByTestId('custom-icon')).toBeInTheDocument()
+                expect(
+                    container.querySelector('.autoSaveBadgeMinimal'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should still show tooltip after transition to icon-only', async () => {
+            const updatedAt = new Date()
+            render(
+                <AutoSaveBadge
+                    state={AutoSaveState.SAVED}
+                    updatedAt={updatedAt}
+                    variant="minimal"
+                />,
+            )
+
+            act(() => {
+                jest.advanceTimersByTime(3000)
+            })
+
+            await waitFor(() => {
+                expect(screen.queryByText('Tooltip')).toBeInTheDocument()
+            })
+        })
+    })
 })

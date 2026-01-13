@@ -257,13 +257,13 @@ describe('useSettingsAutoSave', () => {
             expect(result.current.settingsProps.title).toBe('Test Article')
         })
 
-        it('returns autoSave state as SAVED when not auto-saving', () => {
+        it('returns autoSave state as INITIAL when no save has occurred', () => {
             const mockContext = createMockContextValue()
             mockUseArticleContext.mockReturnValue(mockContext)
 
             const { result } = renderHook(() => useSettingsAutoSave())
 
-            expect(result.current.autoSave.state).toBe(AutoSaveState.SAVED)
+            expect(result.current.autoSave.state).toBe(AutoSaveState.INITIAL)
             expect(result.current.autoSave.updatedAt).toEqual(
                 new Date('2024-01-02T00:00:00Z'),
             )
@@ -276,7 +276,7 @@ describe('useSettingsAutoSave', () => {
 
             const { result } = renderHook(() => useSettingsAutoSave())
 
-            expect(result.current.autoSave.state).toBe(AutoSaveState.SAVED)
+            expect(result.current.autoSave.state).toBe(AutoSaveState.INITIAL)
 
             act(() => {
                 result.current.settingsProps.category.onChangeCategory(2)
@@ -1005,6 +1005,113 @@ describe('useSettingsAutoSave', () => {
             const { result } = renderHook(() => useSettingsAutoSave())
 
             expect(result.current.autoSave.updatedAt).toBeUndefined()
+        })
+    })
+
+    describe('creation mode', () => {
+        it('returns isCreationMode as true when articleMode is create and no article exists', () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    articleMode: 'create',
+                    article: undefined,
+                },
+            })
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            const { result } = renderHook(() => useSettingsAutoSave())
+
+            expect(result.current.isCreationMode).toBe(true)
+        })
+
+        it('returns isCreationMode as false when articleMode is create but article exists', () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    articleMode: 'create',
+                    article: createMockArticle(),
+                },
+            })
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            const { result } = renderHook(() => useSettingsAutoSave())
+
+            expect(result.current.isCreationMode).toBe(false)
+        })
+
+        it('returns isCreationMode as false when articleMode is edit', () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    articleMode: 'edit',
+                    article: createMockArticle(),
+                },
+            })
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            const { result } = renderHook(() => useSettingsAutoSave())
+
+            expect(result.current.isCreationMode).toBe(false)
+        })
+
+        it('returns autoSave state as INITIAL when in creation mode', () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    articleMode: 'create',
+                    article: undefined,
+                },
+            })
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            const { result } = renderHook(() => useSettingsAutoSave())
+
+            expect(result.current.autoSave.state).toBe(AutoSaveState.INITIAL)
+        })
+
+        it('returns autoSave state as INITIAL when article is created but no save occurred', () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    articleMode: 'create',
+                    article: createMockArticle(),
+                },
+            })
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            const { result } = renderHook(() => useSettingsAutoSave())
+
+            expect(result.current.autoSave.state).toBe(AutoSaveState.INITIAL)
+        })
+
+        it('returns autoSave state as INITIAL when in view (read) mode', () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    articleMode: 'read',
+                    article: createMockArticle(),
+                },
+            })
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            const { result } = renderHook(() => useSettingsAutoSave())
+
+            expect(result.current.autoSave.state).toBe(AutoSaveState.INITIAL)
+        })
+
+        it('returns autoSave state as INITIAL when in edit mode and no save occurred', () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    articleMode: 'edit',
+                    article: createMockArticle(),
+                },
+            })
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            const { result } = renderHook(() => useSettingsAutoSave())
+
+            expect(result.current.autoSave.state).toBe(AutoSaveState.INITIAL)
         })
     })
 })
