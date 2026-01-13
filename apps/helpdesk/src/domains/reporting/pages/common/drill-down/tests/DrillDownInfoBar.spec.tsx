@@ -179,6 +179,27 @@ describe('<DrillDownInfoBar />', () => {
                 ).toBeInTheDocument()
             },
         )
+
+        it.each([
+            [OverviewMetric.OpenTickets, '1 ticket'],
+            [ConvertMetric.CampaignSalesCount, '1 order'],
+            [VoiceMetric.AverageWaitTime, '1 voice call'],
+        ])(
+            'should render singular form when totalResults is 1 for %s',
+            (metric, expectedText) => {
+                const metricData = {
+                    metricName: metric,
+                } as any
+                useDrillDownDataMock.mockReturnValue({
+                    totalResults: 1,
+                    isFetching: false,
+                } as any)
+
+                renderInfoBar(metricData)
+
+                expect(screen.getByText(expectedText)).toBeInTheDocument()
+            },
+        )
     })
 
     describe('Download button visibility', () => {

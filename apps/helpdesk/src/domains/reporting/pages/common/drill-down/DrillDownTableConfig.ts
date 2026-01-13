@@ -66,6 +66,19 @@ export type DrillDownHook = DrillDownDataHook<
     TicketDrillDownRowData | ConvertDrillDownRowData | VoiceCallDrillDownRowData
 >
 
+export type InfoBarObjectType = 'tickets' | 'orders' | 'voice calls'
+
+export function singular(objectType: InfoBarObjectType): string {
+    switch (objectType) {
+        case 'tickets':
+            return 'ticket'
+        case 'orders':
+            return 'order'
+        case 'voice calls':
+            return 'voice call'
+    }
+}
+
 export type DomainConfig<T extends string> = {
     drillDownHook: DrillDownHook
     tableComponent: FunctionComponent<{
@@ -76,7 +89,7 @@ export type DomainConfig<T extends string> = {
         metricData: DrillDownMetric
         columnConfig: ColumnConfig
     }>
-    infoBarObjectType: string
+    infoBarObjectType: InfoBarObjectType
     isMetricDataDownloadable: boolean
     modalTriggerTooltipText: string
     metricsConfig: Record<T, MetricConfig>

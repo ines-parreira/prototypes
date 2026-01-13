@@ -15,7 +15,11 @@ import type {
     VoiceCallDrillDownRowData,
 } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import css from 'domains/reporting/pages/common/drill-down/DrillDownInfoBar.less'
-import type { DomainConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
+import type {
+    DomainConfig,
+    InfoBarObjectType,
+} from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
+import { singular } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
@@ -44,11 +48,13 @@ const OPERATION_IN_PROGRESS_CONTENT =
 
 const getTheInfoLabel = (
     totalResults: number,
-    objectType: string,
+    objectType: InfoBarObjectType,
     metricName?: string,
-) => {
+): string => {
     if (totalResults < DRILLDOWN_QUERY_LIMIT) {
-        return `${totalResults} ${objectType}`
+        const displayType =
+            totalResults === 1 ? singular(objectType) : objectType
+        return `${totalResults} ${displayType}`
     }
 
     if (metricName === KnowledgeMetric.CSAT) {
