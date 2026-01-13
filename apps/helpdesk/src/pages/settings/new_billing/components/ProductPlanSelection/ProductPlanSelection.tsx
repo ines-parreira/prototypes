@@ -496,7 +496,7 @@ const ProductPlanSelection = ({
                     <div className={css.selectedPlan}>
                         <SelectField
                             options={options}
-                            id="priceSelect"
+                            id={`priceSelect_${type}`}
                             aria-label="Price value"
                             placeholder="Select a plan"
                             value={selectedPlan?.plan_id}

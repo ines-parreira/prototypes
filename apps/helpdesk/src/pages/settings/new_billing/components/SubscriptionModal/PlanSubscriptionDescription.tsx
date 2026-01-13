@@ -159,7 +159,7 @@ const PlanSubscriptionDescription = ({
                     <div className={css.selector}>
                         <SelectField
                             options={options}
-                            id="priceSelect"
+                            id={`priceSelect_${productType}`}
                             aria-label="Plan"
                             placeholder="Select a plan"
                             value={selectedPlan?.plan_id}

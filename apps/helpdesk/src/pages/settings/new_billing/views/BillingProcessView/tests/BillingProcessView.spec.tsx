@@ -96,7 +96,7 @@ const storeInitialState = {
     }),
 }
 
-describe('UsageAndPlansView', () => {
+describe('BillingProcessView', () => {
     beforeEach(() => {
         mockUseProductCancellations.mockReturnValue({
             data: new Map(),

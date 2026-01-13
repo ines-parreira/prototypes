@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UsageAndPlansView should render 1`] = `
+exports[`BillingProcessView should render 1`] = `
 <div>
   <div
     class="container"
@@ -133,7 +133,7 @@ exports[`UsageAndPlansView should render 1`] = `
                           <span
                             aria-label="Price value"
                             class="label"
-                            data-testid="selected-priceSelect"
+                            data-testid="selected-priceSelect_helpdesk"
                             style="min-width: 10px; opacity: 1;"
                           >
                             300
@@ -141,7 +141,7 @@ exports[`UsageAndPlansView should render 1`] = `
                           <input
                             autocomplete="chrome-off"
                             class="input"
-                            id="priceSelect"
+                            id="priceSelect_helpdesk"
                             style="min-width: 10px;"
                             type="text"
                             value=""

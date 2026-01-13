@@ -516,7 +516,7 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
                               <span
                                 aria-label="Plan"
                                 class="label"
-                                data-testid="selected-priceSelect"
+                                data-testid="selected-priceSelect_automation"
                                 style="min-width: 10px; opacity: 1;"
                               >
                                 30
@@ -524,7 +524,7 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
                               <input
                                 autocomplete="chrome-off"
                                 class="input"
-                                id="priceSelect"
+                                id="priceSelect_automation"
                                 style="min-width: 10px;"
                                 type="text"
                                 value=""
