@@ -7,7 +7,14 @@ export function guidanceReducer(
 ): GuidanceState {
     switch (action.type) {
         case 'SET_MODE':
-            return { ...state, guidanceMode: action.payload }
+            return {
+                ...state,
+                guidanceMode: action.payload,
+                hasAutoSavedInSession:
+                    action.payload === 'read'
+                        ? false
+                        : state.hasAutoSavedInSession,
+            }
 
         case 'SET_FULLSCREEN':
             return { ...state, isFullscreen: action.payload }
@@ -77,6 +84,7 @@ export function guidanceReducer(
                     content: newContent,
                 },
                 isAutoSaving: false,
+                hasAutoSavedInSession: true,
                 guidance: newGuidance,
             }
         }
@@ -107,6 +115,7 @@ export function guidanceReducer(
                     newVersionStatus === 'current'
                         ? 'read'
                         : state.guidanceMode,
+                hasAutoSavedInSession: false,
             }
         }
 

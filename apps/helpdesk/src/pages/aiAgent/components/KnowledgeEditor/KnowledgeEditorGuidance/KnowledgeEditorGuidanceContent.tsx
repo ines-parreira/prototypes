@@ -22,8 +22,7 @@ type Props = {
 }
 
 export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
-    const { state, dispatch, config, guidanceArticle, hasPendingChanges } =
-        useGuidanceContext()
+    const { state, dispatch, config, hasPendingChanges } = useGuidanceContext()
 
     const { shopName, shopType, onClickPrevious, onClickNext, onClose } = config
 
@@ -73,10 +72,10 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                 disabled={isDisabled}
                 isSaving={state.isAutoSaving}
                 lastUpdatedDatetime={
-                    state.isAutoSaving
+                    state.isAutoSaving || !state.hasAutoSavedInSession
                         ? undefined
-                        : guidanceArticle
-                          ? new Date(guidanceArticle.lastUpdated)
+                        : state.guidance?.lastUpdated
+                          ? new Date(state.guidance.lastUpdated)
                           : undefined
                 }
                 guidanceMode={state.guidanceMode}

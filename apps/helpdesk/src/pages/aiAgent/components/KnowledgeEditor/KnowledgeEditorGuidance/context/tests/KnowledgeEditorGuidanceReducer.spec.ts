@@ -28,6 +28,7 @@ describe('guidanceReducer', () => {
         savedSnapshot: { title: 'Test Title', content: 'Test Content' },
         guidance: mockGuidance,
         isAutoSaving: false,
+        hasAutoSavedInSession: false,
         isFromTemplate: false,
         hasTemplateChanges: false,
         versionStatus: 'latest_draft',
@@ -66,6 +67,34 @@ describe('guidanceReducer', () => {
             })
 
             expect(result.guidanceMode).toBe('edit')
+        })
+
+        it('should reset hasAutoSavedInSession to false when switching to read mode', () => {
+            const stateWithAutoSaved = {
+                ...initialState,
+                guidanceMode: 'edit' as const,
+                hasAutoSavedInSession: true,
+            }
+            const result = guidanceReducer(stateWithAutoSaved, {
+                type: 'SET_MODE',
+                payload: 'read',
+            })
+
+            expect(result.hasAutoSavedInSession).toBe(false)
+        })
+
+        it('should preserve hasAutoSavedInSession when switching to edit mode', () => {
+            const stateWithAutoSaved = {
+                ...initialState,
+                guidanceMode: 'read' as const,
+                hasAutoSavedInSession: true,
+            }
+            const result = guidanceReducer(stateWithAutoSaved, {
+                type: 'SET_MODE',
+                payload: 'edit',
+            })
+
+            expect(result.hasAutoSavedInSession).toBe(true)
         })
     })
 
@@ -522,6 +551,19 @@ describe('guidanceReducer', () => {
             })
 
             expect(result.guidanceMode).toBe('edit')
+        })
+
+        it('should reset hasAutoSavedInSession to false when switching versions', () => {
+            const stateWithAutoSaved = {
+                ...initialState,
+                hasAutoSavedInSession: true,
+            }
+            const result = guidanceReducer(stateWithAutoSaved, {
+                type: 'SWITCH_VERSION',
+                payload: newVersionGuidance,
+            })
+
+            expect(result.hasAutoSavedInSession).toBe(false)
         })
     })
 

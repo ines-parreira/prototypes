@@ -76,7 +76,7 @@ export const ArticleEditorContent = ({ closeHandlerRef }: Props) => {
                 disabled={isDisabled}
                 isSaving={state.isAutoSaving}
                 lastUpdatedDatetime={
-                    state.isAutoSaving
+                    state.isAutoSaving || !state.hasAutoSavedInSession
                         ? undefined
                         : state.article?.translation.updated_datetime
                           ? new Date(state.article.translation.updated_datetime)

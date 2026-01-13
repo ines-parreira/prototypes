@@ -26,6 +26,7 @@ export type GuidanceState = {
     savedSnapshot: { title: string; content: string }
     guidance: GuidanceArticle | undefined
     isAutoSaving: boolean
+    hasAutoSavedInSession: boolean
 
     // Template tracking (for create mode autosave)
     isFromTemplate: boolean
@@ -152,6 +153,7 @@ export const createInitialState = (
         },
         guidance: article ?? undefined,
         isAutoSaving: false,
+        hasAutoSavedInSession: false,
         isFromTemplate: template !== undefined && initialMode === 'create',
         hasTemplateChanges: false,
         versionStatus: 'latest_draft',

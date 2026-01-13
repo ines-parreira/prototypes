@@ -7,7 +7,14 @@ export function articleReducer(
     switch (action.type) {
         // Mode & UI actions
         case 'SET_MODE':
-            return { ...state, articleMode: action.payload }
+            return {
+                ...state,
+                articleMode: action.payload,
+                hasAutoSavedInSession:
+                    action.payload === 'read'
+                        ? false
+                        : state.hasAutoSavedInSession,
+            }
 
         case 'SET_FULLSCREEN':
             return { ...state, isFullscreen: action.payload }
@@ -40,6 +47,7 @@ export function articleReducer(
                     content: newContent,
                 },
                 isAutoSaving: false,
+                hasAutoSavedInSession: true,
                 article: newArticle,
                 translationMode: 'existing',
             }
@@ -128,6 +136,7 @@ export function articleReducer(
                 content,
                 articleMode:
                     versionStatus === 'current' ? 'read' : state.articleMode,
+                hasAutoSavedInSession: false,
             }
         }
 

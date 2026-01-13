@@ -80,6 +80,7 @@ const createMockContextValue = (
             content: '<p>Test content</p>',
         },
         isAutoSaving: false,
+        hasAutoSavedInSession: false,
         article: createMockArticle(),
         translationMode: 'existing' as const,
         currentLocale: 'en-US' as const,
@@ -738,6 +739,7 @@ describe('ArticleEditorContent', () => {
             renderComponent({
                 state: {
                     isAutoSaving: false,
+                    hasAutoSavedInSession: true,
                     article,
                 },
             })

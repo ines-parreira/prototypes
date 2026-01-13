@@ -78,6 +78,7 @@ describe('useToggleVisibility', () => {
         savedSnapshot: { title: 'Test', content: 'Test content' },
         guidance: createMockGuidanceArticle(1, 'UNLISTED'),
         isAutoSaving: false,
+        hasAutoSavedInSession: false,
         isFromTemplate: false,
         hasTemplateChanges: false,
         versionStatus: 'latest_draft',

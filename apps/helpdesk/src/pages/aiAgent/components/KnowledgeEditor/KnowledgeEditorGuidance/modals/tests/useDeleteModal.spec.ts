@@ -51,6 +51,7 @@ describe('useDeleteModal', () => {
         savedSnapshot: { title: 'Test Title', content: 'Test Content' },
         guidance: mockGuidance,
         isAutoSaving: false,
+        hasAutoSavedInSession: false,
         isFromTemplate: false,
         hasTemplateChanges: false,
         versionStatus: 'latest_draft',

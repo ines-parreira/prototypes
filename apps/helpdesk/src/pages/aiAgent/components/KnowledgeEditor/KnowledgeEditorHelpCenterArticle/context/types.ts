@@ -46,6 +46,7 @@ export type ArticleState = {
     // Autosave tracking
     savedSnapshot: { title: string; content: string }
     isAutoSaving: boolean
+    hasAutoSavedInSession: boolean
 
     // Article reference
     article: ArticleWithLocalTranslation | undefined
@@ -198,6 +199,7 @@ export const createInitialState = (
         content,
         savedSnapshot: { title, content },
         isAutoSaving: false,
+        hasAutoSavedInSession: false,
         article: initialArticle,
         translationMode: initialArticle ? 'existing' : 'new',
         currentLocale:

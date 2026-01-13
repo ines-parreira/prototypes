@@ -64,6 +64,7 @@ describe('useGuidanceAutoSave', () => {
             publishedVersionId: null,
         },
         isAutoSaving: false,
+        hasAutoSavedInSession: false,
         isFromTemplate: false,
         hasTemplateChanges: false,
         versionStatus: 'latest_draft',

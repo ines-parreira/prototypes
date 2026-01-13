@@ -53,6 +53,7 @@ const createInitialState = (
         content: '<p>Test content</p>',
     },
     isAutoSaving: false,
+    hasAutoSavedInSession: false,
     article: createMockArticle(),
     translationMode: 'existing',
     currentLocale: 'en-US',
@@ -89,6 +90,34 @@ describe('articleReducer', () => {
                 expect(result.title).toBe(state.title)
                 expect(result.content).toBe(state.content)
                 expect(result.isFullscreen).toBe(state.isFullscreen)
+            })
+
+            it('should reset hasAutoSavedInSession to false when switching to read mode', () => {
+                const state = createInitialState({
+                    articleMode: 'edit',
+                    hasAutoSavedInSession: true,
+                })
+
+                const result = articleReducer(state, {
+                    type: 'SET_MODE',
+                    payload: 'read',
+                })
+
+                expect(result.hasAutoSavedInSession).toBe(false)
+            })
+
+            it('should preserve hasAutoSavedInSession when switching to edit mode', () => {
+                const state = createInitialState({
+                    articleMode: 'read',
+                    hasAutoSavedInSession: true,
+                })
+
+                const result = articleReducer(state, {
+                    type: 'SET_MODE',
+                    payload: 'edit',
+                })
+
+                expect(result.hasAutoSavedInSession).toBe(true)
             })
         })
 
@@ -678,6 +707,23 @@ describe('articleReducer', () => {
                 })
 
                 expect(result.articleMode).toBe('read')
+            })
+
+            it('should reset hasAutoSavedInSession to false when switching versions', () => {
+                const article = createMockArticle()
+                const state = createInitialState({
+                    hasAutoSavedInSession: true,
+                })
+
+                const result = articleReducer(state, {
+                    type: 'SWITCH_VERSION',
+                    payload: {
+                        article,
+                        versionStatus: 'current',
+                    },
+                })
+
+                expect(result.hasAutoSavedInSession).toBe(false)
             })
         })
     })
