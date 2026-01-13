@@ -8,6 +8,7 @@ import {
     IconSize,
     LegacyTooltip,
     Tag,
+    ToggleField,
     Tooltip,
     TooltipContent,
     TooltipTrigger,
@@ -16,7 +17,6 @@ import {
 import { DEFAULT_LOCALE } from 'domains/reporting/pages/common/utils'
 import type { GuidanceModeType } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context/types'
 import { selectText } from 'pages/common/components/CopyText/utils'
-import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 
 import css from './KnowledgeEditorSidePanelCommonFields.less'
 
@@ -68,15 +68,11 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
 
     return (
         <div className={css.aiAgentStatusWrapper}>
-            <span id={`tooltip_${id}`}>
-                <NewToggleButton
-                    color="var(--content-accent-default)"
-                    checked={checked}
+            <span id={`tooltip_${id}`} className={className}>
+                <ToggleField
+                    value={checked}
                     isDisabled={!onChange || isDisabled}
                     onChange={onChange ?? (() => {})}
-                    size="small"
-                    className={className}
-                    ariaLabel="ai-agent-status"
                 />
             </span>
             {tooltip && (

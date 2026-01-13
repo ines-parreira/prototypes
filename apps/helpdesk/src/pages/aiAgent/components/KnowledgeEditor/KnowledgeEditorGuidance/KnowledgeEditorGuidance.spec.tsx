@@ -452,10 +452,8 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
-        // AI Agent status checkbox should be checked by default (visible to AI)
-        expect(
-            screen.getByRole('checkbox', { name: 'ai-agent-status' }),
-        ).toBeChecked()
+        // AI Agent status toggle should be checked by default (visible to AI)
+        expect(screen.getByRole('switch')).toBeChecked()
     })
 
     it('does not auto-save in create mode when form is invalid', () => {
@@ -664,15 +662,12 @@ describe('KnowledgeEditorGuidance', () => {
         )
 
         // Side panel is expanded by default (isDetailsView: true)
-        // The AI agent status checkbox should be visible
-        expect(
-            screen.getByRole('checkbox', { name: 'ai-agent-status' }),
-        ).toBeChecked()
+        // The AI agent status toggle should be visible
+        const aiAgentToggle = screen.getByRole('switch')
+        expect(aiAgentToggle).toBeChecked()
 
         await act(async () => {
-            fireEvent.click(
-                screen.getByRole('checkbox', { name: 'ai-agent-status' }),
-            )
+            fireEvent.click(aiAgentToggle)
         })
 
         expect(updateGuidanceArticle).toHaveBeenCalledWith(

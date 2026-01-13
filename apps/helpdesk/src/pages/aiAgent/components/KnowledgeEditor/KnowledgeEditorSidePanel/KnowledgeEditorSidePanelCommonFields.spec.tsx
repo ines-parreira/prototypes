@@ -405,12 +405,12 @@ describe('KnowledgeEditorSidePanelFieldAIAgentStatus extended', () => {
                 isDisabled={true}
             />,
         )
-        expect(screen.getByRole('switch')).toHaveClass('disabled')
+        expect(screen.getByRole('switch')).toBeDisabled()
     })
 
     it('renders with disabled class when onChange is not provided', () => {
         render(<KnowledgeEditorSidePanelFieldAIAgentStatus checked={true} />)
-        expect(screen.getByRole('switch')).toHaveClass('disabled')
+        expect(screen.getByRole('switch')).toBeDisabled()
     })
 
     it('renders with className when provided', () => {
