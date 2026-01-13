@@ -1,0 +1,19 @@
+@import (reference) '~css/typography';
+
+:local {
+    h1 {
+        .heading-page-semibold();
+        font-size: 32px;
+        line-height: 40px;
+    }
+
+    .titleMagenta {
+        color: var(--accessory-magenta-25); // legacy
+    }
+}
+
+.axiom :local {
+    .titleMagenta {
+        color: var(--content-brand-primary);
+    }
+}

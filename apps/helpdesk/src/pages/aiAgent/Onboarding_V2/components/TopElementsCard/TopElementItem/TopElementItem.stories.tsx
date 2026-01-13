@@ -1,0 +1,32 @@
+import type { Meta, StoryObj } from '@storybook/react'
+
+import TopElementsItem from './TopElementItem'
+
+const storyConfig: Meta<typeof TopElementsItem> = {
+    title: 'AI Agent/Onboarding_V2/TopElementsCard/TopElementsItem',
+    component: TopElementsItem,
+}
+
+type Story = StoryObj<typeof TopElementsItem>
+
+export const Default: Story = {
+    args: {
+        topElement: {
+            id: '1',
+            title: 'New York',
+            percentage: 100,
+        },
+    },
+}
+
+export const PercentageZero: Story = {
+    args: {
+        topElement: {
+            id: '1',
+            title: 'New York',
+            percentage: 0,
+        },
+    },
+}
+
+export default storyConfig

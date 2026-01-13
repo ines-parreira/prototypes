@@ -45,6 +45,7 @@ import { AiAgentGuidanceTemplateNewContainer } from 'pages/aiAgent/AiAgentGuidan
 import { AiAgentGuidanceTemplatesContainer } from 'pages/aiAgent/AiAgentGuidanceTemplatesContainer'
 import { AiAgentKnowledgeContainer } from 'pages/aiAgent/AiAgentKnowledgeContainer'
 import AiAgentMainViewContainer from 'pages/aiAgent/AiAgentMainViewContainer'
+import { AiAgentOnboardingRouter } from 'pages/aiAgent/AiAgentOnboardingRouter'
 import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 import { AiAgentPreviewModeSettingsContainer } from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
 import { AiAgentProductRecommendations } from 'pages/aiAgent/AiAgentProductRecommendations/AiAgentProductRecommendations'
@@ -64,7 +65,6 @@ import {
 } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { OptimizeContainer } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import { KnowledgeHubContainer } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubContainer'
-import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import { AiAgentOpportunities } from 'pages/aiAgent/opportunities/AiAgentOpportunities'
 import { AiAgentOverview } from 'pages/aiAgent/Overview/AiAgentOverview'
@@ -907,7 +907,7 @@ export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
                         ]}
                         exact
                         component={withUserRoleRequired(
-                            AiAgentOnboarding,
+                            AiAgentOnboardingRouter,
                             AGENT_ROLE,
                         )}
                     />
