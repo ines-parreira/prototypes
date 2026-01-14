@@ -100,14 +100,13 @@ export const SyncStoreWebsiteModal = ({
                 <Box flexDirection="column" gap="sm">
                     <Text>
                         {hasWebsiteSync
-                            ? 'Syncing will replace all existing questions and answers, reset any disabled questions and answers, and update all product information from your store website.'
+                            ? 'Syncing will replace all existing snippets, reset any disabled snippets, and update all product information from your store website.'
                             : 'Sync your store website to allow AI Agent to use your site content and product information.'}
                     </Text>
                     {hasWebsiteSync && (
                         <Text>
                             This action cannot be undone. You will need to
-                            review newly generated questions and answers after
-                            syncing.
+                            review newly generated snippets after syncing.
                         </Text>
                     )}
                 </Box>

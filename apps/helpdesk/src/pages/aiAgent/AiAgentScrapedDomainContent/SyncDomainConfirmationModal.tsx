@@ -35,22 +35,20 @@ const SyncDomainConfirmationModal = ({
                 <div>
                     {pageType === HeaderType.Domain ? (
                         <span>
-                            Syncing will replace all existing questions and
-                            answers, reset any disabled questions and answers,
-                            and update all product information from your store
-                            website.
+                            Syncing will replace all existing snippets, reset
+                            any disabled snippets, and update all product
+                            information from your store website.
                         </span>
                     ) : (
                         <span>
-                            Syncing will replace all existing questions and
-                            answers, and reset any disabled questions and
-                            answers from this URL.
+                            Syncing will replace all existing snippets, and
+                            reset any disabled snippets from this URL.
                         </span>
                     )}
                 </div>
                 <Banner variant="inline" icon type={AlertType.Warning}>
                     This action cannot be undone. You will need to review newly
-                    generated questions and answers after syncing.
+                    generated snippets after syncing.
                 </Banner>
             </ModalBody>
             <ModalFooter className={css.footer}>

@@ -261,9 +261,7 @@ describe('SyncStoreWebsiteModal', () => {
             })
 
             expect(
-                screen.getByText(
-                    /Syncing will replace all existing questions and answers/,
-                ),
+                screen.getByText(/Syncing will replace all existing snippets/),
             ).toBeInTheDocument()
         })
 

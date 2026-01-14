@@ -332,7 +332,7 @@ describe('<PublicSourcesSection />', () => {
         expect(screen.getByRole('dialog')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Syncing will replace all existing questions and answers, and reset any disabled questions and answers from this URL.',
+                'Syncing will replace all existing snippets, and reset any disabled snippets from this URL.',
             ),
         ).toBeInTheDocument()
 
