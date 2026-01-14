@@ -175,8 +175,13 @@ const WrappedAIJourneyProvider = ({
             setLocalSettings((prev) => ({
                 ...prev,
                 journeyId: flows.filter(
-                    // playground does not cover winback for the moment
-                    (f) => f.type !== JourneyTypeEnum.WinBack,
+                    // playground does not cover all flows for the moment
+                    (f) =>
+                        [
+                            JourneyTypeEnum.CartAbandoned.toString(),
+                            JourneyTypeEnum.Campaign.toString(),
+                            JourneyTypeEnum.SessionAbandoned.toString(),
+                        ].indexOf(f.type) > -1,
                 )[0].id,
             }))
         } else if (
