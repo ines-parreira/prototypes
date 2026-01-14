@@ -15,7 +15,7 @@ export default function GorgiasChatCreationWizardSwitcher({
     loading,
     isUpdate,
 }: Props) {
-    const isRevampEnabled = useFlag(FeatureFlagKey.ChatCreationWizardRevamp)
+    const isRevampEnabled = useFlag(FeatureFlagKey.ChatSettingsRevamp)
 
     const Component = isRevampEnabled
         ? GorgiasChatCreationWizardRevamp

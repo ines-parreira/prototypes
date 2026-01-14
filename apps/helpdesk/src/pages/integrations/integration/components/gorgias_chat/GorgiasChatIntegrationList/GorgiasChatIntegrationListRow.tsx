@@ -33,11 +33,11 @@ import {
     GorgiasChatCreationWizardStatus,
     GorgiasChatStatusEnum,
     IntegrationType,
-} from '../../../../../models/integration/types'
-import BodyCell from '../../../../common/components/table/cells/BodyCell'
-import TableBodyRow from '../../../../common/components/table/TableBodyRow'
-import ForwardIcon from '../../../common/components/ForwardIcon'
-import { Tab } from '../../types'
+} from '../../../../../../models/integration/types'
+import BodyCell from '../../../../../common/components/table/cells/BodyCell'
+import TableBodyRow from '../../../../../common/components/table/TableBodyRow'
+import ForwardIcon from '../../../../common/components/ForwardIcon'
+import { Tab } from '../../../types'
 
 import css from './GorgiasChatIntegrationListRow.less'
 

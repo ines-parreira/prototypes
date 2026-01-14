@@ -116,6 +116,7 @@ export const IntegrationDetail = ({
     const isNewDomainVerificationEnabled = useFlag(
         FeatureFlagKey.NewDomainVerification,
     )
+    const isRevampEnabled = useFlag(FeatureFlagKey.ChatSettingsRevamp)
 
     const [articleRecommendationEnabled, setArticleRecommendationEnabled] =
         useState(false)
@@ -404,7 +405,11 @@ export const IntegrationDetail = ({
                     )
                 }
 
-                if (extra === Tab.QuickReplies && isQuickRepliesEnabled) {
+                if (
+                    extra === Tab.QuickReplies &&
+                    isQuickRepliesEnabled &&
+                    !isRevampEnabled
+                ) {
                     return (
                         <GorgiasChatIntegrationQuickReplies
                             integration={integration}
@@ -412,7 +417,7 @@ export const IntegrationDetail = ({
                     )
                 }
 
-                if (extra === Tab.Campaigns) {
+                if (extra === Tab.Campaigns && !isRevampEnabled) {
                     return (
                         <GorgiasChatIntegrationCampaigns
                             integration={integration}

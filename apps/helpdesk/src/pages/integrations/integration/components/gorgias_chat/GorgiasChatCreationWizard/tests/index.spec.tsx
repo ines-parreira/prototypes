@@ -37,7 +37,7 @@ describe('GorgiasChatCreationWizardSwitcher', () => {
         render(<GorgiasChatCreationWizardSwitcher {...defaultProps} />)
 
         expect(mockUseFlag).toHaveBeenCalledWith(
-            FeatureFlagKey.ChatCreationWizardRevamp,
+            FeatureFlagKey.ChatSettingsRevamp,
         )
         expect(await screen.findByTestId('legacy-wizard')).toBeInTheDocument()
         expect(screen.queryByTestId('revamp-wizard')).not.toBeInTheDocument()
@@ -49,7 +49,7 @@ describe('GorgiasChatCreationWizardSwitcher', () => {
         render(<GorgiasChatCreationWizardSwitcher {...defaultProps} />)
 
         expect(mockUseFlag).toHaveBeenCalledWith(
-            FeatureFlagKey.ChatCreationWizardRevamp,
+            FeatureFlagKey.ChatSettingsRevamp,
         )
         expect(await screen.findByTestId('revamp-wizard')).toBeInTheDocument()
         expect(screen.queryByTestId('legacy-wizard')).not.toBeInTheDocument()

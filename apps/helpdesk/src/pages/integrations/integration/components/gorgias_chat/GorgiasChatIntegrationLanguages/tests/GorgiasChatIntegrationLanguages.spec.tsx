@@ -1,3 +1,5 @@
+import { useFlag } from '@repo/feature-flags'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,6 +14,7 @@ import { renderWithRouter } from 'utils/testing'
 
 import GorgiasChatIntegrationLanguages from '../GorgiasChatIntegrationLanguages'
 
+jest.mock('@repo/feature-flags')
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 jest.mock(
@@ -36,6 +39,7 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
 }))
 
 const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
+const mockUseFlag = useFlag as jest.Mock
 
 const defaultState: Partial<RootState> = {
     integrations: fromJS(integrationsState),
@@ -56,6 +60,7 @@ describe('GorgiasChatIntegrationLanguages', () => {
             hasAccess: false,
             isLoading: false,
         })
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('should render', () => {
@@ -67,5 +72,35 @@ describe('GorgiasChatIntegrationLanguages', () => {
                 />
             </Provider>,
         )
+    })
+
+    it('should render PageHeaderRevamped when ChatSettingsRevamp feature flag is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <GorgiasChatIntegrationLanguages
+                    loading={fromJS({})}
+                    integration={fromJS({ name: 'Test Integration' })}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByTestId('page-header-revamped')).toBeInTheDocument()
+    })
+
+    it('should render PageHeader when ChatSettingsRevamp feature flag is disabled', () => {
+        mockUseFlag.mockReturnValue(false)
+
+        const { container } = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <GorgiasChatIntegrationLanguages
+                    loading={fromJS({})}
+                    integration={fromJS({ name: 'Test Integration' })}
+                />
+            </Provider>,
+        )
+
+        expect(container.querySelector('.page-header')).toBeInTheDocument()
     })
 })

@@ -81,6 +81,7 @@ import { updateOrCreateIntegration } from '../../../../../../state/integrations/
 import { getIntegrationsByTypes } from '../../../../../../state/integrations/selectors'
 import type { RootState } from '../../../../../../state/types'
 import PageHeader from '../../../../../common/components/PageHeader'
+import PageHeaderRevamped from '../../../../../common/components/PageHeaderRevamped'
 import RadioFieldSet from '../../../../../common/forms/RadioFieldSet'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
 import { isGenericEmailIntegration } from '../../email/helpers'
@@ -963,20 +964,37 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                     </div>
                 </NavigatedSuccessModal>
                 <div className="full-width">
-                    <PageHeader
-                        title={
-                            <Breadcrumb>
-                                <BreadcrumbItem>
-                                    <Link
-                                        to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
-                                    >
-                                        Chat
-                                    </Link>
-                                </BreadcrumbItem>
-                                <BreadcrumbItem>{chatTitle}</BreadcrumbItem>
-                            </Breadcrumb>
-                        }
-                    />
+                    {this.props.flags?.[FeatureFlagKey.ChatSettingsRevamp] ? (
+                        <PageHeaderRevamped
+                            title={
+                                <Breadcrumb>
+                                    <BreadcrumbItem>
+                                        <Link
+                                            to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
+                                        >
+                                            Chat
+                                        </Link>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbItem>{chatTitle}</BreadcrumbItem>
+                                </Breadcrumb>
+                            }
+                        />
+                    ) : (
+                        <PageHeader
+                            title={
+                                <Breadcrumb>
+                                    <BreadcrumbItem>
+                                        <Link
+                                            to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
+                                        >
+                                            Chat
+                                        </Link>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbItem>{chatTitle}</BreadcrumbItem>
+                                </Breadcrumb>
+                            }
+                        />
+                    )}
 
                     <GorgiasChatIntegrationHeader
                         integration={integration}

@@ -55,10 +55,11 @@ const GorgiasChatIntegrationNavigation = ({ integration }: Props) => {
     const isChatMultiLanguagesEnabled = useFlag(
         FeatureFlagKey.ChatMultiLanguages,
     )
+    const isRevampEnabled = useFlag(FeatureFlagKey.ChatSettingsRevamp)
 
     return (
         <SecondaryNavbar>
-            {isQuickRepliesEnabled && (
+            {isQuickRepliesEnabled && !isRevampEnabled && (
                 <NavLink to={`${baseURL}/quick_replies`} exact>
                     Quick replies
                 </NavLink>
@@ -72,7 +73,9 @@ const GorgiasChatIntegrationNavigation = ({ integration }: Props) => {
             {isChatMultiLanguagesEnabled && (
                 <NavLink to={`${baseURL}/languages`}>Language</NavLink>
             )}
-            <NavLink to={`${baseURL}/campaigns`}>Campaigns</NavLink>
+            {!isRevampEnabled && (
+                <NavLink to={`${baseURL}/campaigns`}>Campaigns</NavLink>
+            )}
             <NavLink to={`${baseURL}/installation`} exact>
                 Installation
                 {!installationStatus.installed && (

@@ -14,7 +14,7 @@ import {
     GorgiasChatStatusEnum,
     IntegrationType,
 } from '../../../../../../models/integration/types'
-import GorgiasChatIntegrationList from '../GorgiasChatIntegrationList'
+import GorgiasChatIntegrationList from '../GorgiasChatIntegrationList/GorgiasChatIntegrationList'
 
 jest.mock('@repo/feature-flags')
 

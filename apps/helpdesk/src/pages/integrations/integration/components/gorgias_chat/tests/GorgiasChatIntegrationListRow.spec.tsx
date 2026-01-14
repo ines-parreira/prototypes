@@ -19,10 +19,10 @@ import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import * as hookGorgiasChatIntegrationStatusData from '../../../hooks/useGorgiasChatIntegrationStatusData'
-import type { GorgiasChatIntegrationListRowProps } from '../GorgiasChatIntegrationListRow'
+import type { GorgiasChatIntegrationListRowProps } from '../GorgiasChatIntegrationList/GorgiasChatIntegrationListRow'
 import GorgiasChatIntegrationListRow, {
     GorgiasChatIntegrationStatusFeedbackMapping,
-} from '../GorgiasChatIntegrationListRow'
+} from '../GorgiasChatIntegrationList/GorgiasChatIntegrationListRow'
 
 jest.mock('@repo/feature-flags')
 

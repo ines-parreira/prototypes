@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
@@ -8,6 +9,7 @@ import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { ConnectedChannelsChatView } from 'pages/automate/connectedChannels/components/ConnectedChannelsChatView'
 import PageHeader from 'pages/common/components/PageHeader'
+import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped'
 
 import { Tab } from '../../types'
 import GorgiasChatIntegrationHeader from './GorgiasChatIntegrationHeader'
@@ -18,6 +20,7 @@ interface Props {
     integration: Map<any, any>
 }
 export const GorgiasAutomateChatIntegration = ({ integration }: Props) => {
+    const isRevampEnabled = useFlag(FeatureFlagKey.ChatSettingsRevamp)
     const storeIntegrations = useStoreIntegrations()
     const shopIntegrationId: number | null = integration.getIn(
         ['meta', 'shop_integration_id'],
@@ -30,22 +33,41 @@ export const GorgiasAutomateChatIntegration = ({ integration }: Props) => {
     )
     return (
         <div className={css.container}>
-            <PageHeader
-                title={
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
-                            >
-                                Chat
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            {integration.get('name')}
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                }
-            ></PageHeader>
+            {isRevampEnabled ? (
+                <PageHeaderRevamped
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link
+                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
+                                >
+                                    Chat
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
+            ) : (
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link
+                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
+                                >
+                                    Chat
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
+            )}
             <GorgiasChatIntegrationHeader
                 integration={integration}
                 tab={Tab.Automate}

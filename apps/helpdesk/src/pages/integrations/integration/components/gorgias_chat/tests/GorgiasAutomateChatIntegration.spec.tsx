@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -13,6 +14,8 @@ import type { RootState } from 'state/types'
 
 import { GorgiasAutomateChatIntegration } from '../GorgiasAutomateChatIntegration'
 
+jest.mock('@repo/feature-flags')
+
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => {
     return jest.fn(() => [
         {
@@ -24,8 +27,16 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => {
 })
 jest.mock('react-router-dom', () => {
     return {
+        ...jest.requireActual('react-router-dom'),
         Link: () => 'Link',
         NavLink: () => 'NavLink',
+        useHistory: jest.fn(() => ({
+            push: jest.fn(),
+            replace: jest.fn(),
+            go: jest.fn(),
+            goBack: jest.fn(),
+            goForward: jest.fn(),
+        })),
     }
 })
 
@@ -55,6 +66,7 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
 }))
 
 const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
+const mockUseFlag = useFlag as jest.Mock
 
 const mockStore = configureMockStore([thunk])
 
@@ -81,6 +93,7 @@ describe('GorgiasAutomateChatIntegration', () => {
             hasAccess: false,
             isLoading: false,
         })
+        mockUseFlag.mockReturnValue(false)
     })
 
     it('should render', () => {
@@ -100,5 +113,45 @@ describe('GorgiasAutomateChatIntegration', () => {
 
         expect(screen.getByText('shopType')).toBeInTheDocument()
         expect(screen.getByText('channelId')).toBeInTheDocument()
+    })
+
+    it('should render PageHeaderRevamped when ChatSettingsRevamp feature flag is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+
+        render(
+            <Provider store={mockedStore}>
+                <GorgiasAutomateChatIntegration
+                    integration={Map({
+                        meta: Map({
+                            shop_integration_id: 1,
+                            app_id: 'channelId',
+                        }),
+                        name: 'integrationName',
+                    })}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByTestId('page-header-revamped')).toBeInTheDocument()
+    })
+
+    it('should render PageHeader when ChatSettingsRevamp feature flag is disabled', () => {
+        mockUseFlag.mockReturnValue(false)
+
+        const { container } = render(
+            <Provider store={mockedStore}>
+                <GorgiasAutomateChatIntegration
+                    integration={Map({
+                        meta: Map({
+                            shop_integration_id: 1,
+                            app_id: 'channelId',
+                        }),
+                        name: 'integrationName',
+                    })}
+                />
+            </Provider>,
+        )
+
+        expect(container.querySelector('.page-header')).toBeInTheDocument()
     })
 })

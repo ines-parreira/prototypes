@@ -8,19 +8,20 @@ import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
 import { Button } from '@gorgias/axiom'
 
+import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
-import { IntegrationType } from '../../../../../models/integration/types'
-import PageHeader from '../../../../common/components/PageHeader'
-import HeaderCell from '../../../../common/components/table/cells/HeaderCell'
-import HeaderCellProperty from '../../../../common/components/table/cells/HeaderCellProperty'
-import TableBody from '../../../../common/components/table/TableBody'
-import TableHead from '../../../../common/components/table/TableHead'
-import TableWrapper from '../../../../common/components/table/TableWrapper'
-import NoIntegration from '../NoIntegration'
+import { IntegrationType } from '../../../../../../models/integration/types'
+import PageHeader from '../../../../../common/components/PageHeader'
+import HeaderCell from '../../../../../common/components/table/cells/HeaderCell'
+import HeaderCellProperty from '../../../../../common/components/table/cells/HeaderCellProperty'
+import TableBody from '../../../../../common/components/table/TableBody'
+import TableHead from '../../../../../common/components/table/TableHead'
+import TableWrapper from '../../../../../common/components/table/TableWrapper'
+import NoIntegration from '../../NoIntegration'
 import GorgiasChatIntegrationListRow from './GorgiasChatIntegrationListRow'
 
-import settingsCss from '../../../../settings/settings.less'
+import settingsCss from '../../../../../settings/settings.less'
 import css from './GorgiasChatIntegrationList.less'
 
 type Props = {
@@ -62,30 +63,55 @@ function GorgiasChatIntegrationList({ integrations, loading }: Props) {
     )!.title
 
     const chatMultiLanguagesEnabled = useFlag(FeatureFlagKey.ChatMultiLanguages)
+    const isRevampEnabled = useFlag(FeatureFlagKey.ChatSettingsRevamp)
 
     return (
         <div className="w-100">
-            <PageHeader
-                title={
-                    <Breadcrumb>
-                        <BreadcrumbItem active>
-                            {integrationTitle}
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                }
-            >
-                <Button
-                    onClick={() =>
-                        history.push(
-                            `/app/settings/channels/${
-                                IntegrationType.GorgiasChat
-                            }/new/create-wizard`,
-                        )
+            {isRevampEnabled ? (
+                <PageHeaderRevamped
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem active>
+                                {integrationTitle}
+                            </BreadcrumbItem>
+                        </Breadcrumb>
                     }
                 >
-                    Add Chat
-                </Button>
-            </PageHeader>
+                    <Button
+                        onClick={() =>
+                            history.push(
+                                `/app/settings/channels/${
+                                    IntegrationType.GorgiasChat
+                                }/new/create-wizard`,
+                            )
+                        }
+                    >
+                        Add Chat
+                    </Button>
+                </PageHeaderRevamped>
+            ) : (
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem active>
+                                {integrationTitle}
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                >
+                    <Button
+                        onClick={() =>
+                            history.push(
+                                `/app/settings/channels/${
+                                    IntegrationType.GorgiasChat
+                                }/new/create-wizard`,
+                            )
+                        }
+                    >
+                        Add Chat
+                    </Button>
+                </PageHeader>
+            )}
 
             <Container
                 data-candu-id="integration-list-top"
