@@ -30,7 +30,8 @@
         "typecheck:affected": "nx affected --target=typecheck",
         "platform:deprecated-analysis": "pnpm static-analysis",
         "platform:check-node-engines": "tsx scripts/dependencies-management/dependencies-engines.ts",
-        "platform:update:sdk": "scripts/update-sdk.sh"
+        "platform:update:sdk": "scripts/update-sdk.sh",
+        "platform:test:memory-analysis": "tsx scripts/test-memory-analysis/analyze.ts"
     },
     "devDependencies": {
         "@gorgias/config": "^0.6.0",
