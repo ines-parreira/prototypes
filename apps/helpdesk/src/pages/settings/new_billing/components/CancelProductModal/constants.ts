@@ -13,61 +13,72 @@ export enum CancellationFlowStep {
 }
 
 export enum CancellationPrimaryReasonLabel {
-    Pricing = 'Pricing and Subscription',
-    DoesNotFitMyNeeds = 'Product Fit, Features and Roadmap',
-    EaseOfUse = 'Ease of Use, Adoption and Value Realization',
-    PerformanceAndReliability = 'Platform Performance and Reliability',
-    SupportAndService = 'Support and Services Experience',
-    SecurityAndCompliance = 'Security, Compliance and Legal',
+    Pricing = "Pricing or subscription didn't work for us",
+    DoesNotFitMyNeeds = "The product didn't fully meet our needs",
+    EaseOfUse = "We didn't get enough value or traction from the product",
+    PerformanceAndReliability = 'We had reliability or performance issues',
+    SupportAndService = "Support or services didn't meet our expectations",
+    InternalBusinessChange = 'Changes in our business or priorities',
+    SecurityAndCompliance = 'Security, compliance, or legal requirements',
 }
 
 export enum CancellationSecondaryReasonLabel {
     // Pricing & Subscription
-    TooExpensive = 'Too expensive for perceived value',
-    RenewalNotApproved = 'Renewal increase not approved',
-    CostForUsage = "Cost doesn't match usage level",
-    PricingModel = "Pricing model doesn't fit my needs",
-    LackOfSpendControl = 'Lack of spend control',
-    LackOfPaymentTermsFlexibility = 'Lack of payment terms or length terms flexibility',
-    InvoicingOrPaymentMethodIssues = 'Invoicing or payment method issues',
-    TaxesCurrencyOrFXFriction = 'Taxes, currency, or FX friction',
+    TooExpensive = 'Too expensive for the value we got',
+    RenewalNotApproved = "Our budget couldn't accommodate the renewal price",
+    CostForUsage = "Cost didn't match how much we actually used it",
+    PricingModel = "The pricing model didn't fit how we work",
+    LackOfSpendControl = 'Hard to predict or control our spending',
+    LackOfPaymentTermsFlexibility = 'Needed more flexible payment or contract terms',
+    InvoicingOrPaymentMethodIssues = 'Issues with invoicing or payment methods',
+    TaxesCurrencyOrFXFriction = 'Issues with taxes, currency, or exchange rates',
 
     // Product Fit, Features & Roadmap
-    CriticalFeaturesMissing = 'Critical features missing',
-    IntegrationGap = 'Integration gap with key systems',
-    CustomizationOrPermissionsLimited = 'Customization or permissions too limited',
-    RoadmapTimingWontMeetNeeds = "Roadmap timing won't meet needs",
-    UseCaseEvolvedBeyondProduct = 'Use case evolved beyond product scope',
-    ProductNegativelyImpactedBusiness = 'The product negatively impacted my business',
+    CriticalFeaturesMissing = 'Missing features we needed',
+    IntegrationGap = "Didn't integrate with the tools we use",
+    CustomizationOrPermissionsLimited = 'Not enough customization or permission controls',
+    RoadmapTimingWontMeetNeeds = "Upcoming features won't arrive in time for us",
+    UseCaseEvolvedBeyondProduct = 'Our needs grew beyond what the product can do',
+    ProductNegativelyImpactedBusiness = "The product didn't perform well or caused issues for our business",
 
     // Ease of Use, Adoption & Value Realization
     HardToLearnOrTooComplex = 'Hard to learn or too complex',
-    PoorOnboardingOrTraining = 'Poor onboarding, enablement or training',
-    LowInternalAdoptionOrUtilization = 'Low internal adoption or low utilization',
-    WorkflowMismatch = 'Workflow mismatch with team processes',
-    DontHaveBandwidthOrOtherPriorities = "Don't have the bandwidth to implement or I have other priorities",
-    SlowTimeToValue = 'Slow time-to-value',
-    InsufficientROIOrUnclearImpact = 'Insufficient ROI or unclear impact',
-    NotSolvingCoreNeeds = "Not solving company's core needs",
+    PoorOnboardingOrTraining = "Onboarding or training didn't set us up for success",
+    LowInternalAdoptionOrUtilization = "Our team didn't adopt it or don't use it enough",
+    WorkflowMismatch = "Didn't fit how our team works",
+    DontHaveBandwidthOrOtherPriorities = "We didn't have time to implement it properly",
+    SlowTimeToValue = 'Took too long to see results',
+    InsufficientROIOrUnclearImpact = "The value or impact wasn't clear",
+    NotSolvingCoreNeeds = "Wasn't solving our core problems",
 
     // Platform Performance & Reliability
-    DowntimeIssuesBugsOutagesOrIncidents = 'Downtime issues, bugs, outages, or incidents',
-    SlowPerformanceAndLatencyIssues = 'Slow performance and latency issues',
-    DataQualityAndAccuracyIssues = 'Data quality and accuracy issues',
-    ScaleLimitations = 'Scale limitations',
+    DowntimeIssuesBugsOutagesOrIncidents = 'Too many bugs, outages, or downtime',
+    SlowPerformanceAndLatencyIssues = 'Too slow or laggy',
+    DataQualityAndAccuracyIssues = 'Data quality or accuracy problems',
+    ScaleLimitations = "Couldn't scale with our needs",
 
     // Support & Services Experience
-    SlowOrIneffectiveSupport = 'Slow or ineffective support',
-    UnresolvedOpenIssues = 'Unresolved open issues',
-    LackOfSelfServeGuidance = 'Lack of self-serve guidance to manage my account',
-    LackOfProfessionalServices = 'Lack of Professional Services to optimize my account',
-    DocumentationNotSufficient = 'Documentation not sufficient',
+    SlowOrIneffectiveSupport = "Support was too slow or didn't solve our issues",
+    UnresolvedOpenIssues = 'Had issues that never got resolved',
+    LackOfSelfServeGuidance = 'Not enough self-serve resources to manage our account',
+    LackOfProfessionalServices = 'Needed more hands-on help to optimize our setup',
+    DocumentationNotSufficient = "Documentation wasn't enough",
+
+    // Internal Business & Strategic Factors
+    CompanyDownsizingOrClosure = 'Our company downsized or closed',
+    MergerAndAcquisition = 'Merger or acquisition',
+    ToolConsolidationOrBuildingInHouseSolution = 'Consolidating tools or building in-house',
+    TeamOrOrganizationalChanges = 'Team or organizational changes',
+    StrategicShift = 'Our business focus changed',
+    SeasonalPause = 'Seasonal pause',
+    ProcurementPolicyBarrier = "Procurement policy didn't allow it",
+    BudgetReductionOrSpendingFreeze = 'Budget cuts or spending freeze',
 
     // Security, Compliance & Legal
     DataPrivacyConcerns = 'Data privacy concerns',
-    MissingComplianceCertifications = 'Missing compliance certifications (SOC 2, HIPAA, GDPR, etc.)',
-    SecurityReviewNotPassed = 'Security review not passed',
-    ContractDPAOrLegalTermsMisalignment = 'Contract, DPA, or legal terms misalignment',
+    MissingComplianceCertifications = 'Missing certifications we required (SOC 2, HIPAA, GDPR, etc.)',
+    SecurityReviewNotPassed = "Didn't pass our security review",
+    ContractDPAOrLegalTermsMisalignment = "Contract or legal terms didn't work for us",
 }
 export const ProductCancellationReasons: CancellationReason[] = [
     {
@@ -165,6 +176,31 @@ export const ProductCancellationReasons: CancellationReason[] = [
             },
             {
                 label: CancellationSecondaryReasonLabel.DocumentationNotSufficient,
+            },
+        ],
+    },
+    {
+        primaryReason: {
+            label: CancellationPrimaryReasonLabel.InternalBusinessChange,
+        },
+        secondaryReasons: [
+            {
+                label: CancellationSecondaryReasonLabel.CompanyDownsizingOrClosure,
+            },
+            { label: CancellationSecondaryReasonLabel.MergerAndAcquisition },
+            {
+                label: CancellationSecondaryReasonLabel.ToolConsolidationOrBuildingInHouseSolution,
+            },
+            {
+                label: CancellationSecondaryReasonLabel.TeamOrOrganizationalChanges,
+            },
+            { label: CancellationSecondaryReasonLabel.StrategicShift },
+            { label: CancellationSecondaryReasonLabel.SeasonalPause },
+            {
+                label: CancellationSecondaryReasonLabel.ProcurementPolicyBarrier,
+            },
+            {
+                label: CancellationSecondaryReasonLabel.BudgetReductionOrSpendingFreeze,
             },
         ],
     },
