@@ -88,4 +88,33 @@ describe('SummaryItem', () => {
         // Replace '50' with the expected old price you want to display
         expect(screen.getByLabelText('Old price')).toBeInTheDocument()
     })
+
+    it('displays $0 price and applies strikethrough when scheduledToCancelAt is set', () => {
+        const { container } = render(
+            <SummaryItem
+                {...props}
+                scheduledToCancelAt="2024-12-31T00:00:00Z"
+            />,
+        )
+
+        expect(screen.getByText(/\$0/)).toBeInTheDocument()
+
+        // Verify strikethrough class is applied to the price div
+        const priceDiv = container.querySelector('.price')
+        expect(priceDiv).toHaveClass('strikeThrough')
+    })
+
+    it('displays regular price when scheduledToCancelAt is null', () => {
+        render(<SummaryItem {...props} scheduledToCancelAt={null} />)
+
+        expect(screen.getByText(/\$60/)).toBeInTheDocument()
+        expect(screen.queryByText(/\$0/)).not.toBeInTheDocument()
+    })
+
+    it('displays regular price when scheduledToCancelAt is undefined', () => {
+        render(<SummaryItem {...props} />)
+
+        expect(screen.getByText(/\$60/)).toBeInTheDocument()
+        expect(screen.queryByText(/\$0/)).not.toBeInTheDocument()
+    })
 })

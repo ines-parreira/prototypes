@@ -60,6 +60,7 @@ export type ProductPlanSelectionProps = {
     customer?: CustomerSummary | null
     updateSubscription: () => Promise<unknown>
     scheduledToCancelAt?: string | null
+    cancelledProducts?: ProductType[]
 }
 
 const ProductPlanSelection = ({
@@ -77,6 +78,7 @@ const ProductPlanSelection = ({
     customer,
     updateSubscription,
     scheduledToCancelAt,
+    cancelledProducts = [],
 }: ProductPlanSelectionProps) => {
     const productInfo = getProductInfo(type, currentPlan)
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -596,6 +598,7 @@ const ProductPlanSelection = ({
                         setIsCancellationFlowOpen(false)
                     }}
                     updateSubscription={updateSubscription}
+                    cancelledProducts={cancelledProducts}
                 />
             )}
         </div>

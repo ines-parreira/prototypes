@@ -29,6 +29,7 @@ export type SummaryItemProps = {
     availablePlans?: Plan[]
     selectedPlans: SelectedPlans
     isFrequencyChanged?: boolean
+    scheduledToCancelAt?: string | null
 }
 
 const SummaryItem = ({
@@ -38,6 +39,7 @@ const SummaryItem = ({
     availablePlans = [],
     selectedPlans,
     isFrequencyChanged = false,
+    scheduledToCancelAt,
 }: SummaryItemProps) => {
     const selectedPlan = selectedPlans[productType]
     const productInfo = getProductInfo(productType, selectedPlan.plan)
@@ -101,7 +103,8 @@ const SummaryItem = ({
         <div className={css.container}>
             <div
                 className={classNames(css.details, {
-                    [css.strikeThrough]: !selectedPlan.isSelected,
+                    [css.strikeThrough]:
+                        !selectedPlan.isSelected || !!scheduledToCancelAt,
                 })}
             >
                 <div className={css.title}>{productInfo.title}</div>
@@ -114,7 +117,8 @@ const SummaryItem = ({
             </div>
             <div
                 className={classNames(css.price, {
-                    [css.strikeThrough]: !selectedPlan.isSelected,
+                    [css.strikeThrough]:
+                        !selectedPlan.isSelected || !!scheduledToCancelAt,
                 })}
             >
                 {!!oldPlanPrice &&
@@ -131,7 +135,13 @@ const SummaryItem = ({
                     </>
                 ) : (
                     <>
-                        <span>{formatAmount(price, currency)}</span>/{cadence}
+                        <span>
+                            {formatAmount(
+                                !!scheduledToCancelAt ? 0 : price,
+                                currency,
+                            )}
+                        </span>
+                        /{cadence}
                     </>
                 )}
                 {selectedPlan.isSelected &&

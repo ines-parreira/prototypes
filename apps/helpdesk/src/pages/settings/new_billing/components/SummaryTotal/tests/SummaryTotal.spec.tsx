@@ -364,6 +364,62 @@ describe('SummaryTotal with coupons', () => {
         })
     })
 
+    it('should subtract totalCancelledAmount from total price', () => {
+        const totalCancelledAmount = 3000
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                totalCancelledAmount={totalCancelledAmount}
+            />,
+        )
+
+        const expectedTotal = (totalProductAmount - totalCancelledAmount) / 100
+        expect(screen.getByLabelText('Total price')).toHaveTextContent(
+            `$${expectedTotal}`,
+        )
+    })
+
+    it('should subtract totalCancelledAmount from old price when displayed', () => {
+        const totalCancelledAmount = 3000
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmountDifferent}
+                cadence={cadence}
+                currency={currency}
+                totalCancelledAmount={totalCancelledAmount}
+            />,
+        )
+
+        const expectedOldPrice =
+            (totalProductAmountDifferent - totalCancelledAmount) / 100
+        expect(screen.getByLabelText('Old price')).toHaveTextContent(
+            `$${expectedOldPrice}`,
+        )
+    })
+
+    it('should handle zero totalCancelledAmount', () => {
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                totalCancelledAmount={0}
+            />,
+        )
+
+        const expectedTotal = totalProductAmount / 100
+        expect(screen.getByLabelText('Total price')).toHaveTextContent(
+            `$${expectedTotal}`,
+        )
+    })
+
     it('should correctly calculate discount with amount_off_in_cents coupon', async () => {
         mockedServer.onGet('/billing/state').reply(200, {
             customer: {

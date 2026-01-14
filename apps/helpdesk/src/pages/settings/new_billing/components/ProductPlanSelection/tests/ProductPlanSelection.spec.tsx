@@ -227,6 +227,7 @@ describe('ProductPlanSelection', () => {
             setSelectedPlans: expect.any(Function),
             onCancellationConfirmed: expect.any(Function),
             updateSubscription: expect.any(Function),
+            cancelledProducts: [],
         }
 
         const { getByTestId } = render(

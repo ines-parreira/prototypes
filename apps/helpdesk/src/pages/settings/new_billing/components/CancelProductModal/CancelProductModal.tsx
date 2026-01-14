@@ -61,6 +61,7 @@ type CancelProductModelProps = {
     setSelectedPlans: React.Dispatch<React.SetStateAction<SelectedPlans>>
     onCancellationConfirmed?: () => void
     updateSubscription: () => Promise<unknown>
+    cancelledProducts?: ProductType[]
 }
 
 const getModalHeaderTitle = (
@@ -91,6 +92,7 @@ const CancelProductModal = ({
     setSelectedPlans,
     onCancellationConfirmed,
     updateSubscription,
+    cancelledProducts = [],
 }: CancelProductModelProps) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -424,6 +426,7 @@ const CancelProductModal = ({
                                     productCancellationScenario.productsToCancel
                                 }
                                 periodEnd={periodEnd}
+                                cancelledProducts={cancelledProducts}
                             />
                         }
                         footer={

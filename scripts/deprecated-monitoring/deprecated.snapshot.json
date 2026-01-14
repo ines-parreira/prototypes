@@ -1,6 +1,6 @@
 {
-  "date": "2026-01-12T13:09:06.663Z",
-  "total": 4012,
+  "date": "2026-01-14T09:55:24.662Z",
+  "total": 4010,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -3127,7 +3127,7 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1474,
+      "count": 1472,
       "usages": [
         {
           "name": "LegacyButton",
@@ -4537,7 +4537,7 @@
         },
         {
           "name": "LegacyBanner",
-          "count": 39,
+          "count": 37,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/AlertBanner.tsx",
             "apps/helpdesk/src/domains/reporting/pages/automate/aiSalesAgent/components/SalesOverview.tsx",
@@ -4546,8 +4546,6 @@
             "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/SyncIngestionDomainBanner.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceHeader/GuidanceHeader.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/KnowledgeEditorGuidanceVersionBanner.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/ArticleVersionBanner.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/ChannelToggleInput.tsx",
             "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/SyncStoreDomainBanner.tsx",
             "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/AiAgentPlayground.tsx",

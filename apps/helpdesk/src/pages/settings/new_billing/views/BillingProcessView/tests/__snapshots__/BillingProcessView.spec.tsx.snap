@@ -466,34 +466,8 @@ exports[`BillingProcessView should render 1`] = `
               </div>
             </div>
             <div
-              class="container"
-            >
-              <div
-                class="total"
-              >
-                <div
-                  class="totalTitle"
-                >
-                  Total
-                </div>
-                <div
-                  class="totalPrice"
-                >
-                  <span
-                    aria-label="Total price"
-                  >
-                    $60
-                  </span>
-                  /
-                  month
-                </div>
-              </div>
-              <div
-                class="disclaimer"
-              >
-                Prices exclusive of sales tax
-              </div>
-            </div>
+              data-testid="summary-total"
+            />
           </div>
           <div
             class="container"

@@ -1005,6 +1005,7 @@ describe('CancelProductModal: step 4', () => {
                     HELPDESK_CANCELLATION_SCENARIO.productsToCancel,
                 subscriptionProducts: subscriptionProducts,
                 periodEnd: periodEnd,
+                cancelledProducts: [],
             },
             {},
         )

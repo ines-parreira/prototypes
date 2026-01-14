@@ -274,4 +274,144 @@ describe('CancellationSummary', () => {
             {},
         )
     })
+
+    it('marks products as stricken out when they are in cancelledProducts', () => {
+        const cancellingProducts: ProductType[] = []
+        const cancelledProducts = [ProductType.Voice, ProductType.SMS]
+
+        const { getByTestId } = render(
+            <CancellationSummary
+                subscriptionProducts={subscriptionProducts}
+                cancellingProducts={cancellingProducts}
+                cancelledProducts={cancelledProducts}
+                periodEnd="February 14, 2024"
+            />,
+        )
+
+        expect(getByTestId('summary-body')).toBeInTheDocument()
+        expect(SummaryBodyMock).toHaveBeenCalledWith(
+            {
+                items: [
+                    {
+                        title: 'Helpdesk',
+                        label: 'Pro - ',
+                        cadence: Cadence.Year,
+                        quotaAmount: 100,
+                        counter: 'tickets',
+                        amount: '$1,000',
+                        strickenOut: false,
+                    },
+                    {
+                        title: 'AI Agent',
+                        label: null,
+                        cadence: Cadence.Year,
+                        quotaAmount: 100,
+                        counter: 'automated interactions',
+                        amount: '$1,000',
+                        strickenOut: false,
+                    },
+                    {
+                        title: 'Convert',
+                        label: null,
+                        cadence: Cadence.Year,
+                        quotaAmount: 100,
+                        counter: 'clicks',
+                        amount: '$1,000',
+                        strickenOut: false,
+                    },
+                    {
+                        title: 'SMS',
+                        label: null,
+                        cadence: Cadence.Year,
+                        quotaAmount: 100,
+                        counter: 'SMS tickets',
+                        amount: '$1,000',
+                        strickenOut: true,
+                    },
+                    {
+                        title: 'Voice',
+                        label: null,
+                        cadence: Cadence.Year,
+                        quotaAmount: 100,
+                        counter: 'voice tickets',
+                        amount: '$1,000',
+                        strickenOut: true,
+                    },
+                ],
+                cadence: Cadence.Year,
+                total: 3000,
+            },
+            {},
+        )
+    })
+
+    it('marks products as stricken out when they are in both cancellingProducts and cancelledProducts', () => {
+        const cancellingProducts = [ProductType.Automation]
+        const cancelledProducts = [ProductType.Voice]
+
+        const { getByTestId } = render(
+            <CancellationSummary
+                subscriptionProducts={subscriptionProducts}
+                cancellingProducts={cancellingProducts}
+                cancelledProducts={cancelledProducts}
+                periodEnd="February 14, 2024"
+            />,
+        )
+
+        expect(getByTestId('summary-body')).toBeInTheDocument()
+        expect(SummaryBodyMock).toHaveBeenCalledWith(
+            {
+                items: [
+                    {
+                        title: 'Helpdesk',
+                        label: 'Pro - ',
+                        cadence: Cadence.Year,
+                        quotaAmount: 100,
+                        counter: 'tickets',
+                        amount: '$1,000',
+                        strickenOut: false,
+                    },
+                    {
+                        title: 'SMS',
+                        label: null,
+                        cadence: Cadence.Year,
+                        quotaAmount: 100,
+                        counter: 'SMS tickets',
+                        amount: '$1,000',
+                        strickenOut: false,
+                    },
+                    {
+                        title: 'Convert',
+                        label: null,
+                        cadence: Cadence.Year,
+                        quotaAmount: 100,
+                        counter: 'clicks',
+                        amount: '$1,000',
+                        strickenOut: false,
+                    },
+                    {
+                        title: 'AI Agent',
+                        label: null,
+                        cadence: Cadence.Year,
+                        quotaAmount: 100,
+                        counter: 'automated interactions',
+                        amount: '$1,000',
+                        strickenOut: true,
+                    },
+                    {
+                        title: 'Voice',
+                        label: null,
+                        cadence: Cadence.Year,
+                        quotaAmount: 100,
+                        counter: 'voice tickets',
+                        amount: '$1,000',
+                        strickenOut: true,
+                    },
+                ],
+                cadence: Cadence.Year,
+                total: 3000,
+            },
+            {},
+        )
+    })
 })

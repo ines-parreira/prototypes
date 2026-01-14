@@ -232,13 +232,15 @@ export const useBillingPlans = ({
             (currentHelpdeskPlan?.amount ?? 0) +
             (currentAutomatePlan?.amount ?? 0) +
             (currentVoicePlan?.amount ?? 0) +
-            (currentSmsPlan?.amount ?? 0)
+            (currentSmsPlan?.amount ?? 0) +
+            (currentConvertPlan?.amount ?? 0)
         )
     }, [
         currentHelpdeskPlan,
         currentAutomatePlan,
         currentVoicePlan,
         currentSmsPlan,
+        currentConvertPlan,
     ])
 
     const anyProductChanged = useMemo(

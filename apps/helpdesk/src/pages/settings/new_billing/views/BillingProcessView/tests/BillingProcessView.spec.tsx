@@ -26,6 +26,7 @@ import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
+import SummaryTotal from '../../../components/SummaryTotal'
 import useProductCancellations from '../../../hooks/useProductCancellations'
 import BillingProcessView from '../BillingProcessView'
 
@@ -40,11 +41,15 @@ jest.mock(
         jest.fn(() => <div data-testid="scheduled-cancellation-summary"></div>),
 )
 jest.mock('pages/settings/new_billing/hooks/useProductCancellations')
+jest.mock('../../../components/SummaryTotal/SummaryTotal', () =>
+    jest.fn(() => <div data-testid="summary-total"></div>),
+)
 
 const ScheduledCancellationSummaryMock = assumeMock(
     ScheduledCancellationSummary,
 )
 const mockUseProductCancellations = assumeMock(useProductCancellations)
+const SummaryTotalMock = assumeMock(SummaryTotal)
 
 // Mock PendingChangesModal to capture props
 jest.mock(
@@ -102,11 +107,13 @@ describe('BillingProcessView', () => {
             data: new Map(),
         } as any)
         logEventMock.mockClear()
+        SummaryTotalMock.mockClear()
     })
 
     afterEach(() => {
         mockUseProductCancellations.mockReset()
         logEventMock.mockReset()
+        SummaryTotalMock.mockReset()
     })
 
     it('should render', async () => {
@@ -428,7 +435,19 @@ describe('BillingProcessView', () => {
                             invoices: [],
                             products,
                             currentProductsUsage: {
-                                helpdesk: null,
+                                helpdesk: {
+                                    data: {
+                                        extra_tickets_cost_in_cents: 0,
+                                        num_extra_tickets: 0,
+                                        num_tickets: 0,
+                                    },
+                                    meta: {
+                                        subscription_start_datetime:
+                                            '2021-01-01T00:00:00Z',
+                                        subscription_end_datetime:
+                                            '2021-02-01T00:00:00Z',
+                                    },
+                                },
                                 automation:
                                     usageKey === 'automation'
                                         ? currentProductsUsage.automation
@@ -450,6 +469,8 @@ describe('BillingProcessView', () => {
                         currentAccount: fromJS({
                             current_subscription: {
                                 products: {
+                                    [HELPDESK_PRODUCT_ID]:
+                                        basicMonthlyHelpdeskPlan.plan_id,
                                     [productId]: plan.plan_id,
                                 },
                                 scheduled_to_cancel_at: null,
@@ -484,6 +505,17 @@ describe('BillingProcessView', () => {
                     expect(
                         screen.getByText(/Active until December 31, 2025/i),
                     ).toBeInTheDocument()
+
+                    // Verify that the cancelled product shows $0 price
+                    expect(screen.getByText(/\$0/)).toBeInTheDocument()
+
+                    // Verify that SummaryTotal receives the correct totalCancelledAmount
+                    expect(SummaryTotalMock).toHaveBeenCalledWith(
+                        expect.objectContaining({
+                            totalCancelledAmount: plan.amount,
+                        }),
+                        expect.anything(),
+                    )
                 })
 
                 it('should pass null when product exists but has no scheduled cancellation', async () => {
@@ -497,7 +529,19 @@ describe('BillingProcessView', () => {
                             invoices: [],
                             products,
                             currentProductsUsage: {
-                                helpdesk: null,
+                                helpdesk: {
+                                    data: {
+                                        extra_tickets_cost_in_cents: 0,
+                                        num_extra_tickets: 0,
+                                        num_tickets: 0,
+                                    },
+                                    meta: {
+                                        subscription_start_datetime:
+                                            '2021-01-01T00:00:00Z',
+                                        subscription_end_datetime:
+                                            '2021-02-01T00:00:00Z',
+                                    },
+                                },
                                 automation:
                                     usageKey === 'automation'
                                         ? currentProductsUsage.automation
@@ -519,6 +563,8 @@ describe('BillingProcessView', () => {
                         currentAccount: fromJS({
                             current_subscription: {
                                 products: {
+                                    [HELPDESK_PRODUCT_ID]:
+                                        basicMonthlyHelpdeskPlan.plan_id,
                                     [productId]: plan.plan_id,
                                 },
                                 scheduled_to_cancel_at: null,
@@ -550,10 +596,22 @@ describe('BillingProcessView', () => {
                         ).toBeInTheDocument()
                     })
 
-                    expect(screen.getByText('Active')).toBeInTheDocument()
+                    const activeStatuses = screen.getAllByText('Active')
+                    expect(activeStatuses.length).toBe(2)
                     expect(
                         screen.queryByText(/Active until/i),
                     ).not.toBeInTheDocument()
+
+                    // Verify that active products don't show $0 price
+                    expect(screen.queryByText(/^\$0$/)).not.toBeInTheDocument()
+
+                    // Verify that SummaryTotal receives totalCancelledAmount of 0
+                    expect(SummaryTotalMock).toHaveBeenCalledWith(
+                        expect.objectContaining({
+                            totalCancelledAmount: 0,
+                        }),
+                        expect.anything(),
+                    )
                 })
             },
         )
@@ -629,6 +687,19 @@ describe('BillingProcessView', () => {
             expect(
                 screen.getByText(/Active until November 30, 2025/i),
             ).toBeInTheDocument()
+
+            // Verify that both cancelled products show $0 price
+            const zeroPrices = screen.getAllByText(/\$0/)
+            expect(zeroPrices.length).toBeGreaterThanOrEqual(2)
+
+            // Verify that SummaryTotal receives the sum of both cancelled products
+            expect(SummaryTotalMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    totalCancelledAmount:
+                        basicMonthlyAutomationPlan.amount + convertPlan1.amount,
+                }),
+                expect.anything(),
+            )
         })
 
         it('should pass null when no current plan exists for product', async () => {

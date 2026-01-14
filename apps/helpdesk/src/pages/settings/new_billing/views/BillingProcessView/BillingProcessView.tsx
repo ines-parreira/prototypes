@@ -158,8 +158,53 @@ const BillingProcessView = ({
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
     const productCancellationsQuery = useProductCancellations()
-    const cancellationsByPlanId =
-        productCancellationsQuery.data ?? new Map<string, string>()
+    const cancellationsByPlanId = useMemo(
+        () => productCancellationsQuery.data ?? new Map<string, string>(),
+        [productCancellationsQuery.data],
+    )
+    const getScheduledCancellationPlanId = (
+        cancellationsByPlanId: Map<string, string>,
+        plan?: AutomatePlan | SMSOrVoicePlan | ConvertPlan,
+    ) => (plan ? cancellationsByPlanId.get(plan.plan_id) || null : null)
+    const { totalCancelledAmount, cancelledProducts } = useMemo(() => {
+        let result = 0
+        const automatePlanId = getScheduledCancellationPlanId(
+            cancellationsByPlanId,
+            currentAutomatePlan,
+        )
+        const voicePlanId = getScheduledCancellationPlanId(
+            cancellationsByPlanId,
+            currentVoicePlan,
+        )
+        const smsPlanId = getScheduledCancellationPlanId(
+            cancellationsByPlanId,
+            currentSmsPlan,
+        )
+        const convertPlanId = getScheduledCancellationPlanId(
+            cancellationsByPlanId,
+            currentConvertPlan,
+        )
+        result += automatePlanId ? (currentAutomatePlan?.amount ?? 0) : 0
+        result += voicePlanId ? (currentVoicePlan?.amount ?? 0) : 0
+        result += smsPlanId ? (currentSmsPlan?.amount ?? 0) : 0
+        result += convertPlanId ? (currentConvertPlan?.amount ?? 0) : 0
+        const cancelledProducts: ProductType[] = []
+        automatePlanId ? cancelledProducts.push(ProductType.Automation) : null
+        voicePlanId ? cancelledProducts.push(ProductType.Voice) : null
+        smsPlanId ? cancelledProducts.push(ProductType.SMS) : null
+        convertPlanId ? cancelledProducts.push(ProductType.Convert) : null
+        return {
+            totalCancelledAmount: result,
+            cancelledProducts: cancelledProducts,
+        }
+    }, [
+        cancellationsByPlanId,
+        currentAutomatePlan,
+        currentVoicePlan,
+        currentSmsPlan,
+        currentConvertPlan,
+    ])
+
     // on page unload, remove error notification
     useEffect(() => {
         return () => {
@@ -288,6 +333,10 @@ const BillingProcessView = ({
                         currentPlan={currentAutomatePlan}
                         availablePlans={automateAvailablePlans}
                         selectedPlans={selectedPlans}
+                        scheduledToCancelAt={getScheduledCancellationPlanId(
+                            cancellationsByPlanId,
+                            currentAutomatePlan,
+                        )}
                     />
                     <SummaryItem
                         productType={ProductType.Voice}
@@ -295,6 +344,10 @@ const BillingProcessView = ({
                         currentPlan={currentVoicePlan}
                         availablePlans={voiceAvailablePlans}
                         selectedPlans={selectedPlans}
+                        scheduledToCancelAt={getScheduledCancellationPlanId(
+                            cancellationsByPlanId,
+                            currentVoicePlan,
+                        )}
                     />
                     <SummaryItem
                         productType={ProductType.SMS}
@@ -302,6 +355,10 @@ const BillingProcessView = ({
                         currentPlan={currentSmsPlan}
                         availablePlans={smsAvailablePlans}
                         selectedPlans={selectedPlans}
+                        scheduledToCancelAt={getScheduledCancellationPlanId(
+                            cancellationsByPlanId,
+                            currentSmsPlan,
+                        )}
                     />
                     <SummaryItem
                         productType={ProductType.Convert}
@@ -309,10 +366,15 @@ const BillingProcessView = ({
                         currentPlan={currentConvertPlan}
                         availablePlans={convertAvailablePlans}
                         selectedPlans={selectedPlans}
+                        scheduledToCancelAt={getScheduledCancellationPlanId(
+                            cancellationsByPlanId,
+                            currentConvertPlan,
+                        )}
                     />
                     <SummaryTotal
                         selectedPlans={selectedPlans}
                         totalProductAmount={totalProductAmount}
+                        totalCancelledAmount={totalCancelledAmount}
                         cadence={cadence}
                         currency={helpdeskAvailablePlans?.[0].currency}
                     />
@@ -393,6 +455,7 @@ const BillingProcessView = ({
                                       null
                                     : null
                             }
+                            cancelledProducts={cancelledProducts}
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -418,6 +481,7 @@ const BillingProcessView = ({
                                       )
                                     : null
                             }
+                            cancelledProducts={cancelledProducts}
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -443,6 +507,7 @@ const BillingProcessView = ({
                                       null
                                     : null
                             }
+                            cancelledProducts={cancelledProducts}
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -468,6 +533,7 @@ const BillingProcessView = ({
                                       null
                                     : null
                             }
+                            cancelledProducts={cancelledProducts}
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -493,6 +559,7 @@ const BillingProcessView = ({
                                       null
                                     : null
                             }
+                            cancelledProducts={cancelledProducts}
                         />
                     </div>
                 </Card>

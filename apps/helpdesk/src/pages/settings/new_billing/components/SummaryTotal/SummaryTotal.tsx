@@ -20,6 +20,7 @@ export type SummaryTotalProps = {
     cadence?: Cadence
     currency: string
     isFrequencyChanged?: boolean
+    totalCancelledAmount?: number
 }
 
 const SummaryTotal = ({
@@ -28,6 +29,7 @@ const SummaryTotal = ({
     cadence = Cadence.Month,
     currency,
     isFrequencyChanged = false,
+    totalCancelledAmount = 0,
 }: SummaryTotalProps) => {
     // Get the total amount of the selected plans
     const amountSelectedPlans = useMemo(() => {
@@ -72,11 +74,18 @@ const SummaryTotal = ({
                                 className={css.oldPrice}
                                 aria-label="Old price"
                             >
-                                {formatAmount(oldPlanPrice / 100, currency)}
+                                {formatAmount(
+                                    (oldPlanPrice - totalCancelledAmount) / 100,
+                                    currency,
+                                )}
                             </div>
                         )}
                         <span aria-label="Total price">
-                            {formatAmount(amountSelectedPlans / 100, currency)}
+                            {formatAmount(
+                                (amountSelectedPlans - totalCancelledAmount) /
+                                    100,
+                                currency,
+                            )}
                         </span>
                         /{cadence}
                     </div>
