@@ -44,9 +44,10 @@ export const usePlaygroundPanelInKnowledgeEditor = (isFullscreen: boolean) => {
             return '100vw'
         }
 
-        // Otherwise, use responsive width with 918px minimum
-        // This maintains 66vw on larger screens, but never goes below 918px
-        return 'calc(max(918px, 66vw))'
+        // Otherwise, use responsive width with 920px minimum
+        // This maintains 66vw on larger screens, but never goes below 920px.
+        // By default, side panel width gets "- calc(var(--spacing-xs) * 2))" we need to remove that to maintain proper size
+        return 'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))'
     }, [isFullscreen, isPlaygroundOpen, windowWidth])
 
     return {

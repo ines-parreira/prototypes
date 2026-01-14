@@ -26,7 +26,9 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 usePlaygroundPanelInKnowledgeEditor(false),
             )
 
-            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))',
+            )
         })
 
         it('should calculate side panel width for fullscreen mode', () => {
@@ -76,7 +78,9 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 usePlaygroundPanelInKnowledgeEditor(false),
             )
 
-            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))',
+            )
 
             act(() => {
                 result.current.onTest()
@@ -134,17 +138,21 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 result.current.onClosePlayground()
             })
 
-            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))',
+            )
         })
     })
 
     describe('sidePanelWidth calculation', () => {
-        it('should return calc(max(918px, 66vw)) when neither fullscreen nor playground is open', () => {
+        it('should return calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2)) when neither fullscreen nor playground is open', () => {
             const { result } = renderHook(() =>
                 usePlaygroundPanelInKnowledgeEditor(false),
             )
 
-            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))',
+            )
         })
 
         it('should return 100vw when fullscreen is enabled but playground is closed', () => {
@@ -188,7 +196,9 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 { initialProps: { isFullscreen: false } },
             )
 
-            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))',
+            )
 
             rerender({ isFullscreen: true })
 
@@ -348,7 +358,9 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
 
             rerender({ isFullscreen: false })
 
-            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))',
+            )
         })
     })
 
@@ -357,14 +369,16 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
             mockUseScreenSize.mockReturnValue([1920, 1080])
         })
 
-        it('should use calc(max(918px, 66vw)) when viewport >= 918px and not fullscreen', () => {
+        it('should use calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2)) when viewport >= 918px and not fullscreen', () => {
             mockUseScreenSize.mockReturnValue([1920, 1080])
 
             const { result } = renderHook(() =>
                 usePlaygroundPanelInKnowledgeEditor(false),
             )
 
-            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))',
+            )
         })
 
         it('should use 100vw when viewport < 918px (auto-fullscreen)', () => {
@@ -419,7 +433,9 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 usePlaygroundPanelInKnowledgeEditor(false),
             )
 
-            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))',
+            )
 
             // Simulate viewport shrinking below 918px
             mockUseScreenSize.mockReturnValue([900, 600])
@@ -431,7 +447,9 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
             mockUseScreenSize.mockReturnValue([1920, 1080])
             rerender()
 
-            expect(result.current.sidePanelWidth).toBe('calc(max(918px, 66vw))')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))',
+            )
         })
     })
 })

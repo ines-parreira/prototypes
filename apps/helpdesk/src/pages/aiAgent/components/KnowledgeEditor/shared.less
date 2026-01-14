@@ -23,9 +23,9 @@
     .editor {
         flex: 1;
         min-width: 0;
-        background: white;
-        border-radius: var(--main-alternative-m, 12px); // legacy
+        width: 100%;
     }
+
     .loader {
         display: flex;
         align-items: center;
@@ -45,11 +45,5 @@
     }
     [data-name='knowledge-editor-top-bar-container'] {
         height: 58px;
-    }
-}
-
-.axiom :local {
-    .editor {
-        background: var(--elevation-neutral-default);
     }
 }

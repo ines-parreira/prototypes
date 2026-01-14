@@ -33,6 +33,18 @@ jest.mock('@gorgias/axiom', () => ({
                 {children}
             </div>
         ) : null,
+    Card: ({
+        children,
+        className,
+    }: {
+        children: React.ReactNode
+        className?: string
+        elevation?: string
+    }) => (
+        <div data-testid="card" className={className}>
+            {children}
+        </div>
+    ),
     LegacyLoadingSpinner: () => (
         <div data-testid="loading-spinner">Loading</div>
     ),

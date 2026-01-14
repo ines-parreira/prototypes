@@ -1,4 +1,4 @@
-import { Skeleton } from '@gorgias/axiom'
+import { Card, Skeleton } from '@gorgias/axiom'
 
 import { KnowledgeEditorContentSkeleton } from './KnowledgeEditorContentSkeleton'
 import { KnowledgeEditorSidePanel } from './KnowledgeEditorSidePanel/KnowledgeEditorSidePanel'
@@ -9,7 +9,7 @@ import css from './shared.less'
 
 export const KnowledgeEditorLoadingShell = () => {
     return (
-        <div>
+        <Card elevation="mid" padding={0} width={'100%'}>
             {/* Top Bar with Loading State */}
             <div
                 className={topBarCss.container}
@@ -37,6 +37,6 @@ export const KnowledgeEditorLoadingShell = () => {
                     <KnowledgeEditorSidePanelSkeleton />
                 </KnowledgeEditorSidePanel>
             </div>
-        </div>
+        </Card>
     )
 }

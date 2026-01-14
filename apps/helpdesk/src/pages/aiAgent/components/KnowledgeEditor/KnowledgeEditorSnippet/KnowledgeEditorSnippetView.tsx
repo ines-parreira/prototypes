@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { Card } from '@gorgias/axiom'
+
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 
 import type { Props as ImpactProps } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
@@ -138,7 +140,11 @@ export const KnowledgeEditorSnippetView = ({
     }
 
     return (
-        <div className={css.knowledgeEditorContainer}>
+        <Card
+            elevation="mid"
+            className={css.knowledgeEditorContainer}
+            padding={0}
+        >
             <KnowledgeEditorTopBar
                 title={'Snippet'}
                 onClickPrevious={onClickPrevious}
@@ -166,6 +172,6 @@ export const KnowledgeEditorSnippetView = ({
                 </div>
                 {isDetailsView && renderSidePanel()}
             </div>
-        </div>
+        </Card>
     )
 }

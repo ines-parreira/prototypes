@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-import { SidePanel } from '@gorgias/axiom'
+import { Card, SidePanel } from '@gorgias/axiom'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import { useNotify } from 'hooks/useNotify'
@@ -75,11 +75,11 @@ const ArticleEditorInner = ({ isLoading }: { isLoading: boolean }) => {
                 <KnowledgeEditorLoadingShell />
             ) : (
                 <div className={css.splitView}>
-                    <div className={css.editor}>
+                    <Card elevation="mid" className={css.editor} padding={0}>
                         <ArticleEditorContent
                             closeHandlerRef={closeHandlerRef}
                         />
-                    </div>
+                    </Card>
                     {playground.isOpen && (
                         <div className={css.playground}>
                             <PlaygroundPanel onClose={playground.onClose} />
