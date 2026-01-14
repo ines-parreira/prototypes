@@ -10,7 +10,11 @@ import {
     HELPDESK_PRODUCT_ID,
     products,
 } from 'fixtures/productPrices'
-import type { HelpdeskPlan, Product, ProductType } from 'models/billing/types'
+import type {
+    AvailablePlansOf,
+    HelpdeskPlan,
+    ProductType,
+} from 'models/billing/types'
 import type { RootState } from 'state/types'
 
 export const getStateWithHelpdeskPlan = (
@@ -18,7 +22,7 @@ export const getStateWithHelpdeskPlan = (
 ) => {
     const productsWithExtraPlan = _cloneDeep(products)
     const helpdeskProduct =
-        productsWithExtraPlan[0] as Product<ProductType.Helpdesk>
+        productsWithExtraPlan[0] as AvailablePlansOf<ProductType.Helpdesk>
     helpdeskProduct.prices.push(helpdeskPlan)
 
     return {

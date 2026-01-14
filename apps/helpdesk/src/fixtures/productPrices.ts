@@ -1,10 +1,10 @@
 import type {
     AutomatePlan,
     AutomatePlanFeatures,
+    AvailablePlansOf,
     ConvertPlan,
     HelpdeskPlan,
     HelpdeskPlanFeatures,
-    Product,
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import { Cadence, HelpdeskPlanTier, ProductType } from 'models/billing/types'
@@ -911,32 +911,32 @@ export const convertAvailablePlans = [
     convertPlan7,
 ].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
 
-export const helpdeskProduct: Product<ProductType.Helpdesk> = {
+export const helpdeskProduct: AvailablePlansOf<ProductType.Helpdesk> = {
     type: ProductType.Helpdesk,
     prices: helpdeskAvailablePlans,
 }
 
-export const automationProduct: Product<ProductType.Automation> = {
+export const automationProduct: AvailablePlansOf<ProductType.Automation> = {
     type: ProductType.Automation,
     prices: automationAvailablePlans,
 }
 
-export const voiceProduct: Product<ProductType.Voice> = {
+export const voiceProduct: AvailablePlansOf<ProductType.Voice> = {
     type: ProductType.Voice,
     prices: voiceAvailablePlans,
 }
 
-export const smsProduct: Product<ProductType.SMS> = {
+export const smsProduct: AvailablePlansOf<ProductType.SMS> = {
     type: ProductType.SMS,
     prices: smsAvailablePlans,
 }
 
-export const convertProduct: Product<ProductType.Convert> = {
+export const convertProduct: AvailablePlansOf<ProductType.Convert> = {
     type: ProductType.Convert,
     prices: convertAvailablePlans,
 }
 
-export const products: Product<ProductType>[] = [
+export const products: AvailablePlansOf<ProductType>[] = [
     helpdeskProduct,
     automationProduct,
     smsProduct,

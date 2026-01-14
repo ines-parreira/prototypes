@@ -4,6 +4,7 @@ import type { Tag } from '@gorgias/helpdesk-queries'
 
 import type { RecentChatTicket } from 'business/types/recentChats'
 import type { User } from 'config/types/user'
+import type { AvailablePlansOf } from 'models/billing/types'
 import type {
     Integration,
     IntegrationAuthentication,
@@ -16,7 +17,6 @@ import type { Team } from 'models/team/types'
 import type { View } from 'models/view/types'
 import type { Application } from 'services/applications'
 import type { Channel } from 'services/channels'
-import type { BillingProducts } from 'state/billing/types'
 import type { Account } from 'state/currentAccount/types'
 import type { CompanyTier } from 'state/currentCompany/types'
 
@@ -44,7 +44,7 @@ export type GorgiasInitialState = {
         all: User[]
     }
     billing: {
-        products: BillingProducts
+        products: AvailablePlansOf[]
     }
     chats: {
         tickets: GorgiasInitialStateRecentChatTicket[]

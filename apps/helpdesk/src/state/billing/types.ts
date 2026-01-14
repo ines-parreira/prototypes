@@ -1,10 +1,10 @@
 import type { Map } from 'immutable'
 
 import type {
+    AvailablePlansOf,
     HelpdeskPlan,
     Plan,
     PlanId,
-    Product,
     ProductType,
 } from 'models/billing/types'
 import type { AlertType } from 'pages/common/components/Alert/Alert'
@@ -129,11 +129,9 @@ export type Subscription = {
 
 export type BillingImmutableState = Map<any, any>
 
-export type BillingProducts = Product[]
-
 export type ReduxBillingState = {
     contact?: BillingContact
-    products: BillingProducts
+    products: AvailablePlansOf[]
     invoices: Invoice[]
 }
 

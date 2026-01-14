@@ -16,7 +16,7 @@ import {
     legacyBasicHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
-import type { Product, ProductType } from 'models/billing/types'
+import type { AvailablePlansOf, ProductType } from 'models/billing/types'
 import { AccountFeature } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
@@ -127,7 +127,7 @@ describe('<FeaturePaywall />', () => {
     it('should ask to upgrade legacy plan into new plan', () => {
         const availablePlansWithLegacyPlans = _cloneDeep(products)
         const helpdeskProduct =
-            availablePlansWithLegacyPlans[0] as Product<ProductType.Helpdesk>
+            availablePlansWithLegacyPlans[0] as AvailablePlansOf<ProductType.Helpdesk>
         helpdeskProduct.prices.push(legacyBasicHelpdeskPlan)
 
         const { container } = renderWithRouter(
@@ -164,7 +164,7 @@ describe('<FeaturePaywall />', () => {
     it('should ask to upgrade custom plan when missing feature', () => {
         const availablePlanWithCustomPlan = _cloneDeep(products)
         const helpdeskProduct =
-            availablePlanWithCustomPlan[0] as Product<ProductType.Helpdesk>
+            availablePlanWithCustomPlan[0] as AvailablePlansOf<ProductType.Helpdesk>
         helpdeskProduct.prices.push(customHelpdeskPlan)
 
         const { container } = renderWithRouter(

@@ -28,7 +28,7 @@ import {
     voicePlan2,
     voiceProduct,
 } from 'fixtures/productPrices'
-import type { HelpdeskPlan, Plan, Product } from 'models/billing/types'
+import type { AvailablePlansOf, HelpdeskPlan, Plan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import {
     getCadenceName,
@@ -437,7 +437,7 @@ describe('BillingFrequencyView', () => {
                 billing: fromJS({
                     ...billingState,
                     products: billingState.products.map(
-                        (product: Product<ProductType>) => ({
+                        (product: AvailablePlansOf<ProductType>) => ({
                             ...product,
                             prices: product.prices.filter(
                                 // Remove any plans which could be selected

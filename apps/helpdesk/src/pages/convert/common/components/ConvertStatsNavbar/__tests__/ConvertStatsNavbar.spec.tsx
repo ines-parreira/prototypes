@@ -16,7 +16,11 @@ import {
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import * as aiAgentAccessHook from 'hooks/aiAgent/useAiAgentAccess'
-import type { HelpdeskPlan, Product, ProductType } from 'models/billing/types'
+import type {
+    AvailablePlansOf,
+    HelpdeskPlan,
+    ProductType,
+} from 'models/billing/types'
 import * as convertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import { AccountFeature } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -35,7 +39,7 @@ describe('ConvertStatsNavbar', () => {
     const getState = (plan: HelpdeskPlan, enabled = false): RootState => {
         const productsWithStarter = _cloneDeep(products)
         const helpdeskProduct =
-            productsWithStarter[0] as Product<ProductType.Helpdesk>
+            productsWithStarter[0] as AvailablePlansOf<ProductType.Helpdesk>
         helpdeskProduct.prices.push(plan)
 
         return {

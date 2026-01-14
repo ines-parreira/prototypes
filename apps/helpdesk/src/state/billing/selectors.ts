@@ -5,11 +5,11 @@ import { createSelector } from 'reselect'
 
 import type {
     AutomatePlan,
+    AvailablePlansOf,
     ConvertPlan,
     HelpdeskPlan,
     Plan,
     PlanId,
-    Product,
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
@@ -56,7 +56,7 @@ export const getAvailableHelpdeskPlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const helpdeskProduct = products.find(
-            (product): product is Product<ProductType.Helpdesk> =>
+            (product): product is AvailablePlansOf<ProductType.Helpdesk> =>
                 product.type === ProductType.Helpdesk,
         )
         if (!helpdeskProduct) {
@@ -70,7 +70,7 @@ export const getAvailableAutomatePlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const autProduct = products.find(
-            (product): product is Product<ProductType.Automation> =>
+            (product): product is AvailablePlansOf<ProductType.Automation> =>
                 product.type === ProductType.Automation,
         )
         if (!autProduct) {
@@ -84,7 +84,7 @@ export const getAvailableVoicePlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const voiceProduct = products.find(
-            (product): product is Product<ProductType.Voice> =>
+            (product): product is AvailablePlansOf<ProductType.Voice> =>
                 product.type === ProductType.Voice,
         )
         if (!voiceProduct) {
@@ -98,7 +98,7 @@ export const getAvailableSmsPlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const smsProduct = products.find(
-            (product): product is Product<ProductType.SMS> =>
+            (product): product is AvailablePlansOf<ProductType.SMS> =>
                 product.type === ProductType.SMS,
         )
         if (!smsProduct) {
@@ -112,7 +112,7 @@ export const getAvailableConvertPlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const convertProduct = products.find(
-            (product): product is Product<ProductType.Convert> =>
+            (product): product is AvailablePlansOf<ProductType.Convert> =>
                 product.type === ProductType.Convert,
         )
         if (!convertProduct) {
