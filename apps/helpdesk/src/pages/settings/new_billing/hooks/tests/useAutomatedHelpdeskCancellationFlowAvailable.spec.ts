@@ -5,7 +5,7 @@ import {
     basicMonthlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
     starterHelpdeskPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 
 import useAutomatedHelpdeskCancellationFlowAvailable from '../useAutomatedHelpdeskCancellationFlowAvailable'
 

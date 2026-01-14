@@ -1,4 +1,4 @@
-import { currentProductsUsage, products } from 'fixtures/productPrices'
+import { currentProductsUsage, products } from 'fixtures/plans'
 
 export const billingState = {
     paymentMethod: 'stripe',

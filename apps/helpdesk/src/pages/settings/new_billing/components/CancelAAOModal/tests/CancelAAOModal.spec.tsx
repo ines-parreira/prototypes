@@ -9,7 +9,7 @@ import {
     currentProductsUsage,
     HELPDESK_PRODUCT_ID,
     products,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import { sendRemoveNotificationZap } from '../../../utils/sendRemoveNotificationZap'

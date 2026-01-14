@@ -14,7 +14,7 @@ import {
     products,
     smsPlan1,
     voicePlan0,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
 import { getProductInfo } from 'models/billing/utils'
 import type { RootState, StoreDispatch } from 'state/types'

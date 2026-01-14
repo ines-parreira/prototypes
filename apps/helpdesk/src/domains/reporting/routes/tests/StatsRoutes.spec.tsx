@@ -48,7 +48,7 @@ import * as billingFixtures from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { AnalyticsAiAgentLayout } from 'pages/aiAgent/analyticsAiAgent/components/AnalyticsAiAgentLayout'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'

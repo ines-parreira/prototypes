@@ -18,7 +18,7 @@ import {
     proMonthlyHelpdeskPlan,
     smsPlan1,
     voicePlan0,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { user } from 'fixtures/users'
 import { trackBillingEvent } from 'models/billing/resources'
 import { ProductType } from 'models/billing/types'

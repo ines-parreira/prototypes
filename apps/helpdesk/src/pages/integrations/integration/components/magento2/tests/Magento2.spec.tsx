@@ -14,7 +14,7 @@ import {
     HELPDESK_PRODUCT_ID,
     products,
     proMonthlyHelpdeskPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { IntegrationType } from 'models/integration/types'
 import { renderWithRouter } from 'utils/testing'
 

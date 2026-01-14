@@ -12,7 +12,7 @@ import {
     convertPlan1,
     convertPlan5,
     convertProduct,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
 
 import type { AutoUpgradeToggleProps } from '../AutoUpgradeToggle'

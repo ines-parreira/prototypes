@@ -32,7 +32,7 @@ import {
     basicYearlyAutomationPlan,
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 

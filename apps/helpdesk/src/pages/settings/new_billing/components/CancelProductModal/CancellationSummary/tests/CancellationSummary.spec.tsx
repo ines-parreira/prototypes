@@ -7,7 +7,7 @@ import {
     proYearlyHelpdeskPlan,
     smsPlan0,
     voicePlan0,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { Cadence, ProductType } from 'models/billing/types'
 
 import { HELPDESK_CANCELLATION_SCENARIO } from '../../scenarios'

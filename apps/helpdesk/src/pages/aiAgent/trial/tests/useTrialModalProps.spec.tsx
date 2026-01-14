@@ -9,7 +9,7 @@ import { fromJS } from 'immutable'
 import moment from 'moment'
 import { MemoryRouter, Route } from 'react-router-dom'
 
-import { earlyAccessMonthlyAutomationPlan } from 'fixtures/productPrices'
+import { earlyAccessMonthlyAutomationPlan } from 'fixtures/plans'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

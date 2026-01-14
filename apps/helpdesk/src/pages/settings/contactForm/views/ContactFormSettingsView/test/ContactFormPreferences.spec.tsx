@@ -12,7 +12,7 @@ import thunk from 'redux-thunk'
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { CurrentContactFormContext } from 'pages/settings/contactForm/contexts/currentContactForm.context'
 import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
 

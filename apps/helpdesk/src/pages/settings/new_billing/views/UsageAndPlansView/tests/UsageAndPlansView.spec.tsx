@@ -27,7 +27,7 @@ import {
     starterHelpdeskPlan,
     VOICE_PRODUCT_ID,
     voiceProduct,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import type { HelpdeskPlan, SMSOrVoicePlan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'

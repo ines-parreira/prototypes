@@ -16,7 +16,7 @@ import thunk from 'redux-thunk'
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
 import * as billingFixtures from 'fixtures/billing'
-import { customHelpdeskPlan, HELPDESK_PRODUCT_ID } from 'fixtures/productPrices'
+import { customHelpdeskPlan, HELPDESK_PRODUCT_ID } from 'fixtures/plans'
 import EmailIntegrationOnboarding from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboarding'
 import EmailIntegrationOnboardingDomainVerification from 'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingDomainVerification'
 import DomainVerificationProvider from 'pages/integrations/integration/components/email/EmailDomainVerification/DomainVerificationProvider'

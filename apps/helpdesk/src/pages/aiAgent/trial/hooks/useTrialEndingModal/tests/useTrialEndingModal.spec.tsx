@@ -7,7 +7,7 @@ import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Route, Router } from 'react-router-dom'
 
-import { earlyAccessMonthlyAutomationPlan } from 'fixtures/productPrices'
+import { earlyAccessMonthlyAutomationPlan } from 'fixtures/plans'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'

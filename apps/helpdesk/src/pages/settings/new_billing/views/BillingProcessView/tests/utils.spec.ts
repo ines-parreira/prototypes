@@ -2,7 +2,7 @@ import {
     automationProduct,
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import type { AutomatePlan } from 'models/billing/types'
 import { Cadence } from 'models/billing/types'
 

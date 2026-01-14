@@ -1,7 +1,7 @@
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { currentProductsUsage } from 'fixtures/productPrices'
+import { currentProductsUsage } from 'fixtures/plans'
 import type { StoreAction } from 'state/types'
 
 import * as types from '../constants'

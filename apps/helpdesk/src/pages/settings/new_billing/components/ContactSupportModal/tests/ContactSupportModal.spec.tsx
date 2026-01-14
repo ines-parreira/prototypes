@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
-import { HELPDESK_PRODUCT_ID } from 'fixtures/productPrices'
+import { HELPDESK_PRODUCT_ID } from 'fixtures/plans'
 import client from 'models/api/resources'
 import { TicketPurpose } from 'state/billing/types'
 import * as actions from 'state/notifications/actions'

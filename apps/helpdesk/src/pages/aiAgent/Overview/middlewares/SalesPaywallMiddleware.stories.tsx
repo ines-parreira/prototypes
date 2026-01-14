@@ -18,7 +18,7 @@ import { shopifyIntegration } from 'fixtures/integrations'
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { user } from 'fixtures/users'
 import { trialsKeys } from 'models/aiAgent/queries'
 import type { ResponseTrial } from 'models/aiAgent/types'

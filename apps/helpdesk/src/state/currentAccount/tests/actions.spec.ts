@@ -17,7 +17,7 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import client from 'models/api/resources'
 import {
     submitAgentTableConfigView,

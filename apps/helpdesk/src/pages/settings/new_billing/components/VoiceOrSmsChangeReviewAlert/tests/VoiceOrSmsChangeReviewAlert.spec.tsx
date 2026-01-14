@@ -18,7 +18,7 @@ import {
     VOICE_PRODUCT_ID,
     voicePlan0,
     voicePlan1,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import type { RootState, StoreDispatch } from 'state/types'
 

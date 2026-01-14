@@ -6,7 +6,7 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import type { AccountSetting } from 'state/currentAccount/types'
 import { AccountSettingType } from 'state/currentAccount/types'
 import type { GorgiasAction } from 'state/types'

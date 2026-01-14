@@ -18,7 +18,7 @@ import {
     VOICE_PRODUCT_ID,
     voiceAvailablePlans,
     voicePlan1,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import type { Plan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import { AccountFeature } from 'state/currentAccount/types'

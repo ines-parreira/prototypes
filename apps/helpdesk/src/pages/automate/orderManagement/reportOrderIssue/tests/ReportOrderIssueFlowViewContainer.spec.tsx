@@ -13,7 +13,7 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import { IntegrationType } from 'models/integration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'

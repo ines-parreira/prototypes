@@ -15,7 +15,7 @@ import {
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPlan,
     products,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import type { AvailablePlansOf, ProductType } from 'models/billing/types'
 import { AccountFeature } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'

@@ -12,7 +12,7 @@ import {
     CONVERT_PRODUCT_ID,
     convertPlan0,
     HELPDESK_PRODUCT_ID,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types'
 import * as discountedPriceFlagModule from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
 import type { RootState } from 'state/types'

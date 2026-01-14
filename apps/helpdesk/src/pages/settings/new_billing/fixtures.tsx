@@ -17,7 +17,7 @@ import {
     smsPlan1,
     VOICE_PRODUCT_ID,
     voicePlan1,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import type {
     BillingState,
     ProductUsages,

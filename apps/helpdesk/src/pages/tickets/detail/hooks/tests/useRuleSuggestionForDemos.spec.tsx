@@ -9,10 +9,7 @@ import thunk from 'redux-thunk'
 import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { agents } from 'fixtures/agents'
 import { billingState } from 'fixtures/billing'
-import {
-    HELPDESK_PRODUCT_ID,
-    proMonthlyHelpdeskPlan,
-} from 'fixtures/productPrices'
+import { HELPDESK_PRODUCT_ID, proMonthlyHelpdeskPlan } from 'fixtures/plans'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { AccountSettingType } from 'state/currentAccount/types'
 

@@ -19,7 +19,7 @@ import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { IntegrationType } from 'models/integration/constants'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'

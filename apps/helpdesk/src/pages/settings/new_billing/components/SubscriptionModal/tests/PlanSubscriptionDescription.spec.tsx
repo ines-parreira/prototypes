@@ -1,7 +1,7 @@
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { convertProduct } from 'fixtures/productPrices'
+import { convertProduct } from 'fixtures/plans'
 import { Cadence, ProductType } from 'models/billing/types'
 import { getProductInfo, getProductLabel } from 'models/billing/utils'
 import type { PlanSubscriptionDescriptionProps } from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'

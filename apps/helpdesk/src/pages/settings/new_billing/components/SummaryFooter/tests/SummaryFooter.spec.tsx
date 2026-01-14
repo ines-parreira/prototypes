@@ -7,7 +7,7 @@ import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     products,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
 import { BILLING_BASE_PATH } from 'pages/settings/new_billing/constants'
 import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'

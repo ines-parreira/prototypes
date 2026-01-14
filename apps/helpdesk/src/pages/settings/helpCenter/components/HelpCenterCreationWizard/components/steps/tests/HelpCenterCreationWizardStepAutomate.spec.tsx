@@ -15,7 +15,7 @@ import {
     bigCommerceIntegration,
     shopifyIntegration,
 } from 'fixtures/integrations'
-import { proMonthlyHelpdeskPlan as mockedProMonthlyHelpdeskPlan } from 'fixtures/productPrices'
+import { proMonthlyHelpdeskPlan as mockedProMonthlyHelpdeskPlan } from 'fixtures/plans'
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import { createWorkflowConfigurationShallow } from 'fixtures/workflows'
 import {

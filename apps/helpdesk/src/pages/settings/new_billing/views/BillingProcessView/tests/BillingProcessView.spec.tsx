@@ -18,7 +18,7 @@ import {
     smsPlan1,
     VOICE_PRODUCT_ID,
     voicePlan1,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import client from 'models/api/resources'
 import { ProductType } from 'models/billing/types'
 import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'

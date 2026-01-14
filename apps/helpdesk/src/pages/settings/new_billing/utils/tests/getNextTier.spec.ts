@@ -5,7 +5,7 @@ import {
     convertPlan4,
     convertPlan5,
     convertProduct,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 
 import { getNextTier } from '../getNextTier'
 

@@ -5,10 +5,7 @@ import { fromJS } from 'immutable'
 import querystring from 'querystring'
 import url from 'url'
 
-import {
-    basicMonthlyHelpdeskPlan,
-    HELPDESK_PRODUCT_ID,
-} from 'fixtures/productPrices'
+import { basicMonthlyHelpdeskPlan, HELPDESK_PRODUCT_ID } from 'fixtures/plans'
 import {
     shopifyCancelOrderPayloadFixture,
     shopifyInvoicePayloadFixture,

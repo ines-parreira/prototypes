@@ -15,7 +15,7 @@ import {
     helpdeskProduct,
     legacyAutomatePlan,
     starterHelpdeskPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import type { HelpdeskPlan } from 'models/billing/types'
 import { Cadence } from 'models/billing/types'
 import { getCadenceName } from 'models/billing/utils'

@@ -6,7 +6,7 @@ import {
     smsProduct,
     starterHelpdeskPlan,
     voicePlan0,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 
 import type { AutomatePlan, HelpdeskPlan } from '../types'
 import { Cadence, ProductType } from '../types'

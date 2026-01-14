@@ -5,7 +5,7 @@ import MockAdapter from 'axios-mock-adapter'
 import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import client from 'models/api/resources'
 import { Cadence, SubscriptionStatus } from 'models/billing/types'
 import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'

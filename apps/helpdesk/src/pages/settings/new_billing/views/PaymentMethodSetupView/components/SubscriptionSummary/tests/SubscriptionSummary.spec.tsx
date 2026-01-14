@@ -7,7 +7,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { mockFlags } from 'jest-launchdarkly-mock'
 
-import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
+import { basicMonthlyHelpdeskPlan } from 'fixtures/plans'
 import { Cadence, ProductType } from 'models/billing/types'
 import { useBillingPlans } from 'pages/settings/new_billing/hooks/useBillingPlan'
 import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'

@@ -11,7 +11,7 @@ import thunk from 'redux-thunk'
 
 import { FACEBOOK_INTEGRATION_TYPE } from 'constants/integration'
 import { Language } from 'constants/languages'
-import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
+import { basicMonthlyHelpdeskPlan } from 'fixtures/plans'
 import { IntegrationType } from 'models/integration/constants'
 import type {
     FacebookIntegration,

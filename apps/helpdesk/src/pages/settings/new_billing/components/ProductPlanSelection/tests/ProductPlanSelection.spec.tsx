@@ -19,7 +19,7 @@ import {
     starterHelpdeskPlan,
     VOICE_PRODUCT_ID,
     voicePlan1,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { Cadence, ProductType } from 'models/billing/types'
 import { getProductInfo } from 'models/billing/utils'
 

@@ -4,7 +4,7 @@ import { act } from '@testing-library/react'
 import {
     advancedMonthlyHelpdeskPlan,
     basicMonthlyHelpdeskPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import useAppSelector from 'hooks/useAppSelector'
 import { fetchSubscription } from 'models/billing/resources'
 import useScheduledDowngrades from 'pages/settings/new_billing/hooks/useScheduledDowngrades'

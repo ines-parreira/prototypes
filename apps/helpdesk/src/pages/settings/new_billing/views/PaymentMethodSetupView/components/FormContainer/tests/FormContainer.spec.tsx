@@ -18,7 +18,7 @@ import {
     basicMonthlyHelpdeskPlan,
     currentProductsUsage,
     products,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import client from 'models/api/resources'
 import { ProductType } from 'models/billing/types'
 import {

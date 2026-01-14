@@ -14,7 +14,7 @@ import {
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPlan,
     products,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'

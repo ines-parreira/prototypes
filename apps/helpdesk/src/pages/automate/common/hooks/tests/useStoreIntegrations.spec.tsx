@@ -12,7 +12,7 @@ import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
     products,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
 import type { RootState } from 'state/types'

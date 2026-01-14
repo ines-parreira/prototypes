@@ -9,7 +9,7 @@ import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     products,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import type {
     AvailablePlansOf,
     HelpdeskPlan,

@@ -4,7 +4,7 @@ import { screen } from '@testing-library/dom'
 import { fromJS } from 'immutable'
 
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
-import { products } from 'fixtures/productPrices'
+import { products } from 'fixtures/plans'
 import { COST_SAVED } from 'pages/automate/automate-metrics/constants'
 import { CostSavedMetric } from 'pages/automate/automate-metrics/CostSavedMetric'
 import { initialState } from 'state/billing/reducers'

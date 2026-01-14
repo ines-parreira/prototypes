@@ -10,7 +10,7 @@ import { agents } from 'fixtures/agents'
 import {
     basicMonthlyHelpdeskPlan as mockedBasicMonthlyHelpdeskPlan,
     starterHelpdeskPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import { UserSortableProperties } from 'models/user/types'

@@ -1,4 +1,4 @@
-import { convertAvailablePlans } from 'fixtures/productPrices'
+import { convertAvailablePlans } from 'fixtures/plans'
 import { Cadence } from 'models/billing/types'
 
 import { getDefaultConvertPlanIndex } from '../getDefaultConvertPlanIndex'

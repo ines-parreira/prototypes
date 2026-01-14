@@ -11,7 +11,7 @@ import {
     proMonthlyAutomationPlan,
     smsPlan1,
     voicePlan1,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
 import useScheduledDowngrades from 'pages/settings/new_billing/hooks/useScheduledDowngrades'
 

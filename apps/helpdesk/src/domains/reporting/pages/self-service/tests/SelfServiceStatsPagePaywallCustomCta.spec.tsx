@@ -6,7 +6,7 @@ import { fromJS } from 'immutable'
 import SelfServiceStatsPagePaywallCustomCta from 'domains/reporting/pages/self-service/SelfServiceStatsPagePaywallCustomCta'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
-import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
+import { basicMonthlyHelpdeskPlan } from 'fixtures/plans'
 import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 

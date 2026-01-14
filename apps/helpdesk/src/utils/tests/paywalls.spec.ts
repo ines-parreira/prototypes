@@ -1,4 +1,4 @@
-import { automationProduct, helpdeskProduct } from 'fixtures/productPrices'
+import { automationProduct, helpdeskProduct } from 'fixtures/plans'
 
 import { AccountFeature } from '../../state/currentAccount/types'
 import {

@@ -3,7 +3,7 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { advancedMonthlyHelpdeskPlan } from 'fixtures/productPrices'
+import { advancedMonthlyHelpdeskPlan } from 'fixtures/plans'
 import type { CouponSummary } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
 import { getPlanDescription } from 'models/billing/utils'

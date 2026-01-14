@@ -19,7 +19,7 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'

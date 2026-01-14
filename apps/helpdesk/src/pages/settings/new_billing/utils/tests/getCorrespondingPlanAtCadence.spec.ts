@@ -3,7 +3,7 @@ import {
     basicYearlyHelpdeskPlan,
     basicYearlyHelpdeskPlan2,
     legacyAutomatePlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { Cadence } from 'models/billing/types'
 import { getCorrespondingPlanAtCadence } from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
 

@@ -1,7 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { products } from 'fixtures/productPrices'
+import { products } from 'fixtures/plans'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
 import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding_V2/hooks/useShopifyIntegrations'
 import {

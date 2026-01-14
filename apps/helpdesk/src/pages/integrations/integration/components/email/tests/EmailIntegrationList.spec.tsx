@@ -7,10 +7,7 @@ import { fromJS } from 'immutable'
 import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 
-import {
-    basicMonthlyHelpdeskPlan,
-    customHelpdeskPlan,
-} from 'fixtures/productPrices'
+import { basicMonthlyHelpdeskPlan, customHelpdeskPlan } from 'fixtures/plans'
 import useAppSelector from 'hooks/useAppSelector'
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'

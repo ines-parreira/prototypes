@@ -27,7 +27,7 @@ import {
     smsPlan1,
     VOICE_PRODUCT_ID,
     voicePlan0,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import client from 'models/api/resources'
 import type {
     AutomatePlan,

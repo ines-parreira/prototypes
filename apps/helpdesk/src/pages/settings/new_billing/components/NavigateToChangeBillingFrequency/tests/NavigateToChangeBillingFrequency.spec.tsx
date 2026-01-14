@@ -13,7 +13,7 @@ import {
     HELPDESK_PRODUCT_ID,
     legacyAutomatePlan,
     starterHelpdeskPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { Cadence } from 'models/billing/types'
 import { isOtherCadenceDowngrade } from 'models/billing/utils'
 import { TicketPurpose } from 'state/billing/types'

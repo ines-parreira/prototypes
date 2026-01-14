@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
+import { basicMonthlyHelpdeskPlan } from 'fixtures/plans'
 import { Cadence, ProductType } from 'models/billing/types'
 
 import type { SummaryItemProps } from '../SummaryItem'

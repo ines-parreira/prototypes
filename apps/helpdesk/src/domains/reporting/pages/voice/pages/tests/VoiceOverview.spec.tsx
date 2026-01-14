@@ -47,7 +47,7 @@ import {
     basicYearlyAutomationPlan,
     VOICE_PRODUCT_ID,
     voicePlan1,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { tags } from 'fixtures/tag'
 import { user } from 'fixtures/users'
 import { AccountFeature } from 'state/currentAccount/types'

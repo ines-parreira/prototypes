@@ -3,7 +3,7 @@ import {
     advancedMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     proMonthlyHelpdeskPlan as mockedProMonthlyHelpdeskPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 
 import type { EnhancedStore } from '@reduxjs/toolkit'
 import { fromJS } from 'immutable'

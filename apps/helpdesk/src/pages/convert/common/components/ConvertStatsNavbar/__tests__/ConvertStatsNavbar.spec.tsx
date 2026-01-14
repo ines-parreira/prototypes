@@ -14,7 +14,7 @@ import {
     HELPDESK_PRODUCT_ID,
     products,
     proMonthlyHelpdeskPlan,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import * as aiAgentAccessHook from 'hooks/aiAgent/useAiAgentAccess'
 import type {
     AvailablePlansOf,

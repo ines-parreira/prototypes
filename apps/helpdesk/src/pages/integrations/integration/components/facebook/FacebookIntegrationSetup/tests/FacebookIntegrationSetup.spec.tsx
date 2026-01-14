@@ -4,7 +4,7 @@ import { fireEvent } from '@testing-library/react'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
+import { basicMonthlyHelpdeskPlan } from 'fixtures/plans'
 import { AccountFeature } from 'state/currentAccount/types'
 import { renderWithRouter } from 'utils/testing'
 

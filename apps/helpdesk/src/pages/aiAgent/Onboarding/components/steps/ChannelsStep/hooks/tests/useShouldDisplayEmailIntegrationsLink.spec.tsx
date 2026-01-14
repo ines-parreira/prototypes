@@ -10,7 +10,7 @@ import {
     customHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     helpdeskProduct,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { useShouldDisplayEmailIntegrationsLink } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useShouldDisplayEmailIntegrationsLink'
 import type { Account } from 'state/currentAccount/types'
 import { mockStore } from 'utils/testing'

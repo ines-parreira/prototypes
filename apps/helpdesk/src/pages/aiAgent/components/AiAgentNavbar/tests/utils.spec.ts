@@ -1,4 +1,4 @@
-import { basicMonthlyAutomationPlan } from 'fixtures/productPrices'
+import { basicMonthlyAutomationPlan } from 'fixtures/plans'
 import type { AutomatePlan } from 'models/billing/types'
 
 import { getCollapsedSectionName } from '../utils'

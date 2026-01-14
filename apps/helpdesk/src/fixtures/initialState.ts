@@ -1,4 +1,5 @@
 import { TicketChannel } from 'business/types/ticket'
+import { products } from 'fixtures/plans'
 import { OrderDirection } from 'models/api/types'
 import { IntegrationType } from 'models/integration/constants'
 import {
@@ -11,7 +12,6 @@ import { CompanyTier } from 'state/currentCompany/types'
 import type { GorgiasInitialState } from 'types'
 
 import { account } from './account'
-import { products } from './productPrices'
 import { user } from './users'
 
 export const initialState: GorgiasInitialState = {

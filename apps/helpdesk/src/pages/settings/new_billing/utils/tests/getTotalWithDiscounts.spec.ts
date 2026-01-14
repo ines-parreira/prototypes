@@ -4,7 +4,7 @@ import {
     proMonthlyHelpdeskPlan,
     smsPlan1,
     voicePlan1,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import type { CouponSummary } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
 

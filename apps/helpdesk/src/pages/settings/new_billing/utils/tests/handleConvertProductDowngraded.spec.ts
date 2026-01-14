@@ -1,7 +1,7 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 
-import { convertPlan1, convertPlan2 } from 'fixtures/productPrices'
+import { convertPlan1, convertPlan2 } from 'fixtures/plans'
 
 import { handleConvertProductDowngraded } from '../handleConvertProductDowngraded'
 

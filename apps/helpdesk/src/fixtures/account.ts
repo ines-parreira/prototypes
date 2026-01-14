@@ -3,7 +3,7 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
-} from 'fixtures/productPrices'
+} from 'fixtures/plans'
 import { SubscriptionStatus } from 'models/billing/types'
 import type { Account } from 'state/currentAccount/types'
 import {
