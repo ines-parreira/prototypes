@@ -53,8 +53,8 @@ const SyncIngestionDomainBanner = ({
             className={className}
         >
             {isUrlSync
-                ? 'Your URL is syncing. You will be notified once complete. In the meantime, AI Agent may not have your latest content.'
-                : 'Your store website is syncing. This may take a while. You will be notified once it is complete. In the meantime, the AI Agent may not have your latest content.'}
+                ? 'Your URL is currently syncing.'
+                : 'Your store website is syncing. This may take a while. In the meantime, AI Agent may not have your latest content.'}
         </Banner>
     )
 

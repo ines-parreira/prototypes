@@ -82,9 +82,7 @@ describe('SyncStoreDomainBanner', () => {
             )
 
             expect(
-                screen.getByText(
-                    /Your store website is syncing. You will be notified once complete./,
-                ),
+                screen.getByText(/Your store website is currently syncing./),
             ).toBeInTheDocument()
         })
 
@@ -123,9 +121,7 @@ describe('SyncStoreDomainBanner', () => {
             )
 
             expect(
-                screen.getByText(
-                    /Your URL is syncing. You will be notified once complete./,
-                ),
+                screen.getByText(/Your URL is currently syncing./),
             ).toBeInTheDocument()
         })
 
@@ -171,9 +167,7 @@ describe('SyncStoreDomainBanner', () => {
             )
 
             expect(
-                screen.getByText(
-                    /Your URL is syncing. You will be notified once complete./,
-                ),
+                screen.getByText(/Your URL is currently syncing./),
             ).toBeInTheDocument()
         })
     })
@@ -232,9 +226,7 @@ describe('SyncStoreDomainBanner', () => {
             })
 
             expect(
-                screen.getByText(
-                    /Your URL is syncing. You will be notified once complete./,
-                ),
+                screen.getByText(/Your URL is currently syncing./),
             ).toBeInTheDocument()
             expect(screen.queryByText(/Uploading 3/)).not.toBeInTheDocument()
         })
@@ -514,7 +506,7 @@ describe('SyncStoreDomainBanner', () => {
             )
 
             expect(
-                screen.getByText(/Your store website is syncing/),
+                screen.getByText(/Your store website is currently syncing/),
             ).toBeInTheDocument()
         })
 
@@ -544,9 +536,7 @@ describe('SyncStoreDomainBanner', () => {
             )
 
             expect(
-                screen.getByText(
-                    /Your URL is syncing. You will be notified once complete./,
-                ),
+                screen.getByText(/Your URL is currently syncing./),
             ).toBeInTheDocument()
         })
 

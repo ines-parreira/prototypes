@@ -77,11 +77,11 @@ export const SyncStoreDomainBanner = ({
                 }
             } else {
                 if (type === 'domain') {
-                    progressText = `Your store website is syncing. You will be notified once complete. In the meantime, AI Agent may not have your latest content.`
+                    progressText = `Your store website is currently syncing. In the meantime, AI Agent may not have your latest content.`
                 } else if (type === 'file') {
                     progressText = 'Your document is uploading.'
                 } else {
-                    progressText = `Your ${contentType} is syncing. You will be notified once complete.`
+                    progressText = `Your ${contentType} is currently syncing.`
                 }
             }
 

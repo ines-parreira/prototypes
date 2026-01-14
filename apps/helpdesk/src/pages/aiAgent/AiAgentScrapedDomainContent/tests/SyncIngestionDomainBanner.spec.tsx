@@ -147,9 +147,7 @@ describe('SyncIngestionDomainBanner', () => {
                 )
 
                 expect(
-                    screen.getByText(
-                        /Your URL is syncing. You will be notified once complete. In the meantime, AI Agent may not have your latest content./i,
-                    ),
+                    screen.getByText(/Your URL is currently syncing./i),
                 ).toBeInTheDocument()
             })
 
@@ -182,7 +180,7 @@ describe('SyncIngestionDomainBanner', () => {
 
                 expect(
                     screen.getByText(
-                        /Your URL has been synced successfully and is in use by AI Agent/i,
+                        /Your URL has been synced successfully and is in use by AI Agent./i,
                     ),
                 ).toBeInTheDocument()
             })
