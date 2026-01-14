@@ -16,6 +16,8 @@ declare module '*.png'
 
 declare module '*.jpg'
 
+declare module '*.gif'
+
 declare module '*.mp4' {
     const resource: string
     export = resource

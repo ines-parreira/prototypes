@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import aiAgentButtonEnableGif from 'assets/img/ai-agent/ai-agent-button-enable.gif'
+import aiAgentScanGif from 'assets/img/ai-agent/ai-agent-scan.gif'
 import { useGetPostStoreInstallationStepsPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
 import { PostStoreInstallationStepType } from 'models/aiAgentPostStoreInstallationSteps/types'
 import type { LocaleCode } from 'models/helpCenter/types'
@@ -53,7 +55,7 @@ const getStateConfig = (
     },
     [State.HAS_OPPORTUNITIES]: {
         state: State.HAS_OPPORTUNITIES,
-        title: 'Opportunities',
+        title: '',
         description: '',
         media: null,
         primaryCta: null,
@@ -65,7 +67,7 @@ const getStateConfig = (
         title: 'AI Agent is learning from your conversations',
         description:
             "As AI Agent handles more conversations, we'll surface opportunities to improve its accuracy and coverage. Check back soon!",
-        media: '/assets/images/ai-agent/opportunities/learning.svg',
+        media: aiAgentScanGif,
         primaryCta: null,
         showEmptyState: true,
         isLoading: false,
@@ -75,7 +77,7 @@ const getStateConfig = (
         title: 'Let AI Agent show you what to improve',
         description:
             'AI Agent automatically finds opportunities to improve its responses based on customer conversations. AI Agent needs to be enabled to start learning from conversations.',
-        media: '/assets/images/ai-agent/opportunities/needs-enable.svg',
+        media: aiAgentButtonEnableGif,
         primaryCta: {
             label: 'Enable AI Agent',
             href: `/app/ai-agent/${shopType}/${shopName}/deploy/email`,
@@ -88,9 +90,9 @@ const getStateConfig = (
         title: 'Let AI Agent show you what to improve',
         description:
             'AI Agent automatically finds opportunities to improve its responses based on customer conversations. AI Agent needs to be enabled to start learning from conversations.',
-        media: '/assets/images/ai-agent/opportunities/needs-setup.svg',
+        media: aiAgentButtonEnableGif,
         primaryCta: {
-            label: 'Complete setup',
+            label: 'Complete AI Agent setup',
             href: `/app/ai-agent/${shopType}/${shopName}/overview`,
         },
         showEmptyState: true,

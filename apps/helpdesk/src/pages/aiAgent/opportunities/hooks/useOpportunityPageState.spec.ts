@@ -204,7 +204,7 @@ describe('useOpportunityPageState', () => {
             expect(result.current.state).toBe(State.HAS_OPPORTUNITIES)
             expect(result.current.isLoading).toBe(false)
             expect(result.current.showEmptyState).toBe(false)
-            expect(result.current.title).toBe('Opportunities')
+            expect(result.current.title).toBe('')
             expect(result.current.description).toBe('')
             expect(result.current.media).toBeNull()
             expect(result.current.primaryCta).toBeNull()
@@ -300,9 +300,7 @@ describe('useOpportunityPageState', () => {
             expect(result.current.description).toContain(
                 "As AI Agent handles more conversations, we'll surface opportunities",
             )
-            expect(result.current.media).toBe(
-                '/assets/images/ai-agent/opportunities/learning.svg',
-            )
+            expect(result.current.media).toBe('test-file-stub')
             expect(result.current.primaryCta).toBeNull()
         })
     })
@@ -343,9 +341,7 @@ describe('useOpportunityPageState', () => {
             expect(result.current.description).toContain(
                 'AI Agent automatically finds opportunities',
             )
-            expect(result.current.media).toBe(
-                '/assets/images/ai-agent/opportunities/needs-enable.svg',
-            )
+            expect(result.current.media).toBe('test-file-stub')
             expect(result.current.primaryCta).toEqual({
                 label: 'Enable AI Agent',
                 href: '/app/ai-agent/shopify/test-shop/deploy/email',
@@ -419,11 +415,9 @@ describe('useOpportunityPageState', () => {
             expect(result.current.description).toContain(
                 'AI Agent automatically finds opportunities',
             )
-            expect(result.current.media).toBe(
-                '/assets/images/ai-agent/opportunities/needs-setup.svg',
-            )
+            expect(result.current.media).toBe('test-file-stub')
             expect(result.current.primaryCta).toEqual({
-                label: 'Complete setup',
+                label: 'Complete AI Agent setup',
                 href: '/app/ai-agent/shopify/test-shop/overview',
             })
         })
@@ -479,7 +473,9 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.primaryCta?.label).toBe('Complete setup')
+            expect(result.current.primaryCta?.label).toBe(
+                'Complete AI Agent setup',
+            )
             expect(result.current.primaryCta?.href).toBe(
                 '/app/ai-agent/shopify/test-shop/overview',
             )

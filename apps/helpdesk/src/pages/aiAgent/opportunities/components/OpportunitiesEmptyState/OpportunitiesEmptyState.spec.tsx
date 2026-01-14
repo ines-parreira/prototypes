@@ -16,7 +16,7 @@ const mockOpportunityPageState: OpportunityPageState = {
     title: 'AI Agent is learning from your conversations',
     description:
         "As AI Agent handles more conversations, we'll surface opportunities to improve its accuracy and coverage. Check back soon!",
-    media: '/assets/images/ai-agent/opportunities/learning.svg',
+    media: 'ai-agent-scan.gif',
     primaryCta: null,
     showEmptyState: true,
 }
@@ -117,5 +117,26 @@ describe('OpportunitiesEmptyState', () => {
         await user.click(button)
 
         expect(history.location.pathname).toBe(initialPath)
+    })
+
+    it('should render media image when media is provided', () => {
+        renderComponent()
+
+        const image = screen.getByAltText('Opportunities empty state')
+        expect(image).toBeInTheDocument()
+        expect(image).toHaveAttribute('src', 'ai-agent-scan.gif')
+    })
+
+    it('should not render media frame when media is not provided', () => {
+        const stateWithoutMedia: OpportunityPageState = {
+            ...mockOpportunityPageState,
+            media: null,
+        }
+
+        renderComponent(stateWithoutMedia)
+
+        expect(
+            screen.queryByAltText('Opportunities empty state'),
+        ).not.toBeInTheDocument()
     })
 })

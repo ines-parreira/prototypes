@@ -21,13 +21,15 @@ export const OpportunitiesEmptyState = ({
 
     return (
         <div className={css.containerContent}>
-            <div className={css.mediaFrame}>
-                {/* TODO: Add media when available from design team*/}
-                {/* <img
-                    src={opportunitiesPageState.media ?? ''}
-                    alt="Opportunities empty state"
-                /> */}
-            </div>
+            {opportunitiesPageState.media && (
+                <div className={css.mediaFrame}>
+                    <img
+                        className={css.media}
+                        src={opportunitiesPageState.media}
+                        alt="Opportunities empty state"
+                    />
+                </div>
+            )}
             <Box flexDirection="column" gap="xs" alignItems="center">
                 <Heading size="md">{opportunitiesPageState.title}</Heading>
                 <Text size="md" variant="regular" align="center">
