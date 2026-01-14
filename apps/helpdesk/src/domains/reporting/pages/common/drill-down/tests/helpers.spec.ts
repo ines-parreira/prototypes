@@ -24,7 +24,7 @@ import {
     knowledgeCSATDrillDownQueryFactory,
     knowledgeHandoverTicketsDrillDownQueryFactory,
     knowledgeTicketsDrillDownQueryFactory,
-} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+} from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { customerSatisfactionMetricDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
 import {
     customFieldsTicketCountOnCreatedDatetimePerTicketDrillDownQueryFactory,
@@ -157,7 +157,9 @@ jest.mock(
     'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount',
 )
 jest.mock('domains/reporting/models/queryFactories/ai-sales-agent/metrics')
-jest.mock('domains/reporting/models/queryFactories/knowledge/resourceMetrics')
+jest.mock(
+    'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
+)
 jest.mock('AIJourney/queries/aiJourneyDrillDownQueries')
 
 jest.mock(

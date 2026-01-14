@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react'
 import {
     getLast28DaysDateRange,
     useResourceMetrics,
-} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+} from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import type { GuidanceContextValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context/types'
 import type { MetricProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
@@ -19,7 +19,7 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 
 jest.mock(
-    'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
+    'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
     () => ({
         useResourceMetrics: jest.fn(),
         getLast28DaysDateRange: jest.fn(),

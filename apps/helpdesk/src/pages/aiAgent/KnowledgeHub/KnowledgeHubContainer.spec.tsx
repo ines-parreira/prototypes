@@ -11,7 +11,7 @@ import { appQueryClient } from 'api/queryClient'
 import {
     getLast28DaysDateRange,
     useAllResourcesMetrics,
-} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+} from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     useGetHelpCenterList,
@@ -141,7 +141,7 @@ jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor')
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor')
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubSnippetEditor')
 jest.mock(
-    'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
+    'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
     () => ({
         useAllResourcesMetrics: jest.fn(),
         getLast28DaysDateRange: jest.fn(),
