@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import {
     useRecentTicketsWithDrilldown,
     useResourceMetrics,
-} from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import * as helpCenterQueries from 'models/helpCenter/queries'
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -38,7 +38,7 @@ jest.mock('./KnowledgeEditorSnippetView', () => ({
 }))
 
 jest.mock(
-    'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
+    'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
     () => ({
         useResourceMetrics: jest.fn(),
         useRecentTicketsWithDrilldown: jest.fn(),

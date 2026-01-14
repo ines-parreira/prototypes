@@ -14,7 +14,7 @@ import {
     knowledgeCSATDrillDownQueryFactory,
     knowledgeHandoverTicketsDrillDownQueryFactory,
     knowledgeTicketsDrillDownQueryFactory,
-} from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import { medianFirstAgentResponseTimePerTicketDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/medianFirstResponseTime'
 import {
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,

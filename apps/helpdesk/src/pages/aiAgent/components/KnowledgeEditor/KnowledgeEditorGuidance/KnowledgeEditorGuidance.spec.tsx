@@ -8,7 +8,7 @@ import { toImmutable } from 'common/utils'
 import {
     useRecentTicketsWithDrilldown,
     useResourceMetrics,
-} from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
@@ -125,7 +125,7 @@ jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
 }))
 
 jest.mock(
-    'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
+    'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
     () => ({
         useResourceMetrics: jest.fn(),
         useRecentTicketsWithDrilldown: jest.fn(),

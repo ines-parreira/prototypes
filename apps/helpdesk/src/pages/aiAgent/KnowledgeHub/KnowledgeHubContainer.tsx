@@ -8,7 +8,7 @@ import { Box, Modal, OverlayHeader } from '@gorgias/axiom'
 import {
     getLast28DaysDateRange,
     useAllResourcesMetrics,
-} from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
+} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import useAppSelector from 'hooks/useAppSelector'
 import {
