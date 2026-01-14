@@ -2,6 +2,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
 import {
     TicketsLegacyBridgeProvider,
+    useHelpdeskV2MS1Dot5Flag,
     useHelpdeskV2MS1Flag,
 } from '@repo/tickets'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
@@ -13,6 +14,7 @@ import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/legacyBridge/
 import { useOnToggleUnread } from 'tickets/dtp'
 import { TicketsNavbarPanel } from 'tickets/navigation'
 import { TicketsPage } from 'tickets/pages'
+import { NewTicketPage } from 'tickets/pages/NewTicketPage'
 import { TicketDetailWithInfobar } from 'tickets/pages/TicketDetailWithInfobar'
 import { TicketEmptyPanel } from 'tickets/ticket-empty'
 import { TicketsListPanel } from 'tickets/tickets-list'
@@ -35,6 +37,8 @@ export default function PanelRoutes() {
         FeatureFlagKey.RedirectDeprecatedTicketRoutes,
     )
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
+    const hasUIVisionMS1Dot5 = useHelpdeskV2MS1Dot5Flag()
+
     const { width } = useWindowSize()
     const { onToggleUnread, registerOnToggleUnread } = useOnToggleUnread()
     const isMobileResolution = useIsMobileResolution()
@@ -139,6 +143,11 @@ export default function PanelRoutes() {
                         <Route exact path="/app/tickets/:viewId/:viewSlug?">
                             <ViewPanel key="view-panel" />
                         </Route>
+                        {hasUIVisionMS1Dot5 && (
+                            <Route exact path="/app/ticket/new">
+                                <NewTicketPage />
+                            </Route>
+                        )}
                         <Route exact path="/app/ticket/:ticketId">
                             <TicketDetailWithInfobar key="ticket-detail-with-infobar" />
                         </Route>

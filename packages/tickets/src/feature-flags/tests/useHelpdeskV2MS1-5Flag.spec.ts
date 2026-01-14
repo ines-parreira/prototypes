@@ -1,6 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useIsMobileResolution } from '@repo/hooks'
-import { useParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import { renderHook } from '../../tests/render.utils'
 import { useHelpdeskV2MS1Dot5Flag } from '../useHelpdeskV2MS1-5Flag'
@@ -22,7 +22,7 @@ vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom')
     return {
         ...actual,
-        useParams: vi.fn(),
+        useLocation: vi.fn(),
     }
 })
 
@@ -39,7 +39,9 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             return false
         })
         vi.mocked(useIsMobileResolution).mockReturnValue(false)
-        vi.mocked(useParams).mockReturnValue({ ticketId: 'new' })
+        vi.mocked(useLocation).mockReturnValue({
+            pathname: '/app/ticket/new',
+        } as any)
 
         const { result } = renderHook(() => useHelpdeskV2MS1Dot5Flag())
 
@@ -54,7 +56,9 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             return false
         })
         vi.mocked(useIsMobileResolution).mockReturnValue(false)
-        vi.mocked(useParams).mockReturnValue({ ticketId: 'new' })
+        vi.mocked(useLocation).mockReturnValue({
+            pathname: '/app/ticket/new',
+        } as any)
 
         const { result } = renderHook(() => useHelpdeskV2MS1Dot5Flag())
 
@@ -69,7 +73,9 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             return false
         })
         vi.mocked(useIsMobileResolution).mockReturnValue(false)
-        vi.mocked(useParams).mockReturnValue({ ticketId: 'new' })
+        vi.mocked(useLocation).mockReturnValue({
+            pathname: '/app/ticket/new',
+        } as any)
 
         const { result } = renderHook(() => useHelpdeskV2MS1Dot5Flag())
 
@@ -84,7 +90,9 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             return false
         })
         vi.mocked(useIsMobileResolution).mockReturnValue(false)
-        vi.mocked(useParams).mockReturnValue({ ticketId: 'new' })
+        vi.mocked(useLocation).mockReturnValue({
+            pathname: '/app/ticket/new',
+        } as any)
 
         const { result } = renderHook(() => useHelpdeskV2MS1Dot5Flag())
 
@@ -99,14 +107,16 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             return false
         })
         vi.mocked(useIsMobileResolution).mockReturnValue(true)
-        vi.mocked(useParams).mockReturnValue({ ticketId: 'new' })
+        vi.mocked(useLocation).mockReturnValue({
+            pathname: '/app/ticket/new',
+        } as any)
 
         const { result } = renderHook(() => useHelpdeskV2MS1Dot5Flag())
 
         expect(result.current).toBe(false)
     })
 
-    it('should return false when ticketId is not "new"', () => {
+    it('should return false when pathname does not include /app/ticket/new', () => {
         vi.mocked(useFlag).mockImplementation((key: string) => {
             if (key === FeatureFlagKey.UIVisionBetaBaseline) return true
             if (key === FeatureFlagKey.UIVisionMilestone1) return true
@@ -114,14 +124,16 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             return false
         })
         vi.mocked(useIsMobileResolution).mockReturnValue(false)
-        vi.mocked(useParams).mockReturnValue({ ticketId: '123' })
+        vi.mocked(useLocation).mockReturnValue({
+            pathname: '/app/ticket/123',
+        } as any)
 
         const { result } = renderHook(() => useHelpdeskV2MS1Dot5Flag())
 
         expect(result.current).toBe(false)
     })
 
-    it('should return false when ticketId is undefined', () => {
+    it('should return false when pathname is just /app/tickets', () => {
         vi.mocked(useFlag).mockImplementation((key: string) => {
             if (key === FeatureFlagKey.UIVisionBetaBaseline) return true
             if (key === FeatureFlagKey.UIVisionMilestone1) return true
@@ -129,7 +141,9 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             return false
         })
         vi.mocked(useIsMobileResolution).mockReturnValue(false)
-        vi.mocked(useParams).mockReturnValue({})
+        vi.mocked(useLocation).mockReturnValue({
+            pathname: '/app/tickets',
+        } as any)
 
         const { result } = renderHook(() => useHelpdeskV2MS1Dot5Flag())
 
@@ -144,7 +158,9 @@ describe('useHelpdeskV2MS1Dot5Flag', () => {
             return false
         })
         vi.mocked(useIsMobileResolution).mockReturnValue(true)
-        vi.mocked(useParams).mockReturnValue({ ticketId: '123' })
+        vi.mocked(useLocation).mockReturnValue({
+            pathname: '/app/tickets/123',
+        } as any)
 
         const { result } = renderHook(() => useHelpdeskV2MS1Dot5Flag())
 

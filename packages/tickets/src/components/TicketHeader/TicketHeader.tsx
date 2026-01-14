@@ -9,6 +9,11 @@ import { TicketStatusMenu } from '../TicketMenuStatus/TicketStatusMenu'
 import { TicketPriority } from '../TicketPriority'
 import { TicketViewNavigator } from '../TicketViewNavigator/TicketViewNavigator'
 import { TrashedTicket } from '../TrashedTicket'
+import {
+    TicketHeaderContainer,
+    TicketHeaderLeft,
+    TicketHeaderRight,
+} from './layout/TicketHeaderLayout'
 import { TicketTitle } from './TicketTitle/TicketTitle'
 
 import css from './TicketHeader.less'
@@ -34,11 +39,11 @@ export function TicketHeader({ ticketId }: Props) {
     } = ticket
 
     return (
-        <div className={css.container}>
-            <div className={css.left}>
+        <TicketHeaderContainer>
+            <TicketHeaderLeft>
                 <TicketTitle ticket={ticket} />
-            </div>
-            <div className={css.right}>
+            </TicketHeaderLeft>
+            <TicketHeaderRight>
                 {spam && <SpamTicket />}
                 <TrashedTicket trashedDatetime={trashed_datetime} />
                 {hasMessagesTranslations && (
@@ -56,7 +61,7 @@ export function TicketHeader({ ticketId }: Props) {
                 <TeamAssignee ticketId={ticketId} currentTeam={currentTeam} />
                 <TicketActions {...ticket} />
                 <TicketViewNavigator />
-            </div>
-        </div>
+            </TicketHeaderRight>
+        </TicketHeaderContainer>
     )
 }

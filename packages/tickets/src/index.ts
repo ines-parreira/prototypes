@@ -38,3 +38,9 @@ export { useHelpdeskV2MS1Flag } from './feature-flags/useHelpdeskV2MS1Flag'
 export { useHelpdeskV2MS1Dot5Flag } from './feature-flags/useHelpdeskV2MS1-5Flag'
 export { useCloseTicket } from './components/TicketMenuStatus/useCloseTicket'
 export { useTicketFieldsValidation } from './components/InfobarTicketDetails/components/InfobarTicketFields/hooks/useTicketFieldsValidation'
+
+// Layout components
+export { TicketLayout, TicketLayoutContent } from './layout/TicketLayout'
+export { TicketHeaderContainer } from './components/TicketHeader/layout/TicketHeaderLayout'
+export { TicketHeaderLeft } from './components/TicketHeader/layout/TicketHeaderLayout'
+export { TicketHeaderRight } from './components/TicketHeader/layout/TicketHeaderLayout'
