@@ -65,7 +65,7 @@ describe('GuidanceEditor', () => {
         )
 
         const charCount = container.querySelector('.maxLength')
-        expect(charCount?.textContent).toBe('12/5000')
+        expect(charCount?.textContent).toBe('12/30000')
     })
 
     it('renders toolbar with formatting buttons', () => {
@@ -152,7 +152,7 @@ describe('GuidanceEditor', () => {
         expect(editorContent?.textContent).toBe('')
 
         const charCount = container.querySelector('.maxLength')
-        expect(charCount?.textContent).toBe('0/5000')
+        expect(charCount?.textContent).toBe('0/30000')
     })
 
     it('renders with available guidance actions', () => {

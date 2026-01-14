@@ -26,7 +26,7 @@ type GuidanceEditorProps = {
     label?: string
 }
 
-export const textLimit = 5000
+export const textLimit = 30000
 const defaultToolbarActions = [
     ActionName.Bold,
     ActionName.Italic,
