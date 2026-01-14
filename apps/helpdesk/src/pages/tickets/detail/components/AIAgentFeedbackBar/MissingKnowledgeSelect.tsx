@@ -14,6 +14,7 @@ import {
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import useAppSelector from 'hooks/useAppSelector'
+import { useIsFeedbackMutating } from 'models/knowledgeService/queries'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import {
@@ -92,6 +93,11 @@ const MissingKnowledgeSelect = ({
     const currentUser = useAppSelector((state) => state.currentUser)
     const ticketId: number = ticket.get('id')
     const userId: number = currentUser.get('id')
+
+    const isMutating = useIsFeedbackMutating({
+        objectType: 'TICKET',
+        objectId: ticketId.toString(),
+    })
 
     const { onFeedbackGiven } = useFeedbackTracking({
         ticketId,
@@ -514,6 +520,7 @@ const MissingKnowledgeSelect = ({
                                 handleRemove={handleRemove}
                                 shopName={shopName}
                                 shopType={shopType}
+                                isMutating={isMutating}
                             />
                         )
                     })}
@@ -530,6 +537,7 @@ type KnowledgeTagProps = {
     handleRemove: (option: string) => void
     shopName: string
     shopType: string
+    isMutating?: boolean
 }
 
 export const KnowledgeTag = ({
@@ -537,6 +545,7 @@ export const KnowledgeTag = ({
     handleRemove,
     shopName,
     shopType,
+    isMutating = false,
 }: KnowledgeTagProps) => {
     const { openPreview } = useKnowledgeSourceSideBar()
 
@@ -545,6 +554,7 @@ export const KnowledgeTag = ({
     }
 
     const { meta, type } = choice
+    const isDeleteDisabled = isMutating
 
     const popoverProps = {
         id: choice.value,
@@ -607,14 +617,16 @@ export const KnowledgeTag = ({
                         )}
                     </a>
                     <BadgeIcon
-                        className={css.tagIcon}
+                        className={cn(css.tagIcon, {
+                            [css.tagIconDisabled]: isDeleteDisabled,
+                        })}
                         icon={
                             choice.value ? (
                                 <i className="material-icons">close</i>
                             ) : null
                         }
                         onClick={() => {
-                            if (choice.value && label) {
+                            if (choice.value && label && !isDeleteDisabled) {
                                 handleRemove(choice.value)
                             }
                         }}

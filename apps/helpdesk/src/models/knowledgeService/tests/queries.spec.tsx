@@ -28,6 +28,7 @@ import {
     useGetFeedback,
     useGetMessageAiReasoning,
     useGetRulesProductRecommendation,
+    useIsFeedbackMutating,
 } from '../queries'
 
 const server = setupServer()
@@ -361,6 +362,69 @@ describe('knowledgeService queries', () => {
                 },
             )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
+        })
+    })
+
+    describe('useIsFeedbackMutating', () => {
+        const params: FindFeedbackParams = {
+            objectId: 'ticket-123',
+            objectType: 'TICKET',
+        }
+
+        it('should return false when no mutations are in progress', () => {
+            const { result } = renderHook(() => useIsFeedbackMutating(params), {
+                wrapper,
+            })
+
+            expect(result.current).toBe(false)
+        })
+
+        it('should return true when a mutation is in progress', async () => {
+            const { handler } = mockFindFeedbackHandler()
+            server.use(handler)
+
+            // Create mutation key structure that matches what the SDK generates
+            const mutationKey = [
+                'feedback',
+                'findFeedback',
+                { queryParams: params },
+            ]
+
+            // Create a promise that we can control
+            let resolveMutation: () => void
+            const mutationPromise = new Promise<void>(
+                (resolve) => (resolveMutation = resolve),
+            )
+
+            // Start a mutation using the mutation cache
+            const mutation = queryClient.getMutationCache().build(queryClient, {
+                mutationKey,
+                mutationFn: async () => {
+                    await mutationPromise
+                    return { data: {} }
+                },
+            })
+
+            // Start the mutation
+            const executionPromise = mutation.execute()
+
+            // Check if mutation is detected while in progress
+            const { result } = renderHook(() => useIsFeedbackMutating(params), {
+                wrapper,
+            })
+
+            // Should return true while mutation is in progress
+            expect(result.current).toBe(true)
+
+            // Complete the mutation
+            resolveMutation!()
+            await executionPromise
+
+            // Verify mutation count goes back to 0
+            await waitFor(() => {
+                const isMutating = queryClient.isMutating({ mutationKey })
+                expect(isMutating).toBe(0)
+            })
         })
     })
 })

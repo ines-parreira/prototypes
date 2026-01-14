@@ -1,4 +1,5 @@
 import type { QueryKey, UseQueryOptions } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import type {
     FindAiReasoningAiReasoningResult,
@@ -10,6 +11,7 @@ import type {
     GetRulesProductRecommendationResult,
 } from '@gorgias/knowledge-service-client'
 import {
+    queryKeys,
     useFindAiReasoningAiReasoning,
     useFindAllGuidancesKnowledgeResources as useFindAllGuidancesKnowledgeResourcesQuery,
     useFindFeedback,
@@ -127,4 +129,14 @@ export const useGetRulesProductRecommendation = (
         data: data?.data,
         ...rest,
     }
+}
+
+/**
+ * Hook to check if feedback mutations are in progress for a specific ticket
+ * Returns true if any feedback mutation is currently running
+ */
+export const useIsFeedbackMutating = (params: FindFeedbackParams) => {
+    const queryClient = useQueryClient()
+    const feedbackQueryKey = queryKeys.feedback.findFeedback(params)
+    return queryClient.isMutating({ mutationKey: feedbackQueryKey }) > 0
 }

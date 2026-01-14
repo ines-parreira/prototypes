@@ -6,6 +6,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { useIsFeedbackMutating } from 'models/knowledgeService/queries'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 
@@ -18,6 +19,11 @@ import { getResourceMetadata } from '../useEnrichKnowledgeFeedbackData/utils'
 jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),
     logEventWithSampling: jest.fn(),
+}))
+
+jest.mock('models/knowledgeService/queries', () => ({
+    ...jest.requireActual('models/knowledgeService/queries'),
+    useIsFeedbackMutating: jest.fn(),
 }))
 
 jest.mock(
@@ -193,6 +199,7 @@ jest.mock('../hooks/useFeedbackTracking', () => ({
 }))
 
 const mockUseFlag = useFlag as jest.Mock
+const mockUseIsFeedbackMutating = assumeMock(useIsFeedbackMutating)
 
 describe('MissingKnowledgeSelect', () => {
     beforeEach(() => {
@@ -201,6 +208,7 @@ describe('MissingKnowledgeSelect', () => {
             guidanceActions: [],
         })
         mockUseFlag.mockReturnValue(false)
+        mockUseIsFeedbackMutating.mockReturnValue(false)
         getResourceMetadataMock.mockReturnValue({
             title: '',
             content: '',
@@ -1290,5 +1298,151 @@ describe('MissingKnowledgeSelect', () => {
         const component = screen.getByText('Select First').closest('div')
 
         expect(component).toBeInTheDocument()
+    })
+
+    describe('Delete button disabled state based on mutation status', () => {
+        it('disables delete button when mutation is in progress', () => {
+            const handleRemove = jest.fn()
+
+            render(
+                <KnowledgeTag
+                    choice={{
+                        meta: {
+                            url: 'https://example.com',
+                            title: 'Test Resource',
+                            content: 'Test content',
+                        },
+                        type: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                        displayLabel: 'Actions::Test Resource',
+                        label: 'Actions::Test Resource',
+                        value: '1',
+                    }}
+                    handleRemove={handleRemove}
+                    shopName="test-shop"
+                    shopType="test-type"
+                    isMutating={true}
+                />,
+            )
+
+            const closeButton = screen.getByText('close').parentElement
+            expect(closeButton).toHaveClass('tagIconDisabled')
+
+            fireEvent.click(screen.getByText('close'))
+            expect(handleRemove).not.toHaveBeenCalled()
+        })
+
+        it('enables delete button when no mutation is in progress', () => {
+            const handleRemove = jest.fn()
+
+            render(
+                <KnowledgeTag
+                    choice={{
+                        meta: {
+                            url: 'https://example.com',
+                            title: 'Test Resource',
+                            content: 'Test content',
+                        },
+                        type: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                        displayLabel: 'Actions::Test Resource',
+                        label: 'Actions::Test Resource',
+                        value: '1',
+                    }}
+                    handleRemove={handleRemove}
+                    shopName="test-shop"
+                    shopType="test-type"
+                    isMutating={false}
+                />,
+            )
+
+            const closeButton = screen.getByText('close').parentElement
+            expect(closeButton).not.toHaveClass('tagIconDisabled')
+
+            fireEvent.click(screen.getByText('close'))
+            expect(handleRemove).toHaveBeenCalledWith('1')
+        })
+
+        it('disables all delete buttons when feedback mutation is in progress', () => {
+            mockUseIsFeedbackMutating.mockReturnValue(true)
+
+            const onSubmit = jest.fn()
+            const onRemove = jest.fn()
+
+            render(
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[
+                        {
+                            executionId: 'execution1',
+                            feedback: {
+                                id: 'feedback-id-123',
+                            } as any,
+                            parsedResource: {
+                                resourceId: '3',
+                                resourceType:
+                                    AiAgentKnowledgeResourceTypeEnum.ACTION,
+                            },
+                            metadata: {
+                                title: 'Action Test',
+                                content: 'Test content',
+                            },
+                        } as SuggestedResource,
+                    ]}
+                    resourcesData={enrichedDataMock}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                />,
+            )
+
+            const closeButton = screen.getByText('close').parentElement
+            expect(closeButton).toHaveClass('tagIconDisabled')
+
+            mockUseIsFeedbackMutating.mockReturnValue(false)
+        })
+
+        it('enables delete buttons when feedback mutation completes', () => {
+            mockUseIsFeedbackMutating.mockReturnValue(false)
+
+            const onSubmit = jest.fn()
+            const onRemove = jest.fn()
+
+            render(
+                <MissingKnowledgeSelect
+                    shopName="test-shop"
+                    shopType="test-type"
+                    helpCenterId={1}
+                    guidanceHelpCenterId={2}
+                    snippetHelpCenterId={3}
+                    accountId={123}
+                    initialValues={[
+                        {
+                            executionId: 'execution1',
+                            feedback: {
+                                id: 'feedback-id-123',
+                            } as any,
+                            parsedResource: {
+                                resourceId: '3',
+                                resourceType:
+                                    AiAgentKnowledgeResourceTypeEnum.ACTION,
+                            },
+                            metadata: {
+                                title: 'Action Test',
+                                content: 'Test content',
+                            },
+                        } as SuggestedResource,
+                    ]}
+                    resourcesData={enrichedDataMock}
+                    onSubmit={onSubmit}
+                    onRemove={onRemove}
+                />,
+            )
+
+            const closeButton = screen.getByText('close').parentElement
+            expect(closeButton).not.toHaveClass('tagIconDisabled')
+        })
     })
 })
