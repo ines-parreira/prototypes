@@ -35,6 +35,11 @@
     .playground {
         width: 480px;
         flex-shrink: 0;
+        [data-name='panel-header'] {
+            // this matches the height of header to the height of side panel header
+            // side panel header has height of 58px, but also has a border on top of 1px, making total of 59px
+            height: 59px;
+        }
     }
     [data-name='playground-panel'] {
         border-radius: 12px !important;
