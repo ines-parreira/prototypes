@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 
+import { Heading } from '@gorgias/axiom'
+
 import css from './InfobarTicketDetailsHeader.less'
 
 type InfobarTicketDetailsHeaderProps = {
@@ -11,9 +13,7 @@ export function InfobarTicketDetailsHeader({
 }: InfobarTicketDetailsHeaderProps) {
     return (
         <header className={css.header}>
-            <div className={css.title}>
-                <h2>Ticket details</h2>
-            </div>
+            <Heading size="sm">Ticket details</Heading>
             {ticketSummaryIcon}
         </header>
     )

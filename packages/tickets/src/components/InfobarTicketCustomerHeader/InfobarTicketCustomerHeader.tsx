@@ -7,11 +7,10 @@ import {
     Button,
     ButtonSize,
     ButtonVariant,
+    Heading,
     IconName,
     Menu,
     MenuItem,
-    Text,
-    TextVariant,
 } from '@gorgias/axiom'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
@@ -66,12 +65,7 @@ export function InfobarTicketCustomerHeader({
         <div className={css.container}>
             <Box justifyContent="space-between">
                 <Link to={`/app/customer/${customer.id}`}>
-                    <Text
-                        variant={TextVariant.Bold}
-                        className={css.customerName}
-                    >
-                        {customerDisplayName}
-                    </Text>
+                    <Heading size="sm">{customerDisplayName}</Heading>
                 </Link>
                 <Box>
                     {showMergeButton && (
