@@ -1,4 +1,6 @@
-import { FormField } from '@repo/forms'
+import { useMemo } from 'react'
+
+import { FormField, useWatch } from '@repo/forms'
 
 import {
     Box,
@@ -11,13 +13,9 @@ import {
 
 import { VALIDATION } from '../../constants'
 import { StatusDurationSelect } from '../StatusDurationSelect'
-
-export type AgentStatusFormContentProps = {
-    /** Whether the form is in loading state */
-    isLoading?: boolean
-    /** Callback for cancel button */
-    onCancel: () => void
-}
+import { StatusDurationUnitSelect } from '../StatusDurationUnitSelect'
+import { StatusDurationValueField } from '../StatusDurationValueField'
+import type { AgentStatusFormContentProps } from './types'
 
 /**
  * Form content for creating/editing agent status with custom duration support.
@@ -27,6 +25,13 @@ export function AgentStatusFormContent({
     isLoading,
     onCancel,
 }: AgentStatusFormContentProps) {
+    const durationOption = useWatch({ name: 'durationOption' })
+
+    const isCustom = useMemo(
+        () => durationOption?.id === 'custom',
+        [durationOption],
+    )
+
     return (
         <>
             <OverlayContent>
@@ -59,6 +64,28 @@ export function AgentStatusFormContent({
                                 name="durationOption"
                                 field={StatusDurationSelect}
                             />
+
+                            {isCustom && (
+                                <Box
+                                    flexDirection="row"
+                                    gap="xs"
+                                    flex={1}
+                                    alignItems="flex-start"
+                                >
+                                    <Box flexGrow={0}>
+                                        <FormField
+                                            name="customDurationValue"
+                                            field={StatusDurationValueField}
+                                        />
+                                    </Box>
+                                    <Box flex={1}>
+                                        <FormField
+                                            name="customDurationUnit"
+                                            field={StatusDurationUnitSelect}
+                                        />
+                                    </Box>
+                                </Box>
+                            )}
                         </Box>
                     </Box>
                 </Box>

@@ -21,17 +21,18 @@ export function StatusDurationSelect({
     value,
     onChange,
     error,
-    'aria-label': ariaLabel = 'Status duration',
 }: StatusDurationSelectProps) {
     return (
         <Box flexDirection="column" gap="xs" maxWidth={260} flex={1}>
-            <Label>Status duration</Label>
+            <Label id="status-duration-label" htmlFor="status-duration">
+                Status duration
+            </Label>
             <Select
                 maxWidth={200}
                 items={DURATION_OPTIONS}
                 selectedItem={value}
                 onSelect={onChange}
-                aria-label={ariaLabel}
+                aria-labelledby="status-duration-label"
                 // TODO: There are only 3 avaialble placements, but the design mandates top placement
                 // this works, I'm leaving an ignore until resolved in PR
                 // @ts-ignore
@@ -40,6 +41,7 @@ export function StatusDurationSelect({
                     return (
                         <SelectTrigger>
                             <TextField
+                                id="status-duration"
                                 inputRef={ref as RefObject<HTMLInputElement>}
                                 isFocused={isOpen}
                                 trailingSlot={
@@ -49,7 +51,7 @@ export function StatusDurationSelect({
                                 }
                                 variant="primary"
                                 value={selectedText}
-                                aria-label={ariaLabel}
+                                aria-labelledby="status-duration-label"
                             />
                         </SelectTrigger>
                     )

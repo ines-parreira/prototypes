@@ -3,7 +3,13 @@
 export { AgentStatusesTable } from './components'
 export { DeleteStatusConfirmationModal } from './components/DeleteStatusModal'
 
-export { DURATION_OPTIONS, SYSTEM_STATUSES, VALIDATION } from './constants'
+export {
+    DURATION_LIMITS,
+    DURATION_OPTIONS,
+    DURATION_UNIT_OPTIONS,
+    SYSTEM_STATUSES,
+    VALIDATION,
+} from './constants'
 
 export {
     useAgentStatuses,
@@ -17,6 +23,12 @@ export type { CreateAgentStatusModalProps } from './components/CreateAgentStatus
 
 export { StatusDurationSelect } from './components/StatusDurationSelect'
 export type { StatusDurationSelectProps } from './components/StatusDurationSelect'
+
+export { StatusDurationUnitSelect } from './components/StatusDurationUnitSelect'
+export type { StatusDurationUnitSelectProps } from './components/StatusDurationUnitSelect'
+
+export { StatusDurationValueField } from './components/StatusDurationValueField'
+export type { StatusDurationValueFieldProps } from './components/StatusDurationValueField'
 
 // Hooks
 export { useCreateAgentStatus } from './hooks/useCreateAgentStatus'

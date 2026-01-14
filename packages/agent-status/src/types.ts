@@ -21,3 +21,19 @@ export type DurationOption = {
     unit: DurationUnit | null
     value: number | null
 }
+
+/**
+ * Single duration unit option item
+ */
+export type DurationUnitOption = {
+    id: DurationUnit
+    name: string
+}
+
+/**
+ * Single duration limit
+ */
+export type DurationMinMaxLimit = {
+    min: number
+    max: number
+}

@@ -1,4 +1,11 @@
-import type { AgentStatusWithSystem, DurationOption } from './types'
+import type { DurationUnit } from '@gorgias/helpdesk-queries'
+
+import type {
+    AgentStatusWithSystem,
+    DurationMinMaxLimit,
+    DurationOption,
+    DurationUnitOption,
+} from './types'
 
 /**
  * Duration options for dropdown using new format (unit + value).
@@ -35,7 +42,31 @@ export const DURATION_OPTIONS: DurationOption[] = [
         unit: 'hours',
         value: 4,
     },
+    {
+        name: 'Custom',
+        id: 'custom',
+        unit: null,
+        value: null,
+    },
 ]
+
+/**
+ * Duration unit options for custom duration selection
+ */
+export const DURATION_UNIT_OPTIONS: ReadonlyArray<DurationUnitOption> = [
+    { id: 'minutes', name: 'Minutes' },
+    { id: 'hours', name: 'Hours' },
+    { id: 'days', name: 'Days' },
+] as const
+
+/**
+ * Validation limits for custom duration values by unit
+ */
+export const DURATION_LIMITS: Record<DurationUnit, DurationMinMaxLimit> = {
+    minutes: { min: 1, max: 1440 },
+    hours: { min: 1, max: 24 },
+    days: { min: 1, max: 30 },
+} as const
 
 /**
  * Built-in system statuses, always shown first in table.

@@ -4,6 +4,7 @@ import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import {
+    mockCreateCustomUserAvailabilityStatusHandler,
     mockDeleteCustomUserAvailabilityStatusHandler,
     mockListCustomUserAvailabilityStatusesHandler,
 } from '@gorgias/helpdesk-mocks'
@@ -64,6 +65,94 @@ const renderComponent = () =>
             route: '/app/settings/agent-unavailability',
         },
     )
+
+/**
+ * Helper function to open the create status modal
+ */
+async function openCreateStatusModal() {
+    const user = userEvent.setup()
+    renderComponent()
+
+    await waitFor(() => {
+        expect(screen.getByText('Lunch break')).toBeInTheDocument()
+    })
+
+    const createButton = screen.getByRole('button', {
+        name: /Create status/i,
+    })
+    await act(() => user.click(createButton))
+
+    await waitFor(() => {
+        expect(
+            screen.getByRole('heading', { name: /^Create status$/i }),
+        ).toBeInTheDocument()
+    })
+
+    return { user }
+}
+
+/**
+ * Helper function to fill in the status name
+ */
+async function fillStatusName(
+    user: ReturnType<typeof userEvent.setup>,
+    name: string,
+) {
+    const nameInput = screen.getByPlaceholderText('Lunch break')
+    await act(() => user.type(nameInput, name))
+}
+
+/**
+ * Helper function to select a duration option from the dropdown
+ */
+async function selectDurationOption(optionValue: string) {
+    const durationSelects = screen.getAllByTestId('hidden-select-container')
+    const durationSelect = durationSelects[0].querySelector('select')
+
+    await act(() => {
+        if (durationSelect) {
+            durationSelect.value = optionValue
+            durationSelect.dispatchEvent(new Event('change', { bubbles: true }))
+        }
+    })
+}
+
+/**
+ * Helper function to fill in custom duration fields
+ */
+async function fillCustomDuration(
+    user: ReturnType<typeof userEvent.setup>,
+    value: string,
+    unit: string,
+) {
+    // Wait for custom duration value field to appear (has hidden "Amount" label)
+    const customValueInput = await screen.findByLabelText('Amount')
+    await act(() => user.clear(customValueInput))
+    await act(() => user.type(customValueInput, value))
+
+    // Select the unit - use data-testid since Axiom's Select has complex internal structure
+    // The unit select is the second select container when custom duration is visible
+    const unitSelects = screen.getAllByTestId('hidden-select-container')
+    const unitSelect = unitSelects[1]?.querySelector('select')
+    if (unitSelect) {
+        await act(() => {
+            unitSelect.value = unit
+            unitSelect.dispatchEvent(new Event('change', { bubbles: true }))
+        })
+    }
+}
+
+/**
+ * Helper function to submit the create status form
+ */
+async function submitCreateStatusForm(
+    user: ReturnType<typeof userEvent.setup>,
+) {
+    const createStatusButton = screen.getByRole('button', {
+        name: /^Create status$/i,
+    })
+    await act(() => user.click(createStatusButton))
+}
 
 describe('AgentUnavailabilityStatuses', () => {
     describe('Page Structure', () => {
@@ -629,6 +718,144 @@ describe('AgentUnavailabilityStatuses', () => {
             })
 
             expect(screen.getByText('Delete status?')).toBeInTheDocument()
+        })
+    })
+
+    describe('Create Status', () => {
+        it('should create a status with unlimited duration', async () => {
+            const mockCreateStatus =
+                mockCreateCustomUserAvailabilityStatusHandler()
+            const waitForCreateRequest = mockCreateStatus.waitForRequest(server)
+            server.use(mockCreateStatus.handler)
+
+            const { user } = await openCreateStatusModal()
+            await fillStatusName(user, 'Team meeting')
+            await submitCreateStatusForm(user)
+
+            await waitForCreateRequest(async (request) => {
+                const body = await request.json()
+                expect(body.name).toBe('Team meeting')
+                expect(body.duration_unit).toBeNull()
+                expect(body.duration_value).toBeNull()
+            })
+        })
+
+        it('should create a status with 30 minutes duration', async () => {
+            const mockCreateStatus =
+                mockCreateCustomUserAvailabilityStatusHandler()
+            const waitForCreateRequest = mockCreateStatus.waitForRequest(server)
+            server.use(mockCreateStatus.handler)
+
+            const { user } = await openCreateStatusModal()
+            await fillStatusName(user, 'Lunch')
+            await selectDurationOption('30-minutes')
+            await submitCreateStatusForm(user)
+
+            await waitForCreateRequest(async (request) => {
+                const body = await request.json()
+                expect(body.name).toBe('Lunch')
+                expect(body.duration_unit).toBe('minutes')
+                expect(body.duration_value).toBe(30)
+            })
+        })
+
+        it('should create a status with 1 hour duration', async () => {
+            const mockCreateStatus =
+                mockCreateCustomUserAvailabilityStatusHandler()
+            const waitForCreateRequest = mockCreateStatus.waitForRequest(server)
+            server.use(mockCreateStatus.handler)
+
+            const { user } = await openCreateStatusModal()
+            await fillStatusName(user, 'Training')
+            await selectDurationOption('1-hour')
+            await submitCreateStatusForm(user)
+
+            await waitForCreateRequest(async (request) => {
+                const body = await request.json()
+                expect(body.name).toBe('Training')
+                expect(body.duration_unit).toBe('hours')
+                expect(body.duration_value).toBe(1)
+            })
+        })
+
+        it('should create a status with 4 hours duration', async () => {
+            const mockCreateStatus =
+                mockCreateCustomUserAvailabilityStatusHandler()
+            const waitForCreateRequest = mockCreateStatus.waitForRequest(server)
+            server.use(mockCreateStatus.handler)
+
+            const { user } = await openCreateStatusModal()
+            await fillStatusName(user, 'Workshop')
+            await selectDurationOption('4-hours')
+            await submitCreateStatusForm(user)
+
+            await waitForCreateRequest(async (request) => {
+                const body = await request.json()
+                expect(body.name).toBe('Workshop')
+                expect(body.duration_unit).toBe('hours')
+                expect(body.duration_value).toBe(4)
+            })
+        })
+
+        it('should create a status with 15 minutes preset duration', async () => {
+            const mockCreateStatus =
+                mockCreateCustomUserAvailabilityStatusHandler()
+            const waitForCreateRequest = mockCreateStatus.waitForRequest(server)
+            server.use(mockCreateStatus.handler)
+
+            const { user } = await openCreateStatusModal()
+            await fillStatusName(user, 'Quick break')
+            await selectDurationOption('15-minutes')
+            await submitCreateStatusForm(user)
+
+            await waitForCreateRequest(async (request) => {
+                const body = await request.json()
+                expect(body.name).toBe('Quick break')
+                expect(body.duration_unit).toBe('minutes')
+                expect(body.duration_value).toBe(15)
+            })
+        })
+    })
+
+    describe('Create Status with Custom Duration', () => {
+        it('should create a status with custom duration in minutes', async () => {
+            const mockCreateStatus =
+                mockCreateCustomUserAvailabilityStatusHandler()
+            const waitForCreateRequest = mockCreateStatus.waitForRequest(server)
+            server.use(mockCreateStatus.handler)
+
+            const { user } = await openCreateStatusModal()
+            await fillStatusName(user, 'Coffee break')
+            await selectDurationOption('custom')
+            await fillCustomDuration(user, '15', 'minutes')
+            await submitCreateStatusForm(user)
+
+            await waitForCreateRequest(async (request) => {
+                const body = await request.json()
+                expect(body.name).toBe('Coffee break')
+                expect(body.duration_unit).toBe('minutes')
+                expect(body.duration_value).toBe(15)
+            })
+        })
+
+        it('should create a status with custom duration in hours', async () => {
+            const mockCreateStatus =
+                mockCreateCustomUserAvailabilityStatusHandler()
+            const waitForCreateRequest = mockCreateStatus.waitForRequest(server)
+            server.use(mockCreateStatus.handler)
+
+            const { user } = await openCreateStatusModal()
+            await fillStatusName(user, 'Extended break')
+            await selectDurationOption('custom')
+            await fillCustomDuration(user, '2', 'hours')
+            await submitCreateStatusForm(user)
+
+            await waitForCreateRequest(async (request) => {
+                const body = await request.json()
+                expect(body.name).toBe('Extended break')
+                expect(body.duration_unit).toBe('hours')
+                expect(body.duration_value).toBe(2)
+            })
         })
     })
 })

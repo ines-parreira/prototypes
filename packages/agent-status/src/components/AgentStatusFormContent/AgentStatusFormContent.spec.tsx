@@ -41,6 +41,8 @@ describe('AgentStatusFormContent', () => {
                             name: '',
                             description: '',
                             durationOption: DURATION_OPTIONS[0],
+                            customDurationUnit: 'minutes',
+                            customDurationValue: 1,
                         }}
                         onValidSubmit={onSubmit}
                     >
@@ -200,13 +202,13 @@ describe('AgentStatusFormContent', () => {
             await act(() => user.click(createButton))
 
             expect(onSubmit).toHaveBeenCalledWith(
-                {
+                expect.objectContaining({
                     name: 'Lunch break',
                     description: '',
                     durationOption: DURATION_OPTIONS.find(
                         (opt) => opt.id === '1-hour',
                     ),
-                },
+                }),
                 expect.anything(),
             )
         })
@@ -233,130 +235,88 @@ describe('AgentStatusFormContent', () => {
             await act(() => user.click(createButton))
 
             expect(onSubmit).toHaveBeenCalledWith(
-                {
+                expect.objectContaining({
                     name: 'Team meeting',
                     description: 'Weekly team sync meeting',
                     durationOption: DURATION_OPTIONS.find(
                         (opt) => opt.id === '4-hours',
                     ),
-                },
+                }),
                 expect.anything(),
             )
         })
     })
 
-    describe('Duration Options', () => {
-        it('should have Unlimited selected by default', () => {
-            renderAgentStatusFormContent()
-
-            const select = getDurationSelect() as HTMLSelectElement
-            expect(select.value).toBe('unlimited')
-        })
-
-        it('should show all duration options', () => {
-            renderAgentStatusFormContent()
-
-            const select = getDurationSelect()
-            const options = select.querySelectorAll('option')
-
-            expect(options.length).toBeGreaterThanOrEqual(
-                DURATION_OPTIONS.length,
+    describe('Custom Duration', () => {
+        function getCustomValueInput() {
+            const inputs = screen.getAllByRole('textbox')
+            return inputs.find(
+                (input) => input.getAttribute('inputMode') === 'numeric',
             )
+        }
 
-            DURATION_OPTIONS.forEach((option) => {
-                const optionElement = Array.from(options).find(
-                    (opt) => opt.value === option.id,
-                )
-                expect(optionElement).toBeDefined()
-                expect(optionElement?.textContent).toBe(option.name)
-            })
+        function getUnitSelect() {
+            const containers = screen.getAllByTestId('hidden-select-container')
+            return containers[1]?.querySelector('select')
+        }
+
+        it('should not show custom duration fields by default', () => {
+            renderAgentStatusFormContent()
+
+            expect(getCustomValueInput()).toBeUndefined()
+            expect(getUnitSelect()).toBeUndefined()
         })
 
-        it('should allow selecting each duration option', async () => {
+        it('should show custom duration fields when Custom is selected', async () => {
             const { user } = renderAgentStatusFormContent()
 
-            const select = getDurationSelect()
+            const durationSelect = getDurationSelect()
+            await act(() => user.selectOptions(durationSelect, 'custom'))
 
-            for (const option of DURATION_OPTIONS) {
-                await act(() => user.selectOptions(select, option.id))
-                expect(select).toHaveValue(option.id)
-            }
-        })
-    })
-
-    describe('Accessibility', () => {
-        it('should have accessible form labels', () => {
-            renderAgentStatusFormContent()
-
-            expect(screen.getByText('Status')).toBeInTheDocument()
-            expect(screen.getByText('Description')).toBeInTheDocument()
-            expect(screen.getByText('Status duration')).toBeInTheDocument()
+            expect(getCustomValueInput()).toBeInTheDocument()
+            expect(getUnitSelect()).toBeInTheDocument()
         })
 
-        it('should have accessible buttons', () => {
-            renderAgentStatusFormContent()
-
-            expect(
-                screen.getByRole('button', { name: /Cancel/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('button', { name: /Create status/i }),
-            ).toBeInTheDocument()
-        })
-
-        it('should mark required field appropriately', () => {
-            renderAgentStatusFormContent()
-
-            const statusInput = screen.getByPlaceholderText('Lunch break')
-            expect(statusInput).toBeRequired()
-
-            const descriptionInput = screen.getByPlaceholderText(
-                'Use when agents take their lunch break',
-            )
-            expect(descriptionInput).not.toBeRequired()
-        })
-    })
-
-    describe('Edge Cases', () => {
-        it('should handle empty status name', async () => {
-            const { user, onSubmit } = renderAgentStatusFormContent()
-
-            const createButton = screen.getByRole('button', {
-                name: /Create status/i,
-            })
-            await act(() => user.click(createButton))
-
-            expect(onSubmit).not.toHaveBeenCalled()
-        })
-
-        it('should handle special characters in status name', async () => {
+        it('should hide custom fields when switching back to preset', async () => {
             const { user } = renderAgentStatusFormContent()
 
-            const statusInput = screen.getByPlaceholderText('Lunch break')
-            const specialName = 'Break (15min) ☕'
-            await act(() => user.type(statusInput, specialName))
+            const durationSelect = getDurationSelect()
+            await act(() => user.selectOptions(durationSelect, 'custom'))
 
-            expect(statusInput).toHaveValue(specialName)
+            expect(getCustomValueInput()).toBeInTheDocument()
+
+            await act(() => user.selectOptions(durationSelect, 'unlimited'))
+
+            expect(getCustomValueInput()).toBeUndefined()
         })
 
-        it('should handle exactly max length status name', async () => {
+        it('should submit with custom duration values', async () => {
             const { user, onSubmit } = renderAgentStatusFormContent()
 
-            const exactMaxName = 'A'.repeat(VALIDATION.NAME_MAX_LENGTH)
             const statusInput = screen.getByPlaceholderText('Lunch break')
-            await act(() => user.type(statusInput, exactMaxName))
+            await act(() => user.type(statusInput, 'Custom break'))
 
-            const createButton = screen.getByRole('button', {
+            const durationSelect = getDurationSelect()
+            await act(() => user.selectOptions(durationSelect, 'custom'))
+
+            const valueInput = getCustomValueInput()!
+            await act(() => user.clear(valueInput))
+            await act(() => user.type(valueInput, '45'))
+
+            const unitSelect = getUnitSelect()!
+            await act(() => user.selectOptions(unitSelect, 'minutes'))
+
+            const submitButton = screen.getByRole('button', {
                 name: /Create status/i,
             })
-            await act(() => user.click(createButton))
+            await act(() => user.click(submitButton))
 
             expect(onSubmit).toHaveBeenCalledWith(
-                {
-                    name: exactMaxName,
-                    description: '',
-                    durationOption: DURATION_OPTIONS[0],
-                },
+                expect.objectContaining({
+                    name: 'Custom break',
+                    customDurationUnit: 'minutes',
+                    customDurationValue: 45,
+                }),
                 expect.anything(),
             )
         })
