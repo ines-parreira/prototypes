@@ -232,4 +232,10 @@ const SelectInputBox = (
     )
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<SelectField />` from @gorgias/axiom instead.
+ * @date 2026-01-13
+ * @type ui-kit-migration
+ */
 export default forwardRef<HTMLDivElement, Props>(SelectInputBox)

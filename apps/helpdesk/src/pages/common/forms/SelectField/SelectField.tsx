@@ -72,6 +72,12 @@ type State = {
     isFocused: boolean
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<SelectField />` from @gorgias/axiom instead.
+ * @date 2026-01-13
+ * @type ui-kit-migration
+ */
 export default class SelectField extends Component<Props, State> {
     static defaultProps = {
         id: null,

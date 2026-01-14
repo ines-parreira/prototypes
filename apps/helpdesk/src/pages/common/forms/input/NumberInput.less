@@ -19,14 +19,14 @@
         }
 
         &.isFocused:not(.isNested) {
-            border-color: var(--main-primary);
+            border-color: var(--main-primary); // legacy
             box-shadow: 0 0 0 2px
                 hsla(
                     var(--main-primary-h),
                     var(--main-primary-s),
                     var(--main-primary-l),
                     0.2
-                );
+                ); // legacy
         }
 
         &.isDisabled {
@@ -132,20 +132,42 @@
 .axiom :local {
     .wrapper {
         border: 1px solid var(--border-neutral-default);
-        background-color: var(--elevation-neutral-default);
+        border-radius: var(--spacing-xs);
+        box-shadow: none;
+        background-color: transparent;
+
+        &:hover:not(.isDisabled):not(.isFocused) {
+            border: 1px solid var(--border-neutral-default);
+            background-color: var(--hover-default);
+        }
+
+        &.isFocused:not(.isNested) {
+            border: 1px solid var(--border-neutral-secondary);
+            box-shadow: none;
+
+            &.hasError {
+                border: 1px solid var(--border-error-primary);
+            }
+        }
 
         &.hasError {
             border-color: var(--border-error-primary);
+
+            &:hover:not(.isDisabled):not(.isFocused) {
+                border: 1px solid var(--border-error-primary);
+                background-color: var(--hover-default);
+            }
         }
 
         &.isDisabled {
-            background-color: var(--elevation-neutral-default);
+            opacity: 0.5;
+            background-color: var(--surface-neutral-primary);
         }
     }
 
     .input {
         color: var(--content-neutral-default);
-        background-color: var(--elevation-neutral-default);
+        background-color: transparent;
 
         &.isDisabled {
             color: var(--content-neutral-secondary);
@@ -153,10 +175,10 @@
     }
 
     .prefix {
-        background-color: var(--elevation-neutral-default);
+        background-color: transparent;
     }
 
     .suffix {
-        background-color: var(--elevation-neutral-default);
+        background-color: transparent;
     }
 }

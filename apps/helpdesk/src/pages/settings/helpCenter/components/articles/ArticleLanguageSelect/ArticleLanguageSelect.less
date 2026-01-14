@@ -76,6 +76,25 @@
 .axiom :local {
     .wrapper {
         color: var(--content-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-xs);
+        box-shadow: none;
+        background-color: transparent;
+
+        &:hover:not(:disabled) {
+            border: 1px solid var(--border-neutral-default);
+            background-color: var(--hover-default);
+        }
+
+        &:focus {
+            border: 1px solid var(--border-neutral-secondary);
+            box-shadow: none;
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            background-color: var(--surface-neutral-primary);
+        }
     }
 
     .label {
