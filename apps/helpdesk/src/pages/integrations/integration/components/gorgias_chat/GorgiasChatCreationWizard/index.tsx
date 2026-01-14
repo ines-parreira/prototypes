@@ -1,13 +1,8 @@
-import { lazy, Suspense } from 'react'
-
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Map } from 'immutable'
 
 import GorgiasChatCreationWizardLegacy from './GorgiasChatCreationWizard'
-
-const GorgiasChatCreationWizardRevamp = lazy(
-    () => import('./revamp/GorgiasChatCreationWizard'),
-)
+import GorgiasChatCreationWizardRevamp from './revamp/GorgiasChatCreationWizard'
 
 type Props = {
     integration: Map<any, any>
@@ -27,12 +22,10 @@ export default function GorgiasChatCreationWizardSwitcher({
         : GorgiasChatCreationWizardLegacy
 
     return (
-        <Suspense fallback={null}>
-            <Component
-                integration={integration}
-                loading={loading}
-                isUpdate={isUpdate}
-            />
-        </Suspense>
+        <Component
+            integration={integration}
+            loading={loading}
+            isUpdate={isUpdate}
+        />
     )
 }
