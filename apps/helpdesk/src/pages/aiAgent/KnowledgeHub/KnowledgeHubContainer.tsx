@@ -618,6 +618,7 @@ export const KnowledgeHubContainer = () => {
                     titleAlignment="flex-start"
                     helpCenterId={faqHelpCenterId}
                     onFaqEditorOpen={handleFaqEditorOpen}
+                    sectionsGap="xl"
                 />
             </Modal>
             <AddGuidanceTemplateModal onTemplateSelect={handleTemplateSelect} />

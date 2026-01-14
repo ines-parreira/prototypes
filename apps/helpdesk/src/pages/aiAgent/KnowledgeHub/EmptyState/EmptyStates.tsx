@@ -1,4 +1,5 @@
 import { Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
+import type { SizeValue } from '@gorgias/axiom'
 
 import {
     HELP_CENTER_SELECT_MODAL_OPEN,
@@ -23,14 +24,16 @@ export const EmptyStates = ({
     titleAlignment = 'center',
     helpCenterId,
     onFaqEditorOpen,
+    sectionsGap = 'xxl',
 }: {
     hasWebsiteSync?: boolean
     titleAlignment?: string
     helpCenterId?: number | null
     onFaqEditorOpen?: () => void
+    sectionsGap?: SizeValue
 }) => {
     return (
-        <Box flexDirection="column" gap="xl">
+        <Box flexDirection="column" gap={sectionsGap} width="100%">
             {/* Top row*/}
             <Box
                 flexDirection={'column'}
@@ -114,7 +117,7 @@ export const EmptyStates = ({
                 width="100%"
             >
                 <Heading size={'md'}>Bring in existing content</Heading>
-                <Box flexDirection={'row'} gap="md">
+                <Box flexDirection={'row'} gap="md" width="100%">
                     {!hasWebsiteSync && (
                         <Card
                             onClick={() => {
@@ -421,10 +424,12 @@ export const EmptyStateWrapper = ({
             return <EmptyStateURL />
         default:
             return (
-                <EmptyStates
-                    helpCenterId={helpCenterId}
-                    onFaqEditorOpen={onFaqEditorOpen}
-                />
+                <Box width={'544px'}>
+                    <EmptyStates
+                        helpCenterId={helpCenterId}
+                        onFaqEditorOpen={onFaqEditorOpen}
+                    />
+                </Box>
             )
     }
 }
