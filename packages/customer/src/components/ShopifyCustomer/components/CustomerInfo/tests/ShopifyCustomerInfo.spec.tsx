@@ -8,21 +8,6 @@ import type { Integration } from '@gorgias/helpdesk-types'
 import { CustomerInfo } from '../'
 import { render, testAppQueryClient } from '../../../../../tests/render.utils'
 
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'warn' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-    testAppQueryClient.clear()
-})
-
-afterAll(() => {
-    server.close()
-})
-
 const mockShopifyIntegration = {
     id: 1,
     name: 'Test Shopify Store',
@@ -43,8 +28,23 @@ const mockListIntegrations = mockListIntegrationsHandler(async () =>
     }),
 )
 
+const server = setupServer(mockListIntegrations.handler)
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
 beforeEach(() => {
     server.use(mockListIntegrations.handler)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    testAppQueryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
 })
 
 describe('CustomerInfo', () => {
@@ -78,44 +78,45 @@ describe('CustomerInfo', () => {
             meta: {},
         } as Integration
 
-        const mockListIntegrations = mockListIntegrationsHandler(async () =>
-            HttpResponse.json({
-                data: [mockShopifyIntegration, secondIntegration],
-                meta: {
-                    next_cursor: null,
-                    prev_cursor: null,
-                },
-                object: 'list',
-                uri: '/api/integrations',
-            }),
+        const mockListIntegrationsWithTwo = mockListIntegrationsHandler(
+            async () =>
+                HttpResponse.json({
+                    data: [mockShopifyIntegration, secondIntegration],
+                    meta: {
+                        next_cursor: null,
+                        prev_cursor: null,
+                    },
+                    object: 'list',
+                    uri: '/api/integrations',
+                }),
         )
 
-        server.use(mockListIntegrations.handler)
+        server.use(mockListIntegrationsWithTwo.handler)
 
         const onStoreChange = vi.fn()
         const { user } = render(<CustomerInfo onStoreChange={onStoreChange} />)
 
         await waitFor(() => {
-            expect(onStoreChange).toHaveBeenCalledWith(
-                mockShopifyIntegration.id,
+            expect(screen.getByRole('textbox')).toHaveValue(
+                mockShopifyIntegration.name,
             )
         })
+
+        expect(onStoreChange).toHaveBeenCalledWith(mockShopifyIntegration.id)
 
         onStoreChange.mockClear()
 
-        await act(async () => {
-            await user.click(
+        await act(() =>
+            user.click(
                 screen.getByRole('button', { name: /test shopify store/i }),
-            )
-        })
+            ),
+        )
 
-        const option = await screen.findByRole('option', {
-            name: /second shopify store/i,
-        })
-
-        await act(async () => {
-            await user.click(option)
-        })
+        await act(() =>
+            user.click(
+                screen.getByRole('option', { name: /second shopify store/i }),
+            ),
+        )
 
         expect(onStoreChange).toHaveBeenCalledWith(secondIntegration.id)
     })

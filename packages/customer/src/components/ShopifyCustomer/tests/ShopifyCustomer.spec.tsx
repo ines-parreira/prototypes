@@ -8,21 +8,6 @@ import type { Integration } from '@gorgias/helpdesk-types'
 import { ShopifyCustomer } from '../'
 import { render, testAppQueryClient } from '../../../tests/render.utils'
 
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
-})
-
-afterEach(() => {
-    server.resetHandlers()
-    testAppQueryClient.clear()
-})
-
-afterAll(() => {
-    server.close()
-})
-
 const mockShopifyIntegration = {
     id: 1,
     name: 'Test Shopify Store',
@@ -43,8 +28,23 @@ const mockListIntegrations = mockListIntegrationsHandler(async () =>
     }),
 )
 
+const server = setupServer(mockListIntegrations.handler)
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
 beforeEach(() => {
     server.use(mockListIntegrations.handler)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    testAppQueryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
 })
 
 describe('ShopifyCustomer', () => {
