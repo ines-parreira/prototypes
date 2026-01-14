@@ -2,6 +2,10 @@ import { useState } from 'react'
 
 import { Box, ButtonGroup, ButtonGroupItem, Heading } from '@gorgias/axiom'
 
+import { AiAgentAnalyticsQueryParams } from 'pages/aiAgent/analyticsAiAgent/constants'
+import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
+import { STATS_ROUTES } from 'routes/constants'
+
 import { ChannelPerformanceBreakdownTable } from './ChannelPerformanceBreakdownTable'
 import { IntentPerformanceBreakdownTable } from './IntentPerformanceBreakdownTable'
 
@@ -16,6 +20,15 @@ type PerformanceTabKey = keyof typeof PerformanceTab
 
 export const AllAgentsPerformanceBreakdownTable = () => {
     const [activeTab, setActiveTab] = useState<PerformanceTabKey>('Channel')
+    const { onTableTabInteraction } = useAiAgentAnalyticsDashboardTracking()
+
+    const handleSelectionChange = (key: PerformanceTabKey) => {
+        onTableTabInteraction({
+            reportName: `${STATS_ROUTES.ANALYTICS_AI_AGENT}/${AiAgentAnalyticsQueryParams.AllAgents}`,
+            tableTab: key,
+        })
+        setActiveTab(key)
+    }
 
     return (
         <Box
@@ -33,7 +46,7 @@ export const AllAgentsPerformanceBreakdownTable = () => {
             <ButtonGroup
                 selectedKey={activeTab}
                 onSelectionChange={(key) =>
-                    setActiveTab(key as PerformanceTabKey)
+                    handleSelectionChange(key as PerformanceTabKey)
                 }
             >
                 <ButtonGroupItem id="Channel">

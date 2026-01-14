@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
+import { getPreviousUrl } from '@repo/routing'
 import classnames from 'classnames'
 import { parse } from 'csv-parse/sync'
 import { stringify } from 'csv-stringify/sync'
@@ -28,6 +30,7 @@ import {
     HELP_URL,
     PAGE_DESCRIPTION,
     PAGE_TITLE_PERFORMANCE_BY_FEATURES,
+    ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
 } from 'domains/reporting/pages/self-service/constants'
 import { DEPRECATED_SelfServiceStatsPageFilters } from 'domains/reporting/pages/self-service/DEPRECATED_SelfServiceStatsPageFilters'
 import { SelfServiceFeaturePreview } from 'domains/reporting/pages/self-service/SelfServiceFeaturePreview'
@@ -39,6 +42,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
+import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
@@ -72,6 +76,18 @@ const SelfServiceStatsPageCore = (): JSX.Element => {
             integrations: storeIntegrations,
         }
     }, [statsFilters])
+
+    const { onAnalyticsReportViewed } = useAiAgentAnalyticsDashboardTracking()
+
+    useEffectOnce(() => {
+        const previousUrl = getPreviousUrl()
+        const previousReport = previousUrl?.split('/app/')[1] ?? '-'
+
+        onAnalyticsReportViewed({
+            reportName: ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
+            previousReport,
+        })
+    })
 
     const {
         isLoading: isWorkflowsFetchPending,

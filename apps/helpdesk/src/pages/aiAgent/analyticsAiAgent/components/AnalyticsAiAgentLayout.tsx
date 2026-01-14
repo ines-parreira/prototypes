@@ -1,5 +1,7 @@
 import { useMemo, useRef } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
+import { getPreviousUrl } from '@repo/routing'
 import { useHistory, useLocation } from 'react-router'
 
 import { Box, Heading, TabItem, TabList, Tabs } from '@gorgias/axiom'
@@ -9,6 +11,8 @@ import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersP
 import { useSearchParam } from 'hooks/useSearchParam'
 import { AnalyticsOverviewDownloadButton } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewDownloadButton/AnalyticsOverviewDownloadButton'
 import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
+import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
+import { STATS_ROUTES } from 'routes/constants'
 
 import { AnalyticsAiAgentAllAgentsReportConfig } from '../AnalyticsAiAgentAllAgentsReportConfig'
 import { AnalyticsAiAgentShoppingAssistantReportConfig } from '../AnalyticsAiAgentShoppingAssistantReportConfig'
@@ -47,6 +51,18 @@ export const AnalyticsAiAgentLayout = () => {
     const location = useLocation()
     const history = useHistory()
     const dashboardRef = useRef<HTMLDivElement>(null)
+    const { onAnalyticsReportViewed, onAnalyticsAiAgentTabSelected } =
+        useAiAgentAnalyticsDashboardTracking()
+
+    useEffectOnce(() => {
+        const previousUrl = getPreviousUrl()
+        const previousReport = previousUrl?.split('/app/')[1] ?? '-'
+
+        onAnalyticsReportViewed({
+            reportName: STATS_ROUTES.ANALYTICS_AI_AGENT,
+            previousReport,
+        })
+    })
 
     const [aiagentTab] = useSearchParam(AI_AGENT_TAB_PARAM)
 
@@ -93,6 +109,14 @@ export const AnalyticsAiAgentLayout = () => {
 
     const onTabChange = (tabParam: string | number) => {
         const searchParams = new URLSearchParams(location.search)
+
+        const previousTab = searchParams.get(AI_AGENT_TAB_PARAM)?.toString()
+
+        onAnalyticsAiAgentTabSelected({
+            tabName: tabParam.toString(),
+            previousTab: previousTab ?? AiAgentAnalyticsQueryParams.AllAgents,
+        })
+
         searchParams.set(AI_AGENT_TAB_PARAM, tabParam.toString())
 
         history.replace({

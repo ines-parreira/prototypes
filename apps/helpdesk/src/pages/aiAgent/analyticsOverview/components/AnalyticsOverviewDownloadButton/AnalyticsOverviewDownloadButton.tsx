@@ -5,6 +5,10 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { Button, ButtonSize, IconName } from '@gorgias/axiom'
 
 import { useExportDashboardToPDF } from 'pages/aiAgent/analyticsOverview/hooks/useExportDashboardToPDF'
+import {
+    ExportFormat,
+    useAiAgentAnalyticsDashboardTracking,
+} from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 
 type AnalyticsOverviewDownloadButtonProps = {
     dashboardRef: RefObject<HTMLElement>
@@ -14,11 +18,13 @@ export const AnalyticsOverviewDownloadButton = ({
     dashboardRef,
 }: AnalyticsOverviewDownloadButtonProps) => {
     const { exportToPDF, isLoading, isSuccess } = useExportDashboardToPDF()
+    const { onExport } = useAiAgentAnalyticsDashboardTracking()
 
     const handleClick = async () => {
         logEvent(SegmentEvent.StatDownloadClicked, {
             name: 'analytics-overview',
         })
+        onExport({ format: ExportFormat.PDF })
 
         await exportToPDF(dashboardRef)
     }

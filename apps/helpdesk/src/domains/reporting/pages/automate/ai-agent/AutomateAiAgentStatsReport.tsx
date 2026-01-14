@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { useEffectOnce, useGridSize } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { getPreviousUrl } from '@repo/routing'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
@@ -28,8 +29,10 @@ import {
 } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'
 import { getSelectedCustomField } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import useAppSelector from 'hooks/useAppSelector'
+import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import { isAiAgentCustomField } from 'pages/aiAgent/util'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { STATS_ROUTES } from 'routes/constants'
 
 const NoActivityBanner = ({
     isNoActivityAlertDismissed,
@@ -122,7 +125,16 @@ export default function AutomateAiAgentStatsReport() {
         [activeFields],
     )
 
+    const { onAnalyticsReportViewed } = useAiAgentAnalyticsDashboardTracking()
+
     useEffectOnce(() => {
+        const previousUrl = getPreviousUrl()
+        const previousReport = previousUrl?.split('/app/')[1] ?? '-'
+
+        onAnalyticsReportViewed({
+            reportName: STATS_ROUTES.AUTOMATE_AI_AGENTS,
+            previousReport,
+        })
         logEvent(SegmentEvent.StatAiAgentOverviewPageViewed)
     })
 

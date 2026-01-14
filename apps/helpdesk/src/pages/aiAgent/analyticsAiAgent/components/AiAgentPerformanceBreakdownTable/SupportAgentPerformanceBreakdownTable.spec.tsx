@@ -1,9 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import * as useIntentPerformanceMetricsModule from 'pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics'
 import * as useSupportAgentChannelPerformanceMetricsModule from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentChannelPerformanceMetrics'
+import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
@@ -17,6 +19,7 @@ jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics')
 jest.mock(
     'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
 )
+jest.mock('pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking')
 jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
 
 const mockUseStatsFilters = useStatsFilters as jest.MockedFunction<
@@ -38,6 +41,10 @@ const mockUseMoneySavedPerInteractionWithAutomate =
     useMoneySavedPerInteractionWithAutomate as jest.MockedFunction<
         typeof useMoneySavedPerInteractionWithAutomate
     >
+const mockUseAiAgentAnalyticsDashboardTracking =
+    useAiAgentAnalyticsDashboardTracking as jest.MockedFunction<
+        typeof useAiAgentAnalyticsDashboardTracking
+    >
 
 const createWrapper = () => {
     const queryClient = new QueryClient({
@@ -53,6 +60,13 @@ const createWrapper = () => {
 }
 
 describe('SupportAgentPerformanceBreakdownTable', () => {
+    const mockOnTableTabInteraction = jest.fn()
+
+    beforeAll(() => {
+        // Mock getAnimations for jsdom
+        Element.prototype.getAnimations = jest.fn(() => [])
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -92,6 +106,13 @@ describe('SupportAgentPerformanceBreakdownTable', () => {
                 successRate: false,
                 costSaved: false,
             },
+        })
+
+        mockUseAiAgentAnalyticsDashboardTracking.mockReturnValue({
+            onTableTabInteraction: mockOnTableTabInteraction,
+            onAnalyticsReportViewed: jest.fn(),
+            onAnalyticsAiAgentTabSelected: jest.fn(),
+            onExport: jest.fn(),
         })
     })
 
@@ -145,5 +166,71 @@ describe('SupportAgentPerformanceBreakdownTable', () => {
         expect(
             screen.queryByText('% automated by Shopping assistant'),
         ).not.toBeInTheDocument()
+    })
+
+    describe('handleSelectionChange', () => {
+        it('should call onTableTabInteraction when switching to Intent tab', async () => {
+            const user = userEvent.setup()
+            render(<SupportAgentPerformanceBreakdownTable />, {
+                wrapper: createWrapper(),
+            })
+
+            const intentButton = screen.getByRole('radio', { name: /Intent/i })
+
+            await act(() => user.click(intentButton))
+
+            expect(mockOnTableTabInteraction).toHaveBeenCalledWith({
+                reportName: 'analytics-ai-agent/support-agent',
+                tableTab: 'Intent',
+            })
+            expect(mockOnTableTabInteraction).toHaveBeenCalledTimes(1)
+        })
+
+        it('should call onTableTabInteraction when switching to Channel tab', async () => {
+            const user = userEvent.setup()
+            render(<SupportAgentPerformanceBreakdownTable />, {
+                wrapper: createWrapper(),
+            })
+
+            const intentButton = screen.getByRole('radio', { name: /Intent/i })
+            const channelButton = screen.getByRole('radio', {
+                name: /Channel/i,
+            })
+
+            await act(() => user.click(intentButton))
+
+            expect(mockOnTableTabInteraction).toHaveBeenCalledWith({
+                reportName: 'analytics-ai-agent/support-agent',
+                tableTab: 'Intent',
+            })
+
+            await act(() => user.click(channelButton))
+
+            expect(mockOnTableTabInteraction).toHaveBeenCalledWith({
+                reportName: 'analytics-ai-agent/support-agent',
+                tableTab: 'Channel',
+            })
+            expect(mockOnTableTabInteraction).toHaveBeenCalledTimes(2)
+        })
+
+        it('should update active tab state when switching tabs', async () => {
+            const user = userEvent.setup()
+            render(<SupportAgentPerformanceBreakdownTable />, {
+                wrapper: createWrapper(),
+            })
+
+            const intentButton = screen.getByRole('radio', { name: /Intent/i })
+            const channelButton = screen.getByRole('radio', {
+                name: /Channel/i,
+            })
+
+            expect(channelButton).toHaveAttribute('aria-checked', 'true')
+            expect(intentButton).toHaveAttribute('aria-checked', 'false')
+
+            await act(() => user.click(intentButton))
+
+            expect(intentButton).toHaveAttribute('aria-checked', 'true')
+            expect(channelButton).toHaveAttribute('aria-checked', 'false')
+        })
     })
 })

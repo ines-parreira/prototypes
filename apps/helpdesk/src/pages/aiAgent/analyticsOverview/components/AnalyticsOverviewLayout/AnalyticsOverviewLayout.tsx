@@ -1,9 +1,14 @@
 import { useRef } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
+import { getPreviousUrl } from '@repo/routing'
+
 import { Box, Heading } from '@gorgias/axiom'
 
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
+import { STATS_ROUTES } from 'routes/constants'
 
 import { AnalyticsOverviewReportConfig } from '../../AnalyticsOverviewReportConfig'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../../config/defaultLayoutConfig'
@@ -14,6 +19,17 @@ import css from './AnalyticsOverviewLayout.less'
 
 export const AnalyticsOverviewLayout = () => {
     const dashboardRef = useRef<HTMLDivElement>(null)
+    const { onAnalyticsReportViewed } = useAiAgentAnalyticsDashboardTracking()
+
+    useEffectOnce(() => {
+        const previousUrl = getPreviousUrl()
+        const previousReport = previousUrl?.split('/app/')[1] ?? '-'
+
+        onAnalyticsReportViewed({
+            reportName: STATS_ROUTES.ANALYTICS_OVERVIEW,
+            previousReport,
+        })
+    })
 
     return (
         <Box display="flex" flexDirection="column" flex={1} minWidth="0px">
