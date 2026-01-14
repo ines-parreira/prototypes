@@ -7,32 +7,32 @@ apps/helpdesk/src/assets/img/presentationals/satisfaction-survey-stats.png @gorg
 packages/reporting @gorgias/crm-reporting-frontend
 
 # Conv AI Orchestration scope
-apps/helpdesk/src/pages/aiAgent/ @gorgias/conv-ai-orchestration
-apps/helpdesk/src/pages/standalone/ @gorgias/conv-ai-orchestration
+apps/helpdesk/src/pages/aiAgent/ @gorgias/ai-agent-orchestration
+apps/helpdesk/src/pages/standalone/ @gorgias/ai-agent-orchestration
 
-# Conv AI scope @gorgias/conv-ai-expansion
+# Conv AI scope @gorgias/ai-agent-orchestration-shopping-assistant
 
-apps/helpdesk/src/pages/automate @gorgias/conv-ai-expansion
-apps/helpdesk/src/models/selfServiceConfiguration @gorgias/conv-ai-expansion
-apps/helpdesk/src/domains/reporting/pages/self-service @gorgias/conv-ai-expansion
-apps/helpdesk/src/state/entities/selfServiceConfigurations @gorgias/conv-ai-expansion
+apps/helpdesk/src/pages/automate @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/models/selfServiceConfiguration @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/domains/reporting/pages/self-service @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/state/entities/selfServiceConfigurations @gorgias/ai-agent-orchestration-shopping-assistant
 
-# Help center scope @gorgias/conv-ai-expansion
+# Help center scope @gorgias/ai-agent-orchestration-shopping-assistant
 
-apps/helpdesk/src/rest_api/help_center_api @gorgias/conv-ai-expansion
-apps/helpdesk/src/config/helpCenter.ts @gorgias/conv-ai-expansion
-apps/helpdesk/src/config/help_center_texts.json @gorgias/conv-ai-expansion
-apps/helpdesk/src/pages/settings/helpCenter @gorgias/conv-ai-expansion
-apps/helpdesk/src/models/helpCenter @gorgias/conv-ai-expansion
-apps/helpdesk/src/hooks/helpCenter @gorgias/conv-ai-expansion
-apps/helpdesk/src/state/entities/helpCenter @gorgias/conv-ai-expansion
+apps/helpdesk/src/rest_api/help_center_api @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/config/helpCenter.ts @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/config/help_center_texts.json @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/pages/settings/helpCenter @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/models/helpCenter @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/hooks/helpCenter @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/state/entities/helpCenter @gorgias/ai-agent-orchestration-shopping-assistant
 
-# Contact Form scope @gorgias/conv-ai-expansion
+# Contact Form scope @gorgias/ai-agent-orchestration-shopping-assistant
 
-apps/helpdesk/src/pages/settings/contactForm @gorgias/conv-ai-expansion
-apps/helpdesk/src/state/ui/contactForm @gorgias/conv-ai-expansion
-apps/helpdesk/src/state/entities/contactForm @gorgias/conv-ai-expansion
-apps/helpdesk/src/models/contactForm @gorgias/conv-ai-expansion
+apps/helpdesk/src/pages/settings/contactForm @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/state/ui/contactForm @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/state/entities/contactForm @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/models/contactForm @gorgias/ai-agent-orchestration-shopping-assistant
 
 # Conv AI: AI Journey scope @gorgias/conv-ai-ai-journey
 
@@ -61,15 +61,15 @@ apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/ @gorgias/conv-ai-fly
 # Conv AI: AI Journey scope @gorgias/conv-ai-ai-journey
 apps/helpdesk/src/AIJourney/ @gorgias/conv-ai-ai-journey
 
-# Chat widget scope @gorgias/conv-ai-expansion
+# Chat widget scope @gorgias/ai-agent-orchestration-shopping-assistant
 
-apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat @gorgias/conv-ai-expansion
-apps/helpdesk/src/config/integrations/gorgias_chat.ts @gorgias/conv-ai-expansion
-apps/helpdesk/src/config/integrations/tests/gorgias_chat.spec.ts @gorgias/conv-ai-expansion
-apps/helpdesk/src/models/integration/types/gorgiasChat.ts @gorgias/conv-ai-expansion
-apps/helpdesk/src/state/integrations/actions/gorgias-chat.actions.ts @gorgias/conv-ai-expansion
-apps/helpdesk/src/state/integrations/tests/gorgias-chat.actions.spec.ts @gorgias/conv-ai-expansion
-apps/helpdesk/src/rest_api/gorgias_chat_protected_api @gorgias/conv-ai-expansion
+apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/config/integrations/gorgias_chat.ts @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/config/integrations/tests/gorgias_chat.spec.ts @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/models/integration/types/gorgiasChat.ts @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/state/integrations/actions/gorgias-chat.actions.ts @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/state/integrations/tests/gorgias-chat.actions.spec.ts @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/rest_api/gorgias_chat_protected_api @gorgias/ai-agent-orchestration-shopping-assistant
 
 # Support AgentXP scope @gorgias/support-agent-xp-frontend
 
@@ -118,10 +118,10 @@ apps/helpdesk/src/pages/tickets/detail/components/TicketVoiceCall @gorgias/suppo
 
 # Actions & Flows
 
-apps/helpdesk/src/models/workflows @gorgias/conv-ai-orchestration @gorgias/conv-ai-expansion
-apps/helpdesk/src/pages/aiAgent/actions @gorgias/conv-ai-orchestration @gorgias/conv-ai-expansion
-apps/helpdesk/src/pages/automate/actionsPlatform @gorgias/conv-ai-orchestration @gorgias/conv-ai-expansion
-apps/helpdesk/src/pages/automate/workflows @gorgias/conv-ai-orchestration @gorgias/conv-ai-expansion
+apps/helpdesk/src/models/workflows @gorgias/ai-agent-orchestration
+apps/helpdesk/src/pages/aiAgent/actions @gorgias/ai-agent-orchestration
+apps/helpdesk/src/pages/automate/actionsPlatform @gorgias/ai-agent-orchestration
+apps/helpdesk/src/pages/automate/workflows @gorgias/ai-agent-orchestration
 
 # Ecommerce & DevRel @gorgias/crm-devrel
 
@@ -141,6 +141,6 @@ apps/helpdesk/src/pages/settings/new_billing @gorgias/crm-growth
 apps/helpdesk/src/state/billing @gorgias/crm-growth
 
 # Conv AI: Expansion
-apps/helpdesk/src/pages/aiAgent/utils/handoverCustomization* @gorgias/conv-ai-expansion
-apps/helpdesk/src/pages/aiAgent/hooks/handoverCustomization* @gorgias/conv-ai-expansion
-apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization* @gorgias/conv-ai-expansion
+apps/helpdesk/src/pages/aiAgent/utils/handoverCustomization* @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/pages/aiAgent/hooks/handoverCustomization* @gorgias/ai-agent-orchestration-shopping-assistant
+apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization* @gorgias/ai-agent-orchestration-shopping-assistant
