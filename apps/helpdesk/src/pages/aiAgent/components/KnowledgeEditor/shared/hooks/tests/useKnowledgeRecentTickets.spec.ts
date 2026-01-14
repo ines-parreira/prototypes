@@ -5,7 +5,7 @@ import {
     getLast28DaysDateRange,
     useRecentTicketsWithDrilldown,
     useResourceMetrics,
-} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+} from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 
 import { useKnowledgeRecentTickets } from '../useKnowledgeRecentTickets'
@@ -19,7 +19,7 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 
 jest.mock(
-    'domains/reporting/models/queryFactories/knowledge/resourceMetrics',
+    'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
     () => ({
         useResourceMetrics: jest.fn(),
         useRecentTicketsWithDrilldown: jest.fn(),

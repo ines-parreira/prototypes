@@ -35,7 +35,11 @@ import type {
 } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
+import {
+    KnowledgeStatsFiltersMembers,
+    NotSpamNorTrashedTicketsFilter,
+    statsFiltersToReportingFilters,
+} from 'domains/reporting/utils/reporting'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import type { Props as ImpactProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
@@ -157,71 +161,41 @@ export const createV1Query = <TCube extends Cubes = Cubes>(
         )
     }
 
-    baseFilters.push(
-        {
-            member: 'TicketEnriched.periodStart',
-            operator: ReportingFilterOperator.AfterDate,
-            values: [formatReportingQueryDate(filters.period.start_datetime)],
-        },
-        {
-            member: 'TicketEnriched.periodEnd',
-            operator: ReportingFilterOperator.BeforeDate,
-            values: [formatReportingQueryDate(filters.period.end_datetime)],
-        },
-        {
-            member: 'TicketEnriched.isTrashed',
-            operator: ReportingFilterOperator.Equals,
-            values: ['0'],
-        },
-        {
-            member: 'TicketEnriched.isSpam',
-            operator: ReportingFilterOperator.Equals,
-            values: ['0'],
-        },
-        {
-            member: TicketInsightsTaskDimension.ResourceType,
-            operator: ReportingFilterOperator.Equals,
-            values: [
-                'GUIDANCE',
-                'ARTICLE',
-                'MACRO',
-                'EXTERNAL_SNIPPET',
-                'FILE_EXTERNAL_SNIPPET',
-                'STORE_WEBSITE_QUESTION_SNIPPET',
-            ],
-        },
-    )
+    baseFilters.push({
+        member: TicketInsightsTaskDimension.ResourceType,
+        operator: ReportingFilterOperator.Equals,
+        values: [
+            'GUIDANCE',
+            'ARTICLE',
+            'MACRO',
+            'EXTERNAL_SNIPPET',
+            'FILE_EXTERNAL_SNIPPET',
+            'STORE_WEBSITE_QUESTION_SNIPPET',
+        ],
+    })
 
-    // Add shop integration ID filter if present
-    if (
-        filters[FilterKey.Stores] &&
-        filters[FilterKey.Stores].values.length > 0
-    ) {
-        baseFilters.push({
-            member: TicketInsightsTaskDimension.ShopIntegrationId,
-            operator: ReportingFilterOperator.Equals,
-            values: filters[FilterKey.Stores].values.map(String),
-        })
-    }
-
+    const customFields: {
+        customFieldId: number
+        operator: any
+        values: string[]
+    }[] = []
     // Add custom field filters if present
     if (
         filters[FilterKey.CustomFields] &&
         filters[FilterKey.CustomFields].length > 0
     ) {
-        filters[FilterKey.CustomFields].forEach((customField) => {
+        filters[FilterKey.CustomFields].forEach((cf) => {
             baseFilters.push({
                 member: 'TicketCustomFieldsEnriched.customFieldId',
                 operator: ReportingFilterOperator.Equals,
-                values: [String(customField.customFieldId)],
+                values: [cf.customFieldId.toString()],
             })
-            baseFilters.push({
-                member: 'TicketCustomFieldsEnriched.valueString',
-                operator:
-                    customField.operator === LogicalOperatorEnum.ONE_OF
-                        ? ReportingFilterOperator.Equals
-                        : ReportingFilterOperator.NotEquals,
-                values: customField.values,
+            customFields.push({
+                customFieldId: cf.customFieldId,
+                operator: cf.operator,
+                values: cf.values.map((value) =>
+                    cf.customFieldId.toString().concat('::' + String(value)),
+                ),
             })
         })
     }
@@ -244,7 +218,16 @@ export const createV1Query = <TCube extends Cubes = Cubes>(
     return {
         measures: [measure] as TCube['measures'][],
         dimensions: dimensionsOverride as TCube['dimensions'][],
-        filters: baseFilters,
+        filters: [
+            ...NotSpamNorTrashedTicketsFilter,
+            ...statsFiltersToReportingFilters(KnowledgeStatsFiltersMembers, {
+                ...filters,
+                ...(customFields.length > 0
+                    ? { [FilterKey.CustomFields]: customFields }
+                    : {}),
+            }),
+            ...baseFilters,
+        ],
         timeDimensions: [],
         metricName,
         timezone,

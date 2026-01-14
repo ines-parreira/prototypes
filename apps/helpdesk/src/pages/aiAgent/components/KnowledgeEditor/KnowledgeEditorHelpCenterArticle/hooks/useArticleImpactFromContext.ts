@@ -5,7 +5,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import {
     getLast28DaysDateRange,
     useResourceMetrics,
-} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+} from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import type { MetricProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'

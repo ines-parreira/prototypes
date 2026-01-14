@@ -25,7 +25,7 @@ import {
     useRecentTickets,
     useRecentTicketsWithDrilldown,
     useResourceMetrics,
-} from 'domains/reporting/models/queryFactories/knowledge/resourceMetrics'
+} from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import type {
     ApiStatsFilters,
     StatsFilters,
@@ -254,14 +254,12 @@ describe('createV1Query', () => {
             )
 
             expect(query.filters).toContainEqual({
-                member: 'TicketCustomFieldsEnriched.customFieldId',
+                member: 'TicketEnriched.customField',
                 operator: 'equals',
-                values: [String(customFieldId)],
-            })
-            expect(query.filters).toContainEqual({
-                member: 'TicketCustomFieldsEnriched.valueString',
-                operator: 'equals',
-                values: ['Value1', 'Value2'],
+                values: [
+                    customFieldId + '::' + 'Value1',
+                    customFieldId + '::' + 'Value2',
+                ],
             })
         })
 
@@ -288,9 +286,12 @@ describe('createV1Query', () => {
             )
 
             expect(query.filters).toContainEqual({
-                member: 'TicketCustomFieldsEnriched.valueString',
+                member: 'TicketEnriched.customFieldToExclude',
                 operator: 'notEquals',
-                values: ['Spam', 'NoReply'],
+                values: [
+                    customFieldId + '::' + 'Spam',
+                    customFieldId + '::' + 'NoReply',
+                ],
             })
         })
 
@@ -321,25 +322,15 @@ describe('createV1Query', () => {
             )
 
             expect(query.filters).toContainEqual({
-                member: 'TicketCustomFieldsEnriched.customFieldId',
+                member: 'TicketEnriched.customField',
                 operator: 'equals',
-                values: ['111'],
-            })
-            expect(query.filters).toContainEqual({
-                member: 'TicketCustomFieldsEnriched.valueString',
-                operator: 'equals',
-                values: ['ValueA'],
+                values: [111 + '::' + 'ValueA'],
             })
 
             expect(query.filters).toContainEqual({
-                member: 'TicketCustomFieldsEnriched.customFieldId',
-                operator: 'equals',
-                values: ['222'],
-            })
-            expect(query.filters).toContainEqual({
-                member: 'TicketCustomFieldsEnriched.valueString',
+                member: 'TicketEnriched.customFieldToExclude',
                 operator: 'notEquals',
-                values: ['ValueB'],
+                values: [222 + '::' + 'ValueB'],
             })
         })
 
