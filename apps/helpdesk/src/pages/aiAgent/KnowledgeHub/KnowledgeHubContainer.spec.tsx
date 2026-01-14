@@ -63,10 +63,6 @@ jest.mock('models/helpCenter/queries', () => ({
         mutateAsync: jest.fn(),
         isPending: false,
     })),
-    useStartArticleIngestion: jest.fn(() => ({
-        mutateAsync: jest.fn(),
-        isPending: false,
-    })),
     useDeleteArticleIngestionLog: jest.fn(() => ({
         mutateAsync: jest.fn(),
         isPending: false,

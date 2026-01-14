@@ -16,7 +16,6 @@ import {
     getIngestionLogs,
     getKnowledgeStatus,
     listIngestedResources,
-    startArticleIngestion,
     startIngestion,
     updateAllIngestedResourcesStatus,
     updateIngestedResource,
@@ -135,33 +134,6 @@ describe('resources', () => {
                 help_center_id,
             })
             expect(result).toBeNull()
-        })
-    })
-
-    describe('startArticleIngestion', () => {
-        it('should return null when client is not set', async () => {
-            const result = await startArticleIngestion(
-                undefined,
-                {
-                    help_center_id,
-                },
-                { links: [] },
-            )
-            expect(result).toBeNull()
-        })
-
-        it('should return correct result from API', async () => {
-            const client = {
-                startArticleIngestion: jest
-                    .fn()
-                    .mockReturnValue(Promise.resolve({ data: null })),
-            }
-            const result = await startArticleIngestion(
-                client as unknown as HelpCenterClient,
-                { help_center_id },
-                { links: [] },
-            )
-            expect(result).toEqual({ data: null })
         })
     })
 

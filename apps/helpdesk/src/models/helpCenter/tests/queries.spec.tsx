@@ -37,7 +37,6 @@ import {
     useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
     useListIngestedResources,
-    useStartArticleIngestion,
     useStartIngestion,
     useUpdateAllIngestedResourcesStatus,
     useUpdateIngestedResource,
@@ -54,7 +53,6 @@ const getHelpCenter = jest.spyOn(resources, 'getHelpCenter')
 const getCategoryTree = jest.spyOn(resources, 'getCategoryTree')
 const getHelpCenterList = jest.spyOn(resources, 'getHelpCenterList')
 const getArticleIngestionLogs = jest.spyOn(resources, 'getArticleIngestionLogs')
-const startArticleIngestion = jest.spyOn(resources, 'startArticleIngestion')
 const getIngestionLogs = jest.spyOn(resources, 'getIngestionLogs')
 const startIngestion = jest.spyOn(resources, 'startIngestion')
 const listIngestedResources = jest.spyOn(resources, 'listIngestedResources')
@@ -1413,25 +1411,6 @@ describe('queries', () => {
                 },
             )
             expect(getIngestionLogs).toHaveBeenCalledTimes(0)
-        })
-    })
-
-    describe('useCreateArticleIngestion', () => {
-        it('should return correct data on success', async () => {
-            startArticleIngestion.mockReturnValue(Promise.resolve(null))
-            const { result } = renderHook(() => useStartArticleIngestion(), {
-                wrapper,
-            })
-
-            await result.current.mutateAsync([
-                undefined,
-                { help_center_id: helpCenterId },
-                { links: [] },
-            ])
-
-            await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-            expect(result.current.data).toStrictEqual(null)
         })
     })
 

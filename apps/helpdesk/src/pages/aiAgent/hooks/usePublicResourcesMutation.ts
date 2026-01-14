@@ -1,13 +1,11 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import {
     helpCenterKeys,
     useDeleteArticleIngestionLog,
-    useStartArticleIngestion,
     useStartIngestion,
 } from 'models/helpCenter/queries'
 import { reportError } from 'utils/errors'
@@ -18,10 +16,6 @@ export const usePublicResourceMutation = ({
     helpCenterId: number
 }) => {
     const queryClient = useQueryClient()
-
-    const isNewEndpointEnabled = useFlag(
-        FeatureFlagKey.EnableNewEndpointForIndividualUrlIngestion,
-    )
 
     const onIngestionSuccess = useCallback(async () => {
         await queryClient.invalidateQueries({
@@ -39,35 +33,19 @@ export const usePublicResourceMutation = ({
         onSuccess: onIngestionSuccess,
     })
 
-    const { mutateAsync: startArticleIngestionAsync } =
-        useStartArticleIngestion({
-            onSuccess: onIngestionSuccess,
-        })
-
     const addPublicResource = async (url: string) => {
         try {
-            if (isNewEndpointEnabled) {
-                // New endpoint: /ingestions/start
-                await startIngestionAsync([
-                    undefined,
-                    { help_center_id: helpCenterId },
-                    { url, type: 'url' },
-                ])
-            } else {
-                // Old endpoint: /article-ingestion/start
-                await startArticleIngestionAsync([
-                    undefined,
-                    { help_center_id: helpCenterId },
-                    { links: [{ url }] },
-                ])
-            }
+            await startIngestionAsync([
+                undefined,
+                { help_center_id: helpCenterId },
+                { url, type: 'url' },
+            ])
         } catch (error) {
             reportError(error, {
                 tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
                 extra: {
                     context: 'Error during ingestion start',
                     url,
-                    usedNewEndpoint: isNewEndpointEnabled,
                 },
             })
 

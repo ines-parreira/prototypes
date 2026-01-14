@@ -1,13 +1,11 @@
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import {
     helpCenterKeys,
     useGetIngestionLogs,
-    useStartArticleIngestion,
     useStartIngestion,
 } from 'models/helpCenter/queries'
 import { reportError } from 'utils/errors'
@@ -174,10 +172,6 @@ export const useSyncUrl = ({
 }: Props) => {
     const queryClient = useQueryClient()
 
-    const isNewEndpointEnabled = useFlag(
-        FeatureFlagKey.EnableNewEndpointForIndividualUrlIngestion,
-    )
-
     const onIngestionSuccess = useCallback(async () => {
         await queryClient.invalidateQueries({
             queryKey: helpCenterKeys.articleIngestionLogs(helpCenterId),
@@ -190,11 +184,6 @@ export const useSyncUrl = ({
     const { mutateAsync: startIngestionAsync } = useStartIngestion({
         onSuccess: onIngestionSuccess,
     })
-
-    const { mutateAsync: startArticleIngestionAsync } =
-        useStartArticleIngestion({
-            onSuccess: onIngestionSuccess,
-        })
 
     const {
         data: ingestionLogs,
@@ -247,40 +236,23 @@ export const useSyncUrl = ({
             }
 
             try {
-                if (isNewEndpointEnabled) {
-                    // New endpoint: /ingestions/start
-                    await startIngestionAsync([
-                        undefined,
-                        { help_center_id: helpCenterId },
-                        { url, type: 'url' },
-                    ])
-                } else {
-                    // Old endpoint: /article-ingestion/start
-                    await startArticleIngestionAsync([
-                        undefined,
-                        { help_center_id: helpCenterId },
-                        { links: [{ url }] },
-                    ])
-                }
+                await startIngestionAsync([
+                    undefined,
+                    { help_center_id: helpCenterId },
+                    { url, type: 'url' },
+                ])
             } catch (error) {
                 reportError(error, {
                     tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
                     extra: {
                         context: 'Error during URL sync',
                         url,
-                        usedNewEndpoint: isNewEndpointEnabled,
                     },
                 })
                 throw error
             }
         },
-        [
-            startIngestionAsync,
-            startArticleIngestionAsync,
-            validateUrl,
-            helpCenterId,
-            isNewEndpointEnabled,
-        ],
+        [startIngestionAsync, validateUrl, helpCenterId],
     )
 
     return {

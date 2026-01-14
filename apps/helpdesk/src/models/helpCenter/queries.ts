@@ -43,7 +43,6 @@ import {
     getKnowledgeHubArticles,
     getKnowledgeStatus,
     listIngestedResources,
-    startArticleIngestion,
     startIngestion,
     updateAllIngestedResourcesStatus,
     updateArticleTranslation,
@@ -784,18 +783,6 @@ export const useGetArticleIngestionLogsList = (
         enabled:
             !!helpCenterClient &&
             (overrides === undefined || overrides.enabled),
-    })
-}
-
-export const useStartArticleIngestion = (
-    overrides?: MutationOverrides<typeof startArticleIngestion>,
-) => {
-    const { client: helpCenterClient } = useHelpCenterApi()
-
-    return useMutation({
-        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
-            startArticleIngestion(client, pathParams, data),
-        ...overrides,
     })
 }
 

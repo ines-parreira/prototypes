@@ -265,17 +265,6 @@ export const getArticleIngestionArticleTitlesAndStatus = async (
     return response.data
 }
 
-export const startArticleIngestion = async (
-    client: HelpCenterClient | undefined,
-    pathParams: Paths.StartArticleIngestion.PathParameters,
-    data: Paths.StartArticleIngestion.RequestBody,
-) => {
-    if (!client) return null
-    const response = await client.startArticleIngestion(pathParams, data)
-
-    return response
-}
-
 export const deleteArticleIngestionLog = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.DeleteArticleIngestionLog.PathParameters,
