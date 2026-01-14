@@ -138,6 +138,12 @@ export const METRIC_NAMES = {
         'ai-agent-handover-interactions-per-channel',
     AI_AGENT_SNOOZED_INTERACTIONS_PER_CHANNEL:
         'ai-agent-snoozed-interactions-per-channel',
+    AI_SALES_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_PER_CHANNEL:
+        'ai-sales-agent-shopping-assistant-handover-interactions-per-channel',
+    AI_SALES_AGENT_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_PER_CHANNEL:
+        'ai-sales-agent-shopping-assistant-orders-influenced-per-channel',
+    AI_SALES_AGENT_SHOPPING_ASSISTANT_TOP_PRODUCTS:
+        'ai-sales-agent-shopping-assistant-top-products',
     // Agent Experience
     AGENTXP_ONLINE_TIME: 'agentxp-online-time',
     AGENTXP_ONLINE_TIME_PER_AGENT: 'agentxp-online-time-per-agent',

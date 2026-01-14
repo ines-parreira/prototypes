@@ -1,126 +1,203 @@
-import { render, screen } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { render, screen, waitFor } from '@testing-library/react'
+import moment from 'moment/moment'
+import { Provider } from 'react-redux'
+
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
+import { useProductRecommendations } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductRecommendations'
+import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
+import * as useShoppingAssistantChannelMetricsModule from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantChannelMetrics'
+import type { RootState } from 'state/types'
+import { mockStore } from 'utils/testing'
 
 import { ShoppingAssistantPerformanceBreakdownTable } from './ShoppingAssistantPerformanceBreakdownTable'
 
+jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantChannelMetrics',
+)
+jest.mock(
+    'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductRecommendations',
+)
+
+const mockUseStatsFilters = useStatsFilters as jest.MockedFunction<
+    typeof useStatsFilters
+>
+const mockUseShoppingAssistantChannelMetrics =
+    useShoppingAssistantChannelMetricsModule.useShoppingAssistantChannelMetrics as jest.MockedFunction<
+        typeof useShoppingAssistantChannelMetricsModule.useShoppingAssistantChannelMetrics
+    >
+const mockUseProductRecommendations =
+    useProductRecommendations as jest.MockedFunction<
+        typeof useProductRecommendations
+    >
+
+const createWrapper = () => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: { retry: false },
+        },
+    })
+    const defaultState = {
+        stats: {
+            filters: {
+                period: {
+                    end_datetime: moment().toISOString(),
+                    start_datetime: moment().toISOString(),
+                },
+            },
+        },
+        ui: {
+            stats: { filters: uiFiltersInitialState },
+        },
+    } as RootState
+
+    return ({ children }: { children: React.ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockStore(defaultState)}>{children}</Provider>
+        </QueryClientProvider>
+    )
+}
+
 describe('ShoppingAssistantPerformanceBreakdownTable', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                startDate: '2024-01-01',
+                endDate: '2024-01-31',
+            },
+            userTimezone: 'UTC',
+        } as any)
+
+        mockUseShoppingAssistantChannelMetrics.mockReturnValue({
+            data: [
+                {
+                    channel: 'chat',
+                    automationRate: 80,
+                    aiAgentInteractionsShare: 45,
+                    automatedInteractions: 100,
+                    handover: 20,
+                    successRate: 80,
+                    totalSales: 5000,
+                    ordersInfluenced: 50,
+                    revenuePerInteraction: 50,
+                },
+            ],
+            isLoading: false,
+            isError: false,
+            loadingStates: {
+                handover: false,
+                totalSales: false,
+                automationRate: false,
+                automatedInteractions: false,
+                ordersInfluenced: false,
+            },
+        })
+
+        mockUseProductRecommendations.mockReturnValue({
+            isError: false,
+            isFetching: false,
+            data: [
+                {
+                    product: {
+                        id: 1,
+                        title: 'Test Product 1',
+                        created_at: new Date().toISOString(),
+                        image: null,
+                        images: [],
+                        options: [],
+                        variants: [],
+                    },
+                    metrics: {
+                        [ProductTableKeys.NumberOfRecommendations]: 100,
+                        [ProductTableKeys.CTR]: 0.25,
+                        [ProductTableKeys.BTR]: 0.1,
+                    },
+                },
+            ],
+        })
+    })
+
     it('should render the table heading', () => {
-        render(<ShoppingAssistantPerformanceBreakdownTable />)
+        render(<ShoppingAssistantPerformanceBreakdownTable />, {
+            wrapper: createWrapper(),
+        })
 
         expect(screen.getByText('Performance breakdown')).toBeInTheDocument()
     })
 
-    it('should render button group for filtering', () => {
-        render(<ShoppingAssistantPerformanceBreakdownTable />)
+    it('should render button group with only Channel and Top products recommended tabs', () => {
+        render(<ShoppingAssistantPerformanceBreakdownTable />, {
+            wrapper: createWrapper(),
+        })
 
         expect(
-            screen.getAllByText('Engagement feature').length,
-        ).toBeGreaterThan(0)
-        expect(screen.getByText('Channel')).toBeInTheDocument()
-        expect(screen.getByText('Intent')).toBeInTheDocument()
-        expect(screen.getByText('Top products recommended')).toBeInTheDocument()
-    })
-
-    it('should render the correct number of rows', () => {
-        render(<ShoppingAssistantPerformanceBreakdownTable />)
-
-        expect(screen.getByText('Trigger on search')).toBeInTheDocument()
-        expect(
-            screen.getByText('AI FAQs: Floating above chat'),
+            screen.getByRole('radio', { name: /Channel/i }),
         ).toBeInTheDocument()
-        expect(screen.getByText('Ask anything input')).toBeInTheDocument()
-        expect(screen.getByText('Chat interaction')).toBeInTheDocument()
-        expect(screen.getByText('Email interaction')).toBeInTheDocument()
-    })
-
-    it('should render table with all column headers', () => {
-        render(<ShoppingAssistantPerformanceBreakdownTable />)
-
         expect(
-            screen.getAllByText('Engagement feature').length,
-        ).toBeGreaterThan(0)
-        expect(screen.getByText('Automated interactions')).toBeInTheDocument()
-        expect(screen.getByText('Success rate')).toBeInTheDocument()
-        expect(screen.getByText('Orders influenced')).toBeInTheDocument()
-        expect(screen.getByText('Conversion rate')).toBeInTheDocument()
-        expect(screen.getByText('Total sales')).toBeInTheDocument()
-        expect(screen.getByText('Cost per interaction')).toBeInTheDocument()
-    })
-
-    it('should render correct data for Trigger on search row', () => {
-        render(<ShoppingAssistantPerformanceBreakdownTable />)
-
-        expect(screen.getByText('Trigger on search')).toBeInTheDocument()
-        expect(screen.getAllByText('1659').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('25%').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('150').length).toBeGreaterThan(0)
-    })
-
-    it('should render correct data for Suggested product questions row', () => {
-        render(<ShoppingAssistantPerformanceBreakdownTable />)
-
-        expect(
-            screen.getByText('AI FAQs: Floating above chat'),
+            screen.getByRole('radio', { name: /Top products recommended/i }),
         ).toBeInTheDocument()
-        expect(screen.getAllByText('1998').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('60%').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('10').length).toBeGreaterThan(0)
+        expect(
+            screen.queryByRole('radio', { name: /Engagement feature/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('radio', { name: /Intent/i }),
+        ).not.toBeInTheDocument()
     })
 
-    it('should render correct data for Ask anything input row', () => {
-        render(<ShoppingAssistantPerformanceBreakdownTable />)
+    it('should default to Channel tab', () => {
+        render(<ShoppingAssistantPerformanceBreakdownTable />, {
+            wrapper: createWrapper(),
+        })
 
-        expect(screen.getByText('Ask anything input')).toBeInTheDocument()
-        expect(screen.getAllByText('1499').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('123').length).toBeGreaterThan(0)
+        const channelButton = screen.getByRole('radio', { name: /Channel/i })
+        expect(channelButton).toHaveAttribute('aria-checked', 'true')
     })
 
-    it('should render correct data for Chat interaction row', () => {
-        render(<ShoppingAssistantPerformanceBreakdownTable />)
+    it('should render Channel table by default with correct data', async () => {
+        render(<ShoppingAssistantPerformanceBreakdownTable />, {
+            wrapper: createWrapper(),
+        })
 
-        expect(screen.getByText('Chat interaction')).toBeInTheDocument()
-        expect(screen.getAllByText('1989').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('67%').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('420').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('48%').length).toBeGreaterThan(0)
+        await waitFor(() => {
+            expect(screen.getByText('Chat')).toBeInTheDocument()
+        })
+
+        expect(screen.getByText('Automation rate')).toBeInTheDocument()
     })
 
-    it('should render correct data for Email interaction row', () => {
-        render(<ShoppingAssistantPerformanceBreakdownTable />)
+    it('should render a table', () => {
+        render(<ShoppingAssistantPerformanceBreakdownTable />, {
+            wrapper: createWrapper(),
+        })
 
-        expect(screen.getByText('Email interaction')).toBeInTheDocument()
-        expect(screen.getAllByText('1767').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('74%').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('893').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('34%').length).toBeGreaterThan(0)
+        const table = screen.getByRole('table')
+        expect(table).toBeInTheDocument()
     })
 
-    it('should format large numbers', () => {
-        render(<ShoppingAssistantPerformanceBreakdownTable />)
+    it('should render table toolbar with item count', async () => {
+        render(<ShoppingAssistantPerformanceBreakdownTable />, {
+            wrapper: createWrapper(),
+        })
 
-        expect(screen.getAllByText('1659').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('1998').length).toBeGreaterThan(0)
-        expect(screen.getAllByText('1499').length).toBeGreaterThan(0)
+        await waitFor(() => {
+            expect(screen.getByText('1 item')).toBeInTheDocument()
+        })
     })
 
-    it('should render TableToolbar component', () => {
-        render(<ShoppingAssistantPerformanceBreakdownTable />)
+    it('should have settings button in toolbar', async () => {
+        render(<ShoppingAssistantPerformanceBreakdownTable />, {
+            wrapper: createWrapper(),
+        })
 
-        expect(screen.getByText('5 items')).toBeInTheDocument()
-    })
-
-    it('should have settings button in toolbar', () => {
-        render(<ShoppingAssistantPerformanceBreakdownTable />)
-
-        const buttons = screen.getAllByRole('button')
-        expect(buttons.length).toBeGreaterThan(0)
-    })
-
-    it('should render all info icons for column headers', () => {
-        const { container } = render(
-            <ShoppingAssistantPerformanceBreakdownTable />,
-        )
-
-        const infoIcons = container.querySelectorAll('[aria-label="info"]')
-        expect(infoIcons.length).toBeGreaterThan(0)
+        await waitFor(() => {
+            const toolbar = document.querySelector(
+                '[data-name="table-toolbar"]',
+            )
+            expect(toolbar).toBeInTheDocument()
+        })
     })
 })
