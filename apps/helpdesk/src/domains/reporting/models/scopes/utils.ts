@@ -2,6 +2,7 @@ import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
+import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import { hasFilter } from 'domains/reporting/models/queryFactories/utils'
 import type {
     ScopeFilters,
@@ -570,6 +571,8 @@ const isFilterFromV1Segment = (
     )
 }
 
+const membersToIgnore = [TicketMember.TotalCustomFieldIdsToMatch]
+
 function compareFilters(
     v1Filters: ReportingFilter[],
     v2Filters: ReportingFilter[],
@@ -589,6 +592,11 @@ function compareFilters(
 
     for (const v2Filter of v2Filters) {
         if (!findMatchingFilter(v2Filter, v1Filters)) {
+            // Ignore filters for members that are known to be added in V2 only
+            if (membersToIgnore.includes(v2Filter.member as TicketMember)) {
+                v2FiltersCount--
+                continue
+            }
             // Check if this V2 filter comes from a V1 segment transformation
             if (!isFilterFromV1Segment(v2Filter, v1Segments)) {
                 // Only report if it's truly a new filter, not from a segment

@@ -2501,5 +2501,89 @@ describe('utils', () => {
                 consoleSpy.mockRestore()
             })
         })
+
+        describe('membersToIgnore', () => {
+            it('should ignore TicketEnriched.totalCustomFieldIdsToMatch filter when present in V2 but not V1', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    filters: [
+                        {
+                            member: 'agentId',
+                            operator: 'one-of' as any,
+                            values: ['123'],
+                        },
+                    ],
+                }
+                const v2Query = {
+                    ...baseV2Query,
+                    filters: [
+                        {
+                            member: 'agentId',
+                            operator: 'one-of' as any,
+                            values: ['123'],
+                        },
+                        {
+                            member: 'TicketEnriched.totalCustomFieldIdsToMatch',
+                            operator: 'equals' as any,
+                            values: ['5'],
+                        },
+                    ],
+                }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('tickets' as any, v1Query, v2Query)
+
+                expect(consoleSpy).not.toHaveBeenCalled()
+                consoleSpy.mockRestore()
+            })
+
+            it('should still report V1 filter differences when membersToIgnore filter causes early return', () => {
+                const v1Query = {
+                    ...baseV1Query,
+                    filters: [
+                        {
+                            member: 'agentId',
+                            operator: 'one-of' as any,
+                            values: ['123'],
+                        },
+                    ],
+                }
+                const v2Query = {
+                    ...baseV2Query,
+                    filters: [
+                        {
+                            member: 'TicketEnriched.totalCustomFieldIdsToMatch',
+                            operator: 'equals' as any,
+                            values: ['5'],
+                        },
+                        {
+                            member: 'agentId',
+                            operator: 'one-of' as any,
+                            values: ['456'],
+                        },
+                    ],
+                }
+
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries('tickets' as any, v1Query, v2Query)
+
+                expect(consoleSpy).toHaveBeenCalledWith(
+                    'New Stats API and Legacy API queries are different for metric tickets',
+                    [
+                        'V1 filter not found in V2: {"member":"agentId","operator":"one-of","values":["123"]}',
+                        'V2 filter not found in V1: {"member":"agentId","operator":"one-of","values":["456"]}',
+                    ],
+                    v1Query,
+                    v2Query,
+                )
+                consoleSpy.mockRestore()
+            })
+        })
     })
 })
