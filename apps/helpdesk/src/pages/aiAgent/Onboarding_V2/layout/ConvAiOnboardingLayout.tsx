@@ -1,42 +1,13 @@
 import type { ReactNode } from 'react'
-import type React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { history } from '@repo/routing'
 import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 
-import { Button, Icon } from '@gorgias/axiom'
-
 import { useHideBanners } from 'AlertBanners/hooks/useHideBanners'
-import {
-    aiAgentRoutes,
-    getAiAgentNavigationRoutes,
-} from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import OnboardingProgressTracker from 'pages/aiAgent/Onboarding_V2/components/common/OnboardingProgressTracker/OnboardingProgressTracker'
-import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import { OnboardingNavigationButtons } from 'pages/aiAgent/Onboarding_V2/components/common/OnboardingNavigationButtons/OnboardingNavigationButtons'
 
-import css from './ConvAiOnboardingLayout.less'
-
-const onClose = (isInAiAgentTrial: boolean, shopName?: string) => {
-    if (isInAiAgentTrial) {
-        history.push('/app/home')
-        return
-    }
-    if (shopName) {
-        history.push(getAiAgentNavigationRoutes(shopName).main)
-        return
-    }
-    history.push(aiAgentRoutes.overview)
-}
-
-const CloseButton: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-    return (
-        <Button variant="secondary" onClick={() => onClose()} size="md">
-            <Icon name="close" />
-        </Button>
-    )
-}
+import css from './ConvAiOnboardingLayoutV2.less'
 
 export const OnboardingBody: React.FC<{ children: ReactNode }> = ({
     children,
@@ -68,25 +39,9 @@ export const OnboardingPreviewContainer: React.FC<{
     caption?: string
     children?: ReactNode
 }> = ({ children, isLoading, icon, caption }) => {
-    const { step, shopName } = useParams<{ step: string; shopName: string }>()
-
-    const { isInAiAgentTrial } = useTrialAccess(shopName)
-
-    const onCloseAction = () => {
-        logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
-            step,
-            shopName,
-            type: 'close',
-        })
-        onClose(isInAiAgentTrial, shopName)
-    }
-
     return (
         <div className={css.onboardingPreviewContainerWrapper}>
             <div className={css.onboardingPreviewContainer}>
-                <div className={css.onboardingPreviewClose}>
-                    <CloseButton onClose={onCloseAction} />
-                </div>
                 {isLoading && (
                     <div
                         className={classNames(css.ghostContainer, css.loading)}
@@ -124,17 +79,6 @@ export const OnboardingContentContainer: React.FC<{
 }) => {
     const { step, shopName } = useParams<{ step: string; shopName: string }>()
 
-    const { isInAiAgentTrial } = useTrialAccess(shopName)
-
-    const onCloseAction = () => {
-        logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
-            Step: step,
-            shopName,
-            type: 'close',
-        })
-        onClose(isInAiAgentTrial, shopName)
-    }
-
     const onNextAction = () => {
         logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
             Step: step,
@@ -162,13 +106,10 @@ export const OnboardingContentContainer: React.FC<{
         >
             <div className={css.onboardingHeader}>
                 <div title="Gorgias logo" className={css.logo} />
-                <div className={css.onboardingHeaderClose}>
-                    <CloseButton onClose={onCloseAction} />
-                </div>
             </div>
-            <div>{children}</div>
-            <div className={css.progressTrackerContainer}>
-                <OnboardingProgressTracker
+            <div className={css.onboardingContentBody}>
+                <div>{children}</div>
+                <OnboardingNavigationButtons
                     step={currentStep}
                     totalSteps={totalSteps}
                     onBackClick={onBackAction}

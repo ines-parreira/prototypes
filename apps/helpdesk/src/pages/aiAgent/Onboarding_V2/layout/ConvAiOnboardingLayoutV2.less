@@ -10,8 +10,10 @@
         width: 100vw;
         overflow-y: auto;
         background-color: var(--neutral-grey-1); // legacy
+        padding-bottom: 50px;
 
         @media @tablets-up {
+            padding-bottom: 0;
             display: flex;
             flex-direction: column;
         }
@@ -22,36 +24,26 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding: var(--layout-spacing-s) 0;
         width: 100%;
         top: 0;
         background-color: var(--neutral-grey-1); // legacy
         padding: var(--layout-spacing-s) var(--layout-spacing-m);
 
         @media @tablets-up {
-            margin-left: -8vw;
             padding: var(--layout-spacing-m) 0 0 var(--layout-spacing-m);
-        }
-    }
-
-    .onboardingHeaderClose {
-        @media @tablets-up {
-            display: none;
         }
     }
 
     .onboardingBody {
         @media @tablets-up {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
+            display: flex;
+            flex-direction: row;
             width: 100%;
             height: 100%;
         }
     }
 
     .onboardingContentContainer {
-        padding: 0 0 var(--layout-spacing-s);
-
         & > :nth-child(2) {
             padding: var(--layout-spacing-m) var(--layout-spacing-m)
                 var(--layout-spacing-s);
@@ -60,19 +52,25 @@
         @media @tablets-up {
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            min-width: 400px;
-            padding: 0 8vw var(--layout-spacing-m);
+            flex: 1 1 0;
+            min-width: 0;
             gap: var(--layout-spacing-m);
-            max-width: 100%;
             overflow: auto;
+            .onboardingContentBody {
+                height: 100%;
+                padding: 0 8vw var(--layout-spacing-m);
+                gap: var(--layout-spacing-m);
+                display: flex;
+                flex-direction: column;
+            }
         }
     }
 
     .onboardingPreviewContainerWrapper {
-        padding: 0 var(--layout-spacing-m);
         @media @tablets-up {
             display: flex;
+            flex: 1 1 0;
+            min-width: 0;
             padding: 0;
         }
 
@@ -90,9 +88,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin: var(--layout-spacing-m);
+        border-radius: var(--layout-spacing-s);
 
         @media @tablets-up {
-            display: flex;
             justify-content: space-between;
             padding-top: 24px;
             padding-bottom: 48px;
@@ -113,17 +112,6 @@
         }
     }
 
-    .onboardingPreviewClose {
-        display: none;
-
-        @media @tablets-up {
-            display: initial;
-            align-self: flex-end;
-            margin-right: var(--layout-spacing-m);
-            z-index: 3; // To be above the chat preview
-        }
-    }
-
     .ghostContainer {
         width: 100%;
 
@@ -132,6 +120,8 @@
             justify-content: inherit;
             align-items: inherit;
             padding: 0 24px 0 24px;
+            margin-top: auto;
+            margin-bottom: auto;
 
             &.loading {
                 align-self: flex-start;
@@ -151,24 +141,31 @@
         text-align: center;
     }
 
-    .progressTrackerContainer {
+    .navigationButtonsContainer {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        padding: var(--layout-spacing-m) 0;
-
         @media @mobiles {
             position: fixed;
-            bottom: -0.33rem;
+            bottom: 1.45rem;
             z-index: 4;
             right: 120px;
             left: 24px;
+            padding: var(--layout-spacing-s);
+            background-color: var(--neutral-grey-0);
+            border-radius: var(--layout-spacing-s);
+            box-shadow: var(--layout-spacing-xxs) var(--layout-spacing-xxs)
+                var(--layout-spacing-s) 0 rgba(22, 22, 22, 0.1);
         }
 
         @media @tablets-up {
             margin-top: auto;
         }
+    }
+
+    .nextButton {
+        margin-left: auto;
     }
 
     .loadingPulserIcon {

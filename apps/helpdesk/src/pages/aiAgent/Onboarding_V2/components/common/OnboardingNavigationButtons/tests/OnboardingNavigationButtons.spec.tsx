@@ -1,10 +1,9 @@
-import React from 'react'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { OnboardingNavigationButtons } from '../OnboardingNavigationButtons'
 
-import OnboardingProgressTracker from '../OnboardingProgressTracker'
-
-describe('OnboardingProgressTracker', () => {
+describe('OnboardingNavigationButtons', () => {
     const defaultProps = {
         step: 1,
         totalSteps: 3,
@@ -14,7 +13,7 @@ describe('OnboardingProgressTracker', () => {
     }
 
     it('renders correctly with initial step', () => {
-        render(<OnboardingProgressTracker {...defaultProps} />)
+        render(<OnboardingNavigationButtons {...defaultProps} />)
 
         expect(screen.getByText('Next')).toBeInTheDocument()
         // on the initial step there is no back button
@@ -22,7 +21,7 @@ describe('OnboardingProgressTracker', () => {
     })
 
     it('shows both back and next buttons for middle step', () => {
-        render(<OnboardingProgressTracker {...defaultProps} step={2} />)
+        render(<OnboardingNavigationButtons {...defaultProps} step={2} />)
 
         expect(screen.getByText('Back')).toBeInTheDocument()
         expect(screen.getByText('Next')).toBeInTheDocument()
@@ -30,7 +29,7 @@ describe('OnboardingProgressTracker', () => {
 
     it('shows "Finish" instead of "Next" on final step', () => {
         render(
-            <OnboardingProgressTracker
+            <OnboardingNavigationButtons
                 {...defaultProps}
                 step={3}
                 totalSteps={3}
@@ -41,18 +40,18 @@ describe('OnboardingProgressTracker', () => {
         expect(screen.getByText('Back')).toBeInTheDocument()
     })
 
-    it('calls onBackClick when back button is clicked', () => {
-        render(<OnboardingProgressTracker {...defaultProps} step={2} />)
+    it('calls onBackClick when back button is clicked', async () => {
+        render(<OnboardingNavigationButtons {...defaultProps} step={2} />)
 
-        fireEvent.click(screen.getByText('Back'))
+        await act(() => userEvent.click(screen.getByText('Back')))
 
         expect(defaultProps.onBackClick).toHaveBeenCalledTimes(1)
     })
 
-    it('calls onNextClick when next button is clicked', () => {
-        render(<OnboardingProgressTracker {...defaultProps} />)
+    it('calls onNextClick when next button is clicked', async () => {
+        render(<OnboardingNavigationButtons {...defaultProps} />)
 
-        fireEvent.click(screen.getByText('Next'))
+        await act(() => userEvent.click(screen.getByText('Next')))
 
         expect(defaultProps.onNextClick).toHaveBeenCalledTimes(1)
     })

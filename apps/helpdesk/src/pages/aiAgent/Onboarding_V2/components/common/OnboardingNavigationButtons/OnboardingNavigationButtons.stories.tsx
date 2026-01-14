@@ -2,11 +2,11 @@ import type { ComponentProps } from 'react'
 
 import type { Meta, StoryObj } from '@storybook/react'
 
-import OnboardingProgressTracker from './OnboardingProgressTracker'
+import { OnboardingNavigationButtons } from './OnboardingNavigationButtons'
 
-const storyConfig: Meta<typeof OnboardingProgressTracker> = {
-    title: 'AI Agent/Onboarding_V2/OnboardingProgressTracker',
-    component: OnboardingProgressTracker,
+const storyConfig: Meta<typeof OnboardingNavigationButtons> = {
+    title: 'AI Agent/Onboarding_V2/OnboardingNavigationButtons',
+    component: OnboardingNavigationButtons,
     argTypes: {
         step: {
             control: {
@@ -25,7 +25,7 @@ const storyConfig: Meta<typeof OnboardingProgressTracker> = {
     },
 }
 
-type Story = StoryObj<typeof OnboardingProgressTracker>
+type Story = StoryObj<typeof OnboardingNavigationButtons>
 
 const templateParameters = {
     controls: {
@@ -33,7 +33,7 @@ const templateParameters = {
     },
 }
 
-const defaultProps: ComponentProps<typeof OnboardingProgressTracker> = {
+const defaultProps: ComponentProps<typeof OnboardingNavigationButtons> = {
     step: 2,
     totalSteps: 4,
     isLoading: false,
@@ -43,15 +43,15 @@ const defaultProps: ComponentProps<typeof OnboardingProgressTracker> = {
     onNextClick: () => console.log('Next clicked'),
 }
 
-/** Default onboarding progress tracker */
-export const DefaultOnboardingTracker: Story = {
+/** Default onboarding navigation buttons with Back and Next buttons */
+export const DefaultNavigationButtons: Story = {
     args: { ...defaultProps },
     parameters: {
         ...templateParameters,
     },
 }
 
-/** First step - no back button */
+/** First step - only Next button shown */
 export const FirstStep: Story = {
     args: {
         ...defaultProps,
@@ -62,7 +62,7 @@ export const FirstStep: Story = {
     },
 }
 
-/** Final step - "Finish" button */
+/** Final step - Back and Finish buttons shown */
 export const FinalStep: Story = {
     args: {
         ...defaultProps,
