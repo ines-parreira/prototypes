@@ -14,39 +14,45 @@ import type {
 import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 
 jest.mock('react-grid-layout', () => {
-    const MockResponsive = ({
+    const MockResponsiveGridLayout = ({
         children,
+        width,
+        breakpoints,
         cols,
         rowHeight,
-        isDraggable,
-        isResizable,
-        preventCollision,
-        compactType,
+        dragConfig,
+        resizeConfig,
         containerPadding,
+        compactor,
         ...otherProps
     }: any) => (
         <section
             role="grid"
             aria-label="Dashboard Grid Layout"
+            data-width={width}
+            data-breakpoints={JSON.stringify(breakpoints)}
             data-cols={JSON.stringify(cols)}
             data-row-height={rowHeight}
-            data-is-draggable={isDraggable}
-            data-is-resizable={isResizable}
-            data-prevent-collision={preventCollision}
-            data-compact-type={String(compactType)}
+            data-is-draggable={dragConfig?.enabled}
+            data-is-resizable={resizeConfig?.enabled}
+            data-compact-type={String(compactor)}
             data-container-padding={JSON.stringify(containerPadding)}
             {...otherProps}
         >
             {children}
         </section>
     )
-    MockResponsive.displayName = 'Responsive'
-
-    const WidthProvider = (Component: any) => Component
+    MockResponsiveGridLayout.displayName = 'ResponsiveGridLayout'
 
     return {
-        Responsive: MockResponsive,
-        WidthProvider,
+        ResponsiveGridLayout: MockResponsiveGridLayout,
+        useContainerWidth: jest.fn(() => ({
+            width: 1200,
+            mounted: true,
+            containerRef: { current: null },
+            measureWidth: jest.fn(),
+        })),
+        noCompactor: jest.fn(),
     }
 })
 
@@ -105,16 +111,20 @@ describe('DragAndResizeDashboardGrid', () => {
             name: /dashboard grid layout/i,
         })
         expect(gridLayout).toBeInTheDocument()
+        expect(gridLayout).toHaveAttribute('data-width', '1200')
         expect(gridLayout).toHaveAttribute('data-is-draggable', 'true')
         expect(gridLayout).toHaveAttribute('data-is-resizable', 'true')
-        expect(gridLayout).toHaveAttribute('data-prevent-collision', 'true')
-        expect(gridLayout).toHaveAttribute('data-compact-type', 'null')
+        expect(gridLayout).toHaveAttribute('data-compact-type')
         expect(gridLayout).toHaveAttribute('data-row-height', '40')
         expect(gridLayout).toHaveAttribute(
             'data-cols',
             '{"lg":4,"md":4,"sm":3,"xs":2,"xxs":1}',
         )
         expect(gridLayout).toHaveAttribute('data-container-padding', '[25,20]')
+        expect(gridLayout).toHaveAttribute(
+            'data-breakpoints',
+            '{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0}',
+        )
     })
 
     it('renders empty grid when dashboard has no children', () => {
@@ -323,5 +333,28 @@ describe('DragAndResizeDashboardGrid', () => {
             name: /dashboard grid layout/i,
         })
         expect(gridLayout).toBeInTheDocument()
+    })
+
+    it('renders loading state before container width is mounted', () => {
+        const { useContainerWidth } = jest.requireMock('react-grid-layout')
+        useContainerWidth.mockReturnValueOnce({
+            width: 0,
+            mounted: false,
+            containerRef: { current: null },
+            measureWidth: jest.fn(),
+        })
+
+        const dashboard = createMockDashboard([])
+        const { container } = render(
+            <DragAndResizeDashboardGrid dashboard={dashboard} />,
+        )
+
+        const loadingDiv = container.querySelector('div[style*="width: 100%"]')
+        expect(loadingDiv).toBeInTheDocument()
+
+        const gridLayout = screen.queryByRole('grid', {
+            name: /dashboard grid layout/i,
+        })
+        expect(gridLayout).not.toBeInTheDocument()
     })
 })

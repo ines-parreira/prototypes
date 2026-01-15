@@ -1,5 +1,5 @@
 {
-  "date": "2026-01-14T14:56:24.516Z",
+  "date": "2026-01-14T16:35:42.029Z",
   "total": 4162,
   "deprecated": [
     {
@@ -4073,7 +4073,7 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationVisibilityCondition.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/OneClickInstallationCardStoreRow.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationLanguages/components/GorgiasChatIntegrationLanguagesTable/GorgiasChatIntegrationLanguagesTableRowActions.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationListRow.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationList/GorgiasChatIntegrationListRow.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreferences/ControlTicketVolumeControls.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/http/Integration/JSONBody.tsx",
@@ -4974,7 +4974,7 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateInputGroup.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationList.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationList/GorgiasChatIntegrationList.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/http/Integration/Integration.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/IntegrationList.tsx",
@@ -5050,7 +5050,7 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationLanguages/GorgiasChatIntegrationLanguages.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationList.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationList/GorgiasChatIntegrationList.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/http/Breadcrumb.tsx",
@@ -5126,7 +5126,7 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationLanguages/GorgiasChatIntegrationLanguages.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationList.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationList/GorgiasChatIntegrationList.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/http/Breadcrumb.tsx",

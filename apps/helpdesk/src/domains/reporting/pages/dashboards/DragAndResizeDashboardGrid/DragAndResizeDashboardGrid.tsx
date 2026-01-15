@@ -1,6 +1,12 @@
 import type React from 'react'
+import { useCallback, useMemo } from 'react'
 
-import { Responsive, WidthProvider } from 'react-grid-layout'
+import {
+    noCompactor,
+    ResponsiveGridLayout,
+    useContainerWidth,
+} from 'react-grid-layout'
+import type { Layout } from 'react-grid-layout'
 
 import 'react-grid-layout/css/styles.css'
 
@@ -15,7 +21,7 @@ const COLS = 4
 
 const renderDashboard = (dashboard: DashboardSchema): React.ReactNode[] => {
     const renderChildren = (children: DashboardChild[]): React.ReactNode[] =>
-        children.map((child: DashboardChild, index: number) => {
+        children.flatMap((child: DashboardChild, index: number) => {
             switch (child.type) {
                 case DashboardChildType.Row:
                 case DashboardChildType.Section:
@@ -44,25 +50,62 @@ const renderDashboard = (dashboard: DashboardSchema): React.ReactNode[] => {
     return renderChildren(dashboard.children)
 }
 
-const ResponsiveGridLayout = WidthProvider(Responsive)
-
 const DragAndResizeDashboardGrid = ({
     dashboard,
 }: {
     dashboard: DashboardSchema
 }) => {
+    const { width, containerRef, mounted } = useContainerWidth()
+
+    const handleLayoutChange = useCallback((__layout: Layout) => {
+        // Layout change handler, will be implemented for persistence later
+    }, [])
+
+    const handleBreakpointChange = useCallback(
+        (__breakpoint: string, __cols: number) => {
+            // Breakpoint change handler
+        },
+        [],
+    )
+
+    const renderedChildren = useMemo(
+        () => renderDashboard(dashboard),
+        [dashboard],
+    )
+
+    if (!mounted) {
+        return (
+            <div
+                ref={containerRef as React.Ref<HTMLDivElement>}
+                style={{ width: '100%' }}
+            />
+        )
+    }
+
     return (
-        <ResponsiveGridLayout
-            cols={{ lg: 4, md: 4, sm: 3, xs: 2, xxs: 1 }}
-            rowHeight={40}
-            isDraggable
-            isResizable
-            preventCollision={true}
-            compactType={null}
-            containerPadding={[25, 20]}
+        <div
+            ref={containerRef as React.Ref<HTMLDivElement>}
+            style={{ width: '100%' }}
         >
-            {renderDashboard(dashboard)}
-        </ResponsiveGridLayout>
+            <ResponsiveGridLayout
+                width={width}
+                breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+                cols={{ lg: 4, md: 4, sm: 3, xs: 2, xxs: 1 }}
+                rowHeight={40}
+                containerPadding={[25, 20]}
+                dragConfig={{
+                    enabled: true,
+                }}
+                resizeConfig={{
+                    enabled: true,
+                }}
+                compactor={noCompactor}
+                onLayoutChange={handleLayoutChange}
+                onBreakpointChange={handleBreakpointChange}
+            >
+                {renderedChildren}
+            </ResponsiveGridLayout>
+        </div>
     )
 }
 
