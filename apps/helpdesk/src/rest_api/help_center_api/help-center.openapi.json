@@ -85,57 +85,6 @@
                 "tags": ["article-ingestion"]
             }
         },
-        "/api/help-center/help-centers/{help_center_id}/article-ingestion/start": {
-            "post": {
-                "operationId": "startArticleIngestion",
-                "summary": "Trigger external content ingestion",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": { "type": "number" }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ApifyInputDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Article ingestion started successfully"
-                    }
-                },
-                "tags": ["article-ingestion"]
-            }
-        },
-        "/api/help-center/article-ingestion/done": {
-            "post": {
-                "operationId": "handleArticleIngestionDone",
-                "summary": "Webhook integration with Apify",
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ApifyWebhookDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": { "description": "Webhook processed successfully" }
-                },
-                "tags": ["article-ingestion"]
-            }
-        },
         "/api/help-center/help-centers/{help_center_id}/article-ingestion-log/{article_ingestion_id}/articles": {
             "get": {
                 "operationId": "getArticleIngestionArticleTitlesAndStatus",
@@ -5245,97 +5194,6 @@
                     "meta"
                 ]
             },
-            "LinkDto": {
-                "type": "object",
-                "properties": { "url": { "type": "string" } },
-                "required": ["url"]
-            },
-            "ApifyInputDto": {
-                "type": "object",
-                "properties": {
-                    "links": {
-                        "type": "array",
-                        "items": { "$ref": "#/components/schemas/LinkDto" }
-                    }
-                },
-                "required": ["links"]
-            },
-            "EventDataDto": {
-                "type": "object",
-                "properties": {
-                    "actorId": { "type": "string" },
-                    "actorRunId": { "type": "string" }
-                },
-                "required": ["actorId", "actorRunId"]
-            },
-            "ResourceDto": {
-                "type": "object",
-                "properties": {
-                    "id": { "type": "string" },
-                    "actId": { "type": "string" },
-                    "userId": { "type": "string" },
-                    "startedAt": { "type": "string" },
-                    "finishedAt": { "type": "string" },
-                    "status": { "type": "string" },
-                    "statusMessage": { "type": "string" },
-                    "isStatusMessageTerminal": { "type": "boolean" },
-                    "meta": { "type": "object" },
-                    "stats": { "type": "object" },
-                    "options": { "type": "object" },
-                    "buildId": { "type": "string" },
-                    "exitCode": { "type": "number" },
-                    "defaultKeyValueStoreId": { "type": "string" },
-                    "defaultDatasetId": { "type": "string" },
-                    "defaultRequestQueueId": { "type": "string" },
-                    "buildNumber": { "type": "string" },
-                    "containerUrl": { "type": "string" },
-                    "usage": { "type": "object" },
-                    "usageTotalUsd": { "type": "number" },
-                    "usageUsd": { "type": "object" }
-                },
-                "required": [
-                    "id",
-                    "actId",
-                    "userId",
-                    "startedAt",
-                    "finishedAt",
-                    "status",
-                    "statusMessage",
-                    "isStatusMessageTerminal",
-                    "meta",
-                    "stats",
-                    "options",
-                    "buildId",
-                    "exitCode",
-                    "defaultKeyValueStoreId",
-                    "defaultDatasetId",
-                    "defaultRequestQueueId",
-                    "buildNumber",
-                    "containerUrl",
-                    "usage",
-                    "usageTotalUsd",
-                    "usageUsd"
-                ]
-            },
-            "ApifyWebhookDto": {
-                "type": "object",
-                "properties": {
-                    "userId": { "type": "string" },
-                    "createdAt": { "type": "string" },
-                    "eventType": { "type": "string" },
-                    "eventData": {
-                        "$ref": "#/components/schemas/EventDataDto"
-                    },
-                    "resource": { "$ref": "#/components/schemas/ResourceDto" }
-                },
-                "required": [
-                    "userId",
-                    "createdAt",
-                    "eventType",
-                    "eventData",
-                    "resource"
-                ]
-            },
             "KnowledgeStatusDto": {
                 "type": "object",
                 "properties": {
@@ -6326,11 +6184,6 @@
                         "type": "string",
                         "description": "New visibility status for all translations",
                         "example": "PUBLIC"
-                    },
-                    "is_current": {
-                        "type": "boolean",
-                        "description": "Publish immediately (true) or save as draft (false)",
-                        "default": true
                     }
                 },
                 "required": ["article_ids", "locale_code", "visibility_status"]
@@ -9766,6 +9619,82 @@
                 "type": "object",
                 "properties": { "scraping_id": { "type": "string" } },
                 "required": ["scraping_id"]
+            },
+            "EventDataDto": {
+                "type": "object",
+                "properties": {
+                    "actorId": { "type": "string" },
+                    "actorRunId": { "type": "string" }
+                },
+                "required": ["actorId", "actorRunId"]
+            },
+            "ResourceDto": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "string" },
+                    "actId": { "type": "string" },
+                    "userId": { "type": "string" },
+                    "startedAt": { "type": "string" },
+                    "finishedAt": { "type": "string" },
+                    "status": { "type": "string" },
+                    "statusMessage": { "type": "string" },
+                    "isStatusMessageTerminal": { "type": "boolean" },
+                    "meta": { "type": "object" },
+                    "stats": { "type": "object" },
+                    "options": { "type": "object" },
+                    "buildId": { "type": "string" },
+                    "exitCode": { "type": "number" },
+                    "defaultKeyValueStoreId": { "type": "string" },
+                    "defaultDatasetId": { "type": "string" },
+                    "defaultRequestQueueId": { "type": "string" },
+                    "buildNumber": { "type": "string" },
+                    "containerUrl": { "type": "string" },
+                    "usage": { "type": "object" },
+                    "usageTotalUsd": { "type": "number" },
+                    "usageUsd": { "type": "object" }
+                },
+                "required": [
+                    "id",
+                    "actId",
+                    "userId",
+                    "startedAt",
+                    "finishedAt",
+                    "status",
+                    "statusMessage",
+                    "isStatusMessageTerminal",
+                    "meta",
+                    "stats",
+                    "options",
+                    "buildId",
+                    "exitCode",
+                    "defaultKeyValueStoreId",
+                    "defaultDatasetId",
+                    "defaultRequestQueueId",
+                    "buildNumber",
+                    "containerUrl",
+                    "usage",
+                    "usageTotalUsd",
+                    "usageUsd"
+                ]
+            },
+            "ApifyWebhookDto": {
+                "type": "object",
+                "properties": {
+                    "userId": { "type": "string" },
+                    "createdAt": { "type": "string" },
+                    "eventType": { "type": "string" },
+                    "eventData": {
+                        "$ref": "#/components/schemas/EventDataDto"
+                    },
+                    "resource": { "$ref": "#/components/schemas/ResourceDto" }
+                },
+                "required": [
+                    "userId",
+                    "createdAt",
+                    "eventType",
+                    "eventData",
+                    "resource"
+                ]
             },
             "ApifyFailedIngestionDto": {
                 "type": "object",

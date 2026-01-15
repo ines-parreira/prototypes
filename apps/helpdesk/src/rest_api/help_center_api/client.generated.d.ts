@@ -108,9 +108,6 @@ declare namespace Components {
         export interface ApifyFailedIngestionDto {
             defaultDatasetId: string
         }
-        export interface ApifyInputDto {
-            links: LinkDto[]
-        }
         export interface ApifyWebhookDto {
             userId: string
             createdAt: string
@@ -895,10 +892,6 @@ declare namespace Components {
              * PUBLIC
              */
             visibility_status: 'PUBLIC' | 'UNLISTED'
-            /**
-             * Publish immediately (true) or save as draft (false)
-             */
-            is_current?: boolean
         }
         export interface BulkCopyArticlesRequestDto {
             /**
@@ -2731,9 +2724,6 @@ declare namespace Components {
             has_public_resources: boolean
             has_external_documents: boolean
             is_store_domain_synced: boolean
-        }
-        export interface LinkDto {
-            url: string
         }
         export interface LocalArticleTranslation {
             created_datetime: string // date-time
@@ -5504,18 +5494,6 @@ declare namespace Paths {
             export type $200 = number[]
         }
     }
-    namespace StartArticleIngestion {
-        namespace Parameters {
-            export type HelpCenterId = number
-        }
-        export interface PathParameters {
-            help_center_id: Parameters.HelpCenterId
-        }
-        export type RequestBody = Components.Schemas.ApifyInputDto
-        namespace Responses {
-            export interface $201 {}
-        }
-    }
     namespace StartIngestion {
         namespace Parameters {
             export type HelpCenterId = number
@@ -5807,22 +5785,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetArticleIngestionLogs.Responses.$200>
-    /**
-     * startArticleIngestion - Trigger external content ingestion
-     */
-    'startArticleIngestion'(
-        parameters: Parameters<Paths.StartArticleIngestion.PathParameters>,
-        data?: Paths.StartArticleIngestion.RequestBody,
-        config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.StartArticleIngestion.Responses.$201>
-    /**
-     * handleArticleIngestionDone - Webhook integration with Apify
-     */
-    'handleArticleIngestionDone'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.HandleArticleIngestionDone.RequestBody,
-        config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.HandleArticleIngestionDone.Responses.$201>
     /**
      * getArticleIngestionArticleTitlesAndStatus - Get article titles and visibility status for an article ingestion log
      */
@@ -7072,26 +7034,6 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetArticleIngestionLogs.Responses.$200>
-    }
-    ['/api/help-center/help-centers/{help_center_id}/article-ingestion/start']: {
-        /**
-         * startArticleIngestion - Trigger external content ingestion
-         */
-        'post'(
-            parameters: Parameters<Paths.StartArticleIngestion.PathParameters>,
-            data?: Paths.StartArticleIngestion.RequestBody,
-            config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.StartArticleIngestion.Responses.$201>
-    }
-    ['/api/help-center/article-ingestion/done']: {
-        /**
-         * handleArticleIngestionDone - Webhook integration with Apify
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.HandleArticleIngestionDone.RequestBody,
-            config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.HandleArticleIngestionDone.Responses.$201>
     }
     ['/api/help-center/help-centers/{help_center_id}/article-ingestion-log/{article_ingestion_id}/articles']: {
         /**
