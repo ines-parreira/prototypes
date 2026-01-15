@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
 
 import { TestButton } from './KnowledgeEditorTopBarCommonControls'
 
@@ -12,9 +12,14 @@ export const KnowledgeEditorTopBarSnippetControls = ({
     isPlaygroundOpen = false,
 }: Props) => (
     <>
-        <Button variant="secondary" isDisabled leadingSlot="lock">
-            Edit
-        </Button>
+        <Tooltip delay={0}>
+            <TooltipTrigger>
+                <Button variant="tertiary" isDisabled leadingSlot="lock">
+                    Edit
+                </Button>
+            </TooltipTrigger>
+            <TooltipContent title="Snippets can't be edited" />
+        </Tooltip>
         {!isPlaygroundOpen && <TestButton onTest={onTest} disabled={false} />}
     </>
 )
