@@ -113,7 +113,7 @@ jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
         onClose: () => void
         draftKnowledge?: { sourceId: number; sourceSetId: number }
     }) => (
-        <div data-testid="playground-panel">
+        <div data-testid="playground-panel" data-name="playground-panel">
             <button onClick={onClose}>Close Playground</button>
             {draftKnowledge && (
                 <div data-testid="draft-knowledge-data">
@@ -680,8 +680,8 @@ describe('KnowledgeEditorGuidance', () => {
     })
 
     describe('Split View - Playground Panel', () => {
-        it('should toggle playground panel when test button is clicked', async () => {
-            const { queryByTestId } = render(
+        it('should toggle playground panel visibility when test button is clicked', async () => {
+            render(
                 <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
@@ -695,7 +695,12 @@ describe('KnowledgeEditorGuidance', () => {
                 </Provider>,
             )
 
-            expect(queryByTestId('playground-panel')).not.toBeInTheDocument()
+            const playgroundPanel = screen.getByTestId('playground-panel')
+            const playgroundContainer = playgroundPanel.parentElement
+
+            expect(playgroundPanel).toBeInTheDocument()
+            expect(playgroundContainer).toHaveClass('playground-closed')
+            expect(playgroundContainer).not.toHaveClass('playground-open')
 
             const testButton = screen.getByRole('button', { name: /test/i })
             await act(async () => {
@@ -703,10 +708,10 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             await waitFor(() => {
-                expect(queryByTestId('playground-panel')).toBeInTheDocument()
+                expect(playgroundContainer).toHaveClass('playground-open')
+                expect(playgroundContainer).not.toHaveClass('playground-closed')
             })
 
-            // Test button is hidden when playground is open, so use the Close Playground button
             const closePlaygroundButton = screen.getByRole('button', {
                 name: /close playground/i,
             })
@@ -715,9 +720,8 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             await waitFor(() => {
-                expect(
-                    queryByTestId('playground-panel'),
-                ).not.toBeInTheDocument()
+                expect(playgroundContainer).toHaveClass('playground-closed')
+                expect(playgroundContainer).not.toHaveClass('playground-open')
             })
         })
 
@@ -986,10 +990,12 @@ describe('KnowledgeEditorGuidance', () => {
                 </Provider>,
             )
 
+            const playgroundPanel = screen.getByTestId('playground-panel')
+            const playgroundContainer = playgroundPanel.parentElement
+
             expect(screen.getByText(guidanceArticle.title)).toBeInTheDocument()
-            expect(
-                screen.queryByTestId('playground-panel'),
-            ).not.toBeInTheDocument()
+            expect(playgroundPanel).toBeInTheDocument()
+            expect(playgroundContainer).toHaveClass('playground-closed')
 
             const testButton = screen.getByRole('button', { name: /test/i })
             await act(async () => {
@@ -997,9 +1003,7 @@ describe('KnowledgeEditorGuidance', () => {
             })
 
             await waitFor(() => {
-                expect(
-                    screen.getByTestId('playground-panel'),
-                ).toBeInTheDocument()
+                expect(playgroundContainer).toHaveClass('playground-open')
             })
 
             expect(screen.getByText(guidanceArticle.title)).toBeInTheDocument()

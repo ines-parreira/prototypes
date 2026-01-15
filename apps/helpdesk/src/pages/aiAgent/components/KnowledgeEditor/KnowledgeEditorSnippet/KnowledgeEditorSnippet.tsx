@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react'
 
+import cn from 'classnames'
+
 import { SidePanel } from '@gorgias/axiom'
 
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
@@ -85,11 +87,16 @@ export const KnowledgeEditorSnippet = ({
                         handleVisibilityUpdate={handleVisibilityUpdate}
                     />
                 </div>
-                {isPlaygroundOpen && (
-                    <div className={css.playground}>
-                        <PlaygroundPanel onClose={onClosePlayground} />
-                    </div>
-                )}
+                <div
+                    className={cn(
+                        css.playground,
+                        isPlaygroundOpen
+                            ? css['playground-open']
+                            : css['playground-closed'],
+                    )}
+                >
+                    <PlaygroundPanel onClose={onClosePlayground} />
+                </div>
             </div>
         </SidePanel>
     )

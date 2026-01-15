@@ -27,7 +27,7 @@ jest.mock('./KnowledgeEditorSnippetLoader', () => ({
 
 jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
     PlaygroundPanel: ({ onClose }: { onClose: () => void }) => (
-        <div data-testid="playground-panel">
+        <div data-testid="playground-panel" data-name="playground-panel">
             <button onClick={onClose}>Close Playground</button>
         </div>
     ),
@@ -297,7 +297,7 @@ describe('KnowledgeEditorSnippet', () => {
     })
 
     describe('Playground Panel', () => {
-        it('should not show playground panel initially', () => {
+        it('should have playground panel hidden initially', () => {
             render(
                 <KnowledgeEditorSnippet
                     {...baseProps}
@@ -305,9 +305,12 @@ describe('KnowledgeEditorSnippet', () => {
                 />,
             )
 
-            expect(
-                screen.queryByTestId('playground-panel'),
-            ).not.toBeInTheDocument()
+            const playgroundPanel = screen.getByTestId('playground-panel')
+            const playgroundContainer = playgroundPanel.parentElement
+
+            expect(playgroundPanel).toBeInTheDocument()
+            expect(playgroundContainer).toHaveClass('playground-closed')
+            expect(playgroundContainer).not.toHaveClass('playground-open')
         })
 
         it('should open playground panel when Test button is clicked', async () => {
@@ -318,15 +321,18 @@ describe('KnowledgeEditorSnippet', () => {
                 />,
             )
 
-            expect(
-                screen.queryByTestId('playground-panel'),
-            ).not.toBeInTheDocument()
+            const playgroundPanel = screen.getByTestId('playground-panel')
+            const playgroundContainer = playgroundPanel.parentElement
+
+            expect(playgroundContainer).toHaveClass('playground-closed')
+            expect(playgroundContainer).not.toHaveClass('playground-open')
 
             await act(() =>
                 userEvent.click(screen.getByRole('button', { name: /test/i })),
             )
 
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
+            expect(playgroundContainer).toHaveClass('playground-open')
+            expect(playgroundContainer).not.toHaveClass('playground-closed')
         })
 
         it('should show two columns when playground is open', async () => {
@@ -353,11 +359,14 @@ describe('KnowledgeEditorSnippet', () => {
                 />,
             )
 
+            const playgroundPanel = screen.getByTestId('playground-panel')
+            const playgroundContainer = playgroundPanel.parentElement
+
             await act(() =>
                 userEvent.click(screen.getByRole('button', { name: /test/i })),
             )
 
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
+            expect(playgroundContainer).toHaveClass('playground-open')
 
             await act(() =>
                 userEvent.click(
@@ -365,9 +374,8 @@ describe('KnowledgeEditorSnippet', () => {
                 ),
             )
 
-            expect(
-                screen.queryByTestId('playground-panel'),
-            ).not.toBeInTheDocument()
+            expect(playgroundContainer).toHaveClass('playground-closed')
+            expect(playgroundContainer).not.toHaveClass('playground-open')
         })
 
         it('should toggle playground when Test button is clicked multiple times', async () => {
@@ -378,28 +386,32 @@ describe('KnowledgeEditorSnippet', () => {
                 />,
             )
 
-            await act(() =>
-                userEvent.click(screen.getByRole('button', { name: /test/i })),
-            )
-
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
+            const playgroundPanel = screen.getByTestId('playground-panel')
+            const playgroundContainer = playgroundPanel.parentElement
 
             await act(() =>
                 userEvent.click(screen.getByRole('button', { name: /test/i })),
             )
 
-            expect(
-                screen.queryByTestId('playground-panel'),
-            ).not.toBeInTheDocument()
+            expect(playgroundContainer).toHaveClass('playground-open')
+            expect(playgroundContainer).not.toHaveClass('playground-closed')
 
             await act(() =>
                 userEvent.click(screen.getByRole('button', { name: /test/i })),
             )
 
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
+            expect(playgroundContainer).toHaveClass('playground-closed')
+            expect(playgroundContainer).not.toHaveClass('playground-open')
+
+            await act(() =>
+                userEvent.click(screen.getByRole('button', { name: /test/i })),
+            )
+
+            expect(playgroundContainer).toHaveClass('playground-open')
+            expect(playgroundContainer).not.toHaveClass('playground-closed')
         })
 
-        it('should render playground only when open', async () => {
+        it('should change playground visibility state when opened', async () => {
             render(
                 <KnowledgeEditorSnippet
                     {...baseProps}
@@ -407,15 +419,18 @@ describe('KnowledgeEditorSnippet', () => {
                 />,
             )
 
-            expect(
-                screen.queryByTestId('playground-panel'),
-            ).not.toBeInTheDocument()
+            const playgroundPanel = screen.getByTestId('playground-panel')
+            const playgroundContainer = playgroundPanel.parentElement
+
+            expect(playgroundPanel).toBeInTheDocument()
+            expect(playgroundContainer).toHaveClass('playground-closed')
 
             await act(() =>
                 userEvent.click(screen.getByRole('button', { name: /test/i })),
             )
 
-            expect(screen.getByTestId('playground-panel')).toBeInTheDocument()
+            expect(playgroundPanel).toBeInTheDocument()
+            expect(playgroundContainer).toHaveClass('playground-open')
         })
 
         it('should keep playground state independent of other interactions', async () => {

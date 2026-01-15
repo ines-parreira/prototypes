@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react'
 
+import cn from 'classnames'
+
 import { Card, SidePanel } from '@gorgias/axiom'
 
 import { useNotify } from 'hooks/useNotify'
@@ -76,19 +78,24 @@ const KnowledgeEditorGuidanceInner = ({
                 <KnowledgeEditorLoadingShell />
             ) : (
                 <div className={css.splitView}>
-                    <Card elevation="mid" padding={0} width={'100%'}>
+                    <Card elevation="mid" className={css.editor} padding={0}>
                         <KnowledgeEditorGuidanceContent
                             closeHandlerRef={closeHandlerRef}
                         />
                     </Card>
-                    {playground.isOpen && (
-                        <div className={css.playground}>
-                            <PlaygroundPanel
-                                onClose={playground.onClose}
-                                draftKnowledge={draftKnowledgeForPlayground}
-                            />
-                        </div>
-                    )}
+                    <div
+                        className={cn(
+                            css.playground,
+                            playground.isOpen
+                                ? css['playground-open']
+                                : css['playground-closed'],
+                        )}
+                    >
+                        <PlaygroundPanel
+                            onClose={playground.onClose}
+                            draftKnowledge={draftKnowledgeForPlayground}
+                        />
+                    </div>
                 </div>
             )}
         </SidePanel>

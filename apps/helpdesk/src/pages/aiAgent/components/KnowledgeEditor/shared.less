@@ -33,6 +33,7 @@
     }
 
     .playground {
+        //display: flex;
         width: 480px;
         flex-shrink: 0;
         [data-name='panel-header'] {
@@ -40,7 +41,39 @@
             // side panel header has height of 58px, but also has a border on top of 1px, making total of 59px
             height: 59px;
         }
+        transition:
+            width 0.2s ease-out,
+            max-width 0.2s ease-out,
+            min-width 0.2s ease-out;
+        overflow: hidden;
+
+        &-open {
+            width: 480px;
+            max-width: 480px;
+            min-width: 480px;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        &-closed {
+            width: 0;
+            max-width: 0;
+            min-width: 0;
+            opacity: 0;
+            visibility: hidden;
+        }
     }
+
+    .playground-open [data-name='playground-panel'] {
+        opacity: 1;
+        transition-delay: 0.15s;
+    }
+
+    .playground-closed [data-name='playground-panel'] {
+        opacity: 0;
+        transition-delay: 0s;
+    }
+
     [data-name='playground-panel'] {
         border-radius: 12px !important;
     }

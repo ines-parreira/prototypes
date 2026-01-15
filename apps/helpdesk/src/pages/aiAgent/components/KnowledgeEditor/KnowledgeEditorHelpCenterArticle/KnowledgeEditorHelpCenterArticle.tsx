@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react'
 
+import cn from 'classnames'
+
 import { Card, SidePanel } from '@gorgias/axiom'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
@@ -80,11 +82,16 @@ const ArticleEditorInner = ({ isLoading }: { isLoading: boolean }) => {
                             closeHandlerRef={closeHandlerRef}
                         />
                     </Card>
-                    {playground.isOpen && (
-                        <div className={css.playground}>
-                            <PlaygroundPanel onClose={playground.onClose} />
-                        </div>
-                    )}
+                    <div
+                        className={cn(
+                            css.playground,
+                            playground.isOpen
+                                ? css['playground-open']
+                                : css['playground-closed'],
+                        )}
+                    >
+                        <PlaygroundPanel onClose={playground.onClose} />
+                    </div>
                 </div>
             )}
         </SidePanel>
