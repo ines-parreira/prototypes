@@ -188,6 +188,34 @@ describe('KnowledgeHubHeader', () => {
             expect(syncButton).toBeDisabled()
         })
 
+        it('renders tooltip when syncTooltipMessage is provided', async () => {
+            const user = userEvent.setup()
+            const tooltipMessage = 'Last synced 2 hours ago'
+            renderComponent({
+                data: storeWebsiteData,
+                syncTooltipMessage: tooltipMessage,
+            })
+
+            const syncButton = screen.getByRole('button', {
+                name: /sync store website/i,
+            })
+
+            await user.hover(syncButton)
+
+            expect(await screen.findByText(tooltipMessage)).toBeInTheDocument()
+        })
+
+        it('does not render tooltip when syncTooltipMessage is not provided', () => {
+            renderComponent({
+                data: storeWebsiteData,
+            })
+
+            const syncButton = screen.getByRole('button', {
+                name: /sync store website/i,
+            })
+            expect(syncButton).toBeInTheDocument()
+        })
+
         it('does not render Test or Create content buttons', () => {
             renderComponent({ data: storeWebsiteData })
 
@@ -280,6 +308,30 @@ describe('KnowledgeHubHeader', () => {
                 name: /delete url/i,
             })
             expect(deleteButton).toBeDisabled()
+        })
+
+        it('renders tooltip when syncTooltipMessage is provided', async () => {
+            const user = userEvent.setup()
+            const tooltipMessage = 'Last synced 1 hour ago'
+            renderComponent({
+                data: urlsData,
+                syncTooltipMessage: tooltipMessage,
+            })
+
+            const syncButton = screen.getByRole('button', { name: /sync url/i })
+
+            await user.hover(syncButton)
+
+            expect(await screen.findByText(tooltipMessage)).toBeInTheDocument()
+        })
+
+        it('does not render tooltip when syncTooltipMessage is not provided', () => {
+            renderComponent({
+                data: urlsData,
+            })
+
+            const syncButton = screen.getByRole('button', { name: /sync url/i })
+            expect(syncButton).toBeInTheDocument()
         })
     })
 

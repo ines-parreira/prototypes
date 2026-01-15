@@ -1,6 +1,10 @@
-import { useId } from '@repo/hooks'
-
-import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    Button,
+    Text,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@gorgias/axiom'
 
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
@@ -32,8 +36,6 @@ export const HeaderActions = ({
     syncTooltipMessage,
     isPlaygroundOpen = false,
 }: HeaderActionsProps) => {
-    const id = useId()
-    const syncButtonId = `sync-button-${id}`
     if (!data) {
         return (
             <>
@@ -62,38 +64,62 @@ export const HeaderActions = ({
         case KnowledgeType.Domain:
             return (
                 <>
-                    <Button
-                        id={syncButtonId}
-                        onClick={onSync}
-                        isDisabled={isSyncButtonDisabled}
-                        variant="secondary"
-                        leadingSlot="arrows-reload-alt-1"
-                    >
-                        Sync store website
-                    </Button>
-                    {syncTooltipMessage && (
-                        <Tooltip target={syncButtonId}>
-                            {syncTooltipMessage}
+                    {syncTooltipMessage ? (
+                        <Tooltip placement="top">
+                            <TooltipTrigger>
+                                <Button
+                                    onClick={onSync}
+                                    isDisabled={isSyncButtonDisabled}
+                                    variant="secondary"
+                                    leadingSlot="arrows-reload-alt-1"
+                                >
+                                    Sync store website
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <Text size="sm">{syncTooltipMessage}</Text>
+                            </TooltipContent>
                         </Tooltip>
+                    ) : (
+                        <Button
+                            onClick={onSync}
+                            isDisabled={isSyncButtonDisabled}
+                            variant="secondary"
+                            leadingSlot="arrows-reload-alt-1"
+                        >
+                            Sync store website
+                        </Button>
                     )}
                 </>
             )
         case KnowledgeType.URL:
             return (
                 <>
-                    <Button
-                        id={syncButtonId}
-                        onClick={onSync}
-                        isDisabled={isSyncButtonDisabled}
-                        variant="secondary"
-                        leadingSlot="arrows-reload-alt-1"
-                    >
-                        Sync URL
-                    </Button>
-                    {syncTooltipMessage && (
-                        <Tooltip target={syncButtonId}>
-                            {syncTooltipMessage}
+                    {syncTooltipMessage ? (
+                        <Tooltip placement="top">
+                            <TooltipTrigger>
+                                <Button
+                                    onClick={onSync}
+                                    isDisabled={isSyncButtonDisabled}
+                                    variant="secondary"
+                                    leadingSlot="arrows-reload-alt-1"
+                                >
+                                    Sync URL
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <Text size="sm">{syncTooltipMessage}</Text>
+                            </TooltipContent>
                         </Tooltip>
+                    ) : (
+                        <Button
+                            onClick={onSync}
+                            isDisabled={isSyncButtonDisabled}
+                            variant="secondary"
+                            leadingSlot="arrows-reload-alt-1"
+                        >
+                            Sync URL
+                        </Button>
                     )}
                     <Button
                         onClick={onDelete}
