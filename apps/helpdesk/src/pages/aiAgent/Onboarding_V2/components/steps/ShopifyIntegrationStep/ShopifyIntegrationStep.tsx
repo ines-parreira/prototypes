@@ -37,9 +37,7 @@ import {
     OnboardingContentContainer,
     OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding_V2/layout/ConvAiOnboardingLayout'
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
-import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 const ShopifyIcon: React.FC<{ size?: string }> = ({ size }) => (
@@ -76,7 +74,6 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
     const { validSteps } = useSteps({ shopName, isStoreSelected })
     const { redirectToIntegration } = useOnboardingIntegrationRedirection()
     const shopifyIntegrations = useShopifyIntegrations()
-    const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
     const scopes = useAiAgentScopesForAutomationPlan(shopName)
 
     useCheckOnboardingCompleted()
@@ -183,10 +180,8 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
     }, [validSteps, currentStep, goToStep])
 
     const goToNextStep = () => {
-        let newPath = `/app/ai-agent/${selectedShopType}/${selectedShop}/onboarding/${WizardStepEnum.CHANNELS}`
-        if (!emailIntegrations && !defaultIntegration) {
-            newPath = `/app/ai-agent/${selectedShopType}/${selectedShop}/onboarding/${WizardStepEnum.EMAIL_INTEGRATION}`
-        }
+        const nextStep = validSteps[currentStep]?.step
+        const newPath = `/app/ai-agent/${selectedShopType}/${selectedShop}/onboarding/${nextStep}`
         setIsStoreSelected(true)
         history.push(newPath)
     }
@@ -199,14 +194,12 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
             return
         }
 
+        const nextStep = validSteps[currentStep]?.step
         const updatedData: Partial<OnboardingData> = {
             scopes,
             gorgiasDomain: accountDomain,
             shopName: selectedShop,
-            currentStepName:
-                !emailIntegrations && !defaultIntegration
-                    ? WizardStepEnum.EMAIL_INTEGRATION
-                    : WizardStepEnum.CHANNELS,
+            currentStepName: nextStep,
         }
 
         if (!isDirty && !!data?.shopName) {

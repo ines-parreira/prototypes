@@ -18,6 +18,7 @@ import { useGmvUsdOver30Days } from 'pages/aiAgent/components/CustomerEngagement
 import { useLowestPotentialImpact } from 'pages/aiAgent/components/CustomerEngagementSettings/hooks/useLowestPotentialImpact'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
+import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding'
 import {
@@ -76,6 +77,11 @@ const mutateUpdateOnboardingMock = jest.fn()
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding')
 const useUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
 
+jest.mock('pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan')
+const useAiAgentScopesForAutomationPlanMock = assumeMock(
+    useAiAgentScopesForAutomationPlan,
+)
+
 const goToStep = jest.fn()
 
 const renderWithProviders = (props = {}) => {
@@ -83,7 +89,7 @@ const renderWithProviders = (props = {}) => {
         <Provider store={mockStore(defaultState)}>
             <QueryClientProvider client={queryClient}>
                 <EngagementStep
-                    currentStep={4}
+                    currentStep={3}
                     totalSteps={5}
                     goToStep={goToStep}
                     {...props}
@@ -135,6 +141,11 @@ describe('EngagementStep', () => {
                 onSuccess()
             },
         )
+
+        useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+            AiAgentScopes.SUPPORT,
+            AiAgentScopes.SALES,
+        ])
     })
 
     afterEach(() => {
@@ -241,7 +252,7 @@ describe('EngagementStep', () => {
                 {
                     id: '1',
                     data: {
-                        currentStepName: WizardStepEnum.KNOWLEDGE,
+                        currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
                         id: '1',
                         isAskAnythingInputEnabled: true,
                         isConversationStartersEnabled: true,
@@ -256,7 +267,9 @@ describe('EngagementStep', () => {
                 expect.anything(),
             )
 
-            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
+            expect(goToStep).toHaveBeenCalledWith(
+                WizardStepEnum.PERSONALITY_PREVIEW,
+            )
         })
     })
 })

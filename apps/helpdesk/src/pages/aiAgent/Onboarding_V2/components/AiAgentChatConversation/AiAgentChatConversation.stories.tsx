@@ -14,14 +14,13 @@ import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
-import OnboardingDevPreview from 'pages/aiAgent/Onboarding_V2/components/OnboardingDevPreview/OnboardingDevPreview'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 
 import AiAgentChatConversation from './AiAgentChatConversation'
 
-const storyConfig: Meta<typeof OnboardingDevPreview> = {
+const storyConfig: Meta<typeof ChatIntegrationPreview> = {
     title: 'AI Agent/Onboarding_V2/ChatConversationPreview',
-    component: OnboardingDevPreview,
+    component: ChatIntegrationPreview,
 }
 
 const defaultState = {

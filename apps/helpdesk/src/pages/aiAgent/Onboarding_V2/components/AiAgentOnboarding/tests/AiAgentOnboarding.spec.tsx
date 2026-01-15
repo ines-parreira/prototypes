@@ -21,6 +21,7 @@ import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding_V2/components/AiAgen
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 import { useTopProducts } from 'pages/aiAgent/Onboarding_V2/components/TopProductsCard/hooks'
+import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import {
     AiAgentScopes,
@@ -97,6 +98,11 @@ const mockUseShopifyIntegrationAndScope =
 const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
 const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
 
+jest.mock('pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan')
+const useAiAgentScopesForAutomationPlanMock = assumeMock(
+    useAiAgentScopesForAutomationPlan,
+)
+
 const queryClient = new QueryClient()
 const history = createMemoryHistory()
 
@@ -144,6 +150,11 @@ describe('AiAgentOnboarding', () => {
         mockUseFlag.mockImplementation(
             (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
         )
+
+        useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+            AiAgentScopes.SUPPORT,
+            AiAgentScopes.SALES,
+        ])
     })
 
     beforeAll(() => {
@@ -193,7 +204,9 @@ describe('AiAgentOnboarding', () => {
         )
 
         await waitFor(() => {
-            expect(history.location.pathname).toContain(WizardStepEnum.CHANNELS)
+            expect(history.location.pathname).toContain(
+                WizardStepEnum.TONE_OF_VOICE,
+            )
         })
     })
 

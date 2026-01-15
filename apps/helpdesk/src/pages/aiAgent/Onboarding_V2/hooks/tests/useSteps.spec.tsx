@@ -9,14 +9,12 @@ import {
     WizardStepEnum,
 } from 'pages/aiAgent/Onboarding_V2/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import type { RootState } from 'state/types'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useSteps } from '../useSteps'
 
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData')
-jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useShopifyIntegrations')
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
     useShopifyIntegrationAndScope: jest.fn(),
@@ -24,7 +22,6 @@ jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
 
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
-const mockUseEmailIntegrations = useEmailIntegrations as jest.Mock
 const mockUseShopifyIntegrations = useShopifyIntegrations as jest.Mock
 
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan')
@@ -48,10 +45,6 @@ describe('useSteps', () => {
             integrationId: 123,
             needScopeUpdate: false,
         })
-        mockUseEmailIntegrations.mockReturnValue({
-            emailIntegrations: [{}],
-            defaultIntegration: {},
-        })
 
         useAiAgentScopesForAutomationPlanMock.mockReturnValue([
             AiAgentScopes.SUPPORT,
@@ -59,15 +52,11 @@ describe('useSteps', () => {
         ])
     })
 
-    it('should return all steps when no integrations exist and data is loading', () => {
+    it('should return all steps when no integration exists', () => {
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integration: null,
             integrationId: null,
             needScopeUpdate: false,
-        })
-        mockUseEmailIntegrations.mockReturnValue({
-            emailIntegrations: null,
-            defaultIntegration: null,
         })
 
         const { result } = renderHookWithStoreAndQueryClientProvider(
@@ -77,8 +66,7 @@ describe('useSteps', () => {
 
         expect(result.current.validSteps).toEqual([
             { step: WizardStepEnum.SHOPIFY_INTEGRATION, condition: true },
-            { step: WizardStepEnum.EMAIL_INTEGRATION, condition: true },
-            { step: WizardStepEnum.CHANNELS, condition: true },
+            { step: WizardStepEnum.TONE_OF_VOICE, condition: true },
             { step: WizardStepEnum.SALES_PERSONALITY, condition: true },
             { step: WizardStepEnum.ENGAGEMENT, condition: true },
             { step: WizardStepEnum.PERSONALITY_PREVIEW, condition: true },
@@ -86,14 +74,14 @@ describe('useSteps', () => {
         ])
     })
 
-    it('should exclude steps based on integration and email data', () => {
+    it('should exclude SHOPIFY_INTEGRATION step when integration exists', () => {
         const { result } = renderHookWithStoreAndQueryClientProvider(
             () => useSteps({ shopName: 'test-shop' }),
             initialState,
         )
 
         expect(result.current.validSteps).toEqual([
-            { step: WizardStepEnum.CHANNELS, condition: true },
+            { step: WizardStepEnum.TONE_OF_VOICE, condition: true },
             {
                 step: WizardStepEnum.SALES_PERSONALITY,
                 condition: true,

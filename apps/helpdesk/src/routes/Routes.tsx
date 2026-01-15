@@ -56,6 +56,7 @@ import { AiAgentSalesStrategy } from 'pages/aiAgent/AiAgentSalesStrategy'
 import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer'
 import AiAgentScrapedDomainQuestionsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainQuestionsContainer'
 import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
+import { AiAgentOnboardingRedirect } from 'pages/aiAgent/components/AiAgentOnboardingRedirect/AiAgentOnboardingRedirect'
 import { AiAgentRedirect } from 'pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect'
 import AiAgentExternalDocumentsArticleContainer from 'pages/aiAgent/components/Knowledge/AiAgentExternalDocumentsArticleContainer'
 import AiAgentUrlSourcesArticleContainer from 'pages/aiAgent/components/Knowledge/AiAgentUrlSourcesArticleContainer'
@@ -887,16 +888,12 @@ export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
                         }
                     />
 
-                    {/* Redirect `/shopType/shopName/onboarding` to `/shopType/shopName/onboarding/${WizardStepEnum.SKILLSET}` */}
+                    {/* TEMPORARY: V1/V2 feature flag redirect - remove with CRMGROW-2521 */}
+                    {/* Redirect `/shopType/shopName/onboarding` to appropriate starting step based on feature flag and state */}
                     <Route
                         exact
                         path={`${path}/:shopType/:shopName/onboarding`}
-                        render={({ history, match }) =>
-                            handleRedirect(
-                                history,
-                                `${path}/${match.params.shopType}/${match.params.shopName}/onboarding/${WizardStepEnum.CHANNELS}`,
-                            )
-                        }
+                        component={AiAgentOnboardingRedirect}
                     />
 
                     {/* Generic function to wrap AiAgentOnboarding with user role validation */}

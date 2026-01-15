@@ -12,7 +12,10 @@ import { NotificationStatus } from 'state/notifications/types'
 const useCheckStoreIntegration = (options?: { shouldCheck: boolean }): null => {
     const shouldCheck = options?.shouldCheck ?? true
 
-    const { shopName } = useParams<{ shopName: string }>()
+    const { shopName, shopType } = useParams<{
+        shopName: string
+        shopType: string
+    }>()
     const { data, isLoading } = useGetOnboardingData(shopName)
     const history = useHistory()
     const dispatch = useAppDispatch()
@@ -40,9 +43,11 @@ const useCheckStoreIntegration = (options?: { shouldCheck: boolean }): null => {
                 id: 'store-integration-empty-error',
             }),
         )
-        history.push(
-            `/app/ai-agent/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`,
-        )
+        const redirectPath =
+            shopType && shopName
+                ? `/app/ai-agent/${shopType}/${shopName}/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`
+                : `/app/ai-agent/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`
+        history.push(redirectPath)
     }
 
     return null

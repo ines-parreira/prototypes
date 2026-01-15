@@ -31,7 +31,6 @@ import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/typ
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreAlreadyConfigured'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
-import { useGetChatIntegrationColor } from 'pages/aiAgent/Onboarding_V2/hooks/useGetChatIntegrationColor'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding_V2/hooks/useSteps'
 import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding_V2/hooks/useTransformToneOfVoiceConversations'
@@ -103,11 +102,6 @@ export const PersonalityStep: FC<StepProps> = ({
 
     const { data } = useGetOnboardingData(shopName)
     const { mutate: doUpdateOnboardingMutation } = useUpdateOnboarding()
-
-    const { mainColor, conversationColor } = useGetChatIntegrationColor({
-        shopName,
-        chatIntegrationIds: data?.chatIntegrationIds,
-    })
 
     const storeIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName),
@@ -434,20 +428,9 @@ export const PersonalityStep: FC<StepProps> = ({
                     caption="This is a sample conversation with AI Agent. It will evolve as you onboard."
                 >
                     <div className={css.chatWrapper}>
-                        <ChatIntegrationPreview
-                            {...{
-                                ...chatPreviewSettings,
-                                mainColor:
-                                    mainColor ?? chatPreviewSettings.mainColor,
-                            }}
-                        >
+                        <ChatIntegrationPreview {...chatPreviewSettings}>
                             <AiAgentChatConversation
-                                {...{
-                                    ...agentChatConversationSettings,
-                                    conversationColor:
-                                        conversationColor ??
-                                        agentChatConversationSettings.conversationColor,
-                                }}
+                                {...agentChatConversationSettings}
                                 messages={preview}
                                 isTyping={isPreviewLoading}
                                 removeLinksFromMessages

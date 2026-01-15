@@ -2,9 +2,8 @@ import type { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/st
 import type { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 
 export enum WizardStepEnum {
-    EMAIL_INTEGRATION = 'email integration',
     SHOPIFY_INTEGRATION = 'shopify integration',
-    CHANNELS = 'channels',
+    TONE_OF_VOICE = 'tone of voice',
     PERSONALITY_PREVIEW = 'personality preview',
     SALES_PERSONALITY = 'sales personality',
     KNOWLEDGE = 'knowledge',
@@ -21,10 +20,6 @@ export type OnboardingContextData = {
     lastStep: WizardStepEnum
     scope: AiAgentScopes[]
     shopName?: string
-    emailChannelEnabled?: boolean
-    emailIntegrationIds?: number[]
-    chatChannelEnabled?: boolean
-    chatIntegrationIds?: number[]
     persuasionLevel?: PersuasionLevel
     discountStrategy?: DiscountStrategy
     maxDiscountPercentage?: number

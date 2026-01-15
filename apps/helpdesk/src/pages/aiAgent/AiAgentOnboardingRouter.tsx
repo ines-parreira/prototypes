@@ -1,6 +1,10 @@
 import type { FC } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useAreFlagsLoading,
+    useFlag,
+} from '@repo/feature-flags'
 
 import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
 import { AiAgentOnboarding as AiAgentOnboardingV2 } from 'pages/aiAgent/Onboarding_V2/components/AiAgentOnboarding/AiAgentOnboarding'
@@ -13,6 +17,11 @@ export const AiAgentOnboardingRouter: FC = () => {
     const isSimplifiedAiAgentOnboardingEnabled = useFlag(
         FeatureFlagKey.SimplifyAIAgentOnboardingWizard,
     )
+    const areFlagsLoading = useAreFlagsLoading()
+
+    if (areFlagsLoading) {
+        return null
+    }
 
     return isSimplifiedAiAgentOnboardingEnabled ? (
         <AiAgentOnboardingV2 />

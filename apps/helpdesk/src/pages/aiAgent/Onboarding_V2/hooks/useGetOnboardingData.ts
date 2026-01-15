@@ -20,8 +20,6 @@ export const defaultOnboardingData = (
     salesDiscountMax: 0.08,
     shopName: '',
     shopType: 'shopify',
-    emailIntegrationIds: [],
-    chatIntegrationIds: [],
     currentStepName: WizardStepEnum.SHOPIFY_INTEGRATION,
     handoverMethod: 'email',
     handoverEmail: null,

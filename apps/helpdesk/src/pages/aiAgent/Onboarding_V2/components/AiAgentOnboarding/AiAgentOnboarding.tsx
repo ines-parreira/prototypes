@@ -9,13 +9,13 @@ import {
     useParams,
 } from 'react-router-dom'
 
-import { ChannelsStep } from 'pages/aiAgent/Onboarding_V2/components/steps/ChannelsStep/ChannelsStep'
 import { EngagementStep } from 'pages/aiAgent/Onboarding_V2/components/steps/EngagementStep/EngagementStep'
 import { HandoverStep } from 'pages/aiAgent/Onboarding_V2/components/steps/HandoverStep/HandoverStep'
 import { KnowledgeStep } from 'pages/aiAgent/Onboarding_V2/components/steps/KnowledgeStep/KnowledgeStep'
 import { PersonalityPreviewStep } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
 import { PersonalityStep } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersonalityStep'
 import { ShopifyIntegrationStep } from 'pages/aiAgent/Onboarding_V2/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
+import { ToneOfVoiceStep } from 'pages/aiAgent/Onboarding_V2/components/steps/ToneOfVoiceStep/ToneOfVoiceStep'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
 import { useSteps } from 'pages/aiAgent/Onboarding_V2/hooks/useSteps'
 import { ConvAiOnboardingLayout } from 'pages/aiAgent/Onboarding_V2/layout/ConvAiOnboardingLayout'
@@ -92,8 +92,8 @@ export const AiAgentOnboarding = () => {
                         setIsStoreSelected={setIsStoreSelected}
                     />
                 )
-            case WizardStepEnum.CHANNELS:
-                return <ChannelsStep {...stepProps} />
+            case WizardStepEnum.TONE_OF_VOICE:
+                return <ToneOfVoiceStep {...stepProps} />
             case WizardStepEnum.KNOWLEDGE:
                 return <KnowledgeStep {...stepProps} />
             case WizardStepEnum.HANDOVER:
@@ -105,7 +105,7 @@ export const AiAgentOnboarding = () => {
             case WizardStepEnum.ENGAGEMENT:
                 return <EngagementStep {...stepProps} />
             default:
-                return <ChannelsStep {...stepProps} />
+                return <ToneOfVoiceStep {...stepProps} />
         }
     }
 

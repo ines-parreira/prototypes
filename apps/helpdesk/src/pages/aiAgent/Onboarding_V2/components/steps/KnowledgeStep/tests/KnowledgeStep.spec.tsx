@@ -23,6 +23,7 @@ import { KnowledgeStep } from 'pages/aiAgent/Onboarding_V2/components/steps/Know
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
+import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
 import { useGetHelpCentersByShopName } from 'pages/aiAgent/Onboarding_V2/hooks/useGetHelpCentersByShopName'
 import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetKnowledgePreviewData'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
@@ -115,8 +116,13 @@ const mockUseGetStoresConfigurationForAccount =
 const mockUseAppDispatch = useAppDispatch as jest.Mock
 const mockNotify = notify as jest.Mock
 
+jest.mock('pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan')
+const useAiAgentScopesForAutomationPlanMock = assumeMock(
+    useAiAgentScopesForAutomationPlan,
+)
+
 const defaultProps: StepProps = {
-    currentStep: 2,
+    currentStep: 5,
     totalSteps: 5,
     goToStep: jest.fn(),
 }
@@ -250,6 +256,11 @@ describe('KnowledgeStep', () => {
             isFetched: true,
         })
 
+        useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+            AiAgentScopes.SUPPORT,
+            AiAgentScopes.SALES,
+        ])
+
         jest.useFakeTimers()
     })
 
@@ -341,7 +352,7 @@ describe('KnowledgeStep', () => {
         expect((await screen.findAllByText('Top Locations')).length).toBe(4)
     })
 
-    it('navigates to the channels step when Back is clicked', () => {
+    it('navigates to the personality preview step when Back is clicked', () => {
         renderWithProvider()
 
         jest.runAllTimers()
@@ -349,7 +360,7 @@ describe('KnowledgeStep', () => {
         fireEvent.click(screen.getByText(/Back/i))
 
         expect(defaultProps.goToStep).toHaveBeenCalledWith(
-            WizardStepEnum.CHANNELS,
+            WizardStepEnum.PERSONALITY_PREVIEW,
         )
     })
 
@@ -364,7 +375,7 @@ describe('KnowledgeStep', () => {
         const { history } = renderWithProvider()
         jest.runAllTimers()
 
-        const nextButton = screen.getByText('Next')
+        const nextButton = screen.getByText('Finish')
 
         act(() => {
             userEvent.click(nextButton)
@@ -389,7 +400,7 @@ describe('KnowledgeStep', () => {
 
         jest.runAllTimers()
 
-        const nextButton = screen.getByRole('button', { name: /next/i })
+        const nextButton = screen.getByRole('button', { name: /finish/i })
 
         act(() => {
             userEvent.click(nextButton)
@@ -421,7 +432,7 @@ describe('KnowledgeStep', () => {
             const { history } = renderWithProvider()
             jest.runAllTimers()
 
-            const nextButton = screen.getByText('Next')
+            const nextButton = screen.getByText('Finish')
 
             act(() => {
                 userEvent.click(nextButton)
@@ -448,7 +459,7 @@ describe('KnowledgeStep', () => {
             const { history } = renderWithProvider()
             jest.runAllTimers()
 
-            const nextButton = screen.getByText('Next')
+            const nextButton = screen.getByText('Finish')
 
             act(() => {
                 userEvent.click(nextButton)
@@ -477,7 +488,7 @@ describe('KnowledgeStep', () => {
             const { history } = renderWithProvider()
             jest.runAllTimers()
 
-            const nextButton = screen.getByText('Next')
+            const nextButton = screen.getByText('Finish')
 
             act(() => {
                 userEvent.click(nextButton)
@@ -556,7 +567,7 @@ describe('KnowledgeStep', () => {
             renderWithProvider()
             jest.runAllTimers()
 
-            const nextButton = screen.getByRole('button', { name: /next/i })
+            const nextButton = screen.getByRole('button', { name: /finish/i })
 
             act(() => {
                 userEvent.click(nextButton)
@@ -578,7 +589,7 @@ describe('KnowledgeStep', () => {
             const { history } = renderWithProvider()
             jest.runAllTimers()
 
-            const nextButton = screen.getByRole('button', { name: /next/i })
+            const nextButton = screen.getByRole('button', { name: /finish/i })
 
             act(() => {
                 userEvent.click(nextButton)

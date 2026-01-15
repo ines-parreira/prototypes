@@ -14,16 +14,17 @@ import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { StoreIntegration } from 'models/integration/types'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
-import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
-import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 import { ShopifyIntegrationStep } from 'pages/aiAgent/Onboarding_V2/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
+import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useCreateOnboarding'
 import { useGenerateToneOfVoice } from 'pages/aiAgent/Onboarding_V2/hooks/useGenerateToneOfVoice'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
-import { useGetOnboardingDataByShopName } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingDataByShopName'
 import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding_V2/hooks/useShopifyIntegrations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding'
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'
+import {
+    AiAgentScopes,
+    WizardStepEnum,
+} from 'pages/aiAgent/Onboarding_V2/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -45,11 +46,6 @@ const mockUseStoreConfigurationForAccount =
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData')
 const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
 
-jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingDataByShopName')
-const useGetOnboardingDataByShopNameMock = assumeMock(
-    useGetOnboardingDataByShopName,
-)
-
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding')
 const useUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
 
@@ -58,6 +54,11 @@ const useCreateOnboardingMock = assumeMock(useCreateOnboarding)
 
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGenerateToneOfVoice')
 const useGenerateToneOfVoiceMock = assumeMock(useGenerateToneOfVoice)
+
+jest.mock('pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan')
+const useAiAgentScopesForAutomationPlanMock = assumeMock(
+    useAiAgentScopesForAutomationPlan,
+)
 
 const queryClient = new QueryClient()
 
@@ -91,8 +92,8 @@ const renderComponent = (
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(defaultState)}>
                     <ShopifyIntegrationStep
-                        currentStep={2}
-                        totalSteps={3}
+                        currentStep={0}
+                        totalSteps={4}
                         goToStep={goToStep}
                         setIsStoreSelected={setIsStoreSelected}
                     />
@@ -128,19 +129,6 @@ describe('ShopifyIntegrationStep', () => {
                 .mockResolvedValue('Here is the tone of voice'),
         })
 
-        useGetOnboardingDataByShopNameMock.mockReturnValue({
-            isLoading: false,
-            data: {
-                id: '1',
-                shopName: 'Test Store',
-                salesPersuasionLevel: PersuasionLevel.Moderate,
-                salesDiscountStrategyLevel: DiscountStrategy.Balanced,
-                salesDiscountMax: 0.8,
-                scopes: [],
-                currentStepName: WizardStepEnum.CHANNELS,
-            },
-        } as any)
-
         useUpdateOnboardingMock.mockReturnValue({
             mutate: (data: any, { onSuccess }: { onSuccess: () => {} }) => {
                 onSuccess()
@@ -154,6 +142,11 @@ describe('ShopifyIntegrationStep', () => {
             },
             isLoading: false,
         } as any)
+
+        useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+            AiAgentScopes.SUPPORT,
+            AiAgentScopes.SALES,
+        ])
     })
 
     beforeAll(() => {
@@ -296,7 +289,7 @@ describe('ShopifyIntegrationStep', () => {
         ).toBeInTheDocument()
     })
 
-    it('navigates to the CHANNELS step when Next is clicked', async () => {
+    it('navigates to the TONE_OF_VOICE step when Next is clicked', async () => {
         const integrations = [
             { id: 1, name: 'Test Store', type: 'shopify' },
             { id: 2, name: 'Test Store 2', type: 'shopify' },
@@ -308,20 +301,19 @@ describe('ShopifyIntegrationStep', () => {
         await waitFor(() => {
             expect(setIsStoreSelected).toHaveBeenCalledWith(true)
             expect(history.location.pathname).toEqual(
-                `/app/ai-agent/shopify/${integrations[0].name}/onboarding/${WizardStepEnum.CHANNELS}`,
+                `/app/ai-agent/shopify/${integrations[0].name}/onboarding/${WizardStepEnum.TONE_OF_VOICE}`,
             )
         })
     })
 
-    it('navigates to the EMAIL INTEGRATION step when Next is clicked and there are no email integrations', async () => {
+    it('navigates to the TONE_OF_VOICE step when Next is clicked and SALES scope is not enabled', async () => {
         const integrations = [
             { id: 1, name: 'Test Store', type: 'shopify' },
             { id: 2, name: 'Test Store 2', type: 'shopify' },
         ]
-        mockUseEmailIntegrations.mockReturnValue({
-            emailIntegrations: false,
-            defaultIntegration: false,
-        })
+        useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+            AiAgentScopes.SUPPORT,
+        ])
 
         renderComponent(integrations as StoreIntegration[])
 
@@ -329,7 +321,7 @@ describe('ShopifyIntegrationStep', () => {
 
         await waitFor(() => {
             expect(history.location.pathname).toEqual(
-                `/app/ai-agent/shopify/${integrations[0].name}/onboarding/${WizardStepEnum.EMAIL_INTEGRATION}`,
+                `/app/ai-agent/shopify/${integrations[0].name}/onboarding/${WizardStepEnum.TONE_OF_VOICE}`,
             )
         })
     })

@@ -98,16 +98,16 @@ describe('<PersonalityPreviewStep />', () => {
             scopes: [AiAgentScopes.SUPPORT],
             currentStep: 2,
             totalSteps: 3,
-            previousStep: WizardStepEnum.CHANNELS,
+            previousStep: WizardStepEnum.TONE_OF_VOICE,
             nextStep: WizardStepEnum.KNOWLEDGE,
         },
         {
             description: 'support + sales',
             scopes: [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
-            currentStep: 3,
-            totalSteps: 4,
-            previousStep: WizardStepEnum.SALES_PERSONALITY,
-            nextStep: WizardStepEnum.PERSONALITY_PREVIEW,
+            currentStep: 4,
+            totalSteps: 5,
+            previousStep: WizardStepEnum.ENGAGEMENT,
+            nextStep: WizardStepEnum.KNOWLEDGE,
         },
     ])(
         'with scope defined as $description',
@@ -188,18 +188,20 @@ describe('<PersonalityPreviewStep />', () => {
                     'true',
                 )
             })
+            ;(currentStep > 1 ? it : it.skip)(
+                'navigates to the previous step when Back is clicked',
+                async () => {
+                    act(() => {
+                        userEvent.click(
+                            screen.getByRole('button', { name: 'Back' }),
+                        )
+                    })
 
-            it('navigates to the previous step when Back is clicked', async () => {
-                act(() => {
-                    userEvent.click(
-                        screen.getByRole('button', { name: 'Back' }),
-                    )
-                })
-
-                await waitFor(() => {
-                    expect(goToStep).toHaveBeenCalledWith(previousStep)
-                })
-            })
+                    await waitFor(() => {
+                        expect(goToStep).toHaveBeenCalledWith(previousStep)
+                    })
+                },
+            )
 
             it('navigates to the next step when Next is clicked', async () => {
                 act(() => {

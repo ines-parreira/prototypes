@@ -8,7 +8,6 @@ import {
     WizardStepEnum,
 } from 'pages/aiAgent/Onboarding_V2/types'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
 export const useSteps = ({
     shopName,
@@ -18,7 +17,6 @@ export const useSteps = ({
     isStoreSelected?: boolean
 }) => {
     const { integration } = useShopifyIntegrationAndScope(shopName)
-    const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
     const scopes = useAiAgentScopesForAutomationPlan(shopName)
     const handoverEnabled = useFlag(
         FeatureFlagKey.StandaloneHandoverCapabilities,
@@ -32,11 +30,7 @@ export const useSteps = ({
                 condition: isStoreSelected || !integration,
             },
             {
-                step: WizardStepEnum.EMAIL_INTEGRATION,
-                condition: !emailIntegrations && !defaultIntegration,
-            },
-            {
-                step: WizardStepEnum.CHANNELS,
+                step: WizardStepEnum.TONE_OF_VOICE,
                 condition: true,
             },
             {
@@ -60,14 +54,7 @@ export const useSteps = ({
                 condition: true,
             },
         ],
-        [
-            integration,
-            emailIntegrations,
-            defaultIntegration,
-            isStoreSelected,
-            scopes,
-            handoverEnabled,
-        ],
+        [integration, isStoreSelected, scopes, handoverEnabled],
     )
 
     // Filter steps based on conditions
