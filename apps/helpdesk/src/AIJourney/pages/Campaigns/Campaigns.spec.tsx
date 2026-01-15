@@ -140,6 +140,25 @@ describe('<Campaigns />', () => {
             campaigns: [],
             isLoadingIntegrations: false,
         })
+        useCampaignsKpisMock.mockImplementation(() => ({
+            metrics: [
+                {
+                    label: 'Total Revenue',
+                    value: 59.99,
+                    prevValue: 180.02,
+                    series: [],
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'currency',
+                    currency: 'USD',
+                    isLoading: true,
+                },
+            ],
+        }))
+
+        useAIJourneyTableKpisMock.mockImplementation(() => ({
+            metrics: {},
+            isLoading: true,
+        }))
 
         renderWithRouter(
             <Provider store={mockStore}>
@@ -159,5 +178,6 @@ describe('<Campaigns />', () => {
         expect(
             screen.getByText('Start reaching your customers today'),
         ).toBeInTheDocument()
+        expect(screen.getByText('No data available yet')).toBeInTheDocument()
     })
 })

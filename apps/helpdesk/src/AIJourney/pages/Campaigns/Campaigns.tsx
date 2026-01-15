@@ -70,6 +70,8 @@ export const Campaigns = () => {
             journeyIds: campaigns?.map((c) => c.id),
         })
 
+    const hasCampaigns = campaigns?.length !== 0
+
     const { metrics } = useCampaignsKpis({
         integrationId: integrationId.toString(),
         filters,
@@ -115,8 +117,10 @@ export const Campaigns = () => {
         <Box m="md" flexDirection="column" className={css.container}>
             <DigestCard
                 badgeContent="Campaigns Performance"
-                metrics={metrics}
-                isLoading={isLoadingCampaigns || isLoadingMetrics}
+                metrics={hasCampaigns ? metrics : []}
+                isLoading={
+                    isLoadingCampaigns || (isLoadingMetrics && hasCampaigns)
+                }
             />
             <Card gap="md" elevation="mid">
                 <Heading size="md">Campaigns</Heading>
@@ -127,7 +131,7 @@ export const Campaigns = () => {
                     isLoading={
                         isLoadingIntegrations ||
                         isLoadingCampaigns ||
-                        isMetricLoading
+                        (isMetricLoading && hasCampaigns)
                     }
                 />
             </Card>
