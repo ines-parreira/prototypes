@@ -85,8 +85,10 @@ exports[`Charge AfterTitle should display the refund action when the status is S
     class="container"
   >
     <div
-      class="ui-multibutton-group-3397"
-      data-name="box"
+      class="ui-multibutton-group-cec3"
+      data-name="multi-button"
+      data-size="small"
+      data-variant="primary"
       style="display: flex;"
     >
       <button
@@ -121,8 +123,10 @@ exports[`Charge AfterTitle should display the refund action when the status is S
     class="container"
   >
     <div
-      class="ui-multibutton-group-3397"
-      data-name="box"
+      class="ui-multibutton-group-cec3"
+      data-name="multi-button"
+      data-size="small"
+      data-variant="primary"
       style="display: flex;"
     >
       <button
@@ -157,8 +161,10 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
     class="container"
   >
     <div
-      class="ui-multibutton-group-3397"
-      data-name="box"
+      class="ui-multibutton-group-cec3"
+      data-name="multi-button"
+      data-size="small"
+      data-variant="primary"
       style="display: flex;"
     >
       <button
@@ -193,8 +199,10 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
     class="container"
   >
     <div
-      class="ui-multibutton-group-3397"
-      data-name="box"
+      class="ui-multibutton-group-cec3"
+      data-name="multi-button"
+      data-size="small"
+      data-variant="primary"
       style="display: flex;"
     >
       <button
@@ -287,8 +295,10 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
     class="container"
   >
     <div
-      class="ui-multibutton-group-3397"
-      data-name="box"
+      class="ui-multibutton-group-cec3"
+      data-name="multi-button"
+      data-size="small"
+      data-variant="primary"
       style="display: flex;"
     >
       <button
@@ -323,8 +333,10 @@ exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if
     class="container"
   >
     <div
-      class="ui-multibutton-group-3397"
-      data-name="box"
+      class="ui-multibutton-group-cec3"
+      data-name="multi-button"
+      data-size="small"
+      data-variant="primary"
       style="display: flex;"
     >
       <button

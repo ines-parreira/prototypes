@@ -112,6 +112,15 @@ describe('CustomerInfo', () => {
             ),
         )
 
+        const searchInput = screen.getByRole('searchbox', { name: /search/i })
+        await act(() => user.click(searchInput))
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('option', { name: /second shopify store/i }),
+            ).toBeInTheDocument()
+        })
+
         await act(() =>
             user.click(
                 screen.getByRole('option', { name: /second shopify store/i }),

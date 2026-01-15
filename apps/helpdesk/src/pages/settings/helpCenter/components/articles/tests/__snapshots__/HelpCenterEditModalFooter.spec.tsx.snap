@@ -16,8 +16,10 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
           id="article-save-button-wrapper"
         >
           <div
-            class="ui-multibutton-group-3397"
-            data-name="box"
+            class="ui-multibutton-group-cec3"
+            data-name="multi-button"
+            data-size="md"
+            data-variant="primary"
             style="display: flex;"
           >
             <button
@@ -25,6 +27,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
               class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
               color="primary"
               type="button"
+              variant="primary"
             >
               <span
                 class="ui-button-content-cef1"
@@ -36,6 +39,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
               aria-expanded="false"
               aria-haspopup="true"
               class=""
+              variant="primary"
             >
               <button
                 aria-disabled="false"

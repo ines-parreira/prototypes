@@ -6,8 +6,10 @@ exports[`<AfterTitle/> should match snapshot 1`] = `
     class="container"
   >
     <div
-      class="ui-multibutton-group-3397"
-      data-name="box"
+      class="ui-multibutton-group-cec3"
+      data-name="multi-button"
+      data-size="small"
+      data-variant="primary"
       style="display: flex;"
     >
       <button

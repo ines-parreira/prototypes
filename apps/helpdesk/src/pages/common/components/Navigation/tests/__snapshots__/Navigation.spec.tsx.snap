@@ -5,15 +5,18 @@ exports[`Navigation component should not render because there is no previous ite
 exports[`Navigation component should render with (prev button disabled: false) and (next button disabled: false) 1`] = `
 <div>
   <div
-    class="ui-multibutton-group-3397"
-    data-name="box"
+    class="ui-multibutton-group-cec3"
+    data-name="multi-button"
+    data-size="md"
+    data-variant="primary"
     style="display: flex;"
   >
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-cef1 wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
+      class="ui-button-wrapper-cef1 wrapper md ui-button-fill-cef1 ui-button-secondary-cef1"
       id="prev-btn"
       type="button"
+      variant="primary"
     >
       <span
         class="ui-button-content-cef1"
@@ -27,9 +30,10 @@ exports[`Navigation component should render with (prev button disabled: false) a
     </button>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-cef1 wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
+      class="ui-button-wrapper-cef1 wrapper md ui-button-fill-cef1 ui-button-secondary-cef1"
       id="next-btn"
       type="button"
+      variant="primary"
     >
       <span
         class="ui-button-content-cef1"
@@ -48,15 +52,18 @@ exports[`Navigation component should render with (prev button disabled: false) a
 exports[`Navigation component should render with (prev button disabled: false) and (next button disabled: true) 1`] = `
 <div>
   <div
-    class="ui-multibutton-group-3397"
-    data-name="box"
+    class="ui-multibutton-group-cec3"
+    data-name="multi-button"
+    data-size="md"
+    data-variant="primary"
     style="display: flex;"
   >
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-cef1 wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
+      class="ui-button-wrapper-cef1 wrapper md ui-button-fill-cef1 ui-button-secondary-cef1"
       id="prev-btn"
       type="button"
+      variant="primary"
     >
       <span
         class="ui-button-content-cef1"
@@ -70,9 +77,10 @@ exports[`Navigation component should render with (prev button disabled: false) a
     </button>
     <button
       aria-disabled="true"
-      class="ui-button-wrapper-cef1 wrapper ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
+      class="ui-button-wrapper-cef1 wrapper md ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
       id="next-btn"
       type="button"
+      variant="primary"
     >
       <span
         class="ui-button-content-cef1"
@@ -91,15 +99,18 @@ exports[`Navigation component should render with (prev button disabled: false) a
 exports[`Navigation component should render with (prev button disabled: true) and (next button disabled: false) 1`] = `
 <div>
   <div
-    class="ui-multibutton-group-3397"
-    data-name="box"
+    class="ui-multibutton-group-cec3"
+    data-name="multi-button"
+    data-size="md"
+    data-variant="primary"
     style="display: flex;"
   >
     <button
       aria-disabled="true"
-      class="ui-button-wrapper-cef1 wrapper ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
+      class="ui-button-wrapper-cef1 wrapper md ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
       id="prev-btn"
       type="button"
+      variant="primary"
     >
       <span
         class="ui-button-content-cef1"
@@ -113,9 +124,10 @@ exports[`Navigation component should render with (prev button disabled: true) an
     </button>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-cef1 wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
+      class="ui-button-wrapper-cef1 wrapper md ui-button-fill-cef1 ui-button-secondary-cef1"
       id="next-btn"
       type="button"
+      variant="primary"
     >
       <span
         class="ui-button-content-cef1"

@@ -8,6 +8,7 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
+import type { ButtonSize } from '@gorgias/axiom'
 import { MultiButton } from '@gorgias/axiom'
 
 import IconButton from 'pages/common/components/button/IconButton'
@@ -43,7 +44,7 @@ function ActionButtonsGroup({ actions, payload }: Props) {
     const dropdownButtons = actions.slice(NB_ACTIONS_DISPLAYED)
     return (
         <div className={css.container}>
-            <MultiButton>
+            <MultiButton size={'small' as ButtonSize}>
                 {buttons.map((action) => {
                     return (
                         <ActionButton

@@ -215,15 +215,18 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
     class="navigation"
   >
     <div
-      class="ui-multibutton-group-3397"
-      data-name="box"
+      class="ui-multibutton-group-cec3"
+      data-name="multi-button"
+      data-size="md"
+      data-variant="primary"
       style="display: flex;"
     >
       <button
         aria-disabled="true"
-        class="ui-button-wrapper-cef1 wrapper ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
+        class="ui-button-wrapper-cef1 wrapper md ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-isdisabled-cef1"
         id="prev-btn"
         type="button"
+        variant="primary"
       >
         <span
           class="ui-button-content-cef1"
@@ -237,9 +240,10 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
       </button>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-cef1 wrapper ui-button-fill-cef1 ui-button-secondary-cef1"
+        class="ui-button-wrapper-cef1 wrapper md ui-button-fill-cef1 ui-button-secondary-cef1"
         id="next-btn"
         type="button"
+        variant="primary"
       >
         <span
           class="ui-button-content-cef1"

@@ -5,8 +5,10 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
   class="container"
 >
   <div
-    class="ui-multibutton-group-3397"
-    data-name="box"
+    class="ui-multibutton-group-cec3"
+    data-name="multi-button"
+    data-size="small"
+    data-variant="primary"
     style="display: flex;"
   >
     <button
@@ -71,8 +73,10 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
   class="container"
 >
   <div
-    class="ui-multibutton-group-3397"
-    data-name="box"
+    class="ui-multibutton-group-cec3"
+    data-name="multi-button"
+    data-size="small"
+    data-variant="primary"
     style="display: flex;"
   >
     <button
@@ -127,7 +131,8 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
       </span>
     </button>
     <div
-      class="dropdown"
+      class="btn-group-small dropdown"
+      variant="primary"
     >
       <span
         aria-expanded="false"

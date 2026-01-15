@@ -15,6 +15,7 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
+import type { ButtonSize } from '@gorgias/axiom'
 import {
     LegacyButton as Button,
     LegacyIconButton as IconButton,
@@ -350,7 +351,7 @@ export const TicketListActions = ({
     return (
         <div className={css.wrapper}>
             <UncontrolledButtonDropdown>
-                <MultiButton>
+                <MultiButton size={'small' as ButtonSize}>
                     <Button
                         intent="secondary"
                         onClick={() => bulkUpdate('status', 'closed')}
@@ -386,7 +387,7 @@ export const TicketListActions = ({
                 toggle={toggleAgentsDropdown}
                 a11y={false}
             >
-                <MultiButton>
+                <MultiButton size={'small' as ButtonSize}>
                     <Button
                         intent="secondary"
                         size="small"

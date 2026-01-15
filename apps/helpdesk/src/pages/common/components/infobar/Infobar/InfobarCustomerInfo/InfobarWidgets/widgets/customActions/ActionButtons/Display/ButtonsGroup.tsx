@@ -4,6 +4,7 @@ import React, { memo, useRef } from 'react'
 import classnames from 'classnames'
 import { DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
 
+import type { ButtonSize } from '@gorgias/axiom'
 import { MultiButton } from '@gorgias/axiom'
 
 import { ContentType } from 'models/api/types'
@@ -46,7 +47,7 @@ function ButtonsGroup({ buttons, source }: Props) {
     return (
         <div ref={containerRef}>
             <div className={classnames(css.actionButtons)}>
-                <MultiButton>
+                <MultiButton size={'small' as ButtonSize}>
                     {displayedButtons.map((button, index) => {
                         return (
                             <TemplatedButton

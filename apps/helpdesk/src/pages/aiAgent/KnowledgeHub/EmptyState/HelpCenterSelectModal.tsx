@@ -121,6 +121,9 @@ export const HelpCenterSelectModal = () => {
                         items={helpCenterItems}
                         onChange={handleHelpCenterChange}
                         value={selectedHelpCenter}
+                        maxHeight={300}
+                        placement="bottom"
+                        shouldFlip={false}
                     >
                         {(option) => (
                             <ListItem

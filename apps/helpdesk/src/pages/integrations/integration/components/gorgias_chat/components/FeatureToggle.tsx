@@ -1,13 +1,13 @@
 import type React from 'react'
 
 import { Icon, Tag, Text, ToggleField } from '@gorgias/axiom'
-import type { IconName } from '@gorgias/axiom'
+import type { IconName, TagColor } from '@gorgias/axiom'
 
 import css from './FeatureToggle.less'
 
 type TagConfig = {
     text: string
-    color?: 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'purple'
+    color?: TagColor
     icon?: IconName
 }
 
