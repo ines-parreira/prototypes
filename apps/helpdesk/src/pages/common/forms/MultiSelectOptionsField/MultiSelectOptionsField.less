@@ -46,15 +46,37 @@
 
 .axiom :local {
     .container {
-        background-color: var(--elevation-neutral-default);
         border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-xs);
+        box-shadow: none;
+        background-color: transparent;
+
+        &:hover:not(.disabled):not(.focused) {
+            border: 1px solid var(--border-neutral-default);
+            background-color: var(--hover-default);
+        }
+
+        &.focused {
+            border: 1px solid var(--border-neutral-secondary);
+            box-shadow: none;
+
+            &.hasError {
+                border: 1px solid var(--border-error-primary);
+            }
+        }
 
         &.hasError {
             border-color: var(--border-error-primary);
+
+            &:hover:not(.disabled):not(.focused) {
+                border: 1px solid var(--border-error-primary);
+                background-color: var(--hover-default);
+            }
         }
 
         &.disabled {
-            background-color: var(--elevation-neutral-default);
+            opacity: 0.5;
+            background-color: var(--surface-neutral-primary);
             color: var(--content-neutral-secondary);
         }
     }

@@ -102,13 +102,17 @@
 
 .axiom {
     .popover {
+        background-color: var(--elevation-neutral-mid);
+        color: var(--content-neutral-default);
         border-color: var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        box-shadow: var(--effects-shadow-container);
 
         &.bs-popover-auto {
             &[x-placement^='top'],
             &.bs-popover-top {
                 > .arrow::after {
-                    border-top-color: var(--neutral-grey-1); // legacy;
+                    border-top-color: var(--elevation-neutral-mid);
                 }
 
                 > .arrow::before {
@@ -119,7 +123,7 @@
             &[x-placement^='right'],
             &.bs-popover-right {
                 > .arrow::after {
-                    border-right-color: var(--neutral-grey-1); // legacy;
+                    border-right-color: var(--elevation-neutral-mid);
                 }
 
                 > .arrow::before {
@@ -130,7 +134,7 @@
             &[x-placement^='bottom'],
             &.bs-popover-bottom {
                 > .arrow::after {
-                    border-bottom-color: var(--neutral-grey-1); // legacy;
+                    border-bottom-color: var(--elevation-neutral-mid);
                 }
 
                 > .arrow::before {
@@ -141,7 +145,7 @@
             &[x-placement^='left'],
             &.bs-popover-left {
                 > .arrow::after {
-                    border-left-color: var(--neutral-grey-1); // legacy;
+                    border-left-color: var(--elevation-neutral-mid);
                 }
 
                 > .arrow::before {
@@ -151,7 +155,12 @@
         }
     }
 
+    .popover-body {
+        color: var(--content-neutral-default);
+    }
+
     .popover-header {
+        background-color: var(--elevation-neutral-mid);
         border-color: var(--border-neutral-default);
     }
 
@@ -162,9 +171,7 @@
                     &[x-placement^='bottom'],
                     &.bs-popover-bottom {
                         > .arrow::after {
-                            border-bottom-color: var(
-                                --neutral-grey-0
-                            ); // legacy;
+                            border-bottom-color: var(--elevation-neutral-mid);
                         }
                     }
                 }

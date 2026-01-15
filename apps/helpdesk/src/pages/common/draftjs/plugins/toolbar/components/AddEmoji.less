@@ -74,13 +74,34 @@
 
 .axiom {
     .emoji-mart {
-        background-color: var(--elevation-neutral-default);
+        background-color: var(--elevation-neutral-mid);
         color: var(--content-neutral-default);
+        border-color: var(--border-neutral-default);
+        border-radius: var(--spacing-sm) !important;
+        box-shadow: var(--effects-shadow-container);
 
         .emoji-mart-search {
             input {
+                border: 1px solid var(--border-neutral-default);
+                border-radius: var(--spacing-xs);
+                box-shadow: none;
+                background-color: transparent;
                 color: var(--content-neutral-default);
-                background-color: var(--elevation-neutral-default);
+
+                &:hover:not(:disabled):not(:focus) {
+                    border: 1px solid var(--border-neutral-default);
+                    background-color: var(--hover-default);
+                }
+
+                &:focus {
+                    border: 1px solid var(--border-neutral-secondary);
+                    box-shadow: none;
+                }
+
+                &:disabled {
+                    opacity: 0.5;
+                    background-color: var(--surface-neutral-primary);
+                }
             }
         }
 
@@ -96,7 +117,7 @@
 
         .emoji-mart-category-label {
             span {
-                background-color: var(--elevation-neutral-default);
+                background-color: var(--elevation-neutral-mid);
             }
         }
 
