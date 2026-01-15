@@ -1,7 +1,7 @@
+import { Handle, Panel } from '@repo/layout'
 import { useTicketInfobarNavigation } from '@repo/navigation'
 import { render, screen } from '@testing-library/react'
 
-import { Handle, Panel } from 'core/layout/panels'
 import { InfobarNavigationPanel } from 'tickets/navigation'
 
 import { NewTicketPage } from '../NewTicketPage'
@@ -11,7 +11,8 @@ jest.mock('@repo/navigation', () => ({
 }))
 const useTicketInfobarNavigationMock = jest.mocked(useTicketInfobarNavigation)
 
-jest.mock('core/layout/panels', () => ({
+jest.mock('@repo/layout', () => ({
+    ...jest.requireActual('@repo/layout'),
     Handle: jest.fn(() => <div role="separator">Panel Handle</div>),
     Panel: jest.fn(({ children }) => <div>{children}</div>),
 }))

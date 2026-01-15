@@ -1,6 +1,6 @@
+import { Handle } from '@repo/layout'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import { Handle } from 'core/layout/panels'
 import { ContentPanels } from 'core/ui'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { useOnToggleUnread } from 'tickets/dtp'

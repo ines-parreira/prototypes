@@ -104,6 +104,7 @@
         "@repo/browser-storage": "workspace:*",
         "@repo/feature-flags": "workspace:*",
         "@repo/forms": "workspace:*",
+        "@repo/layout": "workspace:*",
         "@repo/logging": "workspace:*",
         "@repo/navigation": "workspace:*",
         "@repo/reporting": "workspace:*",

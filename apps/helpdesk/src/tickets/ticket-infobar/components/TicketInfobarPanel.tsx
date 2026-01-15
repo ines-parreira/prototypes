@@ -1,4 +1,5 @@
-import { Panel } from 'core/layout/panels'
+import { Panel } from '@repo/layout'
+
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 
 const panelConfig = {

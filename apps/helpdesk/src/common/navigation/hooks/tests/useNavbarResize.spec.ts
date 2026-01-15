@@ -1,13 +1,12 @@
 import type { MouseEvent as MouseEventReact, RefObject } from 'react'
 
+import { useSavedSizes } from '@repo/layout'
 import { act, assumeMock, renderHook } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 
-import { useSavedSizes } from 'core/layout/panels'
-
 import useNavbarResize, { DEFAULT_WIDTH } from '../useNavbarResize'
 
-jest.mock('core/layout/panels', () => ({ useSavedSizes: jest.fn() }))
+jest.mock('@repo/layout', () => ({ useSavedSizes: jest.fn() }))
 const useSavedSizesMock = assumeMock(useSavedSizes)
 
 describe('useNavbarResize', () => {

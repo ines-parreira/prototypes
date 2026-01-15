@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react'
 
+import { Panel } from '@repo/layout'
+
 import { CollapsibleNavbarContainer } from 'common/navigation/components/CollapsibleNavbarContainer'
 import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
-import { Panel } from 'core/layout/panels'
 
 import css from './NavbarPanel.less'
 

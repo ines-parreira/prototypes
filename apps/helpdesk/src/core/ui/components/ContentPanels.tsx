@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { PanelGroup } from 'core/layout/panels'
+import { PanelGroup } from '@repo/layout'
 
 import css from './ContentPanels.less'
 

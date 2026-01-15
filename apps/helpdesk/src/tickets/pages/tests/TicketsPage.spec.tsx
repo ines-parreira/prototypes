@@ -1,3 +1,4 @@
+import { Panels } from '@repo/layout'
 import { NavigationProvider } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
@@ -7,7 +8,6 @@ import { Route, StaticRouter } from 'react-router-dom'
 
 import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
-import { Panels } from 'core/layout/panels'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import { useSplitTicketView } from 'split-ticket-view-toggle'

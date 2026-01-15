@@ -1,6 +1,6 @@
+import { Panel } from '@repo/layout'
 import { TicketInfobarNavigation } from '@repo/tickets'
 
-import { Panel } from 'core/layout/panels'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 
 const panelConfig = {

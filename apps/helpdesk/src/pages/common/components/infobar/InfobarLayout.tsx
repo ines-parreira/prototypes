@@ -1,11 +1,11 @@
 import { Component } from 'react'
 import type { ComponentType, ReactNode } from 'react'
 
+import { clamp, useSavedSizes } from '@repo/layout'
 import classnames from 'classnames'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
-import { clamp, useSavedSizes } from 'core/layout/panels'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import * as layoutSelectors from 'state/layout/selectors'
 import type { RootState } from 'state/types'

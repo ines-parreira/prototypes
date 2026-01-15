@@ -1,3 +1,4 @@
+import { Panels } from '@repo/layout'
 import { render, screen } from '@testing-library/react'
 
 import type { NavBarContextType } from 'common/navigation/hooks/useNavBar/context'
@@ -6,7 +7,6 @@ import {
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
-import { Panels } from 'core/layout/panels'
 
 import NavbarPanel from '../NavbarPanel'
 

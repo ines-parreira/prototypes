@@ -1,4 +1,5 @@
-import { Panel } from 'core/layout/panels'
+import { Panel } from '@repo/layout'
+
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import TicketWrapper from 'split-ticket-view/components/TicketWrapper'
 import type { OnToggleUnreadFn } from 'tickets/dtp'

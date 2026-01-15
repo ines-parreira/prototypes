@@ -5,7 +5,8 @@ import type {
     TouchEvent as TouchEventReact,
 } from 'react'
 
-import { useSavedSizes } from 'core/layout/panels'
+import { useSavedSizes } from '@repo/layout'
+
 import { clamp } from 'panels'
 import { isTouchEvent } from 'utils'
 

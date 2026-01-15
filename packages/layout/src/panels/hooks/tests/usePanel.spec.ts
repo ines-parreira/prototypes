@@ -1,0 +1,48 @@
+import { act, renderHook } from '@testing-library/react'
+import { vi } from 'vitest'
+
+import type { ContextValue } from '../../Context'
+import type { PanelConfig, PanelState } from '../../types'
+import { usePanel } from '../usePanel'
+import { usePanels } from '../usePanels'
+
+vi.mock('../usePanels', () => ({ usePanels: vi.fn() }))
+const usePanelsMock = vi.mocked(usePanels)
+
+describe('usePanel', () => {
+    const config = {
+        defaultSize: 200,
+        minSize: 100,
+        maxSize: 300,
+    }
+
+    let addPanel: ReturnType<typeof vi.fn>
+
+    beforeEach(() => {
+        addPanel = vi.fn()
+        usePanelsMock.mockReturnValue({ addPanel } as unknown as ContextValue)
+    })
+
+    it('should return the default panel state', () => {
+        const { result } = renderHook(() => usePanel('panel1', config))
+        expect(result.current).toEqual({ size: 0 })
+    })
+
+    it('should return the updated panel state when the listener is called', () => {
+        const { result } = renderHook(() => usePanel('panel1', config))
+        expect(addPanel).toHaveBeenCalledWith(
+            'panel1',
+            config,
+            expect.any(Function),
+        )
+        const [[, , listener]] = addPanel.mock.calls as [
+            string,
+            PanelConfig,
+            (state: PanelState) => void,
+        ][]
+        act(() => {
+            listener({ size: 100 })
+        })
+        expect(result.current).toEqual({ size: 100 })
+    })
+})

@@ -1,4 +1,5 @@
-import { Panel } from 'core/layout/panels'
+import { Panel } from '@repo/layout'
+
 import { EmptyTicket } from 'ticket-page'
 
 import css from './TicketEmptyPanel.less'

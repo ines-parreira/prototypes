@@ -1,8 +1,8 @@
 import React from 'react'
 
+import { Panels } from '@repo/layout'
 import { render, screen } from '@testing-library/react'
 
-import { Panels } from 'core/layout/panels'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 
 import TicketDetailPanel from '../TicketDetailPanel'

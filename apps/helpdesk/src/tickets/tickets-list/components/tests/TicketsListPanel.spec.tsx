@@ -1,10 +1,9 @@
 import React from 'react'
 
+import { Panels } from '@repo/layout'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { useParams } from 'react-router-dom'
-
-import { Panels } from 'core/layout/panels'
 
 import TicketsListPanel from '../TicketsListPanel'
 

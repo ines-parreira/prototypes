@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { Handle, Panel } from '@repo/layout'
 import { useTicketInfobarNavigation } from '@repo/navigation'
 import {
     TicketHeaderContainer,
@@ -9,7 +10,6 @@ import {
     TicketLayoutContent,
 } from '@repo/tickets'
 
-import { Handle, Panel } from 'core/layout/panels'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import { InfobarNavigationPanel } from 'tickets/navigation'
 

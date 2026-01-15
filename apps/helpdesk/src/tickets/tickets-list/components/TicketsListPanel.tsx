@@ -1,6 +1,6 @@
+import { Panel } from '@repo/layout'
 import { useParams } from 'react-router-dom'
 
-import { Panel } from 'core/layout/panels'
 import { TicketListView } from 'ticket-list-view'
 import { useViewId } from 'tickets/core/hooks'
 import type { OnToggleUnreadFn } from 'tickets/dtp'

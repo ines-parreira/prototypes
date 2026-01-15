@@ -1,5 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
+import { Handle, PanelGroup, Panels } from '@repo/layout'
 import {
     TicketsLegacyBridgeProvider,
     useHelpdeskV2MS1Dot5Flag,
@@ -7,7 +8,6 @@ import {
 } from '@repo/tickets'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import { Handle, PanelGroup, Panels } from 'core/layout/panels'
 import { GlobalNavigationPanel } from 'core/navigation'
 import { ContentPanels } from 'core/ui'
 import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/legacyBridge/useTicketLegacyBridgeFunctions'

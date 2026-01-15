@@ -1,5 +1,6 @@
+import { Panel } from '@repo/layout'
+
 import { GlobalNavigation } from 'common/navigation'
-import { Panel } from 'core/layout/panels'
 
 const panelConfig = {
     defaultSize: 48,

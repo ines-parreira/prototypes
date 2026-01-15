@@ -1,10 +1,10 @@
 import { useFlag } from '@repo/feature-flags'
+import { Handle } from '@repo/layout'
 import { useTicketInfobarNavigation } from '@repo/navigation'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import { render, screen } from '@testing-library/react'
 import { useLocation, useParams } from 'react-router-dom'
 
-import { Handle } from 'core/layout/panels'
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
@@ -39,7 +39,7 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 const useFlagMock = jest.mocked(useFlag)
 
-jest.mock('core/layout/panels', () => ({
+jest.mock('@repo/layout', () => ({
     Handle: jest.fn(() => <div role="separator">Panel Handle</div>),
     Panel: jest.fn(({ children }) => <div>{children}</div>),
 }))

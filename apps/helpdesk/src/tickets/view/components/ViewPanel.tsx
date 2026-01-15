@@ -1,4 +1,5 @@
-import { Panel } from 'core/layout/panels'
+import { Panel } from '@repo/layout'
+
 import TicketList from 'pages/tickets/list/TicketList'
 
 const panelConfig = {

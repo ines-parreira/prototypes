@@ -1,6 +1,6 @@
+import { useSavedSizes } from '@repo/layout'
 import classnames from 'classnames'
 
-import { useSavedSizes } from 'core/layout/panels'
 import { DEFAULT_WIDTH } from 'pages/common/components/infobar/InfobarLayout'
 
 import css from './PhoneInfobarWrapper.less'
