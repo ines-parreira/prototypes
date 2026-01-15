@@ -69,4 +69,4 @@ class LocalForageManager {
     }
 }
 
-export default new LocalForageManager()
+export const localForageManager = new LocalForageManager()

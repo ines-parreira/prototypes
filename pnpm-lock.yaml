@@ -16,6 +16,25 @@ catalogs:
     '@gorgias/design-tokens':
       specifier: 0.11.4
       version: 0.11.4
+  browser-storage:
+    '@types/zen-observable':
+      specifier: ^0.8.7
+      version: 0.8.7
+    localforage:
+      specifier: 1.10.0
+      version: 1.10.0
+    localforage-getitems:
+      specifier: 1.4.2
+      version: 1.4.2
+    localforage-observable:
+      specifier: 2.1.1
+      version: 2.1.1
+    localforage-removeitems:
+      specifier: 1.4.0
+      version: 1.4.0
+    zen-observable:
+      specifier: 0.10.0
+      version: 0.10.0
   bundler:
     process:
       specifier: ^0.11.10
@@ -520,6 +539,9 @@ importers:
       '@repo/agent-status':
         specifier: workspace:*
         version: link:../../packages/agent-status
+      '@repo/browser-storage':
+        specifier: workspace:*
+        version: link:../../packages/browser-storage
       '@repo/customer':
         specifier: workspace:*
         version: link:../../packages/customer
@@ -740,16 +762,16 @@ importers:
         specifier: ^10.9.2
         version: 10.9.2
       localforage:
-        specifier: 1.10.0
+        specifier: catalog:browser-storage
         version: 1.10.0
       localforage-getitems:
-        specifier: 1.4.2
+        specifier: catalog:browser-storage
         version: 1.4.2
       localforage-observable:
-        specifier: 2.1.1
+        specifier: catalog:browser-storage
         version: 2.1.1
       localforage-removeitems:
-        specifier: 1.4.0
+        specifier: catalog:browser-storage
         version: 1.4.0
       lodash:
         specifier: catalog:lodash
@@ -947,7 +969,7 @@ importers:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@18.2.22)(@types/react@18.2.67)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       zen-observable:
-        specifier: ^0.10.0
+        specifier: catalog:browser-storage
         version: 0.10.0
       zod:
         specifier: catalog:zod
@@ -1266,7 +1288,7 @@ importers:
         specifier: ^1.18.8
         version: 1.18.8
       '@types/zen-observable':
-        specifier: ^0.8.7
+        specifier: catalog:browser-storage
         version: 0.8.7
       '@welldone-software/why-did-you-render':
         specifier: ^7
@@ -1613,6 +1635,61 @@ importers:
       react-dom:
         specifier: catalog:react
         version: 18.2.0(react@18.2.0)
+      typescript:
+        specifier: catalog:typescript
+        version: 5.3.3
+      vitest:
+        specifier: catalog:test
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.13.13)(jiti@2.4.2)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.3.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0)
+
+  packages/browser-storage:
+    dependencies:
+      localforage:
+        specifier: catalog:browser-storage
+        version: 1.10.0
+      localforage-getitems:
+        specifier: catalog:browser-storage
+        version: 1.4.2
+      localforage-observable:
+        specifier: catalog:browser-storage
+        version: 2.1.1
+      localforage-removeitems:
+        specifier: catalog:browser-storage
+        version: 1.4.0
+      zen-observable:
+        specifier: catalog:browser-storage
+        version: 0.10.0
+    devDependencies:
+      '@repo/config':
+        specifier: workspace:*
+        version: link:../../config
+      '@testing-library/dom':
+        specifier: catalog:test
+        version: 10.4.0
+      '@testing-library/jest-dom':
+        specifier: catalog:test
+        version: 6.5.0
+      '@testing-library/react':
+        specifier: catalog:test
+        version: 14.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@testing-library/user-event':
+        specifier: catalog:test
+        version: 14.5.2(@testing-library/dom@10.4.0)
+      '@trivago/prettier-plugin-sort-imports':
+        specifier: catalog:prettier
+        version: 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
+      '@types/zen-observable':
+        specifier: catalog:browser-storage
+        version: 0.8.7
+      '@vitest/coverage-v8':
+        specifier: catalog:test
+        version: 3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@22.13.13)(jiti@2.4.2)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.3.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
+      oxlint:
+        specifier: catalog:oxlint
+        version: 1.34.0
+      prettier:
+        specifier: catalog:prettier
+        version: 3.6.2
       typescript:
         specifier: catalog:typescript
         version: 5.3.3

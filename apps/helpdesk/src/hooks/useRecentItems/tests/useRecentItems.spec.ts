@@ -1,9 +1,9 @@
+import { localForageManager } from '@repo/browser-storage'
 import { flushPromises, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
 import { DEBOUNCE_TIME, RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
-import LocalForageManager from 'services/localForageManager/localForageManager'
 
 const mockSetItem = jest.fn().mockResolvedValue(true)
 const mockObserveTableUnsubscribe = jest.fn()
@@ -31,10 +31,10 @@ const mockDate = 1680109831299
 describe('useRecentItems', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(
+        jest.spyOn(localForageManager, 'getTable').mockReturnValue(
             mockGetTableObject,
         )
-        jest.spyOn(LocalForageManager, 'observeTable').mockImplementation(
+        jest.spyOn(localForageManager, 'observeTable').mockImplementation(
             mockObserveTable.mockReturnValue({
                 unsubscribe: mockObserveTableUnsubscribe,
             }),

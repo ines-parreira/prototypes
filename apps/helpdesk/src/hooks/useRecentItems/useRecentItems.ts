@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { localForageManager } from '@repo/browser-storage'
 import { useAsyncFn, useEffectOnce } from '@repo/hooks'
 import _debounce from 'lodash/debounce'
 import _isEmpty from 'lodash/isEmpty'
@@ -7,7 +8,6 @@ import _isEqual from 'lodash/isEqual'
 
 import type { RecentItems } from 'hooks/useRecentItems/constants'
 import { DEBOUNCE_TIME } from 'hooks/useRecentItems/constants'
-import LocalForageManager from 'services/localForageManager/localForageManager'
 
 const MAX_RECENT_ITEMS = 30
 
@@ -18,7 +18,7 @@ const useRecentItems = <T extends { id: number }>(
     const previousItemRef = useRef<T>()
 
     const localForage = useMemo(
-        () => LocalForageManager.getTable(`recent-${itemType}`),
+        () => localForageManager.getTable(`recent-${itemType}`),
         [itemType],
     )
 
@@ -96,7 +96,7 @@ const useRecentItems = <T extends { id: number }>(
         let subscription: Subscription | undefined
         const setupSubscription = async () => {
             await localForage.ready()
-            subscription = LocalForageManager.observeTable(
+            subscription = localForageManager.observeTable(
                 `recent-${itemType}`,
                 setRecentItems,
             )

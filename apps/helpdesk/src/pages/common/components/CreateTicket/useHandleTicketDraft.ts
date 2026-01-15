@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { localForageManager } from '@repo/browser-storage'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { LocationDescriptor } from 'history'
@@ -8,7 +9,6 @@ import { useHistory } from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 import type { TicketDraft } from 'hooks/useTicketDraft'
 import { DRAFT_TICKET_STORE, isTicketDraftEmpty } from 'hooks/useTicketDraft'
-import LocalForageManager from 'services/localForageManager/localForageManager'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 export default function useHandleTicketDraft() {
@@ -16,7 +16,7 @@ export default function useHandleTicketDraft() {
     const currentUser = useAppSelector(getCurrentUser)
     const localForageRef = useRef<LocalForage>()
     if (!localForageRef.current) {
-        localForageRef.current = LocalForageManager.getTable(DRAFT_TICKET_STORE)
+        localForageRef.current = localForageManager.getTable(DRAFT_TICKET_STORE)
     }
     const localForage = localForageRef.current
     const [hasDraft, setHasDraft] = useState(false)
@@ -30,7 +30,7 @@ export default function useHandleTicketDraft() {
         let subscription: Subscription | undefined
         const setupSubscription = async () => {
             await localForage.ready()
-            subscription = LocalForageManager.observeTable(
+            subscription = localForageManager.observeTable(
                 DRAFT_TICKET_STORE,
                 checkDraft,
             )

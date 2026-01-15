@@ -149,3 +149,10 @@ catalogs:
     'react-hook-form': '^7.52.1'
   zustand:
     'zustand': '5.0.9'
+  browser-storage:
+    'localforage': '1.10.0'
+    'localforage-getitems': '1.4.2'
+    'localforage-observable': '2.1.1'
+    'localforage-removeitems': '1.4.0'
+    'zen-observable': '0.10.0'
+    '@types/zen-observable': '^0.8.7'

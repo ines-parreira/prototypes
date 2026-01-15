@@ -1,3 +1,4 @@
+import { localForageManager } from '@repo/browser-storage'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
@@ -5,7 +6,6 @@ import { fromJS } from 'immutable'
 
 import { user } from 'fixtures/users'
 import useAppSelector from 'hooks/useAppSelector'
-import LocalForageManager from 'services/localForageManager/localForageManager'
 
 import useHandleTicketDraft from '../useHandleTicketDraft'
 
@@ -20,7 +20,7 @@ const mockGetTableObject = {
     ready: jest.fn().mockResolvedValue(true),
 } as unknown as LocalForage
 
-jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(mockGetTableObject)
+jest.spyOn(localForageManager, 'getTable').mockReturnValue(mockGetTableObject)
 
 const mockHistoryPush = jest.fn()
 
@@ -49,7 +49,7 @@ describe('useHandleTicketDraft', () => {
     })
 
     it('should return true when there is a draft', async () => {
-        jest.spyOn(LocalForageManager, 'getTable').mockReturnValueOnce({
+        jest.spyOn(localForageManager, 'getTable').mockReturnValueOnce({
             ...mockGetTableObject,
             getItem: jest.fn().mockResolvedValue({ subject: 'title' }),
         })
@@ -93,7 +93,7 @@ describe('useHandleTicketDraft', () => {
     ])('should handle draft discarding with %s param', async (_type, param) => {
         const mockClear = jest.fn().mockResolvedValue(true)
 
-        jest.spyOn(LocalForageManager, 'getTable').mockReturnValueOnce({
+        jest.spyOn(localForageManager, 'getTable').mockReturnValueOnce({
             ...mockGetTableObject,
             clear: mockClear,
         })
@@ -116,7 +116,7 @@ describe('useHandleTicketDraft', () => {
     })
 
     it('should setup localForage subscription', async () => {
-        const observeTableSpy = jest.spyOn(LocalForageManager, 'observeTable')
+        const observeTableSpy = jest.spyOn(localForageManager, 'observeTable')
         renderHook(() => useHandleTicketDraft())
 
         await waitFor(() => {

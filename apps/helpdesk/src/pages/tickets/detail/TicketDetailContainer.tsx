@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { localForageManager } from '@repo/browser-storage'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import {
     useAsyncFn,
@@ -44,7 +45,6 @@ import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAge
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import KnowledgeSourceSidebarWrapper from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
-import LocalForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import socketManager from 'services/socketManager/socketManager'
 import { JoinEventType } from 'services/socketManager/types'
@@ -409,7 +409,7 @@ export const TicketDetailContainer = ({
             if (error) {
                 return
             }
-            LocalForageManager.clearTable(DRAFT_TICKET_STORE)
+            localForageManager.clearTable(DRAFT_TICKET_STORE)
         } else {
             await submitNewMessage({ status, action, resetMessage })
         }

@@ -1,0 +1,39 @@
+{
+    "name": "@repo/browser-storage",
+    "version": "1.0.0",
+    "description": "Shared browser storage utilities for the monorepo",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "test": "vitest run --configLoader=runner",
+        "test:ci:cover": "vitest run --configLoader=runner --coverage",
+        "test:watch": "vitest watch --configLoader=runner",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+    },
+    "peerDependencies": {
+        "localforage": "catalog:browser-storage",
+        "localforage-getitems": "catalog:browser-storage",
+        "localforage-observable": "catalog:browser-storage",
+        "localforage-removeitems": "catalog:browser-storage",
+        "zen-observable": "catalog:browser-storage"
+    },
+    "devDependencies": {
+        "@repo/config": "workspace:*",
+        "@testing-library/dom": "catalog:test",
+        "@testing-library/jest-dom": "catalog:test",
+        "@testing-library/react": "catalog:test",
+        "@testing-library/user-event": "catalog:test",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@types/zen-observable": "catalog:browser-storage",
+        "@vitest/coverage-v8": "catalog:test",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "typescript": "catalog:typescript",
+        "vitest": "catalog:test"
+    }
+}

@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react'
 import type React from 'react'
 
+import { localForageManager } from '@repo/browser-storage'
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { ContentState, convertToRaw } from 'draft-js'
@@ -8,7 +9,6 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import LocalForageManager from 'services/localForageManager/localForageManager'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import useTicketDraft from '../useTicketDraft'
@@ -53,7 +53,7 @@ describe('useTicketDraft hook', () => {
     })
 
     it('should save draft when ticket is new, draft does not exist yet and new ticket state is not empty', async () => {
-        jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(
+        jest.spyOn(localForageManager, 'getTable').mockReturnValue(
             mockGetTableObject,
         )
 
@@ -70,7 +70,7 @@ describe('useTicketDraft hook', () => {
 
     it('should save draft when ticket is new, a draft exists and new ticket state is not empty', async () => {
         mockGetItem.mockResolvedValue(true)
-        jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(
+        jest.spyOn(localForageManager, 'getTable').mockReturnValue(
             mockGetTableObject,
         )
 
@@ -87,7 +87,7 @@ describe('useTicketDraft hook', () => {
 
     it('should save draft when ticket is new, ticket form is filled then emptied', async () => {
         mockGetItem.mockResolvedValue(true)
-        jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(
+        jest.spyOn(localForageManager, 'getTable').mockReturnValue(
             mockGetTableObject,
         )
 
@@ -130,7 +130,7 @@ describe('useTicketDraft hook', () => {
     })
 
     it('should persist originalContentState when saving draft with translation', async () => {
-        jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(
+        jest.spyOn(localForageManager, 'getTable').mockReturnValue(
             mockGetTableObject,
         )
 

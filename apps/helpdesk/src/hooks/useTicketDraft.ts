@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { localForageManager } from '@repo/browser-storage'
 import { useEffectOnce, usePrevious } from '@repo/hooks'
 import type { RawDraftContentState, SelectionState } from 'draft-js'
 import { convertFromRaw } from 'draft-js'
@@ -15,7 +16,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { Ticket } from 'models/ticket/types'
 import { convertToRawWithoutPredictions } from 'pages/common/draftjs/plugins/prediction/utils'
-import LocalForageManager from 'services/localForageManager/localForageManager'
 import {
     restoreNewMessageBodyText,
     restoreNewMessageDraft,
@@ -104,7 +104,7 @@ export default function useTicketDraft(isTicketNew = false) {
     const isPreviousTicketNew = usePrevious(isTicketNew)
     const localForageRef = useRef<LocalForage>()
     if (!localForageRef.current) {
-        localForageRef.current = LocalForageManager.getTable(DRAFT_TICKET_STORE)
+        localForageRef.current = localForageManager.getTable(DRAFT_TICKET_STORE)
     }
     const localForage = localForageRef.current
     const dispatch = useAppDispatch()
