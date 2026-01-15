@@ -1,4 +1,4 @@
-import { Button } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
 
 import { useGuidanceContext } from '../KnowledgeEditorGuidance/context'
 import { DuplicateGuidance } from '../shared/DuplicateGuidance/DuplicateGuidance'
@@ -42,15 +42,28 @@ export const GuidanceToolbarControls = () => {
     const articleId = state.guidance?.id
     const shopName = config.shopName
 
-    const copyButtonTrigger = ({ ref }: TriggerProps) => (
-        <Button
-            ref={ref}
-            slot="button"
-            variant="secondary"
-            isDisabled={isDisabled}
-            icon="copy"
-        />
-    )
+    const copyButtonTrigger = ({ ref }: TriggerProps) => {
+        const button = (
+            <Button
+                ref={ref}
+                slot="button"
+                variant="secondary"
+                isDisabled={isDisabled}
+                icon="copy"
+            />
+        )
+
+        if (isDisabled) {
+            return button
+        }
+
+        return (
+            <Tooltip placement="bottom">
+                <TooltipTrigger>{button}</TooltipTrigger>
+                <TooltipContent title="Duplicate" />
+            </Tooltip>
+        )
+    }
     switch (toolbarState.type) {
         case 'published-with-draft':
             return (

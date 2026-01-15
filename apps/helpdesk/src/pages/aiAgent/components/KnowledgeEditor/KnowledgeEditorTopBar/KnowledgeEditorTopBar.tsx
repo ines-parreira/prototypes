@@ -14,6 +14,7 @@ import {
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 
+import { withTooltip } from './KnowledgeEditorTopBarCommonControls'
 import type { GuidanceMode } from './KnowledgeEditorTopBarGuidanceControls'
 import { KnowledgeEditorTopBarTitle } from './KnowledgeEditorTopBarTitle'
 
@@ -125,43 +126,63 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                 {props.children && (
                     <>
                         {props.children}
-                        <Button
-                            onClick={props.onToggleDetailsView}
-                            aria-label={
-                                props.isDetailsView
-                                    ? 'collapse side panel'
-                                    : 'expand side panel'
-                            }
-                            isDisabled={props.disabled}
-                            variant="tertiary"
-                            icon={
-                                props.isDetailsView
-                                    ? 'system-bar-collapse'
-                                    : 'system-bar-expand'
-                            }
-                        />
+                        {withTooltip(
+                            <Button
+                                onClick={props.onToggleDetailsView}
+                                aria-label={
+                                    props.isDetailsView
+                                        ? 'collapse side panel'
+                                        : 'expand side panel'
+                                }
+                                isDisabled={props.disabled}
+                                variant="tertiary"
+                                icon={
+                                    props.isDetailsView
+                                        ? 'system-bar-collapse'
+                                        : 'system-bar-expand'
+                                }
+                            />,
+                            props.isDetailsView
+                                ? 'Hide details'
+                                : 'Show details',
+                            !!props.disabled,
+                        )}
                         <Separator direction="vertical" />
                     </>
                 )}
-                <Button
-                    onClick={props.onToggleFullscreen}
-                    aria-label={
-                        props.isFullscreen ? 'leave fullscreen' : 'fullscreen'
-                    }
-                    isDisabled={props.disabled}
-                    variant="tertiary"
-                    icon={
-                        props.isFullscreen ? 'arrow-collapse' : 'arrow-expand'
-                    }
-                />
+                {withTooltip(
+                    <Button
+                        onClick={props.onToggleFullscreen}
+                        aria-label={
+                            props.isFullscreen
+                                ? 'leave fullscreen'
+                                : 'fullscreen'
+                        }
+                        isDisabled={props.disabled}
+                        variant="tertiary"
+                        icon={
+                            props.isFullscreen
+                                ? 'arrow-collapse'
+                                : 'arrow-expand'
+                        }
+                    />,
+                    props.isFullscreen
+                        ? 'Exit full screen'
+                        : 'Enter full screen',
+                    !!props.disabled,
+                )}
 
-                <Button
-                    onClick={props.onClose}
-                    aria-label="close"
-                    isDisabled={props.disabled}
-                    variant="tertiary"
-                    icon="close"
-                />
+                {withTooltip(
+                    <Button
+                        onClick={props.onClose}
+                        aria-label="close"
+                        isDisabled={props.disabled}
+                        variant="tertiary"
+                        icon="close"
+                    />,
+                    'Close editor',
+                    !!props.disabled,
+                )}
             </Box>
         </div>
     )
