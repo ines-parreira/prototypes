@@ -33,7 +33,13 @@ import CancellationReasons from '../CancellationReasons'
 import CancellationSummary from '../CancellationSummary'
 import CancelProductModal from '../CancelProductModal'
 import ChurnMitigationOffer from '../ChurnMitigationOffer'
-import { CancellationFlowStep } from '../constants'
+import {
+    CancellationFlowStep,
+    CancellationPrimaryReasonInternalName,
+    CancellationPrimaryReasonLabel,
+    CancellationSecondaryReasonInternalName,
+    CancellationSecondaryReasonLabel,
+} from '../constants'
 import useCancellationFlowStepsStateMachine from '../hooks/useCancellationFlowStepsStateMachine'
 import useFindChurnMitigationOffer from '../hooks/useFindChurnMitigationOffer'
 import ProductFeaturesFOMO from '../ProductFeaturesFOMO'
@@ -456,8 +462,12 @@ describe('CancelProductModal: step 2', () => {
     it('should go to the next step when continue cancelling is clicked', () => {
         const mockState = {
             ...DEFAULT_STATE,
-            primaryReason: { label: 'some primary reason' },
-            secondaryReason: { label: 'some secondary reason' },
+            primaryReason: {
+                label: CancellationPrimaryReasonLabel.Pricing,
+            },
+            secondaryReason: {
+                label: CancellationSecondaryReasonLabel.TooExpensive,
+            },
             completed: true,
         }
         cancellationReasonsReducerMock.mockImplementation(() => mockState)
@@ -486,8 +496,12 @@ describe('CancelProductModal: step 2', () => {
 describe('CancelProductModal: step 3', () => {
     const mockState = {
         ...DEFAULT_STATE,
-        primaryReason: { label: 'some primary reason' },
-        secondaryReason: { label: 'some secondary reason' },
+        primaryReason: {
+            label: CancellationPrimaryReasonLabel.Pricing,
+        },
+        secondaryReason: {
+            label: CancellationSecondaryReasonLabel.TooExpensive,
+        },
         completed: true,
     }
 
@@ -562,8 +576,9 @@ describe('CancelProductModal: step 3', () => {
             SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
             {
                 product_type: productType,
-                primary_reason: mockState.primaryReason.label,
-                secondary_reason: mockState.secondaryReason.label,
+                primary_reason: CancellationPrimaryReasonInternalName.Cost,
+                secondary_reason:
+                    CancellationSecondaryReasonInternalName.TooExpensiveForPerceivedValue,
                 other_reason: mockState.additionalDetails?.label || null,
                 accepted: false,
             },
@@ -698,7 +713,9 @@ describe('CancelProductModal: step 3', () => {
         // Mock state with only primaryReason
         const minimalMockState = {
             ...DEFAULT_STATE,
-            primaryReason: { label: 'Primary reason only' },
+            primaryReason: {
+                label: CancellationPrimaryReasonLabel.Pricing,
+            },
             secondaryReason: null,
             additionalDetails: null,
             completed: true,
@@ -730,7 +747,150 @@ describe('CancelProductModal: step 3', () => {
             SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
             {
                 product_type: productType,
-                primary_reason: 'Primary reason only',
+                primary_reason: CancellationPrimaryReasonInternalName.Cost,
+                secondary_reason: null,
+                other_reason: null,
+                accepted: false,
+            },
+        )
+
+        expect(mockSwitchToNextStep).toHaveBeenCalled()
+    })
+
+    it('should handle unmapped primary reason label when rejecting offer', async () => {
+        const unmappedReasonState = {
+            ...DEFAULT_STATE,
+            primaryReason: {
+                label: 'Some Unmapped Reason Label' as CancellationPrimaryReasonLabel,
+            },
+            secondaryReason: {
+                label: CancellationSecondaryReasonLabel.TooExpensive,
+            },
+            additionalDetails: {
+                label: 'Custom additional details',
+            },
+            completed: true,
+        }
+        cancellationReasonsReducerMock.mockImplementation(
+            () => unmappedReasonState,
+        )
+
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={ProductType.Helpdesk}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
+        )
+
+        const continueCancellingButton = getByRole('button', {
+            name: 'Continue To Cancel',
+        })
+        await act(() => continueCancellingButton.click())
+
+        expect(trackBillingEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+            {
+                product_type: productType,
+                primary_reason: 'unknown',
+                secondary_reason:
+                    CancellationSecondaryReasonInternalName.TooExpensiveForPerceivedValue,
+                other_reason: 'Custom additional details',
+                accepted: false,
+            },
+        )
+
+        expect(mockSwitchToNextStep).toHaveBeenCalled()
+    })
+
+    it('should handle unmapped secondary reason label when rejecting offer', async () => {
+        const unmappedSecondaryState = {
+            ...DEFAULT_STATE,
+            primaryReason: {
+                label: CancellationPrimaryReasonLabel.Pricing,
+            },
+            secondaryReason: {
+                label: 'Some Unmapped Secondary Reason' as CancellationSecondaryReasonLabel,
+            },
+            additionalDetails: null,
+            completed: true,
+        }
+        cancellationReasonsReducerMock.mockImplementation(
+            () => unmappedSecondaryState,
+        )
+
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={ProductType.Helpdesk}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
+        )
+
+        const continueCancellingButton = getByRole('button', {
+            name: 'Continue To Cancel',
+        })
+        await act(() => continueCancellingButton.click())
+
+        expect(trackBillingEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+            {
+                product_type: productType,
+                primary_reason: CancellationPrimaryReasonInternalName.Cost,
+                secondary_reason: null,
+                other_reason: null,
+                accepted: false,
+            },
+        )
+
+        expect(mockSwitchToNextStep).toHaveBeenCalled()
+    })
+
+    it('should handle missing primaryReason entirely when rejecting offer', async () => {
+        const noPrimaryReasonState = {
+            ...DEFAULT_STATE,
+            primaryReason: null,
+            secondaryReason: null,
+            additionalDetails: null,
+            completed: true,
+        }
+        cancellationReasonsReducerMock.mockImplementation(
+            () => noPrimaryReasonState,
+        )
+
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={jest.fn()}
+                isOpen={true}
+                productType={ProductType.Helpdesk}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
+        )
+
+        const continueCancellingButton = getByRole('button', {
+            name: 'Continue To Cancel',
+        })
+        await act(() => continueCancellingButton.click())
+
+        expect(trackBillingEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+            {
+                product_type: productType,
+                primary_reason: 'unknown',
                 secondary_reason: null,
                 other_reason: null,
                 accepted: false,
@@ -786,8 +946,9 @@ describe('CancelProductModal: step 3', () => {
             SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
             {
                 product_type: productType,
-                primary_reason: mockState.primaryReason.label,
-                secondary_reason: mockState.secondaryReason.label,
+                primary_reason: CancellationPrimaryReasonInternalName.Cost,
+                secondary_reason:
+                    CancellationSecondaryReasonInternalName.TooExpensiveForPerceivedValue,
                 other_reason: mockState.additionalDetails?.label || null,
                 accepted: true,
             },
@@ -856,8 +1017,9 @@ describe('CancelProductModal: step 3', () => {
             SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
             {
                 product_type: productType,
-                primary_reason: mockState.primaryReason.label,
-                secondary_reason: mockState.secondaryReason.label,
+                primary_reason: CancellationPrimaryReasonInternalName.Cost,
+                secondary_reason:
+                    CancellationSecondaryReasonInternalName.TooExpensiveForPerceivedValue,
                 other_reason: mockState.additionalDetails?.label || null,
                 accepted: true,
             },
@@ -919,7 +1081,9 @@ describe('CancelProductModal: step 3', () => {
         // Mock state with only primaryReason (no secondary or additional)
         const minimalMockState = {
             ...DEFAULT_STATE,
-            primaryReason: { label: 'Primary reason only' },
+            primaryReason: {
+                label: CancellationPrimaryReasonLabel.Pricing,
+            },
             secondaryReason: null,
             additionalDetails: null,
             completed: true,
@@ -950,25 +1114,183 @@ describe('CancelProductModal: step 3', () => {
         // Verify modal closed successfully
         expect(mockHandleOnClose).toHaveBeenCalled()
 
-        // Verify sendAcceptedChurnMitigationOfferToSupport was called with null for optional fields
+        // Verify sendAcceptedChurnMitigationOfferToSupport was called with label (not internal name)
         expect(
             sendAcceptedChurnMitigationOfferToSupportMock,
         ).toHaveBeenCalledWith({
             productType: productType.toString(),
             accountDomain: account.domain,
             userEmail: user.email,
-            primaryReason: 'Primary reason only',
+            primaryReason: CancellationPrimaryReasonLabel.Pricing,
             secondaryReason: null,
             otherReason: null,
             correspondingChurnMitigationOfferId: expect.any(String),
         })
 
-        // Verify trackBillingEvent was called with null for optional fields
+        // Verify trackBillingEvent was called with internal name for primary_reason
         expect(trackBillingEventMock).toHaveBeenCalledWith(
             SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
             {
                 product_type: productType,
-                primary_reason: 'Primary reason only',
+                primary_reason: CancellationPrimaryReasonInternalName.Cost,
+                secondary_reason: null,
+                other_reason: null,
+                accepted: true,
+            },
+        )
+    })
+
+    it('should handle unmapped primary reason label when accepting offer', async () => {
+        const unmappedReasonState = {
+            ...DEFAULT_STATE,
+            primaryReason: {
+                label: 'Some Unmapped Reason Label' as CancellationPrimaryReasonLabel,
+            },
+            secondaryReason: {
+                label: CancellationSecondaryReasonLabel.TooExpensive,
+            },
+            additionalDetails: {
+                label: 'Custom additional details',
+            },
+            completed: true,
+        }
+        cancellationReasonsReducerMock.mockImplementation(
+            () => unmappedReasonState,
+        )
+
+        sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(true)
+        const mockHandleOnClose = jest.fn()
+
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
+        )
+
+        const acceptOfferButton = getByRole('button', { name: 'Get My Offer' })
+        await act(() => fireEvent.click(acceptOfferButton))
+
+        expect(mockHandleOnClose).toHaveBeenCalled()
+
+        expect(trackBillingEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+            {
+                product_type: productType,
+                primary_reason: 'unknown',
+                secondary_reason:
+                    CancellationSecondaryReasonInternalName.TooExpensiveForPerceivedValue,
+                other_reason: 'Custom additional details',
+                accepted: true,
+            },
+        )
+    })
+
+    it('should handle unmapped secondary reason label when accepting offer', async () => {
+        const unmappedSecondaryState = {
+            ...DEFAULT_STATE,
+            primaryReason: {
+                label: CancellationPrimaryReasonLabel.Pricing,
+            },
+            secondaryReason: {
+                label: 'Some Unmapped Secondary Reason' as CancellationSecondaryReasonLabel,
+            },
+            additionalDetails: null,
+            completed: true,
+        }
+        cancellationReasonsReducerMock.mockImplementation(
+            () => unmappedSecondaryState,
+        )
+
+        sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(true)
+        const mockHandleOnClose = jest.fn()
+
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
+        )
+
+        const acceptOfferButton = getByRole('button', { name: 'Get My Offer' })
+        await act(() => fireEvent.click(acceptOfferButton))
+
+        expect(mockHandleOnClose).toHaveBeenCalled()
+
+        expect(trackBillingEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+            {
+                product_type: productType,
+                primary_reason: CancellationPrimaryReasonInternalName.Cost,
+                secondary_reason: null,
+                other_reason: null,
+                accepted: true,
+            },
+        )
+    })
+
+    it('should handle missing primaryReason entirely when accepting offer', async () => {
+        const noPrimaryReasonState = {
+            ...DEFAULT_STATE,
+            primaryReason: null,
+            secondaryReason: null,
+            additionalDetails: null,
+            completed: true,
+        }
+        cancellationReasonsReducerMock.mockImplementation(
+            () => noPrimaryReasonState,
+        )
+
+        sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(true)
+        const mockHandleOnClose = jest.fn()
+
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={productType}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlans}
+                updateSubscription={mockUpdateSubscription}
+            />,
+        )
+
+        const acceptOfferButton = getByRole('button', { name: 'Get My Offer' })
+        await act(() => fireEvent.click(acceptOfferButton))
+
+        expect(mockHandleOnClose).toHaveBeenCalled()
+
+        expect(
+            sendAcceptedChurnMitigationOfferToSupportMock,
+        ).toHaveBeenCalledWith({
+            productType: productType.toString(),
+            accountDomain: account.domain,
+            userEmail: user.email,
+            primaryReason: 'No level 1 reason',
+            secondaryReason: null,
+            otherReason: null,
+            correspondingChurnMitigationOfferId: expect.any(String),
+        })
+
+        expect(trackBillingEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+            {
+                product_type: productType,
+                primary_reason: 'unknown',
                 secondary_reason: null,
                 other_reason: null,
                 accepted: true,
@@ -1142,8 +1464,12 @@ describe('CancelProductModal: step 4', () => {
 describe('CancelProductModal: AI Agent cancellation flow', () => {
     const mockState = {
         ...DEFAULT_STATE,
-        primaryReason: { label: 'Too expensive' },
-        secondaryReason: { label: 'Not enough features' },
+        primaryReason: {
+            label: CancellationPrimaryReasonLabel.Pricing,
+        },
+        secondaryReason: {
+            label: CancellationSecondaryReasonLabel.TooExpensive,
+        },
         completed: true,
     }
 
@@ -1256,8 +1582,12 @@ describe('CancelProductModal: AI Agent cancellation flow', () => {
     it('should handle missing plan names when sending Zapier notification', async () => {
         const mockState = {
             ...DEFAULT_STATE,
-            primaryReason: { label: 'Too expensive' },
-            secondaryReason: { label: 'Not enough features' },
+            primaryReason: {
+                label: CancellationPrimaryReasonLabel.Pricing,
+            },
+            secondaryReason: {
+                label: CancellationSecondaryReasonLabel.TooExpensive,
+            },
             completed: true,
         }
         cancellationReasonsReducerMock.mockImplementation(() => mockState)
@@ -1342,14 +1672,14 @@ describe('CancelProductModal: Convert and SMS cancellation flows', () => {
             productType: ProductType.Convert,
             productName: 'Convert',
             plan: convertPlan1,
-            primaryReason: 'Not using it',
+            primaryReason: CancellationPrimaryReasonLabel.EaseOfUse,
             secondaryReason: null,
         },
         {
             productType: ProductType.SMS,
             productName: 'SMS',
             plan: smsPlan1,
-            primaryReason: 'Too expensive',
+            primaryReason: CancellationPrimaryReasonLabel.Pricing,
             secondaryReason: null,
         },
     ])(

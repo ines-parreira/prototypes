@@ -36,7 +36,15 @@ import CancellationSummary from './CancellationSummary'
 import CancellationSummaryFooter from './CancellationSummary/CancellationSummaryFooter'
 import ChurnMitigationOffer from './ChurnMitigationOffer'
 import ChurnMitigationOfferFooter from './ChurnMitigationOffer/ChurnMitigationOfferFooter'
-import { CancellationFlowStep } from './constants'
+import {
+    CancellationFlowStep,
+    PRIMARY_REASON_LABEL_TO_INTERNAL_NAME,
+    SECONDARY_REASON_LABEL_TO_INTERNAL_NAME,
+} from './constants'
+import type {
+    CancellationPrimaryReasonLabel,
+    CancellationSecondaryReasonLabel,
+} from './constants'
 import {
     findCancellationScenarioByProductType,
     formatCancellationReasonsForZapier,
@@ -180,14 +188,33 @@ const CancelProductModal = ({
         }
 
         try {
+            const primaryReasonLabel =
+                cancellationReasonsState.primaryReason?.label
+            const secondaryReasonLabel =
+                cancellationReasonsState.secondaryReason?.label
+
+            const primaryReasonInternal =
+                primaryReasonLabel &&
+                primaryReasonLabel in PRIMARY_REASON_LABEL_TO_INTERNAL_NAME
+                    ? PRIMARY_REASON_LABEL_TO_INTERNAL_NAME[
+                          primaryReasonLabel as CancellationPrimaryReasonLabel
+                      ]
+                    : 'unknown'
+
+            const secondaryReasonInternal =
+                secondaryReasonLabel &&
+                secondaryReasonLabel in SECONDARY_REASON_LABEL_TO_INTERNAL_NAME
+                    ? SECONDARY_REASON_LABEL_TO_INTERNAL_NAME[
+                          secondaryReasonLabel as CancellationSecondaryReasonLabel
+                      ]
+                    : null
+
             await trackBillingEvent(
                 SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
                 {
                     product_type: productType,
-                    primary_reason:
-                        cancellationReasonsState.primaryReason!.label,
-                    secondary_reason:
-                        cancellationReasonsState.secondaryReason?.label || null,
+                    primary_reason: primaryReasonInternal,
+                    secondary_reason: secondaryReasonInternal,
                     other_reason:
                         cancellationReasonsState.additionalDetails?.label ||
                         null,
@@ -278,14 +305,33 @@ const CancelProductModal = ({
 
     const handleSendCancellationEvents = async () => {
         try {
+            const primaryReasonLabel =
+                cancellationReasonsState.primaryReason?.label
+            const secondaryReasonLabel =
+                cancellationReasonsState.secondaryReason?.label
+
+            const primaryReasonInternal =
+                primaryReasonLabel &&
+                primaryReasonLabel in PRIMARY_REASON_LABEL_TO_INTERNAL_NAME
+                    ? PRIMARY_REASON_LABEL_TO_INTERNAL_NAME[
+                          primaryReasonLabel as CancellationPrimaryReasonLabel
+                      ]
+                    : 'unknown'
+
+            const secondaryReasonInternal =
+                secondaryReasonLabel &&
+                secondaryReasonLabel in SECONDARY_REASON_LABEL_TO_INTERNAL_NAME
+                    ? SECONDARY_REASON_LABEL_TO_INTERNAL_NAME[
+                          secondaryReasonLabel as CancellationSecondaryReasonLabel
+                      ]
+                    : null
+
             await trackBillingEvent(
                 SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
                 {
                     product_type: productType,
-                    primary_reason:
-                        cancellationReasonsState.primaryReason!.label,
-                    secondary_reason:
-                        cancellationReasonsState.secondaryReason?.label || null,
+                    primary_reason: primaryReasonInternal,
+                    secondary_reason: secondaryReasonInternal,
                     other_reason:
                         cancellationReasonsState.additionalDetails?.label ||
                         null,

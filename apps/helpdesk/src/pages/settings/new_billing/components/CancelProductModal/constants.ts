@@ -12,6 +12,16 @@ export enum CancellationFlowStep {
     cancellationSummary,
 }
 
+export enum CancellationPrimaryReasonInternalName {
+    Cost = 'cost',
+    Product = 'product',
+    Experience = 'experience',
+    PerformanceAndReliability = 'performance_and_reliability',
+    Support = 'support',
+    BusinessChange = 'business_change',
+    SecurityAndCompliance = 'security_and_compliance',
+}
+
 export enum CancellationPrimaryReasonLabel {
     Pricing = "Pricing or subscription didn't work for us",
     DoesNotFitMyNeeds = "The product didn't fully meet our needs",
@@ -20,6 +30,65 @@ export enum CancellationPrimaryReasonLabel {
     SupportAndService = "Support or services didn't meet our expectations",
     InternalBusinessChange = 'Changes in our business or priorities',
     SecurityAndCompliance = 'Security, compliance, or legal requirements',
+}
+
+export enum CancellationSecondaryReasonInternalName {
+    // Pricing & Subscription
+    TooExpensiveForPerceivedValue = 'too_expensive_for_perceived_value',
+    RenewalIncreaseNotApproved = 'renewal_increase_not_approved',
+    CostDoesntMatchUsageLevel = 'cost_doesnt_match_usage_level',
+    PricingModelDoesntFitNeeds = 'pricing_model_doesnt_fit_needs',
+    LackOfSpendControl = 'lack_of_spend_control',
+    LackOfPaymentTermsOrLengthTermsFlexibility = 'lack_of_payment_terms_or_length_terms_flexibility',
+    InvoicingOrPaymentMethodIssues = 'invoicing_or_payment_method_issues',
+    TaxesCurrencyOrFXFriction = 'taxes_currency_or_fx_friction',
+
+    // Product Fit, Features & Roadmap
+    CriticalFeaturesMissing = 'critical_features_missing',
+    IntegrationGapWithKeySystems = 'integration_gap_with_key_systems',
+    CustomizationOrPermissionsTooLimited = 'customization_or_permissions_too_limited',
+    RoadmapTimingWontMeetNeeds = 'roadmap_timing_wont_meet_needs',
+    UseCaseEvolvedBeyondProductScope = 'use_case_evolved_beyond_product_scope',
+    TheProductNegativelyImpactedBusiness = 'the_product_negatively_impacted_business',
+
+    // Ease of Use, Adoption & Value Realization
+    HardToLearnOrTooComplex = 'hard_to_learn_or_too_complex',
+    PoorOnboardingEnablementOrTraining = 'poor_onboarding_enablement_or_training',
+    LowInternalAdoptionOrLowUtilization = 'low_internal_adoption_or_low_utilization',
+    WorkflowMismatchWithTeamProcesses = 'workflow_mismatch_with_team_processes',
+    DontHaveTheBandwidthToImplementOrIHaveOtherPriorities = 'dont_have_the_bandwith_to_implement_or_i_have_other_priorities',
+    SlowTimeToValue = 'slow_time_to_value',
+    InsufficientROIOrUnclearImpact = 'insufficient_roi_or_unclear_impact',
+    NotSolvingCompanysCoreNeeds = 'not_solving_companys_core_needs',
+
+    // Platform Performance & Reliability
+    DowntimeIssuesBugsOutagesOrIncidents = 'downtime_issues_bugs_outages_or_incidents',
+    SlowPerformanceAndLatencyIssues = 'slow_performance_and_latency_issues',
+    DataQualityAndAccuracyIssues = 'data_quality_and_accuracy_issues',
+    ScaleLimitations = 'scale_limitations',
+
+    // Support & Services Experience
+    SlowOrIneffectiveSupport = 'slow_or_ineffective_support',
+    UnresolvedOpenIssues = 'unresolved_open_issues',
+    LackOfSelfServeGuidanceToManageAccount = 'lack_of_self_serve_guidance_to_manage_account',
+    LackOfProfessionalServicesToOptimizeAccount = 'lack_of_professional_services_to_optimize_account',
+    DocumentationNotSufficient = 'documentation_not_sufficient',
+
+    // Internal Business & Strategic Factors
+    CompanyDownsizingOrClosure = 'company_downsizing_or_closure',
+    MergerAndAcquisition = 'merger_and_acquisition',
+    ToolConsolidationOrSwitchingToInHouseSolution = 'tool_consolidation_or_switching_to_in_house_solution',
+    TeamOrOrganizationalChanges = 'team_or_organizational_changes',
+    StrategicShift = 'strategic_shift',
+    SeasonalPause = 'seasonal_pause',
+    ProcurementPolicyBarrier = 'procurement_policy_barrier',
+    BudgetReductionOrSpendingFreeze = 'budget_reduction_or_spending_freeze',
+
+    // Security, Compliance & Legal
+    DataPrivacyConcerns = 'data_privacy_concerns',
+    MissingComplianceCertifications = 'missing_compliance_certifications',
+    SecurityReviewNotPassed = 'security_review_not_passed',
+    ContractDPAOrLegalTermsMisalignment = 'contract_dpa_or_legal_terms_misalignment',
 }
 
 export enum CancellationSecondaryReasonLabel {
@@ -220,6 +289,118 @@ export const ProductCancellationReasons: CancellationReason[] = [
         ],
     },
 ]
+
+export const PRIMARY_REASON_LABEL_TO_INTERNAL_NAME: Record<
+    CancellationPrimaryReasonLabel,
+    CancellationPrimaryReasonInternalName
+> = {
+    [CancellationPrimaryReasonLabel.Pricing]:
+        CancellationPrimaryReasonInternalName.Cost,
+    [CancellationPrimaryReasonLabel.DoesNotFitMyNeeds]:
+        CancellationPrimaryReasonInternalName.Product,
+    [CancellationPrimaryReasonLabel.EaseOfUse]:
+        CancellationPrimaryReasonInternalName.Experience,
+    [CancellationPrimaryReasonLabel.PerformanceAndReliability]:
+        CancellationPrimaryReasonInternalName.PerformanceAndReliability,
+    [CancellationPrimaryReasonLabel.SupportAndService]:
+        CancellationPrimaryReasonInternalName.Support,
+    [CancellationPrimaryReasonLabel.InternalBusinessChange]:
+        CancellationPrimaryReasonInternalName.BusinessChange,
+    [CancellationPrimaryReasonLabel.SecurityAndCompliance]:
+        CancellationPrimaryReasonInternalName.SecurityAndCompliance,
+}
+
+export const SECONDARY_REASON_LABEL_TO_INTERNAL_NAME: Record<
+    CancellationSecondaryReasonLabel,
+    CancellationSecondaryReasonInternalName
+> = {
+    [CancellationSecondaryReasonLabel.TooExpensive]:
+        CancellationSecondaryReasonInternalName.TooExpensiveForPerceivedValue,
+    [CancellationSecondaryReasonLabel.RenewalNotApproved]:
+        CancellationSecondaryReasonInternalName.RenewalIncreaseNotApproved,
+    [CancellationSecondaryReasonLabel.CostForUsage]:
+        CancellationSecondaryReasonInternalName.CostDoesntMatchUsageLevel,
+    [CancellationSecondaryReasonLabel.PricingModel]:
+        CancellationSecondaryReasonInternalName.PricingModelDoesntFitNeeds,
+    [CancellationSecondaryReasonLabel.LackOfSpendControl]:
+        CancellationSecondaryReasonInternalName.LackOfSpendControl,
+    [CancellationSecondaryReasonLabel.LackOfPaymentTermsFlexibility]:
+        CancellationSecondaryReasonInternalName.LackOfPaymentTermsOrLengthTermsFlexibility,
+    [CancellationSecondaryReasonLabel.InvoicingOrPaymentMethodIssues]:
+        CancellationSecondaryReasonInternalName.InvoicingOrPaymentMethodIssues,
+    [CancellationSecondaryReasonLabel.TaxesCurrencyOrFXFriction]:
+        CancellationSecondaryReasonInternalName.TaxesCurrencyOrFXFriction,
+    [CancellationSecondaryReasonLabel.CriticalFeaturesMissing]:
+        CancellationSecondaryReasonInternalName.CriticalFeaturesMissing,
+    [CancellationSecondaryReasonLabel.IntegrationGap]:
+        CancellationSecondaryReasonInternalName.IntegrationGapWithKeySystems,
+    [CancellationSecondaryReasonLabel.CustomizationOrPermissionsLimited]:
+        CancellationSecondaryReasonInternalName.CustomizationOrPermissionsTooLimited,
+    [CancellationSecondaryReasonLabel.RoadmapTimingWontMeetNeeds]:
+        CancellationSecondaryReasonInternalName.RoadmapTimingWontMeetNeeds,
+    [CancellationSecondaryReasonLabel.UseCaseEvolvedBeyondProduct]:
+        CancellationSecondaryReasonInternalName.UseCaseEvolvedBeyondProductScope,
+    [CancellationSecondaryReasonLabel.ProductNegativelyImpactedBusiness]:
+        CancellationSecondaryReasonInternalName.TheProductNegativelyImpactedBusiness,
+    [CancellationSecondaryReasonLabel.HardToLearnOrTooComplex]:
+        CancellationSecondaryReasonInternalName.HardToLearnOrTooComplex,
+    [CancellationSecondaryReasonLabel.PoorOnboardingOrTraining]:
+        CancellationSecondaryReasonInternalName.PoorOnboardingEnablementOrTraining,
+    [CancellationSecondaryReasonLabel.LowInternalAdoptionOrUtilization]:
+        CancellationSecondaryReasonInternalName.LowInternalAdoptionOrLowUtilization,
+    [CancellationSecondaryReasonLabel.WorkflowMismatch]:
+        CancellationSecondaryReasonInternalName.WorkflowMismatchWithTeamProcesses,
+    [CancellationSecondaryReasonLabel.DontHaveBandwidthOrOtherPriorities]:
+        CancellationSecondaryReasonInternalName.DontHaveTheBandwidthToImplementOrIHaveOtherPriorities,
+    [CancellationSecondaryReasonLabel.SlowTimeToValue]:
+        CancellationSecondaryReasonInternalName.SlowTimeToValue,
+    [CancellationSecondaryReasonLabel.InsufficientROIOrUnclearImpact]:
+        CancellationSecondaryReasonInternalName.InsufficientROIOrUnclearImpact,
+    [CancellationSecondaryReasonLabel.NotSolvingCoreNeeds]:
+        CancellationSecondaryReasonInternalName.NotSolvingCompanysCoreNeeds,
+    [CancellationSecondaryReasonLabel.DowntimeIssuesBugsOutagesOrIncidents]:
+        CancellationSecondaryReasonInternalName.DowntimeIssuesBugsOutagesOrIncidents,
+    [CancellationSecondaryReasonLabel.SlowPerformanceAndLatencyIssues]:
+        CancellationSecondaryReasonInternalName.SlowPerformanceAndLatencyIssues,
+    [CancellationSecondaryReasonLabel.DataQualityAndAccuracyIssues]:
+        CancellationSecondaryReasonInternalName.DataQualityAndAccuracyIssues,
+    [CancellationSecondaryReasonLabel.ScaleLimitations]:
+        CancellationSecondaryReasonInternalName.ScaleLimitations,
+    [CancellationSecondaryReasonLabel.SlowOrIneffectiveSupport]:
+        CancellationSecondaryReasonInternalName.SlowOrIneffectiveSupport,
+    [CancellationSecondaryReasonLabel.UnresolvedOpenIssues]:
+        CancellationSecondaryReasonInternalName.UnresolvedOpenIssues,
+    [CancellationSecondaryReasonLabel.LackOfSelfServeGuidance]:
+        CancellationSecondaryReasonInternalName.LackOfSelfServeGuidanceToManageAccount,
+    [CancellationSecondaryReasonLabel.LackOfProfessionalServices]:
+        CancellationSecondaryReasonInternalName.LackOfProfessionalServicesToOptimizeAccount,
+    [CancellationSecondaryReasonLabel.DocumentationNotSufficient]:
+        CancellationSecondaryReasonInternalName.DocumentationNotSufficient,
+    [CancellationSecondaryReasonLabel.CompanyDownsizingOrClosure]:
+        CancellationSecondaryReasonInternalName.CompanyDownsizingOrClosure,
+    [CancellationSecondaryReasonLabel.MergerAndAcquisition]:
+        CancellationSecondaryReasonInternalName.MergerAndAcquisition,
+    [CancellationSecondaryReasonLabel.ToolConsolidationOrBuildingInHouseSolution]:
+        CancellationSecondaryReasonInternalName.ToolConsolidationOrSwitchingToInHouseSolution,
+    [CancellationSecondaryReasonLabel.TeamOrOrganizationalChanges]:
+        CancellationSecondaryReasonInternalName.TeamOrOrganizationalChanges,
+    [CancellationSecondaryReasonLabel.StrategicShift]:
+        CancellationSecondaryReasonInternalName.StrategicShift,
+    [CancellationSecondaryReasonLabel.SeasonalPause]:
+        CancellationSecondaryReasonInternalName.SeasonalPause,
+    [CancellationSecondaryReasonLabel.ProcurementPolicyBarrier]:
+        CancellationSecondaryReasonInternalName.ProcurementPolicyBarrier,
+    [CancellationSecondaryReasonLabel.BudgetReductionOrSpendingFreeze]:
+        CancellationSecondaryReasonInternalName.BudgetReductionOrSpendingFreeze,
+    [CancellationSecondaryReasonLabel.DataPrivacyConcerns]:
+        CancellationSecondaryReasonInternalName.DataPrivacyConcerns,
+    [CancellationSecondaryReasonLabel.MissingComplianceCertifications]:
+        CancellationSecondaryReasonInternalName.MissingComplianceCertifications,
+    [CancellationSecondaryReasonLabel.SecurityReviewNotPassed]:
+        CancellationSecondaryReasonInternalName.SecurityReviewNotPassed,
+    [CancellationSecondaryReasonLabel.ContractDPAOrLegalTermsMisalignment]:
+        CancellationSecondaryReasonInternalName.ContractDPAOrLegalTermsMisalignment,
+}
 
 // fixme(@illia): add  actual content mapping as soon as provided by CSM team.
 export const HELPDESK_REASONS_TO_CANDU_CONTENTS: ReasonsToCanduContent[] = []
