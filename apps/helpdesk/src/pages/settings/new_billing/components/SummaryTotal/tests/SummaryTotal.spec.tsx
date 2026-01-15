@@ -581,4 +581,97 @@ describe('SummaryTotal with coupons', () => {
             expect(totalElement).toHaveTextContent('$0')
         })
     })
+
+    it('should subtract totalCancelledAmount from subtotal and total with discounts', async () => {
+        const totalCancelledAmount = 3000
+
+        mockedServer.onGet('/billing/state').reply(200, {
+            customer: {
+                coupon: {
+                    name: 'Test 50% off',
+                    duration: 'forever',
+                    duration_in_months: null,
+                    amount_off_in_cents: null,
+                    amount_off_decimal: null,
+                    percent_off: 50,
+                    products: [],
+                },
+            },
+            subscription: {},
+        })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                totalCancelledAmount={totalCancelledAmount}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('Subtotal')).toBeVisible()
+            expect(screen.queryByLabelText('Discount amount')).toBeVisible()
+
+            const expectedSubtotal =
+                (totalProductAmount - totalCancelledAmount) / 100
+            const subtotalElement = screen.getByLabelText('Subtotal')
+            expect(subtotalElement).toHaveTextContent(`$${expectedSubtotal}`)
+
+            // Discount is now calculated on the amount after cancellations
+            const expectedDiscount =
+                ((totalProductAmount - totalCancelledAmount) / 100) * 0.5
+            const discountElement = screen.getByLabelText('Discount amount')
+            expect(discountElement).toHaveTextContent(`- $${expectedDiscount}`)
+
+            const expectedTotal = expectedSubtotal - expectedDiscount
+            const totalElement = screen.getByLabelText('Total price')
+            expect(totalElement).toHaveTextContent(`$${expectedTotal}`)
+        })
+    })
+
+    it('should subtract totalCancelledAmount from total with amount_off_in_cents coupon', async () => {
+        const totalCancelledAmount = 2000
+
+        mockedServer.onGet('/billing/state').reply(200, {
+            customer: {
+                coupon: {
+                    name: 'Fixed $20 off',
+                    duration: 'forever',
+                    duration_in_months: null,
+                    amount_off_in_cents: 2000,
+                    amount_off_decimal: '20',
+                    percent_off: null,
+                    products: [],
+                },
+            },
+            subscription: {},
+        })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <SummaryTotal
+                selectedPlans={selectedPlans}
+                totalProductAmount={totalProductAmount}
+                cadence={cadence}
+                currency={currency}
+                totalCancelledAmount={totalCancelledAmount}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByLabelText('Subtotal')).toBeVisible()
+            expect(screen.queryByLabelText('Discount amount')).toBeVisible()
+
+            const expectedSubtotal =
+                (totalProductAmount - totalCancelledAmount) / 100
+            const subtotalElement = screen.getByLabelText('Subtotal')
+            expect(subtotalElement).toHaveTextContent(`$${expectedSubtotal}`)
+
+            const expectedTotal =
+                (totalProductAmount - totalCancelledAmount - 2000) / 100
+            const totalElement = screen.getByLabelText('Total price')
+            expect(totalElement).toHaveTextContent(`$${expectedTotal}`)
+        })
+    })
 })

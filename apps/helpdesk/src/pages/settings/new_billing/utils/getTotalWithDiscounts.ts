@@ -6,6 +6,8 @@ import type { SelectedPlans } from '../views/BillingProcessView/BillingProcessVi
 export const getTotalWithDiscounts = (
     selectedPlans: SelectedPlans,
     coupon: CouponSummary | null,
+    totalCancelledAmount: number = 0,
+    cancelledProducts: ProductType[] = [],
 ) => {
     const planAmountList = Object.entries(selectedPlans)
         .filter(([, product]) => product.isSelected && !!product.plan?.amount)
@@ -19,24 +21,42 @@ export const getTotalWithDiscounts = (
         0,
     )
 
+    const totalAmountAfterCancellations = totalAmount - totalCancelledAmount
+
     if (!coupon) {
         return {
-            totalWithDiscounts: totalAmount,
-            totalWithoutDiscounts: totalAmount,
+            totalWithDiscounts: totalAmountAfterCancellations,
+            totalWithoutDiscounts: totalAmountAfterCancellations,
             discountAmount: 0,
         }
     }
 
     const couponAppliesToAllProducts = coupon.products.length === 0
 
-    // If the coupon applies to all products, we can just use the total amount
-    const amountEligibleForDiscount = couponAppliesToAllProducts
-        ? totalAmount
-        : planAmountList.reduce(
-              (acc, [type, planAmount]) =>
-                  acc + (couponAppliesToProduct(coupon, type) ? planAmount : 0),
-              0,
-          )
+    // Calculate the amount eligible for discount after subtracting cancelled products
+    let amountEligibleForDiscount: number
+
+    if (couponAppliesToAllProducts) {
+        // If coupon applies to all products, subtract all cancellations
+        amountEligibleForDiscount = totalAmountAfterCancellations
+    } else {
+        // If coupon applies to specific products, only include non-cancelled eligible products
+        amountEligibleForDiscount = planAmountList.reduce(
+            (acc, [type, planAmount]) => {
+                if (!couponAppliesToProduct(coupon, type)) {
+                    return acc
+                }
+
+                // If this product is cancelled, don't include it in eligible amount
+                if (cancelledProducts.includes(type)) {
+                    return acc
+                }
+
+                return acc + planAmount
+            },
+            0,
+        )
+    }
 
     let discount = 0
 
@@ -53,8 +73,8 @@ export const getTotalWithDiscounts = (
     discount = Math.min(amountEligibleForDiscount, discount)
 
     return {
-        totalWithDiscounts: totalAmount - discount,
-        totalWithoutDiscounts: totalAmount,
+        totalWithDiscounts: totalAmountAfterCancellations - discount,
+        totalWithoutDiscounts: totalAmountAfterCancellations,
         discountAmount: discount,
     }
 }

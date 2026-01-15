@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import type { CouponSummary, Plan } from 'models/billing/types'
+import type { CouponSummary, Plan, ProductType } from 'models/billing/types'
 import { Cadence, SubscriptionStatus } from 'models/billing/types'
 import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
@@ -21,6 +21,7 @@ export type SummaryTotalProps = {
     currency: string
     isFrequencyChanged?: boolean
     totalCancelledAmount?: number
+    cancelledProducts?: ProductType[]
 }
 
 const SummaryTotal = ({
@@ -30,6 +31,7 @@ const SummaryTotal = ({
     currency,
     isFrequencyChanged = false,
     totalCancelledAmount = 0,
+    cancelledProducts = [],
 }: SummaryTotalProps) => {
     // Get the total amount of the selected plans
     const amountSelectedPlans = useMemo(() => {
@@ -53,7 +55,7 @@ const SummaryTotal = ({
         totalWithoutDiscounts,
         discountAmount,
         showDiscountedPrice,
-    } = usePriceSummary(selectedPlans)
+    } = usePriceSummary(selectedPlans, totalCancelledAmount, cancelledProducts)
 
     return (
         <div className={css.container}>
@@ -96,7 +98,11 @@ const SummaryTotal = ({
     )
 }
 
-function usePriceSummary(selectedPlans: SelectedPlans) {
+function usePriceSummary(
+    selectedPlans: SelectedPlans,
+    totalCancelledAmount: number,
+    cancelledProducts: ProductType[],
+) {
     const billingSummaryTotalWithCouponsEnabled = useFlag(
         FeatureFlagKey.BillingSummaryTotalWithCoupons,
     )
@@ -111,8 +117,14 @@ function usePriceSummary(selectedPlans: SelectedPlans) {
 
     const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
         useMemo(
-            () => getTotalWithDiscounts(selectedPlans, coupon),
-            [coupon, selectedPlans],
+            () =>
+                getTotalWithDiscounts(
+                    selectedPlans,
+                    coupon,
+                    totalCancelledAmount,
+                    cancelledProducts,
+                ),
+            [coupon, selectedPlans, totalCancelledAmount, cancelledProducts],
         )
     const showDiscountedPrice =
         billingSummaryTotalWithCouponsEnabled && discountAmount > 0

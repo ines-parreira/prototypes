@@ -376,6 +376,7 @@ const BillingProcessView = ({
                         selectedPlans={selectedPlans}
                         totalProductAmount={totalProductAmount}
                         totalCancelledAmount={totalCancelledAmount}
+                        cancelledProducts={cancelledProducts}
                         cadence={cadence}
                         currency={helpdeskAvailablePlans?.[0].currency}
                     />
