@@ -33,17 +33,11 @@ export const KnowledgeEditorGuidanceProvider = ({
     config,
     children,
 }: ProviderProps) => {
-    const { guidanceTemplate, initialMode, guidanceArticle, guidanceArticles } =
-        config
+    const { guidanceTemplate, initialMode, guidanceArticle } = config
 
     const [state, dispatch] = useReducer(
         guidanceReducer,
-        createInitialState(
-            guidanceTemplate,
-            guidanceArticle,
-            initialMode,
-            guidanceArticles,
-        ),
+        createInitialState(guidanceTemplate, guidanceArticle, initialMode),
     )
 
     useEffect(() => {

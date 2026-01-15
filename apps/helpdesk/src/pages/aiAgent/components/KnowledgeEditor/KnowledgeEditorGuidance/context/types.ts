@@ -5,8 +5,6 @@ import type { HelpCenter } from 'models/helpCenter/types'
 import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceArticle, GuidanceTemplate } from 'pages/aiAgent/types'
 
-import { calculateGuidanceLimit } from './guidanceLimitUtils'
-
 export type GuidanceModeType = 'create' | 'edit' | 'read'
 
 export type ModalType = 'unsaved' | 'discard' | 'delete' | null
@@ -127,16 +125,13 @@ export const createInitialState = (
     template?: GuidanceTemplate,
     article?: GuidanceArticle,
     initialMode: GuidanceModeType = 'create',
-    guidanceArticles: FilteredKnowledgeHubArticle[] = [],
 ): GuidanceState => {
-    const { isAtLimit } = calculateGuidanceLimit(guidanceArticles)
-
     // For existing articles, use their visibility
     // For new articles, default to false if at limit
     let defaultVisibility = true
     if (article) {
         defaultVisibility = article.visibility === 'PUBLIC'
-    } else if (initialMode === 'create' && isAtLimit) {
+    } else if (initialMode === 'create') {
         defaultVisibility = false
     }
 

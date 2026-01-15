@@ -444,7 +444,7 @@ describe('useArticleAutoSave', () => {
                         seo_meta: { title: null, description: null },
                         category_id: null,
                         is_current: false,
-                        visibility_status: 'PUBLIC',
+                        visibility_status: 'UNLISTED',
                     },
                 },
             ])

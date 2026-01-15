@@ -86,7 +86,7 @@ export const useArticleAutoSave = () => {
                                 },
                                 category_id: null,
                                 is_current: false,
-                                visibility_status: 'PUBLIC',
+                                visibility_status: 'UNLISTED',
                             },
                             template_key: template?.key,
                         },

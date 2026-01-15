@@ -429,7 +429,7 @@ describe('KnowledgeEditorGuidance', () => {
         ).toBeInTheDocument()
     })
 
-    it('shows AI agent status toggle is checked by default in create mode', () => {
+    it('shows AI agent status toggle is unchecked by default in create mode', () => {
         // In create mode, no article loaded
         mockUseGuidanceArticle.mockReturnValue({
             guidanceArticle: undefined,
@@ -452,8 +452,8 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
-        // AI Agent status toggle should be checked by default (visible to AI)
-        expect(screen.getByRole('switch')).toBeChecked()
+        // AI Agent status toggle should be unchecked by default (hidden from AI until published)
+        expect(screen.getByRole('switch')).not.toBeChecked()
     })
 
     it('does not auto-save in create mode when form is invalid', () => {
