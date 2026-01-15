@@ -9,5 +9,12 @@
             var(--spacing-xxl);
         flex-direction: column;
         gap: var(--layout-spacing-m);
+
+        :global {
+            .rich-textarea-wrapper {
+                background-color: var(--elevation-neutral-mid) !important;
+                color: var(--content-neutral-default) !important;
+            }
+        }
     }
 }
