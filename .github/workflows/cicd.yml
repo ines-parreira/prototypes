@@ -23,7 +23,7 @@ jobs:
       assets-dir: apps/helpdesk/src/assets
       build-dir: apps/helpdesk/build
       bucket-path: web-app
-      node-version: "22.17.1"
+      node-version: "22.22.0"
     steps:
       - name: Workspace vars
         run: echo "empty step"
