@@ -16,6 +16,7 @@ import type {
     AutomatePlan,
     ConvertPlan,
     HelpdeskPlan,
+    PlanId,
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
@@ -163,7 +164,7 @@ const BillingProcessView = ({
         [productCancellationsQuery.data],
     )
     const getScheduledCancellationPlanId = (
-        cancellationsByPlanId: Map<string, string>,
+        cancellationsByPlanId: Map<PlanId, string>,
         plan?: AutomatePlan | SMSOrVoicePlan | ConvertPlan,
     ) => (plan ? cancellationsByPlanId.get(plan.plan_id) || null : null)
     const { totalCancelledAmount, cancelledProducts } = useMemo(() => {

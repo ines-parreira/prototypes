@@ -236,6 +236,60 @@ describe('NavigateToChangeBillingFrequency', () => {
         },
     )
 
+    it('should tell the user to contact us if some products are scheduled to cancel', async () => {
+        const cancellationsByPlanId = new Map([
+            [basicYearlyHelpdeskPlan.plan_id, '2025-12-31T23:59:59Z'],
+        ])
+
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <NavigateToChangeBillingFrequency
+                    {...props}
+                    cancellationsByPlanId={cancellationsByPlanId}
+                />
+            </MemoryRouter>,
+            store,
+        )
+
+        const button = screen.getByText('Change Frequency')
+        expect(button).toBeInTheDocument()
+        expect(button).toHaveClass(css.disabledText)
+        await act(() => userEvent.hover(button))
+
+        const tooltip = screen.getByRole('tooltip')
+        expect(tooltip).toBeInTheDocument()
+        expect(tooltip).toHaveTextContent(
+            'Some products are scheduled to cancel. To change your billing frequency or keep your products active, please',
+        )
+
+        const contact = screen.getByText('get in touch')
+        await act(() => userEvent.click(contact))
+        expect(contactBillingMock).toHaveBeenCalledWith(
+            TicketPurpose.CONTACT_US,
+        )
+    })
+
+    it('should not show cancellation tooltip when cancellationsByPlanId is empty', () => {
+        const cancellationsByPlanId = new Map()
+
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <NavigateToChangeBillingFrequency
+                    {...props}
+                    cancellationsByPlanId={cancellationsByPlanId}
+                />
+            </MemoryRouter>,
+            store,
+        )
+
+        const link = screen.getByText('Change Frequency')
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute(
+            'href',
+            '/app/settings/billing/payment/frequency',
+        )
+    })
+
     describe('BillingPaymentInformationChangeFrequencyClicked tracking', () => {
         it('should track event when Change Frequency link is clicked', async () => {
             renderWithStoreAndQueryClientProvider(

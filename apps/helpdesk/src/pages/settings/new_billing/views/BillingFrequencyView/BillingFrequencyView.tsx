@@ -12,6 +12,7 @@ import { isOtherCadenceUpgrade } from 'models/billing/utils'
 import Alert from 'pages/common/components/Alert/Alert'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
+import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
 import { getCorrespondingPlanAtCadence } from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
 import type { TicketPurpose } from 'state/billing/types'
 
@@ -78,6 +79,9 @@ const BillingFrequencyView = ({
     } = useBillingPlans({
         dispatchBillingError,
     })
+
+    const productCancellationsQuery = useProductCancellations()
+    const cancellationsByPlanId = productCancellationsQuery.data ?? new Map()
 
     const {
         currentPlans,
@@ -210,13 +214,18 @@ const BillingFrequencyView = ({
                     isOtherCadenceUpgrade(cadence, otherCadence),
             ) !== undefined
 
-        if (!cadenceUpgradeIsPossible || isCurrentSubscriptionCanceled) {
+        if (
+            !cadenceUpgradeIsPossible ||
+            isCurrentSubscriptionCanceled ||
+            cancellationsByPlanId.size > 0
+        ) {
             history.push(BILLING_PAYMENT_PATH)
         }
     }, [
         cadence,
         canUseQuarterlyBilling,
         isCurrentSubscriptionCanceled,
+        cancellationsByPlanId.size,
         history,
     ])
 

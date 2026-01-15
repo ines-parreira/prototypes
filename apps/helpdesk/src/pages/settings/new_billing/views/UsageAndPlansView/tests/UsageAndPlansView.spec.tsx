@@ -1173,4 +1173,82 @@ describe('UsageAndPlansView', () => {
             )
         })
     })
+
+    describe('Billing frequency changes with product cancellations', () => {
+        it('should disable frequency update when some products are scheduled to cancel', async () => {
+            mockUseProductCancellations.mockReturnValue({
+                loading: false,
+                error: undefined,
+                data: new Map([
+                    [
+                        basicMonthlyAutomationPlan.plan_id,
+                        '2025-12-31T23:59:59Z',
+                    ],
+                ]),
+            } as any)
+
+            const alteredStore = {
+                billing: fromJS(mockedBilling),
+                integrations: fromJS(mockedIntegrations),
+                currentAccount: fromJS({
+                    ...mockedAccount,
+                    current_subscription: {
+                        ...mockedAccount.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.plan_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            const { container } = renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                alteredStore,
+            )
+
+            const updateBillingFrequencyButton = container.querySelector(
+                '#update-billing-frequency',
+            )
+            expect(updateBillingFrequencyButton).toHaveClass('disabledText')
+            expect(updateBillingFrequencyButton).toHaveTextContent('Update')
+
+            await act(() => userEvent.hover(updateBillingFrequencyButton!))
+
+            expect(
+                screen.getByText(
+                    'Some products are scheduled to cancel. To change your billing frequency or keep your products active, please',
+                    { exact: false },
+                ),
+            )
+        })
+
+        it('should allow frequency update when no products are scheduled to cancel', () => {
+            mockUseProductCancellations.mockReturnValue({
+                loading: false,
+                error: undefined,
+                data: new Map(),
+            } as any)
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                store,
+            )
+
+            expect(screen.getByText('Update')).toHaveAttribute(
+                'href',
+                BILLING_PAYMENT_FREQUENCY_PATH,
+            )
+        })
+    })
 })

@@ -6,6 +6,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
 import { getCadenceName } from 'models/billing/utils'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
+import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
 import { BillingInformationSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
 import { BPOPartnerSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BPOPartnerSection'
 import { ConsultingAgencyPartnerSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/ConsultingAgencyPartnerSection'
@@ -29,6 +30,8 @@ const PaymentInformationView = ({
     const cadence = useAppSelector(getCurrentHelpdeskCadence) ?? Cadence.Month
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
     const { pathname } = useLocation()
+    const productCancellationsQuery = useProductCancellations()
+    const cancellationsByPlanId = productCancellationsQuery.data ?? new Map()
 
     useEffectOnce(() => {
         logEvent(SegmentEvent.BillingPaymentInformationTabVisited, {
@@ -56,6 +59,7 @@ const PaymentInformationView = ({
                     trackingEvent={
                         SegmentEvent.BillingPaymentInformationChangeFrequencyClicked
                     }
+                    cancellationsByPlanId={cancellationsByPlanId}
                 />
             </Section>
             {!shouldPayWithShopify ? <BillingInformationSection /> : null}

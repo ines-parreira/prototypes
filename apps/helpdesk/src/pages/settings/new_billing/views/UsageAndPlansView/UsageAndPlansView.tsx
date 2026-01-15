@@ -251,6 +251,7 @@ const UsageAndPlansView = ({
                         trackingEvent={
                             SegmentEvent.BillingUsageAndPlansChangeFrequencyClicked
                         }
+                        cancellationsByPlanId={cancellationsByPlanId}
                     />
                 </div>
             </div>

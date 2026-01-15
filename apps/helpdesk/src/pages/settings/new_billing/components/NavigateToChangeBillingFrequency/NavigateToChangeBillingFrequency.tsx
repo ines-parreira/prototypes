@@ -7,6 +7,7 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
+import type { PlanId } from 'models/billing/types'
 import { isLegacyAutomate, isOtherCadenceUpgrade } from 'models/billing/utils'
 import {
     getCurrentAutomatePlan,
@@ -26,6 +27,7 @@ export type NavigateToChangeBillingFrequencyProps = {
     tooltipPlacement: TooltipProps['placement']
     contactBilling: ContactBillingCallback
     trackingEvent: SegmentEvent
+    cancellationsByPlanId?: Map<PlanId, string>
 }
 
 export default function NavigateToChangeBillingFrequency({
@@ -33,6 +35,7 @@ export default function NavigateToChangeBillingFrequency({
     tooltipPlacement,
     contactBilling,
     trackingEvent,
+    cancellationsByPlanId,
 }: NavigateToChangeBillingFrequencyProps) {
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
@@ -80,6 +83,20 @@ export default function NavigateToChangeBillingFrequency({
                 <>
                     Your subscription is scheduled to cancel. To reactivate,
                     please{' '}
+                    <span
+                        className={css.link}
+                        onClick={() => contactBilling(TicketPurpose.CONTACT_US)}
+                    >
+                        get in touch
+                    </span>{' '}
+                    with our team.
+                </>
+            )
+        } else if (cancellationsByPlanId && cancellationsByPlanId.size > 0) {
+            toolTipContent = (
+                <>
+                    Some products are scheduled to cancel. To change your
+                    billing frequency or keep your products active, please{' '}
                     <span
                         className={css.link}
                         onClick={() => contactBilling(TicketPurpose.CONTACT_US)}

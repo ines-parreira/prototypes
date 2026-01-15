@@ -285,6 +285,24 @@ describe('BillingFrequencyView', () => {
         expect(mockedHistoryPush).toHaveBeenCalledWith(BILLING_PAYMENT_PATH)
     })
 
+    it('should redirect users if at least one product is scheduled to cancel', () => {
+        queryClient.setQueryData(['subscription'], {
+            current_billing_cycle_end_datetime: '2021-12-31T23:59:59+00:00',
+            current_billing_cycle_start_datetime: '2021-12-01T00:00:00+00:00',
+            downgrade_scheduled: true,
+            downgrades: [
+                {
+                    current_plan_id: basicMonthlyAutomationPlan.plan_id,
+                    scheduled_plan: null,
+                },
+            ],
+        })
+
+        renderBillingFrequencyView()
+
+        expect(mockedHistoryPush).toHaveBeenCalledWith(BILLING_PAYMENT_PATH)
+    })
+
     const cadenceCartesianProduct = cadenceValues.flatMap((a) =>
         cadenceValues.map((b) => [a, b]),
     )
