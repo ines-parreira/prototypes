@@ -9,6 +9,9 @@ import {
     Icon,
     Skeleton,
     Text,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
@@ -21,6 +24,58 @@ import {
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { TitleCell } from './TitleCell'
+
+const getCheckboxContent = (
+    originalCell: unknown,
+    info: unknown,
+): React.ReactNode => {
+    return typeof originalCell === 'function' ? originalCell(info) : null
+}
+
+const createSelectableColumnWithTooltip =
+    (): ColumnDef<GroupedKnowledgeItem> => {
+        const baseSelectableColumn =
+            createSelectableColumn<GroupedKnowledgeItem>()
+        const originalCell = baseSelectableColumn.cell
+
+        return {
+            ...baseSelectableColumn,
+            cell: (info) => {
+                const isGrouped = info.row.original.isGrouped
+                const rowType = info.row.original.type
+                const canSelect = info.row.getCanSelect()
+
+                const isNonClickableType =
+                    rowType === KnowledgeType.Document ||
+                    rowType === KnowledgeType.URL ||
+                    rowType === KnowledgeType.Domain
+
+                const shouldShowTooltip =
+                    isGrouped && isNonClickableType && !canSelect
+
+                const checkboxContent = getCheckboxContent(originalCell, info)
+
+                if (shouldShowTooltip) {
+                    return (
+                        <Tooltip placement="top left">
+                            <TooltipTrigger>
+                                <div>{checkboxContent}</div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <Text size="sm">
+                                    This is a folder of snippets created from an
+                                    external source. Click the folder to manage
+                                    the source and its contents.
+                                </Text>
+                            </TooltipContent>
+                        </Tooltip>
+                    )
+                }
+
+                return checkboxContent
+            },
+        }
+    }
 
 export const getColumns = (
     searchTerm: string = '',
@@ -35,7 +90,7 @@ export const getColumns = (
 ): ColumnDef<GroupedKnowledgeItem>[] => {
     // Base columns - always present
     const baseColumns: ColumnDef<GroupedKnowledgeItem>[] = [
-        createSelectableColumn<GroupedKnowledgeItem>(),
+        createSelectableColumnWithTooltip(),
         {
             ...createSortableColumn<GroupedKnowledgeItem>(
                 'title',
