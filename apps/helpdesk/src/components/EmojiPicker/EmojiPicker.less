@@ -1,0 +1,111 @@
+@import '~css/typography';
+
+:local {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxs);
+        width: 100%;
+    }
+
+    .label {
+        .body-medium();
+        margin-bottom: 0px;
+    }
+
+    .required {
+        color: var(--content-error-primary);
+        margin-left: 2px;
+    }
+
+    .inputContainer {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 8px;
+        background: var(--elevation-neutral-default);
+        transition: border-color 0.2s ease;
+
+        &:hover:not(.disabled):not(.error) {
+            border-color: var(--border-neutral-secondary);
+        }
+
+        &.focused:not(.error) {
+            border-color: var(--border-accent-default);
+            outline: 2px solid var(--border-accent-default);
+            outline-offset: -1px;
+        }
+
+        &.error {
+            border-color: var(--border-error-primary);
+            outline: 2px solid var(--border-error-primary);
+            outline-offset: -1px;
+        }
+
+        &.disabled {
+            background: var(--elevation-neutral-bg);
+            cursor: not-allowed;
+        }
+    }
+
+    .emojiButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 var(--spacing-xs);
+        border: none;
+        border-right: 1px solid var(--border-neutral-default);
+        border-radius: 8px 0 0 8px;
+        background: transparent;
+        cursor: pointer;
+        flex-shrink: 0;
+        align-self: stretch;
+
+        &:hover:not(:disabled) {
+            opacity: 0.7;
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    }
+
+    .input {
+        .body-regular();
+        display: flex;
+        padding: var(--spacing-xxs) var(--spacing-xs);
+        align-items: center;
+        flex: 1 0 0;
+        border: none;
+        border-radius: 0 8px 8px 0;
+        background: transparent;
+        color: var(--content-neutral-default);
+        outline: none;
+
+        &::placeholder {
+            color: var(--content-neutral-tertiary);
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+    }
+
+    .errorMessage {
+        .caption-regular();
+        color: var(--content-error-primary);
+    }
+
+    .caption {
+        .caption-regular();
+        color: var(--content-neutral-secondary);
+    }
+
+    .pickerContainer {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+    }
+}
