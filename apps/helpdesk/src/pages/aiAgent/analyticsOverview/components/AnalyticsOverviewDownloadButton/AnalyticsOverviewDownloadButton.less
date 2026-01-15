@@ -1,0 +1,36 @@
+:local {
+    .buttonWrapper {
+        button[class^='ui-button-wrapper'] [class^='ui-button-content'] {
+            padding-right: var(--spacing-xs);
+        }
+    }
+
+    .chevronSeparator {
+        position: relative;
+        padding-left: var(--spacing-xs);
+        margin-left: var(--spacing-xs);
+        height: 20px;
+        display: flex;
+        align-items: center;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: var(--content-inverted-default);
+        }
+
+        svg {
+            transition: transform 0.2s ease-in-out;
+        }
+    }
+
+    .chevronRotated {
+        svg {
+            transform: rotate(180deg);
+        }
+    }
+}

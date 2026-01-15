@@ -1,7 +1,6 @@
 import { createRef } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useExportDashboardToPDF } from 'pages/aiAgent/analyticsOverview/hooks/useExportDashboardToPDF'
@@ -9,19 +8,22 @@ import { useExportDashboardToPDF } from 'pages/aiAgent/analyticsOverview/hooks/u
 import { AnalyticsOverviewDownloadButton } from './AnalyticsOverviewDownloadButton'
 
 jest.mock('pages/aiAgent/analyticsOverview/hooks/useExportDashboardToPDF')
-jest.mock('@repo/logging', () => ({
-    logEvent: jest.fn(),
-    SegmentEvent: {
-        StatDownloadClicked: 'stat_download_clicked',
-    },
+jest.mock('appNode', () => ({
+    useAppNode: () => document.body,
 }))
 
 const mockExportToPDF = jest.fn()
+const mockExportToCSV = jest.fn()
 
 const mockedUseExportDashboardToPDF = jest.mocked(useExportDashboardToPDF)
 
+const mockUseCsvExport = jest.fn().mockReturnValue({
+    triggerDownload: mockExportToCSV,
+    isLoading: false,
+})
+
 describe('AnalyticsOverviewDownloadButton', () => {
-    const dashboardRef = createRef<HTMLDivElement>()
+    const contentRef = createRef<HTMLDivElement>()
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -32,34 +34,102 @@ describe('AnalyticsOverviewDownloadButton', () => {
             isError: false,
             error: null,
         })
+        mockUseCsvExport.mockReturnValue({
+            triggerDownload: mockExportToCSV,
+            isLoading: false,
+        })
     })
 
     it('should render the export button', () => {
-        render(<AnalyticsOverviewDownloadButton dashboardRef={dashboardRef} />)
+        render(
+            <AnalyticsOverviewDownloadButton
+                contentRef={contentRef}
+                useCsvExport={mockUseCsvExport}
+            />,
+        )
 
         expect(
             screen.getByRole('button', { name: /export/i }),
         ).toBeInTheDocument()
     })
 
-    it('should call exportToPDF and log event when clicked', async () => {
+    it('should open dropdown when button is clicked', async () => {
         const user = userEvent.setup()
-        render(<AnalyticsOverviewDownloadButton dashboardRef={dashboardRef} />)
+        render(
+            <AnalyticsOverviewDownloadButton
+                contentRef={contentRef}
+                useCsvExport={mockUseCsvExport}
+            />,
+        )
 
         const button = screen.getByRole('button', { name: /export/i })
+        await act(() => user.click(button))
 
-        await user.click(button)
-
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.StatDownloadClicked,
-            {
-                name: 'analytics-overview',
-            },
-        )
-        expect(mockExportToPDF).toHaveBeenCalledWith(dashboardRef)
+        expect(screen.getByText('Export as CSV')).toBeInTheDocument()
+        expect(screen.getByText('Export as PDF')).toBeInTheDocument()
     })
 
-    it('should show loading state while exporting', () => {
+    it('should call exportToCSV when "Export as CSV" is clicked', async () => {
+        const user = userEvent.setup()
+        render(
+            <AnalyticsOverviewDownloadButton
+                contentRef={contentRef}
+                useCsvExport={mockUseCsvExport}
+            />,
+        )
+
+        const button = screen.getByRole('button', { name: /export/i })
+        await act(() => user.click(button))
+
+        const csvOption = screen.getByText('Export as CSV')
+        await act(() => user.click(csvOption))
+
+        expect(mockExportToCSV).toHaveBeenCalled()
+    })
+
+    it('should call exportToPDF when "Export as PDF" is clicked', async () => {
+        const user = userEvent.setup()
+        render(
+            <AnalyticsOverviewDownloadButton
+                contentRef={contentRef}
+                useCsvExport={mockUseCsvExport}
+            />,
+        )
+
+        const button = screen.getByRole('button', { name: /export/i })
+        await act(() => user.click(button))
+
+        const pdfOption = screen.getByText('Export as PDF')
+        await act(() => user.click(pdfOption))
+
+        expect(mockExportToPDF).toHaveBeenCalledWith(contentRef, undefined)
+    })
+
+    it('should call exportToPDF with custom filename when pdfFileName is provided', async () => {
+        const user = userEvent.setup()
+        render(
+            <AnalyticsOverviewDownloadButton
+                contentRef={contentRef}
+                useCsvExport={mockUseCsvExport}
+                pdfFileName="ai-agent-all-agents"
+            />,
+        )
+
+        const button = screen.getByRole('button', { name: /export/i })
+        await act(() => user.click(button))
+
+        const pdfOption = screen.getByText('Export as PDF')
+        await act(() => user.click(pdfOption))
+
+        expect(mockExportToPDF).toHaveBeenCalledWith(
+            contentRef,
+            expect.stringMatching(
+                /^ai-agent-all-agents-\d{4}-\d{2}-\d{2}\.pdf$/,
+            ),
+        )
+    })
+
+    it('should show loading state while PDF is exporting', () => {
         mockedUseExportDashboardToPDF.mockReturnValue({
             exportToPDF: mockExportToPDF,
             isLoading: true,
@@ -68,40 +138,46 @@ describe('AnalyticsOverviewDownloadButton', () => {
             error: null,
         })
 
-        render(<AnalyticsOverviewDownloadButton dashboardRef={dashboardRef} />)
+        render(
+            <AnalyticsOverviewDownloadButton
+                contentRef={contentRef}
+                useCsvExport={mockUseCsvExport}
+            />,
+        )
 
         const button = screen.getByRole('button', { name: /exporting/i })
         expect(button).toBeInTheDocument()
+        expect(button).toBeDisabled()
     })
 
-    it('should show success state after export is complete', () => {
-        mockedUseExportDashboardToPDF.mockReturnValue({
-            exportToPDF: mockExportToPDF,
-            isLoading: false,
-            isSuccess: true,
-            isError: false,
-            error: null,
+    it('should disable button while data is loading but show "Export" text', () => {
+        mockUseCsvExport.mockReturnValue({
+            triggerDownload: mockExportToCSV,
+            isLoading: true,
         })
 
-        render(<AnalyticsOverviewDownloadButton dashboardRef={dashboardRef} />)
+        render(
+            <AnalyticsOverviewDownloadButton
+                contentRef={contentRef}
+                useCsvExport={mockUseCsvExport}
+            />,
+        )
 
-        expect(
-            screen.getByRole('button', { name: /exported/i }),
-        ).toBeInTheDocument()
+        const button = screen.getByRole('button', { name: /export/i })
+        expect(button).toBeInTheDocument()
+        expect(button).toBeDisabled()
+        expect(screen.queryByText('Exporting...')).not.toBeInTheDocument()
     })
 
-    it('should be enabled after success state', () => {
-        mockedUseExportDashboardToPDF.mockReturnValue({
-            exportToPDF: mockExportToPDF,
-            isLoading: false,
-            isSuccess: true,
-            isError: false,
-            error: null,
-        })
+    it('should be enabled when not loading', () => {
+        render(
+            <AnalyticsOverviewDownloadButton
+                contentRef={contentRef}
+                useCsvExport={mockUseCsvExport}
+            />,
+        )
 
-        render(<AnalyticsOverviewDownloadButton dashboardRef={dashboardRef} />)
-
-        const button = screen.getByRole('button', { name: /exported/i })
+        const button = screen.getByRole('button', { name: /export/i })
         expect(button).not.toBeDisabled()
     })
 })

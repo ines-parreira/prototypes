@@ -63,7 +63,7 @@ export const AnalyticsOverviewAutomatedInteractionsComboChart = () => {
             {chartType === 'donut' ? (
                 <DonutChart
                     data={filteredChartData ?? []}
-                    containerHeight={320}
+                    containerHeight={280}
                     period={
                         cleanStatsFilters?.period
                             ? {
@@ -81,7 +81,7 @@ export const AnalyticsOverviewAutomatedInteractionsComboChart = () => {
             ) : (
                 <BarChart
                     data={filteredChartData ?? []}
-                    containerHeight={320}
+                    containerHeight={280}
                     isLoading={isLoading}
                     period={{
                         start_datetime: moment(

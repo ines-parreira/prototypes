@@ -45,6 +45,11 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
         expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
+
+        const csvProducer = config.csvProducer?.[0]
+        if (csvProducer?.type === DataExportFormat.Trend) {
+            expect(csvProducer.metricFormat).toBe('decimal-to-percent')
+        }
     })
 
     it('should have automated interactions card config', () => {
@@ -90,6 +95,7 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config).toBeDefined()
         expect(config.label).toBe('Automated interactions')
         expect(config.chartType).toBe(ChartType.Graph)
+        expect(config.csvProducer).toBeNull()
     })
 
     it('should have automation line chart config', () => {
@@ -101,6 +107,7 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config).toBeDefined()
         expect(config.label).toBe('Automation trend over time')
         expect(config.chartType).toBe(ChartType.Graph)
+        expect(config.csvProducer).toBeNull()
     })
 
     it('should have performance table config', () => {
@@ -112,6 +119,7 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config).toBeDefined()
         expect(config.label).toBe('Performance breakdown')
         expect(config.chartType).toBe(ChartType.Graph)
+        expect(config.csvProducer).toBeNull()
     })
 
     it('should have correct report filters', () => {
@@ -202,60 +210,39 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(typeof csvProducer?.fetch).toBe('function')
     })
 
-    it('should have fetch function for automated interactions by skill', async () => {
+    it('should have null csvProducer for automation rate combo chart', () => {
+        const config =
+            AnalyticsOverviewReportConfig.charts[
+                AnalyticsOverviewChart.AutomationRateComboChart
+            ]
+
+        expect(config.csvProducer).toBeNull()
+    })
+
+    it('should have null csvProducer for automated interactions combo chart', () => {
         const config =
             AnalyticsOverviewReportConfig.charts[
                 AnalyticsOverviewChart.AutomatedInteractionsComboChart
             ]
 
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
+        expect(config.csvProducer).toBeNull()
     })
 
-    it('should have fetch function for automation trend data', async () => {
+    it('should have null csvProducer for automation line chart', () => {
         const config =
             AnalyticsOverviewReportConfig.charts[
                 AnalyticsOverviewChart.AutomationLineChart
             ]
 
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-
-        if (csvProducer && typeof csvProducer.fetch === 'function') {
-            const result = await (csvProducer.fetch as any)()
-            expect(result).toBeDefined()
-            expect(result).toHaveProperty('isLoading')
-            expect(result).toHaveProperty('fileName')
-            expect(result).toHaveProperty('files')
-        }
+        expect(config.csvProducer).toBeNull()
     })
 
-    it('should have fetch function for performance breakdown', async () => {
+    it('should have null csvProducer for performance table', () => {
         const config =
             AnalyticsOverviewReportConfig.charts[
                 AnalyticsOverviewChart.PerformanceTable
             ]
 
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-
-        if (csvProducer && typeof csvProducer.fetch === 'function') {
-            const result = await (csvProducer.fetch as any)()
-            expect(result).toBeDefined()
-            expect(result).toHaveProperty('isLoading')
-            expect(result).toHaveProperty('fileName')
-            expect(result).toHaveProperty('files')
-        }
+        expect(config.csvProducer).toBeNull()
     })
 })

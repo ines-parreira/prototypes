@@ -70,7 +70,7 @@ export const AutomationRateComboChart = () => {
             {chartType === 'donut' ? (
                 <DonutChart
                     data={filteredChartData ?? []}
-                    containerHeight={320}
+                    containerHeight={280}
                     period={
                         cleanStatsFilters?.period
                             ? {
@@ -89,7 +89,7 @@ export const AutomationRateComboChart = () => {
             ) : (
                 <BarChart
                     data={filteredChartData ?? []}
-                    containerHeight={320}
+                    containerHeight={280}
                     isLoading={isLoading}
                     valueFormatter={(value) => `${value}%`}
                     period={{

@@ -20,32 +20,6 @@ import { AnalyticsOverviewPerformanceTable } from './charts/AnalyticsOverviewPer
 import { AnalyticsOverviewTimeSavedCard } from './charts/AnalyticsOverviewTimeSavedCard'
 import { AutomationRateComboChart } from './components/AutomationRateComboChart/AutomationRateComboChart'
 
-// Mock fetch functions - these will be replaced with real data fetchers later
-const fetchAutomationRateByFeatureData = async () =>
-    ({
-        isLoading: false,
-        fileName: 'automation-rate-by-feature.csv',
-        files: {},
-    }) as any
-const fetchAutomatedInteractionsBySkillData = async () =>
-    ({
-        isLoading: false,
-        fileName: 'automated-interactions-by-skill.csv',
-        files: {},
-    }) as any
-const fetchAutomationTrendData = async () =>
-    ({
-        isLoading: false,
-        fileName: 'automation-trend.csv',
-        files: {},
-    }) as any
-const fetchPerformanceBreakdown = async () =>
-    ({
-        isLoading: false,
-        fileName: 'performance-breakdown.csv',
-        files: {},
-    }) as any
-
 export enum AnalyticsOverviewChart {
     AutomationRateCard = 'automation_rate_card',
     AutomatedInteractionsCard = 'automated_interactions_card',
@@ -70,7 +44,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchAutomationRateTrend,
-                        metricFormat: 'decimal',
+                        metricFormat: 'decimal-to-percent',
                     },
                 ],
                 description:
@@ -111,7 +85,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchAutomationCostSavedTrend,
-                        metricFormat: 'decimal',
+                        metricFormat: 'currency',
                     },
                 ],
                 description: 'Cost savings from automation',
@@ -120,12 +94,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
             [AnalyticsOverviewChart.AutomationRateComboChart]: {
                 chartComponent: AutomationRateComboChart,
                 label: 'Overall automation rate',
-                csvProducer: [
-                    {
-                        type: DataExportFormat.Table,
-                        fetch: fetchAutomationRateByFeatureData,
-                    },
-                ],
+                csvProducer: null,
                 description: 'Breakdown of automation rate by feature',
                 chartType: ChartType.Graph,
             },
@@ -133,36 +102,21 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 chartComponent:
                     AnalyticsOverviewAutomatedInteractionsComboChart,
                 label: 'Automated interactions',
-                csvProducer: [
-                    {
-                        type: DataExportFormat.Table,
-                        fetch: fetchAutomatedInteractionsBySkillData,
-                    },
-                ],
+                csvProducer: null,
                 description: 'Breakdown of automated interactions by skill',
                 chartType: ChartType.Graph,
             },
             [AnalyticsOverviewChart.AutomationLineChart]: {
                 chartComponent: AnalyticsOverviewLineChart,
                 label: 'Automation trend over time',
-                csvProducer: [
-                    {
-                        type: DataExportFormat.Table,
-                        fetch: fetchAutomationTrendData,
-                    },
-                ],
+                csvProducer: null,
                 description: 'Automation metrics trend over time',
                 chartType: ChartType.Graph,
             },
             [AnalyticsOverviewChart.PerformanceTable]: {
                 chartComponent: AnalyticsOverviewPerformanceTable,
                 label: 'Performance breakdown',
-                csvProducer: [
-                    {
-                        type: DataExportFormat.Table,
-                        fetch: fetchPerformanceBreakdown,
-                    },
-                ],
+                csvProducer: null,
                 description: 'Performance breakdown by feature',
                 chartType: ChartType.Graph,
             },

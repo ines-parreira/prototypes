@@ -56,7 +56,7 @@ export const fetchTimeSavedByAgentsTrend = async (
     return Promise.all([
         fetchFilteredAutomatedInteractions(statsFilters, userTimezone),
         fetchTicketHandleTimeTrend(statsFilters, userTimezone),
-    ]).then(([ticketHandleTimeTrend, automatedInteractionTrend]) => ({
+    ]).then(([automatedInteractionTrend, ticketHandleTimeTrend]) => ({
         data: calculateTimeSavedByAgents(
             ticketHandleTimeTrend,
             automatedInteractionTrend,

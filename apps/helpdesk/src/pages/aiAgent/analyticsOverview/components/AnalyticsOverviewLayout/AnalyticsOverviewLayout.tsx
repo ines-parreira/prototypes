@@ -12,13 +12,14 @@ import { STATS_ROUTES } from 'routes/constants'
 
 import { AnalyticsOverviewReportConfig } from '../../AnalyticsOverviewReportConfig'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../../config/defaultLayoutConfig'
+import { useExportAnalyticsOverviewToCSV } from '../../hooks/useExportAnalyticsOverviewToCSV'
 import { AnalyticsOverviewDownloadButton } from '../AnalyticsOverviewDownloadButton/AnalyticsOverviewDownloadButton'
 import { DashboardLayoutRenderer } from '../DashboardLayoutRenderer/DashboardLayoutRenderer'
 
 import css from './AnalyticsOverviewLayout.less'
 
 export const AnalyticsOverviewLayout = () => {
-    const dashboardRef = useRef<HTMLDivElement>(null)
+    const contentRef = useRef<HTMLDivElement>(null)
     const { onAnalyticsReportViewed } = useAiAgentAnalyticsDashboardTracking()
 
     useEffectOnce(() => {
@@ -32,7 +33,13 @@ export const AnalyticsOverviewLayout = () => {
     })
 
     return (
-        <Box display="flex" flexDirection="column" flex={1} minWidth="0px">
+        <Box
+            ref={contentRef}
+            display="flex"
+            flexDirection="column"
+            flex={1}
+            minWidth="0px"
+        >
             <Box
                 flexDirection="column"
                 justifyContent="space-between"
@@ -48,7 +55,8 @@ export const AnalyticsOverviewLayout = () => {
                 >
                     <Heading size="lg">Overview</Heading>
                     <AnalyticsOverviewDownloadButton
-                        dashboardRef={dashboardRef}
+                        contentRef={contentRef}
+                        useCsvExport={useExportAnalyticsOverviewToCSV}
                     />
                 </Box>
                 <FiltersPanelWrapper
@@ -67,13 +75,7 @@ export const AnalyticsOverviewLayout = () => {
                     compact
                 />
             </Box>
-            <Box
-                ref={dashboardRef}
-                display="flex"
-                flexDirection="column"
-                flex={1}
-                minWidth="0px"
-            >
+            <Box display="flex" flexDirection="column" flex={1} minWidth="0px">
                 <DashboardLayoutRenderer
                     layoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
                     reportConfig={AnalyticsOverviewReportConfig}

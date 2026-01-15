@@ -256,7 +256,7 @@ export const DonutChart = ({
                     </Box>
 
                     <Box flexDirection="column" gap="xxs" width="100%">
-                        {Array.from({ length: 3 }).map((_, index) => (
+                        {Array.from({ length: 2 }).map((_, index) => (
                             <Box
                                 key={index}
                                 flexDirection="row"

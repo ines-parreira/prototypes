@@ -7,6 +7,101 @@ import moment from 'moment'
 
 type ExportStatus = 'idle' | 'loading' | 'success' | 'error'
 
+const fetchSvgSprite = async (url: string): Promise<Document | null> => {
+    try {
+        const baseUrl = url.split('#')[0]
+        const response = await fetch(baseUrl)
+        const svgText = await response.text()
+        const parser = new DOMParser()
+        return parser.parseFromString(svgText, 'image/svg+xml')
+    } catch {
+        return null
+    }
+}
+
+const hideInteractiveElements = (element: HTMLElement): (() => void) => {
+    const restorationCallbacks: Array<() => void> = []
+
+    const elementsToHide = element.querySelectorAll<HTMLElement>(
+        '[class*="buttongroup-group"], [data-pdf-exclude]',
+    )
+
+    elementsToHide.forEach((el) => {
+        const originalDisplay = el.style.display
+        el.style.display = 'none'
+
+        restorationCallbacks.push(() => {
+            el.style.display = originalDisplay
+        })
+    })
+
+    return () => {
+        restorationCallbacks.forEach((restore) => restore())
+    }
+}
+
+const inlineSvgUseElements = async (
+    element: HTMLElement,
+): Promise<() => void> => {
+    const svgUseElements = element.querySelectorAll('svg use')
+    const restorationCallbacks: Array<() => void> = []
+    const spriteCache = new Map<string, Document | null>()
+
+    for (const useElement of svgUseElements) {
+        const href =
+            useElement.getAttribute('href') ||
+            useElement.getAttribute('xlink:href')
+        if (!href) continue
+
+        const svgParent = useElement.closest('svg')
+        if (!svgParent) continue
+
+        const originalContent = svgParent.innerHTML
+        const originalViewBox = svgParent.getAttribute('viewBox')
+
+        let symbolElement: Element | null = null
+
+        if (href.startsWith('#')) {
+            symbolElement = document.getElementById(href.slice(1))
+        } else if (href.includes('#')) {
+            const [baseUrl, symbolId] = href.split('#')
+
+            if (!spriteCache.has(baseUrl)) {
+                spriteCache.set(baseUrl, await fetchSvgSprite(href))
+            }
+
+            const spriteDoc = spriteCache.get(baseUrl)
+            if (spriteDoc) {
+                symbolElement = spriteDoc.getElementById(symbolId)
+            }
+        }
+
+        if (symbolElement) {
+            const symbolViewBox = symbolElement.getAttribute('viewBox')
+            if (symbolViewBox && !originalViewBox) {
+                svgParent.setAttribute('viewBox', symbolViewBox)
+            }
+
+            const childNodes = Array.from(symbolElement.childNodes)
+            svgParent.innerHTML = ''
+            childNodes.forEach((node) => {
+                svgParent.appendChild(node.cloneNode(true))
+            })
+
+            restorationCallbacks.push(() => {
+                svgParent.innerHTML = originalContent
+                if (symbolViewBox && !originalViewBox) {
+                    svgParent.removeAttribute('viewBox')
+                }
+            })
+        }
+    }
+
+    return () => {
+        restorationCallbacks.forEach((restore) => restore())
+    }
+}
+
 export const useExportDashboardToPDF = () => {
     const [status, setStatus] = useState<ExportStatus>('idle')
     const [error, setError] = useState<Error | null>(null)
@@ -40,6 +135,10 @@ export const useExportDashboardToPDF = () => {
                 allowTaint: false,
                 foreignObjectRendering: false,
                 imageTimeout: 0,
+                onclone: async (clonedDoc) => {
+                    hideInteractiveElements(clonedDoc.body)
+                    await inlineSvgUseElements(clonedDoc.body)
+                },
             })
 
             window.scrollTo({

@@ -70,7 +70,7 @@ export const TotalSalesByProductComboChart = () => {
             {chartType === 'donut' ? (
                 <DonutChart
                     data={filteredChartData}
-                    containerHeight={320}
+                    containerHeight={280}
                     period={period}
                     isLoading={isLoading}
                     valueFormatter={valueFormatter}
@@ -78,7 +78,7 @@ export const TotalSalesByProductComboChart = () => {
             ) : (
                 <BarChart
                     data={filteredChartData}
-                    containerHeight={320}
+                    containerHeight={280}
                     isLoading={isLoading}
                     valueFormatter={valueFormatter}
                     yAxisFormatter={valueFormatter}

@@ -24,6 +24,9 @@ import {
     AiAgentAnalyticsContent,
     AiAgentAnalyticsQueryParams,
 } from '../constants'
+import { useExportAiAgentAllAgentsToCSV } from '../hooks/useExportAiAgentAllAgentsToCSV'
+import { useExportAiAgentShoppingAssistantToCSV } from '../hooks/useExportAiAgentShoppingAssistantToCSV'
+import { useExportAiAgentSupportAgentToCSV } from '../hooks/useExportAiAgentSupportAgentToCSV'
 
 import css from './AnalyticsAiAgentLayout.less'
 
@@ -50,7 +53,7 @@ const HEADER_NAVBAR_ITEMS = [
 export const AnalyticsAiAgentLayout = () => {
     const location = useLocation()
     const history = useHistory()
-    const dashboardRef = useRef<HTMLDivElement>(null)
+    const contentRef = useRef<HTMLDivElement>(null)
     const { onAnalyticsReportViewed, onAnalyticsAiAgentTabSelected } =
         useAiAgentAnalyticsDashboardTracking()
 
@@ -73,6 +76,18 @@ export const AnalyticsAiAgentLayout = () => {
             HEADER_NAVBAR_ITEMS.find((item) => item.param === activeTab) ||
             HEADER_NAVBAR_ITEMS[0]
         )
+    }, [activeTab])
+
+    const useCsvExport = useMemo(() => {
+        switch (activeTab) {
+            case AiAgentAnalyticsQueryParams.SupportAgent:
+                return useExportAiAgentSupportAgentToCSV
+            case AiAgentAnalyticsQueryParams.ShoppingAssistant:
+                return useExportAiAgentShoppingAssistantToCSV
+            case AiAgentAnalyticsQueryParams.AllAgents:
+            default:
+                return useExportAiAgentAllAgentsToCSV
+        }
     }, [activeTab])
 
     const renderDashboard = useMemo(() => {
@@ -126,7 +141,13 @@ export const AnalyticsAiAgentLayout = () => {
     }
 
     return (
-        <Box display="flex" flexDirection="column" flex={1} minWidth="0px">
+        <Box
+            ref={contentRef}
+            display="flex"
+            flexDirection="column"
+            flex={1}
+            minWidth="0px"
+        >
             <Box
                 flexDirection="column"
                 justifyContent="space-between"
@@ -140,7 +161,10 @@ export const AnalyticsAiAgentLayout = () => {
                 >
                     <Heading size="lg">AI Agent</Heading>
                     <AnalyticsOverviewDownloadButton
-                        dashboardRef={dashboardRef}
+                        key={activeTab}
+                        contentRef={contentRef}
+                        useCsvExport={useCsvExport}
+                        pdfFileName={`ai-agent-${activeTab}`}
                     />
                 </Box>
                 <Box width="100%" display="flex" flexDirection="column">
@@ -174,13 +198,7 @@ export const AnalyticsAiAgentLayout = () => {
                     />
                 </Box>
             </Box>
-            <Box
-                ref={dashboardRef}
-                display="flex"
-                flexDirection="column"
-                flex={1}
-                minWidth="0px"
-            >
+            <Box display="flex" flexDirection="column" flex={1} minWidth="0px">
                 {renderDashboard}
             </Box>
         </Box>
