@@ -1,8 +1,15 @@
-import { Button, Heading, Text } from '@gorgias/axiom'
+import { Heading, Text } from '@gorgias/axiom'
+
+import ImportAction from './MetafieldsTable/ImportAction'
 
 import styles from './EmptyMetafieldsState.less'
 
-export default function EmptyMetafieldsState() {
+type EmptyMetafieldsStateProps = {
+    handleOpenCategoriesModal: () => void
+}
+export default function EmptyMetafieldsState({
+    handleOpenCategoriesModal,
+}: EmptyMetafieldsStateProps) {
     return (
         <div className={styles.emptyMetafieldsState}>
             <Heading>You haven’t added any metafields yet</Heading>
@@ -11,7 +18,7 @@ export default function EmptyMetafieldsState() {
                 to use the data in customer profiles, macros, rules, flows,
                 views and advanced search.{' '}
             </Text>
-            <Button leadingSlot="add">Import</Button>
+            <ImportAction onImportClick={handleOpenCategoriesModal} />
         </div>
     )
 }

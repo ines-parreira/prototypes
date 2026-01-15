@@ -6,7 +6,12 @@ import EmptyMetafieldsState from '../EmptyMetafieldsState'
 
 describe('EmptyMetafieldsState', () => {
     it('should render the heading correctly', () => {
-        render(<EmptyMetafieldsState />)
+        const handleOpenCategoriesModal = jest.fn()
+        render(
+            <EmptyMetafieldsState
+                handleOpenCategoriesModal={handleOpenCategoriesModal}
+            />,
+        )
 
         expect(
             screen.getByText(/Once you import them, you can manage them here/i),

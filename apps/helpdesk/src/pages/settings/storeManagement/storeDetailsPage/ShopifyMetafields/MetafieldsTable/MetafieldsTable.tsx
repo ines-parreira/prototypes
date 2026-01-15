@@ -193,7 +193,11 @@ export default function MetafieldsTable<TData, TValue>({
                         table={table}
                         renderEmptyStateComponent={() => (
                             <Box alignItems="center" justifyContent="center">
-                                <EmptyMetafieldsState />
+                                <EmptyMetafieldsState
+                                    handleOpenCategoriesModal={
+                                        handleOpenCategoriesModal
+                                    }
+                                />
                             </Box>
                         )}
                     />
