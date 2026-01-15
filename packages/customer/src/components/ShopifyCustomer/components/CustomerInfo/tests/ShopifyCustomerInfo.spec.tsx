@@ -2,23 +2,33 @@ import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { mockListIntegrationsHandler } from '@gorgias/helpdesk-mocks'
-import type { Integration } from '@gorgias/helpdesk-types'
+import {
+    mockIntegration,
+    mockListIntegrationsHandler,
+} from '@gorgias/helpdesk-mocks'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { CustomerInfo } from '../'
 import { render, testAppQueryClient } from '../../../../../tests/render.utils'
 
-const mockShopifyIntegration = {
+const mockShopifyIntegration = mockIntegration({
     id: 1,
     name: 'Test Shopify Store',
-    type: 'shopify',
+    type: IntegrationType.Shopify,
     created_datetime: '2024-01-01T00:00:00Z',
     meta: {},
-} as Integration
+})
 
+const mockSecondShopifyIntegration = mockIntegration({
+    id: 2,
+    name: 'Second Shopify Store',
+    type: IntegrationType.Shopify,
+    created_datetime: '2024-01-02T00:00:00Z',
+    meta: {},
+})
 const mockListIntegrations = mockListIntegrationsHandler(async () =>
     HttpResponse.json({
-        data: [mockShopifyIntegration],
+        data: [mockShopifyIntegration, mockSecondShopifyIntegration],
         meta: {
             next_cursor: null,
             prev_cursor: null,
@@ -70,29 +80,6 @@ describe('CustomerInfo', () => {
     })
 
     it('calls onStoreChange when user selects a different store', async () => {
-        const secondIntegration = {
-            id: 2,
-            name: 'Second Shopify Store',
-            type: 'shopify',
-            created_datetime: '2024-01-02T00:00:00Z',
-            meta: {},
-        } as Integration
-
-        const mockListIntegrationsWithTwo = mockListIntegrationsHandler(
-            async () =>
-                HttpResponse.json({
-                    data: [mockShopifyIntegration, secondIntegration],
-                    meta: {
-                        next_cursor: null,
-                        prev_cursor: null,
-                    },
-                    object: 'list',
-                    uri: '/api/integrations',
-                }),
-        )
-
-        server.use(mockListIntegrationsWithTwo.handler)
-
         const onStoreChange = vi.fn()
         const { user } = render(<CustomerInfo onStoreChange={onStoreChange} />)
 
@@ -112,9 +99,6 @@ describe('CustomerInfo', () => {
             ),
         )
 
-        const searchInput = screen.getByRole('searchbox', { name: /search/i })
-        await act(() => user.click(searchInput))
-
         await waitFor(() => {
             expect(
                 screen.getByRole('option', { name: /second shopify store/i }),
@@ -127,6 +111,8 @@ describe('CustomerInfo', () => {
             ),
         )
 
-        expect(onStoreChange).toHaveBeenCalledWith(secondIntegration.id)
+        expect(onStoreChange).toHaveBeenCalledWith(
+            mockSecondShopifyIntegration.id,
+        )
     })
 })
