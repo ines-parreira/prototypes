@@ -132,6 +132,14 @@ describe('OpportunitiesContent', () => {
     const mockUpsertFeedback = jest.fn()
     const mockProcessOpportunity = jest.fn()
 
+    const selectedOpportunity: Opportunity = {
+        id: '1',
+        key: 'ai_1',
+        title: 'Test opportunity',
+        content: 'Test content',
+        type: OpportunityType.FILL_KNOWLEDGE_GAP,
+    }
+
     const defaultProps = {
         selectedOpportunity: null,
         shopName: 'test-shop',
@@ -231,14 +239,6 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should render opportunity details and action buttons when selected', () => {
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            key: 'key-1',
-            title: "What's your return policy?",
-            content: 'Return policy content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-        }
-
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
@@ -259,14 +259,6 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should open dismiss modal when dismiss button is clicked', async () => {
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
@@ -290,14 +282,6 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should archive article when confirming dismiss', async () => {
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
@@ -347,13 +331,6 @@ describe('OpportunitiesContent', () => {
 
     it('should close dismiss modal when escape is pressed', async () => {
         const user = userEvent.setup({ delay: null })
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
 
         renderComponent({
             selectedOpportunity,
@@ -378,14 +355,6 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should create guidance and archive article when approving', async () => {
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         mockCreateGuidanceArticle.mockResolvedValueOnce({})
 
         renderComponent({
@@ -435,14 +404,6 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should call onOpportunityAccepted with correct parameters when guidance is created successfully', async () => {
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         mockCreateGuidanceArticle.mockResolvedValueOnce({})
 
         renderComponent({
@@ -478,14 +439,6 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should handle approve failure gracefully', async () => {
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         mockCreateGuidanceArticle.mockRejectedValueOnce(new Error('API Error'))
 
         renderComponent({
@@ -522,14 +475,6 @@ describe('OpportunitiesContent', () => {
             isGuidanceArticleUpdating: true,
         })
 
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
@@ -548,14 +493,6 @@ describe('OpportunitiesContent', () => {
             isLoading: true,
         })
 
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
@@ -569,14 +506,6 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should update form data when values change', () => {
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
@@ -680,18 +609,14 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should render correct details for RESOLVE_CONFLICT type', () => {
-        const selectedOpportunity: Opportunity = {
-            id: '2',
-            title: 'Topic',
-            content: 'Conflict content',
+        const conflictOpportunity: Opportunity = {
+            ...selectedOpportunity,
             type: OpportunityType.RESOLVE_CONFLICT,
-            key: 'ai_1',
-            ticketCount: 5,
         }
 
         renderComponent({
-            selectedOpportunity,
-            opportunities: [selectedOpportunity],
+            selectedOpportunity: conflictOpportunity,
+            opportunities: [conflictOpportunity],
             opportunitiesPageState: mockOpportunityPageState,
         })
 
@@ -704,14 +629,6 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should pass correct props to GuidanceForm', () => {
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
@@ -740,14 +657,6 @@ describe('OpportunitiesContent', () => {
             isLoading: true,
         })
 
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
@@ -762,14 +671,6 @@ describe('OpportunitiesContent', () => {
             guidanceCount: 100,
             isLoading: false,
         })
-
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
 
         renderComponent({
             selectedOpportunity,
@@ -789,14 +690,6 @@ describe('OpportunitiesContent', () => {
             isLoading: true,
         })
 
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
@@ -814,14 +707,6 @@ describe('OpportunitiesContent', () => {
             guidanceCount: 50,
             isLoading: false,
         })
-
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
 
         renderComponent({
             selectedOpportunity,
@@ -846,14 +731,6 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should handle form value changes', () => {
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
@@ -887,13 +764,6 @@ describe('OpportunitiesContent', () => {
             default_locale: undefined,
             id: 1,
         })
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
 
         mockCreateGuidanceArticle.mockResolvedValueOnce({})
 
@@ -921,14 +791,6 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should handle undefined onOpportunityDismissed callback', async () => {
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         mockCreateGuidanceArticle.mockResolvedValueOnce({})
 
         renderComponent({
@@ -960,14 +822,6 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should handle dismiss when onOpportunityDismissed is undefined', async () => {
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
-
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
@@ -997,14 +851,6 @@ describe('OpportunitiesContent', () => {
             guidanceCount: 100,
             isLoading: true,
         })
-
-        const selectedOpportunity: Opportunity = {
-            id: '1',
-            title: 'Test opportunity',
-            content: 'Test content',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            key: 'ai_1',
-        }
 
         renderComponent({
             selectedOpportunity,
@@ -1052,13 +898,6 @@ describe('OpportunitiesContent', () => {
             const consoleWarnSpy = jest
                 .spyOn(console, 'warn')
                 .mockImplementation()
-            const selectedOpportunity: Opportunity = {
-                id: '1',
-                title: 'Test opportunity',
-                content: 'Test content',
-                type: OpportunityType.FILL_KNOWLEDGE_GAP,
-                key: 'ai_1',
-            }
 
             renderComponent({
                 selectedOpportunity,
@@ -1074,14 +913,6 @@ describe('OpportunitiesContent', () => {
 
     describe('Knowledge service integration', () => {
         it('should render correctly when useKnowledgeService is true', () => {
-            const selectedOpportunity: Opportunity = {
-                id: '1',
-                title: 'Test opportunity',
-                content: 'Test content',
-                type: OpportunityType.FILL_KNOWLEDGE_GAP,
-                key: 'ai_1',
-            }
-
             renderComponent({
                 selectedOpportunity,
                 opportunities: [selectedOpportunity],
@@ -1098,14 +929,6 @@ describe('OpportunitiesContent', () => {
 
     describe('Loading states', () => {
         it('should show skeleton loader when isLoadingOpportunityDetails is true', () => {
-            const selectedOpportunity: Opportunity = {
-                id: '1',
-                title: 'Test opportunity',
-                content: 'Test content',
-                type: OpportunityType.FILL_KNOWLEDGE_GAP,
-                key: 'ai_1',
-            }
-
             const { container } = renderComponent({
                 selectedOpportunity,
                 opportunities: [selectedOpportunity],
@@ -1124,14 +947,6 @@ describe('OpportunitiesContent', () => {
 
     describe('Feedback submission on dismiss', () => {
         it('should submit feedback after dismissing opportunity', async () => {
-            const selectedOpportunity: Opportunity = {
-                id: '1',
-                title: 'Test opportunity',
-                content: 'Test content',
-                type: OpportunityType.FILL_KNOWLEDGE_GAP,
-                key: 'ai_1',
-            }
-
             renderComponent({
                 selectedOpportunity,
                 opportunities: [selectedOpportunity],
@@ -1188,14 +1003,6 @@ describe('OpportunitiesContent', () => {
                 new Error('Feedback API Error'),
             )
 
-            const selectedOpportunity: Opportunity = {
-                id: '1',
-                title: 'Test opportunity',
-                content: 'Test content',
-                type: OpportunityType.FILL_KNOWLEDGE_GAP,
-                key: 'ai_1',
-            }
-
             renderComponent({
                 selectedOpportunity,
                 opportunities: [selectedOpportunity],
@@ -1244,6 +1051,42 @@ describe('OpportunitiesContent', () => {
                     status: 'success',
                 })
             })
+        })
+    })
+
+    describe('Responsive container width and hideCount', () => {
+        beforeEach(() => {
+            global.ResizeObserver = jest.fn().mockImplementation(() => ({
+                observe: jest.fn(),
+                unobserve: jest.fn(),
+                disconnect: jest.fn(),
+            }))
+        })
+
+        afterEach(() => {
+            jest.restoreAllMocks()
+        })
+
+        it('should setup and cleanup ResizeObserver', () => {
+            const mockObserve = jest.fn()
+            const mockDisconnect = jest.fn()
+            global.ResizeObserver = jest.fn().mockImplementation(() => ({
+                observe: mockObserve,
+                unobserve: jest.fn(),
+                disconnect: mockDisconnect,
+            }))
+
+            const { unmount } = renderComponent({
+                selectedOpportunity,
+                opportunities: [selectedOpportunity],
+                opportunitiesPageState: mockOpportunityPageState,
+            })
+
+            expect(mockObserve).toHaveBeenCalled()
+
+            unmount()
+
+            expect(mockDisconnect).toHaveBeenCalled()
         })
     })
 })

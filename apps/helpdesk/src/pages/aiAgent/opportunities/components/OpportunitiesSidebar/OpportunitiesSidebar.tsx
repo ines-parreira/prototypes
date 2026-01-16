@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
+import classNames from 'classnames'
 import { Virtuoso } from 'react-virtuoso'
 
 import { Button, Heading, Skeleton, Text } from '@gorgias/axiom'
@@ -45,7 +46,7 @@ export const OpportunitiesSidebar = ({
 }: OpportunitiesSidebarProps) => {
     const virtuosoContainerRef = useRef<HTMLDivElement>(null)
     const onEndReachedRef = useRef(onEndReached)
-    const { setIsSidebarVisible } = useOpportunitiesSidebar()
+    const { isSidebarVisible, setIsSidebarVisible } = useOpportunitiesSidebar()
 
     const handleToggleSidebar = useCallback(() => {
         setIsSidebarVisible(false)
@@ -155,9 +156,13 @@ export const OpportunitiesSidebar = ({
         [renderFooter],
     )
 
+    const sidebarClassName = classNames(css.sidebar, {
+        [css.sidebarHidden]: !isSidebarVisible,
+    })
+
     if (isLoading) {
         return (
-            <div className={css.sidebar}>
+            <div className={sidebarClassName}>
                 <div className={css.header}>
                     <Heading size="sm">Opportunities</Heading>
                 </div>
@@ -181,7 +186,7 @@ export const OpportunitiesSidebar = ({
 
     if (opportunitiesPageState.showEmptyState) {
         return (
-            <div className={css.sidebar}>
+            <div className={sidebarClassName}>
                 <div className={css.header}>
                     <Heading size="sm">Opportunities</Heading>
                 </div>
@@ -196,7 +201,7 @@ export const OpportunitiesSidebar = ({
     }
 
     return (
-        <div className={css.sidebar}>
+        <div className={sidebarClassName}>
             <div className={css.header}>
                 <Button
                     intent="regular"
@@ -206,7 +211,7 @@ export const OpportunitiesSidebar = ({
                     onClick={handleToggleSidebar}
                     aria-label="Hide sidebar"
                 />
-                <Heading size="sm">Opportunities</Heading>
+                <Heading size="md">Opportunities</Heading>
             </div>
             <div className={css.containerContent}>
                 <>

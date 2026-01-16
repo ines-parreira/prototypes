@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -115,8 +121,10 @@ export const OpportunitiesContent = ({
         isVisible: true,
     })
     const [isTitleOverflowing, setIsTitleOverflowing] = useState(false)
+    const [containerWidth, setContainerWidth] = useState(0)
     const approveButtonRef = useRef<HTMLButtonElement>(null)
     const titleRef = useRef<HTMLHeadingElement>(null)
+    const containerRef = useRef<HTMLDivElement>(null)
 
     const locale = useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
@@ -137,6 +145,22 @@ export const OpportunitiesContent = ({
             setIsTitleOverflowing(isOverflowing)
         }
     }, [selectedOpportunity?.id])
+
+    useLayoutEffect(() => {
+        if (!containerRef.current) return
+
+        const resizeObserver = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                setContainerWidth(entry.contentRect.width)
+            }
+        })
+
+        resizeObserver.observe(containerRef.current)
+
+        return () => {
+            resizeObserver.disconnect()
+        }
+    }, [])
 
     const handleShowSidebar = useCallback(() => {
         setIsSidebarVisible(true)
@@ -269,7 +293,7 @@ export const OpportunitiesContent = ({
         const titleText = `${typeLabel}: ${selectedOpportunity?.title}`
 
         const titleElement = (
-            <Heading size="sm" className={css.title} ref={titleRef}>
+            <Heading size="md" className={css.title} ref={titleRef}>
                 {titleText}
             </Heading>
         )
@@ -419,7 +443,7 @@ export const OpportunitiesContent = ({
     }
 
     return (
-        <div className={css.containerContent}>
+        <div className={css.containerContent} ref={containerRef}>
             <div className={css.header}>
                 {isLoadingOpportunityDetails ? (
                     <div className={css.skeletonHeader}>
@@ -450,6 +474,7 @@ export const OpportunitiesContent = ({
                                         selectCertainOpportunity
                                     }
                                     totalCount={totalCount}
+                                    hideCount={containerWidth < 582}
                                 />
                                 <div className={css.headerActionDelimiter} />
                                 <Button

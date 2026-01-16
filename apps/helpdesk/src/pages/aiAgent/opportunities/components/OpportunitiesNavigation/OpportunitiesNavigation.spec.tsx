@@ -265,4 +265,17 @@ describe('OpportunitiesNavigation', () => {
         expect(backwardButton).toHaveAccessibleName('arrow-chevron-left')
         expect(forwardButton).toHaveAccessibleName('arrow-chevron-right')
     })
+
+    it('shows count text when hideCount is false or not provided', () => {
+        render(<OpportunitiesNavigation {...defaultProps} />)
+
+        expect(screen.getByText('1 of 3')).toBeInTheDocument()
+    })
+
+    it('hides count text when hideCount is true', () => {
+        render(<OpportunitiesNavigation {...defaultProps} hideCount={true} />)
+
+        expect(screen.queryByText('1 of 3')).not.toBeInTheDocument()
+        expect(screen.getAllByRole('button')).toHaveLength(2)
+    })
 })

@@ -1049,4 +1049,79 @@ describe('OpportunitiesLayout', () => {
             expect(mockHistoryReplace).not.toHaveBeenCalled()
         })
     })
+
+    describe('Responsive sidebar visibility', () => {
+        let resizeObserverCallback: ResizeObserverCallback
+
+        beforeEach(() => {
+            global.ResizeObserver = jest.fn().mockImplementation((callback) => {
+                resizeObserverCallback = callback
+                return {
+                    observe: jest.fn(),
+                    unobserve: jest.fn(),
+                    disconnect: jest.fn(),
+                }
+            })
+        })
+
+        afterEach(() => {
+            jest.restoreAllMocks()
+        })
+
+        it('should initialize sidebar visibility based on window width', () => {
+            Object.defineProperty(window, 'innerWidth', {
+                writable: true,
+                configurable: true,
+                value: 1300,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByTestId('opportunities-sidebar'),
+            ).toBeInTheDocument()
+        })
+
+        it('should update sidebar visibility on window resize', () => {
+            Object.defineProperty(window, 'innerWidth', {
+                writable: true,
+                configurable: true,
+                value: 1000,
+            })
+
+            renderComponent()
+
+            Object.defineProperty(window, 'innerWidth', {
+                writable: true,
+                configurable: true,
+                value: 1300,
+            })
+
+            act(() => {
+                resizeObserverCallback([], {} as ResizeObserver)
+            })
+
+            expect(
+                screen.getByTestId('opportunities-sidebar'),
+            ).toBeInTheDocument()
+        })
+
+        it('should setup and cleanup ResizeObserver', () => {
+            const mockObserve = jest.fn()
+            const mockDisconnect = jest.fn()
+            global.ResizeObserver = jest.fn().mockImplementation(() => ({
+                observe: mockObserve,
+                unobserve: jest.fn(),
+                disconnect: mockDisconnect,
+            }))
+
+            const { unmount } = renderComponent()
+
+            expect(mockObserve).toHaveBeenCalled()
+
+            unmount()
+
+            expect(mockDisconnect).toHaveBeenCalled()
+        })
+    })
 })

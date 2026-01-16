@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
@@ -38,6 +38,7 @@ export const OpportunitiesLayout = () => {
     const history = useHistory()
 
     const [isSidebarVisible, setIsSidebarVisible] = useState(true)
+    const wrapperRef = useRef<HTMLDivElement>(null)
 
     const { storeConfiguration, isLoading: isStoreConfigLoading } =
         useAiAgentStoreConfigurationContext()
@@ -187,6 +188,24 @@ export const OpportunitiesLayout = () => {
         }
     }, [selectedOpportunityId, opportunityId, shopType, shopName, history])
 
+    useLayoutEffect(() => {
+        if (!wrapperRef.current) return
+
+        const resizeObserver = new ResizeObserver(() => {
+            if (window.innerWidth >= 1220) {
+                setIsSidebarVisible(true)
+            } else {
+                setIsSidebarVisible(false)
+            }
+        })
+
+        resizeObserver.observe(wrapperRef.current)
+
+        return () => {
+            resizeObserver.disconnect()
+        }
+    }, [])
+
     const isLoading =
         isStoreConfigLoading ||
         (useKnowledgeService ? isLoadingKnowledgeService : isLoadingAiArticles)
@@ -195,31 +214,27 @@ export const OpportunitiesLayout = () => {
         <OpportunitiesSidebarContext.Provider
             value={{ isSidebarVisible, setIsSidebarVisible }}
         >
-            <div className={css.wrapper} data-ai-opportunities>
+            <div className={css.wrapper} data-ai-opportunities ref={wrapperRef}>
                 <div className={css.layout}>
-                    {isSidebarVisible && (
-                        <OpportunitiesSidebar
-                            isLoading={isLoading}
-                            opportunitiesPageState={opportunityPageState}
-                            opportunities={opportunities}
-                            onSelectOpportunity={(opp) => {
-                                if (opp) {
-                                    setSelectedOpportunityId(opp.id)
-                                }
-                            }}
-                            selectedOpportunity={selectedOpportunity}
-                            onOpportunityViewed={onOpportunityViewed}
-                            hasNextPage={
-                                useKnowledgeService ? hasNextPage : false
+                    <OpportunitiesSidebar
+                        isLoading={isLoading}
+                        opportunitiesPageState={opportunityPageState}
+                        opportunities={opportunities}
+                        onSelectOpportunity={(opp) => {
+                            if (opp) {
+                                setSelectedOpportunityId(opp.id)
                             }
-                            isFetchingNextPage={
-                                useKnowledgeService ? isFetchingNextPage : false
-                            }
-                            onEndReached={
-                                useKnowledgeService ? fetchNextPage : undefined
-                            }
-                        />
-                    )}
+                        }}
+                        selectedOpportunity={selectedOpportunity}
+                        onOpportunityViewed={onOpportunityViewed}
+                        hasNextPage={useKnowledgeService ? hasNextPage : false}
+                        isFetchingNextPage={
+                            useKnowledgeService ? isFetchingNextPage : false
+                        }
+                        onEndReached={
+                            useKnowledgeService ? fetchNextPage : undefined
+                        }
+                    />
                     <OpportunitiesContent
                         key={selectedOpportunity?.key}
                         opportunitiesPageState={opportunityPageState}

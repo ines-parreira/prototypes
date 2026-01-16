@@ -112,7 +112,9 @@ export const OpportunityCard = ({
                                     size="sm"
                                     color="var(--content-neutral-secondary)"
                                 />
-                                {ticketCount}
+                                <Text size="xs" variant="bold">
+                                    {ticketCount}
+                                </Text>
                             </span>
                         </TooltipTrigger>
                         <TooltipContent

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { Button, Text } from '@gorgias/axiom'
 
 import { useOpportunitiesNavigation } from 'pages/aiAgent/opportunities/hooks/useOpportunitiesNavigation'
 import type {
@@ -15,12 +15,14 @@ interface OpportunityNavigationProps {
     opportunities?: SidebarOpportunityItem[]
     selectCertainOpportunity?: (index: number) => void
     totalCount: number
+    hideCount?: boolean
 }
 export const OpportunitiesNavigation = ({
     opportunities,
     selectedOpportunity,
     selectCertainOpportunity,
     totalCount,
+    hideCount = false,
 }: OpportunityNavigationProps) => {
     const navigationData = useOpportunitiesNavigation({
         selectedOpportunity,
@@ -73,9 +75,11 @@ export const OpportunitiesNavigation = ({
             >
                 Right navigation button
             </Button>
-            <div className={css.positionCounter}>
-                {navigationData.position + 1} of {totalCount}
-            </div>
+            {!hideCount && (
+                <Text size="md" variant="regular">
+                    {navigationData.position + 1} of {totalCount}
+                </Text>
+            )}
         </div>
     )
 }
