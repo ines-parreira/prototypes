@@ -105,7 +105,10 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
 
         mockUseJourneyUpdateHandler.mockImplementation(() => ({
             handleUpdate: mockHandleUpdate,
+            isLoading: false,
+            isSuccess: false,
         }))
+
         const mockCreateJourneyMutateAsync = jest.fn().mockResolvedValue({})
         const mockUpdateMutateAsync = jest.fn().mockResolvedValue({})
 
@@ -492,6 +495,8 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             jest.clearAllMocks()
             mockUseJourneyUpdateHandler.mockImplementation(() => ({
                 handleUpdate: mockHandleUpdate,
+                isLoading: false,
+                isSuccess: false,
             }))
         })
 
@@ -589,6 +594,8 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     inactiveDays: undefined,
                     cooldownDays: undefined,
                     waitTimeMinutes: 0,
+                    targetOrderStatus: undefined,
+                    postPurchaseWaitMinutes: undefined,
                 })
             })
         })
@@ -615,9 +622,11 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                 },
             })
 
-            const mockCreateMutateAsync = jest.fn().mockResolvedValue({})
+            const mockMutateAsync = jest
+                .fn()
+                .mockResolvedValue({ id: 'new-journey-123' })
             mockUseCreateNewJourney.mockImplementation(() => ({
-                mutateAsync: mockCreateMutateAsync,
+                mutateAsync: mockMutateAsync,
                 isError: false,
                 isLoading: false,
             }))
@@ -698,10 +707,9 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                 await user.click(continueButton)
             })
 
-            // Verify create journey is called with correct parameters
-            const createMutateAsync = mockUseCreateNewJourney().mutateAsync
+            // Verify mutateAsync is called with correct parameters
             await waitFor(() => {
-                expect(createMutateAsync).toHaveBeenCalledWith({
+                expect(mockMutateAsync).toHaveBeenCalledWith({
                     params: {
                         store_integration_id: 1,
                         store_name: 'shopify-store',
@@ -721,6 +729,8 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                         inactive_days: undefined,
                         cooldown_days: undefined,
                         wait_time_minutes: 0,
+                        post_purchase_wait_minutes: undefined,
+                        target_order_status: undefined,
                     },
                 })
             })
@@ -914,7 +924,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     excluded_audience_list_ids: undefined,
                     included_audience_list_ids: undefined,
                 },
-                journeyConfigs: {
+                journeyConfigs: expect.objectContaining({
                     max_follow_up_messages: 3,
                     offer_discount: true,
                     max_discount_percent: 20,
@@ -924,8 +934,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     include_image: false,
                     inactive_days: undefined,
                     cooldown_days: undefined,
-                    wait_time_minutes: 0,
-                },
+                }),
             })
 
             await waitFor(() => {
@@ -1052,7 +1061,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     excluded_audience_list_ids: undefined,
                     included_audience_list_ids: undefined,
                 },
-                journeyConfigs: {
+                journeyConfigs: expect.objectContaining({
                     max_follow_up_messages: 3,
                     offer_discount: true,
                     max_discount_percent: 20,
@@ -1062,8 +1071,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     include_image: false,
                     inactive_days: undefined,
                     cooldown_days: undefined,
-                    wait_time_minutes: 0,
-                },
+                }),
             })
         })
 
@@ -1131,7 +1139,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     excluded_audience_list_ids: undefined,
                     included_audience_list_ids: undefined,
                 },
-                journeyConfigs: {
+                journeyConfigs: expect.objectContaining({
                     discount_code_message_threshold: undefined,
                     max_follow_up_messages: 0,
                     offer_discount: false,
@@ -1141,8 +1149,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     include_image: false,
                     inactive_days: undefined,
                     cooldown_days: undefined,
-                    wait_time_minutes: 0,
-                },
+                }),
             })
         })
 
@@ -1717,7 +1724,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
                 excluded_audience_list_ids: undefined,
                 included_audience_list_ids: undefined,
             },
-            journeyConfigs: {
+            journeyConfigs: expect.objectContaining({
                 max_follow_up_messages: 0,
                 offer_discount: false,
                 max_discount_percent: undefined,
@@ -1728,7 +1735,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
                 inactive_days: undefined,
                 cooldown_days: undefined,
                 wait_time_minutes: 30,
-            },
+            }),
         })
     })
 

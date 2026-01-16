@@ -15,6 +15,8 @@ type WaitTimeFieldProps = {
     onChange?: (value: number) => void
     onValidationChange?: (isValid: boolean) => void
     showError?: boolean
+    title?: string
+    description?: string
 }
 
 export const WaitTimeField = ({
@@ -23,6 +25,8 @@ export const WaitTimeField = ({
     onChange = () => {},
     onValidationChange = () => {},
     showError = false,
+    title = 'Wait time before triggering flow',
+    description = 'Time in minutes to wait before sending the first message',
 }: WaitTimeFieldProps) => {
     const [isValid, setIsValid] = useState(true)
     const [hasInteracted, setHasInteracted] = useState(false)
@@ -52,10 +56,7 @@ export const WaitTimeField = ({
 
     return (
         <div className={waitTimeFieldClass}>
-            <FieldPresentation
-                name="Wait time before triggering flow"
-                description="Time in minutes to wait before sending the first message"
-            />
+            <FieldPresentation name={title} description={description} />
             <MinutesInput
                 value={value}
                 max={MAX_WAIT_TIME}

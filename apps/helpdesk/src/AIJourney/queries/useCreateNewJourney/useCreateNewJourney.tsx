@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type {
     CreateJourneyBody,
     JourneyConfigurationApiDTO,
+    PostPurchaseJourneyConfigurationApiDTO,
     WelcomeFlowConfigurationApiDTO,
     WinbackJourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
@@ -16,7 +17,8 @@ const createNewJourney = async (
     journeyConfigs:
         | JourneyConfigurationApiDTO
         | WelcomeFlowConfigurationApiDTO
-        | WinbackJourneyConfigurationApiDTO,
+        | WinbackJourneyConfigurationApiDTO
+        | PostPurchaseJourneyConfigurationApiDTO,
 ) => {
     return createJourney(
         {
@@ -47,6 +49,7 @@ export const useCreateNewJourney = () => {
                 | JourneyConfigurationApiDTO
                 | WelcomeFlowConfigurationApiDTO
                 | WinbackJourneyConfigurationApiDTO
+                | PostPurchaseJourneyConfigurationApiDTO
         }) => {
             return createNewJourney(
                 { ...params, store_type: 'shopify' },

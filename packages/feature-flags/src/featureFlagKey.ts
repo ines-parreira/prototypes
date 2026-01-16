@@ -54,6 +54,7 @@ export enum FeatureFlagKey {
     AiJourneyWinBackEnabled = 'ai-journey-win-back-enabled',
     AiJourneySmsImagesEnabled = 'ai-journey-sms-images-enabled',
     AiJourneyAnalyticsEnabled = 'ai-journey-analytics-enabled',
+    AiJourneyPostPurchaseEnabled = 'ai-journey-post-purchase-enabled',
     AiJourneyWelcomeFlowEnabled = 'ai-journey-welcome-flow-enabled',
     AiJourneyCampaignSendingEnabled = 'campaign-sending-enabled',
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',

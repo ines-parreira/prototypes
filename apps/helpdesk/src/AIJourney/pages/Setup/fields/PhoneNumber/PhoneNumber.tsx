@@ -40,7 +40,14 @@ export const PhoneNumberField = ({
                 description="Phone number used for the conversation with the customer"
                 required
             />
-            <Dropdown options={options} value={value} onChange={handleChange} />
+            <Dropdown
+                options={options}
+                value={value}
+                onChange={handleChange}
+                getLabel={(option) => option.phone_number_friendly}
+                getValue={(option) => option.integrations[0].id}
+                emptyMessage="No numbers available"
+            />
             {shouldShowError && (
                 <div className={css.errorMessage}>
                     Agent&apos;s phone number is required.

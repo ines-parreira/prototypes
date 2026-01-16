@@ -269,7 +269,7 @@ describe('<Performance />', () => {
                 screen.getAllByText('Welcome New Subscribers').length,
             ).toEqual(2)
             expect(
-                screen.getAllByText('Post-Purchase Follow-up').length,
+                screen.getAllByText('Post-purchase Follow-up').length,
             ).toEqual(2)
             expect(screen.getAllByText('Customer Win-back').length).toEqual(2)
         })
@@ -283,7 +283,7 @@ describe('<Performance />', () => {
                 screen.queryByText('Welcome New Subscribers'),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByText('Post-Purchase Follow-up'),
+                screen.queryByText('Post-purchase Follow-up'),
             ).not.toBeInTheDocument()
             expect(
                 screen.queryByText('Customer Win-back'),
@@ -302,8 +302,11 @@ describe('<Performance />', () => {
                 screen.queryByText('Welcome New Subscribers'),
             ).not.toBeInTheDocument()
             expect(
-                screen.getAllByText('Post-Purchase Follow-up').length,
-            ).toEqual(2)
+                screen.queryByText('Post-purchase Follow-up'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Browse Abandoned'),
+            ).not.toBeInTheDocument()
         })
     })
 

@@ -23,6 +23,7 @@ import {
     MessagesToSendField,
     MessageWithDiscountCodeField,
     PhoneNumberField,
+    TargetOrderStatusField,
     WaitTimeField,
 } from './fields'
 import { AudienceSelect } from './fields/AudienceSelect/AudienceSelect'
@@ -40,6 +41,8 @@ const Fields = {
     InactiveDays: 'inactive_days',
     CoolDownDays: 'cooldown_days',
     WaitTime: 'wait_time',
+    TargetOrderStatus: 'target_order_status',
+    PostPurchaseWaitTime: 'post_purchase_wait_time',
 }
 
 type Fields = (typeof Fields)[keyof typeof Fields]
@@ -63,7 +66,12 @@ export const JOURNEY_TYPES_TO_FIELDS: Record<JOURNEY_TYPES, Fields[]> = {
         Fields.SendImage,
         Fields.WaitTime,
     ],
-    [JOURNEY_TYPES.POST_PURCHASE]: [],
+    [JOURNEY_TYPES.POST_PURCHASE]: [
+        Fields.TargetOrderStatus,
+        Fields.PostPurchaseWaitTime,
+        Fields.FollowUps,
+        Fields.SendImage,
+    ],
 }
 
 type SetupProps = {
@@ -134,6 +142,11 @@ export const Setup = ({ journeyType }: SetupProps) => {
     const [inactiveDays, setInactiveDays] = useState<number>()
     const [cooldownDays, setCooldownDays] = useState<number | null>()
     const [waitTimeMinutes, setWaitTimeMinutes] = useState<number>(0)
+    const [targetOrderStatus, setTargetOrderStatus] = useState<
+        'order_placed' | 'order_fulfilled'
+    >()
+    const [postPurchaseWaitMinutes, setPostPurchaseWaitMinutes] =
+        useState<number>()
     const [showValidationErrors, setShowValidationErrors] = useState(false)
 
     useEffect(() => {
@@ -159,8 +172,18 @@ export const Setup = ({ journeyType }: SetupProps) => {
             if ('wait_time_minutes' in journeyParams) {
                 setWaitTimeMinutes(journeyParams.wait_time_minutes ?? 0)
             }
+            if ('target_order_status' in journeyParams) {
+                setTargetOrderStatus(
+                    journeyParams.target_order_status ?? 'order_placed',
+                )
+            }
+            if ('post_purchase_wait_minutes' in journeyParams) {
+                setPostPurchaseWaitMinutes(
+                    journeyParams.post_purchase_wait_minutes ?? 1440,
+                )
+            }
         }
-    }, [journeyParams])
+    }, [journeyParams, journeyType])
 
     useEffect(() => {
         setPhoneNumberValue(currentPhoneNumber)
@@ -225,6 +248,16 @@ export const Setup = ({ journeyType }: SetupProps) => {
 
     const handleUpdateWaitTimeMinutes = (newValue: number) => {
         setWaitTimeMinutes(newValue)
+    }
+
+    const handleUpdateTargetOrderStatus = (
+        newValue: 'order_placed' | 'order_fulfilled',
+    ) => {
+        setTargetOrderStatus(newValue)
+    }
+
+    const handleUpdatePostPurchaseWaitMinutes = (newValue: number) => {
+        setPostPurchaseWaitMinutes(newValue)
     }
 
     const {
@@ -327,6 +360,8 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     inactiveDays,
                     cooldownDays,
                     waitTimeMinutes,
+                    targetOrderStatus,
+                    postPurchaseWaitMinutes,
                 })
                 setIsVisible(false)
                 history.push(
@@ -348,6 +383,8 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     inactiveDays,
                     cooldownDays,
                     waitTimeMinutes,
+                    targetOrderStatus,
+                    postPurchaseWaitMinutes,
                 })
                 setIsVisible(false)
                 history.push(
@@ -379,6 +416,8 @@ export const Setup = ({ journeyType }: SetupProps) => {
         inactiveDays,
         cooldownDays,
         waitTimeMinutes,
+        targetOrderStatus,
+        postPurchaseWaitMinutes,
     ])
 
     const getRedirectLinkOnCancel = () => {
@@ -489,6 +528,22 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     type="cooldown_days"
                     value={cooldownDays}
                     onChange={handleUpdateCooldownDays}
+                />
+            )}
+
+            {fields.includes(Fields.TargetOrderStatus) && (
+                <TargetOrderStatusField
+                    value={targetOrderStatus}
+                    onChange={handleUpdateTargetOrderStatus}
+                />
+            )}
+
+            {fields.includes(Fields.PostPurchaseWaitTime) && (
+                <WaitTimeField
+                    title="Wait time after trigger"
+                    description="Time in minutes to wait after the order status changes before sending the first message"
+                    value={postPurchaseWaitMinutes}
+                    onChange={handleUpdatePostPurchaseWaitMinutes}
                 />
             )}
 

@@ -53,11 +53,7 @@ type AvailableJourney = {
     type: JourneyTypeEnum
 }
 
-const defaultUpcomingJourneys: UpcomingJourney[] = [
-    {
-        name: 'Post-Purchase Follow-up',
-    },
-]
+const defaultUpcomingJourneys: UpcomingJourney[] = []
 
 const defaultAvailableJourneys: AvailableJourney[] = [
     {
@@ -80,6 +76,11 @@ const defaultAvailableJourneys: AvailableJourney[] = [
         available: true,
         type: JourneyTypeEnum.Welcome,
     },
+    {
+        name: 'Post-purchase Follow-up',
+        available: true,
+        type: JourneyTypeEnum.PostPurchase,
+    },
 ]
 
 const FILTERS = ['All', 'Active', 'Coming soon']
@@ -95,6 +96,10 @@ export const Performance = () => {
         FeatureFlagKey.AiJourneyWelcomeFlowEnabled,
     )
 
+    const isAiJourneyPostPurchaseEnabled = useFlag(
+        FeatureFlagKey.AiJourneyPostPurchaseEnabled,
+    )
+
     const { journeys, currentIntegration, isLoadingJourneys } =
         useJourneyContext()
 
@@ -102,6 +107,7 @@ export const Performance = () => {
         const disabledJourneyTypes = [
             !isAiJourneyWinBackEnabled && JourneyTypeEnum.WinBack,
             !isAiJourneyWelcomeFlowEnabled && JourneyTypeEnum.Welcome,
+            !isAiJourneyPostPurchaseEnabled && JourneyTypeEnum.PostPurchase,
         ].filter(Boolean) as JourneyTypeEnum[]
 
         const availableJourneys = defaultAvailableJourneys.filter(
@@ -118,7 +124,11 @@ export const Performance = () => {
         ]
 
         return { availableJourneys, upcomingJourneys }
-    }, [isAiJourneyWinBackEnabled, isAiJourneyWelcomeFlowEnabled])
+    }, [
+        isAiJourneyWinBackEnabled,
+        isAiJourneyWelcomeFlowEnabled,
+        isAiJourneyPostPurchaseEnabled,
+    ])
 
     const inactiveJourneys = availableJourneys.filter((availableJourney) => {
         return !journeys?.some(

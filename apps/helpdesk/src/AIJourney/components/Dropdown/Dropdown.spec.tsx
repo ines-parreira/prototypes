@@ -8,9 +8,18 @@ import { Dropdown } from './Dropdown'
 
 const mockPhoneNumbersArray: NewPhoneNumber[] = Object.values(mockPhoneNumbers)
 
+const getLabel = (option: NewPhoneNumber) => option.phone_number_friendly
+const getValue = (option: NewPhoneNumber) => option.integrations[0].id
+
 describe('<Dropdown />', () => {
     it('renders with placeholder when no value is selected', () => {
-        render(<Dropdown options={mockPhoneNumbersArray} />)
+        render(
+            <Dropdown
+                options={mockPhoneNumbersArray}
+                getLabel={getLabel}
+                getValue={getValue}
+            />,
+        )
         expect(screen.getByText('Select')).toBeInTheDocument()
     })
 
@@ -19,6 +28,8 @@ describe('<Dropdown />', () => {
             <Dropdown
                 options={mockPhoneNumbersArray}
                 value={mockPhoneNumbersArray[2]}
+                getLabel={getLabel}
+                getValue={getValue}
             />,
         )
 
@@ -27,7 +38,13 @@ describe('<Dropdown />', () => {
     })
 
     it('shows options when clicked', async () => {
-        render(<Dropdown options={mockPhoneNumbersArray} />)
+        render(
+            <Dropdown
+                options={mockPhoneNumbersArray}
+                getLabel={getLabel}
+                getValue={getValue}
+            />,
+        )
         const trigger = screen.getByRole('group')
         await act(() => userEvent.click(trigger))
         mockPhoneNumbersArray.forEach((option) => {
@@ -39,7 +56,14 @@ describe('<Dropdown />', () => {
 
     it('calls onChange when an option is clicked', async () => {
         const onChange = jest.fn()
-        render(<Dropdown options={mockPhoneNumbersArray} onChange={onChange} />)
+        render(
+            <Dropdown
+                options={mockPhoneNumbersArray}
+                onChange={onChange}
+                getLabel={getLabel}
+                getValue={getValue}
+            />,
+        )
         const trigger = screen.getByRole('group')
         await act(async () => {
             await userEvent.click(trigger)
@@ -49,7 +73,13 @@ describe('<Dropdown />', () => {
     })
 
     it('closes the dropdown after selecting an option', async () => {
-        render(<Dropdown options={mockPhoneNumbersArray} />)
+        render(
+            <Dropdown
+                options={mockPhoneNumbersArray}
+                getLabel={getLabel}
+                getValue={getValue}
+            />,
+        )
         const trigger = screen.getByRole('group')
         expect(screen.queryByRole('listbox')).not.toHaveClass('--open')
 

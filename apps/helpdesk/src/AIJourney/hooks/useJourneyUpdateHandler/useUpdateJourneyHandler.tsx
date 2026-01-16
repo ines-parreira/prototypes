@@ -6,6 +6,7 @@ import type {
     JourneyConfigurationApiDTO,
     JourneyStatusEnum,
     PatchJourneyBody,
+    PostPurchaseJourneyConfigurationApiDTO,
     WelcomeFlowConfigurationApiDTO,
     WinbackJourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
@@ -40,6 +41,8 @@ type HandleUpdateParams = {
     inactiveDays?: number | null
     cooldownDays?: number | null
     waitTimeMinutes?: number
+    targetOrderStatus?: 'order_placed' | 'order_fulfilled'
+    postPurchaseWaitMinutes?: number
 }
 
 export const useJourneyUpdateHandler = ({
@@ -68,6 +71,8 @@ export const useJourneyUpdateHandler = ({
             inactiveDays,
             cooldownDays,
             waitTimeMinutes,
+            targetOrderStatus,
+            postPurchaseWaitMinutes,
         }: HandleUpdateParams) => {
             try {
                 const entityId = id || journeyId
@@ -87,7 +92,8 @@ export const useJourneyUpdateHandler = ({
                 const journeyConfigs:
                     | JourneyConfigurationApiDTO
                     | WinbackJourneyConfigurationApiDTO
-                    | WelcomeFlowConfigurationApiDTO = {
+                    | WelcomeFlowConfigurationApiDTO
+                    | PostPurchaseJourneyConfigurationApiDTO = {
                     max_follow_up_messages: followUpValue,
                     offer_discount: isDiscountEnabled,
                     max_discount_percent: discountValue
@@ -99,7 +105,11 @@ export const useJourneyUpdateHandler = ({
                     include_image: includeImage,
                     inactive_days: inactiveDays,
                     cooldown_days: cooldownDays,
+
                     wait_time_minutes: waitTimeMinutes,
+
+                    post_purchase_wait_minutes: postPurchaseWaitMinutes,
+                    target_order_status: targetOrderStatus,
                 }
 
                 const shouldUpdateConfigs = Object.values(journeyConfigs).some(

@@ -32,6 +32,10 @@ export const LandingPage = () => {
         FeatureFlagKey.AiJourneyWelcomeFlowEnabled,
     )
 
+    const isAiJourneyPostPurchaseEnabled = useFlag(
+        FeatureFlagKey.AiJourneyPostPurchaseEnabled,
+    )
+
     const availableJourneys = useMemo(
         () => [
             {
@@ -66,6 +70,16 @@ export const LandingPage = () => {
                       },
                   ]
                 : []),
+            ...(isAiJourneyPostPurchaseEnabled
+                ? [
+                      {
+                          name: 'Post-purchase Follow-up',
+                          description:
+                              'Enhance customer satisfaction by following up after purchase with timely, AI-personalized messages.',
+                          value: JOURNEY_TYPES.POST_PURCHASE,
+                      },
+                  ]
+                : []),
             ...(isAiJourneyCampaignsEnabled
                 ? [
                       {
@@ -81,6 +95,7 @@ export const LandingPage = () => {
             isAiJourneyCampaignsEnabled,
             isAiJourneyWinBackEnabled,
             isAiJourneyWelcomeFlowEnabled,
+            isAiJourneyPostPurchaseEnabled,
         ],
     )
 

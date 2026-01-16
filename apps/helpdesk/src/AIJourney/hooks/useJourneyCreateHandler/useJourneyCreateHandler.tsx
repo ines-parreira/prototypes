@@ -30,6 +30,8 @@ type HandleCreateParams = {
     inactiveDays?: number | null
     cooldownDays?: number | null
     waitTimeMinutes?: number
+    targetOrderStatus?: 'order_placed' | 'order_fulfilled'
+    postPurchaseWaitMinutes?: number
 }
 
 export const useJourneyCreateHandler = ({
@@ -55,6 +57,8 @@ export const useJourneyCreateHandler = ({
             inactiveDays,
             cooldownDays,
             waitTimeMinutes,
+            targetOrderStatus,
+            postPurchaseWaitMinutes,
         }: HandleCreateParams) => {
             try {
                 if (!integrationId || !integrationName) {
@@ -94,6 +98,8 @@ export const useJourneyCreateHandler = ({
                         inactive_days: inactiveDays,
                         cooldown_days: cooldownDays,
                         wait_time_minutes: waitTimeMinutes,
+                        post_purchase_wait_minutes: postPurchaseWaitMinutes,
+                        target_order_status: targetOrderStatus,
                     },
                 })
 

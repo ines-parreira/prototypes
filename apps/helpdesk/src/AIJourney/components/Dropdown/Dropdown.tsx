@@ -3,21 +3,30 @@ import { useEffect, useState } from 'react'
 import classNames from 'classnames'
 
 import selectedIcon from 'assets/img/ai-journey/selected.svg'
-import type { NewPhoneNumber } from 'models/phoneNumber/types'
 
 import css from './Dropdown.less'
 
-type DropdownProps = {
-    options: NewPhoneNumber[]
-    value?: NewPhoneNumber
-    onChange?: (option: NewPhoneNumber) => void
+type DropdownProps<T> = {
+    options: T[]
+    value?: T
+    onChange?: (option: T) => void
+    getLabel: (option: T) => string
+    getValue: (option: T) => string | number
+    placeholder?: string
+    emptyMessage?: string
 }
 
-export const Dropdown = ({ options, value, onChange }: DropdownProps) => {
+export const Dropdown = <T,>({
+    options,
+    value,
+    onChange,
+    getLabel,
+    getValue,
+    placeholder = 'Select',
+    emptyMessage = 'No options available',
+}: DropdownProps<T>) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [selectedOption, setSelectedOption] = useState<
-        NewPhoneNumber | undefined
-    >(value)
+    const [selectedOption, setSelectedOption] = useState<T | undefined>(value)
 
     useEffect(() => {
         setSelectedOption(value)
@@ -31,7 +40,7 @@ export const Dropdown = ({ options, value, onChange }: DropdownProps) => {
         [css['selectedOption--empty']]: !selectedOption,
     })
 
-    const handleOptionChange = (option: NewPhoneNumber) => {
+    const handleOptionChange = (option: T) => {
         setSelectedOption(option)
         setIsOpen(false)
         if (onChange) {
@@ -53,7 +62,7 @@ export const Dropdown = ({ options, value, onChange }: DropdownProps) => {
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <span className={selectedOptionClass}>
-                    {selectedOption?.phone_number_friendly || 'Select'}
+                    {selectedOption ? getLabel(selectedOption) : placeholder}
                 </span>
                 <i className="material-icons-outlined">keyboard_arrow_down</i>
             </div>
@@ -65,16 +74,17 @@ export const Dropdown = ({ options, value, onChange }: DropdownProps) => {
                             key={index}
                             onClick={() => handleOptionChange(option)}
                         >
-                            <span>{option.phone_number_friendly}</span>
-                            {option.integrations[0].id ===
-                                selectedOption?.integrations[0].id && (
-                                <img src={selectedIcon} alt="icon" />
-                            )}
+                            <span>{getLabel(option)}</span>
+                            {selectedOption &&
+                                getValue(option) ===
+                                    getValue(selectedOption) && (
+                                    <img src={selectedIcon} alt="icon" />
+                                )}
                         </li>
                     ))
                 ) : (
                     <li className={css.dropdownOption}>
-                        <span>No numbers available</span>
+                        <span>{emptyMessage}</span>
                     </li>
                 )}
             </ul>
