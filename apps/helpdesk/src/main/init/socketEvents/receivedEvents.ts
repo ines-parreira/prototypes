@@ -171,23 +171,20 @@ const receivedEvents: ReceivedEvent[] = [
     {
         name: 'ticket-message-created',
         onReceive: function (json) {
-            if (
-                isCurrentlyOnTicket(
-                    (json as TicketMessageCreatedEvent).ticket.id,
-                )
-            ) {
+            const ticket = (json as TicketMessageCreatedEvent).ticket
+
+            if (isCurrentlyOnTicket(ticket.id)) {
                 ;(this as unknown as SocketManager).send(
                     SocketEventType.TicketViewed,
-                    (json as TicketMessageCreatedEvent).ticket
-                        .id as unknown as string,
+                    ticket.id as unknown as string,
                 )
             }
 
-            reduxStore.dispatch(
-                ticketActions.mergeTicket(
-                    (json as TicketMessageCreatedEvent).ticket,
-                ) as any,
-            )
+            reduxStore.dispatch(ticketActions.mergeTicket(ticket) as any)
+            const customerId = ticket?.customer?.id
+            if (customerId) {
+                throttledUpdateCustomerCache(customerId)
+            }
         },
     },
     {

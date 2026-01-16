@@ -72,6 +72,8 @@ import { isCurrentlyOnTicket } from 'utils'
 import { throttledUpdateCustomerCache } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers'
 
 import receivedEvents from '../receivedEvents'
+import { ticket } from 'fixtures/ticket'
+import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
@@ -956,6 +958,62 @@ describe('receivedEvents', () => {
                 ticket: { id: 1, customer: { id: 123 } },
             } as any)
             expect(throttledUpdateCustomerCache).toHaveBeenCalledWith(123)
+        })
+    })
+
+    describe('ticket-message-created', () => {
+        const handler = _find(receivedEvents, {
+            name: 'ticket-message-created',
+        }) as ReceivedEvent
+
+        const createTicketMessageCreatedEvent = () => {
+            const message = ticket.messages[0] as TicketMessage
+            return {
+                event: {
+                    id: 8960833298,
+                    type: 'ticket-message-created',
+                    object_type: 'TicketMessage',
+                    object_id: message.id,
+                    context: 'e0c48b5d-7dde-40df-bc85-aaa89c450a80',
+                    user_id: message.sender.id,
+                    created_datetime: '2026-01-15T21:44:02.260847+00:00',
+                },
+                ticket,
+                message: message,
+            } as any
+        }
+
+        it('should dispatch the ticket merge action', () => {
+            const event = createTicketMessageCreatedEvent()
+
+            handler.onReceive(event)
+
+            expect(ticketActions.mergeTicket).toHaveBeenCalledWith(event.ticket)
+        })
+
+        it('should send TicketViewed event when user is on the ticket page', () => {
+            ;(
+                isCurrentlyOnTicket as jest.MockedFunction<
+                    typeof isCurrentlyOnTicket
+                >
+            ).mockReturnValue(true)
+
+            const mockSend = jest.fn()
+            const event = createTicketMessageCreatedEvent()
+
+            handler.onReceive.call({ send: mockSend }, event)
+
+            expect(mockSend).toHaveBeenCalledWith(
+                SocketEventType.TicketViewed,
+                ticket.id,
+            )
+        })
+
+        it('should call try to invalidate customer query cache', () => {
+            handler.onReceive(createTicketMessageCreatedEvent())
+            expect(throttledUpdateCustomerCache).toHaveBeenCalledWith(
+                ticket.customer?.id,
+            )
         })
     })
 
