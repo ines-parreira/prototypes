@@ -86,7 +86,9 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 result.current.onTest()
             })
 
-            expect(result.current.sidePanelWidth).toBe('98vw')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(min(calc(calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2)) + 480px + var(--layout-spacing-xs)), 98vw)',
+            )
         })
     })
 
@@ -132,7 +134,9 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 result.current.onTest()
             })
 
-            expect(result.current.sidePanelWidth).toBe('98vw')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(min(calc(calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2)) + 480px + var(--layout-spacing-xs)), 98vw)',
+            )
 
             act(() => {
                 result.current.onClosePlayground()
@@ -163,7 +167,7 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
             expect(result.current.sidePanelWidth).toBe('100vw')
         })
 
-        it('should return 98vw when playground is open regardless of fullscreen', () => {
+        it('should add playground width (480px + gap) to base width when playground is open', () => {
             const { result } = renderHook(() =>
                 usePlaygroundPanelInKnowledgeEditor(false),
             )
@@ -172,10 +176,12 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 result.current.onTest()
             })
 
-            expect(result.current.sidePanelWidth).toBe('98vw')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(min(calc(calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2)) + 480px + var(--layout-spacing-xs)), 98vw)',
+            )
         })
 
-        it('should prioritize playground width over fullscreen width', () => {
+        it('should prioritize fullscreen width over playground width', () => {
             const { result } = renderHook(() =>
                 usePlaygroundPanelInKnowledgeEditor(true),
             )
@@ -186,7 +192,8 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 result.current.onTest()
             })
 
-            expect(result.current.sidePanelWidth).toBe('98vw')
+            // Fullscreen takes priority, even when playground is open
+            expect(result.current.sidePanelWidth).toBe('100vw')
         })
 
         it('should update width when isFullscreen parameter changes', () => {
@@ -205,7 +212,7 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
             expect(result.current.sidePanelWidth).toBe('100vw')
         })
 
-        it('should maintain playground width even when isFullscreen changes', () => {
+        it('should prioritize fullscreen when isFullscreen changes even with playground open', () => {
             const { result, rerender } = renderHook(
                 ({ isFullscreen }) =>
                     usePlaygroundPanelInKnowledgeEditor(isFullscreen),
@@ -216,11 +223,14 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 result.current.onTest()
             })
 
-            expect(result.current.sidePanelWidth).toBe('98vw')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(min(calc(calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2)) + 480px + var(--layout-spacing-xs)), 98vw)',
+            )
 
+            // When fullscreen is enabled, it takes priority over playground
             rerender({ isFullscreen: true })
 
-            expect(result.current.sidePanelWidth).toBe('98vw')
+            expect(result.current.sidePanelWidth).toBe('100vw')
         })
     })
 
@@ -323,7 +333,8 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
             })
 
             expect(result.current.isPlaygroundOpen).toBe(true)
-            expect(result.current.sidePanelWidth).toBe('98vw')
+            // Fullscreen takes priority even when playground is open
+            expect(result.current.sidePanelWidth).toBe('100vw')
 
             act(() => {
                 result.current.onClosePlayground()
@@ -344,11 +355,14 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
                 result.current.onTest()
             })
 
-            expect(result.current.sidePanelWidth).toBe('98vw')
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(min(calc(calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2)) + 480px + var(--layout-spacing-xs)), 98vw)',
+            )
 
+            // When fullscreen is enabled, it takes priority
             rerender({ isFullscreen: true })
 
-            expect(result.current.sidePanelWidth).toBe('98vw')
+            expect(result.current.sidePanelWidth).toBe('100vw')
 
             act(() => {
                 result.current.onClosePlayground()
@@ -401,7 +415,7 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
             expect(result.current.sidePanelWidth).toBe('100vw')
         })
 
-        it('should prioritize playground width over viewport-based fullscreen', () => {
+        it('should keep 100vw width on small viewports even when playground opens', () => {
             mockUseScreenSize.mockReturnValue([900, 600])
 
             const { result } = renderHook(() =>
@@ -411,14 +425,15 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
             // Initially should be 100vw due to viewport < 918px
             expect(result.current.sidePanelWidth).toBe('100vw')
 
-            // When playground opens, should be 98vw
+            // When playground opens on small viewport, keep 100vw to avoid horizontal scroll
+            // The playground will overlay with z-index instead
             act(() => {
                 result.current.onTest()
             })
 
-            expect(result.current.sidePanelWidth).toBe('98vw')
+            expect(result.current.sidePanelWidth).toBe('100vw')
 
-            // When playground closes, should go back to 100vw
+            // When playground closes, remains 100vw
             act(() => {
                 result.current.onClosePlayground()
             })
@@ -449,6 +464,60 @@ describe('usePlaygroundPanelInKnowledgeEditor', () => {
 
             expect(result.current.sidePanelWidth).toBe(
                 'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))',
+            )
+        })
+    })
+
+    describe('fullscreen priority behavior', () => {
+        it('should always return 100vw when fullscreen is true, regardless of other states', () => {
+            mockUseScreenSize.mockReturnValue([1920, 1080])
+
+            const { result } = renderHook(() =>
+                usePlaygroundPanelInKnowledgeEditor(true),
+            )
+
+            // Fullscreen without playground
+            expect(result.current.sidePanelWidth).toBe('100vw')
+
+            // Fullscreen with playground open
+            act(() => {
+                result.current.onTest()
+            })
+            expect(result.current.sidePanelWidth).toBe('100vw')
+
+            // Fullscreen with playground closed
+            act(() => {
+                result.current.onClosePlayground()
+            })
+            expect(result.current.sidePanelWidth).toBe('100vw')
+        })
+
+        it('should switch from playground width to fullscreen width when fullscreen is enabled', () => {
+            const { result, rerender } = renderHook(
+                ({ isFullscreen }) =>
+                    usePlaygroundPanelInKnowledgeEditor(isFullscreen),
+                { initialProps: { isFullscreen: false } },
+            )
+
+            // Open playground in non-fullscreen mode
+            act(() => {
+                result.current.onTest()
+            })
+
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(min(calc(calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2)) + 480px + var(--layout-spacing-xs)), 98vw)',
+            )
+
+            // Enable fullscreen - should override playground width
+            rerender({ isFullscreen: true })
+
+            expect(result.current.sidePanelWidth).toBe('100vw')
+
+            // Disable fullscreen - should return to playground width
+            rerender({ isFullscreen: false })
+
+            expect(result.current.sidePanelWidth).toBe(
+                'calc(min(calc(calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2)) + 480px + var(--layout-spacing-xs)), 98vw)',
             )
         })
     })

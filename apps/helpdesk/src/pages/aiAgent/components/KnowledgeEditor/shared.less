@@ -53,6 +53,10 @@
             min-width: 480px;
             opacity: 1;
             visibility: visible;
+
+            @media (max-width: 767px) {
+                z-index: 10; // prevents overlapping of header items from knowledge editor
+            }
         }
 
         &-closed {

@@ -29,25 +29,23 @@ export const usePlaygroundPanelInKnowledgeEditor = (isFullscreen: boolean) => {
     }, [])
 
     const sidePanelWidth = useMemo((): SizeValue => {
-        // When playground is open, always use 98vw
-        if (isPlaygroundOpen) {
-            return '98vw'
-        }
-
-        // When user manually enables fullscreen, use 100vw
         if (isFullscreen) {
             return '100vw'
         }
 
-        // When viewport < 918px, auto-enable fullscreen
+        // When viewport < 918px, base width is 100vw
         if (windowWidth < 918) {
             return '100vw'
         }
 
-        // Otherwise, use responsive width with 920px minimum
-        // This maintains 66vw on larger screens, but never goes below 920px.
-        // By default, side panel width gets "- calc(var(--spacing-xs) * 2))" we need to remove that to maintain proper size
-        return 'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))'
+        const baseWidth =
+            'calc(calc(max(920px, 66vw)) + calc(var(--spacing-xs) * 2))'
+
+        if (isPlaygroundOpen) {
+            return `calc(min(calc(${baseWidth} + 480px + var(--layout-spacing-xs)), 98vw)`
+        }
+
+        return baseWidth
     }, [isFullscreen, isPlaygroundOpen, windowWidth])
 
     return {
