@@ -97,6 +97,7 @@ export const AnalyticsAiAgentLayout = () => {
                     <DashboardLayoutRenderer
                         layoutConfig={ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT}
                         reportConfig={AnalyticsAiAgentAllAgentsReportConfig}
+                        tabKey={AiAgentAnalyticsQueryParams.AllAgents}
                     />
                 )
             case AiAgentAnalyticsQueryParams.SupportAgent:
@@ -104,6 +105,7 @@ export const AnalyticsAiAgentLayout = () => {
                     <DashboardLayoutRenderer
                         layoutConfig={ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT}
                         reportConfig={AnalyticsAiAgentSupportAgentReportConfig}
+                        tabKey={AiAgentAnalyticsQueryParams.SupportAgent}
                     />
                 )
             case AiAgentAnalyticsQueryParams.ShoppingAssistant:
@@ -115,6 +117,7 @@ export const AnalyticsAiAgentLayout = () => {
                         reportConfig={
                             AnalyticsAiAgentShoppingAssistantReportConfig
                         }
+                        tabKey={AiAgentAnalyticsQueryParams.ShoppingAssistant}
                     />
                 )
             default:

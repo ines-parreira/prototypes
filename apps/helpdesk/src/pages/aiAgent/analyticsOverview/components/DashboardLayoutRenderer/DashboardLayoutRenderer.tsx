@@ -19,14 +19,27 @@ import css from './DashboardLayoutRenderer.less'
 type DashboardLayoutRendererProps<TChart extends string> = {
     layoutConfig: DashboardLayoutConfig
     reportConfig: ReportConfig<TChart>
+    tabKey?: string
+}
+
+const getEntranceAnimation = (index: number) => {
+    const animations = [
+        { x: -50, y: -30 },
+        { x: -25, y: -20 },
+        { x: 50, y: -30 },
+        { x: 25, y: -20 },
+    ]
+    return animations[index % animations.length]
 }
 
 const KpisSection = <TChart extends string>({
     section,
     reportConfig,
+    tabKey,
 }: {
     section: LayoutSection
     reportConfig: ReportConfig<TChart>
+    tabKey?: string
 }) => {
     const [isWrapped, setIsWrapped] = useState(false)
     const containerRef = useRef<HTMLDivElement>(null)
@@ -59,42 +72,70 @@ const KpisSection = <TChart extends string>({
             onClick={handleClick}
             className={`${css.kpisSection} ${isScrollable ? css.clickable : ''} ${isWrapped ? css.wrapped : ''}`}
         >
-            {section.items.map((item) => (
-                <motion.div
-                    key={item.chartId}
-                    layout="position"
-                    animate={{
-                        width: isWrapped ? '100%' : 'auto',
-                    }}
-                    initial={false}
-                    transition={{
-                        width: {
-                            duration: 0.7,
-                            type: 'spring',
-                            stiffness: 100,
-                            damping: 15,
-                        },
-                        layout: {
-                            duration: 0.7,
-                            type: 'spring',
-                            stiffness: 100,
-                            damping: 15,
-                        },
-                    }}
-                    className={css.kpiItem}
-                >
-                    <DashboardComponent
-                        chart={item.chartId}
-                        config={reportConfig}
-                    />
-                </motion.div>
-            ))}
+            {section.items.map((item, index) => {
+                const entrance = getEntranceAnimation(index)
+                return (
+                    <motion.div
+                        key={
+                            tabKey ? `${tabKey}-${item.chartId}` : item.chartId
+                        }
+                        layout="position"
+                        initial={{
+                            x: entrance.x,
+                            y: entrance.y,
+                            opacity: 0,
+                        }}
+                        animate={{
+                            x: 0,
+                            y: 0,
+                            opacity: 1,
+                            width: isWrapped ? '100%' : 'auto',
+                        }}
+                        transition={{
+                            x: {
+                                type: 'spring',
+                                stiffness: 200,
+                                damping: 15,
+                                delay: index * 0.05,
+                            },
+                            y: {
+                                type: 'spring',
+                                stiffness: 200,
+                                damping: 15,
+                                delay: index * 0.05,
+                            },
+                            opacity: { duration: 0.7, delay: index * 0.05 },
+                            width: {
+                                duration: 0.7,
+                                type: 'spring',
+                                stiffness: 100,
+                                damping: 15,
+                            },
+                            layout: {
+                                duration: 0.7,
+                                type: 'spring',
+                                stiffness: 100,
+                                damping: 15,
+                            },
+                        }}
+                        className={css.kpiItem}
+                    >
+                        <DashboardComponent
+                            chart={item.chartId}
+                            config={reportConfig}
+                        />
+                    </motion.div>
+                )
+            })}
         </motion.div>
     )
 }
 
 const renderSection =
-    <TChart extends string>(reportConfig: ReportConfig<TChart>) =>
+    <TChart extends string>(
+        reportConfig: ReportConfig<TChart>,
+        tabKey?: string,
+    ) =>
     (section: LayoutSection) => {
         const isChartsSection = section.type === 'charts'
         const isKpisSection = section.type === 'kpis'
@@ -106,6 +147,7 @@ const renderSection =
                     key={section.id}
                     section={section}
                     reportConfig={reportConfig}
+                    tabKey={tabKey}
                 />
             )
         }
@@ -144,6 +186,7 @@ const renderSection =
 export const DashboardLayoutRenderer = <TChart extends string>({
     layoutConfig,
     reportConfig,
+    tabKey,
 }: DashboardLayoutRendererProps<TChart>) => {
     const validatedConfig = validateLayoutConfig(
         layoutConfig,
@@ -160,7 +203,7 @@ export const DashboardLayoutRenderer = <TChart extends string>({
             minWidth="0px"
             className={css.container}
         >
-            {validatedConfig.sections.map(renderSection(reportConfig))}
+            {validatedConfig.sections.map(renderSection(reportConfig, tabKey))}
         </Box>
     )
 }
