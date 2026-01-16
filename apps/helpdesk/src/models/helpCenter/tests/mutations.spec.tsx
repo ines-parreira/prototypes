@@ -352,6 +352,7 @@ describe('helpCenter mutations', () => {
                 })
                 expect(queryClient.invalidateQueries).toHaveBeenCalledWith({
                     queryKey: articleListKey,
+                    exact: true,
                 })
             })
         })

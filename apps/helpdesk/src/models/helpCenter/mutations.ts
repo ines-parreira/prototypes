@@ -192,6 +192,7 @@ export const useDeleteArticle = (
             }
             await queryClient.invalidateQueries({
                 queryKey: articleListKey,
+                exact: true,
             })
             await callbacks?.onSettled?.()
         },
