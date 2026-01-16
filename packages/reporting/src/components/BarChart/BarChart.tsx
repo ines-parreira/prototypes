@@ -103,10 +103,7 @@ export const BarChart = ({
             className={css.chartContainer}
         >
             <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
-                <RechartsBarChart
-                    data={dataWithColors}
-                    margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
-                >
+                <RechartsBarChart data={dataWithColors}>
                     <CartesianGrid
                         strokeDasharray="3 3"
                         vertical={false}
@@ -119,6 +116,7 @@ export const BarChart = ({
                         axisLine={false}
                     />
                     <YAxis
+                        width="auto"
                         tick={{ fontSize: 12 }}
                         tickLine={false}
                         axisLine={false}
