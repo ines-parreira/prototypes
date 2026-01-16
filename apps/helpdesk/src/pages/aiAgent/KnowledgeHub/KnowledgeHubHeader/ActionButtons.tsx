@@ -9,6 +9,8 @@ import {
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
 
+import { LearnDropdown } from './LearnDropdown'
+
 type HeaderActionsProps = {
     data: GroupedKnowledgeItem | null
     onAddKnowledge?: () => void
@@ -39,6 +41,7 @@ export const HeaderActions = ({
     if (!data) {
         return (
             <>
+                <LearnDropdown />
                 {!isPlaygroundOpen && (
                     <Button
                         onClick={onTest}

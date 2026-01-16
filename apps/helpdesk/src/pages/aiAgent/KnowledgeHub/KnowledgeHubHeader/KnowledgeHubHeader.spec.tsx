@@ -57,9 +57,10 @@ describe('KnowledgeHubHeader', () => {
             expect(backButton).not.toBeInTheDocument()
         })
 
-        it('renders Test and Create content buttons', () => {
+        it('renders Learnning resources, Test and Create content buttons', () => {
             renderComponent({ data: null })
 
+            expect(screen.getByText(/learnning resources/i)).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /test knowledge/i }),
             ).toBeInTheDocument()
