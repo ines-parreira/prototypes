@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 import moment from 'moment-timezone'
@@ -289,6 +289,36 @@ export const KnowledgeHubTable = ({
             getRowId: (row) => row.id,
         },
     })
+
+    const prevSelectedFolderRef = useRef(selectedFolder)
+
+    useEffect(() => {
+        const prev = prevSelectedFolderRef.current
+        const current = selectedFolder
+
+        const isEnteringSnippetFolder =
+            current &&
+            (current.type === KnowledgeTypeEnum.Document ||
+                current.type === KnowledgeTypeEnum.URL ||
+                current.type === KnowledgeTypeEnum.Domain)
+
+        const wasInSnippetFolder =
+            prev &&
+            (prev.type === KnowledgeTypeEnum.Document ||
+                prev.type === KnowledgeTypeEnum.URL ||
+                prev.type === KnowledgeTypeEnum.Domain)
+
+        const isExitingFolder = prev && !current
+
+        if (
+            isEnteringSnippetFolder ||
+            (isExitingFolder && wasInSnippetFolder)
+        ) {
+            table.resetRowSelection()
+        }
+
+        prevSelectedFolderRef.current = current
+    }, [selectedFolder, table])
 
     const isSearchEmptyPage =
         !isLoading &&
