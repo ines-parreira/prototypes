@@ -18,7 +18,6 @@ import {
     formatMetricTrend,
     formatMetricValue,
     getTrendColorFromValue,
-    getTrendIconColorFromSign,
     getTrendIconFromSign,
 } from '../../utils/helpers'
 
@@ -57,7 +56,6 @@ export function TrendBadge({
 
     const trendColor = getTrendColorFromValue(sign, interpretAs)
     const trendIcon = getTrendIconFromSign(sign)
-    const trendIconColor = getTrendIconColorFromSign(sign)
 
     const formattedPrevValue = formatMetricValue(
         prevValue,
@@ -78,7 +76,7 @@ export function TrendBadge({
                 className,
             )}
         >
-            {trendIcon && <Icon name={trendIcon} color={trendIconColor} />}
+            {trendIcon && <Icon name={trendIcon} />}
             {formattedTrend}
         </div>
     )
