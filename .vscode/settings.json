@@ -4,7 +4,7 @@
         "source.fixAll.oxc": "explicit",
         "source.fixAll.stylelint": "explicit"
     },
-    "jest.jestCommandLine": "pnpm test:helpdesk",
+    "jest.jestCommandLine": "pnpm test @repo/helpdesk",
     "oxc.enable": true,
     "typescript.tsdk": "node_modules/typescript/lib",
     "typescript.preferences.importModuleSpecifier": "non-relative",

@@ -6,49 +6,49 @@ It's built using ReactJS + Redux + many other smaller tools.
 ## Table of Contents
 
 - [Gorgias JavaScript Application](#gorgias-javascript-application)
-    - [Table of Contents](#table-of-contents)
-    - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-        - [PNPM Catalogs](#pnpm-catalogs)
-        - [Updating SDKs](#updating-sdks)
-        - [Release Age Configuration](#release-age-configuration)
-    - [Development](#development)
-        - [Environment Configuration](#environment-configuration)
-            - [Initial Setup](#initial-setup)
-        - [Running the Development Server](#running-the-development-server)
-        - [Running the shared worker](#running-the-shared-worker)
-        - [Storybook](#storybook)
-            - [Story Guidelines](#story-guidelines)
-            - [Storybook Folder Structure](#storybook-folder-structure)
-        - [Design tokens](#design-tokens)
-    - [Testing](#testing)
-        - [General testing](#general-testing)
-    - [CI/CD Workflow](#cicd-workflow)
-        - [Overview](#overview)
-        - [Workflow Structure](#workflow-structure)
-        - [Quality Checks](#quality-checks)
-        - [Code Coverage](#code-coverage)
-        - [Deployment Pipeline](#deployment-pipeline)
-    - [Linting](#linting)
-        - [Running Linting](#running-linting)
-        - [Adding Linting rules](#adding-linting-rules)
-    - [Debugging tools](#debugging-tools)
-        - [ReactScan](#reactscan)
-        - [WhyDidYouRender](#whydidyourender)
-            - [How it's imported](#how-its-imported)
-            - [How to use it](#how-to-use-it)
-    - [Formatting](#formatting)
-    - [Platform](#platform)
-        - [Deprecated entries](#deprecated-entries)
-            - [Generate new snapshot](#generate-new-snapshot)
-            - [Deprecated entries lint check](#deprecated-entries-lint-check)
-            - [Add new deprecated entries](#add-new-deprecated-entries)
-        - [Dependencies NodeJS Engine check](#dependencies-nodejs-engine-check)
-    - [Contributing](#contributing)
-    - [Update gorgias-chat client](#update-gorgias-chat-client)
-    - [FAQ / Troubleshooting](#faq--troubleshooting)
-        - [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
+  - [Table of Contents](#table-of-contents)
+  - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+    - [PNPM Catalogs](#pnpm-catalogs)
+    - [Updating SDKs](#updating-sdks)
+    - [Release Age Configuration](#release-age-configuration)
+  - [Development](#development)
+    - [Environment Configuration](#environment-configuration)
+      - [Initial Setup](#initial-setup)
+    - [Running the Development Server](#running-the-development-server)
+    - [Running the shared worker](#running-the-shared-worker)
+    - [Storybook](#storybook)
+      - [Story Guidelines](#story-guidelines)
+      - [Storybook Folder Structure](#storybook-folder-structure)
+    - [Design tokens](#design-tokens)
+  - [Testing](#testing)
+    - [General testing](#general-testing)
+  - [CI/CD Workflow](#cicd-workflow)
+    - [Overview](#overview)
+    - [Workflow Structure](#workflow-structure)
+    - [Quality Checks](#quality-checks)
+    - [Code Coverage](#code-coverage)
+    - [Deployment Pipeline](#deployment-pipeline)
+  - [Linting](#linting)
+    - [Running Linting](#running-linting)
+    - [Adding Linting rules](#adding-linting-rules)
+  - [Debugging tools](#debugging-tools)
+    - [ReactScan](#reactscan)
+    - [WhyDidYouRender](#whydidyourender)
+      - [How it's imported](#how-its-imported)
+      - [How to use it](#how-to-use-it)
+  - [Formatting](#formatting)
+  - [Platform](#platform)
+    - [Deprecated entries](#deprecated-entries)
+      - [Generate new snapshot](#generate-new-snapshot)
+      - [Deprecated entries lint check](#deprecated-entries-lint-check)
+      - [Add new deprecated entries](#add-new-deprecated-entries)
+    - [Dependencies NodeJS Engine check](#dependencies-nodejs-engine-check)
+  - [Contributing](#contributing)
+  - [Update gorgias-chat client](#update-gorgias-chat-client)
+  - [FAQ / Troubleshooting](#faq--troubleshooting)
+    - [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
 
 ## Setup NPM to access private packages
 
@@ -188,11 +188,12 @@ Tokens are provided by the `@gorgias/design-tokens` package.
 
 ```bash
 pnpm test:all  # all tests
-pnpm test:helpdesk  # tests of the helpdesk
 pnpm test:affected  # run tests affected by changes w.r.t. main branch
+pnpm test <package-name>  # tests for a given package
+
 pnpm typecheck:all  # Only type-check
-pnpm typecheck:helpdesk  # Only type-check on the helpdesk
 pnpm typecheck:affected  # Only type-check on affected files
+pnpm typecheck <package-name>  # Only type-check for a specific package.
 ```
 
 ## CI/CD Workflow
@@ -279,6 +280,7 @@ If you't editor doesn't support Oxc yet, please use the `pnpm oxlint:watch` comm
 
 ```bash
 pnpm lint:helpdesk  # run lint on the helpdesk, including deprecation checks
+pnpm lint <package-name> # run lint for a specific package.
 pnpm lint:code:all  # run lint everywhere
 ```
 
