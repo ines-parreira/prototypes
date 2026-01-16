@@ -9,7 +9,7 @@ import _values from 'lodash/values'
 import _zip from 'lodash/zip'
 import moment from 'moment'
 
-import { getMomentGranularityFromReportingGranularity } from 'domains/reporting/hooks/useTimeSeries'
+import { getMomentGranularityFromReportingGranularity } from 'domains/reporting/hooks/helpers'
 import type {
     AggregationWindow,
     Stat,

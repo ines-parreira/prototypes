@@ -7,13 +7,16 @@ import { defaultEnrichmentFields } from 'domains/reporting/hooks/useDrillDownDat
 import {
     fetchPostReporting,
     fetchPostReportingV2,
+    fetchPostStats,
     useEnrichedPostReporting,
     usePostReporting,
     usePostReportingV2,
+    usePostStats,
 } from 'domains/reporting/models/queries'
 import {
     postEnrichedReporting,
     postReportingV1,
+    postReportingV2,
 } from 'domains/reporting/models/resources'
 import type { BuiltQuery } from 'domains/reporting/models/scopes/scope'
 import type { ReportingParams } from 'domains/reporting/models/types'
@@ -24,6 +27,7 @@ jest.mock('domains/reporting/models/resources')
 jest.mock('domains/reporting/utils/metricExecutionHandler')
 
 const postReportingMock = assumeMock(postReportingV1)
+const postReportingV2Mock = assumeMock(postReportingV2)
 const postEnrichedReportingMock = assumeMock(postEnrichedReporting)
 const executeMetricCallMock = assumeMock(metricExecutionHandler)
 
@@ -62,6 +66,7 @@ describe('Reporting queries', () => {
         appQueryClient.clear()
         postReportingMock.mockResolvedValue(mockData)
         executeMetricCallMock.mockResolvedValue(mockData)
+        postReportingV2Mock.mockResolvedValue(mockData)
     })
 
     describe('usePostReporting', () => {
@@ -161,6 +166,29 @@ describe('Reporting queries', () => {
                 newPayload: undefined,
             })
             expect(result.data?.data).toEqual([42])
+        })
+    })
+
+    describe('usePostStats', () => {
+        it('should call postReportingV2 and return the result with V2 query', async () => {
+            const { result } = renderHook(() => usePostStats(newQuery), {
+                wrapper: mockQueryClientProvider().QueryClientProvider,
+            })
+            await waitFor(() => {
+                expect(postReportingV2Mock).toHaveBeenCalledWith(newQuery)
+                expect(result.current.data?.data.data).toEqual([42])
+            })
+        })
+    })
+
+    describe('fetchPostStats', () => {
+        it('should call postReportingV2 with V2 query', async () => {
+            const result = await fetchPostStats(newQuery)
+
+            await waitFor(() => {
+                expect(postReportingV2Mock).toHaveBeenCalledWith(newQuery)
+                expect(result.data?.data).toEqual([42])
+            })
         })
     })
 })

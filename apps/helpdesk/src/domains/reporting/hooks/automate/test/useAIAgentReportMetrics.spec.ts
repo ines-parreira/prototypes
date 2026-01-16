@@ -19,12 +19,12 @@ import {
 import { useAutomateMetricsTimeSeries } from 'domains/reporting/hooks/automate/useAutomationDataset'
 import { calculateGreyArea } from 'domains/reporting/hooks/automate/utils'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
+import { getPeriodDateTimes } from 'domains/reporting/hooks/helpers'
 import { useAgentsAverageMetrics } from 'domains/reporting/hooks/support-performance/agents/useAgentsAverageMetrics'
 import { useAgentsMetrics } from 'domains/reporting/hooks/support-performance/agents/useAgentsMetrics'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useCustomFieldsTicketCountTimeSeries } from 'domains/reporting/hooks/timeSeries'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
-import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
 import { AutomationBillingEventMeasure } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
@@ -123,7 +123,7 @@ const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
-jest.mock('domains/reporting/hooks/useTimeSeries')
+jest.mock('domains/reporting/hooks/helpers')
 const getPeriodDateTimesMock = assumeMock(getPeriodDateTimes)
 
 jest.mock('domains/reporting/services/agentsPerformanceReportingService')

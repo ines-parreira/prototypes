@@ -577,6 +577,7 @@ describe('scope', () => {
             const scope = defineScope({
                 scope: MetricScope.TicketsOpen,
                 dimensions: ['agentId', 'ticketId'],
+                measures: ['testMeasure'] as unknown as readonly MeasureName[],
                 filters: ['periodStart', 'periodEnd'] as const,
                 order: ['agentId', 'ticketId'] as const,
             })
@@ -585,6 +586,7 @@ describe('scope', () => {
                 .defineMetricName('test-metric')
                 .defineQuery(() => ({
                     dimensions: ['agentId'],
+                    measures: ['testMeasure' as unknown as MeasureName],
                 }))
 
             const contextWithoutSortBy = {
@@ -730,26 +732,6 @@ describe('scope', () => {
     })
 
     describe('Edge Cases', () => {
-        it('should handle empty scope configuration', () => {
-            const scope = defineScope({
-                scope: MetricScope.TicketsOpen,
-                filters: ['periodStart', 'periodEnd'] as const,
-            })
-            const scopeBuilder = scope
-
-            const metric = scopeBuilder
-                .defineMetricName('empty-metric' as MetricName)
-                .defineQuery(({ ctx, config }) => ({
-                    timezone: ctx.timezone,
-                    filters: createScopeFilters(ctx.filters, config),
-                }))
-
-            const result = metric.build(mockContextWithoutGranularity)
-
-            expect(result.metricName).toBe('empty-metric' as MetricName)
-            expect(result.timezone).toBe('UTC')
-        })
-
         it('should handle complex filter scenarios', () => {
             const complexFilters: StatsFiltersWithLogicalOperator = {
                 period: {

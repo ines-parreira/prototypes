@@ -6,9 +6,9 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { getPeriodDateTimes } from 'domains/reporting/hooks/helpers'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useCustomFieldsTicketCountPerCustomFields } from 'domains/reporting/hooks/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
-import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
 import {
     BREAKDOWN_FIELD,
     VALUE_FIELD,

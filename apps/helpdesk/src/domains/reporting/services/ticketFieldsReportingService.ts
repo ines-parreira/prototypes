@@ -3,6 +3,7 @@ import _flatten from 'lodash/flatten'
 import _orderBy from 'lodash/orderBy'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
+import { getPeriodDateTimes } from 'domains/reporting/hooks/helpers'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     Entity,
@@ -13,7 +14,6 @@ import {
     useCustomFieldsTicketCountTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
 import type {
     Period,
     StatsFilters,

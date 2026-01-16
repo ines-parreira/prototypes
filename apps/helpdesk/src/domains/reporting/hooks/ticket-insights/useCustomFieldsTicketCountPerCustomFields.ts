@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import _zip from 'lodash/zip'
 
+import { getPeriodDateTimes } from 'domains/reporting/hooks/helpers'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     Entity,
@@ -9,7 +10,6 @@ import {
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
 import { useCustomFieldsTicketCountTimeSeries } from 'domains/reporting/hooks/timeSeries'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
 import type {
     TicketCustomFieldsTicketCountTimeSeriesData,
     TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile,

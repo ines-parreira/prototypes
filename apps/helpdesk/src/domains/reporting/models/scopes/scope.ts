@@ -43,7 +43,7 @@ type OptionalFilters<TFilterMembers extends readonly string[]> = {
 
 export type ScopeMeta = {
     scope: MetricScope
-    measures?: readonly MeasureName[]
+    measures: readonly MeasureName[]
     dimensions?: readonly DimensionName[]
     timeDimensions?: readonly TimeDimensionName[]
     filters: readonly FilterName[]
@@ -59,7 +59,7 @@ export type ScopeFilters<TScopeMeta extends ScopeMeta> = Array<
 >
 
 export type QueryFor<TScopeMeta extends ScopeMeta> = {
-    measures?: readonly Values<TScopeMeta['measures']>[]
+    measures: readonly Values<TScopeMeta['measures']>[]
 
     limit?: number
 

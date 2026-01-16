@@ -1,5 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
+import { getPeriodDateTimes } from 'domains/reporting/hooks/helpers'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useTagResultsSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
 import {
@@ -17,7 +18,6 @@ import {
     useTagsTicketCountTimeSeries,
     useTotalTaggedTicketCountTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
-import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
 import { setOrder } from 'domains/reporting/state/ui/stats/tagsReportSlice'
 import { getFilterDateRange } from 'domains/reporting/utils/reporting'
 import useAppDispatch from 'hooks/useAppDispatch'

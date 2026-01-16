@@ -7,6 +7,7 @@ import { reportingRetryDelayHandler, reportingRetryHandler } from 'api/utils'
 import {
     postEnrichedReporting,
     postReportingV1,
+    postReportingV2,
 } from 'domains/reporting/models/resources'
 import type {
     BuiltQuery,
@@ -188,6 +189,52 @@ export const useEnrichedPostReporting = <
                 payload.query,
                 payload.enrichment_fields,
             ),
+        ...defaultOptions,
+        ...overrides,
+    })
+}
+
+/**
+ * Stats Time Series Helpers
+ * ----------------------------
+ * The following functions use the new stats API only
+ **/
+
+export const fetchPostStats = <
+    TData extends unknown[],
+    SelectData = UsePostReportingQueryData<TData>,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(
+    payload: BuiltQuery<TMeta>,
+    overrides?: UseQueryOptions<
+        UsePostReportingQueryData<TData>,
+        unknown,
+        SelectData
+    >,
+) => {
+    return appQueryClient.fetchQuery({
+        queryKey: reportingKeys.postV2(undefined, payload),
+        queryFn: () => postReportingV2<TData, TMeta>(payload),
+        ...defaultOptions,
+        ...overrides,
+    })
+}
+
+export const usePostStats = <
+    TData extends unknown[],
+    SelectData = UsePostReportingQueryData<TData>,
+    TMeta extends ScopeMeta = ScopeMeta,
+>(
+    payload: BuiltQuery<TMeta>,
+    overrides?: UseQueryOptions<
+        UsePostReportingQueryData<TData>,
+        unknown,
+        SelectData
+    >,
+) => {
+    return useQuery({
+        queryKey: reportingKeys.postV2(undefined, payload),
+        queryFn: () => postReportingV2<TData, TMeta>(payload),
         ...defaultOptions,
         ...overrides,
     })

@@ -3,13 +3,13 @@ import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
+import { getPeriodDateTimes } from 'domains/reporting/hooks/helpers'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     fetchCustomFieldsTicketCountTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { formatDates } from 'domains/reporting/pages/utils'

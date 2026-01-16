@@ -5,6 +5,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Tag } from '@gorgias/helpdesk-queries'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
+import { getPeriodDateTimes } from 'domains/reporting/hooks/helpers'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
 import {
@@ -24,7 +25,6 @@ import type {
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
-import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
 import type {
     Period,
     StatsFilters,

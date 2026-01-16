@@ -5,6 +5,7 @@ import _keyBy from 'lodash/keyBy'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { getPeriodDateTimes } from 'domains/reporting/hooks/helpers'
 import { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
 import { filterTimeDataWithSelectedTags } from 'domains/reporting/hooks/ticket-insights/helpers'
 import { useTicketCountPerTag } from 'domains/reporting/hooks/ticket-insights/useTicketCountPerTag'
@@ -12,7 +13,6 @@ import {
     useTagsTicketCountTimeSeries,
     useTotalTaggedTicketCountTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
-import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
 import type { Period } from 'domains/reporting/models/stat/types'
 import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'

@@ -4,6 +4,7 @@ import _groupBy from 'lodash/groupBy'
 import moment from 'moment-timezone'
 
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
+import { getPeriodDateTimesFromFilters } from 'domains/reporting/hooks/helpers'
 import { BREAKDOWN_FIELD } from 'domains/reporting/hooks/withBreakdown'
 import type { DataResponse } from 'domains/reporting/hooks/withDeciles'
 import type { Cubes } from 'domains/reporting/models/cubes'
@@ -13,7 +14,6 @@ import {
 } from 'domains/reporting/models/queries'
 import type {
     BuiltQuery,
-    ScopeFilters,
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
 import type {
@@ -21,12 +21,8 @@ import type {
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
 import type {
-    ReportingFilter,
-    TimeSeriesQuery,
-} from 'domains/reporting/models/types'
-import {
-    ReportingFilterOperator,
     ReportingGranularity,
+    TimeSeriesQuery,
 } from 'domains/reporting/models/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
@@ -179,7 +175,7 @@ const select =
         })
     }
 
-const objectMap = <T, S>(
+export const objectMap = <T, S>(
     obj: Record<string, T>,
     fn: (o: T) => S,
 ): Record<string, S> => {
@@ -343,63 +339,4 @@ export async function fetchTimeSeriesPerDimension<
     >([query], queryV2, {}).then((res) =>
         selectPerDimension<TCube, TMeta>(query, queryV2, isV2)(res.data.data),
     )
-}
-
-export const getMomentGranularityFromReportingGranularity = (
-    granularity: ReportingGranularity,
-) => (granularity === ReportingGranularity.Week ? 'isoWeek' : granularity)
-
-export function getPeriodDateTimes(
-    dateRange: string[],
-    granularity: ReportingGranularity,
-): string[] {
-    // Cube always returns weeks starting with Monday,
-    // but Moment.js derives the starting day of the week from
-    // locale which in our case is `currentUser.language`.
-    // By setting the granularity to isoWeek, we make sure that
-    // start of the week returned by Moment.js is also Monday.
-    const momentGranularity =
-        getMomentGranularityFromReportingGranularity(granularity)
-
-    const dates = []
-    const end = moment(dateRange[1])
-    let currentDate = moment(dateRange[0])
-    while (currentDate.isBefore(end)) {
-        dates.push(
-            formatReportingQueryDate(currentDate.startOf(momentGranularity)),
-        )
-        currentDate = currentDate.add(1, granularity)
-    }
-    return dates
-}
-
-export const getPeriodDateTimesFromFilters = <TMeta extends ScopeMeta>(
-    filters: ReportingFilter[] | ScopeFilters<TMeta> | undefined,
-    granularity: ReportingGranularity = ReportingGranularity.Day,
-): string[] => {
-    if (!filters) return []
-
-    const periodStart = filters.find(
-        (filter) => filter.operator === ReportingFilterOperator.AfterDate,
-    )
-    const periodEnd = filters.find(
-        (filter) => filter.operator === ReportingFilterOperator.BeforeDate,
-    )
-    const periodInRange = filters.find(
-        (filter) => filter.operator === ReportingFilterOperator.InDateRange,
-    )
-
-    let dateRange = ['', '']
-    if (periodStart && periodEnd) {
-        dateRange = [
-            periodStart?.values?.[0] || '',
-            periodEnd?.values?.[0] || '',
-        ]
-    } else if (periodInRange) {
-        const start = periodInRange.values?.[0] ?? ''
-        const end = periodInRange.values?.[1] ?? ''
-        dateRange = [start, end]
-    }
-
-    return getPeriodDateTimes(dateRange, granularity)
 }

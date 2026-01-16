@@ -8,7 +8,6 @@ import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     fetchTimeSeries,
     fetchTimeSeriesPerDimension,
-    getPeriodDateTimesFromFilters,
     selectPerDimension,
     selectTimeSeriesByMeasures,
     seriesToTwoDimensionalDataItem,
@@ -40,7 +39,6 @@ import type {
 } from 'domains/reporting/models/scopes/scope'
 import type { MeasureName } from 'domains/reporting/models/scopes/types'
 import type {
-    ReportingFilter,
     ReportingResponse,
     ReportingTimeDimension,
     TimeSeriesQuery,
@@ -1488,134 +1486,6 @@ describe('TimeSeriesPerDimension', () => {
             )
             expect(result).toBeDefined()
         })
-    })
-})
-
-describe('getDateRangeFromFilters', () => {
-    it('should return empty array when periodStart and periodEnd values are null', () => {
-        const granularity = ReportingGranularity.Hour
-
-        expect(getPeriodDateTimesFromFilters(undefined, granularity)).toEqual(
-            [],
-        )
-        expect(getPeriodDateTimesFromFilters([], granularity)).toEqual([])
-    })
-
-    it('should return empty array when periodStart and periodEnd are null', () => {
-        const filters = [
-            {
-                member: TicketDimension.Channel,
-                operator: ReportingFilterOperator.Equals,
-                values: ['email'],
-            },
-            {
-                member: TicketDimension.PeriodStart,
-                operator: ReportingFilterOperator.AfterDate,
-                values: null,
-            },
-            {
-                member: TicketDimension.PeriodEnd,
-                operator: ReportingFilterOperator.BeforeDate,
-                values: null,
-            },
-        ]
-        const granularity = ReportingGranularity.Hour
-
-        const result = getPeriodDateTimesFromFilters(
-            filters as ReportingFilter[],
-            granularity,
-        )
-
-        expect(result).toEqual([])
-    })
-
-    it('should return date range when periodStart and periodEnd have values', () => {
-        const filters = [
-            {
-                member: TicketDimension.PeriodStart,
-                operator: ReportingFilterOperator.AfterDate,
-                values: ['2022-01-02T00:00:00.000'],
-            },
-            {
-                member: TicketDimension.PeriodEnd,
-                operator: ReportingFilterOperator.BeforeDate,
-                values: ['2022-01-02T05:00:00.000'],
-            },
-        ]
-        const granularity = ReportingGranularity.Hour
-
-        const result = getPeriodDateTimesFromFilters(filters, granularity)
-
-        expect(result).toEqual([
-            '2022-01-02T00:00:00.000',
-            '2022-01-02T01:00:00.000',
-            '2022-01-02T02:00:00.000',
-            '2022-01-02T03:00:00.000',
-            '2022-01-02T04:00:00.000',
-        ])
-    })
-
-    it('should return empty array if InRange is null', () => {
-        const filters = [
-            {
-                member: TicketDimension.Channel,
-                operator: ReportingFilterOperator.Equals,
-                values: ['email'],
-            },
-            {
-                member: TicketDimension.PeriodStart,
-                operator: ReportingFilterOperator.InDateRange,
-                values: null,
-            },
-        ]
-        const granularity = ReportingGranularity.Hour
-
-        const result = getPeriodDateTimesFromFilters(
-            filters as ReportingFilter[],
-            granularity,
-        )
-
-        expect(result).toEqual([])
-    })
-
-    it('should return date range when InRange have values', () => {
-        const filters = [
-            {
-                member: TicketDimension.PeriodStart,
-                operator: ReportingFilterOperator.InDateRange,
-                values: ['2022-01-02T00:00:00.000', '2022-01-02T05:00:00.000'],
-            },
-        ]
-        const granularity = ReportingGranularity.Hour
-
-        const result = getPeriodDateTimesFromFilters(filters, granularity)
-
-        expect(result).toEqual([
-            '2022-01-02T00:00:00.000',
-            '2022-01-02T01:00:00.000',
-            '2022-01-02T02:00:00.000',
-            '2022-01-02T03:00:00.000',
-            '2022-01-02T04:00:00.000',
-        ])
-    })
-
-    it('should return date range when periodStart and periodEnd have values and granularity is undefined', () => {
-        const filters = [
-            {
-                member: TicketDimension.PeriodStart,
-                operator: ReportingFilterOperator.AfterDate,
-                values: ['2022-01-02T00:00:00.000'],
-            },
-            {
-                member: TicketDimension.PeriodEnd,
-                operator: ReportingFilterOperator.BeforeDate,
-                values: ['2022-01-02T05:00:00.000'],
-            },
-        ]
-
-        expect(getPeriodDateTimesFromFilters(filters, undefined)).toEqual([
-            '2022-01-02T00:00:00.000',
-        ])
     })
 })
 

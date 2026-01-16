@@ -1376,7 +1376,7 @@ describe('selectMeasurePerDimension', () => {
         const result = selectMeasurePerDimension(
             data,
             query,
-            { ...queryV2, measures: undefined, dimensions: undefined },
+            { ...queryV2, measures: [], dimensions: undefined },
             undefined,
             '123',
         )

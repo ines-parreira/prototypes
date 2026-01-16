@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 
+import { getPeriodDateTimes } from 'domains/reporting/hooks/helpers'
 import type {
     TimeSeriesFetch,
     TimeSeriesPerDimension,
     TimeSeriesPerDimensionFetch,
 } from 'domains/reporting/hooks/useTimeSeries'
-import { getPeriodDateTimes } from 'domains/reporting/hooks/useTimeSeries'
 import type {
     AggregationWindow,
     Period,

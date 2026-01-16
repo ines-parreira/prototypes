@@ -33,6 +33,7 @@ describe('utils', () => {
 
         it('should create basic period filters', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: [],
             }
@@ -55,6 +56,7 @@ describe('utils', () => {
 
         it('should handle scope config with undefined filters', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['periodStart', 'periodEnd'],
             }
@@ -77,6 +79,7 @@ describe('utils', () => {
 
         it('should add agents filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['agentId'],
             }
@@ -100,6 +103,7 @@ describe('utils', () => {
 
         it('should add agentId filter when using agentId field instead of agents', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['agentId'],
             }
@@ -123,6 +127,7 @@ describe('utils', () => {
 
         it('should add channels filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['channel'],
             }
@@ -146,6 +151,7 @@ describe('utils', () => {
 
         it('should add integrations filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['integrationId'],
             }
@@ -169,6 +175,7 @@ describe('utils', () => {
 
         it('should add stores filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['storeId'],
             }
@@ -192,6 +199,7 @@ describe('utils', () => {
 
         it('should add teams filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['teamId'],
             }
@@ -215,6 +223,7 @@ describe('utils', () => {
 
         it('should add teams filter with NOT_ONE_OF operator', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['teamId'],
             }
@@ -238,6 +247,7 @@ describe('utils', () => {
 
         it('should not add teams filter when values array is empty', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['teamId'],
             }
@@ -260,6 +270,7 @@ describe('utils', () => {
 
         it('should not add teams filter when teams is undefined', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['teamId'],
             }
@@ -279,6 +290,7 @@ describe('utils', () => {
         describe('tags filter', () => {
             it('should add tags filter with OneOf operator', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['tags'],
                 }
@@ -309,6 +321,7 @@ describe('utils', () => {
 
             it('should add tags filter with NotOneOf operator', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['tags'],
                 }
@@ -339,6 +352,7 @@ describe('utils', () => {
 
             it('should add tags filter with default AllOf operator', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['tags'],
                 }
@@ -371,6 +385,7 @@ describe('utils', () => {
         describe('customFields filter', () => {
             it('should add customFields filter with OneOf operator', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['customFields'],
                 }
@@ -402,6 +417,7 @@ describe('utils', () => {
 
             it('should add customFields filter with NotOneOf operator', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['customFields'],
                 }
@@ -433,6 +449,7 @@ describe('utils', () => {
 
             it('should remove ID prefix from custom field values when value after separator is an integer', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['customFields'],
                 }
@@ -464,6 +481,7 @@ describe('utils', () => {
 
             it('should remove ID prefix from custom field values when value after separator is not an integer', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['customFields'],
                 }
@@ -503,6 +521,7 @@ describe('utils', () => {
 
             it('should handle mixed custom field values with integers and non-integers', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['customFields'],
                 }
@@ -539,6 +558,7 @@ describe('utils', () => {
 
             it('should handle custom field values without ID prefix', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['customFields'],
                 }
@@ -572,6 +592,7 @@ describe('utils', () => {
         describe('CSAT metrics filters', () => {
             it('should add score filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['score'],
                 }
@@ -595,6 +616,7 @@ describe('utils', () => {
 
             it('should add communicationSkills filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['communicationSkills'],
                 }
@@ -618,6 +640,7 @@ describe('utils', () => {
 
             it('should add languageProficiency filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['languageProficiency'],
                 }
@@ -641,6 +664,7 @@ describe('utils', () => {
 
             it('should add resolutionCompleteness filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['resolutionCompleteness'],
                 }
@@ -664,6 +688,7 @@ describe('utils', () => {
 
             it('should add accuracy filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['accuracy'],
                 }
@@ -687,6 +712,7 @@ describe('utils', () => {
 
             it('should add efficiency filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['efficiency'],
                 }
@@ -710,6 +736,7 @@ describe('utils', () => {
 
             it('should add internalCompliance filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['internalCompliance'],
                 }
@@ -733,6 +760,7 @@ describe('utils', () => {
 
             it('should add brandVoice filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['brandVoice'],
                 }
@@ -756,6 +784,7 @@ describe('utils', () => {
 
             it('should add customFieldValue filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['customFieldValue'],
                 }
@@ -779,6 +808,7 @@ describe('utils', () => {
 
             it('should add customFieldId filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['customFieldId'],
                 }
@@ -802,6 +832,7 @@ describe('utils', () => {
 
             it('should add productId filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['productId'],
                 }
@@ -825,6 +856,7 @@ describe('utils', () => {
 
             it('should add resourceSourceId filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['resourceSourceId'],
                 }
@@ -848,6 +880,7 @@ describe('utils', () => {
 
             it('should add resourceSourceSetId filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['resourceSourceSetId'],
                 }
@@ -871,6 +904,7 @@ describe('utils', () => {
 
             it('should add storeId filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['storeId'],
                 }
@@ -894,6 +928,7 @@ describe('utils', () => {
 
             it('should add callDirection filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['callDirection'],
                 }
@@ -917,6 +952,7 @@ describe('utils', () => {
 
             it('should add callTerminationStatus filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['callTerminationStatus'],
                 }
@@ -940,6 +976,7 @@ describe('utils', () => {
 
             it('should add isAnsweredByAgent filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['isAnsweredByAgent'],
                 }
@@ -963,6 +1000,7 @@ describe('utils', () => {
 
             it('should add displayStatus filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['displayStatus'],
                 }
@@ -986,6 +1024,7 @@ describe('utils', () => {
 
             it('should add queueId filter when present with ONE_OF operator', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['queueId'],
                 }
@@ -1009,6 +1048,7 @@ describe('utils', () => {
 
             it('should add queueId filter when present with NOT_ONE_OF operator', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['queueId'],
                 }
@@ -1032,6 +1072,7 @@ describe('utils', () => {
 
             it('should not add queueId filter when voiceQueues has empty values', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['queueId'],
                 }
@@ -1054,6 +1095,7 @@ describe('utils', () => {
 
             it('should not add queueId filter when voiceQueues is undefined', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['queueId'],
                 }
@@ -1072,6 +1114,7 @@ describe('utils', () => {
 
             it('should add slaPolicyUuid filter when present', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['slaPolicyUuid'],
                 }
@@ -1095,6 +1138,7 @@ describe('utils', () => {
 
             it('should not add slaPolicyUuid filter when slaPolicies has empty values', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['slaPolicyUuid'],
                 }
@@ -1118,6 +1162,7 @@ describe('utils', () => {
         describe('createdDatetime filter', () => {
             it('should add createdDatetime filter with inDateRange operators', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['createdDatetime'],
                 }
@@ -1144,6 +1189,7 @@ describe('utils', () => {
 
             it('should not add createdDatetime filter when not present in statFilters', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['createdDatetime'],
                 }
@@ -1163,6 +1209,7 @@ describe('utils', () => {
 
         it('should handle multiple filters together', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['agentId', 'channel', 'tags', 'score'],
             }
@@ -1221,6 +1268,7 @@ describe('utils', () => {
 
         it('should skip filters not defined in scope config', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['agentId'], // Only agents filter is allowed
             }
@@ -1252,6 +1300,7 @@ describe('utils', () => {
 
         it('should skip filters not present in stat filters even if defined in scope config', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['agentId', 'channel'],
             }
@@ -1281,6 +1330,7 @@ describe('utils', () => {
         describe('data type handling', () => {
             it('should keep agent values as numbers', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['agentId'],
                 }
@@ -1304,6 +1354,7 @@ describe('utils', () => {
 
             it('should keep integration values as numbers', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['integrationId'],
                 }
@@ -1327,6 +1378,7 @@ describe('utils', () => {
 
             it('should keep store values as numbers', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['storeId'],
                 }
@@ -1350,6 +1402,7 @@ describe('utils', () => {
 
             it('should keep score values as strings', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['score'],
                 }
@@ -1373,6 +1426,7 @@ describe('utils', () => {
 
             it('should convert tag values to strings', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['tags'],
                 }
@@ -1403,6 +1457,7 @@ describe('utils', () => {
 
             it('should convert custom field IDs to strings', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['customFields'],
                 }
@@ -1434,6 +1489,7 @@ describe('utils', () => {
 
             it('should handle empty arrays for tags', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['tags'],
                 }
@@ -1456,6 +1512,7 @@ describe('utils', () => {
 
             it('should handle empty arrays for customFields', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['customFields'],
                 }
@@ -1478,6 +1535,7 @@ describe('utils', () => {
 
             it('should handle arrays with values and not empty for customFields', () => {
                 const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
                     scope: MetricScope.TicketsOpen,
                     filters: ['customFields'],
                 }
@@ -1518,6 +1576,7 @@ describe('utils', () => {
 
         it('should handle error in createScopeFilters', () => {
             const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
                 scope: MetricScope.TicketsOpen,
                 filters: ['invalidFilter' as any], // Invalid filter type
             }
