@@ -45,7 +45,7 @@ export const LearnDropdown = () => {
                 variant="tertiary"
                 onClick={() => setIsOpen(!isOpen)}
             >
-                Learnning resources
+                Learning resources
             </Button>
             <Dropdown
                 target={buttonRef}
