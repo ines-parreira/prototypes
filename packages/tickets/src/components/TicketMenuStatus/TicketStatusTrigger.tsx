@@ -1,14 +1,6 @@
 import { forwardRef } from 'react'
 
-import {
-    Color,
-    Icon,
-    IconName,
-    StatusButton,
-    StatusButtonColor,
-    Tooltip,
-    TooltipContent,
-} from '@gorgias/axiom'
+import { StatusButton, Tooltip, TooltipContent } from '@gorgias/axiom'
 import type { Ticket } from '@gorgias/helpdesk-types'
 
 import {
@@ -36,11 +28,9 @@ export const TicketStatusTrigger = forwardRef<
                     <StatusButton
                         ref={ref}
                         aria-label="Ticket status menu"
-                        leadingSlot={<Icon name={IconName.CircleCheck} />}
-                        trailingSlot={
-                            <Icon name={IconName.ArrowChevronDown} size="sm" />
-                        }
-                        color={StatusButtonColor.Grey}
+                        leadingSlot="circle-check"
+                        trailingSlot="arrow-chevron-down"
+                        color="grey"
                     >
                         Closed
                     </StatusButton>
@@ -56,16 +46,9 @@ export const TicketStatusTrigger = forwardRef<
                     <StatusButton
                         ref={ref}
                         aria-label="Ticket status menu"
-                        leadingSlot={
-                            <Icon
-                                name={IconName.TimerSnooze}
-                                color={Color.Blue}
-                            />
-                        }
-                        trailingSlot={
-                            <Icon name={IconName.ArrowChevronDown} size="sm" />
-                        }
-                        color={StatusButtonColor.Blue}
+                        leadingSlot="timer-snooze"
+                        trailingSlot="arrow-chevron-down"
+                        color="blue"
                     >
                         {getRemainingSnoozeTime(ticket.snooze_datetime)}
                     </StatusButton>
@@ -81,13 +64,9 @@ export const TicketStatusTrigger = forwardRef<
                     <StatusButton
                         ref={ref}
                         aria-label="Ticket status menu"
-                        leadingSlot={
-                            <Icon name={IconName.Inbox} color={Color.Purple} />
-                        }
-                        trailingSlot={
-                            <Icon name={IconName.ArrowChevronDown} size="sm" />
-                        }
-                        color={StatusButtonColor.Purple}
+                        leadingSlot="inbox"
+                        trailingSlot="arrow-chevron-down"
+                        color="purple"
                     >
                         Open
                     </StatusButton>
