@@ -19,6 +19,12 @@ const fetchSvgSprite = async (url: string): Promise<Document | null> => {
     }
 }
 
+const forceLightTheme = (doc: Document): void => {
+    const themeClasses = ['dark', 'light', 'classic']
+    themeClasses.forEach((cls) => doc.body.classList.remove(cls))
+    doc.body.classList.add('light')
+}
+
 const hideInteractiveElements = (element: HTMLElement): (() => void) => {
     const restorationCallbacks: Array<() => void> = []
 
@@ -136,6 +142,10 @@ export const useExportDashboardToPDF = () => {
                 foreignObjectRendering: false,
                 imageTimeout: 0,
                 onclone: async (clonedDoc) => {
+                    // there were multiple issues with the dark theme, were different colors for backgrounds, text, borders, etc.
+                    // did not pick the correct color based on theme so the better way instead of patching a lot of components is to
+                    // force the light theme in the PDF export
+                    forceLightTheme(clonedDoc)
                     hideInteractiveElements(clonedDoc.body)
                     await inlineSvgUseElements(clonedDoc.body)
                 },

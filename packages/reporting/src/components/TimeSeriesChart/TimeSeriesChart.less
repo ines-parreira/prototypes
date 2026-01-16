@@ -114,3 +114,17 @@
         }
     }
 }
+
+:global(.dark) {
+    :local {
+        .shimmerOverlay {
+            background: linear-gradient(
+                90deg,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0.3) 50%,
+                rgba(0, 0, 0, 0) 100%
+            );
+            background-size: 200% 100%;
+        }
+    }
+}

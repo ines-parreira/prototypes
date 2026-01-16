@@ -7,8 +7,6 @@ import {
     YAxis,
 } from 'recharts'
 
-import colors from '@gorgias/axiom/tokens/colors/semantic/light.json'
-
 import css from './TimeSeriesChart.less'
 
 const SKELETON_DATA = [
@@ -23,15 +21,15 @@ const SKELETON_DATA = [
     { date: '8', value: 0.68 },
     { date: '9', value: 0.72 },
     { date: '10', value: 0.68 },
-    { date: '11', value: 0.75 },
+    { date: '11', value: 0.95 },
     { date: '12', value: 0.7 },
     { date: '13', value: 0.65 },
     { date: '14', value: 0.6 },
 ]
 
-const GRID_COLOR = colors['border-neutral-secondary'].$value
-const TICK_COLOR = '#5C6370'
-const SKELETON_STROKE_COLOR = colors['border-neutral-tertiary'].$value
+const GRID_COLOR = 'var(--border-neutral-secondary)'
+const TICK_COLOR = 'var(--content-neutral-tertiary)'
+const SKELETON_STROKE_COLOR = 'var(--border-neutral-tertiary)'
 
 type TimeSeriesChartSkeletonProps = {
     chartHeight: number

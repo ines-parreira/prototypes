@@ -56,7 +56,10 @@ export function MetricCardHeader({
                     </span>
                 )}
             </div>
-            <div className={css.actionMenu}>
+            <div
+                className={css.actionMenu}
+                onClick={(e) => e.stopPropagation()}
+            >
                 {titleExtra}
                 {actionMenu}
             </div>

@@ -33,8 +33,8 @@ type TimeSeriesChartProps = {
 
 const DEFAULT_CHART_HEIGHT = 280
 const DEFAULT_COLOR = colors['Dataviz-purple'].$value
-const GRID_COLOR = colors['border-neutral-secondary'].$value
-const TICK_COLOR = '#5C6370'
+const GRID_COLOR = 'var(--border-neutral-secondary)'
+const TICK_COLOR = 'var(--content-neutral-tertiary)'
 
 export const renderTimeSeriesTooltipContent =
     (
