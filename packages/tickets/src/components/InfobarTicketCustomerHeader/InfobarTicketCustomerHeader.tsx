@@ -85,7 +85,7 @@ export function InfobarTicketCustomerHeader({
                                 variant={ButtonVariant.Tertiary}
                                 size={ButtonSize.Sm}
                                 aria-label="Customer menu"
-                                icon={IconName.DotsKebabVertical}
+                                icon={IconName.DotsMeatballsHorizontal}
                             />
                         }
                         placement="bottom right"
