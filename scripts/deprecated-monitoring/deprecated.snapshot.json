@@ -1,6 +1,6 @@
 {
-  "date": "2026-01-14T16:35:42.029Z",
-  "total": 4162,
+  "date": "2026-01-16T13:18:43.923Z",
+  "total": 4161,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -3307,7 +3307,7 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1472,
+      "count": 1471,
       "usages": [
         {
           "name": "LegacyButton",
@@ -3902,7 +3902,7 @@
         },
         {
           "name": "LegacyTooltip",
-          "count": 302,
+          "count": 301,
           "files": [
             "apps/helpdesk/src/AIJourney/components/FieldPresentation/FieldPresentation.tsx",
             "apps/helpdesk/src/auto_qa/components/AutoQA.tsx",
@@ -3967,7 +3967,6 @@
             "apps/helpdesk/src/pages/aiAgent/insights/IntentTableWidget/IntentTableCells.tsx",
             "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/EmptyState/SyncStoreWebsiteModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/EmptyState/SyncUrlModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/ActionButtons.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/TestSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundActionsToggle/PlaygroundActionsToggle.tsx",
             "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundInputSection/PlaygroundInputSection.tsx",
