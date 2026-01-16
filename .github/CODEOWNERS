@@ -57,6 +57,7 @@ apps/helpdesk/src/pages/aiAgent/AiAgentOnboardingWizard/ @gorgias/conv-ai-flywhe
 apps/helpdesk/src/pages/aiAgent/Onboarding/ @gorgias/conv-ai-flywheel
 apps/helpdesk/src/pages/aiAgent/components/Knowledge/ @gorgias/conv-ai-flywheel
 apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/ @gorgias/conv-ai-flywheel
+apps/helpdesk/src/pages/aiAgent/KnowledgeHub/ @gorgias/conv-ai-flywheel
 
 # Conv AI: AI Journey scope @gorgias/conv-ai-ai-journey
 apps/helpdesk/src/AIJourney/ @gorgias/conv-ai-ai-journey
@@ -100,21 +101,21 @@ packages/utils/src/shortcuts @gorgias/support-agent-xp-frontend
 packages/tickets @gorgias/support-agent-xp-frontend
 packages/navigation @gorgias/support-agent-xp-frontend
 
-# Phone scope @gorgias/support-phone
+# Phone scope @gorgias/cplt-realtime-communication
 
-apps/helpdesk/src/models/integration/types/phone.ts @gorgias/support-phone
-apps/helpdesk/src/pages/common/components/PhoneIntegrationBar @gorgias/support-phone
-apps/helpdesk/src/pages/common/components/VoiceCallAgentLabel @gorgias/support-phone
-apps/helpdesk/src/pages/integrations/integration/components/voice @gorgias/support-phone
-apps/helpdesk/src/pages/integrations/integration/components/phone @gorgias/support-phone
-apps/helpdesk/src/pages/phoneNumbers @gorgias/support-phone
-apps/helpdesk/src/pages/tickets/detail/components/PhoneEvent @gorgias/support-phone
-apps/helpdesk/src/pages/common/forms/PhoneNumberInput @gorgias/support-phone
-apps/helpdesk/src/fixtures/phoneNumber.ts @gorgias/support-phone
-apps/helpdesk/src/hooks/integrations/phone @gorgias/support-phone
-apps/helpdesk/src/pages/common/components/VoiceCallStatusLabel @gorgias/support-phone
-apps/helpdesk/src/pages/common/components/VoiceCallCustomerLabel @gorgias/support-phone
-apps/helpdesk/src/pages/tickets/detail/components/TicketVoiceCall @gorgias/support-phone
+apps/helpdesk/src/models/integration/types/phone.ts @gorgias/cplt-realtime-communication
+apps/helpdesk/src/pages/common/components/PhoneIntegrationBar @gorgias/cplt-realtime-communication
+apps/helpdesk/src/pages/common/components/VoiceCallAgentLabel @gorgias/cplt-realtime-communication
+apps/helpdesk/src/pages/integrations/integration/components/voice @gorgias/cplt-realtime-communication
+apps/helpdesk/src/pages/integrations/integration/components/phone @gorgias/cplt-realtime-communication
+apps/helpdesk/src/pages/phoneNumbers @gorgias/cplt-realtime-communication
+apps/helpdesk/src/pages/tickets/detail/components/PhoneEvent @gorgias/cplt-realtime-communication
+apps/helpdesk/src/pages/common/forms/PhoneNumberInput @gorgias/cplt-realtime-communication
+apps/helpdesk/src/fixtures/phoneNumber.ts @gorgias/cplt-realtime-communication
+apps/helpdesk/src/hooks/integrations/phone @gorgias/cplt-realtime-communication
+apps/helpdesk/src/pages/common/components/VoiceCallStatusLabel @gorgias/cplt-realtime-communication
+apps/helpdesk/src/pages/common/components/VoiceCallCustomerLabel @gorgias/cplt-realtime-communication
+apps/helpdesk/src/pages/tickets/detail/components/TicketVoiceCall @gorgias/cplt-realtime-communication
 
 # Actions & Flows
 
