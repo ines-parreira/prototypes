@@ -122,8 +122,8 @@ const useAiAgentScopesForAutomationPlanMock = assumeMock(
 )
 
 const defaultProps: StepProps = {
-    currentStep: 5,
-    totalSteps: 5,
+    currentStep: 4,
+    totalSteps: 4,
     goToStep: jest.fn(),
 }
 

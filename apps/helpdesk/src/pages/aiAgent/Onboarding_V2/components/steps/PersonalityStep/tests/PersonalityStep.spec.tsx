@@ -154,7 +154,9 @@ describe('PersonalityStep - With prepopulated data', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         await waitFor(() => {
-            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.ENGAGEMENT)
+            expect(goToStep).toHaveBeenCalledWith(
+                WizardStepEnum.PERSONALITY_PREVIEW,
+            )
         })
     })
 })
@@ -422,7 +424,9 @@ describe('PersonalityStep - Empty state', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         await waitFor(() => {
-            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.ENGAGEMENT)
+            expect(goToStep).toHaveBeenCalledWith(
+                WizardStepEnum.PERSONALITY_PREVIEW,
+            )
         })
     })
 })
@@ -725,7 +729,7 @@ describe('PersonalityStep - Onboarding mutation', () => {
                                 AiAgentScopes.SUPPORT,
                             ],
                             shopName: shopifyIntegration.meta.shop_name,
-                            currentStepName: WizardStepEnum.ENGAGEMENT,
+                            currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
                             salesDiscountMax: 0.08,
                             salesDiscountStrategyLevel: 'balanced',
                             salesPersuasionLevel: 'balanced',
@@ -784,7 +788,7 @@ describe('PersonalityStep - Onboarding mutation', () => {
                                 AiAgentScopes.SUPPORT,
                             ],
                             shopName: shopifyIntegration.meta.shop_name,
-                            currentStepName: WizardStepEnum.ENGAGEMENT,
+                            currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
                             salesDiscountMax: null,
                             salesDiscountStrategyLevel: 'none',
                             salesPersuasionLevel: 'aggressive',

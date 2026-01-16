@@ -104,9 +104,9 @@ describe('<PersonalityPreviewStep />', () => {
         {
             description: 'support + sales',
             scopes: [AiAgentScopes.SALES, AiAgentScopes.SUPPORT],
-            currentStep: 4,
-            totalSteps: 5,
-            previousStep: WizardStepEnum.ENGAGEMENT,
+            currentStep: 3,
+            totalSteps: 4,
+            previousStep: WizardStepEnum.SALES_PERSONALITY,
             nextStep: WizardStepEnum.KNOWLEDGE,
         },
     ])(

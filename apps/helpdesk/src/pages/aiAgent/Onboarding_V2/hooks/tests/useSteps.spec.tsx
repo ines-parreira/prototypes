@@ -68,7 +68,6 @@ describe('useSteps', () => {
             { step: WizardStepEnum.SHOPIFY_INTEGRATION, condition: true },
             { step: WizardStepEnum.TONE_OF_VOICE, condition: true },
             { step: WizardStepEnum.SALES_PERSONALITY, condition: true },
-            { step: WizardStepEnum.ENGAGEMENT, condition: true },
             { step: WizardStepEnum.PERSONALITY_PREVIEW, condition: true },
             { step: WizardStepEnum.KNOWLEDGE, condition: true },
         ])
@@ -86,11 +85,10 @@ describe('useSteps', () => {
                 step: WizardStepEnum.SALES_PERSONALITY,
                 condition: true,
             },
-            { step: WizardStepEnum.ENGAGEMENT, condition: true },
             { step: WizardStepEnum.PERSONALITY_PREVIEW, condition: true },
             { step: WizardStepEnum.KNOWLEDGE, condition: true },
         ])
-        expect(result.current.totalSteps).toBe(5)
+        expect(result.current.totalSteps).toBe(4)
     })
 
     it('should include SALES_PERSONALITY step when plan supports AI Agent Sales', () => {

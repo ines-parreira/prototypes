@@ -7,7 +7,6 @@ export enum WizardStepEnum {
     PERSONALITY_PREVIEW = 'personality preview',
     SALES_PERSONALITY = 'sales personality',
     KNOWLEDGE = 'knowledge',
-    ENGAGEMENT = 'engagement',
     HANDOVER = 'handover',
 }
 

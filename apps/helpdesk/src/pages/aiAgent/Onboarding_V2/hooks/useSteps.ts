@@ -38,10 +38,6 @@ export const useSteps = ({
                 condition: scopes.includes(AiAgentScopes.SALES),
             },
             {
-                step: WizardStepEnum.ENGAGEMENT,
-                condition: scopes.includes(AiAgentScopes.SALES),
-            },
-            {
                 step: WizardStepEnum.HANDOVER,
                 condition: handoverEnabled,
             },
