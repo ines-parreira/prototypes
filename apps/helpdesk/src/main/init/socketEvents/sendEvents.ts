@@ -86,16 +86,6 @@ const sendEvents: SendEvent[] = [
             }
         },
     },
-    {
-        name: SocketEventType.VoiceCallWrapUpTimeStartReceived,
-        dataToSend: function (payload) {
-            return {
-                clientId: window.CLIENT_ID,
-                event: SocketEventType.VoiceCallWrapUpTimeStartReceived,
-                data: payload,
-            }
-        },
-    },
 ]
 
 export default sendEvents

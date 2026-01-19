@@ -60,7 +60,6 @@ describe('useWrapUpTime', () => {
     }
 
     const mockErrorNotify = jest.fn()
-    const sendSpy = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -78,7 +77,6 @@ describe('useWrapUpTime', () => {
         endWrapUpTimeMock.mockResolvedValue({
             data: {},
         } as any)
-        socketManager.send = sendSpy
     })
 
     it('should register socket event on mount', () => {
@@ -144,8 +142,6 @@ describe('useWrapUpTime', () => {
 
         expect(result.current.isWrappingUp).toBe(true)
         expect(result.current.voiceCall).toEqual(mockVoiceCall)
-
-        expect(sendSpy).toHaveBeenCalled()
     })
 
     it('should update time left using useInterval', () => {
