@@ -1,3 +1,4 @@
+import { shortcutManager } from '@repo/utils'
 import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -516,6 +517,165 @@ describe('TicketStatus', () => {
                 '[aria-disabled="true"]',
             )
             expect(disabledCells.length).toBeGreaterThan(0)
+        })
+    })
+
+    describe('Keyboard shortcuts', () => {
+        it('should close open ticket when "c" key is pressed', async () => {
+            const waitForUpdateTicketRequest =
+                mockUpdateTicket.waitForRequest(server)
+
+            render(<TicketStatusMenu ticket={openTicket} />)
+
+            act(() => {
+                shortcutManager.trigger('c')
+            })
+
+            await waitForUpdateTicketRequest(async (request) => {
+                const body = await request.json()
+                expect(body).toEqual({ status: 'closed' })
+            })
+        })
+
+        it('should close already closed ticket when "c" key is pressed', async () => {
+            const waitForUpdateTicketRequest =
+                mockUpdateTicket.waitForRequest(server)
+
+            render(<TicketStatusMenu ticket={closedTicket} />)
+
+            act(() => {
+                shortcutManager.trigger('c')
+            })
+
+            await waitForUpdateTicketRequest(async (request) => {
+                const body = await request.json()
+                expect(body).toEqual({ status: 'closed' })
+            })
+        })
+
+        it('should close snoozed ticket when "c" key is pressed', async () => {
+            const waitForUpdateTicketRequest =
+                mockUpdateTicket.waitForRequest(server)
+
+            render(<TicketStatusMenu ticket={snoozedTicket} />)
+
+            act(() => {
+                shortcutManager.trigger('c')
+            })
+
+            await waitForUpdateTicketRequest(async (request) => {
+                const body = await request.json()
+                expect(body).toEqual({ status: 'closed' })
+            })
+        })
+
+        it('should open closed ticket when "o" key is pressed', async () => {
+            const waitForUpdateTicketRequest =
+                mockUpdateTicket.waitForRequest(server)
+
+            render(<TicketStatusMenu ticket={closedTicket} />)
+
+            act(() => {
+                shortcutManager.trigger('o')
+            })
+
+            await waitForUpdateTicketRequest(async (request) => {
+                const body = await request.json()
+                expect(body).toEqual({ status: 'open', snooze_datetime: null })
+            })
+        })
+
+        it('should open snoozed ticket when "o" key is pressed', async () => {
+            const waitForUpdateTicketRequest =
+                mockUpdateTicket.waitForRequest(server)
+
+            render(<TicketStatusMenu ticket={snoozedTicket} />)
+
+            act(() => {
+                shortcutManager.trigger('o')
+            })
+
+            await waitForUpdateTicketRequest(async (request) => {
+                const body = await request.json()
+                expect(body).toEqual({ status: 'open', snooze_datetime: null })
+            })
+        })
+
+        it('should not open already open ticket when "o" key is pressed', async () => {
+            let requestMade = false
+            const mockUpdateTicketLocal = mockUpdateTicketHandler(
+                async ({ data }) => {
+                    requestMade = true
+                    return HttpResponse.json(
+                        mockTicket({ ...data, id: ticketId }),
+                    )
+                },
+            )
+            server.use(mockUpdateTicketLocal.handler)
+
+            render(<TicketStatusMenu ticket={openTicket} />)
+
+            act(() => {
+                shortcutManager.trigger('o')
+            })
+
+            await new Promise((resolve) => setTimeout(resolve, 500))
+
+            expect(requestMade).toBe(false)
+        })
+
+        it('should show error notification when close shortcut fails', async () => {
+            const dispatchNotification = vi.fn()
+
+            server.use(
+                mockUpdateTicketHandler(async () => {
+                    return HttpResponse.json(null, { status: 500 })
+                }).handler,
+            )
+
+            render(<TicketStatusMenu ticket={openTicket} />, {
+                dispatchNotification,
+            })
+
+            act(() => {
+                shortcutManager.trigger('c')
+            })
+
+            await waitFor(() => {
+                expect(dispatchNotification).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        status: NotificationStatus.Error,
+                        message: 'Failed to close ticket',
+                    }),
+                )
+            })
+        })
+
+        it('should show error notification when open shortcut fails', async () => {
+            const dispatchNotification = vi.fn()
+
+            server.use(
+                mockUpdateTicketHandler(async () => {
+                    return HttpResponse.json(null, { status: 500 })
+                }).handler,
+            )
+
+            render(<TicketStatusMenu ticket={closedTicket} />, {
+                dispatchNotification,
+            })
+
+            act(() => {
+                shortcutManager.trigger('o')
+            })
+
+            await waitFor(() => {
+                expect(dispatchNotification).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        status: NotificationStatus.Error,
+                        message: 'Failed to open ticket',
+                    }),
+                )
+            })
         })
     })
 })

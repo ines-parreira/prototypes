@@ -246,6 +246,19 @@ export const shortcuts: Shortcuts = {
             },
         },
     },
+    TicketStatusMenu: {
+        description: 'Ticket status menu',
+        actions: {
+            OPEN_TICKET: {
+                key: 'o',
+                description: 'Open selected tickets.',
+            },
+            CLOSE_TICKET: {
+                key: 'c',
+                description: 'Close selected tickets.',
+            },
+        },
+    },
     TimelineModal: {
         description: 'Timeline ticket modal',
         actions: {

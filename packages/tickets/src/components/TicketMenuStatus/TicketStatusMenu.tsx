@@ -24,6 +24,7 @@ import { TicketStatusTrigger } from './TicketStatusTrigger'
 import { useCloseTicket } from './useCloseTicket'
 import { useOpenTicket } from './useOpenTicket'
 import { useSnoozeTicket } from './useSnoozeTicket'
+import { useTicketStatusShortcuts } from './useTicketStatusShortcuts'
 import { disableDatesBeforeToday, getTicketStatus, TicketStatus } from './utils'
 
 type TicketStatusMenuProps = {
@@ -35,6 +36,7 @@ export function TicketStatusMenu({ ticket }: TicketStatusMenuProps) {
     const [isOpen, setIsOpen] = useState(false)
     const [snoozeDate, setSnoozeDate] = useState<Date | null>(null)
     const status = getTicketStatus(ticket)
+    useTicketStatusShortcuts(ticket)
 
     const { snoozeTicket } = useSnoozeTicket(ticket.id)
     const { openTicket } = useOpenTicket(ticket.id)
