@@ -87,11 +87,11 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
     })
 
     describe('event handling', () => {
-        const mockEvent: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.0'> =
+        const mockEvent: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.1'> =
             {
                 id: 'test-event-1',
                 dataschema:
-                    '//helpdesk/ticket-message-translation.completed/1.0.0',
+                    '//helpdesk/ticket-message-translation.completed/1.0.1',
                 data: {
                     id: 'translation-1',
                     ticket_id: 123,
@@ -314,11 +314,11 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
     })
 
     describe('ticket translations invalidation', () => {
-        const mockEvent: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.0'> =
+        const mockEvent: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.1'> =
             {
                 id: 'test-event-1',
                 dataschema:
-                    '//helpdesk/ticket-message-translation.completed/1.0.0',
+                    '//helpdesk/ticket-message-translation.completed/1.0.1',
                 data: {
                     id: 'translation-1',
                     ticket_id: 123,
@@ -384,7 +384,7 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
         })
 
         it('should not invalidate queries when non-first message is translated', () => {
-            const nonFirstMessageEvent: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.0'> =
+            const nonFirstMessageEvent: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.1'> =
                 {
                     ...mockEvent,
                     data: {

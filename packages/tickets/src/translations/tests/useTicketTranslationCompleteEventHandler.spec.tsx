@@ -43,10 +43,10 @@ describe('useTicketTranslationCompleteEventHandler', () => {
     })
 
     describe('event handling', () => {
-        const mockEvent: ExtractEvent<'//helpdesk/ticket-translation.completed/1.0.0'> =
+        const mockEvent: ExtractEvent<'//helpdesk/ticket-translation.completed/1.0.1'> =
             {
                 id: 'test-event-1',
-                dataschema: '//helpdesk/ticket-translation.completed/1.0.0',
+                dataschema: '//helpdesk/ticket-translation.completed/1.0.1',
                 data: {
                     ticket_id: 123,
                     language: Language.Fr,

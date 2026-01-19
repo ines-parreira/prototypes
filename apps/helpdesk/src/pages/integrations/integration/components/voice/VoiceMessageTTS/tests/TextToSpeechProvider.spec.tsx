@@ -135,7 +135,7 @@ describe('TextToSpeechProvider', () => {
 
             const event: DomainEvent = {
                 dataschema:
-                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.0',
+                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
                 data: {
                     tts_url: 'https://example.com/tts-audio.mp3',
                     text: 'Hello world',
@@ -172,7 +172,7 @@ describe('TextToSpeechProvider', () => {
 
             const event: DomainEvent = {
                 dataschema:
-                    '//helpdesk/phone.voice-tts.preview.step-property-synthesized/1.0.0',
+                    '//helpdesk/phone.voice-tts.preview.step-property-synthesized/1.0.1',
                 data: {
                     tts_url: 'https://example.com/step-audio.mp3',
                     text: 'Hello world',
@@ -203,7 +203,7 @@ describe('TextToSpeechProvider', () => {
 
             const event: DomainEvent = {
                 dataschema:
-                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.0',
+                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
                 data: {
                     error_message: 'Failed to synthesize speech',
                     property_url: 'testField',
@@ -234,7 +234,7 @@ describe('TextToSpeechProvider', () => {
 
             const event: DomainEvent = {
                 dataschema:
-                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.0',
+                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
                 data: {
                     error_message: 'Failed to synthesize speech',
                     property_url: 'testField',
@@ -277,7 +277,7 @@ describe('TextToSpeechProvider', () => {
 
             const event: DomainEvent = {
                 dataschema:
-                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.0',
+                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
                 data: {
                     tts_url: 'https://example.com/tts-audio.mp3',
                     text: 'Hello world',
@@ -319,7 +319,7 @@ describe('TextToSpeechProvider', () => {
 
             const event: DomainEvent = {
                 dataschema:
-                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.0',
+                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
                 data: {
                     tts_url: 'https://example.com/tts-audio.mp3',
                     text: 'Hello world',
@@ -361,7 +361,7 @@ describe('TextToSpeechProvider', () => {
 
             const event: DomainEvent = {
                 dataschema:
-                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.0',
+                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
                 data: {
                     tts_url: 'https://example.com/tts-audio.mp3',
                     text: 'Hello world',
@@ -394,7 +394,7 @@ describe('TextToSpeechProvider', () => {
 
             const event: DomainEvent = {
                 dataschema:
-                    '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.0',
+                    '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.1',
                 data: {},
             } as DomainEvent
 
@@ -436,7 +436,7 @@ describe('TextToSpeechProvider', () => {
 
             const event: DomainEvent = {
                 dataschema:
-                    '//helpdesk/phone.voice-tts.preview.step-property-synthesized/1.0.0',
+                    '//helpdesk/phone.voice-tts.preview.step-property-synthesized/1.0.1',
                 data: {
                     tts_url: 'https://example.com/nested-audio.mp3',
                     text: 'Test message',

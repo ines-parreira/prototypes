@@ -15,7 +15,7 @@ export function useTicketTranslationCompleteEventHandler() {
 
     const handleTicketTranslationCompleted = useCallback(
         (
-            event: ExtractEvent<'//helpdesk/ticket-translation.completed/1.0.0'>,
+            event: ExtractEvent<'//helpdesk/ticket-translation.completed/1.0.1'>,
         ) => {
             const { ticket_id } = event.data
             const queryCache = queryClient.getQueryCache()

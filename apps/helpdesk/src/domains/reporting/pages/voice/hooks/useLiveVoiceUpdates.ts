@@ -124,7 +124,7 @@ export const useLiveVoiceUpdates = (
             processedEvents.current.add(event.id)
 
             switch (event.dataschema) {
-                case '//helpdesk/user-preferences.updated/1.0.0': {
+                case '//helpdesk/user-preferences.updated/1.0.1': {
                     const data = event.data
                     updateAgentAvailabilityInLiveAgentsQueryCache(
                         data.user_id,
@@ -143,14 +143,9 @@ export const useLiveVoiceUpdates = (
                     )
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.received/1.1.0':
-                case '//helpdesk/phone.voice-call.inbound.received/1.0.0': {
+                case '//helpdesk/phone.voice-call.inbound.received/1.1.1': {
                     const data = event.data
-                    const isPossibleSpam =
-                        event.dataschema ===
-                        '//helpdesk/phone.voice-call.inbound.received/1.1.0'
-                            ? event.data.is_possible_spam
-                            : null
+                    const isPossibleSpam = event.data.is_possible_spam
 
                     const voiceCall = {
                         id: data.voice_call_id,
@@ -177,7 +172,7 @@ export const useLiveVoiceUpdates = (
                     }
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.rang-agent/1.0.0': {
+                case '//helpdesk/phone.voice-call.inbound.rang-agent/1.0.1': {
                     updateVoiceCallInLiveCallsQueryCache(
                         {
                             id: event.data.voice_call_id,
@@ -201,9 +196,9 @@ export const useLiveVoiceUpdates = (
                     }
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.canceled/1.0.0':
-                case '//helpdesk/phone.voice-call.inbound.declined/1.0.0':
-                case '//helpdesk/phone.voice-call.inbound.unanswered/1.0.0': {
+                case '//helpdesk/phone.voice-call.inbound.canceled/1.0.1':
+                case '//helpdesk/phone.voice-call.inbound.declined/1.0.1':
+                case '//helpdesk/phone.voice-call.inbound.unanswered/1.0.1': {
                     const voiceCallSid =
                         voiceCallIdToSidRef.current[event.data.voice_call_id]
                     if (voiceCallSid) {
@@ -215,7 +210,7 @@ export const useLiveVoiceUpdates = (
                     }
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.answered/1.0.0': {
+                case '//helpdesk/phone.voice-call.inbound.answered/1.0.1': {
                     updateVoiceCallInLiveCallsQueryCache(
                         {
                             id: event.data.voice_call_id,
@@ -239,7 +234,7 @@ export const useLiveVoiceUpdates = (
                     }
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.transfer-accepted/1.3.0': {
+                case '//helpdesk/phone.voice-call.inbound.transfer-accepted/1.3.1': {
                     const voiceCallSid =
                         voiceCallIdToSidRef.current[event.data.voice_call_id]
                     // user_id is the id of the agent who started the transfer
@@ -263,8 +258,8 @@ export const useLiveVoiceUpdates = (
                     }
                     break
                 }
-                case '//helpdesk/phone.voice-call.outbound.ticket-associated/1.0.0':
-                case '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.0': {
+                case '//helpdesk/phone.voice-call.outbound.ticket-associated/1.0.1':
+                case '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.1': {
                     updateVoiceCallInLiveCallsQueryCacheWithDebounce(
                         {
                             id: event.data.voice_call_id,
@@ -275,8 +270,7 @@ export const useLiveVoiceUpdates = (
                     )
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.enqueued/1.1.0':
-                case '//helpdesk/phone.voice-call.inbound.enqueued/1.2.0': {
+                case '//helpdesk/phone.voice-call.inbound.enqueued/1.2.1': {
                     updateVoiceCallInLiveCallsQueryCacheWithDebounce(
                         {
                             id: event.data.voice_call_id,
@@ -289,9 +283,9 @@ export const useLiveVoiceUpdates = (
                     )
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.ended/1.1.0':
-                case '//helpdesk/phone.voice-call.outbound.ended/1.1.0':
-                case '//helpdesk/phone.voice-call.inbound.ending-triggered/1.1.0': {
+                case '//helpdesk/phone.voice-call.inbound.ended/1.1.1':
+                case '//helpdesk/phone.voice-call.outbound.ended/1.1.1':
+                case '//helpdesk/phone.voice-call.inbound.ending-triggered/1.3.1': {
                     const voiceCallSid =
                         voiceCallIdToSidRef.current[event.data.voice_call_id]
                     if (voiceCallSid) {
@@ -313,7 +307,7 @@ export const useLiveVoiceUpdates = (
                     )
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.wrap-up-ended/1.1.0': {
+                case '//helpdesk/phone.voice-call.inbound.wrap-up-ended/1.1.1': {
                     const callSid = event.data.call_sid
                     if (callSid) {
                         removeVoiceCallInLiveAgentsQueryCache(
@@ -324,7 +318,7 @@ export const useLiveVoiceUpdates = (
                     }
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.wrap-up-started/1.1.0': {
+                case '//helpdesk/phone.voice-call.inbound.wrap-up-started/1.1.1': {
                     const callSid = event.data.call_sid
                     const userId = event.data.user_id
                     if (callSid) {
@@ -343,7 +337,7 @@ export const useLiveVoiceUpdates = (
                     }
                     break
                 }
-                case '//helpdesk/phone.voice-call.outbound.started/1.0.0': {
+                case '//helpdesk/phone.voice-call.outbound.started/1.0.1': {
                     const data = event.data
 
                     const voiceCall = {
@@ -381,7 +375,7 @@ export const useLiveVoiceUpdates = (
 
                     break
                 }
-                case '//helpdesk/phone.voice-call.outbound.connected/1.0.0': {
+                case '//helpdesk/phone.voice-call.outbound.connected/1.0.1': {
                     updateVoiceCallInLiveCallsQueryCache(
                         {
                             id: event.data.voice_call_id,
@@ -404,8 +398,8 @@ export const useLiveVoiceUpdates = (
                     }
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.monitoring-started/1.0.0':
-                case '//helpdesk/phone.voice-call.outbound.monitoring-started/1.0.0': {
+                case '//helpdesk/phone.voice-call.inbound.monitoring-started/1.0.1':
+                case '//helpdesk/phone.voice-call.outbound.monitoring-started/1.0.1': {
                     const monitoringAgentId = event.data.user_id
                     updateVoiceCallInLiveCallsQueryCache(
                         {

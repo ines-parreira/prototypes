@@ -31,7 +31,7 @@ export function useTicketMessageTranslationCompleteEventHandler() {
 
     const handleTicketMessageTranslationCompleted = useCallback(
         (
-            event: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.0'>,
+            event: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.1'>,
         ) => {
             if (!ticket) {
                 return

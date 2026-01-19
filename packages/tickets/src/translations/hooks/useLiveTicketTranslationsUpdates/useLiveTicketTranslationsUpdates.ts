@@ -79,16 +79,16 @@ export const useLiveTicketTranslationsUpdates = ({
             processedEvents.current.add(event.id)
 
             switch (event.dataschema) {
-                case '//helpdesk/ticket-translation.completed/1.0.0':
+                case '//helpdesk/ticket-translation.completed/1.0.1':
                     handleTicketTranslationCompleted(event)
                     break
-                case '//helpdesk/ticket-translation.failed/1.0.0':
+                case '//helpdesk/ticket-translation.failed/1.0.1':
                     handleTicketTranslationFailed(event)
                     break
-                case '//helpdesk/ticket-message-translation.completed/1.0.0':
+                case '//helpdesk/ticket-message-translation.completed/1.0.1':
                     handleTicketMessageTranslationCompleted(event)
                     break
-                case '//helpdesk/ticket-message-translation.failed/1.0.0':
+                case '//helpdesk/ticket-message-translation.failed/1.0.1':
                     handleTicketMessageTranslationFailed(event)
                     break
             }

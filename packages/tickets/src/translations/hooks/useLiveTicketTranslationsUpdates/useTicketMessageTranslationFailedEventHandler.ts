@@ -12,7 +12,7 @@ export function useTicketMessageTranslationFailedEventHandler() {
 
     const handleTicketMessageTranslationFailed = useCallback(
         (
-            event: ExtractEvent<'//helpdesk/ticket-message-translation.failed/1.0.0'>,
+            event: ExtractEvent<'//helpdesk/ticket-message-translation.failed/1.0.1'>,
         ) => {
             const { ticket_message_id } = event.data
             const displayType =

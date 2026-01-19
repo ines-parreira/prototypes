@@ -115,7 +115,7 @@ describe('useLiveVoiceUpdates', () => {
 
         const mockEvent = {
             id: 'test-event-id',
-            dataschema: '//helpdesk/phone.voice-call.inbound.answered/1.0.0',
+            dataschema: '//helpdesk/phone.voice-call.inbound.answered/1.0.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
@@ -176,7 +176,7 @@ describe('useLiveVoiceUpdates', () => {
         }
 
         const mockEvent = {
-            dataschema: '//helpdesk/user-preferences.updated/1.0.0',
+            dataschema: '//helpdesk/user-preferences.updated/1.0.1',
             data: {},
         } as DomainEvent
 
@@ -250,7 +250,7 @@ describe('useLiveVoiceUpdates', () => {
         const queryKey =
             queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
         const mockEvent = {
-            dataschema: '//helpdesk/phone.voice-call.inbound.received/1.0.0',
+            dataschema: '//helpdesk/phone.voice-call.inbound.received/1.1.1',
             data: {
                 voice_call_id: 123,
                 integration_id: 2,
@@ -262,6 +262,7 @@ describe('useLiveVoiceUpdates', () => {
                 created_datetime: new Date().toISOString(),
                 provider: 'provider',
                 customer_id: 123456,
+                is_possible_spam: null,
             },
         } as DomainEvent
 
@@ -308,7 +309,7 @@ describe('useLiveVoiceUpdates', () => {
             }
             const mockEvent = {
                 dataschema:
-                    '//helpdesk/phone.voice-call.inbound.received/1.1.0',
+                    '//helpdesk/phone.voice-call.inbound.received/1.1.1',
                 data: {
                     voice_call_id: 123,
                     integration_id: 2,
@@ -396,7 +397,7 @@ describe('useLiveVoiceUpdates', () => {
         }
 
         const mockEvent = {
-            dataschema: '//helpdesk/phone.voice-call.inbound.rang-agent/1.0.0',
+            dataschema: '//helpdesk/phone.voice-call.inbound.rang-agent/1.0.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
@@ -592,7 +593,7 @@ describe('useLiveVoiceUpdates', () => {
         }
 
         const mockEvent = {
-            dataschema: '//helpdesk/phone.voice-call.inbound.answered/1.0.0',
+            dataschema: '//helpdesk/phone.voice-call.inbound.answered/1.0.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
@@ -780,7 +781,7 @@ describe('useLiveVoiceUpdates', () => {
         }
 
         const mockDeclinedEvent = {
-            dataschema: '//helpdesk/phone.voice-call.inbound.declined/1.0.0',
+            dataschema: '//helpdesk/phone.voice-call.inbound.declined/1.0.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
@@ -788,7 +789,7 @@ describe('useLiveVoiceUpdates', () => {
             },
         } as DomainEvent
         const mockUnansweredEvent = {
-            dataschema: '//helpdesk/phone.voice-call.inbound.declined/1.0.0',
+            dataschema: '//helpdesk/phone.voice-call.inbound.declined/1.0.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
@@ -796,7 +797,7 @@ describe('useLiveVoiceUpdates', () => {
             },
         } as DomainEvent
         const mockCanceledEvent = {
-            dataschema: '//helpdesk/phone.voice-call.inbound.canceled/1.0.0',
+            dataschema: '//helpdesk/phone.voice-call.inbound.canceled/1.0.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
@@ -918,8 +919,8 @@ describe('useLiveVoiceUpdates', () => {
         }
 
         it.each([
-            '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.0',
-            '//helpdesk/phone.voice-call.outbound.ticket-associated/1.0.0',
+            '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.1',
+            '//helpdesk/phone.voice-call.outbound.ticket-associated/1.0.1',
         ])('should update the voice call with the ticket ID', (dataschema) => {
             const queryKey =
                 queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
@@ -962,8 +963,8 @@ describe('useLiveVoiceUpdates', () => {
         })
 
         it.each([
-            '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.0',
-            '//helpdesk/phone.voice-call.outbound.ticket-associated/1.0.0',
+            '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.1',
+            '//helpdesk/phone.voice-call.outbound.ticket-associated/1.0.1',
         ])(
             'should not update the voice call if it is not in the list',
             (dataschema) => {
@@ -1011,7 +1012,7 @@ describe('useLiveVoiceUpdates', () => {
         it('should update the voice call with the queue ID and status in queue', () => {
             const mockEvent = {
                 dataschema:
-                    '//helpdesk/phone.voice-call.inbound.enqueued/1.1.0',
+                    '//helpdesk/phone.voice-call.inbound.enqueued/1.2.1',
                 data: {
                     voice_call_id: 123,
                     queue_id: 3,
@@ -1051,7 +1052,7 @@ describe('useLiveVoiceUpdates', () => {
         it('should not update the voice call if the queue is not in the params', () => {
             const mockEvent = {
                 dataschema:
-                    '//helpdesk/phone.voice-call.inbound.enqueued/1.1.0',
+                    '//helpdesk/phone.voice-call.inbound.enqueued/1.2.1',
                 data: {
                     voice_call_id: 123,
                     queue_id: 9999,
@@ -1089,9 +1090,9 @@ describe('useLiveVoiceUpdates', () => {
         }
 
         it.each([
-            '//helpdesk/phone.voice-call.inbound.ended/1.1.0',
-            '//helpdesk/phone.voice-call.outbound.ended/1.1.0',
-            '//helpdesk/phone.voice-call.inbound.ending-triggered/1.1.0',
+            '//helpdesk/phone.voice-call.inbound.ended/1.1.1',
+            '//helpdesk/phone.voice-call.outbound.ended/1.1.1',
+            '//helpdesk/phone.voice-call.inbound.ending-triggered/1.3.1',
         ])('should remove the voice call from the list', (dataschema) => {
             const queryKey =
                 queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
@@ -1127,9 +1128,9 @@ describe('useLiveVoiceUpdates', () => {
         })
 
         it.each([
-            '//helpdesk/phone.voice-call.inbound.ended/1.1.0',
-            '//helpdesk/phone.voice-call.outbound.ended/1.1.0',
-            '//helpdesk/phone.voice-call.inbound.ending-triggered/1.1.0',
+            '//helpdesk/phone.voice-call.inbound.ended/1.1.1',
+            '//helpdesk/phone.voice-call.outbound.ended/1.1.1',
+            '//helpdesk/phone.voice-call.inbound.ending-triggered/1.3.1',
         ])('should remove the related agent statuses', (dataschema) => {
             const queryKey =
                 queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
@@ -1258,7 +1259,7 @@ describe('useLiveVoiceUpdates', () => {
         const queryKey =
             queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
         const mockEvent = {
-            dataschema: '//helpdesk/phone.voice-call.outbound.started/1.0.0',
+            dataschema: '//helpdesk/phone.voice-call.outbound.started/1.0.1',
             data: {
                 voice_call_id: 123,
                 integration_id: 2,
@@ -1386,7 +1387,7 @@ describe('useLiveVoiceUpdates', () => {
         }
 
         const mockEvent = {
-            dataschema: '//helpdesk/phone.voice-call.outbound.connected/1.0.0',
+            dataschema: '//helpdesk/phone.voice-call.outbound.connected/1.0.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
@@ -1517,7 +1518,7 @@ describe('useLiveVoiceUpdates', () => {
 
             const mockEvent = {
                 dataschema:
-                    '//helpdesk/phone.voice-call.inbound.transfer-accepted/1.3.0',
+                    '//helpdesk/phone.voice-call.inbound.transfer-accepted/1.3.1',
                 data: {
                     voice_call_id: 123,
                     user_id: 1,
@@ -1583,7 +1584,7 @@ describe('useLiveVoiceUpdates', () => {
             const answeredEvent = {
                 id: '40b7c7ee-f5f0-452e-b1cf-f6ca4291002c',
                 dataschema:
-                    '//helpdesk/phone.voice-call.inbound.answered/1.0.0',
+                    '//helpdesk/phone.voice-call.inbound.answered/1.0.1',
                 data: {
                     voice_call_id: 123,
                     account_id: 1,
@@ -1597,7 +1598,7 @@ describe('useLiveVoiceUpdates', () => {
             const mockEvent = {
                 id: '3150f294-5fb9-467a-8f8f-f3c4a049f2ae',
                 dataschema:
-                    '//helpdesk/phone.voice-call.inbound.transfer-accepted/1.3.0',
+                    '//helpdesk/phone.voice-call.inbound.transfer-accepted/1.3.1',
                 data: {
                     voice_call_id: 123,
                     user_id: 1,
@@ -1675,7 +1676,7 @@ describe('useLiveVoiceUpdates', () => {
 
         const mockWrapUpStartedEvent = {
             dataschema:
-                '//helpdesk/phone.voice-call.inbound.wrap-up-started/1.1.0',
+                '//helpdesk/phone.voice-call.inbound.wrap-up-started/1.1.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
@@ -1686,7 +1687,7 @@ describe('useLiveVoiceUpdates', () => {
         } as DomainEvent
         const mockWrapUpEndedEvent = {
             dataschema:
-                '//helpdesk/phone.voice-call.inbound.wrap-up-ended/1.1.0',
+                '//helpdesk/phone.voice-call.inbound.wrap-up-ended/1.1.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
@@ -1902,8 +1903,8 @@ describe('useLiveVoiceUpdates', () => {
         }
 
         it.each([
-            '//helpdesk/phone.voice-call.inbound.monitoring-started/1.0.0',
-            '//helpdesk/phone.voice-call.outbound.monitoring-started/1.0.0',
+            '//helpdesk/phone.voice-call.inbound.monitoring-started/1.0.1',
+            '//helpdesk/phone.voice-call.outbound.monitoring-started/1.0.1',
         ])(
             'should update voice call monitoring status to listening',
             (dataschema) => {
@@ -1952,8 +1953,8 @@ describe('useLiveVoiceUpdates', () => {
         )
 
         it.each([
-            '//helpdesk/phone.voice-call.inbound.monitoring-started/1.0.0',
-            '//helpdesk/phone.voice-call.outbound.monitoring-started/1.0.0',
+            '//helpdesk/phone.voice-call.inbound.monitoring-started/1.0.1',
+            '//helpdesk/phone.voice-call.outbound.monitoring-started/1.0.1',
         ])('should create agent status in live agents cache', (dataschema) => {
             const agentsQueryKey =
                 queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
@@ -1998,8 +1999,8 @@ describe('useLiveVoiceUpdates', () => {
         })
 
         it.each([
-            '//helpdesk/phone.voice-call.inbound.monitoring-started/1.0.0',
-            '//helpdesk/phone.voice-call.outbound.monitoring-started/1.0.0',
+            '//helpdesk/phone.voice-call.inbound.monitoring-started/1.0.1',
+            '//helpdesk/phone.voice-call.outbound.monitoring-started/1.0.1',
         ])(
             'should not update agent status if the call is not in the list',
             (dataschema) => {
@@ -2156,8 +2157,8 @@ describe('useLiveVoiceUpdates', () => {
         )
 
         it.each([
-            '//helpdesk/phone.voice-call.inbound.monitoring-ended/1.0.0',
-            '//helpdesk/phone.voice-call.outbound.monitoring-ended/1.0.0',
+            '//helpdesk/phone.voice-call.inbound.monitoring-ended/1.0.1',
+            '//helpdesk/phone.voice-call.outbound.monitoring-ended/1.0.1',
         ])(
             'should not update agent status if the call is not in the list',
             (dataschema) => {

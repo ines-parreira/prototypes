@@ -35,9 +35,9 @@ export default function TextToSpeechProvider({
         (event: DomainEvent) => {
             if (
                 event.dataschema ===
-                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.0' ||
+                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1' ||
                 event.dataschema ===
-                    '//helpdesk/phone.voice-tts.preview.step-property-synthesized/1.0.0'
+                    '//helpdesk/phone.voice-tts.preview.step-property-synthesized/1.0.1'
             ) {
                 const {
                     tts_url,
