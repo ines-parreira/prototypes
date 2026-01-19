@@ -1,19 +1,10 @@
 import type { CustomerSummary } from '@gorgias/helpdesk-types'
-import {
-    CustomerFixedGmvBand,
-    DEPRECATEDCustomerFixedGmvBand,
-} from '@gorgias/helpdesk-types'
+import { CustomerFixedGmvBand } from '@gorgias/helpdesk-types'
 
 import checkIsEnterpriseGMV from 'pages/settings/new_billing/utils/checkIsEnterpriseGMV'
 
 describe('checkIsEnterpriseGMV', () => {
     it.each([
-        [DEPRECATEDCustomerFixedGmvBand.Enterprise1, true],
-        [DEPRECATEDCustomerFixedGmvBand.Enterprise2, true],
-        [DEPRECATEDCustomerFixedGmvBand.Smb1, false],
-        [DEPRECATEDCustomerFixedGmvBand.Smb2, false],
-        [DEPRECATEDCustomerFixedGmvBand.Commercial1, false],
-        [DEPRECATEDCustomerFixedGmvBand.Commercial2, false],
         [CustomerFixedGmvBand.NamedAccounts, true],
         [CustomerFixedGmvBand.Enterprise, true],
         [CustomerFixedGmvBand.Commercial, false],
