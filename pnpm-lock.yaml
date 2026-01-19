@@ -182,14 +182,14 @@ catalogs:
       specifier: ^0.2.41
       version: 0.2.41
     '@gorgias/ecommerce-storage-client':
-      specifier: ^0.2.5
-      version: 0.2.5
+      specifier: ^0.2.9
+      version: 0.2.9
     '@gorgias/ecommerce-storage-mocks':
-      specifier: ^0.2.5
-      version: 0.2.5
+      specifier: ^0.2.9
+      version: 0.2.9
     '@gorgias/ecommerce-storage-queries':
-      specifier: ^0.2.6
-      version: 0.2.6
+      specifier: ^0.2.10
+      version: 0.2.10
     '@gorgias/help-center-client':
       specifier: ^0.3.7
       version: 0.3.7
@@ -466,13 +466,13 @@ importers:
         version: 0.11.4
       '@gorgias/ecommerce-storage-client':
         specifier: catalog:rest-api-sdk
-        version: 0.2.5
+        version: 0.2.9
       '@gorgias/ecommerce-storage-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.2.5(@types/node@22.13.13)(typescript@5.3.3)
+        version: 0.2.9(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/ecommerce-storage-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.2.6(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 0.2.10(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/event-tracker-api':
         specifier: 1.2.0
         version: 1.2.0
@@ -4074,20 +4074,20 @@ packages:
   '@gorgias/design-tokens@0.11.4':
     resolution: {integrity: sha512-zpJjYuwRU8kaYyug6pRHn4jGi0YCquiIzJS5e4/N2BJTJMTZcUrxmxUQKigDSZ/ppxqSyjLUWmyEZpcAxPf+Xw==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.11.4/44e8e159b3a75f452426c6b2a25758afc0e3f673}
 
-  '@gorgias/ecommerce-storage-client@0.2.5':
-    resolution: {integrity: sha512-sIaYqAQaIcah+4uYYjeVQHRbknsidJz2j2T38CRtlzcjKemFMH7P2uI5mqbaU/Z6wYLWAYIYCnxNVFB7sU2VVg==, tarball: https://npm.pkg.github.com/download/@gorgias/ecommerce-storage-client/0.2.5/6cb0111c2e60ae3b070ca9e40cc62f06c7912254}
+  '@gorgias/ecommerce-storage-client@0.2.9':
+    resolution: {integrity: sha512-63kk9BWLNrHGuotseL+oWDKaP9ZQsRWgcrs8T6q7V9UIzfPH7Yd4smELfug0SwhjI86u80Yo1E5Sp94TV1W41Q==, tarball: https://npm.pkg.github.com/download/@gorgias/ecommerce-storage-client/0.2.9/be7f66825a38866cc4cb09018118cfe16c2ad1a0}
 
-  '@gorgias/ecommerce-storage-mocks@0.2.5':
-    resolution: {integrity: sha512-ZJD8394b3rre67dlfT9Nfuw0WkiSGBarruS20whEzjN8U0DFd0wMoNnb3laxsPfAc49ZefO9Hu17jeQbZ16RsA==, tarball: https://npm.pkg.github.com/download/@gorgias/ecommerce-storage-mocks/0.2.5/775674459b5f1f4cdb4c45bf7fd071a1a1c388d7}
+  '@gorgias/ecommerce-storage-mocks@0.2.9':
+    resolution: {integrity: sha512-9UWf079s/LR+lpmeRVAbCmRVEr46qu8v2+cak/yTwJsa7nO1HtOyTH4dEuJiKlahQreksZU7fy0prrSXmlLG4w==, tarball: https://npm.pkg.github.com/download/@gorgias/ecommerce-storage-mocks/0.2.9/8e0d0f38cfbbadad75e2cafeb43d1d6a9b42fcc8}
 
-  '@gorgias/ecommerce-storage-queries@0.2.6':
-    resolution: {integrity: sha512-z+wKkB8KkLyfSOfiwL8lxP5bB1zWmf84WuF1H2sYfoTwdjbheZ1Jfhg+LwKpdqSKj5ixPMP/T5EDyYUFxhPsRg==, tarball: https://npm.pkg.github.com/download/@gorgias/ecommerce-storage-queries/0.2.6/bbbac9e29d91c90d6158caddf2b16aa048720260}
+  '@gorgias/ecommerce-storage-queries@0.2.10':
+    resolution: {integrity: sha512-vKE2oQu56mlGtiArBnDyDRZ6Ifbpb8SFY6I+DBqSzEB49qo25nU/qH7TwBVE2WrBveZhcQ9CKjr95qoYoLYgHA==, tarball: https://npm.pkg.github.com/download/@gorgias/ecommerce-storage-queries/0.2.10/4531369b7d68a36e52c1efef0d7586d1da3dbc3f}
 
-  '@gorgias/ecommerce-storage-spec@0.2.2':
-    resolution: {integrity: sha512-bCATINZ8ORwPJSpgHObAEgyauyP57LjjGAtt4AhwighOZXVVFsqrLktpCKRuxEXBHHsf702p5o8I05TZ6PQYCw==, tarball: https://npm.pkg.github.com/download/@gorgias/ecommerce-storage-spec/0.2.2/4c50b14ca61cd69c8e9765a4335c909f5163f894}
+  '@gorgias/ecommerce-storage-spec@0.2.5':
+    resolution: {integrity: sha512-5wDeG+rNaH1+dnZN0VCRBWtIZ8E8NFJ4LJo+ZJ4FrJJRrUk/v/C0It5EJ7pPqSg2nmvnppoTXJGfjTRj7kntiA==, tarball: https://npm.pkg.github.com/download/@gorgias/ecommerce-storage-spec/0.2.5/7fb87627e83af98ccd184865920acc933783acc1}
 
-  '@gorgias/ecommerce-storage-types@0.2.2':
-    resolution: {integrity: sha512-gACNk/nVb0UTwSaFyYRF2g48Bi/42I5jdmWBz+iVUmSTKj4U45Sj7fdyT3RZ+dxvlwPiotsEZjLzgwqTyKaQHA==, tarball: https://npm.pkg.github.com/download/@gorgias/ecommerce-storage-types/0.2.2/7743539ba3922a5ce6781fd1397c40bf8a5c176a}
+  '@gorgias/ecommerce-storage-types@0.2.5':
+    resolution: {integrity: sha512-ix2EMHheAEOTOUa9SBoDs/ukJ5hkIYCei8W9Ni+ZEcZyh7W9yuEPHj140dXcXvy9TjAfPNYpxxq3EoOY2BmruA==, tarball: https://npm.pkg.github.com/download/@gorgias/ecommerce-storage-types/0.2.5/f23db8c7841c3597f4632781ec060e2cff40bbc8}
 
   '@gorgias/event-tracker-api@1.2.0':
     resolution: {integrity: sha512-Ugrqt2bKColPX7Y1/ZLx1BPRGSPbQv8tTl8MO5wX8gngLcG04WsdrFH2UYKOoIr8ieSMGgmAANlj+ed8qbAGjQ==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-api/1.2.0/44a3eb2d588633389959a46627b687f98c4346bf}
@@ -15991,30 +15991,30 @@ snapshots:
 
   '@gorgias/design-tokens@0.11.4': {}
 
-  '@gorgias/ecommerce-storage-client@0.2.5':
+  '@gorgias/ecommerce-storage-client@0.2.9':
     dependencies:
-      '@gorgias/ecommerce-storage-types': 0.2.2
-      '@gorgias/sdk-client': 0.9.9
+      '@gorgias/ecommerce-storage-types': 0.2.5
+      '@gorgias/sdk-client': 0.9.11
       axios: 1.12.2
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/ecommerce-storage-mocks@0.2.5(@types/node@22.13.13)(typescript@5.3.3)':
+  '@gorgias/ecommerce-storage-mocks@0.2.9(@types/node@22.13.13)(typescript@5.3.3)':
     dependencies:
-      '@gorgias/ecommerce-storage-spec': 0.2.2
-      '@gorgias/ecommerce-storage-types': 0.2.2
-      '@gorgias/sdk-mocks': 0.13.2(@types/node@22.13.13)(typescript@5.3.3)
-      '@gorgias/sdk-spec-utils': 0.10.2
+      '@gorgias/ecommerce-storage-spec': 0.2.5
+      '@gorgias/ecommerce-storage-types': 0.2.5
+      '@gorgias/sdk-mocks': 0.13.5(@types/node@22.13.13)(typescript@5.3.3)
+      '@gorgias/sdk-spec-utils': 0.10.4
       lodash-es: 4.17.21
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.3.3)
     transitivePeerDependencies:
       - '@types/node'
       - typescript
 
-  '@gorgias/ecommerce-storage-queries@0.2.6(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+  '@gorgias/ecommerce-storage-queries@0.2.10(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@gorgias/ecommerce-storage-client': 0.2.5
-      '@gorgias/ecommerce-storage-types': 0.2.2
+      '@gorgias/ecommerce-storage-client': 0.2.9
+      '@gorgias/ecommerce-storage-types': 0.2.5
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
     transitivePeerDependencies:
       - debug
@@ -16022,9 +16022,9 @@ snapshots:
       - react-dom
       - react-native
 
-  '@gorgias/ecommerce-storage-spec@0.2.2': {}
+  '@gorgias/ecommerce-storage-spec@0.2.5': {}
 
-  '@gorgias/ecommerce-storage-types@0.2.2': {}
+  '@gorgias/ecommerce-storage-types@0.2.5': {}
 
   '@gorgias/event-tracker-api@1.2.0':
     dependencies:
