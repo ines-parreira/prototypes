@@ -346,6 +346,26 @@ export const deleteEmailExtraContent = (
         : ContentState.createFromText('')
 }
 
+const isReplyThreadContentBlock = (block: ContentBlock): boolean => {
+    return block.getData().get(BlockDataKey.ReplyThread, false) as boolean
+}
+
+export const deleteReplyThreadContent = (
+    contentState: ContentState,
+): ContentState => {
+    const newBlocks = contentState
+        .getBlocksAsArray()
+        .filter((block) => !isReplyThreadContentBlock(block))
+
+    if (newBlocks.length === contentState.getBlocksAsArray().length) {
+        return contentState
+    }
+
+    return newBlocks.length
+        ? ContentState.createFromBlockArray(newBlocks)
+        : ContentState.createFromText('')
+}
+
 export const hasEmailExtraContent = (contentState: ContentState): boolean => {
     return !!contentState.getBlocksAsArray().find(isEmailExtraContentBlock)
 }

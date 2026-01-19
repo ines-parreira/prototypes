@@ -19,6 +19,7 @@ import type { CurrentUser, StoreState } from '../types'
 import type { Signature } from './emailExtraUtils'
 import {
     deleteEmailExtraContent,
+    deleteReplyThreadContent,
     hasEmailExtraContent,
     hasOnlySignatureText,
 } from './emailExtraUtils'
@@ -374,7 +375,7 @@ export const updateNewMessageWithContentState = (
     delete newMessage.stripped_text
 
     if (emailThreadSizeFF) {
-        const userInput = deleteEmailExtraContent(contentState)
+        const userInput = deleteReplyThreadContent(contentState)
         newMessage.body_html = convertToHTML(userInput)
         newMessage.body_text = userInput.getPlainText()
     } else {

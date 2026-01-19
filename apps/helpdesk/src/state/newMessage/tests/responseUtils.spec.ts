@@ -531,6 +531,64 @@ describe('responseUtils', () => {
                     },
                 })
             })
+
+            it('should preserve signature but remove reply thread when contentState contains both', () => {
+                const contentState = addEmailExtraContent(
+                    ContentState.createFromText('User message'),
+                    {
+                        ticket,
+                        replyThreadMessages: [ticket.messages[0]] as any,
+                        isForwarded: false,
+                        signature: fromJS({ text: 'My Signature' }),
+                    },
+                )
+                const newMessage = updateNewMessageWithContentState(
+                    (initialState.get('newMessage') as Map<any, any>).toJS(),
+                    contentState,
+                    true,
+                )
+                expect(newMessage?.body_text).toContain('User message')
+                expect(newMessage?.body_text).toContain('My Signature')
+                expect(newMessage?.body_text).not.toContain('On ')
+            })
+
+            it('should preserve signature when only signature exists', () => {
+                const contentState = addEmailExtraContent(
+                    ContentState.createFromText('User message'),
+                    {
+                        ticket,
+                        replyThreadMessages: [],
+                        isForwarded: false,
+                        signature: fromJS({ text: 'My Signature' }),
+                    },
+                )
+                const newMessage = updateNewMessageWithContentState(
+                    (initialState.get('newMessage') as Map<any, any>).toJS(),
+                    contentState,
+                    true,
+                )
+                expect(newMessage?.body_text).toContain('User message')
+                expect(newMessage?.body_text).toContain('My Signature')
+            })
+
+            it('should remove reply thread when only reply thread exists', () => {
+                const contentState = addEmailExtraContent(
+                    ContentState.createFromText('User message'),
+                    {
+                        ticket,
+                        replyThreadMessages: [ticket.messages[0]] as any,
+                        isForwarded: false,
+                        signature: fromJS({}),
+                    },
+                )
+                const newMessage = updateNewMessageWithContentState(
+                    (initialState.get('newMessage') as Map<any, any>).toJS(),
+                    contentState,
+                    true,
+                )
+                expect(newMessage?.body_text).toContain('User message')
+                expect(newMessage?.body_text).not.toContain('On ')
+            })
         })
 
         describe('when FF is OFF', () => {

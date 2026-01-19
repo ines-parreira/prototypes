@@ -22,6 +22,7 @@ import type {
 import {
     addEmailExtraContent,
     deleteEmailExtraContent,
+    deleteReplyThreadContent,
     getReplyThreadMessages,
     hasEmailExtraContent,
     hasOnlySignatureText,
@@ -666,6 +667,74 @@ describe('emailExtraUtils', () => {
                 contentState.getBlocksAsArray().slice(1),
             )
             contentState = deleteEmailExtraContent(contentState)
+            expect(
+                getContentStateBlocksSnapshot(contentState),
+            ).toMatchSnapshot()
+        })
+    })
+
+    describe('deleteReplyThreadContent', () => {
+        const signature = fromJS({
+            text: 'Foo signature',
+            html: 'Foo <b>signature</b>',
+        })
+        const replyThreadMessages = [ticket.messages[0]] as ReplyThreadMessage[]
+        const emailExtraArgs: EmailExtraArgs = {
+            ticket,
+            signature,
+            replyThreadMessages,
+            isForwarded: false,
+        }
+
+        it('should return the same content state if there is no reply thread in the response', () => {
+            const contentState = ContentState.createFromText('Foo bar')
+            const newContentState = deleteReplyThreadContent(contentState)
+            expect(newContentState).toBe(contentState)
+        })
+
+        it('should preserve the signature and only remove the reply thread', () => {
+            let contentState = ContentState.createFromText('Foo\nBar')
+            contentState = addEmailExtraContent(contentState, emailExtraArgs)
+            contentState = deleteReplyThreadContent(contentState)
+            expect(
+                getContentStateBlocksSnapshot(contentState),
+            ).toMatchSnapshot()
+        })
+
+        it('should remove only the reply thread when there is no signature', () => {
+            let contentState = ContentState.createFromText('Foo\nBar')
+            contentState = addEmailExtraContent(contentState, {
+                ...emailExtraArgs,
+                signature: fromJS({}),
+            })
+            contentState = deleteReplyThreadContent(contentState)
+            expect(
+                getContentStateBlocksSnapshot(contentState),
+            ).toMatchSnapshot()
+        })
+
+        it('should preserve signature when only signature exists', () => {
+            let contentState = ContentState.createFromText('Foo\nBar')
+            contentState = addEmailExtraContent(contentState, {
+                ...emailExtraArgs,
+                replyThreadMessages: [],
+            })
+            contentState = deleteReplyThreadContent(contentState)
+            expect(
+                getContentStateBlocksSnapshot(contentState),
+            ).toMatchSnapshot()
+        })
+
+        it('should return an empty text when reply thread is the only content', () => {
+            let contentState = ContentState.createFromText('Foo')
+            contentState = addEmailExtraContent(contentState, {
+                ...emailExtraArgs,
+                signature: fromJS({}),
+            })
+            contentState = ContentState.createFromBlockArray(
+                contentState.getBlocksAsArray().slice(1),
+            )
+            contentState = deleteReplyThreadContent(contentState)
             expect(
                 getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()

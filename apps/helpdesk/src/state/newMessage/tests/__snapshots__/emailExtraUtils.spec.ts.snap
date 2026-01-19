@@ -1135,6 +1135,104 @@ exports[`emailExtraUtils deleteEmailExtraContent should return an empty text whe
 ]
 `;
 
+exports[`emailExtraUtils deleteReplyThreadContent should preserve signature when only signature exists 1`] = `
+[
+  {
+    "data": {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  {
+    "data": {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+  {
+    "data": {
+      "emailExtra": true,
+      "signature": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  {
+    "data": {
+      "emailExtra": true,
+      "signature": true,
+    },
+    "depth": 0,
+    "text": "Foo signature",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils deleteReplyThreadContent should preserve the signature and only remove the reply thread 1`] = `
+[
+  {
+    "data": {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  {
+    "data": {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+  {
+    "data": {
+      "emailExtra": true,
+      "signature": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  {
+    "data": {
+      "emailExtra": true,
+      "signature": true,
+    },
+    "depth": 0,
+    "text": "Foo signature",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils deleteReplyThreadContent should remove only the reply thread when there is no signature 1`] = `
+[
+  {
+    "data": {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  {
+    "data": {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils deleteReplyThreadContent should return an empty text when reply thread is the only content 1`] = `
+[
+  {
+    "data": {},
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
 exports[`emailExtraUtils updateEmailExtraOnUserInput should clear email extra data if more than the first line was modified 1`] = `
 [
   {
