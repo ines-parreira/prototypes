@@ -1,5 +1,5 @@
-import { FeatureFlagKey } from './featureFlagKey'
-import { useFlag } from './useFlag'
+import { FeatureFlagKey } from '../featureFlagKey'
+import { useFlag } from '../useFlag'
 
 export function useHelpdeskV2MS2Flag() {
     const hasUIVisionBetaBaseline = useFlag(
