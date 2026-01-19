@@ -150,3 +150,28 @@
         }
     }
 }
+
+.axiom :local {
+    .barGroupContainer {
+        &::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+        }
+
+        &.scrollable {
+            &::-webkit-scrollbar-thumb {
+                background: var(--scrollbar-thumb);
+                visibility: visible;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: var(--scrollbar-thumb);
+            }
+        }
+
+        scrollbar-width: thin;
+
+        &.scrollable {
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+        }
+    }
+}

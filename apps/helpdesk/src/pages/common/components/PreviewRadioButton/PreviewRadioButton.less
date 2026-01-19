@@ -42,6 +42,13 @@
     .wrapper {
         color: var(--content-neutral-default);
         border: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-mid);
+        box-shadow: var(--effects-shadow-container);
+        border-radius: var(--spacing-sm);
+
+        &:hover {
+            background-color: var(--hover-default);
+        }
 
         &:focus,
         &:hover:not(.selected):not(.disabled) {

@@ -128,4 +128,20 @@
     .itemCount {
         color: var(--content-neutral-default);
     }
+
+    .virtuosoContainer {
+        :global([data-virtuoso-scroller]) {
+            &::-webkit-scrollbar-thumb {
+                background: var(--scrollbar-thumb);
+                visibility: initial;
+            }
+
+            &::-webkit-scrollbar-track {
+                background-color: var(--scrollbar-track);
+            }
+
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+        }
+    }
 }

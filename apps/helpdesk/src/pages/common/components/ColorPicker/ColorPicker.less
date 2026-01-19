@@ -54,3 +54,73 @@
         }
     }
 }
+
+.axiom :local {
+    .button {
+        height: 32px !important;
+        border: 1px solid var(--border-neutral-default) !important;
+        border-right: 0 !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        border-top-left-radius: var(--spacing-xs) !important;
+        border-bottom-left-radius: var(--spacing-xs) !important;
+
+        &:hover:not(:disabled) {
+            border: 1px solid var(--border-neutral-default) !important;
+            border-right: 0 !important;
+            background-color: var(--hover-default) !important;
+        }
+
+        &:active:not(:disabled) {
+            background-color: var(--surface-neutral-quaternary) !important;
+            border-color: var(--border-neutral-secondary) !important;
+            border-right: 0 !important;
+        }
+    }
+
+    .input {
+        border: 1px solid var(--border-neutral-default);
+        border-left: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: var(--spacing-xs);
+        border-bottom-right-radius: var(--spacing-xs);
+        background-color: var(--elevation-neutral-default);
+        color: var(--content-neutral-default);
+        box-shadow: none;
+
+        &:hover:not(:disabled):not(:focus) {
+            border: 1px solid var(--border-neutral-default) !important;
+            border-left: 0 !important;
+            background-color: var(--hover-default) !important;
+        }
+
+        &:focus {
+            border: 1px solid var(--border-neutral-secondary);
+            border-left: 0;
+            box-shadow: none;
+            outline: none;
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            background-color: var(--surface-neutral-primary);
+            color: var(--content-neutral-secondary);
+        }
+
+        &::placeholder {
+            color: var(--content-neutral-secondary);
+        }
+    }
+
+    .popover-content {
+        background-color: var(--elevation-neutral-mid) !important;
+        border-radius: var(--spacing-sm) !important;
+    }
+
+    .popup {
+        .choice {
+            border-radius: var(--spacing-xs);
+        }
+    }
+}

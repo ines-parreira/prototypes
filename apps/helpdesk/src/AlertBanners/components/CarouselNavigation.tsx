@@ -38,7 +38,7 @@ export const CarouselNavigation = ({
                     style={{
                         whiteSpace: 'nowrap',
                         fontSize: '12px',
-                        color: 'var(--neutral-grey-5)',
+                        color: 'var(--content-neutral-default)',
                         width: '29px',
                     }}
                 >

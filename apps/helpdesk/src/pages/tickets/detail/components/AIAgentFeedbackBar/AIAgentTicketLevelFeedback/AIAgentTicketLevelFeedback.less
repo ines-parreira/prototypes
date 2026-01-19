@@ -173,4 +173,24 @@
             }
         }
     }
+
+    .questionContainer {
+        &::-webkit-scrollbar-track {
+            background: var(--scrollbar-track) !important;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb) !important;
+            visibility: visible !important;
+
+            &:hover {
+                background: var(--scrollbar-thumb) !important;
+            }
+        }
+
+        @supports not selector(::-webkit-scrollbar) {
+            scrollbar-width: thin !important;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track) !important;
+        }
+    }
 }

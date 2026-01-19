@@ -76,7 +76,7 @@ describe('<UsersSettingsItem />', () => {
         expect(mockedAvatar).toHaveBeenCalledWith(
             expect.objectContaining({
                 name: defaultUser.name,
-                badgeColor: 'var(--feedback-success)', // Online status
+                badgeColor: 'var(--static-success)', // Online status
             }),
             {},
         )
@@ -155,7 +155,7 @@ describe('<UsersSettingsItem />', () => {
 
         expect(mockedAvatar).toHaveBeenCalledWith(
             expect.objectContaining({
-                badgeColor: 'var(--feedback-warning)',
+                badgeColor: 'var(--static-warning)',
             }),
             {},
         )
@@ -172,7 +172,7 @@ describe('<UsersSettingsItem />', () => {
 
         expect(mockedAvatar).toHaveBeenCalledWith(
             expect.objectContaining({
-                badgeColor: 'var(--neutral-grey-4)',
+                badgeColor: 'var(--static-secondary)',
             }),
             {},
         )

@@ -102,6 +102,9 @@
     .field {
         border-radius: var(--spacing-xs);
         box-shadow: none;
+        color: var(--content-neutral-default);
+        background-color: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
 
         &:hover:not(:disabled):not(:focus) {
             background-color: var(--hover-default);
@@ -115,6 +118,11 @@
         &:disabled {
             opacity: 0.5;
             background-color: var(--surface-neutral-primary);
+            color: var(--content-neutral-secondary);
+        }
+
+        &::placeholder {
+            color: var(--content-neutral-secondary);
         }
     }
 
@@ -122,6 +130,9 @@
         select {
             border-radius: var(--spacing-xs);
             box-shadow: none;
+            color: var(--content-neutral-default);
+            background-color: var(--elevation-neutral-default);
+            border: 1px solid var(--border-neutral-default);
 
             &:hover:not(:disabled):not(:focus) {
                 background-color: var(--hover-default);
@@ -135,6 +146,7 @@
             &:disabled {
                 opacity: 0.5;
                 background-color: var(--surface-neutral-primary);
+                color: var(--content-neutral-secondary);
             }
         }
     }

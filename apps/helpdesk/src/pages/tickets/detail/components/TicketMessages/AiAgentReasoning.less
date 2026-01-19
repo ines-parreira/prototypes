@@ -430,6 +430,22 @@
     .knowledgeSourceIcon {
         background-color: var(--elevation-neutral-mid);
     }
+
+    .body {
+        &.expanded {
+            &::-webkit-scrollbar-track {
+                background: var(--scrollbar-track);
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: var(--scrollbar-thumb);
+                visibility: visible;
+            }
+
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+        }
+    }
 }
 
 :global {

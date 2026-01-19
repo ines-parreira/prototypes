@@ -30,10 +30,10 @@ export function UsersSettingsItem({ user }: Props) {
     const avatarBadgerColor = isBot
         ? ''
         : !availability || availability === AvailabilityStatusTag.Offline
-          ? 'var(--neutral-grey-4)'
+          ? 'var(--static-secondary)'
           : availability === AvailabilityStatusTag.Busy
-            ? 'var(--feedback-warning)'
-            : 'var(--feedback-success)'
+            ? 'var(--static-warning)'
+            : 'var(--static-success)'
 
     const twoFABadgeType: ColorType = isBot
         ? 'light-grey'

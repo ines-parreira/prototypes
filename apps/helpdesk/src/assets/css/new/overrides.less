@@ -253,6 +253,31 @@ pre {
 .axiom {
     color: var(--content-neutral-default);
 
+    .breadcrumb-item {
+        font-size: 20px !important;
+        font-weight: 600;
+        line-height: 32px !important;
+
+        a {
+            font-size: 14px !important;
+            font-weight: 400;
+        }
+    }
+
+    .breadcrumb-item.active {
+        // heading-xl
+        font-size: 20px !important;
+        font-weight: 600;
+        line-height: 32px;
+        letter-spacing: 0em;
+
+        &::before {
+            color: var(--content-neutral-tertiary) !important;
+            opacity: 0.5 !important;
+            font-size: 12px !important;
+        }
+    }
+
     a,
     .btn.btn-link {
         color: var(--content-accent-default);

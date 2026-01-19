@@ -192,9 +192,17 @@
     }
 
     .body {
-        &::-webkit-scrollbar-thumb {
-            background: var(--surface-neutral-tertiary);
+        &::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
         }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            visibility: visible;
+        }
+
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
     }
 
     .knowledgeSourceIcon {

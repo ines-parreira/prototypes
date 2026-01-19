@@ -35,8 +35,8 @@ export default function UserItem() {
                     badgeClassName={css.badge}
                     badgeColor={
                         isAvailable
-                            ? 'var(--feedback-success)'
-                            : 'var(--feedback-warning)'
+                            ? 'var(--static-success)'
+                            : 'var(--static-warning)'
                     }
                     name={currentUser.get('name') || currentUser.get('email')}
                     url={currentUser.getIn(['meta', 'profile_picture_url'])}
