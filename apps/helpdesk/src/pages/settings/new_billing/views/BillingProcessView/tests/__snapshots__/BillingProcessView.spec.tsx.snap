@@ -117,98 +117,103 @@ exports[`BillingProcessView should render 1`] = `
                 <div
                   class="selectedPlan"
                 >
-                  <div>
-                    <div
-                      class="dropdown"
-                    >
+                  <div
+                    class="selectWrapper"
+                    id="priceSelect_helpdesk_wrapper"
+                  >
+                    <div>
                       <div
-                        aria-expanded="false"
-                        aria-haspopup="true"
-                        class=""
-                        data-toggle="dropdown"
+                        class="dropdown"
                       >
                         <div
-                          class="select dropdown-toggle selectFullWidth"
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class=""
+                          data-toggle="dropdown"
                         >
-                          <span
-                            aria-label="Price value"
-                            class="label"
-                            data-testid="selected-priceSelect_helpdesk"
-                            style="min-width: 10px; opacity: 1;"
+                          <div
+                            class="select dropdown-toggle selectFullWidth"
                           >
-                            300
-                          </span>
-                          <input
-                            autocomplete="chrome-off"
-                            class="input"
-                            id="priceSelect_helpdesk"
-                            style="min-width: 10px;"
-                            type="text"
-                            value=""
-                          />
-                          <i
-                            class="material-icons dropdownIcon"
-                          >
-                            arrow_drop_down
-                          </i>
+                            <span
+                              aria-label="Price value"
+                              class="label"
+                              data-testid="selected-priceSelect_helpdesk"
+                              style="min-width: 10px; opacity: 1;"
+                            >
+                              300
+                            </span>
+                            <input
+                              autocomplete="chrome-off"
+                              class="input"
+                              id="priceSelect_helpdesk"
+                              style="min-width: 10px;"
+                              type="text"
+                              value=""
+                            />
+                            <i
+                              class="material-icons dropdownIcon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </div>
                         </div>
-                      </div>
-                      <div
-                        aria-hidden="true"
-                        class="options select optionsFullWidth dropdown-menu"
-                        role="menu"
-                        tabindex="-1"
-                      >
-                        <button
-                          class="option option--focused dropdown-item"
-                          role="menuitem"
-                          tabindex="0"
-                          type="button"
+                        <div
+                          aria-hidden="true"
+                          class="options select optionsFullWidth dropdown-menu"
+                          role="menu"
+                          tabindex="-1"
                         >
-                          <span>
-                            50
-                          </span>
-                        </button>
-                        <button
-                          class="option dropdown-item"
-                          role="menuitem"
-                          tabindex="0"
-                          type="button"
-                        >
-                          <span>
-                            300
-                          </span>
-                        </button>
-                        <button
-                          class="option dropdown-item"
-                          role="menuitem"
-                          tabindex="0"
-                          type="button"
-                        >
-                          <span>
-                            2,000
-                          </span>
-                        </button>
-                        <button
-                          class="option dropdown-item"
-                          role="menuitem"
-                          tabindex="0"
-                          type="button"
-                        >
-                          <span>
-                            5,000
-                          </span>
-                        </button>
-                        <button
-                          class="option dropdown-item"
-                          role="menuitem"
-                          tabindex="0"
-                          type="button"
-                        >
-                          <span>
-                            5,000+
-                          </span>
-                        </button>
+                          <button
+                            class="option option--focused dropdown-item"
+                            role="menuitem"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span>
+                              50
+                            </span>
+                          </button>
+                          <button
+                            class="option dropdown-item"
+                            role="menuitem"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span>
+                              300
+                            </span>
+                          </button>
+                          <button
+                            class="option dropdown-item"
+                            role="menuitem"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span>
+                              2,000
+                            </span>
+                          </button>
+                          <button
+                            class="option dropdown-item"
+                            role="menuitem"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span>
+                              5,000
+                            </span>
+                          </button>
+                          <button
+                            class="option dropdown-item"
+                            role="menuitem"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span>
+                              5,000+
+                            </span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

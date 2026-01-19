@@ -71,6 +71,7 @@ jest.mock('../../../utils/handleConvertProductRemoved')
 const handleConvertProductRemovedMock = assumeMock(handleConvertProductRemoved)
 
 const mockUpdateSubscription = jest.fn()
+const mockContactBilling = jest.fn()
 
 describe('ProductPlanSelection', () => {
     beforeEach(() => {
@@ -86,6 +87,8 @@ describe('ProductPlanSelection', () => {
 
         mockUpdateSubscription.mockReset()
         mockUpdateSubscription.mockResolvedValue(undefined)
+
+        mockContactBilling.mockReset()
 
         useFlagMock.mockReset()
         useFlagMock.mockReturnValue(false)
@@ -146,6 +149,7 @@ describe('ProductPlanSelection', () => {
         periodEnd: 'February 14, 2024',
         editingAvailable: true,
         updateSubscription: mockUpdateSubscription,
+        contactBilling: mockContactBilling,
     }
 
     it('does not display the cancel auto-renewal button and a modal if cancellation is not available', () => {
@@ -658,6 +662,7 @@ describe('ProductPlanSelection', () => {
             currentUsage: currentProductsUsage,
             editingAvailable: true,
             updateSubscription: mockUpdateSubscription,
+            contactBilling: mockContactBilling,
         }
 
         it('shows CancelAAOModal when consolidated modal feature flag is OFF', async () => {
@@ -764,6 +769,7 @@ describe('ProductPlanSelection', () => {
                         periodEnd: 'February 14, 2024',
                         editingAvailable: true,
                         updateSubscription: mockUpdateSubscription,
+                        contactBilling: mockContactBilling,
                     }
                 })
 
@@ -856,6 +862,7 @@ describe('ProductPlanSelection', () => {
                 periodEnd: 'February 14, 2024',
                 editingAvailable: true,
                 updateSubscription: mockUpdateSubscription,
+                contactBilling: mockContactBilling,
             }
 
             it('calls handleConvertProductRemoved when Convert is removed with feature flag OFF', async () => {
@@ -1015,6 +1022,7 @@ describe('ProductPlanSelection', () => {
                         productType === ProductType.Automation
                             ? currentProductsUsage
                             : undefined,
+                    contactBilling: mockContactBilling,
                 }
 
                 const { getByRole } = render(
@@ -1199,11 +1207,13 @@ describe('ProductPlanSelection', () => {
                         periodEnd: 'February 14, 2024',
                         editingAvailable: true,
                         updateSubscription: mockUpdateSubscription,
+                        contactBilling: mockContactBilling,
                     }
                 })
 
-                it('should disable Remove product button when scheduledToCancelAt is set', () => {
-                    const { getByRole } = render(
+                it('should disable Remove product button when scheduledToCancelAt is set', async () => {
+                    const user = userEvent.setup()
+                    const { getByRole, container } = render(
                         <Provider store={store}>
                             <ProductPlanSelection
                                 {...productProps}
@@ -1212,9 +1222,24 @@ describe('ProductPlanSelection', () => {
                         </Provider>,
                     )
 
+                    const removeButton = getByRole('button', {
+                        name: 'Remove product',
+                    })
+                    expect(removeButton).toBeAriaDisabled()
+
+                    await act(() => user.hover(removeButton))
+
                     expect(
-                        getByRole('button', { name: 'Remove product' }),
-                    ).toBeAriaDisabled()
+                        container.querySelector(
+                            `#remove-product-${productProps.type}`,
+                        ),
+                    ).toBeInTheDocument()
+                    expect(
+                        screen.getByText(
+                            /Your product is scheduled to cancel/i,
+                        ),
+                    ).toBeInTheDocument()
+                    expect(screen.getByText('get in touch')).toBeInTheDocument()
                 })
 
                 it('should enable Remove product button when scheduledToCancelAt is null', () => {
@@ -1304,7 +1329,8 @@ describe('ProductPlanSelection', () => {
                 expect(queryByText(/Active until/i)).not.toBeInTheDocument()
             })
 
-            it('should disable Remove product button when whole subscription is cancelled', () => {
+            it('should disable Remove product button when whole subscription is cancelled', async () => {
+                const user = userEvent.setup()
                 const automationProps = {
                     ...props,
                     type: ProductType.Automation,
@@ -1319,7 +1345,7 @@ describe('ProductPlanSelection', () => {
                     },
                 }
 
-                const { getByRole } = render(
+                const { getByRole, container } = render(
                     <Provider store={store}>
                         <ProductPlanSelection
                             {...automationProps}
@@ -1328,9 +1354,29 @@ describe('ProductPlanSelection', () => {
                     </Provider>,
                 )
 
+                const removeButton = getByRole('button', {
+                    name: 'Remove product',
+                })
+                expect(removeButton).toBeAriaDisabled()
+
+                await act(() => user.hover(removeButton))
+
                 expect(
-                    getByRole('button', { name: 'Remove product' }),
-                ).toBeAriaDisabled()
+                    screen.getByText(/Your product is scheduled to cancel/i),
+                ).toBeInTheDocument()
+                expect(screen.getByText('get in touch')).toBeInTheDocument()
+
+                const selectWrapper = container.querySelector(
+                    `#priceSelect_${ProductType.Automation}_wrapper`,
+                )
+                expect(selectWrapper).toBeInTheDocument()
+
+                await act(() => user.hover(selectWrapper!))
+
+                expect(
+                    screen.getAllByText(/Your product is scheduled to cancel/i)
+                        .length,
+                ).toBeGreaterThanOrEqual(1)
             })
         })
     })

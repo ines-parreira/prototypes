@@ -458,6 +458,7 @@ const BillingProcessView = ({
                                     : null
                             }
                             cancelledProducts={cancelledProducts}
+                            contactBilling={contactBilling}
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -484,6 +485,7 @@ const BillingProcessView = ({
                                     : null
                             }
                             cancelledProducts={cancelledProducts}
+                            contactBilling={contactBilling}
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -510,6 +512,7 @@ const BillingProcessView = ({
                                     : null
                             }
                             cancelledProducts={cancelledProducts}
+                            contactBilling={contactBilling}
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -536,6 +539,7 @@ const BillingProcessView = ({
                                     : null
                             }
                             cancelledProducts={cancelledProducts}
+                            contactBilling={contactBilling}
                         />
                         <div className={css.separator} />
                         <ProductPlanSelection
@@ -562,6 +566,7 @@ const BillingProcessView = ({
                                     : null
                             }
                             cancelledProducts={cancelledProducts}
+                            contactBilling={contactBilling}
                         />
                     </div>
                 </Card>

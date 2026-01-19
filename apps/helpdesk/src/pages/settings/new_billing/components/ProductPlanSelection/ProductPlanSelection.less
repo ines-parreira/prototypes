@@ -66,6 +66,11 @@
         align-items: center;
     }
 
+    .selectWrapper {
+        flex: 1;
+        min-width: 0;
+    }
+
     .counter {
         display: flex;
         gap: 4px;
@@ -105,6 +110,11 @@
             text-decoration: underline !important;
             padding-left: 4px;
         }
+    }
+
+    .link {
+        color: var(--main-primary); // legacy
+        cursor: pointer;
     }
 
     .select {
@@ -149,5 +159,9 @@
 
     .oldPrice {
         color: var(--content-neutral-tertiary);
+    }
+
+    .link {
+        color: var(--content-accent-default);
     }
 }

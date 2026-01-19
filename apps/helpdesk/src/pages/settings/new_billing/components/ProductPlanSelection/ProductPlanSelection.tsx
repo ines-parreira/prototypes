@@ -26,6 +26,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import type { Value } from 'pages/common/forms/SelectField/types'
 import { handleConvertProductRemoved } from 'pages/settings/new_billing/utils/handleConvertProductRemoved'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
+import { TicketPurpose } from 'state/billing/types'
 import type { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
@@ -61,6 +62,7 @@ export type ProductPlanSelectionProps = {
     updateSubscription: () => Promise<unknown>
     scheduledToCancelAt?: string | null
     cancelledProducts?: ProductType[]
+    contactBilling: (ticketPurpose: TicketPurpose) => void
 }
 
 const ProductPlanSelection = ({
@@ -79,6 +81,7 @@ const ProductPlanSelection = ({
     updateSubscription,
     scheduledToCancelAt,
     cancelledProducts = [],
+    contactBilling,
 }: ProductPlanSelectionProps) => {
     const productInfo = getProductInfo(type, currentPlan)
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -313,6 +316,65 @@ const ProductPlanSelection = ({
         ? PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP
         : undefined
 
+    const disabledDueToScheduledCancellation = !!scheduledToCancelAt
+
+    const isSelectFieldDisabled =
+        !editingAvailable || disabledDueToScheduledCancellation
+
+    const scheduledCancellationTooltip = useMemo(() => {
+        return (
+            <>
+                Your product is scheduled to cancel. To reactivate, please{' '}
+                <span
+                    className={css.link}
+                    onClick={() => contactBilling(TicketPurpose.CONTACT_US)}
+                >
+                    get in touch
+                </span>{' '}
+                with our team.
+            </>
+        )
+    }, [contactBilling])
+
+    const renderRemoveProductButton = useCallback(
+        (onClick: () => void) => {
+            return (
+                <>
+                    {disabledDueToScheduledCancellation && (
+                        <Tooltip
+                            placement="top"
+                            target={`remove-product-${type}`}
+                            autohide={false}
+                        >
+                            {scheduledCancellationTooltip}
+                        </Tooltip>
+                    )}
+                    <Button
+                        fillStyle="ghost"
+                        intent="secondary"
+                        size="small"
+                        onClick={() => {
+                            logEvent(
+                                SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
+                                { product: getProductTrackingName(type) },
+                            )
+                            onClick()
+                        }}
+                        isDisabled={disabledDueToScheduledCancellation}
+                        id={`remove-product-${type}`}
+                    >
+                        Remove product
+                    </Button>
+                </>
+            )
+        },
+        [
+            disabledDueToScheduledCancellation,
+            scheduledCancellationTooltip,
+            type,
+        ],
+    )
+
     const renderHeader = () => {
         if (!selectedPlans[type].isSelected) {
             return (
@@ -389,87 +451,29 @@ const ProductPlanSelection = ({
             )
         }
         if (type === ProductType.Automation) {
-            return (
-                <Button
-                    fillStyle="ghost"
-                    intent="secondary"
-                    size="small"
-                    onClick={() => {
-                        logEvent(
-                            SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
-                            { product: getProductTrackingName(type) },
-                        )
-                        if (useConsolidatedCancellationModal) {
-                            setIsCancellationFlowOpen(true)
-                        } else {
-                            setIsCancelAAOModalOpen(true)
-                        }
-                    }}
-                    isDisabled={!!scheduledToCancelAt}
-                >
-                    Remove product
-                </Button>
-            )
+            return renderRemoveProductButton(() => {
+                if (useConsolidatedCancellationModal) {
+                    setIsCancellationFlowOpen(true)
+                } else {
+                    setIsCancelAAOModalOpen(true)
+                }
+            })
         } else if (type === ProductType.Convert) {
-            return (
-                <Button
-                    fillStyle="ghost"
-                    intent="secondary"
-                    size="small"
-                    onClick={() => {
-                        logEvent(
-                            SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
-                            { product: getProductTrackingName(type) },
-                        )
-                        handleConvertClose()
-                    }}
-                    isDisabled={!!scheduledToCancelAt}
-                >
-                    Remove product
-                </Button>
-            )
+            return renderRemoveProductButton(handleConvertClose)
         } else if (
             type === ProductType.SMS &&
             useConsolidatedCancellationModal
         ) {
-            return (
-                <Button
-                    fillStyle="ghost"
-                    intent="secondary"
-                    size="small"
-                    onClick={() => {
-                        logEvent(
-                            SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
-                            { product: getProductTrackingName(type) },
-                        )
-                        setIsCancellationFlowOpen(true)
-                    }}
-                    isDisabled={!!scheduledToCancelAt}
-                >
-                    Remove product
-                </Button>
-            )
+            return renderRemoveProductButton(() => {
+                setIsCancellationFlowOpen(true)
+            })
         } else if (
             type === ProductType.Voice &&
             useConsolidatedCancellationModal
         ) {
-            return (
-                <Button
-                    fillStyle="ghost"
-                    intent="secondary"
-                    size="small"
-                    onClick={() => {
-                        logEvent(
-                            SegmentEvent.BillingUsageAndPlansRemoveProductClicked,
-                            { product: getProductTrackingName(type) },
-                        )
-                        setIsCancellationFlowOpen(true)
-                    }}
-                    isDisabled={!!scheduledToCancelAt}
-                >
-                    Remove product
-                </Button>
-            )
+            return renderRemoveProductButton(() => {
+                setIsCancellationFlowOpen(true)
+            })
         }
 
         return null
@@ -496,20 +500,32 @@ const ProductPlanSelection = ({
             {selectedPlans[type].isSelected && (
                 <div className={css.details}>
                     <div className={css.selectedPlan}>
-                        <SelectField
-                            options={options}
-                            id={`priceSelect_${type}`}
-                            aria-label="Price value"
-                            placeholder="Select a plan"
-                            value={selectedPlan?.plan_id}
-                            fullWidth
-                            onChange={handleSelectProductPlan}
-                            showSelectedOption
-                            dropdownMenuClassName={css.select}
-                            disabled={
-                                !editingAvailable || !!scheduledToCancelAt
-                            }
-                        />
+                        <div
+                            id={`priceSelect_${type}_wrapper`}
+                            className={css.selectWrapper}
+                        >
+                            <SelectField
+                                options={options}
+                                id={`priceSelect_${type}`}
+                                aria-label="Price value"
+                                placeholder="Select a plan"
+                                value={selectedPlan?.plan_id}
+                                fullWidth
+                                onChange={handleSelectProductPlan}
+                                showSelectedOption
+                                dropdownMenuClassName={css.select}
+                                disabled={isSelectFieldDisabled}
+                            />
+                        </div>
+                        {isSelectFieldDisabled && (
+                            <Tooltip
+                                placement="top"
+                                target={`priceSelect_${type}_wrapper`}
+                                autohide={false}
+                            >
+                                {scheduledCancellationTooltip}
+                            </Tooltip>
+                        )}
                         <div className={css.counter}>
                             <div>
                                 <CounterText
