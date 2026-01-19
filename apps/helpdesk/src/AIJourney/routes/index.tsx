@@ -97,7 +97,11 @@ function AiJourneyBaseRoutes() {
                             <Route
                                 path={`${path}/:shopName/campaigns`}
                                 exact
-                                render={() => <Campaigns />}
+                                render={() => (
+                                    <DefaultStatsFilters>
+                                        <Campaigns />
+                                    </DefaultStatsFilters>
+                                )}
                             />
                             <Route render={() => <LandingPage />} />
                         </Switch>

@@ -1,26 +1,28 @@
 import { useMemo, useState } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
-import { ConfigureMetricsModal, type MetricConfigItem } from '@repo/reporting'
+import { ConfigureMetricsModal } from '@repo/reporting'
+import type { MetricConfigItem } from '@repo/reporting'
 
-import { Box, Card, type ColumnDef, Heading } from '@gorgias/axiom'
+import { Box, Heading } from '@gorgias/axiom'
+import type { ColumnDef } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 
-import { DigestCard } from 'AIJourney/components'
 import CampaignsTable from 'AIJourney/components/CampaignsTable/CampaignsTable'
 import {
     actionColumns,
     columns,
     metricColumns,
 } from 'AIJourney/components/CampaignsTable/Columns'
-import { useFilters } from 'AIJourney/hooks'
 import {
     DEFAULT_TABLE_METRICS,
     useAIJourneyTableKpis,
 } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
-import { useCampaignsKpis } from 'AIJourney/hooks/useCampaignsKpis/useCampaignsKpis'
 import { useJourneyContext } from 'AIJourney/providers'
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
+import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 
 import { getCampaignStateLabelAndColor } from '../../utils'
 
@@ -61,7 +63,14 @@ export const Campaigns = () => {
         MetricConfigItem[]
     >('ai-journey-campaign-columns', customizableMetrics)
 
-    const filters = useFilters()
+    const { cleanStatsFilters: statsFilters } = useStatsFilters()
+
+    const filters = useMemo(() => {
+        return {
+            period: statsFilters.period,
+        }
+        // oxlint-disable-next-line eslint-plugin-react-hooks/exhaustive-deps
+    }, [statsFilters.period.start_datetime, statsFilters.period.end_datetime])
 
     const { metrics: tableMetrics, isLoading: isMetricLoading } =
         useAIJourneyTableKpis({
@@ -71,13 +80,6 @@ export const Campaigns = () => {
         })
 
     const hasCampaigns = campaigns?.length !== 0
-
-    const { metrics } = useCampaignsKpis({
-        integrationId: integrationId.toString(),
-        filters,
-        journeyIds: campaigns?.map((c) => c.id),
-    })
-    const isLoadingMetrics = metrics?.some((metric) => metric.isLoading)
 
     const campaignRows = useMemo(() => {
         return campaigns?.map((campaign) => {
@@ -114,16 +116,30 @@ export const Campaigns = () => {
     }, [keyKpisConfig])
 
     return (
-        <Box m="md" flexDirection="column" className={css.container}>
-            <DigestCard
-                badgeContent="Campaigns Performance"
-                metrics={hasCampaigns ? metrics : []}
-                isLoading={
-                    isLoadingCampaigns || (isLoadingMetrics && hasCampaigns)
-                }
-            />
-            <Card gap="md" elevation="mid">
-                <Heading size="md">Campaigns</Heading>
+        <Box m="md" width="100%" flexDirection="column">
+            <Heading className={css.header} size="xl">
+                Campaigns
+            </Heading>
+
+            <Box
+                m="md"
+                padding="xs"
+                gap="lg"
+                margin={0}
+                flexDirection="column"
+                className={css.container}
+            >
+                <FiltersPanelWrapper
+                    persistentFilters={[FilterKey.Period]}
+                    withSavedFilters={false}
+                    filterSettingsOverrides={{
+                        [FilterKey.Period]: {
+                            initialSettings: {
+                                maxSpan: 365,
+                            },
+                        },
+                    }}
+                />
                 <CampaignsTable
                     columns={visibleColumns}
                     data={campaignRows || []}
@@ -134,15 +150,15 @@ export const Campaigns = () => {
                         (isMetricLoading && hasCampaigns)
                     }
                 />
-            </Card>
-            <DrillDownModal />
-            <ConfigureMetricsModal
-                isOpen={isEditModalOpen}
-                onClose={() => setIsEditModalOpen(false)}
-                metrics={keyKpisConfig}
-                onSave={setKeyKpisConfig}
-                maxVisibleMetric={6}
-            />
+                <DrillDownModal />
+                <ConfigureMetricsModal
+                    isOpen={isEditModalOpen}
+                    onClose={() => setIsEditModalOpen(false)}
+                    metrics={keyKpisConfig}
+                    onSave={setKeyKpisConfig}
+                    maxVisibleMetric={6}
+                />
+            </Box>
         </Box>
     )
 }

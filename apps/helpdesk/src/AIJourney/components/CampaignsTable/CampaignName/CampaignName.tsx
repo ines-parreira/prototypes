@@ -23,9 +23,10 @@ export default function CampaignName({
     return (
         <Link
             to={`/app/ai-journey/${storeName}/${JOURNEY_TYPES_MAP_TO_URL[journeyType]}/setup/${journeyId}`}
-            className={css.campaignNameLink}
         >
-            <Text variant="bold">{name}</Text>
+            <Text className={css.campaignNameLink} variant="bold">
+                {name}
+            </Text>
         </Link>
     )
 }

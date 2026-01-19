@@ -10,12 +10,10 @@ import {
     DEFAULT_TABLE_METRICS,
     useAIJourneyTableKpis,
 } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
-import { useCampaignsKpis } from 'AIJourney/hooks/useCampaignsKpis/useCampaignsKpis'
 import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
-import { journeyKpisMock } from 'AIJourney/utils/test-fixtures/journeyKpisMock'
 import { appQueryClient } from 'api/queryClient'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
+import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import { account } from 'fixtures/account'
 import { renderWithRouter } from 'utils/testing'
 
@@ -33,12 +31,9 @@ const mockUseJourneyContext =
         .useJourneyContext as jest.Mock
 
 jest.mock('domains/reporting/state/ui/stats/selectors')
-const getCleanStatsFiltersWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithTimezone,
+const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
 )
-
-jest.mock('AIJourney/hooks/useCampaignsKpis/useCampaignsKpis')
-const useCampaignsKpisMock = assumeMock(useCampaignsKpis)
 
 jest.mock('AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis')
 const useAIJourneyTableKpisMock = assumeMock(useAIJourneyTableKpis)
@@ -49,6 +44,11 @@ jest.mock(
         DrillDownModal: () => null,
     }),
 )
+
+jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
+    __esModule: true,
+    default: () => <div data-testid="filters-panel-wrapper" />,
+}))
 
 describe('<Campaigns />', () => {
     const mockStore = configureMockStore([thunk])({
@@ -76,15 +76,13 @@ describe('<Campaigns />', () => {
             currentIntegration: { id: 1, name: 'Test Integration' },
         })
 
-        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
-            userTimezone: 'someTimezone',
-            cleanStatsFilters,
-            granularity: ReportingGranularity.Day,
-        })
-
-        useCampaignsKpisMock.mockImplementation(() => ({
-            metrics: journeyKpisMock,
-        }))
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock.mockReturnValue(
+            {
+                userTimezone: 'someTimezone',
+                cleanStatsFilters,
+                granularity: ReportingGranularity.Day,
+            },
+        )
 
         useAIJourneyTableKpisMock.mockImplementation(() => ({
             metrics: {
@@ -140,20 +138,6 @@ describe('<Campaigns />', () => {
             campaigns: [],
             isLoadingIntegrations: false,
         })
-        useCampaignsKpisMock.mockImplementation(() => ({
-            metrics: [
-                {
-                    label: 'Total Revenue',
-                    value: 59.99,
-                    prevValue: 180.02,
-                    series: [],
-                    interpretAs: 'more-is-better',
-                    metricFormat: 'currency',
-                    currency: 'USD',
-                    isLoading: true,
-                },
-            ],
-        }))
 
         useAIJourneyTableKpisMock.mockImplementation(() => ({
             metrics: {},
@@ -178,6 +162,5 @@ describe('<Campaigns />', () => {
         expect(
             screen.getByText('Start reaching your customers today'),
         ).toBeInTheDocument()
-        expect(screen.getByText('No data available yet')).toBeInTheDocument()
     })
 })

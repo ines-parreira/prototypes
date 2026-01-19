@@ -228,10 +228,12 @@ export default function CampaignsTable<TData, TValue>({
                                     <Button
                                         onClick={onEditColumns}
                                         intent="regular"
-                                        icon="columns"
+                                        leadingSlot="columns"
                                         size="md"
-                                        variant="tertiary"
-                                    />
+                                        variant="secondary"
+                                    >
+                                        Edit metrics
+                                    </Button>
                                 ),
                             },
                             {
