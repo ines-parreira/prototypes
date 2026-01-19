@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Icon } from '@gorgias/axiom'
+import { Box, Icon } from '@gorgias/axiom'
 
 import Collapse from 'pages/common/components/Collapse/Collapse'
 
@@ -25,11 +25,19 @@ export const KnowledgeEditorSidePanelFieldURLsList = ({
                 </span>
             </div>
             <Collapse isOpen={isOpen}>
-                {urls.map((url, index) => (
-                    <div key={index} className={css.url}>
-                        {url}
-                    </div>
-                ))}
+                <Box gap="xxxs" flexDirection="column">
+                    {urls.map((url, index) => (
+                        <a
+                            key={index}
+                            href={url}
+                            className={css.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {url}
+                        </a>
+                    ))}
+                </Box>
             </Collapse>
         </div>
     )
