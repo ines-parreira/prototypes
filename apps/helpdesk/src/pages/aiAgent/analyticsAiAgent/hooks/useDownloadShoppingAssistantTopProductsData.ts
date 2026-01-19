@@ -1,15 +1,15 @@
 import { useMemo } from 'react'
 
-import { formatMetricValue } from '@repo/reporting'
-
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
+import { formatPercentage } from 'pages/common/utils/numbers'
 import { createCsv } from 'utils/file'
 
 import { useShoppingAssistantTopProductsMetrics } from './useShoppingAssistantTopProductsMetrics'
 
-const FILE_NAME = 'shopping-assistant-top-products'
+const SHOPPING_ASSISTANT_TOP_PRODUCTS_FILENAME =
+    'shopping-assistant-top-products'
 
 export const useDownloadShoppingAssistantTopProductsData = () => {
     const { cleanStatsFilters } = useStatsFilters()
@@ -17,50 +17,47 @@ export const useDownloadShoppingAssistantTopProductsData = () => {
 
     const csvData = useMemo(() => {
         if (!data || data.length === 0) {
-            return null
+            return []
         }
 
-        const rows: string[][] = [
+        return [
             [
-                'product_name',
-                'times_recommended',
-                'click_through_rate',
-                'buy_through_rate',
+                'Product name',
+                'Times recommended',
+                'Click-through rate',
+                'Buy through rate',
             ],
+            ...data.map((row) => {
+                const recommendations =
+                    row.metrics[ProductTableKeys.NumberOfRecommendations]
+                const ctr = row.metrics[ProductTableKeys.CTR]
+                const btr = row.metrics[ProductTableKeys.BTR]
+                return [
+                    row.product.title || `Product ${row.product.id}`,
+                    typeof recommendations === 'number'
+                        ? recommendations.toLocaleString()
+                        : String(recommendations ?? 0),
+                    formatPercentage(
+                        typeof ctr === 'number' ? ctr : Number(ctr ?? 0),
+                    ),
+                    formatPercentage(
+                        typeof btr === 'number' ? btr : Number(btr ?? 0),
+                    ),
+                ]
+            }),
         ]
-
-        data.forEach((item) => {
-            const recommendations = Number(
-                item.metrics[ProductTableKeys.NumberOfRecommendations] ?? 0,
-            )
-            const ctr = Number(item.metrics[ProductTableKeys.CTR] ?? 0)
-            const btr = Number(item.metrics[ProductTableKeys.BTR] ?? 0)
-
-            rows.push([
-                item.product.title,
-                formatMetricValue(recommendations, 'integer'),
-                formatMetricValue(ctr, 'percent-precision-1'),
-                formatMetricValue(btr, 'percent-precision-1'),
-            ])
-        })
-
-        return createCsv(rows)
     }, [data])
 
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
-        FILE_NAME,
+        SHOPPING_ASSISTANT_TOP_PRODUCTS_FILENAME,
     )
 
-    const files = useMemo(() => {
-        if (!csvData) {
-            return {}
-        }
-        return { [fileName]: csvData }
-    }, [csvData, fileName])
-
     return {
-        files,
+        files: {
+            [fileName]: createCsv(csvData),
+        },
+        fileName,
         isLoading: isFetching,
     }
 }

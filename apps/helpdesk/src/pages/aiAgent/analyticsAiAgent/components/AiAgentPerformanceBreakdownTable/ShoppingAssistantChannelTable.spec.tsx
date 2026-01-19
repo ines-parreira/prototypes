@@ -57,8 +57,10 @@ describe('ShoppingAssistantChannelTable', () => {
 
         mockUseStatsFilters.mockReturnValue({
             cleanStatsFilters: {
-                startDate: '2024-01-01',
-                endDate: '2024-01-31',
+                period: {
+                    start_datetime: '2024-01-01T00:00:00Z',
+                    end_datetime: '2024-01-31T23:59:59Z',
+                },
             },
             userTimezone: 'UTC',
         } as any)
@@ -151,7 +153,7 @@ describe('ShoppingAssistantChannelTable', () => {
             data: [
                 {
                     channel: 'sms',
-                    automationRate: null,
+                    automationRate: 50,
                     aiAgentInteractionsShare: null,
                     automatedInteractions: null,
                     handover: null,
@@ -181,7 +183,7 @@ describe('ShoppingAssistantChannelTable', () => {
         })
 
         const naElements = screen.getAllByText('N/A')
-        expect(naElements.length).toBe(8)
+        expect(naElements.length).toBe(7)
     })
 
     it('should show skeletons only for loading metrics', async () => {
@@ -275,7 +277,19 @@ describe('ShoppingAssistantChannelTable', () => {
 
     it('should render table headers with tooltips', async () => {
         mockUseShoppingAssistantChannelMetrics.mockReturnValue({
-            data: [],
+            data: [
+                {
+                    channel: 'chat',
+                    automationRate: 80,
+                    aiAgentInteractionsShare: 45,
+                    automatedInteractions: 100,
+                    handover: 20,
+                    successRate: 80,
+                    totalSales: 5000,
+                    ordersInfluenced: 50,
+                    revenuePerInteraction: 50,
+                },
+            ],
             isLoading: false,
             isError: false,
             loadingStates: {
@@ -307,7 +321,7 @@ describe('ShoppingAssistantChannelTable', () => {
         expect(screen.getByText('Revenue per interaction')).toBeInTheDocument()
     })
 
-    it('should display placeholder data when no channels are returned', async () => {
+    it('should display empty state when no channels are returned', async () => {
         mockUseShoppingAssistantChannelMetrics.mockReturnValue({
             data: [],
             isLoading: false,
@@ -326,12 +340,12 @@ describe('ShoppingAssistantChannelTable', () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText('Email')).toBeInTheDocument()
-            expect(screen.getByText('Chat')).toBeInTheDocument()
+            expect(screen.getByText('No data found')).toBeInTheDocument()
         })
 
-        const naElements = screen.getAllByText('N/A')
-        expect(naElements.length).toBeGreaterThan(0)
+        expect(
+            screen.getByText('Try to adjust your report filters.'),
+        ).toBeInTheDocument()
     })
 
     it('should show table toolbar with total count', async () => {
@@ -371,7 +385,19 @@ describe('ShoppingAssistantChannelTable', () => {
 
     it('should render all info icons for column headers', async () => {
         mockUseShoppingAssistantChannelMetrics.mockReturnValue({
-            data: [],
+            data: [
+                {
+                    channel: 'chat',
+                    automationRate: 80,
+                    aiAgentInteractionsShare: 45,
+                    automatedInteractions: 100,
+                    handover: 20,
+                    successRate: 80,
+                    totalSales: 5000,
+                    ordersInfluenced: 50,
+                    revenuePerInteraction: 50,
+                },
+            ],
             isLoading: false,
             isError: false,
             loadingStates: {

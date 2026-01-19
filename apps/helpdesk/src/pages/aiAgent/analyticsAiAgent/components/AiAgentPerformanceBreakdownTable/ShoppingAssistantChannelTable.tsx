@@ -6,6 +6,7 @@ import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
     HeaderRowGroup,
+    Heading,
     Icon,
     Skeleton,
     TableBodyContent,
@@ -20,10 +21,32 @@ import {
 } from '@gorgias/axiom'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useDownloadShoppingAssistantChannelData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelData'
 import type { ShoppingAssistantChannelMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantChannelMetrics'
 import { useShoppingAssistantChannelMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantChannelMetrics'
 
+import { DownloadTableButton } from './DownloadTableButton'
+
 import css from './PerformanceBreakdownTable.less'
+
+const hasNonZeroMetrics = (
+    data: ShoppingAssistantChannelMetrics[],
+): boolean => {
+    return data.some(
+        (row) =>
+            (row.automationRate !== null && row.automationRate !== 0) ||
+            (row.aiAgentInteractionsShare !== null &&
+                row.aiAgentInteractionsShare !== 0) ||
+            (row.automatedInteractions !== null &&
+                row.automatedInteractions !== 0) ||
+            (row.handover !== null && row.handover !== 0) ||
+            (row.successRate !== null && row.successRate !== 0) ||
+            (row.totalSales !== null && row.totalSales !== 0) ||
+            (row.ordersInfluenced !== null && row.ordersInfluenced !== 0) ||
+            (row.revenuePerInteraction !== null &&
+                row.revenuePerInteraction !== 0),
+    )
+}
 
 const formatChannelName = (channel: string): string => {
     const channelNames: Record<string, string> = {
@@ -69,11 +92,21 @@ export const ShoppingAssistantChannelTable = () => {
         cleanStatsFilters,
         userTimezone,
     )
+    const downloadData = useDownloadShoppingAssistantChannelData()
 
-    const tableData: ShoppingAssistantChannelMetrics[] = useMemo(
-        () => (data.length > 0 ? data : PLACEHOLDER_DATA),
-        [data],
+    const allLoadingComplete = !Object.values(loadingStates).some(
+        (state) => state === true,
     )
+
+    const tableData: ShoppingAssistantChannelMetrics[] = useMemo(() => {
+        if (data.length > 0 && hasNonZeroMetrics(data)) {
+            return data
+        }
+        if (allLoadingComplete) {
+            return []
+        }
+        return PLACEHOLDER_DATA
+    }, [data, allLoadingComplete])
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const columns: ColumnDef<ShoppingAssistantChannelMetrics>[] = useMemo(
@@ -549,8 +582,19 @@ export const ShoppingAssistantChannelTable = () => {
         },
     })
 
+    const showEmptyState =
+        allLoadingComplete && (data.length === 0 || !hasNonZeroMetrics(data))
+
     return (
         <Box display="flex" flexDirection="column" minWidth="0px">
+            <Box display="flex" justifyContent="flex-end">
+                <DownloadTableButton
+                    files={downloadData.files}
+                    fileName={downloadData.fileName}
+                    isLoading={downloadData.isLoading}
+                    tableName="shopping-assistant-channel-performance"
+                />
+            </Box>
             <TableToolbar
                 table={table}
                 bottomRow={{
@@ -560,16 +604,35 @@ export const ShoppingAssistantChannelTable = () => {
             />
             <Box className={css.tableWrapper}>
                 <TableRoot withBorder className={css.table}>
-                    <TableHeader>
-                        <HeaderRowGroup
-                            headerGroups={table.getHeaderGroups()}
-                        />
-                    </TableHeader>
-                    <TableBodyContent
-                        rows={table.getRowModel().rows}
-                        columnCount={table.getAllColumns().length}
-                        table={table}
-                    />
+                    {showEmptyState ? (
+                        <Box
+                            width="100%"
+                            display="flex"
+                            flexDirection="column"
+                            alignItems="center"
+                            justifyContent="center"
+                            padding="xxxl"
+                            gap="xs"
+                        >
+                            <Heading size="sm">No data found</Heading>
+                            <Text size="md" color="secondary">
+                                Try to adjust your report filters.
+                            </Text>
+                        </Box>
+                    ) : (
+                        <>
+                            <TableHeader>
+                                <HeaderRowGroup
+                                    headerGroups={table.getHeaderGroups()}
+                                />
+                            </TableHeader>
+                            <TableBodyContent
+                                rows={table.getRowModel().rows}
+                                columnCount={table.getAllColumns().length}
+                                table={table}
+                            />
+                        </>
+                    )}
                 </TableRoot>
             </Box>
         </Box>

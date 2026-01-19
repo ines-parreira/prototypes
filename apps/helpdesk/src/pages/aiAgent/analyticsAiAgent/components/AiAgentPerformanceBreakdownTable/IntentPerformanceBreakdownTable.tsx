@@ -6,6 +6,7 @@ import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
     HeaderRowGroup,
+    Heading,
     Icon,
     Skeleton,
     TableBodyContent,
@@ -20,10 +21,25 @@ import {
 } from '@gorgias/axiom'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
 import type { IntentMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics'
 import { useIntentPerformanceMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics'
 
+import { DownloadTableButton } from './DownloadTableButton'
+
 import css from './PerformanceBreakdownTable.less'
+
+const hasNonZeroMetrics = (data: IntentMetrics[]): boolean => {
+    return data.some(
+        (row) =>
+            (row.handoverInteractions !== null &&
+                row.handoverInteractions !== 0) ||
+            (row.snoozedInteractions !== null &&
+                row.snoozedInteractions !== 0) ||
+            (row.successRate !== null && row.successRate !== 0) ||
+            (row.costSaved !== null && row.costSaved !== 0),
+    )
+}
 
 const PLACEHOLDER_DATA: IntentMetrics[] = [
     {
@@ -50,11 +66,21 @@ export const IntentPerformanceBreakdownTable = () => {
         cleanStatsFilters,
         userTimezone,
     )
+    const downloadData = useDownloadIntentPerformanceData()
 
-    const tableData: IntentMetrics[] = useMemo(
-        () => (data.length > 0 ? data : PLACEHOLDER_DATA),
-        [data],
+    const allLoadingComplete = !Object.values(loadingStates).some(
+        (state) => state === true,
     )
+
+    const tableData: IntentMetrics[] = useMemo(() => {
+        if (data.length > 0 && hasNonZeroMetrics(data)) {
+            return data
+        }
+        if (allLoadingComplete) {
+            return []
+        }
+        return PLACEHOLDER_DATA
+    }, [data, allLoadingComplete])
 
     const columns: ColumnDef<IntentMetrics>[] = useMemo(
         () => [
@@ -360,8 +386,19 @@ export const IntentPerformanceBreakdownTable = () => {
         },
     })
 
+    const showEmptyState =
+        allLoadingComplete && (data.length === 0 || !hasNonZeroMetrics(data))
+
     return (
         <Box display="flex" flexDirection="column" minWidth="0px">
+            <Box display="flex" justifyContent="flex-end">
+                <DownloadTableButton
+                    files={downloadData.files}
+                    fileName={downloadData.fileName}
+                    isLoading={downloadData.isLoading}
+                    tableName="ai-agent-intent-performance"
+                />
+            </Box>
             <TableToolbar
                 table={table}
                 bottomRow={{
@@ -371,16 +408,35 @@ export const IntentPerformanceBreakdownTable = () => {
             />
             <Box className={css.tableWrapper}>
                 <TableRoot withBorder className={css.table}>
-                    <TableHeader>
-                        <HeaderRowGroup
-                            headerGroups={table.getHeaderGroups()}
-                        />
-                    </TableHeader>
-                    <TableBodyContent
-                        rows={table.getRowModel().rows}
-                        columnCount={table.getAllColumns().length}
-                        table={table}
-                    />
+                    {showEmptyState ? (
+                        <Box
+                            width="100%"
+                            display="flex"
+                            flexDirection="column"
+                            alignItems="center"
+                            justifyContent="center"
+                            padding="xxxl"
+                            gap="xs"
+                        >
+                            <Heading size="sm">No data found</Heading>
+                            <Text size="md" color="secondary">
+                                Try to adjust your report filters.
+                            </Text>
+                        </Box>
+                    ) : (
+                        <>
+                            <TableHeader>
+                                <HeaderRowGroup
+                                    headerGroups={table.getHeaderGroups()}
+                                />
+                            </TableHeader>
+                            <TableBodyContent
+                                rows={table.getRowModel().rows}
+                                columnCount={table.getAllColumns().length}
+                                table={table}
+                            />
+                        </>
+                    )}
                 </TableRoot>
             </Box>
         </Box>

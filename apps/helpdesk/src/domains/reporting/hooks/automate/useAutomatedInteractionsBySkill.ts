@@ -8,7 +8,7 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 const SKILL_LABELS = {
     [AIAgentSkills.AIAgentSupport]: 'Support',
-    [AIAgentSkills.AIAgentSales]: 'Shopping assistant',
+    [AIAgentSkills.AIAgentSales]: 'Shopping Assistant',
 }
 
 export const useAutomatedInteractionsBySkill = (

@@ -6,6 +6,7 @@ import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
     HeaderRowGroup,
+    Heading,
     Icon,
     Skeleton,
     TableBodyContent,
@@ -20,10 +21,22 @@ import {
 } from '@gorgias/axiom'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useDownloadSupportAgentChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportAgentChannelPerformanceData'
 import type { SupportAgentChannelMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentChannelPerformanceMetrics'
 import { useSupportAgentChannelPerformanceMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentChannelPerformanceMetrics'
 
+import { DownloadTableButton } from './DownloadTableButton'
+
 import css from './PerformanceBreakdownTable.less'
+
+const hasNonZeroMetrics = (data: SupportAgentChannelMetrics[]): boolean => {
+    return data.some(
+        (row) =>
+            (row.handoverInteractions !== null &&
+                row.handoverInteractions !== 0) ||
+            (row.snoozedInteractions !== null && row.snoozedInteractions !== 0),
+    )
+}
 
 const formatChannelName = (channel: string): string => {
     const channelNames: Record<string, string> = {
@@ -57,11 +70,21 @@ export const SupportAgentChannelPerformanceBreakdownTable = () => {
         cleanStatsFilters,
         userTimezone,
     )
+    const downloadData = useDownloadSupportAgentChannelPerformanceData()
 
-    const tableData: SupportAgentChannelMetrics[] = useMemo(
-        () => (data.length > 0 ? data : PLACEHOLDER_DATA),
-        [data],
+    const allLoadingComplete = !Object.values(loadingStates).some(
+        (state) => state === true,
     )
+
+    const tableData: SupportAgentChannelMetrics[] = useMemo(() => {
+        if (data.length > 0 && hasNonZeroMetrics(data)) {
+            return data
+        }
+        if (allLoadingComplete) {
+            return []
+        }
+        return PLACEHOLDER_DATA
+    }, [data, allLoadingComplete])
 
     // Keep columns stable to prevent Skeleton animation resets
     // loadingStates is intentionally omitted from deps to avoid recreating columns
@@ -227,8 +250,19 @@ export const SupportAgentChannelPerformanceBreakdownTable = () => {
         },
     })
 
+    const showEmptyState =
+        allLoadingComplete && (data.length === 0 || !hasNonZeroMetrics(data))
+
     return (
         <Box display="flex" flexDirection="column" minWidth="0px">
+            <Box display="flex" justifyContent="flex-end">
+                <DownloadTableButton
+                    files={downloadData.files}
+                    fileName={downloadData.fileName}
+                    isLoading={downloadData.isLoading}
+                    tableName="support-agent-channel-performance"
+                />
+            </Box>
             <TableToolbar
                 table={table}
                 bottomRow={{
@@ -238,16 +272,35 @@ export const SupportAgentChannelPerformanceBreakdownTable = () => {
             />
             <Box className={css.tableWrapper}>
                 <TableRoot withBorder className={css.table}>
-                    <TableHeader>
-                        <HeaderRowGroup
-                            headerGroups={table.getHeaderGroups()}
-                        />
-                    </TableHeader>
-                    <TableBodyContent
-                        rows={table.getRowModel().rows}
-                        columnCount={table.getAllColumns().length}
-                        table={table}
-                    />
+                    {showEmptyState ? (
+                        <Box
+                            width="100%"
+                            display="flex"
+                            flexDirection="column"
+                            alignItems="center"
+                            justifyContent="center"
+                            padding="xxxl"
+                            gap="xs"
+                        >
+                            <Heading size="sm">No data found</Heading>
+                            <Text size="md" color="secondary">
+                                Try to adjust your report filters.
+                            </Text>
+                        </Box>
+                    ) : (
+                        <>
+                            <TableHeader>
+                                <HeaderRowGroup
+                                    headerGroups={table.getHeaderGroups()}
+                                />
+                            </TableHeader>
+                            <TableBodyContent
+                                rows={table.getRowModel().rows}
+                                columnCount={table.getAllColumns().length}
+                                table={table}
+                            />
+                        </>
+                    )}
                 </TableRoot>
             </Box>
         </Box>

@@ -33,10 +33,14 @@ describe('useDownloadSupportAgentChannelPerformanceData', () => {
 
     it('should return isLoading as true when data is loading', () => {
         mockedUseSupportAgentChannelPerformanceMetrics.mockReturnValue({
-            data: undefined,
+            data: undefined as any,
             isLoading: true,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: true,
+                snoozedInteractions: true,
+            },
+        })
 
         const { result } = renderHook(() =>
             useDownloadSupportAgentChannelPerformanceData(),
@@ -56,7 +60,11 @@ describe('useDownloadSupportAgentChannelPerformanceData', () => {
             ],
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+            },
+        })
 
         const { result } = renderHook(() =>
             useDownloadSupportAgentChannelPerformanceData(),
@@ -65,32 +73,42 @@ describe('useDownloadSupportAgentChannelPerformanceData', () => {
         expect(result.current.isLoading).toBe(false)
     })
 
-    it('should return empty files when data is undefined', () => {
+    it('should return empty CSV when data is undefined', () => {
         mockedUseSupportAgentChannelPerformanceMetrics.mockReturnValue({
-            data: undefined,
+            data: undefined as any,
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+            },
+        })
 
         const { result } = renderHook(() =>
             useDownloadSupportAgentChannelPerformanceData(),
         )
 
-        expect(result.current.files).toEqual({})
+        const csvContent = Object.values(result.current.files)[0]
+        expect(csvContent).toBe('')
     })
 
-    it('should return empty files when data is empty array', () => {
+    it('should return empty CSV when data is empty array', () => {
         mockedUseSupportAgentChannelPerformanceMetrics.mockReturnValue({
             data: [],
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+            },
+        })
 
         const { result } = renderHook(() =>
             useDownloadSupportAgentChannelPerformanceData(),
         )
 
-        expect(result.current.files).toEqual({})
+        const csvContent = Object.values(result.current.files)[0]
+        expect(csvContent).toBe('')
     })
 
     it('should return CSV file with channel performance data', () => {
@@ -116,7 +134,11 @@ describe('useDownloadSupportAgentChannelPerformanceData', () => {
             data: mockChannelData,
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+            },
+        })
 
         const { result } = renderHook(() =>
             useDownloadSupportAgentChannelPerformanceData(),
@@ -131,9 +153,9 @@ describe('useDownloadSupportAgentChannelPerformanceData', () => {
         ).toBe(true)
 
         const csvContent = Object.values(result.current.files)[0]
-        expect(csvContent).toContain('channel')
-        expect(csvContent).toContain('handover_interactions')
-        expect(csvContent).toContain('snoozed_interactions')
+        expect(csvContent).toContain('Channel')
+        expect(csvContent).toContain('Handover interactions')
+        expect(csvContent).toContain('Snoozed interactions')
     })
 
     it('should format channel names correctly', () => {
@@ -179,7 +201,11 @@ describe('useDownloadSupportAgentChannelPerformanceData', () => {
             data: mockChannelData,
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+            },
+        })
 
         const { result } = renderHook(() =>
             useDownloadSupportAgentChannelPerformanceData(),
@@ -207,7 +233,11 @@ describe('useDownloadSupportAgentChannelPerformanceData', () => {
             data: mockChannelData,
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+            },
+        })
 
         const { result } = renderHook(() =>
             useDownloadSupportAgentChannelPerformanceData(),
@@ -230,7 +260,11 @@ describe('useDownloadSupportAgentChannelPerformanceData', () => {
             data: mockChannelData,
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+            },
+        })
 
         const { result } = renderHook(() =>
             useDownloadSupportAgentChannelPerformanceData(),
@@ -244,10 +278,14 @@ describe('useDownloadSupportAgentChannelPerformanceData', () => {
 
     it('should call useSupportAgentChannelPerformanceMetrics with correct params', () => {
         mockedUseSupportAgentChannelPerformanceMetrics.mockReturnValue({
-            data: undefined,
+            data: undefined as any,
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+            },
+        })
 
         renderHook(() => useDownloadSupportAgentChannelPerformanceData())
 

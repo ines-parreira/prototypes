@@ -8,23 +8,21 @@ import { createCsv } from 'utils/file'
 
 import { useIntentPerformanceMetrics } from './useIntentPerformanceMetrics'
 
-const FILENAME = 'intent-performance-breakdown'
+const INTENT_PERFORMANCE_FILENAME = 'ai-agent-intent-performance'
 
 export const useDownloadIntentPerformanceData = () => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
-    const { data, isLoading } = useIntentPerformanceMetrics(
+    const { data, loadingStates } = useIntentPerformanceMetrics(
         cleanStatsFilters,
         userTimezone,
     )
+
+    const isLoading = Object.values(loadingStates).some((state) => state)
 
     const csvData = useMemo(() => {
         if (!data || data.length === 0) {
             return []
         }
-
-        const sortedData = [...data].sort((a, b) =>
-            b.intentL1.localeCompare(a.intentL1),
-        )
 
         return [
             [
@@ -35,7 +33,7 @@ export const useDownloadIntentPerformanceData = () => {
                 'Success rate',
                 'Cost saved',
             ],
-            ...sortedData.map((row) => [
+            ...data.map((row) => [
                 row.intentL1,
                 row.intentL2,
                 formatMetricValue(row.handoverInteractions, 'decimal'),
@@ -46,7 +44,10 @@ export const useDownloadIntentPerformanceData = () => {
         ]
     }, [data])
 
-    const fileName = getCsvFileNameWithDates(cleanStatsFilters.period, FILENAME)
+    const fileName = getCsvFileNameWithDates(
+        cleanStatsFilters.period,
+        INTENT_PERFORMANCE_FILENAME,
+    )
 
     return {
         files: {

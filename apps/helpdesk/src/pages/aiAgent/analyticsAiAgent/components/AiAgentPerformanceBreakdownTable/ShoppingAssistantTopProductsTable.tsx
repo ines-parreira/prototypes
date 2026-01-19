@@ -5,6 +5,7 @@ import {
     Avatar,
     Box,
     HeaderRowGroup,
+    Heading,
     Icon,
     Skeleton,
     TableBodyContent,
@@ -20,10 +21,22 @@ import {
 
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import type { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
+import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
 import { useShoppingAssistantTopProductsMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
 import { formatPercentage } from 'pages/common/utils/numbers'
 
+import { DownloadTableButton } from './DownloadTableButton'
+
 import css from './PerformanceBreakdownTable.less'
+
+const hasNonZeroMetrics = (data: ProductTableContentCell[]): boolean => {
+    return data.some(
+        (row) =>
+            row.metrics[ProductTableKeys.NumberOfRecommendations] !== 0 ||
+            row.metrics[ProductTableKeys.CTR] !== 0 ||
+            row.metrics[ProductTableKeys.BTR] !== 0,
+    )
+}
 
 const PLACEHOLDER_DATA: ProductTableContentCell[] = [
     {
@@ -46,11 +59,17 @@ const PLACEHOLDER_DATA: ProductTableContentCell[] = [
 
 export const ShoppingAssistantTopProductsTable = () => {
     const { data, isFetching } = useShoppingAssistantTopProductsMetrics()
+    const downloadData = useDownloadShoppingAssistantTopProductsData()
 
-    const tableData = useMemo(
-        () => (data.length > 0 ? data : PLACEHOLDER_DATA),
-        [data],
-    )
+    const tableData = useMemo(() => {
+        if (data.length > 0 && hasNonZeroMetrics(data)) {
+            return data
+        }
+        if (!isFetching) {
+            return []
+        }
+        return PLACEHOLDER_DATA
+    }, [data, isFetching])
 
     const columns: ColumnDef<ProductTableContentCell>[] = useMemo(
         () => [
@@ -305,8 +324,19 @@ export const ShoppingAssistantTopProductsTable = () => {
         },
     })
 
+    const showEmptyState =
+        !isFetching && (data.length === 0 || !hasNonZeroMetrics(data))
+
     return (
         <Box display="flex" flexDirection="column" minWidth="0px">
+            <Box display="flex" justifyContent="flex-end">
+                <DownloadTableButton
+                    files={downloadData.files}
+                    fileName={downloadData.fileName}
+                    isLoading={downloadData.isLoading}
+                    tableName="shopping-assistant-top-products"
+                />
+            </Box>
             <TableToolbar
                 table={table}
                 bottomRow={{
@@ -316,16 +346,35 @@ export const ShoppingAssistantTopProductsTable = () => {
             />
             <Box className={css.tableWrapper}>
                 <TableRoot withBorder className={css.table}>
-                    <TableHeader>
-                        <HeaderRowGroup
-                            headerGroups={table.getHeaderGroups()}
-                        />
-                    </TableHeader>
-                    <TableBodyContent
-                        rows={table.getRowModel().rows}
-                        columnCount={table.getAllColumns().length}
-                        table={table}
-                    />
+                    {showEmptyState ? (
+                        <Box
+                            width="100%"
+                            display="flex"
+                            flexDirection="column"
+                            alignItems="center"
+                            justifyContent="center"
+                            padding="xxxl"
+                            gap="xs"
+                        >
+                            <Heading size="sm">No data found</Heading>
+                            <Text size="md" color="secondary">
+                                Try to adjust your report filters.
+                            </Text>
+                        </Box>
+                    ) : (
+                        <>
+                            <TableHeader>
+                                <HeaderRowGroup
+                                    headerGroups={table.getHeaderGroups()}
+                                />
+                            </TableHeader>
+                            <TableBodyContent
+                                rows={table.getRowModel().rows}
+                                columnCount={table.getAllColumns().length}
+                                table={table}
+                            />
+                        </>
+                    )}
                 </TableRoot>
             </Box>
         </Box>

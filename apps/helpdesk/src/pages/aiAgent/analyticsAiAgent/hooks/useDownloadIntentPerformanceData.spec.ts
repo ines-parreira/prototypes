@@ -33,10 +33,16 @@ describe('useDownloadIntentPerformanceData', () => {
 
     it('should return isLoading as true when data is loading', () => {
         mockedUseIntentPerformanceMetrics.mockReturnValue({
-            data: undefined,
+            data: undefined as any,
             isLoading: true,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: true,
+                snoozedInteractions: true,
+                successRate: true,
+                costSaved: true,
+            },
+        })
 
         const { result } = renderHook(() => useDownloadIntentPerformanceData())
 
@@ -57,7 +63,13 @@ describe('useDownloadIntentPerformanceData', () => {
             ],
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                successRate: false,
+                costSaved: false,
+            },
+        })
 
         const { result } = renderHook(() => useDownloadIntentPerformanceData())
 
@@ -66,10 +78,16 @@ describe('useDownloadIntentPerformanceData', () => {
 
     it('should return empty CSV when data is undefined', () => {
         mockedUseIntentPerformanceMetrics.mockReturnValue({
-            data: undefined,
+            data: undefined as any,
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                successRate: false,
+                costSaved: false,
+            },
+        })
 
         const { result } = renderHook(() => useDownloadIntentPerformanceData())
 
@@ -82,7 +100,13 @@ describe('useDownloadIntentPerformanceData', () => {
             data: [],
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                successRate: false,
+                costSaved: false,
+            },
+        })
 
         const { result } = renderHook(() => useDownloadIntentPerformanceData())
 
@@ -114,7 +138,13 @@ describe('useDownloadIntentPerformanceData', () => {
             data: mockIntentData,
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                successRate: false,
+                costSaved: false,
+            },
+        })
 
         const { result } = renderHook(() => useDownloadIntentPerformanceData())
 
@@ -122,7 +152,7 @@ describe('useDownloadIntentPerformanceData', () => {
         expect(fileNames.length).toBe(1)
         expect(
             fileNames.some((name) =>
-                name.includes('intent-performance-breakdown'),
+                name.includes('ai-agent-intent-performance'),
             ),
         ).toBe(true)
 
@@ -133,51 +163,6 @@ describe('useDownloadIntentPerformanceData', () => {
         expect(csvContent).toContain('Snoozed interactions')
         expect(csvContent).toContain('Success rate')
         expect(csvContent).toContain('Cost saved')
-    })
-
-    it('should sort data by intentL1 in descending order', () => {
-        const mockIntentData = [
-            {
-                intentL1: 'Account',
-                intentL2: 'Settings',
-                handoverInteractions: 50,
-                snoozedInteractions: 20,
-                successRate: 0.8,
-                costSaved: 2500,
-            },
-            {
-                intentL1: 'Return',
-                intentL2: 'Request',
-                handoverInteractions: 75,
-                snoozedInteractions: 25,
-                successRate: 0.9,
-                costSaved: 3750,
-            },
-            {
-                intentL1: 'Order',
-                intentL2: 'Status',
-                handoverInteractions: 100,
-                snoozedInteractions: 50,
-                successRate: 0.85,
-                costSaved: 5000,
-            },
-        ]
-
-        mockedUseIntentPerformanceMetrics.mockReturnValue({
-            data: mockIntentData,
-            isLoading: false,
-            isError: false,
-        } as any)
-
-        const { result } = renderHook(() => useDownloadIntentPerformanceData())
-
-        const csvContent = Object.values(result.current.files)[0]
-        const returnIndex = csvContent.indexOf('Return')
-        const orderIndex = csvContent.indexOf('Order')
-        const accountIndex = csvContent.indexOf('Account')
-
-        expect(returnIndex).toBeLessThan(orderIndex)
-        expect(orderIndex).toBeLessThan(accountIndex)
     })
 
     it('should include fileName in return value', () => {
@@ -194,22 +179,32 @@ describe('useDownloadIntentPerformanceData', () => {
             ],
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                successRate: false,
+                costSaved: false,
+            },
+        })
 
         const { result } = renderHook(() => useDownloadIntentPerformanceData())
 
-        expect(result.current.fileName).toContain(
-            'intent-performance-breakdown',
-        )
+        expect(result.current.fileName).toContain('ai-agent-intent-performance')
         expect(result.current.fileName).toContain('.csv')
     })
 
     it('should call useIntentPerformanceMetrics with correct params', () => {
         mockedUseIntentPerformanceMetrics.mockReturnValue({
-            data: undefined,
+            data: undefined as any,
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                successRate: false,
+                costSaved: false,
+            },
+        })
 
         renderHook(() => useDownloadIntentPerformanceData())
 

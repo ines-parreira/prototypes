@@ -36,8 +36,10 @@ describe('IntentPerformanceBreakdownTable', () => {
 
         mockUseStatsFilters.mockReturnValue({
             cleanStatsFilters: {
-                startDate: '2024-01-01',
-                endDate: '2024-01-31',
+                period: {
+                    start_datetime: '2024-01-01T00:00:00Z',
+                    end_datetime: '2024-01-31T23:59:59Z',
+                },
             },
             userTimezone: 'UTC',
         } as any)
@@ -122,7 +124,7 @@ describe('IntentPerformanceBreakdownTable', () => {
                 {
                     intentL1: 'Order',
                     intentL2: 'Cancel',
-                    handoverInteractions: null,
+                    handoverInteractions: 10,
                     snoozedInteractions: null,
                     successRate: null,
                     costSaved: null,
@@ -148,7 +150,7 @@ describe('IntentPerformanceBreakdownTable', () => {
         })
 
         const naElements = screen.getAllByText('N/A')
-        expect(naElements.length).toBe(4)
+        expect(naElements.length).toBe(3)
     })
 
     it('should show skeletons only for loading metrics', async () => {

@@ -66,8 +66,10 @@ describe('ShoppingAssistantPerformanceBreakdownTable', () => {
 
         mockUseStatsFilters.mockReturnValue({
             cleanStatsFilters: {
-                startDate: '2024-01-01',
-                endDate: '2024-01-31',
+                period: {
+                    start_datetime: '2024-01-01T00:00:00Z',
+                    end_datetime: '2024-01-31T23:59:59Z',
+                },
             },
             userTimezone: 'UTC',
         } as any)

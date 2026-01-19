@@ -138,6 +138,7 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
                 'shopping-assistant-top-products.csv':
                     'product_name,times_recommended\nProduct A,100',
             },
+            fileName: 'shopping-assistant-top-products.csv',
             isLoading: false,
         })
     })
@@ -250,6 +251,7 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
     it('should return isLoading as true when top products data is loading', () => {
         mockedUseDownloadShoppingAssistantTopProductsData.mockReturnValue({
             files: {},
+            fileName: '',
             isLoading: true,
         })
 
@@ -351,6 +353,7 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
 
         mockedUseDownloadShoppingAssistantTopProductsData.mockReturnValue({
             files: {},
+            fileName: '',
             isLoading: false,
         })
 

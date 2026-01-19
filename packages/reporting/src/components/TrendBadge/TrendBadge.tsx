@@ -71,6 +71,7 @@ export function TrendBadge({
         <div
             className={classnames(
                 styles.trend,
+                'typography-medium-md',
                 styles[`color-${trendColor}`],
                 styles[`size-${size}`],
                 className,

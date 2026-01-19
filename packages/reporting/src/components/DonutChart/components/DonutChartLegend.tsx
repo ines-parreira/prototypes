@@ -57,7 +57,7 @@ export const DonutChartLegend = ({
 
     return (
         <div ref={containerRef} className={css.legend}>
-            {useTwoColumns ? (
+            {useTwoColumns && items.length > 2 ? (
                 <div className={css.legendGrid}>
                     <div className={css.legendColumn}>
                         {leftColumnItems.map((item) => (

@@ -11,6 +11,10 @@ jest.mock('@repo/routing', () => ({
     getPreviousUrl: jest.fn(),
 }))
 
+jest.mock('domains/reporting/hooks/useCleanStatsFilters', () => ({
+    useCleanStatsFilters: jest.fn(),
+}))
+
 jest.mock('../hooks/useExportAiAgentAllAgentsToCSV')
 jest.mock('../hooks/useExportAiAgentShoppingAssistantToCSV')
 jest.mock('../hooks/useExportAiAgentSupportAgentToCSV')

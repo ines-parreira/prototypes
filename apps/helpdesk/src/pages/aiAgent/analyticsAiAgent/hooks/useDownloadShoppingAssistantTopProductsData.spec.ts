@@ -60,7 +60,7 @@ describe('useDownloadShoppingAssistantTopProductsData', () => {
         expect(result.current.isLoading).toBe(false)
     })
 
-    it('should return empty files when data is undefined', () => {
+    it('should return empty CSV when data is undefined', () => {
         mockedUseShoppingAssistantTopProductsMetrics.mockReturnValue({
             data: undefined,
             isFetching: false,
@@ -71,10 +71,11 @@ describe('useDownloadShoppingAssistantTopProductsData', () => {
             useDownloadShoppingAssistantTopProductsData(),
         )
 
-        expect(result.current.files).toEqual({})
+        const csvContent = Object.values(result.current.files)[0]
+        expect(csvContent).toBe('')
     })
 
-    it('should return empty files when data is empty array', () => {
+    it('should return empty CSV when data is empty array', () => {
         mockedUseShoppingAssistantTopProductsMetrics.mockReturnValue({
             data: [],
             isFetching: false,
@@ -85,7 +86,8 @@ describe('useDownloadShoppingAssistantTopProductsData', () => {
             useDownloadShoppingAssistantTopProductsData(),
         )
 
-        expect(result.current.files).toEqual({})
+        const csvContent = Object.values(result.current.files)[0]
+        expect(csvContent).toBe('')
     })
 
     it('should return CSV file with product data', () => {
@@ -127,10 +129,10 @@ describe('useDownloadShoppingAssistantTopProductsData', () => {
         ).toBe(true)
 
         const csvContent = Object.values(result.current.files)[0]
-        expect(csvContent).toContain('product_name')
-        expect(csvContent).toContain('times_recommended')
-        expect(csvContent).toContain('click_through_rate')
-        expect(csvContent).toContain('buy_through_rate')
+        expect(csvContent).toContain('Product name')
+        expect(csvContent).toContain('Times recommended')
+        expect(csvContent).toContain('Click-through rate')
+        expect(csvContent).toContain('Buy through rate')
         expect(csvContent).toContain('Product A')
         expect(csvContent).toContain('Product B')
     })
@@ -164,6 +166,32 @@ describe('useDownloadShoppingAssistantTopProductsData', () => {
         expect(csvContent).toContain('Product A')
     })
 
+    it('should use product id as fallback if title is missing', () => {
+        const mockProductData = [
+            {
+                product: { id: '123' },
+                metrics: {
+                    [ProductTableKeys.NumberOfRecommendations]: 100,
+                    [ProductTableKeys.CTR]: 0.25,
+                    [ProductTableKeys.BTR]: 0.1,
+                },
+            },
+        ]
+
+        mockedUseShoppingAssistantTopProductsMetrics.mockReturnValue({
+            data: mockProductData,
+            isFetching: false,
+            isError: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useDownloadShoppingAssistantTopProductsData(),
+        )
+
+        const csvContent = Object.values(result.current.files)[0]
+        expect(csvContent).toContain('Product 123')
+    })
+
     it('should include date range in filename', () => {
         const mockProductData = [
             {
@@ -192,7 +220,7 @@ describe('useDownloadShoppingAssistantTopProductsData', () => {
         expect(fileNames[0]).toContain('.csv')
     })
 
-    it('should format metrics correctly', () => {
+    it('should include fileName in return value', () => {
         const mockProductData = [
             {
                 product: { title: 'Product X' },
@@ -214,7 +242,9 @@ describe('useDownloadShoppingAssistantTopProductsData', () => {
             useDownloadShoppingAssistantTopProductsData(),
         )
 
-        const csvContent = Object.values(result.current.files)[0]
-        expect(csvContent).toContain('Product X')
+        expect(result.current.fileName).toContain(
+            'shopping-assistant-top-products',
+        )
+        expect(result.current.fileName).toContain('.csv')
     })
 })

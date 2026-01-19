@@ -1,7 +1,7 @@
 export enum AiAgentAnalyticsContent {
     AllAgents = 'All Agents',
     SupportAgent = 'Support Agent',
-    ShoppingAssistant = 'Shopping assistant',
+    ShoppingAssistant = 'Shopping Assistant',
 }
 
 export enum AiAgentAnalyticsQueryParams {

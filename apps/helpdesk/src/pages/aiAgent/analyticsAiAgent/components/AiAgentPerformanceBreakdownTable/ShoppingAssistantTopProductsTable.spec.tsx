@@ -1,14 +1,20 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { useShoppingAssistantTopProductsMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
 
 import { ShoppingAssistantTopProductsTable } from './ShoppingAssistantTopProductsTable'
 
+jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics',
 )
+
+const mockUseStatsFilters = useStatsFilters as jest.MockedFunction<
+    typeof useStatsFilters
+>
 
 const mockUseShoppingAssistantTopProductsMetrics =
     useShoppingAssistantTopProductsMetrics as jest.MockedFunction<
@@ -32,6 +38,16 @@ const createWrapper = () => {
 describe('ShoppingAssistantTopProductsTable', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                period: {
+                    start_datetime: '2024-01-01T00:00:00Z',
+                    end_datetime: '2024-01-31T23:59:59Z',
+                },
+            },
+            userTimezone: 'UTC',
+        } as any)
     })
 
     it('should render loading skeletons when data is loading', async () => {
@@ -112,7 +128,24 @@ describe('ShoppingAssistantTopProductsTable', () => {
         mockUseShoppingAssistantTopProductsMetrics.mockReturnValue({
             isError: false,
             isFetching: false,
-            data: [],
+            data: [
+                {
+                    product: {
+                        id: 1,
+                        title: 'Test Product',
+                        created_at: new Date().toISOString(),
+                        image: null,
+                        images: [],
+                        options: [],
+                        variants: [],
+                    },
+                    metrics: {
+                        [ProductTableKeys.NumberOfRecommendations]: 100,
+                        [ProductTableKeys.CTR]: 25,
+                        [ProductTableKeys.BTR]: 10,
+                    },
+                },
+            ],
         })
 
         render(<ShoppingAssistantTopProductsTable />, {
@@ -132,7 +165,24 @@ describe('ShoppingAssistantTopProductsTable', () => {
         mockUseShoppingAssistantTopProductsMetrics.mockReturnValue({
             isError: false,
             isFetching: false,
-            data: [],
+            data: [
+                {
+                    product: {
+                        id: 1,
+                        title: 'Test Product',
+                        created_at: new Date().toISOString(),
+                        image: null,
+                        images: [],
+                        options: [],
+                        variants: [],
+                    },
+                    metrics: {
+                        [ProductTableKeys.NumberOfRecommendations]: 100,
+                        [ProductTableKeys.CTR]: 25,
+                        [ProductTableKeys.BTR]: 10,
+                    },
+                },
+            ],
         })
 
         const { container } = render(<ShoppingAssistantTopProductsTable />, {
@@ -145,7 +195,7 @@ describe('ShoppingAssistantTopProductsTable', () => {
         })
     })
 
-    it('should display placeholder data when no products are returned', async () => {
+    it('should display empty state when no products are returned', async () => {
         mockUseShoppingAssistantTopProductsMetrics.mockReturnValue({
             isError: false,
             isFetching: false,
@@ -157,8 +207,12 @@ describe('ShoppingAssistantTopProductsTable', () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText('Loading...')).toBeInTheDocument()
+            expect(screen.getByText('No data found')).toBeInTheDocument()
         })
+
+        expect(
+            screen.getByText('Try to adjust your report filters.'),
+        ).toBeInTheDocument()
     })
 
     it('should show table toolbar with total count', async () => {
@@ -365,7 +419,7 @@ describe('ShoppingAssistantTopProductsTable', () => {
         })
     })
 
-    it('should handle zero values correctly', async () => {
+    it('should show empty state when all metrics are zero', async () => {
         mockUseShoppingAssistantTopProductsMetrics.mockReturnValue({
             isError: false,
             isFetching: false,
@@ -394,15 +448,11 @@ describe('ShoppingAssistantTopProductsTable', () => {
         })
 
         await waitFor(() => {
-            expect(
-                screen.getByText('Product With Zero Metrics'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('No data found')).toBeInTheDocument()
         })
 
-        const zeroValues = screen.getAllByText('0')
-        expect(zeroValues.length).toBeGreaterThan(0)
-
-        const zeroPercents = screen.getAllByText('0%')
-        expect(zeroPercents.length).toBe(2)
+        expect(
+            screen.getByText('Try to adjust your report filters.'),
+        ).toBeInTheDocument()
     })
 })

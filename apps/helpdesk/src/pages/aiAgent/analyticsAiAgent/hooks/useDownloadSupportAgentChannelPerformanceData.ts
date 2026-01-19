@@ -8,7 +8,7 @@ import { createCsv } from 'utils/file'
 
 import { useSupportAgentChannelPerformanceMetrics } from './useSupportAgentChannelPerformanceMetrics'
 
-const FILE_NAME = 'support-agent-channel-performance'
+const SUPPORT_AGENT_CHANNEL_FILENAME = 'support-agent-channel-performance'
 
 const formatChannelName = (channel: string): string => {
     const channelNames: Record<string, string> = {
@@ -25,45 +25,38 @@ const formatChannelName = (channel: string): string => {
 
 export const useDownloadSupportAgentChannelPerformanceData = () => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
-    const { data, isLoading } = useSupportAgentChannelPerformanceMetrics(
+    const { data, loadingStates } = useSupportAgentChannelPerformanceMetrics(
         cleanStatsFilters,
         userTimezone,
     )
 
+    const isLoading = Object.values(loadingStates).some((state) => state)
+
     const csvData = useMemo(() => {
         if (!data || data.length === 0) {
-            return null
+            return []
         }
 
-        const rows: string[][] = [
-            ['channel', 'handover_interactions', 'snoozed_interactions'],
+        return [
+            ['Channel', 'Handover interactions', 'Snoozed interactions'],
+            ...data.map((row) => [
+                formatChannelName(row.channel),
+                formatMetricValue(row.handoverInteractions, 'decimal'),
+                formatMetricValue(row.snoozedInteractions, 'decimal'),
+            ]),
         ]
-
-        data.forEach((item) => {
-            rows.push([
-                formatChannelName(item.channel),
-                formatMetricValue(item.handoverInteractions, 'decimal'),
-                formatMetricValue(item.snoozedInteractions, 'decimal'),
-            ])
-        })
-
-        return createCsv(rows)
     }, [data])
 
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
-        FILE_NAME,
+        SUPPORT_AGENT_CHANNEL_FILENAME,
     )
 
-    const files = useMemo(() => {
-        if (!csvData) {
-            return {}
-        }
-        return { [fileName]: csvData }
-    }, [csvData, fileName])
-
     return {
-        files,
+        files: {
+            [fileName]: createCsv(csvData),
+        },
+        fileName,
         isLoading,
     }
 }

@@ -6,6 +6,7 @@ import { useHistory, useLocation } from 'react-router'
 
 import { Box, Heading, TabItem, TabList, Tabs } from '@gorgias/axiom'
 
+import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { useSearchParam } from 'hooks/useSearchParam'
@@ -51,6 +52,7 @@ const HEADER_NAVBAR_ITEMS = [
 ] as const
 
 export const AnalyticsAiAgentLayout = () => {
+    useCleanStatsFilters()
     const location = useLocation()
     const history = useHistory()
     const contentRef = useRef<HTMLDivElement>(null)

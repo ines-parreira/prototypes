@@ -128,6 +128,7 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
                 'support-agent-channel-performance.csv':
                     'channel,automation_rate\nEmail,75%',
             },
+            fileName: 'support-agent-channel-performance.csv',
             isLoading: false,
         })
 
@@ -220,6 +221,7 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
     it('should return isLoading as true when channel performance data is loading', () => {
         mockedUseDownloadSupportAgentChannelPerformanceData.mockReturnValue({
             files: {},
+            fileName: '',
             isLoading: true,
         })
 
@@ -322,6 +324,7 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
 
         mockedUseDownloadSupportAgentChannelPerformanceData.mockReturnValue({
             files: {},
+            fileName: '',
             isLoading: false,
         })
 

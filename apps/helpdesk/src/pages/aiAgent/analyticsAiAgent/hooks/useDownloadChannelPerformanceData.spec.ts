@@ -33,10 +33,16 @@ describe('useDownloadChannelPerformanceData', () => {
 
     it('should return isLoading as true when data is loading', () => {
         mockedUseChannelPerformanceMetrics.mockReturnValue({
-            data: undefined,
+            data: [],
             isLoading: true,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: true,
+                snoozedInteractions: true,
+                totalSales: true,
+                automationRate: true,
+            },
+        })
 
         const { result } = renderHook(() => useDownloadChannelPerformanceData())
 
@@ -56,24 +62,17 @@ describe('useDownloadChannelPerformanceData', () => {
             ],
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                totalSales: false,
+                automationRate: false,
+            },
+        })
 
         const { result } = renderHook(() => useDownloadChannelPerformanceData())
 
         expect(result.current.isLoading).toBe(false)
-    })
-
-    it('should return empty CSV when data is undefined', () => {
-        mockedUseChannelPerformanceMetrics.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-        } as any)
-
-        const { result } = renderHook(() => useDownloadChannelPerformanceData())
-
-        const csvContent = Object.values(result.current.files)[0]
-        expect(csvContent).toBe('')
     })
 
     it('should return empty CSV when data is empty array', () => {
@@ -81,7 +80,13 @@ describe('useDownloadChannelPerformanceData', () => {
             data: [],
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                totalSales: false,
+                automationRate: false,
+            },
+        })
 
         const { result } = renderHook(() => useDownloadChannelPerformanceData())
 
@@ -111,7 +116,13 @@ describe('useDownloadChannelPerformanceData', () => {
             data: mockChannelData,
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                totalSales: false,
+                automationRate: false,
+            },
+        })
 
         const { result } = renderHook(() => useDownloadChannelPerformanceData())
 
@@ -119,7 +130,7 @@ describe('useDownloadChannelPerformanceData', () => {
         expect(fileNames.length).toBe(1)
         expect(
             fileNames.some((name) =>
-                name.includes('channel-performance-breakdown'),
+                name.includes('ai-agent-channel-performance'),
             ),
         ).toBe(true)
 
@@ -188,7 +199,13 @@ describe('useDownloadChannelPerformanceData', () => {
             data: mockChannelData,
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                totalSales: false,
+                automationRate: false,
+            },
+        })
 
         const { result } = renderHook(() => useDownloadChannelPerformanceData())
 
@@ -216,7 +233,13 @@ describe('useDownloadChannelPerformanceData', () => {
             data: mockChannelData,
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                totalSales: false,
+                automationRate: false,
+            },
+        })
 
         const { result } = renderHook(() => useDownloadChannelPerformanceData())
 
@@ -237,22 +260,34 @@ describe('useDownloadChannelPerformanceData', () => {
             ],
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                totalSales: false,
+                automationRate: false,
+            },
+        })
 
         const { result } = renderHook(() => useDownloadChannelPerformanceData())
 
         expect(result.current.fileName).toContain(
-            'channel-performance-breakdown',
+            'ai-agent-channel-performance',
         )
         expect(result.current.fileName).toContain('.csv')
     })
 
     it('should call useChannelPerformanceMetrics with correct params', () => {
         mockedUseChannelPerformanceMetrics.mockReturnValue({
-            data: undefined,
+            data: undefined as any,
             isLoading: false,
             isError: false,
-        } as any)
+            loadingStates: {
+                handoverInteractions: false,
+                snoozedInteractions: false,
+                totalSales: false,
+                automationRate: false,
+            },
+        })
 
         renderHook(() => useDownloadChannelPerformanceData())
 

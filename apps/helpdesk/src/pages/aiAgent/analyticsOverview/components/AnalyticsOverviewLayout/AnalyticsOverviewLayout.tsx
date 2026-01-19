@@ -5,6 +5,7 @@ import { getPreviousUrl } from '@repo/routing'
 
 import { Box, Heading } from '@gorgias/axiom'
 
+import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
@@ -19,6 +20,7 @@ import { DashboardLayoutRenderer } from '../DashboardLayoutRenderer/DashboardLay
 import css from './AnalyticsOverviewLayout.less'
 
 export const AnalyticsOverviewLayout = () => {
+    useCleanStatsFilters()
     const contentRef = useRef<HTMLDivElement>(null)
     const { onAnalyticsReportViewed } = useAiAgentAnalyticsDashboardTracking()
 

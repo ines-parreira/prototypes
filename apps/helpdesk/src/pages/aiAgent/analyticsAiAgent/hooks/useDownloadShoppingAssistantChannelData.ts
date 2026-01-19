@@ -6,9 +6,10 @@ import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { createCsv } from 'utils/file'
 
-import { useChannelPerformanceMetrics } from './useChannelPerformanceMetrics'
+import { useShoppingAssistantChannelMetrics } from './useShoppingAssistantChannelMetrics'
 
-const CHANNEL_PERFORMANCE_FILENAME = 'ai-agent-channel-performance'
+const SHOPPING_ASSISTANT_CHANNEL_FILENAME =
+    'shopping-assistant-channel-performance'
 
 const formatChannelName = (channel: string): string => {
     const channelNames: Record<string, string> = {
@@ -23,9 +24,9 @@ const formatChannelName = (channel: string): string => {
     return channelNames[channel] || channel
 }
 
-export const useDownloadChannelPerformanceData = () => {
+export const useDownloadShoppingAssistantChannelData = () => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
-    const { data, loadingStates } = useChannelPerformanceMetrics(
+    const { data, loadingStates } = useShoppingAssistantChannelMetrics(
         cleanStatsFilters,
         userTimezone,
     )
@@ -40,24 +41,35 @@ export const useDownloadChannelPerformanceData = () => {
         return [
             [
                 'Channel',
-                'Handover interactions',
-                'Snoozed interactions',
+                'Automation rate',
+                'AI Agent interactions share',
+                'Automated interactions',
+                'Handover',
+                'Success rate',
                 'Total sales',
-                '% automated by Shopping assistant',
+                'Orders influenced',
+                'Revenue per interaction',
             ],
             ...data.map((row) => [
                 formatChannelName(row.channel),
-                formatMetricValue(row.handoverInteractions, 'decimal'),
-                formatMetricValue(row.snoozedInteractions, 'decimal'),
-                formatMetricValue(row.totalSales, 'currency'),
                 formatMetricValue(row.automationRate, 'percent-precision-1'),
+                formatMetricValue(
+                    row.aiAgentInteractionsShare,
+                    'percent-precision-1',
+                ),
+                formatMetricValue(row.automatedInteractions, 'decimal'),
+                formatMetricValue(row.handover, 'decimal'),
+                formatMetricValue(row.successRate, 'percent-precision-1'),
+                formatMetricValue(row.totalSales, 'currency'),
+                formatMetricValue(row.ordersInfluenced, 'decimal'),
+                formatMetricValue(row.revenuePerInteraction, 'currency'),
             ]),
         ]
     }, [data])
 
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
-        CHANNEL_PERFORMANCE_FILENAME,
+        SHOPPING_ASSISTANT_CHANNEL_FILENAME,
     )
 
     return {

@@ -36,8 +36,10 @@ describe('ChannelPerformanceBreakdownTable', () => {
 
         mockUseStatsFilters.mockReturnValue({
             cleanStatsFilters: {
-                startDate: '2024-01-01',
-                endDate: '2024-01-31',
+                period: {
+                    start_datetime: '2024-01-01T00:00:00Z',
+                    end_datetime: '2024-01-31T23:59:59Z',
+                },
             },
             userTimezone: 'UTC',
         } as any)
@@ -116,7 +118,7 @@ describe('ChannelPerformanceBreakdownTable', () => {
             data: [
                 {
                     channel: 'sms',
-                    handoverInteractions: null,
+                    handoverInteractions: 10,
                     snoozedInteractions: null,
                     totalSales: null,
                     automationRate: null,
@@ -141,7 +143,7 @@ describe('ChannelPerformanceBreakdownTable', () => {
         })
 
         const naElements = screen.getAllByText('N/A')
-        expect(naElements.length).toBe(4)
+        expect(naElements.length).toBe(3)
     })
 
     it('should show skeletons only for loading metrics', async () => {
@@ -220,7 +222,15 @@ describe('ChannelPerformanceBreakdownTable', () => {
 
     it('should render table headers with tooltips', async () => {
         mockUseChannelPerformanceMetrics.mockReturnValue({
-            data: [],
+            data: [
+                {
+                    channel: 'chat',
+                    handoverInteractions: 100,
+                    snoozedInteractions: 20,
+                    totalSales: 5000,
+                    automationRate: 80,
+                },
+            ],
             isLoading: false,
             isError: false,
             loadingStates: {
@@ -247,7 +257,7 @@ describe('ChannelPerformanceBreakdownTable', () => {
         ).toBeInTheDocument()
     })
 
-    it('should display placeholder data when no channels are returned', async () => {
+    it('should display empty state when no channels are returned', async () => {
         mockUseChannelPerformanceMetrics.mockReturnValue({
             data: [],
             isLoading: false,
@@ -265,12 +275,12 @@ describe('ChannelPerformanceBreakdownTable', () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText('Email')).toBeInTheDocument()
-            expect(screen.getByText('Chat')).toBeInTheDocument()
+            expect(screen.getByText('No data found')).toBeInTheDocument()
         })
 
-        const naElements = screen.getAllByText('N/A')
-        expect(naElements.length).toBeGreaterThan(0)
+        expect(
+            screen.getByText('Try to adjust your report filters.'),
+        ).toBeInTheDocument()
     })
 
     it('should show table toolbar with settings', async () => {
