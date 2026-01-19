@@ -56,6 +56,7 @@ export const HeaderActions = ({
                     onClick={onAddKnowledge}
                     isDisabled={isAddKnowledgeButtonDisabled}
                     variant="primary"
+                    data-candu-id="knowledge-hub-create-content-button"
                 >
                     Create content
                 </Button>

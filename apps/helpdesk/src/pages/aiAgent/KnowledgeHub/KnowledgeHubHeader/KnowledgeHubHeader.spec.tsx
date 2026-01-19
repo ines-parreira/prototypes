@@ -113,6 +113,18 @@ describe('KnowledgeHubHeader', () => {
             })
             expect(addButton).toBeDisabled()
         })
+
+        it('has correct data-candu-id attribute on Create content button', () => {
+            renderComponent({ data: null })
+
+            const addButton = screen.getByRole('button', {
+                name: /create content/i,
+            })
+            expect(addButton).toHaveAttribute(
+                'data-candu-id',
+                'knowledge-hub-create-content-button',
+            )
+        })
     })
 
     describe('when data.type is Domain', () => {
