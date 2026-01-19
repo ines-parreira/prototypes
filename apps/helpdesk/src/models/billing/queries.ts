@@ -10,6 +10,8 @@ import {
     getBillingContact,
     getBillingState,
     getCouponsForSales,
+    getPaymentMethod,
+    getProductsUsage,
     reactivateAccount,
     reactivateTrial,
     updateBillingContact,
@@ -163,6 +165,38 @@ export const useReactivateAccount = (
 ) => {
     return useMutation({
         mutationFn: reactivateAccount,
+        ...overrides,
+    })
+}
+
+export const getProductsUsageQuery = {
+    queryKey: ['productsUsage'] as const,
+    queryFn: getProductsUsage,
+}
+
+export type UseProductsUsage = Awaited<ReturnType<typeof getProductsUsage>>
+
+export const useProductsUsage = (
+    overrides?: UseQueryOptions<UseProductsUsage>,
+) => {
+    return useQuery({
+        ...getProductsUsageQuery,
+        ...overrides,
+    })
+}
+
+export const getPaymentMethodQuery = {
+    queryKey: ['paymentMethod'] as const,
+    queryFn: getPaymentMethod,
+}
+
+export type UsePaymentMethod = Awaited<ReturnType<typeof getPaymentMethod>>
+
+export const usePaymentMethod = (
+    overrides?: UseQueryOptions<UsePaymentMethod>,
+) => {
+    return useQuery({
+        ...getPaymentMethodQuery,
         ...overrides,
     })
 }

@@ -340,4 +340,86 @@ describe('ProductCard', () => {
             expect(screen.queryByText(/Active until/i)).not.toBeInTheDocument()
         })
     })
+
+    describe('Loading state', () => {
+        it('should render nothing for badge when isLoading is true for active product', () => {
+            render(
+                <Provider store={store}>
+                    <ProductCard
+                        type={ProductType.Automation}
+                        plan={basicYearlyAutomationPlan}
+                        isDisabled={false}
+                        isLoading={true}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.queryByText('Active')).not.toBeInTheDocument()
+            expect(screen.queryByText('Inactive')).not.toBeInTheDocument()
+        })
+
+        it('should render nothing for badge when isLoading is true for inactive product', () => {
+            render(
+                <Provider store={store}>
+                    <ProductCard
+                        type={ProductType.Automation}
+                        plan={null}
+                        isDisabled={false}
+                        isLoading={true}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.queryByText('Active')).not.toBeInTheDocument()
+            expect(screen.queryByText('Inactive')).not.toBeInTheDocument()
+        })
+
+        it('should render nothing for badge when isLoading is true with scheduled cancellation', () => {
+            const cancellationDate = '2025-12-31T23:59:59Z'
+            render(
+                <Provider store={store}>
+                    <ProductCard
+                        type={ProductType.Automation}
+                        plan={basicYearlyAutomationPlan}
+                        isDisabled={false}
+                        scheduledToCancelAt={cancellationDate}
+                        isLoading={true}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.queryByText('Active')).not.toBeInTheDocument()
+            expect(screen.queryByText(/Active until/i)).not.toBeInTheDocument()
+            expect(screen.queryByText('Inactive')).not.toBeInTheDocument()
+        })
+
+        it('should render badge when isLoading is false', () => {
+            render(
+                <Provider store={store}>
+                    <ProductCard
+                        type={ProductType.Automation}
+                        plan={basicYearlyAutomationPlan}
+                        isDisabled={false}
+                        isLoading={false}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Active')).toBeInTheDocument()
+        })
+
+        it('should render badge when isLoading is undefined (defaults to false)', () => {
+            render(
+                <Provider store={store}>
+                    <ProductCard
+                        type={ProductType.Automation}
+                        plan={basicYearlyAutomationPlan}
+                        isDisabled={false}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Active')).toBeInTheDocument()
+        })
+    })
 })

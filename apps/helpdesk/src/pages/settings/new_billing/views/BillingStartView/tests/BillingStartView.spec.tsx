@@ -19,6 +19,7 @@ import {
     BILLING_PAYMENT_PATH,
 } from 'pages/settings/new_billing/constants'
 import {
+    currentProductsUsageWithPhone,
     storeWithActiveSubscriptionWithConvert,
     storeWithActiveSubscriptionWithPhone,
     storeWithCanceledSubscription,
@@ -37,19 +38,15 @@ jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('pages/aiAgent/hooks/useMeetAiAgentNotification')
 jest.mock('hooks/useGetDateAndTimeFormat')
 
-// Mock action creators
-jest.mock('state/billing/actions', () => {
-    const actions: Record<string, unknown> = jest.requireActual(
-        'state/billing/actions',
-    )
-    return {
-        ...actions,
-        fetchCurrentProductsUsage: () =>
-            jest.fn().mockResolvedValue({
-                type: 'FETCH_CURRENT_PRODUCTS_USAGE_SUCCESS',
-            }),
-    }
-})
+// Mock React Query hooks
+const mockUseProductsUsage = jest.fn()
+const mockUsePaymentMethod = jest.fn()
+
+jest.mock('models/billing/queries', () => ({
+    ...jest.requireActual('models/billing/queries'),
+    useProductsUsage: () => mockUseProductsUsage(),
+    usePaymentMethod: () => mockUsePaymentMethod(),
+}))
 
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('@repo/feature-flags', () => ({
@@ -90,6 +87,18 @@ describe('BillingStartView', () => {
         useFlagMock.mockReset()
         window.USER_IMPERSONATED = null
         logEventMock.mockClear()
+
+        // Default mock implementations for React Query hooks
+        mockUseProductsUsage.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            error: null,
+        })
+        mockUsePaymentMethod.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            error: null,
+        })
     })
 
     describe('Billing maintenance mode is ON', () => {
@@ -345,6 +354,12 @@ describe('BillingStartView', () => {
 
     describe('SMS subscription banner', () => {
         it('should show SMS activation banner for new subscription having a SMS plan', () => {
+            mockUseProductsUsage.mockReturnValue({
+                data: currentProductsUsageWithPhone,
+                isLoading: false,
+                error: null,
+            })
+
             renderWithStoreAndQueryClientAndRouter(
                 <BillingStartView />,
                 storeWithNewlyActiveSubscriptionWithPhone,
@@ -358,6 +373,12 @@ describe('BillingStartView', () => {
         })
 
         it('should not show SMS activation banner for old subscriptions', () => {
+            mockUseProductsUsage.mockReturnValue({
+                data: currentProductsUsageWithPhone,
+                isLoading: false,
+                error: null,
+            })
+
             renderWithStoreAndQueryClientAndRouter(
                 <BillingStartView />,
                 storeWithActiveSubscriptionWithPhone,
@@ -373,6 +394,12 @@ describe('BillingStartView', () => {
 
     describe('Voice subscription banner', () => {
         it('should show Voice activation banner for new subscription having a Voice plan', () => {
+            mockUseProductsUsage.mockReturnValue({
+                data: currentProductsUsageWithPhone,
+                isLoading: false,
+                error: null,
+            })
+
             renderWithStoreAndQueryClientAndRouter(
                 <BillingStartView />,
                 storeWithNewlyActiveSubscriptionWithPhone,
@@ -386,6 +413,12 @@ describe('BillingStartView', () => {
         })
 
         it('should not show Voice activation banner for old subscriptions', () => {
+            mockUseProductsUsage.mockReturnValue({
+                data: currentProductsUsageWithPhone,
+                isLoading: false,
+                error: null,
+            })
+
             renderWithStoreAndQueryClientAndRouter(
                 <BillingStartView />,
                 storeWithActiveSubscriptionWithPhone,
@@ -455,6 +488,135 @@ describe('BillingStartView', () => {
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.BillingPaymentHistoryTabClicked,
             )
+        })
+    })
+
+    describe('Loading states', () => {
+        it('should show loader when products usage is loading', () => {
+            mockUseProductsUsage.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+                error: null,
+            })
+
+            const { container } = renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithPhone,
+                {
+                    route: BILLING_BASE_PATH,
+                },
+            )
+
+            expect(
+                container.querySelector('.icon-circle-o-notch'),
+            ).toBeInTheDocument()
+            expect(screen.queryByText('contact us')).not.toBeInTheDocument()
+        })
+
+        it('should show loader when payment method is loading', () => {
+            mockUseProductsUsage.mockReturnValue({
+                data: currentProductsUsageWithPhone,
+                isLoading: false,
+                error: null,
+            })
+            mockUsePaymentMethod.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+                error: null,
+            })
+
+            const { container } = renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithPhone,
+                {
+                    route: BILLING_BASE_PATH,
+                },
+            )
+
+            expect(
+                container.querySelector('.icon-circle-o-notch'),
+            ).toBeInTheDocument()
+            expect(screen.queryByText('contact us')).not.toBeInTheDocument()
+        })
+
+        it('should show loader when products usage is loading even when payment method is also loading', () => {
+            mockUseProductsUsage.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+                error: null,
+            })
+            mockUsePaymentMethod.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+                error: null,
+            })
+
+            const { container } = renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithPhone,
+                {
+                    route: BILLING_BASE_PATH,
+                },
+            )
+
+            expect(
+                container.querySelector('.icon-circle-o-notch'),
+            ).toBeInTheDocument()
+            expect(screen.queryByText('contact us')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('ContactSupportModal', () => {
+        it('should render ContactSupportModal component', () => {
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithPhone,
+                {
+                    route: BILLING_BASE_PATH,
+                },
+            )
+
+            expect(screen.getByText('contact us')).toBeInTheDocument()
+        })
+    })
+
+    describe('Voice banner removal', () => {
+        it('should remove voice banner when subscription is no longer new', () => {
+            mockUseProductsUsage.mockReturnValue({
+                data: currentProductsUsageWithPhone,
+                isLoading: false,
+                error: null,
+            })
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithPhone,
+                {
+                    route: BILLING_BASE_PATH,
+                },
+            )
+
+            expect(mockRemoveBanner).toHaveBeenCalled()
+        })
+    })
+
+    describe('SMS banner removal', () => {
+        it('should remove SMS banner when subscription is no longer new', () => {
+            mockUseProductsUsage.mockReturnValue({
+                data: currentProductsUsageWithPhone,
+                isLoading: false,
+                error: null,
+            })
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingStartView />,
+                storeWithActiveSubscriptionWithPhone,
+                {
+                    route: BILLING_BASE_PATH,
+                },
+            )
+
+            expect(mockRemoveBanner).toHaveBeenCalled()
         })
     })
 })

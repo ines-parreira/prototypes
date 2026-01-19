@@ -47,6 +47,7 @@ import {
 } from 'pages/settings/new_billing/fixtures'
 import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
 import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
+import { TicketPurpose } from 'state/billing/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 jest.mock('@repo/feature-flags')
@@ -70,6 +71,14 @@ jest.mock('pages/settings/new_billing/components/ProductCard', () =>
     jest.fn((props: ProductCardProps) => {
         const dataTestId = `product-card--${props.type}`
         return <div data-testid={dataTestId}></div>
+    }),
+)
+
+jest.mock(
+    'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades',
+    () => ({
+        __esModule: true,
+        default: () => <div data-testid="billing-scheduled-downgrades" />,
     }),
 )
 
@@ -1249,6 +1258,62 @@ describe('UsageAndPlansView', () => {
                 'href',
                 BILLING_PAYMENT_FREQUENCY_PATH,
             )
+        })
+    })
+
+    describe('Contact us functionality', () => {
+        it('should call contactBilling when contact us link is clicked', async () => {
+            const mockContactBilling = jest.fn()
+            const user = userEvent.setup()
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={mockContactBilling}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                store,
+            )
+
+            const contactUsLink = screen.getByText('contact us')
+
+            await act(() => user.click(contactUsLink))
+
+            expect(mockContactBilling).toHaveBeenCalledWith(
+                TicketPurpose.CONTACT_US,
+            )
+        })
+    })
+
+    describe('BillingScheduledDowngrades', () => {
+        it('should render BillingScheduledDowngrades when subscription is active', () => {
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                store,
+            )
+
+            expect(
+                screen.getByTestId('billing-scheduled-downgrades'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render BillingScheduledDowngrades when subscription is canceled', () => {
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={undefined}
+                />,
+                storeWithCanceledSubscription,
+            )
+
+            expect(
+                screen.queryByTestId('billing-scheduled-downgrades'),
+            ).not.toBeInTheDocument()
         })
     })
 })

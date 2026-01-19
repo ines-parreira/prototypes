@@ -4,6 +4,8 @@ import client from 'models/api/resources'
 
 import {
     getAiAgentGeneration6Plan,
+    getPaymentMethod,
+    getProductsUsage,
     trackBillingEvent,
     upgradeAiAgentSubscriptionGeneration6Plan,
 } from '../resources'
@@ -114,6 +116,60 @@ describe('billing resources', () => {
 
             expect(result).toEqual(mockResponse)
             expect(mockedServer.history.post[0].data).toEqual('{}')
+        })
+    })
+
+    describe('getProductsUsage', () => {
+        it('should successfully fetch products usage', async () => {
+            const mockUsage = {
+                helpdesk: {
+                    usage: { tickets: 100 },
+                    meta: { subscription_end_datetime: '2024-12-31' },
+                },
+            }
+
+            mockedServer.onGet('/billing/products-usages').reply(200, mockUsage)
+
+            const result = await getProductsUsage()
+
+            expect(result).toEqual(mockUsage)
+        })
+
+        it('should handle errors correctly', async () => {
+            mockedServer
+                .onGet('/billing/products-usages')
+                .reply(500, { error: 'Server error' })
+
+            await expect(getProductsUsage()).rejects.toThrow(
+                'Request failed with status code 500',
+            )
+        })
+    })
+
+    describe('getPaymentMethod', () => {
+        it('should successfully fetch payment method', async () => {
+            const mockPaymentMethod = {
+                type: 'card',
+                last4: '4242',
+            }
+
+            mockedServer
+                .onGet('/api/billing/payment-method/')
+                .reply(200, mockPaymentMethod)
+
+            const result = await getPaymentMethod()
+
+            expect(result).toEqual(mockPaymentMethod)
+        })
+
+        it('should handle errors correctly', async () => {
+            mockedServer
+                .onGet('/api/billing/payment-method/')
+                .reply(404, { error: 'Not found' })
+
+            await expect(getPaymentMethod()).rejects.toThrow(
+                'Request failed with status code 404',
+            )
         })
     })
 })

@@ -123,6 +123,7 @@ const UsageAndPlansView = ({
         : undefined
 
     const productCancellationsQuery = useProductCancellations()
+    const isLoading = productCancellationsQuery.isLoading
     const cancellationsByPlanId = productCancellationsQuery.data ?? new Map()
 
     useEffect(() => {
@@ -291,6 +292,7 @@ const UsageAndPlansView = ({
                                   null
                                 : null
                         }
+                        isLoading={isLoading}
                     />
                     <ProductCard
                         type={ProductType.Voice}
@@ -311,6 +313,7 @@ const UsageAndPlansView = ({
                                   null
                                 : null
                         }
+                        isLoading={isLoading}
                     />
                     <ProductCard
                         type={ProductType.SMS}
@@ -331,6 +334,7 @@ const UsageAndPlansView = ({
                                   null
                                 : null
                         }
+                        isLoading={isLoading}
                     />
                     <ProductCard
                         type={ProductType.Convert}
@@ -352,6 +356,7 @@ const UsageAndPlansView = ({
                                   null
                                 : null
                         }
+                        isLoading={isLoading}
                     />
                 </div>
             )}

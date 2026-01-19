@@ -8,9 +8,9 @@ import moment from 'moment'
 import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { usePaymentMethod, useProductsUsage } from 'models/billing/queries'
 import { isEnterprise } from 'models/billing/utils'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -23,12 +23,7 @@ import useGetConvertStatus, {
 import { isExceedingPlanLimit } from 'pages/convert/common/utils/isExceedingPlanLimit'
 import { PaymentMethodSetupView } from 'pages/settings/new_billing/views/PaymentMethodSetupView/PaymentMethodSetupView'
 import {
-    fetchCurrentProductsUsage,
-    fetchPaymentMethod,
-} from 'state/billing/actions'
-import {
     getCurrentConvertPlan,
-    getCurrentProductsUsage,
     getIsCurrentHelpdeskLegacy,
 } from 'state/billing/selectors'
 import type { BillingBanner } from 'state/billing/types'
@@ -36,8 +31,8 @@ import { TicketPurpose } from 'state/billing/types'
 import {
     getCurrentAccountState,
     getCurrentSubscription,
+    paymentMethod as getPaymentMethodSelector,
     isTrialing,
-    paymentMethod,
 } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
@@ -69,16 +64,20 @@ import UsageAndPlansView from '../UsageAndPlansView'
 import css from './BillingStartView.less'
 
 const BillingStartView = () => {
-    const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
-    const currentUsage = useAppSelector(getCurrentProductsUsage)
     const isTrialingSubscription = useAppSelector(isTrialing)
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
-    const payment = useAppSelector(paymentMethod)
+    const payment = useAppSelector(getPaymentMethodSelector)
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
+
+    // Parallel data fetching with React Query
+    const { data: currentUsage, isLoading: isUsageLoading } = useProductsUsage()
+    const { isLoading: isPaymentMethodLoading } = usePaymentMethod()
+
+    const isLoading = isUsageLoading || isPaymentMethodLoading
 
     const subscriptionStartDatetime = currentSubscription
         ? moment(currentSubscription.get('start_datetime'))
@@ -115,7 +114,6 @@ const BillingStartView = () => {
     const [ticketPurpose, setTicketPurpose] = useState<TicketPurpose>(
         TicketPurpose.CONTACT_US,
     )
-    const [isUsageFetched, setIsUsageFetched] = useState(false)
     const periodEnd = useMemo(
         () =>
             moment(
@@ -143,20 +141,6 @@ const BillingStartView = () => {
     )
 
     const dispatchBillingError = useDispatchBillingError(contactBilling)
-
-    useEffect(() => {
-        const fetchUsage = async () => {
-            await dispatch(fetchCurrentProductsUsage())
-            await dispatch(fetchPaymentMethod())
-            setIsUsageFetched(true)
-        }
-
-        if (!currentUsage) {
-            void fetchUsage()
-        } else {
-            setIsUsageFetched(true)
-        }
-    }, [currentUsage, dispatch])
 
     useEffect(() => {
         if (isCurrentHelpdeskLegacy) {
@@ -226,7 +210,6 @@ const BillingStartView = () => {
     }, [
         addBanner,
         currentUsage,
-        dispatch,
         isCurrentHelpdeskLegacy,
         periodEnd,
         removeBanner,
@@ -411,7 +394,9 @@ const BillingStartView = () => {
                 </SecondaryNavbar>
             }
             <div className={css.mainContainer}>
-                {isUsageFetched ? (
+                {isLoading ? (
+                    <Loader />
+                ) : (
                     <Switch>
                         <Route exact path={BILLING_INTERNAL_PATH}>
                             {window.USER_IMPERSONATED ? (
@@ -482,8 +467,6 @@ const BillingStartView = () => {
                             )}
                         </Route>
                     </Switch>
-                ) : (
-                    <Loader />
                 )}
             </div>
             <ContactSupportModal

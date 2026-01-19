@@ -1,8 +1,8 @@
-import { useAsyncFn, useEffectOnce } from '@repo/hooks'
+import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { fetchSubscription } from 'models/billing/resources'
-import type { Plan, SubscriptionCycle } from 'models/billing/types'
+import { useSubscription } from 'models/billing/queries'
+import type { Plan } from 'models/billing/types'
 import { getAvailablePlansMapByPlanId } from 'state/billing/selectors'
 
 interface ScheduledDowngrade {
@@ -13,11 +13,12 @@ interface ScheduledDowngrade {
 
 export default function useScheduledDowngrades() {
     const plansMap = useAppSelector(getAvailablePlansMapByPlanId)
+    const { data: sub, isLoading, error } = useSubscription()
 
-    const [state, doFetch] = useAsyncFn(async () => {
-        const sub: SubscriptionCycle = await fetchSubscription()
+    const downgrades = useMemo(() => {
+        if (!sub) return null
 
-        const downgrades: ScheduledDowngrade[] = (sub.downgrades || [])
+        const result: ScheduledDowngrade[] = (sub.downgrades || [])
             .filter((downgrade) => {
                 const currentPlan = plansMap[downgrade.current_plan_id]
                 return !!currentPlan
@@ -31,12 +32,12 @@ export default function useScheduledDowngrades() {
                 }
             })
 
-        return downgrades
-    }, [plansMap])
+        return result
+    }, [sub, plansMap])
 
-    useEffectOnce(() => {
-        void doFetch()
-    })
-
-    return state
+    return {
+        value: downgrades,
+        loading: isLoading,
+        error: error || undefined,
+    }
 }

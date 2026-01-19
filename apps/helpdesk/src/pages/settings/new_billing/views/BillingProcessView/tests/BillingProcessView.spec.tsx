@@ -105,6 +105,7 @@ describe('BillingProcessView', () => {
     beforeEach(() => {
         mockUseProductCancellations.mockReturnValue({
             data: new Map(),
+            isLoading: false,
         } as any)
         logEventMock.mockClear()
         SummaryTotalMock.mockClear()
@@ -114,6 +115,33 @@ describe('BillingProcessView', () => {
         mockUseProductCancellations.mockReset()
         logEventMock.mockReset()
         SummaryTotalMock.mockReset()
+    })
+
+    it('should show loader while product cancellations are loading', async () => {
+        mockUseProductCancellations.mockReturnValue({
+            data: new Map(),
+            isLoading: true,
+        } as any)
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        const { container } = renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState,
+        )
+
+        expect(
+            container.querySelector('.icon-circle-o-notch'),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('See Plans Details')).not.toBeInTheDocument()
     })
 
     it('should render', async () => {
@@ -329,6 +357,7 @@ describe('BillingProcessView', () => {
         it('should handle unavailable cancellations data gracefully', async () => {
             mockUseProductCancellations.mockReturnValue({
                 data: undefined,
+                isLoading: false,
             } as any)
             mockedServer
                 .onGet('/billing/state')
@@ -361,6 +390,7 @@ describe('BillingProcessView', () => {
         it('should render without cancellation badges when no products are scheduled to cancel', async () => {
             mockUseProductCancellations.mockReturnValue({
                 data: new Map(),
+                isLoading: false,
             } as any)
             mockedServer
                 .onGet('/billing/state')
@@ -427,6 +457,7 @@ describe('BillingProcessView', () => {
                     const cancellationDate = '2025-12-31T23:59:59Z'
                     mockUseProductCancellations.mockReturnValue({
                         data: new Map([[plan.plan_id, cancellationDate]]),
+                        isLoading: false,
                     } as any)
 
                     const storeForProduct = {
@@ -521,6 +552,7 @@ describe('BillingProcessView', () => {
                 it('should pass null when product exists but has no scheduled cancellation', async () => {
                     mockUseProductCancellations.mockReturnValue({
                         data: new Map(),
+                        isLoading: false,
                     } as any)
 
                     const storeForProduct = {
@@ -628,6 +660,7 @@ describe('BillingProcessView', () => {
                     ],
                     [convertPlan1.plan_id, convertCancellation],
                 ]),
+                isLoading: false,
             } as any)
 
             const storeWithMultipleProducts = {
@@ -710,6 +743,7 @@ describe('BillingProcessView', () => {
                         '2025-12-31T23:59:59Z',
                     ],
                 ]),
+                isLoading: false,
             } as any)
 
             const storeWithoutAutomation = {
@@ -771,6 +805,7 @@ describe('BillingProcessView', () => {
         it('should handle undefined value from hook gracefully', async () => {
             mockUseProductCancellations.mockReturnValue({
                 data: undefined,
+                isLoading: false,
             } as any)
 
             mockedServer
@@ -809,6 +844,7 @@ describe('BillingProcessView', () => {
                         '2025-06-30T23:59:59Z',
                     ],
                 ]),
+                isLoading: false,
             } as any)
 
             const storeWithBothProducts = {
@@ -873,6 +909,7 @@ describe('BillingProcessView', () => {
         it('should handle scenario with no products subscribed', async () => {
             mockUseProductCancellations.mockReturnValue({
                 data: undefined,
+                isLoading: false,
             } as any)
 
             const storeWithNoProducts = {

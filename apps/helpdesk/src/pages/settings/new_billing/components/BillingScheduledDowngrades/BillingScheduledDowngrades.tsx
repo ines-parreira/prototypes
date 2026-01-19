@@ -11,6 +11,7 @@ export default function BillingScheduledDowngrades() {
         loading,
         value: scheduledDowngrades,
     } = useScheduledDowngrades()
+
     if (loading) return null
 
     if (error) {

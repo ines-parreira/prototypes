@@ -44,6 +44,7 @@ export type ProductCardProps = {
     disabledTooltip?: string
     autoUpgradeEnabled?: boolean | null
     scheduledToCancelAt?: string | null
+    isLoading?: boolean
 }
 
 const ProductCard = ({
@@ -55,6 +56,7 @@ const ProductCard = ({
     disabledTooltip,
     autoUpgradeEnabled = false,
     scheduledToCancelAt,
+    isLoading = false,
 }: ProductCardProps) => {
     const cheapestPlanByProduct = useAppSelector(getCheapestProductPlans)
     const cadence = useAppSelector(getCurrentHelpdeskCadence)
@@ -241,6 +243,9 @@ const ProductCard = ({
     }, [plan, usage])
 
     const statusBadge = useMemo(() => {
+        if (isLoading) {
+            return null
+        }
         if (!plan) {
             return <Badge text="Inactive" type={BadgeType.Info} />
         }
@@ -257,7 +262,7 @@ const ProductCard = ({
         }
 
         return <Badge text="Active" type={BadgeType.Success} />
-    }, [plan, scheduledToCancelAt])
+    }, [plan, scheduledToCancelAt, isLoading])
 
     return (
         <div className={css.container}>

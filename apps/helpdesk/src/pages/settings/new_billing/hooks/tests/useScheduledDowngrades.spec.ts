@@ -1,30 +1,23 @@
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
 
 import {
     advancedMonthlyHelpdeskPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/plans'
 import useAppSelector from 'hooks/useAppSelector'
-import { fetchSubscription } from 'models/billing/resources'
+import { useSubscription } from 'models/billing/queries'
 import useScheduledDowngrades from 'pages/settings/new_billing/hooks/useScheduledDowngrades'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 
-jest.mock('models/billing/resources', () => ({
-    fetchSubscription: jest.fn(),
+jest.mock('models/billing/queries', () => ({
+    useSubscription: jest.fn(),
 }))
 
-const mockFetchSubscription = fetchSubscription as jest.Mock
+const mockUseSubscription = useSubscription as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
 
 describe('useScheduledDowngrades', () => {
-    let promise
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    let reject = (..._args: any[]): any => null
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    let resolve = (..._args: any[]): any => null
-
     const defaultSub = {
         current_billing_cycle_end_datetime: '2023-03-31T00:00:00Z',
         downgrades: [],
@@ -36,45 +29,60 @@ describe('useScheduledDowngrades', () => {
     }
 
     beforeEach(() => {
-        promise = new Promise((internalResolve, internalReject) => {
-            resolve = internalResolve
-            reject = internalReject
-        })
-        mockFetchSubscription.mockReturnValue(promise)
-        mockUseAppSelector.mockReturnValueOnce(plansMap)
+        mockUseAppSelector.mockReturnValue(plansMap)
     })
 
     it('should return a default state', () => {
+        mockUseSubscription.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+            error: undefined,
+        })
+
         const { result } = renderHook(() => useScheduledDowngrades())
-        expect(result.current).toEqual({ loading: true })
+        expect(result.current).toEqual({
+            value: null,
+            loading: true,
+            error: undefined,
+        })
     })
 
-    it('should return return an error if the request fails', async () => {
-        const { result } = renderHook(() => useScheduledDowngrades())
-
+    it('should return return an error if the request fails', () => {
         const error = new Error('Oh no!')
-        await act(async () => {
-            await reject(error)
+        mockUseSubscription.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            error,
         })
 
-        expect(result.current).toEqual({ error, loading: false })
-    })
-
-    it('should return an empty array if no downgrades are scheduled', async () => {
         const { result } = renderHook(() => useScheduledDowngrades())
 
-        await act(async () => {
-            await resolve(defaultSub)
+        expect(result.current).toEqual({
+            value: null,
+            loading: false,
+            error,
+        })
+    })
+
+    it('should return an empty array if no downgrades are scheduled', () => {
+        mockUseSubscription.mockReturnValue({
+            data: defaultSub,
+            isLoading: false,
+            error: undefined,
         })
 
-        expect(result.current).toEqual({ loading: false, value: [] })
-    })
-
-    it('should return any downgrades that will still have a plan after the downgrade', async () => {
         const { result } = renderHook(() => useScheduledDowngrades())
 
-        await act(async () => {
-            await resolve({
+        expect(result.current).toEqual({
+            loading: false,
+            value: [],
+            error: undefined,
+        })
+    })
+
+    it('should return any downgrades that will still have a plan after the downgrade', () => {
+        mockUseSubscription.mockReturnValue({
+            data: {
                 ...defaultSub,
                 downgrades: [
                     {
@@ -83,8 +91,12 @@ describe('useScheduledDowngrades', () => {
                         scheduled_plan: basicMonthlyHelpdeskPlan,
                     },
                 ],
-            })
+            },
+            isLoading: false,
+            error: undefined,
         })
+
+        const { result } = renderHook(() => useScheduledDowngrades())
 
         expect(result.current).toEqual({
             loading: false,
@@ -95,14 +107,13 @@ describe('useScheduledDowngrades', () => {
                     targetPlan: basicMonthlyHelpdeskPlan,
                 },
             ],
+            error: undefined,
         })
     })
 
-    it('should return downgrades that will no longer have a plan after the downgrade', async () => {
-        const { result } = renderHook(() => useScheduledDowngrades())
-
-        await act(async () => {
-            await resolve({
+    it('should return downgrades that will no longer have a plan after the downgrade', () => {
+        mockUseSubscription.mockReturnValue({
+            data: {
                 ...defaultSub,
                 downgrades: [
                     {
@@ -111,8 +122,12 @@ describe('useScheduledDowngrades', () => {
                         scheduled_plan: null,
                     },
                 ],
-            })
+            },
+            isLoading: false,
+            error: undefined,
         })
+
+        const { result } = renderHook(() => useScheduledDowngrades())
 
         expect(result.current).toEqual({
             loading: false,
@@ -123,6 +138,43 @@ describe('useScheduledDowngrades', () => {
                     targetPlan: null,
                 },
             ],
+            error: undefined,
+        })
+    })
+
+    it('should filter out downgrades with missing current plans', () => {
+        mockUseSubscription.mockReturnValue({
+            data: {
+                ...defaultSub,
+                downgrades: [
+                    {
+                        current_plan_id: 'non-existent-plan-id',
+                        scheduled_plan_id: basicMonthlyHelpdeskPlan.plan_id,
+                        scheduled_plan: basicMonthlyHelpdeskPlan,
+                    },
+                    {
+                        current_plan_id: advancedMonthlyHelpdeskPlan.plan_id,
+                        scheduled_plan_id: basicMonthlyHelpdeskPlan.plan_id,
+                        scheduled_plan: basicMonthlyHelpdeskPlan,
+                    },
+                ],
+            },
+            isLoading: false,
+            error: undefined,
+        })
+
+        const { result } = renderHook(() => useScheduledDowngrades())
+
+        expect(result.current).toEqual({
+            loading: false,
+            value: [
+                {
+                    datetime: defaultSub.current_billing_cycle_end_datetime,
+                    currentPlan: advancedMonthlyHelpdeskPlan,
+                    targetPlan: basicMonthlyHelpdeskPlan,
+                },
+            ],
+            error: undefined,
         })
     })
 })

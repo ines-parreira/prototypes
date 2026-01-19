@@ -1,9 +1,14 @@
+import { waitFor } from '@testing-library/react'
+
 import {
     aiAgentGen6PlanQuery,
     billingKeys,
+    usePaymentMethod,
+    useProductsUsage,
     useUpgradeAiAgentSubscriptionGeneration6Plan,
 } from 'models/billing/queries'
 import * as billingResources from 'models/billing/resources'
+import { PaymentMethodType } from 'state/billing/types'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 jest.mock('models/billing/resources')
@@ -12,11 +17,19 @@ describe('billing queries', () => {
     let mockUpgradeAiAgentSubscriptionGeneration6Plan: jest.MockedFunction<
         typeof billingResources.upgradeAiAgentSubscriptionGeneration6Plan
     >
+    let mockGetProductsUsage: jest.MockedFunction<
+        typeof billingResources.getProductsUsage
+    >
+    let mockGetPaymentMethod: jest.MockedFunction<
+        typeof billingResources.getPaymentMethod
+    >
 
     beforeEach(() => {
         mockUpgradeAiAgentSubscriptionGeneration6Plan = jest.mocked(
             billingResources.upgradeAiAgentSubscriptionGeneration6Plan,
         )
+        mockGetProductsUsage = jest.mocked(billingResources.getProductsUsage)
+        mockGetPaymentMethod = jest.mocked(billingResources.getPaymentMethod)
     })
 
     describe('useUpgradeAiAgentSubscriptionGeneration6Plan', () => {
@@ -183,6 +196,81 @@ describe('billing queries', () => {
                 [],
                 undefined,
             )
+        })
+    })
+
+    describe('useProductsUsage', () => {
+        it('should successfully fetch products usage', async () => {
+            const mockUsage = {
+                helpdesk: {
+                    data: {
+                        extra_tickets_cost_in_cents: 0,
+                        num_extra_tickets: 0,
+                        num_tickets: 100,
+                    },
+                    meta: {
+                        subscription_start_datetime: '2024-01-01',
+                        subscription_end_datetime: '2024-12-31',
+                    },
+                },
+                automation: null,
+                voice: null,
+                sms: null,
+                convert: null,
+            }
+            mockGetProductsUsage.mockResolvedValue(mockUsage)
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+                useProductsUsage(),
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(result.current.data).toEqual(mockUsage)
+        })
+
+        it('should handle errors correctly', async () => {
+            const mockError = new Error('Failed to fetch')
+            mockGetProductsUsage.mockRejectedValue(mockError)
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+                useProductsUsage(),
+            )
+
+            await waitFor(() => expect(result.current.isError).toBe(true))
+
+            expect(result.current.error).toEqual(mockError)
+        })
+    })
+
+    describe('usePaymentMethod', () => {
+        it('should successfully fetch payment method', async () => {
+            const mockPaymentMethod = {
+                active: true,
+                method: PaymentMethodType.Stripe,
+            }
+            mockGetPaymentMethod.mockResolvedValue(mockPaymentMethod)
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+                usePaymentMethod(),
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(result.current.data).toEqual(mockPaymentMethod)
+        })
+
+        it('should handle errors correctly', async () => {
+            const mockError = new Error('Failed to fetch')
+            mockGetPaymentMethod.mockRejectedValue(mockError)
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+                usePaymentMethod(),
+            )
+
+            await waitFor(() => expect(result.current.isError).toBe(true))
+
+            expect(result.current.error).toEqual(mockError)
         })
     })
 })
