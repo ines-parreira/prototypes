@@ -1,8 +1,10 @@
 :local {
     .container {
-        border-left: 1px solid var(--neutral-grey-2); // legacy
+        &:not(.primary) {
+            border-left: 1px solid var(--neutral-grey-2); // legacy
+        }
 
-        &.primary {
+        &.primary.legacy {
             border-left: 1px solid #0c7e5a; // legacy - success green
         }
 
@@ -21,9 +23,11 @@
 
 .axiom :local {
     .container {
-        border-left: 1px solid var(--border-neutral-default);
+        &:not(.primary) {
+            border-left: 1px solid var(--border-neutral-default);
+        }
 
-        &.primary {
+        &.primary.legacy {
             border-left: 1px solid var(--border-success-default);
         }
     }

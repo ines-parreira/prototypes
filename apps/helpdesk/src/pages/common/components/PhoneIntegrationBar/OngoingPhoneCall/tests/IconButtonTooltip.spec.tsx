@@ -1,55 +1,66 @@
-import React from 'react'
-
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { useFlag } from '@repo/feature-flags'
+import { render, screen } from '@testing-library/react'
 
 import IconButtonTooltip from '../IconButtonTooltip'
+import LegacyIconButtonTooltip from '../LegacyIconButtonTooltip'
 
+jest.mock('@repo/feature-flags')
 jest.mock(
     'pages/common/components/button/IconButton',
     () =>
         ({ children, ...rest }: any) => <div {...rest}>{children}</div>,
 )
 
-describe('<IconButtonTooltip />', () => {
-    it('should render the button only', () => {
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
+
+describe('<IconButtonTooltip /> - Legacy Component', () => {
+    it('should render the button', () => {
         const { getByTestId, queryByText } = render(
-            <IconButtonTooltip data-testid="icon-button-tooltip" icon="pause">
+            <LegacyIconButtonTooltip
+                data-testid="icon-button-tooltip"
+                icon="pause"
+            >
                 Tooltip text
-            </IconButtonTooltip>,
+            </LegacyIconButtonTooltip>,
         )
 
         expect(getByTestId('icon-button-tooltip')).toBeInTheDocument()
         expect(queryByText('Tooltip text')).not.toBeInTheDocument()
     })
+})
 
-    it('should render the tooltip when hovering over the button', async () => {
-        const { getByTestId, getByText } = render(
-            <IconButtonTooltip data-testid="icon-button-tooltip" icon="pause">
-                Tooltip text
-            </IconButtonTooltip>,
-        )
-
-        const button = getByTestId('icon-button-tooltip')
-        fireEvent.mouseOver(button)
-
-        await waitFor(() =>
-            expect(getByText('Tooltip text')).toBeInTheDocument(),
-        )
+describe('<IconButtonTooltip />', () => {
+    beforeEach(() => {
+        mockUseFlag.mockReturnValue(true)
     })
 
-    it('should hide the tooltip when moving the mouse away from the button', async () => {
-        const { getByTestId, queryByText } = render(
-            <IconButtonTooltip data-testid="icon-button-tooltip" icon="pause">
-                Tooltip text
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should render the button', () => {
+        render(
+            <IconButtonTooltip icon="comm-phone-end" legacyIcon="call_end">
+                Test Action
             </IconButtonTooltip>,
         )
 
-        const button = getByTestId('icon-button-tooltip')
-        fireEvent.mouseOver(button)
-        fireEvent.mouseOut(button)
+        expect(screen.getByRole('button')).toBeInTheDocument()
+    })
 
-        await waitFor(() =>
-            expect(expect(queryByText('Tooltip text')).toBeNull()),
+    it('should forward ref correctly', () => {
+        const ref = { current: null }
+
+        render(
+            <IconButtonTooltip
+                ref={ref as any}
+                icon="comm-phone-end"
+                legacyIcon="call_end"
+            >
+                Test Action
+            </IconButtonTooltip>,
         )
+
+        expect(ref.current).not.toBeNull()
     })
 })

@@ -1,9 +1,13 @@
-import { render } from '@testing-library/react'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { render, screen } from '@testing-library/react'
 import parsePhoneNumber from 'libphonenumber-js'
 
 import PhoneCustomerName from '../PhoneCustomerName'
 
+jest.mock('@repo/feature-flags')
 jest.mock('libphonenumber-js')
+
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 const parsePhoneNumberMock = parsePhoneNumber as jest.MockedFunction<
     typeof parsePhoneNumber
 >
@@ -11,24 +15,25 @@ const parsePhoneNumberMock = parsePhoneNumber as jest.MockedFunction<
 describe('<PhoneCustomerName/>', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFlag.mockReturnValue(true)
     })
 
     it.each([
         ['+14158880101', '+1 415 888 0101'],
         ['+33611223344', '+33 6 11 22 33 44'],
     ])(
-        'should render with name and phone number',
+        'should render with name and phone number and arrow icon',
         (phoneNumber, formattedPhoneNumber) => {
             parsePhoneNumberMock.mockReturnValue({
                 formatInternational: () => formattedPhoneNumber,
             } as any)
 
-            const { container } = render(
-                <PhoneCustomerName name="Bob" phoneNumber={phoneNumber} />,
-            )
+            render(<PhoneCustomerName name="Bob" phoneNumber={phoneNumber} />)
 
             expect(parsePhoneNumberMock).toHaveBeenCalledWith(phoneNumber)
-            expect(container.firstChild).toMatchSnapshot()
+            expect(
+                screen.getByRole('img', { hidden: true }),
+            ).toBeInTheDocument()
         },
     )
 
@@ -61,5 +66,23 @@ describe('<PhoneCustomerName/>', () => {
 
         expect(parsePhoneNumberMock).toHaveBeenCalledWith(phoneNumber)
         expect(getByText(phoneNumber)).toBeInTheDocument()
+    })
+
+    it('should not display arrow icon with restyling FF OFF', () => {
+        mockUseFlag.mockImplementation((flagKey) => {
+            if (flagKey === FeatureFlagKey.CallBarRestyling) {
+                return false
+            }
+        })
+
+        parsePhoneNumberMock.mockReturnValue({
+            formatInternational: () => '+1 415 555 1234',
+        } as any)
+
+        render(<PhoneCustomerName name={null} phoneNumber="+14155551234" />)
+
+        expect(
+            screen.queryByRole('img', { hidden: true }),
+        ).not.toBeInTheDocument()
     })
 })

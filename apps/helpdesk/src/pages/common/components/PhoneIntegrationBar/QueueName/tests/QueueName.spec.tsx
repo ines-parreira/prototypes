@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -12,6 +13,9 @@ import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import QueueName from '../QueueName'
 
+jest.mock('@repo/feature-flags')
+
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 const server = setupServer()
 
 beforeAll(() => {
@@ -37,6 +41,7 @@ describe('QueueName', () => {
     const mockQueue = mockVoiceQueue({ id: 1, name: 'Support Queue' })
 
     beforeEach(() => {
+        mockUseFlag.mockReturnValue(true)
         const mockGetVoiceQueue = mockGetVoiceQueueHandler(async () =>
             HttpResponse.json(mockQueue),
         )
@@ -45,6 +50,7 @@ describe('QueueName', () => {
 
     afterEach(() => {
         server.resetHandlers()
+        jest.clearAllMocks()
     })
 
     it('should display queue name with icon when data loads successfully', async () => {
@@ -134,5 +140,23 @@ describe('QueueName', () => {
         await waitFor(() => {
             expect(container.firstChild).toBeNull()
         })
+    })
+
+    it('should render as span with restyling FF OFF', async () => {
+        mockUseFlag.mockImplementation((flagKey) => {
+            if (flagKey === FeatureFlagKey.CallBarRestyling) {
+                return false
+            }
+            return false
+        })
+
+        const { container } = renderComponent({ queueId: mockQueue.id })
+
+        await waitFor(() => {
+            expect(screen.getByText(mockQueue.name)).toBeInTheDocument()
+        })
+
+        const tag = container.querySelector('[data-name="tag"]')
+        expect(tag).not.toBeInTheDocument()
     })
 })

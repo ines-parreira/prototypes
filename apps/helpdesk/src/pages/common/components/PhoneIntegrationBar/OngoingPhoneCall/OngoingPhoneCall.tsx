@@ -8,8 +8,10 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
 import {
+    Box,
+    Dot,
     Icon,
-    LegacyIconButton as IconButton,
+    Text,
     Tooltip,
     TooltipContent,
     TooltipTrigger,
@@ -36,6 +38,7 @@ import {
     useAudioLevel,
     useConnectionParameters,
 } from 'pages/common/components/PhoneIntegrationBar/hooks'
+import IconButtonTooltip from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/IconButtonTooltip'
 import type { TransferTarget } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import PhoneBarCallerDetailsContainer from 'pages/common/components/PhoneIntegrationBar/PhoneBarCallerDetailsContainer/PhoneBarCallerDetailsContainer'
 import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
@@ -58,7 +61,6 @@ import PhoneBarContainer from '../PhoneBarContainer/PhoneBarContainer'
 import PhoneBarInnerContent from '../PhoneBarInnerContent/PhoneBarInnerContent'
 import QueueName from '../QueueName/QueueName'
 import CallTransferDropdown from './CallTransferDropdown/CallTransferDropdown'
-import IconButtonTooltip from './IconButtonTooltip'
 import InCallDialPad from './InCallDialPad/InCallDialPad'
 import { TransferTargetLabel } from './TransferTargetLabel'
 
@@ -77,6 +79,7 @@ export function OngoingPhoneCall({
     notify,
 }: Props): JSX.Element {
     const isCallWhisperingEnabled = useFlag(FeatureFlagKey.CallWhispering)
+    const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)
 
     const [isTransferDropdownOpen, setIsTransferDropdownOpen] = useState(false)
     const { isMuted, onToggleMute } = useMute(call)
@@ -219,10 +222,10 @@ export function OngoingPhoneCall({
 
     const microphoneButton = (
         <IconButtonTooltip
-            intent="secondary"
             aria-label={`${isMuted ? 'Unmute' : 'Mute'} phone call`}
             onClick={onToggleMute}
-            icon={isMuted ? 'mic_off' : 'mic'}
+            icon={isMuted ? 'mic-mute' : 'mic'}
+            legacyIcon={isMuted ? 'mic_off' : 'mic'}
         >
             {isMuted ? 'Unmute' : 'Mute'}
         </IconButtonTooltip>
@@ -232,8 +235,14 @@ export function OngoingPhoneCall({
         <PhoneBarContainer>
             <PhoneBarInnerContent>
                 <PhoneBarCallerDetailsContainer>
-                    <PhoneIntegrationName integrationId={integrationId} />
-                    <QueueName queueId={queueId} />
+                    <Box
+                        display="flex"
+                        gap={applyCallBarRestyling ? 'xs' : undefined}
+                        marginRight="lg"
+                    >
+                        <PhoneIntegrationName integrationId={integrationId} />
+                        <QueueName queueId={queueId} />
+                    </Box>
                     {transferringTo ? (
                         <TransferTargetLabel transferringTo={transferringTo} />
                     ) : (
@@ -243,103 +252,127 @@ export function OngoingPhoneCall({
                         />
                     )}
                 </PhoneBarCallerDetailsContainer>
-                <InCallDialPad className={css.dialPad} call={call} />
-                <IconButtonTooltip
-                    intent="secondary"
-                    aria-label="Transfer phone call"
-                    onClick={() =>
-                        setIsTransferDropdownOpen((isOpen) => !isOpen)
-                    }
-                    icon="phone_forwarded"
-                    ref={transferButtonRef}
-                    isDisabled={isTransferring}
-                >
-                    Transfer
-                </IconButtonTooltip>
-                <CallTransferDropdown
-                    target={transferButtonRef}
-                    isOpen={isTransferDropdownOpen}
-                    setIsOpen={setIsTransferDropdownOpen}
-                    onTransferInitiated={(transferTarget) => {
-                        setIsTransferring(true)
-                        setIsOnHold(true)
-                        setTransferringTo(transferTarget)
-                    }}
-                    call={call}
-                    integrationPhoneNumberId={
-                        integration.getIn(['meta', 'phone_number_id']) as
-                            | number
-                            | undefined
-                    }
-                />
-                {isCallWhisperingEnabled ? (
-                    <DynamicSoundWaveIcon
-                        audioLevel={!isMuted ? audioLevel : 0}
-                        hide={isMuted}
-                    >
-                        {microphoneButton}
-                    </DynamicSoundWaveIcon>
-                ) : (
-                    microphoneButton
-                )}
-                <IconButtonTooltip
-                    intent="secondary"
-                    aria-label={`${
-                        isOnHold ? 'Take off hold on' : 'Hold'
-                    } phone call`}
-                    onClick={() =>
-                        changeHoldState({
-                            data: {
-                                participant_call_sid: getCallSid(call),
-                                hold_state: !isOnHold,
-                            },
-                        })
-                    }
-                    icon={isOnHold ? 'pause_circle_outline' : 'pause'}
-                    isDisabled={isTransferring}
-                >
-                    {isOnHold ? 'Take off hold' : 'Hold'}
-                </IconButtonTooltip>
-                <IconButtonTooltip
-                    aria-label={`${
-                        isRecording ? 'Stop' : 'Start'
-                    } recording phone call`}
-                    intent="secondary"
-                    isDisabled={isRequestPending}
-                    onClick={startRecording}
-                    iconClassName={classNames('text-danger', {
-                        'material-icons-outlined': isRecording,
-                        'material-icons': !isRecording,
-                    })}
-                    icon={isRecording ? 'stop_circle' : 'fiber_manual_record'}
-                >
-                    {isRecording ? 'Stop recording' : 'Start recording'}
-                </IconButtonTooltip>
-                {isTransferring ? (
-                    <ConfirmButton
-                        aria-label="End phone call"
-                        confirmationContent={
-                            'Ending this call before the transfer is complete will end the call for the customer as well.'
+                <Box display="flex" alignItems="center" gap="sm">
+                    <InCallDialPad call={call} />
+                    <IconButtonTooltip
+                        aria-label="Transfer phone call"
+                        onClick={() =>
+                            setIsTransferDropdownOpen((isOpen) => !isOpen)
                         }
-                        onConfirm={handleDisconnect}
-                        intent="destructive"
-                        confirmationButtonIntent="destructive"
-                        showCancelButton={true}
-                        className={css.endCallConfirmationButton}
+                        icon="comm-phone-outgoing"
+                        legacyIcon="phone_forwarded"
+                        ref={transferButtonRef}
+                        isDisabled={isTransferring}
                     >
-                        <i className="material-icons">call_end</i>
-                    </ConfirmButton>
-                ) : (
-                    <IconButton
-                        aria-label="End phone call"
-                        intent="destructive"
-                        onClick={handleDisconnect}
-                        icon="call_end"
+                        Transfer
+                    </IconButtonTooltip>
+                    <CallTransferDropdown
+                        target={transferButtonRef}
+                        isOpen={isTransferDropdownOpen}
+                        setIsOpen={setIsTransferDropdownOpen}
+                        onTransferInitiated={(transferTarget) => {
+                            setIsTransferring(true)
+                            setIsOnHold(true)
+                            setTransferringTo(transferTarget)
+                        }}
+                        call={call}
+                        integrationPhoneNumberId={
+                            integration.getIn(['meta', 'phone_number_id']) as
+                                | number
+                                | undefined
+                        }
                     />
-                )}
+                    {isCallWhisperingEnabled ? (
+                        <DynamicSoundWaveIcon
+                            audioLevel={!isMuted ? audioLevel : 0}
+                            hide={isMuted}
+                        >
+                            {microphoneButton}
+                        </DynamicSoundWaveIcon>
+                    ) : (
+                        microphoneButton
+                    )}
+                    <IconButtonTooltip
+                        aria-label={`${
+                            isOnHold ? 'Take off hold on' : 'Hold'
+                        } phone call`}
+                        onClick={() =>
+                            changeHoldState({
+                                data: {
+                                    participant_call_sid: getCallSid(call),
+                                    hold_state: !isOnHold,
+                                },
+                            })
+                        }
+                        icon={isOnHold ? 'media-play-circle' : 'media-pause'}
+                        legacyIcon={isOnHold ? 'pause_circle_outline' : 'pause'}
+                        isDisabled={isTransferring}
+                    >
+                        {isOnHold ? 'Take off hold' : 'Hold'}
+                    </IconButtonTooltip>
+                    <IconButtonTooltip
+                        aria-label={`${
+                            isRecording ? 'Stop' : 'Start'
+                        } recording phone call`}
+                        onClick={startRecording}
+                        icon={
+                            isRecording ? (
+                                <Icon
+                                    name="media-stop-circle"
+                                    color="red"
+                                    size="lg"
+                                />
+                            ) : (
+                                <Dot color="red" size="xxl" />
+                            )
+                        }
+                        legacyIcon={
+                            isRecording ? 'stop_circle' : 'fiber_manual_record'
+                        }
+                        legacyIconClassName={classNames('text-danger', {
+                            'material-icons-outlined': isRecording,
+                            'material-icons': !isRecording,
+                        })}
+                        isDisabled={isRequestPending}
+                    >
+                        {isRecording ? 'Stop recording' : 'Start recording'}
+                    </IconButtonTooltip>
+                    {isTransferring ? (
+                        <ConfirmButton
+                            aria-label="End phone call"
+                            confirmationContent={
+                                'Ending this call before the transfer is complete will end the call for the customer as well.'
+                            }
+                            onConfirm={handleDisconnect}
+                            intent="destructive"
+                            confirmationButtonIntent="destructive"
+                            showCancelButton={true}
+                            className={css.endCallConfirmationButton}
+                        >
+                            <i className="material-icons">call_end</i>
+                        </ConfirmButton>
+                    ) : (
+                        <IconButtonTooltip
+                            aria-label="End phone call"
+                            variant="primary"
+                            intent="destructive"
+                            onClick={handleDisconnect}
+                            icon="comm-phone-end"
+                            legacyIcon="call_end"
+                        >
+                            End call
+                        </IconButtonTooltip>
+                    )}
+                </Box>
             </PhoneBarInnerContent>
             <PhoneInfobarWrapper>
-                <span>{isTransferring ? 'Transferring...' : 'Connected'}</span>
+                <Text variant={applyCallBarRestyling ? 'bold' : 'regular'}>
+                    {isTransferring
+                        ? 'Transferring...'
+                        : isOnHold
+                          ? 'On hold'
+                          : 'Connected'}
+                </Text>
                 {isBeingWhispered && (
                     <Tooltip>
                         <TooltipTrigger>

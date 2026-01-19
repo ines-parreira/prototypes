@@ -1,6 +1,9 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
+
+import { Tag } from '@gorgias/axiom'
 
 import { getIntegrationById } from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
@@ -18,6 +21,8 @@ function PhoneIntegrationName({
     integration,
     primary,
 }: Props): JSX.Element | null {
+    const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)
+
     if (!integration) {
         return null
     }
@@ -25,14 +30,26 @@ function PhoneIntegrationName({
     const integrationName = integration.get('name')
     const integrationEmoji = integration.getIn(['meta', 'emoji'])
 
-    return (
-        <span className={classnames(css.container, { [css.primary]: primary })}>
-            {!!integrationEmoji && (
-                <span className="mr-2">{integrationEmoji}</span>
-            )}
-            {integrationName}
-        </span>
-    )
+    if (!applyCallBarRestyling) {
+        return (
+            <span
+                className={classnames(css.container, {
+                    [css.primary]: primary,
+                })}
+            >
+                {!!integrationEmoji && (
+                    <span className="mr-2">{integrationEmoji}</span>
+                )}
+                {integrationName}
+            </span>
+        )
+    }
+
+    const displayName = !!integrationEmoji
+        ? `${integrationEmoji} ${integrationName}`
+        : integrationName
+
+    return <Tag>{displayName}</Tag>
 }
 
 const connector = connect((state: RootState, ownProps: OwnProps) => {

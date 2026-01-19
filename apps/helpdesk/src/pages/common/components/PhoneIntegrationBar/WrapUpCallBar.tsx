@@ -1,4 +1,6 @@
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
+import { Button, LegacyButton } from '@gorgias/axiom'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useWrapUpTime from 'pages/common/components/PhoneIntegrationBar/useWrapUpTime'
@@ -10,6 +12,8 @@ import PhoneIntegrationName from './PhoneIntegrationName/PhoneIntegrationName'
 
 export default function WrapUpCallBar() {
     const { call } = useVoiceDevice()
+    const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)
+
     const {
         isWrappingUp,
         timeLeft,
@@ -33,19 +37,36 @@ export default function WrapUpCallBar() {
                         integrationId={voiceCall?.integration_id}
                     />
                 )}
-                <Button
-                    intent="secondary"
-                    onClick={() => {
-                        endWrapUpTimeMutation.mutate({
-                            data: {
-                                call_sid: voiceCall.external_id,
-                            },
-                        })
-                    }}
-                    isLoading={endWrapUpTimeMutation.isLoading}
-                >
-                    End wrap-up time
-                </Button>
+                {applyCallBarRestyling ? (
+                    <Button
+                        variant="secondary"
+                        onClick={() => {
+                            endWrapUpTimeMutation.mutate({
+                                data: {
+                                    call_sid: voiceCall.external_id,
+                                },
+                            })
+                        }}
+                        isLoading={endWrapUpTimeMutation.isLoading}
+                        leadingSlot="comm-phone-end"
+                    >
+                        End wrap-up time
+                    </Button>
+                ) : (
+                    <LegacyButton
+                        intent="secondary"
+                        onClick={() => {
+                            endWrapUpTimeMutation.mutate({
+                                data: {
+                                    call_sid: voiceCall.external_id,
+                                },
+                            })
+                        }}
+                        isLoading={endWrapUpTimeMutation.isLoading}
+                    >
+                        End wrap-up time
+                    </LegacyButton>
+                )}
             </PhoneBarInnerContent>
             <PhoneInfobarWrapper>
                 <strong>Post call wrap-up</strong>

@@ -1,40 +1,45 @@
-import type { ComponentProps, ReactNode, Ref } from 'react'
-import React, { forwardRef } from 'react'
+import type { ComponentProps } from 'react'
+import { forwardRef } from 'react'
 
-import { useId } from '@repo/hooks'
-import classnames from 'classnames'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
-import IconButton from '../../button/IconButton'
+import LegacyIconButtonTooltip from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/LegacyIconButtonTooltip'
 
-import css from './IconButtonTooltip.less'
-
-type TooltipProps = ComponentProps<typeof Tooltip>
-
-type Props = ComponentProps<typeof IconButton> & {
-    children: ReactNode
-    icon?: string
-    tooltipProps?: Partial<TooltipProps>
-    interactive?: boolean
+type Props = ComponentProps<typeof Button> & {
+    children: string
+    legacyIcon: string
+    legacyIconClassName?: string | undefined
 }
 
 const IconButtonTooltip = (
-    { children, className, icon = 'info', id, tooltipProps, ...rest }: Props,
-    ref?: Ref<HTMLButtonElement> | null,
+    { children, legacyIcon, legacyIconClassName = undefined, ...rest }: Props,
+    ref?: React.ForwardedRef<HTMLButtonElement> | null,
 ) => {
-    const generatedId = useId()
-    const buttonId = id ?? `icon-button-${generatedId}`
+    const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)
+
+    if (!applyCallBarRestyling) {
+        return (
+            <LegacyIconButtonTooltip
+                intent="secondary"
+                {...(rest as ComponentProps<typeof LegacyIconButtonTooltip>)}
+                icon={legacyIcon}
+                iconClassName={legacyIconClassName}
+                ref={ref}
+            >
+                {children}
+            </LegacyIconButtonTooltip>
+        )
+    }
 
     return (
-        <div className={classnames(css.wrapper, className)}>
-            <IconButton id={buttonId} ref={ref} {...rest}>
-                {icon}
-            </IconButton>
-            <Tooltip target={buttonId} {...tooltipProps}>
+        <Tooltip>
+            <Button variant="secondary" {...rest} ref={ref}>
                 {children}
-            </Tooltip>
-        </div>
+            </Button>
+            <TooltipContent title={children} />
+        </Tooltip>
     )
 }
 

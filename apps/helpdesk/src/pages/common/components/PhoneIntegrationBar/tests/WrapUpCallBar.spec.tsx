@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
@@ -17,6 +18,9 @@ jest.mock(
     ),
 )
 jest.mock('hooks/integrations/phone/useVoiceDevice')
+
+jest.mock('@repo/feature-flags')
+const useFlagMock = assumeMock(useFlag)
 
 const useWrapUpTimeMock = assumeMock(useWrapUpTime)
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
@@ -45,6 +49,9 @@ describe('WrapUpCallBar', () => {
         useVoiceDeviceMock.mockReturnValue({
             call: null,
         } as any)
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.CallBarRestyling) return true
+        })
     })
 
     it('renders nothing when not wrapping up', () => {
@@ -98,6 +105,37 @@ describe('WrapUpCallBar', () => {
     })
 
     it('calls endWrapUpTimeMutation when clicking the end wrap-up button', async () => {
+        useFlagMock.mockReturnValue(true)
+
+        const mutateMock = jest.fn()
+
+        useWrapUpTimeMock.mockReturnValue({
+            isWrappingUp: true,
+            timeLeft: '01:30',
+            voiceCall: mockVoiceCall as VoiceCall,
+            endWrapUpTimeMutation: {
+                mutate: mutateMock,
+                isLoading: false,
+            } as any,
+            clearWrapUpTime: jest.fn(),
+        })
+
+        renderComponent()
+
+        fireEvent.click(screen.getByText('End wrap-up time'))
+
+        expect(mutateMock).toHaveBeenCalledWith({
+            data: {
+                call_sid: 'test-call-sid',
+            },
+        })
+    })
+
+    it('calls endWrapUpTimeMutation when clicking the end wrap-up button - FF off', async () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.CallBarRestyling) return false
+        })
+
         const mutateMock = jest.fn()
 
         useWrapUpTimeMock.mockReturnValue({

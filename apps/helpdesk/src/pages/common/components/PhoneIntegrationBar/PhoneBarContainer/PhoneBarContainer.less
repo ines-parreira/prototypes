@@ -1,7 +1,7 @@
 :local {
     .container {
-        background-color: var(--neutral-grey-0); // legacy
-        color: var(--neutral-grey-6); // legacy
+        background-color: var(--elevation-neutral-default);
+        color: var(--content-neutral-default);
         display: flex;
         position: relative;
 
@@ -18,34 +18,29 @@
             top: -6px;
         }
 
+        &.legacy {
+            background-color: var(--neutral-grey-0); // legacy
+            color: var(--neutral-grey-6); // legacy
+        }
+
         &.highlighted {
-            --background-color: var(--feedback-success-4); // legacy
-            --color: var(--neutral-grey-0); // legacy
+            --background-color: var(--surface-accent-default);
+            --color: var(--content-neutral-default);
+
+            &.legacy {
+                --background-color: var(--feedback-success-4); // legacy
+                --color: var(--neutral-grey-0); // legacy
+            }
 
             &.dark {
-                --background-color: var(--accessory-green-1); // legacy
-                --color: var(--neutral-grey-6); // legacy
+                &.legacy {
+                    --background-color: var(--accessory-green-1); // legacy
+                    --color: var(--neutral-grey-6); // legacy
+                }
             }
 
             background-color: var(--background-color);
             color: var(--color);
-        }
-    }
-}
-
-.axiom :local {
-    .container {
-        background-color: var(--elevation-neutral-default);
-        color: var(--content-neutral-default);
-
-        &.highlighted {
-            --background-color: var(--content-success-primary);
-            --color: var(--content-inverted-default);
-
-            &.dark {
-                --background-color: var(--surface-success-primary);
-                --color: var(--content-neutral-default);
-            }
         }
     }
 }

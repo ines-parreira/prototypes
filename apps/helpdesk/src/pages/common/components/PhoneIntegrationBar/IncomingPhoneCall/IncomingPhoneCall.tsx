@@ -1,12 +1,13 @@
 import type { SyntheticEvent } from 'react'
 import React, { useCallback, useRef } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useNow } from '@repo/hooks'
 import type { Call } from '@twilio/voice-sdk'
 import moment from 'moment'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { LegacyButton as Button, Icon, Tag } from '@gorgias/axiom'
+import { Box, Button, Icon, LegacyButton, Tag, Text } from '@gorgias/axiom'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
@@ -31,6 +32,8 @@ type Props = {
 }
 
 export default function IncomingPhoneCall({ call }: Props): JSX.Element {
+    const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)
+
     const history = useHistory()
     const location = useLocation()
     const { permissionDenied } = useMicrophonePermissions(1000)
@@ -76,11 +79,13 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
             <PhoneBarContainer onClick={openTicket} isHighlighted>
                 <PhoneBarInnerContent>
                     <PhoneBarCallerDetailsContainer>
-                        <PhoneIntegrationName
-                            integrationId={integrationId}
-                            primary
-                        />
-                        <QueueName queueId={queueId} primary />
+                        <Box display="flex" gap="xs" marginRight="lg">
+                            <PhoneIntegrationName
+                                integrationId={integrationId}
+                                primary
+                            />
+                            <QueueName queueId={queueId} primary />
+                        </Box>
                         <div className={css.callerDetails}>
                             {transferFromAgentId && (
                                 <>
@@ -108,41 +113,67 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
                             )}
                         </div>
                     </PhoneBarCallerDetailsContainer>
-                    <div>
-                        <Button
-                            aria-label="Accept phone call"
-                            intent="secondary"
-                            className={css.accept}
-                            onClick={() => call.accept()}
-                        >
-                            <i className="material-icons mr-2">phone</i>
-                            Accept
-                        </Button>
-                        <Button
-                            intent="secondary"
-                            aria-label="Decline phone call"
-                            className={css.decline}
-                            onClick={(
-                                event: SyntheticEvent<HTMLButtonElement>,
-                            ) => {
-                                event.stopPropagation()
+                    {applyCallBarRestyling ? (
+                        <Box gap="md">
+                            <Button
+                                aria-label="Accept phone call"
+                                onClick={() => call.accept()}
+                                leadingSlot="comm-phone-incoming"
+                            >
+                                Accept
+                            </Button>
+                            <Button
+                                intent="destructive"
+                                aria-label="Decline phone call"
+                                leadingSlot="comm-phone-end"
+                                onClick={(event) => {
+                                    event.stopPropagation()
 
-                                call.reject()
-                                call.emit('cancel')
-                                void declineCall(call)
-                            }}
-                        >
-                            <i className="material-icons mr-2">call_end</i>
-                            Decline
-                        </Button>
-                    </div>
+                                    call.reject()
+                                    call.emit('cancel')
+                                    void declineCall(call)
+                                }}
+                            >
+                                Decline
+                            </Button>
+                        </Box>
+                    ) : (
+                        <div>
+                            <LegacyButton
+                                aria-label="Accept phone call"
+                                intent="secondary"
+                                className={css.accept}
+                                onClick={() => call.accept()}
+                            >
+                                <i className="material-icons mr-2">phone</i>
+                                Accept
+                            </LegacyButton>
+                            <LegacyButton
+                                intent="secondary"
+                                aria-label="Decline phone call"
+                                className={css.decline}
+                                onClick={(
+                                    event: SyntheticEvent<HTMLButtonElement>,
+                                ) => {
+                                    event.stopPropagation()
+
+                                    call.reject()
+                                    call.emit('cancel')
+                                    void declineCall(call)
+                                }}
+                            >
+                                <i className="material-icons mr-2">call_end</i>
+                                Decline
+                            </LegacyButton>
+                        </div>
+                    )}
                 </PhoneBarInnerContent>
                 <PhoneInfobarWrapper primary>
-                    <span>
+                    <Text variant={applyCallBarRestyling ? 'bold' : 'regular'}>
                         {isTransferring
                             ? 'Incoming transfer...'
                             : 'Incoming call...'}
-                    </span>
+                    </Text>
                     <span>Waiting for {formattedWaitTime}</span>
                 </PhoneInfobarWrapper>
             </PhoneBarContainer>

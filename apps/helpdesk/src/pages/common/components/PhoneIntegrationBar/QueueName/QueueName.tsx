@@ -1,6 +1,7 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 
-import { Icon } from '@gorgias/axiom'
+import { Icon, Tag } from '@gorgias/axiom'
 import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
 
 import css from './QueueName.less'
@@ -11,6 +12,8 @@ type Props = {
 }
 
 function QueueName({ queueId, primary }: Props) {
+    const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)
+
     const {
         data: queue,
         isFetching,
@@ -31,12 +34,24 @@ function QueueName({ queueId, primary }: Props) {
         return null
     }
 
-    return (
-        <span className={classnames(css.container, { [css.primary]: primary })}>
-            <Icon name={'users'} />
+    if (!applyCallBarRestyling) {
+        return (
+            <span
+                className={classnames(css.container, {
+                    [css.primary]: primary,
+                })}
+            >
+                <Icon name={'users'} />
 
+                {queue.name || `Queue #${queue.id}`}
+            </span>
+        )
+    }
+
+    return (
+        <Tag leadingSlot={<Icon name={'users'} />}>
             {queue.name || `Queue #${queue.id}`}
-        </span>
+        </Tag>
     )
 }
 

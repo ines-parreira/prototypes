@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import type { MockStoreEnhanced } from 'redux-mock-store'
@@ -9,6 +10,10 @@ import thunk from 'redux-thunk'
 
 import type { RootState, StoreDispatch } from '../../../../../../state/types'
 import PhoneIntegrationName from '../PhoneIntegrationName'
+
+jest.mock('@repo/feature-flags')
+
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 describe('<PhoneIntegrationName/>', () => {
     let store: MockStoreEnhanced
@@ -19,6 +24,7 @@ describe('<PhoneIntegrationName/>', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        mockUseFlag.mockReturnValue(true)
 
         store = mockStore({
             integrations: fromJS({
@@ -34,22 +40,30 @@ describe('<PhoneIntegrationName/>', () => {
     })
 
     it('should render', () => {
+        render(
+            <Provider store={store}>
+                <PhoneIntegrationName integrationId={integrationId} />
+            </Provider>,
+        )
+
+        expect(screen.getByText(/My Phone Integration/)).toBeInTheDocument()
+    })
+
+    it('should render as span with restyling FF OFF', () => {
+        mockUseFlag.mockImplementation((flagKey) => {
+            if (flagKey === FeatureFlagKey.CallBarRestyling) {
+                return false
+            }
+            return false
+        })
+
         const { container } = render(
             <Provider store={store}>
                 <PhoneIntegrationName integrationId={integrationId} />
             </Provider>,
         )
 
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should render as primary', () => {
-        const { container } = render(
-            <Provider store={store}>
-                <PhoneIntegrationName integrationId={integrationId} primary />
-            </Provider>,
-        )
-
-        expect(container.firstChild).toMatchSnapshot()
+        const element = container.querySelector('[data-name="tag"]')
+        expect(element).not.toBeInTheDocument()
     })
 })

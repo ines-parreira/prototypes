@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Call } from '@twilio/voice-sdk'
 
-import { Box, Button, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { Box, Button, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 import { useHandleCallWhispering } from '@gorgias/helpdesk-queries'
 
 import { extractMonitoringCallParams } from 'hooks/integrations/phone/monitoring.utils'
@@ -29,6 +29,7 @@ type Props = {
 
 export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
     const isCallWhisperingEnabled = useFlag(FeatureFlagKey.CallWhispering)
+    const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)
 
     const {
         integrationId,
@@ -72,32 +73,43 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
         <PhoneBarContainer>
             <PhoneBarInnerContent>
                 <PhoneBarCallerDetailsContainer>
-                    {integrationId && (
-                        <PhoneIntegrationName integrationId={integrationId} />
-                    )}
-                    {customerId ? (
-                        <VoiceCallCustomerLabel
-                            customerId={customerId}
-                            phoneNumber={customerPhoneNumber}
-                            showBothNameAndPhone
-                        />
-                    ) : (
-                        <span>
-                            <b>{customerPhoneNumber}</b>
-                        </span>
-                    )}
-                    <span>and</span>
-                    {inCallAgentId ? (
-                        <VoiceCallAgentLabel
-                            agentId={inCallAgentId}
-                            semibold
-                            className={css.phoneBarAgentLabel}
-                        />
-                    ) : (
-                        <span>unknown agent</span>
-                    )}
+                    <Box gap="xs" alignItems="center">
+                        {integrationId && (
+                            <PhoneIntegrationName
+                                integrationId={integrationId}
+                            />
+                        )}
+                        {customerId ? (
+                            <VoiceCallCustomerLabel
+                                customerId={customerId}
+                                phoneNumber={customerPhoneNumber}
+                                showBothNameAndPhone
+                            />
+                        ) : (
+                            <span>
+                                <b>{customerPhoneNumber}</b>
+                            </span>
+                        )}
+                        <span>and</span>
+                        {inCallAgentId ? (
+                            <VoiceCallAgentLabel
+                                agentId={inCallAgentId}
+                                semibold
+                                className={css.phoneBarAgentLabel}
+                            />
+                        ) : (
+                            <span>unknown agent</span>
+                        )}
+                    </Box>
                 </PhoneBarCallerDetailsContainer>
                 <Box display="flex" alignItems="center" gap="sm">
+                    <Button
+                        intent="destructive"
+                        leadingSlot="headset"
+                        onClick={() => call.disconnect()}
+                    >
+                        Stop Listening
+                    </Button>
                     {isCallWhisperingEnabled && (
                         <Tooltip>
                             <DynamicSoundWaveIcon
@@ -136,17 +148,14 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
                             />
                         </Tooltip>
                     )}
-                    <Button
-                        intent="destructive"
-                        leadingSlot="headset"
-                        onClick={() => call.disconnect()}
-                    >
-                        Stop Listening
-                    </Button>
                 </Box>
             </PhoneBarInnerContent>
             <PhoneInfobarWrapper>
-                <span>Connected</span>
+                {applyCallBarRestyling ? (
+                    <Text variant="bold">Connected</Text>
+                ) : (
+                    <span>Connected</span>
+                )}
             </PhoneInfobarWrapper>
         </PhoneBarContainer>
     )
