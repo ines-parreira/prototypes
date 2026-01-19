@@ -349,3 +349,16 @@ export function getLocalTime(
 
     return formatDatetime(localTime, format)
 }
+
+/**
+ * Convert hours to seconds.
+ *
+ * Migrated from: apps/helpdesk/src/utils/hoursToSeconds.ts
+ */
+export function hoursToSeconds(hours: number | string = 0): number {
+    if (typeof hours !== 'number') {
+        return 0
+    }
+
+    return 60 * 60 * hours
+}

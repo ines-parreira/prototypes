@@ -1,3 +1,4 @@
+import { hoursToSeconds } from '@repo/utils'
 import _find from 'lodash/find'
 import _get from 'lodash/get'
 
@@ -25,7 +26,6 @@ import {
 } from 'state/widgets/constants'
 import { WidgetEnvironment } from 'state/widgets/types'
 import daysToHours from 'utils/daysToHours'
-import hoursToSeconds from 'utils/hoursToSeconds'
 
 // TODO @LouisBarranqueiro switch all configuration to modular version
 

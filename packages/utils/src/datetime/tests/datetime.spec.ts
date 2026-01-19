@@ -5,7 +5,7 @@ import {
     DateTimeFormatType,
     TimeFormatType,
 } from '../constants'
-import { getDateAndTimeFormat } from '../datetime'
+import { getDateAndTimeFormat, hoursToSeconds } from '../datetime'
 
 describe('getDateAndTimeFormat', () => {
     const timeSetting24hour = TimeFormatType.TwentyFourHour
@@ -700,4 +700,18 @@ describe('getDateAndTimeFormat', () => {
             ).toEqual(expectedFormat)
         },
     )
+})
+
+describe('hoursToSeconds', () => {
+    it('should return zero for undefined', () => {
+        expect(hoursToSeconds()).toBe(0)
+    })
+
+    it('should return zero for non-numbers', () => {
+        expect(hoursToSeconds('1')).toBe(0)
+    })
+
+    it('should convert hours to seconds', () => {
+        expect(hoursToSeconds(2)).toBe(2 * 60 * 60)
+    })
 })
