@@ -235,6 +235,16 @@ jest.mock(
 )
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
 jest.mock(
+    'pages/aiAgent/components/CustomerEngagementSettings/hooks/useSpqInstallationStatus',
+    () => ({
+        __esModule: true,
+        default: jest.fn(() => ({
+            isSpqInstalled: true,
+            isLoaded: true,
+        })),
+    }),
+)
+jest.mock(
     'pages/aiAgent/components/AiShoppingAssistantExpireBanner/AiShoppingAssistantExpireBanner',
     () => () => <div>AI-Shopping-Assistant-Expire-Banner</div>,
 )

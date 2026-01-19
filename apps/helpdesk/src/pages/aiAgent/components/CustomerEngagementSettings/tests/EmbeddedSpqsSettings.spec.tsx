@@ -1,531 +1,402 @@
-import '@testing-library/jest-dom'
-
 import type { ReactNode } from 'react'
 
-import { act, render, screen, within } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { act } from 'react-dom/test-utils'
 import { FormProvider, useForm } from 'react-hook-form'
+import { MemoryRouter, Route } from 'react-router-dom'
 
-import type { StoreConfiguration } from 'models/aiAgent/types'
-import { EmbeddedSpqsSettings } from 'pages/aiAgent/components/CustomerEngagementSettings/EmbeddedSpqsSettings'
-import { notify } from 'state/notifications/actions'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 
-jest.mock('utils', () => ({
-    assetsUrl: jest.fn((path) => path),
-}))
+import { EmbeddedSpqsSettings } from '../EmbeddedSpqsSettings'
+import useSpqInstallationStatus from '../hooks/useSpqInstallationStatus'
 
-const mockCopyToClipboard = jest.fn()
-jest.mock('@repo/hooks', () => ({
-    useCopyToClipboard: () => [{}, mockCopyToClipboard],
-    useKey: () => {},
-}))
-
-const mockDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => ({
-    __esModule: true,
-    default: () => mockDispatch,
-}))
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
-jest.mock(
-    'pages/aiAgent/components/CustomerEngagementSettings/card/EngagementSettingsCardToggle',
-    () => ({
-        EngagementSettingsCardToggle: ({
-            isChecked,
-            onChange,
-            onSettingsClick,
-        }: any) => (
-            <div>
-                <input
-                    type="checkbox"
-                    checked={isChecked}
-                    onChange={(e) => onChange(e.target.checked)}
-                    aria-label={
-                        isChecked ? 'Disable engagement' : 'Enable engagement'
-                    }
-                />
-                <button onClick={onSettingsClick} aria-label="Open settings">
-                    Settings
-                </button>
+jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
+jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
+jest.mock('../hooks/useSpqInstallationStatus')
+jest.mock('../EmbeddedSpqSettingsDrawer', () => ({
+    EmbeddedSpqSettingsDrawer: ({
+        isOpen,
+        onClose,
+    }: {
+        isOpen: boolean
+        onClose: () => void
+        shopName: string
+    }) =>
+        isOpen ? (
+            <div role="dialog" aria-label="SPQ Settings Drawer">
+                <button onClick={onClose}>Close</button>
             </div>
-        ),
-    }),
-)
-
-jest.mock('../card/EngagementSettingsCard', () => ({
-    EngagementSettingsCard: ({ children }: any) => <div>{children}</div>,
-    EngagementSettingsCardContentWrapper: ({ children }: any) => (
-        <div>{children}</div>
-    ),
-    EngagementSettingsCardImage: ({ alt, src }: any) => (
-        <img alt={alt} src={src} />
-    ),
-    EngagementSettingsCardContent: ({ children }: any) => <div>{children}</div>,
-    EngagementSettingsCardTitle: ({ children }: any) => <h3>{children}</h3>,
-    EngagementSettingsCardDescription: ({ children }: any) => <p>{children}</p>,
-}))
-
-const mockNotify = notify as jest.Mock
-
-const mockUpdateStoreConfiguration = jest.fn()
-const mockCreateStoreConfiguration = jest.fn()
-
-jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
-    useAiAgentStoreConfigurationContext: jest.fn(),
+        ) : null,
 }))
 
 const mockUseAiAgentStoreConfigurationContext = jest.mocked(
-    jest.requireMock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
-        .useAiAgentStoreConfigurationContext,
+    useAiAgentStoreConfigurationContext,
 )
+const mockUseStoreIntegrationByShopName = jest.mocked(
+    useStoreIntegrationByShopName,
+)
+const mockUseSpqInstallationStatus = jest.mocked(useSpqInstallationStatus)
 
-type FormValues = {
-    embeddedSpqEnabled: boolean
-}
+const storeConfiguration = getStoreConfigurationFixture()
 
-const FormWrapper = ({
-    children,
-    defaultValues = { embeddedSpqEnabled: false },
-}: {
-    children: ReactNode
-    defaultValues?: FormValues
-}) => {
-    const methods = useForm<FormValues>({ defaultValues })
+const FormWrapper = ({ children }: { children: ReactNode }) => {
+    const methods = useForm({
+        defaultValues: {
+            embeddedSpqEnabled: storeConfiguration?.embeddedSpqEnabled ?? false,
+        },
+    })
     return <FormProvider {...methods}>{children}</FormProvider>
 }
 
-describe('EmbeddedSpqsSettings - Functions', () => {
-    beforeAll(() => {
-        Element.prototype.getAnimations = function () {
-            return []
-        }
-    })
+const renderComponent = (shopName = 'test-store') => {
+    return render(
+        <MemoryRouter initialEntries={[`/shopify/${shopName}`]}>
+            <Route path="/:shopType/:shopName">
+                <FormWrapper>
+                    <EmbeddedSpqsSettings shopName={shopName} />
+                </FormWrapper>
+            </Route>
+        </MemoryRouter>,
+    )
+}
+
+describe('EmbeddedSpqsSettings', () => {
+    const mockUpdateStoreConfiguration = jest.fn()
 
     beforeEach(() => {
-        mockDispatch.mockClear()
-        mockCopyToClipboard.mockClear()
-        mockNotify.mockClear()
-        mockUpdateStoreConfiguration.mockClear()
-        mockCreateStoreConfiguration.mockClear()
+        jest.clearAllMocks()
+
+        mockUseStoreIntegrationByShopName.mockReturnValue({
+            id: 123,
+            name: 'Test Store',
+        } as ReturnType<typeof useStoreIntegrationByShopName>)
 
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration: undefined,
+            storeConfiguration: {
+                ...storeConfiguration,
+                embeddedSpqEnabled: false,
+            },
             isLoading: false,
             updateStoreConfiguration: mockUpdateStoreConfiguration,
-            createStoreConfiguration: mockCreateStoreConfiguration,
+            createStoreConfiguration: jest.fn(),
             isPendingCreateOrUpdate: false,
         })
     })
 
-    describe('Setup button behavior', () => {
-        it('should show "Set Up" button when embedded SPQ is disabled', () => {
-            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration: {
-                    embeddedSpqEnabled: false,
-                } as StoreConfiguration,
-                isLoading: false,
-                updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
-                isPendingCreateOrUpdate: false,
+    describe('Set Up button visibility', () => {
+        it('should display Set Up button when SPQ is not installed and not enabled', () => {
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: false,
+                isLoaded: true,
             })
 
-            render(
-                <FormWrapper>
-                    <EmbeddedSpqsSettings shopName={'test-store'} />
-                </FormWrapper>,
-            )
+            renderComponent()
 
             expect(
                 screen.getByRole('button', { name: 'Set Up' }),
             ).toBeInTheDocument()
-            expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
         })
 
-        it('should call updateStoreConfiguration when "Set Up" button is clicked', async () => {
-            const user = userEvent.setup()
-            const mockStoreConfig = {
-                embeddedSpqEnabled: false,
-            } as StoreConfiguration
+        it('should not display Set Up button when SPQ is installed', () => {
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: true,
+                isLoaded: true,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByRole('button', { name: 'Set Up' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not display Set Up button when SPQ status is still loading', () => {
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: undefined,
+                isLoaded: false,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByRole('button', { name: 'Set Up' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display toggle when embeddedSpqEnabled is true', () => {
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: false,
+                isLoaded: true,
+            })
 
             mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration: mockStoreConfig,
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    embeddedSpqEnabled: true,
+                },
                 isLoading: false,
                 updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
                 isPendingCreateOrUpdate: false,
             })
 
-            render(
-                <FormWrapper>
-                    <EmbeddedSpqsSettings shopName={'test-store'} />
-                </FormWrapper>,
-            )
+            renderComponent()
 
-            const setUpButton = screen.getByRole('button', { name: 'Set Up' })
+            expect(
+                screen.queryByRole('button', { name: 'Set Up' }),
+            ).not.toBeInTheDocument()
+            expect(screen.getByRole('switch')).toBeInTheDocument()
+        })
 
-            await act(() => user.click(setUpButton))
+        it('should display toggle when SPQ is already installed', () => {
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: true,
+                isLoaded: true,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByRole('button', { name: 'Set Up' }),
+            ).not.toBeInTheDocument()
+            expect(screen.getByRole('switch')).toBeInTheDocument()
+        })
+    })
+
+    describe('Set Up button behavior', () => {
+        it('should show loading spinner when isPendingCreateOrUpdate is true', () => {
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: false,
+                isLoaded: true,
+            })
+
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    embeddedSpqEnabled: false,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: true,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByRole('button', { name: 'Set Up' }),
+            ).not.toBeInTheDocument()
+            expect(screen.getByRole('status')).toBeInTheDocument()
+        })
+
+        it('should call updateStoreConfiguration and open drawer when Set Up is clicked', async () => {
+            const user = userEvent.setup()
+            mockUpdateStoreConfiguration.mockResolvedValue(undefined)
+
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: false,
+                isLoaded: true,
+            })
+
+            renderComponent()
+
+            const setupButton = screen.getByRole('button', { name: 'Set Up' })
+            await act(() => user.click(setupButton))
 
             expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith({
-                ...mockStoreConfig,
+                ...storeConfiguration,
                 embeddedSpqEnabled: true,
             })
         })
 
-        it('should show loading spinner while updating', () => {
-            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration: {
-                    embeddedSpqEnabled: false,
-                } as StoreConfiguration,
-                isLoading: false,
-                updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
-                isPendingCreateOrUpdate: true,
-            })
-
-            render(
-                <FormWrapper>
-                    <EmbeddedSpqsSettings shopName={'test-store'} />
-                </FormWrapper>,
-            )
-
-            expect(
-                screen.queryByRole('button', { name: 'Set Up' }),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.getByText('AI FAQs: Embedded in page'),
-            ).toBeInTheDocument()
-        })
-    })
-
-    describe('Toggle behavior', () => {
-        it('should show toggle when embedded SPQ is enabled', () => {
-            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration: {
-                    embeddedSpqEnabled: true,
-                } as StoreConfiguration,
-                isLoading: false,
-                updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
-                isPendingCreateOrUpdate: false,
-            })
-
-            render(
-                <FormWrapper defaultValues={{ embeddedSpqEnabled: true }}>
-                    <EmbeddedSpqsSettings shopName={'test-store'} />
-                </FormWrapper>,
-            )
-
-            expect(
-                screen.getByRole('checkbox', { name: /disable engagement/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.queryByRole('button', { name: 'Set Up' }),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should not show "Set Up" button when toggle is turned off', async () => {
+        it('should not call updateStoreConfiguration when storeConfiguration is undefined', async () => {
             const user = userEvent.setup()
 
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: false,
+                isLoaded: true,
+            })
+
             mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration: {
-                    embeddedSpqEnabled: true,
-                } as StoreConfiguration,
+                storeConfiguration: undefined,
                 isLoading: false,
                 updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
                 isPendingCreateOrUpdate: false,
             })
 
-            render(
-                <FormWrapper defaultValues={{ embeddedSpqEnabled: true }}>
-                    <EmbeddedSpqsSettings shopName={'test-store'} />
-                </FormWrapper>,
-            )
+            renderComponent()
 
-            const toggle = screen.getByRole('checkbox', {
-                name: /disable engagement/i,
-            })
+            const setupButton = screen.getByRole('button', { name: 'Set Up' })
+            await act(() => user.click(setupButton))
 
-            await act(() => user.click(toggle))
-
-            expect(toggle).not.toBeChecked()
-            expect(
-                screen.queryByRole('button', { name: 'Set Up' }),
-            ).not.toBeInTheDocument()
             expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
         })
     })
 
-    describe('handleToggleChange', () => {
-        it('should toggle state from false to true when toggle is clicked', async () => {
+    describe('drawer behavior', () => {
+        it('should open drawer when settings button is clicked on toggle', async () => {
             const user = userEvent.setup()
 
-            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration: {
-                    embeddedSpqEnabled: true,
-                } as StoreConfiguration,
-                isLoading: false,
-                updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
-                isPendingCreateOrUpdate: false,
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: true,
+                isLoaded: true,
             })
 
-            render(
-                <FormWrapper>
-                    <EmbeddedSpqsSettings shopName={'test-store'} />
-                </FormWrapper>,
-            )
+            renderComponent()
 
-            const toggle = screen.getByRole('checkbox', {
-                name: /enable engagement/i,
+            const settingsButton = screen.getByRole('button', {
+                name: /settings/i,
             })
+            await act(() => user.click(settingsButton))
 
-            expect(toggle).not.toBeChecked()
-
-            await act(() => user.click(toggle))
-
-            expect(toggle).toBeChecked()
+            expect(
+                screen.getByRole('dialog', { name: 'SPQ Settings Drawer' }),
+            ).toBeInTheDocument()
         })
 
-        it('should toggle state from true to false when toggle is clicked', async () => {
+        it('should close drawer when close button is clicked', async () => {
             const user = userEvent.setup()
 
-            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration: {
-                    embeddedSpqEnabled: true,
-                } as StoreConfiguration,
-                isLoading: false,
-                updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
-                isPendingCreateOrUpdate: false,
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: true,
+                isLoaded: true,
             })
 
-            render(
-                <FormWrapper defaultValues={{ embeddedSpqEnabled: true }}>
-                    <EmbeddedSpqsSettings shopName={'test-store'} />
-                </FormWrapper>,
-            )
+            renderComponent()
 
-            const toggle = screen.getByRole('checkbox', {
-                name: /disable engagement/i,
+            const settingsButton = screen.getByRole('button', {
+                name: /settings/i,
             })
+            await act(() => user.click(settingsButton))
 
-            await act(() => user.click(toggle))
-
-            expect(toggle).not.toBeChecked()
-        })
-
-        it('should correctly update state on multiple toggle changes', async () => {
-            const user = userEvent.setup()
-
-            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration: {
-                    embeddedSpqEnabled: true,
-                } as StoreConfiguration,
-                isLoading: false,
-                updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
-                isPendingCreateOrUpdate: false,
+            const drawer = screen.getByRole('dialog', {
+                name: 'SPQ Settings Drawer',
             })
-
-            render(
-                <FormWrapper>
-                    <EmbeddedSpqsSettings shopName={'test-store'} />
-                </FormWrapper>,
-            )
-
-            const initialToggle = screen.getByRole('checkbox', {
-                name: /enable engagement/i,
+            const closeButton = within(drawer).getByRole('button', {
+                name: 'Close',
             })
+            await act(() => user.click(closeButton))
 
-            await act(() => user.click(initialToggle))
-            expect(initialToggle).toBeChecked()
-
-            await act(() => user.click(initialToggle))
-            expect(initialToggle).not.toBeChecked()
-
-            await act(() => user.click(initialToggle))
-            expect(initialToggle).toBeChecked()
+            expect(
+                screen.queryByRole('dialog', { name: 'SPQ Settings Drawer' }),
+            ).not.toBeInTheDocument()
         })
     })
 
-    describe('handleSettingsClick', () => {
-        it('should open drawer when settings button is clicked', async () => {
-            const user = userEvent.setup()
-
-            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration: {
-                    embeddedSpqEnabled: true,
-                } as StoreConfiguration,
-                isLoading: false,
-                updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
-                isPendingCreateOrUpdate: false,
+    describe('content rendering', () => {
+        beforeEach(() => {
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: true,
+                isLoaded: true,
             })
+        })
 
+        it('should render the card title', () => {
+            renderComponent()
+            expect(
+                screen.getByText('AI FAQs: Embedded in page'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render the default description', () => {
+            renderComponent()
+            expect(
+                screen.getByText(
+                    /Show up to 3 dynamic, AI-generated questions embedded directly in product pages/,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should render custom description when provided', () => {
             render(
-                <FormWrapper defaultValues={{ embeddedSpqEnabled: true }}>
-                    <EmbeddedSpqsSettings shopName={'test-store'} />
-                </FormWrapper>,
+                <MemoryRouter initialEntries={['/shopify/test-store']}>
+                    <Route path="/:shopType/:shopName">
+                        <FormWrapper>
+                            <EmbeddedSpqsSettings
+                                shopName="test-store"
+                                description="Custom description text"
+                            />
+                        </FormWrapper>
+                    </Route>
+                </MemoryRouter>,
             )
 
             expect(
-                screen.queryByRole('dialog', {
-                    name: /embedded faqs settings/i,
-                }),
-            ).not.toBeInTheDocument()
+                screen.getByText('Custom description text'),
+            ).toBeInTheDocument()
+        })
 
-            const settingsButton = screen.getByRole('button', {
-                name: /open settings/i,
-            })
-
-            await act(() => user.click(settingsButton))
-
-            expect(screen.getByRole('dialog')).toBeInTheDocument()
-
+        it('should render the card image with correct alt text', () => {
+            renderComponent()
             expect(
-                within(screen.getByRole('dialog')).getByText(
-                    /AI FAQs: Embedded in page/i,
+                screen.getByAltText(
+                    'image showing an example of embedded FAQs',
                 ),
             ).toBeInTheDocument()
         })
     })
 
-    describe('handleCopyCode', () => {
-        it('should copy code and dispatch notification when copy button is clicked', async () => {
-            const user = userEvent.setup()
+    describe('loading state', () => {
+        it('should not display Set Up button when isLoading is true', () => {
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: false,
+                isLoaded: true,
+            })
 
             mockUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: {
-                    embeddedSpqEnabled: true,
-                } as StoreConfiguration,
-                isLoading: false,
+                    ...storeConfiguration,
+                    embeddedSpqEnabled: false,
+                },
+                isLoading: true,
                 updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
                 isPendingCreateOrUpdate: false,
             })
 
-            render(
-                <FormWrapper>
-                    <EmbeddedSpqsSettings shopName={'test-store'} />
-                </FormWrapper>,
-            )
+            renderComponent()
 
-            const settingsButton = screen.getByRole('button', {
-                name: /open settings/i,
-            })
-
-            await act(() => user.click(settingsButton))
-
-            await act(() =>
-                user.click(screen.getByText(/Insert code snippet/i)),
-            )
-
-            const copyCodeButton = screen.getByTestId(
-                'embedded-spq-copy-button',
-            )
-
-            await act(() => user.click(copyCodeButton))
-
-            expect(mockCopyToClipboard).toHaveBeenCalledWith(
-                '<script id="gorgias-spq-script" src="https://config.gorgias.chat/conversation-starters/spq.js?shop=test-store.myshopify.com&source=manual"></script>',
-            )
-
-            expect(mockNotify).toHaveBeenCalledWith({
-                message: 'Code copied!',
-                dismissAfter: 3000,
-                status: 'success',
-            })
-
-            expect(mockDispatch).toHaveBeenCalledWith(
-                mockNotify.mock.results[0].value,
-            )
+            expect(
+                screen.queryByRole('button', { name: 'Set Up' }),
+            ).not.toBeInTheDocument()
         })
     })
 
-    describe('handleDrawerOnClose', () => {
-        it('should close drawer when close button is clicked', async () => {
-            const user = userEvent.setup()
-
-            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration: {
-                    embeddedSpqEnabled: true,
-                } as StoreConfiguration,
-                isLoading: false,
-                updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
-                isPendingCreateOrUpdate: false,
+    describe('integration with useStoreIntegrationByShopName', () => {
+        it('should pass shopName to useStoreIntegrationByShopName', () => {
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: false,
+                isLoaded: true,
             })
 
-            render(
-                <FormWrapper defaultValues={{ embeddedSpqEnabled: true }}>
-                    <EmbeddedSpqsSettings shopName={'test-store'} />
-                </FormWrapper>,
+            renderComponent('my-custom-shop')
+
+            expect(mockUseStoreIntegrationByShopName).toHaveBeenCalledWith(
+                'my-custom-shop',
             )
-
-            const settingsButton = screen.getByRole('button', {
-                name: /open settings/i,
-            })
-
-            await act(() => user.click(settingsButton))
-
-            expect(screen.getByRole('dialog')).toBeInTheDocument()
-
-            const closeButton = screen.getByRole('button', {
-                name: /close/i,
-            })
-
-            await act(() => user.click(closeButton))
-
-            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
         })
-    })
 
-    describe('Edit in Shopify button', () => {
-        it('should render Edit in Shopify link with external link icon and open in new tab', async () => {
-            const user = userEvent.setup()
+        it('should pass storeIntegration to useSpqInstallationStatus', () => {
+            const mockIntegration = {
+                id: 456,
+                name: 'My Store',
+            } as ReturnType<typeof useStoreIntegrationByShopName>
 
-            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-                storeConfiguration: {
-                    embeddedSpqEnabled: true,
-                } as StoreConfiguration,
-                isLoading: false,
-                updateStoreConfiguration: mockUpdateStoreConfiguration,
-                createStoreConfiguration: mockCreateStoreConfiguration,
-                isPendingCreateOrUpdate: false,
+            mockUseStoreIntegrationByShopName.mockReturnValue(mockIntegration)
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: false,
+                isLoaded: true,
             })
 
-            render(
-                <FormWrapper defaultValues={{ embeddedSpqEnabled: true }}>
-                    <EmbeddedSpqsSettings shopName={'test-store'} />
-                </FormWrapper>,
+            renderComponent()
+
+            expect(mockUseSpqInstallationStatus).toHaveBeenCalledWith(
+                mockIntegration,
             )
-
-            const settingsButton = screen.getByRole('button', {
-                name: /open settings/i,
-            })
-
-            await act(() => user.click(settingsButton))
-
-            const editInShopifyLink = screen.getByRole('link', {
-                name: /edit in shopify/i,
-            })
-
-            expect(editInShopifyLink).toHaveAttribute('target', '_blank')
-            expect(editInShopifyLink).toHaveAttribute(
-                'rel',
-                'noopener noreferrer',
-            )
-            expect(editInShopifyLink).toHaveAttribute(
-                'href',
-                expect.stringContaining('test-store.myshopify.com'),
-            )
-
-            const externalLinkIcon = editInShopifyLink.querySelector('svg')
-            expect(externalLinkIcon).toBeInTheDocument()
         })
     })
 })

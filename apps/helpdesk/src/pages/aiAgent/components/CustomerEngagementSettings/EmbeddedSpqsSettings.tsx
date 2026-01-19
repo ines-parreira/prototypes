@@ -4,8 +4,10 @@ import { useFormContext } from 'react-hook-form'
 
 import { Button, LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
+import type { ShopifyIntegration } from 'models/integration/types'
 import { EngagementSettingsCardToggle } from 'pages/aiAgent/components/CustomerEngagementSettings/card/EngagementSettingsCardToggle'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 import { assetsUrl } from 'utils'
 
 import {
@@ -17,6 +19,7 @@ import {
     EngagementSettingsCardTitle,
 } from './card/EngagementSettingsCard'
 import { EmbeddedSpqSettingsDrawer } from './EmbeddedSpqSettingsDrawer'
+import useSpqInstallationStatus from './hooks/useSpqInstallationStatus'
 
 import css from './EmbeddedSpqsSettings.less'
 
@@ -42,6 +45,10 @@ export const EmbeddedSpqsSettings = ({
         storeConfiguration,
         updateStoreConfiguration,
     } = useAiAgentStoreConfigurationContext()
+
+    const storeIntegration = useStoreIntegrationByShopName(shopName)
+    const { isSpqInstalled, isLoaded: isSpqStatusLoaded } =
+        useSpqInstallationStatus(storeIntegration as ShopifyIntegration)
 
     const handleToggleChange = useCallback(
         (newValue: boolean) => {
@@ -73,7 +80,10 @@ export const EmbeddedSpqsSettings = ({
     }, [storeConfiguration, updateStoreConfiguration, setValue])
 
     const shouldDisplaySetUpButton =
-        !isLoading && !storeConfiguration?.embeddedSpqEnabled
+        !isLoading &&
+        !storeConfiguration?.embeddedSpqEnabled &&
+        isSpqStatusLoaded &&
+        !isSpqInstalled
 
     return (
         <>
@@ -98,7 +108,11 @@ export const EmbeddedSpqsSettings = ({
                                 AI FAQs: Embedded in page
                             </EngagementSettingsCardTitle>
 
-                            {shouldDisplaySetUpButton ? (
+                            {isLoading || !isSpqStatusLoaded ? (
+                                <div className={css.setUpButton}>
+                                    <LoadingSpinner />
+                                </div>
+                            ) : shouldDisplaySetUpButton ? (
                                 <div className={css.setUpButton}>
                                     {isPendingCreateOrUpdate ? (
                                         <LoadingSpinner />
@@ -117,7 +131,7 @@ export const EmbeddedSpqsSettings = ({
                                     onChange={handleToggleChange}
                                     withBadges
                                     onSettingsClick={handleSettingsClick}
-                                ></EngagementSettingsCardToggle>
+                                />
                             )}
                         </div>
 
