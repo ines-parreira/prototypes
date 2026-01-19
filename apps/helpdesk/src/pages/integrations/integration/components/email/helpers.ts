@@ -55,15 +55,6 @@ export const isSingleSenderVerified = (
     )
 }
 
-export const isOutboundVerifiedSendgrid = (
-    integration: EmailIntegration,
-): boolean => {
-    return (
-        isOutboundDomainVerified(integration) ||
-        isSingleSenderVerified(integration)
-    )
-}
-
 export const getDomainFromEmailAddress = (address: string): string =>
     address.substring(address.lastIndexOf('@') + 1)
 

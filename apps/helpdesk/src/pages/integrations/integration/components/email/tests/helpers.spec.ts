@@ -19,7 +19,6 @@ import {
     isBaseEmailIntegration,
     isCommonDomainEmail,
     isOutboundDomainVerified,
-    isOutboundVerifiedSendgrid,
     isSendgridEmailIntegration,
     isSingleSenderVerificationInProgress,
     isSingleSenderVerified,
@@ -80,29 +79,6 @@ describe('helpers', () => {
                 false,
             )
         })
-    })
-
-    describe('isOutboundVerifiedSendgrid', () => {
-        it.each`
-            domain                                        | singleSender                                  | result
-            ${OutboundVerificationStatusValue.Unverified} | ${OutboundVerificationStatusValue.Unverified} | ${false}
-            ${OutboundVerificationStatusValue.Unverified} | ${OutboundVerificationStatusValue.Pending}    | ${false}
-            ${OutboundVerificationStatusValue.Unverified} | ${OutboundVerificationStatusValue.Failure}    | ${false}
-            ${OutboundVerificationStatusValue.Unverified} | ${OutboundVerificationStatusValue.Success}    | ${true}
-            ${OutboundVerificationStatusValue.Success}    | ${OutboundVerificationStatusValue.Unverified} | ${true}
-            ${OutboundVerificationStatusValue.Success}    | ${OutboundVerificationStatusValue.Pending}    | ${true}
-            ${OutboundVerificationStatusValue.Success}    | ${OutboundVerificationStatusValue.Failure}    | ${true}
-            ${OutboundVerificationStatusValue.Success}    | ${OutboundVerificationStatusValue.Success}    | ${true}
-        `(
-            'should return $result when domain is $domain and single sender is $singleSender',
-            ({ domain, singleSender, result }) => {
-                const newIntegration = cloneDeep(integration)
-                newIntegration.meta.outbound_verification_status.domain = domain
-                newIntegration.meta.outbound_verification_status.single_sender =
-                    singleSender
-                expect(isOutboundVerifiedSendgrid(newIntegration)).toBe(result)
-            },
-        )
     })
 
     describe('isOutboundDomainVerified', () => {

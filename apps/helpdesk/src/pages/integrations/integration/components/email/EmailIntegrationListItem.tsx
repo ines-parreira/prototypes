@@ -26,7 +26,7 @@ import {
     canIntegrationDomainBeVerified,
     getDomainFromEmailAddress,
     isBaseEmailIntegration,
-    isOutboundVerifiedSendgrid,
+    isOutboundDomainVerified,
 } from './helpers'
 import { useEmailOnboardingCompleteCheck } from './hooks/useEmailOnboarding'
 
@@ -79,7 +79,7 @@ export default function EmailIntegrationListItem({
         !isForwardEmail ||
         isBaseIntegration
     const isDomainVerified = isSendgrid
-        ? isOutboundVerifiedSendgrid(integration as DEPRECATED_EmailIntegration)
+        ? isOutboundDomainVerified(integration as DEPRECATED_EmailIntegration)
         : verifiedDomains.includes(domain)
 
     // Whether to show the "pending domain verification" warning for this integration

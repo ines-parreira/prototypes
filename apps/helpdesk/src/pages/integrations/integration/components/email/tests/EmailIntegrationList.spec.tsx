@@ -18,7 +18,7 @@ import EmailIntegrationListVerificationStatus from '../EmailIntegrationListVerif
 import {
     canIntegrationDomainBeVerified,
     isBaseEmailIntegration,
-    isOutboundVerifiedSendgrid,
+    isOutboundDomainVerified,
 } from '../helpers'
 import { useEmailOnboardingCompleteCheck } from '../hooks/useEmailOnboarding'
 import { fetchEmailDomains } from '../resources'
@@ -49,7 +49,7 @@ const isBaseEmailIntegrationMock = assumeMock(isBaseEmailIntegration)
 const canIntegrationDomainBeVerifiedMock = assumeMock(
     canIntegrationDomainBeVerified,
 )
-const isOutboundVerifiedSendgridMock = assumeMock(isOutboundVerifiedSendgrid)
+const isOutboundDomainVerifiedMock = assumeMock(isOutboundDomainVerified)
 const useEmailOnboardingCompleteCheckMock = assumeMock(
     useEmailOnboardingCompleteCheck,
 )
@@ -185,7 +185,7 @@ describe('<EmailIntegrationList/>', () => {
             isBaseEmailIntegrationMock.mockReturnValue(false)
             canIntegrationDomainBeVerifiedMock.mockReturnValue(true)
             // Make sure this is false to trigger domain verification warning
-            isOutboundVerifiedSendgridMock.mockReturnValue(false)
+            isOutboundDomainVerifiedMock.mockReturnValue(false)
 
             // Reset the mock to ensure we're tracking fresh calls
             EmailIntegrationListVerificationStatusMock.mockClear()
@@ -412,7 +412,7 @@ describe('<EmailIntegrationList/>', () => {
             'should render the page without warning when a GMail integration is deactivated',
             async (emailProvider: EmailProvider) => {
                 const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
-                isOutboundVerifiedSendgridMock.mockReturnValue(false)
+                isOutboundDomainVerifiedMock.mockReturnValue(false)
                 isBaseEmailIntegrationMock.mockReturnValue(false)
 
                 renderWithRouter(
@@ -469,7 +469,7 @@ describe('<EmailIntegrationList/>', () => {
             'should render the page without warning when a Outlook integration is deactivated',
             async (emailProvider: EmailProvider) => {
                 const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
-                isOutboundVerifiedSendgridMock.mockReturnValue(false)
+                isOutboundDomainVerifiedMock.mockReturnValue(false)
                 isBaseEmailIntegrationMock.mockReturnValue(false)
 
                 renderWithRouter(
@@ -650,7 +650,7 @@ describe('<EmailIntegrationList/>', () => {
                     } as any)
 
                     fetchEmailDomainsMock.mockResolvedValueOnce([])
-                    isOutboundVerifiedSendgridMock.mockReturnValue(false)
+                    isOutboundDomainVerifiedMock.mockReturnValue(false)
 
                     const component = renderWithRouter(
                         <QueryClientProvider client={queryClient}>
@@ -688,7 +688,7 @@ describe('<EmailIntegrationList/>', () => {
                 '(inactive integrations) should redirect to the correct page when clicking on the integration - $type',
                 async (integration) => {
                     fetchEmailDomainsMock.mockResolvedValueOnce([])
-                    isOutboundVerifiedSendgridMock.mockReturnValue(false)
+                    isOutboundDomainVerifiedMock.mockReturnValue(false)
 
                     const component = renderWithRouter(
                         <QueryClientProvider client={queryClient}>
@@ -807,7 +807,7 @@ describe('<EmailIntegrationList/>', () => {
                     canDomainBeVerified = true,
                 }) => {
                     fetchEmailDomainsMock.mockResolvedValueOnce([])
-                    isOutboundVerifiedSendgridMock.mockReturnValue(true)
+                    isOutboundDomainVerifiedMock.mockReturnValue(true)
                     canIntegrationDomainBeVerifiedMock.mockReturnValue(
                         canDomainBeVerified,
                     )
