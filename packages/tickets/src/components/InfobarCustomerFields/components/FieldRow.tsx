@@ -1,5 +1,7 @@
 import React from 'react'
 
+import cn from 'classnames'
+
 import { Label } from '@gorgias/axiom'
 
 import css from './FieldRow.less'
@@ -9,6 +11,7 @@ export type FieldRowProps = {
     label: React.ReactNode
     children: React.ReactNode
     isRequired?: boolean
+    className?: string
 }
 
 export const FieldRow = ({
@@ -16,9 +19,10 @@ export const FieldRow = ({
     label,
     children,
     isRequired = false,
+    className,
 }: FieldRowProps) => {
     return (
-        <div className={css.row}>
+        <div className={cn(css.row, className)}>
             {label ? (
                 <Label
                     size="sm"

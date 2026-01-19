@@ -1,3 +1,5 @@
+import cn from 'classnames'
+
 import { OverflowListItem, Text } from '@gorgias/axiom'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
@@ -59,11 +61,11 @@ export function InfobarBaseCustomerFields({
             </OverflowListItem>
             {location && (
                 <OverflowListItem className={css.overflowListItem}>
-                    <FieldRow label="Location">
+                    <FieldRow label="Location" className={css.infoFieldRow}>
                         <Text
                             size="sm"
                             overflow="ellipsis"
-                            className={css.fieldValue}
+                            className={cn(css.fieldValue, css.infoFieldValue)}
                         >
                             {location}
                         </Text>
@@ -72,11 +74,11 @@ export function InfobarBaseCustomerFields({
             )}
             {localTime && (
                 <OverflowListItem className={css.overflowListItem}>
-                    <FieldRow label="Local time">
+                    <FieldRow label="Local time" className={css.infoFieldRow}>
                         <Text
                             size="sm"
                             overflow="ellipsis"
-                            className={css.fieldValue}
+                            className={cn(css.fieldValue, css.infoFieldValue)}
                         >
                             {localTime}
                         </Text>
