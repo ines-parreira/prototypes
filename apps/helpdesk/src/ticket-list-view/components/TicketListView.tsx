@@ -12,6 +12,7 @@ import {
 
 import {
     useCurrentUserLanguagePreferences,
+    useHelpdeskV2MS1Flag,
     useTicketsTranslatedProperties,
 } from '@repo/tickets'
 import cn from 'classnames'
@@ -84,6 +85,7 @@ export default function TicketListView({
     viewId,
     registerToggleUnread,
 }: Props) {
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const dispatch = useAppDispatch()
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
     const viewCount = useAppSelector(getViewCount(viewId))
@@ -271,7 +273,11 @@ export default function TicketListView({
     return (
         <div className={css.wrapper}>
             <div className={css.titleWrapper}>
-                <div className={css.headerLeft}>
+                <div
+                    className={cn(css.headerLeft, {
+                        [css.headerLeftMS1Spacing]: hasUIVisionMS1,
+                    })}
+                >
                     <SplitTicketViewToggle />
                     <div className={css.titleAndViewDecorationWrapper}>
                         <ViewDecoration view={view} />

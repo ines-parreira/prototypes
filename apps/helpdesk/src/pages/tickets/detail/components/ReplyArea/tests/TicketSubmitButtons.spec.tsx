@@ -92,6 +92,18 @@ const legacyBridgeProps = {
         device: {},
         call: null,
     },
+    dtpToggle: {
+        isEnabled: false,
+        setIsEnabled: jest.fn(),
+        previousTicketId: undefined,
+        nextTicketId: undefined,
+        setPrevNextTicketIds: jest.fn(),
+        shouldRedirectToSplitView: false,
+        setShouldRedirectToSplitView: jest.fn(),
+    },
+    dtpEnabled: {
+        isEnabled: false,
+    },
 }
 
 describe('<TicketSubmitButtons />', () => {

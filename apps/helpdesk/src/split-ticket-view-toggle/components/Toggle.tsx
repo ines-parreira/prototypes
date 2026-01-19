@@ -1,13 +1,13 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
 import { useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import cn from 'classnames'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import { TooltipDelay } from 'core/ui/tooltip.utils'
 
 import useSplitTicketView from '../hooks/useSplitTicketView'
 import useIsToggleEnabled from './useIsToggleEnabled'
@@ -24,6 +24,7 @@ export default function Toggle() {
     const { isEnabled, setIsEnabled } = useSplitTicketView()
     const { isEnabled: isToggleEnabled } = useIsToggleEnabled()
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
 
     const id = useId()
     const buttonId = 'toggle-button-' + id
@@ -37,8 +38,37 @@ export default function Toggle() {
         setIsEnabled(!isEnabled)
     }, [isEnabled, setIsEnabled])
 
+    if (hasUIVisionMS1) {
+        return (
+            <Tooltip>
+                <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={handleClick}
+                    id={buttonId}
+                    isDisabled={!isToggleEnabled}
+                    data-candu-id="dtp-toggle"
+                    icon="system-bar-left-collapse"
+                    aria-describedby={
+                        isEnabled ? Labels.FullWidth : Labels.SplitTicket
+                    }
+                />
+
+                <TooltipContent
+                    title={
+                        !isToggleEnabled
+                            ? 'Select a view in order to enable the ticket panel.'
+                            : isEnabled
+                              ? Labels.FullWidth
+                              : Labels.SplitTicket
+                    }
+                />
+            </Tooltip>
+        )
+    }
+
     return (
-        <>
+        <Tooltip>
             <button
                 className={cn(
                     showGlobalNav ? css.showGlobalNavToggle : css.toggle,
@@ -68,28 +98,15 @@ export default function Toggle() {
                     </span>
                 )}
             </button>
-            {showGlobalNav && isToggleEnabled && (
-                <Tooltip
-                    target={buttonId}
-                    placement="right"
-                    delay={TooltipDelay.Short}
-                >
-                    {isEnabled ? Labels.FullWidth : Labels.SplitTicket}
-                </Tooltip>
-            )}
-
-            {!isToggleEnabled && (
-                <Tooltip
-                    target={buttonId}
-                    placement="bottom-start"
-                    delay={TooltipDelay.Short}
-                    innerProps={{
-                        popperClassName: css.tooltip,
-                    }}
-                >
-                    Select a view in order to enable the ticket panel.
-                </Tooltip>
-            )}
-        </>
+            <TooltipContent
+                title={
+                    !isToggleEnabled
+                        ? 'Select a view in order to enable the ticket panel.'
+                        : isEnabled
+                          ? Labels.FullWidth
+                          : Labels.SplitTicket
+                }
+            />
+        </Tooltip>
     )
 }

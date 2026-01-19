@@ -39,6 +39,8 @@ type LegacyBridgeOptions = {
     handleTicketDraft?: LegacyBridgeContextType['handleTicketDraft']
     makeOutboundCall?: ReturnType<typeof vi.fn>
     voiceDevice?: LegacyBridgeContextType['voiceDevice']
+    dtpToggle?: LegacyBridgeContextType['dtpToggle']
+    dtpEnabled?: LegacyBridgeContextType['dtpEnabled']
 }
 
 type RenderOptions = RenderOptionsPrimitive &
@@ -82,6 +84,18 @@ const defaultOptions = {
         device: {},
         call: null,
     },
+    dtpToggle: {
+        isEnabled: false,
+        setIsEnabled: vi.fn(),
+        previousTicketId: undefined,
+        nextTicketId: undefined,
+        setPrevNextTicketIds: vi.fn(),
+        shouldRedirectToSplitView: false,
+        setShouldRedirectToSplitView: vi.fn(),
+    },
+    dtpEnabled: {
+        isEnabled: true,
+    },
 }
 
 export const render = (element: ReactElement, options?: RenderOptions) => {
@@ -117,6 +131,8 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
             toggleQuickReplies: mergedOptions.toggleQuickReplies,
             onToggleUnread: mergedOptions.onToggleUnread,
             handleTicketDraft: mergedOptions.handleTicketDraft,
+            dtpToggle: mergedOptions.dtpToggle,
+            dtpEnabled: mergedOptions.dtpEnabled,
         },
         ...result,
     }

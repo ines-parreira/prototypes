@@ -71,6 +71,21 @@ export type LegacyBridgeContextType = {
         device?: unknown
         call?: unknown
     }
+    dtpToggle: {
+        isEnabled: boolean
+        setIsEnabled: (value: boolean) => void
+        previousTicketId: number | undefined
+        nextTicketId: number | undefined
+        setPrevNextTicketIds: (ticketIds: {
+            prev: number | undefined
+            next: number | undefined
+        }) => void
+        shouldRedirectToSplitView: boolean
+        setShouldRedirectToSplitView: (value: boolean) => void
+    }
+    dtpEnabled: {
+        isEnabled: boolean
+    }
 }
 
 export const LegacyBridgeContext =

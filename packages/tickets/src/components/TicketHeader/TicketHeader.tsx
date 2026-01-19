@@ -1,5 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
+import { DTPTicketHeaderToggle } from '../../dtp/DTPTicketHeaderToggle'
 import { useTicket } from '../../hooks/useTicket'
 import { TicketTranslationMenu } from '../../translations/components/TicketTranslationMenu'
 import { SpamTicket } from '../SpamTicket'
@@ -41,6 +42,7 @@ export function TicketHeader({ ticketId }: Props) {
     return (
         <TicketHeaderContainer>
             <TicketHeaderLeft>
+                <DTPTicketHeaderToggle />
                 <TicketTitle ticket={ticket} />
             </TicketHeaderLeft>
             <TicketHeaderRight>

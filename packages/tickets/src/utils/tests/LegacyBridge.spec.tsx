@@ -24,6 +24,20 @@ const mockVoiceDevice: LegacyBridgeContextType['voiceDevice'] = {
     call: null,
 }
 
+const mockDtpToggle: LegacyBridgeContextType['dtpToggle'] = {
+    isEnabled: false,
+    setIsEnabled: vi.fn(),
+    previousTicketId: undefined,
+    nextTicketId: undefined,
+    setPrevNextTicketIds: vi.fn(),
+    shouldRedirectToSplitView: false,
+    setShouldRedirectToSplitView: vi.fn(),
+}
+
+const mockDtpEnabled: LegacyBridgeContextType['dtpEnabled'] = {
+    isEnabled: true,
+}
+
 describe('TicketsLegacyBridgeProvider', () => {
     it('should render children', () => {
         render(
@@ -41,6 +55,8 @@ describe('TicketsLegacyBridgeProvider', () => {
                 }}
                 makeOutboundCall={vi.fn()}
                 voiceDevice={mockVoiceDevice}
+                dtpToggle={mockDtpToggle}
+                dtpEnabled={mockDtpEnabled}
             >
                 <div>Test Child</div>
             </TicketsLegacyBridgeProvider>,
@@ -82,6 +98,8 @@ describe('TicketsLegacyBridgeProvider', () => {
                 }}
                 makeOutboundCall={vi.fn()}
                 voiceDevice={mockVoiceDevice}
+                dtpToggle={mockDtpToggle}
+                dtpEnabled={mockDtpEnabled}
             >
                 <TestComponent />
             </TicketsLegacyBridgeProvider>,
@@ -128,6 +146,8 @@ describe('useTicketsLegacyBridge', () => {
                 }}
                 makeOutboundCall={vi.fn()}
                 voiceDevice={mockVoiceDevice}
+                dtpToggle={mockDtpToggle}
+                dtpEnabled={mockDtpEnabled}
             >
                 <TestComponent />
             </TicketsLegacyBridgeProvider>,
