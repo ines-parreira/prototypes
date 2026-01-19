@@ -438,6 +438,51 @@ describe('useActionDrivenNavbarSections', () => {
         })
     })
 
+    describe('setup completion status', () => {
+        it('should return true when store has activation data', () => {
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            const status = result.current.getSetupCompletionStatus('teststore1')
+            expect(status).toBe(true)
+        })
+
+        it('should return true for any store with activation data', () => {
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            const status = result.current.getSetupCompletionStatus('teststore2')
+            expect(status).toBe(true)
+        })
+
+        it('should return false when store has no activation data', () => {
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            const status =
+                result.current.getSetupCompletionStatus('unknownstore')
+            expect(status).toBe(false)
+        })
+
+        it('should return false when storeActivations is empty', () => {
+            mockUseStoreActivations.mockReturnValue({
+                storeActivations: {} as any,
+                progressPercentage: 0,
+                isFetchLoading: false,
+                isSaveLoading: false,
+                changeSales: jest.fn(),
+                changeSupport: jest.fn(),
+                changeChannel: jest.fn(),
+                refreshStoreActivations: jest.fn(),
+                syncAllStoreActivations: jest.fn(),
+                canRefresh: true,
+                activation: jest.fn(),
+            } as any)
+
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            const status = result.current.getSetupCompletionStatus('teststore1')
+            expect(status).toBe(false)
+        })
+    })
+
     describe('URL path extraction', () => {
         it('should extract rest of path correctly for navigation', () => {
             Object.defineProperty(window, 'location', {
@@ -545,6 +590,142 @@ describe('useActionDrivenNavbarSections', () => {
 
             expect(mockPush).toHaveBeenCalledWith(
                 '/app/ai-agent/shopify/teststore2/intents',
+            )
+        })
+    })
+
+    describe('redirect behavior based on setup completion', () => {
+        it('should redirect to base page when switching to store without activation data', () => {
+            Object.defineProperty(window, 'location', {
+                value: {
+                    pathname:
+                        '/app/ai-agent/shopify/teststore1/train/knowledge',
+                },
+                writable: true,
+            })
+            mockUseLocation.mockReturnValue({
+                pathname: '/app/ai-agent/shopify/teststore1/train/knowledge',
+                search: '',
+                hash: '',
+                state: null,
+                key: 'test',
+            })
+
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            act(() => {
+                result.current.handleStoreSelect('unknownstore')
+            })
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/unknownstore',
+            )
+        })
+
+        it('should preserve path when switching to store with activation data', () => {
+            Object.defineProperty(window, 'location', {
+                value: {
+                    pathname:
+                        '/app/ai-agent/shopify/teststore1/train/knowledge',
+                },
+                writable: true,
+            })
+            mockUseLocation.mockReturnValue({
+                pathname: '/app/ai-agent/shopify/teststore1/train/knowledge',
+                search: '',
+                hash: '',
+                state: null,
+                key: 'test',
+            })
+
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            act(() => {
+                result.current.handleStoreSelect('teststore2')
+            })
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/teststore2/train/knowledge',
+            )
+        })
+
+        it('should redirect to base when switching from settings to store without setup', () => {
+            Object.defineProperty(window, 'location', {
+                value: {
+                    pathname: '/app/ai-agent/shopify/teststore1/settings',
+                },
+                writable: true,
+            })
+            mockUseLocation.mockReturnValue({
+                pathname: '/app/ai-agent/shopify/teststore1/settings',
+                search: '',
+                hash: '',
+                state: null,
+                key: 'test',
+            })
+
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            act(() => {
+                result.current.handleStoreSelect('newstore')
+            })
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/newstore',
+            )
+        })
+
+        it('should redirect to base page from any sub-path when store has no setup', () => {
+            Object.defineProperty(window, 'location', {
+                value: {
+                    pathname: '/app/ai-agent/shopify/teststore1/analyze',
+                },
+                writable: true,
+            })
+            mockUseLocation.mockReturnValue({
+                pathname: '/app/ai-agent/shopify/teststore1/analyze',
+                search: '',
+                hash: '',
+                state: null,
+                key: 'test',
+            })
+
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            act(() => {
+                result.current.handleStoreSelect('storeWithoutSetup')
+            })
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/storeWithoutSetup',
+            )
+        })
+
+        it('should preserve nested paths for stores with setup completed', () => {
+            Object.defineProperty(window, 'location', {
+                value: {
+                    pathname:
+                        '/app/ai-agent/shopify/teststore1/train/knowledge/guidance',
+                },
+                writable: true,
+            })
+            mockUseLocation.mockReturnValue({
+                pathname:
+                    '/app/ai-agent/shopify/teststore1/train/knowledge/guidance',
+                search: '',
+                hash: '',
+                state: null,
+                key: 'test',
+            })
+
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            act(() => {
+                result.current.handleStoreSelect('teststore2')
+            })
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/teststore2/train/knowledge/guidance',
             )
         })
     })

@@ -99,6 +99,18 @@ export const useActionDrivenNavbarSections = () => {
         [storeActivations],
     )
 
+    const getSetupCompletionStatus = useCallback(
+        (storeName: string) => {
+            const activation = storeActivations[storeName]
+            if (!activation) {
+                return false
+            }
+
+            return true
+        },
+        [storeActivations],
+    )
+
     const getChannelStatus = useCallback(
         (channelType: NavigationChannelType) => {
             if (!selectedStore) return false
@@ -146,10 +158,14 @@ export const useActionDrivenNavbarSections = () => {
             // e.g., "opportunities/123" -> "opportunities", "products/456" -> "products"
             restOfPath = restOfPath.replace(/\/(\d+|[a-f0-9-]{8,})$/, '')
 
-            const isActivated = getStoreActivationStatus(shopName)
-            const nextPath = isActivated
-                ? `/app/ai-agent/${integrationType}/${shopName}${restOfPath ? `/${restOfPath}` : ''}`
-                : `/app/ai-agent/${integrationType}/${shopName}`
+            // Check if the destination store has completed setup
+            const isSetupCompleted = getSetupCompletionStatus(shopName)
+
+            const shouldRedirectToBase = !isSetupCompleted
+
+            const nextPath = shouldRedirectToBase
+                ? `/app/ai-agent/${integrationType}/${shopName}`
+                : `/app/ai-agent/${integrationType}/${shopName}${restOfPath ? `/${restOfPath}` : ''}`
 
             history.push(nextPath)
 
@@ -159,7 +175,7 @@ export const useActionDrivenNavbarSections = () => {
             history,
             currentIntegrationType,
             setExpandedSections,
-            getStoreActivationStatus,
+            getSetupCompletionStatus,
             location.pathname,
         ],
     )
@@ -177,6 +193,7 @@ export const useActionDrivenNavbarSections = () => {
         storeIntegrations,
         handleStoreSelect,
         getStoreActivationStatus,
+        getSetupCompletionStatus,
         getChannelStatus,
         navigationItems,
         expandedSections,
