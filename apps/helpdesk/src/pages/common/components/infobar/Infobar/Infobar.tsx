@@ -4,11 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
-import {
-    InfobarTicketCustomerDetails,
-    InfobarTicketDetails,
-    useHelpdeskV2MS1Flag,
-} from '@repo/tickets'
+import { InfobarTicketDetails, useHelpdeskV2MS1Flag } from '@repo/tickets'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -294,19 +290,9 @@ export const Infobar = ({
                         ticketSummaryIcon={
                             <TicketSummaryPopover displayLabel={false} />
                         }
-                    />
-                )}
-                {hasUIVisionMS1 && (
-                    <InfobarTicketCustomerDetails
                         onEditCustomer={handleEditCustomer}
                         onSyncToShopify={handleSyncToShopify}
                         hasShopifyIntegration={hasShopifyIntegration}
-                        showMergeButton={
-                            mode === 'default' &&
-                            !suggestedCustomer.isEmpty() &&
-                            !isWidgetEditing
-                        }
-                        onMergeClick={handleMergeClick}
                     />
                 )}
 

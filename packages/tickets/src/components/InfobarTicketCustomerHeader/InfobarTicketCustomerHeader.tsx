@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import {
     Box,
@@ -11,51 +11,46 @@ import {
     IconName,
     Menu,
     MenuItem,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
 } from '@gorgias/axiom'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
-
-import { useGetTicketData } from '../InfobarTicketDetails/components/InfobarTicketDetailsTags/hooks/useGetTicketData'
 
 import css from './InfobarTicketCustomerHeader.less'
 
 export interface InfobarTicketCustomerHeaderProps {
+    customer?: TicketCustomer
+    onOpenMergePanel?: () => void
     onEditCustomer: (customer: TicketCustomer) => void
     onSyncToShopify: (customer: TicketCustomer) => void
     hasShopifyIntegration?: boolean
-    showMergeButton?: boolean
-    onMergeClick?: () => void
 }
 
 export function InfobarTicketCustomerHeader({
+    customer,
+    onOpenMergePanel,
     onEditCustomer,
     onSyncToShopify,
     hasShopifyIntegration = false,
-    showMergeButton = false,
-    onMergeClick,
 }: InfobarTicketCustomerHeaderProps) {
-    const { ticketId } = useParams<{ ticketId: string }>()
-
-    const { data: ticket } = useGetTicketData(ticketId)
-
-    const customer = ticket?.data?.customer
-
     const handleActionSelect = useCallback(
         (action: 'edit' | 'sync') => {
             if (!customer) return
 
             switch (action) {
                 case 'edit':
-                    onEditCustomer(customer)
+                    onEditCustomer(customer as TicketCustomer)
                     break
                 case 'sync':
-                    onSyncToShopify(customer)
+                    onSyncToShopify(customer as TicketCustomer)
                     break
             }
         },
         [customer, onEditCustomer, onSyncToShopify],
     )
 
-    if (!ticketId || !customer) {
+    if (!customer) {
         return null
     }
 
@@ -63,20 +58,27 @@ export function InfobarTicketCustomerHeader({
 
     return (
         <div className={css.container}>
-            <Box justifyContent="space-between">
+            <Box justifyContent="space-between" alignItems="center">
                 <Link to={`/app/customer/${customer.id}`}>
                     <Heading size="sm">{customerDisplayName}</Heading>
                 </Link>
                 <Box>
-                    {showMergeButton && (
-                        <Button
-                            variant={ButtonVariant.Tertiary}
-                            size={ButtonSize.Sm}
-                            aria-label="Merge customer profiles"
-                            icon={IconName.ArrowMerging}
-                            onClick={onMergeClick}
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button
+                                variant={ButtonVariant.Tertiary}
+                                size={ButtonSize.Sm}
+                                aria-label="Merge or switch customer profiles"
+                                icon={IconName.ArrowMerging}
+                                onClick={onOpenMergePanel}
+                            />
+                        </TooltipTrigger>
+                        <TooltipContent
+                            title=" Search for customers to merge or to switch the
+                                ticket customer"
+                            maxWidth={147}
                         />
-                    )}
+                    </Tooltip>
                     <Menu
                         aria-label="Customer actions"
                         trigger={

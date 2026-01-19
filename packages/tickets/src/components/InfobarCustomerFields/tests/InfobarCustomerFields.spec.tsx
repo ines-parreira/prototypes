@@ -4,18 +4,15 @@ import { setupServer } from 'msw/node'
 
 import {
     mockGetCurrentUserHandler,
-    mockGetTicketHandler,
     mockListCustomerCustomFieldsValuesHandler,
     mockListCustomerCustomFieldsValuesResponse,
     mockListCustomFieldsHandler,
     mockListCustomFieldsResponse,
     mockListIntegrationsHandler,
     mockListPhoneNumbersHandler,
-    mockTicket,
     mockTicketCustomer,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
-import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { render, testAppQueryClient } from '../../../tests/render.utils'
 import { InfobarCustomerFields } from '../InfobarCustomerFields'
@@ -47,21 +44,13 @@ describe('InfobarCustomerFields', () => {
     })
 
     it('should return null when customer is not available', async () => {
-        const ticket = mockTicket({
-            id: 123,
-            customer: null as unknown as TicketCustomer,
-        })
-
-        const mockGetTicket = mockGetTicketHandler(async () =>
-            HttpResponse.json(ticket),
+        const { container } = render(
+            <InfobarCustomerFields customer={undefined} ticketId={'123'} />,
+            {
+                initialEntries: ['/tickets/123'],
+                path: '/tickets/:ticketId',
+            },
         )
-
-        server.use(mockGetTicket.handler)
-
-        const { container } = render(<InfobarCustomerFields />, {
-            initialEntries: ['/tickets/123'],
-            path: '/tickets/:ticketId',
-        })
 
         await waitFor(() => {
             expect(container.firstChild).toBeNull()
@@ -69,18 +58,11 @@ describe('InfobarCustomerFields', () => {
     })
 
     it('should render OverflowList when ticketId and customer are available', async () => {
-        const ticket = mockTicket({
-            id: 123,
-            customer: mockTicketCustomer({
-                id: 1,
-                name: 'Test Customer',
-                email: 'test@example.com',
-            }),
+        const mockCustomer = mockTicketCustomer({
+            id: 1,
+            name: 'Test Customer',
+            email: 'test@example.com',
         })
-
-        const mockGetTicket = mockGetTicketHandler(async () =>
-            HttpResponse.json(ticket),
-        )
 
         const mockGetCurrentUser = mockGetCurrentUserHandler(async () =>
             HttpResponse.json(mockUser()),
@@ -98,7 +80,6 @@ describe('InfobarCustomerFields', () => {
             )
 
         server.use(
-            mockGetTicket.handler,
             mockGetCurrentUser.handler,
             mockListCustomFields.handler,
             mockListCustomerFieldsValues.handler,
@@ -106,10 +87,13 @@ describe('InfobarCustomerFields', () => {
             mockListPhoneNumbersHandler().handler,
         )
 
-        const { container } = render(<InfobarCustomerFields />, {
-            initialEntries: ['/tickets/123'],
-            path: '/tickets/:ticketId',
-        })
+        const { container } = render(
+            <InfobarCustomerFields customer={mockCustomer} ticketId={'123'} />,
+            {
+                initialEntries: ['/tickets/123'],
+                path: '/tickets/:ticketId',
+            },
+        )
 
         await waitFor(() => {
             const overflowList = container.querySelector(

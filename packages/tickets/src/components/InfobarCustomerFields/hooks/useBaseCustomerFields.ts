@@ -14,25 +14,25 @@ type ChannelType = 'email' | 'phone'
 type BaseCustomerFieldsEmptyFields = Record<ChannelType, string>
 
 type BaseCustomerFieldsParams = {
-    ticketId: string
-    customer: TicketCustomer
+    ticketId?: string
+    customer: TicketCustomer | undefined
 }
 export function useBaseCustomerFields({
     ticketId,
     customer,
 }: BaseCustomerFieldsParams) {
-    const [note, setNote] = useState<string>(customer.note ?? '')
+    const [note, setNote] = useState<string>(customer?.note ?? '')
     const [fields, setFields] = useState<BaseCustomerFieldsEmptyFields>({
         phone: '',
         email: '',
     })
     const [channels, setChannels] = useState<TicketCustomerChannel[]>(
-        customer.channels ?? [],
+        customer?.channels ?? [],
     )
 
     const sortedChannels = useCustomerChannels(channels)
 
-    const { updateCustomer } = useUpdateCustomer(ticketId, customer?.id ?? 0)
+    const { updateCustomer } = useUpdateCustomer(customer?.id ?? -1, ticketId)
 
     const handleNoteBlur = useCallback(
         async (value: string) => {

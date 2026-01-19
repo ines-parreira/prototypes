@@ -5,10 +5,8 @@ import { setupServer } from 'msw/node'
 import { OverflowList } from '@gorgias/axiom'
 import {
     mockGetCurrentUserHandler,
-    mockGetTicketHandler,
     mockListIntegrationsHandler,
     mockListPhoneNumbersHandler,
-    mockTicket,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 import type { TicketCustomer, User } from '@gorgias/helpdesk-types'
@@ -93,7 +91,7 @@ const createMockCustomer = (
     } as TicketCustomer
 }
 
-const setupMocks = (customer: TicketCustomer, userSettings = [{}]) => {
+const setupMocks = (userSettings = [{}]) => {
     const user = mockUser({
         id: 1,
         email: 'agent@example.com',
@@ -104,18 +102,8 @@ const setupMocks = (customer: TicketCustomer, userSettings = [{}]) => {
         HttpResponse.json(user),
     )
 
-    const ticket = mockTicket({
-        id: 123,
-        customer,
-    })
-
-    const mockGetTicket = mockGetTicketHandler(async () =>
-        HttpResponse.json(ticket),
-    )
-
     server.use(
         mockGetCurrentUser.handler,
-        mockGetTicket.handler,
         mockListIntegrationsHandler().handler,
         mockListPhoneNumbersHandler().handler,
     )
@@ -135,7 +123,7 @@ const TestComponent = ({ customer }: { customer: TicketCustomer }) => {
 describe('InfobarBaseCustomerFields', () => {
     it('should render all basic fields', async () => {
         const customer = createMockCustomer()
-        setupMocks(customer, [
+        setupMocks([
             {
                 type: 'preferences',
                 data: {
@@ -160,7 +148,7 @@ describe('InfobarBaseCustomerFields', () => {
                 location_info: {},
             },
         })
-        setupMocks(customer)
+        setupMocks()
 
         render(<TestComponent customer={customer} />)
 
@@ -186,7 +174,7 @@ describe('InfobarBaseCustomerFields', () => {
                 },
             ],
         } as TicketCustomer)
-        setupMocks(customer)
+        setupMocks()
 
         render(<TestComponent customer={customer} />)
 
@@ -216,7 +204,7 @@ describe('InfobarBaseCustomerFields', () => {
                 },
             ],
         } as TicketCustomer)
-        setupMocks(customer)
+        setupMocks()
 
         render(<TestComponent customer={customer} />)
 
@@ -252,7 +240,7 @@ describe('InfobarBaseCustomerFields', () => {
                 },
             ],
         } as TicketCustomer)
-        setupMocks(customer)
+        setupMocks()
 
         render(<TestComponent customer={customer} />)
 
@@ -299,7 +287,7 @@ describe('InfobarBaseCustomerFields', () => {
 
         it('should show draft-related menu items when a draft exists', async () => {
             const customer = createMockCustomer()
-            setupMocks(customer)
+            setupMocks()
 
             const onResumeDraft = vi.fn()
             const onDiscardDraft = vi.fn()
@@ -327,7 +315,7 @@ describe('InfobarBaseCustomerFields', () => {
 
         it('should call onResumeDraft when "Resume draft" is clicked', async () => {
             const customer = createMockCustomer()
-            setupMocks(customer)
+            setupMocks()
 
             const onResumeDraft = vi.fn()
             const onDiscardDraft = vi.fn()
@@ -352,7 +340,7 @@ describe('InfobarBaseCustomerFields', () => {
 
         it('should call onDiscardDraft with correct location when "Discard and create new ticket" is clicked', async () => {
             const customer = createMockCustomer()
-            setupMocks(customer)
+            setupMocks()
 
             const onResumeDraft = vi.fn()
             const onDiscardDraft = vi.fn()
@@ -392,7 +380,7 @@ describe('InfobarBaseCustomerFields', () => {
 
         it('should show regular "Send email" menu item when no draft exists', async () => {
             const customer = createMockCustomer()
-            setupMocks(customer)
+            setupMocks()
 
             const onResumeDraft = vi.fn()
             const onDiscardDraft = vi.fn()

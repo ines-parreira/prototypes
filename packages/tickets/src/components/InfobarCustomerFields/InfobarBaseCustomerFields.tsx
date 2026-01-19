@@ -17,7 +17,7 @@ import css from './InfobarCustomerFields.less'
 
 interface InfobarBaseCustomerFieldsProps {
     customer: TicketCustomer
-    ticketId: string
+    ticketId?: string
 }
 
 export function InfobarBaseCustomerFields({

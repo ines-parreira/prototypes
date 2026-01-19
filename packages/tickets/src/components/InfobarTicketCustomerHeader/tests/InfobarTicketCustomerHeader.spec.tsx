@@ -1,27 +1,17 @@
 import { act, screen, waitFor } from '@testing-library/react'
-import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { mockGetTicketHandler, mockTicket } from '@gorgias/helpdesk-mocks'
+import { mockTicketCustomer } from '@gorgias/helpdesk-mocks'
 
 import { render, testAppQueryClient } from '../../../tests/render.utils'
 import { InfobarTicketCustomerHeader } from '../InfobarTicketCustomerHeader'
 
 const ticketId = '123'
 
-const mockCustomer = {
+const mockCustomer = mockTicketCustomer({
     id: 456,
     name: 'John Doe',
     email: 'john.doe@example.com',
-}
-
-const mockGetTicket = mockGetTicketHandler(async () => {
-    return HttpResponse.json(
-        mockTicket({
-            id: Number(ticketId),
-            customer: mockCustomer as any,
-        }),
-    )
 })
 
 const server = setupServer()
@@ -31,7 +21,6 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    server.use(mockGetTicket.handler)
     testAppQueryClient.clear()
 })
 
@@ -44,6 +33,7 @@ afterAll(() => {
 })
 
 const defaultProps = {
+    customer: mockCustomer,
     onEditCustomer: vi.fn(),
     onSyncToShopify: vi.fn(),
     hasShopifyIntegration: false,
@@ -60,36 +50,12 @@ const waitUntilLoaded = async () => {
 }
 
 describe('InfobarTicketCustomerHeader', () => {
-    it('should render null when ticketId is missing', () => {
-        const { container } = render(
-            <InfobarTicketCustomerHeader {...defaultProps} />,
-            {
-                path: '/ticket/:ticketId',
-                initialEntries: ['/ticket/'],
-            },
-        )
-
-        expect(container.firstChild).toBeNull()
-    })
-
     it('should render null when customer data is missing', async () => {
-        server.use(
-            mockGetTicketHandler(async () => {
-                return HttpResponse.json(
-                    mockTicket({
-                        id: Number(ticketId),
-                        customer: undefined,
-                    }),
-                )
-            }).handler,
-        )
-
         const { container } = render(
-            <InfobarTicketCustomerHeader {...defaultProps} />,
-            {
-                path: '/ticket/:ticketId',
-                initialEntries: [`/ticket/${ticketId}`],
-            },
+            <InfobarTicketCustomerHeader
+                {...defaultProps}
+                customer={undefined}
+            />,
         )
 
         await waitFor(() => {
@@ -213,69 +179,5 @@ describe('InfobarTicketCustomerHeader', () => {
                 email: mockCustomer.email,
             }),
         )
-    })
-
-    it('should show merge button when showMergeButton is true', async () => {
-        render(
-            <InfobarTicketCustomerHeader
-                {...defaultProps}
-                showMergeButton={true}
-            />,
-            {
-                path: '/ticket/:ticketId',
-                initialEntries: [`/ticket/${ticketId}`],
-            },
-        )
-
-        await waitUntilLoaded()
-
-        const mergeButton = screen.getByRole('button', {
-            name: 'Merge customer profiles',
-        })
-        expect(mergeButton).toBeInTheDocument()
-    })
-
-    it('should not show merge button when showMergeButton is false', async () => {
-        render(
-            <InfobarTicketCustomerHeader
-                {...defaultProps}
-                showMergeButton={false}
-            />,
-            {
-                path: '/ticket/:ticketId',
-                initialEntries: [`/ticket/${ticketId}`],
-            },
-        )
-
-        await waitUntilLoaded()
-
-        const mergeButton = screen.queryByRole('button', {
-            name: 'Merge customer profiles',
-        })
-        expect(mergeButton).not.toBeInTheDocument()
-    })
-
-    it('should call onMergeClick when merge button is clicked', async () => {
-        const onMergeClick = vi.fn()
-        const { user } = render(
-            <InfobarTicketCustomerHeader
-                {...defaultProps}
-                showMergeButton={true}
-                onMergeClick={onMergeClick}
-            />,
-            {
-                path: '/ticket/:ticketId',
-                initialEntries: [`/ticket/${ticketId}`],
-            },
-        )
-
-        await waitUntilLoaded()
-
-        const mergeButton = screen.getByRole('button', {
-            name: 'Merge customer profiles',
-        })
-        await act(() => user.click(mergeButton))
-
-        expect(onMergeClick).toHaveBeenCalledTimes(1)
     })
 })
