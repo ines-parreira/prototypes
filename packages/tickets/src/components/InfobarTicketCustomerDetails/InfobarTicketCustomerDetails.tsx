@@ -5,7 +5,7 @@ import type { Customer, TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { InfobarCustomerFields } from '../InfobarCustomerFields/InfobarCustomerFields'
 import { InfobarTicketCustomerHeader } from '../InfobarTicketCustomerHeader/InfobarTicketCustomerHeader'
-import { useGetTicketData } from '../InfobarTicketDetails/components/InfobarTicketDetailsTags/hooks/useGetTicketData'
+import { useGetTicketData } from '../InfobarTicketDetails/components/InfobarTicketTags/hooks/useGetTicketData'
 import { DuplicateCustomer } from './components/DuplicateCustomer/DuplicateCustomer'
 import { CustomerPreview } from './components/SearchAndPreviewCustomersPanel/components/CustomerPreview'
 import { SearchAndPreviewCustomersPanel } from './components/SearchAndPreviewCustomersPanel/SearchAndPreviewCustomersPanel'

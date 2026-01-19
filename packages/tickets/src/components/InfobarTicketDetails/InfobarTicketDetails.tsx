@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { InfobarTicketCustomerDetails } from '../InfobarTicketCustomerDetails/InfobarTicketCustomerDetails'
-import { InfobarTicketDetailsTags } from './components/InfobarTicketDetailsTags/InfobarTicketDetailsTags'
+import { TicketInfobarTicketDetailsTags } from './components/InfobarTicketTags'
 import { InfobarTicketDetailsHeader } from './components/InforbarTicketDetailsHeader'
 import { TicketInfobarTicketFields } from './components/TicketInfobarTicketFields'
 
@@ -36,7 +36,7 @@ export function InfobarTicketDetails({
                 <InfobarTicketDetailsHeader
                     ticketSummaryIcon={ticketSummaryIcon}
                 />
-                <InfobarTicketDetailsTags ticketId={ticketId} />
+                <TicketInfobarTicketDetailsTags ticketId={ticketId} />
                 <TicketInfobarTicketFields ticketId={ticketId} />
             </div>
             <InfobarTicketCustomerDetails

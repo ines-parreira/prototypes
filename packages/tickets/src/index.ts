@@ -1,4 +1,6 @@
 export { InfobarTicketDetails } from './components/InfobarTicketDetails/InfobarTicketDetails'
+export { TagsMultiSelect } from './components/InfobarTicketDetails/components/InfobarTicketTags/TagsMultiSelect'
+export type { TagsMultiSelectProps } from './components/InfobarTicketDetails/components/InfobarTicketTags/TagsMultiSelect'
 export { InfobarTicketCustomerDetails } from './components/InfobarTicketCustomerDetails/InfobarTicketCustomerDetails'
 export { MultiLevelSelect } from './components/MultiLevelSelect'
 export { TeamAssignee } from './components/TicketAssignee'

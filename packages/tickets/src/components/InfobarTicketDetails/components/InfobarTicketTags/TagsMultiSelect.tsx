@@ -16,17 +16,15 @@ import {
 } from '@gorgias/axiom'
 import type { TicketTag } from '@gorgias/helpdesk-queries'
 
-import { useGetTicketData } from './hooks/useGetTicketData'
 import { useListTagsSearch } from './hooks/useListTagsSearch'
-import {
-    sortByAscendingIdOrder,
-    useUpdateTicketTags,
-} from './hooks/useUpdateTicketTags'
+import { sortByAscendingIdOrder } from './hooks/useUpdateTicketTags'
 
-import css from './InfobarTicketDetailsTags.less'
+import css from './TagsMultiSelect.less'
 
-type InfobarTicketDetailsTagsProps = {
-    ticketId: string
+export type TagsMultiSelectProps = {
+    value: TicketTag[]
+    onChange: (tags: TicketTag[]) => void | Promise<void>
+    'aria-label'?: string
 }
 
 type TicketTagOption = {
@@ -34,11 +32,11 @@ type TicketTagOption = {
     label: string
 }
 
-export function InfobarTicketDetailsTags({
-    ticketId,
-}: InfobarTicketDetailsTagsProps) {
-    const { updateTicketTags } = useUpdateTicketTags(ticketId)
-    const { data: ticket } = useGetTicketData(ticketId)
+export function TagsMultiSelect({
+    value,
+    onChange,
+    'aria-label': ariaLabel = 'Tags selection',
+}: TagsMultiSelectProps) {
     const {
         data: tagList,
         search,
@@ -48,13 +46,13 @@ export function InfobarTicketDetailsTags({
         onLoad,
     } = useListTagsSearch()
 
-    const ticketTags = useMemo(
+    const selectedTags = useMemo(
         () =>
-            ticket?.data.tags.map((tag) => ({
+            value.map((tag) => ({
                 id: tag.id,
                 label: tag.name,
-            })) ?? [],
-        [ticket?.data.tags],
+            })),
+        [value],
     )
 
     const tagsOptions = useMemo(
@@ -69,9 +67,8 @@ export function InfobarTicketDetailsTags({
     )
 
     const handleSelectChange = useCallback(
-        async (selectedOptions: TicketTagOption[]) => {
-            const existingTagsIds =
-                ticket?.data.tags.map((option) => option.id) ?? []
+        (selectedOptions: TicketTagOption[]) => {
+            const existingTagsIds = value.map((tag) => tag.id)
 
             const newTags = selectedOptions
                 .filter((option) => !existingTagsIds.includes(option.id))
@@ -82,47 +79,38 @@ export function InfobarTicketDetailsTags({
                 ) as TicketTag[]
 
             if (newTags.length > 0) {
-                await updateTicketTags(Number(ticketId), {
-                    tags: [...newTags, ...(ticket?.data.tags ?? [])].sort(
-                        sortByAscendingIdOrder,
-                    ),
-                })
+                onChange([...newTags, ...value].sort(sortByAscendingIdOrder))
             } else {
-                // Non-visible currently saved tags shouldn't be removed from the ticket
+                // Non-visible currently saved tags shouldn't be removed
                 // since they can't have been selected for deletion
-                const nonVisibleSavedTags =
-                    ticket?.data.tags.filter(
-                        (tag) =>
-                            !tagsOptions.some((option) => option.id === tag.id),
-                    ) ?? []
-                const visibleSavedTags =
-                    ticket?.data.tags.filter((tag) =>
-                        tagsOptions.some((option) => option.id === tag.id),
-                    ) ?? []
+                const nonVisibleSavedTags = value.filter(
+                    (tag) =>
+                        !tagsOptions.some((option) => option.id === tag.id),
+                )
+                const visibleSavedTags = value.filter((tag) =>
+                    tagsOptions.some((option) => option.id === tag.id),
+                )
 
                 const selectedVisibleSavedTags = visibleSavedTags.filter(
                     (tag) =>
                         selectedOptions.some((option) => option.id === tag.id),
                 )
 
-                await updateTicketTags(Number(ticketId), {
-                    tags: [
-                        ...nonVisibleSavedTags,
-                        ...selectedVisibleSavedTags,
-                    ].sort(sortByAscendingIdOrder),
-                })
+                onChange(
+                    [...nonVisibleSavedTags, ...selectedVisibleSavedTags].sort(
+                        sortByAscendingIdOrder,
+                    ),
+                )
             }
         },
-        [tagsOptions, updateTicketTags, ticketId, ticket?.data, tagList?.pages],
+        [tagsOptions, onChange, value, tagList?.pages],
     )
 
     const handleCloseTag = useCallback(
         (tag: TicketTag) => {
-            updateTicketTags(Number(ticketId), {
-                tags: ticket?.data.tags.filter((t) => t.id !== tag.id) ?? [],
-            })
+            onChange(value.filter((t) => t.id !== tag.id))
         },
-        [updateTicketTags, ticketId, ticket?.data.tags],
+        [onChange, value],
     )
 
     return (
@@ -132,7 +120,7 @@ export function InfobarTicketDetailsTags({
                     <MultiSelect
                         trigger={({ ref }) => (
                             <>
-                                {ticketTags.length === 0 ? (
+                                {selectedTags.length === 0 ? (
                                     <Button
                                         ref={ref}
                                         slot="button"
@@ -157,12 +145,12 @@ export function InfobarTicketDetailsTags({
                         searchValue={search}
                         onSearchChange={setSearch}
                         items={tagsOptions}
-                        selectedItems={ticketTags}
+                        selectedItems={selectedTags}
                         onSelect={handleSelectChange}
                         maxHeight={256}
                         isLoading={isLoading}
                         onLoadMore={() => shouldLoadMore && onLoad()}
-                        aria-label="Ticket tags selection"
+                        aria-label={ariaLabel}
                     >
                         {(option) => (
                             <ListItem
@@ -175,7 +163,7 @@ export function InfobarTicketDetailsTags({
                         )}
                     </MultiSelect>
                 </OverflowListItem>
-                {ticket?.data.tags.map((tag) => (
+                {value.map((tag) => (
                     <OverflowListItem key={tag.id}>
                         <Tag
                             onClose={() => handleCloseTag(tag)}

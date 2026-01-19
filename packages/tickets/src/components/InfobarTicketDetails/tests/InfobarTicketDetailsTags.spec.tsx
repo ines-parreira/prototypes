@@ -12,7 +12,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { render, testAppQueryClient } from '../../../tests/render.utils'
-import { InfobarTicketDetailsTags } from '../components/InfobarTicketDetailsTags/InfobarTicketDetailsTags'
+import { TicketInfobarTicketDetailsTags } from '../components/InfobarTicketTags'
 
 const ticketId = '123'
 
@@ -106,7 +106,7 @@ afterAll(() => {
     server.close()
 })
 
-describe('InfobarTicketDetailsTags', () => {
+describe('TicketInfobarTicketDetailsTags', () => {
     const getAddButton = () => {
         const buttons = screen.getAllByRole('button')
         return buttons.find((btn) =>
@@ -121,7 +121,7 @@ describe('InfobarTicketDetailsTags', () => {
 
     describe('Initial rendering', () => {
         it('should render the component with add button', async () => {
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
@@ -132,7 +132,7 @@ describe('InfobarTicketDetailsTags', () => {
         })
 
         it('should render icon-only button when ticket has tags', async () => {
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
@@ -156,7 +156,7 @@ describe('InfobarTicketDetailsTags', () => {
 
             server.use(mockGetTicketNoTags.handler, mockListTags.handler)
 
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
@@ -167,7 +167,7 @@ describe('InfobarTicketDetailsTags', () => {
         })
 
         it('should display existing ticket tags', async () => {
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
@@ -181,7 +181,7 @@ describe('InfobarTicketDetailsTags', () => {
         })
 
         it('should render tags with color decorations', async () => {
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
@@ -196,7 +196,7 @@ describe('InfobarTicketDetailsTags', () => {
     describe('Tag selection via MultiSelect', () => {
         it('should display all available tags in dropdown', async () => {
             const { user } = render(
-                <InfobarTicketDetailsTags ticketId={ticketId} />,
+                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
 
             await waitFor(() => {
@@ -227,7 +227,7 @@ describe('InfobarTicketDetailsTags', () => {
                 mockUpdateTicket.waitForRequest(server)
 
             const { user } = render(
-                <InfobarTicketDetailsTags ticketId={ticketId} />,
+                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
 
             await waitFor(() => {
@@ -269,7 +269,7 @@ describe('InfobarTicketDetailsTags', () => {
 
         it('should add multiple tags when selected', async () => {
             const { user } = render(
-                <InfobarTicketDetailsTags ticketId={ticketId} />,
+                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
 
             await waitFor(() => {
@@ -322,7 +322,7 @@ describe('InfobarTicketDetailsTags', () => {
                 mockUpdateTicket.waitForRequest(server)
 
             const { user } = render(
-                <InfobarTicketDetailsTags ticketId={ticketId} />,
+                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
 
             await waitFor(() => {
@@ -357,7 +357,7 @@ describe('InfobarTicketDetailsTags', () => {
                 mockUpdateTicket.waitForRequest(server)
 
             const { user } = render(
-                <InfobarTicketDetailsTags ticketId={ticketId} />,
+                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
 
             await waitFor(() => {
@@ -431,7 +431,7 @@ describe('InfobarTicketDetailsTags', () => {
             )
 
             const { user } = render(
-                <InfobarTicketDetailsTags ticketId={ticketId} />,
+                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
 
             await waitFor(() => {
@@ -500,7 +500,7 @@ describe('InfobarTicketDetailsTags', () => {
                 mockUpdateTicket.waitForRequest(server)
 
             const { user } = render(
-                <InfobarTicketDetailsTags ticketId={ticketId} />,
+                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
 
             await waitFor(() => {
@@ -540,7 +540,7 @@ describe('InfobarTicketDetailsTags', () => {
     describe('Search functionality', () => {
         it('should display searchbox and allow typing', async () => {
             const { user } = render(
-                <InfobarTicketDetailsTags ticketId={ticketId} />,
+                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
 
             await waitFor(() => {
@@ -561,7 +561,7 @@ describe('InfobarTicketDetailsTags', () => {
 
         it('should show search input when dropdown is open', async () => {
             const { user } = render(
-                <InfobarTicketDetailsTags ticketId={ticketId} />,
+                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
 
             await waitFor(() => {
@@ -598,7 +598,7 @@ describe('InfobarTicketDetailsTags', () => {
             server.use(mockGetTicket.handler, mockListTagsPage1.handler)
 
             const { user } = render(
-                <InfobarTicketDetailsTags ticketId={ticketId} />,
+                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
 
             await waitFor(() => {
@@ -629,7 +629,7 @@ describe('InfobarTicketDetailsTags', () => {
 
             server.use(mockGetTicket.handler, mockListTagsComplete.handler)
 
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
@@ -653,7 +653,7 @@ describe('InfobarTicketDetailsTags', () => {
 
             server.use(mockGetTicketNoTags.handler, mockListTags.handler)
 
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
@@ -678,7 +678,7 @@ describe('InfobarTicketDetailsTags', () => {
 
             server.use(mockGetTicket.handler, mockListTagsEmpty.handler)
 
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
@@ -701,7 +701,7 @@ describe('InfobarTicketDetailsTags', () => {
 
             server.use(mockGetTicketError.handler, mockListTags.handler)
 
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
@@ -722,7 +722,7 @@ describe('InfobarTicketDetailsTags', () => {
 
             server.use(mockGetTicket.handler, mockListTagsError.handler)
 
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
@@ -748,7 +748,7 @@ describe('InfobarTicketDetailsTags', () => {
             )
 
             const { user } = render(
-                <InfobarTicketDetailsTags ticketId={ticketId} />,
+                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
 
             await waitFor(() => {
@@ -786,7 +786,7 @@ describe('InfobarTicketDetailsTags', () => {
 
             server.use(mockGetTicketManyTags.handler, mockListTags.handler)
 
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
@@ -816,7 +816,7 @@ describe('InfobarTicketDetailsTags', () => {
 
             server.use(mockGetTicketManyTags.handler, mockListTags.handler)
 
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
@@ -829,7 +829,7 @@ describe('InfobarTicketDetailsTags', () => {
 
     describe('Tag decorations', () => {
         it('should render tags with color decorations', async () => {
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
@@ -857,7 +857,7 @@ describe('InfobarTicketDetailsTags', () => {
 
             server.use(mockGetTicketPlain.handler, mockListTags.handler)
 
-            render(<InfobarTicketDetailsTags ticketId={ticketId} />, {
+            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
                 initialEntries: [`/tickets/${ticketId}`],
                 path: `/tickets/${ticketId}`,
             })
