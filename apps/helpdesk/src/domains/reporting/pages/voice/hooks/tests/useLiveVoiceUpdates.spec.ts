@@ -2042,8 +2042,8 @@ describe('useLiveVoiceUpdates', () => {
         )
 
         it.each([
-            '//helpdesk/phone.voice-call.inbound.monitoring-ended/1.0.0',
-            '//helpdesk/phone.voice-call.outbound.monitoring-ended/1.0.0',
+            '//helpdesk/phone.voice-call.inbound.monitoring-ended/1.0.1',
+            '//helpdesk/phone.voice-call.outbound.monitoring-ended/1.0.1',
         ])(
             'should update voice call monitoring status to none',
             (dataschema) => {
@@ -2091,8 +2091,8 @@ describe('useLiveVoiceUpdates', () => {
         )
 
         it.each([
-            '//helpdesk/phone.voice-call.inbound.monitoring-ended/1.0.0',
-            '//helpdesk/phone.voice-call.outbound.monitoring-ended/1.0.0',
+            '//helpdesk/phone.voice-call.inbound.monitoring-ended/1.0.1',
+            '//helpdesk/phone.voice-call.outbound.monitoring-ended/1.0.1',
         ])(
             'should remove agent status from live agents cache',
             (dataschema) => {

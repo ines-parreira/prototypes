@@ -58,7 +58,7 @@ catalogs:
     '@gorgias/knowledge-service-validators': '^0.2.44'
     '@tanstack/react-query': '4.36.1'
   events:
-    '@gorgias/events': '^0.13.3'
+    '@gorgias/events': '^0.13.4'
   react:
     react: '18.2.0'
     react-dom: '18.2.0'

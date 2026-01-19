@@ -424,8 +424,8 @@ export const useLiveVoiceUpdates = (
                     }
                     break
                 }
-                case '//helpdesk/phone.voice-call.inbound.monitoring-ended/1.0.0':
-                case '//helpdesk/phone.voice-call.outbound.monitoring-ended/1.0.0': {
+                case '//helpdesk/phone.voice-call.inbound.monitoring-ended/1.0.1':
+                case '//helpdesk/phone.voice-call.outbound.monitoring-ended/1.0.1': {
                     updateVoiceCallInLiveCallsQueryCache(
                         {
                             id: event.data.voice_call_id,
