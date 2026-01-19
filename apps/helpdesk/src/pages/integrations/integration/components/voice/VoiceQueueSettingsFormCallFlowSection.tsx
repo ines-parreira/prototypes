@@ -183,7 +183,7 @@ export default function VoiceQueueSettingsFormCallFlowSection() {
                                 outputTransform={(value) =>
                                     value === '' ? value : Number(value)
                                 }
-                                caption="Set a time between 10 and 3600 seconds (1 hour)."
+                                caption="Set a time between 10 and 7200 seconds (2 hour)."
                             />
                         </div>
                         <div>
