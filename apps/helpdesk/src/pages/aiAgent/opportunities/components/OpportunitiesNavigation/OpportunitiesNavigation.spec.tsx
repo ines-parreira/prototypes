@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -16,6 +14,9 @@ jest.mock(
             position: 0,
             isFirst: true,
             isLast: false,
+            totalNavigable: 3,
+            getNextIndex: jest.fn(() => 1),
+            getPrevIndex: jest.fn(() => undefined),
         })),
     }),
 )
@@ -26,6 +27,8 @@ const { useOpportunitiesNavigation } = jest.requireMock(
 
 describe('OpportunitiesNavigation', () => {
     const mockSelectCertainOpportunity = jest.fn()
+    const mockGetNextIndex = jest.fn(() => 1)
+    const mockGetPrevIndex = jest.fn(() => undefined as number | undefined)
 
     const mockOpportunities: Opportunity[] = [
         {
@@ -59,10 +62,16 @@ describe('OpportunitiesNavigation', () => {
     }
 
     beforeEach(() => {
+        jest.clearAllMocks()
+        mockGetNextIndex.mockReturnValue(1)
+        mockGetPrevIndex.mockReturnValue(undefined)
         useOpportunitiesNavigation.mockReturnValue({
             position: 0,
             isFirst: true,
             isLast: false,
+            totalNavigable: 3,
+            getNextIndex: mockGetNextIndex,
+            getPrevIndex: mockGetPrevIndex,
         })
     })
 
@@ -81,6 +90,9 @@ describe('OpportunitiesNavigation', () => {
             position: 1,
             isFirst: false,
             isLast: false,
+            totalNavigable: 3,
+            getNextIndex: mockGetNextIndex,
+            getPrevIndex: mockGetPrevIndex,
         })
 
         render(<OpportunitiesNavigation {...defaultProps} />)
@@ -93,13 +105,16 @@ describe('OpportunitiesNavigation', () => {
             position: 0,
             isFirst: true,
             isLast: false,
+            totalNavigable: 3,
+            getNextIndex: mockGetNextIndex,
+            getPrevIndex: mockGetPrevIndex,
         })
 
         render(<OpportunitiesNavigation {...defaultProps} />)
 
         const buttons = screen.getAllByRole('button')
-        const backwardButton = buttons[0] // first button is backward
-        const forwardButton = buttons[1] // second button is forward
+        const backwardButton = buttons[0]
+        const forwardButton = buttons[1]
 
         expect(backwardButton).toHaveAttribute('aria-disabled', 'true')
         expect(forwardButton).not.toHaveAttribute('aria-disabled', 'true')
@@ -110,72 +125,87 @@ describe('OpportunitiesNavigation', () => {
             position: 2,
             isFirst: false,
             isLast: true,
+            totalNavigable: 3,
+            getNextIndex: mockGetNextIndex,
+            getPrevIndex: mockGetPrevIndex,
         })
 
         render(<OpportunitiesNavigation {...defaultProps} />)
 
         const buttons = screen.getAllByRole('button')
-        const backwardButton = buttons[0] // first button is backward
-        const forwardButton = buttons[1] // second button is forward
+        const backwardButton = buttons[0]
+        const forwardButton = buttons[1]
 
         expect(backwardButton).not.toHaveAttribute('aria-disabled', 'true')
         expect(forwardButton).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('disables both buttons when there is only one opportunity', () => {
+        const singleOpportunity = [mockOpportunities[0]]
         useOpportunitiesNavigation.mockReturnValue({
             position: 0,
             isFirst: true,
             isLast: true,
+            totalNavigable: 1,
+            getNextIndex: jest.fn(() => undefined),
+            getPrevIndex: jest.fn(() => undefined),
         })
 
         render(
             <OpportunitiesNavigation
                 {...defaultProps}
-                opportunities={[mockOpportunities[0]]}
+                opportunities={singleOpportunity}
                 totalCount={1}
             />,
         )
 
         const buttons = screen.getAllByRole('button')
-        const backwardButton = buttons[0] // first button is backward
-        const forwardButton = buttons[1] // second button is forward
+        const backwardButton = buttons[0]
+        const forwardButton = buttons[1]
 
         expect(backwardButton).toHaveAttribute('aria-disabled', 'true')
         expect(forwardButton).toHaveAttribute('aria-disabled', 'true')
         expect(screen.getByText('1 of 1')).toBeInTheDocument()
     })
 
-    it('calls selectCertainOpportunity with next position when forward button is clicked', async () => {
+    it('calls selectCertainOpportunity with correct index when forward button is clicked', async () => {
         const user = userEvent.setup()
+        mockGetNextIndex.mockReturnValue(1)
         useOpportunitiesNavigation.mockReturnValue({
             position: 0,
             isFirst: true,
             isLast: false,
+            totalNavigable: 3,
+            getNextIndex: mockGetNextIndex,
+            getPrevIndex: mockGetPrevIndex,
         })
 
         render(<OpportunitiesNavigation {...defaultProps} />)
 
         const buttons = screen.getAllByRole('button')
-        const forwardButton = buttons[1] // second button is forward
+        const forwardButton = buttons[1]
 
         await user.click(forwardButton)
 
         expect(mockSelectCertainOpportunity).toHaveBeenCalledWith(1)
     })
 
-    it('calls selectCertainOpportunity with previous position when backward button is clicked', async () => {
+    it('calls selectCertainOpportunity with correct index when backward button is clicked', async () => {
         const user = userEvent.setup()
+        mockGetPrevIndex.mockReturnValue(0)
         useOpportunitiesNavigation.mockReturnValue({
             position: 1,
             isFirst: false,
             isLast: false,
+            totalNavigable: 3,
+            getNextIndex: mockGetNextIndex,
+            getPrevIndex: mockGetPrevIndex,
         })
 
         render(<OpportunitiesNavigation {...defaultProps} />)
 
         const buttons = screen.getAllByRole('button')
-        const backwardButton = buttons[0] // first button is backward
+        const backwardButton = buttons[0]
 
         await user.click(backwardButton)
 
@@ -188,6 +218,9 @@ describe('OpportunitiesNavigation', () => {
             position: 0,
             isFirst: true,
             isLast: false,
+            totalNavigable: 3,
+            getNextIndex: mockGetNextIndex,
+            getPrevIndex: mockGetPrevIndex,
         })
 
         render(
@@ -198,7 +231,7 @@ describe('OpportunitiesNavigation', () => {
         )
 
         const buttons = screen.getAllByRole('button')
-        const forwardButton = buttons[1] // second button is forward
+        const forwardButton = buttons[1]
 
         await user.click(forwardButton)
 
@@ -210,6 +243,9 @@ describe('OpportunitiesNavigation', () => {
             position: 0,
             isFirst: true,
             isLast: true,
+            totalNavigable: 0,
+            getNextIndex: jest.fn(() => undefined),
+            getPrevIndex: jest.fn(() => undefined),
         })
 
         const { container } = render(
@@ -228,6 +264,7 @@ describe('OpportunitiesNavigation', () => {
         expect(useOpportunitiesNavigation).toHaveBeenCalledWith({
             selectedOpportunity: mockOpportunities[0],
             opportunities: mockOpportunities,
+            allowedOpportunityIds: undefined,
         })
     })
 
@@ -244,7 +281,44 @@ describe('OpportunitiesNavigation', () => {
         expect(useOpportunitiesNavigation).toHaveBeenCalledWith({
             selectedOpportunity: mockOpportunities[0],
             opportunities: [],
+            allowedOpportunityIds: undefined,
         })
+    })
+
+    it('passes allowedOpportunityIds to hook when provided', () => {
+        const allowedIds = [1, 3]
+        render(
+            <OpportunitiesNavigation
+                {...defaultProps}
+                allowedOpportunityIds={allowedIds}
+            />,
+        )
+
+        expect(useOpportunitiesNavigation).toHaveBeenCalledWith({
+            selectedOpportunity: mockOpportunities[0],
+            opportunities: mockOpportunities,
+            allowedOpportunityIds: allowedIds,
+        })
+    })
+
+    it('displays total count when allowedOpportunityIds is provided', () => {
+        useOpportunitiesNavigation.mockReturnValue({
+            position: 0,
+            isFirst: true,
+            isLast: false,
+            totalNavigable: 2,
+            getNextIndex: mockGetNextIndex,
+            getPrevIndex: mockGetPrevIndex,
+        })
+
+        render(
+            <OpportunitiesNavigation
+                {...defaultProps}
+                allowedOpportunityIds={[1, 3]}
+            />,
+        )
+
+        expect(screen.getByText('1 of 3')).toBeInTheDocument()
     })
 
     it('renders navigation icons correctly', () => {

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { Button, Text } from '@gorgias/axiom'
 
@@ -15,30 +15,44 @@ interface OpportunityNavigationProps {
     opportunities?: SidebarOpportunityItem[]
     selectCertainOpportunity?: (index: number) => void
     totalCount: number
+    allowedOpportunityIds?: number[]
     hideCount?: boolean
 }
+
 export const OpportunitiesNavigation = ({
     opportunities,
     selectedOpportunity,
     selectCertainOpportunity,
     totalCount,
+    allowedOpportunityIds,
     hideCount = false,
 }: OpportunityNavigationProps) => {
-    const navigationData = useOpportunitiesNavigation({
+    const {
+        isFirst,
+        isLast,
+        position,
+        totalNavigable,
+        getNextIndex,
+        getPrevIndex,
+    } = useOpportunitiesNavigation({
         selectedOpportunity,
         opportunities: opportunities || [],
+        allowedOpportunityIds,
     })
-    const navigateForward = () => {
-        if (selectCertainOpportunity) {
-            selectCertainOpportunity(navigationData.position + 1)
-        }
-    }
 
-    const navigateBackward = () => {
-        if (selectCertainOpportunity) {
-            selectCertainOpportunity(navigationData.position - 1)
+    const navigateForward = useCallback(() => {
+        const nextIndex = getNextIndex()
+        if (nextIndex !== undefined && selectCertainOpportunity) {
+            selectCertainOpportunity(nextIndex)
         }
-    }
+    }, [getNextIndex, selectCertainOpportunity])
+
+    const navigateBackward = useCallback(() => {
+        const prevIndex = getPrevIndex()
+        if (prevIndex !== undefined && selectCertainOpportunity) {
+            selectCertainOpportunity(prevIndex)
+        }
+    }, [getPrevIndex, selectCertainOpportunity])
 
     const isSidebarOpportunityLoaded = useMemo(() => {
         return opportunities?.some(
@@ -50,7 +64,8 @@ export const OpportunitiesNavigation = ({
         !selectedOpportunity ||
         !opportunities ||
         opportunities.length === 0 ||
-        !isSidebarOpportunityLoaded
+        !isSidebarOpportunityLoaded ||
+        totalNavigable === 0
     ) {
         return null
     }
@@ -61,7 +76,7 @@ export const OpportunitiesNavigation = ({
                 intent="regular"
                 variant="tertiary"
                 icon="arrow-chevron-left"
-                isDisabled={navigationData.isFirst}
+                isDisabled={isFirst}
                 onClick={navigateBackward}
             >
                 Left navigation button
@@ -70,14 +85,14 @@ export const OpportunitiesNavigation = ({
                 intent="regular"
                 variant="tertiary"
                 icon="arrow-chevron-right"
-                isDisabled={navigationData.isLast}
+                isDisabled={isLast}
                 onClick={navigateForward}
             >
                 Right navigation button
             </Button>
             {!hideCount && (
                 <Text size="md" variant="regular">
-                    {navigationData.position + 1} of {totalCount}
+                    {position + 1} of {totalCount}
                 </Text>
             )}
         </div>

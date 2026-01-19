@@ -26,7 +26,10 @@ import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { DismissOpportunityModal } from 'pages/aiAgent/opportunities/components/DismissOpportunityModal/DismissOpportunityModal'
-import type { OpportunityPageState } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
+import {
+    type OpportunityPageState,
+    State,
+} from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
 import type {
     Opportunity,
     SidebarOpportunityItem,
@@ -59,6 +62,7 @@ import { OpportunitiesEmptyState } from '../OpportunitiesEmptyState/Opportunitie
 import { OpportunitiesNavigation } from '../OpportunitiesNavigation/OpportunitiesNavigation'
 import { OpportunityDetailsCard } from '../OpportunityDetailsCard/OpportunityDetailsCard'
 import { OpportunityTicketDrillDownModal } from '../OpportunityTicketDrillDownModal/OpportunityTicketDrillDownModal'
+import { RestrictedOpportunityMessage } from '../RestrictedOpportunityMessage/RestrictedOpportunityMessage'
 
 import css from './OpportunitiesContent.less'
 
@@ -89,6 +93,7 @@ interface OpportunitiesContentProps {
     isLoadingOpportunityDetails: boolean
     totalCount: number
     opportunitiesPageState: OpportunityPageState
+    allowedOpportunityIds?: number[]
 }
 
 export const OpportunitiesContent = ({
@@ -108,6 +113,7 @@ export const OpportunitiesContent = ({
     isLoadingOpportunityDetails,
     totalCount,
     opportunitiesPageState,
+    allowedOpportunityIds,
 }: OpportunitiesContentProps) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -431,6 +437,17 @@ export const OpportunitiesContent = ({
         )
     }
 
+    if (opportunitiesPageState.state === State.RESTRICTED_NO_OPPORTUNITIES) {
+        return (
+            <div className={css.containerContent}>
+                <div className={css.header}></div>
+                <RestrictedOpportunityMessage
+                    opportunitiesPageState={opportunitiesPageState}
+                />
+            </div>
+        )
+    }
+
     if (opportunitiesPageState.showEmptyState || !selectedOpportunity) {
         return (
             <div className={css.containerContent}>
@@ -474,6 +491,9 @@ export const OpportunitiesContent = ({
                                         selectCertainOpportunity
                                     }
                                     totalCount={totalCount}
+                                    allowedOpportunityIds={
+                                        allowedOpportunityIds
+                                    }
                                     hideCount={containerWidth < 582}
                                 />
                                 <div className={css.headerActionDelimiter} />

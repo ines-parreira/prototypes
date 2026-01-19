@@ -266,6 +266,7 @@ describe('OpportunitiesLayout', () => {
             totalCount: 0,
             totalPending: 0,
             refetch: jest.fn(),
+            allowedOpportunityIds: undefined,
         })
         mockUseSelectedOpportunity.mockImplementation(() => ({
             selectedOpportunity: null,
@@ -351,7 +352,7 @@ describe('OpportunitiesLayout', () => {
     it('should handle opportunity selection', async () => {
         const mockSetSelectedOpportunityId = jest.fn()
         mockUseSelectedOpportunity.mockImplementation(
-            (_shopIntegrationId: number, opportunities: any[]) => ({
+            ({ opportunities }: { opportunities: any[] }) => ({
                 selectedOpportunity: opportunities[0] || null,
                 selectedOpportunityId: opportunities[0]?.id || null,
                 setSelectedOpportunityId: mockSetSelectedOpportunityId,
@@ -710,6 +711,7 @@ describe('OpportunitiesLayout', () => {
                 totalCount: 50,
                 totalPending: 50,
                 refetch: jest.fn(),
+                allowedOpportunityIds: undefined,
             })
         })
 
@@ -762,7 +764,7 @@ describe('OpportunitiesLayout', () => {
         it('should select next opportunity when archiving with knowledge service', async () => {
             const mockSetSelectedOpportunityId = jest.fn()
             mockUseSelectedOpportunity.mockImplementation(
-                (_shopIntegrationId: number, opportunities: any[]) => ({
+                ({ opportunities }: { opportunities: any[] }) => ({
                     selectedOpportunity: opportunities[0] || null,
                     selectedOpportunityId: opportunities[0]?.id || null,
                     setSelectedOpportunityId: mockSetSelectedOpportunityId,
@@ -907,6 +909,7 @@ describe('OpportunitiesLayout', () => {
                 totalCount: 2,
                 totalPending: 2,
                 refetch: jest.fn(),
+                allowedOpportunityIds: undefined,
             })
         })
 
@@ -920,10 +923,14 @@ describe('OpportunitiesLayout', () => {
             renderComponent()
 
             expect(mockUseSelectedOpportunity).toHaveBeenCalledWith(
-                123,
-                mockKnowledgeServiceOpportunities,
-                true,
-                '2',
+                expect.objectContaining({
+                    shopIntegrationId: 123,
+                    opportunities: mockKnowledgeServiceOpportunities,
+                    useKnowledgeService: true,
+                    initialOpportunityId: '2',
+                    shopType: 'shopify',
+                    shopName: 'test-shop',
+                }),
             )
         })
 
@@ -936,95 +943,47 @@ describe('OpportunitiesLayout', () => {
             renderComponent()
 
             expect(mockUseSelectedOpportunity).toHaveBeenCalledWith(
-                123,
-                mockKnowledgeServiceOpportunities,
-                true,
-                undefined,
+                expect.objectContaining({
+                    shopIntegrationId: 123,
+                    opportunities: mockKnowledgeServiceOpportunities,
+                    useKnowledgeService: true,
+                    initialOpportunityId: undefined,
+                }),
             )
         })
 
-        it('should update URL when opportunity is selected', async () => {
-            mockUseSelectedOpportunity.mockReturnValue({
-                selectedOpportunity: mockFullOpportunities[0],
-                selectedOpportunityId: '1',
-                setSelectedOpportunityId: jest.fn(),
+        it('should pass shopType and shopName to useSelectedOpportunity for URL updates', () => {
+            renderComponent()
+
+            expect(mockUseSelectedOpportunity).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    shopType: 'shopify',
+                    shopName: 'test-shop',
+                }),
+            )
+        })
+
+        it('should pass allowedOpportunityIds to useSelectedOpportunity when using knowledge service', () => {
+            mockUseKnowledgeServiceOpportunities.mockReturnValue({
+                opportunities: mockKnowledgeServiceOpportunities,
                 isLoading: false,
+                isFetchingNextPage: false,
+                hasNextPage: false,
+                fetchNextPage: jest.fn(),
+                preloadNextPage: jest.fn(),
+                totalCount: 2,
+                totalPending: 2,
+                refetch: jest.fn(),
+                allowedOpportunityIds: [1, 2],
             })
 
             renderComponent()
 
-            await waitFor(() => {
-                expect(mockHistoryReplace).toHaveBeenCalledWith(
-                    '/app/ai-agent/shopify/test-shop/opportunities/1',
-                )
-            })
-        })
-
-        it('should not update URL when selectedOpportunityId matches opportunityId param', () => {
-            ;(useParams as jest.Mock).mockReturnValue({
-                shopName: 'test-shop',
-                shopType: 'shopify',
-                opportunityId: '1',
-            })
-
-            mockUseSelectedOpportunity.mockReturnValue({
-                selectedOpportunity: mockFullOpportunities[0],
-                selectedOpportunityId: '1',
-                setSelectedOpportunityId: jest.fn(),
-                isLoading: false,
-            })
-
-            renderComponent()
-
-            expect(mockHistoryReplace).not.toHaveBeenCalled()
-        })
-
-        it('should update URL when selected opportunity changes', async () => {
-            const mockSetSelectedOpportunityId = jest.fn()
-
-            mockUseSelectedOpportunity.mockReturnValue({
-                selectedOpportunity: mockFullOpportunities[0],
-                selectedOpportunityId: '1',
-                setSelectedOpportunityId: mockSetSelectedOpportunityId,
-                isLoading: false,
-            })
-
-            const { rerender } = renderComponent()
-
-            await waitFor(() => {
-                expect(mockHistoryReplace).toHaveBeenCalledWith(
-                    '/app/ai-agent/shopify/test-shop/opportunities/1',
-                )
-            })
-
-            mockHistoryReplace.mockClear()
-
-            mockUseSelectedOpportunity.mockReturnValue({
-                selectedOpportunity: mockFullOpportunities[1],
-                selectedOpportunityId: '2',
-                setSelectedOpportunityId: mockSetSelectedOpportunityId,
-                isLoading: false,
-            })
-
-            const store = mockStore({
-                notifications: [],
-            })
-
-            rerender(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <QueryClientProvider client={queryClient}>
-                            <OpportunitiesLayout />
-                        </QueryClientProvider>
-                    </Provider>
-                </MemoryRouter>,
+            expect(mockUseSelectedOpportunity).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    allowedOpportunityIds: [1, 2],
+                }),
             )
-
-            await waitFor(() => {
-                expect(mockHistoryReplace).toHaveBeenCalledWith(
-                    '/app/ai-agent/shopify/test-shop/opportunities/2',
-                )
-            })
         })
 
         it('should handle direct URL access with opportunityId', () => {
@@ -1046,7 +1005,6 @@ describe('OpportunitiesLayout', () => {
             expect(
                 screen.getByTestId('opportunities-content'),
             ).toBeInTheDocument()
-            expect(mockHistoryReplace).not.toHaveBeenCalled()
         })
     })
 

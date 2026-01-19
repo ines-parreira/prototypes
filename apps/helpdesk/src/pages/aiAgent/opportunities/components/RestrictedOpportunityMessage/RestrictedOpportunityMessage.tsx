@@ -1,22 +1,21 @@
-import { useHistory } from 'react-router-dom'
-
 import { Box, Button, Heading, Text } from '@gorgias/axiom'
 
 import type { OpportunityPageState } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
 
-import css from './OpportunitiesEmptyState.less'
+import css from './RestrictedOpportunityMessage.less'
 
-export const OpportunitiesEmptyState = ({
-    opportunitiesPageState,
-}: {
+const BOOK_DEMO_URL =
+    'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_opportunities'
+
+interface RestrictedOpportunityMessageProps {
     opportunitiesPageState: OpportunityPageState
-}) => {
-    const history = useHistory()
+}
 
-    const redirectTo = () => {
-        if (opportunitiesPageState.primaryCta?.href) {
-            history.push(opportunitiesPageState.primaryCta.href)
-        }
+export const RestrictedOpportunityMessage = ({
+    opportunitiesPageState,
+}: RestrictedOpportunityMessageProps) => {
+    const handleBookDemo = () => {
+        window.open(BOOK_DEMO_URL, '_blank')
     }
 
     return (
@@ -26,7 +25,7 @@ export const OpportunitiesEmptyState = ({
                     <img
                         className={css.media}
                         src={opportunitiesPageState.media}
-                        alt="Opportunities empty state"
+                        alt="Upgrade opportunities"
                     />
                 </div>
             )}
@@ -36,11 +35,9 @@ export const OpportunitiesEmptyState = ({
                     {opportunitiesPageState.description}
                 </Text>
             </Box>
-            {opportunitiesPageState.primaryCta && (
-                <Button variant="primary" onClick={redirectTo}>
-                    {opportunitiesPageState.primaryCta?.label}
-                </Button>
-            )}
+            <Button variant="primary" onClick={handleBookDemo}>
+                Book a demo
+            </Button>
         </div>
     )
 }

@@ -1056,7 +1056,6 @@ describe('useUpsertRulesProductRecommendation', () => {
         result.current.mutate({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     {
@@ -1084,7 +1083,6 @@ describe('useUpsertRulesProductRecommendation', () => {
         result.current.mutate({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     {
@@ -1117,7 +1115,6 @@ describe('useUpsertRulesProductRecommendation', () => {
         result.current.mutate({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     {

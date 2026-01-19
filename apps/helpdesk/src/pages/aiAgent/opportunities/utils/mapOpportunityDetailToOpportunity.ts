@@ -1,6 +1,6 @@
 import type {
     ConflictOpportunityDetail,
-    FindOpportunityByIdOpportunity200,
+    FindOpportunityByIdForShopOpportunity200,
     KnowledgeGapOpportunityDetail,
 } from '@gorgias/knowledge-service-types'
 
@@ -12,7 +12,7 @@ import type { Opportunity } from '../types'
  * Used for displaying in the content area.
  */
 export const mapOpportunityDetailToOpportunity = (
-    detail: FindOpportunityByIdOpportunity200,
+    detail: FindOpportunityByIdForShopOpportunity200,
 ): Opportunity => {
     const baseOpportunity = {
         id: detail.id.toString(),

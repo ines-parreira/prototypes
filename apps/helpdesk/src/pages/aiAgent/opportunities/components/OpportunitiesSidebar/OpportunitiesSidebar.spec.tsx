@@ -727,4 +727,108 @@ describe('OpportunitiesSidebar', () => {
             )
         })
     })
+
+    describe('restricted opportunities', () => {
+        it('should render all opportunities as accessible when allowedOpportunityIds is undefined', () => {
+            const { container } = renderWithProvider(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    allowedOpportunityIds={undefined}
+                />,
+            )
+
+            const restrictedCards = container.querySelectorAll(
+                '[class*="cardRestricted"]',
+            )
+            expect(restrictedCards.length).toBe(0)
+        })
+
+        it('should render restricted opportunities with restricted styling', () => {
+            const { container } = renderWithProvider(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    allowedOpportunityIds={[1, 2]}
+                />,
+            )
+
+            const restrictedCards = container.querySelectorAll(
+                '[class*="cardRestricted"]',
+            )
+            expect(restrictedCards.length).toBe(2)
+        })
+
+        it('should mark opportunities not in allowedOpportunityIds as restricted', () => {
+            const { container } = renderWithProvider(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    allowedOpportunityIds={[1]}
+                />,
+            )
+
+            const restrictedCards = container.querySelectorAll(
+                '[aria-disabled="true"]',
+            )
+            expect(restrictedCards.length).toBe(3)
+        })
+
+        it('should allow all opportunities when allowedOpportunityIds contains all ids', () => {
+            const { container } = renderWithProvider(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    allowedOpportunityIds={[1, 2, 3, 4]}
+                />,
+            )
+
+            const restrictedCards = container.querySelectorAll(
+                '[class*="cardRestricted"]',
+            )
+            expect(restrictedCards.length).toBe(0)
+        })
+
+        it('should mark all opportunities as restricted when allowedOpportunityIds is empty array', () => {
+            const { container } = renderWithProvider(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    allowedOpportunityIds={[]}
+                />,
+            )
+
+            const restrictedCards = container.querySelectorAll(
+                '[class*="cardRestricted"]',
+            )
+            expect(restrictedCards.length).toBe(4)
+        })
+
+        it('should not call onSelectOpportunity when clicking a restricted opportunity', async () => {
+            const user = userEvent.setup()
+            renderWithProvider(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    allowedOpportunityIds={[1]}
+                />,
+            )
+
+            const secondCard = screen
+                .getByText('How do I access my store account?')
+                .closest('div[class*="card"]')
+
+            if (secondCard) {
+                await act(() => user.click(secondCard))
+            }
+
+            expect(mockOnSelectOpportunity).not.toHaveBeenCalled()
+        })
+    })
 })

@@ -122,6 +122,19 @@ const mockEmptyPageState: OpportunityPageState = {
     showEmptyState: true,
 }
 
+const mockRestrictedPageState: OpportunityPageState = {
+    state: State.RESTRICTED_NO_OPPORTUNITIES,
+    isLoading: false,
+    title: 'Upgrade to unlock more AI Agent opportunities',
+    description:
+        "You've reviewed 3 opportunities for AI Agent. To continue discovering and acting on new opportunities based on real customer conversations, upgrade your plan.",
+    media: '/assets/images/ai-agent/opportunities/upgrade.jpg',
+    primaryCta: {
+        label: 'Try for 14 days',
+    },
+    showEmptyState: true,
+}
+
 describe('OpportunitiesContent', () => {
     const mockCreateGuidanceArticle = jest.fn()
     const mockReviewArticleMutate = jest.fn()
@@ -1051,6 +1064,79 @@ describe('OpportunitiesContent', () => {
                     status: 'success',
                 })
             })
+        })
+    })
+
+    describe('restricted access state', () => {
+        it('should render RestrictedOpportunityMessage when state is RESTRICTED_NO_OPPORTUNITIES', () => {
+            renderComponent({
+                opportunitiesPageState: mockRestrictedPageState,
+            })
+
+            expect(
+                screen.getByRole('heading', {
+                    name: 'Upgrade to unlock more AI Agent opportunities',
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /You've reviewed 3 opportunities for AI Agent/,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should render CTA button when state is RESTRICTED_NO_OPPORTUNITIES', () => {
+            renderComponent({
+                opportunitiesPageState: mockRestrictedPageState,
+            })
+
+            expect(
+                screen.getByRole('button', { name: 'Book a demo' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render opportunity details when state is RESTRICTED_NO_OPPORTUNITIES', () => {
+            const selectedOpportunity: Opportunity = {
+                id: '1',
+                key: 'key-1',
+                title: "What's your return policy?",
+                content: 'Return policy content',
+                type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            }
+
+            renderComponent({
+                selectedOpportunity,
+                opportunities: [selectedOpportunity],
+                opportunitiesPageState: mockRestrictedPageState,
+            })
+
+            expect(
+                screen.queryByText(/Fill knowledge gap/),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /Dismiss/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /Publish and enable/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render RestrictedOpportunityMessage instead of empty state when state is RESTRICTED_NO_OPPORTUNITIES', () => {
+            renderComponent({
+                selectedOpportunity: null,
+                opportunitiesPageState: mockRestrictedPageState,
+            })
+
+            expect(
+                screen.getByRole('heading', {
+                    name: 'Upgrade to unlock more AI Agent opportunities',
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText(
+                    /AI Agent is learning from your conversations/,
+                ),
+            ).not.toBeInTheDocument()
         })
     })
 

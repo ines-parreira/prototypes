@@ -418,7 +418,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     defaultTagRules,
@@ -467,7 +466,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     defaultTagRules,
@@ -497,7 +495,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     defaultTagRules,
@@ -545,7 +542,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     defaultProductRules,
@@ -603,7 +599,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     defaultProductRules,
@@ -632,7 +627,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     defaultProductRules,
@@ -678,7 +672,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     defaultProductRules,
@@ -726,7 +719,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     defaultProductRules,
@@ -759,7 +751,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     defaultProductRules,
@@ -805,7 +796,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     defaultProductRules,
@@ -843,7 +833,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     defaultProductRules,
@@ -876,7 +865,6 @@ describe('AiAgentProductRecommendationsExclude', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'excluded',
                 rules: [
                     defaultProductRules,

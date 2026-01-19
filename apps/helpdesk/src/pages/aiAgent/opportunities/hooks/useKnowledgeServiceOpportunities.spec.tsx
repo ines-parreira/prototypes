@@ -31,8 +31,7 @@ jest.mock('../utils/mapKnowledgeServiceOpportunities', () => ({
             return data.data.map((item) => ({
                 id: item.id.toString(),
                 key: `ks_${item.id}`,
-                title: item.resources[0]?.resourceTitle || 'Untitled',
-                content: '',
+                insight: item.insight,
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
             }))
         },
@@ -63,16 +62,6 @@ describe('useKnowledgeServiceOpportunities', () => {
                 shopName: 'shop-1',
                 detectionCount: 1,
                 insight: 'Test insight 1',
-                resources: [
-                    {
-                        resourceId: 'res-1',
-                        resourceTitle: 'Opportunity 1',
-                        resourceType: 'guidance',
-                        resourceLocale: 'en',
-                        resourceSetId: 'set-1',
-                        resourceVersion: '1',
-                    },
-                ],
             },
             {
                 id: 2,
@@ -83,16 +72,6 @@ describe('useKnowledgeServiceOpportunities', () => {
                 shopName: 'shop-1',
                 detectionCount: 1,
                 insight: 'Test insight 2',
-                resources: [
-                    {
-                        resourceId: 'res-2',
-                        resourceTitle: 'Opportunity 2',
-                        resourceType: 'article',
-                        resourceLocale: 'en',
-                        resourceSetId: 'set-2',
-                        resourceVersion: '1',
-                    },
-                ],
             },
         ],
         metadata: {
@@ -130,8 +109,7 @@ describe('useKnowledgeServiceOpportunities', () => {
         expect(result.current.opportunities[0]).toEqual({
             id: '1',
             key: 'ks_1',
-            title: 'Opportunity 1',
-            content: '',
+            insight: 'Test insight 1',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
         })
     })

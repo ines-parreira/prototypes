@@ -411,7 +411,6 @@ describe('AiAgentProductRecommendationsPromote', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
                     defaultTagRules,
@@ -464,7 +463,6 @@ describe('AiAgentProductRecommendationsPromote', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
                     defaultTagRules,
@@ -495,7 +493,6 @@ describe('AiAgentProductRecommendationsPromote', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
                     defaultTagRules,
@@ -542,7 +539,6 @@ describe('AiAgentProductRecommendationsPromote', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
                     defaultProductRules,
@@ -591,7 +587,6 @@ describe('AiAgentProductRecommendationsPromote', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
                     defaultProductRules,
@@ -621,7 +616,6 @@ describe('AiAgentProductRecommendationsPromote', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
                     defaultProductRules,
@@ -672,7 +666,6 @@ describe('AiAgentProductRecommendationsPromote', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
                     defaultProductRules,
@@ -725,7 +718,6 @@ describe('AiAgentProductRecommendationsPromote', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
                     defaultProductRules,
@@ -757,7 +749,6 @@ describe('AiAgentProductRecommendationsPromote', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
                     defaultProductRules,
@@ -804,7 +795,6 @@ describe('AiAgentProductRecommendationsPromote', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
                     defaultProductRules,
@@ -847,7 +837,6 @@ describe('AiAgentProductRecommendationsPromote', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
                     defaultProductRules,
@@ -880,7 +869,6 @@ describe('AiAgentProductRecommendationsPromote', () => {
         expect(mockUpsertRulesProductRecommendation).toHaveBeenCalledWith({
             integrationId: 123,
             data: {
-                gorgiasDomain: 'my-domain',
                 recommendationAction: 'promoted',
                 rules: [
                     defaultProductRules,

@@ -104,6 +104,14 @@ jest.mock('../hooks/useSelectedOpportunity', () => ({
 }))
 
 jest.mock('../hooks/useOpportunityPageState', () => ({
+    State: {
+        LOADING: 'LOADING',
+        HAS_OPPORTUNITIES: 'HAS_OPPORTUNITIES',
+        ENABLED_NO_OPPORTUNITIES: 'ENABLED_NO_OPPORTUNITIES',
+        DISABLED_NEEDS_ENABLE: 'DISABLED_NEEDS_ENABLE',
+        DISABLED_NEEDS_SETUP: 'DISABLED_NEEDS_SETUP',
+        RESTRICTED_NO_OPPORTUNITIES: 'RESTRICTED_NO_OPPORTUNITIES',
+    },
     useOpportunityPageState: jest.fn(() => ({
         state: 'ENABLED_NO_OPPORTUNITIES',
         isLoading: false,

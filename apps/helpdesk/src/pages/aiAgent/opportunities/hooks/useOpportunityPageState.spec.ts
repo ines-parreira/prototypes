@@ -6,6 +6,7 @@ import {
     PostStoreInstallationStepType,
 } from 'models/aiAgentPostStoreInstallationSteps/types'
 
+import { MIN_TOTAL_OPPORTUNITIES_THRESHOLD } from '../constants'
 import { State, useOpportunityPageState } from './useOpportunityPageState'
 
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
@@ -86,6 +87,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 0,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -112,6 +114,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: undefined,
                 isLoading: true,
+                totalCount: undefined,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -136,6 +139,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 0,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -160,6 +164,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: undefined,
                 isLoading: true,
+                totalCount: undefined,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -190,6 +195,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 5,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -224,6 +230,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 1,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -251,6 +258,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 1,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -278,6 +286,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 0,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -317,6 +326,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 0,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -359,6 +369,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 0,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -393,6 +404,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 0,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -433,6 +445,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 0,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -460,6 +473,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 0,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -482,6 +496,179 @@ describe('useOpportunityPageState', () => {
         })
     })
 
+    describe('RESTRICTED_NO_OPPORTUNITIES state', () => {
+        it('returns RESTRICTED_NO_OPPORTUNITIES when user has no allowed opportunities', () => {
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: createMockStoreConfiguration(),
+                isLoading: false,
+            })
+
+            mockUseOpportunitiesCount.mockReturnValue({
+                count: 0,
+                isLoading: false,
+                totalCount: 20,
+            })
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: createMockPostStoreInstallationSteps(),
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useOpportunityPageState({
+                    ...defaultParams,
+                    allowedOpportunityIds: [],
+                }),
+            )
+
+            expect(result.current.state).toBe(State.RESTRICTED_NO_OPPORTUNITIES)
+            expect(result.current.showEmptyState).toBe(false)
+            expect(result.current.title).toBe(
+                'Upgrade to unlock more AI Agent opportunities',
+            )
+            expect(result.current.description).toContain(
+                "You've reviewed 3 opportunities",
+            )
+            expect(result.current.primaryCta?.label).toBe('Try for 14 days')
+            expect(result.current.media).toBeDefined()
+        })
+
+        it('returns HAS_OPPORTUNITIES when restricted user still has allowed opportunities', () => {
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: createMockStoreConfiguration(),
+                isLoading: false,
+            })
+
+            mockUseOpportunitiesCount.mockReturnValue({
+                count: 2,
+                isLoading: false,
+                totalCount: 20,
+            })
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: createMockPostStoreInstallationSteps(),
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useOpportunityPageState({
+                    ...defaultParams,
+                    allowedOpportunityIds: [1, 2],
+                }),
+            )
+
+            expect(result.current.state).toBe(State.HAS_OPPORTUNITIES)
+            expect(result.current.showEmptyState).toBe(false)
+        })
+    })
+
+    describe('waiting for more opportunities (threshold)', () => {
+        it('returns ENABLED_NO_OPPORTUNITIES when totalCount is below threshold and allowedOpportunityIds is defined', () => {
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: createMockStoreConfiguration(),
+                isLoading: false,
+            })
+
+            mockUseOpportunitiesCount.mockReturnValue({
+                count: 5,
+                isLoading: false,
+                totalCount: MIN_TOTAL_OPPORTUNITIES_THRESHOLD - 1,
+            })
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: createMockPostStoreInstallationSteps(),
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useOpportunityPageState({
+                    ...defaultParams,
+                    allowedOpportunityIds: [1, 2, 3],
+                }),
+            )
+
+            expect(result.current.state).toBe(State.ENABLED_NO_OPPORTUNITIES)
+        })
+
+        it('returns HAS_OPPORTUNITIES when totalCount equals threshold', () => {
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: createMockStoreConfiguration(),
+                isLoading: false,
+            })
+
+            mockUseOpportunitiesCount.mockReturnValue({
+                count: 5,
+                isLoading: false,
+                totalCount: MIN_TOTAL_OPPORTUNITIES_THRESHOLD,
+            })
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: createMockPostStoreInstallationSteps(),
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useOpportunityPageState({
+                    ...defaultParams,
+                    allowedOpportunityIds: [1, 2, 3],
+                }),
+            )
+
+            expect(result.current.state).toBe(State.HAS_OPPORTUNITIES)
+        })
+
+        it('does not wait for more opportunities when allowedOpportunityIds is undefined (premium user)', () => {
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: createMockStoreConfiguration(),
+                isLoading: false,
+            })
+
+            mockUseOpportunitiesCount.mockReturnValue({
+                count: 5,
+                isLoading: false,
+                totalCount: MIN_TOTAL_OPPORTUNITIES_THRESHOLD - 1,
+            })
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: createMockPostStoreInstallationSteps(),
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useOpportunityPageState(defaultParams),
+            )
+
+            expect(result.current.state).toBe(State.HAS_OPPORTUNITIES)
+        })
+
+        it('prioritizes RESTRICTED_NO_OPPORTUNITIES over waiting for opportunities', () => {
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: createMockStoreConfiguration(),
+                isLoading: false,
+            })
+
+            mockUseOpportunitiesCount.mockReturnValue({
+                count: 0,
+                isLoading: false,
+                totalCount: MIN_TOTAL_OPPORTUNITIES_THRESHOLD - 1,
+            })
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: createMockPostStoreInstallationSteps(),
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useOpportunityPageState({
+                    ...defaultParams,
+                    allowedOpportunityIds: [],
+                }),
+            )
+
+            expect(result.current.state).toBe(State.RESTRICTED_NO_OPPORTUNITIES)
+        })
+    })
+
     describe('edge cases', () => {
         it('handles undefined storeConfiguration gracefully', () => {
             mockUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -492,6 +679,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 0,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -517,6 +705,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: undefined,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
@@ -544,6 +733,7 @@ describe('useOpportunityPageState', () => {
             mockUseOpportunitiesCount.mockReturnValue({
                 count: 1,
                 isLoading: false,
+                totalCount: 20,
             })
 
             mockUseGetPostStoreInstallationStepsPure.mockReturnValue({

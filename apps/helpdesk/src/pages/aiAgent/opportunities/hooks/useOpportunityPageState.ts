@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import aiAgentButtonEnableGif from 'assets/img/ai-agent/ai-agent-button-enable.gif'
 import aiAgentScanGif from 'assets/img/ai-agent/ai-agent-scan.gif'
+import aiAgentUpgradeOpportunities from 'assets/img/ai-agent/ai-agent-upgrade-oppportunities.jpg'
 import { useGetPostStoreInstallationStepsPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
 import { PostStoreInstallationStepType } from 'models/aiAgentPostStoreInstallationSteps/types'
 import type { LocaleCode } from 'models/helpCenter/types'
@@ -9,12 +10,15 @@ import { useOpportunitiesCount } from 'pages/aiAgent/hooks/useOpportunitiesCount
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
 
+import { MIN_TOTAL_OPPORTUNITIES_THRESHOLD } from '../constants'
+
 export enum State {
     LOADING = 'LOADING',
     HAS_OPPORTUNITIES = 'HAS_OPPORTUNITIES',
     ENABLED_NO_OPPORTUNITIES = 'ENABLED_NO_OPPORTUNITIES',
     DISABLED_NEEDS_ENABLE = 'DISABLED_NEEDS_ENABLE',
     DISABLED_NEEDS_SETUP = 'DISABLED_NEEDS_SETUP',
+    RESTRICTED_NO_OPPORTUNITIES = 'RESTRICTED_NO_OPPORTUNITIES',
 }
 
 export interface OpportunityPageCta {
@@ -38,6 +42,8 @@ export interface UseOpportunityPageStateParams {
     shopName: string
     accountId: number
     shopType: string
+    allowedOpportunityIds?: number[]
+    totalAllowedCount?: number
 }
 
 const getStateConfig = (
@@ -98,6 +104,18 @@ const getStateConfig = (
         showEmptyState: true,
         isLoading: false,
     },
+    [State.RESTRICTED_NO_OPPORTUNITIES]: {
+        state: State.RESTRICTED_NO_OPPORTUNITIES,
+        title: 'Upgrade to unlock more AI Agent opportunities',
+        // TODO: expose the hardcoded 3 as metadata from the backend
+        description: `You've reviewed 3 opportunities for AI Agent. To continue discovering and acting on new opportunities based on real customer conversations, upgrade your plan.`,
+        media: aiAgentUpgradeOpportunities,
+        primaryCta: {
+            label: 'Try for 14 days',
+        },
+        showEmptyState: false,
+        isLoading: false,
+    },
 })
 
 export function useOpportunityPageState({
@@ -106,11 +124,15 @@ export function useOpportunityPageState({
     shopName,
     accountId,
     shopType,
+    allowedOpportunityIds,
 }: UseOpportunityPageStateParams): OpportunityPageState {
     const { storeConfiguration, isLoading: isLoadingStoreConfig } =
         useAiAgentStoreConfigurationContext()
-    const { count: opportunitiesCount, isLoading: isLoadingOpportunities } =
-        useOpportunitiesCount(helpCenterId, locale, shopName)
+    const {
+        count: opportunitiesCount,
+        isLoading: isLoadingOpportunities,
+        totalCount,
+    } = useOpportunitiesCount(helpCenterId, locale, shopName)
 
     const {
         data: postStoreInstallationStepsData,
@@ -134,8 +156,22 @@ export function useOpportunityPageState({
             return State.LOADING
         }
 
-        const hasOpportunities = (opportunitiesCount ?? 0) > 0
+        const shouldShowPaywall =
+            allowedOpportunityIds !== undefined &&
+            allowedOpportunityIds.length === 0
+        if (shouldShowPaywall) {
+            return State.RESTRICTED_NO_OPPORTUNITIES
+        }
 
+        const shouldWaitForMoreOpportunities =
+            allowedOpportunityIds !== undefined &&
+            totalCount < MIN_TOTAL_OPPORTUNITIES_THRESHOLD
+        if (shouldWaitForMoreOpportunities) {
+            return State.ENABLED_NO_OPPORTUNITIES
+        }
+
+        // If restricted user has no more opportunities, show upgrade message
+        const hasOpportunities = (opportunitiesCount ?? 0) > 0
         if (hasOpportunities) {
             return State.HAS_OPPORTUNITIES
         }
@@ -169,6 +205,8 @@ export function useOpportunityPageState({
         opportunitiesCount,
         storeConfiguration,
         postStoreInstallationStepsData,
+        allowedOpportunityIds,
+        totalCount,
     ])
 
     const stateConfig = getStateConfig(shopType, shopName)

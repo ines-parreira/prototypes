@@ -10,6 +10,15 @@ import { useSelectedOpportunity } from './useSelectedOpportunity'
 
 jest.mock('./useFindOneOpportunity')
 
+const mockHistoryReplace = jest.fn()
+jest.mock('react-router', () => ({
+    ...jest.requireActual('react-router'),
+    useHistory: () => ({
+        replace: mockHistoryReplace,
+        push: jest.fn(),
+    }),
+}))
+
 describe('useSelectedOpportunity', () => {
     const queryClient = new QueryClient({
         defaultOptions: {
@@ -22,6 +31,14 @@ describe('useSelectedOpportunity', () => {
             {children}
         </QueryClientProvider>
     )
+
+    const defaultHookParams = {
+        shopIntegrationId: 789,
+        opportunities: [] as (Opportunity | OpportunityListItem)[],
+        useKnowledgeService: false,
+        shopType: 'shopify',
+        shopName: 'test-shop',
+    }
 
     const mockOpportunities: Opportunity[] = [
         {
@@ -73,8 +90,6 @@ describe('useSelectedOpportunity', () => {
         queryClient.clear()
     })
 
-    const mockShopIntegrationId = 789
-
     it('should initialize with no selected opportunity when opportunities array is empty', () => {
         const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
@@ -83,7 +98,7 @@ describe('useSelectedOpportunity', () => {
         })
 
         const { result } = renderHook(
-            () => useSelectedOpportunity(mockShopIntegrationId, [], false),
+            () => useSelectedOpportunity(defaultHookParams),
             { wrapper },
         )
 
@@ -101,11 +116,10 @@ describe('useSelectedOpportunity', () => {
 
         const { result } = renderHook(
             () =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
-                    mockOpportunities,
-                    false,
-                ),
+                useSelectedOpportunity({
+                    ...defaultHookParams,
+                    opportunities: mockOpportunities,
+                }),
             { wrapper },
         )
 
@@ -123,11 +137,10 @@ describe('useSelectedOpportunity', () => {
 
         const { result } = renderHook(
             () =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
-                    mockOpportunities,
-                    false,
-                ),
+                useSelectedOpportunity({
+                    ...defaultHookParams,
+                    opportunities: mockOpportunities,
+                }),
             { wrapper },
         )
 
@@ -149,11 +162,10 @@ describe('useSelectedOpportunity', () => {
 
         const { result } = renderHook(
             () =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
-                    mockOpportunities,
-                    false,
-                ),
+                useSelectedOpportunity({
+                    ...defaultHookParams,
+                    opportunities: mockOpportunities,
+                }),
             { wrapper },
         )
 
@@ -162,7 +174,7 @@ describe('useSelectedOpportunity', () => {
         })
 
         expect(mockUseFindOneOpportunity).toHaveBeenCalledWith(
-            mockShopIntegrationId,
+            defaultHookParams.shopIntegrationId,
             1,
             {
                 query: {
@@ -182,11 +194,11 @@ describe('useSelectedOpportunity', () => {
 
         const { result } = renderHook(
             () =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
-                    mockOpportunityListItems,
-                    true,
-                ),
+                useSelectedOpportunity({
+                    ...defaultHookParams,
+                    opportunities: mockOpportunityListItems,
+                    useKnowledgeService: true,
+                }),
             { wrapper },
         )
 
@@ -195,7 +207,7 @@ describe('useSelectedOpportunity', () => {
         })
 
         expect(mockUseFindOneOpportunity).toHaveBeenCalledWith(
-            mockShopIntegrationId,
+            defaultHookParams.shopIntegrationId,
             1,
             {
                 query: {
@@ -214,14 +226,18 @@ describe('useSelectedOpportunity', () => {
         })
 
         renderHook(
-            () => useSelectedOpportunity(mockShopIntegrationId, [], true),
+            () =>
+                useSelectedOpportunity({
+                    ...defaultHookParams,
+                    useKnowledgeService: true,
+                }),
             {
                 wrapper,
             },
         )
 
         expect(mockUseFindOneOpportunity).toHaveBeenCalledWith(
-            mockShopIntegrationId,
+            defaultHookParams.shopIntegrationId,
             undefined,
             {
                 query: {
@@ -241,11 +257,11 @@ describe('useSelectedOpportunity', () => {
 
         const { result } = renderHook(
             () =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
-                    mockOpportunityListItems,
-                    true,
-                ),
+                useSelectedOpportunity({
+                    ...defaultHookParams,
+                    opportunities: mockOpportunityListItems,
+                    useKnowledgeService: true,
+                }),
             { wrapper },
         )
 
@@ -265,11 +281,11 @@ describe('useSelectedOpportunity', () => {
 
         const { result, rerender } = renderHook(
             () =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
-                    mockOpportunityListItems,
-                    true,
-                ),
+                useSelectedOpportunity({
+                    ...defaultHookParams,
+                    opportunities: mockOpportunityListItems,
+                    useKnowledgeService: true,
+                }),
             { wrapper },
         )
 
@@ -300,11 +316,11 @@ describe('useSelectedOpportunity', () => {
 
         const { result } = renderHook(
             () =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
-                    mockOpportunityListItems,
-                    true,
-                ),
+                useSelectedOpportunity({
+                    ...defaultHookParams,
+                    opportunities: mockOpportunityListItems,
+                    useKnowledgeService: true,
+                }),
             { wrapper },
         )
 
@@ -325,11 +341,10 @@ describe('useSelectedOpportunity', () => {
 
         const { result } = renderHook(
             () =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
-                    mockOpportunities,
-                    false,
-                ),
+                useSelectedOpportunity({
+                    ...defaultHookParams,
+                    opportunities: mockOpportunities,
+                }),
             { wrapper },
         )
 
@@ -349,11 +364,10 @@ describe('useSelectedOpportunity', () => {
 
         const { result } = renderHook(
             () =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
-                    mockOpportunities,
-                    false,
-                ),
+                useSelectedOpportunity({
+                    ...defaultHookParams,
+                    opportunities: mockOpportunities,
+                }),
             { wrapper },
         )
 
@@ -379,11 +393,10 @@ describe('useSelectedOpportunity', () => {
 
         const { result } = renderHook(
             () =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
-                    mockOpportunities,
-                    false,
-                ),
+                useSelectedOpportunity({
+                    ...defaultHookParams,
+                    opportunities: mockOpportunities,
+                }),
             { wrapper },
         )
 
@@ -410,11 +423,11 @@ describe('useSelectedOpportunity', () => {
 
         const { result, rerender } = renderHook(
             ({ useKnowledgeService }) =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
-                    mockOpportunities,
+                useSelectedOpportunity({
+                    ...defaultHookParams,
+                    opportunities: mockOpportunities,
                     useKnowledgeService,
-                ),
+                }),
             {
                 wrapper,
                 initialProps: { useKnowledgeService: false },
@@ -450,11 +463,10 @@ describe('useSelectedOpportunity', () => {
 
         const { result } = renderHook(
             () =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
-                    mockOpportunities,
-                    false,
-                ),
+                useSelectedOpportunity({
+                    ...defaultHookParams,
+                    opportunities: mockOpportunities,
+                }),
             { wrapper },
         )
 
@@ -474,11 +486,10 @@ describe('useSelectedOpportunity', () => {
 
         const { result, rerender } = renderHook(
             ({ opportunities }) =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
+                useSelectedOpportunity({
+                    ...defaultHookParams,
                     opportunities,
-                    false,
-                ),
+                }),
             {
                 wrapper,
                 initialProps: { opportunities: mockOpportunities },
@@ -518,11 +529,10 @@ describe('useSelectedOpportunity', () => {
 
         const { result, rerender } = renderHook(
             ({ opportunities }) =>
-                useSelectedOpportunity(
-                    mockShopIntegrationId,
+                useSelectedOpportunity({
+                    ...defaultHookParams,
                     opportunities,
-                    false,
-                ),
+                }),
             {
                 wrapper,
                 initialProps: { opportunities: mockOpportunities },
@@ -550,12 +560,11 @@ describe('useSelectedOpportunity', () => {
 
             const { result } = renderHook(
                 () =>
-                    useSelectedOpportunity(
-                        mockShopIntegrationId,
-                        mockOpportunities,
-                        false,
-                        '2',
-                    ),
+                    useSelectedOpportunity({
+                        ...defaultHookParams,
+                        opportunities: mockOpportunities,
+                        initialOpportunityId: '2',
+                    }),
                 { wrapper },
             )
 
@@ -575,17 +584,17 @@ describe('useSelectedOpportunity', () => {
 
             const { result } = renderHook(
                 () =>
-                    useSelectedOpportunity(
-                        mockShopIntegrationId,
-                        mockOpportunityListItems,
-                        true,
-                        '999',
-                    ),
+                    useSelectedOpportunity({
+                        ...defaultHookParams,
+                        opportunities: mockOpportunityListItems,
+                        useKnowledgeService: true,
+                        initialOpportunityId: '999',
+                    }),
                 { wrapper },
             )
 
             expect(mockUseFindOneOpportunity).toHaveBeenCalledWith(
-                mockShopIntegrationId,
+                defaultHookParams.shopIntegrationId,
                 999,
                 {
                     query: {
@@ -595,30 +604,6 @@ describe('useSelectedOpportunity', () => {
                 },
             )
             expect(result.current.selectedOpportunityId).toBe('999')
-        })
-
-        it('should fallback to first opportunity when initialOpportunityId fetch fails', async () => {
-            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
-            mockUseFindOneOpportunity.mockReturnValue({
-                data: undefined,
-                isLoading: false,
-                isError: true,
-            })
-
-            const { result } = renderHook(
-                () =>
-                    useSelectedOpportunity(
-                        mockShopIntegrationId,
-                        mockOpportunityListItems,
-                        true,
-                        '999',
-                    ),
-                { wrapper },
-            )
-
-            await waitFor(() => {
-                expect(result.current.selectedOpportunityId).toBe('1')
-            })
         })
 
         it('should not fallback when no opportunities are available', () => {
@@ -631,12 +616,11 @@ describe('useSelectedOpportunity', () => {
 
             const { result } = renderHook(
                 () =>
-                    useSelectedOpportunity(
-                        mockShopIntegrationId,
-                        [],
-                        true,
-                        '999',
-                    ),
+                    useSelectedOpportunity({
+                        ...defaultHookParams,
+                        useKnowledgeService: true,
+                        initialOpportunityId: '999',
+                    }),
                 { wrapper },
             )
 
@@ -653,12 +637,11 @@ describe('useSelectedOpportunity', () => {
 
             const { result } = renderHook(
                 () =>
-                    useSelectedOpportunity(
-                        mockShopIntegrationId,
-                        [],
-                        true,
-                        '1',
-                    ),
+                    useSelectedOpportunity({
+                        ...defaultHookParams,
+                        useKnowledgeService: true,
+                        initialOpportunityId: '1',
+                    }),
                 { wrapper },
             )
 
@@ -667,6 +650,161 @@ describe('useSelectedOpportunity', () => {
                     mockOpportunityDetails,
                 )
             })
+        })
+
+        it('should update URL when opportunity is selected', () => {
+            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            mockUseFindOneOpportunity.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+            })
+
+            renderHook(
+                () =>
+                    useSelectedOpportunity({
+                        ...defaultHookParams,
+                        opportunities: mockOpportunities,
+                    }),
+                { wrapper },
+            )
+
+            expect(mockHistoryReplace).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/test-shop/opportunities/1',
+            )
+        })
+
+        it('should not update URL when selectedOpportunityId matches initialOpportunityId', () => {
+            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            mockUseFindOneOpportunity.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+            })
+
+            renderHook(
+                () =>
+                    useSelectedOpportunity({
+                        ...defaultHookParams,
+                        opportunities: mockOpportunities,
+                        initialOpportunityId: '1',
+                    }),
+                { wrapper },
+            )
+
+            expect(mockHistoryReplace).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('free tier filtering with allowedOpportunityIds', () => {
+        it('should only select from allowed opportunities when allowedOpportunityIds is provided', () => {
+            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            mockUseFindOneOpportunity.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useSelectedOpportunity({
+                        ...defaultHookParams,
+                        opportunities: mockOpportunities,
+                        allowedOpportunityIds: [2],
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.selectedOpportunityId).toBe('2')
+        })
+
+        it('should not preselect any opportunity when allowedOpportunityIds is empty', () => {
+            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            mockUseFindOneOpportunity.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useSelectedOpportunity({
+                        ...defaultHookParams,
+                        opportunities: mockOpportunities,
+                        allowedOpportunityIds: [],
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.selectedOpportunityId).toBeNull()
+            expect(result.current.selectedOpportunity).toBeNull()
+        })
+
+        it('should select first opportunity when allowedOpportunityIds is undefined (premium user)', () => {
+            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            mockUseFindOneOpportunity.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useSelectedOpportunity({
+                        ...defaultHookParams,
+                        opportunities: mockOpportunities,
+                        allowedOpportunityIds: undefined,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.selectedOpportunityId).toBe('1')
+        })
+
+        it('should fallback to first allowed opportunity when initialOpportunityId fails', async () => {
+            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            mockUseFindOneOpportunity.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: true,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useSelectedOpportunity({
+                        ...defaultHookParams,
+                        opportunities: mockOpportunityListItems,
+                        useKnowledgeService: true,
+                        initialOpportunityId: '999',
+                        allowedOpportunityIds: [2],
+                    }),
+                { wrapper },
+            )
+
+            await waitFor(() => {
+                expect(result.current.selectedOpportunityId).toBe('2')
+            })
+        })
+
+        it('should redirect to first allowed opportunity when selecting a restricted one', () => {
+            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            mockUseFindOneOpportunity.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useSelectedOpportunity({
+                        ...defaultHookParams,
+                        opportunities: mockOpportunities,
+                        allowedOpportunityIds: [2],
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.selectedOpportunityId).toBe('2')
+
+            act(() => {
+                result.current.setSelectedOpportunityId('1')
+            })
+
+            expect(result.current.selectedOpportunityId).toBe('2')
         })
     })
 })

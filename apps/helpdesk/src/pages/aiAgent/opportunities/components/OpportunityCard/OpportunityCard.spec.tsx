@@ -167,4 +167,95 @@ describe('OpportunityCard', () => {
 
         expect(screen.getByText('2')).toBeInTheDocument()
     })
+
+    describe('restricted state', () => {
+        it('should apply restricted styles when isRestricted is true', () => {
+            const { container } = render(
+                <OpportunityCard {...defaultProps} isRestricted={true} />,
+            )
+
+            const card = container.firstChild
+            expect(card).toHaveClass('cardRestricted')
+        })
+
+        it('should have aria-disabled attribute when restricted', () => {
+            const { container } = render(
+                <OpportunityCard {...defaultProps} isRestricted={true} />,
+            )
+
+            const card = container.firstChild
+            expect(card).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should not apply hover styles when restricted', async () => {
+            const user = userEvent.setup()
+            const { container } = render(
+                <OpportunityCard {...defaultProps} isRestricted={true} />,
+            )
+
+            const card = container.firstChild as HTMLElement
+
+            await act(async () => {
+                await user.hover(card)
+            })
+
+            await waitFor(() => {
+                expect(card).not.toHaveClass('cardHovered')
+                expect(card).toHaveClass('cardRestricted')
+            })
+        })
+
+        it('should not apply selected styles when restricted and selected', () => {
+            const { container } = render(
+                <OpportunityCard
+                    {...defaultProps}
+                    selected={true}
+                    isRestricted={true}
+                />,
+            )
+
+            const card = container.firstChild
+            expect(card).not.toHaveClass('cardSelected')
+            expect(card).toHaveClass('cardRestricted')
+        })
+
+        it('should not call onSelect when clicked while restricted', async () => {
+            const onSelect = jest.fn()
+            const user = userEvent.setup()
+            const { container } = render(
+                <OpportunityCard
+                    {...defaultProps}
+                    onSelect={onSelect}
+                    isRestricted={true}
+                />,
+            )
+
+            const card = container.firstChild as HTMLElement
+            await act(() => user.click(card))
+
+            expect(onSelect).not.toHaveBeenCalled()
+        })
+
+        it('should not apply selected+hover styles when restricted, selected and hovered', async () => {
+            const user = userEvent.setup()
+            const { container } = render(
+                <OpportunityCard
+                    {...defaultProps}
+                    selected={true}
+                    isRestricted={true}
+                />,
+            )
+
+            const card = container.firstChild as HTMLElement
+
+            await act(async () => {
+                await user.hover(card)
+            })
+
+            await waitFor(() => {
+                expect(card).not.toHaveClass('cardSelectedHovered')
+                expect(card).toHaveClass('cardRestricted')
+            })
+        })
+    })
 })

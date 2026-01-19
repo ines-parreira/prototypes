@@ -31,6 +31,7 @@ interface OpportunitiesSidebarProps {
     hasNextPage?: boolean
     isFetchingNextPage?: boolean
     onEndReached?: () => void
+    allowedOpportunityIds?: number[]
 }
 
 export const OpportunitiesSidebar = ({
@@ -43,6 +44,7 @@ export const OpportunitiesSidebar = ({
     hasNextPage = false,
     isFetchingNextPage = false,
     onEndReached,
+    allowedOpportunityIds,
 }: OpportunitiesSidebarProps) => {
     const virtuosoContainerRef = useRef<HTMLDivElement>(null)
     const onEndReachedRef = useRef(onEndReached)
@@ -111,6 +113,16 @@ export const OpportunitiesSidebar = ({
         : opportunities.length
     const itemCountText = itemCount === 1 ? '1 item' : `${itemCount} items`
 
+    const isOpportunityRestricted = useCallback(
+        (opportunityId: string) => {
+            if (allowedOpportunityIds === undefined) {
+                return false
+            }
+            return !allowedOpportunityIds.includes(Number(opportunityId))
+        },
+        [allowedOpportunityIds],
+    )
+
     const renderOpportunityCard = useCallback(
         (_index: number, opportunity: SidebarOpportunityItem) => {
             return (
@@ -120,10 +132,11 @@ export const OpportunitiesSidebar = ({
                     ticketCount={opportunity.ticketCount}
                     selected={selectedOpportunity?.id === opportunity.id}
                     onSelect={() => handleSelectCard(opportunity.id)}
+                    isRestricted={isOpportunityRestricted(opportunity.id)}
                 />
             )
         },
-        [selectedOpportunity?.id, handleSelectCard],
+        [selectedOpportunity?.id, handleSelectCard, isOpportunityRestricted],
     )
 
     const handleEndReached = useCallback(() => {

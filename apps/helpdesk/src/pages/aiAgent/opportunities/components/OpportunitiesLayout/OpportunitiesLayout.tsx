@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
-import { useHistory, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
@@ -35,7 +35,6 @@ export const OpportunitiesLayout = () => {
         shopType: string
         opportunityId?: string
     }>()
-    const history = useHistory()
 
     const [isSidebarVisible, setIsSidebarVisible] = useState(true)
     const wrapperRef = useRef<HTMLDivElement>(null)
@@ -64,14 +63,6 @@ export const OpportunitiesLayout = () => {
     const accountId = useAppSelector(getCurrentAccountId)
     const userId = useAppSelector(getCurrentUserId)
 
-    const opportunityPageState = useOpportunityPageState({
-        helpCenterId: storeConfiguration?.helpCenterId ?? 0,
-        locale,
-        shopName: shopName ?? '',
-        accountId,
-        shopType: shopType ?? '',
-    })
-
     const {
         articles: aiArticles,
         isLoading: isLoadingAiArticles,
@@ -91,20 +82,11 @@ export const OpportunitiesLayout = () => {
         fetchNextPage,
         preloadNextPage,
         refetch: refetchOpportunities,
+        allowedOpportunityIds,
     } = useKnowledgeServiceOpportunities(
         shopIntegrationId || 0,
         useKnowledgeService,
     )
-
-    const {
-        onOpportunityPageVisited,
-        onOpportunityViewed,
-        onOpportunityAccepted,
-        onOpportunityDismissed,
-    } = useOpportunitiesTracking({
-        accountId,
-        userId,
-    })
 
     const opportunities: SidebarOpportunityItem[] = useMemo(() => {
         if (useKnowledgeService) {
@@ -121,15 +103,40 @@ export const OpportunitiesLayout = () => {
 
     const {
         selectedOpportunity,
-        selectedOpportunityId,
         setSelectedOpportunityId,
         isLoading: isLoadingOpportunityDetails,
-    } = useSelectedOpportunity(
-        shopIntegrationId || 0,
+    } = useSelectedOpportunity({
+        shopIntegrationId: shopIntegrationId || 0,
         opportunities,
         useKnowledgeService,
-        opportunityId,
-    )
+        initialOpportunityId: opportunityId,
+        allowedOpportunityIds: useKnowledgeService
+            ? allowedOpportunityIds
+            : undefined,
+        shopType: shopType ?? '',
+        shopName: shopName ?? '',
+    })
+
+    const opportunityPageState = useOpportunityPageState({
+        helpCenterId: storeConfiguration?.helpCenterId ?? 0,
+        locale,
+        shopName: shopName ?? '',
+        accountId,
+        shopType: shopType ?? '',
+        allowedOpportunityIds: useKnowledgeService
+            ? allowedOpportunityIds
+            : undefined,
+    })
+
+    const {
+        onOpportunityPageVisited,
+        onOpportunityViewed,
+        onOpportunityAccepted,
+        onOpportunityDismissed,
+    } = useOpportunitiesTracking({
+        accountId,
+        userId,
+    })
 
     const selectNextOpportunity = (articleKey: string) => {
         if (selectedOpportunity?.key === articleKey) {
@@ -148,9 +155,10 @@ export const OpportunitiesLayout = () => {
         setSelectedOpportunityId(opportunities[index].id)
 
         // Preload next page if we're close to the end
-        // Only for knowledge service with pagination
+        // Only for knowledge service with pagination (premium users only)
         if (
             useKnowledgeService &&
+            allowedOpportunityIds === undefined &&
             opportunities.length - index <= PRELOAD_THRESHOLD
         ) {
             preloadNextPage()
@@ -180,13 +188,6 @@ export const OpportunitiesLayout = () => {
     useEffect(() => {
         onOpportunityPageVisited()
     }, [onOpportunityPageVisited])
-
-    useEffect(() => {
-        if (selectedOpportunityId && selectedOpportunityId !== opportunityId) {
-            const basePath = `/app/ai-agent/${shopType}/${shopName}/opportunities`
-            history.replace(`${basePath}/${selectedOpportunityId}`)
-        }
-    }, [selectedOpportunityId, opportunityId, shopType, shopName, history])
 
     useLayoutEffect(() => {
         if (!wrapperRef.current) return
@@ -227,12 +228,28 @@ export const OpportunitiesLayout = () => {
                         }}
                         selectedOpportunity={selectedOpportunity}
                         onOpportunityViewed={onOpportunityViewed}
-                        hasNextPage={useKnowledgeService ? hasNextPage : false}
+                        hasNextPage={
+                            useKnowledgeService &&
+                            allowedOpportunityIds === undefined
+                                ? hasNextPage
+                                : false
+                        }
                         isFetchingNextPage={
-                            useKnowledgeService ? isFetchingNextPage : false
+                            useKnowledgeService &&
+                            allowedOpportunityIds === undefined
+                                ? isFetchingNextPage
+                                : false
                         }
                         onEndReached={
-                            useKnowledgeService ? fetchNextPage : undefined
+                            useKnowledgeService &&
+                            allowedOpportunityIds === undefined
+                                ? fetchNextPage
+                                : undefined
+                        }
+                        allowedOpportunityIds={
+                            useKnowledgeService
+                                ? allowedOpportunityIds
+                                : undefined
                         }
                     />
                     <OpportunitiesContent
@@ -255,6 +272,11 @@ export const OpportunitiesLayout = () => {
                             isLoadingOpportunityDetails
                         }
                         totalCount={opportunities.length}
+                        allowedOpportunityIds={
+                            useKnowledgeService
+                                ? allowedOpportunityIds
+                                : undefined
+                        }
                     />
                 </div>
             </div>

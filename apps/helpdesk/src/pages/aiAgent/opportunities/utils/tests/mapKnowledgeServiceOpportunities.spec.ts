@@ -16,16 +16,6 @@ describe('mapKnowledgeServiceOpportunities', () => {
                     shopName: 'Test Shop',
                     detectionCount: 5,
                     insight: 'Test insight',
-                    resources: [
-                        {
-                            resourceId: 'res-1',
-                            resourceTitle: 'First Opportunity',
-                            resourceType: 'article',
-                            resourceLocale: 'en',
-                            resourceSetId: 'set-1',
-                            resourceVersion: '1',
-                        },
-                    ],
                 },
             ],
             metadata: {
@@ -61,16 +51,6 @@ describe('mapKnowledgeServiceOpportunities', () => {
                     shopName: 'Shop 1',
                     detectionCount: 3,
                     insight: 'Test insight 1',
-                    resources: [
-                        {
-                            resourceId: 'res-1',
-                            resourceTitle: 'First Opportunity',
-                            resourceType: 'article',
-                            resourceLocale: 'en',
-                            resourceSetId: 'set-1',
-                            resourceVersion: '1',
-                        },
-                    ],
                 },
                 {
                     id: 2,
@@ -81,16 +61,6 @@ describe('mapKnowledgeServiceOpportunities', () => {
                     shopName: 'Shop 2',
                     detectionCount: 7,
                     insight: 'Test insight 2',
-                    resources: [
-                        {
-                            resourceId: 'res-2',
-                            resourceTitle: 'Second Opportunity',
-                            resourceType: 'guidance',
-                            resourceLocale: 'en',
-                            resourceSetId: 'set-2',
-                            resourceVersion: '2',
-                        },
-                    ],
                 },
             ],
             metadata: {
@@ -132,16 +102,6 @@ describe('mapKnowledgeServiceOpportunities', () => {
                     shopName: 'Test Shop',
                     detectionCount: 2,
                     insight: 'Test insight',
-                    resources: [
-                        {
-                            resourceId: 'res-1',
-                            resourceTitle: 'Test',
-                            resourceType: 'article',
-                            resourceLocale: 'en',
-                            resourceSetId: 'set-1',
-                            resourceVersion: '1',
-                        },
-                    ],
                 },
             ],
             metadata: {
@@ -169,16 +129,6 @@ describe('mapKnowledgeServiceOpportunities', () => {
                     shopName: 'Test Shop',
                     detectionCount: 2,
                     insight: 'Test insight',
-                    resources: [
-                        {
-                            resourceId: 'res-1',
-                            resourceTitle: 'Test',
-                            resourceType: 'article',
-                            resourceLocale: 'en',
-                            resourceSetId: 'set-1',
-                            resourceVersion: '1',
-                        },
-                    ],
                 },
             ],
             metadata: {
@@ -206,16 +156,6 @@ describe('mapKnowledgeServiceOpportunities', () => {
                     shopName: 'Test Shop',
                     detectionCount: 2,
                     insight: 'Test insight',
-                    resources: [
-                        {
-                            resourceId: 'res-1',
-                            resourceTitle: 'Test',
-                            resourceType: 'article',
-                            resourceLocale: 'en',
-                            resourceSetId: 'set-1',
-                            resourceVersion: '1',
-                        },
-                    ],
                 },
             ],
             metadata: {
@@ -259,16 +199,6 @@ describe('mapKnowledgeServiceOpportunities', () => {
                     shopName: 'Test Shop',
                     detectionCount: 2,
                     insight: 'Test insight',
-                    resources: [
-                        {
-                            resourceId: 'res-1',
-                            resourceTitle: 'Test',
-                            resourceType: 'article',
-                            resourceLocale: 'en',
-                            resourceSetId: 'set-1',
-                            resourceVersion: '1',
-                        },
-                    ],
                 },
             ],
             metadata: {
@@ -298,16 +228,6 @@ describe('mapKnowledgeServiceOpportunities', () => {
                     shopName: 'Test Shop',
                     detectionCount: 42,
                     insight: 'Test insight',
-                    resources: [
-                        {
-                            resourceId: 'res-1',
-                            resourceTitle: 'Test',
-                            resourceType: 'article',
-                            resourceLocale: 'en',
-                            resourceSetId: 'set-1',
-                            resourceVersion: '1',
-                        },
-                    ],
                 },
             ],
             metadata: {
@@ -335,16 +255,6 @@ describe('mapKnowledgeServiceOpportunities', () => {
                     shopName: 'Test Shop',
                     detectionCount: 2,
                     insight: 'Customer frequently asks about return policy',
-                    resources: [
-                        {
-                            resourceId: 'res-1',
-                            resourceTitle: 'Test',
-                            resourceType: 'article',
-                            resourceLocale: 'en',
-                            resourceSetId: 'set-1',
-                            resourceVersion: '1',
-                        },
-                    ],
                 },
             ],
             metadata: {

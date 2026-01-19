@@ -16,6 +16,7 @@ interface PaginatedPage {
     prevCursor: string | null
     total: number
     totalPending: number
+    allowedOpportunityIds: number[] | undefined
 }
 
 export const useKnowledgeServiceOpportunities = (
@@ -68,6 +69,8 @@ export const useKnowledgeServiceOpportunities = (
             prevCursor: paginatedData.metadata.prev_cursor,
             total: paginatedData.metadata.total,
             totalPending: paginatedData.metadata.total_pending,
+            allowedOpportunityIds:
+                paginatedData.metadata.accessible_opportunity_ids ?? undefined,
         }
 
         setPages((prevPages) => {
@@ -93,6 +96,18 @@ export const useKnowledgeServiceOpportunities = (
 
     const opportunities = useMemo(() => {
         return pages.flatMap((page) => page.opportunities)
+    }, [pages])
+
+    const allowedOpportunityIds = useMemo((): number[] | undefined => {
+        // If any page has undefined allowedOpportunityIds, return undefined (premium user)
+        if (pages.some((page) => page.allowedOpportunityIds === undefined)) {
+            return undefined
+        }
+        return Array.from(
+            new Set(
+                pages.flatMap((page) => page.allowedOpportunityIds as number[]),
+            ),
+        )
     }, [pages])
 
     const totalCount = pages[0]?.total
@@ -123,6 +138,7 @@ export const useKnowledgeServiceOpportunities = (
 
     return {
         opportunities,
+        allowedOpportunityIds,
         isLoading: isLoading && pages.length === 0,
         isFetchingNextPage,
         hasNextPage,

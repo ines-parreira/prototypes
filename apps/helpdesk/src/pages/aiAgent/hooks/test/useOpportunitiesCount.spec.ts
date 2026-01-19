@@ -44,6 +44,7 @@ describe('useOpportunitiesCount', () => {
             fetchNextPage: jest.fn(),
             preloadNextPage: jest.fn(),
             refetch: jest.fn(),
+            allowedOpportunityIds: undefined,
         })
     })
 
@@ -327,6 +328,7 @@ describe('useOpportunitiesCount', () => {
                 fetchNextPage: jest.fn(),
                 preloadNextPage: jest.fn(),
                 refetch: jest.fn(),
+                allowedOpportunityIds: undefined,
             })
 
             mockUseHelpCenterAIArticlesLibrary.mockReturnValue({
@@ -354,6 +356,7 @@ describe('useOpportunitiesCount', () => {
                 fetchNextPage: jest.fn(),
                 preloadNextPage: jest.fn(),
                 refetch: jest.fn(),
+                allowedOpportunityIds: undefined,
             })
 
             mockUseHelpCenterAIArticlesLibrary.mockReturnValue({
@@ -380,6 +383,7 @@ describe('useOpportunitiesCount', () => {
                 fetchNextPage: jest.fn(),
                 preloadNextPage: jest.fn(),
                 refetch: jest.fn(),
+                allowedOpportunityIds: undefined,
             })
 
             mockUseHelpCenterAIArticlesLibrary.mockReturnValue({

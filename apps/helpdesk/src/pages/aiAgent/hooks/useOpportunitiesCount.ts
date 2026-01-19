@@ -6,6 +6,7 @@ import type { LocaleCode } from 'models/helpCenter/types'
 import { useKnowledgeServiceOpportunities } from 'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities'
 import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 
+import { MIN_TOTAL_OPPORTUNITIES_THRESHOLD } from '../opportunities/constants'
 import { useShopIntegrationId } from './useShopIntegrationId'
 
 export const useOpportunitiesCount = (
@@ -28,23 +29,44 @@ export const useOpportunitiesCount = (
             !useKnowledgeService,
         )
 
-    const { isLoading: isLoadingKnowledgeService, totalPending } =
-        useKnowledgeServiceOpportunities(
-            shopIntegrationId || 0,
-            useKnowledgeService,
-        )
+    const {
+        isLoading: isLoadingKnowledgeService,
+        totalPending,
+        totalCount: totalOpportunitiesCount,
+        allowedOpportunityIds,
+    } = useKnowledgeServiceOpportunities(
+        shopIntegrationId || 0,
+        useKnowledgeService,
+    )
 
     const opportunitiesCount = useMemo(() => {
         if (useKnowledgeService) {
+            if (
+                allowedOpportunityIds !== undefined &&
+                totalOpportunitiesCount < MIN_TOTAL_OPPORTUNITIES_THRESHOLD
+            ) {
+                return 0
+            }
+
             return totalPending
         } else if (!helpCenterId) return 0
         return aiArticles?.length ?? 0
-    }, [aiArticles, helpCenterId, useKnowledgeService, totalPending])
+    }, [
+        aiArticles,
+        helpCenterId,
+        useKnowledgeService,
+        totalPending,
+        allowedOpportunityIds,
+        totalOpportunitiesCount,
+    ])
 
     return {
         count: opportunitiesCount,
         isLoading: useKnowledgeService
             ? isLoadingKnowledgeService
             : isLoadingAiArticles,
+        totalCount: useKnowledgeService
+            ? totalOpportunitiesCount
+            : opportunitiesCount,
     }
 }

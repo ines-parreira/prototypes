@@ -2,11 +2,9 @@ import { Link, useParams } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertRulesProductRecommendation } from 'models/knowledgeService/mutations'
 import { useGetRulesProductRecommendation } from 'models/knowledgeService/queries'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
 import { PRODUCT_RECOMMENDATIONS, SALES } from '../constants'
@@ -27,8 +25,6 @@ export const AiAgentProductRecommendationsExclude = () => {
         shopName: string
     }>()
 
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const gorgiasDomain = currentAccount.get('domain')
     const { integrationId } = useShopifyIntegrationAndScope(shopName)
     const { routes } = useAiAgentNavigation({ shopName })
 
@@ -73,7 +69,6 @@ export const AiAgentProductRecommendationsExclude = () => {
         await upsertProductRecommendationRules({
             integrationId: integrationId,
             data: {
-                gorgiasDomain,
                 recommendationAction: 'excluded',
                 rules: [
                     ...(rawProductRecommendationRules?.excluded ?? []).filter(
@@ -100,7 +95,6 @@ export const AiAgentProductRecommendationsExclude = () => {
             await upsertProductRecommendationRules({
                 integrationId: integrationId,
                 data: {
-                    gorgiasDomain,
                     recommendationAction: 'promoted',
                     rules: [
                         ...(

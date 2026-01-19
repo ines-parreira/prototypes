@@ -21,6 +21,7 @@ interface OpportunityCardProps {
     ticketCount?: number
     selected?: boolean
     onSelect?: () => void
+    isRestricted?: boolean
 }
 
 export const OpportunityCard = ({
@@ -29,6 +30,7 @@ export const OpportunityCard = ({
     selected = false,
     ticketCount,
     onSelect,
+    isRestricted = false,
 }: OpportunityCardProps) => {
     const [isHovered, setIsHovered] = useState(false)
     const [isTextOverflowing, setIsTextOverflowing] = useState(false)
@@ -84,25 +86,46 @@ export const OpportunityCard = ({
     return (
         <div
             className={classNames(css.card, {
-                [css.cardHovered]: isHovered,
-                [css.cardSelected]: selected,
-                [css.cardSelectedHovered]: selected && isHovered,
+                [css.cardHovered]: isHovered && !isRestricted,
+                [css.cardSelected]: selected && !isRestricted,
+                [css.cardSelectedHovered]:
+                    selected && isHovered && !isRestricted,
+                [css.cardRestricted]: isRestricted,
             })}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            onClick={onSelect}
+            onClick={isRestricted ? undefined : onSelect}
+            aria-disabled={isRestricted}
         >
             <div className={css.header}>
-                <div className={css.infoSection}>
-                    <Icon
-                        name={infoContent.icon as IconName}
-                        size="sm"
-                        color="var(--content-neutral-secondary)"
-                    />
-                    <Text size="md" variant="bold">
-                        {infoContent.text}
-                    </Text>
-                </div>
+                {isRestricted ? (
+                    <Tooltip placement="top">
+                        <TooltipTrigger>
+                            <div className={css.infoSection}>
+                                <Icon
+                                    name={infoContent.icon as IconName}
+                                    size="sm"
+                                    color="var(--content-neutral-secondary)"
+                                />
+                                <Text size="md" variant="bold">
+                                    {infoContent.text}
+                                </Text>
+                            </div>
+                        </TooltipTrigger>
+                        <TooltipContent title="Upgrade to access all opportunities for AI Agent" />
+                    </Tooltip>
+                ) : (
+                    <div className={css.infoSection}>
+                        <Icon
+                            name={infoContent.icon as IconName}
+                            size="sm"
+                            color="var(--content-neutral-secondary)"
+                        />
+                        <Text size="md" variant="bold">
+                            {infoContent.text}
+                        </Text>
+                    </div>
+                )}
                 {ticketCount !== undefined && (
                     <Tooltip placement="top">
                         <TooltipTrigger>
