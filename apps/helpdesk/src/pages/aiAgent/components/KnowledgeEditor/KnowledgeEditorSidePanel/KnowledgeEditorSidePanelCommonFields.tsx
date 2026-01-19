@@ -166,23 +166,25 @@ export const KnowledgeEditorSidePanelFieldSourceDocument = ({
     const id = useId()
 
     return (
-        <a
-            href={sourceDocument.downloadUrl}
-            className={css.documentField}
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            <span className={css.documentFieldText}>
-                {sourceDocument.label}
-            </span>
+        <Tooltip>
+            <TooltipTrigger>
+                <a
+                    href={sourceDocument.downloadUrl}
+                    className={css.documentField}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <span className={css.documentFieldText}>
+                        {sourceDocument.label}
+                    </span>
 
-            <span id={`tooltip_${id}`}>
-                <Icon name="download" size={IconSize.Xs} />
-            </span>
-            <LegacyTooltip target={`tooltip_${id}`} placement="top">
-                Click to download
-            </LegacyTooltip>
-        </a>
+                    <span id={`tooltip_${id}`}>
+                        <Icon name="download" size={IconSize.Xs} />
+                    </span>
+                </a>
+            </TooltipTrigger>
+            <TooltipContent caption="Click to download" />
+        </Tooltip>
     )
 }
 
