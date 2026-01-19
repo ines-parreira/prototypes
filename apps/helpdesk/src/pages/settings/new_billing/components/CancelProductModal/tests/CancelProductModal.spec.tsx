@@ -2050,4 +2050,124 @@ describe('Modal state management', () => {
 
         expect(resetMock).toHaveBeenCalled()
     })
+
+    it('should discard changes when modal is closed at cancellation summary step', () => {
+        const mockHandleOnClose = jest.fn()
+        const mockSetSelectedPlansLocal = jest.fn()
+
+        useCancellationFlowStepsStateMachineMock.mockImplementation(() => ({
+            cancellationStep: CancellationFlowStep.cancellationSummary,
+            switchToNextStep: mockSwitchToNextStep,
+            resetCancellationFlow: jest.fn(),
+        }))
+
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={ProductType.Automation}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlansLocal}
+                updateSubscription={mockUpdateSubscription}
+            />,
+        )
+
+        const modal = getByRole('dialog')
+        act(() => {
+            fireEvent.keyDown(modal, { key: 'Escape' })
+        })
+
+        expect(mockSetSelectedPlansLocal).toHaveBeenCalledWith(
+            expect.any(Function),
+        )
+
+        const setSelectedPlansCallback =
+            mockSetSelectedPlansLocal.mock.calls[0][0]
+        const result = setSelectedPlansCallback(mockSelectedPlans)
+
+        expect(result[ProductType.Automation]).toEqual({
+            ...mockSelectedPlans[ProductType.Automation],
+            isSelected: true,
+        })
+        expect(mockHandleOnClose).toHaveBeenCalled()
+    })
+
+    it('should NOT discard changes when modal is closed at earlier steps', () => {
+        const mockHandleOnClose = jest.fn()
+        const mockSetSelectedPlansLocal = jest.fn()
+
+        useCancellationFlowStepsStateMachineMock.mockImplementation(() => ({
+            cancellationStep: CancellationFlowStep.cancellationReasons,
+            switchToNextStep: mockSwitchToNextStep,
+            resetCancellationFlow: jest.fn(),
+        }))
+
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={ProductType.Automation}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlansLocal}
+                updateSubscription={mockUpdateSubscription}
+            />,
+        )
+
+        const keepPlanButton = getByRole('button', {
+            name: /Keep My AI Agent Plan/i,
+        })
+        act(() => {
+            fireEvent.click(keepPlanButton)
+        })
+
+        expect(mockSetSelectedPlansLocal).not.toHaveBeenCalled()
+        expect(mockHandleOnClose).toHaveBeenCalled()
+    })
+
+    it('should discard changes for Helpdesk product when closing at summary step', () => {
+        const mockHandleOnClose = jest.fn()
+        const mockSetSelectedPlansLocal = jest.fn()
+
+        useCancellationFlowStepsStateMachineMock.mockImplementation(() => ({
+            cancellationStep: CancellationFlowStep.cancellationSummary,
+            switchToNextStep: mockSwitchToNextStep,
+            resetCancellationFlow: jest.fn(),
+        }))
+
+        const { getByRole } = renderComponent(
+            <CancelProductModal
+                onClose={mockHandleOnClose}
+                isOpen={true}
+                productType={ProductType.Helpdesk}
+                subscriptionProducts={subscriptionProducts}
+                periodEnd={periodEnd}
+                selectedPlans={mockSelectedPlans}
+                setSelectedPlans={mockSetSelectedPlansLocal}
+                updateSubscription={mockUpdateSubscription}
+            />,
+        )
+
+        const modal = getByRole('dialog')
+        act(() => {
+            fireEvent.keyDown(modal, { key: 'Escape' })
+        })
+
+        expect(mockSetSelectedPlansLocal).toHaveBeenCalledWith(
+            expect.any(Function),
+        )
+
+        const setSelectedPlansCallback =
+            mockSetSelectedPlansLocal.mock.calls[0][0]
+        const result = setSelectedPlansCallback(mockSelectedPlans)
+
+        expect(result[ProductType.Helpdesk]).toEqual({
+            ...mockSelectedPlans[ProductType.Helpdesk],
+            isSelected: true,
+        })
+        expect(mockHandleOnClose).toHaveBeenCalled()
+    })
 })

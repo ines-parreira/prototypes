@@ -135,6 +135,15 @@ const CancelProductModal = ({
     }
 
     const handleOnClose = () => {
+        if (cancellationStep === CancellationFlowStep.cancellationSummary) {
+            setSelectedPlans((prev) => ({
+                ...prev,
+                [productType]: {
+                    ...prev[productType],
+                    isSelected: true,
+                },
+            }))
+        }
         onClose()
         setIsFirstOpened(true)
     }
