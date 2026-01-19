@@ -12,7 +12,7 @@ export const withTooltip = (
     return (
         <Tooltip placement="bottom">
             <TooltipTrigger>{button}</TooltipTrigger>
-            <TooltipContent title={title} />
+            <TooltipContent caption={title} />
         </Tooltip>
     )
 }

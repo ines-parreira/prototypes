@@ -31,7 +31,7 @@ export const DisableForAIButton = ({
         return (
             <Tooltip delay={0}>
                 <TooltipTrigger>{button}</TooltipTrigger>
-                <TooltipContent>{tooltipMessage}</TooltipContent>
+                <TooltipContent caption={tooltipMessage} />
             </Tooltip>
         )
     }

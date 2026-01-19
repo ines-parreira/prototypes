@@ -123,13 +123,13 @@ export function getBulkEnableButtonConfig(
 }
 
 export const TOOLTIP_MESSAGES: TooltipConfig = {
-    duplicateWithSnippets: 'De-select snippets to perform this action',
-    duplicateWithFAQ: 'De-select Help Center articles to perform this action',
-    delete: 'De-select snippets to perform this action',
-    aiAgentOnlyFAQ: 'This action is not supported at the moment',
-    aiAgentMixedFAQ: 'De-select Help Center articles to perform this action',
+    duplicateWithSnippets: 'De-select snippets to perform this action.',
+    duplicateWithFAQ: 'De-select Help Center articles to perform this action.',
+    delete: 'De-select snippets to perform this action.',
+    aiAgentOnlyFAQ: 'This action is not supported at the moment.',
+    aiAgentMixedFAQ: 'De-select Help Center articles to perform this action.',
     enableOnlyFAQ:
-        'Publish and make articles public to enable them for AI Agent',
+        'Publish and make articles public to enable them for AI Agent.',
     disableOnlyFAQ:
-        'Change article visibility to unlisted to disable for AI Agent',
+        'Change article visibility to unlisted to disable for AI Agent.',
 }

@@ -110,7 +110,7 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                                     />
                                 </TooltipTrigger>
                                 <TooltipContent
-                                    title={`Last saved: ${formatDatetime(
+                                    caption={`Last saved: ${formatDatetime(
                                         props.lastUpdatedDatetime.toISOString(),
                                         datetimeFormat,
                                         Intl.DateTimeFormat().resolvedOptions()

@@ -61,13 +61,11 @@ const createSelectableColumnWithTooltip =
                             <TooltipTrigger>
                                 <div>{checkboxContent}</div>
                             </TooltipTrigger>
-                            <TooltipContent>
-                                <Text size="sm">
-                                    This is a folder of snippets created from an
+                            <TooltipContent
+                                caption="This is a folder of snippets created from an
                                     external source. Click the folder to manage
-                                    the source and its contents.
-                                </Text>
-                            </TooltipContent>
+                                    the source and its contents."
+                            />
                         </Tooltip>
                     )
                 }

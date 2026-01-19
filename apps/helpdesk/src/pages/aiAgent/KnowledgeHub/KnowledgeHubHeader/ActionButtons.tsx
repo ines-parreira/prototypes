@@ -1,10 +1,4 @@
-import {
-    Button,
-    Text,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
 
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
@@ -80,9 +74,7 @@ export const HeaderActions = ({
                                     Sync store website
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent>
-                                <Text size="sm">{syncTooltipMessage}</Text>
-                            </TooltipContent>
+                            <TooltipContent caption={syncTooltipMessage} />
                         </Tooltip>
                     ) : (
                         <Button
@@ -111,9 +103,7 @@ export const HeaderActions = ({
                                     Sync URL
                                 </Button>
                             </TooltipTrigger>
-                            <TooltipContent>
-                                <Text size="sm">{syncTooltipMessage}</Text>
-                            </TooltipContent>
+                            <TooltipContent caption={syncTooltipMessage} />
                         </Tooltip>
                     ) : (
                         <Button

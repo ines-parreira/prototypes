@@ -230,7 +230,7 @@ export const DuplicateGuidance = ({
                     <TooltipTrigger>
                         <span id={buttonId}>{multiSelect}</span>
                     </TooltipTrigger>
-                    <TooltipContent title={tooltipMessage} />
+                    <TooltipContent caption={tooltipMessage} />
                 </Tooltip>
             </>
         )
