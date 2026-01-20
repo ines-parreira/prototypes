@@ -8,11 +8,16 @@ import {
     Text,
 } from '@gorgias/axiom'
 
+import { useGuidanceContext } from '../context'
 import { useDeleteModal } from './useDeleteModal'
 
 export const KnowledgeEditorGuidanceDeleteModal = () => {
+    const { state } = useGuidanceContext()
     const { isOpen, isDeleting, hasBothVersions, onClose, onDelete } =
         useDeleteModal()
+
+    const cancelButtonText =
+        state.guidanceMode === 'read' ? 'Cancel' : 'Back to editing'
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose} size="sm">
@@ -33,7 +38,7 @@ export const KnowledgeEditorGuidanceDeleteModal = () => {
                         onClick={onClose}
                         isDisabled={isDeleting}
                     >
-                        Back to editing
+                        {cancelButtonText}
                     </Button>
                     <Button
                         variant="primary"

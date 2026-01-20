@@ -8,11 +8,16 @@ import {
     Text,
 } from '@gorgias/axiom'
 
+import { useArticleContext } from '../context'
 import { useDeleteArticleModal } from './useDeleteArticleModal'
 
 export const ArticleDeleteModal = () => {
+    const { state } = useArticleContext()
     const { isOpen, isDeleting, hasBothVersions, onClose, onDelete } =
         useDeleteArticleModal()
+
+    const cancelButtonText =
+        state.articleMode === 'read' ? 'Cancel' : 'Back to editing'
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose} size="sm">
@@ -33,7 +38,7 @@ export const ArticleDeleteModal = () => {
                         onClick={onClose}
                         isDisabled={isDeleting}
                     >
-                        Back to editing
+                        {cancelButtonText}
                     </Button>
                     <Button
                         variant="primary"

@@ -1,15 +1,21 @@
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import type { ArticleModeType } from '../context/types'
 import { ArticleDeleteModal } from './ArticleDeleteModal'
 
 const mockOnClose = jest.fn()
 const mockOnDelete = jest.fn()
 
 const mockUseDeleteArticleModal = jest.fn()
+const mockUseArticleContext = jest.fn()
 
 jest.mock('./useDeleteArticleModal', () => ({
     useDeleteArticleModal: () => mockUseDeleteArticleModal(),
+}))
+
+jest.mock('../context', () => ({
+    useArticleContext: () => mockUseArticleContext(),
 }))
 
 const defaultMockState = {
@@ -20,10 +26,17 @@ const defaultMockState = {
     onDelete: mockOnDelete,
 }
 
+const defaultContextState = {
+    state: {
+        articleMode: 'edit' as ArticleModeType,
+    },
+}
+
 describe('ArticleDeleteModal', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseDeleteArticleModal.mockReturnValue(defaultMockState)
+        mockUseArticleContext.mockReturnValue(defaultContextState)
     })
 
     it('renders modal with correct title when open', () => {
@@ -73,12 +86,29 @@ describe('ArticleDeleteModal', () => {
         })
     })
 
-    it('renders Back to editing button', () => {
+    it('renders Back to editing button when in edit mode', () => {
         render(<ArticleDeleteModal />)
 
         expect(
             screen.getByRole('button', { name: /Back to editing/i }),
         ).toBeInTheDocument()
+    })
+
+    it('renders Cancel button when in read mode', () => {
+        mockUseArticleContext.mockReturnValue({
+            state: {
+                articleMode: 'read' as ArticleModeType,
+            },
+        })
+
+        render(<ArticleDeleteModal />)
+
+        expect(
+            screen.getByRole('button', { name: /Cancel/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /Back to editing/i }),
+        ).not.toBeInTheDocument()
     })
 
     it('renders Delete button', () => {
@@ -89,7 +119,7 @@ describe('ArticleDeleteModal', () => {
         ).toBeInTheDocument()
     })
 
-    it('calls onClose when Back to editing button is clicked', async () => {
+    it('calls onClose when Back to editing button is clicked in edit mode', async () => {
         const user = userEvent.setup()
         render(<ArticleDeleteModal />)
 
@@ -98,6 +128,26 @@ describe('ArticleDeleteModal', () => {
         })
 
         await act(() => user.click(backButton))
+
+        expect(mockOnClose).toHaveBeenCalledTimes(1)
+        expect(mockOnDelete).not.toHaveBeenCalled()
+    })
+
+    it('calls onClose when Cancel button is clicked in read mode', async () => {
+        const user = userEvent.setup()
+        mockUseArticleContext.mockReturnValue({
+            state: {
+                articleMode: 'read' as ArticleModeType,
+            },
+        })
+
+        render(<ArticleDeleteModal />)
+
+        const cancelButton = screen.getByRole('button', {
+            name: /Cancel/i,
+        })
+
+        await act(() => user.click(cancelButton))
 
         expect(mockOnClose).toHaveBeenCalledTimes(1)
         expect(mockOnDelete).not.toHaveBeenCalled()
@@ -115,7 +165,7 @@ describe('ArticleDeleteModal', () => {
         expect(mockOnDelete).toHaveBeenCalledTimes(1)
     })
 
-    it('disables Back to editing button while deleting', () => {
+    it('disables Back to editing button while deleting in edit mode', () => {
         mockUseDeleteArticleModal.mockReturnValue({
             ...defaultMockState,
             isDeleting: true,
@@ -128,6 +178,26 @@ describe('ArticleDeleteModal', () => {
         })
 
         expect(backButton).toBeDisabled()
+    })
+
+    it('disables Cancel button while deleting in read mode', () => {
+        mockUseDeleteArticleModal.mockReturnValue({
+            ...defaultMockState,
+            isDeleting: true,
+        })
+        mockUseArticleContext.mockReturnValue({
+            state: {
+                articleMode: 'read' as ArticleModeType,
+            },
+        })
+
+        render(<ArticleDeleteModal />)
+
+        const cancelButton = screen.getByRole('button', {
+            name: /Cancel/i,
+        })
+
+        expect(cancelButton).toBeDisabled()
     })
 
     it('disables Delete button while deleting', () => {
