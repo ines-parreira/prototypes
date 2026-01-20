@@ -28,6 +28,7 @@ describe('CustomTooltip', () => {
                     label="2024-01"
                     coordinate={mockCoordinate}
                     accessibilityLayer={false}
+                    activeIndex={undefined}
                 />,
             )
 
@@ -43,6 +44,7 @@ describe('CustomTooltip', () => {
                     label="2024-01"
                     coordinate={mockCoordinate}
                     accessibilityLayer={false}
+                    activeIndex={undefined}
                 />,
             )
 
@@ -58,6 +60,7 @@ describe('CustomTooltip', () => {
                     label="2024-01"
                     coordinate={mockCoordinate}
                     accessibilityLayer={false}
+                    activeIndex={undefined}
                 />,
             )
 
@@ -73,6 +76,7 @@ describe('CustomTooltip', () => {
                     label="2024-01"
                     coordinate={mockCoordinate}
                     accessibilityLayer={false}
+                    activeIndex={undefined}
                 />,
             )
 
@@ -90,6 +94,7 @@ describe('CustomTooltip', () => {
                     label="2024-01"
                     coordinate={mockCoordinate}
                     accessibilityLayer={false}
+                    activeIndex={undefined}
                 />,
             )
 
@@ -104,6 +109,7 @@ describe('CustomTooltip', () => {
                     label="2024-01"
                     coordinate={mockCoordinate}
                     accessibilityLayer={false}
+                    activeIndex={undefined}
                 />,
             )
 
@@ -121,6 +127,7 @@ describe('CustomTooltip', () => {
                     label="2024-01"
                     coordinate={mockCoordinate}
                     accessibilityLayer={false}
+                    activeIndex={undefined}
                 />,
             )
 
@@ -135,7 +142,8 @@ describe('CustomTooltip', () => {
 
     describe('formatter', () => {
         it('should format value when formatter returns a string', () => {
-            const formatter = (value: string | number) => `${value}$`
+            const formatter = (value: string | number | undefined) =>
+                `${value}$`
 
             render(
                 <ChartTooltip
@@ -145,6 +153,7 @@ describe('CustomTooltip', () => {
                     formatter={formatter}
                     coordinate={mockCoordinate}
                     accessibilityLayer={false}
+                    activeIndex={undefined}
                 />,
             )
 
@@ -155,10 +164,10 @@ describe('CustomTooltip', () => {
         })
 
         it('should format both value and name when formatter returns an array', () => {
-            const formatter = (value: string | number, name: string) => [
-                `${value}$`,
-                `${name}🎉️`,
-            ]
+            const formatter = (
+                value: string | number | undefined,
+                name: string | undefined,
+            ) => [`${value}$`, `${name}🎉️`]
 
             render(
                 <ChartTooltip
@@ -168,6 +177,7 @@ describe('CustomTooltip', () => {
                     formatter={formatter}
                     coordinate={mockCoordinate}
                     accessibilityLayer={false}
+                    activeIndex={undefined}
                 />,
             )
 
@@ -178,8 +188,10 @@ describe('CustomTooltip', () => {
         })
 
         it('should skip entry when formatter returns null', () => {
-            const formatter = (value: string | number, name: string) =>
-                name === 'Series 1' ? null : value
+            const formatter = (
+                value: string | number | undefined,
+                name: string | undefined,
+            ) => (name === 'Series 1' ? null : value)
 
             render(
                 <ChartTooltip
@@ -189,6 +201,7 @@ describe('CustomTooltip', () => {
                     formatter={formatter}
                     coordinate={mockCoordinate}
                     accessibilityLayer={false}
+                    activeIndex={undefined}
                 />,
             )
 
@@ -206,6 +219,7 @@ describe('CustomTooltip', () => {
                     label="2024-01"
                     coordinate={mockCoordinate}
                     accessibilityLayer={false}
+                    activeIndex={undefined}
                 />,
             )
 

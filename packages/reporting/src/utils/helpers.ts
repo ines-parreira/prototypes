@@ -292,7 +292,7 @@ const formatMetricValue = (
 
 const formatMetricValueOrString =
     (options?: { metricFormat?: MetricTrendFormat; currency?: string }) =>
-    (value: number | string) => {
+    (value: number | string | undefined) => {
         if (typeof value === 'number') {
             return formatMetricValue(
                 value,
@@ -301,7 +301,7 @@ const formatMetricValueOrString =
             )
         }
 
-        return value
+        return value ?? NOT_AVAILABLE_TEXT
     }
 
 export {

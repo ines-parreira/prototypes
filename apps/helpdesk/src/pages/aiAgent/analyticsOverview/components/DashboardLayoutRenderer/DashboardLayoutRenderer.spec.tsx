@@ -1,5 +1,5 @@
-import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import userEventLib from '@testing-library/user-event'
 
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
@@ -9,6 +9,8 @@ import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../../config/defaultLayoutCon
 import type { DashboardLayoutConfig } from '../../types/layoutConfig'
 import { DashboardLayoutRenderer } from './DashboardLayoutRenderer'
 
+import css from './DashboardLayoutRenderer.less'
+
 jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
     DashboardComponent: ({ chart }: { chart: string }) => (
         <div data-testid={`chart-${chart}`} data-chart-id={chart}>
@@ -16,6 +18,37 @@ jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
         </div>
     ),
 }))
+
+jest.mock('framer-motion', () => ({
+    motion: {
+        div: require('react').forwardRef(
+            ({ children, onAnimationComplete, ...props }: any, ref: any) => {
+                if (onAnimationComplete) {
+                    setTimeout(() => onAnimationComplete(), 0)
+                }
+                return (
+                    <div ref={ref} {...props}>
+                        {children}
+                    </div>
+                )
+            },
+        ),
+    },
+}))
+
+let resizeObserverCallback: ResizeObserverCallback | null = null
+
+class MockResizeObserver implements ResizeObserver {
+    constructor(callback: ResizeObserverCallback) {
+        resizeObserverCallback = callback
+    }
+
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+}
+
+global.ResizeObserver = MockResizeObserver as any
 
 const createKpisLayoutConfig = (
     chartIds: string[] = ['kpi1', 'kpi2', 'kpi3', 'kpi4'],
@@ -237,7 +270,7 @@ describe('DashboardLayoutRenderer', () => {
         })
 
         it('should toggle wrapped state when scrollable section is clicked', async () => {
-            const user = userEvent.setup()
+            const user = userEventLib.setup()
 
             const { container } = render(
                 <DashboardLayoutRenderer
@@ -245,6 +278,10 @@ describe('DashboardLayoutRenderer', () => {
                     reportConfig={reportConfigMock}
                 />,
             )
+
+            await act(async () => {
+                await new Promise((resolve) => setTimeout(resolve, 50))
+            })
 
             const kpisSection = container.querySelector(
                 '[class*="kpisSection"]',
@@ -260,17 +297,26 @@ describe('DashboardLayoutRenderer', () => {
                 configurable: true,
             })
 
-            await act(async () => {
-                window.dispatchEvent(new Event('resize'))
+            if (resizeObserverCallback && kpisSection) {
+                await act(async () => {
+                    resizeObserverCallback?.(
+                        [] as ResizeObserverEntry[],
+                        {} as ResizeObserver,
+                    )
+                })
+            }
+
+            await waitFor(() => {
+                expect(kpisSection).toHaveClass(css.clickable)
             })
 
             await act(() => user.click(kpisSection!))
 
-            expect(kpisSection).toHaveClass('wrapped')
+            expect(kpisSection).toHaveClass(css.wrapped)
         })
 
         it('should not toggle wrapped state when section is not scrollable', async () => {
-            const user = userEvent.setup()
+            const user = userEventLib.setup()
 
             const { container } = render(
                 <DashboardLayoutRenderer
@@ -299,7 +345,7 @@ describe('DashboardLayoutRenderer', () => {
 
             await act(() => user.click(kpisSection!))
 
-            expect(kpisSection).not.toHaveClass('wrapped')
+            expect(kpisSection).not.toHaveClass(css.wrapped)
         })
 
         it('should add clickable class when section is scrollable', async () => {
@@ -310,6 +356,10 @@ describe('DashboardLayoutRenderer', () => {
                 />,
             )
 
+            await act(async () => {
+                await new Promise((resolve) => setTimeout(resolve, 50))
+            })
+
             const kpisSection = container.querySelector(
                 '[class*="kpisSection"]',
             )
@@ -323,15 +373,22 @@ describe('DashboardLayoutRenderer', () => {
                 configurable: true,
             })
 
-            await act(async () => {
-                window.dispatchEvent(new Event('resize'))
-            })
+            if (resizeObserverCallback && kpisSection) {
+                await act(async () => {
+                    resizeObserverCallback?.(
+                        [] as ResizeObserverEntry[],
+                        {} as ResizeObserver,
+                    )
+                })
+            }
 
-            expect(kpisSection).toHaveClass('clickable')
+            await waitFor(() => {
+                expect(kpisSection).toHaveClass(css.clickable)
+            })
         })
 
         it('should toggle back to unwrapped state on second click', async () => {
-            const user = userEvent.setup()
+            const user = userEventLib.setup()
 
             const { container } = render(
                 <DashboardLayoutRenderer
@@ -340,6 +397,10 @@ describe('DashboardLayoutRenderer', () => {
                 />,
             )
 
+            await act(async () => {
+                await new Promise((resolve) => setTimeout(resolve, 50))
+            })
+
             const kpisSection = container.querySelector(
                 '[class*="kpisSection"]',
             )
@@ -353,15 +414,24 @@ describe('DashboardLayoutRenderer', () => {
                 configurable: true,
             })
 
-            await act(async () => {
-                window.dispatchEvent(new Event('resize'))
+            if (resizeObserverCallback && kpisSection) {
+                await act(async () => {
+                    resizeObserverCallback?.(
+                        [] as ResizeObserverEntry[],
+                        {} as ResizeObserver,
+                    )
+                })
+            }
+
+            await waitFor(() => {
+                expect(kpisSection).toHaveClass(css.clickable)
             })
 
             await act(() => user.click(kpisSection!))
-            expect(kpisSection).toHaveClass('wrapped')
+            expect(kpisSection).toHaveClass(css.wrapped)
 
             await act(() => user.click(kpisSection!))
-            expect(kpisSection).not.toHaveClass('wrapped')
+            expect(kpisSection).not.toHaveClass(css.wrapped)
         })
     })
 
@@ -460,13 +530,17 @@ describe('DashboardLayoutRenderer', () => {
     })
 
     describe('Resize handling', () => {
-        it('should update scrollable state on window resize', async () => {
+        it('should update scrollable state when ResizeObserver detects changes', async () => {
             const { container } = render(
                 <DashboardLayoutRenderer
                     layoutConfig={createKpisLayoutConfig()}
                     reportConfig={reportConfigMock}
                 />,
             )
+
+            await act(async () => {
+                await new Promise((resolve) => setTimeout(resolve, 50))
+            })
 
             const kpisSection = container.querySelector(
                 '[class*="kpisSection"]',
@@ -483,11 +557,18 @@ describe('DashboardLayoutRenderer', () => {
                 writable: true,
             })
 
-            await act(async () => {
-                window.dispatchEvent(new Event('resize'))
-            })
+            if (resizeObserverCallback && kpisSection) {
+                await act(async () => {
+                    resizeObserverCallback?.(
+                        [] as ResizeObserverEntry[],
+                        {} as ResizeObserver,
+                    )
+                })
+            }
 
-            expect(kpisSection).not.toHaveClass('clickable')
+            await waitFor(() => {
+                expect(kpisSection).not.toHaveClass(css.clickable)
+            })
 
             Object.defineProperty(kpisSection, 'scrollWidth', {
                 value: 1000,
@@ -495,17 +576,24 @@ describe('DashboardLayoutRenderer', () => {
                 writable: true,
             })
 
-            await act(async () => {
-                window.dispatchEvent(new Event('resize'))
-            })
+            if (resizeObserverCallback && kpisSection) {
+                await act(async () => {
+                    resizeObserverCallback?.(
+                        [] as ResizeObserverEntry[],
+                        {} as ResizeObserver,
+                    )
+                })
+            }
 
-            expect(kpisSection).toHaveClass('clickable')
+            await waitFor(() => {
+                expect(kpisSection).toHaveClass(css.clickable)
+            })
         })
 
-        it('should cleanup resize listener on unmount', () => {
-            const removeEventListenerSpy = jest.spyOn(
-                window,
-                'removeEventListener',
+        it('should cleanup ResizeObserver on unmount', async () => {
+            const disconnectSpy = jest.spyOn(
+                MockResizeObserver.prototype,
+                'disconnect',
             )
 
             const { unmount } = render(
@@ -515,14 +603,15 @@ describe('DashboardLayoutRenderer', () => {
                 />,
             )
 
+            await act(async () => {
+                await new Promise((resolve) => setTimeout(resolve, 1000))
+            })
+
             unmount()
 
-            expect(removeEventListenerSpy).toHaveBeenCalledWith(
-                'resize',
-                expect.any(Function),
-            )
+            expect(disconnectSpy).toHaveBeenCalled()
 
-            removeEventListenerSpy.mockRestore()
+            disconnectSpy.mockRestore()
         })
     })
 })

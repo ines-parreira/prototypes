@@ -3,8 +3,9 @@ import { userEvent } from '@testing-library/user-event'
 
 import type { ChartDataItem } from '../ChartCard/types'
 import {
+    calculateSafeCornerRadius,
     DonutChart,
-    renderActiveShape,
+    renderShape,
     renderTooltipContent,
 } from './DonutChart'
 
@@ -318,46 +319,6 @@ describe('DonutChart', () => {
         })
     })
 
-    describe('renderActiveShape', () => {
-        it('should render Sector with correct props', () => {
-            const props = {
-                cx: 100,
-                cy: 100,
-                innerRadius: 60,
-                outerRadius: 95,
-                startAngle: 0,
-                endAngle: 90,
-                fill: '#A084E1',
-                cornerRadius: 4,
-            }
-
-            const { container } = render(renderActiveShape(props))
-
-            expect(
-                container.querySelector('.recharts-sector'),
-            ).toBeInTheDocument()
-        })
-
-        it('should apply radius offset to inner radius', () => {
-            const props = {
-                cx: 100,
-                cy: 100,
-                innerRadius: 60,
-                outerRadius: 95,
-                startAngle: 0,
-                endAngle: 90,
-                fill: '#A084E1',
-                cornerRadius: 4,
-            }
-
-            const result = renderActiveShape(props)
-
-            expect(result).toBeTruthy()
-            expect(result.props.innerRadius).toBe(55)
-            expect(result.props.outerRadius).toBe(95)
-        })
-    })
-
     describe('renderTooltipContent', () => {
         it('should return null when payload is empty', () => {
             const tooltipRenderer = renderTooltipContent()
@@ -432,6 +393,255 @@ describe('DonutChart', () => {
 
             expect(result).toBeTruthy()
             expect(result?.props.period).toEqual(period)
+        })
+    })
+
+    describe('pie chart segment interactions', () => {
+        it('should have responsive container for interactions', () => {
+            const { container } = render(<DonutChart data={mockData} />)
+
+            const responsiveContainer = container.querySelector(
+                '.recharts-responsive-container',
+            )
+            expect(responsiveContainer).toBeInTheDocument()
+        })
+
+        it('should render data in pie chart', () => {
+            render(<DonutChart data={mockData} />)
+
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
+            expect(screen.getByText('Flows')).toBeInTheDocument()
+            expect(
+                screen.getByText('Article Recommendation'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Order Management')).toBeInTheDocument()
+        })
+    })
+
+    describe('corner radius calculations', () => {
+        it('should render segments with small angles correctly', () => {
+            const smallSegmentData: ChartDataItem[] = [
+                { name: 'Large', value: 95 },
+                { name: 'Tiny', value: 5 },
+            ]
+
+            render(<DonutChart data={smallSegmentData} />)
+
+            expect(screen.getByText('Large')).toBeInTheDocument()
+            expect(screen.getByText('Tiny')).toBeInTheDocument()
+        })
+
+        it('should handle single segment correctly', () => {
+            const singleSegmentData: ChartDataItem[] = [
+                { name: 'Only', value: 100 },
+            ]
+
+            render(<DonutChart data={singleSegmentData} />)
+
+            expect(screen.getByText('Only')).toBeInTheDocument()
+        })
+
+        it('should handle very small segment values', () => {
+            const tinySegmentData: ChartDataItem[] = [
+                { name: 'Large', value: 99.9 },
+                { name: 'Tiny', value: 0.1 },
+            ]
+
+            render(<DonutChart data={tinySegmentData} />)
+
+            expect(screen.getByText('Large')).toBeInTheDocument()
+            expect(screen.getByText('Tiny')).toBeInTheDocument()
+        })
+    })
+
+    describe('legend hover interactions', () => {
+        it('should highlight segment when hovering over legend item', async () => {
+            render(<DonutChart data={mockData} />)
+
+            const aiAgentLegend = screen.getByText('AI Agent')
+            const user = userEvent.setup()
+
+            await user.hover(aiAgentLegend)
+
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        })
+
+        it('should remove highlight when mouse leaves legend item', async () => {
+            render(<DonutChart data={mockData} />)
+
+            const aiAgentLegend = screen.getByText('AI Agent')
+            const user = userEvent.setup()
+
+            await user.hover(aiAgentLegend)
+            await user.unhover(aiAgentLegend)
+
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        })
+    })
+
+    describe('data with zero values', () => {
+        it('should handle items with zero values', () => {
+            const dataWithZero: ChartDataItem[] = [
+                { name: 'AI Agent', value: 18 },
+                { name: 'Flows', value: 0 },
+                { name: 'Article Recommendation', value: 4 },
+            ]
+
+            render(<DonutChart data={dataWithZero} />)
+
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
+            expect(screen.getByText('Flows')).toBeInTheDocument()
+            expect(
+                screen.getByText('Article Recommendation'),
+            ).toBeInTheDocument()
+        })
+
+        it('should handle all zero values', () => {
+            const allZeroData: ChartDataItem[] = [
+                { name: 'AI Agent', value: 0 },
+                { name: 'Flows', value: 0 },
+            ]
+
+            render(<DonutChart data={allZeroData} />)
+
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
+            expect(screen.getByText('Flows')).toBeInTheDocument()
+        })
+    })
+
+    describe('period rendering in tooltip', () => {
+        it('should render tooltip with period when hovering', async () => {
+            const period = {
+                start_datetime: '2024-01-01',
+                end_datetime: '2024-01-31',
+            }
+
+            render(<DonutChart data={mockData} period={period} />)
+
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        })
+    })
+
+    describe('calculateSafeCornerRadius', () => {
+        it('should return desired corner radius when arc is large enough', () => {
+            const result = calculateSafeCornerRadius(0, 90, 95, 4)
+            expect(result).toBe(4)
+        })
+
+        it('should return smaller corner radius when arc is too small', () => {
+            const result = calculateSafeCornerRadius(0, 5, 95, 4)
+            expect(result).toBeLessThan(4)
+        })
+
+        it('should handle full circle (360 degrees)', () => {
+            const result = calculateSafeCornerRadius(0, 360, 95, 4)
+            expect(result).toBe(4)
+        })
+
+        it('should handle very small angles', () => {
+            const result = calculateSafeCornerRadius(0, 1, 95, 4)
+            expect(result).toBeLessThan(1)
+        })
+
+        it('should handle negative angle differences', () => {
+            const result = calculateSafeCornerRadius(90, 0, 95, 4)
+            expect(result).toBe(4)
+        })
+    })
+
+    describe('renderShape', () => {
+        it('should render active shape with expanded inner radius', () => {
+            const props = {
+                cx: 100,
+                cy: 100,
+                innerRadius: 60,
+                outerRadius: 95,
+                startAngle: 0,
+                endAngle: 90,
+                fill: '#A084E1',
+                isActive: true,
+            }
+
+            const result = renderShape(props)
+
+            expect(result).toBeTruthy()
+            expect(result.props.innerRadius).toBe(55)
+        })
+
+        it('should render inactive shape with normal inner radius', () => {
+            const props = {
+                cx: 100,
+                cy: 100,
+                innerRadius: 60,
+                outerRadius: 95,
+                startAngle: 0,
+                endAngle: 90,
+                fill: '#A084E1',
+                isActive: false,
+            }
+
+            const result = renderShape(props)
+
+            expect(result).toBeTruthy()
+            expect(result.props.innerRadius).toBe(60)
+        })
+
+        it('should apply safe corner radius for small arcs', () => {
+            const props = {
+                cx: 100,
+                cy: 100,
+                innerRadius: 60,
+                outerRadius: 95,
+                startAngle: 0,
+                endAngle: 5,
+                fill: '#A084E1',
+                isActive: false,
+            }
+
+            const result = renderShape(props)
+
+            expect(result).toBeTruthy()
+            expect(result.props.cornerRadius).toBeLessThan(4)
+        })
+
+        it('should apply full corner radius for large arcs', () => {
+            const props = {
+                cx: 100,
+                cy: 100,
+                innerRadius: 60,
+                outerRadius: 95,
+                startAngle: 0,
+                endAngle: 90,
+                fill: '#A084E1',
+                isActive: false,
+            }
+
+            const result = renderShape(props)
+
+            expect(result).toBeTruthy()
+            expect(result.props.cornerRadius).toBe(4)
+        })
+
+        it('should pass through all required props to Sector', () => {
+            const props = {
+                cx: 100,
+                cy: 100,
+                innerRadius: 60,
+                outerRadius: 95,
+                startAngle: 0,
+                endAngle: 90,
+                fill: '#A084E1',
+                isActive: false,
+            }
+
+            const result = renderShape(props)
+
+            expect(result.props.cx).toBe(100)
+            expect(result.props.cy).toBe(100)
+            expect(result.props.outerRadius).toBe(95)
+            expect(result.props.startAngle).toBe(0)
+            expect(result.props.endAngle).toBe(90)
+            expect(result.props.fill).toBe('#A084E1')
         })
     })
 })

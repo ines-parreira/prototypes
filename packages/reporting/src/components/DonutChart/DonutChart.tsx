@@ -43,7 +43,19 @@ const CORNER_RADIUS = 4
 const ACTIVE_SHAPE_RADIUS_OFFSET = 5
 const CHART_HEIGHT = 210
 
-export const renderActiveShape = (props: any) => {
+export const calculateSafeCornerRadius = (
+    startAngle: number,
+    endAngle: number,
+    outerRadius: number,
+    desiredCornerRadius: number,
+): number => {
+    const angleDiff = Math.abs(endAngle - startAngle)
+    const arcLength = (angleDiff / 360) * 2 * Math.PI * outerRadius
+    const maxCornerRadius = arcLength / 4
+    return Math.min(desiredCornerRadius, maxCornerRadius)
+}
+
+export const renderShape = (props: any) => {
     const {
         cx,
         cy,
@@ -52,19 +64,30 @@ export const renderActiveShape = (props: any) => {
         startAngle,
         endAngle,
         fill,
-        cornerRadius,
+        isActive,
     } = props
+
+    const safeCornerRadius = calculateSafeCornerRadius(
+        startAngle,
+        endAngle,
+        outerRadius,
+        CORNER_RADIUS,
+    )
 
     return (
         <Sector
             cx={cx}
             cy={cy}
-            innerRadius={innerRadius - ACTIVE_SHAPE_RADIUS_OFFSET}
+            innerRadius={
+                isActive
+                    ? innerRadius - ACTIVE_SHAPE_RADIUS_OFFSET
+                    : innerRadius
+            }
             outerRadius={outerRadius}
             startAngle={startAngle}
             endAngle={endAngle}
             fill={fill}
-            cornerRadius={cornerRadius}
+            cornerRadius={safeCornerRadius}
         />
     )
 }
@@ -174,10 +197,9 @@ const DonutChartInner = ({
                                 outerRadius={OUTER_RADIUS}
                                 paddingAngle={PADDING_ANGLE}
                                 dataKey="value"
-                                cornerRadius={CORNER_RADIUS}
-                                activeShape={renderActiveShape}
+                                shape={renderShape}
                                 // @ts-expect-error - activeIndex is supported by Recharts but not in types
-                                activeIndex={effectiveActiveIndex ?? undefined}
+                                activeIndex={effectiveActiveIndex ?? -1}
                                 onMouseEnter={(_, index) =>
                                     setActiveIndex(index)
                                 }

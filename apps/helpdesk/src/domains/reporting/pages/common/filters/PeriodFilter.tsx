@@ -214,6 +214,7 @@ export function PeriodFilter({
                 onChange={handleCompactDateChange}
                 presets={compactPresets}
                 aria-label="Date range picker"
+                placement="bottom left"
                 trigger={(renderProps) => (
                     <Button
                         {...renderProps}

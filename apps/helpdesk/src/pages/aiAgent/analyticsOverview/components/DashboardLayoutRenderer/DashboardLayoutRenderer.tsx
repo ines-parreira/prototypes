@@ -44,8 +44,13 @@ const KpisSection = <TChart extends string>({
     const [isWrapped, setIsWrapped] = useState(false)
     const containerRef = useRef<HTMLDivElement>(null)
     const [isScrollable, setIsScrollable] = useState(false)
+    const [animationComplete, setAnimationComplete] = useState(
+        section.items.length === 0,
+    )
 
     useEffect(() => {
+        if (!animationComplete) return
+
         const checkScrollable = () => {
             if (containerRef.current) {
                 const hasOverflow =
@@ -56,15 +61,27 @@ const KpisSection = <TChart extends string>({
         }
 
         checkScrollable()
-        window.addEventListener('resize', checkScrollable)
-        return () => window.removeEventListener('resize', checkScrollable)
-    }, [])
+
+        const resizeObserver = new ResizeObserver(() => {
+            checkScrollable()
+        })
+
+        if (containerRef.current) {
+            resizeObserver.observe(containerRef.current)
+        }
+
+        return () => {
+            resizeObserver.disconnect()
+        }
+    }, [animationComplete])
 
     const handleClick = () => {
         if (isScrollable) {
             setIsWrapped(!isWrapped)
         }
     }
+
+    const lastItemIndex = section.items.length - 1
 
     return (
         <motion.div
@@ -74,6 +91,8 @@ const KpisSection = <TChart extends string>({
         >
             {section.items.map((item, index) => {
                 const entrance = getEntranceAnimation(index)
+                const isLastItem = index === lastItemIndex
+
                 return (
                     <motion.div
                         key={
@@ -118,6 +137,11 @@ const KpisSection = <TChart extends string>({
                                 damping: 15,
                             },
                         }}
+                        onAnimationComplete={
+                            isLastItem
+                                ? () => setAnimationComplete(true)
+                                : undefined
+                        }
                         className={css.kpiItem}
                     >
                         <DashboardComponent

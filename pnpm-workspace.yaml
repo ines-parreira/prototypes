@@ -27,7 +27,7 @@ minimumReleaseAgeExclude:
 
 catalogs:
   axiom:
-    '@gorgias/axiom': '0.152.0'
+    '@gorgias/axiom': '0.153.0'
     '@gorgias/design-tokens': '0.11.4'
     '@internationalized/date': '3.10.0'
   analytics-ui-kit:
@@ -133,7 +133,7 @@ catalogs:
     'mousetrap': '^1.6.5'
     '@types/mousetrap': '^1.6.15'
   recharts:
-    recharts: 3.3.0
+    recharts: 3.6.0
   notifications:
     'push.js': '1.0.12'
   logging:
