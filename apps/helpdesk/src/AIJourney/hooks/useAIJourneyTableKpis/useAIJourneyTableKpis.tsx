@@ -65,10 +65,12 @@ export const useAIJourneyTableKpis = ({
     integrationId,
     filters,
     journeyIds,
+    enabled,
 }: {
     integrationId: string
     filters: FilterType
     journeyIds?: string[]
+    enabled?: boolean
 }): TableKpisReturn => {
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
 
@@ -91,13 +93,13 @@ export const useAIJourneyTableKpis = ({
         usePostReportingV2<
             ConversationMeasureData[],
             UsePostReportingQueryData<ConversationMeasureData[]>
-        >([conversationQuery])
+        >([conversationQuery], undefined, { enabled })
 
     const { data: orderData, isFetching: isFetchingOrders } =
         usePostReportingV2<
             OrderMeasureData[],
             UsePostReportingQueryData<OrderMeasureData[]>
-        >([orderQuery])
+        >([orderQuery], undefined, { enabled })
 
     const metrics: Record<string, Metrics> = useMemo(() => {
         const result: Record<string, Metrics> = {}

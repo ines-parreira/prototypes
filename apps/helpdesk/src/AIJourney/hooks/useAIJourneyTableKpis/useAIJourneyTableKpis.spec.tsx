@@ -456,4 +456,68 @@ describe('useAIJourneyTableKpis', () => {
             conversionRate: 0,
         })
     })
+
+    it('should not fetch data when enabled is false', () => {
+        ;(usePostReportingV2 as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+
+        renderHook(() =>
+            useAIJourneyTableKpis({
+                integrationId: mockIntegrationId,
+                filters: mockFilters,
+                enabled: false,
+            }),
+        )
+
+        expect(usePostReportingV2).toHaveBeenCalledTimes(2)
+        expect(usePostReportingV2).toHaveBeenCalledWith(
+            expect.anything(),
+            undefined,
+            { enabled: false },
+        )
+    })
+
+    it('should fetch data when enabled is true', () => {
+        ;(usePostReportingV2 as jest.Mock).mockReturnValue({
+            data: { data: { data: [] } },
+            isFetching: false,
+        })
+
+        renderHook(() =>
+            useAIJourneyTableKpis({
+                integrationId: mockIntegrationId,
+                filters: mockFilters,
+                enabled: true,
+            }),
+        )
+
+        expect(usePostReportingV2).toHaveBeenCalledTimes(2)
+        expect(usePostReportingV2).toHaveBeenCalledWith(
+            expect.anything(),
+            undefined,
+            { enabled: true },
+        )
+    })
+
+    it('should default to enabled when enabled parameter is not provided', () => {
+        ;(usePostReportingV2 as jest.Mock).mockReturnValue({
+            data: { data: { data: [] } },
+            isFetching: false,
+        })
+
+        renderHook(() =>
+            useAIJourneyTableKpis({
+                integrationId: mockIntegrationId,
+                filters: mockFilters,
+            }),
+        )
+
+        expect(usePostReportingV2).toHaveBeenCalledWith(
+            expect.anything(),
+            undefined,
+            { enabled: undefined },
+        )
+    })
 })

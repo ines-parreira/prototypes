@@ -72,14 +72,15 @@ export const Campaigns = () => {
         // oxlint-disable-next-line eslint-plugin-react-hooks/exhaustive-deps
     }, [statsFilters.period.start_datetime, statsFilters.period.end_datetime])
 
+    const hasCampaigns = campaigns && campaigns.length > 0
+
     const { metrics: tableMetrics, isLoading: isMetricLoading } =
         useAIJourneyTableKpis({
             integrationId: integrationId.toString(),
             filters,
             journeyIds: campaigns?.map((c) => c.id),
+            enabled: !isLoadingCampaigns && hasCampaigns,
         })
-
-    const hasCampaigns = campaigns?.length !== 0
 
     const campaignRows = useMemo(() => {
         return campaigns?.map((campaign) => {

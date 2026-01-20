@@ -163,4 +163,118 @@ describe('<Campaigns />', () => {
             screen.getByText('Start reaching your customers today'),
         ).toBeInTheDocument()
     })
+
+    it('should not fetch metrics when journeys are loading', () => {
+        mockUseJourneyContext.mockReturnValue({
+            campaigns: [
+                { id: '1', campaign: { title: 'Campaign 1', state: 'active' } },
+            ],
+            isLoadingJourneys: true,
+            isLoadingIntegrations: false,
+            currentIntegration: { id: 1, name: 'Test Integration' },
+        })
+
+        useAIJourneyTableKpisMock.mockImplementation(() => ({
+            metrics: {},
+            isLoading: false,
+        }))
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <Campaigns />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(useAIJourneyTableKpisMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                enabled: false,
+            }),
+        )
+    })
+
+    it('should not fetch metrics when there are no campaigns', () => {
+        mockUseJourneyContext.mockReturnValue({
+            campaigns: [],
+            isLoadingJourneys: false,
+            isLoadingIntegrations: false,
+            currentIntegration: { id: 1, name: 'Test Integration' },
+        })
+
+        useAIJourneyTableKpisMock.mockImplementation(() => ({
+            metrics: {},
+            isLoading: false,
+        }))
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <Campaigns />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(useAIJourneyTableKpisMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                enabled: false,
+            }),
+        )
+    })
+
+    it('should fetch metrics when journeys are loaded and campaigns exist', () => {
+        mockUseJourneyContext.mockReturnValue({
+            campaigns: [
+                { id: '1', campaign: { title: 'Campaign 1', state: 'active' } },
+                {
+                    id: '2',
+                    campaign: { title: 'Campaign 2', state: 'inactive' },
+                },
+            ],
+            isLoadingJourneys: false,
+            isLoadingIntegrations: false,
+            currentIntegration: { id: 1, name: 'Test Integration' },
+        })
+
+        useAIJourneyTableKpisMock.mockImplementation(() => ({
+            metrics: {
+                '1': {
+                    ...DEFAULT_TABLE_METRICS,
+                    recipients: 100,
+                },
+                '2': {
+                    ...DEFAULT_TABLE_METRICS,
+                    recipients: 200,
+                },
+            },
+            isLoading: false,
+        }))
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <JourneyProvider>
+                            <Campaigns />
+                        </JourneyProvider>
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(useAIJourneyTableKpisMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                enabled: true,
+                journeyIds: ['1', '2'],
+            }),
+        )
+    })
 })
