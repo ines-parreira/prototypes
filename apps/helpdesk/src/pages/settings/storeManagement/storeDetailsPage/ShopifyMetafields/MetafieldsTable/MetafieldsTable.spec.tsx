@@ -233,16 +233,16 @@ describe('MetafieldsTable', () => {
         const fieldWithoutVisibility: Field[] = [
             {
                 id: '4',
-                name: 'Product SKU',
+                name: 'Customer SKU',
                 type: 'single_line_text_field',
-                category: 'product',
+                category: 'Customer',
             } as Field,
         ]
 
         renderComponent({ data: fieldWithoutVisibility })
 
         await waitFor(() => {
-            expect(screen.getByText('Product SKU')).toBeInTheDocument()
+            expect(screen.getByText('Customer SKU')).toBeInTheDocument()
         })
 
         const visibilityButtons = getVisibilityButtons()

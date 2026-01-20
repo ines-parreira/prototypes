@@ -471,6 +471,34 @@ describe('MetafieldsImportList', () => {
         expect(unsupportedCheckbox).toBeDisabled()
     })
 
+    it('should render empty state when no metafields are available', () => {
+        useImportableMetafields.mockReturnValue({
+            data: [],
+            isLoading: false,
+            isError: false,
+            error: null,
+        })
+
+        render(
+            <MetafieldsImportList
+                category="Customer"
+                selectedMetafields={[]}
+                onSelectionChange={mockOnSelectionChange}
+                onBack={mockOnBack}
+                onContinue={mockOnContinue}
+            />,
+        )
+
+        expect(
+            screen.getByRole('heading', { name: /no metafields available/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                /there are no metafields available to import in this category/i,
+            ),
+        ).toBeInTheDocument()
+    })
+
     describe('Filters', () => {
         it('should render the Type filter component', () => {
             render(

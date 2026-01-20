@@ -37,9 +37,11 @@ describe('MetafieldTypeItem', () => {
         expect(icon).not.toHaveAttribute('aria-disabled')
     })
 
-    it('handles unknown type with empty defaults', () => {
+    it('handles unknown type by not rendering icon', () => {
         render(<MetafieldTypeItem type={'unknown_type' as MetafieldType} />)
 
-        expect(screen.queryByRole('img', { hidden: true })).toBeInTheDocument()
+        expect(
+            screen.queryByRole('img', { hidden: true }),
+        ).not.toBeInTheDocument()
     })
 })

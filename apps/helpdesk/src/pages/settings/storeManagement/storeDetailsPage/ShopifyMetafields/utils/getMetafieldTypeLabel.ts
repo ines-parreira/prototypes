@@ -1,7 +1,7 @@
 import type { MetafieldType } from '@gorgias/helpdesk-types'
 
-import { typeConfig } from '../MetafieldTypeItem/MetafieldTypeItem'
+import { TYPE_CONFIG } from '../constants'
 
 export function getMetafieldTypeLabel(type: MetafieldType): string {
-    return typeConfig[type]?.label || type
+    return TYPE_CONFIG[type]?.label || type
 }

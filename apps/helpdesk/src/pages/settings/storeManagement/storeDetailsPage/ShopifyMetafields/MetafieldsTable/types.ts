@@ -1,11 +1,13 @@
 import type { TableMeta } from '@gorgias/axiom'
 import type { MetafieldType } from '@gorgias/helpdesk-types'
 
+import type { SupportedCategories } from '../types'
+
 export type Field = {
     id: string
     name: string
     type: MetafieldType
-    category: string
+    category: SupportedCategories
     isVisible?: boolean
 }
 

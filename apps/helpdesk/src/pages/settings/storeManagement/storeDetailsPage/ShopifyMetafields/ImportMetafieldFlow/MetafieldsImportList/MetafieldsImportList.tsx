@@ -18,19 +18,22 @@ import {
     Text,
     useTable,
 } from '@gorgias/axiom'
-import { MetafieldType } from '@gorgias/helpdesk-types'
 
-import { MAX_FIELDS_PER_CATEGORY } from '../../constants'
+import {
+    DEFAULT_TABLE_PAGE_SIZE,
+    MAX_FIELDS_PER_CATEGORY,
+    METAFIELD_TYPE_OPTIONS,
+} from '../../constants'
 import { useImportableMetafields } from '../../hooks/useImportableMetafields'
 import { useMetafieldsFiltersHandler } from '../../hooks/useMetafieldsFiltersHandler'
 import type { Field } from '../../MetafieldsTable/types'
 import type { SupportedCategories } from '../../types'
 import { getCategoryLabel } from '../../utils/getCategoryLabel'
-import { getMetafieldTypeLabel } from '../../utils/getMetafieldTypeLabel'
 import { isSupportedMetafieldType } from '../../utils/isSupportedMetafieldType'
 import { useFilteredMetafields } from '../hooks/useFilteredMetafields'
 import MaxFieldsImportedBanner from '../MaxMetafieldsImportedBanner/MaxFieldsImportedBanner'
 import { getCheckboxColumn, staticColumns } from './Columns'
+import EmptyMetafieldsImportState from './EmptyMetafieldsImportState'
 
 import styles from './MetafieldsImportList.less'
 
@@ -43,12 +46,6 @@ type MetafieldsImportListProps = {
     isAtMaxFields?: boolean
     importedFields?: Field[]
 }
-
-const metafieldTypeOptions = Object.values(MetafieldType).map((type) => ({
-    id: type,
-    type,
-    label: getMetafieldTypeLabel(type),
-}))
 
 export default function MetafieldsImportList({
     category,
@@ -125,7 +122,7 @@ export default function MetafieldsImportList({
         paginationConfig: {
             enablePagination: true,
             manualPagination: false,
-            pageSize: 10,
+            pageSize: DEFAULT_TABLE_PAGE_SIZE,
             initialPageIndex: 0,
         },
         globalFilterConfig: {
@@ -192,7 +189,7 @@ export default function MetafieldsImportList({
                                             <SelectFilter
                                                 id="type"
                                                 label="Type"
-                                                items={metafieldTypeOptions}
+                                                items={METAFIELD_TYPE_OPTIONS}
                                                 keyName="id"
                                             >
                                                 {(option) => (
@@ -221,6 +218,9 @@ export default function MetafieldsImportList({
                         rows={table.getRowModel().rows}
                         columnCount={columns.length}
                         table={table}
+                        renderEmptyStateComponent={() => (
+                            <EmptyMetafieldsImportState />
+                        )}
                     />
                 </TableRoot>
                 <div className={styles.toolbarWrapper}>
@@ -230,7 +230,7 @@ export default function MetafieldsImportList({
                     />
                 </div>
             </div>
-            <Box gap="xs" justifyContent="flex-end" p="sm">
+            <Box gap="xs" justifyContent="flex-end" paddingTop="sm">
                 <Button variant="secondary" onClick={onBack}>
                     Back to category
                 </Button>

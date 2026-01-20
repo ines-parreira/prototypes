@@ -1,9 +1,4 @@
-import {
-    Box,
-    Button,
-    LegacyIconButton as IconButton,
-    Text,
-} from '@gorgias/axiom'
+import { Box, Button, Text } from '@gorgias/axiom'
 
 import type { SupportedCategories } from '../../types'
 
@@ -38,11 +33,11 @@ export default function ImportableCategories({
                         {category.selectCount > 0 ? (
                             <Text>{category.selectCount} selected</Text>
                         ) : null}
-                        <IconButton
+                        <Button
                             onClick={() => onCategorySelect(category.value)}
-                            icon="chevron_right"
-                            intent="secondary"
-                            fillStyle="ghost"
+                            aria-label={`Select ${category.label}`}
+                            variant="tertiary"
+                            icon="arrow-chevron-right"
                         />
                     </div>
                 </div>

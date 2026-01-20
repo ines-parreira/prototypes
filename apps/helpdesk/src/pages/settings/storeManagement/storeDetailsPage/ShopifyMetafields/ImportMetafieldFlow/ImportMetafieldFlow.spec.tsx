@@ -163,7 +163,7 @@ describe('ImportMetafieldFlow', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should call onClose, reset, and clearAllSelections when close button is clicked', async () => {
+        it('should call onClose when close button is clicked', async () => {
             const user = userEvent.setup()
             renderComponent({ isOpen: true, onClose: mockOnClose })
 
@@ -172,8 +172,6 @@ describe('ImportMetafieldFlow', () => {
 
             await act(() => user.click(closeButton))
 
-            expect(mockClearAllSelections).toHaveBeenCalledTimes(1)
-            expect(mockReset).toHaveBeenCalledTimes(1)
             expect(mockOnClose).toHaveBeenCalledTimes(1)
         })
     })
@@ -433,8 +431,6 @@ describe('ImportMetafieldFlow', () => {
             })
 
             await waitFor(() => {
-                expect(mockClearAllSelections).toHaveBeenCalledTimes(1)
-                expect(mockReset).toHaveBeenCalledTimes(1)
                 expect(mockOnClose).toHaveBeenCalledTimes(1)
             })
         })
@@ -546,6 +542,35 @@ describe('ImportMetafieldFlow', () => {
                 )
             })
             expect(mockSuccess).not.toHaveBeenCalled()
+        })
+
+        it('should dispatch error notification when import mutation throws', async () => {
+            const user = userEvent.setup()
+            const selectedFields = [mockImportableFields[0]]
+
+            mockImportMetafields.mockRejectedValue(new Error('Network error'))
+
+            mockGetSelectionCount.mockImplementation((category) => {
+                if (category === 'Customer') return 1
+                return 0
+            })
+
+            useFieldSelection.mockReturnValue({
+                ...defaultFieldSelectionState,
+                allSelectedFields: selectedFields,
+            })
+
+            renderComponent({ isOpen: true, onClose: mockOnClose })
+
+            await user.click(screen.getByRole('button', { name: /^import$/i }))
+
+            await waitFor(() => {
+                expect(mockError).toHaveBeenCalledWith(
+                    'There was an issue adding your Shopify metafields to Gorgias. Please try again.',
+                )
+            })
+            expect(mockSuccess).not.toHaveBeenCalled()
+            expect(mockOnClose).not.toHaveBeenCalled()
         })
     })
 

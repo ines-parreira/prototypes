@@ -41,7 +41,7 @@ describe('useImportMetafields', () => {
         id: 'field-1',
         name: 'Customer Email',
         type: 'number_integer',
-        category: 'customer',
+        category: 'Customer',
         isVisible: true,
     }
 
@@ -49,7 +49,7 @@ describe('useImportMetafields', () => {
         id: 'field-2',
         name: 'Order Total',
         type: 'number_integer',
-        category: 'order',
+        category: 'Order',
         isVisible: true,
     }
 

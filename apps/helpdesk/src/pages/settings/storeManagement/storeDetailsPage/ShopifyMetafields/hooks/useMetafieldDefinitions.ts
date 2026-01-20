@@ -4,6 +4,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import type { Field } from '../MetafieldsTable/types'
+import type { SupportedCategories } from '../types'
 
 type UseMetafieldDefinitionsOptions = {
     integrationId: number
@@ -17,7 +18,7 @@ export function transformMetafieldDefinitionToField(
         id: definition.id,
         name: definition.name,
         type: definition.type as Field['type'],
-        category: definition.ownerType,
+        category: definition.ownerType as SupportedCategories,
         isVisible: definition.isVisible,
     }
 }

@@ -13,26 +13,22 @@ import {
     TableToolbar,
     useTable,
 } from '@gorgias/axiom'
-import { MetafieldType } from '@gorgias/helpdesk-types'
 
-import { METAFIELD_CATEGORIES } from '../constants'
+import {
+    DEFAULT_TABLE_PAGE_SIZE,
+    METAFIELD_CATEGORIES,
+    METAFIELD_TYPE_OPTIONS,
+} from '../constants'
 import EmptyMetafieldsState from '../EmptyMetafieldsState'
 import { useDeleteMetafield } from '../hooks/useDeleteMetafield'
 import { useMetafieldsFiltersHandler } from '../hooks/useMetafieldsFiltersHandler'
 import { useToggleMetafieldVisibility } from '../hooks/useToggleMetafieldVisibility'
 import ImportMetafieldFlow from '../ImportMetafieldFlow/ImportMetafieldFlow'
 import RemoveMetafieldConfirmation from '../RemoveMetafieldConfirmation/RemoveMetafieldConfirmation'
-import { getMetafieldTypeLabel } from '../utils/getMetafieldTypeLabel'
 import ImportAction from './ImportAction'
 import type { Field, MetafieldsTableMeta } from './types'
 
 import styles from './MetafieldsTable.less'
-
-const metafieldTypeOptions = Object.values(MetafieldType).map((type) => ({
-    id: type,
-    type,
-    label: getMetafieldTypeLabel(type),
-}))
 
 const categoryOptions = METAFIELD_CATEGORIES.map((cat) => ({
     id: cat.value,
@@ -98,7 +94,7 @@ export default function MetafieldsTable<TData, TValue>({
         paginationConfig: {
             enablePagination: true,
             manualPagination: false,
-            pageSize: 10,
+            pageSize: DEFAULT_TABLE_PAGE_SIZE,
             initialPageIndex: 0,
         },
         globalFilterConfig: {
@@ -137,7 +133,9 @@ export default function MetafieldsTable<TData, TValue>({
                                                 <SelectFilter
                                                     id="type"
                                                     label="Type"
-                                                    items={metafieldTypeOptions}
+                                                    items={
+                                                        METAFIELD_TYPE_OPTIONS
+                                                    }
                                                     keyName="id"
                                                 >
                                                     {(option) => (
