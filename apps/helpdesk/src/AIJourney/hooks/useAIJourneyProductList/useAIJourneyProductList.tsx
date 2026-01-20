@@ -22,7 +22,7 @@ export const useAIJourneyProductList = ({
     } = useListProducts(
         integrationId ?? 0,
         !!integrationId,
-        { limit: 50 },
+        { limit: 100 },
         { refetchOnWindowFocus: false, refetchOnMount: false },
     )
 
@@ -32,7 +32,11 @@ export const useAIJourneyProductList = ({
 
     const productList = useMemo(() => {
         return (productItemsData ?? [])
-            .filter((item) => item.data.status === 'active')
+            .filter(
+                (item) =>
+                    item.data.status === 'active' &&
+                    item.data.published_at !== null,
+            )
             .filter((item) => !!item.data.image && !!item.data.title)
             .map((item) => item.data)
             .slice(0, MINIMUM_PRODUCT_COUNT)
