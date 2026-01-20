@@ -13,6 +13,11 @@ export type CustomerData = {
     email: string
 }
 
+export type TicketEvaluationResults = {
+    evaluationResults: Record<number, ExpressionFieldType | undefined>
+    conditionsLoading: boolean
+}
+
 export type TicketCustomField = {
     id: number
     label: string

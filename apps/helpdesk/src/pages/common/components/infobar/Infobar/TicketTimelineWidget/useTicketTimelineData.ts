@@ -159,6 +159,8 @@ export function useTicketTimelineData({
                 ticket,
                 evaluationResults,
                 conditionsLoading,
+                isFieldRequired,
+                isFieldVisible,
                 customFields,
                 iconName: channelToIcon(ticket.channel),
             }

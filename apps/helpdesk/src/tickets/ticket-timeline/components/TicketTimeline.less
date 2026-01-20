@@ -1,0 +1,20 @@
+:local {
+    .scrollableContent {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0;
+
+        // Thin scrollbar styling
+        scrollbar-width: thin;
+        scrollbar-color: var(--border-neutral-default)
+            var(--elevation-neutral-default);
+
+        &::-webkit-scrollbar-thumb {
+            visibility: initial;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: var(--elevation-neutral-default);
+        }
+    }
+}

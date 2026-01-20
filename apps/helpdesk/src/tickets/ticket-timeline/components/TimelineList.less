@@ -1,0 +1,32 @@
+:local {
+    .timelineList {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+
+        > li {
+            position: relative;
+
+            // Add connector line between items
+            &:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                left: 19px;
+                bottom: 0;
+                transform: translateX(-50%);
+                width: 1px;
+                height: 8px;
+                background-color: var(--border-neutral-default);
+                z-index: 1000;
+                display: block;
+            }
+        }
+    }
+
+    .activeTicket {
+        border: 1px solid var(--border-accent-default);
+    }
+}

@@ -1,0 +1,141 @@
+import { useMemo } from 'react'
+
+import { formatTicketTime, TicketListItem } from '@repo/tickets'
+import type { EnrichedTicket } from '@repo/tickets'
+
+import { Box, Skeleton, Text } from '@gorgias/axiom'
+
+import type { Product } from 'constants/integrations/types/shopify'
+import type { TimelineItem } from 'timeline/types'
+import { TimelineItemKind } from 'timeline/types'
+
+import { TimelineOrderCard } from './TimelineOrderCard'
+
+import css from './TimelineList.less'
+
+type Props = {
+    timelineItems: TimelineItem[]
+    enrichedTickets: EnrichedTicket[]
+    isLoading: boolean
+    totalNumber: number
+    productsMap: Map<number, Product>
+    activeTicketId?: string
+}
+
+export function TimelineList({
+    timelineItems,
+    enrichedTickets,
+    isLoading,
+    totalNumber,
+    productsMap,
+    activeTicketId,
+}: Props) {
+    // Create a map for fast lookup of enriched ticket data
+    const enrichedTicketMap = useMemo(() => {
+        const map = new Map<number, EnrichedTicket>()
+        enrichedTickets.forEach((enriched) => {
+            map.set(enriched.ticket.id, enriched)
+        })
+        return map
+    }, [enrichedTickets])
+    if (isLoading) {
+        return (
+            <Box flexDirection="column" gap="md" padding={'md'}>
+                <Skeleton count={5} />
+            </Box>
+        )
+    }
+
+    if (totalNumber === 0) {
+        return (
+            <Box
+                alignItems="center"
+                justifyContent="center"
+                paddingTop={'xxxl'}
+                paddingBottom={'xxxl'}
+                paddingLeft={'md'}
+                paddingRight={'md'}
+            >
+                <Text size="md" variant="regular" align="center">
+                    No tickets for this customer
+                </Text>
+            </Box>
+        )
+    }
+
+    if (timelineItems.length === 0) {
+        return (
+            <Box justifyContent="center" padding={'xl'}>
+                <Text size="md" variant="regular">
+                    No items match the selected filters
+                </Text>
+            </Box>
+        )
+    }
+
+    return (
+        <Box
+            padding-left="md"
+            padding-right="md"
+            padding-bottom="md"
+            padding-top="xs"
+            flexDirection="column"
+        >
+            <ol className={css.timelineList}>
+                {timelineItems.map((item) => {
+                    switch (item.kind) {
+                        case TimelineItemKind.Order: {
+                            return (
+                                <li key={`order-${item.order.id}`}>
+                                    <TimelineOrderCard
+                                        order={item.order}
+                                        displayedDate={formatTicketTime(
+                                            item.order.created_at,
+                                        )}
+                                        productsMap={productsMap}
+                                    />
+                                </li>
+                            )
+                        }
+                        case TimelineItemKind.Ticket: {
+                            if (!item.ticket.channel) {
+                                return null
+                            }
+
+                            const enriched = enrichedTicketMap.get(
+                                item.ticket.id,
+                            )
+                            if (!enriched) {
+                                return null
+                            }
+
+                            const isActive =
+                                !!activeTicketId &&
+                                String(item.ticket.id) ===
+                                    String(activeTicketId)
+
+                            return (
+                                <TicketListItem
+                                    key={`ticket-${item.ticket.id}`}
+                                    ticket={enriched.ticket}
+                                    iconName={enriched.iconName}
+                                    customFields={enriched.customFields}
+                                    conditionsLoading={
+                                        enriched.conditionsLoading
+                                    }
+                                    className={
+                                        isActive ? css.activeTicket : undefined
+                                    }
+                                    isClickable={true}
+                                />
+                            )
+                        }
+                        default: {
+                            return null
+                        }
+                    }
+                })}
+            </ol>
+        </Box>
+    )
+}

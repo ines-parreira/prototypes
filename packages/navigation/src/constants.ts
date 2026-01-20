@@ -3,4 +3,5 @@ export enum TicketInfobarTab {
     AutoQA = 'auto-qa',
     Customer = 'customer',
     Shopify = 'shopify',
+    Timeline = 'timeline',
 }

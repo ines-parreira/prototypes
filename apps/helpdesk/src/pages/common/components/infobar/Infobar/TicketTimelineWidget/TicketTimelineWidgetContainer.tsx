@@ -1,3 +1,4 @@
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { TicketTimelineWidget } from '@repo/tickets'
 import { useParams } from 'react-router-dom'
 
@@ -8,7 +9,6 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { useGetCustomer } from 'models/customer/queries'
 import type { Customer } from 'models/customer/types'
 import { useTicketList } from 'timeline/hooks/useTicketList'
-import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
 
 import { channelToCommunicationIcon } from './channelToCommunicationIcon'
 import { useTicketTimelineData } from './useTicketTimelineData'
@@ -28,6 +28,7 @@ function getCustomerName(
 export function TicketTimelineWidgetContainer() {
     const { ticketId: activeTicketId } = useParams<{ ticketId?: string }>()
     const ticketId = activeTicketId ? Number(activeTicketId) : undefined
+    const { onChangeTab, onToggle, isExpanded } = useTicketInfobarNavigation()
 
     // Get customer ID from the current ticket
     const { data: currentTicketData } = useGetTicket(ticketId!, undefined, {
@@ -37,19 +38,14 @@ export function TicketTimelineWidgetContainer() {
     })
     const shopperId = currentTicketData?.data?.customer?.id
     const { tickets, isLoading: isLoadingTickets } = useTicketList(shopperId)
-    const {
-        isOpen: isTimelineOpen,
-        openTimeline,
-        closeTimeline,
-    } = useTimelinePanel()
 
     const handleToggleTimeline = () => {
-        if (!shopperId) return
+        // Switch to Timeline tab first
+        onChangeTab(TicketInfobarTab.Timeline)
 
-        if (isTimelineOpen) {
-            closeTimeline()
-        } else {
-            openTimeline(shopperId)
+        // Then expand infobar if it's collapsed
+        if (!isExpanded) {
+            onToggle()
         }
     }
 
@@ -89,7 +85,6 @@ export function TicketTimelineWidgetContainer() {
                 snoozedTicketsNumber={snoozedTicketsNumber}
                 isLoading={isLoadingTickets}
                 customerName={customerName}
-                isTimelineOpen={isTimelineOpen}
                 onToggleTimeline={handleToggleTimeline}
             />
         </div>

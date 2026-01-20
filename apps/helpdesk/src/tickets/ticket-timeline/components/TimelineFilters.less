@@ -1,0 +1,78 @@
+:local {
+    .customerTimelineFilter {
+        display: flex;
+    }
+
+    .customerTimelineStatusList {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    .filtersBar {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+        padding: var(--space-md);
+        border-bottom: 1px solid var(--border-neutral-default);
+        position: relative;
+        z-index: 1;
+    }
+
+    .filterButtons {
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+    }
+
+    .filterTags {
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+        flex-wrap: wrap;
+    }
+
+    .dateRangeWrapper {
+        display: inline-flex;
+    }
+
+    .overflowButton {
+        display: flex;
+        align-items: center;
+        gap: var(--space-xxxs);
+        cursor: pointer;
+        color: var(--text-primary);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-medium);
+    }
+
+    .filterOptionsList {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        min-width: 180px;
+    }
+
+    .filterOption {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--space-sm) var(--space-md);
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background-color: var(--surface-neutral-secondary);
+        }
+
+        i {
+            font-size: 16px;
+            color: var(--content-accent-default);
+        }
+    }
+
+    .filterOptionLabel {
+        font-size: 14px;
+        color: var(--content-neutral-primary);
+    }
+}

@@ -1,2 +1,7 @@
 export { TicketTimelineWidget } from './TicketTimelineWidget'
+export { TicketListItem } from './TicketListItem'
+export { TicketsList } from './TicketsList'
+export { TimelineCard } from './TimelineCard'
+export { TicketHeader } from './TicketHeader'
+export { formatTicketTime } from './utils'
 export type { EnrichedTicket, TicketCustomField } from './types'

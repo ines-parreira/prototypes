@@ -112,6 +112,30 @@ describe('TicketInfobarNavigation', () => {
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Shopify)
     })
 
+    it('should render the "Timeline" tab when the `hasTimeline` prop is true', () => {
+        render(<TicketInfobarNavigation hasTimeline />)
+
+        const button = screen.getByLabelText('history')
+        expect(button).toBeInTheDocument()
+    })
+
+    it('should not render the "Timeline" tab when `hasTimeline` is false', () => {
+        render(<TicketInfobarNavigation />)
+
+        const button = screen.queryByLabelText('history')
+        expect(button).not.toBeInTheDocument()
+    })
+
+    it('should change to the "Timeline" tab when that icon is clicked', async () => {
+        const { user } = render(<TicketInfobarNavigation hasTimeline />)
+
+        const button = screen.getByLabelText('history').closest('button')
+
+        await act(() => user.click(button!))
+
+        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Timeline)
+    })
+
     describe('Expand/Collapse button', () => {
         it('should display the expand button when the infobar is collapsed', () => {
             useTicketInfobarNavigationMock.mockReturnValue({

@@ -11,7 +11,6 @@ export type TicketTimelineWidgetProps = {
     snoozedTicketsNumber: number
     isLoading: boolean
     customerName?: string
-    isTimelineOpen: boolean
     onToggleTimeline: () => void
 }
 
@@ -22,7 +21,6 @@ export function TicketTimelineWidget({
     snoozedTicketsNumber,
     isLoading,
     customerName,
-    isTimelineOpen,
     onToggleTimeline,
 }: TicketTimelineWidgetProps) {
     const shouldDisplayTicketsList = totalNumber > 1 && !isLoading
@@ -49,7 +47,7 @@ export function TicketTimelineWidget({
                             size="sm"
                             trailingSlot="arrow-chevron-right"
                         >
-                            {isTimelineOpen ? 'Close' : 'Show All'}
+                            Show All
                         </Button>
                     </Box>
                 </Box>

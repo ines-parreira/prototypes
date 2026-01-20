@@ -5,16 +5,17 @@ import type { TicketCompact } from '@gorgias/helpdesk-queries'
 import { TicketFieldsOverflowList } from './TicketFieldsOverflowList'
 import { TicketFooter } from './TicketFooter'
 import { TicketHeader } from './TicketHeader'
+import { TimelineCard } from './TimelineCard'
 import type { TicketCustomField } from './types'
 import { formatTicketTime } from './utils'
-
-import css from './TicketTimelineWidget.less'
 
 type TicketListItemProps = {
     ticket: TicketCompact
     iconName: IconName
     customFields: TicketCustomField[]
     conditionsLoading: boolean
+    className?: string
+    isClickable?: boolean
 }
 
 export function TicketListItem({
@@ -22,37 +23,32 @@ export function TicketListItem({
     iconName,
     customFields,
     conditionsLoading,
+    className,
+    isClickable = false,
 }: TicketListItemProps) {
     return (
-        <li>
-            <Box
-                display="inline-block"
-                width="100%"
-                marginBottom="sm"
-                paddingTop="sm"
-                paddingBottom="sm"
-                paddingLeft="md"
-                paddingRight="md"
-                className={css.card}
-            >
-                <Box display="flex" flexDirection="column" gap="xs">
-                    <TicketHeader
-                        subject={ticket.subject}
-                        time={formatTicketTime(ticket.created_datetime)}
-                        iconName={iconName}
-                    />
-                    <TicketFieldsOverflowList
-                        customFields={customFields}
-                        isLoading={conditionsLoading}
-                    />
-                    <TicketFooter
-                        status={ticket.status}
-                        isSnoozed={!!ticket.snooze_datetime}
-                        assignee={ticket.assignee_user}
-                        messagesCount={ticket.messages_count}
-                    />
-                </Box>
-            </Box>
+        <li key={ticket.id}>
+            <div style={isClickable ? { cursor: 'pointer' } : undefined}>
+                <TimelineCard className={className}>
+                    <Box display="flex" flexDirection="column" gap="xs">
+                        <TicketHeader
+                            subject={ticket.subject}
+                            time={formatTicketTime(ticket.created_datetime)}
+                            iconName={iconName}
+                        />
+                        <TicketFieldsOverflowList
+                            customFields={customFields}
+                            isLoading={conditionsLoading}
+                        />
+                        <TicketFooter
+                            status={ticket.status}
+                            isSnoozed={!!ticket.snooze_datetime}
+                            assignee={ticket.assignee_user}
+                            messagesCount={ticket.messages_count}
+                        />
+                    </Box>
+                </TimelineCard>
+            </div>
         </li>
     )
 }

@@ -81,7 +81,6 @@ const defaultProps: TicketTimelineWidgetProps = {
     snoozedTicketsNumber: 0,
     isLoading: false,
     customerName: undefined,
-    isTimelineOpen: false,
     onToggleTimeline: vi.fn(),
 }
 
@@ -211,32 +210,10 @@ describe('TicketTimelineWidget', () => {
             renderComponent({
                 tickets: tickets,
                 totalNumber: 2,
-                isTimelineOpen: false,
                 onToggleTimeline,
             })
 
             const button = screen.getByText('Show All')
-            await act(() => user.click(button))
-
-            expect(onToggleTimeline).toHaveBeenCalled()
-        })
-
-        it('should call onToggleTimeline when clicking "Close"', async () => {
-            const user = userEvent.setup()
-            const onToggleTimeline = vi.fn()
-            const tickets = [
-                createEnrichedTicket(createTicketCompact({ id: 1 })),
-                createEnrichedTicket(createTicketCompact({ id: 2 })),
-            ]
-
-            renderComponent({
-                tickets: tickets,
-                totalNumber: 2,
-                isTimelineOpen: true,
-                onToggleTimeline,
-            })
-
-            const button = screen.getByText('Close')
             await act(() => user.click(button))
 
             expect(onToggleTimeline).toHaveBeenCalled()
@@ -390,11 +367,6 @@ describe('TicketTimelineWidget', () => {
         })
 
         it('should show conditionally visible fields', () => {
-            const customIsFieldVisible = (
-                definition: any,
-                evaluationResult?: any,
-            ) => evaluationResult === ExpressionFieldType.Visible
-
             const tickets = [
                 {
                     ...createEnrichedTicket(
@@ -417,7 +389,6 @@ describe('TicketTimelineWidget', () => {
                         ],
                         'comm-mail',
                     ),
-                    isFieldVisible: customIsFieldVisible,
                 },
             ]
 

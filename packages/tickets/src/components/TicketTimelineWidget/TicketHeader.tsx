@@ -4,13 +4,13 @@ import type { Ticket } from '@gorgias/helpdesk-types'
 
 type TicketHeaderProps = Pick<Ticket, 'subject'> & {
     time: string
-    iconName: IconName
+    iconName?: IconName
 }
 
 export function TicketHeader({ subject, time, iconName }: TicketHeaderProps) {
     return (
         <Box gap="xxxs" alignItems="center">
-            <Icon name={iconName} size="md" />
+            {iconName && <Icon name={iconName} size="md" />}
             <Box
                 justifyContent="space-between"
                 alignItems="center"

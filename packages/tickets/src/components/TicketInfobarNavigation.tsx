@@ -28,9 +28,10 @@ type TicketInfobarNavigationItem = {
 
 type Props = {
     hasAIFeedback?: boolean
+    hasTimeline?: boolean
 }
 
-export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
+export function TicketInfobarNavigation({ hasAIFeedback, hasTimeline }: Props) {
     const { activeTab, isExpanded, onChangeTab, onToggle } =
         useTicketInfobarNavigation()
     useTicketInfobarNavigationShortcuts()
@@ -65,6 +66,17 @@ export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
                       } satisfies TicketInfobarNavigationItem,
                   ]
                 : []),
+            ...(hasTimeline
+                ? [
+                      {
+                          name: TicketInfobarTab.Timeline,
+                          icon: 'history' as IconName,
+                          onClick: () => {
+                              onChangeTab(TicketInfobarTab.Timeline)
+                          },
+                      } satisfies TicketInfobarNavigationItem,
+                  ]
+                : []),
             ...(hasAIFeedback
                 ? [
                       {
@@ -86,6 +98,7 @@ export function TicketInfobarNavigation({ hasAIFeedback }: Props) {
         ],
         [
             hasAIFeedback,
+            hasTimeline,
             onChangeTab,
             onToggle,
             isExpanded,

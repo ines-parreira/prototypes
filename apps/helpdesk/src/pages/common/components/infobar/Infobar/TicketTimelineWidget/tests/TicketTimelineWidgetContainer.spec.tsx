@@ -1,3 +1,4 @@
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { render, screen } from '@testing-library/react'
 // Import the mocked modules
 import { useParams } from 'react-router-dom'
@@ -8,7 +9,6 @@ import { useGetTicket } from '@gorgias/helpdesk-queries'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useGetCustomer } from 'models/customer/queries'
 import { useTicketList } from 'timeline/hooks/useTicketList'
-import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
 
 import { TicketTimelineWidgetContainer } from '../TicketTimelineWidgetContainer'
 import { useTicketTimelineData } from '../useTicketTimelineData'
@@ -18,6 +18,11 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
 
+jest.mock('@repo/navigation', () => ({
+    ...jest.requireActual('@repo/navigation'),
+    useTicketInfobarNavigation: jest.fn(),
+}))
+
 jest.mock('@gorgias/helpdesk-queries', () => ({
     ...jest.requireActual('@gorgias/helpdesk-queries'),
     useGetTicket: jest.fn(),
@@ -25,10 +30,6 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 
 jest.mock('timeline/hooks/useTicketList', () => ({
     useTicketList: jest.fn(),
-}))
-
-jest.mock('timeline/hooks/useTimelinePanel', () => ({
-    useTimelinePanel: jest.fn(),
 }))
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
@@ -50,9 +51,11 @@ const mockUseGetTicket = useGetTicket as jest.MockedFunction<
 const mockUseTicketList = useTicketList as jest.MockedFunction<
     typeof useTicketList
 >
-const mockUseTimelinePanel = useTimelinePanel as jest.MockedFunction<
-    typeof useTimelinePanel
->
+
+const mockUseTicketInfobarNavigation =
+    useTicketInfobarNavigation as jest.MockedFunction<
+        typeof useTicketInfobarNavigation
+    >
 const mockUseCustomFieldDefinitions =
     useCustomFieldDefinitions as jest.MockedFunction<
         typeof useCustomFieldDefinitions
@@ -105,8 +108,7 @@ const createMockTicket = (
 })
 
 describe('TicketTimelineWidgetContainer', () => {
-    const mockOpenTimeline = jest.fn()
-    const mockCloseTimeline = jest.fn()
+    const mockToggleTimeline = jest.fn()
 
     const defaultMockValues = {
         useParams: { ticketId: '1' },
@@ -119,11 +121,18 @@ describe('TicketTimelineWidgetContainer', () => {
             },
         } as any,
         useTicketList: { tickets: [], isLoading: false, isError: false },
-        useTimelinePanel: {
+        useTicketTimeline: {
             isOpen: false,
             shopperId: null,
-            openTimeline: mockOpenTimeline,
-            closeTimeline: mockCloseTimeline,
+            openTimeline: jest.fn(),
+            closeTimeline: jest.fn(),
+            toggleTimeline: mockToggleTimeline,
+        },
+        useTicketInfobarNavigation: {
+            activeTab: TicketInfobarTab.Customer,
+            onChangeTab: jest.fn(),
+            onToggle: jest.fn(),
+            isExpanded: true,
         },
         useCustomFieldDefinitions: {
             data: { data: [] as CustomField[] },
@@ -144,7 +153,9 @@ describe('TicketTimelineWidgetContainer', () => {
         mockUseParams.mockReturnValue(defaultMockValues.useParams)
         mockUseGetTicket.mockReturnValue(defaultMockValues.useGetTicket)
         mockUseTicketList.mockReturnValue(defaultMockValues.useTicketList)
-        mockUseTimelinePanel.mockReturnValue(defaultMockValues.useTimelinePanel)
+        mockUseTicketInfobarNavigation.mockReturnValue(
+            defaultMockValues.useTicketInfobarNavigation,
+        )
         mockUseCustomFieldDefinitions.mockReturnValue(
             defaultMockValues.useCustomFieldDefinitions,
         )

@@ -11,6 +11,8 @@ import { connect } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 import { Navbar } from 'reactstrap'
 
+import { useGetTicket } from '@gorgias/helpdesk-queries'
+
 import { AutoQA } from 'auto_qa'
 import { TicketStatus } from 'business/types/ticket'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
@@ -18,6 +20,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
+import { channelToCommunicationIcon } from 'pages/common/components/infobar/Infobar/TicketTimelineWidget/channelToCommunicationIcon'
 import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import TicketFeedback from 'pages/tickets/detail/components/TicketFeedback'
@@ -34,6 +37,7 @@ import {
     getWidgetsState,
 } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
+import { TimelineContent } from 'tickets/ticket-timeline'
 import { isTeamLead } from 'utils'
 
 import { useFeedbackTracking } from './components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
@@ -75,6 +79,14 @@ export const TicketInfobarContainer = ({
     const location = useLocation()
     const hasAIAgent = useHasAIAgent()
     const { activeTab, onChangeTab } = useTicketInfobarNavigation()
+
+    const ticketId = parseInt(params.ticketId, 10)
+    const { data: currentTicketData } = useGetTicket(ticketId!, undefined, {
+        query: {
+            enabled: ticketId !== undefined,
+        },
+    })
+    const shopperId = currentTicketData?.data?.customer?.id
 
     const { onFeedbackTabOpened } = useFeedbackTracking({
         ticketId: ticket.id,
@@ -255,7 +267,13 @@ export const TicketInfobarContainer = ({
                 </Navbar>
             )}
 
-            {activeTab === TicketInfobarTab.AIFeedback && hasAIAgent ? (
+            {activeTab === TicketInfobarTab.Timeline && shopperId ? (
+                <TimelineContent
+                    shopperId={shopperId}
+                    activeTicketId={params.ticketId}
+                    channelToCommunicationIcon={channelToCommunicationIcon}
+                />
+            ) : activeTab === TicketInfobarTab.AIFeedback && hasAIAgent ? (
                 <TicketFeedback key={ticket.id} />
             ) : activeTab === TicketInfobarTab.AutoQA ? (
                 <div className={css.autoQaContainer}>

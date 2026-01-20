@@ -10,6 +10,8 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useGetTicket } from '@gorgias/helpdesk-queries'
+
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { UserRole } from 'config/types/user'
@@ -47,6 +49,9 @@ const useFlagMock = jest.mocked(useFlag)
 jest.mock('@repo/tickets')
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
+jest.mock('@gorgias/helpdesk-queries')
+const useGetTicketMock = assumeMock(useGetTicket)
+
 jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({
     __esModule: true,
     default: () => <div>TicketFeedback</div>,
@@ -59,6 +64,10 @@ jest.mock('auto_qa', () => ({
 
 jest.mock('@repo/customer', () => ({
     ShopifyCustomer: () => <div>ShopifyCustomer Component</div>,
+}))
+
+jest.mock('tickets/ticket-timeline', () => ({
+    TimelineContent: () => <div>TimelineContent Component</div>,
 }))
 
 jest.mock('state/currentUser/selectors')
@@ -177,6 +186,15 @@ describe('<TicketInfobarContainer />', () => {
             activeTab: TicketInfobarTab.Customer,
             onChangeTab,
         })
+
+        useGetTicketMock.mockReturnValue({
+            data: {
+                data: {
+                    id: 1,
+                    customer: { id: 123 },
+                },
+            },
+        } as any)
     })
 
     it('should render infobar for active customer', () => {
@@ -514,6 +532,36 @@ describe('<TicketInfobarContainer />', () => {
 
         expect(
             screen.getByText('ShopifyCustomer Component'),
+        ).toBeInTheDocument()
+    })
+
+    it('should render TimelineContent component when Timeline tab is active and shopperId is present', () => {
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.Timeline,
+            onChangeTab,
+        })
+
+        useGetTicketMock.mockReturnValue({
+            data: {
+                data: {
+                    id: 1,
+                    customer: { id: 456 },
+                },
+            },
+        } as any)
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/123',
+            },
+        )
+
+        expect(
+            screen.getByText('TimelineContent Component'),
         ).toBeInTheDocument()
     })
 })
