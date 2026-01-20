@@ -1,42 +1,110 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook } from '@testing-library/react'
+import { act, renderHook, waitFor } from '@testing-library/react'
+import { setupServer } from 'msw/node'
+import { MemoryRouter, Route } from 'react-router-dom'
 
-import type { Field } from '../MetafieldsTable/types'
-import { METAFIELDS_QUERY_KEY } from './useMetafields'
+import { mockUpdateMetafieldDefinitionHandler } from '@gorgias/helpdesk-mocks'
+import { queryKeys } from '@gorgias/helpdesk-queries'
+import type {
+    ListMetafieldDefinitionsResult,
+    MetafieldDefinition,
+} from '@gorgias/helpdesk-types'
+
 import { useToggleMetafieldVisibility } from './useToggleMetafieldVisibility'
+
+const server = setupServer()
+
+const INTEGRATION_ID = 123
+
+function getPinnedQueryKey() {
+    return queryKeys.integrations.listMetafieldDefinitions(INTEGRATION_ID, {
+        pinned: true,
+    })
+}
+
+function createMockResponse(
+    definitions: MetafieldDefinition[],
+): ListMetafieldDefinitionsResult {
+    return {
+        data: {
+            data: definitions,
+            meta: { next_cursor: null, prev_cursor: null },
+            object: 'list',
+            uri: '/api/integrations/123/metafield-definitions',
+        },
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: {} as ListMetafieldDefinitionsResult['config'],
+    }
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useToggleMetafieldVisibility', () => {
     let queryClient: QueryClient
 
-    const mockFields: Field[] = [
+    const mockDefinitions: MetafieldDefinition[] = [
         {
             id: '1',
             name: 'Field 1',
+            key: 'field_1',
+            namespace: 'custom',
             type: 'single_line_text_field',
-            category: 'Order',
+            ownerType: 'Order',
             isVisible: true,
         },
         {
             id: '2',
             name: 'Field 2',
+            key: 'field_2',
+            namespace: 'custom',
             type: 'multi_line_text_field',
-            category: 'Customer',
+            ownerType: 'Customer',
             isVisible: false,
         },
         {
             id: '3',
             name: 'Field 3',
+            key: 'field_3',
+            namespace: 'custom',
             type: 'date',
-            category: 'DraftOrder',
+            ownerType: 'DraftOrder',
             isVisible: true,
         },
     ]
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
+        <MemoryRouter initialEntries={[`/integrations/${INTEGRATION_ID}`]}>
+            <Route path="/integrations/:id">
+                <QueryClientProvider client={queryClient}>
+                    {children}
+                </QueryClientProvider>
+            </Route>
+        </MemoryRouter>
     )
+
+    function getCachedField(id: string) {
+        return queryClient
+            .getQueryData<ListMetafieldDefinitionsResult>(getPinnedQueryKey())
+            ?.data?.data?.find((d) => d.id === id)
+    }
+
+    function getCachedData() {
+        return queryClient.getQueryData<ListMetafieldDefinitionsResult>(
+            getPinnedQueryKey(),
+        )?.data?.data
+    }
 
     beforeEach(() => {
         queryClient = new QueryClient({
@@ -45,99 +113,87 @@ describe('useToggleMetafieldVisibility', () => {
                 mutations: { retry: false },
             },
         })
-        queryClient.setQueryData(METAFIELDS_QUERY_KEY, mockFields)
+        queryClient.setQueryData(
+            getPinnedQueryKey(),
+            createMockResponse(mockDefinitions),
+        )
+
+        const mockHandler = mockUpdateMetafieldDefinitionHandler()
+        server.use(mockHandler.handler)
     })
 
     afterEach(() => {
         queryClient.clear()
     })
 
-    it('should toggle metafield visibility optimistically', async () => {
+    it.each([
+        { id: '1', from: true, to: false },
+        { id: '2', from: false, to: true },
+    ])(
+        'should toggle visibility from $from to $to',
+        async ({ id, from, to }) => {
+            expect(getCachedField(id)?.isVisible).toBe(from)
+
+            const { result } = renderHook(
+                () => useToggleMetafieldVisibility(),
+                {
+                    wrapper,
+                },
+            )
+
+            act(() => {
+                result.current.mutate({ id, isVisible: to })
+            })
+
+            await waitFor(() => {
+                expect(getCachedField(id)?.isVisible).toBe(to)
+            })
+        },
+    )
+
+    it('should handle mutation without cached data', async () => {
+        queryClient.setQueryData(getPinnedQueryKey(), undefined)
+
         const { result } = renderHook(() => useToggleMetafieldVisibility(), {
             wrapper,
         })
 
-        await act(async () => {
+        act(() => {
             result.current.mutate({ id: '1', isVisible: false })
         })
 
-        const updatedFields =
-            queryClient.getQueryData<Field[]>(METAFIELDS_QUERY_KEY)
-        expect(updatedFields).toEqual([
-            {
-                id: '1',
-                name: 'Field 1',
-                type: 'single_line_text_field',
-                category: 'Order',
-                isVisible: false,
-            },
-            {
-                id: '2',
-                name: 'Field 2',
-                type: 'multi_line_text_field',
-                category: 'Customer',
-                isVisible: false,
-            },
-            {
-                id: '3',
-                name: 'Field 3',
-                type: 'date',
-                category: 'DraftOrder',
-                isVisible: true,
-            },
-        ])
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
     })
 
-    it('should toggle visibility from false to true', async () => {
-        const { result } = renderHook(() => useToggleMetafieldVisibility(), {
-            wrapper,
+    it('should handle mutation when previousData array is undefined', async () => {
+        queryClient.setQueryData(getPinnedQueryKey(), {
+            data: {
+                data: undefined,
+                meta: { next_cursor: null, prev_cursor: null },
+                object: 'list',
+                uri: '/api/integrations/123/metafield-definitions',
+            },
+            status: 200,
+            statusText: 'OK',
+            headers: {},
+            config: {} as ListMetafieldDefinitionsResult['config'],
         })
-
-        await act(async () => {
-            result.current.mutate({ id: '2', isVisible: true })
-        })
-
-        const updatedFields =
-            queryClient.getQueryData<Field[]>(METAFIELDS_QUERY_KEY)
-        expect(updatedFields).toEqual([
-            {
-                id: '1',
-                name: 'Field 1',
-                type: 'single_line_text_field',
-                category: 'Order',
-                isVisible: true,
-            },
-            {
-                id: '2',
-                name: 'Field 2',
-                type: 'multi_line_text_field',
-                category: 'Customer',
-                isVisible: true,
-            },
-            {
-                id: '3',
-                name: 'Field 3',
-                type: 'date',
-                category: 'DraftOrder',
-                isVisible: true,
-            },
-        ])
-    })
-
-    it('should handle undefined cache data gracefully', async () => {
-        queryClient.clear()
 
         const { result } = renderHook(() => useToggleMetafieldVisibility(), {
             wrapper,
         })
 
-        await act(async () => {
+        act(() => {
             result.current.mutate({ id: '1', isVisible: false })
         })
 
-        const updatedFields =
-            queryClient.getQueryData<Field[]>(METAFIELDS_QUERY_KEY)
-        expect(updatedFields).toBeUndefined()
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+
+        expect(getCachedData()).toEqual([])
     })
 
     it('should cancel queries before mutation', async () => {
@@ -147,12 +203,14 @@ describe('useToggleMetafieldVisibility', () => {
             wrapper,
         })
 
-        await act(async () => {
+        act(() => {
             result.current.mutate({ id: '1', isVisible: false })
         })
 
-        expect(cancelQueriesSpy).toHaveBeenCalledWith({
-            queryKey: METAFIELDS_QUERY_KEY,
+        await waitFor(() => {
+            expect(cancelQueriesSpy).toHaveBeenCalledWith({
+                queryKey: getPinnedQueryKey(),
+            })
         })
     })
 })

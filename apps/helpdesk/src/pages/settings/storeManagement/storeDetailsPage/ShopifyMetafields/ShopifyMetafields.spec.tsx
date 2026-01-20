@@ -1,47 +1,94 @@
-import { assumeMock } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { render, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import { Provider } from 'react-redux'
+import { MemoryRouter, Route } from 'react-router-dom'
 
-import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
+import {
+    mockListMetafieldDefinitionsHandler,
+    mockMetafieldDefinition,
+    mockUpdateMetafieldDefinitionHandler,
+} from '@gorgias/helpdesk-mocks'
 
-import { useMetafields } from './hooks/useMetafields'
+import { mockStore } from 'utils/testing'
+
 import ShopifyMetafields from './ShopifyMetafields'
 
-jest.mock('./hooks/useMetafields')
-const useMetafieldsMock = assumeMock(useMetafields)
+const INTEGRATION_ID = 123
 
-const mockMetafieldsData = [
-    {
-        id: '1',
-        name: 'Customer Email',
-        type: 'single_line_text',
-        category: 'Customer',
-        isVisible: true,
-    },
-    {
-        id: '2',
-        name: 'Order Notes',
-        type: 'multi_line_text',
-        category: 'Order',
-        isVisible: false,
-    },
-]
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('ShopifyMetafields', () => {
+    let queryClient: QueryClient
+
+    const renderComponent = () => {
+        const store = mockStore({})
+        return render(
+            <MemoryRouter
+                initialEntries={[`/integrations/${INTEGRATION_ID}/settings`]}
+            >
+                <Route path="/integrations/:id/settings">
+                    <Provider store={store}>
+                        <QueryClientProvider client={queryClient}>
+                            <ShopifyMetafields />
+                        </QueryClientProvider>
+                    </Provider>
+                </Route>
+            </MemoryRouter>,
+        )
+    }
+
+    function setupEmptyListHandler() {
+        const mockListHandler = mockListMetafieldDefinitionsHandler(async () =>
+            HttpResponse.json({
+                data: [],
+                meta: { next_cursor: null, prev_cursor: null },
+                object: 'list',
+                uri: `/api/integrations/${INTEGRATION_ID}/metafield-definitions`,
+            }),
+        )
+        server.use(mockListHandler.handler)
+    }
+
     beforeEach(() => {
-        jest.clearAllMocks()
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: { retry: false },
+                mutations: { retry: false },
+            },
+        })
+
+        const mockUpdateHandler = mockUpdateMetafieldDefinitionHandler()
+        server.use(mockUpdateHandler.handler)
     })
 
-    it('should render the explainer text correctly', () => {
-        useMetafieldsMock.mockReturnValue({
-            data: [],
-            isLoading: false,
-            isError: false,
-            error: null,
-        } as any)
+    afterEach(() => {
+        queryClient.clear()
+    })
 
-        renderWithStoreAndQueryClientProvider(<ShopifyMetafields />)
+    it('should render the explainer text correctly', async () => {
+        setupEmptyListHandler()
+        renderComponent()
 
-        expect(screen.getByText(/Manage/, { exact: false })).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(/Manage/, { exact: false }),
+            ).toBeInTheDocument()
+        })
+
         expect(
             screen.getByText(
                 /from your Shopify store to Gorgias and choose which ones to show in each customer's profile/,
@@ -50,56 +97,78 @@ describe('ShopifyMetafields', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render the MetafieldsTable component with data', () => {
-        useMetafieldsMock.mockReturnValue({
-            data: mockMetafieldsData,
-            isLoading: false,
-            isError: false,
-            error: null,
-        } as any)
+    it('should render the MetafieldsTable component with data', async () => {
+        const mockListHandler = mockListMetafieldDefinitionsHandler(async () =>
+            HttpResponse.json({
+                data: [
+                    mockMetafieldDefinition({
+                        id: '1',
+                        name: 'Customer Email',
+                        type: 'single_line_text_field',
+                        ownerType: 'Customer',
+                        isVisible: true,
+                    }),
+                    mockMetafieldDefinition({
+                        id: '2',
+                        name: 'Order Notes',
+                        type: 'multi_line_text_field',
+                        ownerType: 'Order',
+                        isVisible: false,
+                    }),
+                ],
+                meta: { next_cursor: null, prev_cursor: null },
+                object: 'list',
+                uri: `/api/integrations/${INTEGRATION_ID}/metafield-definitions`,
+            }),
+        )
+        server.use(mockListHandler.handler)
 
-        renderWithStoreAndQueryClientProvider(<ShopifyMetafields />)
+        renderComponent()
 
-        expect(screen.getByText('Customer Email')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Customer Email')).toBeInTheDocument()
+        })
+
         expect(screen.getByText('Order Notes')).toBeInTheDocument()
     })
 
-    it('should pass empty array to MetafieldsTable when data is undefined', () => {
-        useMetafieldsMock.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-            error: null,
-        } as any)
+    it('should render the table structure', async () => {
+        setupEmptyListHandler()
+        renderComponent()
 
-        renderWithStoreAndQueryClientProvider(<ShopifyMetafields />)
+        await waitFor(() => {
+            expect(screen.getByRole('table')).toBeInTheDocument()
+        })
+
         expect(
-            screen.getByText('You haven’t added any metafields yet'),
+            screen.getByRole('button', { name: /import/i }),
         ).toBeInTheDocument()
     })
 
-    it('should pass isLoading state to MetafieldsTable', () => {
-        useMetafieldsMock.mockReturnValue({
-            data: [],
-            isLoading: true,
-            isError: false,
-            error: null,
-        } as any)
+    it('should show loading state while fetching data', async () => {
+        const mockListHandler = mockListMetafieldDefinitionsHandler(
+            () => new Promise(() => {}),
+        )
+        server.use(mockListHandler.handler)
 
-        renderWithStoreAndQueryClientProvider(<ShopifyMetafields />)
+        renderComponent()
 
-        expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(1)
+        await waitFor(() => {
+            expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(
+                1,
+            )
+        })
     })
 
-    it('should render metafields styled text with correct class', () => {
-        useMetafieldsMock.mockReturnValue({
-            data: [],
-            isLoading: false,
-            isError: false,
-            error: null,
-        } as any)
+    it('should render metafields styled text with correct class', async () => {
+        setupEmptyListHandler()
+        renderComponent()
 
-        renderWithStoreAndQueryClientProvider(<ShopifyMetafields />)
+        await waitFor(() => {
+            expect(
+                screen.getByText(/Manage/, { exact: false }),
+            ).toBeInTheDocument()
+        })
 
         const metafieldsSpan = screen
             .getByText(/Manage/)

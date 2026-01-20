@@ -1,7 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
 
-import pluralize from 'pluralize'
-
 import { Box } from '@gorgias/axiom'
 
 import { useNotify } from 'hooks/useNotify'
@@ -11,6 +9,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import { METAFIELD_CATEGORIES } from '../constants'
 import type { Field } from '../MetafieldsTable/types'
+import { getImportResultMessage } from '../utils/getImportResultMessage'
 import { isAtMaxFields } from '../utils/isAtMaxFields'
 import { useFieldSelection } from './hooks/useFieldSelection'
 import { useImportMetafields } from './hooks/useImportMetafields'
@@ -66,10 +65,20 @@ export default function ImportMetafieldFlow({
     const handleImport = useCallback(async () => {
         if (allSelectedFields?.length > 0) {
             try {
-                await importMetafields({ fields: allSelectedFields })
-                success(
-                    `Success! ${allSelectedFields.length} ${pluralize('metafield', allSelectedFields.length)} added`,
+                const result = await importMetafields({
+                    fields: allSelectedFields,
+                })
+
+                const notification = getImportResultMessage(
+                    result,
+                    allSelectedFields.length,
                 )
+                if (notification.type === 'success') {
+                    success(notification.message)
+                } else {
+                    error(notification.message)
+                }
+
                 clearAllSelections()
                 reset()
                 onClose()

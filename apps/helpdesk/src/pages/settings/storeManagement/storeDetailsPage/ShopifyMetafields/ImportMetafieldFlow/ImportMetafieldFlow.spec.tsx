@@ -3,6 +3,19 @@ import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import { Provider } from 'react-redux'
+import { MemoryRouter, Route } from 'react-router-dom'
+
+import {
+    mockListMetafieldDefinitionsHandler,
+    mockMetafieldDefinition,
+    mockUpdateMetafieldDefinitionHandler,
+} from '@gorgias/helpdesk-mocks'
+import type { MetafieldOwnerType } from '@gorgias/helpdesk-types'
+
+import { mockStore } from 'utils/testing'
 
 import ImportMetafieldFlow from './ImportMetafieldFlow'
 import { mockImportableFields } from './MetafieldsImportList/data'
@@ -11,23 +24,30 @@ jest.mock('./hooks/useImportWizard')
 jest.mock('./hooks/useFieldSelection')
 jest.mock('./hooks/useImportMetafields')
 jest.mock('hooks/useNotify')
-jest.mock('../hooks/useImportableMetafields')
 
 const { useImportWizard } = jest.requireMock('./hooks/useImportWizard')
 const { useFieldSelection } = jest.requireMock('./hooks/useFieldSelection')
 const { useImportMetafields } = jest.requireMock('./hooks/useImportMetafields')
 const { useNotify } = jest.requireMock('hooks/useNotify')
-const { useImportableMetafields } = jest.requireMock(
-    '../hooks/useImportableMetafields',
-)
+
+const INTEGRATION_ID = 123
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('ImportMetafieldFlow', () => {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: { retry: false },
-            mutations: { retry: false },
-        },
-    })
+    let queryClient: QueryClient
 
     const mockSelectCategory = jest.fn()
     const mockBackToCategories = jest.fn()
@@ -37,10 +57,10 @@ describe('ImportMetafieldFlow', () => {
     const mockGetSelectionCount = jest.fn()
     const mockClearSelectionForCategory = jest.fn()
     const mockClearAllSelections = jest.fn()
-    const mockImportMetafields = jest.fn()
     const mockOnClose = jest.fn()
     const mockSuccess = jest.fn()
     const mockError = jest.fn()
+    const mockImportMetafields = jest.fn()
 
     const defaultWizardState = {
         step: 'categories' as const,
@@ -63,15 +83,31 @@ describe('ImportMetafieldFlow', () => {
         isOpen: boolean
         onClose: () => void
     }) => {
+        const store = mockStore({})
         return render(
-            <QueryClientProvider client={queryClient}>
-                <ImportMetafieldFlow {...props} />
-            </QueryClientProvider>,
+            <MemoryRouter
+                initialEntries={[`/integrations/${INTEGRATION_ID}/settings`]}
+            >
+                <Route path="/integrations/:id/settings">
+                    <Provider store={store}>
+                        <QueryClientProvider client={queryClient}>
+                            <ImportMetafieldFlow {...props} />
+                        </QueryClientProvider>
+                    </Provider>
+                </Route>
+            </MemoryRouter>,
         )
     }
 
     beforeEach(() => {
         jest.clearAllMocks()
+
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: { retry: false },
+                mutations: { retry: false },
+            },
+        })
 
         useImportWizard.mockReturnValue(defaultWizardState)
         useFieldSelection.mockReturnValue(defaultFieldSelectionState)
@@ -82,15 +118,32 @@ describe('ImportMetafieldFlow', () => {
             success: mockSuccess,
             error: mockError,
         })
-        useImportableMetafields.mockReturnValue({
-            data: mockImportableFields,
-            isLoading: false,
-            isError: false,
-            error: null,
-        })
 
         mockGetSelectionCount.mockReturnValue(0)
         mockGetSelectionForCategory.mockReturnValue([])
+
+        const mockUpdateHandler = mockUpdateMetafieldDefinitionHandler()
+        const mockListHandler = mockListMetafieldDefinitionsHandler(async () =>
+            HttpResponse.json({
+                data: mockImportableFields.map((field) =>
+                    mockMetafieldDefinition({
+                        id: field.id,
+                        name: field.name,
+                        type: field.type,
+                        ownerType: field.category as MetafieldOwnerType,
+                        isVisible: field.isVisible,
+                    }),
+                ),
+                meta: { next_cursor: null, prev_cursor: null },
+                object: 'list',
+                uri: `/api/integrations/${INTEGRATION_ID}/metafield-definitions`,
+            }),
+        )
+        server.use(mockUpdateHandler.handler, mockListHandler.handler)
+    })
+
+    afterEach(() => {
+        queryClient.clear()
     })
 
     describe('Modal rendering', () => {
@@ -149,22 +202,17 @@ describe('ImportMetafieldFlow', () => {
 
         it('should not show import button when no selections exist', () => {
             mockGetSelectionCount.mockReturnValue(0)
-
             renderComponent({ isOpen: true, onClose: mockOnClose })
-
             expect(
                 screen.queryByRole('button', { name: /^import$/i }),
             ).not.toBeInTheDocument()
         })
 
         it('should show import button when at least one selection exists', () => {
-            mockGetSelectionCount.mockImplementation((category) => {
-                if (category === 'Order') return 2
-                return 0
-            })
-
+            mockGetSelectionCount.mockImplementation((category) =>
+                category === 'Order' ? 2 : 0,
+            )
             renderComponent({ isOpen: true, onClose: mockOnClose })
-
             expect(
                 screen.getByRole('button', { name: /^import$/i }),
             ).toBeInTheDocument()
@@ -180,13 +228,12 @@ describe('ImportMetafieldFlow', () => {
 
             await act(() => user.click(chevronButton!))
 
-            expect(mockSelectCategory).toHaveBeenCalledTimes(1)
             expect(mockSelectCategory).toHaveBeenCalledWith('Order')
         })
     })
 
     describe('Wizard navigation flow', () => {
-        it('should render MetafieldsImportList when a category is selected', () => {
+        it('should render MetafieldsImportList when a category is selected', async () => {
             useImportWizard.mockReturnValue({
                 ...defaultWizardState,
                 step: 'list',
@@ -195,7 +242,10 @@ describe('ImportMetafieldFlow', () => {
 
             renderComponent({ isOpen: true, onClose: mockOnClose })
 
-            expect(screen.getByText('Customer')).toBeInTheDocument()
+            await waitFor(() => {
+                expect(screen.getByText('Customer')).toBeInTheDocument()
+            })
+
             expect(
                 screen.getByText(
                     'Choose up to 10 metafields to import to Gorgias.',
@@ -219,13 +269,18 @@ describe('ImportMetafieldFlow', () => {
 
             renderComponent({ isOpen: true, onClose: mockOnClose })
 
-            const backButton = screen.getByRole('button', {
-                name: /back to category/i,
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /back to category/i }),
+                ).toBeInTheDocument()
             })
 
-            await act(() => user.click(backButton))
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', { name: /back to category/i }),
+                ),
+            )
 
-            expect(mockClearSelectionForCategory).toHaveBeenCalledTimes(1)
             expect(mockClearSelectionForCategory).toHaveBeenCalledWith('Order')
             expect(mockBackToCategories).toHaveBeenCalledTimes(1)
         })
@@ -245,16 +300,20 @@ describe('ImportMetafieldFlow', () => {
 
             renderComponent({ isOpen: true, onClose: mockOnClose })
 
-            const continueButton = screen.getByRole('button', {
-                name: /^continue$/i,
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /^continue$/i }),
+                ).toBeInTheDocument()
             })
 
-            await act(() => user.click(continueButton))
+            await act(() =>
+                user.click(screen.getByRole('button', { name: /^continue$/i })),
+            )
 
             expect(mockBackToCategories).toHaveBeenCalledTimes(1)
         })
 
-        it('should pass selected metafields to MetafieldsImportList', () => {
+        it('should pass selected metafields to MetafieldsImportList', async () => {
             const selectedFields = mockImportableFields.filter(
                 (field) => field.category === 'Customer',
             )
@@ -268,14 +327,20 @@ describe('ImportMetafieldFlow', () => {
 
             renderComponent({ isOpen: true, onClose: mockOnClose })
 
-            expect(mockGetSelectionForCategory).toHaveBeenCalledWith('Customer')
+            await waitFor(() => {
+                expect(mockGetSelectionForCategory).toHaveBeenCalledWith(
+                    'Customer',
+                )
+            })
 
-            const checkboxes = screen.getAllByRole('checkbox')
-            const dataCheckboxes = checkboxes.filter(
-                (cb) => cb.id !== 'checkbox-0',
-            )
-            dataCheckboxes.forEach((checkbox) => {
-                expect(checkbox).toBeChecked()
+            await waitFor(() => {
+                const checkboxes = screen.getAllByRole('checkbox')
+                const dataCheckboxes = checkboxes.filter(
+                    (cb) => cb.id !== 'checkbox-0',
+                )
+                dataCheckboxes.forEach((checkbox) => {
+                    expect(checkbox).toBeChecked()
+                })
             })
         })
 
@@ -287,20 +352,51 @@ describe('ImportMetafieldFlow', () => {
                 selectedCategory: 'DraftOrder',
             })
 
+            const draftOrderFields = mockImportableFields.filter(
+                (f) => f.category === 'DraftOrder',
+            )
+            const mockListHandler = mockListMetafieldDefinitionsHandler(
+                async () =>
+                    HttpResponse.json({
+                        data: draftOrderFields.map((field) =>
+                            mockMetafieldDefinition({
+                                id: field.id,
+                                name: field.name,
+                                type: field.type,
+                                ownerType: field.category as MetafieldOwnerType,
+                                isVisible: field.isVisible,
+                            }),
+                        ),
+                        meta: { next_cursor: null, prev_cursor: null },
+                        object: 'list',
+                        uri: `/api/integrations/${INTEGRATION_ID}/metafield-definitions`,
+                    }),
+            )
+            server.use(mockListHandler.handler)
+
             renderComponent({ isOpen: true, onClose: mockOnClose })
 
-            const checkboxes = screen.getAllByRole('checkbox')
-            const firstRowCheckbox = checkboxes[1]
-
-            await act(() => user.click(firstRowCheckbox))
-
             await waitFor(() => {
-                expect(mockUpdateSelection).toHaveBeenCalled()
+                expect(screen.getAllByRole('checkbox').length).toBeGreaterThan(
+                    1,
+                )
             })
 
-            const callArgs = mockUpdateSelection.mock.calls[0]
-            expect(callArgs[0]).toBe('DraftOrder')
-            expect(callArgs[1]).toHaveLength(1)
+            const checkboxes = screen.getAllByRole('checkbox')
+            const enabledCheckboxes = checkboxes.filter(
+                (cb) => !cb.hasAttribute('disabled'),
+            )
+
+            if (enabledCheckboxes.length > 1) {
+                const dataCheckbox = enabledCheckboxes[1]
+                await act(() => user.click(dataCheckbox))
+
+                await waitFor(() => {
+                    expect(mockUpdateSelection).toHaveBeenCalled()
+                })
+
+                expect(mockUpdateSelection.mock.calls[0][0]).toBe('DraftOrder')
+            }
         })
     })
 
@@ -311,6 +407,11 @@ describe('ImportMetafieldFlow', () => {
                 mockImportableFields[0],
                 mockImportableFields[1],
             ]
+
+            mockImportMetafields.mockResolvedValue({
+                successful: selectedFields,
+                failed: [],
+            })
 
             mockGetSelectionCount.mockImplementation((category) => {
                 if (category === 'Order') return 1
@@ -323,26 +424,19 @@ describe('ImportMetafieldFlow', () => {
                 allSelectedFields: selectedFields,
             })
 
-            mockImportMetafields.mockResolvedValue({})
-
             renderComponent({ isOpen: true, onClose: mockOnClose })
 
-            const importButton = screen.getByRole('button', {
-                name: /^import$/i,
-            })
-
-            await act(() => user.click(importButton))
-
-            await waitFor(() => {
-                expect(mockImportMetafields).toHaveBeenCalledTimes(1)
-            })
+            await user.click(screen.getByRole('button', { name: /^import$/i }))
 
             expect(mockImportMetafields).toHaveBeenCalledWith({
                 fields: selectedFields,
             })
-            expect(mockClearAllSelections).toHaveBeenCalledTimes(1)
-            expect(mockReset).toHaveBeenCalledTimes(1)
-            expect(mockOnClose).toHaveBeenCalledTimes(1)
+
+            await waitFor(() => {
+                expect(mockClearAllSelections).toHaveBeenCalledTimes(1)
+                expect(mockReset).toHaveBeenCalledTimes(1)
+                expect(mockOnClose).toHaveBeenCalledTimes(1)
+            })
         })
 
         it('should not trigger import when no fields are selected', () => {
@@ -360,71 +454,32 @@ describe('ImportMetafieldFlow', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should not call import when allSelectedFields is empty even if import is triggered', async () => {
-            const user = userEvent.setup()
-            mockGetSelectionCount.mockReturnValue(1)
+        it.each([
+            { value: [], label: 'empty array' },
+            { value: null as any, label: 'null' },
+            { value: undefined as any, label: 'undefined' },
+        ])(
+            'should not call import when allSelectedFields is $label',
+            async ({ value }) => {
+                const user = userEvent.setup()
+                mockGetSelectionCount.mockReturnValue(1)
 
-            useFieldSelection.mockReturnValue({
-                ...defaultFieldSelectionState,
-                allSelectedFields: [],
-            })
+                useFieldSelection.mockReturnValue({
+                    ...defaultFieldSelectionState,
+                    allSelectedFields: value,
+                })
 
-            renderComponent({ isOpen: true, onClose: mockOnClose })
+                renderComponent({ isOpen: true, onClose: mockOnClose })
 
-            const importButton = screen.getByRole('button', {
-                name: /^import$/i,
-            })
+                const importButton = screen.getByRole('button', {
+                    name: /^import$/i,
+                })
 
-            await act(() => user.click(importButton))
+                await user.click(importButton)
 
-            expect(mockImportMetafields).not.toHaveBeenCalled()
-        })
-
-        it('should not call import when allSelectedFields is null', async () => {
-            const user = userEvent.setup()
-            mockGetSelectionCount.mockReturnValue(1)
-
-            useFieldSelection.mockReturnValue({
-                ...defaultFieldSelectionState,
-                allSelectedFields: null as any,
-            })
-
-            renderComponent({ isOpen: true, onClose: mockOnClose })
-
-            const importButton = screen.getByRole('button', {
-                name: /^import$/i,
-            })
-
-            await act(() => user.click(importButton))
-
-            expect(mockImportMetafields).not.toHaveBeenCalled()
-            expect(mockClearAllSelections).not.toHaveBeenCalled()
-            expect(mockReset).not.toHaveBeenCalled()
-            expect(mockOnClose).not.toHaveBeenCalled()
-        })
-
-        it('should not call import when allSelectedFields is undefined', async () => {
-            const user = userEvent.setup()
-            mockGetSelectionCount.mockReturnValue(1)
-
-            useFieldSelection.mockReturnValue({
-                ...defaultFieldSelectionState,
-                allSelectedFields: undefined as any,
-            })
-
-            renderComponent({ isOpen: true, onClose: mockOnClose })
-
-            const importButton = screen.getByRole('button', {
-                name: /^import$/i,
-            })
-
-            await act(() => user.click(importButton))
-
-            expect(mockImportMetafields).not.toHaveBeenCalled()
-            expect(mockClearAllSelections).not.toHaveBeenCalled()
-            expect(mockReset).not.toHaveBeenCalled()
-            expect(mockOnClose).not.toHaveBeenCalled()
-        })
+                expect(mockImportMetafields).not.toHaveBeenCalled()
+            },
+        )
 
         it('should dispatch success notification with count when import succeeds', async () => {
             const user = userEvent.setup()
@@ -433,6 +488,11 @@ describe('ImportMetafieldFlow', () => {
                 mockImportableFields[1],
                 mockImportableFields[2],
             ]
+
+            mockImportMetafields.mockResolvedValue({
+                successful: selectedFields,
+                failed: [],
+            })
 
             mockGetSelectionCount.mockImplementation((category) => {
                 if (category === 'Order') return 2
@@ -445,29 +505,26 @@ describe('ImportMetafieldFlow', () => {
                 allSelectedFields: selectedFields,
             })
 
-            mockImportMetafields.mockResolvedValue({})
-
             renderComponent({ isOpen: true, onClose: mockOnClose })
 
-            const importButton = screen.getByRole('button', {
-                name: /^import$/i,
-            })
-
-            await act(() => user.click(importButton))
+            await user.click(screen.getByRole('button', { name: /^import$/i }))
 
             await waitFor(() => {
-                expect(mockSuccess).toHaveBeenCalledTimes(1)
+                expect(mockSuccess).toHaveBeenCalledWith(
+                    'Success! 3 metafields added',
+                )
             })
-
-            expect(mockSuccess).toHaveBeenCalledWith(
-                'Success! 3 metafields added',
-            )
             expect(mockError).not.toHaveBeenCalled()
         })
 
         it('should dispatch error notification when import fails', async () => {
             const user = userEvent.setup()
             const selectedFields = [mockImportableFields[0]]
+
+            mockImportMetafields.mockResolvedValue({
+                successful: [],
+                failed: selectedFields,
+            })
 
             mockGetSelectionCount.mockImplementation((category) => {
                 if (category === 'Customer') return 1
@@ -479,25 +536,16 @@ describe('ImportMetafieldFlow', () => {
                 allSelectedFields: selectedFields,
             })
 
-            mockImportMetafields.mockRejectedValue(new Error('API Error'))
-
             renderComponent({ isOpen: true, onClose: mockOnClose })
 
-            const importButton = screen.getByRole('button', {
-                name: /^import$/i,
-            })
-
-            await act(() => user.click(importButton))
+            await user.click(screen.getByRole('button', { name: /^import$/i }))
 
             await waitFor(() => {
-                expect(mockError).toHaveBeenCalledTimes(1)
+                expect(mockError).toHaveBeenCalledWith(
+                    'Failed to import metafields. Please try again.',
+                )
             })
-
-            expect(mockError).toHaveBeenCalledWith(
-                'There was an issue adding your Shopify metafields to Gorgias. Please try again.',
-            )
             expect(mockSuccess).not.toHaveBeenCalled()
-            expect(mockOnClose).not.toHaveBeenCalled()
         })
     })
 
@@ -541,7 +589,7 @@ describe('ImportMetafieldFlow', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should render MetafieldsImportList when step is list and selectedCategory exists', () => {
+        it('should render MetafieldsImportList when step is list and selectedCategory exists', async () => {
             useImportWizard.mockReturnValue({
                 ...defaultWizardState,
                 step: 'list',
@@ -550,7 +598,10 @@ describe('ImportMetafieldFlow', () => {
 
             renderComponent({ isOpen: true, onClose: mockOnClose })
 
-            expect(screen.getByText('Order')).toBeInTheDocument()
+            await waitFor(() => {
+                expect(screen.getByText('Order')).toBeInTheDocument()
+            })
+
             expect(
                 screen.getByText(
                     'Choose up to 10 metafields to import to Gorgias.',

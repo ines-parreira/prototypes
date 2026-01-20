@@ -1,14 +1,11 @@
-import { useParams } from 'react-router-dom'
-
+import { useIntegrationId } from './useMetafieldDefinitionMutation'
 import { useMetafieldDefinitions } from './useMetafieldDefinitions'
 
-export const METAFIELDS_QUERY_KEY = ['metafields']
-
 export function useMetafields() {
-    const { id } = useParams<{ id: string }>()
+    const integrationId = useIntegrationId()
 
     return useMetafieldDefinitions({
-        integrationId: Number(id),
+        integrationId,
         pinned: true,
     })
 }

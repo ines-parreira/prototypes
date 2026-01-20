@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-
-import type { Field } from '../MetafieldsTable/types'
-import { METAFIELDS_QUERY_KEY } from './useMetafields'
+import {
+    useIntegrationId,
+    useMetafieldDefinitionMutation,
+} from './useMetafieldDefinitionMutation'
 
 type ToggleMetafieldVisibilityParams = {
     id: string
@@ -9,31 +9,29 @@ type ToggleMetafieldVisibilityParams = {
 }
 
 export function useToggleMetafieldVisibility() {
-    const queryClient = useQueryClient()
+    const integrationId = useIntegrationId()
 
-    return useMutation({
-        mutationFn: async (params: ToggleMetafieldVisibilityParams) => {
-            return params
+    const mutation = useMetafieldDefinitionMutation({
+        optimisticUpdate: (params, previousData) => {
+            if (!previousData) return previousData
+            return previousData.map((definition) =>
+                definition.id === params.id
+                    ? { ...definition, isVisible: params.data.isVisible }
+                    : definition,
+            )
         },
-        onMutate: async (params) => {
-            await queryClient.cancelQueries({
-                queryKey: METAFIELDS_QUERY_KEY,
-            })
-
-            const previousData =
-                queryClient.getQueryData<Field[]>(METAFIELDS_QUERY_KEY)
-
-            queryClient.setQueryData<Field[]>(METAFIELDS_QUERY_KEY, (old) => {
-                if (!old) return old
-                return old.map((field) =>
-                    field.id === params.id
-                        ? { ...field, isVisible: params.isVisible }
-                        : field,
-                )
-            })
-
-            return { previousData }
-        },
-        //TODO: reset ui on error
     })
+
+    const buildMutationParams = (params: ToggleMetafieldVisibilityParams) => ({
+        integrationId,
+        id: params.id,
+        data: { isPinned: true, isVisible: params.isVisible },
+    })
+
+    return {
+        ...mutation,
+        mutate: (params: ToggleMetafieldVisibilityParams) => {
+            mutation.mutate(buildMutationParams(params))
+        },
+    }
 }
