@@ -1810,7 +1810,7 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
     },
   },
   "currentCompany": {
-    "fixed_gmv_band": "tier_3",
+    "fixed_gmv_band": "band_1",
   },
   "currentUser": Immutable.Map {
     "lastname": "Plugaru",

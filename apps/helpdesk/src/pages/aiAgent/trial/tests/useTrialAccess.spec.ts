@@ -174,7 +174,7 @@ describe('useTrialAccess', () => {
             return false
         }
         if (selector === getCompanyFixedGmvBandTier) {
-            return CompanyTier.Tier1 // SMB 1
+            return CompanyTier.Band1 // SMB
         }
         return undefined
     }

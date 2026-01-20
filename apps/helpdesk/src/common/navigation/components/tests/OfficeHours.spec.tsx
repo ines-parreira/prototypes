@@ -128,9 +128,6 @@ describe('OfficeHours', () => {
     describe('GMV Band tier logic', () => {
         describe('eligible tiers should render `Book office hours` button', () => {
             const eligibleTiers = [
-                { tier: CompanyTier.Tier2, description: 'SMB 2' },
-                { tier: CompanyTier.Tier3, description: 'Commercial 1' },
-                { tier: CompanyTier.Tier4, description: 'Commercial 2' },
                 { tier: CompanyTier.Band1, description: 'SMB' },
                 { tier: CompanyTier.Band2, description: 'Commercial' },
             ]
@@ -153,9 +150,6 @@ describe('OfficeHours', () => {
 
         describe('ineligible tiers should not render `Book office hours` button', () => {
             const ineligibleTiers = [
-                { tier: CompanyTier.Tier1, description: 'SMB 1' },
-                { tier: CompanyTier.Tier5, description: 'Enterprise 1' },
-                { tier: CompanyTier.Tier6, description: 'Enterprise 2' },
                 { tier: CompanyTier.Band3, description: 'Enterprise' },
                 { tier: CompanyTier.Band4, description: 'Named Accounts' },
             ]

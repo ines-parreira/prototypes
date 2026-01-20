@@ -38,7 +38,7 @@ export const initialState: GorgiasInitialState = {
     },
     currentAccount: account,
     currentCompany: {
-        fixed_gmv_band: CompanyTier.Tier3,
+        fixed_gmv_band: CompanyTier.Band1,
     },
     currentUser: user,
     integrations: {

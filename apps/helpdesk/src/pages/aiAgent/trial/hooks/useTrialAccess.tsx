@@ -32,26 +32,14 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import { isAdmin, isTeamLead } from 'utils'
 
 export const gmvBandsAllowedToSelfServe = [
-    // NEW
     CompanyTier.Band1, // SMB
     CompanyTier.Band2, // Commercial
-    // DEPRECATED
-    CompanyTier.Tier1, // SMB 1
-    CompanyTier.Tier2, // SMB 2
-    CompanyTier.Tier3, // Commercial 1
-    CompanyTier.Tier4, // Commerical 2
 ]
 
 export const gmvBandsAllowedToBookDemo = [
-    // NEW
     CompanyTier.Band2, // Commercial
     CompanyTier.Band3, // Enterprise
     CompanyTier.Band4, // Named Accounts
-    // DEPRECATED
-    CompanyTier.Tier3, // Commercial 1
-    CompanyTier.Tier4, // Commercial 2
-    CompanyTier.Tier5, // Enterprise 1
-    CompanyTier.Tier6, // Enterprise 2
 ]
 
 /**
@@ -144,7 +132,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const accountDomain = currentAccount.get('domain')
     const onboardingState = useAiAgentOnboardingState(currentStoreName ?? '')
     const gmvBandTier =
-        useAppSelector(getCompanyFixedGmvBandTier) ?? CompanyTier.Tier1 // Default to SMB 1
+        useAppSelector(getCompanyFixedGmvBandTier) ?? CompanyTier.Band1 // Default to SMB
 
     const isTrialingSubscription = useAppSelector(isTrialing)
 

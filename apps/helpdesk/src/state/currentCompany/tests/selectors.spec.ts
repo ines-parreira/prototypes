@@ -8,7 +8,7 @@ import { CompanyTier } from '../types'
 
 describe('currentCompany selectors', () => {
     const mockCompanyData = {
-        fixed_gmv_band: CompanyTier.Tier3,
+        fixed_gmv_band: CompanyTier.Band1,
     }
 
     const defaultState = {
@@ -38,7 +38,7 @@ describe('currentCompany selectors', () => {
     describe('getCompanyFixedGmvBandTier', () => {
         it('should return the fixed_gmv_band value', () => {
             expect(getCompanyFixedGmvBandTier(defaultState)).toBe(
-                CompanyTier.Tier3,
+                CompanyTier.Band1,
             )
         })
 
@@ -54,27 +54,7 @@ describe('currentCompany selectors', () => {
             expect(getCompanyFixedGmvBandTier(emptyState)).toBeNull()
         })
 
-        it('should handle different tier values (deprecated)', () => {
-            const tierValues = [
-                CompanyTier.Tier1,
-                CompanyTier.Tier2,
-                CompanyTier.Tier3,
-                CompanyTier.Tier4,
-                CompanyTier.Tier5,
-                CompanyTier.Tier6,
-            ]
-
-            tierValues.forEach((tier) => {
-                const state = {
-                    currentCompany: {
-                        fixed_gmv_band: tier,
-                    },
-                } as Partial<RootState> as RootState
-                expect(getCompanyFixedGmvBandTier(state)).toBe(tier)
-            })
-        })
-
-        it('should handle different band values (new)', () => {
+        it('should handle different band values', () => {
             const bandValues = [
                 CompanyTier.Band1,
                 CompanyTier.Band2,
