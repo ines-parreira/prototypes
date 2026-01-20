@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { SidePanel } from '@gorgias/axiom'
+import { Box, SidePanel } from '@gorgias/axiom'
 import type { Customer, TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { InfobarCustomerFields } from '../InfobarCustomerFields/InfobarCustomerFields'
@@ -56,7 +56,13 @@ export function InfobarTicketCustomerDetails({
     )
 
     return (
-        <div className={css.container}>
+        <Box
+            className={css.container}
+            flexDirection="column"
+            gap="xs"
+            padding="md"
+            paddingBottom="sm"
+        >
             <InfobarTicketCustomerHeader
                 customer={ticketCustomer}
                 onOpenMergePanel={() => {
@@ -96,6 +102,6 @@ export function InfobarTicketCustomerDetails({
                     onSwitchCustomer={handleSetCustomer}
                 />
             </SidePanel>
-        </div>
+        </Box>
     )
 }

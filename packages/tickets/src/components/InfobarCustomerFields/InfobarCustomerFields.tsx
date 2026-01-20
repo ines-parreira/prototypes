@@ -1,4 +1,5 @@
 import {
+    Box,
     OverflowList,
     OverflowListShowLess,
     OverflowListShowMore,
@@ -28,19 +29,23 @@ export function InfobarCustomerFields({
             className={css.overflowList}
             nonExpandedLineCount={7}
             key={customer.id}
+            gap={1}
         >
             <InfobarCustomCustomerFields customer={customer} />
             <InfobarBaseCustomerFields
                 customer={customer}
                 ticketId={ticketId}
             />
-
-            <OverflowListShowMore leadingSlot="arrow-chevron-down">
-                Show more
-            </OverflowListShowMore>
-            <OverflowListShowLess leadingSlot="arrow-chevron-up">
-                Show less
-            </OverflowListShowLess>
+            <Box paddingTop="xxs" className={css.overflowListToggle}>
+                <OverflowListShowMore leadingSlot="arrow-chevron-down">
+                    Show more
+                </OverflowListShowMore>
+            </Box>
+            <Box paddingTop="xxs" className={css.overflowListToggle}>
+                <OverflowListShowLess leadingSlot="arrow-chevron-up">
+                    Show less
+                </OverflowListShowLess>
+            </Box>
         </OverflowList>
     )
 }

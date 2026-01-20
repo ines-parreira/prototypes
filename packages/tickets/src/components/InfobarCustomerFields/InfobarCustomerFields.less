@@ -1,10 +1,14 @@
 :local {
     .overflowList {
         width: 100%;
+        // remove default margin and padding trick from axiom,
+        // as it prevents the fields from expanding
+        margin: 0;
+        padding: 0;
     }
 
     .overflowListItem {
-        width: 100%;
+        width: calc(100%);
     }
 
     .infoFieldRow {
@@ -25,5 +29,9 @@
 
     .isEditable {
         cursor: pointer;
+    }
+
+    .overflowListToggle {
+        margin-left: calc(-1 * var(--spacing-xs));
     }
 }

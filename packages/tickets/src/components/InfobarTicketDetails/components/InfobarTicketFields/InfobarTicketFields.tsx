@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import {
+    Box,
     OverflowList,
     OverflowListShowLess,
     OverflowListShowMore,
@@ -45,6 +46,7 @@ export function InfobarTicketFields({
             isExpanded={isExpanded}
             onExpandedChange={setIsExpanded}
             key={`ticket-fields-overflow-list-${defaultLineCount}-${isExpanded}`}
+            gap={1}
         >
             {ticketFields.map((ticketField) => (
                 <InfobarTicketField
@@ -55,12 +57,16 @@ export function InfobarTicketFields({
                     onFieldBlur={onFieldBlur}
                 />
             ))}
-            <OverflowListShowMore leadingSlot="arrow-chevron-down">
-                Show more
-            </OverflowListShowMore>
-            <OverflowListShowLess leadingSlot="arrow-chevron-up">
-                Show less
-            </OverflowListShowLess>
+            <Box paddingTop="xxs" className={css.overflowListToggle}>
+                <OverflowListShowMore leadingSlot="arrow-chevron-down">
+                    Show more
+                </OverflowListShowMore>
+            </Box>
+            <Box paddingTop="xxs" className={css.overflowListToggle}>
+                <OverflowListShowLess leadingSlot="arrow-chevron-up">
+                    Show less
+                </OverflowListShowLess>
+            </Box>
         </OverflowList>
     )
 }
