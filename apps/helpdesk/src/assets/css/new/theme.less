@@ -229,21 +229,104 @@
 
     // btn
     .btn {
+        color: var(--content-neutral-default);
+
         &:hover {
             color: var(--content-neutral-default);
+        }
+
+        &:focus {
+            box-shadow: none !important;
         }
     }
 
     .btn-primary {
-        .button-variant(
-            var(--content-inverted-default); var(--surface-inverted-default); var(--surface-inverted-default); var(--inverted-hover); var(--surface-inverted-default); var(--surface-inverted-default); var(--surface-inverted-default)
-        );
+        background-color: var(--surface-inverted-default);
+        border-color: var(--surface-inverted-default);
+        color: var(--content-inverted-default) !important;
+        border-radius: var(--spacing-xs);
+        height: 32px;
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            background-color: transparent;
+            transition: background-color 0.2s linear;
+        }
+
+        &:hover {
+            background-color: var(--surface-inverted-default) !important;
+            border-color: var(--surface-inverted-default) !important;
+        }
+
+        &:hover::before {
+            background-color: var(--inverted-hover) !important;
+        }
+
+        &:focus {
+            box-shadow: none !important;
+        }
+
+        &:focus::before {
+            background-color: var(--inverted-hover) !important;
+        }
+
+        &:active {
+            background-color: var(--surface-inverted-default) !important;
+            border-color: var(--surface-inverted-default) !important;
+        }
+
+        &:active::before {
+            background-color: var(--inverted-hover) !important;
+            box-shadow: var(--effects-inner-shadow) !important;
+        }
+
+        &.active {
+            background-color: var(--surface-inverted-default) !important;
+            border-color: var(--surface-inverted-default) !important;
+        }
+
+        &.active::before {
+            background-color: var(--inverted-hover) !important;
+            box-shadow: var(--effects-inner-shadow) !important;
+        }
+    }
+
+    .show > .btn-primary.dropdown-toggle {
+        background-color: var(--surface-inverted-default) !important;
+        border-color: var(--surface-inverted-default) !important;
+
+        &::before {
+            background-color: var(--inverted-hover) !important;
+            box-shadow: var(--effects-inner-shadow) !important;
+        }
     }
 
     .btn-secondary {
-        .button-variant(
-            var(--content-neutral-default); var(--hover-default); var(--border-neutral-default); var(--hover-default); var(--border-neutral-default); var(--hover-default); var(--content-neutral-secondary)
-        ) !important;
+        background-color: var(--surface-button-secondary);
+        border-color: var(--border-neutral-tertiary);
+        color: var(--content-neutral-default) !important;
+        border-radius: var(--spacing-xs);
+
+        &:hover,
+        &:focus {
+            background-color: var(--hover-default);
+            border-color: var(--border-neutral-tertiary);
+            color: var(--content-neutral-default) !important;
+        }
+
+        &:active {
+            background-color: var(--hover-default);
+            border-color: var(--border-neutral-secondary);
+            color: var(--content-neutral-default) !important;
+        }
     }
 
     .btn-success {
@@ -277,6 +360,10 @@
 
         &:hover {
             background: var(--elevation-neutral-default) !important;
+        }
+
+        &:focus {
+            box-shadow: none !important;
         }
     }
 

@@ -99,8 +99,10 @@
 
 .axiom :local {
     .card {
-        background-color: var(--elevation-neutral-default);
+        background-color: var(--elevation-neutral-mid);
         border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        box-shadow: var(--effects-shadow-container);
     }
 
     .featured {
@@ -109,7 +111,8 @@
 
     .interactive {
         &:hover {
-            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+            top: 0;
+            background-color: var(--hover-default);
         }
     }
 

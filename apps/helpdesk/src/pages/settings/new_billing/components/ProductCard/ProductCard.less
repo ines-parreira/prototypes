@@ -106,14 +106,19 @@
 
 .axiom :local {
     .container {
+        padding: var(--spacing-md);
+        border-radius: var(--spacing-sm);
         border: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-mid);
+        box-shadow: var(--effects-shadow-container);
+        color: var(--content-neutral-default);
     }
 
     .title {
         color: var(--content-neutral-default);
 
         i {
-            background-color: var(--elevation-neutral-mid);
+            background-color: var(--elevation-neutral-default);
             color: var(--content-neutral-tertiary);
 
             &.activeIcon {

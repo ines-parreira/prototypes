@@ -69,7 +69,7 @@ export class AddMemberContainer extends Component<Props, State> {
         return (
             <Dropdown isOpen={this.state.isOpen} toggle={this._toggle}>
                 <DropdownToggle
-                    color="success"
+                    color="primary"
                     type="button"
                     className={classnames({ 'btn-loading': isLoading })}
                     disabled={isLoading}

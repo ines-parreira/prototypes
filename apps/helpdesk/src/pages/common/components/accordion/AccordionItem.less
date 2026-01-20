@@ -17,8 +17,10 @@
 
 .axiom :local {
     .container {
+        border-radius: var(--spacing-sm);
         border: 1px solid var(--border-neutral-default);
-        background-color: var(--elevation-neutral-default);
+        background-color: var(--elevation-neutral-mid);
+        box-shadow: var(--effects-shadow-container);
 
         &:not(.isDisabled):not(.isExpanded):hover {
             outline: 1px solid var(--border-neutral-default);
@@ -27,6 +29,11 @@
         &.isExpanded {
             border-color: var(--content-accent-default);
             outline: 1px solid var(--content-accent-default);
+        }
+
+        // Nested AccordionItems get elevation high
+        .container {
+            background-color: var(--elevation-neutral-high);
         }
     }
 }

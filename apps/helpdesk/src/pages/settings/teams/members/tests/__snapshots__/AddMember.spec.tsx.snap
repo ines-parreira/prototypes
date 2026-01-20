@@ -7,7 +7,7 @@ exports[`<AddMember /> should render 1`] = `
   <button
     aria-expanded="false"
     aria-haspopup="true"
-    class="dropdown-toggle btn btn-success"
+    class="dropdown-toggle btn btn-primary"
     type="button"
   >
     Add team member

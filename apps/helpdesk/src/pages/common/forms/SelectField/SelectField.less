@@ -183,9 +183,15 @@
     background-color: transparent;
     color: var(--content-neutral-default);
 
-    &:hover:not(.disabled) {
+    &:hover:not(.disabled):not(:focus) {
         border: 1px solid var(--border-neutral-default);
         background-color: var(--hover-default);
+    }
+
+    &:focus {
+        border: 1px solid var(--border-neutral-secondary);
+        box-shadow: none;
+        outline: none;
     }
 
     &.disabled {

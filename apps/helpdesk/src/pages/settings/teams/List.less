@@ -82,9 +82,16 @@
 }
 
 .axiom :local .card {
+    padding: var(--spacing-md);
+    border-radius: var(--spacing-sm);
+    border: 1px solid var(--border-neutral-default);
+    background-color: var(--elevation-neutral-mid);
+    box-shadow: var(--effects-shadow-container);
     color: var(--content-neutral-default);
 
     &:hover {
+        top: 0;
+        box-shadow: var(--effects-shadow-container);
         color: var(--content-neutral-default);
     }
 

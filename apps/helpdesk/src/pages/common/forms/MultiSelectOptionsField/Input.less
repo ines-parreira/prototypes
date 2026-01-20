@@ -17,8 +17,20 @@
 }
 
 .axiom :local .input {
+    padding: 0 var(--spacing-xxxs);
+    color: var(--content-neutral-default);
+    background-color: transparent;
+
+    &::placeholder {
+        color: var(--content-neutral-tertiary);
+    }
+
+    &.compact {
+        padding: 0 var(--spacing-xxxs);
+    }
+
     &.disabled {
-        background-color: var(--elevation-neutral-mid);
+        background-color: transparent;
         color: var(--content-neutral-secondary);
     }
 }

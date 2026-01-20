@@ -96,5 +96,27 @@
             opacity: 0.5;
             background-color: var(--surface-neutral-primary);
         }
+
+        // Remove border radius from all children by default
+        > * {
+            border-radius: 0 !important;
+        }
+
+        // First child keeps left border radius
+        > *:first-child {
+            border-top-left-radius: var(--spacing-xs) !important;
+            border-bottom-left-radius: var(--spacing-xs) !important;
+        }
+
+        // Last child keeps right border radius
+        > *:last-child {
+            border-top-right-radius: var(--spacing-xs) !important;
+            border-bottom-right-radius: var(--spacing-xs) !important;
+        }
+
+        // If only one child, keep all border radius
+        > *:only-child {
+            border-radius: var(--spacing-xs) !important;
+        }
     }
 }

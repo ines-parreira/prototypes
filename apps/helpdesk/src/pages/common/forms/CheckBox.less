@@ -80,31 +80,113 @@
 
 .axiom :local {
     .input[type='checkbox'] {
-        border: 1px solid var(--border-neutral-default);
-        background-color: var(--elevation-neutral-default);
+        border: none;
+        border-radius: var(--spacing-xxxs);
+        background-color: var(--surface-button-secondary);
+        box-shadow:
+            inset 0 0 0 1px var(--border-neutral-tertiary),
+            var(--effects-inner-shadow);
+        transition: all 150ms ease-out;
+        position: relative;
 
         &::before {
-            box-shadow: inset 1em 1em var(--elevation-neutral-default);
+            content: '';
+            display: block;
+            width: 16px;
+            height: 16px;
+            border-radius: var(--spacing-xxxs);
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: all 150ms ease-out;
+            box-shadow: none;
+        }
+
+        &::after {
+            content: '';
+            display: block;
+            width: 16px;
+            height: 16px;
+            border-radius: var(--spacing-xxxs);
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: var(--content-inverted-default);
+            clip-path: path(
+                'M 11.025 4.96 C 11.406 4.594 12.039 4.579 12.439 4.928 C 12.839 5.277 12.855 5.858 12.474 6.225 L 7.474 11.04 C 7.286 11.222 7.024 11.325 6.75 11.325 C 6.476 11.325 6.215 11.222 6.026 11.04 L 3.526 8.633 C 3.145 8.266 3.161 7.686 3.56 7.337 C 3.96 6.987 4.593 7.001 4.974 7.368 L 6.75 9.078 L 11.025 4.96 Z'
+            );
+            opacity: 0;
+            transform: scale(1);
+            transition: all 150ms ease-out;
+        }
+
+        &:hover:not(:disabled) {
+            box-shadow: inset 0 0 0 1px var(--border-neutral-secondary);
+
+            &::before {
+                background-color: var(--hover-default);
+                opacity: 1;
+            }
+        }
+
+        &:active:not(:disabled) {
+            background-color: var(--pressed-default);
+            box-shadow:
+                inset 0 0 0 1px var(--border-neutral-secondary),
+                var(--effects-inner-shadow);
         }
 
         &:indeterminate,
         &:checked {
-            background-color: var(--surface-accent-default);
-            border-color: var(--border-accent-default);
+            background-color: var(--surface-inverted-default);
+            box-shadow: var(--effects-inner-light);
+
+            &::before {
+                transform: scale(1);
+            }
+
+            &::after {
+                opacity: 1;
+            }
+
+            &:hover:not(:disabled) {
+                &::before {
+                    background-color: var(--inverted-hover);
+                    opacity: 1;
+                }
+            }
+
+            &:active:not(:disabled) {
+                background-color: var(--pressed-default);
+                box-shadow:
+                    inset 0 0 0 1px var(--border-neutral-secondary),
+                    var(--effects-inner-shadow);
+
+                &::after {
+                    opacity: 0;
+                }
+            }
 
             &:disabled {
-                background-color: var(--surface-neutral-tertiary);
+                opacity: 0.5;
             }
         }
 
+        &:indeterminate::after {
+            clip-path: path(
+                'M 12.73 7 C 13.282 7 13.73 7.448 13.73 8 C 13.73 8.552 13.282 9 12.73 9 L 3.27 9 C 2.718 9 2.27 8.552 2.27 8 C 2.27 7.448 2.718 7 3.27 7 L 12.73 7 Z'
+            );
+        }
+
         &:disabled {
-            background-color: var(--elevation-neutral-default);
-            border-color: var(--border-neutral-default);
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         &[readonly]:checked,
         &[readonly]:indeterminate {
-            background: var(--surface-accent-default) !important;
+            background: var(--surface-inverted-default) !important;
         }
     }
 }
