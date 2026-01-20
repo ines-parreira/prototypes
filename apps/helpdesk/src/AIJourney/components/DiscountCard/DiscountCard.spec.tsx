@@ -7,8 +7,8 @@ import { DiscountCard } from './DiscountCard'
 
 const renderDiscountCard = (props: DiscountCardProps = {}) => {
     return renderWithRouter(<DiscountCard {...props} />, {
-        path: '/app/ai-journey/:shopName/performance',
-        route: '/app/ai-journey/test-store/performance',
+        path: '/app/ai-journey/:shopName/flows',
+        route: '/app/ai-journey/test-store/flows',
     })
 }
 

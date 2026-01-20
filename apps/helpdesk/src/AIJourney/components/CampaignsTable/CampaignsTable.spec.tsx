@@ -111,7 +111,7 @@ describe('CampaignsTable', () => {
 
         useParamsMock.mockReturnValue({ shopName: 'test-shop' })
         useLocationMock.mockReturnValue({
-            pathname: '/app/ai-journey/test-shop/performance',
+            pathname: '/app/ai-journey/test-shop/flows',
         } as Location)
 
         jest.clearAllMocks()

@@ -97,12 +97,12 @@ export const AiJourneyNavbar = () => {
                         as={NavLink}
                         to={
                             hasJourney
-                                ? `/app/ai-journey/${shopName}/performance`
+                                ? `/app/ai-journey/${shopName}/flows`
                                 : `/app/ai-journey/${shopName}`
                         }
                         exact
                     >
-                        {hasJourney ? 'Overview' : 'Setup'}
+                        {hasJourney ? 'Flows' : 'Setup'}
                     </Navigation.SectionItem>
                     {shouldAccessCampaigns && (
                         <Navigation.SectionItem

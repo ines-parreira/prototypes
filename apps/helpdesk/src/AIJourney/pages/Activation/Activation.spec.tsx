@@ -241,7 +241,7 @@ describe('<Activation />', () => {
             () => {
                 expect(mockHistoryPush).toHaveBeenCalledTimes(1)
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/ai-journey/shopify-store/performance',
+                    '/app/ai-journey/shopify-store/flows',
                 )
             },
             { timeout: 1000 },

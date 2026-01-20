@@ -93,7 +93,7 @@ export const Activation = () => {
                 if (journeyData?.type === JOURNEY_TYPES.CAMPAIGN) {
                     history.push(`/app/ai-journey/${shopName}/campaigns`)
                 } else {
-                    history.push(`/app/ai-journey/${shopName}/performance`)
+                    history.push(`/app/ai-journey/${shopName}/flows`)
                 }
             }, 700)
         } catch (error) {

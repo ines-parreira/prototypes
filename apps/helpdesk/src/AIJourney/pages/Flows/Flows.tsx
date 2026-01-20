@@ -25,7 +25,7 @@ import { useGetNamespacedShopNameForStore } from 'domains/reporting/pages/conver
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 
-import css from './Performance.less'
+import css from './Flows.less'
 
 const digestContent = (
     revenueVariation: string,
@@ -85,7 +85,7 @@ const defaultAvailableJourneys: AvailableJourney[] = [
 
 const FILTERS = ['All', 'Active', 'Coming soon']
 
-export const Performance = () => {
+export const Flows = () => {
     const [filter, setFilter] = useState('All')
 
     const isAiJourneyWinBackEnabled = useFlag(
@@ -255,7 +255,7 @@ export const Performance = () => {
     return (
         <div className={css.container}>
             <DigestCard
-                badgeContent="AI Journey Performance"
+                badgeContent="AI Journey Flows"
                 content={digestContent(
                     metricsContent.revenueVariationContent,
                     metricsContent.conversionVariationContent,

@@ -103,7 +103,7 @@ export const LandingPage = () => {
 
     useEffect(() => {
         if (journeys?.length) {
-            history.push(`/app/ai-journey/${shopName}/performance`)
+            history.push(`/app/ai-journey/${shopName}/flows`)
         }
     }, [journeys, history, shopName])
 

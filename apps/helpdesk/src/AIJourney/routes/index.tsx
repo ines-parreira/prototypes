@@ -7,8 +7,8 @@ import { AI_JOURNEY_ONBOARDING_STEPS } from 'AIJourney/constants/journeyTypes'
 import {
     AiJourneyOnboarding,
     Analytics,
+    Flows,
     LandingPage,
-    Performance,
     Playground,
 } from 'AIJourney/pages'
 import { Campaigns } from 'AIJourney/pages/Campaigns/Campaigns'
@@ -76,9 +76,9 @@ function AiJourneyBaseRoutes() {
                                     ),
                             )}
                             <Route
-                                path={`${path}/:shopName/performance`}
+                                path={`${path}/:shopName/flows`}
                                 exact
-                                render={() => <Performance />}
+                                render={() => <Flows />}
                             />
                             <Route
                                 path={`${path}/:shopName/playground`}

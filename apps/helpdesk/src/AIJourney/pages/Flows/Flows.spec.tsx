@@ -22,7 +22,7 @@ import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/sta
 import { shopifyIntegration } from 'fixtures/integrations'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
-import { Performance } from './Performance'
+import { Flows } from './Flows'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -90,7 +90,7 @@ const useKpisPerJourneyMock = assumeMock(useKpisPerJourney)
 jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
-describe('<Performance />', () => {
+describe('<Flows />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -200,7 +200,7 @@ describe('<Performance />', () => {
         })
     })
 
-    it("should render AI Journey performance page with complete Digest message when discount is disabled and doesn't have follow-ups", () => {
+    it("should render AI Journey flows page with complete Digest message when discount is disabled and doesn't have follow-ups", () => {
         mockUseJourneyData.mockImplementation(() => ({
             data: {
                 configuration: {
@@ -220,14 +220,14 @@ describe('<Performance />', () => {
                 <Provider store={mockStore({})}>
                     <IntegrationsProvider>
                         <JourneyProvider>
-                            <Performance />
+                            <Flows />
                         </JourneyProvider>
                     </IntegrationsProvider>
                 </Provider>
             </QueryClientProvider>,
         )
 
-        expect(screen.getByText('AI Journey Performance')).toBeInTheDocument()
+        expect(screen.getByText('AI Journey Flows')).toBeInTheDocument()
     })
 
     it('missing integration should not break the page', () => {
@@ -242,14 +242,14 @@ describe('<Performance />', () => {
                 <Provider store={mockStore({})}>
                     <IntegrationsProvider>
                         <JourneyProvider>
-                            <Performance />
+                            <Flows />
                         </JourneyProvider>
                     </IntegrationsProvider>
                 </Provider>
             </QueryClientProvider>,
         )
 
-        expect(screen.getByText('AI Journey Performance')).toBeInTheDocument()
+        expect(screen.getByText('AI Journey Flows')).toBeInTheDocument()
     })
 
     it('filters journeys correctly', async () => {
@@ -257,7 +257,7 @@ describe('<Performance />', () => {
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
                     <IntegrationsProvider>
-                        <Performance />
+                        <Flows />
                     </IntegrationsProvider>
                 </Provider>
             </QueryClientProvider>,
@@ -331,7 +331,7 @@ describe('<Performance />', () => {
                     <Provider store={mockStore({})}>
                         <IntegrationsProvider>
                             <JourneyProvider>
-                                <Performance />
+                                <Flows />
                             </JourneyProvider>
                         </IntegrationsProvider>
                     </Provider>
@@ -350,7 +350,7 @@ describe('<Performance />', () => {
                 <Provider store={mockStore({})}>
                     <IntegrationsProvider>
                         <JourneyProvider>
-                            <Performance />
+                            <Flows />
                         </JourneyProvider>
                     </IntegrationsProvider>
                 </Provider>
@@ -369,7 +369,7 @@ describe('<Performance />', () => {
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore({})}>
                     <IntegrationsProvider>
-                        <Performance />
+                        <Flows />
                     </IntegrationsProvider>
                 </Provider>
             </QueryClientProvider>,
