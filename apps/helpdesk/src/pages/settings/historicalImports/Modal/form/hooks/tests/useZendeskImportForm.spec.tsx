@@ -1,19 +1,32 @@
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
 
 import { useCreateIntegration } from '@gorgias/helpdesk-queries'
 
 import { IntegrationType } from 'models/integration/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useZendeskImportForm } from '../useZendeskImportForm'
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     useCreateIntegration: jest.fn(),
+    queryKeys: {
+        integrations: {
+            listIntegrations: jest.fn(() => ['integrations']),
+        },
+    },
 }))
 
 describe('useZendeskImportForm', () => {
     const mockCreateIntegration = jest.fn()
     const mockOnSuccess = jest.fn()
     const mockOnError = jest.fn()
+
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+        <QueryClientProvider client={mockQueryClient()}>
+            {children}
+        </QueryClientProvider>
+    )
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -24,11 +37,13 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should initialize with empty form state and isFormValid as false when form is empty', () => {
-        const { result } = renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        const { result } = renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         expect(result.current.formState.subdomain).toBe('')
@@ -38,11 +53,13 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should return isFormValid as true when all fields are filled', () => {
-        const { result } = renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        const { result } = renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         act(() => {
@@ -55,11 +72,13 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should call createIntegration with correct data on submit', () => {
-        const { result } = renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        const { result } = renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         act(() => {
@@ -91,11 +110,13 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should extract subdomain from full domain format', () => {
-        const { result } = renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        const { result } = renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         act(() => {
@@ -124,11 +145,13 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should extract subdomain from URL format', () => {
-        const { result } = renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        const { result } = renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         act(() => {
@@ -157,11 +180,13 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should include deactivated_datetime in integration data', () => {
-        const { result } = renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        const { result } = renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         act(() => {
@@ -182,11 +207,13 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should prevent default on form submit event', () => {
-        const { result } = renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        const { result } = renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         const mockEvent = {
@@ -212,11 +239,13 @@ describe('useZendeskImportForm', () => {
             },
         )
 
-        renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         expect(capturedOnSuccess).toBeDefined()
@@ -240,11 +269,13 @@ describe('useZendeskImportForm', () => {
             },
         )
 
-        renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         expect(capturedOnError).toBeDefined()
@@ -262,22 +293,26 @@ describe('useZendeskImportForm', () => {
             isLoading: true,
         })
 
-        const { result } = renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        const { result } = renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         expect(result.current.isLoading).toBe(true)
     })
 
     it('should set email error when invalid email is entered', () => {
-        const { result } = renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        const { result } = renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         act(() => {
@@ -290,11 +325,13 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should clear email error when valid email is entered', () => {
-        const { result } = renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        const { result } = renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         act(() => {
@@ -313,11 +350,13 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should not set email error when email is empty', () => {
-        const { result } = renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        const { result } = renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         act(() => {
@@ -328,11 +367,13 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should return isFormValid as false when email has error', () => {
-        const { result } = renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        const { result } = renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         act(() => {
@@ -345,11 +386,13 @@ describe('useZendeskImportForm', () => {
     })
 
     it('should not submit form when email is invalid', () => {
-        const { result } = renderHook(() =>
-            useZendeskImportForm({
-                onSuccess: mockOnSuccess,
-                onError: mockOnError,
-            }),
+        const { result } = renderHook(
+            () =>
+                useZendeskImportForm({
+                    onSuccess: mockOnSuccess,
+                    onError: mockOnError,
+                }),
+            { wrapper },
         )
 
         act(() => {

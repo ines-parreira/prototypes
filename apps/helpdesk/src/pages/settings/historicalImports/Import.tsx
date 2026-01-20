@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Key } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import { TabItem, TabList, TabPanel, Tabs } from '@gorgias/axiom'
 
@@ -18,21 +18,37 @@ const ZENDESK_IMPORT = 'zendesk-import'
 
 const ImportEmails = () => {
     const location = useLocation()
+    const history = useHistory()
     const queryParams = new URLSearchParams(location.search)
     const selectedEmail = queryParams.get('selectedEmail')
+    const activeTabParam = queryParams.get('activeTab')
     const historicalImportsEnabled = useFlag(FeatureFlagKey.HistoricalImports)
     const [isCreateImportModalOpen, setIsCreateImportModalOpen] =
         useState(!!selectedEmail)
     const [isZendeskImportModalOpen, setIsZendeskImportModalOpen] =
         useState(false)
 
-    const [activeTab, setActiveTab] = useState<Key>(EMAIL_IMPORT)
+    const getInitialTab = () => {
+        if (activeTabParam === 'import-zendesk') {
+            return ZENDESK_IMPORT
+        }
+        return EMAIL_IMPORT
+    }
+
+    const [activeTab, setActiveTab] = useState(getInitialTab())
 
     const { tableProps } = useTableImport()
 
+    useEffect(() => {
+        const params = new URLSearchParams(location.search)
+
+        const tabParam =
+            activeTab === EMAIL_IMPORT ? 'import-email' : 'import-zendesk'
+        params.set('activeTab', tabParam)
+        history.replace({ search: params.toString() })
+    }, [activeTab, history, location.search])
+
     const openImportModal = () => {
-        // get active TabItem
-        // based on it trigger the action
         if (activeTab === EMAIL_IMPORT) {
             setIsCreateImportModalOpen(true)
         } else {
@@ -49,8 +65,10 @@ const ImportEmails = () => {
 
             <>
                 <Tabs
-                    defaultSelectedItem="overview"
-                    onSelectionChange={(val: Key) => setActiveTab(val)}
+                    selectedItem={activeTab}
+                    onSelectionChange={(val: Key) =>
+                        setActiveTab(val as string)
+                    }
                 >
                     <TabList>
                         <TabItem id={EMAIL_IMPORT} label="Email Import" />
@@ -70,7 +88,9 @@ const ImportEmails = () => {
                     </TabPanel>
                     {historicalImportsEnabled && (
                         <TabPanel id={ZENDESK_IMPORT}>
-                            <ZendeskImportTable />
+                            <ZendeskImportTable
+                                onOpenCreateImportModal={openImportModal}
+                            />
                         </TabPanel>
                     )}
                 </Tabs>

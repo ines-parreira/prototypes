@@ -42,6 +42,8 @@ afterAll(() => {
     server.close()
 })
 
+const noop = () => ({})
+
 describe('ZendeskImportTable', () => {
     const renderComponent = () => {
         const queryClient = mockQueryClient()
@@ -51,7 +53,9 @@ describe('ZendeskImportTable', () => {
             </QueryClientProvider>
         )
 
-        return render(<ZendeskImportTable />, { wrapper })
+        return render(<ZendeskImportTable onOpenCreateImportModal={noop} />, {
+            wrapper,
+        })
     }
 
     describe('Empty State', () => {

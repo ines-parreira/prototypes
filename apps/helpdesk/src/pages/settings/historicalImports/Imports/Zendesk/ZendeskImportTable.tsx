@@ -10,16 +10,20 @@ import { useListIntegrations } from '@gorgias/helpdesk-queries'
 import { EmptyState } from '../EmptyState'
 import { columns } from './columns'
 
-export const ZendeskImportTable = () => {
+type ZendeskImportTableProps = {
+    onOpenCreateImportModal: () => void
+}
+export const ZendeskImportTable = ({
+    onOpenCreateImportModal,
+}: ZendeskImportTableProps) => {
     const { data: zendeskIntegrations, isLoading } = useListIntegrations(
         {
             type: 'zendesk',
         },
         {
             query: {
-                enabled: true,
-                staleTime: Infinity,
-                cacheTime: Infinity,
+                staleTime: 60 * 60 * 1000,
+                cacheTime: 60 * 60 * 1000,
                 select: (resp) => resp?.data?.data,
             },
         },
@@ -42,7 +46,7 @@ export const ZendeskImportTable = () => {
             <EmptyState
                 title="No Zendesk data imported"
                 description="Connect to Zendesk to migrate up to 2 years of data. Once the initial import is complete, your Zendesk data will automatically stay in sync with Gorgias."
-                ctaButtonCallback={() => {}}
+                ctaButtonCallback={onOpenCreateImportModal}
                 ctaButtonLabel="Import Zendesk"
             />
         )

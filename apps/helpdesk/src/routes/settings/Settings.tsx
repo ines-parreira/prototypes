@@ -41,6 +41,7 @@ import { Convert } from './Convert'
 import { CustomFields } from './CustomFields'
 import { HelpCenter } from './HelpCenter'
 import { renderAppSettings } from './helpers/settingsRenderer'
+import { HistoricalImportsRoute } from './HistoricalImportsRoute'
 import { ImportEmailsRoute } from './ImportEmailsRoute'
 import { ImportZendeskRoute } from './ImportZendeskRoute'
 import { Integrations } from './Integrations'
@@ -121,6 +122,9 @@ export function SettingRoutes() {
                 </Route>
                 <Route path={`${path}/import-email`}>
                     <ImportEmailsRoute />
+                </Route>
+                <Route path={`${path}/historical-imports`}>
+                    <HistoricalImportsRoute />
                 </Route>
                 <Route path={`${path}/integrations`}>
                     <Integrations />

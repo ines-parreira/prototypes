@@ -2,8 +2,10 @@ import { useState } from 'react'
 
 import {
     LegacyBadge as Badge,
+    Box,
     Icon,
     LegacyLoadingSpinner as LoadingSpinner,
+    Text,
 } from '@gorgias/axiom'
 import { useUpdateIntegration } from '@gorgias/helpdesk-queries'
 import type { HttpResponse, Integration } from '@gorgias/helpdesk-types'
@@ -50,19 +52,24 @@ export const SyncStatusBadge = ({ integrationItem }: SyncStatusBadgeProps) => {
             } as any,
         })
 
-    if (syncInProgress) {
-        return (
-            <Badge onClick={update} corner="square" type="dark">
-                <LoadingSpinner size="small" />
-                {!isUpdating && 'Synchronizing'}
-            </Badge>
-        )
-    }
     return (
         <Badge onClick={update} corner="square" type="dark">
-            <Icon name="media-pause-circle" />
-            {!isUpdating && 'Paused'}
-            {isUpdating && <LoadingSpinner size="small" />}
+            {syncInProgress || isUpdating ? (
+                <>
+                    <LoadingSpinner size="small" />
+                    <Text size="sm">Synchronizing</Text>
+                </>
+            ) : (
+                <Box
+                    alignItems="center"
+                    justifyContent="center"
+                    width="100%"
+                    gap="xs"
+                >
+                    <Icon name="media-pause-circle" size="sm" />
+                    <Text size="sm">Paused</Text>
+                </Box>
+            )}
         </Badge>
     )
 }

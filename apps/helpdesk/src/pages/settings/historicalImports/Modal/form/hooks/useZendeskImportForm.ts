@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react'
 
+import { useQueryClient } from '@tanstack/react-query'
+
 import type { CreateIntegrationBody } from '@gorgias/helpdesk-queries'
-import { useCreateIntegration } from '@gorgias/helpdesk-queries'
+import { queryKeys, useCreateIntegration } from '@gorgias/helpdesk-queries'
 
 import { IntegrationType } from 'models/integration/types'
 import { subdomain as extractSubdomain, isEmail } from 'utils'
@@ -21,11 +23,19 @@ export const useZendeskImportForm = ({
     const [loginEmail, setLoginEmail] = useState('')
     const [apiKey, setApiKey] = useState('')
     const [emailError, setEmailError] = useState<string>('')
+    const queryClient = useQueryClient()
 
     const { mutate: createIntegration, isLoading } = useCreateIntegration({
         mutation: {
             onSuccess,
             onError,
+            onSettled: () => {
+                queryClient.invalidateQueries({
+                    queryKey: queryKeys.integrations.listIntegrations({
+                        type: 'zendesk',
+                    }),
+                })
+            },
         },
     })
 

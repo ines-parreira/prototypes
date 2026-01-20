@@ -10,7 +10,7 @@ export type RoleRestrictionConfig = {
 export const roleRestrictionConfigs: Record<
     PageSection,
     RoleRestrictionConfig
-> = {
+> = Object.freeze({
     // TODO(@Irinel) remove this when new billing is fully released
     [PageSection.NewBilling]: { pageHeader: SectionPageHeader.NewBilling },
     [PageSection.Access]: { pageHeader: SectionPageHeader.Access },
@@ -33,6 +33,9 @@ export const roleRestrictionConfigs: Record<
         pageHeader: SectionPageHeader.CustomerFields,
     },
     [PageSection.HelpCenter]: { pageHeader: SectionPageHeader.HelpCenter },
+    [PageSection.HistoricalImports]: {
+        pageHeader: SectionPageHeader.HistoricalImports,
+    },
     [PageSection.ImportZendesk]: {
         pageHeader: SectionPageHeader.ImportZendesk,
     },
@@ -76,4 +79,4 @@ export const roleRestrictionConfigs: Record<
         pageHeader: SectionPageHeader.TwilioSubaccountStatus,
     },
     [PageSection.Users]: { pageHeader: SectionPageHeader.Users },
-}
+})

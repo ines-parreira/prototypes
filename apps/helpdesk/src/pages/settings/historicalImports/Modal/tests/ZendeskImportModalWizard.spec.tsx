@@ -1,9 +1,11 @@
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useCreateIntegration } from '@gorgias/helpdesk-queries'
 
 import { useNotify } from 'hooks/useNotify'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { ZendeskImportModalWizard } from '../ZendeskImportModalWizard'
 
@@ -32,6 +34,15 @@ describe('ZendeskImportModalWizard', () => {
     const mockNotifySuccess = jest.fn()
     const mockNotifyError = jest.fn()
 
+    const renderComponent = () => {
+        const queryClient = mockQueryClient()
+        return render(
+            <QueryClientProvider client={queryClient}>
+                <ZendeskImportModalWizard onClose={mockOnClose} />
+            </QueryClientProvider>,
+        )
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
         ;(useCreateIntegration as jest.Mock).mockReturnValue({
@@ -45,13 +56,13 @@ describe('ZendeskImportModalWizard', () => {
     })
 
     it('should render the modal with correct title', () => {
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         expect(screen.getByText('Import Zendesk data')).toBeInTheDocument()
     })
 
     it('should render description text', () => {
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         expect(
             screen.getByText(
@@ -61,7 +72,7 @@ describe('ZendeskImportModalWizard', () => {
     })
 
     it('should render all form fields', () => {
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         expect(
             screen.getByRole('textbox', { name: /zendesk subdomain/i }),
@@ -75,7 +86,7 @@ describe('ZendeskImportModalWizard', () => {
     })
 
     it('should render Cancel and Import buttons', () => {
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         expect(
             screen.getByRole('button', { name: /cancel/i }),
@@ -87,7 +98,7 @@ describe('ZendeskImportModalWizard', () => {
 
     it('should call onClose when Cancel button is clicked', async () => {
         const user = userEvent.setup()
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         const cancelButton = screen.getByRole('button', { name: /cancel/i })
 
@@ -97,7 +108,7 @@ describe('ZendeskImportModalWizard', () => {
     })
 
     it('should disable Import button when form is empty', () => {
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         const importButton = screen.getByRole('button', { name: /import/i })
 
@@ -106,7 +117,7 @@ describe('ZendeskImportModalWizard', () => {
 
     it('should enable Import button when all fields are filled with valid data', async () => {
         const user = userEvent.setup()
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         await act(async () => {
             await user.type(
@@ -131,7 +142,7 @@ describe('ZendeskImportModalWizard', () => {
     })
 
     it('should not show error banner initially', () => {
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         expect(
             screen.queryByText('There was an error during import creation.'),
@@ -150,7 +161,7 @@ describe('ZendeskImportModalWizard', () => {
             },
         )
 
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         act(() => {
             capturedOnError!()
@@ -177,7 +188,7 @@ describe('ZendeskImportModalWizard', () => {
             },
         )
 
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         act(() => {
             capturedOnError!()
@@ -208,7 +219,7 @@ describe('ZendeskImportModalWizard', () => {
             },
         )
 
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         act(() => {
             capturedOnSuccess!()
@@ -223,7 +234,7 @@ describe('ZendeskImportModalWizard', () => {
             isLoading: true,
         })
 
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         const importButton = screen.getByRole('button', { name: /import/i })
 
@@ -232,7 +243,7 @@ describe('ZendeskImportModalWizard', () => {
 
     it('should display email validation error', async () => {
         const user = userEvent.setup()
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         await act(async () => {
             await user.type(
@@ -250,7 +261,7 @@ describe('ZendeskImportModalWizard', () => {
 
     it('should clear email validation error when valid email is entered', async () => {
         const user = userEvent.setup()
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         const emailInput = screen.getByRole('textbox', {
             name: /login email/i,
@@ -280,7 +291,7 @@ describe('ZendeskImportModalWizard', () => {
 
     it('should keep Import button disabled when email is invalid', async () => {
         const user = userEvent.setup()
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         await act(async () => {
             await user.type(
@@ -306,7 +317,7 @@ describe('ZendeskImportModalWizard', () => {
 
     it('should call createIntegration when Import button is clicked with valid form data', async () => {
         const user = userEvent.setup()
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         await act(async () => {
             await user.type(
@@ -357,8 +368,11 @@ describe('ZendeskImportModalWizard', () => {
             isLoading: false,
         })
 
+        const queryClient = mockQueryClient()
         const { rerender } = render(
-            <ZendeskImportModalWizard onClose={mockOnClose} />,
+            <QueryClientProvider client={queryClient}>
+                <ZendeskImportModalWizard onClose={mockOnClose} />
+            </QueryClientProvider>,
         )
 
         await act(async () => {
@@ -386,7 +400,11 @@ describe('ZendeskImportModalWizard', () => {
             isLoading: true,
         })
 
-        rerender(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        rerender(
+            <QueryClientProvider client={queryClient}>
+                <ZendeskImportModalWizard onClose={mockOnClose} />
+            </QueryClientProvider>,
+        )
 
         expect(importButton).toHaveAttribute('aria-disabled', 'true')
     })
@@ -405,7 +423,7 @@ describe('ZendeskImportModalWizard', () => {
             },
         )
 
-        render(<ZendeskImportModalWizard onClose={mockOnClose} />)
+        renderComponent()
 
         act(() => {
             capturedOnError!()

@@ -3,12 +3,11 @@ import { useMemo } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { UserRole } from '@repo/utils'
 
 import { ActiveContent, Navbar } from 'common/navigation'
 import type { AccordionValues } from 'components/Accordion/utils/types'
 import { Navigation } from 'components/Navigation/Navigation'
-import { UserRole } from 'config/types/user'
-import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
@@ -69,6 +68,8 @@ const SettingsNavbar = () => {
         FeatureFlagKey.CustomAgentUnavailableStatuses,
     )
 
+    const isHistoricalImportsEnabled = useFlag(FeatureFlagKey.HistoricalImports)
+
     return (
         <Navbar activeContent={ActiveContent.Settings} title="Settings">
             <Navigation.Root
@@ -82,27 +83,27 @@ const SettingsNavbar = () => {
                         <Item
                             to="flows"
                             text="Flows"
-                            requiredRole={AGENT_ROLE}
+                            requiredRole={UserRole.Agent}
                             shouldRender={shouldRender}
                         />
                         <Item
                             to="order-management"
                             text="Order Management"
-                            requiredRole={AGENT_ROLE}
+                            requiredRole={UserRole.Agent}
                             shouldRender={shouldRender}
                         />
                         {isArticleRecEnabledWhileSunset && (
                             <Item
                                 to="article-recommendations"
                                 text="Article Recommendations"
-                                requiredRole={AGENT_ROLE}
+                                requiredRole={UserRole.Agent}
                                 shouldRender={shouldRender}
                             />
                         )}
                         <Item
                             to="automate"
                             text="AI Agent"
-                            requiredRole={AGENT_ROLE}
+                            requiredRole={UserRole.Agent}
                             shouldRender={shouldRenderAutomate}
                             extra={<AutomateUpgradeBadge />}
                         />
@@ -112,34 +113,38 @@ const SettingsNavbar = () => {
                 <Section
                     id="ticket-customer-data"
                     value={Sections.Ticket}
-                    requiredRole={AGENT_ROLE}
+                    requiredRole={UserRole.Agent}
                 >
                     <Navigation.SectionContent className={css.sectionContent}>
                         <Item
                             to={CUSTOM_FIELD_ROUTES[OBJECT_TYPES.TICKET]}
                             text="Ticket Fields"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to={CUSTOM_FIELD_ROUTES[OBJECT_TYPES.CUSTOMER]}
                             text="Customer Fields"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to={CUSTOM_FIELD_CONDITIONS_ROUTE}
                             text="Field Conditions"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to="manage-tags"
                             text="Tags"
-                            requiredRole={AGENT_ROLE}
+                            requiredRole={UserRole.Agent}
                         />
-                        <Item to="sla" text="SLAs" requiredRole={AGENT_ROLE} />
+                        <Item
+                            to="sla"
+                            text="SLAs"
+                            requiredRole={UserRole.Agent}
+                        />
                         <Item
                             to="satisfaction-surveys"
                             text="Satisfaction survey"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                     </Navigation.SectionContent>
                 </Section>
@@ -147,33 +152,33 @@ const SettingsNavbar = () => {
                 <Section
                     id="ticket-management"
                     value={Sections.TicketManagement}
-                    requiredRole={AGENT_ROLE}
+                    requiredRole={UserRole.Agent}
                 >
                     <Navigation.SectionContent className={css.sectionContent}>
                         <Item
                             to="rules"
                             text="Rules"
-                            requiredRole={AGENT_ROLE}
+                            requiredRole={UserRole.Agent}
                         />
                         <Item
                             to="ticket-assignment"
                             text="Ticket Assignment"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to="auto-merge"
                             text="Auto-merge"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to="business-hours"
                             text="Business hours"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to="sidebar"
                             text="Default views"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                     </Navigation.SectionContent>
                 </Section>
@@ -184,32 +189,32 @@ const SettingsNavbar = () => {
                         <Item
                             to="phone-numbers"
                             text="Phone numbers"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to={`channels/${IntegrationType.Email}`}
                             text="Email"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to={`channels/${IntegrationType.Phone}`}
                             text="Voice"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to={`channels/${IntegrationType.Sms}`}
                             text="SMS"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to={`channels/${IntegrationType.GorgiasChat}`}
                             text="Chat"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to="contact-form"
                             text="Contact form"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                     </Navigation.SectionContent>
                 </Section>
@@ -217,26 +222,26 @@ const SettingsNavbar = () => {
                 <Section
                     id="apps"
                     value={Sections.Apps}
-                    requiredRole={ADMIN_ROLE}
+                    requiredRole={UserRole.Admin}
                 >
                     <Navigation.SectionContent className={css.sectionContent}>
                         <Item
                             to="integrations/mine"
                             exact
                             text="Installed apps"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to="integrations"
                             exact
                             text="App store"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to={`integrations/${IntegrationType.Http}`}
                             exact
                             text="HTTP integration"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                     </Navigation.SectionContent>
                 </Section>
@@ -244,23 +249,23 @@ const SettingsNavbar = () => {
                 <Section
                     id="account"
                     value={Sections.Account}
-                    requiredRole={ADMIN_ROLE}
+                    requiredRole={UserRole.Admin}
                 >
                     <Navigation.SectionContent className={css.sectionContent}>
                         <Item
                             to="store-management"
                             text="Store Management"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to="users"
                             text="Users"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to="teams"
                             text="Teams"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         {isAgentUnavailabilityEnabled && (
                             <Item
@@ -272,12 +277,12 @@ const SettingsNavbar = () => {
                         <Item
                             to="access"
                             text="Access management"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to="billing"
                             text="Billing & usage"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                             onClick={() =>
                                 logEvent(
                                     SegmentEvent.BillingAndUsageNavigationSideNavClicked,
@@ -290,29 +295,39 @@ const SettingsNavbar = () => {
                 <Section
                     id="advanced"
                     value={Sections.Advanced}
-                    requiredRole={ADMIN_ROLE}
+                    requiredRole={UserRole.Admin}
                 >
                     <Navigation.SectionContent className={css.sectionContent}>
                         <Item
                             to="audit"
                             text="Audit logs"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
                         <Item
                             to="api"
                             text="REST API"
-                            requiredRole={ADMIN_ROLE}
+                            requiredRole={UserRole.Admin}
                         />
-                        <Item
-                            to="import-email"
-                            text="Email Import"
-                            requiredRole={ADMIN_ROLE}
-                        />
-                        <Item
-                            to="import-zendesk"
-                            text="Zendesk import"
-                            requiredRole={ADMIN_ROLE}
-                        />
+                        {isHistoricalImportsEnabled ? (
+                            <Item
+                                to="historical-imports"
+                                text="Historical Imports"
+                                requiredRole={UserRole.Admin}
+                            />
+                        ) : (
+                            <>
+                                <Item
+                                    to="import-email"
+                                    text="Email Import"
+                                    requiredRole={UserRole.Admin}
+                                />
+                                <Item
+                                    to="import-zendesk"
+                                    text="Zendesk import"
+                                    requiredRole={UserRole.Admin}
+                                />
+                            </>
+                        )}
                     </Navigation.SectionContent>
                 </Section>
 
