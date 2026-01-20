@@ -280,6 +280,7 @@ export const Infobar = ({
     return (
         <InfobarLayout
             isOnNewLayout={isOnNewLayout}
+            hasUIVisionMS1={hasUIVisionMS1}
             className={classnames({
                 [css.editing]: isEditing,
             })}

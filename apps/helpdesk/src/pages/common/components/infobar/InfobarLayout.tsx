@@ -27,6 +27,7 @@ type Props = {
     children?: ReactNode
     className?: string
     isOnNewLayout?: boolean
+    hasUIVisionMS1?: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -129,6 +130,7 @@ export class InfobarLayout extends Component<Props & SavedSizesProps, State> {
                     'infobar infobar-panel d-print-none',
                     {
                         'hidden-panel': !this.props.isOpenedPanel,
+                        [css.infobarHelpdeskV2MS1]: this.props.hasUIVisionMS1,
                     },
                     this.props.className,
                 )}

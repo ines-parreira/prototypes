@@ -286,7 +286,9 @@ export const TicketInfobarContainer = ({
             ) : (
                 <div
                     className={classNames(css.infoBarContainer, {
-                        [css.infoBarContainerWithNavbar]: hasAccess,
+                        [css.infoBarContainerWithNavbar]:
+                            !hasUIVisionMS1 && hasAccess,
+                        [css.infobarHelpdeskV2MS1]: hasUIVisionMS1,
                     })}
                 >
                     <Infobar
