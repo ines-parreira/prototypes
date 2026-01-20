@@ -15,7 +15,7 @@ export const ArticleTranslationDeleteModal = () => {
         useDeleteTranslationModal()
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={onClose}>
+        <Modal isOpen={isOpen} onOpenChange={onClose} size="sm">
             <OverlayHeader
                 title={
                     <span>

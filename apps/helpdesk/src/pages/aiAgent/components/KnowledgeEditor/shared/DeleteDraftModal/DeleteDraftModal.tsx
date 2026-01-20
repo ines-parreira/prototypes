@@ -22,7 +22,7 @@ export const DeleteDraftModal = ({
     onDelete,
 }: DeleteDraftModalProps) => {
     return (
-        <Modal isOpen={isOpen} onOpenChange={onClose}>
+        <Modal isOpen={isOpen} onOpenChange={onClose} size="sm">
             <OverlayHeader title="Delete draft?" />
             <OverlayContent>
                 <Box paddingBottom="md">

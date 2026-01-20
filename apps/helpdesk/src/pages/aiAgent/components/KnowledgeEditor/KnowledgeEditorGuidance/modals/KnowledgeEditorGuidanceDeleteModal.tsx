@@ -15,7 +15,7 @@ export const KnowledgeEditorGuidanceDeleteModal = () => {
         useDeleteModal()
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={onClose}>
+        <Modal isOpen={isOpen} onOpenChange={onClose} size="sm">
             <OverlayHeader title="Delete?" />
             <OverlayContent>
                 <Box paddingBottom="md">
