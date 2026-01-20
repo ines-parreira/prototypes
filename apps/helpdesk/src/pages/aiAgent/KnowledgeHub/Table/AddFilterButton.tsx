@@ -1,10 +1,6 @@
-import React, { useRef, useState } from 'react'
+import { useState } from 'react'
 
-import { Button, Icon } from '@gorgias/axiom'
-
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { Button, Icon, Menu, MenuItem, MenuSize } from '@gorgias/axiom'
 
 export type FilterOption = {
     label: string
@@ -19,41 +15,44 @@ type Props = {
 export const ADD_FILTER_BUTTON_LABEL = 'Add Filter'
 
 export const AddFilterButton = ({ options, onOptionSelect }: Props) => {
-    const buttonRef = useRef(null)
     const [isOpen, setIsOpen] = useState(false)
 
-    const onToggle = () => setIsOpen(!isOpen)
-    const handleOnClick = (value: string) => {
+    const handleMenuOpenChange = (open: boolean) => {
+        setIsOpen(open)
+    }
+
+    const handleOptionSelect = (value: string) => {
         onOptionSelect(value)
         setIsOpen(false)
     }
 
     return (
-        <>
-            <Button
-                variant="tertiary"
-                onClick={onToggle}
-                ref={buttonRef}
-                size="sm"
-                trailingSlot={<Icon name="arrow-chevron-down" />}
-                as="button"
-                data-candu-id="knowledge-hub-add-filter"
-            >
-                {ADD_FILTER_BUTTON_LABEL}
-            </Button>
-            <Dropdown isOpen={isOpen} onToggle={onToggle} target={buttonRef}>
-                <DropdownBody>
-                    {options.map((option) => (
-                        <DropdownItem
-                            key={option.value}
-                            option={option}
-                            onClick={() => handleOnClick(option.value)}
-                        >
-                            {option.label}
-                        </DropdownItem>
-                    ))}
-                </DropdownBody>
-            </Dropdown>
-        </>
+        <Menu
+            isOpen={isOpen}
+            onOpenChange={handleMenuOpenChange}
+            size={MenuSize.Sm}
+            trigger={
+                <Button
+                    variant="tertiary"
+                    size="sm"
+                    trailingSlot={<Icon name="arrow-chevron-down" />}
+                    as="button"
+                    data-candu-id="knowledge-hub-add-filter"
+                >
+                    {ADD_FILTER_BUTTON_LABEL}
+                </Button>
+            }
+        >
+            <>
+                {options.map((option) => (
+                    <MenuItem
+                        key={option.value}
+                        id={option.value}
+                        label={option.label}
+                        onAction={() => handleOptionSelect(option.value)}
+                    />
+                ))}
+            </>
+        </Menu>
     )
 }
