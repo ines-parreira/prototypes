@@ -2,7 +2,7 @@ import { isProduction, isStaging } from '@repo/utils'
 
 const CONVERT_BUNDLE_PRODUCTION_URL =
     process.env.CONVERT_BUNDLE_PRODUCTION_URL ??
-    'https://cdn.9gtb.com/loader.js'
+    'https://static.9gtb.com/loader.js'
 const CONVERT_BUNDLE_STAGING_URL =
     process.env.CONVERT_BUNDLE_STAGING_URL ??
     'https://cdn-staging.9gtb.com/loader.js'

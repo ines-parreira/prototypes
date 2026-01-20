@@ -14,7 +14,7 @@ describe('getConvertBundleInstallationSnippet', () => {
             useConvertBundleInstallationSnippet('1'),
         )
         expect(result.current).toContain(
-            `<script src="${process.env.CONVERT_BUNDLE_PRODUCTION_URL ?? 'https://cdn.9gtb.com/loader.js?g_cvt_id=1'}" async></script>`,
+            `<script src="${process.env.CONVERT_BUNDLE_PRODUCTION_URL ?? 'https://static.9gtb.com/loader.js?g_cvt_id=1'}" async></script>`,
         )
     })
 
@@ -45,7 +45,7 @@ describe('getConvertBundleInstallationSnippet', () => {
             useConvertBundleInstallationSnippet(),
         )
         expect(result.current).toContain(
-            `<script src="${process.env.CONVERT_BUNDLE_PRODUCTION_URL ?? 'https://cdn.9gtb.com/loader.js'}" async></script>`,
+            `<script src="${process.env.CONVERT_BUNDLE_PRODUCTION_URL ?? 'https://static.9gtb.com/loader.js'}" async></script>`,
         )
     })
 })
