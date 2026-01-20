@@ -8,7 +8,7 @@ import { IntegrationType } from 'models/integration/constants'
 import type { Option as DropdownOption } from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
 import DropdownButtonWithSearch from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
 import PageHeader from 'pages/common/components/PageHeader'
-import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped'
+import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped/PageHeaderRevamped'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'
 

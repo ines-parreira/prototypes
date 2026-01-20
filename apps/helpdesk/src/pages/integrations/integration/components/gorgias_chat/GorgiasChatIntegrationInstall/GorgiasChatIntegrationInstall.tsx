@@ -8,7 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
-import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped'
+import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped/PageHeaderRevamped'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'

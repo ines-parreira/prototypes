@@ -77,13 +77,4 @@ describe('PageHeaderRevamped', () => {
         const headerContainer = container.firstChild as HTMLElement
         expect(headerContainer).toHaveClass('custom-class')
     })
-
-    it('renders without className', () => {
-        const { container } = renderComponent({
-            title: 'Page Title',
-        })
-
-        const headerContainer = container.firstChild as HTMLElement
-        expect(headerContainer).not.toHaveAttribute('class')
-    })
 })

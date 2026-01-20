@@ -68,7 +68,7 @@ import {
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import PageHeader from 'pages/common/components/PageHeader'
-import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped'
+import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped/PageHeaderRevamped'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import CheckBox from 'pages/common/forms/CheckBox'

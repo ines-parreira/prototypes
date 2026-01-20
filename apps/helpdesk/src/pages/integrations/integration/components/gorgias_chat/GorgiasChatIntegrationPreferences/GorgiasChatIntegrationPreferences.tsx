@@ -81,7 +81,7 @@ import { updateOrCreateIntegration } from '../../../../../../state/integrations/
 import { getIntegrationsByTypes } from '../../../../../../state/integrations/selectors'
 import type { RootState } from '../../../../../../state/types'
 import PageHeader from '../../../../../common/components/PageHeader'
-import PageHeaderRevamped from '../../../../../common/components/PageHeaderRevamped'
+import PageHeaderRevamped from '../../../../../common/components/PageHeaderRevamped/PageHeaderRevamped'
 import RadioFieldSet from '../../../../../common/forms/RadioFieldSet'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
 import { isGenericEmailIntegration } from '../../email/helpers'

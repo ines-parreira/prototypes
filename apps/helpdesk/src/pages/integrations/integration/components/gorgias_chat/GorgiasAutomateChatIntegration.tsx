@@ -9,7 +9,7 @@ import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { ConnectedChannelsChatView } from 'pages/automate/connectedChannels/components/ConnectedChannelsChatView'
 import PageHeader from 'pages/common/components/PageHeader'
-import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped'
+import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped/PageHeaderRevamped'
 
 import { Tab } from '../../types'
 import GorgiasChatIntegrationHeader from './GorgiasChatIntegrationHeader'

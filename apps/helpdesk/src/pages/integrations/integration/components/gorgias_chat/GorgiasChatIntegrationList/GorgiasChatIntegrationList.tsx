@@ -4,11 +4,14 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
-import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
+import {
+    BreadcrumbItem,
+    Container,
+    Breadcrumb as LegacyBreadcrumb,
+} from 'reactstrap'
 
 import { Button } from '@gorgias/axiom'
 
-import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
 import { IntegrationType } from '../../../../../../models/integration/types'
@@ -20,6 +23,7 @@ import TableHead from '../../../../../common/components/table/TableHead'
 import TableWrapper from '../../../../../common/components/table/TableWrapper'
 import NoIntegration from '../../NoIntegration'
 import GorgiasChatIntegrationListRow from './GorgiasChatIntegrationListRow'
+import GorgiasChatIntegrationListRevamped from './revamp/GorgiasChatIntegrationList'
 
 import settingsCss from '../../../../../settings/settings.less'
 import css from './GorgiasChatIntegrationList.less'
@@ -65,53 +69,38 @@ function GorgiasChatIntegrationList({ integrations, loading }: Props) {
     const chatMultiLanguagesEnabled = useFlag(FeatureFlagKey.ChatMultiLanguages)
     const isRevampEnabled = useFlag(FeatureFlagKey.ChatSettingsRevamp)
 
+    if (isRevampEnabled) {
+        return (
+            <GorgiasChatIntegrationListRevamped
+                integrations={integrations}
+                loading={loading}
+            ></GorgiasChatIntegrationListRevamped>
+        )
+    }
+
     return (
         <div className="w-100">
-            {isRevampEnabled ? (
-                <PageHeaderRevamped
-                    title={
-                        <Breadcrumb>
-                            <BreadcrumbItem active>
-                                {integrationTitle}
-                            </BreadcrumbItem>
-                        </Breadcrumb>
+            <PageHeader
+                title={
+                    <LegacyBreadcrumb>
+                        <BreadcrumbItem active>
+                            {integrationTitle}
+                        </BreadcrumbItem>
+                    </LegacyBreadcrumb>
+                }
+            >
+                <Button
+                    onClick={() =>
+                        history.push(
+                            `/app/settings/channels/${
+                                IntegrationType.GorgiasChat
+                            }/new/create-wizard`,
+                        )
                     }
                 >
-                    <Button
-                        onClick={() =>
-                            history.push(
-                                `/app/settings/channels/${
-                                    IntegrationType.GorgiasChat
-                                }/new/create-wizard`,
-                            )
-                        }
-                    >
-                        Add Chat
-                    </Button>
-                </PageHeaderRevamped>
-            ) : (
-                <PageHeader
-                    title={
-                        <Breadcrumb>
-                            <BreadcrumbItem active>
-                                {integrationTitle}
-                            </BreadcrumbItem>
-                        </Breadcrumb>
-                    }
-                >
-                    <Button
-                        onClick={() =>
-                            history.push(
-                                `/app/settings/channels/${
-                                    IntegrationType.GorgiasChat
-                                }/new/create-wizard`,
-                            )
-                        }
-                    >
-                        Add Chat
-                    </Button>
-                </PageHeader>
-            )}
+                    Add Chat
+                </Button>
+            </PageHeader>
 
             <Container
                 data-candu-id="integration-list-top"
@@ -122,15 +111,14 @@ function GorgiasChatIntegrationList({ integrations, loading }: Props) {
                 )}
             >
                 {chats.isEmpty() && (
-                    <div className="mb-3">{longTypeDescription}</div>
-                )}
-
-                {chats.isEmpty() && (
-                    <div className="mt-3">
-                        <NoIntegration
-                            loading={loading.get('integrations', false)}
-                        />
-                    </div>
+                    <>
+                        <div className="mb-3">{longTypeDescription}</div>
+                        <div className="mt-3">
+                            <NoIntegration
+                                loading={loading.get('integrations', false)}
+                            />
+                        </div>
+                    </>
                 )}
             </Container>
 
