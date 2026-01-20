@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
-import type { MetricPerDimensionWithEnrichment } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricPerDimensionWithEnrichment } from 'domains/reporting/hooks/types'
 import {
     getProducts,
     getProductsLoading,

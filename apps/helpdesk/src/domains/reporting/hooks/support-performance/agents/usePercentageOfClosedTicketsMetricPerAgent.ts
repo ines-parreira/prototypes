@@ -12,7 +12,7 @@ import {
 import type {
     MetricWithDecile,
     MetricWithDecileFetch,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+} from 'domains/reporting/hooks/types'
 import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'

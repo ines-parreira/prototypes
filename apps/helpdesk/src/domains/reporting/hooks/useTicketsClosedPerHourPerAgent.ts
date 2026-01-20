@@ -8,11 +8,11 @@ import {
     useOnlineTimePerAgent,
 } from 'domains/reporting/hooks/metricsPerAgent'
 import { calculateDecile } from 'domains/reporting/hooks/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
-import { periodAndAgentOnlyFilters } from 'domains/reporting/hooks/useMessagesSentPerHour'
 import type {
     MetricWithDecile,
     MetricWithDecileFetch,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+} from 'domains/reporting/hooks/types'
+import { periodAndAgentOnlyFilters } from 'domains/reporting/hooks/useMessagesSentPerHour'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     matchAndCalculateAllEntries,

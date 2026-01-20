@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import type { MergedRecordWithEnrichment } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MergedRecordWithEnrichment } from 'domains/reporting/hooks/types'
 import { useProductsSorting } from 'domains/reporting/hooks/voice-of-customer/useSortedProducts'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {

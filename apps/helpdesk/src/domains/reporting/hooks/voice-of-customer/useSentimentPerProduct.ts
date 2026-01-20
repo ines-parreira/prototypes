@@ -5,7 +5,7 @@ import _get from 'lodash/get'
 import type {
     QueryReturnType,
     StringWhichShouldBeNumber,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+} from 'domains/reporting/hooks/types'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
 import { usePostReporting } from 'domains/reporting/models/queries'

@@ -5,7 +5,7 @@ import { useQueries } from '@tanstack/react-query'
 
 import type { Product } from 'constants/integrations/types/shopify'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import type { StringWhichShouldBeNumber } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { StringWhichShouldBeNumber } from 'domains/reporting/hooks/types'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentOrdersDimension,

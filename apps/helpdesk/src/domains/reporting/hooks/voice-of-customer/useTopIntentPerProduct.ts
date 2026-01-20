@@ -1,5 +1,7 @@
-import type { RequestedData } from 'domains/reporting/hooks/types'
-import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
+import type {
+    QueryReturnType,
+    RequestedData,
+} from 'domains/reporting/hooks/types'
 import {
     TicketProductsEnrichedDimension,
     TicketProductsEnrichedMeasure,

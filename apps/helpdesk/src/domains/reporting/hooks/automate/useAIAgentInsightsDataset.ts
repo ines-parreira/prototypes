@@ -22,7 +22,7 @@ import {
     filterMetricDataByIntentLevel,
     transformIntentName,
 } from 'domains/reporting/hooks/automate/utils'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
 import {

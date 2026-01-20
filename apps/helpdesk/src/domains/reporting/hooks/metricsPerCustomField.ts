@@ -1,4 +1,4 @@
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     customFieldsTicketCountForProductOnCreatedDatetimeQueryFactory,

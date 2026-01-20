@@ -4,11 +4,11 @@ import type { UseQueryResult } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import { defaultEnrichmentFields } from 'domains/reporting/hooks/useDrillDownData'
 import type {
     QueryReturnType,
     ReportingMetricItemValue,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+} from 'domains/reporting/hooks/types'
+import { defaultEnrichmentFields } from 'domains/reporting/hooks/useDrillDownData'
 import {
     fetchMetricPerDimension,
     fetchMetricPerDimensionV2,

@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import {
     fetchMetricPerDimension,
     useMetricPerDimension,

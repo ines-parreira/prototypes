@@ -22,7 +22,7 @@ import {
 } from 'domains/reporting/hooks/automate/useAIAgentInsightsL2Dataset'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { filterMetricDataByIntentLevel } from 'domains/reporting/hooks/automate/utils'
-import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { QueryReturnType } from 'domains/reporting/hooks/types'
 import type { TicketCustomFieldsCube } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ticketFieldDefinitions } from 'fixtures/customField'
@@ -33,7 +33,6 @@ const timezone = 'UTC'
 
 jest.mock('domains/reporting/hooks/timeSeries')
 jest.mock('domains/reporting/hooks/useMetric')
-jest.mock('domains/reporting/hooks/useMetricPerDimension')
 jest.mock('domains/reporting/hooks/useMultipleMetricsTrend')
 
 jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')

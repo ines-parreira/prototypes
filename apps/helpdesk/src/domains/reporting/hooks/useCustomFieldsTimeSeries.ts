@@ -17,7 +17,7 @@ import {
     useCustomFieldsTicketCountTimeSeries,
     useSentimentsCustomFieldsTicketCountTimeSeries,
 } from 'domains/reporting/hooks/timeSeries'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { TicketCustomFieldsDimension } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import { TICKET_CUSTOM_FIELDS_API_SEPARATOR } from 'domains/reporting/models/queryFactories/utils'

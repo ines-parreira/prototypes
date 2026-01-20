@@ -41,13 +41,13 @@ import { fetchOneTouchTicketsPercentageMetricPerAgent } from 'domains/reporting/
 import { fetchOneTouchTicketsPercentageMetricTrend } from 'domains/reporting/hooks/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
 import { fetchZeroTouchTicketsMetricTrend } from 'domains/reporting/hooks/support-performance/overview/useZeroTouchTicketsMetricTrend'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
 import {
     fetchMessagesSentPerHour,
     fetchMessagesSentPerHourPerAgentTotalCapacity,
 } from 'domains/reporting/hooks/useMessagesSentPerHour'
 import { fetchMessagesSentPerHourPerAgent } from 'domains/reporting/hooks/useMessagesSentPerHourPerAgent'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     fetchTicketsClosedPerHour,
     fetchTicketsClosedPerHourPerAgentTotalCapacity,

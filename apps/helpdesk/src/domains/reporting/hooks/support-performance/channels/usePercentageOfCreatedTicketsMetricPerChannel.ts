@@ -9,7 +9,7 @@ import {
     fetchCreatedTicketsMetricPerChannel,
     useCreatedTicketsMetricPerChannel,
 } from 'domains/reporting/hooks/support-performance/channels/metricsPerChannel'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'

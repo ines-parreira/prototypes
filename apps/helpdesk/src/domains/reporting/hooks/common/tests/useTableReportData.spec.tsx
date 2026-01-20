@@ -16,9 +16,9 @@ import {
     useTables,
 } from 'domains/reporting/hooks/common/useTableReportData'
 import { useSortedChannels } from 'domains/reporting/hooks/support-performance/useSortedChannels'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
 import { useChannelsTableSetting } from 'domains/reporting/hooks/useChannelsTableConfigSetting'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'

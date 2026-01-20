@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
 import { useCustomFieldsTicketCount } from 'domains/reporting/hooks/metricsPerCustomField'
 import { useTicketsDistribution } from 'domains/reporting/hooks/ticket-insights/useTicketsDistribution'
-import type { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { ReportingMetricItem } from 'domains/reporting/hooks/types'
 import {
     BREAKDOWN_FIELD,
     VALUE_FIELD,

@@ -27,7 +27,7 @@ import {
     sortAllData,
     sortByAutomateFeatureLabels,
 } from 'domains/reporting/hooks/automate/utils'
-import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { QueryReturnType } from 'domains/reporting/hooks/types'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import type { Cubes } from 'domains/reporting/models/cubes'
 import { AutomationBillingEventMeasure } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'

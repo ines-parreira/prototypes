@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { stripEscapedQuotes } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import type { MetricWithDecileData } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecileData } from 'domains/reporting/hooks/types'
 import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     TicketCustomFieldsDimension,

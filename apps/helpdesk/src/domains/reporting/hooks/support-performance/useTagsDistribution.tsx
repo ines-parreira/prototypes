@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { useTagsTicketCount } from 'domains/reporting/hooks/metricsPerPeriod'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import type { ReportingMetricItemValue } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { ReportingMetricItemValue } from 'domains/reporting/hooks/types'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,

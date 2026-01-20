@@ -1,6 +1,6 @@
 import type { User } from 'config/types/user'
 import type { Metric } from 'domains/reporting/hooks/metrics'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,

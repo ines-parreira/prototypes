@@ -6,7 +6,7 @@ import {
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
 } from 'domains/reporting/hooks/metricsPerAgent'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     formatMetricValue,

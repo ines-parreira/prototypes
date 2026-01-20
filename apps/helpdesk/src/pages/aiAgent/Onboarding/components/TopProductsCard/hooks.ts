@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import type { StringWhichShouldBeNumber } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { StringWhichShouldBeNumber } from 'domains/reporting/hooks/types'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentOrdersDimension,

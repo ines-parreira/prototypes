@@ -7,7 +7,7 @@ import {
     useSnoozedInteractionsPerChannel,
     useTotalSalesConversationsPerChannel,
 } from 'domains/reporting/hooks/ai-sales-agent/channelMetrics'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     automatedSalesConversationsPerChannelQueryFactory,

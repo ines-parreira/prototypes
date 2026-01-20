@@ -1,7 +1,7 @@
 import type {
     MetricPerDimensionTrend,
     StringWhichShouldBeNumber,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+} from 'domains/reporting/hooks/types'
 import { useTicketCountPerProductWithEnrichment } from 'domains/reporting/hooks/voice-of-customer/metricsPerProduct'
 import type { TicketProductsEnrichedCube } from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

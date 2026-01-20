@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import moment from 'moment'
 import { shallowEqual } from 'react-redux'
 
-import type { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { ReportingMetricItem } from 'domains/reporting/hooks/types'
 import { fetchMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentOrdersDimension,

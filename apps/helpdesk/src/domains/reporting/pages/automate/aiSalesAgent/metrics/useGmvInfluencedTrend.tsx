@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import type {
     MetricWithDecileData,
     StringWhichShouldBeNumber,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+} from 'domains/reporting/hooks/types'
 import {
     fetchMetricPerDimension,
     useMetricPerDimension,

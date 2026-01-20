@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import _takeWhile from 'lodash/takeWhile'
 
 import type { User } from 'config/types/user'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import type { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import { isMetricForAgent } from 'domains/reporting/pages/common/utils'
 import { agentIdFields } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'

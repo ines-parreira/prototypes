@@ -11,7 +11,7 @@ import {
     useTagResultsSelection,
 } from 'domains/reporting/hooks/tags/useTagResultsSelection'
 import { useTicketTimeReference } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
-import type { QueryReturnType } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { QueryReturnType } from 'domains/reporting/hooks/types'
 import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { TicketTagsEnrichedCube } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import { TicketTagsEnrichedDimension } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'

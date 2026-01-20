@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 
-import type { MergedRecordWithEnrichment } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MergedRecordWithEnrichment } from 'domains/reporting/hooks/types'
 import {
     PRODUCT_ENRICHMENT_ENTITY_ID,
     useTicketCountPerProductWithEnrichment,

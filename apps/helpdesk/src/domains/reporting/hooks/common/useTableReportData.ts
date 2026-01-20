@@ -10,10 +10,10 @@ import {
     Entity,
     useTicketTimeReference,
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
+import type { MetricWithDecileFetch } from 'domains/reporting/hooks/types'
 import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTableConfigSetting'
 import { useChannelsTableSetting } from 'domains/reporting/hooks/useChannelsTableConfigSetting'
 import type { MetricFetch } from 'domains/reporting/hooks/useMetric'
-import type { MetricWithDecileFetch } from 'domains/reporting/hooks/useMetricPerDimension'
 import type {
     AggregationWindow,
     StatsFilters,

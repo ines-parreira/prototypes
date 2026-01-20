@@ -10,7 +10,7 @@ import type {
     ReportingMetricItem,
     ReportingMetricItemValue,
     StringWhichShouldBeNumber,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+} from 'domains/reporting/hooks/types'
 import type { Cubes } from 'domains/reporting/models/cubes'
 import { AgentTimeTrackingMember } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
 import { AutomationBillingEventMember } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'

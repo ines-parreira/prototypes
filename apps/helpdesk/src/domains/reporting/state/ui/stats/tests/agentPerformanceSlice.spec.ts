@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 
-import type { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { ReportingMetricItem } from 'domains/reporting/hooks/types'
 import {
     TicketDimension,
     TicketMember,

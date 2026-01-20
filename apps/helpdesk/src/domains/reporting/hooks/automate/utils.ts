@@ -40,7 +40,7 @@ import type {
     MetricWithDecile,
     QueryReturnType,
     StringWhichShouldBeNumber,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+} from 'domains/reporting/hooks/types'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import type { Cubes } from 'domains/reporting/models/cubes'

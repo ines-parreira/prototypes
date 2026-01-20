@@ -31,12 +31,12 @@ import { usePercentageOfClosedTicketsMetricPerAgent } from 'domains/reporting/ho
 import { useOneTouchTicketsPercentageMetricPerAgent } from 'domains/reporting/hooks/support-performance/overview/useOneTouchTicketsPercentageMetricPerAgent'
 import { useOneTouchTicketsPercentageMetricTrend } from 'domains/reporting/hooks/support-performance/overview/useOneTouchTicketsPercentageMetricTrend'
 import { useZeroTouchTicketsMetricTrend } from 'domains/reporting/hooks/support-performance/overview/useZeroTouchTicketsMetricTrend'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import {
     useMessagesSentPerHour,
     useMessagesSentPerHourPerAgentTotalCapacity,
 } from 'domains/reporting/hooks/useMessagesSentPerHour'
 import { useMessagesSentPerHourPerAgent } from 'domains/reporting/hooks/useMessagesSentPerHourPerAgent'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     useTicketsClosedPerHour,
     useTicketsClosedPerHourPerAgentTotalCapacity,

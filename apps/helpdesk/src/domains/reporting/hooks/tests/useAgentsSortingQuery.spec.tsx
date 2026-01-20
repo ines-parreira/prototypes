@@ -5,11 +5,11 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useAgentsSortingQuery } from 'domains/reporting/hooks/useAgentsSortingQuery'
 import type {
     MetricWithDecile,
     StringWhichShouldBeNumber,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+} from 'domains/reporting/hooks/types'
+import { useAgentsSortingQuery } from 'domains/reporting/hooks/useAgentsSortingQuery'
 import type { TicketMessagesCube } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { TicketMessagesMeasure } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import { getQuery } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'

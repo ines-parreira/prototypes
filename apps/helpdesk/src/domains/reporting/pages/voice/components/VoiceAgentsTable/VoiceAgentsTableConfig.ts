@@ -1,7 +1,7 @@
 import type { MetricValueFormat } from '@repo/reporting'
 
 import type { Metric } from 'domains/reporting/hooks/metrics'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import {
     VoiceCallDimension,
     VoiceCallMeasure,

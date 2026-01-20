@@ -1,4 +1,4 @@
-import type { MetricWithEnrichment } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithEnrichment } from 'domains/reporting/hooks/types'
 import {
     useMetricPerDimension,
     useMetricPerDimensionWithEnrichment,

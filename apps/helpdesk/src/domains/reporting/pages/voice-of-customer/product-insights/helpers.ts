@@ -1,4 +1,4 @@
-import type { ReportingMetricItemValue } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { ReportingMetricItemValue } from 'domains/reporting/hooks/types'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,

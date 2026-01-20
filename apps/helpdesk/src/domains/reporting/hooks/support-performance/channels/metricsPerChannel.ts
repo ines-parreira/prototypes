@@ -5,7 +5,7 @@ import {
 import type {
     MetricWithDecile,
     ReportingMetricItemValue,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+} from 'domains/reporting/hooks/types'
 import {
     fetchMetricPerDimensionV2,
     useMetricPerDimensionV2,

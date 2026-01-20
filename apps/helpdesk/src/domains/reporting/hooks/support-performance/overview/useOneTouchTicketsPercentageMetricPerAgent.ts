@@ -10,7 +10,7 @@ import { calculateDecile } from 'domains/reporting/hooks/ticket-insights/useCust
 import type {
     MetricWithDecile,
     ReportingMetricItemValue,
-} from 'domains/reporting/hooks/useMetricPerDimension'
+} from 'domains/reporting/hooks/types'
 import type { Cubes } from 'domains/reporting/models/cubes'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {

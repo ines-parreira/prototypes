@@ -10,10 +10,7 @@ import { humanizeChannel } from 'state/ticket/utils'
 
 import type { Cubes } from '../models/cubes'
 import { workloadTicketsPerChannelQueryV2Factory } from '../models/scopes/workloadTickets'
-import type {
-    MetricWithDecile,
-    ReportingMetricItemValue,
-} from './useMetricPerDimension'
+import type { MetricWithDecile, ReportingMetricItemValue } from './types'
 import {
     fetchMetricPerDimensionV2,
     useMetricPerDimensionV2,

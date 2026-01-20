@@ -7,7 +7,7 @@ import type { Moment } from 'moment-timezone'
 import moment from 'moment-timezone'
 
 import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
-import type { ReportingMetricItem } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { ReportingMetricItem } from 'domains/reporting/hooks/types'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'

@@ -76,14 +76,12 @@ export const selectPerDimension =
 
 export async function fetchStatsTimeSeriesPerDimension<
     TMeta extends ScopeMeta = ScopeMeta,
->(queryV2: BuiltQuery<TMeta>) {
+>(query: BuiltQuery<TMeta>) {
     return fetchPostStats<
         Record<string, string>[],
         Record<string, TimeSeriesDataItem[][]>,
         TMeta
-    >(queryV2, {}).then((res) =>
-        selectPerDimension<TMeta>(queryV2)(res.data.data),
-    )
+    >(query, {}).then((res) => selectPerDimension<TMeta>(query)(res.data.data))
 }
 
 export function useStatsTimeSeriesPerDimension<TMeta extends ScopeMeta>(

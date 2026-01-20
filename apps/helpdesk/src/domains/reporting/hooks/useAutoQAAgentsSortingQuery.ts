@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { DEFAULT_SORTING_DIRECTION } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'

@@ -18,7 +18,7 @@ import {
     useTicketTimeReference,
 } from 'domains/reporting/hooks/ticket-insights/useTicketTimeReference'
 import { useTagsTicketCountTimeSeries } from 'domains/reporting/hooks/timeSeries'
-import type { MetricPerDimensionTrend } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricPerDimensionTrend } from 'domains/reporting/hooks/types'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { TicketTagsEnrichedMember } from 'domains/reporting/models/cubes/TicketTagsEnrichedCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

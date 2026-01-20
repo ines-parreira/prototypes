@@ -7,7 +7,7 @@ import { fetchTableReportData } from 'domains/reporting/hooks/common/useTableRep
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { Metric } from 'domains/reporting/hooks/metrics'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import type { VoiceCallCube } from 'domains/reporting/models/cubes/VoiceCallCube'
 import {
     VoiceCallDimension,

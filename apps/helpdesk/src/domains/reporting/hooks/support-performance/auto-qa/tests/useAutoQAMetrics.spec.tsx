@@ -19,7 +19,7 @@ import { useResolutionCompletenessTrend } from 'domains/reporting/hooks/support-
 import { useReviewedClosedTicketsPerAgent } from 'domains/reporting/hooks/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
 import { useReviewedClosedTicketsTrend } from 'domains/reporting/hooks/support-performance/auto-qa/useReviewedClosedTicketsTrend'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import type { MetricWithDecile } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { Cubes } from 'domains/reporting/models/cubes'
 import { ReportingGranularity } from 'domains/reporting/models/types'
