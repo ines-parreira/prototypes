@@ -19,7 +19,6 @@ jest.mock('@repo/hooks', () => ({
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    Icon: jest.fn(({ name }) => <span data-testid={`icon-${name}`} />),
 }))
 
 describe('KnowledgeEditorSidePanelFieldKnowledgeType', () => {
@@ -114,7 +113,7 @@ describe('KnowledgeEditorSidePanelFieldURL', () => {
             <KnowledgeEditorSidePanelFieldURL url="https://www.google.com" />,
         )
 
-        expect(screen.getByTestId('icon-copy')).toBeInTheDocument()
+        expect(screen.getByRole('img', { name: 'copy' })).toBeInTheDocument()
     })
 
     it('shows checkmark icon after successful copy', () => {
@@ -122,7 +121,7 @@ describe('KnowledgeEditorSidePanelFieldURL', () => {
             <KnowledgeEditorSidePanelFieldURL url="https://www.google.com" />,
         )
 
-        expect(screen.getByTestId('icon-copy')).toBeInTheDocument()
+        expect(screen.getByRole('img', { name: 'copy' })).toBeInTheDocument()
 
         // Simulate successful copy by returning a new object with value
         act(() => {
@@ -138,8 +137,12 @@ describe('KnowledgeEditorSidePanelFieldURL', () => {
         )
 
         // Should show checkmark icon
-        expect(screen.getByTestId('icon-check-all')).toBeInTheDocument()
-        expect(screen.queryByTestId('icon-copy')).not.toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'check-all' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('img', { name: 'copy' }),
+        ).not.toBeInTheDocument()
     })
 
     it('reverts to copy icon after 3 seconds', () => {
@@ -161,7 +164,9 @@ describe('KnowledgeEditorSidePanelFieldURL', () => {
         )
 
         // Should show checkmark
-        expect(screen.getByTestId('icon-check-all')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'check-all' }),
+        ).toBeInTheDocument()
 
         // Fast-forward time by 3 seconds
         act(() => {
@@ -169,8 +174,10 @@ describe('KnowledgeEditorSidePanelFieldURL', () => {
         })
 
         // Should revert to copy icon
-        expect(screen.getByTestId('icon-copy')).toBeInTheDocument()
-        expect(screen.queryByTestId('icon-check-all')).not.toBeInTheDocument()
+        expect(screen.getByRole('img', { name: 'copy' })).toBeInTheDocument()
+        expect(
+            screen.queryByRole('img', { name: 'check-all' }),
+        ).not.toBeInTheDocument()
     })
 
     it('resets timer on multiple rapid clicks', () => {
@@ -192,7 +199,9 @@ describe('KnowledgeEditorSidePanelFieldURL', () => {
         )
 
         // Should show checkmark
-        expect(screen.getByTestId('icon-check-all')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'check-all' }),
+        ).toBeInTheDocument()
 
         // Advance time by 2 seconds (not enough to reset)
         act(() => {
@@ -200,7 +209,9 @@ describe('KnowledgeEditorSidePanelFieldURL', () => {
         })
 
         // Still showing checkmark
-        expect(screen.getByTestId('icon-check-all')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'check-all' }),
+        ).toBeInTheDocument()
 
         // Second copy - return another new object with different value
         act(() => {
@@ -216,7 +227,9 @@ describe('KnowledgeEditorSidePanelFieldURL', () => {
         )
 
         // Should still show checkmark
-        expect(screen.getByTestId('icon-check-all')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'check-all' }),
+        ).toBeInTheDocument()
 
         // Advance time by 2 more seconds (total 4 seconds from first copy, 2 from second)
         act(() => {
@@ -224,7 +237,9 @@ describe('KnowledgeEditorSidePanelFieldURL', () => {
         })
 
         // Should still show checkmark because timer was reset
-        expect(screen.getByTestId('icon-check-all')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'check-all' }),
+        ).toBeInTheDocument()
 
         // Advance time by 1 more second (3 seconds from second copy)
         act(() => {
@@ -232,15 +247,17 @@ describe('KnowledgeEditorSidePanelFieldURL', () => {
         })
 
         // Now should revert to copy icon
-        expect(screen.getByTestId('icon-copy')).toBeInTheDocument()
-        expect(screen.queryByTestId('icon-check-all')).not.toBeInTheDocument()
+        expect(screen.getByRole('img', { name: 'copy' })).toBeInTheDocument()
+        expect(
+            screen.queryByRole('img', { name: 'check-all' }),
+        ).not.toBeInTheDocument()
     })
 
     it('handles empty URL', () => {
         const { container } = render(<KnowledgeEditorSidePanelFieldURL />)
 
         expect(container.textContent).toBe('-')
-        expect(container.querySelector('.copyButton')).not.toBeInTheDocument()
+        expect(screen.queryByRole('button')).not.toBeInTheDocument()
     })
 })
 
@@ -383,7 +400,9 @@ describe('KnowledgeEditorSidePanelFieldSourceDocument', () => {
             />,
         )
 
-        expect(screen.getByTestId('icon-download')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'download' }),
+        ).toBeInTheDocument()
     })
 })
 
@@ -432,7 +451,9 @@ describe('KnowledgeEditorSidePanelFieldAIAgentStatus extended', () => {
                     onChange={jest.fn()}
                 />,
             )
-            expect(screen.queryByTestId('icon-info')).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('img', { name: 'info' }),
+            ).not.toBeInTheDocument()
         })
 
         it('does not render info icon when showMultiLanguageInfo is false', () => {
@@ -444,7 +465,9 @@ describe('KnowledgeEditorSidePanelFieldAIAgentStatus extended', () => {
                     multiLanguageTooltip="Test tooltip"
                 />,
             )
-            expect(screen.queryByTestId('icon-info')).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('img', { name: 'info' }),
+            ).not.toBeInTheDocument()
         })
 
         it('does not render info icon when multiLanguageTooltip is undefined', () => {
@@ -455,7 +478,9 @@ describe('KnowledgeEditorSidePanelFieldAIAgentStatus extended', () => {
                     showMultiLanguageInfo={true}
                 />,
             )
-            expect(screen.queryByTestId('icon-info')).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('img', { name: 'info' }),
+            ).not.toBeInTheDocument()
         })
 
         it('renders info icon when showMultiLanguageInfo is true and multiLanguageTooltip is provided', () => {
@@ -467,7 +492,9 @@ describe('KnowledgeEditorSidePanelFieldAIAgentStatus extended', () => {
                     multiLanguageTooltip="You're viewing the default-language version of this article: English (US). AI Agent only uses this default version."
                 />,
             )
-            expect(screen.getByTestId('icon-info')).toBeInTheDocument()
+            expect(
+                screen.getByRole('img', { name: 'info' }),
+            ).toBeInTheDocument()
         })
 
         it('renders both toggle and info icon when multi-language is enabled', () => {
@@ -480,7 +507,9 @@ describe('KnowledgeEditorSidePanelFieldAIAgentStatus extended', () => {
                 />,
             )
             expect(screen.getByRole('switch')).toBeInTheDocument()
-            expect(screen.getByTestId('icon-info')).toBeInTheDocument()
+            expect(
+                screen.getByRole('img', { name: 'info' }),
+            ).toBeInTheDocument()
         })
     })
 })

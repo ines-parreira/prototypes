@@ -4,6 +4,7 @@ import { useCopyToClipboard, useId } from '@repo/hooks'
 import _uniqueId from 'lodash/uniqueId'
 
 import {
+    Button,
     Icon,
     IconSize,
     LegacyTooltip,
@@ -124,9 +125,7 @@ export const KnowledgeEditorSidePanelFieldURL = ({ url }: { url?: string }) => {
         }
     }, [copyState])
 
-    const handleCopyCode = (
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    ) => {
+    const handleCopyCode = (e: React.MouseEvent) => {
         e.stopPropagation()
         copyToClipboard(url ?? '')
         selectText(textId)
@@ -143,12 +142,17 @@ export const KnowledgeEditorSidePanelFieldURL = ({ url }: { url?: string }) => {
                 {url}
             </a>
 
-            <span onClick={handleCopyCode} className={css.copyButton}>
-                <Icon
-                    name={showCheckmark ? 'check-all' : 'copy'}
-                    size={IconSize.Xs}
-                />
-            </span>
+            <Tooltip>
+                <TooltipTrigger>
+                    <Button
+                        onClick={handleCopyCode}
+                        icon={showCheckmark ? 'check-all' : 'copy'}
+                        size="sm"
+                        variant="tertiary"
+                    />
+                </TooltipTrigger>
+                <TooltipContent caption="Copy URL" />
+            </Tooltip>
         </span>
     ) : (
         '-'
