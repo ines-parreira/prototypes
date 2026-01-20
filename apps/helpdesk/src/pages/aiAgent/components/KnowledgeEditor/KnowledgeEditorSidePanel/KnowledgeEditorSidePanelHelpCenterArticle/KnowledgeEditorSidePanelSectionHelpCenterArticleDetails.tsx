@@ -1,5 +1,6 @@
-import classNames from 'classnames'
 import { Link } from 'react-router-dom'
+
+import { Tag } from '@gorgias/axiom'
 
 import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import { useArticleDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
@@ -15,7 +16,6 @@ import { KnowledgeEditorSidePanelSection } from '../KnowledgeEditorSidePanelSect
 import { KnowledgeEditorSidePanelTwoColumnsContent } from '../KnowledgeEditorSidePanelTwoColumnsContent'
 
 import commonCss from '../KnowledgeEditorSidePanelCommonFields.less'
-import css from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails.less'
 
 export type Props = {
     sectionId: string
@@ -86,16 +86,12 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
                         left: 'Status',
                         right:
                             isPublished !== undefined ? (
-                                <span
+                                <Tag
                                     key="status"
-                                    className={classNames(
-                                        css.articleStatusBadge,
-                                        commonCss.extraLeftMargin,
-                                        isPublished && css.published,
-                                    )}
+                                    color={isPublished ? 'green' : 'grey'}
                                 >
                                     {isPublished ? 'Published' : 'Draft'}
-                                </span>
+                                </Tag>
                             ) : (
                                 '-'
                             ),
