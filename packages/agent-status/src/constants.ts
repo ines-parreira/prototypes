@@ -60,12 +60,13 @@ export const DURATION_UNIT_OPTIONS: ReadonlyArray<DurationUnitOption> = [
 ] as const
 
 /**
- * Validation limits for custom duration values by unit
+ * Validation limits for custom duration values by unit.
+ * Backend constraint: duration must be < 1 year (365 days = 8760 hours = 525,600 minutes)
  */
 export const DURATION_LIMITS: Record<DurationUnit, DurationMinMaxLimit> = {
-    minutes: { min: 1, max: 1440 },
-    hours: { min: 1, max: 24 },
-    days: { min: 1, max: 30 },
+    minutes: { min: 1, max: 525599 }, // < 1 year in minutes
+    hours: { min: 1, max: 8759 }, // < 1 year in hours
+    days: { min: 1, max: 364 }, // < 1 year in days
 } as const
 
 /**

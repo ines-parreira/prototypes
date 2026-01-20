@@ -14,12 +14,16 @@ export {
 export {
     useAgentStatuses,
     useDeleteCustomUserAvailabilityStatus,
-    useDeleteCustomUserAvailabilityStatusModal,
+    useCustomUserUnavailabilityModal,
 } from './hooks'
 
 export type { AgentStatusWithSystem, DurationOption } from './types'
-export { CreateAgentStatusModal } from './components/CreateAgentStatusModal/CreateAgentStatusModal'
-export type { CreateAgentStatusModalProps } from './components/CreateAgentStatusModal/types'
+
+export { EditAgentStatusModal } from './components/EditAgentStatusModal'
+export type { EditAgentStatusModalProps } from './components/EditAgentStatusModal'
+
+export { CreateAgentStatusModal } from './components/CreateAgentStatusModal'
+export type { CreateAgentStatusModalProps } from './components/CreateAgentStatusModal'
 
 export { StatusDurationSelect } from './components/StatusDurationSelect'
 export type { StatusDurationSelectProps } from './components/StatusDurationSelect'
@@ -32,6 +36,7 @@ export type { StatusDurationValueFieldProps } from './components/StatusDurationV
 
 // Hooks
 export { useCreateAgentStatus } from './hooks/useCreateAgentStatus'
+export { useUpdateAgentStatus } from './hooks/useUpdateAgentStatus'
 
 export {
     AgentStatusLegacyBridgeProvider,

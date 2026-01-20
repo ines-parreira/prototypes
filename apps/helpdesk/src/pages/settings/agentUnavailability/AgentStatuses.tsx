@@ -5,43 +5,112 @@ import {
     AgentStatusLegacyBridgeProvider,
     CreateAgentStatusModal,
     DeleteStatusConfirmationModal,
+    EditAgentStatusModal,
+    NotificationStatus,
     useAgentStatuses,
     useCreateAgentStatus,
-    useDeleteCustomUserAvailabilityStatusModal,
+    useUpdateAgentStatus,
 } from '@repo/agent-status'
+import type {
+    AgentStatusWithSystem,
+    CreateAgentStatusModalProps,
+    EditAgentStatusModalProps,
+} from '@repo/agent-status'
+import { useToggle } from '@repo/hooks'
 import { Link } from 'react-router-dom'
 
 import { Banner, Box, Button, Icon } from '@gorgias/axiom'
-import type { CreateCustomUserAvailabilityStatus } from '@gorgias/helpdesk-types'
 
-import { useNotify } from 'hooks/useNotify'
 import PageHeader from 'pages/common/components/PageHeader'
 import { useAgentStatusLegacyBridgeFunctions } from 'pages/settings/agentUnavailability/useAgentStatusLegacyBridgeFunctions'
 
 function AgentUnavailabilityStatuses() {
+    const bridgeFunctions = useAgentStatusLegacyBridgeFunctions()
+    const { dispatchNotification } = bridgeFunctions
     const { data, isLoading, isError, refetch } = useAgentStatuses()
 
-    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+    const createMutation = useCreateAgentStatus()
+    const updateMutation = useUpdateAgentStatus()
 
-    const notify = useNotify()
-    const { mutateAsync: createStatusAsync, isLoading: isPending } =
-        useCreateAgentStatus()
+    const createModal = useToggle()
+    const editModal = useToggle()
+    const deleteModal = useToggle()
 
-    const handleCreateStatus = useCallback(
-        async (data: CreateCustomUserAvailabilityStatus) => {
+    const [statusToEdit, setStatusToEdit] = useState<
+        AgentStatusWithSystem | undefined
+    >()
+    const [statusToDelete, setStatusToDelete] = useState<
+        AgentStatusWithSystem | undefined
+    >()
+
+    const handleOpenEdit = useCallback(
+        (status: AgentStatusWithSystem) => {
+            setStatusToEdit(status)
+            editModal.open()
+        },
+        [editModal],
+    )
+
+    const handleOpenDelete = useCallback(
+        (status: AgentStatusWithSystem) => {
+            setStatusToDelete(status)
+            deleteModal.open()
+        },
+        [deleteModal],
+    )
+
+    const handleCloseEdit = useCallback(() => {
+        editModal.close()
+        setStatusToEdit(undefined)
+    }, [editModal])
+
+    const handleCloseDelete = useCallback(() => {
+        deleteModal.close()
+        setStatusToDelete(undefined)
+    }, [deleteModal])
+
+    const handleCreate = useCallback<CreateAgentStatusModalProps['onSubmit']>(
+        async (data) => {
             try {
-                await createStatusAsync({ data })
-                setIsCreateModalOpen(false)
-                notify.success('Status created successfully')
+                await createMutation.mutateAsync({ data })
+                dispatchNotification({
+                    status: NotificationStatus.Success,
+                    message: 'Status created successfully',
+                })
+                createModal.close()
             } catch {
-                notify.error('Failed to create status')
+                dispatchNotification({
+                    status: NotificationStatus.Error,
+                    message: 'Failed to create status',
+                })
             }
         },
-        [notify, setIsCreateModalOpen, createStatusAsync],
+        [createMutation, createModal, dispatchNotification],
     )
-    const bridgeFunctions = useAgentStatusLegacyBridgeFunctions()
-    const { deleteModalState, openStatusDeleteModal, closeStatusDeleteModal } =
-        useDeleteCustomUserAvailabilityStatusModal()
+
+    const handleEdit = useCallback<EditAgentStatusModalProps['onSubmit']>(
+        async (data, status) => {
+            try {
+                await updateMutation.mutateAsync({
+                    pk: status.id,
+                    data,
+                })
+                dispatchNotification({
+                    status: NotificationStatus.Success,
+                    message: 'Status updated successfully',
+                })
+                handleCloseEdit()
+            } catch {
+                dispatchNotification({
+                    status: NotificationStatus.Error,
+                    message: 'Failed to update status',
+                })
+            }
+        },
+        [updateMutation, handleCloseEdit, dispatchNotification],
+    )
+
+    const isModalLoading = createMutation.isLoading || updateMutation.isLoading
 
     return (
         <AgentStatusLegacyBridgeProvider {...bridgeFunctions}>
@@ -49,13 +118,13 @@ function AgentUnavailabilityStatuses() {
                 <PageHeader title="Agent unavailability">
                     <Box gap="xs">
                         <Button
-                            onClick={() => setIsCreateModalOpen(true)}
+                            onClick={() => {}}
                             variant="tertiary"
                             trailingSlot={<Icon name="external-link" />}
                         >
                             Learning resources
                         </Button>
-                        <Button onClick={() => setIsCreateModalOpen(true)}>
+                        <Button onClick={createModal.open}>
                             Create status
                         </Button>
                     </Box>
@@ -92,23 +161,31 @@ function AgentUnavailabilityStatuses() {
                 <AgentStatusesTable
                     data={data}
                     isLoading={isLoading}
-                    onEdit={() => {}}
-                    onDelete={openStatusDeleteModal}
+                    onEdit={handleOpenEdit}
+                    onDelete={handleOpenDelete}
                 />
             </Box>
             <CreateAgentStatusModal
-                isOpen={isCreateModalOpen}
-                onOpenChange={setIsCreateModalOpen}
-                onCreate={handleCreateStatus}
-                isLoading={isPending}
+                isOpen={createModal.isOpen}
+                onOpenChange={createModal.toggle}
+                onSubmit={handleCreate}
+                isLoading={isModalLoading}
             />
-
-            {deleteModalState.statusId && (
+            {statusToEdit && (
+                <EditAgentStatusModal
+                    isOpen={editModal.isOpen}
+                    onOpenChange={handleCloseEdit}
+                    status={statusToEdit}
+                    onSubmit={handleEdit}
+                    isLoading={isModalLoading}
+                />
+            )}
+            {statusToDelete && (
                 <DeleteStatusConfirmationModal
-                    isOpen={deleteModalState.isOpen}
-                    onOpenChange={closeStatusDeleteModal}
-                    statusId={deleteModalState.statusId}
-                    statusName={deleteModalState.statusName || 'this status'}
+                    isOpen={deleteModal.isOpen}
+                    onOpenChange={handleCloseDelete}
+                    statusId={statusToDelete.id}
+                    statusName={statusToDelete.name}
                 />
             )}
         </AgentStatusLegacyBridgeProvider>

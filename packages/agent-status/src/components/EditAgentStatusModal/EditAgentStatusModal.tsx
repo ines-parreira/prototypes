@@ -8,23 +8,24 @@ import type { AgentStatusFormValues } from '../../hooks/useAgentStatusFormDefaul
 import { useAgentStatusFormDefaults } from '../../hooks/useAgentStatusFormDefaults'
 import { validateAgentStatusForm } from '../../utils'
 import { AgentStatusFormContent } from '../AgentStatusFormContent'
-import type { CreateAgentStatusModalProps } from './types'
+import type { EditAgentStatusModalProps } from './types'
 
 /**
- * Modal for creating a new agent status.
+ * Modal for editing an existing agent status.
  * Business logic (mutations, notifications) should be handled by the consumer.
  */
-export function CreateAgentStatusModal({
+export function EditAgentStatusModal({
     isOpen,
     onOpenChange,
+    status,
     onSubmit,
     isLoading,
-}: CreateAgentStatusModalProps) {
+}: EditAgentStatusModalProps) {
     const handleCancel = useCallback(() => {
         onOpenChange(false)
     }, [onOpenChange])
 
-    const defaultValues = useAgentStatusFormDefaults()
+    const defaultValues = useAgentStatusFormDefaults(status)
 
     const handleValidSubmit = useCallback(
         (formValues: AgentStatusFormValues) => {
@@ -44,9 +45,9 @@ export function CreateAgentStatusModal({
                 duration_value: durationValue,
             }
 
-            onSubmit(data)
+            onSubmit(data, status)
         },
-        [onSubmit],
+        [onSubmit, status],
     )
 
     return (
@@ -54,7 +55,7 @@ export function CreateAgentStatusModal({
             isOpen={isOpen}
             onOpenChange={handleCancel}
             size={ModalSize.Md}
-            aria-label="Create status"
+            aria-label="Edit status"
         >
             <Form<AgentStatusFormValues>
                 key={isOpen ? 'open' : 'closed'}
@@ -62,12 +63,11 @@ export function CreateAgentStatusModal({
                 validator={validateAgentStatusForm}
                 onValidSubmit={handleValidSubmit}
             >
-                <OverlayHeader title="Create status" />
+                <OverlayHeader title="Edit status" />
                 <AgentStatusFormContent
                     isLoading={isLoading}
                     onCancel={handleCancel}
-                    submitButtonText="Create status"
-                    description="Create a new custom agent unavailable status to better track team activity and improve visibility into how time is spent."
+                    submitButtonText="Save changes"
                 />
             </Form>
         </Modal>

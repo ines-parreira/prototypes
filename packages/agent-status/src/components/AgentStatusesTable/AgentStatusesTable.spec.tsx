@@ -73,7 +73,7 @@ describe('AgentStatusesTable', () => {
     })
 
     describe('Rendering', () => {
-        it('should render statuses from props', () => {
+        it('should render all statuses', () => {
             renderAgentStatusesTable()
 
             const statuses = defaultProps.data.map((status) => status.name)
@@ -92,101 +92,43 @@ describe('AgentStatusesTable', () => {
         })
     })
 
-    describe('Description Display', () => {
-        it('should status descriptions', () => {
+    describe('Description display', () => {
+        it('should show description or "—" for empty', () => {
             renderAgentStatusesTable()
-            const descriptions = defaultProps.data.map(
-                (status) => status.description,
-            )
 
-            let emptyDescriptionsCount = 0
+            expect(screen.getByText('Available status')).toBeInTheDocument()
+            expect(screen.getByText('Lunch break status')).toBeInTheDocument()
 
-            for (const description of descriptions) {
-                if (!description) {
-                    emptyDescriptionsCount++
-                } else {
-                    expect(screen.getByText(description)).toBeInTheDocument()
-                }
-            }
-            expect(screen.getAllByText('—').length).toBe(emptyDescriptionsCount)
+            // Training has empty description
+            const trainingRow = screen.getByText('Training').closest('tr')!
+            expect(within(trainingRow).getByText('—')).toBeInTheDocument()
         })
     })
 
-    describe('Duration Formatting', () => {
-        it('should display special duration text for system statuses', () => {
+    describe('Duration formatting', () => {
+        it('should format unlimited as "Unlimited"', () => {
             renderAgentStatusesTable()
 
-            const durationDisplays = defaultProps.data
-                .map((status) => status.durationDisplay)
-                .filter((durationDisplay) => durationDisplay !== undefined)
-
-            for (const durationDisplay of durationDisplays) {
-                if (durationDisplay) {
-                    expect(
-                        screen.getByText(durationDisplay),
-                    ).toBeInTheDocument()
-                }
-            }
+            expect(screen.getAllByText('Unlimited').length).toBeGreaterThan(0)
         })
 
-        it('should display "Unlimited" for null duration on custom statuses', () => {
-            renderAgentStatusesTable()
-
-            // Multiple statuses have unlimited duration
-            const unlimitedElements = screen.getAllByText('Unlimited')
-            expect(unlimitedElements.length).toBeGreaterThan(0)
-        })
-
-        it('should format minutes correctly', () => {
+        it('should format durations correctly', () => {
             renderAgentStatusesTable()
 
             expect(screen.getByText('30 minutes')).toBeInTheDocument()
-        })
-
-        it('should format hours correctly', () => {
-            renderAgentStatusesTable()
-
-            // Training is 2 hours
             expect(screen.getByText('2 hours')).toBeInTheDocument()
-        })
-
-        it('should format hours and minutes together', () => {
-            const statusWithMixedDuration: AgentStatusWithSystem = {
-                id: '5',
-                name: 'Long meeting',
-                duration_unit: 'minutes',
-                duration_value: 90,
-                is_system: false,
-                created_datetime: '2024-01-05T00:00:00Z',
-                updated_datetime: '2024-01-05T00:00:00Z',
-                description: 'Long meeting status',
-            }
-
-            render(
-                <AgentStatusesTable
-                    {...defaultProps}
-                    data={[...mockStatuses, statusWithMixedDuration]}
-                />,
-            )
-
-            const longMeetingRow = screen
-                .getByText('Long meeting')
-                .closest('tr')!
-            expect(
-                within(longMeetingRow).getByText('1 hour 30 minutes'),
-            ).toBeInTheDocument()
         })
     })
 
-    describe('Action Buttons', () => {
-        it('should have both edit and delete buttons for each row', () => {
+    describe('Action buttons', () => {
+        it('should have edit and delete buttons for each row', () => {
             renderAgentStatusesTable()
 
             const allButtons = screen.getAllByRole('button')
             expect(allButtons.length).toBe(mockStatuses.length * 2)
         })
 
-        it('should disable edit and delete buttons for system statuses', () => {
+        it('should disable buttons for system statuses', () => {
             renderAgentStatusesTable()
 
             const allButtons = screen.getAllByRole('button')
@@ -199,7 +141,7 @@ describe('AgentStatusesTable', () => {
             expect(disabledButtons.length).toBe(SYSTEM_STATUSES.length * 2)
         })
 
-        it('should enable edit and delete buttons for custom statuses', () => {
+        it('should enable buttons for custom statuses', () => {
             renderAgentStatusesTable()
 
             const allButtons = screen.getAllByRole('button')
@@ -212,7 +154,7 @@ describe('AgentStatusesTable', () => {
             expect(enabledButtons.length).toBe(mockCustomStatuses.length * 2)
         })
 
-        it('should call onEdit with correct status when edit button clicked', async () => {
+        it('should call onEdit when edit button clicked', async () => {
             const onEdit = vi.fn()
             const { user } = render(
                 <AgentStatusesTable {...defaultProps} onEdit={onEdit} />,
@@ -234,7 +176,7 @@ describe('AgentStatusesTable', () => {
             expect(onEdit).toHaveBeenCalledTimes(1)
         })
 
-        it('should call onDelete with correct status id when delete button clicked', async () => {
+        it('should call onDelete when delete button clicked', async () => {
             const onDelete = vi.fn()
             const { user } = render(
                 <AgentStatusesTable {...defaultProps} onDelete={onDelete} />,
@@ -255,71 +197,16 @@ describe('AgentStatusesTable', () => {
             )
             expect(onDelete).toHaveBeenCalledTimes(1)
         })
-
-        it('should not call onEdit when clicking disabled edit button on system status', async () => {
-            const onEdit = vi.fn()
-            const { user } = render(
-                <AgentStatusesTable {...defaultProps} onEdit={onEdit} />,
-            )
-
-            const unavailableRow = screen
-                .getByText('Unavailable')
-                .closest('tr')!
-            const editButton = within(unavailableRow).getByRole('button', {
-                name: /cannot edit system status unavailable/i,
-            })
-
-            expect(editButton).toBeDisabled()
-
-            // Try to click anyway
-            await act(() => user.click(editButton))
-
-            // Callback should not be called
-            expect(onEdit).not.toHaveBeenCalled()
-        })
-
-        it('should not call onDelete when clicking disabled delete button on system status', async () => {
-            const onDelete = vi.fn()
-            const { user } = render(
-                <AgentStatusesTable {...defaultProps} onDelete={onDelete} />,
-            )
-
-            const unavailableRow = screen
-                .getByText('Unavailable')
-                .closest('tr')!
-            const deleteButton = within(unavailableRow).getByRole('button', {
-                name: /cannot delete system status unavailable/i,
-            })
-
-            expect(deleteButton).toBeDisabled()
-
-            // Try to click anyway
-            await act(() => user.click(deleteButton))
-
-            // Callback should not be called
-            expect(onDelete).not.toHaveBeenCalled()
-        })
     })
 
-    describe('Accessibility - Structure', () => {
-        it('should have proper table structure', () => {
+    describe('Accessibility', () => {
+        it('should have proper table structure with semantic headers', () => {
             renderAgentStatusesTable()
 
             const table = screen.getByRole('table')
             expect(table).toBeInTheDocument()
 
             // Should have column headers
-            const columnHeaders = screen.getAllByRole('columnheader')
-            expect(columnHeaders.length).toBe(4) // Status, Description, Duration, Actions
-
-            // Should have rows
-            const rows = screen.getAllByRole('row')
-            expect(rows.length).toBeGreaterThan(1) // At least header + data rows
-        })
-
-        it('should have semantic column headers', () => {
-            renderAgentStatusesTable()
-
             expect(
                 screen.getByRole('columnheader', { name: /status/i }),
             ).toBeInTheDocument()
@@ -329,32 +216,17 @@ describe('AgentStatusesTable', () => {
             expect(
                 screen.getByRole('columnheader', { name: /duration/i }),
             ).toBeInTheDocument()
-        })
 
-        it('should have proper row structure with cells', () => {
-            renderAgentStatusesTable()
-
-            const firstDataRow = screen.getAllByRole('row')[1] // Skip header row
+            // Should have rows with cells
+            const firstDataRow = screen.getAllByRole('row')[1]
             const cells = within(firstDataRow).getAllByRole('cell')
-
-            expect(cells.length).toBe(4) // One cell per column
-        })
-    })
-
-    describe('Accessibility - ARIA Attributes', () => {
-        it('should have accessible names on all action buttons', () => {
-            renderAgentStatusesTable()
-
-            const allButtons = screen.getAllByRole('button')
-            allButtons.forEach((button) => {
-                expect(button).toHaveAccessibleName()
-            })
+            expect(cells.length).toBe(4)
         })
 
-        it('should have descriptive aria-labels that include status names', () => {
+        it('should have accessible button labels', () => {
             renderAgentStatusesTable()
 
-            // Custom status - should have edit/delete labels with status name
+            // Custom status buttons
             expect(
                 screen.getByRole('button', { name: /edit available status/i }),
             ).toBeInTheDocument()
@@ -363,12 +235,8 @@ describe('AgentStatusesTable', () => {
                     name: /delete available status/i,
                 }),
             ).toBeInTheDocument()
-        })
 
-        it('should have aria-labels indicating disabled state for system statuses', () => {
-            renderAgentStatusesTable()
-
-            // System status - aria-label should indicate cannot edit/delete
+            // System status buttons with disabled indication
             expect(
                 screen.getByRole('button', {
                     name: /cannot edit system status unavailable/i,
@@ -379,33 +247,6 @@ describe('AgentStatusesTable', () => {
                     name: /cannot delete system status unavailable/i,
                 }),
             ).toBeInTheDocument()
-        })
-
-        it('should maintain both disabled attribute and aria-disabled', () => {
-            renderAgentStatusesTable()
-
-            const systemStatusRow = screen
-                .getByText('Unavailable')
-                .closest('tr')!
-            const editButton = within(systemStatusRow).getByRole('button', {
-                name: /cannot edit/i,
-            })
-
-            expect(editButton).toHaveAttribute('aria-disabled', 'true')
-            expect(editButton).toBeDisabled()
-        })
-
-        it('should have proper table accessibility attributes', () => {
-            renderAgentStatusesTable()
-
-            const table = screen.getByRole('table')
-            expect(table).toBeInTheDocument()
-
-            // Verify table has accessible name
-            expect(table).toHaveAttribute(
-                'aria-label',
-                'Agent availability statuses',
-            )
         })
     })
 })

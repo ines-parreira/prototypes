@@ -24,6 +24,8 @@ import type { AgentStatusFormContentProps } from './types'
 export function AgentStatusFormContent({
     isLoading,
     onCancel,
+    submitButtonText,
+    description,
 }: AgentStatusFormContentProps) {
     const durationOption = useWatch({ name: 'durationOption' })
 
@@ -36,11 +38,7 @@ export function AgentStatusFormContent({
         <>
             <OverlayContent>
                 <Box flexDirection="column" gap="md">
-                    <Text>
-                        Create a new custom agent unavailable status to better
-                        track team activity and improve visibility into how time
-                        is spent.
-                    </Text>
+                    {description && <Text>{description}</Text>}
 
                     <Box flexDirection="column" gap="sm">
                         <FormField
@@ -102,7 +100,7 @@ export function AgentStatusFormContent({
                         isDisabled={isLoading}
                         isLoading={isLoading}
                     >
-                        Create status
+                        {submitButtonText}
                     </Button>
                 </Box>
             </OverlayFooter>
