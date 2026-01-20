@@ -5,10 +5,16 @@ import type { IngestionLog } from 'pages/aiAgent/AiAgentScrapedDomainContent/typ
 
 import { useGetLastWebsiteSync } from './useGetLastWebsiteSync'
 
-jest.mock('pages/aiAgent/AiAgentScrapedDomainContent/utils', () => ({
-    isSyncLessThan24Hours: jest.fn(),
-    getNextSyncDate: jest.fn(),
-}))
+jest.mock('pages/aiAgent/AiAgentScrapedDomainContent/utils', () => {
+    const actual = jest.requireActual(
+        'pages/aiAgent/AiAgentScrapedDomainContent/utils',
+    )
+    return {
+        ...actual,
+        isSyncLessThan24Hours: jest.fn(),
+        getNextSyncDate: jest.fn(),
+    }
+})
 
 const mockIsSyncLessThan24Hours = jest.requireMock(
     'pages/aiAgent/AiAgentScrapedDomainContent/utils',
@@ -39,7 +45,7 @@ describe('useGetLastWebsiteSync', () => {
             useGetLastWebsiteSync(mockIngestionLog),
         )
 
-        expect(result.current.latestSync).toBe('2024-01-15T10:00:00Z')
+        expect(result.current.latestSync).toBe(1705312800000)
     })
 
     it('returns current date ISO string when status is pending', () => {
@@ -67,15 +73,13 @@ describe('useGetLastWebsiteSync', () => {
     it('calls isSyncLessThan24Hours with latestSync', () => {
         renderHook(() => useGetLastWebsiteSync(mockIngestionLog))
 
-        expect(mockIsSyncLessThan24Hours).toHaveBeenCalledWith(
-            '2024-01-15T10:00:00Z',
-        )
+        expect(mockIsSyncLessThan24Hours).toHaveBeenCalledWith(1705312800000)
     })
 
     it('calls getNextSyncDate with latestSync', () => {
         renderHook(() => useGetLastWebsiteSync(mockIngestionLog))
 
-        expect(mockGetNextSyncDate).toHaveBeenCalledWith('2024-01-15T10:00:00Z')
+        expect(mockGetNextSyncDate).toHaveBeenCalledWith(1705312800000)
     })
 
     it('returns isSyncLessThan24h from utility function', () => {
@@ -107,10 +111,8 @@ describe('useGetLastWebsiteSync', () => {
 
         const { result } = renderHook(() => useGetLastWebsiteSync(failedLog))
 
-        expect(result.current.latestSync).toBe('2024-01-14T08:00:00Z')
-        expect(mockIsSyncLessThan24Hours).toHaveBeenCalledWith(
-            '2024-01-14T08:00:00Z',
-        )
+        expect(result.current.latestSync).toBe(1705219200000)
+        expect(mockIsSyncLessThan24Hours).toHaveBeenCalledWith(1705219200000)
     })
 
     it('handles ingestion log without latest_sync field', () => {
@@ -134,7 +136,7 @@ describe('useGetLastWebsiteSync', () => {
             },
         )
 
-        expect(result.current.latestSync).toBe('2024-01-15T10:00:00Z')
+        expect(result.current.latestSync).toBe(1705312800000)
 
         const updatedLog: IngestionLog = {
             ...mockIngestionLog,
@@ -165,6 +167,6 @@ describe('useGetLastWebsiteSync', () => {
 
         rerender({ log: mockIngestionLog })
 
-        expect(result.current.latestSync).toBe('2024-01-15T10:00:00Z')
+        expect(result.current.latestSync).toBe(1705312800000)
     })
 })

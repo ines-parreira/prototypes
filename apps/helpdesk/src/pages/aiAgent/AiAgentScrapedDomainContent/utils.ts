@@ -1,3 +1,4 @@
+import { IngestionLogStatus } from './constant'
 import type { IngestionLog } from './types'
 
 const dateOptions: Intl.DateTimeFormatOptions = {
@@ -12,7 +13,9 @@ const dateTimeOptions: Intl.DateTimeFormatOptions = {
     hour12: true,
 }
 
-export const getFormattedSyncDate = (latestSync: string | undefined | null) => {
+export const getFormattedSyncDate = (
+    latestSync: number | string | undefined | null,
+) => {
     if (!latestSync) return null
 
     const latestSyncDate = new Date(latestSync)
@@ -23,7 +26,7 @@ export const getFormattedSyncDate = (latestSync: string | undefined | null) => {
 }
 
 export const getFormattedSyncDatetime = (
-    latestSync: string | undefined | null,
+    latestSync: number | string | undefined | null,
 ) => {
     if (!latestSync) return null
 
@@ -39,7 +42,7 @@ export const getFormattedSyncDatetime = (
 }
 
 export const isSyncLessThan24Hours = (
-    latestSync: string | undefined | null,
+    latestSync: number | string | undefined | null,
 ) => {
     if (!latestSync) return false
 
@@ -51,7 +54,9 @@ export const isSyncLessThan24Hours = (
     return diffInHours < 24
 }
 
-export const getNextSyncDate = (latestSync: string | undefined | null) => {
+export const getNextSyncDate = (
+    latestSync: number | string | undefined | null,
+) => {
     if (!latestSync) return null
 
     const latestSyncDate = new Date(latestSync)
@@ -67,22 +72,35 @@ export const getNextSyncDate = (latestSync: string | undefined | null) => {
         .replace(/\s(am|pm)/i, (match) => match.toUpperCase())
 }
 
+export function getEffectiveSyncTime(log?: IngestionLog): number | undefined {
+    if (!log) return undefined
+
+    if (log.status === IngestionLogStatus.Pending) {
+        return Date.now()
+    }
+
+    return log.latest_sync ? new Date(log.latest_sync).getTime() : undefined
+}
+
 export const getTheLatestIngestionLog = (ingestionLogs?: IngestionLog[]) => {
     if (!ingestionLogs || ingestionLogs.length === 0) {
         return undefined
     }
 
-    const latestIngestionLog = ingestionLogs?.reduce((latest, current) => {
-        if (!latest.latest_sync) {
-            return current
-        }
-        if (!current.latest_sync) {
-            return latest
-        }
-        return new Date(current.latest_sync) > new Date(latest.latest_sync)
-            ? current
-            : latest
-    })
+    const latestIngestionLog = ingestionLogs.reduce<IngestionLog | undefined>(
+        (latest, current) => {
+            if (!latest) return current
+
+            const latestTime = getEffectiveSyncTime(latest)
+            const currentTime = getEffectiveSyncTime(current)
+
+            if (latestTime === undefined) return current
+            if (currentTime === undefined) return latest
+
+            return currentTime > latestTime ? current : latest
+        },
+        undefined,
+    )
 
     return latestIngestionLog
 }
