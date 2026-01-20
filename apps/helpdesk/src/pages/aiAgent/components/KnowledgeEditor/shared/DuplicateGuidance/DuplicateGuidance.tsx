@@ -186,6 +186,9 @@ export const DuplicateGuidance = ({
         <MultiSelect<StoreSection>
             key={resetKey}
             maxWidth={290}
+            // fixing minWidth to same as maxWidth (100%) to prevent container from jumping and allowing enough space
+            // to render search input and not to cut off text while typing
+            minWidth={290}
             trigger={trigger || defaultTrigger}
             maxHeight={206}
             isSearchable
