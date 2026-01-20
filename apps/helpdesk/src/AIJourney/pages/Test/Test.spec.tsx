@@ -413,4 +413,195 @@ describe('<Test />', () => {
             expect(mockHandleGenerateMessages).toHaveBeenCalledTimes(1)
         })
     })
+
+    it('should preserve product image when generating messages', async () => {
+        const firstProductImage = {
+            src: 'https://example.com/image1.jpg',
+        }
+
+        const mockProducts = [
+            {
+                id: 1,
+                integration_id: 1,
+                integration_type: 'shopify',
+                item_type: 'product',
+                data: {
+                    id: 1,
+                    title: 'Product 1',
+                    image: firstProductImage,
+                    status: 'active',
+                    variants: [
+                        {
+                            id: 1,
+                            title: 'Default',
+                            price: '10.00',
+                        },
+                    ],
+                },
+            },
+            {
+                id: 2,
+                integration_id: 1,
+                integration_type: 'shopify',
+                item_type: 'product',
+                data: {
+                    id: 2,
+                    title: 'Product 2',
+                    image: { src: 'https://example.com/image2.jpg' },
+                    status: 'active',
+                    variants: [
+                        {
+                            id: 2,
+                            title: 'Default',
+                            price: '20.00',
+                        },
+                    ],
+                },
+            },
+        ]
+
+        useListProductsMock.mockReturnValue({
+            data: {
+                pages: [
+                    {
+                        data: {
+                            data: mockProducts,
+                        },
+                    },
+                ],
+            },
+        } as any)
+
+        const mockPlaygroundMessages = ['Message 1', 'Message 2']
+        mockUseGeneratePlaygroundMessage.mockImplementation(() => ({
+            handleGenerateMessages: mockHandleGenerateMessages,
+            playgroundMessages: mockPlaygroundMessages,
+            isGeneratingMessages: false,
+        }))
+
+        mockUseJourneyContext.mockImplementation(() => ({
+            journey: null,
+            journeyData: {
+                id: 'journey-123',
+                type: 'cart-abandoned',
+                message_instructions: 'Test instructions',
+                configuration: {
+                    max_follow_up_messages: 3,
+                    offer_discount: true,
+                    include_image: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 1,
+                },
+            },
+            journeyType: 'cart-abandoned',
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            storeConfiguration: {
+                monitoredSmsIntegrations: [],
+            },
+        }))
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <Test />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const user = userEvent.setup()
+
+        const previewButton = screen.getByRole('button', {
+            name: 'Preview messages',
+        })
+
+        await act(async () => {
+            await user.click(previewButton)
+        })
+
+        await waitFor(() => {
+            expect(mockHandleGenerateMessages).toHaveBeenCalledTimes(1)
+        })
+
+        await waitFor(() => {
+            const productImage = screen.getByAltText(
+                'selected-product-image',
+            ) as HTMLImageElement
+            expect(productImage).toBeInTheDocument()
+            expect(productImage.src).toBe(firstProductImage.src)
+        })
+    })
+
+    it('should handle preview messages when product is null', async () => {
+        useListProductsMock.mockReturnValue({
+            data: {
+                pages: [
+                    {
+                        data: {
+                            data: [],
+                        },
+                    },
+                ],
+            },
+        } as any)
+
+        const mockPlaygroundMessages = ['Message 1', 'Message 2']
+        mockUseGeneratePlaygroundMessage.mockImplementation(() => ({
+            handleGenerateMessages: mockHandleGenerateMessages,
+            playgroundMessages: mockPlaygroundMessages,
+            isGeneratingMessages: false,
+        }))
+
+        mockUseJourneyContext.mockImplementation(() => ({
+            journey: null,
+            journeyData: {
+                id: 'journey-123',
+                type: 'campaign',
+                message_instructions: 'Test instructions',
+                configuration: {
+                    max_follow_up_messages: 3,
+                    offer_discount: true,
+                    include_image: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '415-111-111',
+                    sms_sender_integration_id: 1,
+                },
+            },
+            journeyType: 'campaign',
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            storeConfiguration: {
+                monitoredSmsIntegrations: [],
+            },
+        }))
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <Test />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const user = userEvent.setup()
+
+        const previewButton = screen.getByRole('button', {
+            name: 'Preview messages',
+        })
+
+        await act(async () => {
+            await user.click(previewButton)
+        })
+
+        await waitFor(() => {
+            expect(mockHandleGenerateMessages).toHaveBeenCalledTimes(1)
+        })
+
+        expect(
+            screen.queryByAltText('selected-product-image'),
+        ).not.toBeInTheDocument()
+    })
 })

@@ -17,7 +17,7 @@ import {
 } from 'AIJourney/hooks'
 import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
 import { useJourneyContext } from 'AIJourney/providers'
-import type { Product } from 'constants/integrations/types/shopify'
+import type { Image, Product } from 'constants/integrations/types/shopify'
 
 import { ProductSelectField } from '../Activation/fields'
 import { JourneyMessageInstructionsField } from '../Setup/fields'
@@ -37,6 +37,9 @@ export const Test = () => {
 
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
     const [error, setError] = useState<string | undefined>()
+    const [currentProductImage, setCurrentProductImage] =
+        useState<Image | null>()
+
     const [journeyMessageInstructions, setJourneyMessageInstructions] =
         useState<string>(journeyData?.message_instructions || '')
 
@@ -103,12 +106,14 @@ export const Test = () => {
             setError('Please provide message guidance to continue.')
             return
         }
+        setCurrentProductImage(selectedProduct?.image)
         setError(undefined)
         await handleGenerateMessages()
     }, [
         handleGenerateMessages,
         areInstructionsMandatory,
         journeyMessageInstructions,
+        selectedProduct?.image,
     ])
 
     const handleContinue = useCallback(async () => {
@@ -234,7 +239,7 @@ export const Test = () => {
                         content={playgroundMessages}
                         isGeneratingMessages={isGeneratingMessages}
                         includeImage={journeyParams?.include_image}
-                        selectedProductImage={selectedProduct?.image}
+                        selectedProductImage={currentProductImage}
                     />
                 </div>
             </motion.div>
