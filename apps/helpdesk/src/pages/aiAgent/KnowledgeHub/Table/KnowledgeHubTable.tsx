@@ -292,33 +292,56 @@ export const KnowledgeHubTable = ({
 
     const prevSelectedFolderRef = useRef(selectedFolder)
 
+    const handleDateRangeClear = useCallback(() => {
+        onDateRangeChange(null, null)
+        setActiveFilterTypes((prev) => {
+            const next = new Set(prev)
+            next.delete('lastUpdatedAt')
+            return next
+        })
+    }, [onDateRangeChange])
+
+    const handleInUseByAIClear = useCallback(() => {
+        onInUseByAIChange(null)
+        setActiveFilterTypes((prev) => {
+            const next = new Set(prev)
+            next.delete('inUseByAI')
+            return next
+        })
+    }, [onInUseByAIChange])
+
     useEffect(() => {
         const prev = prevSelectedFolderRef.current
         const current = selectedFolder
 
-        const isEnteringSnippetFolder =
-            current &&
-            (current.type === KnowledgeTypeEnum.Document ||
-                current.type === KnowledgeTypeEnum.URL ||
-                current.type === KnowledgeTypeEnum.Domain)
+        const isSnippetFolder = (folder: GroupedKnowledgeItem | null) =>
+            folder &&
+            (folder.type === KnowledgeTypeEnum.Document ||
+                folder.type === KnowledgeTypeEnum.URL ||
+                folder.type === KnowledgeTypeEnum.Domain)
 
-        const wasInSnippetFolder =
-            prev &&
-            (prev.type === KnowledgeTypeEnum.Document ||
-                prev.type === KnowledgeTypeEnum.URL ||
-                prev.type === KnowledgeTypeEnum.Domain)
+        const currentIsSnippetFolder = isSnippetFolder(current)
+        const prevIsSnippetFolder = isSnippetFolder(prev)
+
+        // Only clear filters when transitioning to a DIFFERENT snippet folder
+        const isEnteringSnippetFolder =
+            currentIsSnippetFolder &&
+            current !== null &&
+            (!prev || prev.source !== current.source)
 
         const isExitingFolder = prev && !current
 
         if (
             isEnteringSnippetFolder ||
-            (isExitingFolder && wasInSnippetFolder)
+            (isExitingFolder && prevIsSnippetFolder)
         ) {
             table.resetRowSelection()
+            handleDateRangeClear()
+            handleInUseByAIClear()
         }
 
         prevSelectedFolderRef.current = current
-    }, [selectedFolder, table])
+    }, [selectedFolder, table, handleDateRangeClear, handleInUseByAIClear])
 
     const isSearchEmptyPage =
         !isLoading &&
@@ -348,24 +371,6 @@ export const KnowledgeHubTable = ({
 
     const handleFilterSelect = (filterValue: string) => {
         setActiveFilterTypes((prev) => new Set(prev).add(filterValue))
-    }
-
-    const handleDateRangeClear = () => {
-        onDateRangeChange(null, null)
-        setActiveFilterTypes((prev) => {
-            const next = new Set(prev)
-            next.delete('lastUpdatedAt')
-            return next
-        })
-    }
-
-    const handleInUseByAIClear = () => {
-        onInUseByAIChange(null)
-        setActiveFilterTypes((prev) => {
-            const next = new Set(prev)
-            next.delete('inUseByAI')
-            return next
-        })
     }
 
     return (

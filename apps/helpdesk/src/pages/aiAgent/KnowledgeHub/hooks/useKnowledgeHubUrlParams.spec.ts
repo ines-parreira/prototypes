@@ -768,9 +768,10 @@ describe('useKnowledgeHubUrlParams', () => {
                 },
             )
 
-            // Other params should be preserved
+            // Filter param should be preserved (knowledge type filter)
             expect(history.location.search).toContain('filter=url')
-            expect(history.location.search).toContain('search=test')
+            // Search param should be cleared along with folder
+            expect(history.location.search).not.toContain('search=test')
             // Folder param should be removed
             expect(history.location.search).not.toContain('folder=')
         })

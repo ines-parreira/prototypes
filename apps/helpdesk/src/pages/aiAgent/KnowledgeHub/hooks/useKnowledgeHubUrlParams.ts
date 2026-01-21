@@ -171,9 +171,21 @@ export function useKnowledgeHubUrlParams(
     )
 
     const removeFolderParamFromUrl = useCallback(() => {
+        // Clear filter state that doesn't apply outside of folders
+        setSearchTerm('')
+        setDateRange({ startDate: null, endDate: null })
+        setInUseByAIFilter(null)
+
         // Remove folder parameter from URL
         const params = new URLSearchParams(location.search)
         params.delete('folder')
+
+        // Remove filter params from URL that don't apply outside of folder views
+        params.delete('startDate')
+        params.delete('endDate')
+        params.delete('search')
+        params.delete('inUseByAI')
+
         const newSearch = params.toString()
         const newUrl = newSearch
             ? `${history.location.pathname}?${newSearch}`
@@ -387,8 +399,20 @@ export function useKnowledgeHubUrlParams(
 
     const updateUrlWithFolderParam = useCallback(
         (data: GroupedKnowledgeItem) => {
+            // Clear filter state that doesn't apply to folders
+            setSearchTerm('')
+            setDateRange({ startDate: null, endDate: null })
+            setInUseByAIFilter(null)
+
             // Update URL with folder parameter
             const params = new URLSearchParams(location.search)
+
+            // Remove filter params from URL that don't apply to folder views
+            params.delete('startDate')
+            params.delete('endDate')
+            params.delete('search')
+            params.delete('inUseByAI')
+
             if (data.source) {
                 params.set('folder', encodeURIComponent(data.source))
             }
