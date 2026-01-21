@@ -3,6 +3,7 @@ import type React from 'react'
 import { useEffect, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
+import { getMoneySymbol } from '@repo/utils'
 import classnames from 'classnames'
 
 import type {
@@ -11,7 +12,6 @@ import type {
 } from 'models/integration/types'
 import { BigCommerceRefundableItemType } from 'models/integration/types'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import type { BIGCOMMERCE_REFUND_ACTION_TYPE } from '../types'
 import { BigCommerceRefundActionType } from '../types'

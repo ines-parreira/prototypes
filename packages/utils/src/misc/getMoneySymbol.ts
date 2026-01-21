@@ -1,3 +1,9 @@
+/**
+ * Currency symbol utilities
+ *
+ * Migrated from: apps/helpdesk/src/utils/getMoneySymbol.ts
+ */
+
 const DEFAULT_SYMBOL = '$'
 
 /**

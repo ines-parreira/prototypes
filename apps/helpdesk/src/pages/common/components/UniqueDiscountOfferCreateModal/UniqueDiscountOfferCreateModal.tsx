@@ -3,6 +3,7 @@ import type React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { getMoneySymbol } from '@repo/utils'
 import type { AxiosError } from 'axios'
 import type { Map } from 'immutable'
 import { isEqual } from 'lodash'
@@ -40,7 +41,6 @@ import CustomerSegmentSelector from 'pages/convert/discountOffer/components/Cust
 import { useCreateDiscountOffer } from 'pages/convert/discountOffer/hooks/useCreateDiscountOffer'
 import { useUpdateDiscountOffer } from 'pages/convert/discountOffer/hooks/useUpdateDiscountOffer'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import { transformAxiosError } from './utils'
 

@@ -1,6 +1,7 @@
 import type { FormEvent } from 'react'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 
+import { getMoneySymbol } from '@repo/utils'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
 import type { Map } from 'immutable'
@@ -38,7 +39,6 @@ import CustomerSegmentSelector from 'pages/convert/discountOffer/components/Cust
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getTicketState } from 'state/ticket/selectors'
-import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import css from './DiscountCodeCreateModal.less'
 

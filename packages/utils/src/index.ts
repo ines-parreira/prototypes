@@ -12,4 +12,5 @@ export {
     isTeamLead,
 } from './access-control/roles'
 export { sleep } from './misc/sleep'
+export { getMoneySymbol } from './misc/getMoneySymbol'
 export { IntlDisplayNames } from './language/language'

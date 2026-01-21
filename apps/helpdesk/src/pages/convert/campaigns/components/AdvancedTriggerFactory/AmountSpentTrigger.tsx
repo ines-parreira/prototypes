@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
+import { getMoneySymbol } from '@repo/utils'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import type { Value } from 'pages/common/forms/SelectField/types'
 import { convertTriggerOperatorsToSelectOptions } from 'pages/convert/campaigns/utils/convertTriggerOperatorsToSelectOptions'
-import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import { useIntegrationContext } from '../../containers/IntegrationProvider'
 import type { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'

@@ -1,8 +1,8 @@
+import { getMoneySymbol } from '@repo/utils'
 import cn from 'classnames'
 
 import logo from 'assets/img/infobar/shopify.svg'
 import type { Order } from 'constants/integrations/types/shopify'
-import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import CardHeaderIcon from './CardHeaderIcon'
 import OrderStatusBadge from './OrderStatusBadge'

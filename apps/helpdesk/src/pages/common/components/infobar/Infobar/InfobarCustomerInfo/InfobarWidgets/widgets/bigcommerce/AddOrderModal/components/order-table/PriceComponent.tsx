@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 
+import { getMoneySymbol } from '@repo/utils'
 import classnames from 'classnames'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
@@ -11,7 +12,6 @@ import type {
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import Caption from 'pages/common/forms/Caption/Caption'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import { isBigCommerceCartLineItem } from '../../utils'
 import { PopoverContainer } from '../popover-container/PopoverContainer'

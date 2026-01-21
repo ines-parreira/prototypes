@@ -2,6 +2,7 @@ import {
     TicketTimelineHeader as TicketHeader,
     TimelineCard,
 } from '@repo/tickets'
+import { getMoneySymbol } from '@repo/utils'
 
 import { Box, Color, Tag, Text, TextVariant } from '@gorgias/axiom'
 import type { Color as ColorType } from '@gorgias/axiom'
@@ -14,7 +15,6 @@ import type {
     OrderLineItem,
     Product,
 } from 'constants/integrations/types/shopify'
-import { getMoneySymbol } from 'utils/getMoneySymbol'
 import { getSizedImageUrl } from 'utils/shopify'
 
 import css from './TimelineOrderCard.less'

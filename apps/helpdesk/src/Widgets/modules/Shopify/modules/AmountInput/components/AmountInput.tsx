@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react'
 
+import { getMoneySymbol } from '@repo/utils'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
 import { NON_FRACTIONAL_CURRENCIES } from 'constants/integrations/shopify'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import css from './AmountInput.less'
 

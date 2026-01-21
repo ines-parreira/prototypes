@@ -10,6 +10,7 @@ import type {
 import React, { PureComponent } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { getMoneySymbol } from '@repo/utils'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import {
@@ -28,7 +29,6 @@ import { getDiscountAmount } from 'business/shopify/discount'
 import { formatPrice } from 'business/shopify/number'
 import type { AppliedDiscount } from 'constants/integrations/types/shopify'
 import { DiscountType } from 'constants/integrations/types/shopify'
-import { getMoneySymbol } from 'utils/getMoneySymbol'
 import { focusElement } from 'utils/html'
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'

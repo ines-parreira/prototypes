@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 
+import { getMoneySymbol } from '@repo/utils'
 import classnames from 'classnames'
 
 import {
@@ -18,7 +19,6 @@ import {
 } from 'models/integration/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import { PopoverContainer } from './components/popover-container/PopoverContainer'
 

@@ -1,12 +1,13 @@
 import type React from 'react'
 import { useRef, useState } from 'react'
 
+import { getMoneySymbol } from '@repo/utils'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { BigCommerceCustomProduct } from 'models/integration/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/input/InputField'
-import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import { PopoverContainer } from './components/popover-container/PopoverContainer'
 
