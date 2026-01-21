@@ -1,3 +1,4 @@
+import { isCallActive } from '@repo/utils'
 import type { AxiosResponse } from 'axios'
 import axios from 'axios'
 import rateLimit from 'axios-rate-limit'
@@ -6,7 +7,6 @@ import type { Store } from 'redux'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { StoreDispatch } from 'state/types'
-import { isCallActive } from 'utils/reloadCallGuard'
 
 const client = createClient()
 

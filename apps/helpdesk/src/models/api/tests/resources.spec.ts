@@ -99,9 +99,7 @@ describe('client resources', () => {
         it('should not schedule reload when call is active', () => {
             jest.isolateModules(() => {
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const {
-                    registerCallStateCallback,
-                } = require('utils/reloadCallGuard')
+                const { registerCallStateCallback } = require('@repo/utils')
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const {
                     handleNewRelease: mockedHandler,
@@ -122,9 +120,7 @@ describe('client resources', () => {
         it('should show notification but prevent automatic reload if call is active when timeout fires', () => {
             jest.isolateModules(() => {
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const {
-                    registerCallStateCallback,
-                } = require('utils/reloadCallGuard')
+                const { registerCallStateCallback } = require('@repo/utils')
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const {
                     handleNewRelease: mockedHandler,

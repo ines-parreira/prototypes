@@ -1,3 +1,9 @@
+/**
+ * Call state management for reload protection
+ *
+ * Migrated from: apps/helpdesk/src/utils/reloadCallGuard.ts
+ */
+
 type CallStateCallback = () => boolean
 
 let isCallActiveCallback: CallStateCallback | null = null

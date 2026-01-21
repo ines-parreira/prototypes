@@ -13,4 +13,5 @@ export {
 } from './access-control/roles'
 export { sleep } from './misc/sleep'
 export { getMoneySymbol } from './misc/getMoneySymbol'
+export { isCallActive, registerCallStateCallback } from './misc/reloadCallGuard'
 export { IntlDisplayNames } from './language/language'
