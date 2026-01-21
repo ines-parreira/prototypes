@@ -112,13 +112,10 @@ afterAll(() => {
 
 describe('TicketStatus', () => {
     const openMenu = async (user: ReturnType<typeof render>['user']) => {
-        const statusButton = screen.getByRole('button', {
+        const statusButton = await screen.findByRole('button', {
             name: 'Ticket status menu',
         })
-        expect(statusButton).toBeInTheDocument()
-
-        await act(() => user.click(statusButton))
-
+        await user.click(statusButton)
         return statusButton
     }
 
@@ -159,13 +156,13 @@ describe('TicketStatus', () => {
             await openMenu(user)
 
             const snoozeOption = await screen.findByText('Snooze')
-            await act(() => user.click(snoozeOption))
+            await user.click(snoozeOption)
 
             const datePicker = await screen.findByRole('grid')
             expect(datePicker).toBeInTheDocument()
 
             const nextWeekButton = await screen.findByText('1 Week')
-            await act(() => user.click(nextWeekButton))
+            await user.click(nextWeekButton)
 
             await waitFor(() => {
                 expect(dispatchNotification).toHaveBeenCalledWith(
@@ -184,23 +181,25 @@ describe('TicketStatus', () => {
             await openMenu(user)
 
             const snoozeOption = await screen.findByText('Snooze')
-            await act(() => user.click(snoozeOption))
+            await user.click(snoozeOption)
 
             const datePicker = await screen.findByRole('grid')
             expect(datePicker).toBeInTheDocument()
 
-            const applyButton = screen.getByText('Apply').closest('button')
+            const applyButton = await screen.findByRole('button', {
+                name: 'Apply',
+            })
             expect(applyButton).toBeDisabled()
 
-            const nextMonthButton = screen.getByRole('button', {
+            const nextMonthButton = await screen.findByRole('button', {
                 name: 'Next month',
             })
-            await act(() => user.click(nextMonthButton))
+            await user.click(nextMonthButton)
 
-            const day15 = screen.getByRole('button', {
+            const day15 = await screen.findByRole('button', {
                 name: /15/,
             })
-            await act(() => user.click(day15))
+            await user.click(day15)
 
             await waitFor(() => {
                 expect(applyButton).not.toBeDisabled()
@@ -222,11 +221,11 @@ describe('TicketStatus', () => {
             await openMenu(user)
 
             const snoozeOption = await screen.findByText('Snooze')
-            await act(() => user.click(snoozeOption))
+            await user.click(snoozeOption)
 
             await screen.findByRole('grid')
             const nextWeekButton = await screen.findByText('1 Week')
-            await act(() => user.click(nextWeekButton))
+            await user.click(nextWeekButton)
 
             await waitFor(() => {
                 expect(dispatchNotification).toHaveBeenCalledWith(
@@ -244,7 +243,7 @@ describe('TicketStatus', () => {
             await openMenu(user)
 
             const closeOption = await screen.findByText('Close')
-            await act(() => user.click(closeOption))
+            await user.click(closeOption)
 
             await waitFor(() => {
                 expect(screen.queryByText('Close')).not.toBeInTheDocument()
@@ -256,9 +255,8 @@ describe('TicketStatus', () => {
         it('should render and show correct menu options', async () => {
             const { user } = render(<TicketStatusMenu ticket={closedTicket} />)
 
-            expect(screen.getByText('Closed')).toBeInTheDocument()
-
-            await act(() => user.click(screen.getByText('Closed')))
+            const closedButton = await screen.findByText('Closed')
+            await user.click(closedButton)
 
             await waitFor(() => {
                 expect(screen.getByText('Reopen')).toBeInTheDocument()
@@ -270,10 +268,11 @@ describe('TicketStatus', () => {
         it('should reopen ticket and close menu', async () => {
             const { user } = render(<TicketStatusMenu ticket={closedTicket} />)
 
-            await act(() => user.click(screen.getByText('Closed')))
+            const closedButton = await screen.findByText('Closed')
+            await user.click(closedButton)
 
             const reopenOption = await screen.findByText('Reopen')
-            await act(() => user.click(reopenOption))
+            await user.click(reopenOption)
 
             await waitFor(() => {
                 expect(screen.queryByText('Reopen')).not.toBeInTheDocument()
@@ -302,16 +301,17 @@ describe('TicketStatus', () => {
                 },
             )
 
-            await act(() => user.click(screen.getByText('Closed')))
+            const closedButton = await screen.findByText('Closed')
+            await user.click(closedButton)
 
             const snoozeOption = await screen.findByText('Snooze')
-            await act(() => user.click(snoozeOption))
+            await user.click(snoozeOption)
 
             const datePicker = await screen.findByRole('grid')
             expect(datePicker).toBeInTheDocument()
 
             const nextWeekButton = await screen.findByText('1 Week')
-            await act(() => user.click(nextWeekButton))
+            await user.click(nextWeekButton)
 
             await waitFor(() => {
                 expect(dispatchNotification).toHaveBeenCalledWith(
@@ -339,10 +339,11 @@ describe('TicketStatus', () => {
                 }).handler,
             )
 
-            await act(() => user.click(screen.getByText('Closed')))
+            const closedButton = await screen.findByText('Closed')
+            await user.click(closedButton)
 
             const reopenOption = await screen.findByText('Reopen')
-            await act(() => user.click(reopenOption))
+            await user.click(reopenOption)
 
             await waitFor(() => {
                 expect(dispatchNotification).toHaveBeenCalledWith(
@@ -363,7 +364,7 @@ describe('TicketStatus', () => {
 
             const changeSnoozeOption =
                 await screen.findByText('Change snooze time')
-            await act(() => user.click(changeSnoozeOption))
+            await user.click(changeSnoozeOption)
 
             const datePicker = await screen.findByRole('grid')
             expect(datePicker).toBeInTheDocument()
@@ -394,7 +395,7 @@ describe('TicketStatus', () => {
 
             const changeSnoozeOption =
                 await screen.findByText('Change snooze time')
-            await act(() => user.click(changeSnoozeOption))
+            await user.click(changeSnoozeOption)
 
             const datePicker = await screen.findByRole('grid')
             expect(datePicker).toBeInTheDocument()
@@ -429,7 +430,7 @@ describe('TicketStatus', () => {
             await openMenu(user)
 
             const reopenOption = await screen.findByText('Reopen')
-            await act(() => user.click(reopenOption))
+            await user.click(reopenOption)
 
             await waitFor(() => {
                 expect(screen.queryByText('Reopen')).not.toBeInTheDocument()
@@ -443,7 +444,7 @@ describe('TicketStatus', () => {
 
             const changeSnoozeOption =
                 await screen.findByText('Change snooze time')
-            await act(() => user.click(changeSnoozeOption))
+            await user.click(changeSnoozeOption)
 
             const datePicker = await screen.findByRole('grid')
             expect(datePicker).toBeInTheDocument()
@@ -482,13 +483,13 @@ describe('TicketStatus', () => {
 
             const changeSnoozeOption =
                 await screen.findByText('Change snooze time')
-            await act(() => user.click(changeSnoozeOption))
+            await user.click(changeSnoozeOption)
 
             const datePicker = await screen.findByRole('grid')
             expect(datePicker).toBeInTheDocument()
 
             const nextWeekButton = await screen.findByText('1 Week')
-            await act(() => user.click(nextWeekButton))
+            await user.click(nextWeekButton)
 
             await waitFor(() => {
                 expect(dispatchNotification).toHaveBeenCalledWith(
@@ -508,7 +509,7 @@ describe('TicketStatus', () => {
 
             const changeSnoozeOption =
                 await screen.findByText('Change snooze time')
-            await act(() => user.click(changeSnoozeOption))
+            await user.click(changeSnoozeOption)
 
             const datePicker = await screen.findByRole('grid')
             expect(datePicker).toBeInTheDocument()
