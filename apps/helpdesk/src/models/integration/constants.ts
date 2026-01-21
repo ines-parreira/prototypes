@@ -119,6 +119,8 @@ export const DEFAULT_RECORDING_NOTIFICATION = {
     voice_message_type: VoiceMessageType.TextToSpeech,
     text_to_speech_content:
         'This call is being recorded for notetaking, training, or record-keeping purposes.',
+    language: DEFAULT_TTS_LANGUAGE,
+    gender: DEFAULT_TTS_GENDER,
 }
 export const RECORDING_NOTIFICATION_MAX_DURATION = 1 * 60
 

@@ -306,6 +306,8 @@ describe('getDefaultValues', () => {
                     voice_message_type: VoiceMessageType.TextToSpeech,
                     text_to_speech_content:
                         DEFAULT_RECORDING_NOTIFICATION.text_to_speech_content,
+                    gender: DEFAULT_TTS_GENDER,
+                    language: DEFAULT_TTS_LANGUAGE,
                 },
                 send_calls_to_voicemail: false,
                 greeting_message: DEFAULT_GREETING_MESSAGE,
