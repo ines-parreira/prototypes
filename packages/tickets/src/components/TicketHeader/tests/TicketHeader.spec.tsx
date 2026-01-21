@@ -1,5 +1,5 @@
 import { useFlag } from '@repo/feature-flags'
-import { act, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -172,12 +172,10 @@ describe('TicketHeader', () => {
                 const waitForUpdateTicketRequest =
                     mockUpdateTicket.waitForRequest(server)
 
-                await act(async () => {
-                    await user.click(subject)
-                    await user.clear(subject)
-                    await user.type(subject, 'Test ticket updated')
-                    await user.tab()
-                })
+                await user.click(subject)
+                await user.clear(subject)
+                await user.type(subject, 'Test ticket updated')
+                await user.tab()
 
                 await waitForUpdateTicketRequest(async (request) => {
                     const body = await request.json()
@@ -207,12 +205,10 @@ describe('TicketHeader', () => {
 
                 const subject = screen.getByRole('textbox')
 
-                await act(async () => {
-                    await user.click(subject)
-                    await user.clear(subject)
-                    await user.type(subject, 'Test ticket updated')
-                    await user.tab()
-                })
+                await user.click(subject)
+                await user.clear(subject)
+                await user.type(subject, 'Test ticket updated')
+                await user.tab()
 
                 await waitFor(() => {
                     expect(dispatchNotification).toHaveBeenCalledWith(
@@ -234,7 +230,7 @@ describe('TicketHeader', () => {
                 const editIcon = screen.getByRole('textbox').nextElementSibling
                 expect(editIcon).toBeInTheDocument()
 
-                await act(() => user.click(editIcon!))
+                await user.click(editIcon!)
 
                 const subject = screen.getByRole('textbox')
                 expect(subject).toHaveFocus()

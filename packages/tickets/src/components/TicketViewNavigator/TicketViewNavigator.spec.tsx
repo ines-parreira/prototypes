@@ -1,4 +1,4 @@
-import { act, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { useLocation } from 'react-router'
 
 import { render } from '../../tests/render.utils'
@@ -19,7 +19,7 @@ const mockTicketViewNavigation: LegacyBridgeContextType['ticketViewNavigation'] 
 
 function LocationDisplay() {
     const location = useLocation()
-    return <div data-testid="location">{location.pathname}</div>
+    return <output aria-label="current location">{location.pathname}</output>
 }
 
 describe('TicketViewNavigator', () => {
@@ -67,15 +67,13 @@ describe('TicketViewNavigator', () => {
                 },
             )
 
-            await act(() =>
-                user.click(
-                    screen.getByRole('button', { name: /arrow-chevron-left/i }),
-                ),
+            await user.click(
+                screen.getByRole('button', { name: /arrow-chevron-left/i }),
             )
 
-            expect(screen.getByTestId('location')).toHaveTextContent(
-                '/app/views/1/100',
-            )
+            expect(
+                screen.getByRole('status', { name: /current location/i }),
+            ).toHaveTextContent('/app/views/1/100')
         })
 
         it('should navigate to next ticket when next button is clicked', async () => {
@@ -91,17 +89,15 @@ describe('TicketViewNavigator', () => {
                 },
             )
 
-            await act(() =>
-                user.click(
-                    screen.getByRole('button', {
-                        name: /arrow-chevron-right/i,
-                    }),
-                ),
+            await user.click(
+                screen.getByRole('button', {
+                    name: /arrow-chevron-right/i,
+                }),
             )
 
-            expect(screen.getByTestId('location')).toHaveTextContent(
-                '/app/views/1/102',
-            )
+            expect(
+                screen.getByRole('status', { name: /current location/i }),
+            ).toHaveTextContent('/app/views/1/102')
         })
 
         it('should not navigate when previous button is disabled', async () => {
@@ -125,10 +121,10 @@ describe('TicketViewNavigator', () => {
             })
             expect(prevButton).toBeDisabled()
 
-            await act(() => user.click(prevButton))
-            expect(screen.getByTestId('location')).toHaveTextContent(
-                '/app/views/1/101',
-            )
+            await user.click(prevButton)
+            expect(
+                screen.getByRole('status', { name: /current location/i }),
+            ).toHaveTextContent('/app/views/1/101')
         })
 
         it('should not navigate when next button is disabled', async () => {
@@ -152,10 +148,10 @@ describe('TicketViewNavigator', () => {
             })
             expect(nextButton).toBeDisabled()
 
-            await act(() => user.click(nextButton))
-            expect(screen.getByTestId('location')).toHaveTextContent(
-                '/app/views/1/101',
-            )
+            await user.click(nextButton)
+            expect(
+                screen.getByRole('status', { name: /current location/i }),
+            ).toHaveTextContent('/app/views/1/101')
         })
     })
 
@@ -178,16 +174,14 @@ describe('TicketViewNavigator', () => {
                 },
             )
 
-            await act(() =>
-                user.click(
-                    screen.getByRole('button', { name: /arrow-chevron-left/i }),
-                ),
+            await user.click(
+                screen.getByRole('button', { name: /arrow-chevron-left/i }),
             )
 
             expect(legacyGoToPrevTicket).toHaveBeenCalledTimes(1)
-            expect(screen.getByTestId('location')).toHaveTextContent(
-                '/app/views/1/101',
-            )
+            expect(
+                screen.getByRole('status', { name: /current location/i }),
+            ).toHaveTextContent('/app/views/1/101')
         })
 
         it('should call legacyGoToNextTicket when shouldUseLegacyFunctions is true and next button is clicked', async () => {
@@ -208,18 +202,16 @@ describe('TicketViewNavigator', () => {
                 },
             )
 
-            await act(() =>
-                user.click(
-                    screen.getByRole('button', {
-                        name: /arrow-chevron-right/i,
-                    }),
-                ),
+            await user.click(
+                screen.getByRole('button', {
+                    name: /arrow-chevron-right/i,
+                }),
             )
 
             expect(legacyGoToNextTicket).toHaveBeenCalledTimes(1)
-            expect(screen.getByTestId('location')).toHaveTextContent(
-                '/app/views/1/101',
-            )
+            expect(
+                screen.getByRole('status', { name: /current location/i }),
+            ).toHaveTextContent('/app/views/1/101')
         })
     })
 
@@ -237,15 +229,13 @@ describe('TicketViewNavigator', () => {
                 },
             )
 
-            await act(() =>
-                user.click(
-                    screen.getByRole('button', { name: /arrow-chevron-left/i }),
-                ),
+            await user.click(
+                screen.getByRole('button', { name: /arrow-chevron-left/i }),
             )
 
-            expect(screen.getByTestId('location')).toHaveTextContent(
-                '/app/tickets/101',
-            )
+            expect(
+                screen.getByRole('status', { name: /current location/i }),
+            ).toHaveTextContent('/app/tickets/101')
         })
     })
 })

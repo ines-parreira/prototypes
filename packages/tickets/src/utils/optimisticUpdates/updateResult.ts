@@ -22,6 +22,7 @@ export function updateResult<T extends HttpResponse>(
     return {
         ...previousResult,
         data: {
+            // oxlint-disable-next-line
             ...(previousResult?.data ?? {}),
             data,
         },

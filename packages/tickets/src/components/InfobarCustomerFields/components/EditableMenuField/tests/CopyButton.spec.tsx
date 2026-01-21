@@ -25,26 +25,26 @@ describe('CopyButton', () => {
         expect(copyIcon).toBeInTheDocument()
     })
 
-    it('should copy value to clipboard when clicked', () => {
-        render(<CopyButton value="test@example.com" isVisible={true} />)
+    it('should copy value to clipboard when clicked', async () => {
+        const { user } = render(
+            <CopyButton value="test@example.com" isVisible={true} />,
+        )
 
         const copyIcon = screen.getByLabelText('copy')
 
-        act(() => {
-            fireEvent.pointerDown(copyIcon)
-        })
+        await user.click(copyIcon)
 
         expect(mockCopyToClipboard).toHaveBeenCalledWith('test@example.com')
     })
 
     it('should show tooltip after copying', async () => {
-        render(<CopyButton value="test value" isVisible={true} />)
+        const { user } = render(
+            <CopyButton value="test value" isVisible={true} />,
+        )
 
         const copyIcon = screen.getByLabelText('copy')
 
-        act(() => {
-            fireEvent.pointerDown(copyIcon)
-        })
+        await user.click(copyIcon)
 
         expect(
             await screen.findByText('Copied to clipboard'),
@@ -52,21 +52,19 @@ describe('CopyButton', () => {
     })
 
     it('should hide tooltip on mouse leave', async () => {
-        render(<CopyButton value="test value" isVisible={true} />)
+        const { user } = render(
+            <CopyButton value="test value" isVisible={true} />,
+        )
 
         const copyIcon = screen.getByLabelText('copy')
 
-        act(() => {
-            fireEvent.pointerDown(copyIcon)
-        })
+        await user.click(copyIcon)
 
         expect(
             await screen.findByText('Copied to clipboard'),
         ).toBeInTheDocument()
 
-        act(() => {
-            fireEvent.mouseLeave(copyIcon)
-        })
+        await user.unhover(copyIcon)
 
         await waitFor(() => {
             expect(
