@@ -42,7 +42,7 @@ export const EmptyStates = ({
                 width="100%"
             >
                 <Heading size={'md'}>Create something new</Heading>
-                <Box flexDirection={'row'} gap="md">
+                <Box gap="sm" className={css.responsiveContainer}>
                     <Card
                         elevation="default"
                         onClick={() => {
@@ -50,7 +50,8 @@ export const EmptyStates = ({
                                 OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
                             )
                         }}
-                        gap="xs"
+                        className={css.cardContainer}
+                        gap="xxxs"
                     >
                         <div className={css.cardTitle}>
                             <Text size={'md'} variant={'bold'}>
@@ -84,7 +85,8 @@ export const EmptyStates = ({
                                 onFaqEditorOpen?.()
                             }
                         }}
-                        gap="xs"
+                        className={css.cardContainer}
+                        gap="xxxs"
                     >
                         <div className={css.cardTitle}>
                             <Text size={'md'} variant={'bold'}>
@@ -117,13 +119,14 @@ export const EmptyStates = ({
                 width="100%"
             >
                 <Heading size={'md'}>Bring in existing content</Heading>
-                <Box flexDirection={'row'} gap="md" width="100%">
+                <Box className={css.responsiveContainer} gap="md" width="100%">
                     {!hasWebsiteSync && (
                         <Card
                             onClick={() => {
                                 openSyncStoreWebsiteModal()
                             }}
-                            gap="xs"
+                            gap="xxxs"
+                            className={css.cardContainer}
                         >
                             <div className={css.cardTitle}>
                                 <Text size={'md'} variant={'bold'}>
@@ -152,7 +155,8 @@ export const EmptyStates = ({
                         onClick={() => {
                             openSyncUrlModal()
                         }}
-                        gap="xs"
+                        gap="xxxs"
+                        className={css.cardContainer}
                     >
                         <div className={css.cardTitle}>
                             <Text size={'md'} variant={'bold'}>
@@ -178,7 +182,8 @@ export const EmptyStates = ({
                         onClick={() => {
                             openUploadDocumentModal()
                         }}
-                        gap="xs"
+                        gap="xxxs"
+                        className={css.cardContainer}
                     >
                         <div className={css.cardTitle}>
                             <Text size={'md'} variant={'bold'}>
@@ -424,7 +429,7 @@ export const EmptyStateWrapper = ({
             return <EmptyStateURL />
         default:
             return (
-                <Box width={'544px'}>
+                <Box className={css.emptyStateContainer}>
                     <EmptyStates
                         helpCenterId={helpCenterId}
                         onFaqEditorOpen={onFaqEditorOpen}
