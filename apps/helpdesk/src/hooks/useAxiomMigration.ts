@@ -8,8 +8,8 @@ export function useAxiomMigration() {
     const hasFlag = useFlag(FeatureFlagKey.AxiomMigration)
 
     const [isEnabled, setIsEnabled] = useLocalStorage(
-        'axiom-migration-enabled-v2',
-        false,
+        'axiom-migration-enabled-v3',
+        true,
     )
 
     const [isHighlightingTokens, setHighlightingTokens] = useLocalStorage(
