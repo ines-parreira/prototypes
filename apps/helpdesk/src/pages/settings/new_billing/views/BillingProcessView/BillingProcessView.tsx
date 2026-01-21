@@ -159,7 +159,6 @@ const BillingProcessView = ({
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
     const productCancellationsQuery = useProductCancellations()
-    const isLoading = productCancellationsQuery.isLoading
     const cancellationsByPlanId = useMemo(
         () => productCancellationsQuery.data ?? new Map<string, string>(),
         [productCancellationsQuery.data],
@@ -415,9 +414,7 @@ const BillingProcessView = ({
         )
     }
 
-    return isLoading ? (
-        <Loader />
-    ) : (
+    return (
         <div className={css.container}>
             <div className={css.header}>
                 <BackLink />

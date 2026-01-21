@@ -470,6 +470,9 @@ exports[`BillingProcessView should render 1`] = `
                 month
               </div>
             </div>
+            <div
+              data-testid="summary-total"
+            />
           </div>
           <div
             class="container"
