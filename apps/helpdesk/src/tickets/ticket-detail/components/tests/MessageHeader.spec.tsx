@@ -82,6 +82,7 @@ beforeEach(() => {
     mockUseTicketModalContext.mockReturnValue({
         containerRef: null,
         isInsideTicketModal: false,
+        isInsideSidePanel: false,
     })
     mockIsForwardedMessage.mockReturnValue(false)
 })

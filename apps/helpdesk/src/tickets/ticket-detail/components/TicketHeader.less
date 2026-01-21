@@ -3,6 +3,11 @@
         padding: var(--layout-spacing-s) var(--layout-spacing-s)
             var(--layout-spacing-s) var(--layout-spacing-m);
         border-bottom: 1px solid var(--neutral-grey-3); // legacy
+
+        &[data-rendering='side-panel'] {
+            width: 100%;
+            padding: 0;
+        }
     }
 
     .header {

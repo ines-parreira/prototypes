@@ -6,6 +6,8 @@ import cn from 'classnames'
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
+import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
+
 import { useTicket } from '../hooks/useTicket'
 import { TicketBody } from './TicketBody'
 import { TicketHeader } from './TicketHeader'
@@ -26,6 +28,7 @@ export function TicketDetail({
 }: Props) {
     const hasTicketThreadRevamp = useFlag(FeatureFlagKey.TicketThreadRevamp)
     const { body, isLoading, ticket } = useTicket(ticketId)
+    const { isInsideSidePanel } = useTicketModalContext()
     const headerData = ticket || summary
 
     return (
@@ -33,6 +36,7 @@ export function TicketDetail({
             className={cn(css.container, {
                 'ticket-thread-revamp': hasTicketThreadRevamp,
             })}
+            data-rendering={isInsideSidePanel ? 'side-panel' : 'modal'}
         >
             <div className={css.content}>
                 {!!headerData && (

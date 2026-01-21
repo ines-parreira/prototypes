@@ -1,3 +1,4 @@
+import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import copyToClipboard from 'copy-to-clipboard'
@@ -7,6 +8,7 @@ import type { TicketCompact, TicketTag } from '@gorgias/helpdesk-queries'
 import { TicketStatus } from 'business/types/ticket'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
+import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
 import TicketFields from 'timeline/TicketFields'
 
 import { TicketAssignee } from '../TicketAssignee'
@@ -20,8 +22,12 @@ jest.mock('../TicketAssignee', () => ({
     TicketAssignee: jest.fn(() => <div>An assignee</div>),
 }))
 
-// Mock copy-to-clipboard
 jest.mock('copy-to-clipboard', () => jest.fn(() => true))
+
+jest.mock('timeline/ticket-modal/hooks/useTicketModalContext', () => ({
+    useTicketModalContext: jest.fn(),
+}))
+const useTicketModalContextMock = assumeMock(useTicketModalContext)
 
 describe('TicketHeader', () => {
     const ticket = {
@@ -31,6 +37,14 @@ describe('TicketHeader', () => {
         subject: 'Ticket Subject',
         tags: [] as TicketTag[],
     } as TicketCompact
+
+    beforeEach(() => {
+        useTicketModalContextMock.mockReturnValue({
+            isInsideTicketModal: false,
+            containerRef: null,
+            isInsideSidePanel: false,
+        })
+    })
 
     it('should render the ticket metadata', () => {
         renderWithStoreAndQueryClientProvider(<TicketHeader ticket={ticket} />)
@@ -148,5 +162,26 @@ describe('TicketHeader', () => {
             },
             {},
         )
+    })
+
+    it('should set data-rendering to "modal" when not inside side panel', () => {
+        const { container } = renderWithStoreAndQueryClientProvider(
+            <TicketHeader ticket={ticket} />,
+        )
+        const headerContainer = container.firstChild as HTMLElement
+        expect(headerContainer).toHaveAttribute('data-rendering', 'modal')
+    })
+
+    it('should set data-rendering to "side-panel" when inside side panel', () => {
+        useTicketModalContextMock.mockReturnValue({
+            isInsideTicketModal: true,
+            containerRef: null,
+            isInsideSidePanel: true,
+        })
+        const { container } = renderWithStoreAndQueryClientProvider(
+            <TicketHeader ticket={ticket} />,
+        )
+        const headerContainer = container.firstChild as HTMLElement
+        expect(headerContainer).toHaveAttribute('data-rendering', 'side-panel')
     })
 })

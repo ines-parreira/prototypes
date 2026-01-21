@@ -5,10 +5,12 @@ import { TicketModalContext } from '../TicketModalContext'
 
 interface TicketModalProviderProps {
     children: ReactNode
+    isInsideSidePanel?: boolean
 }
 
 export const TicketModalProvider: React.FC<TicketModalProviderProps> = ({
     children,
+    isInsideSidePanel = false,
 }) => {
     const containerRef = useRef<HTMLElement>(null)
 
@@ -28,6 +30,7 @@ export const TicketModalProvider: React.FC<TicketModalProviderProps> = ({
     const contextValue = {
         isInsideTicketModal: true,
         containerRef,
+        isInsideSidePanel,
     }
 
     return (

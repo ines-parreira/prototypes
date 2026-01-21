@@ -9,6 +9,7 @@ import type {
 import CopyButton from 'components/CopyButton/CopyButton'
 import { PriorityLabel } from 'pages/tickets/common/components/PriorityLabel'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
+import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
 import TicketFields from 'timeline/TicketFields'
 
 import { SourceBadge } from './SourceBadge'
@@ -23,8 +24,12 @@ type Props = {
 }
 
 export function TicketHeader({ ticket, additionalActions }: Props) {
+    const { isInsideSidePanel } = useTicketModalContext()
     return (
-        <div className={css.container}>
+        <div
+            className={css.container}
+            data-rendering={isInsideSidePanel ? 'side-panel' : 'modal'}
+        >
             <header className={css.header}>
                 <SourceBadge channel={ticket.channel} />
                 <div className={css.subjectWrapper}>

@@ -88,6 +88,7 @@ describe('MessageActions', () => {
         useTicketModalContextMock.mockReturnValue({
             isInsideTicketModal: false,
             containerRef: null,
+            isInsideSidePanel: false,
         })
     })
 
@@ -144,6 +145,7 @@ describe('MessageActions', () => {
         useTicketModalContextMock.mockReturnValue({
             isInsideTicketModal: true,
             containerRef: null,
+            isInsideSidePanel: false,
         })
 
         render(<MessageActions message={message} />)

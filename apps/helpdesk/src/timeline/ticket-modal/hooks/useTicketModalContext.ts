@@ -11,6 +11,7 @@ export const useTicketModalContext = (): TicketModalContextType => {
         return {
             isInsideTicketModal: false,
             containerRef: null,
+            isInsideSidePanel: false,
         }
     }
 

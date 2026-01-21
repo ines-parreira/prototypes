@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react'
 
 import type { Ticket, TicketCompact } from '@gorgias/helpdesk-queries'
 
+import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
+
 import { useTicket } from '../../hooks/useTicket'
 import { TicketDetail } from '../TicketDetail'
 import { TicketHeader } from '../TicketHeader'
@@ -13,6 +15,11 @@ jest.mock('@gorgias/axiom', () => ({
 
 jest.mock('../../hooks/useTicket', () => ({ useTicket: jest.fn() }))
 const useTicketMock = assumeMock(useTicket)
+
+jest.mock('timeline/ticket-modal/hooks/useTicketModalContext', () => ({
+    useTicketModalContext: jest.fn(),
+}))
+const useTicketModalContextMock = assumeMock(useTicketModalContext)
 
 jest.mock('../TicketBody', () => ({
     TicketBody: jest.fn(() => <div>TicketBody</div>),
@@ -28,6 +35,11 @@ describe('TicketDetail', () => {
             body: [],
             isLoading: true,
             ticket: undefined,
+        })
+        useTicketModalContextMock.mockReturnValue({
+            isInsideTicketModal: false,
+            containerRef: null,
+            isInsideSidePanel: false,
         })
     })
 
@@ -67,5 +79,25 @@ describe('TicketDetail', () => {
         })
         render(<TicketDetail ticketId={1} />)
         expect(screen.getByText('TicketBody')).toBeInTheDocument()
+    })
+
+    it('should set data-rendering to "modal" when not inside side panel', () => {
+        const { container } = render(<TicketDetail ticketId={1} />)
+        const ticketDetailContainer = container.firstChild as HTMLElement
+        expect(ticketDetailContainer).toHaveAttribute('data-rendering', 'modal')
+    })
+
+    it('should set data-rendering to "side-panel" when inside side panel', () => {
+        useTicketModalContextMock.mockReturnValue({
+            isInsideTicketModal: true,
+            containerRef: null,
+            isInsideSidePanel: true,
+        })
+        const { container } = render(<TicketDetail ticketId={1} />)
+        const ticketDetailContainer = container.firstChild as HTMLElement
+        expect(ticketDetailContainer).toHaveAttribute(
+            'data-rendering',
+            'side-panel',
+        )
     })
 })

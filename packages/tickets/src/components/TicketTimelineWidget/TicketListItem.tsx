@@ -15,7 +15,7 @@ type TicketListItemProps = {
     customFields: TicketCustomField[]
     conditionsLoading: boolean
     className?: string
-    isClickable?: boolean
+    onSelect?: () => void
 }
 
 export function TicketListItem({
@@ -24,12 +24,12 @@ export function TicketListItem({
     customFields,
     conditionsLoading,
     className,
-    isClickable = false,
+    onSelect,
 }: TicketListItemProps) {
     return (
-        <li key={ticket.id}>
-            <div style={isClickable ? { cursor: 'pointer' } : undefined}>
-                <TimelineCard className={className}>
+        <li>
+            <div style={{ cursor: 'pointer' }}>
+                <TimelineCard className={className} onClick={onSelect}>
                     <Box display="flex" flexDirection="column" gap="xs">
                         <TicketHeader
                             subject={ticket.subject}

@@ -20,6 +20,7 @@ type Props = {
     totalNumber: number
     productsMap: Map<number, Product>
     activeTicketId?: string
+    onSelect: (ticket: EnrichedTicket) => void
 }
 
 export function TimelineList({
@@ -29,6 +30,7 @@ export function TimelineList({
     totalNumber,
     productsMap,
     activeTicketId,
+    onSelect,
 }: Props) {
     // Create a map for fast lookup of enriched ticket data
     const enrichedTicketMap = useMemo(() => {
@@ -126,7 +128,7 @@ export function TimelineList({
                                     className={
                                         isActive ? css.activeTicket : undefined
                                     }
-                                    isClickable={true}
+                                    onSelect={() => onSelect(enriched)}
                                 />
                             )
                         }
