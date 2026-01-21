@@ -53,7 +53,7 @@ describe('useAutomatedInteractionsBySkill', () => {
 
         await waitFor(() => {
             expect(result.current.data).toEqual([
-                { name: 'Support', value: 100 },
+                { name: 'Support Agent', value: 100 },
                 { name: 'Shopping Assistant', value: 50 },
             ])
         })
@@ -127,7 +127,7 @@ describe('useAutomatedInteractionsBySkill', () => {
         )
 
         expect(result.current.data).toEqual([
-            { name: 'Support', value: 0 },
+            { name: 'Support Agent', value: 0 },
             { name: 'Shopping Assistant', value: 0 },
         ])
     })
@@ -202,7 +202,7 @@ describe('fetchAutomatedInteractionsBySkill', () => {
         )
 
         expect(result.data).toEqual([
-            { name: 'Support', value: 100 },
+            { name: 'Support Agent', value: 100 },
             { name: 'Shopping Assistant', value: 50 },
         ])
         expect(result.isFetching).toBe(false)

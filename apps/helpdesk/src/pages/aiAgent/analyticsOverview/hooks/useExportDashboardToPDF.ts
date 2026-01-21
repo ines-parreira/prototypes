@@ -25,6 +25,37 @@ const forceLightTheme = (doc: Document): void => {
     doc.body.classList.add('light')
 }
 
+const MIN_CAPTURE_WIDTH = 1200
+
+const expandClonedElementWidth = (
+    clonedElement: HTMLElement,
+    targetWidth: number,
+): void => {
+    clonedElement.style.width = `${targetWidth}px`
+    clonedElement.style.minWidth = `${targetWidth}px`
+    clonedElement.style.maxWidth = 'none'
+    clonedElement.style.overflow = 'visible'
+
+    const containers = clonedElement.querySelectorAll<HTMLElement>(
+        '[class*="container"], [class*="kpisSection"]',
+    )
+    containers.forEach((container) => {
+        container.style.width = '100%'
+        container.style.maxWidth = 'none'
+        container.style.overflow = 'visible'
+    })
+}
+
+const removeStickyPositioning = (element: HTMLElement): void => {
+    const stickyElements = element.querySelectorAll<HTMLElement>(
+        '[class*="stickyHeader"]',
+    )
+    stickyElements.forEach((el) => {
+        el.style.position = 'relative'
+        el.style.top = 'auto'
+    })
+}
+
 const hideInteractiveElements = (element: HTMLElement): (() => void) => {
     const restorationCallbacks: Array<() => void> = []
 
@@ -133,6 +164,11 @@ export const useExportDashboardToPDF = () => {
 
             await new Promise((resolve) => setTimeout(resolve, 100))
 
+            const captureWidth = Math.max(
+                element.scrollWidth,
+                MIN_CAPTURE_WIDTH,
+            )
+
             const canvas = await html2canvas(element, {
                 scale: 2,
                 useCORS: true,
@@ -141,11 +177,17 @@ export const useExportDashboardToPDF = () => {
                 allowTaint: false,
                 foreignObjectRendering: false,
                 imageTimeout: 0,
-                onclone: async (clonedDoc) => {
+                windowWidth: captureWidth,
+                windowHeight: element.scrollHeight,
+                width: captureWidth,
+                height: element.scrollHeight,
+                onclone: async (clonedDoc, clonedElement) => {
                     // there were multiple issues with the dark theme, were different colors for backgrounds, text, borders, etc.
                     // did not pick the correct color based on theme so the better way instead of patching a lot of components is to
                     // force the light theme in the PDF export
                     forceLightTheme(clonedDoc)
+                    expandClonedElementWidth(clonedElement, captureWidth)
+                    removeStickyPositioning(clonedElement)
                     hideInteractiveElements(clonedDoc.body)
                     await inlineSvgUseElements(clonedDoc.body)
                 },

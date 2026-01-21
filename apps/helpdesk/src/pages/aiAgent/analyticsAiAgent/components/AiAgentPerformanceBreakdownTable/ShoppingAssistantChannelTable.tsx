@@ -159,7 +159,7 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Automation rate</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -200,7 +200,12 @@ export const ShoppingAssistantChannelTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'percent-precision-1')
+                    return formatMetricValue(
+                        value,
+                        'percent-precision-1',
+                        'USD',
+                        true,
+                    )
                 },
                 enableHiding: true,
             },
@@ -211,7 +216,7 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>AI Agent interactions share</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -252,7 +257,12 @@ export const ShoppingAssistantChannelTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'percent-precision-1')
+                    return formatMetricValue(
+                        value,
+                        'percent-precision-1',
+                        'USD',
+                        true,
+                    )
                 },
                 enableHiding: true,
             },
@@ -263,7 +273,7 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Automated interactions</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -304,7 +314,7 @@ export const ShoppingAssistantChannelTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'decimal')
+                    return formatMetricValue(value, 'decimal', 'USD', true)
                 },
                 enableHiding: true,
             },
@@ -315,7 +325,7 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Handover</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -356,7 +366,7 @@ export const ShoppingAssistantChannelTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'decimal')
+                    return formatMetricValue(value, 'decimal', 'USD', true)
                 },
                 enableHiding: true,
             },
@@ -367,7 +377,7 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Success rate</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -408,7 +418,12 @@ export const ShoppingAssistantChannelTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'percent-precision-1')
+                    return formatMetricValue(
+                        value,
+                        'percent-precision-1',
+                        'USD',
+                        true,
+                    )
                 },
                 enableHiding: true,
             },
@@ -419,7 +434,7 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Total sales</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -460,7 +475,7 @@ export const ShoppingAssistantChannelTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'currency')
+                    return formatMetricValue(value, 'currency', 'USD', true)
                 },
                 enableHiding: true,
             },
@@ -471,7 +486,7 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Orders influenced</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -512,7 +527,7 @@ export const ShoppingAssistantChannelTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'decimal')
+                    return formatMetricValue(value, 'decimal', 'USD', true)
                 },
                 enableHiding: true,
             },
@@ -523,7 +538,7 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Revenue per interaction</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -564,7 +579,7 @@ export const ShoppingAssistantChannelTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'currency')
+                    return formatMetricValue(value, 'currency', 'USD', true)
                 },
                 enableHiding: true,
             },

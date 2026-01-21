@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import { useTotalNumberOfSalesConversationsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
+import { useResolvedInteractionsMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useResolvedInteractionsMetric'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { AnalyticsAiAgentResolvedInteractionsCard } from './AnalyticsAiAgentResolvedInteractionsCard'
@@ -10,11 +10,9 @@ import { AnalyticsAiAgentResolvedInteractionsCard } from './AnalyticsAiAgentReso
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const mockUseStatsFilters = jest.mocked(useStatsFilters)
 
-jest.mock(
-    'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend',
-)
-const mockUseTotalNumberOfSalesConversationsTrend = jest.mocked(
-    useTotalNumberOfSalesConversationsTrend,
+jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useResolvedInteractionsMetric')
+const mockUseResolvedInteractionsMetric = jest.mocked(
+    useResolvedInteractionsMetric,
 )
 
 describe('AnalyticsAiAgentResolvedInteractionsCard', () => {
@@ -34,10 +32,11 @@ describe('AnalyticsAiAgentResolvedInteractionsCard', () => {
             userTimezone: 'UTC',
         } as any)
 
-        mockUseTotalNumberOfSalesConversationsTrend.mockReturnValue({
+        mockUseResolvedInteractionsMetric.mockReturnValue({
             isFetching: false,
             isError: false,
             data: {
+                label: 'Resolved interactions',
                 value: 2300,
                 prevValue: 2200,
             },
@@ -45,7 +44,7 @@ describe('AnalyticsAiAgentResolvedInteractionsCard', () => {
     })
 
     it('should render loading state initially', () => {
-        mockUseTotalNumberOfSalesConversationsTrend.mockReturnValue({
+        mockUseResolvedInteractionsMetric.mockReturnValue({
             isFetching: true,
             isError: false,
             data: undefined,

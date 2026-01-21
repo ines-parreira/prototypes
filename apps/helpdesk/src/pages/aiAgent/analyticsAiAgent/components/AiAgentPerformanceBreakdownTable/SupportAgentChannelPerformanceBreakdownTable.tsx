@@ -115,8 +115,8 @@ export const SupportAgentChannelPerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -139,7 +139,7 @@ export const SupportAgentChannelPerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Handover interactions</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -158,8 +158,8 @@ export const SupportAgentChannelPerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -180,7 +180,7 @@ export const SupportAgentChannelPerformanceBreakdownTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'decimal')
+                    return formatMetricValue(value, 'decimal', 'USD', true)
                 },
                 enableHiding: true,
             },
@@ -191,7 +191,7 @@ export const SupportAgentChannelPerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Snoozed interactions</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -210,8 +210,8 @@ export const SupportAgentChannelPerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -232,7 +232,7 @@ export const SupportAgentChannelPerformanceBreakdownTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'decimal')
+                    return formatMetricValue(value, 'decimal', 'USD', true)
                 },
                 enableHiding: true,
             },

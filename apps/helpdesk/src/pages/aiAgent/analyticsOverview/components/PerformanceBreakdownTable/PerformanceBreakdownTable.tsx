@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { formatMetricValue } from '@repo/reporting'
+import { formatMetricValue, NOT_AVAILABLE_PLACEHOLDER } from '@repo/reporting'
 
 import type { ColumnDef } from '@gorgias/axiom'
 import {
@@ -109,8 +109,8 @@ export const PerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -133,7 +133,7 @@ export const PerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Overall automation rate</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -152,8 +152,8 @@ export const PerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -174,7 +174,12 @@ export const PerformanceBreakdownTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'percent-precision-1')
+                    return formatMetricValue(
+                        value,
+                        'percent-precision-1',
+                        'USD',
+                        true,
+                    )
                 },
                 enableHiding: true,
             },
@@ -185,7 +190,7 @@ export const PerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Automated interactions</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -204,8 +209,8 @@ export const PerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -226,7 +231,7 @@ export const PerformanceBreakdownTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'decimal')
+                    return formatMetricValue(value, 'decimal', 'USD', true)
                 },
                 enableHiding: true,
             },
@@ -237,7 +242,7 @@ export const PerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Handover interactions</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -256,8 +261,8 @@ export const PerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -287,7 +292,7 @@ export const PerformanceBreakdownTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'decimal')
+                    return formatMetricValue(value, 'decimal', 'USD', true)
                 },
                 enableHiding: true,
             },
@@ -298,7 +303,7 @@ export const PerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Cost saved</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -317,8 +322,8 @@ export const PerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -341,9 +346,14 @@ export const PerformanceBreakdownTable = () => {
                         )
                     }
                     if (value !== null && isNaN(value)) {
-                        return 'N/A'
+                        return NOT_AVAILABLE_PLACEHOLDER
                     }
-                    return formatMetricValue(value, 'currency-precision-1')
+                    return formatMetricValue(
+                        value,
+                        'currency-precision-1',
+                        'USD',
+                        true,
+                    )
                 },
                 enableHiding: true,
             },
@@ -354,7 +364,7 @@ export const PerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Time saved by agents</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -373,8 +383,8 @@ export const PerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -399,7 +409,7 @@ export const PerformanceBreakdownTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'duration')
+                    return formatMetricValue(value, 'duration', 'USD', true)
                 },
                 enableHiding: true,
             },

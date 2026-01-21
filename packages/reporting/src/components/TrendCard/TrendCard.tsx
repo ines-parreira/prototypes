@@ -42,7 +42,11 @@ export const TrendCard = memo<TrendCardProps>(
         const { data } = trend
         const [isHovered, setIsHovered] = useState(false)
 
-        const hasData = !isLoading && !!data?.value
+        const hasData =
+            !isLoading &&
+            data?.value !== null &&
+            data?.value !== undefined &&
+            data?.value !== 0
 
         return (
             <div

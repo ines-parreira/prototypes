@@ -5,6 +5,7 @@ import { IconName } from '@gorgias/axiom'
 import {
     DEFAULT_BADGE_TEXT,
     DEFAULT_LOCALE,
+    NOT_AVAILABLE_PLACEHOLDER,
     NOT_AVAILABLE_TEXT,
 } from '../constants'
 import type {
@@ -218,15 +219,17 @@ const formatCurrency = (
  * @param value - The value to format
  * @param format - The format of the metric value
  * @param currency - The currency to format
+ * @param usePlaceholder - Whether to use placeholder ('-') instead of 'N/A' for null/undefined values
  * @returns value depending on the format and currency
  */
 const formatMetricValue = (
     value: number | null | undefined,
     format: MetricValueFormat = 'decimal',
     currency: string = 'USD',
+    usePlaceholder: boolean = false,
 ) => {
     if (value === null || value === undefined) {
-        return NOT_AVAILABLE_TEXT
+        return usePlaceholder ? NOT_AVAILABLE_PLACEHOLDER : NOT_AVAILABLE_TEXT
     }
 
     if (format === 'duration') {

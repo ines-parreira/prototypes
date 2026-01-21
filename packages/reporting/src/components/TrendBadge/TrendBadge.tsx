@@ -89,7 +89,7 @@ export function TrendBadge({
     const tooltipTitle = `Compared to ${formattedPrevValue} on ${tooltipData.period}`
 
     return (
-        <Tooltip>
+        <Tooltip delay={0}>
             <TooltipTrigger>{badgeElement}</TooltipTrigger>
             <TooltipContent title={tooltipTitle} />
         </Tooltip>

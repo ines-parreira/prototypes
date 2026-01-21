@@ -104,6 +104,8 @@ export const METRIC_NAMES = {
         'ai-sales-agent-total-number-of-order',
     AI_SALES_AGENT_TOTAL_NUMBER_OF_SALES_CONVERSATIONS:
         'ai-sales-agent-total-number-of-sales-conversations',
+    AI_SALES_AGENT_AUTOMATED_SALES_CONVERSATIONS:
+        'ai-sales-agent-automated-sales-conversations',
     AI_SALES_AGENT_TOTAL_NUMBER_OF_SALES_CONVERSATIONS_DRILL_DOWN:
         'ai-sales-agent-total-number-of-sales-conversations-drill-down',
     AI_SALES_AGENT_TOTAL_PRODUCT_BOUGHT: 'ai-sales-agent-total-product-bought',

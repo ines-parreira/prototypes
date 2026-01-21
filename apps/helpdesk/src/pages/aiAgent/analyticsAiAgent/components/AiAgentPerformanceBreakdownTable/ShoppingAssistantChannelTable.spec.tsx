@@ -148,19 +148,19 @@ describe('ShoppingAssistantChannelTable', () => {
         expect(secondPercentages.length).toBe(2)
     })
 
-    it('should show N/A for null values when not loading', async () => {
+    it('should show empty state when all metrics are zero', async () => {
         mockUseShoppingAssistantChannelMetrics.mockReturnValue({
             data: [
                 {
                     channel: 'sms',
-                    automationRate: 50,
-                    aiAgentInteractionsShare: null,
-                    automatedInteractions: null,
-                    handover: null,
-                    successRate: null,
-                    totalSales: null,
-                    ordersInfluenced: null,
-                    revenuePerInteraction: null,
+                    automationRate: 0,
+                    aiAgentInteractionsShare: 0,
+                    automatedInteractions: 0,
+                    handover: 0,
+                    successRate: 0,
+                    totalSales: 0,
+                    ordersInfluenced: 0,
+                    revenuePerInteraction: 0,
                 },
             ],
             isLoading: false,
@@ -179,11 +179,12 @@ describe('ShoppingAssistantChannelTable', () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText('SMS')).toBeInTheDocument()
+            expect(screen.getByText('No data found')).toBeInTheDocument()
         })
 
-        const naElements = screen.getAllByText('N/A')
-        expect(naElements.length).toBe(7)
+        expect(
+            screen.getByText('Try to adjust your report filters.'),
+        ).toBeInTheDocument()
     })
 
     it('should show skeletons only for loading metrics', async () => {

@@ -7,6 +7,7 @@ import {
     TicketCustomFieldsMember,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import {
+    AI_AGENT_TICKETS_CHANNELS,
     AI_INTENTS_TO_EXCLUDE,
     AI_OUTCOME_TO_EXCLUDE,
 } from 'domains/reporting/models/queryFactories/ai-agent-insights/utils'
@@ -29,6 +30,11 @@ export const handoverInteractionsPerIntentQueryFactory = (
         dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
         filters: [
             ...NotSpamNorTrashedTicketsFilter,
+            {
+                member: TicketMember.Channel,
+                operator: ReportingFilterOperator.Equals,
+                values: AI_AGENT_TICKETS_CHANNELS,
+            },
             {
                 member: TicketMember.CreatedDatetime,
                 operator: ReportingFilterOperator.InDateRange,
@@ -75,6 +81,11 @@ export const snoozedInteractionsPerIntentQueryFactory = (
         filters: [
             ...NotSpamNorTrashedTicketsFilter,
             {
+                member: TicketMember.Channel,
+                operator: ReportingFilterOperator.Equals,
+                values: AI_AGENT_TICKETS_CHANNELS,
+            },
+            {
                 member: TicketMember.CreatedDatetime,
                 operator: ReportingFilterOperator.InDateRange,
                 values: [
@@ -119,6 +130,11 @@ export const totalInteractionsPerIntentQueryFactory = (
         dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
         filters: [
             ...NotSpamNorTrashedTicketsFilter,
+            {
+                member: TicketMember.Channel,
+                operator: ReportingFilterOperator.Equals,
+                values: AI_AGENT_TICKETS_CHANNELS,
+            },
             {
                 member: TicketMember.CreatedDatetime,
                 operator: ReportingFilterOperator.InDateRange,

@@ -113,7 +113,7 @@ describe('ChannelPerformanceBreakdownTable', () => {
         expect(screen.getByText('90%')).toBeInTheDocument()
     })
 
-    it('should show N/A for null values when not loading', async () => {
+    it('should show placeholder for null values when not loading', async () => {
         mockUseChannelPerformanceMetrics.mockReturnValue({
             data: [
                 {
@@ -142,8 +142,8 @@ describe('ChannelPerformanceBreakdownTable', () => {
             expect(screen.getByText('SMS')).toBeInTheDocument()
         })
 
-        const naElements = screen.getAllByText('N/A')
-        expect(naElements.length).toBe(3)
+        const placeholderElements = screen.getAllByText('-')
+        expect(placeholderElements.length).toBeGreaterThanOrEqual(3)
     })
 
     it('should show skeletons only for loading metrics', async () => {

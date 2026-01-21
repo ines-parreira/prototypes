@@ -38,7 +38,7 @@ export function MetricCardHeader({
         <div className={css.wrapper}>
             <div className={css.title}>
                 {isTitleTruncated && typeof title === 'string' ? (
-                    <Tooltip>
+                    <Tooltip delay={0}>
                         <TooltipTrigger>{titleElement}</TooltipTrigger>
                         <TooltipContent title={title} />
                     </Tooltip>
@@ -47,7 +47,7 @@ export function MetricCardHeader({
                 )}
                 {hint && (
                     <span className={css.infoIcon}>
-                        <Tooltip>
+                        <Tooltip delay={0}>
                             <TooltipTrigger>
                                 <Icon name="info" />
                             </TooltipTrigger>

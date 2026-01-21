@@ -10,11 +10,15 @@ import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'domains/reporting/models/cubes/TicketCube'
 import {
     TicketCustomFieldsMeasure,
     TicketCustomFieldsMember,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
+import { AI_AGENT_TICKETS_CHANNELS } from 'domains/reporting/models/queryFactories/ai-agent-insights/utils'
 import { SourceFilter } from 'domains/reporting/models/queryFactories/ai-sales-agent/constants'
 import {
     aiSalesAgentConversationsDefaultFiltersMembers,
@@ -61,6 +65,11 @@ export const handoverInteractionsPerChannelQueryFactory = (
             member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
             operator: ReportingFilterOperator.StartsWith,
             values: ['Handover::'],
+        },
+        {
+            member: TicketMember.Channel,
+            operator: ReportingFilterOperator.Equals,
+            values: AI_AGENT_TICKETS_CHANNELS,
         },
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
     ],
@@ -158,6 +167,11 @@ export const snoozedInteractionsPerChannelQueryFactory = (
             member: TicketCustomFieldsMember.TicketCustomFieldsValueString,
             operator: ReportingFilterOperator.StartsWith,
             values: ['Snooze::'],
+        },
+        {
+            member: TicketMember.Channel,
+            operator: ReportingFilterOperator.Equals,
+            values: AI_AGENT_TICKETS_CHANNELS,
         },
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
     ],

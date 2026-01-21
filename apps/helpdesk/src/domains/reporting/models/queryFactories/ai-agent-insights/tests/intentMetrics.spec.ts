@@ -11,6 +11,7 @@ import {
     totalInteractionsPerIntentQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-agent-insights/intentMetrics'
 import {
+    AI_AGENT_TICKETS_CHANNELS,
     AI_INTENTS_TO_EXCLUDE,
     AI_OUTCOME_TO_EXCLUDE,
 } from 'domains/reporting/models/queryFactories/ai-agent-insights/utils'
@@ -49,6 +50,11 @@ describe('Intent Metrics Query Factories', () => {
                 ],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
+                    {
+                        member: TicketMember.Channel,
+                        operator: ReportingFilterOperator.Equals,
+                        values: AI_AGENT_TICKETS_CHANNELS,
+                    },
                     {
                         member: TicketMember.CreatedDatetime,
                         operator: ReportingFilterOperator.InDateRange,
@@ -129,6 +135,11 @@ describe('Intent Metrics Query Factories', () => {
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
                     {
+                        member: TicketMember.Channel,
+                        operator: ReportingFilterOperator.Equals,
+                        values: AI_AGENT_TICKETS_CHANNELS,
+                    },
+                    {
                         member: TicketMember.CreatedDatetime,
                         operator: ReportingFilterOperator.InDateRange,
                         values: [
@@ -207,6 +218,11 @@ describe('Intent Metrics Query Factories', () => {
                 ],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
+                    {
+                        member: TicketMember.Channel,
+                        operator: ReportingFilterOperator.Equals,
+                        values: AI_AGENT_TICKETS_CHANNELS,
+                    },
                     {
                         member: TicketMember.CreatedDatetime,
                         operator: ReportingFilterOperator.InDateRange,

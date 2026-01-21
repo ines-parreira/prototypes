@@ -1,13 +1,15 @@
 import type { MetricTrend } from '@repo/reporting'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useTotalNumberOfSalesConversationsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
+import { useAutomatedSalesConversationsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useAutomatedSalesConversationsTrend'
 
 export const useResolvedInteractionsMetric = (): MetricTrend => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
-    const { isFetching, isError, data } =
-        useTotalNumberOfSalesConversationsTrend(cleanStatsFilters, userTimezone)
+    const { isFetching, isError, data } = useAutomatedSalesConversationsTrend(
+        cleanStatsFilters,
+        userTimezone,
+    )
 
     return {
         isFetching,

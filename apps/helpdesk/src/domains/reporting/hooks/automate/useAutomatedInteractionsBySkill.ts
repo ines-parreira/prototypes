@@ -7,7 +7,7 @@ import { aiAgentInteractionsBySkillQueryFactory } from 'domains/reporting/models
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 const SKILL_LABELS = {
-    [AIAgentSkills.AIAgentSupport]: 'Support',
+    [AIAgentSkills.AIAgentSupport]: 'Support Agent',
     [AIAgentSkills.AIAgentSales]: 'Shopping Assistant',
 }
 

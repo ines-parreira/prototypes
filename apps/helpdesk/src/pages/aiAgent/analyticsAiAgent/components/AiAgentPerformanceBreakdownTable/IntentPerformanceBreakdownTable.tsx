@@ -108,8 +108,8 @@ export const IntentPerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -144,8 +144,8 @@ export const IntentPerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -166,7 +166,7 @@ export const IntentPerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Handover interactions</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -185,8 +185,8 @@ export const IntentPerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -208,7 +208,7 @@ export const IntentPerformanceBreakdownTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'decimal')
+                    return formatMetricValue(value, 'decimal', 'USD', true)
                 },
                 enableHiding: true,
             },
@@ -219,7 +219,7 @@ export const IntentPerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Snoozed interactions</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -238,8 +238,8 @@ export const IntentPerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -261,7 +261,7 @@ export const IntentPerformanceBreakdownTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'decimal')
+                    return formatMetricValue(value, 'decimal', 'USD', true)
                 },
                 enableHiding: true,
             },
@@ -272,7 +272,7 @@ export const IntentPerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Success rate</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -291,8 +291,8 @@ export const IntentPerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -314,7 +314,12 @@ export const IntentPerformanceBreakdownTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'percent-precision-1')
+                    return formatMetricValue(
+                        value,
+                        'percent-precision-1',
+                        'USD',
+                        true,
+                    )
                 },
                 enableHiding: true,
             },
@@ -325,7 +330,7 @@ export const IntentPerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Cost saved</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -344,8 +349,8 @@ export const IntentPerformanceBreakdownTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -367,7 +372,7 @@ export const IntentPerformanceBreakdownTable = () => {
                             />
                         )
                     }
-                    return formatMetricValue(value, 'currency')
+                    return formatMetricValue(value, 'currency', 'USD', true)
                 },
                 enableHiding: true,
             },

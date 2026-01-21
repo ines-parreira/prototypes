@@ -97,8 +97,8 @@ export const ShoppingAssistantTopProductsTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -163,7 +163,7 @@ export const ShoppingAssistantTopProductsTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Times recommended</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -182,8 +182,8 @@ export const ShoppingAssistantTopProductsTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -215,7 +215,7 @@ export const ShoppingAssistantTopProductsTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Click-through rate</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -234,8 +234,8 @@ export const ShoppingAssistantTopProductsTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />
@@ -267,7 +267,7 @@ export const ShoppingAssistantTopProductsTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Buy through rate</span>
-                            <Tooltip>
+                            <Tooltip delay={0}>
                                 <TooltipTrigger>
                                     <Icon name="info" size="xs" />
                                 </TooltipTrigger>
@@ -286,8 +286,8 @@ export const ShoppingAssistantTopProductsTable = () => {
                                 <Icon
                                     name={
                                         sortDirection === 'asc'
-                                            ? 'arrow-up'
-                                            : 'arrow-down'
+                                            ? 'arrow-down'
+                                            : 'arrow-up'
                                     }
                                     size="xs"
                                 />

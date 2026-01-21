@@ -290,6 +290,33 @@ export const totalNumberOfSalesConversationsQueryFactory = (
     metricName: METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_SALES_CONVERSATIONS,
 })
 
+export const automatedSalesConversationsQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    measures: [AiSalesAgentConversationsMeasure.Count],
+    dimensions: [],
+    filters: [
+        {
+            member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
+            operator: ReportingFilterOperator.Equals,
+            values: ['1'],
+        },
+        {
+            member: AiSalesAgentConversationsFilterMember.Outcome,
+            operator: ReportingFilterOperator.NotEquals,
+            values: ['handover'],
+        },
+        ...baseAISalesAgentConversationsFilters,
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentConversationsDefaultFiltersMembers,
+            filters,
+        ),
+    ],
+    timezone,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_AUTOMATED_SALES_CONVERSATIONS,
+})
+
 export const totalNumberOfAutomatedSalesQueryFactory = (
     filters: StatsFilters,
     timezone: string,

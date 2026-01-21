@@ -48,9 +48,12 @@ export const ChartHeader = ({
 
     const formatValue = formatMetricValueOrString({ metricFormat, currency })
     const formattedValue =
-        value !== undefined ? formatValue(value) : NOT_AVAILABLE_PLACEHOLDER
+        value !== undefined && value !== null && value !== 0
+            ? formatValue(value)
+            : NOT_AVAILABLE_PLACEHOLDER
 
-    const hasData = !isLoading && !!value
+    const hasData =
+        !isLoading && value !== null && value !== undefined && value !== 0
 
     return (
         <Box flexDirection="column" gap="xxxs" className={css.header}>

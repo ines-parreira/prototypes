@@ -10,6 +10,7 @@ import {
     supportInteractionsTotalQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-agent-insights/supportInteractionsMetrics'
 import {
+    AI_AGENT_TICKETS_CHANNELS,
     AI_INTENTS_TO_EXCLUDE,
     AI_OUTCOME_TO_EXCLUDE,
 } from 'domains/reporting/models/queryFactories/ai-agent-insights/utils'
@@ -406,6 +407,11 @@ describe('supportInteractionsMetrics', () => {
                 ],
                 filters: [
                     ...NotSpamNorTrashedTicketsFilter,
+                    {
+                        member: TicketMember.Channel,
+                        operator: ReportingFilterOperator.Equals,
+                        values: AI_AGENT_TICKETS_CHANNELS,
+                    },
                     {
                         member: TicketMember.CreatedDatetime,
                         operator: ReportingFilterOperator.InDateRange,

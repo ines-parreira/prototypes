@@ -6,6 +6,11 @@ import {
     TicketCustomFieldsMeasure,
     TicketCustomFieldsMember,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
+import {
+    AI_AGENT_TICKETS_CHANNELS,
+    AI_INTENTS_TO_EXCLUDE,
+    AI_OUTCOME_TO_EXCLUDE,
+} from 'domains/reporting/models/queryFactories/ai-agent-insights/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
@@ -13,8 +18,6 @@ import {
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
 } from 'domains/reporting/utils/reporting'
-
-import { AI_INTENTS_TO_EXCLUDE, AI_OUTCOME_TO_EXCLUDE } from './utils'
 
 export const supportInteractionsTotalQueryFactory = (
     filters: StatsFilters,
@@ -27,6 +30,11 @@ export const supportInteractionsTotalQueryFactory = (
         dimensions: [],
         filters: [
             ...NotSpamNorTrashedTicketsFilter,
+            {
+                member: TicketMember.Channel,
+                operator: ReportingFilterOperator.Equals,
+                values: AI_AGENT_TICKETS_CHANNELS,
+            },
             {
                 member: TicketMember.CreatedDatetime,
                 operator: ReportingFilterOperator.InDateRange,
@@ -74,6 +82,11 @@ export const supportInteractionsPerIntentQueryFactory = (
         ],
         filters: [
             ...NotSpamNorTrashedTicketsFilter,
+            {
+                member: TicketMember.Channel,
+                operator: ReportingFilterOperator.Equals,
+                values: AI_AGENT_TICKETS_CHANNELS,
+            },
             {
                 member: TicketMember.CreatedDatetime,
                 operator: ReportingFilterOperator.InDateRange,

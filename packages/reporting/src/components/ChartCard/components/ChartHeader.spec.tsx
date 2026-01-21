@@ -313,7 +313,7 @@ describe('ChartHeader', () => {
         it('should handle zero value', () => {
             render(<ChartHeader title="Count" value={0} />)
 
-            expect(screen.getByText('0')).toBeInTheDocument()
+            expect(screen.getByText('-')).toBeInTheDocument()
         })
     })
 
@@ -401,7 +401,7 @@ describe('ChartHeader', () => {
         it('should handle value of 0 with prevValue', () => {
             render(<ChartHeader title="Metric" value={0} prevValue={100} />)
 
-            expect(screen.getByText('0')).toBeInTheDocument()
+            expect(screen.getByText('-')).toBeInTheDocument()
         })
 
         it('should handle prevValue of 0', () => {
