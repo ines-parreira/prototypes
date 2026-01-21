@@ -43,7 +43,7 @@ describe('useScheduledDowngrades', () => {
         expect(result.current).toEqual({
             value: null,
             loading: true,
-            error: undefined,
+            error: null,
         })
     })
 
@@ -76,7 +76,7 @@ describe('useScheduledDowngrades', () => {
         expect(result.current).toEqual({
             loading: false,
             value: [],
-            error: undefined,
+            error: null,
         })
     })
 
@@ -107,7 +107,7 @@ describe('useScheduledDowngrades', () => {
                     targetPlan: basicMonthlyHelpdeskPlan,
                 },
             ],
-            error: undefined,
+            error: null,
         })
     })
 
@@ -138,7 +138,7 @@ describe('useScheduledDowngrades', () => {
                     targetPlan: null,
                 },
             ],
-            error: undefined,
+            error: null,
         })
     })
 
@@ -174,7 +174,7 @@ describe('useScheduledDowngrades', () => {
                     targetPlan: basicMonthlyHelpdeskPlan,
                 },
             ],
-            error: undefined,
+            error: null,
         })
     })
 })

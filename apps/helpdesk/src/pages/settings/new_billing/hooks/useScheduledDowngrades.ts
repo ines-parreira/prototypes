@@ -38,6 +38,6 @@ export default function useScheduledDowngrades() {
     return {
         value: downgrades,
         loading: isLoading,
-        error: error || undefined,
+        error: error || null,
     }
 }
