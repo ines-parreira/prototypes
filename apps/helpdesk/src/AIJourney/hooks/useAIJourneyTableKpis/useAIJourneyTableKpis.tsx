@@ -19,17 +19,17 @@ import { usePostReportingV2 } from 'domains/reporting/models/queries'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 
-export type Metrics = {
-    recipients: number
-    ctr: number
-    replyRate: number
-    optOutRate: number
-    messagesSent: number
-    revenue: number
-    totalOrders: number
-    averageOrderValue: number
-    revenuePerRecipient: number
-    conversionRate: number
+export type Metrics<T> = {
+    recipients: T
+    ctr: T
+    replyRate: T
+    optOutRate: T
+    messagesSent: T
+    revenue: T
+    totalOrders: T
+    averageOrderValue: T
+    revenuePerRecipient: T
+    conversionRate: T
 }
 
 type ConversationMeasureData = Record<
@@ -44,11 +44,11 @@ type OrderMeasureData = Record<
 >
 
 export type TableKpisReturn = {
-    metrics: Record<string, Metrics>
+    metrics: Record<string, Metrics<number>>
     isLoading: boolean
 }
 
-export const DEFAULT_TABLE_METRICS: Metrics = {
+export const DEFAULT_TABLE_METRICS: Metrics<number> = {
     recipients: 0,
     ctr: 0,
     replyRate: 0,
@@ -59,6 +59,19 @@ export const DEFAULT_TABLE_METRICS: Metrics = {
     averageOrderValue: 0,
     revenuePerRecipient: 0,
     conversionRate: 0,
+}
+
+export const EMPTY_TABLE_METRICS: Metrics<string> = {
+    recipients: '-',
+    ctr: '-',
+    replyRate: '-',
+    optOutRate: '-',
+    messagesSent: '-',
+    revenue: '-',
+    totalOrders: '-',
+    averageOrderValue: '-',
+    revenuePerRecipient: '-',
+    conversionRate: '-',
 }
 
 export const useAIJourneyTableKpis = ({
@@ -101,8 +114,8 @@ export const useAIJourneyTableKpis = ({
             UsePostReportingQueryData<OrderMeasureData[]>
         >([orderQuery], undefined, { enabled })
 
-    const metrics: Record<string, Metrics> = useMemo(() => {
-        const result: Record<string, Metrics> = {}
+    const metrics: Record<string, Metrics<number>> = useMemo(() => {
+        const result: Record<string, Metrics<number>> = {}
 
         const conversationRows = conversationData?.data.data || []
         const orderRows = orderData?.data.data || []

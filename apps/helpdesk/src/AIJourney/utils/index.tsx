@@ -1,6 +1,12 @@
 import { isValidPhoneNumber as validatePhoneNumber } from 'libphonenumber-js'
 
-import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
+import {
+    JourneyCampaignStateEnum,
+    JourneyStatusEnum,
+    type JourneyTypeEnum,
+} from '@gorgias/convert-client'
+
+import { JOURNEY_TYPES_MAP_TO_URL } from 'AIJourney/constants'
 
 export function splitStringUsingRegex(inputString: string): string[] {
     const characters: string[] = []
@@ -88,4 +94,44 @@ export const getCampaignStateLabelAndColor = (
     }
 
     return { color, label }
+}
+
+export const getFlowStateLabelAndColor = (
+    state?: JourneyStatusEnum,
+): { label: string; color: string } => {
+    let color: string
+    let label: string
+    switch (state) {
+        case JourneyStatusEnum.Draft:
+            color = 'grey'
+            label = 'Draft'
+            break
+        case JourneyStatusEnum.Paused:
+            color = 'yellow'
+            label = 'Paused'
+            break
+        case JourneyStatusEnum.Active:
+            color = 'blue'
+            label = 'Active'
+            break
+        default:
+            color = 'grey'
+            label = 'Unknown'
+    }
+
+    return { color, label }
+}
+
+export const getSetupStepPath = ({
+    shopName,
+    journeyType,
+    stepName,
+    journeyId,
+}: {
+    shopName: string
+    journeyType: JourneyTypeEnum
+    stepName: string
+    journeyId?: string
+}) => {
+    return `/app/ai-journey/${shopName}/${JOURNEY_TYPES_MAP_TO_URL[journeyType]}/${stepName}${journeyId ? `/${journeyId}` : ''}`
 }

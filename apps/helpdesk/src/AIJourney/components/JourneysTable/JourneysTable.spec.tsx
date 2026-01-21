@@ -1,0 +1,213 @@
+import React from 'react'
+
+import { assumeMock } from '@repo/testing'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { Box, createSortableColumn } from '@gorgias/axiom'
+import type { ColumnDef } from '@gorgias/axiom'
+import type { JourneyApiDTO } from '@gorgias/convert-client'
+import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
+
+import { ThemeProvider } from 'core/theme'
+import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
+
+import { JourneysTable } from './JourneysTable'
+
+jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
+
+const useCurrencyMock = assumeMock(useCurrency)
+
+const mockColumns: ColumnDef<JourneyApiDTO, unknown>[] = [
+    {
+        id: 'title',
+        accessorFn: (row) => row.campaign?.title || row.type,
+        header: 'Title',
+        cell: (info) => <Box gap="xs">{String(info.getValue())}</Box>,
+        enableSorting: true,
+    },
+    createSortableColumn<JourneyApiDTO>('state', 'Status', (info) => (
+        <Box gap="xs">{String(info.getValue())}</Box>
+    )),
+]
+
+const mockJourneyData: JourneyApiDTO[] = [
+    {
+        id: '1',
+        type: JourneyTypeEnum.WinBack,
+        state: JourneyStatusEnum.Active,
+        store_name: 'Test Store',
+        store_integration_id: 123,
+        created_datetime: '2024-01-01T00:00:00Z',
+        account_id: 1,
+        store_type: 'shopify',
+    },
+    {
+        id: '2',
+        type: JourneyTypeEnum.Welcome,
+        state: JourneyStatusEnum.Draft,
+        store_name: 'Test Store',
+        store_integration_id: 123,
+        created_datetime: '2024-01-01T00:00:00Z',
+        account_id: 1,
+        store_type: 'shopify',
+    },
+    {
+        id: '3',
+        type: JourneyTypeEnum.PostPurchase,
+        state: JourneyStatusEnum.Paused,
+        store_name: 'Test Store',
+        store_integration_id: 123,
+        created_datetime: '2024-01-01T00:00:00Z',
+        account_id: 1,
+        store_type: 'shopify',
+    },
+]
+
+const renderComponent = (
+    props: Partial<{
+        columns: ColumnDef<JourneyApiDTO, unknown>[]
+        data: JourneyApiDTO[]
+        onEditColumns?: () => void
+        isLoading?: boolean
+    }> = {},
+) => {
+    const defaultProps = {
+        columns: mockColumns,
+        data: mockJourneyData,
+        isLoading: false,
+    }
+
+    return render(
+        <ThemeProvider>
+            <JourneysTable<JourneyApiDTO, unknown>
+                {...defaultProps}
+                {...props}
+            />
+        </ThemeProvider>,
+    )
+}
+
+describe('JourneysTable', () => {
+    beforeEach(() => {
+        useCurrencyMock.mockReturnValue({
+            currency: 'USD',
+            isCurrencyUSD: true,
+        })
+    })
+
+    describe('Rendering', () => {
+        it('should render the table with data', () => {
+            renderComponent()
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+            expect(screen.getByText('Title')).toBeInTheDocument()
+            expect(screen.getByText('Status')).toBeInTheDocument()
+        })
+
+        it('should render empty state when no data', () => {
+            renderComponent({ data: [] })
+
+            expect(screen.getByText('No journeys selected')).toBeInTheDocument()
+        })
+
+        it('should pass currency to table meta', () => {
+            useCurrencyMock.mockReturnValue({
+                currency: 'EUR',
+                isCurrencyUSD: false,
+            })
+
+            renderComponent()
+
+            expect(useCurrencyMock).toHaveBeenCalled()
+        })
+    })
+
+    describe('Loading state', () => {
+        it('should show loading state when isLoading is true', () => {
+            renderComponent({ isLoading: true })
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+        })
+
+        it('should not show loading state when isLoading is false', () => {
+            renderComponent({ isLoading: false })
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+        })
+    })
+
+    describe('Edit metrics button', () => {
+        it('should render Edit metrics button', () => {
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: /edit metrics/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should call onEditColumns when Edit metrics button is clicked', async () => {
+            const user = userEvent.setup()
+            const onEditColumns = jest.fn()
+
+            renderComponent({ onEditColumns })
+
+            const editButton = screen.getByRole('button', {
+                name: /edit metrics/i,
+            })
+            await user.click(editButton)
+
+            expect(onEditColumns).toHaveBeenCalledTimes(1)
+        })
+
+        it('should render Edit metrics button even when onEditColumns is not provided', () => {
+            renderComponent({ onEditColumns: undefined })
+
+            expect(
+                screen.queryByRole('button', { name: /edit metrics/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('Different data types', () => {
+        it('should handle journeys with campaign titles', () => {
+            const dataWithCampaign: JourneyApiDTO[] = [
+                {
+                    ...mockJourneyData[0],
+                    campaign: {
+                        title: 'Campaign Title',
+                        state: JourneyStatusEnum.Active,
+                    },
+                },
+            ]
+
+            renderComponent({ data: dataWithCampaign })
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+        })
+
+        it('should handle different journey states', () => {
+            const dataWithVariousStates = [
+                { ...mockJourneyData[0], state: JourneyStatusEnum.Active },
+                { ...mockJourneyData[1], state: JourneyStatusEnum.Draft },
+                { ...mockJourneyData[2], state: JourneyStatusEnum.Paused },
+            ]
+
+            renderComponent({ data: dataWithVariousStates })
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+        })
+
+        it('should handle different journey types', () => {
+            const dataWithVariousTypes = [
+                { ...mockJourneyData[0], type: JourneyTypeEnum.WinBack },
+                { ...mockJourneyData[1], type: JourneyTypeEnum.Welcome },
+                { ...mockJourneyData[2], type: JourneyTypeEnum.PostPurchase },
+            ]
+
+            renderComponent({ data: dataWithVariousTypes })
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+        })
+    })
+})

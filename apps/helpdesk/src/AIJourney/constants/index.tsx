@@ -6,13 +6,19 @@ export const STEPS_NAMES = {
     ACTIVATE: 'activate',
 }
 
-export const JOURNEY_TYPES = {
-    CAMPAIGN: 'campaign',
+export const CAMPAIGN_TYPE = 'campaign'
+
+export const FLOW_TYPES = {
     CART_ABANDONMENT: 'cart-abandoned',
     POST_PURCHASE: 'post-purchase',
     SESSION_ABANDONMENT: 'session-abandoned',
     WELCOME: 'welcome',
     WIN_BACK: 'win-back',
+}
+
+export const JOURNEY_TYPES = {
+    CAMPAIGN: CAMPAIGN_TYPE,
+    ...FLOW_TYPES,
 } as const
 
 export type JOURNEY_TYPES = (typeof JOURNEY_TYPES)[keyof typeof JOURNEY_TYPES]

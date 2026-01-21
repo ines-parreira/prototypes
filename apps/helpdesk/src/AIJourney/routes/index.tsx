@@ -78,7 +78,11 @@ function AiJourneyBaseRoutes() {
                             <Route
                                 path={`${path}/:shopName/flows`}
                                 exact
-                                render={() => <Flows />}
+                                render={() => (
+                                    <DefaultStatsFilters>
+                                        <Flows />
+                                    </DefaultStatsFilters>
+                                )}
                             />
                             <Route
                                 path={`${path}/:shopName/playground`}

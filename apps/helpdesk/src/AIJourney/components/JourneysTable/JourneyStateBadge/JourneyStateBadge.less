@@ -1,0 +1,63 @@
+:local {
+    .badge {
+        border-radius: 6px;
+        padding: 2px var(--layout-spacing-xs);
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+
+        &.green {
+            background-color: var(--surface-success-primary); // legacy
+            color: var(--content-success-primary); // legacy
+        }
+
+        &.grey {
+            background-color: var(--grey-300);
+            color: var(--grey-900);
+        }
+
+        &.blue {
+            background-color: var(--surface-additional-blue); // legacy
+            color: var(--content-additional-blue); // legacy
+        }
+
+        &.yellow {
+            background-color: var(--surface-warning-primary); // legacy
+            color: var(--content-warning-primary); // legacy
+        }
+
+        &.red {
+            background-color: var(--surface-error-primary); // legacy
+            color: var(--content-error-primary); // legacy
+        }
+    }
+}
+
+.axiom :local {
+    .badge {
+        &.green {
+            background-color: var(--surface-success-primary);
+            color: var(--content-success-primary);
+        }
+
+        &.grey {
+            background-color: var(--surface-neutral-tertiary);
+            color: var(--content-neutral-default);
+        }
+
+        &.blue {
+            background-color: var(--surface-additional-blue);
+            color: var(--content-additional-blue);
+        }
+
+        &.yellow {
+            background-color: var(--surface-warning-primary);
+            color: var(--content-warning-primary);
+        }
+
+        &.red {
+            background-color: var(--surface-error-primary);
+            color: var(--content-error-primary);
+        }
+    }
+}
