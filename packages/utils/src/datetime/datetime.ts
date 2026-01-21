@@ -362,3 +362,16 @@ export function hoursToSeconds(hours: number | string = 0): number {
 
     return 60 * 60 * hours
 }
+
+/**
+ * Convert days to hours.
+ *
+ * Migrated from: apps/helpdesk/src/utils/daysToHours.ts
+ */
+export function daysToHours(days = 0): number {
+    if (typeof days !== 'number') {
+        return 0
+    }
+
+    return 24 * days
+}

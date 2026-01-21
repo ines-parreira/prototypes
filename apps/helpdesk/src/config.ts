@@ -1,4 +1,4 @@
-import { hoursToSeconds } from '@repo/utils'
+import { daysToHours, hoursToSeconds } from '@repo/utils'
 import _find from 'lodash/find'
 import _get from 'lodash/get'
 
@@ -25,7 +25,6 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import { WidgetEnvironment } from 'state/widgets/types'
-import daysToHours from 'utils/daysToHours'
 
 // TODO @LouisBarranqueiro switch all configuration to modular version
 
