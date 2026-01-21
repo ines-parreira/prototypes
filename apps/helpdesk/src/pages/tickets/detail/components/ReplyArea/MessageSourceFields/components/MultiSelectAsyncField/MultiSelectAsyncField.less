@@ -105,20 +105,33 @@
 
 .axiom :local {
     .item {
-        background: var(--elevation-neutral-mid);
-        color: var(--content-neutral-default);
+        background: var(--elevation-neutral-mid) !important;
+        color: var(--content-neutral-default) !important;
+
+        &.item--focused {
+            background: var(--hover-default) !important;
+        }
     }
 
     .suggestions {
-        background: var(--elevation-neutral-default);
+        background: var(--elevation-neutral-mid);
         border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        box-shadow: var(--effects-shadow-container);
 
         & > .suggestion {
             color: var(--content-neutral-default);
+            background-color: transparent;
+            border-radius: var(--spacing-xxxs);
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--hover-default);
+            }
 
             &.suggestion--focused {
-                background-color: var(--elevation-neutral-mid);
-                color: var(--content-neutral-default);
+                background-color: var(--surface-accent-default);
+                color: var(--content-selected-accent);
             }
         }
     }

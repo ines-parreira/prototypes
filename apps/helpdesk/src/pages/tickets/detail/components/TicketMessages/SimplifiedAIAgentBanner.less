@@ -57,7 +57,13 @@
 
 .axiom :local {
     .container {
-        background-color: var(--elevation-neutral-default);
+        background:
+            linear-gradient(
+                    var(--elevation-neutral-default),
+                    var(--elevation-neutral-default)
+                )
+                padding-box,
+            linear-gradient(90deg, #f58d86, #a084e1) border-box;
     }
 
     .content {

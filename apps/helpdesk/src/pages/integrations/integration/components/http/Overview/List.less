@@ -45,14 +45,18 @@
 .axiom :local {
     .listItem {
         border-bottom: 1px solid var(--border-neutral-default);
+
+        &:hover {
+            background-color: var(--hover-default);
+
+            .link {
+                background-color: transparent;
+            }
+        }
     }
 
     .link {
         color: var(--content-neutral-default);
         background-color: var(--elevation-neutral-default);
-        &:hover {
-            color: var(--content-neutral-default);
-            background-color: var(--hover-default);
-        }
     }
 }

@@ -46,42 +46,26 @@
 
 .axiom :local {
     .avatar {
-        background: linear-gradient(
-            143deg,
-            #fff -15.08%,
-            var(--border-neutral-default, #ddd) 103.97%
-        );
+        background: var(--gradient-grey);
         color: var(--content-neutral-secondary);
     }
 
     .isAgent {
-        background: linear-gradient(
-            143deg,
-            #fff -15.08%,
-            var(--surface-danger-subtle) 103.97%
-        );
+        background: var(--gradient-coral);
     }
 
     .isAIAgent {
-        background: linear-gradient(
-            143deg,
-            #fff -15.08%,
-            var(--surface-brand-subtle) 103.97%
-        );
-        color: var(--content-brand-primary);
+        background: var(--gradient-fuchsia);
+        color: var(--content-additional-fuchsia);
     }
 
     .isCurrentUser {
-        background: linear-gradient(
-            143deg,
-            #fff -15.08%,
-            var(--surface-info-subtle) 103.97%
-        );
+        background: var(--gradient-blue);
     }
 }
 
 .axiom.dark :local {
     .isAIAgent {
-        color: var(--content-brand-secondary);
+        color: var(--content-additional-fuchsia);
     }
 }

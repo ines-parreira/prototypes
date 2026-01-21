@@ -419,6 +419,52 @@
             linear-gradient(90deg, #f58d86, #a084e1) border-box;
     }
 
+    .executionId {
+        color: var(--content-neutral-default);
+    }
+
+    .loading {
+        color: var(--content-neutral-default) !important;
+        background: linear-gradient(
+            90deg,
+            var(--content-neutral-default) 0%,
+            var(--content-neutral-secondary) 50%,
+            var(--content-neutral-default) 100%
+        ) !important;
+        background-size: 200% 100% !important;
+        background-clip: text !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+    }
+
+    .title {
+        .text {
+            color: var(--content-neutral-default);
+        }
+
+        .expandIcon {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .contentWithIcons {
+        ul {
+            li {
+                &::before {
+                    color: var(--content-neutral-default);
+                }
+            }
+        }
+    }
+
+    .feedbackText {
+        color: var(--content-neutral-default);
+    }
+
+    .feedbackFormHeader {
+        color: var(--content-neutral-default);
+    }
+
     .footer {
         .retryButton {
             &:hover {

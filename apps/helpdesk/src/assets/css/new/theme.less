@@ -230,6 +230,7 @@
     // btn
     .btn {
         color: var(--content-neutral-default);
+        border-radius: var(--spacing-xs);
 
         &:hover {
             color: var(--content-neutral-default);
@@ -322,11 +323,27 @@
             color: var(--content-neutral-default) !important;
         }
 
-        &:active {
-            background-color: var(--hover-default);
-            border-color: var(--border-neutral-secondary);
+        &:active,
+        &.active {
+            background-color: var(--pressed-default) !important;
+            border-color: var(--border-neutral-secondary) !important;
             color: var(--content-neutral-default) !important;
         }
+
+        &.disabled,
+        &:disabled {
+            background-color: var(--elevation-neutral-default) !important;
+            border-color: var(--border-neutral-default) !important;
+            color: var(--content-neutral-tertiary) !important;
+            opacity: 0.5;
+            box-shadow: none !important;
+        }
+    }
+
+    .show > .btn-secondary.dropdown-toggle {
+        background-color: var(--pressed-default) !important;
+        border-color: var(--border-neutral-secondary) !important;
+        color: var(--content-neutral-default) !important;
     }
 
     .btn-success {

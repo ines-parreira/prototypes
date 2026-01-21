@@ -533,49 +533,142 @@
     }
 }
 
-.axiom {
-    .daterangepicker {
-        border: 1px solid var(--border-neutral-default);
+.axiom.daterangepicker {
+    background-color: var(--elevation-neutral-mid) !important;
+    border: 1px solid var(--border-neutral-default) !important;
+    border-radius: var(--spacing-sm);
+    box-shadow: var(--effects-shadow-container);
 
-        &:after {
-            border-bottom-color: var(--neutral-grey-0); // legacy;
+    &:after {
+        border-bottom-color: var(--elevation-neutral-mid) !important;
+    }
+
+    &:before {
+        border-bottom-color: var(--border-neutral-default) !important;
+    }
+
+    .drp-calendar {
+        .calendar-table {
+            background-color: var(--elevation-neutral-mid) !important;
+
+            .next span,
+            .prev span {
+                border: solid var(--content-neutral-default) !important;
+            }
+        }
+    }
+
+    select {
+        &.hourselect,
+        &.minuteselect,
+        &.secondselect,
+        &.ampmselect,
+        &.monthselect,
+        &.yearselect {
+            border: none !important;
+            box-shadow: inset 0 0 0 1px var(--border-neutral-default) !important;
+            border-radius: var(--spacing-xs) !important;
+            background-color: transparent !important;
+            color: var(--content-neutral-default) !important;
+            transition: all 0.2s linear;
+
+            &:hover {
+                background: var(--hover-input) !important;
+            }
+
+            &:focus {
+                background: transparent !important;
+                box-shadow:
+                    var(--effects-inner-shadow),
+                    inset 0 0 0 1px var(--border-neutral-secondary) !important;
+                z-index: 2;
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--focus) !important;
+                outline-offset: 2px !important;
+            }
+        }
+    }
+
+    td {
+        background-color: transparent !important;
+
+        &.active,
+        &.active:hover {
+            background-color: var(--surface-accent-default) !important;
         }
 
-        &:before {
-            border-bottom-color: var(--border-neutral-default);
+        &:hover,
+        &.available:not(.active):hover {
+            background-color: var(--hover-default) !important;
         }
 
-        .drp-calendar {
-            .calendar-table {
-                .next span,
-                .prev span {
-                    border: solid var(--neutral-grey-5); // legacy;
+        &.disabled {
+            background-color: transparent !important;
+            color: var(--content-neutral-tertiary) !important;
+            opacity: 0.5 !important;
+        }
+
+        &.off.available {
+            color: var(--content-neutral-secondary) !important;
+            background-color: transparent !important;
+        }
+
+        &.in-range:not(.active):not(.off) {
+            background-color: var(--surface-accent-tertiary) !important;
+            color: var(--content-accent-default) !important;
+        }
+    }
+
+    &.picker-v2 {
+        &.apply-v2-styles {
+            .ranges {
+                ul {
+                    li {
+                        color: var(--content-neutral-default) !important;
+                        background-color: transparent !important;
+                        border-radius: var(--spacing-xxxs) !important;
+                        padding: var(--spacing-xxxs) var(--spacing-xs) !important;
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: var(--hover-default) !important;
+                        }
+
+                        &.active {
+                            background-color: var(
+                                --surface-accent-default
+                            ) !important;
+                            color: var(--content-selected-accent) !important;
+
+                            &::after {
+                                color: var(
+                                    --content-selected-accent
+                                ) !important;
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        select {
-            &.hourselect,
-            &.minuteselect,
-            &.secondselect,
-            &.ampmselect,
-            &.monthselect,
-            &.yearselect {
-                border: 1px solid var(--border-neutral-default);
+        &.ranges-on-left {
+            .ranges {
+                border-right: 1px solid var(--border-neutral-default) !important;
             }
         }
 
-        &.picker-v2 {
-            &.ranges-on-left {
-                .ranges {
-                    border-right: 1px solid var(--border-neutral-default);
-                }
+        &.action-buttons-on-the-bottom {
+            .drp-buttons {
+                background-color: var(--elevation-neutral-mid) !important;
+                border-top: 1px solid var(--border-neutral-default) !important;
             }
+        }
 
-            &.action-buttons-on-the-bottom {
-                .drp-buttons {
-                    border-top: 1px solid var(--border-neutral-default);
-                }
+        &.range-dates-in-footer {
+            .drp-selected {
+                color: var(--content-neutral-default) !important;
             }
         }
     }

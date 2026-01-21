@@ -62,6 +62,9 @@
 }
 
 .axiom :local {
+    --animation-duration: 250ms;
+    --animation-timing-fn: cubic-bezier(0.9, 0, 0, 1);
+
     .container {
         border-left: 1px solid var(--border-neutral-default);
     }
@@ -72,14 +75,33 @@
     }
 
     .link {
-        color: var(--content-neutral-default);
+        color: var(--content-neutral-tertiary);
+        position: relative;
+        transition: color var(--animation-duration) var(--animation-timing-fn);
 
-        &.active {
-            border-bottom: 2px solid var(--surface-additional-blue);
-            color: var(--content-neutral-default);
+        &:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 1px;
+            transition: background-color var(--animation-duration)
+                var(--animation-timing-fn);
         }
 
-        &:hover {
+        &:hover:not(.active) {
+            color: var(--content-neutral-default);
+            background-color: var(--surface-surface-hovered);
+
+            &:after {
+                background-color: var(--border-neutral-secondary);
+            }
+        }
+
+        &.active {
+            border-bottom: 2px solid var(--content-neutral-default);
             color: var(--content-neutral-default);
         }
     }

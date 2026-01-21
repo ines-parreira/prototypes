@@ -499,6 +499,26 @@
         background-color: var(--elevation-neutral-default);
     }
 
+    .dialog {
+        .content {
+            .quickRepliesContent {
+                .reply {
+                    background: var(--elevation-neutral-default) !important;
+                    border-radius: var(--spacing-xs);
+                    border-width: 1px;
+                    border-style: solid;
+                    padding: var(--spacing-xxs) var(--spacing-xs);
+                    font-weight: 500;
+                    transition: all 0.2s linear;
+
+                    &:hover {
+                        background: var(--hover-default) !important;
+                    }
+                }
+            }
+        }
+    }
+
     .agents,
     .team-picture-wrapper {
         .agent {

@@ -99,12 +99,15 @@
 
 .axiom :local {
     .icon.icon {
-        color: var(--content-neutral-default);
+        color: var(--content-neutral-tertiary) !important;
     }
 
     .unavailable {
-        background: var(--elevation-neutral-mid);
-        color: var(--content-neutral-default);
+        background: var(--elevation-neutral-mid) !important;
+        color: var(--content-neutral-default) !important;
+        border-radius: var(--spacing-sm);
+        border: 1px solid var(--border-neutral-default);
+        box-shadow: var(--effects-shadow-container);
     }
 
     .lastUpdated {
