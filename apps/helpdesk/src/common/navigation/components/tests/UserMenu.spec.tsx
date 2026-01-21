@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { shortcutManager } from '@repo/utils'
@@ -20,14 +21,15 @@ import { ignoreHTML } from 'tests/ignoreHTML'
 
 import UserMenu from '../UserMenu'
 
-jest.mock(
-    '@repo/logging',
-    () =>
-        ({
-            ...jest.requireActual('@repo/logging'),
-            logEvent: jest.fn(),
-        }) as typeof import('@repo/logging'),
-)
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
+
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
+    logEvent: jest.fn(),
+}))
 jest.mock('pages/common/components/NoticeableIndicator', () => () => (
     <div>NoticeableIndicator</div>
 ))
@@ -35,16 +37,12 @@ jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock('hooks/useAxiomMigration', () => ({ useAxiomMigration: jest.fn() }))
 const useAxiomMigrationMock = useAxiomMigration as jest.Mock
 
-jest.mock(
-    'services/activityTracker',
-    () =>
-        ({
-            ...jest.requireActual('services/activityTracker'),
-            clearActivityTrackerSession: jest.fn(),
-            logActivityEvent: jest.fn(),
-            unregisterAppActivityTrackerHooks: jest.fn(),
-        }) as typeof import('services/activityTracker'),
-)
+jest.mock('services/activityTracker', () => ({
+    ...jest.requireActual('services/activityTracker'),
+    clearActivityTrackerSession: jest.fn(),
+    logActivityEvent: jest.fn(),
+    unregisterAppActivityTrackerHooks: jest.fn(),
+}))
 jest.mock('@repo/utils', () => ({
     ...jest.requireActual('@repo/utils'),
     shortcutManager: {
@@ -52,16 +50,15 @@ jest.mock('@repo/utils', () => ({
     },
 }))
 
-jest.mock(
-    'core/theme',
-    () =>
-        ({
-            ...jest.requireActual('core/theme'),
-            useTheme: jest.fn(),
-        }) as typeof import('core/theme'),
-)
+jest.mock('core/theme', () => ({
+    ...jest.requireActual('core/theme'),
+    useTheme: jest.fn(),
+}))
 const useThemeMock = assumeMock(useTheme)
 const getCurrentUserMock = assumeMock(getCurrentUser)
+
+const { useFlag } = jest.requireMock('@repo/feature-flags')
+const useFlagMock = useFlag as jest.Mock
 
 jest.mock('../AvailabilityToggle', () => () => <div>AvailabilityToggle</div>)
 jest.mock('../AxiomMigrationToggle', () => ({
@@ -69,6 +66,10 @@ jest.mock('../AxiomMigrationToggle', () => ({
 }))
 jest.mock('../MainNavigation', () => () => <div>MainNavigation</div>)
 jest.mock('../ThemeMenu', () => () => <div>ThemeMenu</div>)
+
+jest.mock('@repo/agent-status', () => ({
+    UserInfoHeaderContainer: () => <div>UserInfoHeaderContainer</div>,
+}))
 
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(),
@@ -84,6 +85,9 @@ describe('UserMenu', () => {
     beforeEach(() => {
         onClose = jest.fn()
         useAxiomMigrationMock.mockReturnValue({ hasFlag: false })
+        useFlagMock.mockImplementation(() => {
+            return false
+        })
         useThemeMock.mockReturnValue({
             name: THEME_NAME.Classic,
             resolvedName: THEME_NAME.Classic,
@@ -122,6 +126,56 @@ describe('UserMenu', () => {
         useAxiomMigrationMock.mockReturnValue({ hasFlag: true })
         render(<UserMenu onClose={onClose} />, { wrapper })
         expect(screen.getByText('AxiomMigrationToggle')).toBeInTheDocument()
+    })
+
+    it('should not render the user info header when feature flag is disabled', () => {
+        useFlagMock.mockImplementation((key: string) => {
+            if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
+                return false
+            }
+            return false
+        })
+        render(<UserMenu onClose={onClose} />, { wrapper })
+        expect(
+            screen.queryByText('UserInfoHeaderContainer'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render the user info header when feature flag is enabled', () => {
+        useFlagMock.mockImplementation((key: string) => {
+            if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
+                return true
+            }
+            return false
+        })
+        render(<UserMenu onClose={onClose} />, { wrapper })
+        expect(screen.getByText('UserInfoHeaderContainer')).toBeInTheDocument()
+    })
+
+    it('should render user info header above availability toggle when enabled', () => {
+        useFlagMock.mockImplementation((key: string) => {
+            if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
+                return true
+            }
+            return false
+        })
+        const { container } = render(<UserMenu onClose={onClose} />, {
+            wrapper,
+        })
+
+        const userInfoHeader = screen.getByText('UserInfoHeaderContainer')
+        const availabilityToggle = screen.getByText('AvailabilityToggle')
+
+        expect(userInfoHeader).toBeInTheDocument()
+        expect(availabilityToggle).toBeInTheDocument()
+
+        const allElements = Array.from(container.querySelectorAll('*'))
+        const userInfoPosition = allElements.indexOf(userInfoHeader)
+        const availabilityPosition = allElements.indexOf(availabilityToggle)
+
+        expect(userInfoPosition).toBeGreaterThan(-1)
+        expect(availabilityPosition).toBeGreaterThan(-1)
+        expect(userInfoPosition).toBeLessThan(availabilityPosition)
     })
 
     it.each([

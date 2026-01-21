@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { UserInfoHeaderContainer } from '@repo/agent-status'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import cn from 'classnames'
@@ -41,6 +43,9 @@ type Props = {
 
 export default function UserMenu({ onClose }: Props) {
     const { hasFlag: hasAxiomMigration } = useAxiomMigration()
+    const areCustomStatusesActive = useFlag(
+        FeatureFlagKey.CustomAgentUnavailableStatuses,
+    )
     const theme = useTheme()
     const currentUser = useAppSelector(getCurrentUser)
     const [activeScreen, setActiveScreen] = useState<ActiveScreen>(
@@ -52,6 +57,12 @@ export default function UserMenu({ onClose }: Props) {
     return (
         <Screens activeScreen={activeScreen}>
             <Screen name={ActiveScreen.Main}>
+                {areCustomStatusesActive && (
+                    <>
+                        <UserInfoHeaderContainer />
+                        <hr className={css.separator} />
+                    </>
+                )}
                 <AvailabilityToggle />
                 {hasAxiomMigration && (
                     <>

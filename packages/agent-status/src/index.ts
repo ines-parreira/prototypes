@@ -2,6 +2,8 @@
 
 export { AgentStatusesTable } from './components'
 export { DeleteStatusConfirmationModal } from './components/DeleteStatusModal'
+export { UserInfoHeader, UserInfoHeaderContainer } from './components'
+export type { UserInfoHeaderProps } from './components/UserInfoHeader'
 
 export {
     DURATION_LIMITS,
@@ -15,6 +17,7 @@ export {
     useAgentStatuses,
     useDeleteCustomUserAvailabilityStatus,
     useCustomUserUnavailabilityModal,
+    useAvailabilityStatusColor,
 } from './hooks'
 
 export type { AgentStatusWithSystem, DurationOption } from './types'

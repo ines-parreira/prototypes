@@ -9,7 +9,6 @@ export enum FeatureFlagKey {
     ActionsInternalPlatform = 'actions-internal-platform',
     ActionSteps = 'action-steps',
     AgentActivityTracking = 'agent-activity-tracking',
-    CustomAgentUnavailableStatuses = 'linear.task_SUPXP-4819.custom-agent-unavailable-status',
     /** @deprecated Fully evaluated to `true` */
     AiAgentActivation = 'linear.project_activate-ai-agent-per-skills-and-channels-easily.enable_activation_feature',
     AiAgentAIGeneratedGuidances = 'ai-agent-ai-generated-guidances',
@@ -112,6 +111,7 @@ export enum FeatureFlagKey {
     ConvertChatInstallSnippet = 'convert-chat-install-snippet',
     ConvertContactForm = 'convert-contact-form',
     ConvertPerformanceView = 'convert-performance-view',
+    CustomAgentUnavailableStatuses = 'linear.task_SUPXP-4819.custom-agent-unavailable-status',
     CustomBusinessHours = 'business-hours-by-integration',
     CustomerTimelineDrawerUX = 'linear.task_SUPXP-3671.customer-timeline-drawer-ux',
     DefaultEmailAddress = 'default-email-address',
