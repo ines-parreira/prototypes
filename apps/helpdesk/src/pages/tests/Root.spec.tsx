@@ -1,11 +1,8 @@
 import type { ReactNode } from 'react'
 
-import { getLDClient } from '@repo/feature-flags'
 import { history } from '@repo/routing'
-import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import type { Location } from 'history'
-import type { LDClient } from 'launchdarkly-js-client-sdk'
 import type { Store } from 'redux'
 
 import activityTracker from 'services/activityTracker'
@@ -67,10 +64,13 @@ jest.mock('main/app', () => ({
 jest.mock('routes', () => () => <div>RoutesWrapper</div>)
 jest.mock('services/activityTracker', () => ({ createUserContext: jest.fn() }))
 jest.mock('@repo/feature-flags', () => ({
-    getLDClient: jest.fn(),
-    LDContext: {},
+    FeatureFlagsProvider: ({ children }: { children: ReactNode }) => (
+        <div>
+            <p>FeatureFlagsProvider</p>
+            {children}
+        </div>
+    ),
 }))
-const getLDClientMock = assumeMock(getLDClient)
 
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),
@@ -80,21 +80,14 @@ jest.mock('@repo/routing', () => ({
 }))
 
 describe('Root', () => {
-    let waitUntilGoalsReady: jest.Mock
     const store = {} as Store<RootState>
-
-    beforeEach(() => {
-        waitUntilGoalsReady = jest.fn(() => new Promise(jest.fn()))
-        getLDClientMock.mockReturnValue({
-            waitUntilGoalsReady,
-        } as unknown as LDClient)
-    })
 
     it('should render various providers', () => {
         render(<Root store={store} />)
         screen.getByText('QueryClientProvider')
         screen.getByText('ReduxProvider')
         screen.getByText('DndProvider')
+        screen.getByText('FeatureFlagsProvider')
         screen.getByText('Router')
         screen.getByText('CompatRouter')
         screen.getByText('Main')

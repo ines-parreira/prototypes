@@ -1,4 +1,5 @@
 export { FeatureFlagKey } from './featureFlagKey'
+export { FeatureFlagsProvider } from './FeatureFlagsProvider'
 export type { FeatureFlagsMap } from './types'
 export { withFeatureFlags } from './withFeatureFlags'
 export { getLDClient, initLaunchDarkly, LDContext } from './launchdarkly'

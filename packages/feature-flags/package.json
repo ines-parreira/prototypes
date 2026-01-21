@@ -16,6 +16,7 @@
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
+        "@repo/hooks": "workspace:*",
         "@repo/utils": "workspace:*",
         "react": "catalog:react",
         "react-dom": "catalog:react",
@@ -24,6 +25,7 @@
     },
     "devDependencies": {
         "@repo/config": "workspace:*",
+        "@repo/hooks": "workspace:*",
         "@repo/utils": "workspace:*",
         "@testing-library/dom": "catalog:test",
         "@testing-library/jest-dom": "catalog:test",

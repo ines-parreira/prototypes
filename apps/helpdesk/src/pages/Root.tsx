@@ -1,7 +1,6 @@
-import { useLayoutEffect, useState } from 'react'
+import { useLayoutEffect } from 'react'
 
-import { getLDClient, LDContext } from '@repo/feature-flags'
-import { useEffectOnce } from '@repo/hooks'
+import { FeatureFlagsProvider } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { envVars, NodeEnv } from '@repo/utils'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -9,8 +8,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createDragDropManager } from 'dnd-core'
 import Immutable from 'immutable'
 import installDevTools from 'immutable-devtools'
-import type { LDClient } from 'launchdarkly-js-client-sdk'
-import { LDProvider } from 'launchdarkly-react-client-sdk'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
@@ -36,17 +33,7 @@ if (envVars.NODE_ENV !== NodeEnv.Production) {
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
 const Root = ({ store }: Props) => {
-    const [LDClient, setLDClient] = useState<LDClient>()
-
     window.GorgiasCanduRouter = useCanduRouter()
-
-    useEffectOnce(() => {
-        const LDClient = getLDClient()
-
-        void LDClient.waitUntilGoalsReady().then(() => {
-            setLDClient(LDClient)
-        })
-    })
 
     useLayoutEffect(() => {
         const unlisten = history.listen((location) => {
@@ -66,12 +53,7 @@ const Root = ({ store }: Props) => {
         <QueryClientProvider client={appQueryClient}>
             <Provider store={store}>
                 <DndProvider manager={manager}>
-                    <LDProvider
-                        clientSideID={window.GORGIAS_LAUNCHDARKLY_CLIENT_ID}
-                        ldClient={LDClient}
-                        reactOptions={{ useCamelCaseFlagKeys: false }}
-                        context={LDContext}
-                    >
+                    <FeatureFlagsProvider>
                         <RevenueAddonApiClientProvider>
                             <HelpCenterApiClientProvider>
                                 <Router history={history}>
@@ -83,7 +65,7 @@ const Root = ({ store }: Props) => {
                                 </Router>
                             </HelpCenterApiClientProvider>
                         </RevenueAddonApiClientProvider>
-                    </LDProvider>
+                    </FeatureFlagsProvider>
                 </DndProvider>
             </Provider>
             {envVars.NODE_ENV !== NodeEnv.Production && (
