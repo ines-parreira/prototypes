@@ -1,0 +1,37 @@
+name: Security Audit Fix (Transitive Dependencies)
+
+on:
+  schedule:
+    # Run daily at 9 AM UTC
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    inputs:
+      severity:
+        description: 'Minimum severity level to fix (low, moderate, high, critical)'
+        required: false
+        default: 'moderate'
+        type: choice
+        options:
+          - low
+          - moderate
+          - high
+          - critical
+      dry_run:
+        description: 'Dry run (analyze only, do not create PRs)'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  audit-and-fix:
+    # This workflow handles transitive dependency vulnerabilities only
+    # Direct dependencies are automatically handled by Dependabot
+    uses: gorgias/reusable-actions/.github/workflows/security-audit-fix.yml@main
+    with:
+      min-severity: ${{ inputs.severity || 'high' }}
+      dry-run: ${{ inputs.dry_run || false }}
+      base-branch: main
+      node-version: '22'
+      max-open-prs: 5
+      reviewers: Ahmedgrissa
+    secrets: inherit
