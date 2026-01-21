@@ -78,8 +78,10 @@ exports[`Event should render 1`] = `
       </b>
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="green"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="success"
       >
         200 OK
       </div>

@@ -72,8 +72,10 @@ exports[`<Shopify/> Detail should render a detail view 1`] = `
       >
         <div
           class="ui-badge-badge-0cf8 badge ui-badge-uppercase-0cf8"
+          data-color="grey"
+          data-corner="round"
           data-name="badge"
-          style="border-radius: 100px;"
+          data-type="grey"
         >
           ECOMMERCE
         </div>

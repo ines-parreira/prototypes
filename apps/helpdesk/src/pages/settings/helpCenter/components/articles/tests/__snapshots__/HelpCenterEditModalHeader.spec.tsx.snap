@@ -18,9 +18,11 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
       >
         <div
           class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+          data-color="grey"
+          data-corner="round"
           data-name="badge"
+          data-type="light-grey"
           id="editingState"
-          style="border-radius: 100px;"
         >
           <i
             class="material-icons"
@@ -198,9 +200,11 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
       >
         <div
           class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+          data-color="grey"
+          data-corner="round"
           data-name="badge"
+          data-type="light-grey"
           id="editingState"
-          style="border-radius: 100px;"
         >
           <i
             class="material-icons"
@@ -308,9 +312,11 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
       >
         <div
           class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+          data-color="grey"
+          data-corner="round"
           data-name="badge"
+          data-type="light-grey"
           id="editingState"
-          style="border-radius: 100px;"
         >
           <i
             class="material-icons"

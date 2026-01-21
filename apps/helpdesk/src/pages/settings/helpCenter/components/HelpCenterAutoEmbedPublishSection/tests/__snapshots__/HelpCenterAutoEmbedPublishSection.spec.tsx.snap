@@ -16,8 +16,10 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a non-
         Automatically embed on your website
         <div
           class="ui-badge-badge-0cf8 badge ui-badge-uppercase-0cf8"
+          data-color="grey"
+          data-corner="round"
           data-name="badge"
-          style="border-radius: 100px;"
+          data-type="light"
         >
           RECOMMENDED
         </div>
@@ -114,8 +116,10 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
         Automatically embed on your website
         <div
           class="ui-badge-badge-0cf8 badge ui-badge-uppercase-0cf8"
+          data-color="grey"
+          data-corner="round"
           data-name="badge"
-          style="border-radius: 100px;"
+          data-type="light"
         >
           RECOMMENDED
         </div>
@@ -174,8 +178,10 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
         Automatically embed on your website
         <div
           class="ui-badge-badge-0cf8 badge ui-badge-uppercase-0cf8"
+          data-color="green"
+          data-corner="round"
           data-name="badge"
-          style="border-radius: 100px;"
+          data-type="light-success"
         >
           RECOMMENDED
         </div>

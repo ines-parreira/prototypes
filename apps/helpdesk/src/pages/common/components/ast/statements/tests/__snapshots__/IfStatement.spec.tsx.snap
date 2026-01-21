@@ -27,8 +27,10 @@ exports[`IfStatement component should not render alternate because there is none
     </button>
     <div
       class="ui-badge-badge-0cf8 unknownstatement ui-badge-uppercase-0cf8"
+      data-color="red"
+      data-corner="round"
       data-name="badge"
-      style="border-radius: 100px;"
+      data-type="error"
     >
       Unknown 
     </div>
@@ -91,8 +93,10 @@ exports[`IfStatement component should not render alternate because there is none
       <div>
         <div
           class="ui-badge-badge-0cf8 unknownstatement ui-badge-uppercase-0cf8"
+          data-color="red"
+          data-corner="round"
           data-name="badge"
-          style="border-radius: 100px;"
+          data-type="error"
         >
           Unknown 
         </div>
@@ -129,8 +133,10 @@ exports[`IfStatement component should render alternate because there is one 1`] 
     </button>
     <div
       class="ui-badge-badge-0cf8 unknownstatement ui-badge-uppercase-0cf8"
+      data-color="red"
+      data-corner="round"
       data-name="badge"
-      style="border-radius: 100px;"
+      data-type="error"
     >
       Unknown 
     </div>
@@ -193,8 +199,10 @@ exports[`IfStatement component should render alternate because there is one 1`] 
       <div>
         <div
           class="ui-badge-badge-0cf8 unknownstatement ui-badge-uppercase-0cf8"
+          data-color="red"
+          data-corner="round"
           data-name="badge"
-          style="border-radius: 100px;"
+          data-type="error"
         >
           Unknown 
         </div>
@@ -272,8 +280,10 @@ exports[`IfStatement component should render alternate because there is one 1`] 
       <div>
         <div
           class="ui-badge-badge-0cf8 unknownstatement ui-badge-uppercase-0cf8"
+          data-color="red"
+          data-corner="round"
           data-name="badge"
-          style="border-radius: 100px;"
+          data-type="error"
         >
           Unknown 
         </div>

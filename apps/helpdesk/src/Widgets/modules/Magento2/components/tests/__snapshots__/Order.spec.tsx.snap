@@ -264,8 +264,10 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="blue"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="classic"
       >
         New
       </div>
@@ -503,8 +505,10 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="blue"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="classic"
       >
         New
       </div>
@@ -742,8 +746,10 @@ exports[`Order <BeforeContent/> render() should render the state and an empty cr
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="blue"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="classic"
       >
         New
       </div>
@@ -783,8 +789,10 @@ exports[`Order <BeforeContent/> render() should render with a label for the canc
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="red"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="error"
       >
         Canceled
       </div>
@@ -826,8 +834,10 @@ exports[`Order <BeforeContent/> render() should render with a label for the clos
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="red"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="error"
       >
         Closed
       </div>
@@ -869,8 +879,10 @@ exports[`Order <BeforeContent/> render() should render with a label for the comp
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="green"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="success"
       >
         Complete
       </div>
@@ -912,8 +924,10 @@ exports[`Order <BeforeContent/> render() should render with a label for the new 
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="blue"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="classic"
       >
         New
       </div>
@@ -955,8 +969,10 @@ exports[`Order <BeforeContent/> render() should render with a label for the on_h
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="orange"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="warning"
       >
         On hold
       </div>
@@ -998,8 +1014,10 @@ exports[`Order <BeforeContent/> render() should render with a label for the pend
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="blue"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="classic"
       >
         Pending
       </div>
@@ -1041,8 +1059,10 @@ exports[`Order <BeforeContent/> render() should render with a label for the proc
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="blue"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="classic"
       >
         Processing
       </div>

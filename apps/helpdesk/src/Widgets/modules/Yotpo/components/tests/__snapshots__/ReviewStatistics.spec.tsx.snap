@@ -23,15 +23,19 @@ exports[`<AfterContent/> render() should render top topics for reviews 1`] = `
   >
     <div
       class="ui-badge-badge-0cf8 topic ui-badge-uppercase-0cf8"
+      data-color="grey"
+      data-corner="round"
       data-name="badge"
-      style="border-radius: 100px;"
+      data-type="light"
     >
       food
     </div>
     <div
       class="ui-badge-badge-0cf8 topic ui-badge-uppercase-0cf8"
+      data-color="grey"
+      data-corner="round"
       data-name="badge"
-      style="border-radius: 100px;"
+      data-type="light"
     >
       stuff
     </div>
@@ -77,8 +81,10 @@ exports[`<TitleWrapper/> render() should render header total reviews 1`] = `
   </span>
   <div
     class="ui-badge-badge-0cf8 pill ui-badge-uppercase-0cf8"
+    data-color="grey"
+    data-corner="round"
     data-name="badge"
-    style="border-radius: 100px;"
+    data-type="dark-grey"
   >
     2
   </div>

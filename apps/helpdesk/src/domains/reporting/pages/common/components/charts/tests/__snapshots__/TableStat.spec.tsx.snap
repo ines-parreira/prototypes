@@ -364,8 +364,10 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           <div>
             <div
               class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+              data-color="green"
+              data-corner="round"
               data-name="badge"
-              style="border-radius: 100px;"
+              data-type="success"
             >
               Online
             </div>
@@ -970,8 +972,10 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           <div>
             <div
               class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+              data-color="green"
+              data-corner="round"
               data-name="badge"
-              style="border-radius: 100px;"
+              data-type="success"
             >
               Online
             </div>
@@ -1769,8 +1773,10 @@ exports[`TableStat should render a table chart 1`] = `
           <div>
             <div
               class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+              data-color="green"
+              data-corner="round"
               data-name="badge"
-              style="border-radius: 100px;"
+              data-type="success"
             >
               Online
             </div>
@@ -2249,8 +2255,10 @@ exports[`TableStat should render a table with online status disabled badge 1`] =
           <div>
             <div
               class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+              data-color="grey"
+              data-corner="round"
               data-name="badge"
-              style="border-radius: 100px;"
+              data-type="grey"
             >
               Offline
             </div>
@@ -2626,8 +2634,10 @@ exports[`TableStat should render a table with the expand button and one line vis
           <div>
             <div
               class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+              data-color="green"
+              data-corner="round"
               data-name="badge"
-              style="border-radius: 100px;"
+              data-type="success"
             >
               Online
             </div>

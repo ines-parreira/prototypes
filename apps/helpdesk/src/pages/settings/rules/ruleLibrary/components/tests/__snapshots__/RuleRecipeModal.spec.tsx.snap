@@ -162,8 +162,11 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                         </span>
                         <div
                           class="ui-badge-badge-0cf8 fakeTicketClosed ui-badge-uppercase-0cf8"
+                          data-color="red"
+                          data-corner="round"
                           data-name="badge"
-                          style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46); border-radius: 100px;"
+                          data-type="error"
+                          style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
                         >
                           closed
                         </div>
@@ -205,8 +208,11 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                         </span>
                         <div
                           class="ui-badge-badge-0cf8 fakeTicketClosed ui-badge-uppercase-0cf8"
+                          data-color="red"
+                          data-corner="round"
                           data-name="badge"
-                          style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46); border-radius: 100px;"
+                          data-type="error"
+                          style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
                         >
                           closed
                         </div>

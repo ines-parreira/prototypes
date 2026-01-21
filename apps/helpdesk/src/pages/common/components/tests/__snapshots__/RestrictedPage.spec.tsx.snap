@@ -21,8 +21,10 @@ exports[`<RestrictedPage/> should render for a specific page 1`] = `
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="red"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="light-error"
       >
         Admin
       </div>
@@ -69,8 +71,10 @@ exports[`<RestrictedPage/> should render for admin role and include higher permi
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="red"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="light-error"
       >
         Admin
       </div>
@@ -117,8 +121,10 @@ exports[`<RestrictedPage/> should render for agent role and include higher permi
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="orange"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="light-warning"
       >
         Lead
       </div>
@@ -165,8 +171,10 @@ exports[`<RestrictedPage/> should render for basic-agent role and include higher
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="teal"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="teal"
       >
         Basic
       </div>
@@ -213,8 +221,10 @@ exports[`<RestrictedPage/> should render for bot role and include higher permiss
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="blue"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="blue"
       >
         Bot
       </div>
@@ -261,8 +271,10 @@ exports[`<RestrictedPage/> should render for internal-agent role and include hig
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="blue"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="blue"
       >
         Gorgias Support
       </div>
@@ -309,8 +321,10 @@ exports[`<RestrictedPage/> should render for lite-agent role and include higher 
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="purple"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="light-purple"
       >
         Lite
       </div>
@@ -357,8 +371,10 @@ exports[`<RestrictedPage/> should render for observer-agent role and include hig
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="grey"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="light-grey"
       >
         Observer
       </div>

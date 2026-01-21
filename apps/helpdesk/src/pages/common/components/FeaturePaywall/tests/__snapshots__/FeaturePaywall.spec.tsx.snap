@@ -49,8 +49,10 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
             >
               <div
                 class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                data-color="red"
+                data-corner="round"
                 data-name="badge"
-                style="border-radius: 100px;"
+                data-type="error"
               >
                 <i
                   class="material-icons mr-1"
@@ -66,8 +68,10 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
               </i>
               <div
                 class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                data-color="orange"
+                data-corner="round"
                 data-name="badge"
-                style="border-radius: 100px;"
+                data-type="warning"
               >
                 Enterprise Plan
               </div>
@@ -231,8 +235,10 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
             >
               <div
                 class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                data-color="red"
+                data-corner="round"
                 data-name="badge"
-                style="border-radius: 100px;"
+                data-type="error"
               >
                 <i
                   class="material-icons mr-1"
@@ -248,8 +254,10 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
               </i>
               <div
                 class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                data-color="blue"
+                data-corner="round"
                 data-name="badge"
-                style="border-radius: 100px;"
+                data-type="classic"
               >
                 Basic Plan
               </div>
@@ -417,8 +425,10 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
             >
               <div
                 class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                data-color="blue"
+                data-corner="round"
                 data-name="badge"
-                style="border-radius: 100px;"
+                data-type="indigo"
               >
                 Pro Plan
               </div>

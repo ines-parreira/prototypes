@@ -253,8 +253,9 @@ exports[`Charge BeforeContent should display default color if there's no matchin
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="default"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
       >
         Foobar
       </div>
@@ -279,8 +280,10 @@ exports[`Charge BeforeContent should display the appropriate color if there's a 
     >
       <div
         class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+        data-color="red"
+        data-corner="round"
         data-name="badge"
-        style="border-radius: 100px;"
+        data-type="error"
       >
         Error
       </div>

@@ -14,8 +14,10 @@ exports[`<CardHeaderYotpoReviewStatistics/> render() should render children and 
   </span>
   <div
     class="ui-badge-badge-0cf8 pill ui-badge-uppercase-0cf8"
+    data-color="grey"
+    data-corner="round"
     data-name="badge"
-    style="border-radius: 100px;"
+    data-type="dark-grey"
   >
     3
   </div>

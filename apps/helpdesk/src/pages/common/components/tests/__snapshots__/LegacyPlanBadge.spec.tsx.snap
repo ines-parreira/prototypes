@@ -6,8 +6,10 @@ exports[`<LegacyPlanBadge /> should render a badge 1`] = `
 >
   <div
     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+    data-color="red"
+    data-corner="round"
     data-name="badge"
-    style="border-radius: 100px;"
+    data-type="error"
   >
     <i
       class="material-icons"

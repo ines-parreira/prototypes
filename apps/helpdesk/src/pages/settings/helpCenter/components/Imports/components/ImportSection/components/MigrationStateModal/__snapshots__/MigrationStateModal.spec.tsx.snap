@@ -103,9 +103,11 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
                 >
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="blue"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="blue"
                     id="quick-summary-tooltip-12-0-exported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -116,9 +118,11 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
                   </div>
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="red"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="light-error"
                     id="quick-summary-tooltip-12-0-failed"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -142,9 +146,11 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
                 >
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="blue"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="blue"
                     id="quick-summary-tooltip-12-1-exported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -155,9 +161,11 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
                   </div>
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="red"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="light-error"
                     id="quick-summary-tooltip-12-1-failed"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -181,8 +189,10 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
             >
               <div
                 class="ui-badge-badge-0cf8 headerCountBadge ui-badge-uppercase-0cf8"
+                data-color="red"
+                data-corner="round"
                 data-name="badge"
-                style="border-radius: 100px;"
+                data-type="light-error"
               >
                 <i
                   class="material-icons mr-2"
@@ -797,9 +807,11 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                 >
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="blue"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="blue"
                     id="quick-summary-tooltip-6-0-exported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -810,9 +822,11 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                   </div>
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="green"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="light-success"
                     id="quick-summary-tooltip-6-0-imported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -823,9 +837,11 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                   </div>
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="red"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="light-error"
                     id="quick-summary-tooltip-6-0-failed"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -849,9 +865,11 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                 >
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="blue"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="blue"
                     id="quick-summary-tooltip-6-1-exported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -862,9 +880,11 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                   </div>
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="red"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="light-error"
                     id="quick-summary-tooltip-6-1-failed"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -888,8 +908,10 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
             >
               <div
                 class="ui-badge-badge-0cf8 headerCountBadge ui-badge-uppercase-0cf8"
+                data-color="red"
+                data-corner="round"
                 data-name="badge"
-                style="border-radius: 100px;"
+                data-type="light-error"
               >
                 <i
                   class="material-icons mr-2"
@@ -1233,9 +1255,11 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
                 >
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="blue"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="blue"
                     id="quick-summary-tooltip-4-0-exported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -1246,9 +1270,11 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
                   </div>
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="green"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="light-success"
                     id="quick-summary-tooltip-4-0-imported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -1272,9 +1298,11 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
                 >
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="blue"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="blue"
                     id="quick-summary-tooltip-4-1-exported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -1285,9 +1313,11 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
                   </div>
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="green"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="light-success"
                     id="quick-summary-tooltip-4-1-imported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -1633,9 +1663,11 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                 >
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="blue"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="blue"
                     id="quick-summary-tooltip-10-0-exported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -1646,9 +1678,11 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                   </div>
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="green"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="light-success"
                     id="quick-summary-tooltip-10-0-imported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -1659,9 +1693,11 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                   </div>
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="red"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="light-error"
                     id="quick-summary-tooltip-10-0-failed"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -1685,9 +1721,11 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                 >
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="blue"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="blue"
                     id="quick-summary-tooltip-10-1-exported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -1698,9 +1736,11 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                   </div>
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="green"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="light-success"
                     id="quick-summary-tooltip-10-1-imported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -1711,9 +1751,11 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                   </div>
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="red"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="light-error"
                     id="quick-summary-tooltip-10-1-failed"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -1737,8 +1779,10 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
             >
               <div
                 class="ui-badge-badge-0cf8 headerCountBadge ui-badge-uppercase-0cf8"
+                data-color="red"
+                data-corner="round"
                 data-name="badge"
-                style="border-radius: 100px;"
+                data-type="light-error"
               >
                 <i
                   class="material-icons mr-2"
@@ -2038,9 +2082,11 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
                 >
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="blue"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="blue"
                     id="quick-summary-tooltip-8-0-exported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -2051,9 +2097,11 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
                   </div>
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="green"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="light-success"
                     id="quick-summary-tooltip-8-0-imported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -2077,9 +2125,11 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
                 >
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="blue"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="blue"
                     id="quick-summary-tooltip-8-1-exported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"
@@ -2090,9 +2140,11 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
                   </div>
                   <div
                     class="ui-badge-badge-0cf8 ui-badge-uppercase-0cf8"
+                    data-color="green"
+                    data-corner="round"
                     data-name="badge"
+                    data-type="light-success"
                     id="quick-summary-tooltip-8-1-imported"
-                    style="border-radius: 100px;"
                   >
                     <i
                       class="material-icons mr-2"

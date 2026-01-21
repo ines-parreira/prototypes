@@ -23,8 +23,10 @@ exports[`<TitleWrapper/> should not render copy button if editing 1`] = `
   <div>
     <div
       class="ui-badge-badge-0cf8 badge ui-badge-uppercase-0cf8"
+      data-color="grey"
+      data-corner="round"
       data-name="badge"
-      style="border-radius: 100px;"
+      data-type="grey"
     >
       Open
     </div>
@@ -70,8 +72,10 @@ exports[`<TitleWrapper/> should render the invoice sent status 1`] = `
   <div>
     <div
       class="ui-badge-badge-0cf8 badge ui-badge-uppercase-0cf8"
+      data-color="orange"
+      data-corner="round"
       data-name="badge"
-      style="border-radius: 100px;"
+      data-type="light-yellow"
     >
       Invoice Sent
     </div>
@@ -117,8 +121,10 @@ exports[`<TitleWrapper/> should render the open status 1`] = `
   <div>
     <div
       class="ui-badge-badge-0cf8 badge ui-badge-uppercase-0cf8"
+      data-color="grey"
+      data-corner="round"
       data-name="badge"
-      style="border-radius: 100px;"
+      data-type="grey"
     >
       Open
     </div>

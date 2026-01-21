@@ -12,8 +12,10 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
     </i>
     <div
       class="ui-badge-badge-0cf8 mr-2 ui-badge-uppercase-0cf8"
+      data-color="blue"
+      data-corner="round"
       data-name="badge"
-      style="border-radius: 100px;"
+      data-type="classic"
     >
       1
     </div>
@@ -294,8 +296,10 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
     </i>
     <div
       class="ui-badge-badge-0cf8 mr-2 ui-badge-uppercase-0cf8"
+      data-color="blue"
+      data-corner="round"
       data-name="badge"
-      style="border-radius: 100px;"
+      data-type="classic"
     >
       8
     </div>
@@ -1219,8 +1223,10 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
     </i>
     <div
       class="ui-badge-badge-0cf8 mr-2 ui-badge-uppercase-0cf8"
+      data-color="blue"
+      data-corner="round"
       data-name="badge"
-      style="border-radius: 100px;"
+      data-type="classic"
     >
       1
     </div>

@@ -14,8 +14,10 @@ exports[`<TitleWrapper/> render() should not render loyalty point balance 1`] = 
   </span>
   <div
     class="ui-badge-badge-0cf8 pill ui-badge-uppercase-0cf8"
+    data-color="grey"
+    data-corner="round"
     data-name="badge"
-    style="border-radius: 100px;"
+    data-type="dark-grey"
   >
     NaN
   </div>
@@ -36,8 +38,10 @@ exports[`<TitleWrapper/> render() should render loyalty point balance 1`] = `
   </span>
   <div
     class="ui-badge-badge-0cf8 pill ui-badge-uppercase-0cf8"
+    data-color="grey"
+    data-corner="round"
     data-name="badge"
-    style="border-radius: 100px;"
+    data-type="dark-grey"
   >
     1
   </div>
