@@ -29,6 +29,9 @@ describe('useArticleDetailsFromContext', () => {
         is_current: true,
         draft_version_id: 100,
         published_version_id: 100,
+        published_datetime: null,
+        publisher_user_id: null,
+        commit_message: null,
     }
 
     const mockArticle = {

@@ -5330,6 +5330,13 @@
                         "type": "number",
                         "nullable": true
                     },
+                    "published_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "publisher_user_id": { "type": "number", "nullable": true },
+                    "commit_message": { "type": "string", "nullable": true },
                     "rating": { "$ref": "#/components/schemas/Rating" },
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
@@ -5353,6 +5360,9 @@
                     "is_current",
                     "draft_version_id",
                     "published_version_id",
+                    "published_datetime",
+                    "publisher_user_id",
+                    "commit_message",
                     "rating"
                 ]
             },
@@ -5593,6 +5603,13 @@
                         "type": "number",
                         "nullable": true
                     },
+                    "published_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "publisher_user_id": { "type": "number", "nullable": true },
+                    "commit_message": { "type": "string", "nullable": true },
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
                         "enum": ["available", "default"],
@@ -5614,7 +5631,10 @@
                     "visibility_status",
                     "is_current",
                     "draft_version_id",
-                    "published_version_id"
+                    "published_version_id",
+                    "published_datetime",
+                    "publisher_user_id",
+                    "commit_message"
                 ]
             },
             "ArticleWithLocalTranslation": {
@@ -5854,6 +5874,12 @@
                         "example": "\"false\" it means it is a draft version",
                         "default": true
                     },
+                    "commit_message": {
+                        "type": "string",
+                        "description": "A short description of the changes in this version. Only stored when publishing (isCurrent=true).",
+                        "example": "Updated pricing information",
+                        "maxLength": 280
+                    },
                     "visibility_status": {
                         "description": "The visibility status of the article.",
                         "enum": ["PUBLIC", "UNLISTED"],
@@ -5977,6 +6003,13 @@
                         "type": "number",
                         "nullable": true
                     },
+                    "published_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "publisher_user_id": { "type": "number", "nullable": true },
+                    "commit_message": { "type": "string", "nullable": true },
                     "rating": { "$ref": "#/components/schemas/Rating" }
                 },
                 "required": [
@@ -5995,6 +6028,9 @@
                     "is_current",
                     "draft_version_id",
                     "published_version_id",
+                    "published_datetime",
+                    "publisher_user_id",
+                    "commit_message",
                     "rating"
                 ]
             },
@@ -6076,7 +6112,14 @@
                     "published_version_id": {
                         "type": "number",
                         "nullable": true
-                    }
+                    },
+                    "published_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "publisher_user_id": { "type": "number", "nullable": true },
+                    "commit_message": { "type": "string", "nullable": true }
                 },
                 "required": [
                     "created_datetime",
@@ -6093,7 +6136,10 @@
                     "visibility_status",
                     "is_current",
                     "draft_version_id",
-                    "published_version_id"
+                    "published_version_id",
+                    "published_datetime",
+                    "publisher_user_id",
+                    "commit_message"
                 ]
             },
             "UpdateArticleTranslationDto": {
@@ -6134,6 +6180,12 @@
                         "description": "This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.",
                         "example": "\"false\" it means it is a draft version",
                         "default": true
+                    },
+                    "commit_message": {
+                        "type": "string",
+                        "description": "A short description of the changes in this version. Only stored when publishing (isCurrent=true).",
+                        "example": "Updated pricing information",
+                        "maxLength": 280
                     },
                     "visibility_status": {
                         "description": "The visibility status of the article.",

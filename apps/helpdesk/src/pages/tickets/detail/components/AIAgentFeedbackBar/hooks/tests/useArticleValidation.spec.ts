@@ -155,9 +155,10 @@ describe('useArticleValidation', () => {
     it('should return canSaveArticle as false when article is not modified', () => {
         // Create a scenario where the translations are actually equal
         const sameTranslation = mockSelectedTranslation
-        const articleWithSameTranslation = {
+        const articleWithSameTranslation: CreateArticleDto = {
             ...mockSelectedArticle,
-            translation: sameTranslation,
+            translation:
+                sameTranslation as unknown as CreateArticleDto['translation'],
         }
 
         const { result } = renderHook(() =>

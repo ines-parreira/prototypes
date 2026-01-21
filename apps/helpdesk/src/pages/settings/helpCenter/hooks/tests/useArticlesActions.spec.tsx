@@ -391,6 +391,9 @@ describe('useArticlesActions()', () => {
                         is_current: false,
                         draft_version_id: null,
                         published_version_id: null,
+                        published_datetime: null,
+                        publisher_user_id: null,
+                        commit_message: null,
                     },
                     rating: {
                         up: 0,
@@ -451,6 +454,9 @@ describe('useArticlesActions()', () => {
                         is_current: false,
                         draft_version_id: null,
                         published_version_id: null,
+                        published_datetime: null,
+                        publisher_user_id: null,
+                        commit_message: null,
                     },
                     rating: {
                         up: 0,

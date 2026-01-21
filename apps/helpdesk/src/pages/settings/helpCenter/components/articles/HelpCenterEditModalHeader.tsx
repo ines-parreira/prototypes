@@ -6,6 +6,7 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import useAppSelector from 'hooks/useAppSelector'
 import type {
     Article,
+    CreateArticleDto,
     LocaleCode,
     VisibilityStatus,
 } from 'models/helpCenter/types'
@@ -361,16 +362,20 @@ export const HelpCenterEditModalHeader = ({
                             categoryId={selectedCategoryId}
                             isDisabled={!canUpdateArticle}
                             onChange={(value: number | null) => {
-                                setSelectedArticle((prevSelectedArticle) =>
-                                    prevSelectedArticle?.translation
-                                        ? {
-                                              ...prevSelectedArticle,
-                                              translation: {
-                                                  ...prevSelectedArticle.translation,
-                                                  category_id: value,
-                                              },
-                                          }
-                                        : null,
+                                setSelectedArticle(
+                                    (prevSelectedArticle) =>
+                                        (prevSelectedArticle?.translation
+                                            ? {
+                                                  ...prevSelectedArticle,
+                                                  translation: {
+                                                      ...prevSelectedArticle.translation,
+                                                      category_id: value,
+                                                  },
+                                              }
+                                            : null) as
+                                            | Article
+                                            | CreateArticleDto
+                                            | null,
                                 )
                                 setSelectedCategoryId(value)
                                 if (value) {
@@ -391,16 +396,20 @@ export const HelpCenterEditModalHeader = ({
                     <div className={css.visiblitySelect}>
                         <SelectVisibilityStatus
                             onChange={(status) => {
-                                setSelectedArticle((prevSelectedArticle) =>
-                                    prevSelectedArticle?.translation
-                                        ? {
-                                              ...prevSelectedArticle,
-                                              translation: {
-                                                  ...prevSelectedArticle.translation,
-                                                  visibility_status: status,
-                                              },
-                                          }
-                                        : null,
+                                setSelectedArticle(
+                                    (prevSelectedArticle) =>
+                                        (prevSelectedArticle?.translation
+                                            ? {
+                                                  ...prevSelectedArticle,
+                                                  translation: {
+                                                      ...prevSelectedArticle.translation,
+                                                      visibility_status: status,
+                                                  },
+                                              }
+                                            : null) as
+                                            | Article
+                                            | CreateArticleDto
+                                            | null,
                                 )
                             }}
                             status={visibilityStatus}

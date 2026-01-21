@@ -63,6 +63,9 @@ export const getArticleFixture = (
         rating: { up: 0, down: 0 },
         draft_version_id: null,
         published_version_id: null,
+        published_datetime: null,
+        publisher_user_id: null,
+        commit_message: null,
     },
     ...overrides,
 })

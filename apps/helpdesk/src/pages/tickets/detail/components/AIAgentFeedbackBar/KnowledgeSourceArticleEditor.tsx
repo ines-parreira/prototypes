@@ -5,6 +5,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import type {
     Article,
     ArticleTranslationWithRating,
+    CreateArticleDto,
     CreateArticleTranslationDto,
     LocaleCode,
 } from 'models/helpCenter/types'
@@ -256,16 +257,17 @@ const KnowledgeSourceArticleEditor = ({
 
     const hasDefaultLayout = helpCenter.layout === HELP_CENTER_DEFAULT_LAYOUT
     const onArticleChange = ({ content }: { content: string }) => {
-        setSelectedArticle((prevSelectedArticle) =>
-            prevSelectedArticle?.translation
-                ? {
-                      ...prevSelectedArticle,
-                      translation: {
-                          ...prevSelectedArticle.translation,
-                          content,
-                      },
-                  }
-                : prevSelectedArticle,
+        setSelectedArticle(
+            (prevSelectedArticle) =>
+                (prevSelectedArticle?.translation
+                    ? {
+                          ...prevSelectedArticle,
+                          translation: {
+                              ...prevSelectedArticle.translation,
+                              content,
+                          },
+                      }
+                    : prevSelectedArticle) as Article | CreateArticleDto | null,
         )
     }
 
@@ -282,8 +284,12 @@ const KnowledgeSourceArticleEditor = ({
         if (isTranslationChanged && isContentChanged) {
             setSelectedArticle({
                 ...selectedArticle,
-                translation: selectedTranslation,
-            })
+                translation: {
+                    ...selectedTranslation,
+                    commit_message:
+                        selectedTranslation.commit_message ?? undefined,
+                },
+            } as Article | CreateArticleDto)
         }
 
         if (selectedArticle.translation.category_id !== undefined) {
@@ -315,16 +321,17 @@ const KnowledgeSourceArticleEditor = ({
             // Set the initial translation content and the selected article translation
             // content once the Froala editor is done loading and pre-formatting the content
             if (selectedArticle) {
-                setSelectedArticle((prev) =>
-                    prev
-                        ? {
-                              ...prev,
-                              translation: {
-                                  ...prev.translation,
-                                  content,
-                              },
-                          }
-                        : prev,
+                setSelectedArticle(
+                    (prev) =>
+                        (prev
+                            ? {
+                                  ...prev,
+                                  translation: {
+                                      ...prev.translation,
+                                      content,
+                                  },
+                              }
+                            : prev) as Article | CreateArticleDto | null,
                 )
             }
         },
@@ -338,10 +345,11 @@ const KnowledgeSourceArticleEditor = ({
         if (!selectedArticle) {
             return
         }
-        setSelectedArticle((prevSelectedArticle) =>
-            prevSelectedArticle
-                ? { ...prevSelectedArticle, translation }
-                : prevSelectedArticle,
+        setSelectedArticle(
+            (prevSelectedArticle) =>
+                (prevSelectedArticle
+                    ? { ...prevSelectedArticle, translation }
+                    : prevSelectedArticle) as Article | CreateArticleDto | null,
         )
         setSelectedArticleLanguage(localeCode)
     }

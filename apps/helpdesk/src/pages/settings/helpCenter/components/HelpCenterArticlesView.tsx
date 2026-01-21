@@ -207,7 +207,15 @@ export const HelpCenterArticlesView: React.FC = () => {
                         locale: 'en-US',
                         version_status: 'latest_draft',
                     })
-                    setSelectedArticle(fetchedArticle)
+                    setSelectedArticle({
+                        ...fetchedArticle,
+                        position: 0,
+                        rating: { up: 0, down: 0 },
+                        translation: {
+                            ...fetchedArticle.translation,
+                            rating: { up: 0, down: 0 },
+                        },
+                    })
                     setEditModal({
                         isOpened: true,
                         view: HelpCenterArticleModalView.BASIC,
@@ -423,13 +431,13 @@ export const HelpCenterArticlesView: React.FC = () => {
     ) => {
         setSelectedArticle((prevSelectedArticle) =>
             prevSelectedArticle?.translation
-                ? {
+                ? ({
                       ...prevSelectedArticle,
                       translation: {
                           ...prevSelectedArticle.translation,
                           content,
                       },
-                  }
+                  } as Article | CreateArticleDto)
                 : prevSelectedArticle,
         )
 
@@ -453,7 +461,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                     ...selectedArticle.translation,
                     content,
                 },
-            })
+            } as Article | CreateArticleDto)
         }
     }
 
@@ -526,7 +534,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                 {
                     ...article.translation,
                     is_current: isPublished,
-                },
+                } as CreateArticleTranslationDto,
                 selectedTemplateKey,
             )
 
@@ -788,7 +796,9 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
         setSelectedArticle((prevSelectedArticle) =>
             prevSelectedArticle
-                ? { ...prevSelectedArticle, translation }
+                ? ({ ...prevSelectedArticle, translation } as
+                      | Article
+                      | CreateArticleDto)
                 : prevSelectedArticle,
         )
         setSelectedArticleLanguage(localeCode)

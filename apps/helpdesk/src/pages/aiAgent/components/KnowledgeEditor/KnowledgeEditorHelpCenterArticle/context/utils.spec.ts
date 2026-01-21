@@ -30,6 +30,9 @@ describe('utils', () => {
         is_current: true,
         draft_version_id: null,
         published_version_id: null,
+        published_datetime: null,
+        publisher_user_id: null,
+        commit_message: null,
     }
 
     const mockArticle: ArticleWithLocalTranslation = {
@@ -135,6 +138,9 @@ describe('utils', () => {
                 is_current: true,
                 draft_version_id: 456,
                 published_version_id: 789,
+                published_datetime: null,
+                publisher_user_id: null,
+                commit_message: null,
             }
 
             const result = mergeTranslationResponse(mockArticle, response)
@@ -163,6 +169,9 @@ describe('utils', () => {
                 is_current: true,
                 draft_version_id: null,
                 published_version_id: null,
+                published_datetime: null,
+                publisher_user_id: null,
+                commit_message: null,
             }
 
             const result = mergeTranslationResponse(mockArticle, response)
@@ -190,6 +199,9 @@ describe('utils', () => {
                 is_current: false,
                 draft_version_id: null,
                 published_version_id: null,
+                published_datetime: null,
+                publisher_user_id: null,
+                commit_message: null,
             }
 
             const result = mergeTranslationResponse(mockArticle, response)

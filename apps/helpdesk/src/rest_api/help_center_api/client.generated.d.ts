@@ -249,6 +249,9 @@ declare namespace Components {
             is_current: boolean
             draft_version_id: number | null
             published_version_id: number | null
+            published_datetime: string | null // date-time
+            publisher_user_id: number | null
+            commit_message: string | null
             rating: Rating
             /**
              * Gives details on how the translation fallback was chosen:
@@ -380,6 +383,9 @@ declare namespace Components {
             is_current: boolean
             draft_version_id: number | null
             published_version_id: number | null
+            published_datetime: string | null // date-time
+            publisher_user_id: number | null
+            commit_message: string | null
         }
         export interface ArticleTranslationSeoMeta {
             title: string | null
@@ -420,6 +426,9 @@ declare namespace Components {
             is_current: boolean
             draft_version_id: number | null
             published_version_id: number | null
+            published_datetime: string | null // date-time
+            publisher_user_id: number | null
+            commit_message: string | null
             rating: Rating
         }
         export interface ArticleTranslationsListPageDto {
@@ -1068,6 +1077,9 @@ declare namespace Components {
                 is_current: boolean
                 draft_version_id: number | null
                 published_version_id: number | null
+                published_datetime: string | null // date-time
+                publisher_user_id: number | null
+                commit_message: string | null
             } | null
             draft: ArticleTranslationResponseDto
         }
@@ -1530,6 +1542,12 @@ declare namespace Components {
                  */
                 is_current?: boolean
                 /**
+                 * A short description of the changes in this version. Only stored when publishing (isCurrent=true).
+                 * example:
+                 * Updated pricing information
+                 */
+                commit_message?: string
+                /**
                  * The visibility status of the article.
                  */
                 visibility_status?: 'PUBLIC' | 'UNLISTED'
@@ -1619,6 +1637,12 @@ declare namespace Components {
              * "false" it means it is a draft version
              */
             is_current?: boolean
+            /**
+             * A short description of the changes in this version. Only stored when publishing (isCurrent=true).
+             * example:
+             * Updated pricing information
+             */
+            commit_message?: string
             /**
              * The visibility status of the article.
              */
@@ -2760,6 +2784,9 @@ declare namespace Components {
             is_current: boolean
             draft_version_id: number | null
             published_version_id: number | null
+            published_datetime: string | null // date-time
+            publisher_user_id: number | null
+            commit_message: string | null
             /**
              * Gives details on how the translation fallback was chosen:
              * - `undefined`: the translation is the requested one
@@ -3219,6 +3246,12 @@ declare namespace Components {
              * "false" it means it is a draft version
              */
             is_current?: boolean
+            /**
+             * A short description of the changes in this version. Only stored when publishing (isCurrent=true).
+             * example:
+             * Updated pricing information
+             */
+            commit_message?: string
             /**
              * The visibility status of the article.
              */

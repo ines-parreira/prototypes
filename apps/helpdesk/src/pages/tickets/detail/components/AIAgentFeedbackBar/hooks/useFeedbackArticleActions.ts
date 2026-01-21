@@ -7,6 +7,7 @@ import type {
     Article,
     ArticleTemplateKey,
     CreateArticleDto,
+    CreateArticleTranslationDto,
     LocaleCode,
 } from 'models/helpCenter/types'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
@@ -48,7 +49,7 @@ export const useFeedbackArticleActions = (
                     {
                         ...article.translation,
                         is_current: isPublished,
-                    },
+                    } as CreateArticleTranslationDto,
                     selectedTemplateKey,
                 )
 

@@ -5,7 +5,11 @@ import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import type { Article, LocaleCode } from 'models/helpCenter/types'
+import type {
+    Article,
+    CreateArticleDto,
+    LocaleCode,
+} from 'models/helpCenter/types'
 import { isArticleWithExistingTranslation } from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import {
@@ -175,7 +179,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                 onTitleChange={(title: string) =>
                     setSelectedArticle(
                         (prevSelectedArticle) =>
-                            (prevSelectedArticle?.translation && {
+                            ((prevSelectedArticle?.translation && {
                                 ...prevSelectedArticle,
                                 translation: {
                                     ...prevSelectedArticle.translation,
@@ -183,7 +187,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                                     slug: slugify(title),
                                 },
                             }) ||
-                            null,
+                                null) as Article | CreateArticleDto | null,
                     )
                 }
                 visibilityStatus={selectedArticle.translation.visibility_status}

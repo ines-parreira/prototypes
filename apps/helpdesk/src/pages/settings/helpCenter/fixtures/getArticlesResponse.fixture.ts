@@ -19,6 +19,9 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             translation: {
                 draft_version_id: null,
                 published_version_id: null,
+                published_datetime: null,
+                publisher_user_id: null,
+                commit_message: null,
                 locale: 'en-US',
                 created_datetime: '2022-03-07T15:23:19.150Z',
                 updated_datetime: '2022-03-07T15:24:32.036Z',
@@ -59,6 +62,9 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             translation: {
                 draft_version_id: null,
                 published_version_id: null,
+                published_datetime: null,
+                publisher_user_id: null,
+                commit_message: null,
                 locale: 'en-US',
                 created_datetime: '2022-03-07T15:23:46.118Z',
                 updated_datetime: '2022-03-07T15:25:01.138Z',
@@ -99,6 +105,9 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             translation: {
                 draft_version_id: null,
                 published_version_id: null,
+                published_datetime: null,
+                publisher_user_id: null,
+                commit_message: null,
                 locale: 'en-US',
                 created_datetime: '2022-03-07T15:24:14.122Z',
                 updated_datetime: '2022-03-07T15:24:14.122Z',
@@ -139,6 +148,9 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             translation: {
                 draft_version_id: null,
                 published_version_id: null,
+                published_datetime: null,
+                publisher_user_id: null,
+                commit_message: null,
                 locale: 'en-US',
                 created_datetime: '2022-03-07T15:25:24.970Z',
                 updated_datetime: '2022-03-07T15:25:24.970Z',
@@ -179,6 +191,9 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             translation: {
                 draft_version_id: null,
                 published_version_id: null,
+                published_datetime: null,
+                publisher_user_id: null,
+                commit_message: null,
                 locale: 'en-US',
                 created_datetime: '2022-03-07T15:25:46.082Z',
                 updated_datetime: '2022-03-07T15:25:53.620Z',
@@ -219,6 +234,9 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             translation: {
                 draft_version_id: null,
                 published_version_id: null,
+                published_datetime: null,
+                publisher_user_id: null,
+                commit_message: null,
                 locale: 'en-US',
                 created_datetime: '2022-03-07T15:26:12.394Z',
                 updated_datetime: '2022-03-07T15:26:12.394Z',
@@ -259,6 +277,9 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             translation: {
                 draft_version_id: null,
                 published_version_id: null,
+                published_datetime: null,
+                publisher_user_id: null,
+                commit_message: null,
                 locale: 'en-US',
                 created_datetime: '2022-03-10T08:21:44.459Z',
                 updated_datetime: '2022-03-10T08:21:44.459Z',
@@ -299,6 +320,9 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             translation: {
                 draft_version_id: null,
                 published_version_id: null,
+                published_datetime: null,
+                publisher_user_id: null,
+                commit_message: null,
                 locale: 'en-US',
                 created_datetime: '2022-03-10T08:23:56.930Z',
                 updated_datetime: '2022-03-10T08:23:56.930Z',
@@ -339,6 +363,9 @@ export const getArticlesResponseFixture: ArticlesListPage = {
             translation: {
                 draft_version_id: null,
                 published_version_id: null,
+                published_datetime: null,
+                publisher_user_id: null,
+                commit_message: null,
                 locale: 'en-US',
                 created_datetime: '2022-03-10T12:43:02.809Z',
                 updated_datetime: '2022-03-10T12:43:02.809Z',
@@ -388,6 +415,9 @@ export const getSingleArticleEnglish: Article = {
     translation: {
         draft_version_id: null,
         published_version_id: null,
+        published_datetime: null,
+        publisher_user_id: null,
+        commit_message: null,
         locale: 'en-US',
         created_datetime: '2022-03-10T12:43:02.809Z',
         updated_datetime: '2022-03-10T12:43:02.809Z',

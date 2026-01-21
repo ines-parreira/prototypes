@@ -83,6 +83,9 @@ export const ArticlesListFixture: ArticleWithLocalTranslationAndRating[] = [
         translation: {
             draft_version_id: null,
             published_version_id: null,
+            published_datetime: null,
+            publisher_user_id: null,
+            commit_message: null,
             locale: 'en-US',
             created_datetime: '2022-03-07T15:23:19.150Z',
             updated_datetime: '2022-03-07T15:24:32.036Z',
@@ -124,6 +127,9 @@ export const ArticlesListFixture: ArticleWithLocalTranslationAndRating[] = [
         translation: {
             draft_version_id: null,
             published_version_id: null,
+            published_datetime: null,
+            publisher_user_id: null,
+            commit_message: null,
             locale: 'en-US',
             created_datetime: '2022-03-07T15:23:19.150Z',
             updated_datetime: '2022-03-07T15:24:32.036Z',

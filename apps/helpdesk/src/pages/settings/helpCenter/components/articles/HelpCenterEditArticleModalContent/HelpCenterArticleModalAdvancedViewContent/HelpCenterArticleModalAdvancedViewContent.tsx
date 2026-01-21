@@ -2,7 +2,9 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type {
     Article,
+    CreateArticleDto,
     CreateArticleTranslationDto,
+    LocalArticleTranslation,
     LocaleCode,
 } from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -137,13 +139,17 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 categoryId={selectedCategoryId}
                 translation={selectedArticle.translation}
                 onCategoryChange={setSelectedCategoryId}
-                onChange={(translation: CreateArticleTranslationDto) =>
+                onChange={(
+                    translation:
+                        | CreateArticleTranslationDto
+                        | LocalArticleTranslation,
+                ) =>
                     setSelectedArticle((prevSelectedArticle) =>
                         prevSelectedArticle
-                            ? {
+                            ? ({
                                   ...prevSelectedArticle,
                                   translation,
-                              }
+                              } as Article | CreateArticleDto)
                             : prevSelectedArticle,
                     )
                 }
