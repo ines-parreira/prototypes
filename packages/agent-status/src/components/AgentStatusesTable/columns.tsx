@@ -1,4 +1,11 @@
-import { Box, Button, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    Text,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@gorgias/axiom'
 
 import { formatDuration } from '../../utils'
 import type { GetColumnsFunction } from './types'
@@ -55,17 +62,19 @@ export const getColumns: GetColumnsFunction = ({ onEdit, onDelete }) => [
             return (
                 <Box gap="xs">
                     <Tooltip>
-                        <Button
-                            variant="tertiary"
-                            icon="edit-pencil"
-                            onClick={() => onEdit(info.row.original)}
-                            isDisabled={is_system}
-                            aria-label={
-                                is_system
-                                    ? `Cannot edit system status ${name}`
-                                    : `Edit ${name} status`
-                            }
-                        />
+                        <TooltipTrigger>
+                            <Button
+                                variant="tertiary"
+                                icon="edit-pencil"
+                                onClick={() => onEdit(info.row.original)}
+                                isDisabled={is_system}
+                                aria-label={
+                                    is_system
+                                        ? `Cannot edit system status ${name}`
+                                        : `Edit ${name} status`
+                                }
+                            />
+                        </TooltipTrigger>
 
                         <TooltipContent
                             title={
@@ -77,17 +86,19 @@ export const getColumns: GetColumnsFunction = ({ onEdit, onDelete }) => [
                     </Tooltip>
 
                     <Tooltip>
-                        <Button
-                            variant="tertiary"
-                            icon="trash-empty"
-                            onClick={() => onDelete(info.row.original)}
-                            isDisabled={is_system}
-                            aria-label={
-                                is_system
-                                    ? `Cannot delete system status ${name}`
-                                    : `Delete ${name} status`
-                            }
-                        />
+                        <TooltipTrigger>
+                            <Button
+                                variant="tertiary"
+                                icon="trash-empty"
+                                onClick={() => onDelete(info.row.original)}
+                                isDisabled={is_system}
+                                aria-label={
+                                    is_system
+                                        ? `Cannot delete system status ${name}`
+                                        : `Delete ${name} status`
+                                }
+                            />
+                        </TooltipTrigger>
                         <TooltipContent
                             title={
                                 is_system
