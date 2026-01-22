@@ -4,6 +4,7 @@ import type {
     GroupedKnowledgeItem,
 } from '../../types'
 import { KnowledgeType } from '../../types'
+import { isDraft } from '../../utils/articleUtils'
 import { ButtonRenderMode } from './types'
 import type { TooltipConfig } from './types'
 
@@ -69,6 +70,28 @@ export function getDeleteButtonMode(
     return ButtonRenderMode.Visible
 }
 
+/**
+ * Checks if any selected items contain draft guidance.
+ *
+ * Draft guidance is guidance that either:
+ * - Has never been published (no publishedVersionId)
+ * - Has unpublished changes (draftVersionId !== publishedVersionId)
+ *
+ * @param selectedItems - Array of selected knowledge items
+ * @returns true if any guidance item is in draft status
+ */
+function hasDraftGuidance(selectedItems: GroupedKnowledgeItem[]): boolean {
+    return selectedItems.some(
+        (item) =>
+            item.type === KnowledgeType.Guidance &&
+            isDraft({
+                id: parseInt(item.id, 10),
+                draftVersionId: item.draftVersionId,
+                publishedVersionId: item.publishedVersionId,
+            }),
+    )
+}
+
 export function getAIAgentButtonConfig(
     selectedItems: GroupedKnowledgeItem[],
     action: 'enable' | 'disable',
@@ -83,6 +106,21 @@ export function getAIAgentButtonConfig(
     const selectedTypes = new Set(selectedItems.map((item) => item.type))
     const hasFAQ = selectedTypes.has(KnowledgeType.FAQ)
     const hasOnlyFAQ = selectedTypes.size === 1 && hasFAQ
+    const hasDraft = hasDraftGuidance(selectedItems)
+
+    if (hasDraft && hasFAQ) {
+        return {
+            mode: ButtonRenderMode.DisabledWithTooltip,
+            tooltipMessage: TOOLTIP_MESSAGES.aiAgentDraftAndFAQ,
+        }
+    }
+
+    if (hasDraft) {
+        return {
+            mode: ButtonRenderMode.DisabledWithTooltip,
+            tooltipMessage: TOOLTIP_MESSAGES.aiAgentOnlyDraft,
+        }
+    }
 
     if (hasOnlyFAQ) {
         return {
@@ -132,4 +170,7 @@ export const TOOLTIP_MESSAGES: TooltipConfig = {
         'Publish and make articles public to enable them for AI Agent.',
     disableOnlyFAQ:
         'Change article visibility to unlisted to disable for AI Agent.',
+    aiAgentOnlyDraft: 'De-select draft guidance to perform this action.',
+    aiAgentDraftAndFAQ:
+        'De-select draft guidance and Help Center articles to perform this action.',
 }

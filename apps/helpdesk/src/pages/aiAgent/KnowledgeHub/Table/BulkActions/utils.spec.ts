@@ -338,12 +338,16 @@ describe('BulkActions utils', () => {
                     id: '1',
                     title: 'Guidance 1',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
                 {
                     type: KnowledgeType.Guidance,
                     id: '2',
                     title: 'Guidance 2',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
             ]
 
@@ -408,6 +412,8 @@ describe('BulkActions utils', () => {
                     id: '1',
                     title: 'Guidance 1',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
                 {
                     type: KnowledgeType.Document,
@@ -512,6 +518,8 @@ describe('BulkActions utils', () => {
                     id: '2',
                     title: 'Guidance 1',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
             ]
 
@@ -556,6 +564,8 @@ describe('BulkActions utils', () => {
                     id: '2',
                     title: 'Guidance 1',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
                 {
                     type: KnowledgeType.Document,

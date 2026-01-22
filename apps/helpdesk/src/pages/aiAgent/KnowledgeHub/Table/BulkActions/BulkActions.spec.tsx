@@ -296,6 +296,8 @@ describe('BulkActions', () => {
                 type: KnowledgeType.Guidance,
                 title: 'Test',
                 lastUpdatedAt: '2024-01-01',
+                draftVersionId: 1,
+                publishedVersionId: 1,
             },
         ]
         const table = createMockTable(selectedItems)
@@ -324,6 +326,8 @@ describe('BulkActions', () => {
                 type: KnowledgeType.Guidance,
                 title: 'Test',
                 lastUpdatedAt: '2024-01-01',
+                draftVersionId: 1,
+                publishedVersionId: 1,
             },
         ]
         const table = createMockTable(selectedItems)
@@ -546,6 +550,8 @@ describe('BulkActions', () => {
                     type: KnowledgeType.Guidance,
                     title: 'Guidance 1',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
             ]
             const table = createMockTable(selectedItems)
@@ -612,6 +618,8 @@ describe('BulkActions', () => {
                     type: KnowledgeType.Guidance,
                     title: 'Guidance 1',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
             ]
             const table = createMockTable(selectedItems)
@@ -682,6 +690,8 @@ describe('BulkActions', () => {
                     type: KnowledgeType.Guidance,
                     title: 'Guidance 1',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
                 {
                     id: '2',
@@ -771,6 +781,283 @@ describe('BulkActions', () => {
             expect(disableButton).not.toBeDisabled()
         })
 
+        describe('Draft guidance validation', () => {
+            it('should disable Enable button when only draft guidance is selected', () => {
+                const selectedItems: GroupedKnowledgeItem[] = [
+                    {
+                        id: '1',
+                        type: KnowledgeType.Guidance,
+                        title: 'Draft Guidance 1',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 2,
+                        publishedVersionId: 1,
+                    },
+                ]
+                const table = createMockTable(selectedItems)
+
+                render(
+                    <BulkActions
+                        table={table}
+                        helpCenterIds={helpCenterIds}
+                        isSearchActive={false}
+                    />,
+                )
+
+                const enableButton = screen.getByRole('button', {
+                    name: /enable for ai agent/i,
+                })
+
+                expect(enableButton).toBeDisabled()
+            })
+
+            it('should disable Disable button when only draft guidance is selected', () => {
+                const selectedItems: GroupedKnowledgeItem[] = [
+                    {
+                        id: '1',
+                        type: KnowledgeType.Guidance,
+                        title: 'Draft Guidance 1',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 2,
+                        publishedVersionId: 1,
+                    },
+                ]
+                const table = createMockTable(selectedItems)
+
+                render(
+                    <BulkActions
+                        table={table}
+                        helpCenterIds={helpCenterIds}
+                        isSearchActive={false}
+                    />,
+                )
+
+                const disableButton = screen.getByRole('button', {
+                    name: /disable for ai agent/i,
+                })
+
+                expect(disableButton).toBeDisabled()
+            })
+
+            it('should disable Enable button with tooltip when draft guidance is selected', () => {
+                const selectedItems: GroupedKnowledgeItem[] = [
+                    {
+                        id: '1',
+                        type: KnowledgeType.Guidance,
+                        title: 'Draft Guidance 1',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 2,
+                        publishedVersionId: 1,
+                    },
+                ]
+                const table = createMockTable(selectedItems)
+
+                render(
+                    <BulkActions
+                        table={table}
+                        helpCenterIds={helpCenterIds}
+                        isSearchActive={false}
+                    />,
+                )
+
+                const enableButton = screen.getByRole('button', {
+                    name: /enable for ai agent/i,
+                })
+
+                expect(enableButton).toBeDisabled()
+            })
+
+            it('should disable buttons when guidance has never been published', () => {
+                const selectedItems: GroupedKnowledgeItem[] = [
+                    {
+                        id: '1',
+                        type: KnowledgeType.Guidance,
+                        title: 'New Draft Guidance',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 1,
+                        publishedVersionId: null,
+                    },
+                ]
+                const table = createMockTable(selectedItems)
+
+                render(
+                    <BulkActions
+                        table={table}
+                        helpCenterIds={helpCenterIds}
+                        isSearchActive={false}
+                    />,
+                )
+
+                const enableButton = screen.getByRole('button', {
+                    name: /enable for ai agent/i,
+                })
+                const disableButton = screen.getByRole('button', {
+                    name: /disable for ai agent/i,
+                })
+
+                expect(enableButton).toBeDisabled()
+                expect(disableButton).toBeDisabled()
+            })
+
+            it('should enable buttons when guidance is fully published with no draft changes', () => {
+                const selectedItems: GroupedKnowledgeItem[] = [
+                    {
+                        id: '1',
+                        type: KnowledgeType.Guidance,
+                        title: 'Published Guidance',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
+                    },
+                ]
+                const table = createMockTable(selectedItems)
+
+                render(
+                    <BulkActions
+                        table={table}
+                        helpCenterIds={helpCenterIds}
+                        isSearchActive={false}
+                    />,
+                )
+
+                const enableButton = screen.getByRole('button', {
+                    name: /enable for ai agent/i,
+                })
+                const disableButton = screen.getByRole('button', {
+                    name: /disable for ai agent/i,
+                })
+
+                expect(enableButton).not.toBeDisabled()
+                expect(disableButton).not.toBeDisabled()
+            })
+
+            it('should disable buttons when mix of draft and published guidance is selected', () => {
+                const selectedItems: GroupedKnowledgeItem[] = [
+                    {
+                        id: '1',
+                        type: KnowledgeType.Guidance,
+                        title: 'Draft Guidance',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 2,
+                        publishedVersionId: 1,
+                    },
+                    {
+                        id: '2',
+                        type: KnowledgeType.Guidance,
+                        title: 'Published Guidance',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
+                    },
+                ]
+                const table = createMockTable(selectedItems)
+
+                render(
+                    <BulkActions
+                        table={table}
+                        helpCenterIds={helpCenterIds}
+                        isSearchActive={false}
+                    />,
+                )
+
+                const enableButton = screen.getByRole('button', {
+                    name: /enable for ai agent/i,
+                })
+                const disableButton = screen.getByRole('button', {
+                    name: /disable for ai agent/i,
+                })
+
+                expect(enableButton).toBeDisabled()
+                expect(disableButton).toBeDisabled()
+            })
+
+            it('should disable buttons with tooltip when draft guidance and FAQ are selected', () => {
+                const selectedItems: GroupedKnowledgeItem[] = [
+                    {
+                        id: '1',
+                        type: KnowledgeType.Guidance,
+                        title: 'Draft Guidance',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 2,
+                        publishedVersionId: 1,
+                    },
+                    {
+                        id: '2',
+                        type: KnowledgeType.FAQ,
+                        title: 'FAQ Article',
+                        lastUpdatedAt: '2024-01-01',
+                    },
+                ]
+                const table = createMockTable(selectedItems)
+
+                render(
+                    <BulkActions
+                        table={table}
+                        helpCenterIds={helpCenterIds}
+                        isSearchActive={false}
+                    />,
+                )
+
+                const enableButton = screen.getByRole('button', {
+                    name: /enable for ai agent/i,
+                })
+                const disableButton = screen.getByRole('button', {
+                    name: /disable for ai agent/i,
+                })
+
+                expect(enableButton).toBeDisabled()
+                expect(disableButton).toBeDisabled()
+            })
+
+            it('should prioritize draft validation over FAQ and limit validation', () => {
+                const existingGuidanceArticles: GroupedKnowledgeItem[] =
+                    Array.from({ length: 100 }, (_, i) => ({
+                        id: `existing-${i}`,
+                        type: KnowledgeType.Guidance,
+                        title: `Existing Guidance ${i}`,
+                        lastUpdatedAt: '2024-01-01',
+                        inUseByAI: KnowledgeVisibility.PUBLIC,
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
+                    }))
+
+                const selectedItems: GroupedKnowledgeItem[] = [
+                    {
+                        id: '1',
+                        type: KnowledgeType.Guidance,
+                        title: 'Draft Guidance',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 2,
+                        publishedVersionId: 1,
+                    },
+                    {
+                        id: '2',
+                        type: KnowledgeType.FAQ,
+                        title: 'FAQ Item',
+                        lastUpdatedAt: '2024-01-01',
+                    },
+                ]
+
+                const table = createMockTable(selectedItems, [
+                    ...existingGuidanceArticles,
+                    ...selectedItems,
+                ])
+
+                render(
+                    <BulkActions
+                        table={table}
+                        helpCenterIds={helpCenterIds}
+                        isSearchActive={false}
+                    />,
+                )
+
+                const enableButton = screen.getByRole('button', {
+                    name: /enable for ai agent/i,
+                })
+
+                expect(enableButton).toBeDisabled()
+            })
+        })
+
         describe('Guidance limit validation', () => {
             it('should disable enable button when bulk enable would exceed limit of 100', () => {
                 // 100 active guidance articles already in the system
@@ -781,6 +1068,8 @@ describe('BulkActions', () => {
                         title: `Existing Guidance ${i}`,
                         lastUpdatedAt: '2024-01-01',
                         inUseByAI: KnowledgeVisibility.PUBLIC,
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
                     }))
 
                 // User selects 1 UNLISTED guidance to enable
@@ -791,6 +1080,8 @@ describe('BulkActions', () => {
                         title: 'New Guidance',
                         lastUpdatedAt: '2024-01-01',
                         inUseByAI: KnowledgeVisibility.UNLISTED,
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
                     },
                 ]
 
@@ -829,6 +1120,8 @@ describe('BulkActions', () => {
                         title: `Existing Guidance ${i}`,
                         lastUpdatedAt: '2024-01-01',
                         inUseByAI: KnowledgeVisibility.PUBLIC,
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
                     }))
 
                 // Selecting 2 UNLISTED guidances (95 + 2 = 97, under limit)
@@ -839,6 +1132,8 @@ describe('BulkActions', () => {
                         title: 'New Guidance 1',
                         lastUpdatedAt: '2024-01-01',
                         inUseByAI: KnowledgeVisibility.UNLISTED,
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
                     },
                     {
                         id: '2',
@@ -846,6 +1141,8 @@ describe('BulkActions', () => {
                         title: 'New Guidance 2',
                         lastUpdatedAt: '2024-01-01',
                         inUseByAI: KnowledgeVisibility.UNLISTED,
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
                     },
                 ]
 
@@ -878,6 +1175,8 @@ describe('BulkActions', () => {
                         title: `Existing Guidance ${i}`,
                         lastUpdatedAt: '2024-01-01',
                         inUseByAI: KnowledgeVisibility.PUBLIC,
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
                     }))
 
                 // Selecting 1 UNLISTED guidance (99 + 1 = 100, at limit)
@@ -888,6 +1187,8 @@ describe('BulkActions', () => {
                         title: 'New Guidance',
                         lastUpdatedAt: '2024-01-01',
                         inUseByAI: KnowledgeVisibility.UNLISTED,
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
                     },
                 ]
 
@@ -920,6 +1221,8 @@ describe('BulkActions', () => {
                         title: `Existing Guidance ${i}`,
                         lastUpdatedAt: '2024-01-01',
                         inUseByAI: KnowledgeVisibility.PUBLIC,
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
                     }))
 
                 const unlistedGuidance: GroupedKnowledgeItem = {
@@ -928,6 +1231,8 @@ describe('BulkActions', () => {
                     title: 'Unlisted Guidance',
                     lastUpdatedAt: '2024-01-01',
                     inUseByAI: KnowledgeVisibility.UNLISTED,
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 }
 
                 const alreadyPublicGuidance: GroupedKnowledgeItem = {
@@ -936,6 +1241,8 @@ describe('BulkActions', () => {
                     title: 'Already Public Guidance',
                     lastUpdatedAt: '2024-01-01',
                     inUseByAI: KnowledgeVisibility.PUBLIC,
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 }
 
                 // Selecting 1 UNLISTED and 1 already PUBLIC guidance
@@ -976,6 +1283,8 @@ describe('BulkActions', () => {
                         title: `Existing Guidance ${i}`,
                         lastUpdatedAt: '2024-01-01',
                         inUseByAI: KnowledgeVisibility.PUBLIC,
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
                     }))
 
                 // Selecting FAQ and UNLISTED guidance
@@ -992,6 +1301,8 @@ describe('BulkActions', () => {
                         title: 'New Guidance',
                         lastUpdatedAt: '2024-01-01',
                         inUseByAI: KnowledgeVisibility.UNLISTED,
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
                     },
                 ]
 

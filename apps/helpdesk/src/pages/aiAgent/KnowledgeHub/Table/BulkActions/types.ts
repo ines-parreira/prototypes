@@ -22,4 +22,6 @@ export type TooltipConfig = {
     aiAgentMixedFAQ: string
     enableOnlyFAQ: string
     disableOnlyFAQ: string
+    aiAgentOnlyDraft: string
+    aiAgentDraftAndFAQ: string
 }
