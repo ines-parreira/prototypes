@@ -9,6 +9,7 @@ import { EmailProvider } from '@gorgias/helpdesk-queries'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
+import useIsQuickRepliesEnabled from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
@@ -176,10 +177,19 @@ jest.mock('hooks/useAppSelector', () => jest.fn(() => 'mocked'))
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
+jest.mock(
+    '../components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled',
+    () => ({
+        __esModule: true,
+        default: jest.fn(),
+    }),
+)
+
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)
 const useFlagMock = jest.mocked(useFlag)
+const useIsQuickRepliesEnabledMock = jest.mocked(useIsQuickRepliesEnabled)
 
 describe('<IntegrationDetail />', () => {
     const minProps = {
@@ -235,6 +245,7 @@ describe('<IntegrationDetail />', () => {
             hasAccess: true,
             isLoading: false,
         })
+        useIsQuickRepliesEnabledMock.mockReturnValue(false)
     })
 
     it.each([
@@ -688,6 +699,48 @@ describe('<IntegrationDetail />', () => {
                 },
             )
             expect(container.firstChild).toMatchSnapshot()
+        })
+    })
+
+    describe(`${IntegrationType.GorgiasChat} - QuickReplies tab`, () => {
+        it('should render QuickReplies tab when feature is enabled', () => {
+            useIsQuickRepliesEnabledMock.mockReturnValue(true)
+
+            const { getByText } = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.QuickReplies}`,
+                },
+            )
+
+            expect(
+                getByText('GorgiasChatIntegrationQuickReplies'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render QuickReplies tab when feature is disabled', () => {
+            useIsQuickRepliesEnabledMock.mockReturnValue(false)
+
+            const { queryByText } = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.QuickReplies}`,
+                },
+            )
+
+            expect(
+                queryByText('GorgiasChatIntegrationQuickReplies'),
+            ).not.toBeInTheDocument()
         })
     })
 })
