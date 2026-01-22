@@ -50,21 +50,42 @@ describe('ItemCount', () => {
     describe('when no items are selected and search is not active', () => {
         it('displays total item count with singular form', () => {
             const table = createMockTable([mockItems[0]])
-            render(<ItemCount table={table} isSearchActive={false} />)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={false}
+                    hasActiveFilters={false}
+                    hasInUseByAIFilter={false}
+                />,
+            )
 
             expect(screen.getByText('1 item')).toBeInTheDocument()
         })
 
         it('displays total item count with plural form', () => {
             const table = createMockTable(mockItems)
-            render(<ItemCount table={table} isSearchActive={false} />)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={false}
+                    hasActiveFilters={false}
+                    hasInUseByAIFilter={false}
+                />,
+            )
 
             expect(screen.getByText('3 items')).toBeInTheDocument()
         })
 
         it('displays zero items', () => {
             const table = createMockTable([])
-            render(<ItemCount table={table} isSearchActive={false} />)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={false}
+                    hasActiveFilters={false}
+                    hasInUseByAIFilter={false}
+                />,
+            )
 
             expect(screen.getByText('0 items')).toBeInTheDocument()
         })
@@ -73,51 +94,215 @@ describe('ItemCount', () => {
     describe('when items are selected', () => {
         it('displays selected count with singular form', () => {
             const table = createMockTable(mockItems, [0])
-            render(<ItemCount table={table} isSearchActive={false} />)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={false}
+                    hasActiveFilters={false}
+                    hasInUseByAIFilter={false}
+                />,
+            )
 
             expect(screen.getByText('1 item selected')).toBeInTheDocument()
         })
 
         it('displays selected count with plural form', () => {
             const table = createMockTable(mockItems, [0, 1])
-            render(<ItemCount table={table} isSearchActive={false} />)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={false}
+                    hasActiveFilters={false}
+                    hasInUseByAIFilter={false}
+                />,
+            )
 
             expect(screen.getByText('2 items selected')).toBeInTheDocument()
         })
 
         it('displays selected count even when search is active', () => {
             const table = createMockTable(mockItems, [0, 1, 2])
-            render(<ItemCount table={table} isSearchActive={true} />)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={true}
+                    hasActiveFilters={false}
+                    hasInUseByAIFilter={false}
+                />,
+            )
 
             expect(screen.getByText('3 items selected')).toBeInTheDocument()
+        })
+
+        it('displays selected count even when filters are active', () => {
+            const table = createMockTable(mockItems, [0, 1])
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={false}
+                    hasActiveFilters={true}
+                    hasInUseByAIFilter={false}
+                />,
+            )
+
+            expect(screen.getByText('2 items selected')).toBeInTheDocument()
         })
     })
 
     describe('when search is active and no items are selected', () => {
-        it('displays result count with singular form and includes snippets text', () => {
-            const table = createMockTable([mockItems[0]])
-            render(<ItemCount table={table} isSearchActive={true} />)
+        it('displays result count with "including snippets" when only search is active', () => {
+            const table = createMockTable(mockItems)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={true}
+                    hasActiveFilters={false}
+                    hasInUseByAIFilter={false}
+                />,
+            )
 
             expect(
-                screen.getByText('1 result including snippets'),
+                screen.getByText('3 results found including snippets'),
             ).toBeInTheDocument()
         })
 
-        it('displays result count with plural form and includes snippets text', () => {
-            const table = createMockTable(mockItems)
-            render(<ItemCount table={table} isSearchActive={true} />)
+        it('displays result count with "including snippets" in singular form', () => {
+            const table = createMockTable([mockItems[0]])
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={true}
+                    hasActiveFilters={false}
+                    hasInUseByAIFilter={false}
+                />,
+            )
 
             expect(
-                screen.getByText('3 results including snippets'),
+                screen.getByText('1 result found including snippets'),
             ).toBeInTheDocument()
+        })
+
+        it('displays regular result count when search + date filter are active (no inUseByAI)', () => {
+            const table = createMockTable(mockItems)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={true}
+                    hasActiveFilters={true}
+                    hasInUseByAIFilter={false}
+                />,
+            )
+
+            expect(screen.getByText('3 results found')).toBeInTheDocument()
         })
 
         it('displays zero results', () => {
             const table = createMockTable([])
-            render(<ItemCount table={table} isSearchActive={true} />)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={true}
+                    hasActiveFilters={false}
+                    hasInUseByAIFilter={false}
+                />,
+            )
+
+            expect(screen.getByText('0 results found')).toBeInTheDocument()
+        })
+    })
+
+    describe('when filters are active and no items are selected', () => {
+        it('displays regular result count when only date filter is active', () => {
+            const table = createMockTable(mockItems)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={false}
+                    hasActiveFilters={true}
+                    hasInUseByAIFilter={false}
+                />,
+            )
+
+            expect(screen.getByText('3 results found')).toBeInTheDocument()
+        })
+
+        it('displays result count with "including snippets" when only inUseByAI filter is active', () => {
+            const table = createMockTable(mockItems)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={false}
+                    hasActiveFilters={true}
+                    hasInUseByAIFilter={true}
+                />,
+            )
 
             expect(
-                screen.getByText('0 results including snippets'),
+                screen.getByText('3 results found including snippets'),
+            ).toBeInTheDocument()
+        })
+
+        it('displays result count with "including snippets" when inUseByAI + date filters are active', () => {
+            const table = createMockTable(mockItems)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={false}
+                    hasActiveFilters={true}
+                    hasInUseByAIFilter={true}
+                />,
+            )
+
+            expect(
+                screen.getByText('3 results found including snippets'),
+            ).toBeInTheDocument()
+        })
+
+        it('displays zero results when filters produce no results', () => {
+            const table = createMockTable([])
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={false}
+                    hasActiveFilters={true}
+                    hasInUseByAIFilter={false}
+                />,
+            )
+
+            expect(screen.getByText('0 results found')).toBeInTheDocument()
+        })
+    })
+
+    describe('when both search and filters are active', () => {
+        it('displays result count with "including snippets" when search + inUseByAI filter are active', () => {
+            const table = createMockTable(mockItems)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={true}
+                    hasActiveFilters={true}
+                    hasInUseByAIFilter={true}
+                />,
+            )
+
+            expect(
+                screen.getByText('3 results found including snippets'),
+            ).toBeInTheDocument()
+        })
+
+        it('displays result count with "including snippets" when search + inUseByAI + date filters are active', () => {
+            const table = createMockTable(mockItems)
+            render(
+                <ItemCount
+                    table={table}
+                    isSearchActive={true}
+                    hasActiveFilters={true}
+                    hasInUseByAIFilter={true}
+                />,
+            )
+
+            expect(
+                screen.getByText('3 results found including snippets'),
             ).toBeInTheDocument()
         })
     })

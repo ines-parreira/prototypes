@@ -451,6 +451,7 @@ export const EmptyStateNoSearchResults = ({
             alignItems="center"
             justifyContent="center"
             padding="xxxl"
+            data-empty-state="no-results"
         >
             <Heading size={'md'}>No results found</Heading>
             <Box flexDirection="column" gap="md" alignItems="center">

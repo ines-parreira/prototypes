@@ -127,6 +127,10 @@ export const KnowledgeHubTable = ({
         useGetCustomTicketsFieldsDefinitionData()
 
     const isSearchActive = Boolean(searchTerm)
+    const hasActiveFilters = Boolean(
+        dateRange.startDate || dateRange.endDate || inUseByAIFilter !== null,
+    )
+    const hasInUseByAIFilter = inUseByAIFilter !== null
 
     const filteredData = useMemo(() => {
         let filtered = data
@@ -453,6 +457,8 @@ export const KnowledgeHubTable = ({
                                 <ItemCount
                                     table={table}
                                     isSearchActive={isSearchActive}
+                                    hasActiveFilters={hasActiveFilters}
+                                    hasInUseByAIFilter={hasInUseByAIFilter}
                                 />
                             ),
                         },

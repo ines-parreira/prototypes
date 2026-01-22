@@ -143,6 +143,11 @@
         table tbody tr:hover {
             background-color: var(--hover-default);
         }
+
+        // Disable hover effect for empty state rows
+        table tbody tr:has([data-empty-state='no-results']):hover {
+            background-color: transparent !important;
+        }
     }
 
     .source {
