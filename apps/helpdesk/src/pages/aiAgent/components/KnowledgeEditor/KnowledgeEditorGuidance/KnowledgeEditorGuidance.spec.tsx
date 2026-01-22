@@ -9,9 +9,9 @@ import {
     useRecentTicketsWithDrilldown,
     useResourceMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
+import { useStoresWithCompletedSetup } from 'pages/aiAgent/components/KnowledgeEditor/shared/DuplicateGuidance/useStoresWithCompletedSetup'
 import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticle.fixture'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
@@ -140,14 +140,19 @@ const mockedUseRecentTicketsWithDrilldown = jest.mocked(
     useRecentTicketsWithDrilldown,
 )
 
-const mockUseStoreIntegrations = jest.mocked(useStoreIntegrations)
+const mockUseStoresWithCompletedSetup = jest.mocked(useStoresWithCompletedSetup)
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => false),
 }))
 
-jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => jest.fn())
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/shared/DuplicateGuidance/useStoresWithCompletedSetup',
+    () => ({
+        useStoresWithCompletedSetup: jest.fn(),
+    }),
+)
 
 jest.mock('models/api/types', () => ({
     ...jest.requireActual('models/api/types'),
@@ -186,7 +191,7 @@ describe('KnowledgeEditorGuidance', () => {
         updateGuidanceArticle.mockResolvedValue(guidanceArticle)
         createGuidanceArticle.mockResolvedValue(guidanceArticle)
 
-        mockUseStoreIntegrations.mockReturnValue([])
+        mockUseStoresWithCompletedSetup.mockReturnValue([])
 
         mockedFetchResourceMetrics.mockReturnValue({
             isLoading: false,

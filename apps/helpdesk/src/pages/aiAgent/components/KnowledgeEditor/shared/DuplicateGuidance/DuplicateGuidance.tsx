@@ -15,7 +15,6 @@ import {
 } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -28,6 +27,7 @@ import type {
     StoreSection,
     TriggerProps,
 } from './types'
+import { useStoresWithCompletedSetup } from './useStoresWithCompletedSetup'
 import { buildDuplicateNotificationMessage, cleanStoreName } from './utils'
 
 import './DuplicateGuidance.less'
@@ -46,7 +46,7 @@ export const DuplicateGuidance = ({
     const id = useId()
     const buttonId = `duplicate-button-${id}`
     const dispatch = useAppDispatch()
-    const storeIntegrations = useStoreIntegrations()
+    const storeIntegrations = useStoresWithCompletedSetup()
     const [selectedStores, setSelectedStores] = useState<
         StoreIntegrationItem[]
     >([])

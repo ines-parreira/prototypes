@@ -6,20 +6,22 @@ import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-
 import { REFETCH_KNOWLEDGE_HUB_TABLE } from '../../../../KnowledgeHub/constants'
 import * as emptyStateUtils from '../../../../KnowledgeHub/EmptyState/utils'
 import { DuplicateGuidance } from './DuplicateGuidance'
 import { ButtonRenderMode } from './types'
+import { useStoresWithCompletedSetup } from './useStoresWithCompletedSetup'
 
 const mockStore = configureStore([thunk])
 
-jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => jest.fn())
+jest.mock('./useStoresWithCompletedSetup', () => ({
+    useStoresWithCompletedSetup: jest.fn(),
+}))
 
-const mockUseStoreIntegrations = useStoreIntegrations as jest.MockedFunction<
-    typeof useStoreIntegrations
->
+const mockUseStoresWithCompletedSetup =
+    useStoresWithCompletedSetup as jest.MockedFunction<
+        typeof useStoresWithCompletedSetup
+    >
 
 describe('DuplicateGuidance', () => {
     let queryClient: QueryClient
@@ -96,7 +98,7 @@ describe('DuplicateGuidance', () => {
         jest.clearAllMocks()
 
         mockOnDuplicate.mockResolvedValue({ success: true })
-        mockUseStoreIntegrations.mockReturnValue(defaultStores as any)
+        mockUseStoresWithCompletedSetup.mockReturnValue(defaultStores as any)
     })
 
     describe('Render modes', () => {

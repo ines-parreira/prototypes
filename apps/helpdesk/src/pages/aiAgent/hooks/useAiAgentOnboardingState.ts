@@ -1,6 +1,7 @@
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
+import { isWizardSetupCompleted } from '../utils/wizardSetupHelpers'
 import { useStoreConfiguration } from './useStoreConfiguration'
 
 export enum OnboardingState {
@@ -23,7 +24,7 @@ export const useAiAgentOnboardingState = (
         })
 
     const isOnUpdateOnboardingWizard =
-        storeConfiguration?.wizard?.completedDatetime === null
+        !isWizardSetupCompleted(storeConfiguration)
 
     if (isStoreConfigurationLoading || isLoading) return OnboardingState.Loading
 
