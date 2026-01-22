@@ -18,7 +18,7 @@ export const KnowledgeEditorTopBarSnippetControls = ({
                     Edit
                 </Button>
             </TooltipTrigger>
-            <TooltipContent caption="Snippets can't be edited" />
+            <TooltipContent title="Snippets can't be edited" />
         </Tooltip>
         {!isPlaygroundOpen && <TestButton onTest={onTest} disabled={false} />}
     </>

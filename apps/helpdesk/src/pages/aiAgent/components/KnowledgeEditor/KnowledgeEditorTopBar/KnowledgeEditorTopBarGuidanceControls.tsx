@@ -60,7 +60,7 @@ export const GuidanceToolbarControls = () => {
         return (
             <Tooltip placement="bottom">
                 <TooltipTrigger>{button}</TooltipTrigger>
-                <TooltipContent caption="Duplicate" />
+                <TooltipContent title="Duplicate" />
             </Tooltip>
         )
     }

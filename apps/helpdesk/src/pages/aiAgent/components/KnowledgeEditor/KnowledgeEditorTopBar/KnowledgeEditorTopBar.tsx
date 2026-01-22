@@ -180,8 +180,9 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                         variant="tertiary"
                         icon="close"
                     />,
-                    'Close editor',
+                    'Close',
                     !!props.disabled,
+                    'Esc',
                 )}
             </Box>
         </div>

@@ -4,6 +4,7 @@ export const withTooltip = (
     button: React.ReactElement<React.DOMAttributes<HTMLElement>, string>,
     title: string,
     isDisabled: boolean,
+    shortcut?: string,
 ) => {
     if (isDisabled) {
         return button
@@ -12,7 +13,7 @@ export const withTooltip = (
     return (
         <Tooltip placement="bottom">
             <TooltipTrigger>{button}</TooltipTrigger>
-            <TooltipContent caption={title} />
+            <TooltipContent title={title} shortcut={shortcut} />
         </Tooltip>
     )
 }
