@@ -52,16 +52,116 @@
 
 .axiom :local .container {
     .whenBtn {
-        background-color: var(--surface-additional-blue);
-        color: var(--content-accent-default);
+        // Full button reset
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        background-image: none !important;
+        text-shadow: none !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: var(--spacing-xxxs) !important;
+        height: 24px !important;
+        padding: 0 var(--spacing-xs) !important;
+        margin: 0 var(--spacing-xxs) 0 0 !important;
+        white-space: nowrap !important;
+        border-radius: var(--spacing-xxs) !important;
+        border: none !important;
+        box-shadow: inset 0 0 0 1px var(--border-neutral-tertiary) !important;
+        outline: none !important;
+        background-color: transparent !important;
+        cursor: pointer !important;
+        color: var(--content-neutral-default) !important;
+        text-transform: none !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: 1 !important;
+        position: relative !important;
+
+        & > span {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: transparent;
+            border-radius: var(--spacing-xxs);
+            pointer-events: none;
+        }
+
+        &:hover::before {
+            background-color: var(--hover-default);
+        }
+
+        &:active::before,
+        &.active::before {
+            background-color: var(--pressed-default);
+        }
+
+        &::after {
+            display: none !important;
+        }
+
+        &:focus,
+        &:focus-visible,
+        &.focus,
+        &:active,
+        &.active {
+            box-shadow: inset 0 0 0 1px var(--border-neutral-tertiary) !important;
+        }
+    }
+
+    .whenEvents > div {
+        background: var(--elevation-neutral-default);
+        border: none;
+        border-radius: var(--spacing-xs);
+        padding: var(--spacing-xxxs);
+        box-shadow: inset 0 0 0 1px var(--border-neutral-default);
+
+        input {
+            background: transparent;
+        }
     }
 
     .whenEvents :global(.badge.badge-secondary) {
-        background-color: var(--surface-additional-blue) !important;
+        background-color: transparent !important;
+        color: var(--content-neutral-default) !important;
+        border-radius: var(--spacing-xxs) !important;
+        text-transform: none !important;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+        padding: 2px var(--spacing-xs) !important;
+        margin: 0 var(--spacing-xxs) 0 0 !important;
+        height: 24px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+
+        &::after {
+            opacity: 0.6 !important;
+            font-size: 16px !important;
+        }
     }
 
-    .whenEvents :global(.badge.badge-secondary),
-    input {
-        color: var(--content-accent-default) !important;
+    .whenEvents input {
+        color: var(--content-neutral-default) !important;
+        font-size: 14px !important;
+        font-weight: 400 !important;
+        border-radius: 0 !important;
+        padding: var(--spacing-xxs) !important;
+    }
+
+    .whenEvents :global(.dropdown-menu) {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+        box-shadow: var(--effects-elevation-default);
     }
 }

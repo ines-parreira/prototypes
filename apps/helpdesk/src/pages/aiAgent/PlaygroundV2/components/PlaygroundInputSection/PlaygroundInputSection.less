@@ -163,7 +163,23 @@
 
 .axiom :local {
     .container {
-        border: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-default);
+        border: none;
+        box-shadow: inset 0 0 0 1px var(--border-neutral-default);
+        transition:
+            box-shadow 0.2s linear,
+            background-color 0.2s linear;
+
+        &:has(:focus) {
+            box-shadow:
+                var(--effects-inner-shadow),
+                inset 0 0 0 1px var(--border-neutral-secondary);
+        }
+
+        &:hover:not(:has(:focus)) {
+            background-color: var(--hover-input);
+            box-shadow: inset 0 0 0 1px var(--border-neutral-default);
+        }
     }
 
     .section:not(:last-child) {

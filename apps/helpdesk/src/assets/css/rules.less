@@ -169,6 +169,281 @@ pre {
     font-weight: 600;
 }
 
+.axiom {
+    .LogicalOperator,
+    .LogicalOperator.dropdown-toggle {
+        // Full button reset
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        background-image: none !important;
+        text-shadow: none !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: var(--spacing-xxxs) !important;
+        height: 24px !important;
+        padding: 0 var(--spacing-xs) !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+        border-radius: var(--spacing-xxs) !important;
+        border: none !important;
+        box-shadow: inset 0 0 0 1px var(--border-additional-teal) !important;
+        outline: none !important;
+        background-color: var(--surface-additional-teal) !important;
+        cursor: pointer !important;
+        color: var(--content-additional-teal) !important;
+        text-transform: none !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: 1 !important;
+        position: relative !important;
+
+        & > span {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: transparent;
+            border-radius: var(--spacing-xxs);
+            pointer-events: none;
+        }
+
+        &:hover::before {
+            background-color: var(--hover-default);
+        }
+
+        &:active::before,
+        &.active::before {
+            background-color: var(--pressed-default);
+        }
+
+        &::after {
+            display: none !important;
+        }
+
+        &:focus,
+        &:focus-visible,
+        &.focus,
+        &:active,
+        &.active {
+            box-shadow: inset 0 0 0 1px var(--border-additional-teal) !important;
+        }
+    }
+
+    .btn-group.show > .LogicalOperator,
+    .btn-group > .LogicalOperator:focus,
+    .btn-group > .LogicalOperator:active {
+        box-shadow: inset 0 0 0 1px var(--border-additional-teal) !important;
+    }
+
+    .OperatorDropdown .dropdown-toggle {
+        // Full button reset
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        background-image: none !important;
+        text-shadow: none !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: var(--spacing-xxxs) !important;
+        height: 24px !important;
+        padding: 0 var(--spacing-xs) !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+        border-radius: var(--spacing-xxs) !important;
+        border: none !important;
+        box-shadow: inset 0 0 0 1px var(--border-warning-default) !important;
+        outline: none !important;
+        background-color: var(--surface-warning-default) !important;
+        cursor: pointer !important;
+        color: var(--content-warning-default) !important;
+        text-transform: none !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: 1 !important;
+        position: relative !important;
+
+        & > span {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: transparent;
+            border-radius: var(--spacing-xxs);
+            pointer-events: none;
+        }
+
+        &:hover::before {
+            background-color: var(--hover-default);
+        }
+
+        &:active::before,
+        &.active::before {
+            background-color: var(--pressed-default);
+        }
+
+        &::after {
+            display: none !important;
+        }
+
+        &:focus,
+        &:focus-visible,
+        &.focus,
+        &:active,
+        &.active {
+            box-shadow: inset 0 0 0 1px var(--border-warning-default) !important;
+        }
+
+        input {
+            top: 0;
+            left: var(--spacing-xs);
+            text-transform: none;
+            color: var(--content-warning-default);
+            font-weight: inherit;
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+        }
+    }
+
+    .Literal .dropdown-toggle {
+        // Full button reset
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        background-image: none !important;
+        text-shadow: none !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: var(--spacing-xxxs) !important;
+        height: 24px !important;
+        padding: 0 var(--spacing-xs) !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+        border-radius: var(--spacing-xxs) !important;
+        border: none !important;
+        box-shadow: inset 0 0 0 1px var(--border-additional-fuchsia) !important;
+        outline: none !important;
+        background-color: var(--surface-additional-fuchsia) !important;
+        cursor: pointer !important;
+        color: var(--content-additional-fuchsia) !important;
+        text-transform: none !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: 1 !important;
+        position: relative !important;
+
+        & > span {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: transparent;
+            border-radius: var(--spacing-xxs);
+            pointer-events: none;
+        }
+
+        &:hover::before {
+            background-color: var(--hover-default);
+        }
+
+        &:active::before,
+        &.active::before {
+            background-color: var(--pressed-default);
+        }
+
+        &::after {
+            display: none !important;
+        }
+
+        &:focus,
+        &:focus-visible,
+        &.focus,
+        &:active,
+        &.active {
+            box-shadow: inset 0 0 0 1px var(--border-additional-fuchsia) !important;
+        }
+
+        input {
+            padding: 0;
+            background: none;
+            top: 0;
+            left: var(--spacing-xs);
+            color: var(--content-additional-fuchsia);
+            font-weight: inherit;
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+        }
+    }
+
+    .Literal .LiteralWidget.MultiSelectField > div {
+        background: var(--elevation-neutral-default);
+        border: none;
+        border-radius: var(--spacing-xs);
+        padding: var(--spacing-xxs);
+        box-shadow: inset 0 0 0 1px var(--border-neutral-default);
+
+        input {
+            background: transparent;
+            color: var(--content-neutral-default) !important;
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            border-radius: 0 !important;
+            padding: var(--spacing-xxs) !important;
+        }
+    }
+
+    .Literal .LiteralWidget.MultiSelectField .badge.badge-secondary {
+        background-color: transparent !important;
+        color: var(--content-neutral-default) !important;
+        border-radius: var(--spacing-xxs) !important;
+        text-transform: none !important;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+        padding: 2px var(--spacing-xs) !important;
+        margin: 0 var(--spacing-xxs) 0 0 !important;
+        height: 24px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+
+        &::after {
+            opacity: 0.6 !important;
+            font-size: 16px !important;
+        }
+    }
+}
+
 .IdentifierDropdown .dropdown-toggle {
     .rule-badge-mixin;
     padding: 2px 8px;
@@ -181,6 +456,95 @@ pre {
     input {
         top: 0;
         left: 0.5rem;
+    }
+}
+
+.axiom {
+    .IdentifierDropdown .dropdown-toggle,
+    .ControlStructureButton {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: var(--spacing-xxxs) !important;
+        height: 24px !important;
+        padding: 0 var(--spacing-xs) !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+        border-radius: var(--spacing-xxs) !important;
+        border: none !important;
+        box-shadow: inset 0 0 0 1px var(--border-neutral-tertiary) !important;
+        outline: none !important;
+        background-color: transparent !important;
+        cursor: pointer !important;
+        color: var(--content-neutral-default) !important;
+        text-transform: none !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: 1 !important;
+        position: relative !important;
+
+        & > span {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: transparent;
+            border-radius: var(--spacing-xxs);
+            pointer-events: none;
+            transition: background-color 0.2s linear;
+        }
+
+        &:hover::before {
+            background-color: var(--hover-default);
+        }
+
+        &:active::before,
+        &.active::before,
+        &:focus::before {
+            background-color: var(--pressed-default);
+        }
+
+        input {
+            top: 0;
+            left: var(--spacing-xs);
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+        }
+    }
+
+    .IdentifierDropdown .dropdown-toggle {
+        box-shadow: inset 0 0 0 1px var(--border-additional-purple) !important;
+        background-color: var(--surface-additional-purple) !important;
+        color: var(--content-additional-purple) !important;
+
+        &:focus {
+            box-shadow: inset 0 0 0 1px var(--border-additional-purple) !important;
+        }
+
+        input {
+            color: var(--content-additional-purple);
+        }
+    }
+
+    .ControlStructureButton {
+        &::after {
+            margin-left: 0 !important;
+            opacity: 1 !important;
+            position: relative;
+            z-index: 1;
+        }
     }
 }
 
@@ -388,11 +752,103 @@ pre {
 
 .axiom {
     .delete-blockstatement {
-        color: var(--content-inverted-default);
+        display: flex;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 32px;
+        height: 32px;
+        padding: 0 !important;
+        margin: 0 !important;
+        border-radius: var(--spacing-xs);
+        background-color: transparent;
+        border: 1px solid transparent;
+        box-shadow: none;
+        cursor: pointer;
+        position: absolute;
+        top: 4px;
+        left: auto !important;
+        right: 0 !important;
+        z-index: 5;
 
         .material-icons {
-            color: var(--content-error-primary);
+            color: var(--content-error-primary) !important;
+            font-size: 16px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            width: 16px;
+            height: 16px;
         }
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: transparent;
+            border-radius: var(--spacing-xs);
+            pointer-events: none;
+        }
+
+        &:hover::before {
+            background-color: var(--hover-default);
+        }
+
+        &:active::before {
+            background-color: var(--hover-default);
+            box-shadow: var(--effects-inner-shadow);
+        }
+    }
+
+    .flex.flex-wrap > .material-icons.text-danger.clickable {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 32px;
+        height: 32px;
+        padding: 0 !important;
+        margin: 0 !important;
+        border-radius: var(--spacing-xs);
+        background-color: transparent;
+        border: 1px solid transparent;
+        box-shadow: none;
+        cursor: pointer;
+        position: absolute;
+        top: 4px;
+        left: auto !important;
+        right: 0 !important;
+        z-index: 5;
+        color: var(--content-error-primary);
+        font-size: 16px;
+        line-height: 1;
+        vertical-align: middle;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: transparent;
+            border-radius: var(--spacing-xs);
+            pointer-events: none;
+        }
+
+        &:hover::before {
+            background-color: var(--hover-default);
+        }
+
+        &:active::before {
+            background-color: var(--hover-default);
+            box-shadow: var(--effects-inner-shadow);
+        }
+    }
+
+    .flex.flex-wrap {
+        position: relative;
+    }
+
+    .AddActionOrIfStatement {
+        padding-left: 0;
     }
 
     .IfStatement,
@@ -402,16 +858,121 @@ pre {
         }
     }
 
+    .Action .compact-action .ActionWidget .badge.badge-secondary {
+        border-radius: var(--spacing-xxs) !important;
+    }
+
+    .ActionSelect .dropdown-toggle,
+    .ActionWidget .dropdown-toggle,
+    .Action .ActionSelect .dropdown-toggle,
+    .Action .ActionWidget .dropdown-toggle {
+        // Full button reset
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        background-image: none !important;
+        text-shadow: none !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: var(--spacing-xxxs) !important;
+        height: 24px !important;
+        padding: 0 var(--spacing-xs) !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+        border-radius: var(--spacing-xxs) !important;
+        border: none !important;
+        box-shadow: inset 0 0 0 1px var(--border-success-primary) !important;
+        outline: none !important;
+        background-color: var(--surface-success-primary) !important;
+        cursor: pointer !important;
+        color: var(--content-success-primary) !important;
+        text-transform: none !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: 1 !important;
+        position: relative !important;
+
+        & > span {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: transparent;
+            border-radius: var(--spacing-xxs);
+            pointer-events: none;
+        }
+
+        &:hover::before {
+            background-color: var(--hover-default);
+        }
+
+        &:active::before,
+        &.active::before {
+            background-color: var(--pressed-default);
+        }
+
+        &::after {
+            display: none !important;
+        }
+
+        &:focus,
+        &:focus-visible,
+        &.focus,
+        &:active,
+        &.active {
+            box-shadow: inset 0 0 0 1px var(--border-success-primary) !important;
+        }
+
+        input {
+            padding: 0;
+            background: none;
+            top: 0;
+            left: var(--spacing-xs);
+            color: var(--content-success-primary);
+            font-weight: inherit;
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+        }
+    }
+
+    .btn-group.show > .ActionSelect .dropdown-toggle,
+    .btn-group.show > .ActionWidget .dropdown-toggle,
+    .Action .btn-group.show > .ActionSelect .dropdown-toggle,
+    .Action .btn-group.show > .ActionWidget .dropdown-toggle,
+    .btn-group > .ActionSelect .dropdown-toggle:focus,
+    .btn-group > .ActionWidget .dropdown-toggle:focus,
+    .btn-group > .ActionSelect .dropdown-toggle:active,
+    .btn-group > .ActionWidget .dropdown-toggle:active {
+        box-shadow: inset 0 0 0 1px var(--border-success-primary) !important;
+    }
+
     .test,
     .consequent,
     .alternate {
         .btn-group {
             & > .ControlStructureButton.dropdown-toggle {
                 &:not(:disabled) {
-                    background: var(--surface-accent-default);
+                    background-color: var(--surface-additional-blue) !important;
+                    box-shadow: inset 0 0 0 1px var(--border-additional-blue) !important;
 
-                    &:hover {
-                        background: var(--surface-accent-default);
+                    &:hover::before {
+                        background-color: var(--hover-default);
+                    }
+
+                    &:active::before,
+                    &.active::before {
+                        background-color: var(--pressed-default);
                     }
                 }
             }

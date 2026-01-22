@@ -272,6 +272,43 @@
                     color: var(--content-neutral-tertiary) !important;
                 }
             }
+
+            &:hover {
+                background: var(--hover-default);
+
+                :global {
+                    .message-content {
+                        background: transparent;
+                    }
+                }
+            }
+        }
+
+        &.internal {
+            background: var(--surface-warning-default);
+            position: relative;
+            box-shadow: none;
+
+            &:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: transparent;
+                pointer-events: none;
+            }
+
+            &:hover:after {
+                background: var(--hover-default);
+            }
+
+            :global {
+                .message-content {
+                    background: transparent;
+                }
+            }
         }
     }
 }

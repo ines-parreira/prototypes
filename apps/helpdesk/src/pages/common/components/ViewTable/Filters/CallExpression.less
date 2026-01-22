@@ -30,7 +30,39 @@
 .axiom :local {
     .component {
         .operatorLabel {
-            color: var(--content-neutral-default);
+            display: inline-flex;
+            align-items: center;
+            height: 24px;
+            padding: 0 var(--spacing-xs);
+            border-radius: var(--spacing-xxs);
+            font-size: 12px;
+            line-height: 16px;
+            font-weight: 400;
+            color: var(--content-neutral-secondary);
+            background-color: var(--surface-neutral-secondary);
+            white-space: nowrap;
+            text-transform: lowercase;
+        }
+
+        :global(.btn-frozen.btn.btn-primary) {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: 600;
+            color: var(--content-neutral-default) !important;
+            height: auto;
+            box-shadow: none;
+
+            &:hover,
+            &:focus,
+            &:active {
+                background: none;
+                border: none;
+                box-shadow: none;
+                color: var(--content-neutral-default) !important;
+            }
         }
     }
 }
