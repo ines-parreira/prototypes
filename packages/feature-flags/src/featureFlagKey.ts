@@ -143,6 +143,7 @@ export enum FeatureFlagKey {
     HelpCenterSubjectLines = 'help-center-subject-lines',
     HistoricalImports = 'linear.project_historical-imports-zendesk',
     IncreaseGuidanceCreationLimit = 'increase-guidance-creation-limitation',
+    IncreaseVisibilityOfOpportunity = 'linear.project_increase-visibility-of-opportunities.top-opportunities',
     LiquidTemplateStep = 'liquid-template-step',
     MacroArchives = 'macro-archives',
     MacroForwardByEmail = 'macro-forward-by-email',

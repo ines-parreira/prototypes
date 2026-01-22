@@ -7,6 +7,7 @@ export enum AiAgentNotificationType {
     ScrapingProcessingFinished = 'scraping-processing-finished',
     AiShoppingAssistantTrialRequest = 'ai-shopping-assistant-trial-request',
     AiAgentTrialRequest = 'ai-agent-trial-request',
+    NewOpportunityGenerated = 'new-opportunity-generated',
 }
 
 export type AiAgentNotificationPayload = {
@@ -15,6 +16,7 @@ export type AiAgentNotificationPayload = {
     shop_type: string
     ticket_id?: string
     agent_id?: number
+    opportunity_id?: number
 }
 
 export type WorkflowConfigurationUpdatedNotificationPayload = {

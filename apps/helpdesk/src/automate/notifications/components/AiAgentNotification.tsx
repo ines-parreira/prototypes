@@ -8,7 +8,10 @@ import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStor
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { AI_AGENT_ICON } from 'pages/common/components/SourceIcon'
 
-import type { AiAgentNotificationPayload } from '../types'
+import {
+    type AiAgentNotificationPayload,
+    AiAgentNotificationType,
+} from '../types'
 import {
     getNotificationParams,
     getNotificationReceivedDatetimePayload,
@@ -37,6 +40,12 @@ export default function AiAgentNotification({ notification, ...props }: Props) {
             !payload.shop_name ||
             !payload.ai_agent_notification_type ||
             !onboardingNotificationState
+        )
+            return
+
+        if (
+            payload.ai_agent_notification_type ===
+            AiAgentNotificationType.NewOpportunityGenerated
         )
             return
 

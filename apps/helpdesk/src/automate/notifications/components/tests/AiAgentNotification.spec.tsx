@@ -196,6 +196,30 @@ describe('AiAgentNotification', () => {
         },
     )
 
+    it('should not save and log event when NewOpportunityGenerated notification is received', () => {
+        const notification: Notification<AiAgentNotificationPayload> = {
+            id: '1',
+            inserted_datetime: '2024-11-04T13:07:00',
+            read_datetime: null,
+            seen_datetime: null,
+            type: 'automate-setup-and-optimization',
+            payload: {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.NewOpportunityGenerated,
+                opportunity_id: 123,
+            },
+        }
+
+        renderWithRouter(<AiAgentNotification notification={notification} />)
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave,
+        ).not.toHaveBeenCalled()
+
+        expect(logEvent).not.toHaveBeenCalled()
+    })
+
     it.each(notifications)(
         'should log event when $type notification is clicked',
         ({ type, redirectTo }) => {

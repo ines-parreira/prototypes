@@ -112,6 +112,10 @@ export const getAiAgentNavigationRoutes = (shopName: string) => {
         intents: `${basePath}/intents`,
         intentsWithId: (intentId: string) => `${basePath}/intents/${intentId}`,
         opportunities: `${basePath}/opportunities`,
+        opportunitiesWithId: (opportunityId?: string) =>
+            opportunityId
+                ? `${basePath}/opportunities/${opportunityId}`
+                : `${basePath}/opportunities`,
         products: `${basePath}/products`,
         productsDetail: (productId: number) =>
             `${basePath}/products/${productId}`,

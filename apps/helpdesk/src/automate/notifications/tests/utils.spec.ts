@@ -214,6 +214,41 @@ describe('getNotificationParams', () => {
         })
     })
 
+    it('should return correct params for NewOpportunityGenerated', () => {
+        const payload = {
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.NewOpportunityGenerated,
+            opportunity_id: 123,
+        }
+
+        const result = getNotificationParams(payload, null)
+
+        expect(result).toEqual({
+            title: 'New AI Agent Opportunities',
+            subtitle:
+                'You’re only a few steps away from getting AI Agent ready to start automating 60% of your tickets!',
+            redirectTo: '/app/ai-agent/shopify/store_1/opportunities/123',
+        })
+    })
+
+    it('should return redirect to general opportunities page if there is no id', () => {
+        const payload = {
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.NewOpportunityGenerated,
+        }
+
+        const result = getNotificationParams(payload, null)
+
+        expect(result).toEqual({
+            title: 'New AI Agent Opportunities',
+            subtitle:
+                'You’re only a few steps away from getting AI Agent ready to start automating 60% of your tickets!',
+            redirectTo: '/app/ai-agent/shopify/store_1/opportunities',
+        })
+    })
+
     it('should return null for unsupported notification series', () => {
         const payload = {
             ...basePayload,
