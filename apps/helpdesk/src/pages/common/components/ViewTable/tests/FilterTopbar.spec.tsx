@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -721,25 +721,7 @@ describe('<FilterTopbar />', () => {
         expect(getByText('Ticket field')).toBeInTheDocument()
     })
 
-    it('should not render Customer Fields filter when FF is disabled', () => {
-        const { getByLabelText, queryByText } = render(
-            <Provider store={mockStore(defaultState)}>
-                <FilterTopbar {...minProps} />
-            </Provider>,
-        )
-
-        const addFilterButton = getByLabelText('Add filter')
-        fireEvent.click(addFilterButton)
-
-        expect(queryByText('Customer field')).not.toBeInTheDocument()
-    })
-
-    it('should render Customer Fields filter when FF is enabled', () => {
-        mockUseFlag.mockImplementation(
-            (flag) =>
-                flag === FeatureFlagKey.TicketCustomerFieldsInSearchAndViews,
-        )
-
+    it('should render customer fields filter', () => {
         const { getByLabelText, getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} />

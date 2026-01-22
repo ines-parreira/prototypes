@@ -1,6 +1,5 @@
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 import type { Expression } from 'estree'
 import type { List } from 'immutable'
@@ -363,11 +362,6 @@ export function MemberExpression({
         )
     }, [displayedValue])
 
-    const isCustomerCustomFieldsInRulesConditionsEnabled = useFlag(
-        FeatureFlagKey.TicketCustomerFieldsInRulesAndMacros,
-        false,
-    )
-
     return (
         <div className={css.memberExpressionContainer}>
             {/* First dropdown - for selecting categories */}
@@ -433,14 +427,6 @@ export function MemberExpression({
                             {IDENTIFIER_VARIABLES_BY_CATEGORY[
                                 selectedCategory
                             ].map((subcategory) => {
-                                if (
-                                    subcategory.value ===
-                                        CustomFieldTreePath.Customer &&
-                                    !isCustomerCustomFieldsInRulesConditionsEnabled
-                                ) {
-                                    return null
-                                }
-
                                 return subcategory.children ? (
                                     <Fragment key={subcategory.label}>
                                         <div className={css.subcategoryLabel}>

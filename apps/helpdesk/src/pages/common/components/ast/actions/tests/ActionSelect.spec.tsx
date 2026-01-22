@@ -94,8 +94,7 @@ describe('<ActionSelect />', () => {
         )
     })
 
-    it('should include customer field action in available actions when feature flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('should include customer field action in available actions', () => {
         render(<ActionSelect {...commonProps} />)
 
         fireEvent.click(screen.getByText('Select action'))
@@ -105,19 +104,6 @@ describe('<ActionSelect />', () => {
                 name: 'Set customer field',
             }),
         ).toBeInTheDocument()
-    })
-
-    it('should not include customer field action when feature flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-        render(<ActionSelect {...commonProps} />)
-
-        fireEvent.click(screen.getByText('Select action'))
-
-        expect(
-            screen.queryByRole('menuitem', {
-                name: 'Set customer field',
-            }),
-        ).not.toBeInTheDocument()
     })
 
     it('should have proper configuration for customer field action', () => {

@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { List, Map } from 'immutable'
 import {
     DropdownItem,
@@ -24,10 +23,6 @@ export default function ActionSelect({ actions, parent, rule, value }: Props) {
         actions.modifyCodeAST(parent, value, RuleOperation.Update)
     }
 
-    const isCustomerFieldsExposureEnabled = useFlag(
-        FeatureFlagKey.TicketCustomerFieldsInRulesAndMacros,
-    )
-
     const label = isValidActionKey(value)
         ? actionsConfig[value]?.name
         : 'Select action'
@@ -39,12 +34,6 @@ export default function ActionSelect({ actions, parent, rule, value }: Props) {
             </DropdownToggle>
             <DropdownMenu>
                 {Object.entries(actionsConfig).map(([action, config], i) => {
-                    if (
-                        !isCustomerFieldsExposureEnabled &&
-                        action === 'setCustomerCustomFieldValue'
-                    ) {
-                        return null
-                    }
                     return config?.type === 'system' &&
                         !(rule.get('type') === 'system') ? null : (
                         <DropdownItem

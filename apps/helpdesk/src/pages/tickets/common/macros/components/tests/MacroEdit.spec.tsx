@@ -550,8 +550,7 @@ describe('MacroEdit component', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render customer field action with proper title when feature flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('should render customer field action with proper title', () => {
         const customerFieldAction = {
             name: MacroActionName.SetCustomerCustomFieldValue,
             arguments: {
@@ -564,22 +563,7 @@ describe('MacroEdit component', () => {
         expect(screen.getAllByText('Set customer field')).toHaveLength(2)
     })
 
-    it('should not render customer field action when feature flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-        const customerFieldAction = {
-            name: MacroActionName.SetCustomerCustomFieldValue,
-            arguments: {
-                custom_field_id: 1,
-                value: 'VIP Customer',
-            },
-        }
-        renderComponent({ actions: fromJS([customerFieldAction]) })
-
-        expect(screen.queryByText('Set customer field')).not.toBeInTheDocument()
-    })
-
-    it('should allow multiple customer field actions when feature flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('should allow multiple customer field actions', () => {
         const actionsWithMultipleCustomerFields = [
             {
                 name: MacroActionName.SetCustomerCustomFieldValue,
@@ -602,21 +586,11 @@ describe('MacroEdit component', () => {
         expect(screen.getAllByText('Set customer field')).toHaveLength(3)
     })
 
-    it('should show customer field action in dropdown when feature flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+    it('should show customer field action in dropdown', () => {
         renderComponent()
 
         fireEvent.click(screen.getByText(new RegExp('Add action', 'i')))
 
         expect(screen.getByText('Set customer field')).toBeInTheDocument()
-    })
-
-    it('should not show customer field action in dropdown when feature flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-        renderComponent()
-
-        fireEvent.click(screen.getByText(new RegExp('Add action', 'i')))
-
-        expect(screen.queryByText('Set customer field')).not.toBeInTheDocument()
     })
 })

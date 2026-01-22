@@ -68,9 +68,6 @@ export const MacroEdit = ({
     const isMacroForwardByEmailEnabled = useFlag(
         FeatureFlagKey.MacroForwardByEmail,
     )
-    const isCustomerFieldsExposureEnabled = useFlag(
-        FeatureFlagKey.TicketCustomerFieldsInRulesAndMacros,
-    )
 
     const extractText = useCallback(() => {
         const action: Map<any, any> = actions?.find(
@@ -183,10 +180,8 @@ export const MacroEdit = ({
     const renderNewActionMenu = useCallback(
         ({
             isMacroForwardByEmailEnabled,
-            isCustomerFieldsExposureEnabled,
         }: {
             isMacroForwardByEmailEnabled: boolean
-            isCustomerFieldsExposureEnabled: boolean
         }) => {
             const ticketActions = ACTION_TEMPLATES.filter(
                 (template) =>
@@ -194,11 +189,8 @@ export const MacroEdit = ({
             )
                 .filter(
                     ({ name }) =>
-                        (isMacroForwardByEmailEnabled ||
-                            name !== MacroActionName.ForwardByEmail) &&
-                        (isCustomerFieldsExposureEnabled ||
-                            name !==
-                                MacroActionName.SetCustomerCustomFieldValue),
+                        isMacroForwardByEmailEnabled ||
+                        name !== MacroActionName.ForwardByEmail,
                 )
                 // remove actions that have already been used
                 // except for SetCustomFieldValue and SetCustomerCustomFieldValue which are allowed multiple times
@@ -580,12 +572,9 @@ export const MacroEdit = ({
                 {actions
                     ?.filter(
                         (action: Map<any, any>) =>
-                            (isMacroForwardByEmailEnabled ||
-                                action.get('name') !==
-                                    MacroActionName.ForwardByEmail) &&
-                            (isCustomerFieldsExposureEnabled ||
-                                action.get('name') !==
-                                    MacroActionName.SetCustomerCustomFieldValue),
+                            isMacroForwardByEmailEnabled ||
+                            action.get('name') !==
+                                MacroActionName.ForwardByEmail,
                     )
                     .map(
                         (action: Map<any, any>, index) =>
@@ -602,7 +591,6 @@ export const MacroEdit = ({
                         </DropdownToggle>
                         {renderNewActionMenu({
                             isMacroForwardByEmailEnabled,
-                            isCustomerFieldsExposureEnabled,
                         })}
                     </UncontrolledButtonDropdown>
 

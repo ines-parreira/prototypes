@@ -8,7 +8,6 @@ import {
     useState,
 } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import {
     useAsyncFn,
     usePrevious,
@@ -39,7 +38,6 @@ import {
 } from '@gorgias/axiom'
 
 import { getConfigByName } from 'config/views'
-import { OBJECT_PATHS } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -382,10 +380,6 @@ export const FilterTopbar = ({
             await dispatch(createJob(activeView, JobType.ExportTicket, {}))
         }, [dispatch, activeView])
 
-    const isCustomerFieldsViewFilterEnabled = useFlag(
-        FeatureFlagKey.TicketCustomerFieldsInSearchAndViews,
-    )
-
     const hasAutomate = useAppSelector(getHasAutomate)
 
     const filterableFields = useMemo(
@@ -403,14 +397,10 @@ export const FilterTopbar = ({
                         return false
                     }
 
-                    if (field.get('path', '') === OBJECT_PATHS.CUSTOMER) {
-                        return isCustomerFieldsViewFilterEnabled
-                    }
-
                     return true
                 })
                 .sortBy((field) => field.get('title')),
-        [config, hasAutomate, isCustomerFieldsViewFilterEnabled],
+        [config, hasAutomate],
     )
 
     const totalSearchResources = useMemo(() => {
