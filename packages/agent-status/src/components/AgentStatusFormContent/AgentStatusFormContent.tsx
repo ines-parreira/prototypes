@@ -28,11 +28,23 @@ export function AgentStatusFormContent({
     description,
 }: AgentStatusFormContentProps) {
     const durationOption = useWatch({ name: 'durationOption' })
+    const nameValue = useWatch({ name: 'name' })
+    const descriptionValue = useWatch({ name: 'description' })
 
     const isCustom = useMemo(
         () => durationOption?.id === 'custom',
         [durationOption],
     )
+
+    const nameCaption = useMemo(() => {
+        const count = (nameValue || '').length
+        return `${count}/${VALIDATION.NAME_MAX_LENGTH} characters`
+    }, [nameValue])
+
+    const descriptionCaption = useMemo(() => {
+        const count = (descriptionValue || '').length
+        return `${count}/${VALIDATION.DESCRIPTION_MAX_LENGTH} characters`
+    }, [descriptionValue])
 
     return (
         <>
@@ -48,6 +60,7 @@ export function AgentStatusFormContent({
                             placeholder="Lunch break"
                             isRequired
                             maxLength={VALIDATION.NAME_MAX_LENGTH}
+                            caption={nameCaption}
                         />
 
                         <FormField
@@ -55,6 +68,8 @@ export function AgentStatusFormContent({
                             field={TextField}
                             label="Description"
                             placeholder="Use when agents take their lunch break"
+                            maxLength={VALIDATION.DESCRIPTION_MAX_LENGTH}
+                            caption={descriptionCaption}
                         />
 
                         <Box alignItems="flex-start" gap="md">

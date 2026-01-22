@@ -186,4 +186,64 @@ describe('AgentStatusFormContent', () => {
             expect(onCancel).toHaveBeenCalled()
         })
     })
+
+    describe('Character count display', () => {
+        it('should display initial character count for name field', () => {
+            renderFormContent({})
+
+            expect(screen.getByText('0/30 characters')).toBeInTheDocument()
+        })
+
+        it('should display initial character count for description field', () => {
+            renderFormContent({})
+
+            expect(screen.getByText('0/70 characters')).toBeInTheDocument()
+        })
+
+        it('should update character count when typing in name field', async () => {
+            const user = userEvent.setup()
+            renderFormContent({})
+
+            const nameInput = screen.getByPlaceholderText('Lunch break')
+            await act(() => user.type(nameInput, 'Break'))
+
+            expect(screen.getByText('5/30 characters')).toBeInTheDocument()
+        })
+
+        it('should update character count when typing in description field', async () => {
+            const user = userEvent.setup()
+            renderFormContent({})
+
+            const descriptionInput = screen.getByPlaceholderText(
+                'Use when agents take their lunch break',
+            )
+            await act(() => user.type(descriptionInput, 'Short break'))
+
+            expect(screen.getByText('11/70 characters')).toBeInTheDocument()
+        })
+
+        it('should show correct character count for pre-filled name field', () => {
+            renderFormContent({
+                defaultValues: {
+                    name: 'Lunch break',
+                    description: '',
+                    durationOption: DURATION_OPTIONS[0],
+                },
+            })
+
+            expect(screen.getByText('11/30 characters')).toBeInTheDocument()
+        })
+
+        it('should show correct character count for pre-filled description field', () => {
+            renderFormContent({
+                defaultValues: {
+                    name: '',
+                    description: 'Taking a lunch break',
+                    durationOption: DURATION_OPTIONS[0],
+                },
+            })
+
+            expect(screen.getByText('20/70 characters')).toBeInTheDocument()
+        })
+    })
 })
