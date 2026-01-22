@@ -3,10 +3,14 @@ import type { AxiosResponse } from 'axios'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
+    fetchStatsTimeSeries,
     fetchStatsTimeSeriesPerDimension,
     selectPerDimension,
+    selectTimeSeriesByMeasures,
+    useStatsTimeSeries,
     useStatsTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useStatsTimeSeries'
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { BREAKDOWN_FIELD } from 'domains/reporting/hooks/withBreakdown'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { fetchPostStats, usePostStats } from 'domains/reporting/models/queries'
@@ -432,5 +436,256 @@ describe('fetchTimeSeriesPerDimension', () => {
         await expect(
             fetchStatsTimeSeriesPerDimension(newAPIQuery),
         ).rejects.toThrow('API Error')
+    })
+})
+
+describe('selectTimeSeriesByMeasures', () => {
+    const mockResponse = {
+        data: {
+            data: [
+                {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T00:00:00',
+                    medianFirstResponseTime: '65',
+                    averageFirstResponseTime: '70',
+                },
+                {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T01:00:00',
+                    medianFirstResponseTime: '55',
+                    averageFirstResponseTime: '60',
+                },
+            ],
+            annotation: { title: '', shortTitle: '', type: 'array' },
+            query: newAPIQuery as any,
+        },
+    } as any
+
+    const multiMeasureQuery: BuiltQuery<typeof testScopeMeta> = {
+        ...newAPIQuery,
+        measures: [
+            'medianFirstResponseTime',
+            'averageFirstResponseTime',
+        ] as any,
+    }
+
+    it('should select and organize data by measures', () => {
+        const result = selectTimeSeriesByMeasures(
+            mockResponse,
+            multiMeasureQuery,
+        )
+
+        expect(result).toHaveLength(2)
+        expect(result[0]).toBeDefined()
+        expect(result[1]).toBeDefined()
+        expect(result[0][0].label).toBe('medianFirstResponseTime')
+        expect(result[1][0].label).toBe('averageFirstResponseTime')
+    })
+
+    it('should handle empty data response', () => {
+        const emptyResponse = {
+            data: {
+                data: [],
+                annotation: { title: '', shortTitle: '', type: 'array' },
+                query: newAPIQuery as any,
+            },
+        } as any
+
+        const result = selectTimeSeriesByMeasures(emptyResponse, newAPIQuery)
+
+        expect(result).toHaveLength(1)
+        expect(result[0]).toHaveLength(5)
+        expect(result[0].every((item) => item.value === 0)).toBe(true)
+    })
+
+    it('should match measures in correct order', () => {
+        const result = selectTimeSeriesByMeasures(
+            mockResponse,
+            multiMeasureQuery,
+        )
+
+        expect(
+            result[0].every((item) => item.label === 'medianFirstResponseTime'),
+        ).toBe(true)
+        expect(
+            result[1].every(
+                (item) => item.label === 'averageFirstResponseTime',
+            ),
+        ).toBe(true)
+    })
+
+    it('should handle missing measures gracefully', () => {
+        const queryWithExtraMeasure: BuiltQuery<typeof testScopeMeta> = {
+            ...newAPIQuery,
+            measures: ['medianFirstResponseTime', 'nonExistentMeasure'] as any,
+        }
+
+        const result = selectTimeSeriesByMeasures(
+            mockResponse,
+            queryWithExtraMeasure,
+        )
+
+        expect(result[0]).toBeDefined()
+        expect(result[1]).toBeDefined()
+        expect(
+            result[1].every((item) => item.label === 'nonExistentMeasure'),
+        ).toBe(true)
+    })
+})
+
+describe('useStatsTimeSeries', () => {
+    it('should call usePostStats with correct query and select function', () => {
+        renderHook(() => useStatsTimeSeries(newAPIQuery))
+
+        expect(usePostStatsMock).toHaveBeenCalled()
+        const callArgs = usePostStatsMock.mock.calls[0]
+        expect(callArgs[0]).toEqual(newAPIQuery)
+        expect(callArgs[1]?.select).toBeDefined()
+
+        const select = callArgs[1]?.select
+        const mockResponse: AxiosResponse<
+            ReportingResponse<typeof defaultData>
+        > = {
+            data: {
+                data: defaultData,
+                annotation: {
+                    title: 'foo title',
+                    shortTitle: 'foo',
+                    type: 'array',
+                },
+                query: newAPIQuery as any,
+            },
+        } as any
+
+        const result: TimeSeriesDataItem[][] = select?.(mockResponse) as any
+
+        expect(Array.isArray(result)).toBe(true)
+        expect(result).toHaveLength(1)
+        expect(Array.isArray(result?.[0])).toBe(true)
+        expect(result?.[0].every((item) => 'dateTime' in item)).toBe(true)
+        expect(result?.[0].every((item) => 'value' in item)).toBe(true)
+        expect(
+            result?.[0].every(
+                (item) => item.label === 'medianFirstResponseTime',
+            ),
+        ).toBe(true)
+    })
+
+    it('should return hook result with data defaulting to [[]] when undefined', () => {
+        usePostStatsMock.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+            error: null,
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() => useStatsTimeSeries(newAPIQuery))
+
+        expect(result.current.data).toEqual([[]])
+    })
+
+    it('should return hook result with actual data when available', () => {
+        const mockData = [
+            [{ dateTime: '2022-01-02T00:00:00', value: 65, label: 'test' }],
+        ]
+        usePostStatsMock.mockReturnValue({
+            data: mockData,
+            isLoading: false,
+            isError: false,
+            error: null,
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() => useStatsTimeSeries(newAPIQuery))
+
+        expect(result.current.data).toEqual(mockData)
+    })
+
+    it('should handle loading state', () => {
+        usePostStatsMock.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+            isError: false,
+            error: null,
+            isFetching: true,
+        } as any)
+
+        const { result } = renderHook(() => useStatsTimeSeries(newAPIQuery))
+
+        expect(result.current.isLoading).toBe(true)
+        expect(result.current.isFetching).toBe(true)
+    })
+
+    it('should handle error state', () => {
+        const error = new Error('Test error')
+        usePostStatsMock.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: true,
+            error: error,
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() => useStatsTimeSeries(newAPIQuery))
+
+        expect(result.current.isError).toBe(true)
+        expect(result.current.error).toEqual(error)
+    })
+})
+
+describe('fetchStatsTimeSeries', () => {
+    const mockResponse = {
+        data: {
+            data: [
+                {
+                    [TicketDimension.CreatedDatetime]: '2022-01-02T00:00:00',
+                    medianFirstResponseTime: '65',
+                },
+            ],
+            annotation: { title: '', shortTitle: '', type: 'array' },
+            query: newAPIQuery as any,
+        },
+    } as any
+
+    it('should call fetchPostStats with correct query', async () => {
+        fetchPostStatsMock.mockResolvedValue(mockResponse)
+
+        await fetchStatsTimeSeries(newAPIQuery)
+
+        expect(fetchPostStatsMock).toHaveBeenCalled()
+        expect(fetchPostStatsMock.mock.calls[0][0]).toEqual(newAPIQuery)
+    })
+
+    it('should return processed time series data', async () => {
+        fetchPostStatsMock.mockResolvedValue(mockResponse)
+
+        const result = await fetchStatsTimeSeries(newAPIQuery)
+
+        expect(result).toBeDefined()
+        expect(Array.isArray(result)).toBe(true)
+    })
+
+    it('should handle empty data response', async () => {
+        fetchPostStatsMock.mockResolvedValue({
+            data: {
+                data: [],
+                annotation: { title: '', shortTitle: '', type: 'array' },
+                query: newAPIQuery as any,
+            },
+        } as any)
+
+        const result = await fetchStatsTimeSeries(newAPIQuery)
+
+        expect(result).toHaveLength(1)
+        expect(result[0]).toHaveLength(5)
+        expect(result[0].every((item) => item.value === 0)).toBe(true)
+    })
+
+    it('should propagate API errors', async () => {
+        const error = new Error('API Error')
+        fetchPostStatsMock.mockRejectedValue(error)
+
+        await expect(fetchStatsTimeSeries(newAPIQuery)).rejects.toThrow(
+            'API Error',
+        )
     })
 })

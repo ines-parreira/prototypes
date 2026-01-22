@@ -1,46 +1,40 @@
 import { Skeleton } from '@gorgias/axiom'
 
-import { useSatisfiedOrBreachedTicketsTimeSeries } from 'domains/reporting/hooks/sla/useSatisfiedOrBreachedTicketsTimeSeries'
+import { useSatisfiedOrBreachedVoiceCallsTimeSeries } from 'domains/reporting/hooks/sla/useSatisfiedOrBreachedVoiceCallsTimeSeries'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { TicketSLAStatus } from 'domains/reporting/models/cubes/sla/TicketSLACube'
+import { VoiceSLAStatus } from 'domains/reporting/models/scopes/voiceSLA'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
-import BarChart from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
+import { BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import { formatLabeledTimeSeriesData } from 'domains/reporting/pages/common/utils'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { CHART_COLORS } from 'domains/reporting/pages/sla/constants'
 
-export const CHART_TITLE = 'Achieved and breached tickets'
+export const CHART_TITLE = 'Achieved and breached calls'
 export const HINT =
-    'Number of tickets that satisfied and breached the SLA policy over time'
+    'Number of calls that satisfied and breached the SLA policy over time'
 
 export const CHART_FIELDS = [
     {
-        field: TicketSLAStatus.Satisfied,
+        field: VoiceSLAStatus.Satisfied,
         label: 'Achieved',
     },
     {
-        field: TicketSLAStatus.Breached,
+        field: VoiceSLAStatus.Breached,
         label: 'Breached',
     },
 ]
 
-export const AchievedAndBreachedTicketsChart = ({
+export const AchievedAndBreachedVoiceCallsChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
-    const { data, isLoading } = useSatisfiedOrBreachedTicketsTimeSeries(
+    const { data, isLoading } = useSatisfiedOrBreachedVoiceCallsTimeSeries(
         cleanStatsFilters,
         userTimezone,
         granularity,
     )
-
-    const formattedData = data
-        ? CHART_FIELDS.map((metric) => metric.field).map((metric) =>
-              data[metric] ? data[metric][0] : [],
-          )
-        : []
 
     return isLoading ? (
         <Skeleton />
@@ -55,7 +49,7 @@ export const AchievedAndBreachedTicketsChart = ({
                 data={
                     data !== undefined
                         ? formatLabeledTimeSeriesData(
-                              formattedData,
+                              data,
                               CHART_FIELDS.map((metric) => metric.label),
                               granularity,
                           )

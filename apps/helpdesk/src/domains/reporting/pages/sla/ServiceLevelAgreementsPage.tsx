@@ -8,13 +8,14 @@ import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
 import { DownloadSLAsData } from 'domains/reporting/pages/sla/components/DownloadSLAsData'
 import { ServiceLevelAgreements } from 'domains/reporting/pages/sla/ServiceLevelAgreements'
 import { ServiceLevelAgreementsReportConfig } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
+import { VoiceServiceLevelAgreements } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreements'
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 import { currentAccountHasProduct } from 'state/billing/selectors'
 
 enum SLATabs {
     Tickets = 'Tickets',
-    Voice = 'Voice',
+    Calls = 'Calls',
 }
 
 export function ServiceLevelAgreementsPage() {
@@ -29,7 +30,7 @@ export function ServiceLevelAgreementsPage() {
 
     const tabRoutes = {
         [SLATabs.Tickets]: path,
-        [SLATabs.Voice]: `${path}/voice`,
+        [SLATabs.Calls]: `${path}/calls`,
     }
 
     return (
@@ -39,7 +40,7 @@ export function ServiceLevelAgreementsPage() {
                 titleExtra={
                     <Switch>
                         {isVoiceTabAvailable && (
-                            <Route path={tabRoutes[SLATabs.Voice]} exact>
+                            <Route path={tabRoutes[SLATabs.Calls]} exact>
                                 <DownloadSLAsData>
                                     Download calls data
                                 </DownloadSLAsData>
@@ -69,8 +70,8 @@ export function ServiceLevelAgreementsPage() {
                                     label="Tickets"
                                 />
                                 <TabItem
-                                    id={tabRoutes[SLATabs.Voice]}
-                                    label="Voice"
+                                    id={tabRoutes[SLATabs.Calls]}
+                                    label="Calls"
                                 />
                             </TabList>
                         </Tabs>
@@ -79,8 +80,8 @@ export function ServiceLevelAgreementsPage() {
 
                 <Switch>
                     {isVoiceTabAvailable && (
-                        <Route path={tabRoutes[SLATabs.Voice]} exact>
-                            <div>Voice SLA</div>
+                        <Route path={tabRoutes[SLATabs.Calls]} exact>
+                            <VoiceServiceLevelAgreements />
                         </Route>
                     )}
                     <Route exact path={tabRoutes[SLATabs.Tickets]}>

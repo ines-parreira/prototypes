@@ -55,7 +55,7 @@ export const selectPerDimension =
     <TMeta extends ScopeMeta>(statsQuery: BuiltQuery<TMeta>) =>
     (res: DataResponse['data']['data']): TimeSeriesPerDimension => {
         let escapedResponse = res
-        const dimension = statsQuery?.dimensions?.[0]
+        const dimension = statsQuery.dimensions?.[0]
 
         if (dimension === BREAKDOWN_FIELD) {
             escapedResponse = res.map((item) => {
@@ -73,6 +73,56 @@ export const selectPerDimension =
             select(statsQuery),
         )
     }
+
+export const selectTimeSeriesByMeasures = <TMeta extends ScopeMeta>(
+    result: DataResponse,
+    statsQuery: BuiltQuery<TMeta>,
+): TimeSeriesDataItem[][] => {
+    let matchingArray: TimeSeriesDataItem[][] = []
+
+    const dataItems = select<TMeta>(statsQuery)(result.data.data)
+
+    const measures = statsQuery.measures || []
+    measures.forEach((measure, index) => {
+        const dataItem = dataItems.find((arr) =>
+            arr.some((item) => item.label === measure),
+        )
+        if (dataItem) {
+            matchingArray[index] = dataItem
+        }
+    })
+
+    return matchingArray
+}
+
+export function useStatsTimeSeries<TMeta extends ScopeMeta>(
+    statsQuery: BuiltQuery<TMeta>,
+) {
+    const result = usePostStats<
+        Record<string, string>[],
+        TimeSeriesDataItem[][],
+        TMeta
+    >(statsQuery, {
+        select: (res) => selectTimeSeriesByMeasures<TMeta>(res, statsQuery),
+    })
+
+    return {
+        ...result,
+        data: result.data ?? [[]],
+    }
+}
+
+export async function fetchStatsTimeSeries<TMeta extends ScopeMeta = ScopeMeta>(
+    statsQuery: BuiltQuery<TMeta>,
+) {
+    return fetchPostStats<
+        Record<string, string>[],
+        TimeSeriesDataItem[][],
+        TMeta
+    >(statsQuery, {}).then((res) =>
+        selectTimeSeriesByMeasures<TMeta>(res, statsQuery),
+    )
+}
 
 export async function fetchStatsTimeSeriesPerDimension<
     TMeta extends ScopeMeta = ScopeMeta,

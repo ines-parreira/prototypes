@@ -11,6 +11,7 @@ import { mockListSlaPoliciesHandler } from '@gorgias/helpdesk-mocks'
 import { appQueryClient } from 'api/queryClient'
 import { ServiceLevelAgreementsPage } from 'domains/reporting/pages/sla/ServiceLevelAgreementsPage'
 import { ServiceLevelAgreementsReportConfig } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
+import { VoiceServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreementsReportConfig'
 import { billingState } from 'fixtures/billing'
 import { ProductType } from 'models/billing/types'
 import * as billingSelectors from 'state/billing/selectors'
@@ -53,7 +54,9 @@ jest.mock('domains/reporting/pages/common/AnalyticsFooter', () => ({
 }))
 
 jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
-    DashboardComponent: () => <div>Dashboard Chart</div>,
+    DashboardComponent: ({ chart }: { chart: string }) => (
+        <div data-testid={chart}>Dashboard Chart</div>
+    ),
 }))
 
 jest.mock('domains/reporting/hooks/useCleanStatsFilters', () => ({
@@ -162,7 +165,7 @@ describe('ServiceLevelAgreementsPage', () => {
 
             expect(screen.getAllByText('Dashboard Chart')).toHaveLength(3)
             expect(screen.queryByText('Tickets')).not.toBeInTheDocument()
-            expect(screen.queryByText('Voice')).not.toBeInTheDocument()
+            expect(screen.queryByText('Calls')).not.toBeInTheDocument()
         })
 
         it('should show "Download tickets data" button', async () => {
@@ -214,7 +217,7 @@ describe('ServiceLevelAgreementsPage', () => {
 
             expect(screen.getAllByText('Dashboard Chart')).toHaveLength(3)
             expect(screen.queryByText('Tickets')).not.toBeInTheDocument()
-            expect(screen.queryByText('Voice')).not.toBeInTheDocument()
+            expect(screen.queryByText('Calls')).not.toBeInTheDocument()
         })
     })
 
@@ -227,7 +230,7 @@ describe('ServiceLevelAgreementsPage', () => {
             })
         })
 
-        it('should render tickets SLA content by default and both Ticket and Voice tabs', async () => {
+        it('should render tickets SLA content by default and both Ticket and Calls tabs', async () => {
             renderWithStoreAndQueryClientAndRouter(
                 <ServiceLevelAgreementsPage />,
                 stateWithVoice,
@@ -250,7 +253,7 @@ describe('ServiceLevelAgreementsPage', () => {
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('tab', {
-                    name: /Voice/i,
+                    name: /Calls/i,
                 }),
             ).toBeInTheDocument()
         })
@@ -278,26 +281,30 @@ describe('ServiceLevelAgreementsPage', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should render voice SLA content on voice route', async () => {
+        it('should render voice SLA content on calls route', async () => {
             renderWithStoreAndQueryClientAndRouter(
                 <ServiceLevelAgreementsPage />,
                 stateWithVoice,
                 {
-                    route: '/app/reporting/stats/slas/voice',
+                    route: '/app/reporting/stats/slas/calls',
                     path: '/app/reporting/stats/slas',
                 },
             )
 
             expect(
                 screen.getByRole('tab', {
-                    name: /Voice/i,
+                    name: /Calls/i,
                 }),
             ).toBeInTheDocument()
 
-            expect(screen.getByText('Voice SLA')).toBeInTheDocument()
+            expect(
+                await screen.findByTestId(
+                    VoiceServiceLevelAgreementsChart.AchievedAndBreachedVoiceCallsChart,
+                ),
+            ).toBeInTheDocument()
         })
 
-        it('should switch to voice SLA when clicking on Voice tab', async () => {
+        it('should switch to voice SLA when clicking on Calls tab', async () => {
             const user = userEvent.setup()
 
             renderWithStoreAndQueryClientAndRouter(
@@ -311,27 +318,27 @@ describe('ServiceLevelAgreementsPage', () => {
 
             expect(
                 screen.getByRole('tab', {
-                    name: /Voice/i,
+                    name: /Calls/i,
                 }),
             ).toBeInTheDocument()
 
             await act(() =>
-                user.click(screen.getByRole('tab', { name: /Voice/i })),
+                user.click(screen.getByRole('tab', { name: /Calls/i })),
             )
 
             await waitFor(() =>
                 expect(history.push).toHaveBeenCalledWith(
-                    '/app/reporting/stats/slas/voice',
+                    '/app/reporting/stats/slas/calls',
                 ),
             )
         })
 
-        it('should show "Download calls data" button on voice route', async () => {
+        it('should show "Download calls data" button on calls route', async () => {
             renderWithStoreAndQueryClientAndRouter(
                 <ServiceLevelAgreementsPage />,
                 stateWithVoice,
                 {
-                    route: '/app/reporting/stats/slas/voice',
+                    route: '/app/reporting/stats/slas/calls',
                     path: '/app/reporting/stats/slas',
                 },
             )

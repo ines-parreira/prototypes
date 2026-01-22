@@ -133,6 +133,9 @@ export type MeasureName =
     | 'missedVoiceCallsCount'
     | 'outboundVoiceCallsCount'
     | 'unansweredVoiceCallsCount'
+    | 'slaAchievementRate'
+    | 'breachedExposures'
+    | 'achievedExposures'
 
 export type TimeDimensionName =
     | 'createdDatetime'
@@ -141,6 +144,7 @@ export type TimeDimensionName =
     | 'firstAgentMessageDatetime'
     | 'updatedDatetime'
     | 'anchorDatetime'
+    | 'queuedDate'
     | 'timestamp'
 
 export type StringFilterName =
