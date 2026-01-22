@@ -1,0 +1,56 @@
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
+@import '~css/typography';
+@import '~css/util';
+
+:local {
+    .header {
+        width: 100%;
+        padding: var(--spacing-md) var(--spacing-lg);
+        border-bottom: 1px solid var(--neutral-grey-2); // legacy
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+        height: 52px;
+    }
+
+    .headerLeft {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        overflow: hidden;
+    }
+
+    .headerActions {
+        display: flex;
+        gap: var(--spacing-xs);
+    }
+
+    .headerActionDelimiter {
+        width: 1px;
+        border-radius: var(--spacing-xs);
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .title {
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .guidanceLink {
+        color: var(--main-primary, #0075ff);
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.axiom :local {
+    .header {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+}

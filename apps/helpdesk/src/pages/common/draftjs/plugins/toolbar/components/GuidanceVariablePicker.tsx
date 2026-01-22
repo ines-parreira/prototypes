@@ -24,7 +24,7 @@ export type GuidanceVariablePickerProps = {
 
 const GuidanceVariablePicker = ({
     onSelect,
-    label = `{+} variables`,
+    label = `{+} Variables`,
     size = 'small',
     tooltipMessage = 'Insert variable',
     variableDropdownProps,

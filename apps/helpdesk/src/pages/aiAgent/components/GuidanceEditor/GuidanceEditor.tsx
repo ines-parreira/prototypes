@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import type { EditorState } from 'draft-js'
 
-import { LegacyLabel as Label } from '@gorgias/axiom'
+import { Label } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
@@ -24,6 +24,7 @@ type GuidanceEditorProps = {
     handleUpdateContent: (content: string) => void
     onBlur?: () => void
     label?: string
+    showDefaultToolbarActions?: boolean
 }
 
 export const textLimit = 30000
@@ -48,9 +49,12 @@ export function GuidanceEditor({
     handleUpdateContent,
     onBlur,
     label,
+    showDefaultToolbarActions = true,
 }: GuidanceEditorProps) {
     const toolbarActions = useMemo(() => {
-        let actions = defaultToolbarActions
+        let actions = showDefaultToolbarActions
+            ? defaultToolbarActions
+            : [ActionName.GuidanceVariable, ActionName.GuidanceAction]
 
         if (!showActionsButton) {
             actions = actions.filter(
@@ -65,7 +69,7 @@ export function GuidanceEditor({
         }
 
         return actions
-    }, [showActionsButton, showVariablesButton])
+    }, [showActionsButton, showVariablesButton, showDefaultToolbarActions])
 
     const richFieldValue = useMemo(
         () => ({

@@ -1,0 +1,31 @@
+:local {
+    .container {
+        display: flex;
+        padding: var(--spacing-md);
+
+        border-radius: var(--spacing-sm);
+        border: 1.2px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+    }
+
+    .disabledTitle {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    .bodyField :global(label) {
+        font-weight: 500;
+    }
+
+    .bodyField :global(textarea) {
+        color: var(--content-neutral-default) !important;
+        resize: none;
+        padding: var(--spacing-md);
+        display: block;
+        box-sizing: border-box;
+    }
+
+    .bodyField :global(textarea:hover) {
+        background: var(--hover-input) !important;
+    }
+}

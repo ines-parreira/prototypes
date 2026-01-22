@@ -1,4 +1,28 @@
+import type { ArticleTemplateReviewAction } from 'models/helpCenter/types'
+
 import type { OpportunityType } from './enums'
+
+export interface OpportunityConfig {
+    shopName: string
+    shopIntegrationId: number | undefined
+    helpCenterId: number
+    guidanceHelpCenterId: number
+    useKnowledgeService: boolean
+    onArchive: (articleKey: string) => void
+    onPublish: (articleKey: string) => void
+    markArticleAsReviewed: (
+        templateKey: string,
+        reviewAction: ArticleTemplateReviewAction,
+    ) => void
+    onOpportunityAccepted?: (context: {
+        opportunityId: string
+        opportunityType: string
+    }) => void
+    onOpportunityDismissed?: (context: {
+        opportunityId: string
+        opportunityType: string
+    }) => void
+}
 
 interface OpportunityBase {
     id: string

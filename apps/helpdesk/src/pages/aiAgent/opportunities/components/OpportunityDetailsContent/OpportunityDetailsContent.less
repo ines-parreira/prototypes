@@ -1,0 +1,29 @@
+:local {
+    .contentBody {
+        padding: var(--spacing-md) var(--spacing-lg);
+        display: flex;
+        flex: 1;
+        min-height: 0; // Critical for allowing scroll
+        width: 100%;
+        background: var(--neutral-grey-0) !important; // legacy
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .opportunityDetails {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: var(--spacing-md);
+    }
+
+    .guidanceFormWrapper {
+        width: 100%;
+    }
+}
+
+.axiom :local {
+    .contentBody {
+        background: var(--elevation-neutral-default) !important;
+    }
+}

@@ -383,9 +383,9 @@ describe('OpportunitiesLayout', () => {
         renderComponent()
 
         const callArgs = OpportunitiesContent.mock.calls[0][0]
-        expect(callArgs.onArchive).toBeDefined()
+        expect(callArgs.opportunityConfig.onArchive).toBeDefined()
 
-        callArgs.onArchive('article-1')
+        callArgs.opportunityConfig.onArchive('article-1')
 
         expect(mockMarkArticleAsReviewed).toHaveBeenCalledWith(
             'article-1',
@@ -401,9 +401,9 @@ describe('OpportunitiesLayout', () => {
         renderComponent()
 
         const callArgs = OpportunitiesContent.mock.calls[0][0]
-        expect(callArgs.onPublish).toBeDefined()
+        expect(callArgs.opportunityConfig.onPublish).toBeDefined()
 
-        callArgs.onPublish('article-1')
+        callArgs.opportunityConfig.onPublish('article-1')
 
         expect(mockMarkArticleAsReviewed).toHaveBeenCalledWith(
             'article-1',
@@ -589,12 +589,14 @@ describe('OpportunitiesLayout', () => {
 
         expect(OpportunitiesContent).toHaveBeenCalledWith(
             expect.objectContaining({
-                shopName: 'test-shop',
-                helpCenterId: 2,
-                guidanceHelpCenterId: 1,
-                onArchive: expect.any(Function),
-                onPublish: expect.any(Function),
-                markArticleAsReviewed: mockMarkArticleAsReviewed,
+                opportunityConfig: expect.objectContaining({
+                    shopName: 'test-shop',
+                    helpCenterId: 2,
+                    guidanceHelpCenterId: 1,
+                    onArchive: expect.any(Function),
+                    onPublish: expect.any(Function),
+                    markArticleAsReviewed: mockMarkArticleAsReviewed,
+                }),
             }),
             expect.anything(),
         )
@@ -781,7 +783,7 @@ describe('OpportunitiesLayout', () => {
             const callArgs = OpportunitiesContent.mock.calls[0][0]
 
             await act(async () => {
-                await callArgs.onArchive('ks_1')
+                await callArgs.opportunityConfig.onArchive('ks_1')
             })
 
             await waitFor(() => {
@@ -798,7 +800,7 @@ describe('OpportunitiesLayout', () => {
 
             const callArgs = OpportunitiesContent.mock.calls[0][0]
             await act(async () => {
-                await callArgs.onArchive('ks_1')
+                await callArgs.opportunityConfig.onArchive('ks_1')
             })
 
             expect(mockMarkArticleAsReviewed).not.toHaveBeenCalled()
@@ -813,8 +815,10 @@ describe('OpportunitiesLayout', () => {
 
             expect(OpportunitiesContent).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    shopIntegrationId: 123,
-                    useKnowledgeService: true,
+                    opportunityConfig: expect.objectContaining({
+                        shopIntegrationId: 123,
+                        useKnowledgeService: true,
+                    }),
                 }),
                 expect.anything(),
             )

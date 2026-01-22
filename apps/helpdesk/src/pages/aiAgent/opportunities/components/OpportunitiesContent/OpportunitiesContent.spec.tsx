@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -16,10 +17,8 @@ import { notify } from 'state/notifications/actions'
 
 import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
 import { OpportunityType } from '../../enums'
-import {
-    type OpportunityPageState,
-    State,
-} from '../../hooks/useOpportunityPageState'
+import { State } from '../../hooks/useOpportunityPageState'
+import type { OpportunityPageState } from '../../hooks/useOpportunityPageState'
 import { useProcessOpportunity } from '../../hooks/useProcessOpportunity'
 import { OpportunitiesContent } from './OpportunitiesContent'
 
@@ -59,6 +58,15 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation')
 jest.mock(
     'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
 )
+jest.mock('pages/aiAgent/components/GuidanceEditor/GuidanceEditor', () => ({
+    GuidanceEditor: ({ content, handleUpdateContent }: any) => (
+        <textarea
+            data-testid="guidance-editor"
+            value={content}
+            onChange={(e) => handleUpdateContent(e.target.value)}
+        />
+    ),
+}))
 jest.mock('pages/settings/helpCenter/queries')
 jest.mock('models/knowledgeService/mutations')
 jest.mock('../../hooks/useProcessOpportunity')
@@ -79,23 +87,6 @@ jest.mock('../../../hooks/useAiAgentNavigation', () => ({
             opportunities: '/ai-agent/opportunities',
         },
     })),
-}))
-
-const mockOnValuesChange = jest.fn()
-const mockGuidanceForm = jest.fn()
-
-jest.mock('../../../components/GuidanceForm/GuidanceForm', () => ({
-    GuidanceForm: (props: any) => {
-        mockGuidanceForm(props)
-        useEffect(() => {
-            if (props.onValuesChange && props.initialFields) {
-                mockOnValuesChange(props.initialFields)
-                props.onValuesChange(props.initialFields)
-            }
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [])
-        return <div data-testid="guidance-form">Guidance Form</div>
-    },
 }))
 
 const middlewares = [thunk]
@@ -153,8 +144,7 @@ describe('OpportunitiesContent', () => {
         type: OpportunityType.FILL_KNOWLEDGE_GAP,
     }
 
-    const defaultProps = {
-        selectedOpportunity: null,
+    const mockOpportunityConfig = {
         shopName: 'test-shop',
         helpCenterId: 1,
         guidanceHelpCenterId: 2,
@@ -163,6 +153,11 @@ describe('OpportunitiesContent', () => {
         shopIntegrationId: 1,
         markArticleAsReviewed: mockMarkArticleAsReviewed,
         useKnowledgeService: false,
+    }
+
+    const defaultProps = {
+        selectedOpportunity: null,
+        opportunityConfig: mockOpportunityConfig,
         isLoadingOpportunityDetails: false,
         totalCount: 10,
         opportunitiesPageState: mockEmptyPageState,
@@ -182,15 +177,20 @@ describe('OpportunitiesContent', () => {
         const Wrapper = ({ children }: { children: ReactNode }) => {
             const [isSidebarVisible, setIsSidebarVisible] = useState(true)
             return (
-                <Provider store={store}>
-                    <QueryClientProvider client={queryClient}>
-                        <OpportunitiesSidebarContext.Provider
-                            value={{ isSidebarVisible, setIsSidebarVisible }}
-                        >
-                            {children}
-                        </OpportunitiesSidebarContext.Provider>
-                    </QueryClientProvider>
-                </Provider>
+                <MemoryRouter>
+                    <Provider store={store}>
+                        <QueryClientProvider client={queryClient}>
+                            <OpportunitiesSidebarContext.Provider
+                                value={{
+                                    isSidebarVisible,
+                                    setIsSidebarVisible,
+                                }}
+                            >
+                                {children}
+                            </OpportunitiesSidebarContext.Provider>
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>
             )
         }
 
@@ -202,8 +202,6 @@ describe('OpportunitiesContent', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockCreateGuidanceArticle.mockClear()
-        mockOnValuesChange.mockClear()
-        mockGuidanceForm.mockClear()
         mockReviewArticleMutate.mockClear()
         mockMarkArticleAsReviewed.mockClear()
         mockOnArchive.mockClear()
@@ -422,7 +420,10 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
-            onOpportunityAccepted: mockOnOpportunityAccepted,
+            opportunityConfig: {
+                ...mockOpportunityConfig,
+                onOpportunityAccepted: mockOnOpportunityAccepted,
+            },
             opportunitiesPageState: mockOpportunityPageState,
         })
 
@@ -518,18 +519,14 @@ describe('OpportunitiesContent', () => {
         expect(approveButton).toBeInTheDocument()
     })
 
-    it('should update form data when values change', () => {
+    it('should render form with initial values from opportunity', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
             opportunitiesPageState: mockOpportunityPageState,
         })
 
-        expect(mockOnValuesChange).toHaveBeenCalledWith({
-            name: 'Test opportunity',
-            content: 'Test content',
-            isVisible: true,
-        })
+        expect(screen.getByDisplayValue('Test opportunity')).toBeInTheDocument()
     })
 
     it('should handle review article success callback', async () => {
@@ -634,23 +631,28 @@ describe('OpportunitiesContent', () => {
         })
 
         expect(screen.getByText(/Resolve conflict/)).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                /Edit, disable or delete the conflicting knowledge below/,
-            ),
-        ).toBeInTheDocument()
     })
 
-    it('should pass correct props to GuidanceForm', () => {
+    it('should render guidance editor with correct fields', async () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
-            shopName: 'my-shop',
-            helpCenterId: 123,
+            opportunityConfig: {
+                ...mockOpportunityConfig,
+                shopName: 'my-shop',
+                helpCenterId: 123,
+            },
             opportunitiesPageState: mockOpportunityPageState,
         })
 
-        expect(screen.getByTestId('guidance-form')).toBeInTheDocument()
+        expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
+
+        await waitFor(() => {
+            expect(screen.getByText('Guidance name')).toBeInTheDocument()
+            expect(
+                screen.getByDisplayValue('Test opportunity'),
+            ).toBeInTheDocument()
+        })
     })
 
     it('should not render action buttons when no opportunity is selected', () => {
@@ -664,7 +666,7 @@ describe('OpportunitiesContent', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should handle loading state from guidance actions', () => {
+    it('should render guidance editor even when guidance actions are loading', async () => {
         ;(useGetGuidancesAvailableActions as jest.Mock).mockReturnValueOnce({
             guidanceActions: [],
             isLoading: true,
@@ -676,7 +678,9 @@ describe('OpportunitiesContent', () => {
             opportunitiesPageState: mockOpportunityPageState,
         })
 
-        expect(screen.getByTestId('guidance-form')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Guidance name')).toBeInTheDocument()
+        })
     })
 
     it('should disable button at guidance limit', async () => {
@@ -743,31 +747,20 @@ describe('OpportunitiesContent', () => {
         })
     })
 
-    it('should handle form value changes', () => {
+    it('should allow editing the guidance title', async () => {
+        const user = userEvent.setup()
+
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
             opportunitiesPageState: mockOpportunityPageState,
         })
 
-        const formProps = mockGuidanceForm.mock.calls[0][0]
-        const newFormData = {
-            name: 'Updated Title',
-            content: 'Updated Content',
-            isVisible: false,
-        }
+        const titleInput = await screen.findByDisplayValue('Test opportunity')
+        await user.clear(titleInput)
+        await user.type(titleInput, 'Updated Title')
 
-        act(() => {
-            formProps.onValuesChange(newFormData)
-        })
-
-        expect(mockOnValuesChange).toHaveBeenCalledWith(
-            expect.objectContaining({
-                name: 'Test opportunity',
-                content: 'Test content',
-                isVisible: true,
-            }),
-        )
+        expect(titleInput).toHaveValue('Updated Title')
     })
 
     it('should handle approve when guidance help center has no locale', async () => {
@@ -838,7 +831,10 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
-            onOpportunityDismissed: undefined,
+            opportunityConfig: {
+                ...mockOpportunityConfig,
+                onOpportunityDismissed: undefined,
+            },
             opportunitiesPageState: mockOpportunityPageState,
         })
 
@@ -929,7 +925,10 @@ describe('OpportunitiesContent', () => {
             renderComponent({
                 selectedOpportunity,
                 opportunities: [selectedOpportunity],
-                useKnowledgeService: true,
+                opportunityConfig: {
+                    ...mockOpportunityConfig,
+                    useKnowledgeService: true,
+                },
                 opportunitiesPageState: mockOpportunityPageState,
             })
 

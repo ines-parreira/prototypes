@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import type { GuidanceVariable } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 
@@ -9,9 +10,9 @@ import GuidanceVariablePicker from '../GuidanceVariablePicker'
 jest.mock('../GuidanceVariableDropdown', () => {
     return jest.fn(({ onSelect, isOpen, onToggle }) =>
         isOpen ? (
-            <div data-testid="guidance-variable-dropdown">
+            <div role="menu" aria-label="Variable dropdown">
                 <button
-                    data-testid="select-variable-btn"
+                    role="menuitem"
                     onClick={() => {
                         const mockVariable: GuidanceVariable = {
                             name: 'Customer Name',
@@ -32,7 +33,7 @@ jest.mock('../GuidanceVariableDropdown', () => {
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
     LegacyTooltip: jest.fn(({ children }) => (
-        <div data-testid="tooltip">{children}</div>
+        <div role="tooltip">{children}</div>
     )),
 }))
 
@@ -48,11 +49,11 @@ describe('GuidanceVariablePicker', () => {
     it('renders with default props', () => {
         render(<GuidanceVariablePicker {...defaultProps} />)
 
-        const button = screen.getByText('{+} variables')
+        const button = screen.getByRole('button', { name: /\{\+\} Variables/i })
         expect(button).toBeInTheDocument()
 
         expect(
-            screen.queryByTestId('guidance-variable-dropdown'),
+            screen.queryByRole('menu', { name: /Variable dropdown/i }),
         ).not.toBeInTheDocument()
     })
 
@@ -73,7 +74,7 @@ describe('GuidanceVariablePicker', () => {
             />,
         )
 
-        const tooltip = screen.getByTestId('tooltip')
+        const tooltip = screen.getByRole('tooltip')
         expect(tooltip).toBeInTheDocument()
         expect(tooltip).toHaveTextContent('Custom tooltip')
     })
@@ -83,25 +84,33 @@ describe('GuidanceVariablePicker', () => {
             <GuidanceVariablePicker {...defaultProps} tooltipMessage={null} />,
         )
 
-        expect(screen.queryByTestId('tooltip')).not.toBeInTheDocument()
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
     })
 
-    it('opens dropdown when button is clicked', () => {
+    it('opens dropdown when button is clicked', async () => {
+        const user = userEvent.setup()
         render(<GuidanceVariablePicker {...defaultProps} />)
 
-        fireEvent.click(screen.getByText('{+} variables'))
+        await user.click(
+            screen.getByRole('button', { name: /\{\+\} Variables/i }),
+        )
 
         expect(
-            screen.getByTestId('guidance-variable-dropdown'),
+            screen.getByRole('menu', { name: /Variable dropdown/i }),
         ).toBeInTheDocument()
     })
 
-    it('calls onSelect when a variable is selected', () => {
+    it('calls onSelect when a variable is selected', async () => {
+        const user = userEvent.setup()
         render(<GuidanceVariablePicker {...defaultProps} />)
 
-        fireEvent.click(screen.getByText('{+} variables'))
+        await user.click(
+            screen.getByRole('button', { name: /\{\+\} Variables/i }),
+        )
 
-        fireEvent.click(screen.getByTestId('select-variable-btn'))
+        await user.click(
+            screen.getByRole('menuitem', { name: /Select Variable/i }),
+        )
 
         expect(defaultProps.onSelect).toHaveBeenCalledWith({
             name: 'Customer Name',
@@ -110,15 +119,20 @@ describe('GuidanceVariablePicker', () => {
         })
     })
 
-    it('closes dropdown after selecting a variable', () => {
+    it('closes dropdown after selecting a variable', async () => {
+        const user = userEvent.setup()
         render(<GuidanceVariablePicker {...defaultProps} />)
 
-        fireEvent.click(screen.getByText('{+} variables'))
+        await user.click(
+            screen.getByRole('button', { name: /\{\+\} Variables/i }),
+        )
 
-        fireEvent.click(screen.getByTestId('select-variable-btn'))
+        await user.click(
+            screen.getByRole('menuitem', { name: /Select Variable/i }),
+        )
 
         expect(
-            screen.queryByTestId('guidance-variable-dropdown'),
+            screen.queryByRole('menu', { name: /Variable dropdown/i }),
         ).not.toBeInTheDocument()
     })
 
@@ -130,8 +144,9 @@ describe('GuidanceVariablePicker', () => {
         expect(button).toHaveAttribute('aria-disabled', 'true')
     })
 
-    it('passes variableDropdownProps to GuidanceVariableDropdown', () => {
+    it('passes variableDropdownProps to GuidanceVariableDropdown', async () => {
         const GuidanceVariableDropdown = require('../GuidanceVariableDropdown')
+        const user = userEvent.setup()
         const variableDropdownProps = {
             noSelectedCategoryText: 'Custom text',
         }
@@ -143,7 +158,9 @@ describe('GuidanceVariablePicker', () => {
             />,
         )
 
-        fireEvent.click(screen.getByText('{+} variables'))
+        await user.click(
+            screen.getByRole('button', { name: /\{\+\} Variables/i }),
+        )
 
         expect(GuidanceVariableDropdown).toHaveBeenCalledWith(
             expect.objectContaining({

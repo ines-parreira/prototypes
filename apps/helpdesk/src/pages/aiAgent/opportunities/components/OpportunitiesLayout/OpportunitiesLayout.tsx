@@ -8,6 +8,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import { useOpportunityPageState } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
+import type {
+    OpportunityConfig,
+    SidebarOpportunityItem,
+} from 'pages/aiAgent/opportunities/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
@@ -20,7 +24,6 @@ import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarConte
 import { useKnowledgeServiceOpportunities } from '../../hooks/useKnowledgeServiceOpportunities'
 import { useOpportunitiesTracking } from '../../hooks/useOpportunitiesTracking'
 import { useSelectedOpportunity } from '../../hooks/useSelectedOpportunity'
-import type { SidebarOpportunityItem } from '../../types'
 import { mapAiArticlesToOpportunities } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesContent } from '../OpportunitiesContent/OpportunitiesContent'
 import { OpportunitiesSidebar } from '../OpportunitiesSidebar/OpportunitiesSidebar'
@@ -211,6 +214,19 @@ export const OpportunitiesLayout = () => {
         isStoreConfigLoading ||
         (useKnowledgeService ? isLoadingKnowledgeService : isLoadingAiArticles)
 
+    const opportunityConfig: OpportunityConfig = {
+        shopName,
+        shopIntegrationId,
+        helpCenterId: storeConfiguration?.helpCenterId ?? 0,
+        guidanceHelpCenterId: guidanceHelpCenter?.id ?? 0,
+        useKnowledgeService,
+        onArchive: handleArchiveArticle,
+        onPublish: handlePublishArticle,
+        markArticleAsReviewed,
+        onOpportunityAccepted,
+        onOpportunityDismissed,
+    }
+
     return (
         <OpportunitiesSidebarContext.Provider
             value={{ isSidebarVisible, setIsSidebarVisible }}
@@ -256,18 +272,9 @@ export const OpportunitiesLayout = () => {
                         key={selectedOpportunity?.key}
                         opportunitiesPageState={opportunityPageState}
                         selectedOpportunity={selectedOpportunity ?? null}
-                        shopName={shopName}
-                        shopIntegrationId={shopIntegrationId}
-                        helpCenterId={storeConfiguration?.helpCenterId ?? 0}
-                        guidanceHelpCenterId={guidanceHelpCenter?.id ?? 0}
-                        onArchive={handleArchiveArticle}
-                        onPublish={handlePublishArticle}
-                        markArticleAsReviewed={markArticleAsReviewed}
+                        opportunityConfig={opportunityConfig}
                         opportunities={opportunities}
                         selectCertainOpportunity={selectCertainOpportunity}
-                        onOpportunityAccepted={onOpportunityAccepted}
-                        onOpportunityDismissed={onOpportunityDismissed}
-                        useKnowledgeService={useKnowledgeService}
                         isLoadingOpportunityDetails={
                             isLoadingOpportunityDetails
                         }

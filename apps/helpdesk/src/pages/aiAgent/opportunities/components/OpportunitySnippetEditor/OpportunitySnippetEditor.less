@@ -1,0 +1,29 @@
+:local {
+    .container {
+        display: flex;
+        padding: var(--spacing-md);
+
+        border-radius: var(--spacing-sm);
+        border: 1.2px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+    }
+
+    .disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    .bodyContainer {
+        border-radius: var(--spacing-xs);
+        border: 1px solid var(--border-neutral-default);
+        background: var(--surface-neutral-primary);
+    }
+
+    .sourceContainer {
+        display: flex;
+        flex-direction: row;
+        gap: var(--spacing-xxxs);
+        cursor: pointer;
+        color: var(--content-accent-default);
+    }
+}
