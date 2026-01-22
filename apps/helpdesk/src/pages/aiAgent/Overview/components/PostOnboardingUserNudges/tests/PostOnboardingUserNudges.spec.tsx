@@ -321,4 +321,27 @@ describe('PostOnboardingUserNudges', () => {
 
         expect(mockLogEvent).not.toHaveBeenCalled()
     })
+
+    it('should call dismissTrainNudge when modal is closed via onOpenChange', async () => {
+        const userEvent = user.setup()
+        const dismissTrainNudge = jest.fn().mockResolvedValue(undefined)
+
+        mockUsePostOnboardingNudges.mockReturnValue({
+            shouldDisplayTrainNudge: true,
+            shouldDisplayDeployNudge: false,
+            dismissTrainNudge,
+            dismissDeployNudge: jest.fn().mockResolvedValue(undefined),
+            isLoading: false,
+        })
+
+        renderComponent()
+
+        await screen.findByRole('dialog')
+
+        await userEvent.keyboard('{Escape}')
+
+        await waitFor(() => {
+            expect(dismissTrainNudge).toHaveBeenCalledTimes(1)
+        })
+    })
 })
