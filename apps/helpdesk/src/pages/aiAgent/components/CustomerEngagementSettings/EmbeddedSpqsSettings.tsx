@@ -80,10 +80,7 @@ export const EmbeddedSpqsSettings = ({
     }, [storeConfiguration, updateStoreConfiguration, setValue])
 
     const shouldDisplaySetUpButton =
-        !isLoading &&
-        !storeConfiguration?.embeddedSpqEnabled &&
-        isSpqStatusLoaded &&
-        !isSpqInstalled
+        !isLoading && isSpqStatusLoaded && !isSpqInstalled
 
     return (
         <>

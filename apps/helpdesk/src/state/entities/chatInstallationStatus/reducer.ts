@@ -11,6 +11,7 @@ import type { ChatInstallationStatusState } from './types'
 export const initialState: ChatInstallationStatusState = {
     installed: true,
     installedOnShopifyCheckout: true,
+    embeddedSpqInstalled: false,
     minimumSnippetVersion: GorgiasChatMinimumSnippetVersion.V3,
 }
 
@@ -26,6 +27,7 @@ const chatInstallationStatus = createReducer<ChatInstallationStatusState>(
                         payload: {
                             installed,
                             installedOnShopifyCheckout,
+                            embeddedSpqInstalled,
                             minimumSnippetVersion,
                         },
                     },
@@ -33,6 +35,7 @@ const chatInstallationStatus = createReducer<ChatInstallationStatusState>(
                     state.installed = installed
                     state.installedOnShopifyCheckout =
                         !!installedOnShopifyCheckout
+                    state.embeddedSpqInstalled = !!embeddedSpqInstalled
                     state.minimumSnippetVersion = minimumSnippetVersion
                 },
             )
@@ -40,6 +43,7 @@ const chatInstallationStatus = createReducer<ChatInstallationStatusState>(
                 state.installed = initialState.installed
                 state.installedOnShopifyCheckout =
                     initialState.installedOnShopifyCheckout
+                state.embeddedSpqInstalled = initialState.embeddedSpqInstalled
                 state.minimumSnippetVersion = initialState.minimumSnippetVersion
             }),
 )

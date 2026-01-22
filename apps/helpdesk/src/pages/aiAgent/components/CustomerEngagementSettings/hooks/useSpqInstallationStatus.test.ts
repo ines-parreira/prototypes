@@ -1,18 +1,52 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 
-import type { ShopifyIntegration } from 'models/integration/types'
+import type {
+    GorgiasChatIntegration,
+    ShopifyIntegration,
+} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
+import { getInstallationStatuses } from 'state/integrations/actions'
 
 import useSpqInstallationStatus from './useSpqInstallationStatus'
+
+jest.mock('state/integrations/actions', () => ({
+    getInstallationStatuses: jest.fn(),
+}))
+
+jest.mock('hooks/useAppSelector', () => jest.fn())
+
+const mockUseAppSelector = jest.requireMock('hooks/useAppSelector') as jest.Mock
+
+const mockGetInstallationStatuses = jest.mocked(getInstallationStatuses)
 
 const mockShopifyIntegration = {
     id: 123,
 } as unknown as ShopifyIntegration
+
+const createMockChatIntegration = (
+    appId: string,
+    shopIntegrationId: number,
+): GorgiasChatIntegration =>
+    ({
+        id: Number(appId),
+        type: IntegrationType.GorgiasChat,
+        meta: {
+            app_id: appId,
+            shop_integration_id: shopIntegrationId,
+        },
+    }) as unknown as GorgiasChatIntegration
 
 describe('useSpqInstallationStatus', () => {
     const originalFetch = global.fetch
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockGetInstallationStatuses.mockResolvedValue({
+            installationStatuses: [],
+        })
+        mockUseAppSelector.mockReturnValue([
+            createMockChatIntegration('1', 123),
+        ])
     })
 
     afterEach(() => {
@@ -29,7 +63,26 @@ describe('useSpqInstallationStatus', () => {
         expect(result.current.isSpqInstalled).toBeUndefined()
     })
 
-    it('should fetch SPQ status and return is_installed true', async () => {
+    it('should call both spq/status endpoint and getInstallationStatuses', async () => {
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            json: () => Promise.resolve({ is_installed: true }),
+        })
+
+        const { result } = renderHook(() =>
+            useSpqInstallationStatus(mockShopifyIntegration),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoaded).toBe(true)
+        })
+
+        expect(global.fetch).toHaveBeenCalledWith(
+            '/integrations/shopify/123/spq/status/',
+        )
+        expect(mockGetInstallationStatuses).toHaveBeenCalled()
+    })
+
+    it('should return isSpqInstalled true when spq/status returns is_installed true', async () => {
         global.fetch = jest.fn().mockResolvedValueOnce({
             json: () => Promise.resolve({ is_installed: true }),
         })
@@ -44,15 +97,164 @@ describe('useSpqInstallationStatus', () => {
             expect(result.current.isLoaded).toBe(true)
         })
 
-        expect(global.fetch).toHaveBeenCalledWith(
-            '/integrations/shopify/123/spq/status/',
-        )
         expect(result.current.isSpqInstalled).toBe(true)
     })
 
-    it('should fetch SPQ status and return is_installed false', async () => {
+    it('should return isSpqInstalled false when both sources return false', async () => {
         global.fetch = jest.fn().mockResolvedValueOnce({
             json: () => Promise.resolve({ is_installed: false }),
+        })
+
+        mockGetInstallationStatuses.mockResolvedValue({
+            installationStatuses: [
+                {
+                    applicationId: 1,
+                    hasBeenRequestedOnce: true,
+                    installed: true,
+                    installedOnShopifyCheckout: false,
+                    embeddedSpqInstalled: false,
+                    minimumSnippetVersion: null,
+                    isDuringBusinessHours: false,
+                },
+            ],
+        })
+
+        const { result } = renderHook(() =>
+            useSpqInstallationStatus(mockShopifyIntegration),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoaded).toBe(true)
+        })
+
+        expect(result.current.isSpqInstalled).toBe(false)
+    })
+
+    it('should return isSpqInstalled true when embeddedSpqInstalled is true from installation statuses', async () => {
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            json: () => Promise.resolve({ is_installed: false }),
+        })
+
+        mockGetInstallationStatuses.mockResolvedValue({
+            installationStatuses: [
+                {
+                    applicationId: 1,
+                    hasBeenRequestedOnce: true,
+                    installed: true,
+                    installedOnShopifyCheckout: false,
+                    embeddedSpqInstalled: true,
+                    minimumSnippetVersion: null,
+                    isDuringBusinessHours: false,
+                },
+            ],
+        })
+
+        const { result } = renderHook(() =>
+            useSpqInstallationStatus(mockShopifyIntegration),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoaded).toBe(true)
+        })
+
+        expect(result.current.isSpqInstalled).toBe(true)
+    })
+
+    it('should return isSpqInstalled true when any chat for the store has embeddedSpqInstalled true', async () => {
+        mockUseAppSelector.mockReturnValue([
+            createMockChatIntegration('1', 123),
+            createMockChatIntegration('2', 123),
+        ])
+
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            json: () => Promise.resolve({ is_installed: false }),
+        })
+
+        mockGetInstallationStatuses.mockResolvedValue({
+            installationStatuses: [
+                {
+                    applicationId: 1,
+                    hasBeenRequestedOnce: true,
+                    installed: true,
+                    installedOnShopifyCheckout: false,
+                    embeddedSpqInstalled: false,
+                    minimumSnippetVersion: null,
+                    isDuringBusinessHours: false,
+                },
+                {
+                    applicationId: 2,
+                    hasBeenRequestedOnce: true,
+                    installed: true,
+                    installedOnShopifyCheckout: false,
+                    embeddedSpqInstalled: true,
+                    minimumSnippetVersion: null,
+                    isDuringBusinessHours: false,
+                },
+            ],
+        })
+
+        const { result } = renderHook(() =>
+            useSpqInstallationStatus(mockShopifyIntegration),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoaded).toBe(true)
+        })
+
+        expect(result.current.isSpqInstalled).toBe(true)
+    })
+
+    it('should ignore installation statuses for chats not associated with the store', async () => {
+        mockUseAppSelector.mockReturnValue([
+            createMockChatIntegration('1', 123),
+            createMockChatIntegration('2', 456),
+        ])
+
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            json: () => Promise.resolve({ is_installed: false }),
+        })
+
+        mockGetInstallationStatuses.mockResolvedValue({
+            installationStatuses: [
+                {
+                    applicationId: 1,
+                    hasBeenRequestedOnce: true,
+                    installed: true,
+                    installedOnShopifyCheckout: false,
+                    embeddedSpqInstalled: false,
+                    minimumSnippetVersion: null,
+                    isDuringBusinessHours: false,
+                },
+                {
+                    applicationId: 2,
+                    hasBeenRequestedOnce: true,
+                    installed: true,
+                    installedOnShopifyCheckout: false,
+                    embeddedSpqInstalled: true,
+                    minimumSnippetVersion: null,
+                    isDuringBusinessHours: false,
+                },
+            ],
+        })
+
+        const { result } = renderHook(() =>
+            useSpqInstallationStatus(mockShopifyIntegration),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoaded).toBe(true)
+        })
+
+        expect(result.current.isSpqInstalled).toBe(false)
+    })
+
+    it('should return isSpqInstalled false when installationStatuses is empty', async () => {
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            json: () => Promise.resolve({ is_installed: false }),
+        })
+
+        mockGetInstallationStatuses.mockResolvedValue({
+            installationStatuses: [],
         })
 
         const { result } = renderHook(() =>

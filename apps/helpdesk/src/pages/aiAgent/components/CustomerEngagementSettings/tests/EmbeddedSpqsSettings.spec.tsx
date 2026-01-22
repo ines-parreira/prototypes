@@ -42,20 +42,31 @@ const mockUseSpqInstallationStatus = jest.mocked(useSpqInstallationStatus)
 
 const storeConfiguration = getStoreConfigurationFixture()
 
-const FormWrapper = ({ children }: { children: ReactNode }) => {
+const FormWrapper = ({
+    children,
+    defaultEmbeddedSpqEnabled = storeConfiguration?.embeddedSpqEnabled ?? false,
+}: {
+    children: ReactNode
+    defaultEmbeddedSpqEnabled?: boolean
+}) => {
     const methods = useForm({
         defaultValues: {
-            embeddedSpqEnabled: storeConfiguration?.embeddedSpqEnabled ?? false,
+            embeddedSpqEnabled: defaultEmbeddedSpqEnabled,
         },
     })
     return <FormProvider {...methods}>{children}</FormProvider>
 }
 
-const renderComponent = (shopName = 'test-store') => {
+const renderComponent = (
+    shopName = 'test-store',
+    { defaultEmbeddedSpqEnabled }: { defaultEmbeddedSpqEnabled?: boolean } = {},
+) => {
     return render(
         <MemoryRouter initialEntries={[`/shopify/${shopName}`]}>
             <Route path="/:shopType/:shopName">
-                <FormWrapper>
+                <FormWrapper
+                    defaultEmbeddedSpqEnabled={defaultEmbeddedSpqEnabled}
+                >
                     <EmbeddedSpqsSettings shopName={shopName} />
                 </FormWrapper>
             </Route>
@@ -126,7 +137,7 @@ describe('EmbeddedSpqsSettings', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should display toggle when embeddedSpqEnabled is true', () => {
+        it('should display Setup button when SPQ is not installed even if embeddedSpqEnabled is true', () => {
             mockUseSpqInstallationStatus.mockReturnValue({
                 isSpqInstalled: false,
                 isLoaded: true,
@@ -146,15 +157,25 @@ describe('EmbeddedSpqsSettings', () => {
             renderComponent()
 
             expect(
-                screen.queryByRole('button', { name: 'Set Up' }),
-            ).not.toBeInTheDocument()
-            expect(screen.getByRole('switch')).toBeInTheDocument()
+                screen.getByRole('button', { name: 'Set Up' }),
+            ).toBeInTheDocument()
         })
 
-        it('should display toggle when SPQ is already installed', () => {
+        it('should display toggle set to Off when SPQ is installed but not enabled', () => {
             mockUseSpqInstallationStatus.mockReturnValue({
                 isSpqInstalled: true,
                 isLoaded: true,
+            })
+
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    embeddedSpqEnabled: false,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
             })
 
             renderComponent()
@@ -162,7 +183,36 @@ describe('EmbeddedSpqsSettings', () => {
             expect(
                 screen.queryByRole('button', { name: 'Set Up' }),
             ).not.toBeInTheDocument()
-            expect(screen.getByRole('switch')).toBeInTheDocument()
+            const toggle = screen.getByRole('switch')
+            expect(toggle).toBeInTheDocument()
+            expect(toggle).not.toBeChecked()
+        })
+
+        it('should display toggle set to On when SPQ is installed and enabled', () => {
+            mockUseSpqInstallationStatus.mockReturnValue({
+                isSpqInstalled: true,
+                isLoaded: true,
+            })
+
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: {
+                    ...storeConfiguration,
+                    embeddedSpqEnabled: true,
+                },
+                isLoading: false,
+                updateStoreConfiguration: mockUpdateStoreConfiguration,
+                createStoreConfiguration: jest.fn(),
+                isPendingCreateOrUpdate: false,
+            })
+
+            renderComponent('test-store', { defaultEmbeddedSpqEnabled: true })
+
+            expect(
+                screen.queryByRole('button', { name: 'Set Up' }),
+            ).not.toBeInTheDocument()
+            const toggle = screen.getByRole('switch')
+            expect(toggle).toBeInTheDocument()
+            expect(toggle).toBeChecked()
         })
     })
 

@@ -21,6 +21,7 @@ const neutralInstallationStatus: InstallationStatus = {
     hasBeenRequestedOnce: true,
     installed: true,
     installedOnShopifyCheckout: true,
+    embeddedSpqInstalled: false,
     minimumSnippetVersion: null,
     isDuringBusinessHours: false,
 }

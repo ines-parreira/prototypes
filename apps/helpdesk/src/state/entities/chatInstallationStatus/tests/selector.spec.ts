@@ -7,6 +7,7 @@ const storeInstallationOk: Partial<StoreState> = {
         chatInstallationStatus: {
             installed: true,
             installedOnShopifyCheckout: true,
+            embeddedSpqInstalled: true,
         },
     } as any,
 }
@@ -16,6 +17,7 @@ const storeInstallationNok: Partial<StoreState> = {
         chatInstallationStatus: {
             installed: false,
             installedOnShopifyCheckout: false,
+            embeddedSpqInstalled: false,
         },
     } as any,
 }
@@ -24,12 +26,20 @@ describe('getChatInstallationStatus()', () => {
     it('returns installed:true', () => {
         expect(
             getChatInstallationStatus(storeInstallationOk as StoreState),
-        ).toEqual({ installed: true, installedOnShopifyCheckout: true })
+        ).toEqual({
+            installed: true,
+            installedOnShopifyCheckout: true,
+            embeddedSpqInstalled: true,
+        })
     })
 
     it('returns installed:false', () => {
         expect(
             getChatInstallationStatus(storeInstallationNok as StoreState),
-        ).toEqual({ installed: false, installedOnShopifyCheckout: false })
+        ).toEqual({
+            installed: false,
+            installedOnShopifyCheckout: false,
+            embeddedSpqInstalled: false,
+        })
     })
 })

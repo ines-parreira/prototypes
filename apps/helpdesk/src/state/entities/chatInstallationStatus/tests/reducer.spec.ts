@@ -13,11 +13,13 @@ describe('chatInstallationStatus reducer', () => {
         {
             installed: true,
             installedOnShopifyCheckout: true,
+            embeddedSpqInstalled: true,
             minimumSnippetVersion: GorgiasChatMinimumSnippetVersion.V1,
         },
         {
             installed: false,
             installedOnShopifyCheckout: false,
+            embeddedSpqInstalled: false,
             minimumSnippetVersion: null,
         },
     ])('chatInstallationStatusFetched', (state) => {
@@ -34,6 +36,8 @@ describe('chatInstallationStatus reducer', () => {
                 installed: !chatInstallationStatusInitialState.installed,
                 installedOnShopifyCheckout:
                     !chatInstallationStatusInitialState.installedOnShopifyCheckout,
+                embeddedSpqInstalled:
+                    !chatInstallationStatusInitialState.embeddedSpqInstalled,
                 minimumSnippetVersion: null,
             },
             resetChatInstallationStatus(),
@@ -42,6 +46,8 @@ describe('chatInstallationStatus reducer', () => {
             installed: chatInstallationStatusInitialState.installed,
             installedOnShopifyCheckout:
                 chatInstallationStatusInitialState.installedOnShopifyCheckout,
+            embeddedSpqInstalled:
+                chatInstallationStatusInitialState.embeddedSpqInstalled,
             minimumSnippetVersion: GorgiasChatMinimumSnippetVersion.V3,
         })
     })

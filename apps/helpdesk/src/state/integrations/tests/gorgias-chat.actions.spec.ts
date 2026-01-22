@@ -233,6 +233,7 @@ describe('gorgias-chat.actions', () => {
                 hasBeenRequestedOnce: false,
                 installed: false,
                 installedOnShopifyCheckout: false,
+                embeddedSpqInstalled: false,
                 minimumSnippetVersion: null,
                 isDuringBusinessHours: false,
             }
@@ -290,6 +291,7 @@ describe('gorgias-chat.actions', () => {
                         hasBeenRequestedOnce: false,
                         installed: false,
                         installedOnShopifyCheckout: false,
+                        embeddedSpqInstalled: false,
                         minimumSnippetVersion: null,
                         isDuringBusinessHours: false,
                     },

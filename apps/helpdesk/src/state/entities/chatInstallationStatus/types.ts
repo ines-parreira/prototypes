@@ -2,5 +2,8 @@ import type { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/typ
 
 export type ChatInstallationStatusState = Pick<
     InstallationStatus,
-    'installed' | 'installedOnShopifyCheckout' | 'minimumSnippetVersion'
+    | 'installed'
+    | 'installedOnShopifyCheckout'
+    | 'embeddedSpqInstalled'
+    | 'minimumSnippetVersion'
 >

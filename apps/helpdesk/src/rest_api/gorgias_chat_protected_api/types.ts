@@ -40,6 +40,7 @@ export type InstallationStatus = {
     hasBeenRequestedOnce: boolean
     installed: boolean
     installedOnShopifyCheckout: boolean
+    embeddedSpqInstalled: boolean
     minimumSnippetVersion: GorgiasChatMinimumSnippetVersion | null
     isDuringBusinessHours: boolean
 }

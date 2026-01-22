@@ -73,6 +73,7 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
             chatInstallationStatus: {
                 installed: false,
                 installedOnShopifyCheckout: false,
+                embeddedSpqInstalled: false,
                 minimumSnippetVersion: null,
             },
         },
