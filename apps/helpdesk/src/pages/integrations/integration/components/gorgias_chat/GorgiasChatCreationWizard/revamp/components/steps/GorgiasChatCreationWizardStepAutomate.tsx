@@ -273,7 +273,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
             <GorgiasChatCreationWizardStep
                 step={GorgiasChatCreationWizardSteps.Automate}
                 showPreviewPlaceholder={showPreviewPlaceholder}
-                preview={'Placeholder'}
+                preview={null}
                 footer={
                     <div className={css.wizardButtons}>
                         <div className={css.wizardNavigationButtons}>

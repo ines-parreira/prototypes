@@ -9,7 +9,7 @@ import { fromJS } from 'immutable'
 import { Button, Text } from '@gorgias/axiom'
 
 import {
-    GORGIAS_CHAT_DEFAULT_COLOR,
+    GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -64,7 +64,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
         currentMainColor ||
         (integration.getIn(
             ['decoration', 'main_color'],
-            GORGIAS_CHAT_DEFAULT_COLOR,
+            GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
         ) as string)
     const headerPictureUrl =
         currentHeaderPictureUrl ??
@@ -136,7 +136,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
             />
             <GorgiasChatCreationWizardStep
                 step={GorgiasChatCreationWizardSteps.Branding}
-                preview={'Placeholder'}
+                preview={null}
                 footer={
                     <div className={css.wizardButtons}>
                         <div className={css.wizardNavigationButtons}>
@@ -183,7 +183,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                             defaultValue={
                                 integration.getIn(
                                     ['decoration', 'main_color'],
-                                    GORGIAS_CHAT_DEFAULT_COLOR,
+                                    GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
                                 ) as string
                             }
                             onChange={setCurrentMainColor}

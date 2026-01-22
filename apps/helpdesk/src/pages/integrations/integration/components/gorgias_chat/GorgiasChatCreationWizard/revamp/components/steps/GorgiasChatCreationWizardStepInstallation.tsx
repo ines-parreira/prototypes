@@ -206,7 +206,7 @@ export const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
             />
             <GorgiasChatCreationWizardStep
                 step={GorgiasChatCreationWizardSteps.Installation}
-                preview={'Preview'}
+                preview={null}
                 footer={
                     <div className={css.wizardButtons}>
                         <div className={css.wizardNavigationButtons}>

@@ -9,7 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
-    GORGIAS_CHAT_DEFAULT_COLOR,
+    GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 import {
@@ -84,7 +84,7 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
         container
             .querySelectorAll('.colorPicker input')
             .forEach((input) =>
-                expect(input).toHaveValue(GORGIAS_CHAT_DEFAULT_COLOR),
+                expect(input).toHaveValue(GORGIAS_CHAT_DEFAULT_COLOR_REVAMP),
             )
 
         expect(screen.getByText('Chat launcher position')).toBeInTheDocument()

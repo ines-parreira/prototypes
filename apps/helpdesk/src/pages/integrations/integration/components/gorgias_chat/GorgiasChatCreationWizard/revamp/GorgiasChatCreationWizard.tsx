@@ -66,19 +66,6 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
                 <Redirect to="/app/settings/channels/gorgias_chat" />
             )}
             <div className={css.page}>
-                <div
-                    style={{
-                        background: '#fef3c7',
-                        color: '#92400e',
-                        padding: '8px 16px',
-                        borderRadius: '4px',
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        marginBottom: '16px',
-                    }}
-                >
-                    🚧 Revamp mode: under development
-                </div>
                 <PageHeader
                     title={
                         <Breadcrumb>

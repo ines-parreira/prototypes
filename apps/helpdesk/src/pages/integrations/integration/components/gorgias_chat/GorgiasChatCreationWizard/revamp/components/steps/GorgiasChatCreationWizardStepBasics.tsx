@@ -17,7 +17,7 @@ import {
     getHasShopifyScriptTagScopes,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
-    GORGIAS_CHAT_DEFAULT_COLOR,
+    GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
     GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
@@ -327,8 +327,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             form = {
                 ...form,
                 decoration: {
-                    conversation_color: GORGIAS_CHAT_DEFAULT_COLOR,
-                    main_color: GORGIAS_CHAT_DEFAULT_COLOR,
+                    conversation_color: GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
+                    main_color: GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
                     introduction_text: introductionText,
                     offline_introduction_text: offlineIntroductionText,
                     avatar_type: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
@@ -463,7 +463,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             <ShopifyScriptTagScopeModal />
             <GorgiasChatCreationWizardStep
                 step={GorgiasChatCreationWizardSteps.Basics}
-                preview={'Preview placeholder'}
+                preview={null}
                 footer={
                     <>
                         {isUpdate ? (

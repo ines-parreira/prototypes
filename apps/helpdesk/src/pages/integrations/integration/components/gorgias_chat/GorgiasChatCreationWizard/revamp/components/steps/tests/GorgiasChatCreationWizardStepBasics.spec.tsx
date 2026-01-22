@@ -167,8 +167,8 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
         expect(form.type).toBe(IntegrationType.GorgiasChat)
         expect(form.name).toBe('Test Chat Title')
         expect(form.decoration).toEqual({
-            conversation_color: '#115cb5',
-            main_color: '#115cb5',
+            conversation_color: '#000000',
+            main_color: '#000000',
             introduction_text: 'How can we help?',
             offline_introduction_text: 'We will be back soon',
             avatar_type: 'team-members',

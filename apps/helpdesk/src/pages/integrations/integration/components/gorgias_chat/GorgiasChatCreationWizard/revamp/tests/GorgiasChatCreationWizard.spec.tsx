@@ -65,12 +65,9 @@ const renderComponent = (
 }
 
 describe('GorgiasChatCreationWizard (revamp minimal)', () => {
-    it('renders create flow breadcrumb and banner', () => {
+    it('renders create flow breadcrumb', () => {
         const { getByText } = renderComponent()
 
-        expect(
-            getByText('🚧 Revamp mode: under development'),
-        ).toBeInTheDocument()
         expect(getByText('New Chat')).toBeInTheDocument()
         expect(getByText('Chat').closest('a')).toHaveAttribute(
             'href',
