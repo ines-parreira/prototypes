@@ -14,11 +14,11 @@ import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
-import { conversationExamples } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityPreviewStep/conversationsExamples'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
 import { PersonalityStep } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersonalityStep'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
+import { conversationExamples } from 'pages/aiAgent/Onboarding_V2/constants/conversationExamples'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding_V2/hooks/useTransformToneOfVoiceConversations'
@@ -154,9 +154,7 @@ describe('PersonalityStep - With prepopulated data', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         await waitFor(() => {
-            expect(goToStep).toHaveBeenCalledWith(
-                WizardStepEnum.PERSONALITY_PREVIEW,
-            )
+            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
         })
     })
 })
@@ -424,9 +422,7 @@ describe('PersonalityStep - Empty state', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         await waitFor(() => {
-            expect(goToStep).toHaveBeenCalledWith(
-                WizardStepEnum.PERSONALITY_PREVIEW,
-            )
+            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
         })
     })
 })
@@ -729,7 +725,7 @@ describe('PersonalityStep - Onboarding mutation', () => {
                                 AiAgentScopes.SUPPORT,
                             ],
                             shopName: shopifyIntegration.meta.shop_name,
-                            currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
+                            currentStepName: WizardStepEnum.KNOWLEDGE,
                             salesDiscountMax: 0.08,
                             salesDiscountStrategyLevel: 'balanced',
                             salesPersuasionLevel: 'balanced',
@@ -788,7 +784,7 @@ describe('PersonalityStep - Onboarding mutation', () => {
                                 AiAgentScopes.SUPPORT,
                             ],
                             shopName: shopifyIntegration.meta.shop_name,
-                            currentStepName: WizardStepEnum.PERSONALITY_PREVIEW,
+                            currentStepName: WizardStepEnum.KNOWLEDGE,
                             salesDiscountMax: null,
                             salesDiscountStrategyLevel: 'none',
                             salesPersuasionLevel: 'aggressive',

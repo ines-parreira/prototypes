@@ -4,7 +4,6 @@ import type { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/ste
 export enum WizardStepEnum {
     SHOPIFY_INTEGRATION = 'shopify integration',
     TONE_OF_VOICE = 'tone of voice',
-    PERSONALITY_PREVIEW = 'personality preview',
     SALES_PERSONALITY = 'sales personality',
     KNOWLEDGE = 'knowledge',
     HANDOVER = 'handover',

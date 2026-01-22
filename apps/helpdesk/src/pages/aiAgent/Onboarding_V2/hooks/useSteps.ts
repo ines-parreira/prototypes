@@ -42,10 +42,6 @@ export const useSteps = ({
                 condition: handoverEnabled,
             },
             {
-                step: WizardStepEnum.PERSONALITY_PREVIEW,
-                condition: true,
-            },
-            {
                 step: WizardStepEnum.KNOWLEDGE,
                 condition: true,
             },

@@ -11,7 +11,6 @@ import {
 
 import { HandoverStep } from 'pages/aiAgent/Onboarding_V2/components/steps/HandoverStep/HandoverStep'
 import { KnowledgeStep } from 'pages/aiAgent/Onboarding_V2/components/steps/KnowledgeStep/KnowledgeStep'
-import { PersonalityPreviewStep } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
 import { PersonalityStep } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersonalityStep'
 import { ShopifyIntegrationStep } from 'pages/aiAgent/Onboarding_V2/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
 import { ToneOfVoiceStep } from 'pages/aiAgent/Onboarding_V2/components/steps/ToneOfVoiceStep/ToneOfVoiceStep'
@@ -97,8 +96,6 @@ export const AiAgentOnboarding = () => {
                 return <KnowledgeStep {...stepProps} />
             case WizardStepEnum.HANDOVER:
                 return <HandoverStep {...stepProps} />
-            case WizardStepEnum.PERSONALITY_PREVIEW:
-                return <PersonalityPreviewStep {...stepProps} />
             case WizardStepEnum.SALES_PERSONALITY:
                 return <PersonalityStep {...stepProps} />
             default:

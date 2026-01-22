@@ -122,8 +122,8 @@ const useAiAgentScopesForAutomationPlanMock = assumeMock(
 )
 
 const defaultProps: StepProps = {
-    currentStep: 4,
-    totalSteps: 4,
+    currentStep: 3,
+    totalSteps: 3,
     goToStep: jest.fn(),
 }
 
@@ -352,7 +352,7 @@ describe('KnowledgeStep', () => {
         expect((await screen.findAllByText('Top Locations')).length).toBe(4)
     })
 
-    it('navigates to the personality preview step when Back is clicked', () => {
+    it('navigates to the previous step when Back is clicked', () => {
         renderWithProvider()
 
         jest.runAllTimers()
@@ -360,7 +360,7 @@ describe('KnowledgeStep', () => {
         fireEvent.click(screen.getByText(/Back/i))
 
         expect(defaultProps.goToStep).toHaveBeenCalledWith(
-            WizardStepEnum.PERSONALITY_PREVIEW,
+            WizardStepEnum.SALES_PERSONALITY,
         )
     })
 

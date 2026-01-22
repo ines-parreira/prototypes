@@ -15,7 +15,6 @@ import AiAgentChatConversation from 'pages/aiAgent/Onboarding_V2/components/AiAg
 import Card from 'pages/aiAgent/Onboarding_V2/components/Card/Card'
 import MainTitle from 'pages/aiAgent/Onboarding_V2/components/MainTitle/MainTitle'
 import { OnboardingSteppedSlider } from 'pages/aiAgent/Onboarding_V2/components/OnboardingSteppedSlider/OnboardingSteppedSlider'
-import type { PreviewId } from 'pages/aiAgent/Onboarding_V2/components/PersonalityPreviewGroup/constants'
 import {
     DiscountStrategy,
     DiscountStrategyLabels,
@@ -28,6 +27,7 @@ import {
     PersuasionLevelSteps,
 } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
+import type { PreviewId } from 'pages/aiAgent/Onboarding_V2/constants/previewConstants'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreAlreadyConfigured'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
