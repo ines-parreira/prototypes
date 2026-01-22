@@ -95,50 +95,6 @@ describe('<VoicePolicyFields />', () => {
         })
     })
 
-    describe('Threshold field', () => {
-        it('should allow only numeric input', async () => {
-            const user = userEvent.setup()
-            const handleSubmit = jest.fn()
-
-            render(
-                <Form
-                    defaultValues={{
-                        target: 0.8,
-                        metrics: [
-                            {
-                                threshold: '',
-                                unit: SLAPolicyMetricUnit.Second,
-                            },
-                        ],
-                    }}
-                    onValidSubmit={handleSubmit}
-                >
-                    <VoicePolicyFields />
-                    <button type="submit">Submit</button>
-                </Form>,
-            )
-
-            const thresholdInput = screen.getByRole('textbox', {
-                name: /threshold/i,
-            })
-            await act(() => user.type(thresholdInput, 'abc123def456'))
-
-            const submitButton = screen.getByRole('button', { name: /submit/i })
-            await act(() => user.click(submitButton))
-
-            expect(handleSubmit).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    metrics: [
-                        expect.objectContaining({
-                            threshold: '123456',
-                        }),
-                    ],
-                }),
-                expect.anything(),
-            )
-        })
-    })
-
     describe('Time unit field', () => {
         it('should render with default value', () => {
             render(
@@ -247,7 +203,7 @@ describe('<VoicePolicyFields />', () => {
                 target: 0.9,
                 metrics: [
                     expect.objectContaining({
-                        threshold: '120',
+                        threshold: 120,
                         unit: SLAPolicyMetricUnit.Second,
                     }),
                 ],

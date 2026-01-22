@@ -1,8 +1,8 @@
+import { formatMetricValue } from '@repo/reporting'
+import type { MetricValueFormat } from '@repo/reporting'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 
-import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
-import { formatMetricValue } from 'domains/reporting/pages/common/utils'
 import VoiceCallVolumeMetric from 'domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
 import { useMetricFormat } from 'domains/reporting/pages/voice/hooks/useMetricFormat'
 import { useVoiceCallCountTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallCountTrend'
@@ -143,5 +143,96 @@ describe('<VoiceCallVolumeMetric />', () => {
         expect(getByText('Total calls')).toBeInTheDocument()
         expect(getByText('50%')).toHaveClass('negative')
         expect(getByText('15')).toBeInTheDocument()
+    })
+
+    describe('metricValueFormat prop', () => {
+        it('should use default format value when metricValueFormat is percent', () => {
+            useMetricFormatMock.mockImplementation((props) => ({
+                ...mockMetricFormat,
+                metricValue: props.value?.toString() || '0',
+            }))
+
+            const { getByText } = renderComponent({
+                metricValueFormat: 'percent',
+                metricTrend: {
+                    data: {
+                        prevValue: 10,
+                        value: 85.5,
+                    },
+                    isError: false,
+                    isFetching: false,
+                },
+            })
+
+            const expectedFormattedValue = formatMetricValue(85.5, 'percent')
+            expect(getByText(expectedFormattedValue)).toBeInTheDocument()
+        })
+
+        it('should use computed metric value when metricValueFormat is integer', () => {
+            useMetricFormatMock.mockImplementation(() => ({
+                ...mockMetricFormat,
+                metricValue: '42',
+            }))
+
+            const { getByText } = renderComponent({
+                metricValueFormat: 'integer',
+                metricTrend: {
+                    data: {
+                        prevValue: 10,
+                        value: 42,
+                    },
+                    isError: false,
+                    isFetching: false,
+                },
+            })
+
+            expect(getByText('42')).toBeInTheDocument()
+        })
+
+        it('should use computed metric value when metricValueFormat is duration', () => {
+            useMetricFormatMock.mockImplementation(() => ({
+                ...mockMetricFormat,
+                metricValue: '2m 30s',
+            }))
+
+            const { getByText } = renderComponent({
+                metricValueFormat: 'duration',
+                metricTrend: {
+                    data: {
+                        prevValue: 100,
+                        value: 150,
+                    },
+                    isError: false,
+                    isFetching: false,
+                },
+            })
+
+            expect(getByText('2m 30s')).toBeInTheDocument()
+        })
+
+        it('should default to integer format when metricValueFormat is not provided', () => {
+            useMetricFormatMock.mockImplementation((props) => ({
+                ...mockMetricFormat,
+                metricValue: props.value?.toString() || '0',
+            }))
+
+            renderComponent({
+                metricTrend: {
+                    data: {
+                        prevValue: 10,
+                        value: 25,
+                    },
+                    isError: false,
+                    isFetching: false,
+                },
+            })
+
+            expect(useMetricFormatMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    value: 25,
+                    defaultValueFormat: 'integer',
+                }),
+            )
+        })
     })
 })

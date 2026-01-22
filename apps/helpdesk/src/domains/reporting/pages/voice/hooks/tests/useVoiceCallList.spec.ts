@@ -156,6 +156,7 @@ describe('useVoiceCallList', () => {
                             VoiceCallDisplayStatus.Answered,
                         [VoiceCallDimension.QueueId]: '23',
                         [VoiceCallDimension.QueueName]: 'Test Queue',
+                        [VoiceCallDimension.CallSlaStatus]: '0',
                     },
                 ],
             },
@@ -184,6 +185,7 @@ describe('useVoiceCallList', () => {
                 queueId: 23,
                 queueName: 'Test Queue',
                 callSid: 'undefined',
+                callSlaStatus: '0',
             },
         ])
     })
@@ -214,6 +216,7 @@ describe('useVoiceCallList', () => {
                             VoiceCallDisplayStatus.Answered,
                         [VoiceCallDimension.QueueId]: null,
                         [VoiceCallDimension.QueueName]: null,
+                        [VoiceCallDimension.CallSlaStatus]: null,
                     },
                 ],
             },
@@ -242,6 +245,7 @@ describe('useVoiceCallList', () => {
                 queueId: null,
                 queueName: null,
                 callSid: 'undefined',
+                callSlaStatus: null,
             },
         ])
     })
@@ -270,6 +274,7 @@ describe('useVoiceCallList', () => {
                         displayStatus: VoiceCallDisplayStatus.Missed,
                         queueId: '7',
                         queueName: 'Support Queue',
+                        callSlaStatus: '1',
                     },
                 ],
                 annotation: {
@@ -312,8 +317,96 @@ describe('useVoiceCallList', () => {
                 queueId: 7,
                 queueName: 'Support Queue',
                 callSid: 'undefined',
+                callSlaStatus: '1',
             },
         ])
+    })
+
+    it('should select callSlaStatus from V1 format (VoiceCallDimension key)', () => {
+        const mockedResponse = {
+            data: {
+                data: [
+                    {
+                        [VoiceCallDimension.CallSlaStatus]: '0',
+                        [VoiceCallDimension.AgentId]: '10',
+                        [VoiceCallDimension.CustomerId]: '100',
+                        [VoiceCallDimension.Direction]: 'inbound',
+                        [VoiceCallDimension.IntegrationId]: '1',
+                        [VoiceCallDimension.CreatedAt]: '2025-01-15T10:00:00Z',
+                        [VoiceCallDimension.Status]: VoiceCallStatus.Answered,
+                        [VoiceCallDimension.Duration]: '100',
+                        [VoiceCallDimension.TicketId]: '123',
+                        [VoiceCallDimension.PhoneNumberDestination]:
+                            '+123456789',
+                        [VoiceCallDimension.PhoneNumberSource]: '+987654321',
+                        [VoiceCallMeasure.VoiceCallCount]: '1',
+                        [VoiceCallDimension.TalkTime]: '90',
+                        [VoiceCallDimension.WaitTime]: '10',
+                        [VoiceCallDimension.VoicemailAvailable]: false,
+                        [VoiceCallDimension.VoicemailUrl]: null,
+                        [VoiceCallDimension.CallRecordingAvailable]: true,
+                        [VoiceCallDimension.CallRecordingUrl]: 'url',
+                        [VoiceCallDimension.DisplayStatus]:
+                            VoiceCallDisplayStatus.Answered,
+                        [VoiceCallDimension.QueueId]: '5',
+                        [VoiceCallDimension.QueueName]: 'Queue',
+                    },
+                ],
+            },
+        } as UsePostReportingQueryData<VoiceCallStatListItem[]>
+
+        const result = selectVoiceCallData(mockedResponse)
+
+        expect(result[0].callSlaStatus).toBe('0')
+    })
+
+    it('should select callSlaStatus from V2 format (callSlaStatus key)', () => {
+        const mockedResponse = {
+            data: {
+                data: [
+                    {
+                        callSlaStatus: '1',
+                        agentId: '10',
+                        customerId: '100',
+                        callDirection: 'inbound',
+                        integrationId: '1',
+                        createdDatetime: '2025-01-15T10:00:00Z',
+                        status: VoiceCallStatus.Answered,
+                        duration: '100',
+                        ticketId: '123',
+                        destination: '+123456789',
+                        source: '+987654321',
+                        talkTime: '90',
+                        waitTime: '10',
+                        voicemailAvailable: false,
+                        voicemailUrl: null,
+                        callRecordingAvailable: true,
+                        callRecordingUrl: 'url',
+                        displayStatus: VoiceCallDisplayStatus.Answered,
+                        queueId: '5',
+                        queueName: 'Queue',
+                    },
+                ],
+                annotation: {
+                    title: 'Voice Calls',
+                    shortTitle: 'Calls',
+                    type: 'list',
+                },
+                query: {
+                    dimensions: [],
+                    measures: [],
+                    filters: [],
+                },
+            },
+            status: 200,
+            statusText: 'OK',
+            headers: {},
+            config: {} as any,
+        } as unknown as UsePostReportingQueryData<VoiceCallStatListItem[]>
+
+        const result = selectVoiceCallData(mockedResponse)
+
+        expect(result[0].callSlaStatus).toBe('1')
     })
 })
 

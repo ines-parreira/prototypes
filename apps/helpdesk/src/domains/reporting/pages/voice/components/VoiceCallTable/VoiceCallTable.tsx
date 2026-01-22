@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
@@ -22,12 +24,26 @@ type VoiceCallTableProps = {
     filterOption: VoiceCallFilterOptions
 }
 
+const columns = [
+    VoiceCallTableColumn.Activity,
+    VoiceCallTableColumn.Integration,
+    VoiceCallTableColumn.Queue,
+    VoiceCallTableColumn.Date,
+    VoiceCallTableColumn.SlaStatus,
+    VoiceCallTableColumn.State,
+    VoiceCallTableColumn.Recording,
+    VoiceCallTableColumn.Duration,
+    VoiceCallTableColumn.WaitTime,
+    VoiceCallTableColumn.Ticket,
+]
+
 export const VoiceCallTable = ({
     statsFilters,
     userTimezone,
     filterOption,
 }: VoiceCallTableProps) => {
     const [currentPage, setCurrentPage] = useState(1)
+    const isVoiceSLAEnabled = useFlag(FeatureFlagKey.VoiceSLA)
 
     const {
         onOrderChange,
@@ -74,17 +90,13 @@ export const VoiceCallTable = ({
                 orderBy={orderByColumnName}
                 orderDirection={orderDirection}
                 onColumnClick={onOrderChange}
-                columns={[
-                    VoiceCallTableColumn.Activity,
-                    VoiceCallTableColumn.Integration,
-                    VoiceCallTableColumn.Queue,
-                    VoiceCallTableColumn.Date,
-                    VoiceCallTableColumn.State,
-                    VoiceCallTableColumn.Recording,
-                    VoiceCallTableColumn.Duration,
-                    VoiceCallTableColumn.WaitTime,
-                    VoiceCallTableColumn.Ticket,
-                ]}
+                columns={
+                    isVoiceSLAEnabled
+                        ? columns
+                        : columns.filter(
+                              (col) => col !== VoiceCallTableColumn.SlaStatus,
+                          )
+                }
             />
             {totalPages > 1 && (
                 <Pagination

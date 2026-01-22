@@ -23,54 +23,99 @@ import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPayw
 import { AccountFeature } from 'state/currentAccount/types'
 
 function VoiceOverview() {
-    const isDuringBusinessHoursEnabled = useFlag(
-        FeatureFlagKey.VoiceCallDuringBusinessHours,
-    )
+    const isVoiceSLAEnabled = useFlag(FeatureFlagKey.VoiceSLA)
 
     useCleanStatsFilters()
 
-    const reportComponents = [
-        {
-            chart: VoiceOverviewChart.VoiceCallVolumeTotalCallCountTrendChart,
-            size: 3,
-        },
-        {
-            chart: VoiceOverviewChart.VoiceCallVolumeMetricOutboundCallsCountTrend,
-            size: 3,
-        },
-        {
-            chart: VoiceOverviewChart.VoiceCallVolumeMetricInboundCallsCountTrend,
-            size: 3,
-        },
-        {
-            chart: VoiceOverviewChart.VoiceCallVolumeMetricUnansweredCallsCountTrendChart,
-            size: 3,
-        },
-        {
-            chart: VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart,
-            size: 3,
-        },
-        {
-            chart: VoiceOverviewChart.VoiceCallVolumeMetricCancelledCallsCountTrendChart,
-            size: 3,
-        },
-        {
-            chart: VoiceOverviewChart.VoiceCallVolumeMetricAbandonedCallsCountTrendChart,
-            size: 3,
-        },
-        {
-            chart: VoiceOverviewChart.VoiceCallVolumeMetricCallbackRequestedCallsCountTrendChart,
-            size: 3,
-        },
-        {
-            chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart,
-            size: 6,
-        },
-        {
-            chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageTalkTime,
-            size: 6,
-        },
-    ]
+    const reportComponents = isVoiceSLAEnabled
+        ? [
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeTotalCallCountTrendChart,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricOutboundCallsCountTrend,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricInboundCallsCountTrend,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricUnansweredCallsCountTrendChart,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricCancelledCallsCountTrendChart,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricAbandonedCallsCountTrendChart,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricCallbackRequestedCallsCountTrendChart,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart,
+                  size: 4,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageTalkTime,
+                  size: 4,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallSlaAchievementRateChart,
+                  size: 4,
+              },
+          ]
+        : [
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeTotalCallCountTrendChart,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricOutboundCallsCountTrend,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricInboundCallsCountTrend,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricUnansweredCallsCountTrendChart,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricMissedCallsCountTrendChart,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricCancelledCallsCountTrendChart,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricAbandonedCallsCountTrendChart,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallVolumeMetricCallbackRequestedCallsCountTrendChart,
+                  size: 3,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart,
+                  size: 6,
+              },
+              {
+                  chart: VoiceOverviewChart.VoiceCallCallerExperienceAverageTalkTime,
+                  size: 6,
+              },
+          ]
 
     return (
         <StatsPage
@@ -88,14 +133,7 @@ function VoiceOverview() {
                             VoiceOverviewReportConfig.reportFilters.persistent
                         }
                         optionalFilters={
-                            isDuringBusinessHoursEnabled
-                                ? VoiceOverviewReportConfig.reportFilters
-                                      .optional
-                                : VoiceOverviewReportConfig.reportFilters.optional.filter(
-                                      (filter) =>
-                                          filter !==
-                                          FilterKey.IsDuringBusinessHours,
-                                  )
+                            VoiceOverviewReportConfig.reportFilters.optional
                         }
                         filterSettingsOverrides={{
                             [FilterKey.Period]: {

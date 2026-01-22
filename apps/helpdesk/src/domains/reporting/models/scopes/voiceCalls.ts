@@ -19,6 +19,7 @@ const voiceCallsScope = defineScope({
     measures: [
         'averageTalkTimeInSeconds',
         'averageWaitTimeInSeconds',
+        'slaAchievementRate',
         'voiceCallsCount',
     ],
     dimensions: [
@@ -125,6 +126,37 @@ export const voiceCallsAverageTalkTimeQueryFactoryV2 = (
             ...ctx.filters,
             period: getAdvancedVoicePeriodFilters(ctx.filters.period),
         }),
+    })
+}
+
+export const voiceCallsSlaAchievementRate = voiceCallsScope
+    .defineMetricName(METRIC_NAMES.VOICE_CALL_SLA_ACHIEVEMENT_RATE)
+    .defineQuery(() => ({
+        measures: ['slaAchievementRate'] as const,
+    }))
+
+export const voiceCallsSlaAchievementRateQueryFactoryV2 = (
+    ctx: VoiceCallsContext,
+    assignedCallsOnly = false,
+) => {
+    // TODO(2026): remove getAdvancedVoicePeriodFilters as we won't be able to query data before 2024
+    return voiceCallsSlaAchievementRate.build({
+        ...ctx,
+        filters: withVoiceCallSegment(
+            {
+                ...(assignedCallsOnly
+                    ? {
+                          [APIOnlyFilterKey.AgentId]: withLogicalOperator(
+                              [],
+                              ApiOnlyOperatorEnum.SET,
+                          ),
+                      }
+                    : {}),
+                ...ctx.filters,
+                period: getAdvancedVoicePeriodFilters(ctx.filters.period),
+            },
+            VoiceCallSegment.inboundCalls,
+        ),
     })
 }
 

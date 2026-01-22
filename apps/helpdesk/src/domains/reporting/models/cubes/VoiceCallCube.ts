@@ -7,10 +7,14 @@ export enum VoiceCallMeasure {
     VoiceCallCount = 'VoiceCall.count',
     VoiceCallAverageTalkTime = 'VoiceCall.averageTalkTimeSeconds',
     VoiceCallAverageWaitTime = 'VoiceCall.averageWaitTimeSeconds',
+    SlaAchievementRate = 'VoiceQueueExposure.slaAchievementRate',
+    BreachedExposures = 'VoiceCall.breachedExposures',
+    AchievedExposures = 'VoiceCall.achievedExposures',
 }
 
 export enum VoiceCallDimension {
     IsDuringBusinessHours = 'VoiceCall.isDuringBusinessHours',
+    CallSlaStatus = 'VoiceCall.callSlaStatus',
     CreatedAt = 'VoiceCall.createdAt',
     PeriodStart = 'VoiceCall.periodStart',
     PeriodEnd = 'VoiceCall.periodEnd',

@@ -1,6 +1,6 @@
 import { FormField } from '@repo/forms'
 
-import { Box, NumberField, TextField } from '@gorgias/axiom'
+import { Box, NumberField } from '@gorgias/axiom'
 
 import TimeUnitSelectField from 'pages/settings/SLAs/features/SLAForm/views/TimeUnitSelectField'
 
@@ -15,7 +15,7 @@ export function VoicePolicyFields() {
                 minValue={0}
                 maxValue={100}
                 isRequired
-                label="Target (%)"
+                label="Target"
                 trailingSlot="percent"
                 inputTransform={(value) =>
                     value === undefined ? value : value * 100
@@ -25,13 +25,11 @@ export function VoicePolicyFields() {
                 }
             />
             <FormField
-                field={TextField}
+                field={NumberField}
                 name={`${METRICS_FIELD_NAME}.threshold`}
                 isRequired
                 label="Threshold"
-                inputTransform={(value) =>
-                    value?.toString().replace(/[^0-9]/g, '')
-                }
+                trailingSlot={''}
             />
             <Box flexShrink="0">
                 <TimeUnitSelectField name={`${METRICS_FIELD_NAME}.unit`} />

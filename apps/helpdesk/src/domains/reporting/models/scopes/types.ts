@@ -123,6 +123,7 @@ export type MeasureName =
     | 'averageBrandVoiceScore'
     | 'averageTalkTimeInSeconds'
     | 'averageWaitTimeInSeconds'
+    | 'slaAchievementRate'
     | 'voiceCallsCount'
     | 'abandonedVoiceCallsCount'
     | 'answeredVoiceCallsCount'

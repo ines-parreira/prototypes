@@ -457,6 +457,7 @@ export const METRIC_NAMES = {
     VOICE_CALL_AVERAGE_TALK_TIME_PER_AGENT:
         'voice-call-average-talk-time-per-agent',
     VOICE_CALL_AVERAGE_WAIT_TIME: 'voice-call-average-wait-time',
+    VOICE_CALL_SLA_ACHIEVEMENT_RATE: 'voice-call-sla-achievement-rate',
     VOICE_CALL_COUNT: 'voice-call-count',
     VOICE_UNANSWERED_CALLS_BY_AGENT: 'voice-unanswered-calls-by-agent',
     VOICE_MISSED_CALLS_BY_AGENT: 'voice-missed-calls-by-agent',
@@ -675,6 +676,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.VoiceCalls]: [
         METRIC_NAMES.VOICE_CALL_AVERAGE_WAIT_TIME,
         METRIC_NAMES.VOICE_CALL_AVERAGE_TALK_TIME,
+        METRIC_NAMES.VOICE_CALL_SLA_ACHIEVEMENT_RATE,
         METRIC_NAMES.VOICE_CALL_COUNT_TREND,
         METRIC_NAMES.VOICE_CALL_COUNT,
         METRIC_NAMES.VOICE_CALL_COUNT_TABLE,

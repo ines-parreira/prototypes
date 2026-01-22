@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 import { fireEvent, render } from '@testing-library/react'
@@ -8,6 +9,7 @@ import thunk from 'redux-thunk'
 
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import { VoiceCallTable } from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTable'
 import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
 import { useVoiceCallCount } from 'domains/reporting/pages/voice/hooks/useVoiceCallCount'
@@ -17,6 +19,9 @@ import { VoiceCallFilterDirection } from 'domains/reporting/pages/voice/models/t
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import type { RootState, StoreDispatch } from 'state/types'
+
+jest.mock('@repo/feature-flags')
+const useFlagMock = assumeMock(useFlag)
 
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallList')
 const useVoiceCallListMock = assumeMock(useVoiceCallList)
@@ -39,6 +44,12 @@ describe('VoiceCallTable', () => {
             start_datetime: formatReportingQueryDate(moment()),
         },
     }
+
+    beforeEach(() => {
+        useFlagMock.mockImplementation((flag) => {
+            return flag === FeatureFlagKey.VoiceSLA
+        })
+    })
 
     const renderComponent = (
         filterOption = { direction: VoiceCallFilterDirection.All },
@@ -208,5 +219,67 @@ describe('VoiceCallTable', () => {
         expect(
             getByLabelText('Page 2 is your current page'),
         ).toBeInTheDocument()
+    })
+
+    describe('VoiceSLA feature flag', () => {
+        beforeEach(() => {
+            useVoiceCallListMock.mockReturnValue({
+                data: [{}],
+                isFetching: false,
+            } as UseQueryResult<VoiceCallSummary[], unknown>)
+            useVoiceCallCountMock.mockReturnValue({
+                total: 10,
+                totalPages: 1,
+            })
+        })
+
+        it('should include all expected columns when feature flag is enabled', () => {
+            useFlagMock.mockImplementation((flag) => {
+                return flag === FeatureFlagKey.VoiceSLA
+            })
+
+            renderComponent()
+
+            expect(VoiceCallTableContentMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    columns: [
+                        VoiceCallTableColumn.Activity,
+                        VoiceCallTableColumn.Integration,
+                        VoiceCallTableColumn.Queue,
+                        VoiceCallTableColumn.Date,
+                        VoiceCallTableColumn.SlaStatus,
+                        VoiceCallTableColumn.State,
+                        VoiceCallTableColumn.Recording,
+                        VoiceCallTableColumn.Duration,
+                        VoiceCallTableColumn.WaitTime,
+                        VoiceCallTableColumn.Ticket,
+                    ],
+                }),
+                {},
+            )
+        })
+
+        it('should include all expected columns except SLA Status when feature flag is disabled', () => {
+            useFlagMock.mockReturnValue(false)
+
+            renderComponent()
+
+            expect(VoiceCallTableContentMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    columns: [
+                        VoiceCallTableColumn.Activity,
+                        VoiceCallTableColumn.Integration,
+                        VoiceCallTableColumn.Queue,
+                        VoiceCallTableColumn.Date,
+                        VoiceCallTableColumn.State,
+                        VoiceCallTableColumn.Recording,
+                        VoiceCallTableColumn.Duration,
+                        VoiceCallTableColumn.WaitTime,
+                        VoiceCallTableColumn.Ticket,
+                    ],
+                }),
+                {},
+            )
+        })
     })
 })

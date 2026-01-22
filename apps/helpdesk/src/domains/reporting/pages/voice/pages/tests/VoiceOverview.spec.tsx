@@ -21,6 +21,7 @@ import {
 import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import * as VoiceCallCallerExperienceMetric from 'domains/reporting/pages/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import { VoiceOverviewDownloadDataButton } from 'domains/reporting/pages/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
+import { SLA_ACHIEVEMENT_RATE_METRIC_TITLE } from 'domains/reporting/pages/voice/constants/liveVoice'
 import {
     ABANDONED_CALLS_METRIC_TITLE,
     AVERAGE_TALK_TIME_METRIC_TITLE,
@@ -116,6 +117,9 @@ useReportRestrictionsMock.mockReturnValue({
 describe('VoiceOverview', () => {
     beforeEach(() => {
         VoiceOverviewDownloadDataButtonMock.mockImplementation(() => <div />)
+        useFlagMock.mockImplementation((flag) => {
+            return flag === FeatureFlagKey.VoiceSLA
+        })
     })
 
     const renderVoiceOverview = (featureEnabled = true) => {
@@ -200,6 +204,55 @@ describe('VoiceOverview', () => {
         expect(queryByText(AVERAGE_TALK_TIME_METRIC_TITLE)).toBeInTheDocument()
         expect(queryByText(AVERAGE_WAIT_TIME_METRIC_TITLE)).toBeInTheDocument()
 
+        expect(
+            queryByText(SLA_ACHIEVEMENT_RATE_METRIC_TITLE),
+        ).toBeInTheDocument()
+
+        // list of calls section
+        expect(queryByText(CALL_LIST_TITLE)).toBeInTheDocument()
+
+        // filters by direction
+        expect(queryByText('All')).toBeInTheDocument()
+        expect(queryByText('Inbound')).toBeInTheDocument()
+        expect(queryByText('Outbound')).toBeInTheDocument()
+
+        // footer
+        expect(
+            queryByText('Analytics are using EST timezone'),
+        ).toBeInTheDocument()
+    })
+
+    it('should render page with voice SLA FF off', () => {
+        useFlagMock.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.VoiceSLA) {
+                return false
+            }
+        })
+        const { queryByText } = renderVoiceOverview()
+
+        // header elements
+        expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
+        expect(queryByText('Voice add-on features')).toBeNull()
+
+        expect(VoiceOverviewDownloadDataButtonMock).toHaveBeenCalled()
+
+        expect(queryByText(TOTAL_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(OUTBOUND_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(INBOUND_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(UNANSWERED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+
+        expect(queryByText(MISSED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(CANCELLED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(ABANDONED_CALLS_METRIC_TITLE)).toBeInTheDocument()
+        expect(
+            queryByText(CALLBACK_REQUESTED_CALLS_METRIC_TITLE),
+        ).toBeInTheDocument()
+
+        expect(queryByText(AVERAGE_TALK_TIME_METRIC_TITLE)).toBeInTheDocument()
+        expect(queryByText(AVERAGE_WAIT_TIME_METRIC_TITLE)).toBeInTheDocument()
+
+        expect(queryByText(SLA_ACHIEVEMENT_RATE_METRIC_TITLE)).toBeNull()
+
         // list of calls section
         expect(queryByText(CALL_LIST_TITLE)).toBeInTheDocument()
 
@@ -252,12 +305,6 @@ describe('VoiceOverview', () => {
     })
 
     it('should render optional filters', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.VoiceCallDuringBusinessHours) {
-                return true
-            }
-        })
-
         const { getByText } = renderVoiceOverview()
 
         expect(getByText(FilterKey.Agents)).toBeInTheDocument()
@@ -266,26 +313,5 @@ describe('VoiceOverview', () => {
         ).toBeInTheDocument()
         expect(getByText(FilterKey.Tags)).toBeInTheDocument()
         expect(getByText(FilterKey.VoiceQueues)).toBeInTheDocument()
-        expect(getByText(FilterKey.IsDuringBusinessHours)).toBeInTheDocument()
-    })
-
-    it('should render old optional filters when FF is disabled', () => {
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.VoiceCallDuringBusinessHours) {
-                return false
-            }
-        })
-
-        const { queryByText } = renderVoiceOverview()
-
-        expect(queryByText(FilterKey.Agents)).toBeInTheDocument()
-        expect(
-            queryByText(FilterComponentKey.PhoneIntegrations),
-        ).toBeInTheDocument()
-        expect(queryByText(FilterKey.Tags)).toBeInTheDocument()
-        expect(queryByText(FilterKey.VoiceQueues)).toBeInTheDocument()
-        expect(
-            queryByText(FilterKey.IsDuringBusinessHours),
-        ).not.toBeInTheDocument()
     })
 })

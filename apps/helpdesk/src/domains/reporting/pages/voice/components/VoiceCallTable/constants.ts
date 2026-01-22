@@ -13,6 +13,7 @@ export enum VoiceCallTableColumn {
     OngoingTime = 'Time',
     LiveStatus = 'Status',
     Monitor = 'Monitor',
+    SlaStatus = 'SlaStatus',
 }
 
 export const voiceCallTableColumnName: Record<string, string> = {
@@ -29,6 +30,7 @@ export const voiceCallTableColumnName: Record<string, string> = {
     [VoiceCallTableColumn.TalkTime]: 'Talk time',
     [VoiceCallTableColumn.OngoingTime]: 'Time',
     [VoiceCallTableColumn.LiveStatus]: 'Status',
+    [VoiceCallTableColumn.SlaStatus]: 'SLA Status',
     [VoiceCallTableColumn.Monitor]: 'Monitor',
 }
 
@@ -47,4 +49,5 @@ export const skeletonColumnsWidth: Record<string, number> = {
     [VoiceCallTableColumn.WaitTime]: 84,
     [VoiceCallTableColumn.Ticket]: 82,
     [VoiceCallTableColumn.Monitor]: 120,
+    [VoiceCallTableColumn.SlaStatus]: 200,
 }

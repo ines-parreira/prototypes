@@ -21,6 +21,7 @@ import {
     voiceCallCountPerFilteringAgentQueryFactory,
     voiceCallCountQueryFactory,
     voiceCallListQueryFactory,
+    voiceCallSlaAchievementRateQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -39,6 +40,7 @@ jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')
 
 const voiceCallListDimensions = [
     VoiceCallDimension.AgentId,
+    VoiceCallDimension.CallSlaStatus,
     VoiceCallDimension.CustomerId,
     VoiceCallDimension.Direction,
     VoiceCallDimension.IntegrationId,
@@ -382,8 +384,52 @@ describe('voice queries factories', () => {
     )
 
     it.each([
+        {
+            includeLiveData: false,
+            expectedSegments: [
+                VoiceCallSegment.inboundCalls,
+                VoiceCallSegment.callsInFinalStatus,
+            ],
+        },
+        {
+            includeLiveData: true,
+            expectedSegments: [VoiceCallSegment.inboundCalls],
+        },
+    ])(
+        'voiceCallSlaAchievementRateQueryFactory should create a query',
+        ({ includeLiveData, expectedSegments }) => {
+            const query = voiceCallSlaAchievementRateQueryFactory(
+                statsFilters,
+                'UTC',
+                includeLiveData,
+            )
+
+            expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_CALL_SLA_ACHIEVEMENT_RATE,
+                measures: [VoiceCallMeasure.SlaAchievementRate],
+                dimensions: [],
+                filters: [
+                    {
+                        member: VoiceCallMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceCallMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                ],
+                timezone: 'UTC',
+                segments: expectedSegments,
+            })
+        },
+    )
+
+    it.each([
         voiceCallAverageTalkTimeQueryFactory,
         voiceCallAverageWaitTimeQueryFactory,
+        voiceCallSlaAchievementRateQueryFactory,
     ])(
         'should limit period to after MIN_DATE_FOR_ADVANCED_VOICE_STATS',
         (factory) => {
@@ -423,6 +469,7 @@ describe('voice queries factories', () => {
         voiceCallCountQueryFactory,
         voiceCallAverageTalkTimeQueryFactory,
         voiceCallAverageWaitTimeQueryFactory,
+        voiceCallSlaAchievementRateQueryFactory,
         voiceCallCountPerFilteringAgentQueryFactory,
         voiceCallListQueryFactory,
         voiceCallAverageTalkTimePerAgentQueryFactory,

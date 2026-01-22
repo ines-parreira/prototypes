@@ -153,6 +153,12 @@ export const getOrderedHeaderCells = ({
                 className: css.smallCell,
             },
         },
+        [VoiceCallTableColumn.SlaStatus]: {
+            props: {
+                title: voiceCallTableColumnName[VoiceCallTableColumn.SlaStatus],
+                className: css.smallCell,
+            },
+        },
         [VoiceCallTableColumn.Monitor]: {
             props: {
                 title: voiceCallTableColumnName[VoiceCallTableColumn.Monitor],
@@ -352,6 +358,17 @@ export const getOrderedCells = ({
                         status={item.status}
                     />
                 ),
+            },
+        },
+        [VoiceCallTableColumn.SlaStatus]: {
+            props: {
+                className: css.smallCell,
+                children:
+                    item.callSlaStatus !== null
+                        ? item.callSlaStatus === '0'
+                            ? 'Achieved'
+                            : 'Breached'
+                        : '-',
             },
         },
         [VoiceCallTableColumn.Monitor]: {

@@ -104,6 +104,19 @@ describe('voiceCallTableContentCells', () => {
 
             expect(result[0].props.title).toEqual('Custom title')
         })
+
+        it('should include SlaStatus column when present', () => {
+            const columns = [VoiceCallTableColumn.SlaStatus]
+
+            const result = getOrderedHeaderCells({
+                columns,
+                isTableScrolled: false,
+            })
+
+            expect(result[0].props.title).toEqual(
+                voiceCallTableColumnName[VoiceCallTableColumn.SlaStatus],
+            )
+        })
     })
 
     describe('getOrderedCells', () => {
@@ -324,6 +337,56 @@ describe('voiceCallTableContentCells', () => {
                 {},
             )
             expect(screen.getByText('MonitorCell')).toBeInTheDocument()
+        })
+
+        describe('SlaStatus cell', () => {
+            it('should render "Achieved" when callSlaStatus is 0', () => {
+                const columns = [VoiceCallTableColumn.SlaStatus]
+                const mockVoiceCall = {
+                    callSlaStatus: '0',
+                } as VoiceCallSummary
+
+                const result = getOrderedCells({
+                    item: mockVoiceCall,
+                    columns,
+                    isTableScrolled: false,
+                })
+
+                render(result[0].props.children as any)
+                expect(screen.getByText('Achieved')).toBeInTheDocument()
+            })
+
+            it('should render "Breached" when callSlaStatus is 1', () => {
+                const columns = [VoiceCallTableColumn.SlaStatus]
+                const mockVoiceCall = {
+                    callSlaStatus: '1',
+                } as VoiceCallSummary
+
+                const result = getOrderedCells({
+                    item: mockVoiceCall,
+                    columns,
+                    isTableScrolled: false,
+                })
+
+                render(result[0].props.children as any)
+                expect(screen.getByText('Breached')).toBeInTheDocument()
+            })
+
+            it('should render "-" when callSlaStatus is null', () => {
+                const columns = [VoiceCallTableColumn.SlaStatus]
+                const mockVoiceCall = {
+                    callSlaStatus: null,
+                } as VoiceCallSummary
+
+                const result = getOrderedCells({
+                    item: mockVoiceCall,
+                    columns,
+                    isTableScrolled: false,
+                })
+
+                render(result[0].props.children as any)
+                expect(screen.getByText('-')).toBeInTheDocument()
+            })
         })
     })
 })

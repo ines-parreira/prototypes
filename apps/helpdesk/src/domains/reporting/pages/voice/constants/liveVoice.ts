@@ -43,6 +43,10 @@ export const OUTBOUND_CALLS_METRIC_TITLE = 'Outbound calls'
 export const OUTBOUND_CALLS_METRIC_HINT =
     'Total number of outbound calls placed.'
 
+export const SLA_ACHIEVEMENT_RATE_METRIC_TITLE = 'SLA Achievement rate'
+export const SLA_ACHIEVEMENT_RATE_METRIC_HINT =
+    'Percentage of calls where your team met the SLA during the selected timeframe'
+
 export const VALID_LIVE_STATUSES: VoiceCallStatus[] = [
     VoiceCallStatus.Queued,
     VoiceCallStatus.Ringing,

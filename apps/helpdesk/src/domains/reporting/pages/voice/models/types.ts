@@ -15,6 +15,7 @@ import type {
 
 export type VoiceCallStatListItem = {
     [VoiceCallDimension.AgentId]: string | null
+    [VoiceCallDimension.CallSlaStatus]: string | null
     [VoiceCallDimension.CustomerId]: string | null
     [VoiceCallDimension.Direction]: VoiceCallDirection
     [VoiceCallDimension.IntegrationId]: string | null
@@ -67,6 +68,7 @@ export type VoiceCallSummary = {
     monitoringStatus?: VoiceCallMonitoringStatus | null
     lastMonitoringAgentId?: number | null
     isPossibleSpam?: boolean | null
+    callSlaStatus?: string | null
 }
 
 export enum VoiceCallFilterDirection {

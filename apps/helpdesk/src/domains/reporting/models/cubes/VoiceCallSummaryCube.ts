@@ -14,6 +14,9 @@ export enum VoiceCallSummaryMeasure {
     VoiceCallSummaryCallbackRequestedTotal = 'VoiceCallSummary.callbackRequestedTotal',
     VoiceCallSummaryAverageTalkTime = 'VoiceCallSummary.averageTalkTimeSeconds',
     VoiceCallSummaryAverageWaitTime = 'VoiceCallSummary.averageWaitTimeSeconds',
+    VoiceCallSummarySlaAchievementRate = 'VoiceQueueExposure.slaAchievementRate',
+    VoiceCallSummaryBreachedExposures = 'VoiceCallSummary.breachedExposures',
+    VoiceCallSummaryAchievedExposures = 'VoiceCallSummary.achievedExposures',
 }
 
 export enum VoiceCallSummaryDimension {

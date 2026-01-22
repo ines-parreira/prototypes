@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
@@ -71,7 +71,7 @@ const filters: StatsFilters = {
 describe('useLiveVoiceMetricCards', () => {
     beforeEach(() => {
         filterLiveCallsByStatusMock.mockReturnValue(sampleLiveVoiceCalls)
-        useFlagMock.mockReturnValue(true)
+        useFlagMock.mockReturnValue(false)
         voiceCallsSummaryMetricsQueryFactoryV2Mock.mockReturnValue({
             metricName: 'voice-call-summary',
             scope: 'voice-calls-summary',
@@ -289,4 +289,73 @@ describe('useLiveVoiceMetricCards', () => {
             })
         },
     )
+
+    describe('VoiceSLA feature flag', () => {
+        it('should include SLA metric when feature flag is enabled', () => {
+            useFlagMock.mockImplementation((flag) => {
+                return flag === FeatureFlagKey.VoiceSLA
+            })
+
+            const { result } = renderHook(() =>
+                useLiveVoiceMetricCards([], false, filters),
+            )
+
+            const slaMetric = result.current.find(
+                (card) =>
+                    card.title === constants.SLA_ACHIEVEMENT_RATE_METRIC_TITLE,
+            )
+
+            expect(slaMetric).toBeDefined()
+            expect(slaMetric).toMatchObject({
+                title: constants.SLA_ACHIEVEMENT_RATE_METRIC_TITLE,
+                hint: constants.SLA_ACHIEVEMENT_RATE_METRIC_HINT,
+                size: 3,
+                measure:
+                    VoiceCallSummaryMeasure.VoiceCallSummarySlaAchievementRate,
+                metricValueFormat: 'percent',
+            })
+        })
+
+        it('should not include SLA metric when feature flag is disabled', () => {
+            useFlagMock.mockReturnValue(false)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceMetricCards([], false, filters),
+            )
+
+            const slaMetric = result.current.find(
+                (card) =>
+                    card.title === constants.SLA_ACHIEVEMENT_RATE_METRIC_TITLE,
+            )
+
+            expect(slaMetric).toBeUndefined()
+        })
+
+        it('should adjust metric sizes when feature flag is enabled', () => {
+            useFlagMock.mockImplementation((flag) => {
+                return flag === FeatureFlagKey.VoiceSLA
+            })
+
+            const { result } = renderHook(() =>
+                useLiveVoiceMetricCards([], false, filters),
+            )
+
+            expect(result.current[0].size).toBe(3)
+            expect(result.current[1].size).toBe(3)
+            expect(result.current[2].size).toBe(3)
+            expect(result.current[3].size).toBe(3)
+        })
+
+        it('should keep original metric sizes when feature flag is disabled', () => {
+            useFlagMock.mockReturnValue(false)
+
+            const { result } = renderHook(() =>
+                useLiveVoiceMetricCards([], false, filters),
+            )
+
+            expect(result.current[0].size).toBe(4)
+            expect(result.current[1].size).toBe(4)
+            expect(result.current[2].size).toBe(4)
+        })
+    })
 })

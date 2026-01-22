@@ -16,6 +16,8 @@ import {
     voiceCallsCountPerFilteringAgent,
     voiceCallsCountPerFilteringAgentQueryFactoryV2,
     voiceCallsCountQueryFactoryV2,
+    voiceCallsSlaAchievementRate,
+    voiceCallsSlaAchievementRateQueryFactoryV2,
 } from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
@@ -123,6 +125,56 @@ describe('voiceCallsScope', () => {
 
         it('does not include agentId filter when assignedCallsOnly is false', () => {
             const result = voiceCallsAverageTalkTimeQueryFactoryV2(
+                context,
+                false,
+            )
+
+            const agentIdFilter = result.filters?.find(
+                (f: { member: string }) => f.member === 'agentId',
+            )
+            expect(agentIdFilter).toBeUndefined()
+        })
+    })
+
+    describe('voiceCallsSlaAchievementRate', () => {
+        it('creates query with correct metric name and measures', () => {
+            const actual = voiceCallsSlaAchievementRate.build(context)
+
+            expect(actual).toMatchObject({
+                measures: ['slaAchievementRate'],
+                timezone: 'utc',
+                metricName: METRIC_NAMES.VOICE_CALL_SLA_ACHIEVEMENT_RATE,
+                scope: MetricScope.VoiceCalls,
+            })
+        })
+    })
+
+    describe('voiceCallsSlaAchievementRateQueryFactoryV2', () => {
+        it('returns query with inboundCalls segment', () => {
+            const result = voiceCallsSlaAchievementRateQueryFactoryV2(context)
+
+            expect(result.filters).toContainEqual({
+                member: 'callDirection',
+                operator: 'one-of',
+                values: ['inbound'],
+            })
+        })
+
+        it('includes agentId filter when assignedCallsOnly is true', () => {
+            const result = voiceCallsSlaAchievementRateQueryFactoryV2(
+                context,
+                true,
+            )
+
+            expect(result.filters).toContainEqual({
+                member: 'agentId',
+                operator: 'set',
+                values: [],
+            })
+        })
+
+        it('does not include agentId filter when assignedCallsOnly is false', () => {
+            const result = voiceCallsSlaAchievementRateQueryFactoryV2(
                 context,
                 false,
             )

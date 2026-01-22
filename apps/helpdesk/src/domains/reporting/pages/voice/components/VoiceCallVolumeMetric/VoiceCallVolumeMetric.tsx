@@ -1,3 +1,5 @@
+import { formatMetricValue, NOT_AVAILABLE_PLACEHOLDER } from '@repo/reporting'
+import type { MetricValueFormat } from '@repo/reporting'
 import moment from 'moment'
 
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
@@ -20,6 +22,7 @@ type VoiceCallVolumeMetricProps = {
     moreIsBetter?: boolean
     metricTrend: MetricTrend
     multiFormat?: boolean
+    metricValueFormat?: MetricValueFormat
 } & DashboardChartProps
 
 const getTrendProps = (metricTrend: MetricTrend, moreIsBetter = true) => ({
@@ -40,12 +43,19 @@ function VoiceCallVolumeMetric({
     dashboard,
     chartId,
     multiFormat = false,
+    metricValueFormat = 'integer',
 }: VoiceCallVolumeMetricProps) {
     const voiceCallsCount = metricTrend.data?.value
     const previousPeriod = getPreviousPeriod(statsFilters.period)
 
+    const defaultFormatValue = formatMetricValue(
+        voiceCallsCount,
+        metricValueFormat,
+        NOT_AVAILABLE_PLACEHOLDER,
+    )
+
     const {
-        metricValue,
+        metricValue: computedMetricValue,
         isFetching: isAdditionalDataFetching,
         selectedFormat,
         setSelectedFormat,
@@ -55,6 +65,11 @@ function VoiceCallVolumeMetric({
         defaultValueFormat: multiFormat ? 'percent' : 'integer',
         storageKey: chartId,
     })
+
+    const metricValue =
+        metricValueFormat === 'percent'
+            ? defaultFormatValue
+            : computedMetricValue
 
     return (
         <MetricCard

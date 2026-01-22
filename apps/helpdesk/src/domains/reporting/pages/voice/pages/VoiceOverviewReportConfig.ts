@@ -13,11 +13,16 @@ import {
 } from 'domains/reporting/pages/dashboards/types'
 import { VoiceCallCallerExperienceAverageTalkTime } from 'domains/reporting/pages/voice/charts/VoiceCallCallerExperienceAverageTalkTime'
 import { VoiceCallCallerExperienceAverageWaitTimeChart } from 'domains/reporting/pages/voice/charts/VoiceCallCallerExperienceAverageWaitTimeChart'
+import { VoiceCallSlaAchievementRateChart } from 'domains/reporting/pages/voice/charts/VoiceCallSlaAchievementRateChart'
 import { VoiceCallTableChart } from 'domains/reporting/pages/voice/charts/VoiceCallTableChart'
 import { VoiceCallVolumeMetricCallsCountTrendChart } from 'domains/reporting/pages/voice/charts/VoiceCallVolumeMetricCallsCountTrendChart'
 import { VoiceCallVolumeMetricInboundCallsCountTrend } from 'domains/reporting/pages/voice/charts/VoiceCallVolumeMetricInboundCallsCountTrendChart'
 import { VoiceCallVolumeMetricOutboundCallsCountTrend } from 'domains/reporting/pages/voice/charts/VoiceCallVolumeMetricOutboundCallsCountTrend'
 import { VoiceCallVolumeTotalCallCountTrendChart } from 'domains/reporting/pages/voice/charts/VoiceCallVolumeTotalCallCountTrendChart'
+import {
+    SLA_ACHIEVEMENT_RATE_METRIC_HINT,
+    SLA_ACHIEVEMENT_RATE_METRIC_TITLE,
+} from 'domains/reporting/pages/voice/constants/liveVoice'
 import {
     ABANDONED_CALLS_METRIC_HINT,
     ABANDONED_CALLS_METRIC_TITLE,
@@ -51,6 +56,7 @@ import {
     fetchVoiceCallCountOutboundTrend,
     fetchVoiceCallCountTrend,
 } from 'domains/reporting/pages/voice/hooks/useVoiceCallCountTrend'
+import { fetchVoiceCallSlaAchievementRateTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallSlaAchievementRateTrend'
 import { STATS_ROUTES } from 'routes/constants'
 
 export const VOICE_OVERVIEW_PERSISTENT_FILTERS: StaticFilter[] = [
@@ -77,6 +83,7 @@ export enum VoiceOverviewChart {
     VoiceCallVolumeMetricAbandonedCallsCountTrendChart = 'VoiceCallVolumeMetricAbandonedCallsCountTrendChart',
     VoiceCallVolumeMetricCancelledCallsCountTrendChart = 'VoiceCallVolumeMetricCancelledCallsCountTrendChart',
     VoiceCallVolumeMetricCallbackRequestedCallsCountTrendChart = 'VoiceCallVolumeMetricCallbackRequestedCallsCountTrendChart',
+    VoiceCallSlaAchievementRateChart = 'VoiceCallSlaAchievementRateChart',
     VoiceCallTableChart = 'VoiceCallTableChart',
 }
 
@@ -108,6 +115,19 @@ export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
                     type: DataExportFormat.Trend,
                     fetch: fetchVoiceCallAverageTimeTalkTimeTrend,
                     metricFormat: 'decimal',
+                },
+            ],
+        },
+        [VoiceOverviewChart.VoiceCallSlaAchievementRateChart]: {
+            chartComponent: VoiceCallSlaAchievementRateChart,
+            label: SLA_ACHIEVEMENT_RATE_METRIC_TITLE,
+            description: SLA_ACHIEVEMENT_RATE_METRIC_HINT,
+            chartType: ChartType.Card,
+            csvProducer: [
+                {
+                    type: DataExportFormat.Trend,
+                    fetch: fetchVoiceCallSlaAchievementRateTrend,
+                    metricFormat: 'percent',
                 },
             ],
         },

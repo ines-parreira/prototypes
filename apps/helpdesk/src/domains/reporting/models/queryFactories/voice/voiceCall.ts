@@ -121,6 +121,7 @@ const withStatisticsDefaultSegment = (
 
 const voiceCallListDimensions = [
     VoiceCallDimension.AgentId,
+    VoiceCallDimension.CallSlaStatus,
     VoiceCallDimension.CustomerId,
     VoiceCallDimension.Direction,
     VoiceCallDimension.IntegrationId,
@@ -344,6 +345,22 @@ export const voiceCallAverageWaitTimeQueryFactory = (
 ): ReportingQuery<VoiceCallCube> => ({
     metricName: METRIC_NAMES.VOICE_CALL_AVERAGE_WAIT_TIME,
     measures: [VoiceCallMeasure.VoiceCallAverageWaitTime],
+    dimensions: [],
+    timezone,
+    segments: withStatisticsDefaultSegment(
+        VoiceCallSegment.inboundCalls,
+        includeLiveData,
+    ),
+    filters: voiceCallDefaultFilters(filters, true),
+})
+
+export const voiceCallSlaAchievementRateQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    includeLiveData: boolean = false,
+): ReportingQuery<VoiceCallCube> => ({
+    metricName: METRIC_NAMES.VOICE_CALL_SLA_ACHIEVEMENT_RATE,
+    measures: [VoiceCallMeasure.SlaAchievementRate],
     dimensions: [],
     timezone,
     segments: withStatisticsDefaultSegment(

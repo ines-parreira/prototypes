@@ -161,5 +161,9 @@ export const selectVoiceCallData = (
             VoiceCallDimension.IsPossibleSpam in row
                 ? row[VoiceCallDimension.IsPossibleSpam]
                 : row['isPossibleSpam'],
+        callSlaStatus:
+            VoiceCallDimension.CallSlaStatus in row
+                ? row[VoiceCallDimension.CallSlaStatus]
+                : row['callSlaStatus'],
     }))
 }

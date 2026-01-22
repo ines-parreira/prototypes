@@ -1,10 +1,11 @@
+import { formatMetricValue, NOT_AVAILABLE_PLACEHOLDER } from '@repo/reporting'
+import type { MetricValueFormat } from '@repo/reporting'
+
 import { VoiceCallSummaryMeasure } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import { TableValueModeSwitch } from 'domains/reporting/pages/common/components/Table/TableValueModeSwitch'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
-import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
-import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import { useMetricFormat } from 'domains/reporting/pages/voice/hooks/useMetricFormat'
 import type { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
 import { ValueMode } from 'domains/reporting/state/ui/stats/types'
@@ -73,8 +74,14 @@ const LiveVoiceMetricCardFull = ({
         VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
     )
 
+    const defaultFormatValue = formatMetricValue(
+        value,
+        metricValueFormat,
+        NOT_AVAILABLE_PLACEHOLDER,
+    )
+
     const {
-        metricValue,
+        metricValue: computedMetricValue,
         isFetching: isAdditionalDataFetching,
         selectedFormat,
         setSelectedFormat,
@@ -85,6 +92,11 @@ const LiveVoiceMetricCardFull = ({
         defaultValueFormat: showPercentage ? 'percent' : metricValueFormat,
         storageKey: metricName,
     })
+
+    const metricValue =
+        metricValueFormat === 'percent'
+            ? defaultFormatValue
+            : computedMetricValue
 
     return (
         <MetricCard

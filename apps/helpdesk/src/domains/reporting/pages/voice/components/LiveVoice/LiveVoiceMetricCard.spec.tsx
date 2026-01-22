@@ -1,5 +1,5 @@
-import React from 'react'
-
+import { formatMetricValue, NOT_AVAILABLE_PLACEHOLDER } from '@repo/reporting'
+import type { MetricValueFormat } from '@repo/reporting'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
@@ -7,8 +7,6 @@ import { VoiceCallSummaryMeasure } from 'domains/reporting/models/cubes/VoiceCal
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
-import * as utils from 'domains/reporting/pages/common/utils'
-import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import { LiveVoiceMetricCard } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard'
 import { useMetricFormat } from 'domains/reporting/pages/voice/hooks/useMetricFormat'
 
@@ -205,9 +203,7 @@ describe('LiveVoiceMetricCard', () => {
             }),
             {},
         )
-        expect(
-            screen.getByText(utils.NOT_AVAILABLE_PLACEHOLDER),
-        ).toBeInTheDocument()
+        expect(screen.getByText(NOT_AVAILABLE_PLACEHOLDER)).toBeInTheDocument()
     })
 
     describe('count/percentage format toggle', () => {
@@ -757,6 +753,68 @@ describe('LiveVoiceMetricCard', () => {
                 }),
                 {},
             )
+        })
+    })
+
+    describe('Percent format handling', () => {
+        it('uses default formatted value when metricValueFormat is percent', () => {
+            const props = {
+                title: 'Test Title',
+                hint: 'Test Hint',
+                metric: {
+                    data: 75.5,
+                },
+                metricValueFormat: 'percent' as MetricValueFormat,
+            }
+
+            renderComponent(props)
+
+            const expectedFormattedValue = formatMetricValue(
+                75.5,
+                'percent',
+                NOT_AVAILABLE_PLACEHOLDER,
+            )
+            expect(screen.getByText(expectedFormattedValue)).toBeInTheDocument()
+        })
+
+        it('uses computed metric value when metricValueFormat is not percent', () => {
+            useMetricFormatMock.mockReturnValue({
+                ...mockMetricFormat,
+                metricValue: '42',
+            })
+
+            const props = {
+                title: 'Test Title',
+                hint: 'Test Hint',
+                metric: {
+                    data: 42,
+                },
+                metricValueFormat: 'integer' as MetricValueFormat,
+            }
+
+            renderComponent(props)
+
+            expect(screen.getByText('42')).toBeInTheDocument()
+        })
+
+        it('uses computed metric value when metricValueFormat is duration', () => {
+            useMetricFormatMock.mockReturnValue({
+                ...mockMetricFormat,
+                metricValue: '1m 30s',
+            })
+
+            const props = {
+                title: 'Test Title',
+                hint: 'Test Hint',
+                metric: {
+                    data: 90,
+                },
+                metricValueFormat: 'duration' as MetricValueFormat,
+            }
+
+            renderComponent(props)
+
+            expect(screen.getByText('1m 30s')).toBeInTheDocument()
         })
     })
 })
