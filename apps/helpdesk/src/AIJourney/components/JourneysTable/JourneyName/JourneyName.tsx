@@ -25,9 +25,10 @@ export const JourneyName = ({
     return (
         <Link
             to={`/app/ai-journey/${storeName}/${JOURNEY_TYPES_MAP_TO_URL[journeyType]}/setup/${journeyId}`}
-            className={css.journeyNameLink}
         >
-            <Text variant="bold">{name}</Text>
+            <Text variant="bold" className={css.journeyNameLink}>
+                {name}
+            </Text>
         </Link>
     )
 }
