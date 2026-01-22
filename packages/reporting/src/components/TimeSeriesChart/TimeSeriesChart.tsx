@@ -127,7 +127,8 @@ export const TimeSeriesChart = ({
                             </defs>
                         )}
                         <CartesianGrid
-                            strokeDasharray="3 3"
+                            strokeDasharray="0 6"
+                            strokeLinecap="round"
                             stroke={GRID_COLOR}
                             vertical={false}
                         />
@@ -135,7 +136,7 @@ export const TimeSeriesChart = ({
                             dataKey="date"
                             tick={{ fill: TICK_COLOR, fontSize: 12 }}
                             axisLine={false}
-                            tickLine={{ stroke: GRID_COLOR }}
+                            tickLine={{ stroke: GRID_COLOR, strokeWidth: 0.75 }}
                             tickMargin={8}
                         />
                         <YAxis
