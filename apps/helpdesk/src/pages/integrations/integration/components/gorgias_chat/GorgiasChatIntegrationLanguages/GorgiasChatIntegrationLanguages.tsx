@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
@@ -8,7 +7,6 @@ import { IntegrationType } from 'models/integration/constants'
 import type { Option as DropdownOption } from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
 import DropdownButtonWithSearch from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
 import PageHeader from 'pages/common/components/PageHeader'
-import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped/PageHeaderRevamped'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'
 
@@ -25,7 +23,6 @@ const GorgiasChatIntegrationLanguages = ({
     integration,
     loading,
 }: GorgiasChatIntegrationLanguagesProps) => {
-    const isRevampEnabled = useFlag(FeatureFlagKey.ChatSettingsRevamp)
     const {
         languagesAvailable,
         languagesRows,
@@ -43,58 +40,30 @@ const GorgiasChatIntegrationLanguages = ({
 
     return (
         <div className="full-width">
-            {isRevampEnabled ? (
-                <PageHeaderRevamped
-                    title={
-                        <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link
-                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
-                                >
-                                    Chat
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                {integration.get('name')}
-                            </BreadcrumbItem>
-                        </Breadcrumb>
-                    }
-                >
-                    <DropdownButtonWithSearch
-                        label="Add Language"
-                        options={languagesAvailable}
-                        variant="primary"
-                        withLargeMenu
-                        onSelectOptionChange={onAddLanguage}
-                    />
-                </PageHeaderRevamped>
-            ) : (
-                <PageHeader
-                    title={
-                        <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link
-                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
-                                >
-                                    Chat
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                {integration.get('name')}
-                            </BreadcrumbItem>
-                        </Breadcrumb>
-                    }
-                >
-                    <DropdownButtonWithSearch
-                        label="Add Language"
-                        options={languagesAvailable}
-                        variant="primary"
-                        withLargeMenu
-                        onSelectOptionChange={onAddLanguage}
-                    />
-                </PageHeader>
-            )}
-
+            <PageHeader
+                title={
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link
+                                to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
+                            >
+                                Chat
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            {integration.get('name')}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                }
+            >
+                <DropdownButtonWithSearch
+                    label="Add Language"
+                    options={languagesAvailable}
+                    variant="primary"
+                    withLargeMenu
+                    onSelectOptionChange={onAddLanguage}
+                />
+            </PageHeader>
             <GorgiasChatIntegrationHeader
                 integration={integration}
                 tab={Tab.Languages}

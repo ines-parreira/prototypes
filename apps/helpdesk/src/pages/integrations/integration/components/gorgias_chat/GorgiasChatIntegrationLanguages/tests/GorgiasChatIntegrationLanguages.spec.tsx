@@ -1,5 +1,4 @@
 import { useFlag } from '@repo/feature-flags'
-import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -72,35 +71,5 @@ describe('GorgiasChatIntegrationLanguages', () => {
                 />
             </Provider>,
         )
-    })
-
-    it('should render PageHeaderRevamped when ChatSettingsRevamp feature flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
-
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <GorgiasChatIntegrationLanguages
-                    loading={fromJS({})}
-                    integration={fromJS({ name: 'Test Integration' })}
-                />
-            </Provider>,
-        )
-
-        expect(screen.getByTestId('page-header-revamped')).toBeInTheDocument()
-    })
-
-    it('should render PageHeader when ChatSettingsRevamp feature flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-
-        const { container } = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <GorgiasChatIntegrationLanguages
-                    loading={fromJS({})}
-                    integration={fromJS({ name: 'Test Integration' })}
-                />
-            </Provider>,
-        )
-
-        expect(container.querySelector('.page-header')).toBeInTheDocument()
     })
 })

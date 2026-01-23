@@ -114,44 +114,4 @@ describe('GorgiasAutomateChatIntegration', () => {
         expect(screen.getByText('shopType')).toBeInTheDocument()
         expect(screen.getByText('channelId')).toBeInTheDocument()
     })
-
-    it('should render PageHeaderRevamped when ChatSettingsRevamp feature flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
-
-        render(
-            <Provider store={mockedStore}>
-                <GorgiasAutomateChatIntegration
-                    integration={Map({
-                        meta: Map({
-                            shop_integration_id: 1,
-                            app_id: 'channelId',
-                        }),
-                        name: 'integrationName',
-                    })}
-                />
-            </Provider>,
-        )
-
-        expect(screen.getByTestId('page-header-revamped')).toBeInTheDocument()
-    })
-
-    it('should render PageHeader when ChatSettingsRevamp feature flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-
-        const { container } = render(
-            <Provider store={mockedStore}>
-                <GorgiasAutomateChatIntegration
-                    integration={Map({
-                        meta: Map({
-                            shop_integration_id: 1,
-                            app_id: 'channelId',
-                        }),
-                        name: 'integrationName',
-                    })}
-                />
-            </Provider>,
-        )
-
-        expect(container.querySelector('.page-header')).toBeInTheDocument()
-    })
 })

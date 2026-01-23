@@ -19,20 +19,6 @@ jest.mock('state/integrations/helpers', () => ({
     getIntegrationConfig: jest.fn(),
 }))
 
-jest.mock(
-    'pages/common/components/PageHeaderRevamped/PageHeaderRevamped',
-    () => {
-        return function MockPageHeaderRevamped({ title, children }: any) {
-            return (
-                <div data-testid="page-header-revamped">
-                    <div data-testid="page-header-title">{title}</div>
-                    <div data-testid="page-header-actions">{children}</div>
-                </div>
-            )
-        }
-    },
-)
-
 jest.mock('pages/common/components/Loader/Loader', () => {
     return function MockLoader() {
         return <div data-testid="loader">Loading...</div>
@@ -130,9 +116,7 @@ describe('GorgiasChatIntegrationList', () => {
 
             renderComponent({})
 
-            expect(screen.getByTestId('page-header-title')).toHaveTextContent(
-                'Custom Chat Title',
-            )
+            expect(screen.queryByText(/Custom Chat Title/i)).toBeInTheDocument()
         })
 
         it('calls getIntegrationConfig with correct integration type', () => {

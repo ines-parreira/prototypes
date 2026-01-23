@@ -68,7 +68,6 @@ import {
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import PageHeader from 'pages/common/components/PageHeader'
-import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped/PageHeaderRevamped'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -248,7 +247,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     const integrationChat = integration.toJS() as GorgiasChatIntegration
     const chatApplicationId = integrationChat?.meta?.app_id
 
-    const isRevampEnabled = useFlag(FeatureFlagKey.ChatSettingsRevamp)
     const chatMultiLanguagesEnabled = useFlag(FeatureFlagKey.ChatMultiLanguages)
     const chatBackgroundColorStyleEnabled = useFlag(
         FeatureFlagKey.ChatBackgroundColorStyle,
@@ -906,46 +904,22 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
     return (
         <div className="full-width">
-            {isRevampEnabled ? (
-                <PageHeaderRevamped
-                    title={
-                        <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link
-                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
-                                >
-                                    Chat
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                {isUpdate
-                                    ? integration.get('name')
-                                    : 'New Chat'}
-                            </BreadcrumbItem>
-                        </Breadcrumb>
-                    }
-                />
-            ) : (
-                <PageHeader
-                    title={
-                        <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link
-                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
-                                >
-                                    Chat
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                {isUpdate
-                                    ? integration.get('name')
-                                    : 'New Chat'}
-                            </BreadcrumbItem>
-                        </Breadcrumb>
-                    }
-                />
-            )}
-
+            <PageHeader
+                title={
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link
+                                to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
+                            >
+                                Chat
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            {isUpdate ? integration.get('name') : 'New Chat'}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                }
+            />
             {isUpdate && (
                 <GorgiasChatIntegrationHeader
                     integration={integration}

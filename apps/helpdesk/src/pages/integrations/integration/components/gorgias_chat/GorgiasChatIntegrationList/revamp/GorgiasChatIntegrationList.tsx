@@ -6,7 +6,6 @@ import { type List, type Map } from 'immutable'
 import { Button, Heading, Text } from '@gorgias/axiom'
 
 import Loader from 'pages/common/components/Loader/Loader'
-import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped/PageHeaderRevamped'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
 import { IntegrationType } from '../../../../../../../models/integration/types'
@@ -35,9 +34,8 @@ function GorgiasChatIntegrationList({ integrations, loading }: Props) {
 
     return (
         <div className={css.chatIntegrationList}>
-            <PageHeaderRevamped
-                title={<Heading size="xl">{integrationTitle}</Heading>}
-            >
+            <div className={css.pageHeader}>
+                <Heading size="xl">{integrationTitle}</Heading>
                 <Button
                     variant="primary"
                     onClick={() =>
@@ -51,7 +49,7 @@ function GorgiasChatIntegrationList({ integrations, loading }: Props) {
                 >
                     New chat
                 </Button>
-            </PageHeaderRevamped>
+            </div>
 
             {chats.isEmpty() ? (
                 <div className={css.emptyChatIntegrationList}>
