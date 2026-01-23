@@ -20,14 +20,14 @@ import {
 
 import css from './ChatSettingsPageHeader.less'
 
-type BreadcrumbItem = {
+export type ChatSettingsBreadcrumbItem = {
     link?: string
     label: string
     id: string
 }
 
 type Props = {
-    breadcrumbItems?: BreadcrumbItem[]
+    breadcrumbItems?: ChatSettingsBreadcrumbItem[]
     backButtonLink?: string
     showBackButton?: boolean
     title: string

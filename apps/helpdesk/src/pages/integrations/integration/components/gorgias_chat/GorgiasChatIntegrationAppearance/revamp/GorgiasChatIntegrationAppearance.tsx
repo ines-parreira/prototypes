@@ -18,8 +18,7 @@ import _defaults from 'lodash/defaults'
 import _merge from 'lodash/merge'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
-import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+import { useHistory } from 'react-router-dom'
 
 import {
     Button,
@@ -62,11 +61,13 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped/PageHeaderRevamped'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import ColorField from 'pages/common/forms/ColorField'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import { LauncherPositionPicker } from 'pages/integrations/integration/components/gorgias_chat/components/LauncherPositionPicker'
+import ChatSettingsPageHeader, {
+    type ChatSettingsBreadcrumbItem,
+} from 'pages/integrations/integration/components/gorgias_chat/components/revamp/ChatSettingsPageHeader'
 import { StorePicker } from 'pages/integrations/integration/components/gorgias_chat/components/StorePicker'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'
@@ -650,6 +651,23 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         },
     ]
 
+    const chatIntegrationsLink = `/app/settings/channels/${IntegrationType.GorgiasChat}`
+
+    const breadcrumbItems = useMemo<ChatSettingsBreadcrumbItem[]>(
+        () => [
+            {
+                link: chatIntegrationsLink,
+                label: 'All chats',
+                id: '1',
+            },
+            {
+                label: integration.get('name'),
+                id: '2',
+            },
+        ],
+        [integration, chatIntegrationsLink],
+    )
+
     return (
         <div className="full-width">
             {/* ========================================================
@@ -660,22 +678,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 Appearance tab. This component is under active development.
             </div>
 
-            <PageHeaderRevamped
-                title={
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
-                            >
-                                Chat
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            {isUpdate ? integration.get('name') : 'New Chat'}
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                }
-            />
+            <ChatSettingsPageHeader
+                breadcrumbItems={breadcrumbItems}
+                title="Settings"
+                onSave={() => {}}
+            ></ChatSettingsPageHeader>
 
             {isUpdate && (
                 <GorgiasChatIntegrationHeader
