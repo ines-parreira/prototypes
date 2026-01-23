@@ -10,6 +10,7 @@ type UseUrlSyncStatusParams = {
     existingUrls: string[]
     helpCenterCustomDomains: string[]
     storeUrl: string | null
+    shopName: string
 }
 
 /**
@@ -22,12 +23,14 @@ export const useUrlSyncStatus = ({
     existingUrls,
     helpCenterCustomDomains,
     storeUrl,
+    shopName,
 }: UseUrlSyncStatusParams) => {
     const { latestUrlIngestionLog, urlIngestionLogs } = useSyncUrl({
         helpCenterId,
         existingUrls,
         helpCenterCustomDomains,
         storeUrl,
+        shopName,
     })
 
     const syncStatus = useMemo(() => {

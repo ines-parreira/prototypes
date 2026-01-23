@@ -288,6 +288,7 @@ describe('useKnowledgeHub', () => {
                 existingUrls: ['https://example.com'],
                 helpCenterCustomDomains: ['custom.domain.com'],
                 storeUrl: 'https://test-shop.myshopify.com',
+                shopName: 'test-shop',
             })
         })
 
@@ -315,6 +316,7 @@ describe('useKnowledgeHub', () => {
                 existingUrls: [],
                 helpCenterCustomDomains: [],
                 storeUrl: 'https://test-shop.myshopify.com',
+                shopName: 'test-shop',
             })
         })
 

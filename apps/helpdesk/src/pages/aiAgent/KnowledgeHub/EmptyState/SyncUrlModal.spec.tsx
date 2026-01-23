@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -54,6 +56,14 @@ jest.mock('../../AiAgentScrapedDomainContent/utils', () => ({
     getNextSyncDate: jest.fn(() => '01/15/25 10:00 AM'),
 }))
 
+jest.mock('../../hooks/useAiAgentNavigation', () => ({
+    useAiAgentNavigation: jest.fn(() => ({
+        routes: {
+            knowledge: '/test-shop/settings/ai-agent/knowledge',
+        },
+    })),
+}))
+
 const mockUseListenToDocumentEvent =
     useListenToDocumentEvent as jest.MockedFunction<
         typeof useListenToDocumentEvent
@@ -65,7 +75,7 @@ describe('SyncUrlModal', () => {
 
     const defaultProps = {
         helpCenterId: 1,
-        existingUrls: [],
+        existingUrls: [] as string[],
         storeUrl: null,
     }
 
@@ -276,6 +286,115 @@ describe('SyncUrlModal', () => {
             await waitFor(() => {
                 expect(syncUrl).toHaveBeenCalledWith('https://example.com')
             })
+        })
+
+        it('shows "existing URL" link when duplicate URL is entered', async () => {
+            const duplicateUrl = 'https://example.com/existing'
+            const { useSyncUrl } = jest.requireMock('../../hooks/useSyncUrl')
+            const encodedUrl = encodeURIComponent(duplicateUrl)
+            const existingUrlLink = `http://localhost/test-shop/settings/ai-agent/knowledge/sources?filter=url&folder=${encodedUrl}`
+            const validateUrl = jest.fn(() => (
+                <>
+                    This URL is already synced. To sync new version, re sync the{' '}
+                    <a
+                        href={existingUrlLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                            textDecoration: 'underline',
+                        }}
+                    >
+                        existing URL
+                    </a>
+                    .
+                </>
+            ))
+
+            useSyncUrl.mockReturnValue({
+                syncUrl: jest.fn(),
+                validateUrl,
+                urlIngestionLogs: [],
+            })
+
+            renderComponent({
+                ...defaultProps,
+                existingUrls: [duplicateUrl],
+            })
+
+            act(() => {
+                eventCallback?.()
+            })
+
+            const input = screen.getByRole('textbox', { name: 'URL' })
+            await act(() => userEvent.type(input, duplicateUrl))
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.getByText(/This URL is already synced/i),
+                    ).toBeInTheDocument()
+                },
+                { timeout: 600 },
+            )
+
+            const link = screen.getByText('existing URL')
+            expect(link).toBeInTheDocument()
+        })
+
+        it('has correct href for "existing URL" link', async () => {
+            const duplicateUrl2 = 'https://example.com/existing'
+            const { useSyncUrl } = jest.requireMock('../../hooks/useSyncUrl')
+            const encodedUrl2 = encodeURIComponent(duplicateUrl2)
+            const existingUrlLink2 = `http://localhost/test-shop/settings/ai-agent/knowledge/sources?filter=url&folder=${encodedUrl2}`
+            const validateUrl2 = jest.fn(() => (
+                <>
+                    This URL is already synced. To sync new version, re sync the{' '}
+                    <a
+                        href={existingUrlLink2}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                            textDecoration: 'underline',
+                        }}
+                    >
+                        existing URL
+                    </a>
+                    .
+                </>
+            ))
+
+            useSyncUrl.mockReturnValue({
+                syncUrl: jest.fn(),
+                validateUrl: validateUrl2,
+                urlIngestionLogs: [],
+            })
+
+            renderComponent({
+                ...defaultProps,
+                existingUrls: [duplicateUrl2],
+            })
+
+            act(() => {
+                eventCallback?.()
+            })
+
+            const input = screen.getByRole('textbox', { name: 'URL' })
+            await act(() => userEvent.type(input, duplicateUrl2))
+
+            await waitFor(
+                () => {
+                    expect(screen.getByText('existing URL')).toBeInTheDocument()
+                },
+                { timeout: 600 },
+            )
+
+            const link = screen.getByText('existing URL')
+            expect(link).toHaveAttribute(
+                'href',
+                `http://localhost/test-shop/settings/ai-agent/knowledge/sources?filter=url&folder=${encodedUrl2}`,
+            )
+            expect(link).toHaveAttribute('target', '_blank')
+            expect(link).toHaveAttribute('rel', 'noopener noreferrer')
         })
     })
 

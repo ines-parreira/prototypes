@@ -1,3 +1,4 @@
+import type React from 'react'
 import { useCallback, useMemo } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
@@ -15,6 +16,7 @@ import {
     POLLING_INTERVAL,
 } from '../AiAgentScrapedDomainContent/constant'
 import { getTheLatestIngestionLog } from '../AiAgentScrapedDomainContent/utils'
+import { useAiAgentNavigation } from './useAiAgentNavigation'
 
 const SOURCES_LIMIT = 10
 
@@ -107,7 +109,8 @@ export const getUrlValidationError = (
     existingUrls: string[],
     helpCenterCustomDomains: string[],
     storeUrl: string | null,
-) => {
+    existingUrlLink?: string,
+): React.ReactNode => {
     if (!url) {
         return 'URL is required'
     }
@@ -136,8 +139,23 @@ export const getUrlValidationError = (
     }
 
     const isDuplicate = existingUrls.includes(url)
-    if (isDuplicate) {
-        return 'This URL is already synced. To sync new version, re sync the existing URL.'
+    if (isDuplicate && existingUrlLink) {
+        return (
+            <>
+                This URL is already synced. To sync a new version, re-sync the{' '}
+                <a
+                    href={existingUrlLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                        textDecoration: 'underline',
+                    }}
+                >
+                    existing URL
+                </a>
+                .
+            </>
+        )
     }
 
     if (existingUrls.length >= SOURCES_LIMIT) {
@@ -162,6 +180,7 @@ type Props = {
     existingUrls: string[]
     helpCenterCustomDomains: string[]
     storeUrl: string | null
+    shopName: string
 }
 
 export const useSyncUrl = ({
@@ -169,8 +188,10 @@ export const useSyncUrl = ({
     existingUrls,
     helpCenterCustomDomains,
     storeUrl,
+    shopName,
 }: Props) => {
     const queryClient = useQueryClient()
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const onIngestionSuccess = useCallback(async () => {
         await queryClient.invalidateQueries({
@@ -218,21 +239,25 @@ export const useSyncUrl = ({
 
     const validateUrl = useCallback(
         (url: string) => {
+            const encodedUrl = encodeURIComponent(url)
+            const existingUrlLink = `${window.location.origin}${routes.knowledge}/sources?filter=url&folder=${encodedUrl}`
+
             return getUrlValidationError(
                 url,
                 existingUrls,
                 helpCenterCustomDomains,
                 storeUrl,
+                existingUrlLink,
             )
         },
-        [existingUrls, helpCenterCustomDomains, storeUrl],
+        [existingUrls, helpCenterCustomDomains, storeUrl, routes.knowledge],
     )
 
     const syncUrl = useCallback(
         async (url: string) => {
             const validationError = validateUrl(url)
             if (validationError) {
-                throw new Error(validationError)
+                throw new Error('Invalid URL')
             }
 
             try {

@@ -40,6 +40,7 @@ describe('useUrlSyncStatus', () => {
         existingUrls: [],
         helpCenterCustomDomains: [],
         storeUrl: null,
+        shopName: 'test-shop',
     }
 
     beforeEach(() => {

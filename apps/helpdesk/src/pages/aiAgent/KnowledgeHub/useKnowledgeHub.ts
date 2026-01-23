@@ -53,6 +53,7 @@ export const useKnowledgeHub = () => {
         existingUrls,
         helpCenterCustomDomains: helpCenterCustomDomains || [],
         storeUrl,
+        shopName,
     })
 
     const {

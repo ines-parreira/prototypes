@@ -45,7 +45,7 @@ export const SyncUrlModal = ({
     const [url, setUrl] = useState('')
     const [originalUrl, setOriginalUrl] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState<string | null>(null)
+    const [error, setError] = useState<React.ReactNode>(null)
 
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -68,6 +68,7 @@ export const SyncUrlModal = ({
         existingUrls: filteredExistingUrls,
         helpCenterCustomDomains,
         storeUrl,
+        shopName,
     })
 
     // Find the ingestion log for the specific URL being synced

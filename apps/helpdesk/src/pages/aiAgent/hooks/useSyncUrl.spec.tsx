@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, renderHook, waitFor } from '@testing-library/react'
+import { act, render, renderHook, waitFor } from '@testing-library/react'
 
 import {
     useGetIngestionLogs,
@@ -33,6 +33,14 @@ jest.mock('models/helpCenter/queries', () => ({
 
 jest.mock('utils/errors', () => ({
     reportError: jest.fn(),
+}))
+
+jest.mock('./useAiAgentNavigation', () => ({
+    useAiAgentNavigation: jest.fn(() => ({
+        routes: {
+            knowledge: '/test-shop/settings/ai-agent/knowledge',
+        },
+    })),
 }))
 
 describe('useSyncUrl', () => {
@@ -368,16 +376,26 @@ describe('useSyncUrl', () => {
 
         it('returns error for duplicate URL', () => {
             const existingUrlsWithPath = ['https://existing.com/page']
-            expect(
-                getUrlValidationError(
-                    'https://existing.com/page',
-                    existingUrlsWithPath,
-                    mockCustomDomains,
-                    mockStoreUrl,
-                ),
-            ).toBe(
-                'This URL is already synced. To sync new version, re sync the existing URL.',
+            const mockExistingUrlLink =
+                'http://localhost/knowledge/sources?filter=url&folder=https%3A%2F%2Fexisting.com%2Fpage'
+            const result = getUrlValidationError(
+                'https://existing.com/page',
+                existingUrlsWithPath,
+                mockCustomDomains,
+                mockStoreUrl,
+                mockExistingUrlLink,
             )
+
+            const { container } = render(<div>{result}</div>)
+            expect(container.textContent).toContain(
+                'This URL is already synced. To sync a new version, re-sync the',
+            )
+            expect(container.textContent).toContain('existing URL')
+
+            const link = container.querySelector('a')
+            expect(link).toHaveAttribute('href', mockExistingUrlLink)
+            expect(link).toHaveAttribute('target', '_blank')
+            expect(link).toHaveAttribute('rel', 'noopener noreferrer')
         })
 
         it('returns error when limit reached', () => {
@@ -534,6 +552,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -551,6 +570,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -568,6 +588,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -584,6 +605,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -600,6 +622,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -618,15 +641,14 @@ describe('useSyncUrl', () => {
                         existingUrls: existingUrlsWithPath,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
 
             await expect(
                 result.current.syncUrl('https://existing.com/page'),
-            ).rejects.toThrow(
-                'This URL is already synced. To sync new version, re sync the existing URL.',
-            )
+            ).rejects.toThrow('Invalid URL')
 
             expect(mockStartIngestion).not.toHaveBeenCalled()
         })
@@ -641,6 +663,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -666,6 +689,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -693,6 +717,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -724,6 +749,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -758,6 +784,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -784,6 +811,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -806,6 +834,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -821,6 +850,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -843,6 +873,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -879,6 +910,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
@@ -901,6 +933,7 @@ describe('useSyncUrl', () => {
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
                         storeUrl: mockStoreUrl,
+                        shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
             )
