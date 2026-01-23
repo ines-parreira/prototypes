@@ -277,7 +277,7 @@ const BillingFrequencyView = ({
                             selectedPlans={selectedPlans}
                             totalProductAmount={totalProductAmount}
                             cadence={selectedCadence}
-                            currency={helpdeskAvailablePlans?.[0].currency}
+                            currency={helpdeskAvailablePlans?.[0]?.currency}
                             isFrequencyChanged={true}
                         />
                     </div>

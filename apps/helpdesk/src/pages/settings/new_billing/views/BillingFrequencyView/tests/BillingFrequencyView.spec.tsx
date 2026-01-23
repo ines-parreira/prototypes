@@ -495,4 +495,51 @@ describe('BillingFrequencyView', () => {
             expect(radioButton).toBeDisabled()
         },
     )
+
+    it('should render with default currency when helpdeskAvailablePlans is empty', () => {
+        const storeOverride: DeepPartial<RootState> = {
+            ...defaultStore,
+            billing: fromJS({
+                ...billingState,
+                products: billingState.products.map(
+                    (product: AvailablePlansOf<ProductType>) => ({
+                        ...product,
+                        prices:
+                            product.type === ProductType.Helpdesk
+                                ? []
+                                : product.prices,
+                    }),
+                ),
+            }),
+        }
+
+        renderBillingFrequencyView(storeOverride)
+
+        const totalPrice = screen.getByLabelText('Total price', {
+            selector: 'span',
+        })
+        expect(totalPrice).toBeInTheDocument()
+        expect(totalPrice.textContent).toContain('$')
+    })
+
+    it('should render with default currency when helpdeskAvailablePlans is undefined', () => {
+        const storeOverride: DeepPartial<RootState> = {
+            ...defaultStore,
+            billing: fromJS({
+                ...billingState,
+                products: billingState.products.filter(
+                    (product: AvailablePlansOf<ProductType>) =>
+                        product.type !== ProductType.Helpdesk,
+                ),
+            }),
+        }
+
+        renderBillingFrequencyView(storeOverride)
+
+        const totalPrice = screen.getByLabelText('Total price', {
+            selector: 'span',
+        })
+        expect(totalPrice).toBeInTheDocument()
+        expect(totalPrice.textContent).toContain('$')
+    })
 })
