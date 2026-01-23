@@ -417,6 +417,36 @@ export const firstTierMonthlyAutomationPlan: AutomatePlan = {
     product: ProductType.Automation,
 }
 
+export const firstTierQuarterlyAutomationPlan: AutomatePlan = {
+    custom: false,
+    public: true,
+    amount: 9000,
+    cadence: Cadence.Quarter,
+    extra_ticket_cost: 1.5,
+    num_quota_tickets: 90,
+    currency: 'usd',
+    generation: 6,
+    features: automatePlanFeatures,
+    plan_id: 'aut-01-quarterly-usd-6',
+    name: 'Tier 1',
+    product: ProductType.Automation,
+}
+
+export const firstTierYearlyAutomationPlan: AutomatePlan = {
+    custom: false,
+    public: true,
+    amount: 30000,
+    cadence: Cadence.Year,
+    extra_ticket_cost: 1.5,
+    num_quota_tickets: 360,
+    currency: 'usd',
+    generation: 6,
+    features: automatePlanFeatures,
+    plan_id: 'aut-01-yearly-usd-6',
+    name: 'Tier 1',
+    product: ProductType.Automation,
+}
+
 export const basicQuarterlyAutomationPlan: AutomatePlan = {
     custom: false,
     public: true,
@@ -608,6 +638,40 @@ export const starterHelpdeskPlan: HelpdeskPlan = {
     tier: HelpdeskPlanTier.STARTER,
 }
 
+export const starterQuarterlyHelpdeskPlan: HelpdeskPlan = {
+    custom: false,
+    amount: 3000,
+    extra_ticket_cost: 0.4,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    features: starterHelpdeskPlanFeatures,
+    num_quota_tickets: 150,
+    integrations: 150,
+    is_legacy: false,
+    plan_id: 'starter-quarterly-usd-4',
+    name: 'Starter',
+    product: ProductType.Helpdesk,
+    public: false,
+    tier: HelpdeskPlanTier.STARTER,
+}
+
+export const starterYearlyHelpdeskPlan: HelpdeskPlan = {
+    custom: false,
+    amount: 10000,
+    extra_ticket_cost: 0.4,
+    cadence: Cadence.Year,
+    currency: 'usd',
+    features: starterHelpdeskPlanFeatures,
+    num_quota_tickets: 600,
+    integrations: 150,
+    is_legacy: false,
+    plan_id: 'starter-yearly-usd-4',
+    name: 'Starter',
+    product: ProductType.Helpdesk,
+    public: false,
+    tier: HelpdeskPlanTier.STARTER,
+}
+
 export const voicePlan0: SMSOrVoicePlan = {
     custom: false,
     public: true,
@@ -617,6 +681,32 @@ export const voicePlan0: SMSOrVoicePlan = {
     num_quota_tickets: 0,
     plan_id: 'voc-addon-00-monthly-usd-4',
     name: 'Voice Addon Trial Monthly',
+    product: ProductType.Voice,
+    extra_ticket_cost: 2.4,
+}
+
+export const voicePlan0Quarterly: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 0,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    num_quota_tickets: 0,
+    plan_id: 'voc-addon-00-quarterly-usd-4',
+    name: 'Voice Addon Trial Quarterly',
+    product: ProductType.Voice,
+    extra_ticket_cost: 2.4,
+}
+
+export const voicePlan0Yearly: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 0,
+    cadence: Cadence.Year,
+    currency: 'usd',
+    num_quota_tickets: 0,
+    plan_id: 'voc-addon-00-yearly-usd-4',
+    name: 'Voice Addon Trial Yearly',
     product: ProductType.Voice,
     extra_ticket_cost: 2.4,
 }
@@ -647,6 +737,45 @@ export const voicePlan2: SMSOrVoicePlan = {
     extra_ticket_cost: 0.47,
 }
 
+export const voicePlan2Quarterly: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 5000,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    num_quota_tickets: 22500,
+    plan_id: 'voc-addon-10-quarterly-usd-4',
+    name: 'Voice Addon 7500 Quarterly',
+    product: ProductType.Voice,
+    extra_ticket_cost: 0.47,
+}
+
+export const voicePlan2Yearly: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 18000,
+    cadence: Cadence.Year,
+    currency: 'usd',
+    num_quota_tickets: 90000,
+    plan_id: 'voc-addon-10-yearly-usd-4',
+    name: 'Voice Addon 7500 Yearly',
+    product: ProductType.Voice,
+    extra_ticket_cost: 0.47,
+}
+
+export const voicePlan2Monthly: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 2200,
+    cadence: Cadence.Month,
+    currency: 'usd',
+    num_quota_tickets: 1000,
+    plan_id: 'voc-addon-01-monthly-usd-5',
+    name: 'Voice Addon 1000 Monthly',
+    product: ProductType.Voice,
+    extra_ticket_cost: 2.2,
+}
+
 export const voicePlan3: SMSOrVoicePlan = {
     custom: false,
     public: true,
@@ -654,7 +783,7 @@ export const voicePlan3: SMSOrVoicePlan = {
     cadence: Cadence.Quarter,
     currency: 'usd',
     num_quota_tickets: 300,
-    plan_id: 'voice-01-quarterly-usd-5',
+    plan_id: 'voc-addon-01-quarterly-usd-5',
     name: 'Voice Addon 300 Quarterly',
     product: ProductType.Voice,
     extra_ticket_cost: 2.2,
@@ -667,7 +796,7 @@ export const voicePlan4: SMSOrVoicePlan = {
     cadence: Cadence.Year,
     currency: 'usd',
     num_quota_tickets: 300,
-    plan_id: 'voice-01-yearly-usd-5',
+    plan_id: 'voc-addon-01-yearly-usd-5',
     name: 'Voice Addon 300 Yearly',
     product: ProductType.Voice,
     extra_ticket_cost: 2.2,
@@ -699,6 +828,45 @@ export const smsPlan2: SMSOrVoicePlan = {
     extra_ticket_cost: 0.77,
 }
 
+export const smsPlan2Quarterly: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 16500,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    num_quota_tickets: 45000,
+    plan_id: 'sms-addon-12-quarterly-usd-4',
+    name: 'SMS Addon 15000 Quarterly',
+    product: ProductType.SMS,
+    extra_ticket_cost: 0.77,
+}
+
+export const smsPlan2Yearly: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 60000,
+    cadence: Cadence.Year,
+    currency: 'usd',
+    num_quota_tickets: 180000,
+    plan_id: 'sms-addon-12-yearly-usd-4',
+    name: 'SMS Addon 15000 Yearly',
+    product: ProductType.SMS,
+    extra_ticket_cost: 0.77,
+}
+
+export const smsPlan2Monthly: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 1900,
+    cadence: Cadence.Month,
+    currency: 'usd',
+    num_quota_tickets: 5000,
+    plan_id: 'sms-addon-01-monthly-usd-5',
+    name: 'SMS Addon 5000 Monthly',
+    product: ProductType.SMS,
+    extra_ticket_cost: 1.5,
+}
+
 export const smsPlan3: SMSOrVoicePlan = {
     custom: false,
     public: true,
@@ -706,7 +874,7 @@ export const smsPlan3: SMSOrVoicePlan = {
     cadence: Cadence.Quarter,
     currency: 'usd',
     num_quota_tickets: 300,
-    plan_id: 'sms-01-quarterly-usd-5',
+    plan_id: 'sms-addon-01-quarterly-usd-5',
     name: 'SMS Addon 300 Quarterly',
     product: ProductType.SMS,
     extra_ticket_cost: 1.5,
@@ -719,7 +887,7 @@ export const smsPlan4: SMSOrVoicePlan = {
     cadence: Cadence.Year,
     currency: 'usd',
     num_quota_tickets: 300,
-    plan_id: 'sms-01-yearly-usd-5',
+    plan_id: 'sms-addon-01-yearly-usd-5',
     name: 'SMS Addon 300 Yearly',
     product: ProductType.SMS,
     extra_ticket_cost: 1.5,
@@ -738,6 +906,32 @@ export const smsPlan0: SMSOrVoicePlan = {
     extra_ticket_cost: 1.6,
 }
 
+export const smsPlan0Quarterly: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 0,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    num_quota_tickets: 0,
+    plan_id: 'sms-addon-00-quarterly-usd-4',
+    name: 'SMS Addon Trial Quarterly',
+    product: ProductType.SMS,
+    extra_ticket_cost: 1.6,
+}
+
+export const smsPlan0Yearly: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 0,
+    cadence: Cadence.Year,
+    currency: 'usd',
+    num_quota_tickets: 0,
+    plan_id: 'sms-addon-00-yearly-usd-4',
+    name: 'SMS Addon Trial Yearly',
+    product: ProductType.SMS,
+    extra_ticket_cost: 1.6,
+}
+
 export const convertPlan0: ConvertPlan = {
     custom: false,
     public: true,
@@ -747,6 +941,34 @@ export const convertPlan0: ConvertPlan = {
     num_quota_tickets: 0,
     plan_id: 'convert-00-monthly-usd-5',
     name: 'Convert Trial Monthly',
+    product: ProductType.Convert,
+    extra_ticket_cost: 1,
+    tier: 0,
+}
+
+export const convertPlan0Quarterly: ConvertPlan = {
+    custom: false,
+    public: true,
+    amount: 0,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    num_quota_tickets: 0,
+    plan_id: 'convert-00-quarterly-usd-5',
+    name: 'Convert Trial Quarterly',
+    product: ProductType.Convert,
+    extra_ticket_cost: 1,
+    tier: 0,
+}
+
+export const convertPlan0Yearly: ConvertPlan = {
+    custom: false,
+    public: true,
+    amount: 0,
+    cadence: Cadence.Year,
+    currency: 'usd',
+    num_quota_tickets: 0,
+    plan_id: 'convert-00-yearly-usd-5',
+    name: 'Convert Trial Yearly',
     product: ProductType.Convert,
     extra_ticket_cost: 1,
     tier: 0,
@@ -766,6 +988,34 @@ export const convertPlan1: ConvertPlan = {
     tier: 1,
 }
 
+export const convertPlan1Quarterly: ConvertPlan = {
+    custom: false,
+    public: true,
+    amount: 9000,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    num_quota_tickets: 150,
+    plan_id: 'convert-01-quarterly-usd-5',
+    name: 'Convert 150 Quarterly',
+    product: ProductType.Convert,
+    extra_ticket_cost: 0,
+    tier: 1,
+}
+
+export const convertPlan1Yearly: ConvertPlan = {
+    custom: false,
+    public: true,
+    amount: 30000,
+    cadence: Cadence.Year,
+    currency: 'usd',
+    num_quota_tickets: 600,
+    plan_id: 'convert-01-yearly-usd-5',
+    name: 'Convert 600 Yearly',
+    product: ProductType.Convert,
+    extra_ticket_cost: 0,
+    tier: 1,
+}
+
 export const convertPlan2: ConvertPlan = {
     custom: false,
     public: true,
@@ -780,6 +1030,34 @@ export const convertPlan2: ConvertPlan = {
     tier: 2,
 }
 
+export const convertPlan2Quarterly: ConvertPlan = {
+    custom: false,
+    public: true,
+    amount: 75000,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    num_quota_tickets: 1500,
+    plan_id: 'convert-02-quarterly-usd-5',
+    name: 'Convert 1,500 Quarterly',
+    product: ProductType.Convert,
+    extra_ticket_cost: 0,
+    tier: 2,
+}
+
+export const convertPlan2Yearly: ConvertPlan = {
+    custom: false,
+    public: true,
+    amount: 250000,
+    cadence: Cadence.Year,
+    currency: 'usd',
+    num_quota_tickets: 6000,
+    plan_id: 'convert-02-yearly-usd-5',
+    name: 'Convert 6,000 Yearly',
+    product: ProductType.Convert,
+    extra_ticket_cost: 0,
+    tier: 2,
+}
+
 export const convertPlan3: ConvertPlan = {
     custom: false,
     public: true,
@@ -789,6 +1067,34 @@ export const convertPlan3: ConvertPlan = {
     num_quota_tickets: 2000,
     plan_id: 'convert-03-monthly-usd-5',
     name: 'Convert 2,000 Monthly',
+    product: ProductType.Convert,
+    extra_ticket_cost: 0,
+    tier: 3,
+}
+
+export const convertPlan3Quarterly: ConvertPlan = {
+    custom: false,
+    public: true,
+    amount: 240000,
+    cadence: Cadence.Quarter,
+    currency: 'usd',
+    num_quota_tickets: 6000,
+    plan_id: 'convert-03-quarterly-usd-5',
+    name: 'Convert 6,000 Quarterly',
+    product: ProductType.Convert,
+    extra_ticket_cost: 0,
+    tier: 3,
+}
+
+export const convertPlan3Yearly: ConvertPlan = {
+    custom: false,
+    public: true,
+    amount: 800000,
+    cadence: Cadence.Year,
+    currency: 'usd',
+    num_quota_tickets: 24000,
+    plan_id: 'convert-03-yearly-usd-5',
+    name: 'Convert 24,000 Yearly',
     product: ProductType.Convert,
     extra_ticket_cost: 0,
     tier: 3,
@@ -829,7 +1135,7 @@ export const convertPlan6: ConvertPlan = {
     cadence: Cadence.Quarter,
     currency: 'usd',
     num_quota_tickets: 600,
-    plan_id: 'convert-01-quarterly-usd-6',
+    plan_id: 'convert-05-quarterly-usd-6',
     name: 'Convert 600 Quarterly',
     product: ProductType.Convert,
     extra_ticket_cost: 0,
@@ -843,7 +1149,7 @@ export const convertPlan7: ConvertPlan = {
     cadence: Cadence.Year,
     currency: 'usd',
     num_quota_tickets: 600,
-    plan_id: 'convert-01-yearly-usd-6',
+    plan_id: 'convert-05-yearly-usd-6',
     name: 'Convert 600 Yearly',
     product: ProductType.Convert,
     extra_ticket_cost: 0,
@@ -859,6 +1165,8 @@ export const CONVERT_PRODUCT_ID = ProductType.Convert
 
 export const helpdeskAvailablePlans = [
     starterHelpdeskPlan,
+    starterQuarterlyHelpdeskPlan,
+    starterYearlyHelpdeskPlan,
     basicMonthlyHelpdeskPlan,
     basicQuarterlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
@@ -882,29 +1190,49 @@ export const automationAvailablePlans = [
     advancedQuarterlyAutomatePlan,
     advancedYearlyAutomatePlan,
     firstTierMonthlyAutomationPlan,
+    firstTierQuarterlyAutomationPlan,
+    firstTierYearlyAutomationPlan,
 ].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
 
 export const voiceAvailablePlans = [
     voicePlan1,
     voicePlan2,
+    voicePlan2Quarterly,
+    voicePlan2Yearly,
+    voicePlan2Monthly,
     voicePlan3,
     voicePlan4,
     voicePlan0,
+    voicePlan0Quarterly,
+    voicePlan0Yearly,
 ].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
 
 export const smsAvailablePlans = [
     smsPlan1,
     smsPlan2,
+    smsPlan2Quarterly,
+    smsPlan2Yearly,
+    smsPlan2Monthly,
     smsPlan3,
     smsPlan4,
     smsPlan0,
+    smsPlan0Quarterly,
+    smsPlan0Yearly,
 ].sort((a, b) => a.amount - b.amount) // Sort to match behaviour in redux selector
 
 export const convertAvailablePlans = [
     convertPlan0,
+    convertPlan0Quarterly,
+    convertPlan0Yearly,
     convertPlan1,
+    convertPlan1Quarterly,
+    convertPlan1Yearly,
     convertPlan2,
+    convertPlan2Quarterly,
+    convertPlan2Yearly,
     convertPlan3,
+    convertPlan3Quarterly,
+    convertPlan3Yearly,
     convertPlan4,
     convertPlan5,
     convertPlan6,

@@ -24,11 +24,7 @@ export const getCorrespondingPlanAtCadence = <T extends Plan>({
     const canUseIDCheck = currentPlan.plan_id !== targetPlanId
 
     const plan = availablePlans.find(
-        (plan) =>
-            (canUseIDCheck && plan.plan_id === targetPlanId) ||
-            (plan.cadence === cadence &&
-                plan.product === currentPlan.product &&
-                plan.generation === currentPlan.generation),
+        (plan) => canUseIDCheck && plan.plan_id === targetPlanId,
     )
 
     return plan

@@ -22,16 +22,6 @@ describe('getCorrespondingPlanAtInterval', () => {
             cadence: Cadence.Month,
         })
         expect(result2).toBe(basicMonthlyHelpdeskPlan)
-
-        const result3 = getCorrespondingPlanAtCadence({
-            availablePlans: [
-                basicMonthlyHelpdeskPlan,
-                basicYearlyHelpdeskPlan2,
-            ],
-            currentPlan: basicMonthlyHelpdeskPlan,
-            cadence: Cadence.Year,
-        })
-        expect(result3).toBe(basicYearlyHelpdeskPlan2)
     })
 
     it('should return undefined if the price for the given cadence does not exist', () => {
@@ -42,6 +32,16 @@ describe('getCorrespondingPlanAtInterval', () => {
         })
 
         expect(result).toBeUndefined()
+
+        const result2 = getCorrespondingPlanAtCadence({
+            availablePlans: [
+                basicMonthlyHelpdeskPlan,
+                basicYearlyHelpdeskPlan2,
+            ],
+            currentPlan: basicMonthlyHelpdeskPlan,
+            cadence: Cadence.Year,
+        })
+        expect(result2).toBeUndefined()
     })
 
     it('should not return the current plan if the plan id does not contain a cadence', () => {

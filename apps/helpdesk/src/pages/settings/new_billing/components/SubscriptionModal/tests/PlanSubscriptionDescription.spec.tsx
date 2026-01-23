@@ -15,7 +15,10 @@ describe('PlanSubscriptionDescription', () => {
 
     const availablePlans = convertProduct.prices
 
-    const currentSelectedPlan = convertProduct.prices[1]
+    // Find first non-trial plan (amount > 0) for testing
+    const currentSelectedPlan = convertProduct.prices.find(
+        (plan) => plan.amount > 0 && plan.cadence === Cadence.Month,
+    )!
 
     const props = {
         productType: ProductType.Convert,

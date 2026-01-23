@@ -72,9 +72,13 @@ describe('getFormattedAmount', () => {
 
 describe('getCheapestPrice', () => {
     it('returns cheapest non-null amount amongst prices', () => {
+        // Find the cheapest non-zero monthly plan
+        const cheapestMonthlyPlan = smsProduct.prices.find(
+            (plan) => plan.amount > 0 && plan.cadence === Cadence.Month,
+        )
         expect(
             getCheapestPlan(smsProduct.prices, smsProduct.prices[0].cadence),
-        ).toEqual(smsProduct.prices[1]) // N.B. 0th is amount=0 so filtered out
+        ).toEqual(cheapestMonthlyPlan)
     })
 })
 

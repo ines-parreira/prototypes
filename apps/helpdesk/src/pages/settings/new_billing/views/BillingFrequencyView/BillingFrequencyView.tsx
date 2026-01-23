@@ -127,6 +127,7 @@ const BillingFrequencyView = ({
                 .filter((otherCadence) => otherCadence !== cadence)
                 .filter((otherCadence: Cadence) =>
                     Object.values(ProductType)
+                        .filter((productType) => !!currentPlans[productType])
                         .map(
                             (productType: ProductType) =>
                                 allPlansByProductTypeByCadence[otherCadence][
