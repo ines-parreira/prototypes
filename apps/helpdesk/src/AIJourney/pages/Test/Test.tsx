@@ -189,8 +189,9 @@ export const Test = () => {
         },
         [JOURNEY_TYPES.POST_PURCHASE]: {
             name: 'Preview your post-purchase messages',
-            description: '',
-            productSelect: '',
+            description:
+                'See the messages your customers would receive when they place an order.',
+            productSelect: 'Select a product to feature',
         },
     }
 

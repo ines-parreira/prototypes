@@ -182,6 +182,24 @@ describe('AI Journey Resource', () => {
                         discountCodeMessageThreshold: 2,
                         optOutMessage: 'Text STOP to opt out',
                     },
+                    order: {
+                        id: 'order-123',
+                        lineItems: [
+                            {
+                                productId: '67890',
+                                variantId: '12345',
+                                quantity: 1,
+                                price: '49.99',
+                                title: 'Test Product',
+                            },
+                        ],
+                        totalPrice: 49.99,
+                        currency: 'USD',
+                        financialStatus: 'paid',
+                        fulfillmentStatus: null,
+                        createdAt: '2025-01-01T00:00:00.000Z',
+                    },
+                    returningCustomer: false,
                     ...payload,
                 }
 
@@ -235,6 +253,24 @@ describe('AI Journey Resource', () => {
                         journeyMessageInstructions: 'Test instructions',
                         testModeSessionId:
                             '90a2b7b2-e936-4208-ad28-706611c1f9b6',
+                        order: {
+                            id: 'order-123',
+                            lineItems: [
+                                {
+                                    productId: '67890',
+                                    variantId: '12345',
+                                    quantity: 1,
+                                    price: '49.99',
+                                    title: 'Test Product',
+                                },
+                            ],
+                            totalPrice: 49.99,
+                            currency: 'USD',
+                            financialStatus: 'paid',
+                            fulfillmentStatus: null,
+                            createdAt: '2025-01-01T00:00:00.000Z',
+                        },
+                        returningCustomer: false,
                         ...expectedPayload,
                     }),
                     {
@@ -324,6 +360,7 @@ describe('AI Journey Resource', () => {
                             optOutMessage: 'Reply STOP to unsubscribe',
                             discountCodeMessageThreshold: null,
                         }),
+                        returningCustomer: false,
                         ...expectedPayload,
                     }),
                     {

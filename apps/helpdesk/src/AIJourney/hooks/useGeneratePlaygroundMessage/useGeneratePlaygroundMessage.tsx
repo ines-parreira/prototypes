@@ -167,6 +167,30 @@ export const useGeneratePlaygroundMessage = ({
                     discountCodeMessageThreshold:
                         journeyParams.discount_code_message_threshold ?? null,
                 },
+                order: {
+                    id: `order-${Date.now()}`,
+                    lineItems: [
+                        {
+                            productId: String(selectedProduct.id),
+                            variantId: String(
+                                selectedProduct.variants[0]?.id || 'variant-1',
+                            ),
+                            quantity: 1,
+                            price: String(
+                                selectedProduct.variants[0]?.price || '99.99',
+                            ),
+                            title: selectedProduct.title,
+                        },
+                    ],
+                    totalPrice: Number(
+                        selectedProduct.variants[0]?.price || 99.99,
+                    ),
+                    currency: 'USD',
+                    financialStatus: 'paid',
+                    fulfillmentStatus: null,
+                    createdAt: new Date().toISOString(),
+                },
+                returningCustomer: false,
             }
 
             while (
@@ -177,7 +201,7 @@ export const useGeneratePlaygroundMessage = ({
                     followUpAttempt: playgroundMessagesLengthRef.current,
                 }
                 await triggerAIJourney.mutateAsync([attemptOptions])
-                await startPolling()
+                startPolling()
 
                 // use ref to prevent potential race condition issue
                 isPollingRef.current = true

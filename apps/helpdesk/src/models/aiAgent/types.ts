@@ -422,6 +422,22 @@ export type TriggerAIJourneyPayload = {
     executionMode: 'regular' | 'test' | 'dry-run' | 'trial'
     journeyMessageInstructions?: string | null
     testModeSessionId?: string
+    order?: {
+        id: string
+        lineItems: Array<{
+            productId: string
+            variantId: string
+            quantity: number
+            price: string
+            title: string
+        }>
+        totalPrice: number
+        currency: string
+        financialStatus: string
+        fulfillmentStatus: string | null
+        createdAt: string
+    }
+    returningCustomer?: boolean
 }
 
 export type TriggerAIJourneyResponse = {

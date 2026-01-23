@@ -530,9 +530,155 @@ describe('useGeneratePlaygroundMessage', () => {
                     url: 'https://shop-domain/products/product-handle',
                     productId: String(hookParameters.selectedProduct.id),
                 }),
+                order: expect.objectContaining({
+                    id: expect.any(String),
+                    lineItems: expect.arrayContaining([
+                        expect.objectContaining({
+                            productId: String(
+                                hookParameters.selectedProduct.id,
+                            ),
+                            variantId: String(
+                                hookParameters.selectedProduct.variants[0]?.id,
+                            ),
+                            quantity: 1,
+                            price: hookParameters.selectedProduct.variants[0]
+                                ?.price,
+                            title: hookParameters.selectedProduct.title,
+                        }),
+                    ]),
+                    totalPrice: Number(
+                        hookParameters.selectedProduct.variants[0]?.price,
+                    ),
+                    currency: 'USD',
+                    financialStatus: 'paid',
+                    fulfillmentStatus: null,
+                    createdAt: expect.any(String),
+                }),
+                returningCustomer: false,
             }),
         ])
         expect(mockStartPolling).toHaveBeenCalled()
+
+        jest.useRealTimers()
+    })
+
+    it('should use fallback values for order when product has no variants', async () => {
+        jest.useFakeTimers()
+
+        const mockStopPolling = jest.fn()
+        const mockStartPolling = jest.fn()
+
+        mockCreateTestSession.mockResolvedValue({
+            testModeSession: { id: 'test-session-id' },
+        })
+
+        mockTriggerAIJourney.mockResolvedValue(undefined)
+
+        const testSessionLogsWithOneMessage = {
+            id: '123',
+            status: 'finished' as const,
+            logs: [
+                {
+                    id: '566c50b5-f4f3-4467-83f0-a54275681aae',
+                    data: {
+                        message: 'message-1',
+                        isSalesOpportunity: false,
+                        isSalesDiscount: true,
+                        isSalesOpportunityFieldId: 33778,
+                        isSalesDiscountFieldId: 33779,
+                    },
+                    type: TestSessionLogType.AI_AGENT_REPLY,
+                },
+            ],
+        } as GetTestSessionLogsResponse
+
+        let currentTestSessionLogs:
+            | GetTestSessionLogsResponse
+            | { logs: []; status: 'idle'; id: string } = {
+            logs: [],
+            status: 'idle' as const,
+            id: '1',
+        }
+        let currentIsPolling = false
+
+        mockedUsePlaygroundPolling.mockImplementation(() => ({
+            testSessionLogs: currentTestSessionLogs,
+            startPolling: mockStartPolling,
+            stopPolling: mockStopPolling,
+            isPolling: currentIsPolling,
+        }))
+
+        const productWithoutVariants = {
+            id: 12345,
+            title: 'Product Without Variants',
+            handle: 'product-no-variants',
+            variants: [],
+        } as unknown as Product
+
+        const { result, rerender } = renderHook(
+            () =>
+                useGeneratePlaygroundMessage({
+                    ...hookParameters,
+                    selectedProduct: productWithoutVariants,
+                    totalMessagesToBeGenerated: 1,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore}>{children}</Provider>
+                ),
+            },
+        )
+
+        const generatePromise = result.current.handleGenerateMessages()
+
+        await act(async () => {
+            await Promise.resolve()
+            await Promise.resolve()
+        })
+
+        currentIsPolling = true
+        rerender()
+
+        await act(async () => {
+            jest.advanceTimersByTime(5000)
+        })
+
+        currentIsPolling = false
+        currentTestSessionLogs = testSessionLogsWithOneMessage
+        rerender()
+
+        await act(async () => {
+            jest.advanceTimersByTime(5000)
+        })
+
+        await act(async () => {
+            await generatePromise
+        })
+
+        expect(mockTriggerAIJourney).toHaveBeenCalledWith([
+            expect.objectContaining({
+                order: expect.objectContaining({
+                    lineItems: expect.arrayContaining([
+                        expect.objectContaining({
+                            productId: '12345',
+                            variantId: 'variant-1',
+                            quantity: 1,
+                            price: '99.99',
+                            title: 'Product Without Variants',
+                        }),
+                    ]),
+                    totalPrice: 99.99,
+                }),
+                cart: expect.objectContaining({
+                    lineItems: expect.arrayContaining([
+                        expect.objectContaining({
+                            variantId: 'variant-1',
+                            linePrice: 99.99,
+                        }),
+                    ]),
+                }),
+            }),
+        ])
 
         jest.useRealTimers()
     })

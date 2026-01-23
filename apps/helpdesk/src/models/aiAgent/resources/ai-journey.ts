@@ -46,6 +46,24 @@ export type CreateAIJourneyPlaygroundOptions = {
         }>
     }
 
+    order?: {
+        id: string
+        lineItems: Array<{
+            productId: string
+            variantId: string
+            quantity: number
+            price: string
+            title: string
+        }>
+        totalPrice: number
+        currency: string
+        financialStatus: string
+        fulfillmentStatus: string | null
+        createdAt: string
+    }
+
+    returningCustomer?: boolean
+
     settings: {
         maxFollowUpMessages: number | null
         smsSenderNumber: string | null
@@ -150,6 +168,8 @@ const createAIJourneyPlaygroundPayload = (
         executionMode: 'test',
         journeyMessageInstructions: options.journeyMessageInstructions ?? null,
         testModeSessionId: options.testModeSessionId,
+        ...(options.order ? { order: options.order } : {}),
+        returningCustomer: options.returningCustomer ?? false,
     }
 }
 
