@@ -14,7 +14,7 @@ import { NUMBER_TICK_FORMATTER } from 'domains/reporting/pages/utils'
 import { DATE_FORMAT } from 'pages/aiAgent/analyticsOverview/constants'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 
-const METRIC_TITLE = 'Support interactions'
+const METRIC_TITLE = 'Automated interactions'
 
 const CHART_COLOR = colors['Dataviz-purple'].$value
 

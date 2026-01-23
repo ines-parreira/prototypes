@@ -91,7 +91,7 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
             isFetching: false,
             isError: false,
             data: {
-                label: 'Resolved interactions',
+                label: 'Automated interactions',
                 value: 2000,
                 prevValue: 1800,
             },
@@ -179,7 +179,7 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
         expect(result.current.isLoading).toBe(true)
     })
 
-    it('should return isLoading as true when resolved interactions metric is loading', () => {
+    it('should return isLoading as true when automated interactions metric is loading', () => {
         mockedUseResolvedInteractionsMetric.mockReturnValue({
             isFetching: true,
             isError: false,
@@ -329,7 +329,7 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
 
         expect(kpiContent).toContain('Total sales')
         expect(kpiContent).toContain('Orders influenced')
-        expect(kpiContent).toContain('Resolved interactions')
+        expect(kpiContent).toContain('Automated interactions')
         expect(kpiContent).toContain('Revenue per interaction')
     })
 

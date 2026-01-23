@@ -51,7 +51,7 @@ describe('SupportInteractionsComboChart', () => {
             isError: false,
             isFieldsAvailable: true,
             data: {
-                label: 'Support interactions',
+                label: 'Automated interactions',
                 value: 430,
                 prevValue: 400,
             },
@@ -84,7 +84,9 @@ describe('SupportInteractionsComboChart', () => {
         renderWithQueryClientProvider(<SupportInteractionsComboChart />)
 
         await waitFor(() => {
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
         })
     })
 
@@ -94,7 +96,7 @@ describe('SupportInteractionsComboChart', () => {
             isError: false,
             isFieldsAvailable: true,
             data: {
-                label: 'Support interactions',
+                label: 'Automated interactions',
                 value: null,
                 prevValue: null,
             },
@@ -122,7 +124,9 @@ describe('SupportInteractionsComboChart', () => {
         renderWithQueryClientProvider(<SupportInteractionsComboChart />)
 
         await waitFor(() => {
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
             expect(screen.getByText('430')).toBeInTheDocument()
         })
     })
@@ -150,7 +154,9 @@ describe('SupportInteractionsComboChart', () => {
         renderWithQueryClientProvider(<SupportInteractionsComboChart />)
 
         await waitFor(() => {
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
         })
     })
 
@@ -165,7 +171,9 @@ describe('SupportInteractionsComboChart', () => {
         renderWithQueryClientProvider(<SupportInteractionsComboChart />)
 
         await waitFor(() => {
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
         })
     })
 
@@ -201,7 +209,7 @@ describe('SupportInteractionsComboChart', () => {
             isError: true,
             isFieldsAvailable: true,
             data: {
-                label: 'Support interactions',
+                label: 'Automated interactions',
                 value: null,
                 prevValue: null,
             },
@@ -210,7 +218,9 @@ describe('SupportInteractionsComboChart', () => {
         renderWithQueryClientProvider(<SupportInteractionsComboChart />)
 
         await waitFor(() => {
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
         })
     })
 
@@ -225,7 +235,9 @@ describe('SupportInteractionsComboChart', () => {
         renderWithQueryClientProvider(<SupportInteractionsComboChart />)
 
         await waitFor(() => {
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
         })
     })
 
@@ -244,7 +256,9 @@ describe('SupportInteractionsComboChart', () => {
         renderWithQueryClientProvider(<SupportInteractionsComboChart />)
 
         await waitFor(() => {
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
         })
     })
 })

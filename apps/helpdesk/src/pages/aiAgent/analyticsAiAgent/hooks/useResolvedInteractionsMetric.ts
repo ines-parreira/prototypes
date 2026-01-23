@@ -15,7 +15,7 @@ export const useResolvedInteractionsMetric = (): MetricTrend => {
         isFetching,
         isError,
         data: {
-            label: 'Resolved interactions',
+            label: 'Automated interactions',
             value: data?.value ?? null,
             prevValue: data?.prevValue ?? null,
         },

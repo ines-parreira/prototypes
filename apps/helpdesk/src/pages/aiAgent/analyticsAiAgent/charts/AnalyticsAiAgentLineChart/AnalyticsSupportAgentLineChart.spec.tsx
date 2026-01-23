@@ -19,37 +19,37 @@ describe('AnalyticsSupportAgentLineChart', () => {
             {
                 dateTime: '2024-06-01',
                 value: 1000,
-                label: 'Support interactions',
+                label: 'Automated interactions',
             },
             {
                 dateTime: '2024-06-02',
                 value: 1200,
-                label: 'Support interactions',
+                label: 'Automated interactions',
             },
             {
                 dateTime: '2024-06-03',
                 value: 1500,
-                label: 'Support interactions',
+                label: 'Automated interactions',
             },
             {
                 dateTime: '2024-06-04',
                 value: 1800,
-                label: 'Support interactions',
+                label: 'Automated interactions',
             },
             {
                 dateTime: '2024-06-05',
                 value: 1600,
-                label: 'Support interactions',
+                label: 'Automated interactions',
             },
             {
                 dateTime: '2024-06-06',
                 value: 1400,
-                label: 'Support interactions',
+                label: 'Automated interactions',
             },
             {
                 dateTime: '2024-06-07',
                 value: 1700,
-                label: 'Support interactions',
+                label: 'Automated interactions',
             },
         ],
     ]
@@ -107,7 +107,7 @@ describe('AnalyticsSupportAgentLineChart', () => {
     it('should render the metric title', () => {
         render(<AnalyticsSupportAgentLineChart />)
 
-        expect(screen.getByText('Support interactions')).toBeInTheDocument()
+        expect(screen.getByText('Automated interactions')).toBeInTheDocument()
     })
 
     it('should render the metric value from support interactions trend hook', () => {
@@ -145,7 +145,7 @@ describe('AnalyticsSupportAgentLineChart', () => {
     it('should render TimeSeriesChart component', () => {
         render(<AnalyticsSupportAgentLineChart />)
 
-        expect(screen.getByText('Support interactions')).toBeInTheDocument()
+        expect(screen.getByText('Automated interactions')).toBeInTheDocument()
     })
 
     it('should render with negative trend icon when trend is negative', () => {
@@ -184,7 +184,7 @@ describe('AnalyticsSupportAgentLineChart', () => {
 
         render(<AnalyticsSupportAgentLineChart />)
 
-        expect(screen.getByText('Support interactions')).toBeInTheDocument()
+        expect(screen.getByText('Automated interactions')).toBeInTheDocument()
     })
 
     it('should handle undefined support interactions data', () => {
@@ -202,7 +202,7 @@ describe('AnalyticsSupportAgentLineChart', () => {
 
         render(<AnalyticsSupportAgentLineChart />)
 
-        expect(screen.getByText('Support interactions')).toBeInTheDocument()
+        expect(screen.getByText('Automated interactions')).toBeInTheDocument()
     })
 
     it('should handle empty time series data', () => {
@@ -217,7 +217,7 @@ describe('AnalyticsSupportAgentLineChart', () => {
 
         render(<AnalyticsSupportAgentLineChart />)
 
-        expect(screen.getByText('Support interactions')).toBeInTheDocument()
+        expect(screen.getByText('Automated interactions')).toBeInTheDocument()
     })
 
     it('should handle undefined time series data', () => {
@@ -232,7 +232,7 @@ describe('AnalyticsSupportAgentLineChart', () => {
 
         render(<AnalyticsSupportAgentLineChart />)
 
-        expect(screen.getByText('Support interactions')).toBeInTheDocument()
+        expect(screen.getByText('Automated interactions')).toBeInTheDocument()
     })
 
     it('should render chart with time series data', () => {
@@ -259,7 +259,7 @@ describe('AnalyticsSupportAgentLineChart', () => {
         const areaChart = container.querySelector('.recharts-area')
         expect(areaChart).not.toBeInTheDocument()
 
-        expect(screen.getByText('Support interactions')).toBeInTheDocument()
+        expect(screen.getByText('Automated interactions')).toBeInTheDocument()
     })
 
     it('should render chart with empty data when timeSeriesData is empty array', () => {
@@ -279,7 +279,7 @@ describe('AnalyticsSupportAgentLineChart', () => {
         )
         expect(responsiveContainer).toBeInTheDocument()
 
-        expect(screen.getByText('Support interactions')).toBeInTheDocument()
+        expect(screen.getByText('Automated interactions')).toBeInTheDocument()
     })
 
     describe('Loading states', () => {
@@ -298,7 +298,9 @@ describe('AnalyticsSupportAgentLineChart', () => {
 
             const { container } = render(<AnalyticsSupportAgentLineChart />)
 
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
 
             const areaChart = container.querySelector('.recharts-area')
             expect(areaChart).not.toBeInTheDocument()
@@ -316,7 +318,9 @@ describe('AnalyticsSupportAgentLineChart', () => {
 
             const { container } = render(<AnalyticsSupportAgentLineChart />)
 
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
 
             const areaChart = container.querySelector('.recharts-area')
             expect(areaChart).not.toBeInTheDocument()
@@ -346,7 +350,9 @@ describe('AnalyticsSupportAgentLineChart', () => {
 
             const { container } = render(<AnalyticsSupportAgentLineChart />)
 
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
 
             const areaChart = container.querySelector('.recharts-area')
             expect(areaChart).not.toBeInTheDocument()
@@ -376,7 +382,9 @@ describe('AnalyticsSupportAgentLineChart', () => {
 
             const { container } = render(<AnalyticsSupportAgentLineChart />)
 
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
 
             const responsiveContainer = container.querySelector(
                 '.recharts-responsive-container',
@@ -392,12 +400,12 @@ describe('AnalyticsSupportAgentLineChart', () => {
                     {
                         dateTime: '2024-06-01',
                         value: 500,
-                        label: 'Support interactions',
+                        label: 'Automated interactions',
                     },
                     {
                         dateTime: '2024-06-02',
                         value: 600,
-                        label: 'Support interactions',
+                        label: 'Automated interactions',
                     },
                 ],
             ]
@@ -420,7 +428,9 @@ describe('AnalyticsSupportAgentLineChart', () => {
         it('should format tooltip values with comma separators', () => {
             render(<AnalyticsSupportAgentLineChart />)
 
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
         })
     })
 })

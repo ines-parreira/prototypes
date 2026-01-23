@@ -27,7 +27,7 @@ export const AnalyticsAiAgentSupportInteractionsCard = ({
             hint={{
                 title: 'Support tickets',
                 caption:
-                    'The number of fully resolved interactions by AI Agent Support skills without human agent intervention.',
+                    'The number of fully automated interactions by AI Agent Support skills without human agent intervention.',
             }}
             actionMenu={
                 chartId ? (

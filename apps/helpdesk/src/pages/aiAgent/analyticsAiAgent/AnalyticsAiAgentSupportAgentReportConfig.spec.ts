@@ -63,7 +63,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Support interactions')
+        expect(config.label).toBe('Automated interactions')
         expect(config.chartType).toBe(ChartType.Card)
     })
 

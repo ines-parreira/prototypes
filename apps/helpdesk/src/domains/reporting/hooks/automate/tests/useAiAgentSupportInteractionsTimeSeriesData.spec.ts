@@ -31,12 +31,12 @@ const mockTimeSeriesData = [
         {
             dateTime: '2024-01-01T00:00:00Z',
             value: 100,
-            label: 'Support interactions',
+            label: 'Automated interactions',
         },
         {
             dateTime: '2024-01-02T00:00:00Z',
             value: 150,
-            label: 'Support interactions',
+            label: 'Automated interactions',
         },
     ],
 ]

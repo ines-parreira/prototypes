@@ -64,7 +64,7 @@ export const useExportAiAgentSupportAgentToCSV = () => {
                 ),
             ],
             [
-                'Support interactions',
+                'Automated interactions',
                 formatMetricValue(
                     supportInteractionsMetric.data?.value,
                     'decimal',

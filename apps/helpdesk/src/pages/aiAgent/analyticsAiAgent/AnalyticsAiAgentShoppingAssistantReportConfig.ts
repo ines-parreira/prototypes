@@ -83,7 +83,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
             },
             [AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard]: {
                 chartComponent: AnalyticsAiAgentResolvedInteractionsCard,
-                label: 'Resolved interactions',
+                label: 'Automated interactions',
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,

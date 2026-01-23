@@ -80,7 +80,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
             },
             [AnalyticsAiAgentSupportAgentChart.SupportInteractionsCard]: {
                 chartComponent: AnalyticsAiAgentSupportInteractionsCard,
-                label: 'Support interactions',
+                label: 'Automated interactions',
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
@@ -134,7 +134,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
             },
             [AnalyticsAiAgentSupportAgentChart.SupportAgentTrendLineChart]: {
                 chartComponent: AnalyticsSupportAgentLineChart,
-                label: 'Support interactions',
+                label: 'Automated interactions',
                 csvProducer: [
                     {
                         type: DataExportFormat.TimeSeries,

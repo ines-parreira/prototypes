@@ -91,7 +91,7 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
             isFetching: false,
             isError: false,
             data: {
-                label: 'Support interactions',
+                label: 'Automated interactions',
                 value: 3000,
                 prevValue: 2800,
             },
@@ -307,7 +307,7 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
 
         expect(kpiContent).toContain('Time saved by agents')
         expect(kpiContent).toContain('Cost saved')
-        expect(kpiContent).toContain('Support interactions')
+        expect(kpiContent).toContain('Automated interactions')
         expect(kpiContent).toContain('Decrease in first response time')
     })
 

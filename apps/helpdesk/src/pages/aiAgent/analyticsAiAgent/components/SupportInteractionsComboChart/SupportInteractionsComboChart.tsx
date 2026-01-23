@@ -5,7 +5,7 @@ import { useAiAgentSupportInteractionsMetric } from 'pages/aiAgent/analyticsAiAg
 import { useSupportInteractionsByIntent } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportInteractionsByIntent'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 
-const METRIC_TITLE = 'Support interactions'
+const METRIC_TITLE = 'Automated interactions'
 
 export const SupportInteractionsComboChart = () => {
     const { cleanStatsFilters } = useStatsFilters()

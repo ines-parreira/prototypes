@@ -36,7 +36,7 @@ describe('AnalyticsAiAgentResolvedInteractionsCard', () => {
             isFetching: false,
             isError: false,
             data: {
-                label: 'Resolved interactions',
+                label: 'Automated interactions',
                 value: 2300,
                 prevValue: 2200,
             },
@@ -64,7 +64,7 @@ describe('AnalyticsAiAgentResolvedInteractionsCard', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText('Resolved interactions'),
+                screen.getByText('Automated interactions'),
             ).toBeInTheDocument()
             expect(screen.getByText('2,300')).toBeInTheDocument()
         })
@@ -101,7 +101,7 @@ describe('AnalyticsAiAgentResolvedInteractionsCard', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText('Resolved interactions'),
+                screen.getByText('Automated interactions'),
             ).toBeInTheDocument()
             expect(screen.getByText('2,300')).toBeInTheDocument()
         })
@@ -126,7 +126,7 @@ describe('AnalyticsAiAgentResolvedInteractionsCard', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText('Resolved interactions'),
+                screen.getByText('Automated interactions'),
             ).toBeInTheDocument()
         })
     })
@@ -147,7 +147,7 @@ describe('AnalyticsAiAgentResolvedInteractionsCard', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText('Resolved interactions'),
+                screen.getByText('Automated interactions'),
             ).toBeInTheDocument()
             expect(screen.getByText('2,300')).toBeInTheDocument()
         })
@@ -160,7 +160,7 @@ describe('AnalyticsAiAgentResolvedInteractionsCard', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText('Resolved interactions'),
+                screen.getByText('Automated interactions'),
             ).toBeInTheDocument()
             expect(screen.getByText('2,300')).toBeInTheDocument()
         })

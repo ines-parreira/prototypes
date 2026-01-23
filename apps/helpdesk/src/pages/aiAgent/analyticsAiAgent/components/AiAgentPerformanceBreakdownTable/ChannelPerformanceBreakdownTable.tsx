@@ -308,7 +308,7 @@ export const ChannelPerformanceBreakdownTable = () => {
                                 </TooltipTrigger>
                                 <TooltipContent
                                     title="% automated by Shopping assistant"
-                                    caption="The percentage of AI Agent resolved interactions handled by the Shopping Assistant."
+                                    caption="The percentage of AI Agent automated interactions handled by the Shopping Assistant."
                                 />
                             </Tooltip>
                             <span

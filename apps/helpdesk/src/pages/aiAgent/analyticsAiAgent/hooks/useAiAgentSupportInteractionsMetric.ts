@@ -50,7 +50,7 @@ export const useAiAgentSupportInteractionsMetric = (): MetricTrend & {
         isError: isErrorCurrent || isErrorPrev,
         isFieldsAvailable,
         data: {
-            label: 'Support interactions',
+            label: 'Automated interactions',
             value: currentData?.value ?? null,
             prevValue: prevData?.value ?? null,
         },

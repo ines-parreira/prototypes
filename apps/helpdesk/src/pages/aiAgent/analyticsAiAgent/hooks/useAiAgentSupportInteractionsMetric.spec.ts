@@ -77,7 +77,7 @@ describe('useAiAgentSupportInteractionsMetric', () => {
         expect(result.current.isError).toBe(false)
         expect(result.current.isFieldsAvailable).toBe(true)
         expect(result.current.data).toEqual({
-            label: 'Support interactions',
+            label: 'Automated interactions',
             value: 100,
             prevValue: 80,
         })
@@ -273,6 +273,6 @@ describe('useAiAgentSupportInteractionsMetric', () => {
             useAiAgentSupportInteractionsMetric(),
         )
 
-        expect(result.current.data?.label).toBe('Support interactions')
+        expect(result.current.data?.label).toBe('Automated interactions')
     })
 })

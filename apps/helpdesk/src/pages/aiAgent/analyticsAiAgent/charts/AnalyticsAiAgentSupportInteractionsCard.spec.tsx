@@ -39,7 +39,7 @@ describe('AnalyticsAiAgentSupportInteractionsCard', () => {
             isError: false,
             isFieldsAvailable: true,
             data: {
-                label: 'Support interactions',
+                label: 'Automated interactions',
                 value: 3900,
                 prevValue: 3600,
             },
@@ -52,7 +52,7 @@ describe('AnalyticsAiAgentSupportInteractionsCard', () => {
             isError: false,
             isFieldsAvailable: true,
             data: {
-                label: 'Support interactions',
+                label: 'Automated interactions',
                 value: null,
                 prevValue: null,
             },
@@ -71,7 +71,9 @@ describe('AnalyticsAiAgentSupportInteractionsCard', () => {
         )
 
         await waitFor(() => {
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
             expect(screen.getByText('3,900')).toBeInTheDocument()
         })
     })
@@ -106,7 +108,9 @@ describe('AnalyticsAiAgentSupportInteractionsCard', () => {
         )
 
         await waitFor(() => {
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
             expect(screen.getByText('3,900')).toBeInTheDocument()
         })
     })
@@ -129,7 +133,9 @@ describe('AnalyticsAiAgentSupportInteractionsCard', () => {
         )
 
         await waitFor(() => {
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
         })
     })
 
@@ -148,7 +154,9 @@ describe('AnalyticsAiAgentSupportInteractionsCard', () => {
         )
 
         await waitFor(() => {
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
             expect(screen.getByText('3,900')).toBeInTheDocument()
         })
     })
@@ -159,7 +167,9 @@ describe('AnalyticsAiAgentSupportInteractionsCard', () => {
         )
 
         await waitFor(() => {
-            expect(screen.getByText('Support interactions')).toBeInTheDocument()
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
             expect(screen.getByText('3,900')).toBeInTheDocument()
         })
 

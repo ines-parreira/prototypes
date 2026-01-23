@@ -68,7 +68,7 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
                 ),
             ],
             [
-                'Resolved interactions',
+                'Automated interactions',
                 formatMetricValue(
                     resolvedInteractionsMetric.data?.value,
                     'decimal',

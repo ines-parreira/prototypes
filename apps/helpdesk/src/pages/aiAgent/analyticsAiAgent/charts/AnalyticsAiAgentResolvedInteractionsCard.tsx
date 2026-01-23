@@ -25,7 +25,7 @@ export const AnalyticsAiAgentResolvedInteractionsCard = ({
             isLoading={trend.isFetching}
             trendBadgeTooltipData={{ period: trendTooltipData }}
             hint={{
-                title: 'Resolved interactions',
+                title: 'Automated interactions',
                 caption:
                     'The number of interactions handled by Shopping Assistant in which the customer left without asking to talk to a human agent.',
             }}

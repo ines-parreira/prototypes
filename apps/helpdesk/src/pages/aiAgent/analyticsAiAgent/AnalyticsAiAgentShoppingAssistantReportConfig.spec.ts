@@ -56,14 +56,14 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(config.csvProducer).not.toBeNull()
     })
 
-    it('should have resolved interactions card config', () => {
+    it('should have automated interactions card config', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
                 AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Resolved interactions')
+        expect(config.label).toBe('Automated interactions')
         expect(config.chartType).toBe(ChartType.Card)
     })
 
@@ -189,7 +189,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(typeof csvProducer?.fetch).toBe('function')
     })
 
-    it('should have fetch function for resolved interactions trend', async () => {
+    it('should have fetch function for automated interactions trend', async () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
                 AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard
