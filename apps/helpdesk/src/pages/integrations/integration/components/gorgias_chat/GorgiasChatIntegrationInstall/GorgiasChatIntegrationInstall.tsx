@@ -1,6 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import type { List, Map } from 'immutable'
-import { fromJS } from 'immutable'
+import { fromJS, type List, type Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
@@ -8,7 +7,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
-import PageHeaderRevamped from 'pages/common/components/PageHeaderRevamped/PageHeaderRevamped'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
@@ -26,6 +24,7 @@ import GorgiasChatIntegrationConnectStore from './GorgiasChatIntegrationConnectS
 import GorgiasChatIntegrationManualInstallationCard from './GorgiasChatIntegrationManualInstallationCard'
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
 import GorgiasChatIntegrationShopifyCheckoutChatInstallationCard from './GorgiasChatIntegrationShopifyCheckoutChatInstallationCard'
+import GorgiasChatIntegrationInstallRevamped from './revamp/GorgiasChatIntegrationInstall'
 
 import css from './GorgiasChatIntegrationInstall.less'
 
@@ -76,6 +75,15 @@ const GorgiasChatIntegrationInstall = ({
         isConnectedToShopify ? storeIntegration : undefined,
     )
 
+    if (isRevampEnabled) {
+        return (
+            <GorgiasChatIntegrationInstallRevamped
+                integration={integration}
+                actions={{ deleteIntegration }}
+            ></GorgiasChatIntegrationInstallRevamped>
+        )
+    }
+
     return (
         <>
             <NavigatedSuccessModal
@@ -90,42 +98,22 @@ const GorgiasChatIntegrationInstall = ({
                 </div>
             </NavigatedSuccessModal>
             <div className="full-width">
-                {isRevampEnabled ? (
-                    <PageHeaderRevamped
-                        title={
-                            <Breadcrumb>
-                                <BreadcrumbItem>
-                                    <Link
-                                        to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
-                                    >
-                                        Chat
-                                    </Link>
-                                </BreadcrumbItem>
-                                <BreadcrumbItem>
-                                    {integration.get('name')}
-                                </BreadcrumbItem>
-                            </Breadcrumb>
-                        }
-                    />
-                ) : (
-                    <PageHeader
-                        title={
-                            <Breadcrumb>
-                                <BreadcrumbItem>
-                                    <Link
-                                        to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
-                                    >
-                                        Chat
-                                    </Link>
-                                </BreadcrumbItem>
-                                <BreadcrumbItem>
-                                    {integration.get('name')}
-                                </BreadcrumbItem>
-                            </Breadcrumb>
-                        }
-                    />
-                )}
-
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link
+                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
+                                >
+                                    Chat
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
                 <GorgiasChatIntegrationHeader
                     integration={integration}
                     tab={Tab.Installation}
