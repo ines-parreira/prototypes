@@ -23,7 +23,7 @@ import { CustomerPreview } from '../CustomerPreview'
 
 const mockOnGoBack = vi.fn()
 const mockOnClose = vi.fn()
-const mockOnSwitchCustomer = vi.fn()
+const mockOnSetCustomer = vi.fn()
 
 const mockCustomerData = mockCustomer({
     id: 123,
@@ -42,7 +42,7 @@ const defaultProps = {
     customer: mockCustomerData,
     onGoBack: mockOnGoBack,
     onClose: mockOnClose,
-    onSwitchCustomer: mockOnSwitchCustomer,
+    onSetCustomer: mockOnSetCustomer,
 }
 
 const mockGetCurrentUser = mockGetCurrentUserHandler(async () =>
@@ -156,7 +156,7 @@ describe('CustomerPreview', () => {
 
         await act(() => user.click(switchButton))
 
-        expect(mockOnSwitchCustomer).toHaveBeenCalledWith(mockCustomerData)
-        expect(mockOnSwitchCustomer).toHaveBeenCalledTimes(1)
+        expect(mockOnSetCustomer).toHaveBeenCalledWith(mockCustomerData)
+        expect(mockOnSetCustomer).toHaveBeenCalledTimes(1)
     })
 })

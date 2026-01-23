@@ -156,3 +156,6 @@ catalogs:
     'localforage-removeitems': '1.4.0'
     'zen-observable': '0.10.0'
     '@types/zen-observable': '^0.8.7'
+  sanitize-html:
+    '@types/sanitize-html': "1.27.0"
+    'sanitize-html': '2.12.1'

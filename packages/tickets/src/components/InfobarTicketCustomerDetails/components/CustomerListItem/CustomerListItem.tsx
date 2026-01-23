@@ -1,15 +1,31 @@
+import { useMemo } from 'react'
+
+import { sanitizeHtmlDefault } from '@repo/utils'
+
 import { Box, Button, Card, Heading, Icon, Tag, Text } from '@gorgias/axiom'
 import type { TicketCustomerChannel } from '@gorgias/helpdesk-queries'
-import type { Customer } from '@gorgias/helpdesk-types'
+import type {
+    Customer,
+    CustomerHighlightDataItem,
+} from '@gorgias/helpdesk-types'
 
+import { customerHighlightsTransform } from '../../../../utils/search/searchHelpers'
 import { formatPhoneNumberInternational } from '../../../../utils/validation'
 import { useCustomerChannels } from '../../../InfobarCustomerFields/hooks'
 
+import css from './CustomerListItem.less'
+
 export interface CustomerListItemProps {
-    customer: Customer
+    customer: Customer | CustomerHighlightDataItem
     isDuplicate?: boolean
     onSetCustomer: (customer: Customer) => void
     onPreviewCustomer: (customer: Customer) => void
+}
+
+function isCustomerWithHighlights(
+    customer: Customer | CustomerHighlightDataItem,
+): customer is CustomerHighlightDataItem {
+    return 'highlights' in customer
 }
 
 export function CustomerListItem({
@@ -18,32 +34,90 @@ export function CustomerListItem({
     onSetCustomer,
     onPreviewCustomer,
 }: CustomerListItemProps) {
-    const customerDisplayName = customer.name || `Customer #${customer.id}`
+    const transformedCustomer = isCustomerWithHighlights(customer)
+        ? customerHighlightsTransform(customer)
+        : null
+
+    const nonTransformedCustomer = customer as Customer
+
+    const customerDisplayName = transformedCustomer
+        ? transformedCustomer.name || `Customer #${transformedCustomer.id}`
+        : nonTransformedCustomer.name ||
+          `Customer #${nonTransformedCustomer.id}`
+
     const { emailChannels, phoneChannels } = useCustomerChannels(
-        customer?.channels as TicketCustomerChannel[],
+        nonTransformedCustomer?.channels as TicketCustomerChannel[],
+    )
+
+    const emailToDisplay = transformedCustomer
+        ? transformedCustomer.email
+        : emailChannels[0]?.address
+
+    const originalCustomer = useMemo(
+        () =>
+            (transformedCustomer
+                ? (customer as CustomerHighlightDataItem).entity
+                : customer) as Customer,
+        [transformedCustomer, customer],
     )
 
     return (
         <Card padding="sm">
-            <Box flexDirection="column" gap="xxxs">
+            <Box flexDirection="column" gap="xxxs" className={css.container}>
                 <Box justifyContent="space-between">
-                    <Heading size="sm">{customerDisplayName}</Heading>
+                    <Heading size="sm">
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: sanitizeHtmlDefault(
+                                    customerDisplayName,
+                                ),
+                            }}
+                        />
+                    </Heading>
                     {isDuplicate && <Tag color="grey">Potential duplicate</Tag>}
                 </Box>
                 <Box flexDirection="column" gap="xxxs">
-                    {emailChannels[0] && (
+                    {emailToDisplay && (
                         <Box gap="xxxs" alignItems="center">
                             <Icon name="comm-mail" />
-                            <Text size="sm">{emailChannels[0].address}</Text>
+                            <Text size="sm">
+                                <span
+                                    dangerouslySetInnerHTML={{
+                                        __html: sanitizeHtmlDefault(
+                                            emailToDisplay,
+                                        ),
+                                    }}
+                                />
+                            </Text>
                         </Box>
                     )}
                     {phoneChannels[0]?.address && (
                         <Box gap="xxxs" alignItems="center">
                             <Icon name="comm-phone" />
                             <Text size="sm">
-                                {formatPhoneNumberInternational(
-                                    phoneChannels[0].address,
-                                )}
+                                <span
+                                    dangerouslySetInnerHTML={{
+                                        __html: sanitizeHtmlDefault(
+                                            formatPhoneNumberInternational(
+                                                phoneChannels[0]?.address,
+                                            ),
+                                        ),
+                                    }}
+                                />
+                            </Text>
+                        </Box>
+                    )}
+                    {transformedCustomer?.orderId && (
+                        <Box gap="xxxs" alignItems="center">
+                            <Icon name="shopping-bag" />
+                            <Text size="sm">
+                                <span
+                                    dangerouslySetInnerHTML={{
+                                        __html: sanitizeHtmlDefault(
+                                            transformedCustomer.orderId,
+                                        ),
+                                    }}
+                                />
                             </Text>
                         </Box>
                     )}
@@ -55,14 +129,14 @@ export function CustomerListItem({
                     <Button
                         size="sm"
                         variant="secondary"
-                        onClick={() => onSetCustomer(customer)}
+                        onClick={() => onSetCustomer(originalCustomer)}
                     >
-                        Set as customer
+                        Switch customer
                     </Button>
                     <Button
                         size="sm"
                         variant="tertiary"
-                        onClick={() => onPreviewCustomer(customer)}
+                        onClick={() => onPreviewCustomer(originalCustomer)}
                     >
                         View details
                     </Button>

@@ -39,7 +39,12 @@ export const linkifyHtml = (body: string) => {
 export const linkifyString = (body: string) =>
     linkifyjsString(body, linkifyOptions)
 
-/** sanitizeHtml with a sensible config. */
+/**
+ * @deprecated use sanitizeHtmlDefault from @repo/utils
+ * @date 2026-01-23
+ * @type migration to @repo/utils
+ * sanitizeHtml with a sensible config.
+ */
 export function sanitizeHtmlDefault(html: string): string {
     if (typeof html !== 'string') {
         return html

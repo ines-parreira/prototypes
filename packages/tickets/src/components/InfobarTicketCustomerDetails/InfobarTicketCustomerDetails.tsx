@@ -9,6 +9,7 @@ import { useGetTicketData } from '../InfobarTicketDetails/components/InfobarTick
 import { DuplicateCustomer } from './components/DuplicateCustomer/DuplicateCustomer'
 import { CustomerPreview } from './components/SearchAndPreviewCustomersPanel/components/CustomerPreview'
 import { SearchAndPreviewCustomersPanel } from './components/SearchAndPreviewCustomersPanel/SearchAndPreviewCustomersPanel'
+import { SwitchCustomerConfirmationModal } from './components/SwitchCustomerConfirmationModal/SwitchCustomerConfirmationModal'
 import { useGetSimilarCustomer } from './hooks/useGetSimilarCustomer'
 import { useUpdateTicketCustomer } from './hooks/useUpdateTicketCustomer'
 
@@ -38,6 +39,11 @@ export function InfobarTicketCustomerDetails({
     const [isViewingSimilarCustomer, setIsViewingSimilarCustomer] =
         useState(false)
 
+    const [isSwitchModalOpen, setIsSwitchModalOpen] = useState(false)
+    const [customerToSwitch, setCustomerToSwitch] = useState<Customer | null>(
+        null,
+    )
+
     const { data: similarCustomer, isLoading: isLoadingSimilarCustomer } =
         useGetSimilarCustomer(ticketCustomer?.id)
 
@@ -47,10 +53,16 @@ export function InfobarTicketCustomerDetails({
         }
     }, [similarCustomer])
 
-    const handleSetCustomer = useCallback(
+    const handleOpenSwitchModal = useCallback((customer: Customer) => {
+        setCustomerToSwitch(customer)
+        setIsSwitchModalOpen(true)
+    }, [])
+
+    const handleConfirmSwitch = useCallback(
         (customer: Customer) => {
             void updateTicketCustomer(customer as TicketCustomer)
             setIsViewingSimilarCustomer(false)
+            setIsSearchAndPreviewPanelOpen(false)
         },
         [updateTicketCustomer],
     )
@@ -85,7 +97,7 @@ export function InfobarTicketCustomerDetails({
                     setIsSearchAndPreviewPanelOpen(false)
                 }}
                 previewedCustomer={similarCustomer}
-                onSetCustomer={handleSetCustomer}
+                onSetCustomer={handleOpenSwitchModal}
             />
             <SidePanel
                 isOpen={isViewingSimilarCustomer}
@@ -99,9 +111,15 @@ export function InfobarTicketCustomerDetails({
                     customer={similarCustomer}
                     onGoBack={() => setIsViewingSimilarCustomer(false)}
                     onClose={() => setIsViewingSimilarCustomer(false)}
-                    onSwitchCustomer={handleSetCustomer}
+                    onSetCustomer={handleOpenSwitchModal}
                 />
             </SidePanel>
+            <SwitchCustomerConfirmationModal
+                isOpen={isSwitchModalOpen}
+                onOpenChange={setIsSwitchModalOpen}
+                customer={customerToSwitch}
+                onConfirm={handleConfirmSwitch}
+            />
         </Box>
     )
 }

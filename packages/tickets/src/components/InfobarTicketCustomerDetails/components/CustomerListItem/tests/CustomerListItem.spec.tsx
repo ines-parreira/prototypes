@@ -81,7 +81,7 @@ describe('CustomerListItem', () => {
         const { user } = render(<CustomerListItem {...defaultProps} />)
 
         const setAsCustomerButton = screen.getByRole('button', {
-            name: 'Set as customer',
+            name: 'Switch customer',
         })
 
         await act(() => user.click(setAsCustomerButton))

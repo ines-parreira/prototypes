@@ -2,6 +2,7 @@ export * from './shortcuts'
 export * from './environment'
 export * from './datetime'
 export * from './currency'
+export * from './html'
 export {
     UserRole,
     USER_ROLES,

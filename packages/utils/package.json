@@ -25,7 +25,8 @@
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "react-router": "catalog:react-router",
-        "react-router-dom": "catalog:react-router"
+        "react-router-dom": "catalog:react-router",
+        "sanitize-html": "catalog:sanitize-html"
     },
     "devDependencies": {
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
@@ -44,6 +45,7 @@
         "@types/react-dom": "catalog:react",
         "@types/react-router": "catalog:react-router",
         "@types/react-router-dom": "catalog:react-router",
+        "@types/sanitize-html": "catalog:sanitize-html",
         "@vitest/coverage-v8": "catalog:test",
         "lodash": "catalog:lodash",
         "oxlint": "catalog:oxlint",
@@ -54,6 +56,7 @@
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "sanitize-html": "catalog:sanitize-html"
     }
 }

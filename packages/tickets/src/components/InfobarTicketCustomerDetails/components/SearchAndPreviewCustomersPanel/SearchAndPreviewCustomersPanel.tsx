@@ -10,8 +10,10 @@ import {
 } from '@gorgias/axiom'
 import type { Customer } from '@gorgias/helpdesk-types'
 
+import { useCustomerSearch } from '../../hooks/useCustomerSearch'
 import { CustomerListItem } from '../CustomerListItem/CustomerListItem'
 import { CustomerPreview } from './components/CustomerPreview'
+import { InfoSection } from './components/InfoSection'
 
 import css from './SearchAndPreviewCustomersPanel.less'
 
@@ -33,6 +35,16 @@ export function SearchAndPreviewCustomersPanel({
     const [previewCustomer, setPreviewCustomer] = useState<Customer | null>(
         null,
     )
+
+    const {
+        searchTerm,
+        setSearchTerm,
+        clearSearch,
+        isSearchMode,
+        searchResults,
+        isSearching,
+        searchError,
+    } = useCustomerSearch()
 
     const handleSetCustomer = useCallback(
         (customer: Customer) => {
@@ -59,9 +71,10 @@ export function SearchAndPreviewCustomersPanel({
                 setTimeout(() => {
                     setMode('search')
                 }, 250)
+                clearSearch()
             }
         },
-        [onClose],
+        [onClose, clearSearch],
     )
 
     const content = useMemo(() => {
@@ -69,14 +82,40 @@ export function SearchAndPreviewCustomersPanel({
             <>
                 <OverlayHeader title="Search customers" />
                 <OverlayContent>
-                    <Box flexDirection="column" gap="sm">
-                        <TextField
-                            placeholder="Search by name, email or order no."
-                            leadingSlot="search-magnifying-glass"
-                        />
-                        {previewedCustomer && (
+                    <Box flexDirection="column" gap="sm" flexGrow={1}>
+                        <Box marginBottom="xs">
+                            <TextField
+                                placeholder="Search by name, email or order no."
+                                leadingSlot="search-magnifying-glass"
+                                value={searchTerm}
+                                onChange={setSearchTerm}
+                            />
+                        </Box>
+                        {searchError && (
+                            <Text size="sm" color="error">
+                                <InfoSection
+                                    icon="triangle-warning"
+                                    description="Failed to search customers. Please try again."
+                                />
+                            </Text>
+                        )}
+                        {isSearching && (
+                            <InfoSection
+                                icon="loader"
+                                description="Searching customers..."
+                            />
+                        )}
+                        {!isSearchMode &&
+                            !isSearching &&
+                            !previewedCustomer && (
+                                <InfoSection
+                                    icon="user"
+                                    description="Search to find customers to merge or reassign to this ticket."
+                                />
+                            )}
+                        {!isSearchMode && previewedCustomer && (
                             <>
-                                <Text size="sm" className={css.description}>
+                                <Text size="sm" className={css.infoText}>
                                     Another profile looks similar to this one.
                                     Click to view profile or search for other
                                     customers.
@@ -89,6 +128,36 @@ export function SearchAndPreviewCustomersPanel({
                                 />
                             </>
                         )}
+                        {isSearchMode &&
+                            !isSearching &&
+                            !searchError &&
+                            searchResults.length === 0 && (
+                                <InfoSection
+                                    icon="user"
+                                    description="No customers found."
+                                />
+                            )}
+                        {isSearchMode &&
+                            !isSearching &&
+                            searchResults.length > 0 && (
+                                <Box flexDirection="column" gap="sm">
+                                    <Text size="sm" className={css.infoText}>
+                                        {searchResults.length === 1
+                                            ? '1 result'
+                                            : `${searchResults.length} results`}
+                                    </Text>
+                                    {searchResults.map((data) => (
+                                        <CustomerListItem
+                                            key={data.entity?.id}
+                                            customer={data}
+                                            onSetCustomer={handleSetCustomer}
+                                            onPreviewCustomer={
+                                                handlePreviewCustomer
+                                            }
+                                        />
+                                    ))}
+                                </Box>
+                            )}
                     </Box>
                 </OverlayContent>
             </>
@@ -99,7 +168,7 @@ export function SearchAndPreviewCustomersPanel({
                 onClose={() => {
                     handleClose(false)
                 }}
-                onSwitchCustomer={handleSetCustomer}
+                onSetCustomer={handleSetCustomer}
             />
         )
     }, [
@@ -109,6 +178,12 @@ export function SearchAndPreviewCustomersPanel({
         previewedCustomer,
         previewCustomer,
         mode,
+        searchTerm,
+        setSearchTerm,
+        isSearchMode,
+        isSearching,
+        searchResults,
+        searchError,
     ])
 
     return (
