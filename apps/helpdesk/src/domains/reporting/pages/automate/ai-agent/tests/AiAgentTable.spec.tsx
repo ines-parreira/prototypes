@@ -3,7 +3,7 @@ import { assumeMock } from '@repo/testing'
 import type { User } from 'config/types/user'
 import { UserRole } from 'config/types/user'
 import { useAIAgentUser } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AiAgentTable } from 'domains/reporting/pages/automate/ai-agent/AiAgentTable'
@@ -16,8 +16,8 @@ import { renderWithStore } from 'utils/testing'
 jest.mock('domains/reporting/pages/support-performance/agents/AgentsTable')
 const AgentsTableMock = assumeMock(AgentsTable)
 
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-const useStatsFiltersMock = assumeMock(useStatsFilters)
+jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
+const useAutomateFiltersMock = assumeMock(useAutomateFilters)
 
 jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
 const useAIAgentUserMock = assumeMock(useAIAgentUser)
@@ -31,7 +31,7 @@ describe('AiAgentTable', () => {
         email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
     }
     const statsFiltersWithUserTimezone = {
-        cleanStatsFilters: defaultStatsFilters,
+        statsFilters: defaultStatsFilters,
         userTimezone: 'UTC',
         granularity: ReportingGranularity.Day,
     }
@@ -39,8 +39,10 @@ describe('AiAgentTable', () => {
     beforeEach(() => {
         AgentsTableMock.mockImplementation(() => <div />)
         useAIAgentUserMock.mockReturnValue(aiAgent)
-        useStatsFiltersMock.mockReturnValue(
-            statsFiltersWithUserTimezone as ReturnType<typeof useStatsFilters>,
+        useAutomateFiltersMock.mockReturnValue(
+            statsFiltersWithUserTimezone as ReturnType<
+                typeof useAutomateFilters
+            >,
         )
     })
 
@@ -61,7 +63,7 @@ describe('AiAgentTable', () => {
                 statsFilters: {
                     ...statsFiltersWithUserTimezone,
                     cleanStatsFilters: {
-                        ...statsFiltersWithUserTimezone.cleanStatsFilters,
+                        ...statsFiltersWithUserTimezone.statsFilters,
                         agents: withDefaultLogicalOperator([]),
                     },
                 },
@@ -86,7 +88,7 @@ describe('AiAgentTable', () => {
                 statsFilters: {
                     ...statsFiltersWithUserTimezone,
                     cleanStatsFilters: {
-                        ...statsFiltersWithUserTimezone.cleanStatsFilters,
+                        ...statsFiltersWithUserTimezone.statsFilters,
                         agents: withDefaultLogicalOperator([aiAgent.id]),
                     },
                 },

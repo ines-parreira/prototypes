@@ -7,6 +7,7 @@ import moment from 'moment'
 import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useLast28daysForAutomateRedirect } from 'domains/reporting/hooks/automate/useLast28daysForAutomateRedirect'
+import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/automate/overview/AutomateOverview.less'
 import { AutomateOverviewDownloadDataButton } from 'domains/reporting/pages/automate/overview/AutomateOverviewDownloadDataButton'
@@ -27,6 +28,7 @@ const BILLING_PIPE_LINE_DATE = 'June 20, 2023'
 
 export default function AutomateOverviewContent() {
     useLast28daysForAutomateRedirect()
+    useCleanStatsFilters()
     const { statsFilters, userTimezone } = useAutomateFilters()
     const automatedInteractionTrend = useFilteredAutomatedInteractions(
         statsFilters,
@@ -35,9 +37,7 @@ export default function AutomateOverviewContent() {
 
     const [noActivityAlert, setNoActivityAlert] = useState(true)
     const [hide72HourAlert, set72HoursAlert] = useState(false)
-    const isAutomateOverviewChannelsFilter = useFlag(
-        FeatureFlagKey.AutomateOverviewChannelsFilter,
-    )
+
     const isTicketTimeToHandleEnabled = useFlag(
         FeatureFlagKey.ObservabilityTicketTimeToHandle,
     )
@@ -112,22 +112,13 @@ export default function AutomateOverviewContent() {
                                 AutomateOverviewReportConfig.reportFilters
                                     .persistent
                             }
-                            optionalFilters={
-                                isAutomateOverviewChannelsFilter
-                                    ? [FilterKey.Channels]
-                                    : []
-                            }
+                            optionalFilters={[]}
                             filterSettingsOverrides={{
                                 [FilterKey.Period]: {
                                     initialSettings: {
                                         maxSpan: 365,
                                     },
                                 },
-                                // Disable channel filter until fix channels for AI Agent events
-                                // [FilterKey.Channels]: {
-                                //     channelsFilter:
-                                //         AUTOMATE_ENABLED_CHANNELS,
-                                // },
                             }}
                             withSavedFilters={false}
                         />

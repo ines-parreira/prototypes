@@ -3,9 +3,8 @@ import type { ComponentProps } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -35,7 +34,6 @@ import { AutomateOverviewDownloadDataButton } from 'domains/reporting/pages/auto
 import { TimeSavedByAgentsKPIChart } from 'domains/reporting/pages/automate/overview/charts/TimeSavedByAgentsKPIChart'
 import { BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
-import { ADD_FILTER_BUTTON_LABEL } from 'domains/reporting/pages/common/filters/AddFilterButton'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import type DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
@@ -315,8 +313,6 @@ describe('<AutomateOverview />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AutomateOverviewChannelsFilter)
-                return true
             if (flag === FeatureFlagKey.AutomateAIAgentInteractions) return true
 
             return false
@@ -457,12 +453,7 @@ describe('<AutomateOverview />', () => {
     })
 
     describe('Filters Panel', () => {
-        it('should display new filters panel when the feature flag is enabled', async () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AutomateOverviewChannelsFilter)
-                    return true
-                return false
-            })
+        it('should display period filter', async () => {
             const store = mockStore(defaultState)
             render(
                 <Provider store={store}>
@@ -471,45 +462,10 @@ describe('<AutomateOverview />', () => {
                     </QueryClientProvider>
                 </Provider>,
             )
-
-            const addFilterButton = screen.getByText(ADD_FILTER_BUTTON_LABEL)
-            act(() => {
-                userEvent.click(addFilterButton)
-            })
 
             expect(
                 screen.getByText(FilterLabels[FilterKey.Period]),
             ).toBeInTheDocument()
-            await waitFor(() => {
-                expect(
-                    screen.getByText(FilterLabels[FilterKey.Channels]),
-                ).toBeInTheDocument()
-            })
-        })
-
-        it('should display new filters panel without Channels filter if feature flag is disabled', async () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AutomateOverviewChannelsFilter)
-                    return false
-                return false
-            })
-            const store = mockStore(defaultState)
-            render(
-                <Provider store={store}>
-                    <QueryClientProvider client={queryClient}>
-                        <AutomateOverview />
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            expect(
-                screen.queryByText(ADD_FILTER_BUTTON_LABEL),
-            ).not.toBeInTheDocument()
-            await waitFor(() => {
-                expect(
-                    screen.queryByText(FilterLabels[FilterKey.Channels]),
-                ).not.toBeInTheDocument()
-            })
         })
     })
 
@@ -987,8 +943,6 @@ describe('<AutomateOverview />', () => {
     describe('AI Agent KPI Charts', () => {
         beforeEach(() => {
             useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AutomateOverviewChannelsFilter)
-                    return true
                 if (flag === FeatureFlagKey.AutomateAIAgentInteractions)
                     return true
                 return false
@@ -997,8 +951,6 @@ describe('<AutomateOverview />', () => {
 
         it('should render AI Agent KPI charts when ActionDrivenAiAgentNavigation flag is enabled', () => {
             useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AutomateOverviewChannelsFilter)
-                    return true
                 if (flag === FeatureFlagKey.AutomateAIAgentInteractions)
                     return true
                 if (

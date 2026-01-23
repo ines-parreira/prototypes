@@ -70,7 +70,6 @@ export enum FeatureFlagKey {
     AITicketSummary = 'linear.project-ai-summaries.ai-ticket-summary-component-frontend',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
     AutomateAIAgentInteractions = 'automate-ai-agent-interactions',
-    AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
     AutomateSettingsRevamp = 'linear.project_automate-settings-revamp.access',
     AxiomMigration = 'linear.project_ui-kit-foundations-migration',
     BannerCarousel = 'banner-carousel',

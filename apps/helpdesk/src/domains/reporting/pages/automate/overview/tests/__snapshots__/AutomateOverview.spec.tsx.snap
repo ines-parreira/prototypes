@@ -150,25 +150,6 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                       </div>
                     </div>
                   </div>
-                  <button
-                    aria-disabled="false"
-                    class="ui-button-wrapper-cef1 ui-button-ghost-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                    title="Add Filter"
-                    type="button"
-                  >
-                    <i
-                      aria-hidden="true"
-                      class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
-                    >
-                      add
-                    </i>
-                    <span
-                      class="ui-button-content-cef1"
-                    >
-                       
-                      Add Filter
-                    </span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -817,25 +798,6 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                       </div>
                     </div>
                   </div>
-                  <button
-                    aria-disabled="false"
-                    class="ui-button-wrapper-cef1 ui-button-ghost-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                    title="Add Filter"
-                    type="button"
-                  >
-                    <i
-                      aria-hidden="true"
-                      class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
-                    >
-                      add
-                    </i>
-                    <span
-                      class="ui-button-content-cef1"
-                    >
-                       
-                      Add Filter
-                    </span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -1484,25 +1446,6 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                       </div>
                     </div>
                   </div>
-                  <button
-                    aria-disabled="false"
-                    class="ui-button-wrapper-cef1 ui-button-ghost-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                    title="Add Filter"
-                    type="button"
-                  >
-                    <i
-                      aria-hidden="true"
-                      class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
-                    >
-                      add
-                    </i>
-                    <span
-                      class="ui-button-content-cef1"
-                    >
-                       
-                      Add Filter
-                    </span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -2151,25 +2094,6 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                       </div>
                     </div>
                   </div>
-                  <button
-                    aria-disabled="false"
-                    class="ui-button-wrapper-cef1 ui-button-ghost-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                    title="Add Filter"
-                    type="button"
-                  >
-                    <i
-                      aria-hidden="true"
-                      class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
-                    >
-                      add
-                    </i>
-                    <span
-                      class="ui-button-content-cef1"
-                    >
-                       
-                      Add Filter
-                    </span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -2818,25 +2742,6 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                       </div>
                     </div>
                   </div>
-                  <button
-                    aria-disabled="false"
-                    class="ui-button-wrapper-cef1 ui-button-ghost-cef1 ui-button-primary-cef1 ui-button-small-cef1"
-                    title="Add Filter"
-                    type="button"
-                  >
-                    <i
-                      aria-hidden="true"
-                      class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
-                    >
-                      add
-                    </i>
-                    <span
-                      class="ui-button-content-cef1"
-                    >
-                       
-                      Add Filter
-                    </span>
-                  </button>
                 </div>
               </div>
             </div>

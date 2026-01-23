@@ -1,17 +1,17 @@
 import type { User } from 'config/types/user'
 import { useAIAgentUser } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AgentsTable } from 'domains/reporting/pages/support-performance/agents/AgentsTable'
 
 export const AiAgentTable = () => {
-    const statsFilters = useStatsFilters()
+    const statsFilters = useAutomateFilters()
     const aiAgentUser = useAIAgentUser()
     const users = aiAgentUser ? [aiAgentUser] : []
     const cleanStatsFilters = {
-        ...statsFilters.cleanStatsFilters,
+        ...statsFilters.statsFilters,
         [FilterKey.Agents]: withDefaultLogicalOperator(
             users.map((user) => Number(user.id)),
         ),

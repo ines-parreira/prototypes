@@ -26,7 +26,7 @@ describe('useNewAutomateFilters', () => {
         },
     } as RootState
 
-    it('should return filters with logical operators when no channels filter', () => {
+    it('should only return period filter with logical operator when no channels filter', () => {
         const state = {
             ...defaultState,
             stats: {
@@ -44,18 +44,15 @@ describe('useNewAutomateFilters', () => {
 
         expect(result.current.statsFilters).toEqual({
             period: state.stats.filters.period,
-            channels: withDefaultLogicalOperator([]),
         })
     })
 
     it('should return filters with logical operators', () => {
-        const channels = ['api', 'email']
         const state = {
             ...defaultState,
             stats: {
                 filters: {
                     period,
-                    channels: withDefaultLogicalOperator(channels),
                 },
             },
         } as RootState
@@ -69,7 +66,7 @@ describe('useNewAutomateFilters', () => {
         expect(result.current.statsFilters).toEqual(state.stats.filters)
     })
 
-    it('should return clean stats filters with logical operators', () => {
+    it('should only return period filter with logical operator', () => {
         const channels = ['api', 'email']
         const state = {
             ...defaultState,
@@ -102,7 +99,6 @@ describe('useNewAutomateFilters', () => {
 
         expect(result.current.statsFilters).toEqual({
             period: state.ui.stats.filters.cleanStatsFilters?.period,
-            channels: state.ui.stats.filters.cleanStatsFilters?.channels,
         })
     })
 })
