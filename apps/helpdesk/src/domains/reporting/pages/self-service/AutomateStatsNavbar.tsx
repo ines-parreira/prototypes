@@ -80,7 +80,7 @@ export function AutomateStatsNavbar() {
                                             color="purple"
                                             className={css.newBadge}
                                         >
-                                            New
+                                            Beta
                                         </Tag>
                                     </div>
                                 </Navigation.SectionItem>
@@ -102,7 +102,7 @@ export function AutomateStatsNavbar() {
                                             color="purple"
                                             className={css.newBadge}
                                         >
-                                            New
+                                            Beta
                                         </Tag>
                                     </div>
                                 </Navigation.SectionItem>
