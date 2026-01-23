@@ -10,7 +10,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import type { OnboardingData } from 'models/aiAgent/types'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { DropdownSelector } from 'pages/aiAgent/Onboarding_V2/components/DropdownSelector/DropdownSelector'
 import IntegrationCard from 'pages/aiAgent/Onboarding_V2/components/IntegrationCard'
@@ -25,7 +24,6 @@ import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/h
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreAlreadyConfigured'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useCreateOnboarding'
-import { useGenerateToneOfVoice } from 'pages/aiAgent/Onboarding_V2/hooks/useGenerateToneOfVoice'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding_V2/hooks/useOnboardingIntegrationRedirection'
 import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding_V2/hooks/useShopifyIntegrations'
@@ -87,8 +85,6 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
         mutate: doCreateOnboardingMutation,
         isLoading: isCreatingOnboarding,
     } = useCreateOnboarding()
-    const { generateToneOfVoice, isLoading: isToneOfVoiceLoading } =
-        useGenerateToneOfVoice()
 
     const currentAccount = useAppSelector(getCurrentAccountState)
 
@@ -138,10 +134,7 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
         useGetOnboardingData(selectedShop)
 
     const isLoading =
-        isLoadingOnboardingData ||
-        isUpdatingOnboarding ||
-        isCreatingOnboarding ||
-        isToneOfVoiceLoading
+        isLoadingOnboardingData || isUpdatingOnboarding || isCreatingOnboarding
 
     const selectedIntegration = useMemo(
         () =>
@@ -205,15 +198,6 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
         if (!isDirty && !!data?.shopName) {
             goToNextStep()
             return
-        }
-
-        if (!data?.customToneOfVoiceGuidance) {
-            const toneOfVoice = await generateToneOfVoice(
-                selectedIntegration.meta?.shop_domain,
-            )
-
-            updatedData.toneOfVoice = toneOfVoice && ToneOfVoice.Custom
-            updatedData.customToneOfVoiceGuidance = toneOfVoice
         }
 
         if (data && 'id' in data) {

@@ -112,36 +112,16 @@ export const conversationExamples: ConversationExamples = {
     orderReturns: {
         messages: [
             {
-                content:
-                    'I’d like to return a pair of shoes. What’s the process?',
+                content: 'What’s your return policy?',
                 isHtml: false,
                 fromAgent: false,
                 attachments: [],
             },
             {
                 content:
-                    'Returning is simple! You can start here: <a href="https://example.com/returns" target="_blank">Return Item</a>. Please make sure the item is unused and in its original packaging.',
+                    "Hey Alex! We totally get it, sometimes things just don't work out. You can return your items within 30 days of purchase for a full refund or exchange, as long as they're unused and in their original packaging. Feel free to reach out if you have any questions!",
                 isHtml: true,
                 fromAgent: true,
-                attachments: [],
-            },
-            {
-                content: 'Got it. Do I need to pay for return shipping?',
-                isHtml: false,
-                fromAgent: false,
-                attachments: [],
-            },
-            {
-                content:
-                    'Return shipping is free! You’ll receive a prepaid label when you start the return process.',
-                isHtml: true,
-                fromAgent: true,
-                attachments: [],
-            },
-            {
-                content: 'Perfect, thank you!',
-                isHtml: false,
-                fromAgent: false,
                 attachments: [],
             },
         ],

@@ -1,16 +1,26 @@
 import '@testing-library/jest-dom'
 
-import { act, render, screen } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import { MemoryRouter, Route } from 'react-router-dom'
+import configureMockStore from 'redux-mock-store'
+
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import { user } from 'fixtures/users'
+import { ToneOfVoice } from 'pages/aiAgent/constants'
 
 import { ToneOfVoiceStep } from './ToneOfVoiceStep'
 
 const mockUseSteps = {
     validSteps: [
-        { step: 1, condition: true },
-        { step: 2, condition: true },
-        { step: 3, condition: true },
+        { step: 'step1', condition: true },
+        { step: 'step2', condition: true },
+        { step: 'step3', condition: true },
     ],
     totalSteps: 3,
 }
@@ -18,6 +28,14 @@ const mockUseSteps = {
 const mockUseCheckStoreIntegration = jest.fn()
 const mockUseCheckOnboardingCompleted = jest.fn()
 const mockUseCheckStoreAlreadyConfigured = jest.fn()
+const mockMutate = jest.fn()
+
+const mockOnboardingData = {
+    id: '123',
+    shopName: 'test-shop',
+    toneOfVoice: ToneOfVoice.Friendly,
+    customToneOfVoiceGuidance: undefined,
+}
 
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useSteps', () => ({
     useSteps: () => mockUseSteps,
@@ -44,42 +62,54 @@ jest.mock(
     }),
 )
 
-jest.mock('pages/aiAgent/Onboarding_V2/components/MainTitle/MainTitle', () => ({
-    __esModule: true,
-    default: ({ titleBlack, titleMagenta }: any) => (
-        <h1>
-            {titleBlack} <span>{titleMagenta}</span>
-        </h1>
-    ),
+jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData', () => ({
+    useGetOnboardingData: () => ({
+        data: mockOnboardingData,
+        isLoading: false,
+    }),
 }))
 
-jest.mock('pages/aiAgent/Onboarding_V2/layout/ConvAiOnboardingLayout', () => ({
-    OnboardingBody: ({ children }: any) => (
-        <div data-testid="onboarding-body">{children}</div>
-    ),
-    OnboardingContentContainer: ({
-        children,
-        currentStep,
-        totalSteps,
-        onNextClick,
-        onBackClick,
-    }: any) => (
-        <div data-testid="onboarding-content-container">
-            <div data-testid="current-step">{currentStep}</div>
-            <div data-testid="total-steps">{totalSteps}</div>
-            <button onClick={onNextClick}>Next</button>
-            <button onClick={onBackClick}>Back</button>
-            {children}
-        </div>
-    ),
-    OnboardingPreviewContainer: ({ children, isLoading, caption }: any) => (
-        <div data-testid="onboarding-preview-container">
-            {isLoading && <div data-testid="preview-loading">Loading</div>}
-            <div data-testid="preview-caption">{caption}</div>
-            {children}
-        </div>
-    ),
+jest.mock('pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding', () => ({
+    useUpdateOnboarding: () => ({
+        mutate: mockMutate,
+    }),
 }))
+
+jest.mock(
+    'pages/aiAgent/Onboarding_V2/hooks/useTransformToneOfVoiceConversations',
+    () => ({
+        useTransformToneOfVoiceConversations: () => ({
+            previewConversation: {
+                messages: [
+                    {
+                        content: "I'd like to return a pair of shoes.",
+                        isHtml: false,
+                        fromAgent: false,
+                        attachments: [],
+                    },
+                    {
+                        content: 'Returning is simple!',
+                        isHtml: true,
+                        fromAgent: true,
+                        attachments: [],
+                    },
+                ],
+            },
+            isPreviewLoading: false,
+        }),
+    }),
+)
+
+jest.mock('state/integrations/selectors', () => ({
+    getShopifyIntegrationByShopName: () => () => ({
+        toJS: () => ({
+            id: 123,
+            meta: { shop_domain: 'test-shop.myshopify.com' },
+        }),
+    }),
+}))
+
+const mockStore = configureMockStore()
 
 describe('ToneOfVoiceStep', () => {
     const mockGoToStep = jest.fn()
@@ -90,21 +120,51 @@ describe('ToneOfVoiceStep', () => {
         isStoreSelected: false,
     }
 
+    let queryClient: QueryClient
+
+    const createMockState = () => ({
+        currentAccount: fromJS(account),
+        billing: fromJS(billingState),
+        integrations: fromJS(integrationsState).mergeDeep({
+            integrations: [
+                {
+                    ...shopifyIntegration,
+                    meta: {
+                        ...shopifyIntegration.meta,
+                        shop_domain: 'test-shop.myshopify.com',
+                    },
+                },
+            ],
+        }),
+        currentUser: fromJS(user),
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: { retry: false },
+                mutations: { retry: false },
+            },
+        })
     })
 
     const renderComponent = (props = defaultProps) => {
+        const store = mockStore(createMockState())
         return render(
-            <MemoryRouter
-                initialEntries={[
-                    '/app/ai-agent/shopify/test-shop/onboarding/tone-of-voice',
-                ]}
-            >
-                <Route path="/app/ai-agent/:shopType/:shopName/onboarding/:step">
-                    <ToneOfVoiceStep {...props} />
-                </Route>
-            </MemoryRouter>,
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <MemoryRouter
+                        initialEntries={[
+                            '/app/ai-agent/shopify/test-shop/onboarding/tone-of-voice',
+                        ]}
+                    >
+                        <Route path="/app/ai-agent/:shopType/:shopName/onboarding/:step">
+                            <ToneOfVoiceStep {...props} />
+                        </Route>
+                    </MemoryRouter>
+                </QueryClientProvider>
+            </Provider>,
         )
     }
 
@@ -112,177 +172,139 @@ describe('ToneOfVoiceStep', () => {
         it('should render with correct title', () => {
             renderComponent()
 
-            expect(screen.getByText('Set Your')).toBeInTheDocument()
-            expect(screen.getByText('Tone of Voice')).toBeInTheDocument()
-        })
-
-        it('should render onboarding body', () => {
-            renderComponent()
-
-            expect(screen.getByTestId('onboarding-body')).toBeInTheDocument()
-        })
-
-        it('should render content container with correct props', () => {
-            renderComponent()
-
             expect(
-                screen.getByTestId('onboarding-content-container'),
+                screen.getByText('Choose a tone that matches your brand'),
             ).toBeInTheDocument()
-            expect(screen.getByTestId('current-step')).toHaveTextContent('2')
-            expect(screen.getByTestId('total-steps')).toHaveTextContent('3')
         })
 
-        it('should render preview container', () => {
+        it('should render description text', () => {
             renderComponent()
 
             expect(
-                screen.getByTestId('onboarding-preview-container'),
+                screen.getByText(/set the personality of your ai agent/i),
             ).toBeInTheDocument()
-            expect(screen.getByTestId('preview-caption')).toHaveTextContent(
-                'Preview',
-            )
-        })
-
-        it('should render preview container with isLoading as false', () => {
-            renderComponent()
-
-            expect(
-                screen.queryByTestId('preview-loading'),
-            ).not.toBeInTheDocument()
         })
     })
 
     describe('Navigation', () => {
-        it('should call goToStep with next step when Next button is clicked', async () => {
+        it('should navigate to next step when Next button is clicked', async () => {
             const user = userEvent.setup()
             renderComponent()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await act(() => user.click(nextButton))
+            await user.click(nextButton)
 
-            expect(mockGoToStep).toHaveBeenCalledTimes(1)
-            expect(mockGoToStep).toHaveBeenCalledWith(3)
+            expect(mockGoToStep).toHaveBeenCalledWith('step3')
         })
 
-        it('should not call goToStep when Next button is clicked and there is no next step', async () => {
+        it('should navigate to previous step when Back button is clicked', async () => {
             const user = userEvent.setup()
-            mockUseSteps.validSteps = [
-                { step: 1, condition: true },
-                { step: 2, condition: true },
-            ]
-            renderComponent({
-                ...defaultProps,
-                currentStep: 2,
-            })
+            renderComponent()
+
+            const backButton = screen.getByRole('button', { name: /back/i })
+            await user.click(backButton)
+
+            expect(mockGoToStep).toHaveBeenCalledWith('step1')
+        })
+    })
+
+    describe('Tone of Voice Selection', () => {
+        it('should display Friendly tone by default', () => {
+            renderComponent()
+
+            expect(screen.getByText('Friendly')).toBeInTheDocument()
+        })
+
+        it('should allow selecting different tones', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const professionalOption = screen.getByText('Professional')
+            await user.click(professionalOption)
+
+            expect(screen.getByText('Professional')).toBeInTheDocument()
+        })
+
+        it('should show custom tone textarea when Custom is selected', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const customOption = screen.getByText('Custom')
+            await user.click(customOption)
+
+            expect(
+                screen.getByLabelText(/custom tone of voice/i),
+            ).toBeInTheDocument()
+        })
+
+        it('should display examples text for custom tone', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const customOption = screen.getByText('Custom')
+            await user.click(customOption)
+
+            expect(
+                screen.getByText(/use a friendly and conversational tone/i),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('Form Submission', () => {
+        it('should call mutation with correct data when tone is changed', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const professionalOption = screen.getByText('Professional')
+            await user.click(professionalOption)
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await act(() => user.click(nextButton))
+            await user.click(nextButton)
 
-            expect(mockGoToStep).toHaveBeenCalledTimes(1)
-            expect(mockGoToStep).toHaveBeenCalledWith(undefined)
-
-            mockUseSteps.validSteps = [
-                { step: 1, condition: true },
-                { step: 2, condition: true },
-                { step: 3, condition: true },
-            ]
+            expect(mockMutate).toHaveBeenCalledWith(
+                {
+                    id: '123',
+                    data: expect.objectContaining({
+                        toneOfVoice: ToneOfVoice.Professional,
+                    }),
+                },
+                expect.any(Object),
+            )
         })
 
-        it('should call goToStep with previous step when Back button is clicked', async () => {
+        it('should submit custom tone guidance when Custom is selected', async () => {
             const user = userEvent.setup()
             renderComponent()
 
-            const backButton = screen.getByRole('button', { name: /back/i })
-            await act(() => user.click(backButton))
+            const customOption = screen.getByText('Custom')
+            await user.click(customOption)
 
-            expect(mockGoToStep).toHaveBeenCalledTimes(1)
-            expect(mockGoToStep).toHaveBeenCalledWith(1)
+            const textarea = screen.getByLabelText(/custom tone of voice/i)
+            await user.type(textarea, 'Be concise and friendly')
+
+            const nextButton = screen.getByRole('button', { name: /next/i })
+            await user.click(nextButton)
+
+            expect(mockMutate).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    data: expect.objectContaining({
+                        toneOfVoice: ToneOfVoice.Custom,
+                        customToneOfVoiceGuidance: 'Be concise and friendly',
+                    }),
+                }),
+                expect.any(Object),
+            )
         })
 
-        it('should not call goToStep when Back button is clicked and there is no previous step', async () => {
+        it('should skip mutation and go to next step if form unchanged', async () => {
             const user = userEvent.setup()
-            renderComponent({
-                ...defaultProps,
-                currentStep: 1,
-            })
-
-            const backButton = screen.getByRole('button', { name: /back/i })
-            await act(() => user.click(backButton))
-
-            expect(mockGoToStep).not.toHaveBeenCalled()
-        })
-    })
-
-    describe('Hooks', () => {
-        it('should call useCheckStoreIntegration when not first step', () => {
-            renderComponent({
-                ...defaultProps,
-                currentStep: 2,
-            })
-
-            expect(mockUseCheckStoreIntegration).toHaveBeenCalled()
-        })
-
-        it('should not check store integration when it is first step', () => {
-            mockUseCheckStoreIntegration.mockClear()
-            renderComponent({
-                ...defaultProps,
-                currentStep: 1,
-            })
-
-            expect(mockUseCheckStoreIntegration).toHaveBeenCalled()
-        })
-
-        it('should call useCheckOnboardingCompleted', () => {
             renderComponent()
 
-            expect(mockUseCheckOnboardingCompleted).toHaveBeenCalled()
-        })
+            const nextButton = screen.getByRole('button', { name: /next/i })
+            await user.click(nextButton)
 
-        it('should call useCheckStoreAlreadyConfigured', () => {
-            renderComponent()
-
-            expect(mockUseCheckStoreAlreadyConfigured).toHaveBeenCalled()
-        })
-    })
-
-    describe('Step calculations', () => {
-        it('should correctly determine isFirstStep when currentStep is 1', () => {
-            renderComponent({
-                ...defaultProps,
-                currentStep: 1,
-            })
-
-            expect(screen.getByTestId('current-step')).toHaveTextContent('1')
-        })
-
-        it('should correctly determine isFirstStep when currentStep is not 1', () => {
-            renderComponent({
-                ...defaultProps,
-                currentStep: 2,
-            })
-
-            expect(screen.getByTestId('current-step')).toHaveTextContent('2')
-        })
-    })
-
-    describe('Store selection', () => {
-        it('should render correctly when store is selected', () => {
-            renderComponent({
-                ...defaultProps,
-                isStoreSelected: true,
-            })
-
-            expect(screen.getByText('Set Your')).toBeInTheDocument()
-        })
-
-        it('should render correctly when store is not selected', () => {
-            renderComponent({
-                ...defaultProps,
-                isStoreSelected: false,
-            })
-
-            expect(screen.getByText('Set Your')).toBeInTheDocument()
+            expect(mockMutate).not.toHaveBeenCalled()
+            expect(mockGoToStep).toHaveBeenCalledWith('step3')
         })
     })
 })

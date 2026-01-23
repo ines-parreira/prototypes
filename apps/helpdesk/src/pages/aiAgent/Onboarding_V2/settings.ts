@@ -77,7 +77,7 @@ export const agentChatConversationSettings = {
     },
     user: fromJS({
         ...chatUserConfiguration,
-        name: 'AI Agent',
+        name: 'AI agent',
         meta: {
             profile_picture_url: avatarImage,
         },
