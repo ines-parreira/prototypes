@@ -39,11 +39,8 @@ export const ItemCount = ({
             )
         }
 
-        // Show "including snippets" when:
-        // 1. InUseByAI filter is active (takes priority), OR
-        // 2. Search is active without any other filters
-        const showIncludingSnippets =
-            hasInUseByAIFilter || (isSearchActive && !hasActiveFilters)
+        // Show "including snippets" when search is active OR inUseByAI filter is active
+        const showIncludingSnippets = isSearchActive || hasInUseByAIFilter
 
         if (showIncludingSnippets) {
             return (

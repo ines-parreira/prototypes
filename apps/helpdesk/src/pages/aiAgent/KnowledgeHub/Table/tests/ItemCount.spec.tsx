@@ -182,7 +182,7 @@ describe('ItemCount', () => {
             ).toBeInTheDocument()
         })
 
-        it('displays regular result count when search + date filter are active (no inUseByAI)', () => {
+        it('displays result count with "including snippets" when search + date filter are active (no inUseByAI)', () => {
             const table = createMockTable(mockItems)
             render(
                 <ItemCount
@@ -193,7 +193,9 @@ describe('ItemCount', () => {
                 />,
             )
 
-            expect(screen.getByText('3 results found')).toBeInTheDocument()
+            expect(
+                screen.getByText('3 results found including snippets'),
+            ).toBeInTheDocument()
         })
 
         it('displays zero results', () => {
