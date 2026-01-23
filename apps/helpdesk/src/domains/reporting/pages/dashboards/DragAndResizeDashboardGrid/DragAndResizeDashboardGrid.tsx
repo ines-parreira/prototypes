@@ -2,52 +2,79 @@ import type React from 'react'
 import { useCallback, useMemo } from 'react'
 
 import {
-    noCompactor,
     ResponsiveGridLayout,
     useContainerWidth,
+    verticalCompactor,
 } from 'react-grid-layout'
 import type { Layout } from 'react-grid-layout'
 
 import 'react-grid-layout/css/styles.css'
+import 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid.less'
 
+import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'
+import { getChartConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartLayoutConstraints'
+import { calculateChartPositions } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
 import type {
+    DashboardChartSchema,
     DashboardChild,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
-import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import {
+    ChartType,
+    DashboardChildType,
+} from 'domains/reporting/pages/dashboards/types'
 
 const COLS = 4
 
+const flattenCharts = (children: DashboardChild[]): DashboardChartSchema[] => {
+    return children.flatMap((child: DashboardChild) => {
+        switch (child.type) {
+            case DashboardChildType.Row:
+            case DashboardChildType.Section:
+                return flattenCharts(child.children)
+            case DashboardChildType.Chart:
+                return [child]
+        }
+    })
+}
+
 const renderDashboard = (dashboard: DashboardSchema): React.ReactNode[] => {
-    const renderChildren = (children: DashboardChild[]): React.ReactNode[] =>
-        children.flatMap((child: DashboardChild, index: number) => {
-            switch (child.type) {
-                case DashboardChildType.Row:
-                case DashboardChildType.Section:
-                    return renderChildren(child.children)
+    const charts = flattenCharts(dashboard.children)
 
-                case DashboardChildType.Chart:
-                    return (
-                        <div
-                            key={`${child.type}-${index}`}
-                            data-grid={{
-                                x: index % COLS,
-                                y: Math.floor(index / COLS),
-                                w: 1,
-                                h: 2,
-                            }}
-                        >
-                            <DragAndResizeChart
-                                schema={child}
-                                dashboard={dashboard}
-                            />
-                        </div>
-                    )
-            }
-        })
+    const chartConstraints = charts.map((chart) => {
+        const { chartConfig } = getComponentConfig(chart.config_id)
+        const chartType = chartConfig?.chartType ?? ChartType.Card
+        return getChartConstraints(chartType)
+    })
 
-    return renderChildren(dashboard.children)
+    const positions = calculateChartPositions(chartConstraints, COLS)
+
+    return charts.map((chart, index) => {
+        const position = positions[index]
+        const { chartConfig } = getComponentConfig(chart.config_id)
+        const chartType = chartConfig?.chartType ?? ChartType.Card
+        const constraints = getChartConstraints(chartType)
+
+        return (
+            <div
+                key={`${chart.type}-${index}`}
+                data-grid={{
+                    i: chart.config_id,
+                    x: position.x,
+                    y: position.y,
+                    w: position.w,
+                    h: position.h,
+                    minW: constraints.min.width,
+                    maxW: constraints.max.width,
+                    minH: constraints.min.height,
+                    maxH: constraints.max.height,
+                }}
+            >
+                <DragAndResizeChart schema={chart} dashboard={dashboard} />
+            </div>
+        )
+    })
 }
 
 const DragAndResizeDashboardGrid = ({
@@ -99,7 +126,7 @@ const DragAndResizeDashboardGrid = ({
                 resizeConfig={{
                     enabled: true,
                 }}
-                compactor={noCompactor}
+                compactor={verticalCompactor}
                 onLayoutChange={handleLayoutChange}
                 onBreakpointChange={handleBreakpointChange}
             >
