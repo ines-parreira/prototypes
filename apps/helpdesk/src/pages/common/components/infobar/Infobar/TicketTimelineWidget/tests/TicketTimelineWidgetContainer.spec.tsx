@@ -1,5 +1,6 @@
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 // Import the mocked modules
 import { useParams } from 'react-router-dom'
 
@@ -139,6 +140,7 @@ describe('TicketTimelineWidgetContainer', () => {
         } as any,
         useTicketTimelineData: {
             displayedTickets: [],
+            allEnrichedTickets: [],
             totalNumber: 0,
             openTicketsNumber: 0,
             snoozedTicketsNumber: 0,
@@ -207,6 +209,22 @@ describe('TicketTimelineWidgetContainer', () => {
                     evaluationResults: {},
                 },
             ],
+            allEnrichedTickets: [
+                {
+                    ticket: mockTickets[0],
+                    iconName: 'comm-mail',
+                    customFields: [],
+                    conditionsLoading: false,
+                    evaluationResults: {},
+                },
+                {
+                    ticket: mockTickets[1],
+                    iconName: 'comm-mail',
+                    customFields: [],
+                    conditionsLoading: false,
+                    evaluationResults: {},
+                },
+            ],
             totalNumber: 2,
             openTicketsNumber: 2,
             snoozedTicketsNumber: 0,
@@ -224,6 +242,7 @@ describe('TicketTimelineWidgetContainer', () => {
     it('should fetch and display customer name when totalNumber is 1', () => {
         mockUseTicketTimelineData.mockReturnValue({
             displayedTickets: [],
+            allEnrichedTickets: [],
             totalNumber: 1,
             openTicketsNumber: 1,
             snoozedTicketsNumber: 0,
@@ -250,6 +269,7 @@ describe('TicketTimelineWidgetContainer', () => {
     it('should not fetch customer name when totalNumber is not 1', () => {
         mockUseTicketTimelineData.mockReturnValue({
             displayedTickets: [],
+            allEnrichedTickets: [],
             totalNumber: 2,
             openTicketsNumber: 2,
             snoozedTicketsNumber: 0,
@@ -266,6 +286,7 @@ describe('TicketTimelineWidgetContainer', () => {
     it('should use firstname when name is not available', () => {
         mockUseTicketTimelineData.mockReturnValue({
             displayedTickets: [],
+            allEnrichedTickets: [],
             totalNumber: 1,
             openTicketsNumber: 1,
             snoozedTicketsNumber: 0,
@@ -338,5 +359,592 @@ describe('TicketTimelineWidgetContainer', () => {
                 customFieldDefinitions: [],
             }),
         )
+    })
+
+    describe('handleToggleTimeline', () => {
+        it('should call onChangeTab and onToggle when "Show All" is clicked and infobar is collapsed', async () => {
+            const user = userEvent.setup()
+            const mockOnChangeTab = jest.fn()
+            const mockOnToggle = jest.fn()
+
+            const mockTickets = [
+                createMockTicket({ id: 1, subject: 'First Ticket' }),
+                createMockTicket({ id: 2, subject: 'Second Ticket' }),
+            ]
+
+            mockUseTicketInfobarNavigation.mockReturnValue({
+                activeTab: TicketInfobarTab.Customer,
+                onChangeTab: mockOnChangeTab,
+                onToggle: mockOnToggle,
+                isExpanded: false, // Collapsed
+            })
+
+            mockUseTicketTimelineData.mockReturnValue({
+                displayedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                allEnrichedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                totalNumber: 2,
+                openTicketsNumber: 2,
+                snoozedTicketsNumber: 0,
+            })
+
+            render(<TicketTimelineWidgetContainer />)
+
+            const showAllButton = screen.getByText('Show All')
+            await act(() => user.click(showAllButton))
+
+            expect(mockOnChangeTab).toHaveBeenCalledWith(
+                TicketInfobarTab.Timeline,
+            )
+            expect(mockOnToggle).toHaveBeenCalled()
+        })
+
+        it('should only call onChangeTab when "Show All" is clicked and infobar is already expanded', async () => {
+            const user = userEvent.setup()
+            const mockOnChangeTab = jest.fn()
+            const mockOnToggle = jest.fn()
+
+            const mockTickets = [
+                createMockTicket({ id: 1, subject: 'First Ticket' }),
+                createMockTicket({ id: 2, subject: 'Second Ticket' }),
+            ]
+
+            mockUseTicketInfobarNavigation.mockReturnValue({
+                activeTab: TicketInfobarTab.Customer,
+                onChangeTab: mockOnChangeTab,
+                onToggle: mockOnToggle,
+                isExpanded: true, // Already expanded
+            })
+
+            mockUseTicketTimelineData.mockReturnValue({
+                displayedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                allEnrichedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                totalNumber: 2,
+                openTicketsNumber: 2,
+                snoozedTicketsNumber: 0,
+            })
+
+            render(<TicketTimelineWidgetContainer />)
+
+            const showAllButton = screen.getByText('Show All')
+            await act(() => user.click(showAllButton))
+
+            expect(mockOnChangeTab).toHaveBeenCalledWith(
+                TicketInfobarTab.Timeline,
+            )
+            expect(mockOnToggle).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('handleSelectTicket and sidepanel', () => {
+        it('should open sidepanel when a ticket is clicked', async () => {
+            const user = userEvent.setup()
+
+            const mockTickets = [
+                createMockTicket({ id: 1, subject: 'First Ticket' }),
+                createMockTicket({ id: 2, subject: 'Second Ticket' }),
+            ]
+
+            mockUseTicketTimelineData.mockReturnValue({
+                displayedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                allEnrichedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                totalNumber: 2,
+                openTicketsNumber: 2,
+                snoozedTicketsNumber: 0,
+            })
+
+            render(<TicketTimelineWidgetContainer />)
+
+            // Click on first ticket
+            const firstTicketCard = screen
+                .getByText('First Ticket')
+                .closest('div')
+            await act(() => user.click(firstTicketCard!))
+
+            // Check that sidepanel is rendered with the ticket
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('dialog', { hidden: true }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should pass ticket to TicketTimelineSidePanelPreview when clicked', async () => {
+            const user = userEvent.setup()
+
+            const mockTickets = [
+                createMockTicket({ id: 1, subject: 'First Ticket' }),
+                createMockTicket({ id: 2, subject: 'Second Ticket' }),
+            ]
+
+            mockUseTicketTimelineData.mockReturnValue({
+                displayedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                allEnrichedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                totalNumber: 2,
+                openTicketsNumber: 2,
+                snoozedTicketsNumber: 0,
+            })
+
+            render(<TicketTimelineWidgetContainer />)
+
+            // Initially, sidepanel should not be visible
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+
+            // Click on first ticket to open sidepanel
+            const firstTicketCard = screen
+                .getByText('First Ticket')
+                .closest('div')
+            await act(() => user.click(firstTicketCard!))
+
+            // Wait for sidepanel to be rendered
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('dialog', { hidden: true }),
+                ).toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('handleNext and handlePrevious', () => {
+        it('should navigate to next ticket when Next button is clicked', async () => {
+            const user = userEvent.setup()
+
+            const mockTickets = [
+                createMockTicket({ id: 1, subject: 'First Ticket' }),
+                createMockTicket({ id: 2, subject: 'Second Ticket' }),
+                createMockTicket({ id: 3, subject: 'Third Ticket' }),
+            ]
+
+            mockUseTicketTimelineData.mockReturnValue({
+                displayedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[2],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                allEnrichedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[2],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                totalNumber: 3,
+                openTicketsNumber: 3,
+                snoozedTicketsNumber: 0,
+            })
+
+            render(<TicketTimelineWidgetContainer />)
+
+            // Click on first ticket to open sidepanel
+            const firstTicketCard = screen
+                .getByText('First Ticket')
+                .closest('div')
+            await act(() => user.click(firstTicketCard!))
+
+            // Wait for sidepanel to open
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('dialog', { hidden: true }),
+                ).toBeInTheDocument()
+            })
+
+            // Previous button should be disabled (we're on first ticket)
+            const previousButton = screen.getByRole('button', {
+                name: /previous/i,
+            })
+            expect(previousButton).toBeDisabled()
+
+            // Click Next button
+            const nextButton = screen.getByRole('button', { name: /next/i })
+            expect(nextButton).not.toBeDisabled()
+
+            await act(() => user.click(nextButton))
+
+            // After clicking next, Previous button should be enabled
+            await waitFor(() => {
+                expect(previousButton).not.toBeDisabled()
+            })
+        })
+
+        it('should navigate to previous ticket when Previous button is clicked', async () => {
+            const user = userEvent.setup()
+
+            const mockTickets = [
+                createMockTicket({ id: 1, subject: 'First Ticket' }),
+                createMockTicket({ id: 2, subject: 'Second Ticket' }),
+                createMockTicket({ id: 3, subject: 'Third Ticket' }),
+            ]
+
+            mockUseTicketTimelineData.mockReturnValue({
+                displayedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[2],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                allEnrichedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[2],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                totalNumber: 3,
+                openTicketsNumber: 3,
+                snoozedTicketsNumber: 0,
+            })
+
+            render(<TicketTimelineWidgetContainer />)
+
+            // Click on second ticket to open sidepanel
+            const secondTicketCard = screen
+                .getByText('Second Ticket')
+                .closest('div')
+            await act(() => user.click(secondTicketCard!))
+
+            // Wait for sidepanel to open
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('dialog', { hidden: true }),
+                ).toBeInTheDocument()
+            })
+
+            // Next button should be enabled (we're on middle ticket)
+            const nextButton = screen.getByRole('button', { name: /next/i })
+            expect(nextButton).not.toBeDisabled()
+
+            // Click Previous button
+            const previousButton = screen.getByRole('button', {
+                name: /previous/i,
+            })
+            expect(previousButton).not.toBeDisabled()
+
+            await act(() => user.click(previousButton))
+
+            // After clicking previous, Previous button should be disabled (we're on first ticket)
+            await waitFor(() => {
+                expect(previousButton).toBeDisabled()
+            })
+        })
+
+        it('should disable Previous button when on first ticket', async () => {
+            const user = userEvent.setup()
+
+            const mockTickets = [
+                createMockTicket({ id: 1, subject: 'First Ticket' }),
+                createMockTicket({ id: 2, subject: 'Second Ticket' }),
+            ]
+
+            mockUseTicketTimelineData.mockReturnValue({
+                displayedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                allEnrichedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                totalNumber: 2,
+                openTicketsNumber: 2,
+                snoozedTicketsNumber: 0,
+            })
+
+            render(<TicketTimelineWidgetContainer />)
+
+            // Click on first ticket to open sidepanel
+            const firstTicketCard = screen
+                .getByText('First Ticket')
+                .closest('div')
+            await act(() => user.click(firstTicketCard!))
+
+            // Wait for sidepanel to open
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('dialog', { hidden: true }),
+                ).toBeInTheDocument()
+            })
+
+            // Previous button should be disabled
+            const previousButton = screen.getByRole('button', {
+                name: /previous/i,
+            })
+            expect(previousButton).toBeDisabled()
+        })
+
+        it('should disable Next button when on last ticket', async () => {
+            const user = userEvent.setup()
+
+            const mockTickets = [
+                createMockTicket({ id: 1, subject: 'First Ticket' }),
+                createMockTicket({ id: 2, subject: 'Second Ticket' }),
+            ]
+
+            mockUseTicketTimelineData.mockReturnValue({
+                displayedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                allEnrichedTickets: [
+                    {
+                        ticket: mockTickets[0],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                    {
+                        ticket: mockTickets[1],
+                        iconName: 'comm-mail',
+                        customFields: [],
+                        conditionsLoading: false,
+                        evaluationResults: {},
+                    },
+                ],
+                totalNumber: 2,
+                openTicketsNumber: 2,
+                snoozedTicketsNumber: 0,
+            })
+
+            render(<TicketTimelineWidgetContainer />)
+
+            // Click on second (last) ticket to open sidepanel
+            const secondTicketCard = screen
+                .getByText('Second Ticket')
+                .closest('div')
+            await act(() => user.click(secondTicketCard!))
+
+            // Wait for sidepanel to open
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('dialog', { hidden: true }),
+                ).toBeInTheDocument()
+            })
+
+            // Next button should be disabled
+            const nextButton = screen.getByRole('button', { name: /next/i })
+            expect(nextButton).toBeDisabled()
+        })
     })
 })

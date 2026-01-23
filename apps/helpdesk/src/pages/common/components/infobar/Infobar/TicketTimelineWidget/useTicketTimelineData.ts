@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import type { EnrichedTicket, TicketCustomField } from '@repo/tickets'
 
@@ -27,6 +27,7 @@ type UseTicketTimelineDataParams = {
 
 type UseTicketTimelineDataResult = {
     displayedTickets: EnrichedTicket[]
+    allEnrichedTickets: EnrichedTicket[]
     totalNumber: number
     openTicketsNumber: number
     snoozedTicketsNumber: number
@@ -106,9 +107,9 @@ export function useTicketTimelineData({
         [customFieldDefinitions],
     )
 
-    // Enrich only the displayed tickets with evaluation results and custom fields
-    const displayedTickets = useMemo(() => {
-        return ticketsToDisplay.map((ticket) => {
+    // Helper function to enrich a ticket with evaluation results and custom fields
+    const enrichTicket = useCallback(
+        (ticket: TicketCompact): EnrichedTicket => {
             const evaluationResults = evaluateCustomFieldsConditions(
                 customFieldConditions,
                 OBJECT_TYPES.TICKET,
@@ -159,23 +160,32 @@ export function useTicketTimelineData({
                 ticket,
                 evaluationResults,
                 conditionsLoading,
-                isFieldRequired,
-                isFieldVisible,
                 customFields,
                 iconName: channelToIcon(ticket.channel),
             }
-        })
-    }, [
-        ticketsToDisplay,
-        customFieldConditions,
-        conditionsLoading,
-        filteredDefinitions,
-        customFieldDefinitions,
-        channelToIcon,
-    ])
+        },
+        [
+            customFieldConditions,
+            conditionsLoading,
+            filteredDefinitions,
+            customFieldDefinitions,
+            channelToIcon,
+        ],
+    )
+
+    // Enrich all tickets for navigation
+    const allEnrichedTickets = useMemo(() => {
+        return tickets.map(enrichTicket)
+    }, [tickets, enrichTicket])
+
+    // Enrich only the displayed tickets
+    const displayedTickets = useMemo(() => {
+        return ticketsToDisplay.map(enrichTicket)
+    }, [ticketsToDisplay, enrichTicket])
 
     return {
         displayedTickets,
+        allEnrichedTickets,
         totalNumber,
         openTicketsNumber,
         snoozedTicketsNumber,

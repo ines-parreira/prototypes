@@ -220,6 +220,50 @@ describe('TicketTimelineWidget', () => {
         })
     })
 
+    describe('Ticket selection', () => {
+        it('should call onSelectTicket when clicking a ticket card', async () => {
+            const user = userEvent.setup()
+            const onSelectTicket = vi.fn()
+            const ticket1 = createEnrichedTicket(
+                createTicketCompact({ id: 1, subject: 'First Ticket' }),
+            )
+            const ticket2 = createEnrichedTicket(
+                createTicketCompact({ id: 2, subject: 'Second Ticket' }),
+            )
+            const tickets = [ticket1, ticket2]
+
+            renderComponent({
+                tickets: tickets,
+                totalNumber: 2,
+                onSelectTicket,
+            })
+
+            const firstTicketCard = screen
+                .getByText('First Ticket')
+                .closest('div')
+            await act(() => user.click(firstTicketCard!))
+
+            expect(onSelectTicket).toHaveBeenCalledWith(ticket1)
+        })
+
+        it('should not call onSelectTicket when no handler is provided', async () => {
+            const user = userEvent.setup()
+            const tickets = [
+                createEnrichedTicket(
+                    createTicketCompact({ id: 1, subject: 'First Ticket' }),
+                ),
+            ]
+
+            renderComponent({
+                tickets: tickets,
+                totalNumber: 2,
+            })
+
+            const ticketCard = screen.getByText('First Ticket').closest('div')
+            await act(() => user.click(ticketCard!))
+        })
+    })
+
     describe('TicketsList rendering', () => {
         it('should render ticket with correct channel icon', () => {
             const tickets = [

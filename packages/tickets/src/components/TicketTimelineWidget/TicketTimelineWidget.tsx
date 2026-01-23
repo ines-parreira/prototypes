@@ -12,6 +12,7 @@ export type TicketTimelineWidgetProps = {
     isLoading: boolean
     customerName?: string
     onToggleTimeline: () => void
+    onSelectTicket?: (ticket: EnrichedTicket) => void
 }
 
 export function TicketTimelineWidget({
@@ -22,6 +23,7 @@ export function TicketTimelineWidget({
     isLoading,
     customerName,
     onToggleTimeline,
+    onSelectTicket,
 }: TicketTimelineWidgetProps) {
     const shouldDisplayTicketsList = totalNumber > 1 && !isLoading
 
@@ -39,7 +41,10 @@ export function TicketTimelineWidget({
 
             {shouldDisplayTicketsList && (
                 <Box flexDirection="column">
-                    <TicketsList enrichedTickets={tickets} />
+                    <TicketsList
+                        enrichedTickets={tickets}
+                        onSelectTicket={onSelectTicket}
+                    />
                     <Box>
                         <Button
                             onClick={onToggleTimeline}

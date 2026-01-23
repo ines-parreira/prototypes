@@ -1,4 +1,7 @@
+import { useCallback, useState } from 'react'
+
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
+import type { EnrichedTicket } from '@repo/tickets'
 import { TicketTimelineWidget } from '@repo/tickets'
 import { useParams } from 'react-router-dom'
 
@@ -8,6 +11,7 @@ import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useGetCustomer } from 'models/customer/queries'
 import type { Customer } from 'models/customer/types'
+import { TicketTimelineSidePanelPreview } from 'tickets/ticket-timeline/components/TicketTimelineSidePanelPreview'
 import { useTicketList } from 'timeline/hooks/useTicketList'
 
 import { channelToCommunicationIcon } from './channelToCommunicationIcon'
@@ -39,16 +43,6 @@ export function TicketTimelineWidgetContainer() {
     const shopperId = currentTicketData?.data?.customer?.id
     const { tickets, isLoading: isLoadingTickets } = useTicketList(shopperId)
 
-    const handleToggleTimeline = () => {
-        // Switch to Timeline tab first
-        onChangeTab(TicketInfobarTab.Timeline)
-
-        // Then expand infobar if it's collapsed
-        if (!isExpanded) {
-            onToggle()
-        }
-    }
-
     const { data: customFieldDefinitionsData } = useCustomFieldDefinitions({
         object_type: OBJECT_TYPES.TICKET,
         archived: false,
@@ -59,6 +53,7 @@ export function TicketTimelineWidgetContainer() {
 
     const {
         displayedTickets,
+        allEnrichedTickets,
         totalNumber,
         openTicketsNumber,
         snoozedTicketsNumber,
@@ -76,17 +71,70 @@ export function TicketTimelineWidgetContainer() {
     const customerName =
         totalNumber === 1 ? getCustomerName(customerData?.data) : undefined
 
+    const [selectedTicket, setSelectedTicket] = useState<EnrichedTicket | null>(
+        null,
+    )
+    const [isOpen, setIsOpen] = useState(false)
+
+    const currentIndex = selectedTicket
+        ? allEnrichedTickets.findIndex(
+              (e) => e.ticket.id === selectedTicket.ticket.id,
+          )
+        : -1
+    const isFirstTicket = currentIndex <= 0
+    const isLastTicket =
+        currentIndex >= allEnrichedTickets.length - 1 || currentIndex === -1
+
+    const handleToggleTimeline = () => {
+        // Switch to Timeline tab first
+        onChangeTab(TicketInfobarTab.Timeline)
+
+        // Then expand infobar if it's collapsed
+        if (!isExpanded) {
+            onToggle()
+        }
+    }
+
+    const handleSelectTicket = useCallback((enrichedTicket: EnrichedTicket) => {
+        setSelectedTicket(enrichedTicket)
+        setIsOpen(true)
+    }, [])
+
+    const handleNext = useCallback(() => {
+        if (currentIndex < allEnrichedTickets.length - 1) {
+            setSelectedTicket(allEnrichedTickets[currentIndex + 1])
+        }
+    }, [currentIndex, allEnrichedTickets])
+
+    const handlePrevious = useCallback(() => {
+        if (currentIndex > 0) {
+            setSelectedTicket(allEnrichedTickets[currentIndex - 1])
+        }
+    }, [currentIndex, allEnrichedTickets])
+
     return (
-        <div className={css.container}>
-            <TicketTimelineWidget
-                tickets={displayedTickets}
-                totalNumber={totalNumber}
-                openTicketsNumber={openTicketsNumber}
-                snoozedTicketsNumber={snoozedTicketsNumber}
-                isLoading={isLoadingTickets}
-                customerName={customerName}
-                onToggleTimeline={handleToggleTimeline}
+        <>
+            <div className={css.container}>
+                <TicketTimelineWidget
+                    tickets={displayedTickets}
+                    totalNumber={totalNumber}
+                    openTicketsNumber={openTicketsNumber}
+                    snoozedTicketsNumber={snoozedTicketsNumber}
+                    isLoading={isLoadingTickets}
+                    customerName={customerName}
+                    onToggleTimeline={handleToggleTimeline}
+                    onSelectTicket={handleSelectTicket}
+                />
+            </div>
+            <TicketTimelineSidePanelPreview
+                ticket={selectedTicket?.ticket ?? null}
+                isOpen={isOpen}
+                onOpenChange={setIsOpen}
+                onNext={handleNext}
+                onPrevious={handlePrevious}
+                isFirstTicket={isFirstTicket}
+                isLastTicket={isLastTicket}
             />
-        </div>
+        </>
     )
 }
