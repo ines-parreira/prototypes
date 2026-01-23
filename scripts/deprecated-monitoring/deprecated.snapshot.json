@@ -5010,7 +5010,7 @@
         },
         {
           "name": "Breadcrumb",
-          "count": 70,
+          "count": 71,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/cancelOrder/CancelOrderFlowView.tsx",
@@ -5041,6 +5041,7 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/GorgiasChatCreationWizard.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/revamp/GorgiasChatCreationWizard.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/revamp/GorgiasChatIntegrationAppearance.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.tsx",
@@ -5086,7 +5087,7 @@
         },
         {
           "name": "BreadcrumbItem",
-          "count": 70,
+          "count": 71,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/cancelOrder/CancelOrderFlowView.tsx",
@@ -5117,6 +5118,7 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/GorgiasChatCreationWizard.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/revamp/GorgiasChatCreationWizard.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/revamp/GorgiasChatIntegrationAppearance.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.tsx",

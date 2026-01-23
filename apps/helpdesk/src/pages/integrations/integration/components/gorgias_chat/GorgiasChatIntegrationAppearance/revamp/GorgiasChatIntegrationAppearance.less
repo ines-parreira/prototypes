@@ -1,0 +1,138 @@
+@import '~css/new/mixins';
+@import '../../GorgiasChatIntegrationForm.less';
+
+@medium: ~'only screen and (max-width: 1393px)';
+
+:local {
+    /* ============================================================
+       REVAMP DISCLAIMER BANNER - REMOVE WHEN REVAMP IS COMPLETE
+       ============================================================ */
+    .revampBanner {
+        background-color: #fef3c7;
+        border: 2px solid #f59e0b;
+        color: #92400e;
+        padding: var(--layout-spacing-s) var(--layout-spacing-m);
+        margin-bottom: var(--layout-spacing-m);
+        border-radius: 4px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .pageContainer {
+        padding: var(--layout-spacing-m);
+        max-width: calc(680px + var(--layout-spacing-m) * 2);
+    }
+
+    .group {
+        margin-bottom: var(--layout-spacing-s);
+    }
+
+    .colorPickersWrapper {
+        display: flex;
+        gap: var(--layout-spacing-s);
+    }
+
+    .colorPicker {
+        flex: 1;
+        margin-bottom: 0;
+    }
+
+    .redStar {
+        color: var(--content-error-primary);
+    }
+
+    .launcherTypes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: var(--layout-spacing-s);
+        margin-bottom: var(--layout-spacing-l);
+    }
+
+    .launcherPreview {
+        height: 120px;
+        border-radius: 4px;
+        border: 1px var(--border-neutral-default) solid;
+        background-color: var(--surface-neutral-tertiary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .launcherSettingsGrid {
+        display: grid;
+        grid-template-columns: 2fr 2fr;
+        column-gap: var(--layout-spacing-s);
+        row-gap: var(--layout-spacing-s);
+
+        @media @medium {
+            grid-template-columns: 1fr;
+        }
+
+        .formGroup {
+            margin-bottom: 0;
+        }
+
+        .launcherLabelInput {
+            margin-bottom: var(--layout-spacing-s);
+        }
+    }
+
+    .fontInputWrapper,
+    .avatarInputsWrapper,
+    .logoInputsWrapper,
+    .positionInputsWrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: var(--layout-spacing-s);
+        row-gap: var(--layout-spacing-l);
+
+        .tooltipIcon {
+            margin-left: var(--layout-spacing-xxs);
+        }
+    }
+
+    .logoInputsWrapper {
+        margin-bottom: var(--layout-spacing-l);
+    }
+
+    .platformTypeContainer {
+        display: grid;
+        grid-auto-flow: column;
+        column-gap: var(--layout-spacing-s);
+        margin-bottom: var(--layout-spacing-l);
+    }
+
+    .connectStoreDescription {
+        margin-top: var(--layout-spacing-xxs);
+        margin-bottom: var(--layout-spacing-m);
+    }
+
+    .cancelButton {
+        margin-left: var(--layout-spacing-xs);
+    }
+
+    .toggleButtonWrapper {
+        margin-bottom: var(--layout-spacing-s);
+    }
+
+    .introMessageHeader {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .mainColorOutsideBusinessHoursCheckbox {
+        display: flex;
+        margin-top: var(--layout-spacing-l);
+    }
+
+    .mainColorOutsideBusinessHoursCheckboxLabel {
+        display: flex;
+        align-items: center;
+    }
+
+    .mainColorOutsideBusinessHoursTooltipIcon {
+        cursor: default;
+        vertical-align: middle;
+        font-size: 20px;
+    }
+}
