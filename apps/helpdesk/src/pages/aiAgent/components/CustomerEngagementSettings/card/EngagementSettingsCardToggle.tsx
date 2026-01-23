@@ -16,6 +16,7 @@ export type EngagementSettingsCardToggleProps = {
     onSettingsClick?: () => void
     withBadges?: boolean
     isDesktopOnly?: boolean
+    color?: string
 }
 
 export const EngagementSettingsCardToggle = ({
@@ -25,6 +26,7 @@ export const EngagementSettingsCardToggle = ({
     onSettingsClick,
     withBadges = false,
     isDesktopOnly = false,
+    color,
 }: EngagementSettingsCardToggleProps) => {
     const showDeviceBadges = isChecked && withBadges
     const showSettingsButton = withBadges && onSettingsClick
@@ -63,6 +65,7 @@ export const EngagementSettingsCardToggle = ({
                 aria-label={
                     isChecked ? 'Disable engagement' : 'Enable engagement'
                 }
+                color={color}
             />
         </div>
     )

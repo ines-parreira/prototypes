@@ -51,7 +51,7 @@ export const chatUserConfiguration: User = {
 }
 
 export const chatPreviewSettings = {
-    name: 'My ecommerce chat',
+    name: 'Steve Madden',
     mainFontFamily: GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     isOnline: true,
     renderFooter: false,

@@ -9,6 +9,7 @@ import {
     useParams,
 } from 'react-router-dom'
 
+import { EngagementStep } from 'pages/aiAgent/Onboarding_V2/components/steps/EngagementStep/EngagementStep'
 import { HandoverStep } from 'pages/aiAgent/Onboarding_V2/components/steps/HandoverStep/HandoverStep'
 import { KnowledgeStep } from 'pages/aiAgent/Onboarding_V2/components/steps/KnowledgeStep/KnowledgeStep'
 import { PersonalityStep } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersonalityStep'
@@ -98,6 +99,8 @@ export const AiAgentOnboarding = () => {
                 return <HandoverStep {...stepProps} />
             case WizardStepEnum.SALES_PERSONALITY:
                 return <PersonalityStep {...stepProps} />
+            case WizardStepEnum.ENGAGEMENT:
+                return <EngagementStep {...stepProps} />
             default:
                 return <ToneOfVoiceStep {...stepProps} />
         }

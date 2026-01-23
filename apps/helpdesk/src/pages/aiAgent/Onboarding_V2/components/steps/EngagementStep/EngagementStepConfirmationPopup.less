@@ -1,0 +1,50 @@
+@import (reference) '~css/typography.less';
+
+:local {
+    .modal {
+        gap: 0;
+    }
+
+    .header {
+        display: flex;
+        padding: var(--spacing-lg) var(--spacing-xxl);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+        align-self: stretch;
+
+        background: var(
+            --linear-grey-magenta,
+            linear-gradient(
+                166deg,
+                var(--neutral-grey-2) 30.85%,
+                var(--accessory-magenta-25) 145.54%
+            )
+        ); // legacy
+    }
+
+    .footer {
+        background: var(--elevation-neutral-default);
+    }
+}
+
+.axiom :local {
+    .header {
+        background: var(
+            --linear-grey-magenta,
+            linear-gradient(
+                166deg,
+                var(--surface-neutral-tertiary) 30.85%,
+                var(--surface-brand-subtle) 145.54%
+            )
+        );
+    }
+
+    .content {
+        color: var(--content-neutral-default);
+    }
+
+    .footer {
+        background: var(--elevation-neutral-default);
+    }
+}

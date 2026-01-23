@@ -154,7 +154,7 @@ describe('PersonalityStep - With prepopulated data', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         await waitFor(() => {
-            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
+            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.ENGAGEMENT)
         })
     })
 })
@@ -403,7 +403,7 @@ describe('PersonalityStep - Empty state', () => {
         })
     })
 
-    it('navigates to the knowledge step when Next is clicked', async () => {
+    it('navigates to the engagement step when Next is clicked', async () => {
         renderComponent()
 
         await waitFor(() => {
@@ -422,7 +422,7 @@ describe('PersonalityStep - Empty state', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         await waitFor(() => {
-            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.KNOWLEDGE)
+            expect(goToStep).toHaveBeenCalledWith(WizardStepEnum.ENGAGEMENT)
         })
     })
 })
@@ -725,7 +725,7 @@ describe('PersonalityStep - Onboarding mutation', () => {
                                 AiAgentScopes.SUPPORT,
                             ],
                             shopName: shopifyIntegration.meta.shop_name,
-                            currentStepName: WizardStepEnum.KNOWLEDGE,
+                            currentStepName: WizardStepEnum.ENGAGEMENT,
                             salesDiscountMax: 0.08,
                             salesDiscountStrategyLevel: 'balanced',
                             salesPersuasionLevel: 'balanced',
@@ -784,7 +784,7 @@ describe('PersonalityStep - Onboarding mutation', () => {
                                 AiAgentScopes.SUPPORT,
                             ],
                             shopName: shopifyIntegration.meta.shop_name,
-                            currentStepName: WizardStepEnum.KNOWLEDGE,
+                            currentStepName: WizardStepEnum.ENGAGEMENT,
                             salesDiscountMax: null,
                             salesDiscountStrategyLevel: 'none',
                             salesPersuasionLevel: 'aggressive',

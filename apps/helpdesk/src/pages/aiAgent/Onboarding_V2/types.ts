@@ -6,6 +6,7 @@ export enum WizardStepEnum {
     TONE_OF_VOICE = 'tone of voice',
     SALES_PERSONALITY = 'sales personality',
     KNOWLEDGE = 'knowledge',
+    ENGAGEMENT = 'engagement',
     HANDOVER = 'handover',
 }
 

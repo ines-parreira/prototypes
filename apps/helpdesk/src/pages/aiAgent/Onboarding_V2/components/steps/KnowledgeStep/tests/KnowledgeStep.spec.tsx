@@ -122,8 +122,8 @@ const useAiAgentScopesForAutomationPlanMock = assumeMock(
 )
 
 const defaultProps: StepProps = {
-    currentStep: 3,
-    totalSteps: 3,
+    currentStep: 4,
+    totalSteps: 4,
     goToStep: jest.fn(),
 }
 
@@ -360,7 +360,7 @@ describe('KnowledgeStep', () => {
         fireEvent.click(screen.getByText(/Back/i))
 
         expect(defaultProps.goToStep).toHaveBeenCalledWith(
-            WizardStepEnum.SALES_PERSONALITY,
+            WizardStepEnum.ENGAGEMENT,
         )
     })
 
