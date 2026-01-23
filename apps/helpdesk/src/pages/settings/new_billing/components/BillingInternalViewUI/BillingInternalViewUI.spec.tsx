@@ -1,5 +1,5 @@
 import { assumeMock } from '@repo/testing'
-import { act, screen, within } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import MockDate from 'mockdate'
@@ -149,6 +149,7 @@ describe('BillingInternalViewUI', () => {
     })
 
     it('When customer has a trialing subscription, which has NOT been extended', async () => {
+        const user = userEvent.setup()
         renderWithStoreAndQueryClientAndRouter(
             <BillingInternalViewUI
                 {...BillingInternalViewUIDefaultProps}
@@ -173,24 +174,16 @@ describe('BillingInternalViewUI', () => {
         expect(screen.getByText('Next invoice')).toBeInTheDocument()
 
         // When clicking on 'Extend trial' button
-        await act(() =>
-            userEvent.click(
-                screen.getByRole('button', { name: /Extend trial/i }),
-            ),
-        )
+        await user.click(screen.getByRole('button', { name: /Extend trial/i }))
         const confirmButton = await screen.findByRole('button', {
             name: /Confirm/i,
         })
 
-        await act(() => userEvent.click(confirmButton))
+        await user.click(confirmButton)
         expect(useExtendTrialMutateMock).toHaveBeenCalledWith([])
 
         // When clicking on 'Apply coupon' button
-        await act(async () =>
-            userEvent.click(
-                screen.getByRole('button', { name: /Apply coupon/i }),
-            ),
-        )
+        await user.click(screen.getByRole('button', { name: /Apply coupon/i }))
         // Then a modal should show up
         const modal = screen.getByRole('dialog')
         expect(
@@ -255,7 +248,8 @@ describe('BillingInternalViewUI', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('When trial has ended and has NOT been extended previously + customer hasn’t converted (no active subscription)', async () => {
+    it('When trial has ended and has NOT been extended previously + customer has not converted (no active subscription)', async () => {
+        const user = userEvent.setup()
         MockDate.set('2050-08-10T00:00:00.000Z')
 
         renderWithStoreAndQueryClientAndRouter(
@@ -288,10 +282,8 @@ describe('BillingInternalViewUI', () => {
         expect(screen.queryByText(/Trial ended on/i)).toBeInTheDocument()
 
         // When clicking on 'Reactivate trial' button
-        await act(() =>
-            userEvent.click(
-                screen.getByRole('button', { name: /Reactivate trial/i }),
-            ),
+        await user.click(
+            screen.getByRole('button', { name: /Reactivate trial/i }),
         )
 
         // Then
@@ -310,7 +302,7 @@ describe('BillingInternalViewUI', () => {
         const confirmButton = await screen.findByRole('button', {
             name: /Confirm/i,
         })
-        await act(() => userEvent.click(confirmButton))
+        await user.click(confirmButton)
 
         expect(useReactivateTrialMutateMock).toHaveBeenCalledWith([])
     })
@@ -349,6 +341,7 @@ describe('BillingInternalViewUI', () => {
     })
 
     it('should be always possible to deactivate (ban) an account if active', async () => {
+        const user = userEvent.setup()
         renderWithStoreAndQueryClientAndRouter(
             <BillingInternalViewUI
                 {...BillingInternalViewUIDefaultProps}
@@ -361,7 +354,7 @@ describe('BillingInternalViewUI', () => {
         })
 
         mockedServer.onPost('/billing/deactivate-account').reply(200, {})
-        await act(() => userEvent.click(deactivateButton))
+        await user.click(deactivateButton)
 
         expect(mockedServer.history.post.length).toBe(1)
         expect(mockedServer.history.post[0].url).toBe(
@@ -379,6 +372,7 @@ describe('BillingInternalViewUI', () => {
     })
 
     it('should be always possible to reactivate an account if deactivated', async () => {
+        const user = userEvent.setup()
         renderWithStoreAndQueryClientAndRouter(
             <BillingInternalViewUI
                 {...BillingInternalViewUIDefaultProps}
@@ -391,7 +385,7 @@ describe('BillingInternalViewUI', () => {
         })
 
         mockedServer.onPost('/billing/reactivate-account').reply(200, {})
-        await act(() => userEvent.click(reactivateButton))
+        await user.click(reactivateButton)
 
         expect(mockedServer.history.post.length).toBe(1)
         expect(mockedServer.history.post[0].url).toBe(
