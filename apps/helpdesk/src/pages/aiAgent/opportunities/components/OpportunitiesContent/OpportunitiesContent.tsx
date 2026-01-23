@@ -184,6 +184,7 @@ export const OpportunitiesContent = ({
                 <div className={css.header}></div>
                 <RestrictedOpportunityMessage
                     opportunitiesPageState={opportunitiesPageState}
+                    shopName={opportunityConfig.shopName}
                 />
             </div>
         )

@@ -194,6 +194,7 @@ jest.mock('@repo/feature-flags', () => ({
 
 jest.mock('state/integrations/selectors', () => ({
     getStoreIntegrations: jest.fn(() => []),
+    getIntegrationsByTypes: jest.fn(() => () => []),
 }))
 
 jest.mock(

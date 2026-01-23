@@ -71,6 +71,24 @@ jest.mock('pages/settings/helpCenter/queries')
 jest.mock('models/knowledgeService/mutations')
 jest.mock('../../hooks/useProcessOpportunity')
 
+jest.mock(
+    '../RestrictedOpportunityMessage/RestrictedOpportunityMessage',
+    () => ({
+        RestrictedOpportunityMessage: ({
+            opportunitiesPageState,
+        }: {
+            opportunitiesPageState: { title: string; description: string }
+            shopName: string
+        }) => (
+            <div data-testid="restricted-opportunity-message">
+                <h1>{opportunitiesPageState.title}</h1>
+                <p>{opportunitiesPageState.description}</p>
+                <button>Book a demo</button>
+            </div>
+        ),
+    }),
+)
+
 const mockUseGuidanceCount = jest.fn(() => ({
     guidanceCount: 0,
     isLoading: false,
