@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useCallbackRef, useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -7,9 +7,16 @@ import classNames from 'classnames'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 import { useLocation } from 'react-router'
-import { Table } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import type { ColumnDef } from '@gorgias/axiom'
+import {
+    Button,
+    HeaderRowGroup,
+    TableBodyContent,
+    TableHeader,
+    TableRoot,
+    useTable,
+} from '@gorgias/axiom'
 
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -29,7 +36,7 @@ import css from './PaymentHistoryView.less'
 const PaymentsHistoryView = () => {
     const { pathname } = useLocation()
     const dispatch = useAppDispatch()
-    const gorgiasApi = new GorgiasApi()
+    const gorgiasApi = useMemo(() => new GorgiasApi(), [])
     const invoices = useAppSelector(getInvoices).toJS() as Invoice[]
 
     const [isLoading, setIsLoading] = useState(true)
@@ -53,68 +60,209 @@ const PaymentsHistoryView = () => {
         void getInvoices()
     }, [dispatch])
 
-    const retryPayment = async (invoice: Invoice) => {
-        setInvoiceBeingPaid(invoice)
+    const confirmPayment = useCallback(
+        async (invoice: Invoice) => {
+            setInvoiceBeingPaid(invoice)
 
-        try {
-            await gorgiasApi.payInvoice(invoice.id)
-            dispatch(updateInvoiceInList(fromJS(invoice)))
-        } catch (error) {
-            const responseError = error as AxiosError<{
-                error?: { msg: string }
-            }>
+            try {
+                const newInvoice: Invoice = (
+                    await gorgiasApi.confirmInvoicePayment(invoice.id)
+                ).toJS()
+                if (newInvoice.payment_confirmation_url) {
+                    window.location.href = newInvoice.payment_confirmation_url
+                } else {
+                    dispatch(updateInvoiceInList(fromJS(newInvoice)))
+                }
+            } catch (error) {
+                const responseError = error as AxiosError<{
+                    error?: { msg: string }
+                }>
+                const errorMsg =
+                    responseError.response?.data.error?.msg ||
+                    'Failed to confirm the payment. Please try again in a few seconds.'
 
-            if (responseError.response?.status === 402) {
-                // 402: The payment needs to be confirmed by the user.
-                await confirmPayment(invoice)
-                return
+                dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        title: errorMsg,
+                    }),
+                )
+            } finally {
+                setInvoiceBeingPaid(null)
             }
+        },
+        [gorgiasApi, dispatch],
+    )
 
-            const errorMsg =
-                responseError.response?.data.error?.msg ||
-                'Failed to pay the invoice. Please try again in a few seconds.'
+    const retryPayment = useCallback(
+        async (invoice: Invoice) => {
+            setInvoiceBeingPaid(invoice)
 
-            dispatch(
-                notify({
-                    message: errorMsg,
-                    status: NotificationStatus.Error,
-                }),
-            )
-        } finally {
-            setInvoiceBeingPaid(null)
-        }
-    }
+            try {
+                await gorgiasApi.payInvoice(invoice.id)
+                dispatch(updateInvoiceInList(fromJS(invoice)))
+            } catch (error) {
+                const responseError = error as AxiosError<{
+                    error?: { msg: string }
+                }>
 
-    const confirmPayment = async (invoice: Invoice) => {
-        setInvoiceBeingPaid(invoice)
+                if (responseError.response?.status === 402) {
+                    // 402: The payment needs to be confirmed by the user.
+                    await confirmPayment(invoice)
+                    return
+                }
 
-        try {
-            const newInvoice: Invoice = (
-                await gorgiasApi.confirmInvoicePayment(invoice.id)
-            ).toJS()
-            if (newInvoice.payment_confirmation_url) {
-                window.location.href = newInvoice.payment_confirmation_url
-            } else {
-                dispatch(updateInvoiceInList(fromJS(newInvoice)))
+                const errorMsg =
+                    responseError.response?.data.error?.msg ||
+                    'Failed to pay the invoice. Please try again in a few seconds.'
+
+                dispatch(
+                    notify({
+                        message: errorMsg,
+                        status: NotificationStatus.Error,
+                    }),
+                )
+            } finally {
+                setInvoiceBeingPaid(null)
             }
-        } catch (error) {
-            const responseError = error as AxiosError<{
-                error?: { msg: string }
-            }>
-            const errorMsg =
-                responseError.response?.data.error?.msg ||
-                'Failed to confirm the payment. Please try again in a few seconds.'
+        },
+        [gorgiasApi, dispatch, confirmPayment],
+    )
 
-            dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    title: errorMsg,
-                }),
-            )
-        } finally {
-            setInvoiceBeingPaid(null)
-        }
-    }
+    const columns = useMemo<ColumnDef<Invoice, unknown>[]>(
+        () => [
+            {
+                id: 'date',
+                accessorKey: 'date',
+                header: 'Date',
+                cell: (info) => {
+                    return (
+                        <span className={css.invoiceDate}>
+                            {moment
+                                .unix(info.getValue() as number)
+                                .format('LL')}
+                        </span>
+                    )
+                },
+            },
+            {
+                id: 'amount',
+                accessorKey: 'amount_due',
+                header: 'Amount',
+                cell: (info) => {
+                    return formatAmount((info.getValue() as number) / 100)
+                },
+            },
+            {
+                id: 'description',
+                accessorKey: 'description',
+                header: 'Description',
+                cell: (info) => {
+                    return (
+                        <span className={css.invoiceDescription}>
+                            {info.getValue() as string}
+                        </span>
+                    )
+                },
+            },
+            {
+                id: 'status',
+                accessorKey: 'paid',
+                header: 'Status',
+                cell: (info) => {
+                    const isPaid = info.getValue() as boolean
+                    return isPaid ? (
+                        <span className={classNames(css.badge, css.statusPaid)}>
+                            Paid
+                        </span>
+                    ) : (
+                        <span
+                            className={classNames(css.badge, css.statusUnpaid)}
+                        >
+                            Unpaid
+                        </span>
+                    )
+                },
+            },
+            {
+                id: 'actions',
+                header: 'Actions',
+                cell: (info) => {
+                    const invoice = info.row.original
+                    const isPaid = invoice.paid
+                    const paymentIntent = invoice.payment_intent
+                    const has_payment_schedules =
+                        !!invoice.has_payment_schedules
+
+                    const showRetryPaymentButton =
+                        !isPaid &&
+                        !has_payment_schedules &&
+                        [
+                            PaymentIntentStatus.RequiresSource,
+                            PaymentIntentStatus.RequiresPaymentMethod,
+                        ].includes(paymentIntent?.status)
+
+                    return (
+                        <div className={css.actions}>
+                            <a
+                                href={invoice.invoice_pdf}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={css.downloadLink}
+                                onClick={() => {
+                                    logEvent(
+                                        SegmentEvent.BillingPaymentHistoryDownloadPdfClicked,
+                                    )
+                                }}
+                            >
+                                Download PDF
+                            </a>
+                            {paymentIntent?.status ===
+                                PaymentIntentStatus.RequiresConfirmation && (
+                                <Button
+                                    intent="regular"
+                                    isLoading={
+                                        invoice.id === invoiceBeingPaid?.id
+                                    }
+                                    onClick={() => {
+                                        void confirmPayment(invoice)
+                                    }}
+                                >
+                                    Confirm
+                                </Button>
+                            )}
+                            {showRetryPaymentButton && (
+                                <Button
+                                    intent="regular"
+                                    isLoading={
+                                        invoice.id === invoiceBeingPaid?.id
+                                    }
+                                    onClick={() => {
+                                        logEvent(
+                                            SegmentEvent.BillingPaymentHistoryRetryPaymentClicked,
+                                        )
+                                        void retryPayment(invoice)
+                                    }}
+                                >
+                                    Retry Payment
+                                </Button>
+                            )}
+                        </div>
+                    )
+                },
+            },
+        ],
+        [invoiceBeingPaid, confirmPayment, retryPayment],
+    )
+
+    const table = useTable({
+        data: invoices,
+        columns,
+        sortingConfig: {
+            enableSorting: false,
+            enableMultiSort: false,
+        },
+    })
 
     return isLoading ? (
         <Loader data-testid="loader" />
@@ -134,133 +282,17 @@ const PaymentsHistoryView = () => {
                     start of each billing period.
                 </div>
             </div>
-            {invoices.length > 0 && (
-                <Table className={css.invoicesTable}>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Amount</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                            <th className={css.actionsHeader}>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {invoices.map((invoice) => {
-                            const isPaid = invoice.paid
-                            const paymentIntent = invoice.payment_intent
-                            const has_payment_schedules =
-                                !!invoice.has_payment_schedules
-
-                            const showRetryPaymentButton =
-                                !isPaid &&
-                                !has_payment_schedules &&
-                                [
-                                    PaymentIntentStatus.RequiresSource,
-                                    PaymentIntentStatus.RequiresPaymentMethod,
-                                ].includes(paymentIntent?.status)
-
-                            return (
-                                <tr key={invoice.id}>
-                                    <td
-                                        className={classNames(
-                                            'align-middle',
-                                            css.invoiceDate,
-                                        )}
-                                    >
-                                        {moment.unix(invoice.date).format('LL')}
-                                    </td>
-                                    <td className="align-middle">
-                                        {formatAmount(invoice.amount_due / 100)}
-                                    </td>
-                                    <td
-                                        className={classNames(
-                                            'align-middle',
-                                            css.invoiceDescription,
-                                        )}
-                                    >
-                                        {invoice.description}
-                                    </td>
-                                    <td className="align-middle">
-                                        {isPaid ? (
-                                            <span
-                                                className={classNames(
-                                                    css.badge,
-                                                    css.statusPaid,
-                                                )}
-                                            >
-                                                Paid
-                                            </span>
-                                        ) : (
-                                            <span
-                                                className={classNames(
-                                                    css.badge,
-                                                    css.statusUnpaid,
-                                                )}
-                                            >
-                                                Unpaid
-                                            </span>
-                                        )}
-                                    </td>
-                                    <td className="align-middle">
-                                        <div className={css.actions}>
-                                            <a
-                                                href={invoice.invoice_pdf}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className={css.downloadLink}
-                                                onClick={() => {
-                                                    logEvent(
-                                                        SegmentEvent.BillingPaymentHistoryDownloadPdfClicked,
-                                                    )
-                                                }}
-                                            >
-                                                Download PDF
-                                            </a>
-                                            {paymentIntent?.status ===
-                                                PaymentIntentStatus.RequiresConfirmation && (
-                                                <Button
-                                                    intent="primary"
-                                                    isLoading={
-                                                        invoice.id ===
-                                                        invoiceBeingPaid?.id
-                                                    }
-                                                    onClick={() => {
-                                                        void confirmPayment(
-                                                            invoice,
-                                                        )
-                                                    }}
-                                                >
-                                                    Confirm
-                                                </Button>
-                                            )}
-                                            {showRetryPaymentButton && (
-                                                <Button
-                                                    intent="primary"
-                                                    isLoading={
-                                                        invoice.id ===
-                                                        invoiceBeingPaid?.id
-                                                    }
-                                                    onClick={() => {
-                                                        logEvent(
-                                                            SegmentEvent.BillingPaymentHistoryRetryPaymentClicked,
-                                                        )
-                                                        void retryPayment(
-                                                            invoice,
-                                                        )
-                                                    }}
-                                                >
-                                                    Retry Payment
-                                                </Button>
-                                            )}
-                                        </div>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </Table>
-            )}
+            <TableRoot className={css.invoicesTable}>
+                <TableHeader>
+                    <HeaderRowGroup headerGroups={table.getHeaderGroups()} />
+                </TableHeader>
+                <TableBodyContent
+                    isLoading={false}
+                    rows={table.getRowModel().rows}
+                    columnCount={columns.length}
+                    table={table}
+                />
+            </TableRoot>
         </div>
     )
 }
