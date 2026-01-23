@@ -28,7 +28,7 @@ export const SimpleTrendCard = ({
           : 'trending-up'
 
     return (
-        <Card className={css.card}>
+        <Card className={css.card} gap="sm">
             <Box className={css.header}>
                 <span className={css.title}>{title}</span>
                 <Icon name="info" size="xs" />

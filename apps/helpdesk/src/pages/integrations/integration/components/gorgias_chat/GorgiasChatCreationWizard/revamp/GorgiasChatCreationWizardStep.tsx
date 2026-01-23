@@ -47,7 +47,7 @@ export const GorgiasChatCreationWizardStep = ({
                         labels={STEP_LABELS}
                         className={css.wizardProgressHeader}
                     />
-                    <Card p="lg">
+                    <Card p="lg" gap={0}>
                         <div className={css.heading}>
                             <div className={css.title}>{STEP_LABELS[step]}</div>
                             {STEP_DESCRIPTIONS[step] && (
