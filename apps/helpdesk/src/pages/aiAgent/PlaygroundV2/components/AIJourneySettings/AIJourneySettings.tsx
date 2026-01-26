@@ -340,7 +340,9 @@ export const AIJourneySettings: React.FC = () => {
             >
                 <TextField
                     label="Discount code value"
-                    value={discountCodeValue.toString()}
+                    value={
+                        discountCodeValue ? discountCodeValue.toString() : '0'
+                    }
                     onChange={handleDiscountField}
                     trailingSlot={<Button icon="percent" variant="tertiary" />}
                 />

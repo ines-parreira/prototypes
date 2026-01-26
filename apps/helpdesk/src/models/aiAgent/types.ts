@@ -414,7 +414,7 @@ export type TriggerAIJourneyPayload = {
         smsSenderNumber: string | null
         smsSenderIntegrationId: number | null
         offerDiscount: boolean
-        maxDiscountPercent: number | null
+        maxDiscountPercent?: number | null
         brandName?: string | null
         optOutMessage?: string | null
         discountCodeMessageThreshold?: number | null

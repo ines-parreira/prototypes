@@ -561,6 +561,42 @@ describe('AIJourneySettings', () => {
                 expect(discountInput).toHaveValue(initialValue)
             })
         })
+
+        it('should display value casted to string when discountCodeValue is valid', () => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    aiJourneySettings: {
+                        ...AI_JOURNEY_DEFAULT_STATE,
+                        discountCodeValue: 10,
+                    },
+                }),
+            )
+
+            renderComponent()
+
+            const discountInput = screen.getByRole('textbox', {
+                name: /discount code value/i,
+            })
+            expect(discountInput).toHaveValue('10')
+        })
+
+        it('should display "0" when discountCodeValue is undefined', () => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    aiJourneySettings: {
+                        ...AI_JOURNEY_DEFAULT_STATE,
+                        discountCodeValue: undefined,
+                    },
+                }),
+            )
+
+            renderComponent()
+
+            const discountInput = screen.getByRole('textbox', {
+                name: /discount code value/i,
+            })
+            expect(discountInput).toHaveValue('0')
+        })
     })
 
     describe('Message instructions', () => {

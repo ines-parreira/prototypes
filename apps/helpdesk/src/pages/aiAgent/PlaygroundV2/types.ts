@@ -49,7 +49,7 @@ export type AIJourneySettings = {
     includedAudienceListIds: string[]
     includeProductImage: boolean
     includeDiscountCode: boolean
-    discountCodeValue: number
+    discountCodeValue?: number | null
     discountCodeMessageIdx: number
     excludedAudienceListIds: string[]
     outboundMessageInstructions: string

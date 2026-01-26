@@ -69,7 +69,7 @@ export type CreateAIJourneyPlaygroundOptions = {
         smsSenderNumber: string | null
         smsSenderIntegrationId: number | null
         offerDiscount: boolean
-        maxDiscountPercent: number | null
+        maxDiscountPercent?: number | null
         brandName?: string | null
         discountCodeMessageThreshold?: number | null
         optOutMessage?: string | null
