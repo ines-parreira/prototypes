@@ -18,9 +18,11 @@ import AiAgentChatConversation from 'pages/aiAgent/Onboarding_V2/components/AiAg
 import MainTitle from 'pages/aiAgent/Onboarding_V2/components/MainTitle/MainTitle'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
 import { conversationExamples } from 'pages/aiAgent/Onboarding_V2/constants/conversationExamples'
+import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreAlreadyConfigured'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
+import { useCreateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useCreateOnboarding'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding_V2/hooks/useSteps'
 import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding_V2/hooks/useTransformToneOfVoiceConversations'
@@ -36,6 +38,7 @@ import {
 } from 'pages/aiAgent/Onboarding_V2/settings'
 import TextArea from 'pages/common/forms/TextArea'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import { getCurrentDomain } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
 import css from './ToneOfVoiceStep.less'
@@ -75,6 +78,10 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
 
     const { data } = useGetOnboardingData(shopName)
     const { mutate: doUpdateOnboardingMutation } = useUpdateOnboarding()
+    const { mutate: doCreateOnboardingMutation } = useCreateOnboarding()
+
+    const gorgiasDomain = useAppSelector(getCurrentDomain)
+    const scopes = useAiAgentScopesForAutomationPlan(shopName)
 
     const storeIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName),
@@ -131,13 +138,15 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
     }
 
     const onNextClick = () => {
-        if (!data || !('id' in data)) {
+        if (!data) {
             return
         }
 
         const hasExistingToneOfVoice = !!data.toneOfVoice
+        const isUpdateStatus = 'id' in data
 
-        if (!isDirty && hasExistingToneOfVoice) {
+        // Skip mutation if data hasn't changed and tone of voice already exists
+        if (!isDirty && hasExistingToneOfVoice && isUpdateStatus) {
             onNextStep()
             return
         }
@@ -145,19 +154,23 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
         const updatedData = {
             ...data,
             shopName,
+            scopes,
+            gorgiasDomain,
             currentStepName: validSteps[currentStep]?.step,
             toneOfVoice,
-            customToneOfVoiceGuidance: customToneOfVoiceGuidance || undefined,
+            customToneOfVoiceGuidance,
         }
 
-        doUpdateOnboardingMutation(
-            { id: data.id, data: updatedData },
-            {
-                onSuccess: () => {
-                    onNextStep()
-                },
-            },
-        )
+        const mutationOptions = { onSuccess: onNextStep }
+
+        if (isUpdateStatus) {
+            doUpdateOnboardingMutation(
+                { id: data.id, data: updatedData },
+                mutationOptions,
+            )
+        } else {
+            doCreateOnboardingMutation(updatedData, mutationOptions)
+        }
     }
 
     const onNextStep = () => {

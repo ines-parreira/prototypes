@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom'
 
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -13,6 +14,7 @@ import { billingState } from 'fixtures/billing'
 import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { user } from 'fixtures/users'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
+import { AiAgentScopes } from 'pages/aiAgent/Onboarding_V2/types'
 
 import { ToneOfVoiceStep } from './ToneOfVoiceStep'
 
@@ -29,6 +31,7 @@ const mockUseCheckStoreIntegration = jest.fn()
 const mockUseCheckOnboardingCompleted = jest.fn()
 const mockUseCheckStoreAlreadyConfigured = jest.fn()
 const mockMutate = jest.fn()
+const mockCreateMutate = jest.fn()
 
 const mockOnboardingData = {
     id: '123',
@@ -62,18 +65,33 @@ jest.mock(
     }),
 )
 
-jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData', () => ({
-    useGetOnboardingData: () => ({
-        data: mockOnboardingData,
-        isLoading: false,
-    }),
-}))
+jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData')
+const useGetOnboardingDataMock = assumeMock(
+    require('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData')
+        .useGetOnboardingData,
+)
 
-jest.mock('pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding', () => ({
-    useUpdateOnboarding: () => ({
-        mutate: mockMutate,
+jest.mock('pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding')
+const useUpdateOnboardingMock = assumeMock(
+    require('pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding')
+        .useUpdateOnboarding,
+)
+
+jest.mock('pages/aiAgent/Onboarding_V2/hooks/useCreateOnboarding')
+const useCreateOnboardingMock = assumeMock(
+    require('pages/aiAgent/Onboarding_V2/hooks/useCreateOnboarding')
+        .useCreateOnboarding,
+)
+
+jest.mock(
+    'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan',
+    () => ({
+        useAiAgentScopesForAutomationPlan: () => [
+            AiAgentScopes.SUPPORT,
+            AiAgentScopes.SALES,
+        ],
     }),
-}))
+)
 
 jest.mock(
     'pages/aiAgent/Onboarding_V2/hooks/useTransformToneOfVoiceConversations',
@@ -146,6 +164,21 @@ describe('ToneOfVoiceStep', () => {
                 queries: { retry: false },
                 mutations: { retry: false },
             },
+        })
+
+        useGetOnboardingDataMock.mockReturnValue({
+            data: mockOnboardingData,
+            isLoading: false,
+        })
+
+        useUpdateOnboardingMock.mockReturnValue({
+            mutate: mockMutate,
+            isLoading: false,
+        })
+
+        useCreateOnboardingMock.mockReturnValue({
+            mutate: mockCreateMutate,
+            isLoading: false,
         })
     })
 
@@ -305,6 +338,59 @@ describe('ToneOfVoiceStep', () => {
 
             expect(mockMutate).not.toHaveBeenCalled()
             expect(mockGoToStep).toHaveBeenCalledWith('step3')
+        })
+    })
+
+    describe('Create vs Update Logic', () => {
+        it('should call create mutation when data has no id', async () => {
+            const user = userEvent.setup()
+
+            useGetOnboardingDataMock.mockReturnValue({
+                data: {
+                    shopName: 'test-shop',
+                    toneOfVoice: ToneOfVoice.Friendly,
+                    customToneOfVoiceGuidance: undefined,
+                },
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            const professionalOption = screen.getByText('Professional')
+            await user.click(professionalOption)
+
+            const nextButton = screen.getByRole('button', { name: /next/i })
+            await user.click(nextButton)
+
+            expect(mockCreateMutate).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    shopName: 'test-shop',
+                    toneOfVoice: ToneOfVoice.Professional,
+                }),
+                expect.any(Object),
+            )
+            expect(mockMutate).not.toHaveBeenCalled()
+        })
+
+        it('should call create mutation even when form unchanged but no id exists', async () => {
+            const user = userEvent.setup()
+
+            useGetOnboardingDataMock.mockReturnValue({
+                data: {
+                    shopName: 'test-shop',
+                    toneOfVoice: ToneOfVoice.Friendly,
+                    customToneOfVoiceGuidance: undefined,
+                },
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            const nextButton = screen.getByRole('button', { name: /next/i })
+            await user.click(nextButton)
+
+            expect(mockCreateMutate).toHaveBeenCalled()
+            expect(mockMutate).not.toHaveBeenCalled()
         })
     })
 })
