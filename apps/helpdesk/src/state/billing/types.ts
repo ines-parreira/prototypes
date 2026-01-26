@@ -104,7 +104,7 @@ export type BillingContact = {
             line1: string
             line2: string | null
             postal_code: string
-            state?: string
+            state: string | null
         }
         name: string
         phone?: string | null

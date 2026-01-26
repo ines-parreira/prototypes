@@ -13,13 +13,13 @@ import { states } from 'config/states'
  * normalizeStateToCode('Colorado', 'US') // returns 'CO'
  * normalizeStateToCode('CO', 'US') // returns 'CO'
  * normalizeStateToCode('British Columbia', 'CA') // returns 'BC'
- * normalizeStateToCode(undefined, 'US') // returns undefined
- * normalizeStateToCode('Colorado', undefined) // returns 'Colorado'
+ * normalizeStateToCode(null, 'US') // returns null
+ * normalizeStateToCode('Colorado', '') // returns 'Colorado'
  */
 export function normalizeStateToCode(
-    state: string | undefined,
-    country: string | undefined,
-): string | undefined {
+    state: string | null,
+    country: string,
+): string | null {
     if (!state || !country) return state
 
     if (state.length === 2) {

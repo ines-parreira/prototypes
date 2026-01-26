@@ -3,6 +3,7 @@ import { useElements, useStripe } from '@stripe/react-stripe-js'
 import { act, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
+import { billingContact } from 'fixtures/resources'
 import client from 'models/api/resources'
 import * as queries from 'models/billing/queries'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
@@ -11,26 +12,10 @@ import { useConfirmStripeSetupIntent } from '../useConfirmStripeSetupIntent'
 
 jest.mock('@stripe/react-stripe-js')
 
-const mockShipping = {
-    name: 'Test User',
-    address: {
-        line1: '123 Test St',
-        line2: 'Apt 1',
-        city: 'Test City',
-        state: 'Test State',
-        postal_code: '12345',
-        country: 'US',
-    },
-    phone: '1234567890',
-}
-
 const mockedServer = new MockAdapter(client)
 
 const mockBillingContactResponse = {
-    data: {
-        shipping: mockShipping,
-        email: 'test@example.com',
-    },
+    data: billingContact,
 }
 
 mockedServer
@@ -71,8 +56,8 @@ describe('useConfirmStripeSetupIntent', () => {
                 confirmParams: {
                     payment_method_data: {
                         billing_details: {
-                            ...mockShipping,
-                            email: 'test@example.com',
+                            ...billingContact.shipping,
+                            email: billingContact.email,
                         },
                     },
                 },

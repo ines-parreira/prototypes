@@ -1,9 +1,11 @@
 import MockAdapter from 'axios-mock-adapter'
 
+import { billingContact } from 'fixtures/resources'
 import client from 'models/api/resources'
 
 import {
     getAiAgentGeneration6Plan,
+    getBillingContact,
     getPaymentMethod,
     getProductsUsage,
     trackBillingEvent,
@@ -16,6 +18,27 @@ const mockedServer = new MockAdapter(client)
 describe('billing resources', () => {
     afterEach(() => {
         mockedServer.reset()
+    })
+
+    describe('getBillingContact', () => {
+        it('should fetch successfully', async () => {
+            mockedServer
+                .onGet('/api/billing/contact/')
+                .reply(200, billingContact)
+
+            const res = await getBillingContact()
+            expect(res.status).toEqual(200)
+            expect(res.data).toEqual(billingContact)
+        })
+
+        it.each([null, '', [], {}, '<html />'])(
+            'should raise an error if the reply is invalid [value: %s]',
+            async (value: any) => {
+                mockedServer.onGet('/api/billing/contact/').reply(200, value)
+
+                expect(getBillingContact).rejects.toThrow()
+            },
+        )
     })
 
     describe('trackBillingEvent', () => {

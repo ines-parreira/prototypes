@@ -1,13 +1,18 @@
 import { waitFor } from '@testing-library/react'
+import { AxiosHeaders } from 'axios'
+import { z } from 'zod'
 
+import { billingContact } from 'fixtures/resources'
 import {
     aiAgentGen6PlanQuery,
     billingKeys,
+    useBillingContact,
     usePaymentMethod,
     useProductsUsage,
     useUpgradeAiAgentSubscriptionGeneration6Plan,
 } from 'models/billing/queries'
 import * as billingResources from 'models/billing/resources'
+import type { BillingContactDetailResponse } from 'state/billing/types'
 import { PaymentMethodType } from 'state/billing/types'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
@@ -16,6 +21,10 @@ jest.mock('models/billing/resources')
 describe('billing queries', () => {
     let mockUpgradeAiAgentSubscriptionGeneration6Plan: jest.MockedFunction<
         typeof billingResources.upgradeAiAgentSubscriptionGeneration6Plan
+    >
+
+    let mockGetBillingContact: jest.MockedFunction<
+        typeof billingResources.getBillingContact
     >
     let mockGetProductsUsage: jest.MockedFunction<
         typeof billingResources.getProductsUsage
@@ -28,8 +37,60 @@ describe('billing queries', () => {
         mockUpgradeAiAgentSubscriptionGeneration6Plan = jest.mocked(
             billingResources.upgradeAiAgentSubscriptionGeneration6Plan,
         )
+
+        mockGetBillingContact = jest.mocked(billingResources.getBillingContact)
         mockGetProductsUsage = jest.mocked(billingResources.getProductsUsage)
         mockGetPaymentMethod = jest.mocked(billingResources.getPaymentMethod)
+    })
+
+    describe('useBillingContact', () => {
+        const buildResponse = async (
+            value: BillingContactDetailResponse,
+        ): ReturnType<typeof billingResources.getBillingContact> => {
+            const headers = new AxiosHeaders()
+            return {
+                status: 200,
+                data: value,
+                config: { headers },
+                headers: headers,
+                statusText: 'OK',
+            }
+        }
+
+        it('should fetch billing contact successfully', async () => {
+            const response = buildResponse(billingContact)
+            mockGetBillingContact.mockResolvedValue(response)
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+                useBillingContact(),
+            )
+
+            await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+            expect(result.current.data?.data).toEqual(billingContact)
+        })
+
+        it('should fail and return undefined if validation fails', async () => {
+            mockGetBillingContact.mockImplementation(async () => {
+                // Throw a real zod validation error
+                const fakeSchema: z.Schema<boolean> = z.boolean()
+                fakeSchema.parse(billingContact)
+
+                return buildResponse(billingContact)
+            })
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
+                useBillingContact(),
+            )
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
+
+            expect(mockGetBillingContact).toHaveBeenCalled()
+            expect(result.current.isError).toEqual(true)
+            expect(result.current.data).toBeUndefined()
+        })
     })
 
     describe('useUpgradeAiAgentSubscriptionGeneration6Plan', () => {

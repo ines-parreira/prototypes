@@ -10,7 +10,7 @@ export const filterTaxIdsByAddress = (
     taxIds: BillingContactUpdatePayload['tax_ids'],
     address: {
         country?: string
-        state?: string
+        state?: string | null
     },
 ): BillingContactUpdatePayload['tax_ids'] => {
     return mapValues(taxIds, (value, type) => {

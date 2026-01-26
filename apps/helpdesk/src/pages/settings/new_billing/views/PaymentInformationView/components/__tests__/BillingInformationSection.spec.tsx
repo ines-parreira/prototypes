@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { MemoryRouter } from 'react-router-dom'
 
+import { billingContact } from 'fixtures/resources'
 import client from 'models/api/resources'
 import { BillingInformationSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
@@ -18,21 +19,7 @@ describe('BillingInformationSection', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         logEventMock.mockClear()
-        mockedServer.onGet('/api/billing/contact/').reply(200, {
-            email: 'example@gorgias.com',
-            shipping: {
-                name: 'Gorgias',
-                phone: '+3301234567',
-                address: {
-                    line1: '1234 Main St',
-                    line2: 'Apt 1',
-                    city: 'Paris',
-                    state: 'Ile de France',
-                    postal_code: '75001',
-                    country: 'FR',
-                },
-            },
-        })
+        mockedServer.onGet('/api/billing/contact/').reply(200, billingContact)
     })
 
     describe('nominal case', () => {
@@ -54,11 +41,16 @@ describe('BillingInformationSection', () => {
         describe("when there's no address information", () => {
             beforeEach(() => {
                 mockedServer.onGet('/api/billing/contact/').reply(200, {
-                    email: 'example@gorgias.com',
+                    ...billingContact,
                     shipping: {
+                        ...billingContact.shipping,
                         address: {
+                            line1: '',
                             line2: '',
                             state: '',
+                            city: '',
+                            country: '',
+                            postal_code: '',
                         },
                         name: '',
                         phone: null,
@@ -113,6 +105,10 @@ describe('BillingInformationSection', () => {
                 email: 'example@gorgias.com',
                 shipping: {
                     address: {
+                        city: '',
+                        country: '',
+                        postal_code: '',
+                        line1: '',
                         line2: '',
                         state: '',
                     },

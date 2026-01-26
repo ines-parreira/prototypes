@@ -56,18 +56,18 @@ describe('normalizeStateToCode', () => {
     })
 
     describe('edge cases', () => {
-        it('should return undefined for undefined state', () => {
-            expect(normalizeStateToCode(undefined, 'US')).toBeUndefined()
-            expect(normalizeStateToCode(undefined, 'CA')).toBeUndefined()
+        it('should return null for null state', () => {
+            expect(normalizeStateToCode(null, 'US')).toBeNull()
+            expect(normalizeStateToCode(null, 'CA')).toBeNull()
         })
 
-        it('should return original state when country is undefined', () => {
-            expect(normalizeStateToCode('Colorado', undefined)).toBe('Colorado')
-            expect(normalizeStateToCode('CO', undefined)).toBe('CO')
+        it('should return original state when country is empty string', () => {
+            expect(normalizeStateToCode('Colorado', '')).toBe('Colorado')
+            expect(normalizeStateToCode('CO', '')).toBe('CO')
         })
 
-        it('should return undefined when both are undefined', () => {
-            expect(normalizeStateToCode(undefined, undefined)).toBeUndefined()
+        it('should return null when state is null and country is empty', () => {
+            expect(normalizeStateToCode(null, '')).toBeNull()
         })
 
         it('should return original value for unknown states', () => {
@@ -80,7 +80,7 @@ describe('normalizeStateToCode', () => {
             expect(normalizeStateToCode('Some State', 'XX')).toBe('Some State')
         })
 
-        it('should handle empty string', () => {
+        it('should handle empty string state', () => {
             expect(normalizeStateToCode('', 'US')).toBe('')
         })
     })

@@ -66,10 +66,11 @@ const useDefaultValues = (billingInformation: BillingContactDetailResponse) => {
                 ...billingInformation.shipping,
                 address: {
                     ...billingInformation.shipping?.address,
-                    state: normalizeStateToCode(
-                        billingInformation.shipping?.address?.state,
-                        billingInformation.shipping?.address?.country,
-                    ),
+                    state:
+                        normalizeStateToCode(
+                            billingInformation.shipping?.address?.state,
+                            billingInformation.shipping?.address?.country,
+                        ) ?? undefined,
                 },
                 phone: billingInformation.shipping?.phone ?? undefined,
             },
