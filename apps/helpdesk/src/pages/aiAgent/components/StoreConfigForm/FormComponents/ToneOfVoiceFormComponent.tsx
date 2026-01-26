@@ -37,6 +37,7 @@ type ToneOfVoiceFormComponentProps = {
     aiAgentLanguage?: string | null
 }
 
+// DEPRECATED: This component name is not applicable once tone of voice is fully integrated into the AI agent configuration.
 export const ToneOfVoiceFormComponent = ({
     aiAgentMode,
     aiAgentPreviewTicketViewId,
@@ -94,6 +95,8 @@ export const ToneOfVoiceFormComponent = ({
         shouldFocusTextArea.current = false
     }
 
+    const newToneOfVoiceEnabled = useFlag(FeatureFlagKey.AiAgentToneOfVoice)
+
     const isCustomToneOfVoiceSelected = toneOfVoice === ToneOfVoice.Custom
     const isCustomToneOfVoiceValid =
         isBlurred === false ||
@@ -106,21 +109,33 @@ export const ToneOfVoiceFormComponent = ({
                 <SettingsCard>
                     <SettingsCardHeader>
                         <SettingsCardTitle>
-                            Tone of Voice and Language
+                            {!newToneOfVoiceEnabled
+                                ? 'Tone of Voice and Language'
+                                : 'Language'}
                         </SettingsCardTitle>
 
                         <p>
-                            Tone of Voice allows you to customize how your AI
-                            Agent communicates with your customers. Choose the
-                            personality that matches your brand.{' '}
-                            <a
-                                href="https://docs.gorgias.com/en-US/customize-how-ai-agent-behaves-567324"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                See examples
-                            </a>
-                            .
+                            {!newToneOfVoiceEnabled ? (
+                                <span>
+                                    Tone of Voice allows you to customize how
+                                    your AI Agent communicates with your
+                                    customers. Choose the personality that
+                                    matches your brand.{' '}
+                                    <a
+                                        href="https://docs.gorgias.com/en-US/customize-how-ai-agent-behaves-567324"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        See examples
+                                    </a>
+                                    .
+                                </span>
+                            ) : (
+                                <span>
+                                    Choose which language AI Agent should use
+                                    when replying.
+                                </span>
+                            )}
                         </p>
                         {isFollowUpAiAgentPreviewModeEnabled &&
                             aiAgentMode &&
@@ -142,44 +157,56 @@ export const ToneOfVoiceFormComponent = ({
                             )}
                     </SettingsCardHeader>
                     <SettingsCardContent>
-                        <ToneOfVoiceComponent
-                            value={initialToneOfVoiceValue}
-                            onChange={handleToneOfVoiceChange}
-                        />
-                        {isCustomToneOfVoiceSelected && (
-                            <div className={css.customToneOfVoiceGuidance}>
-                                <TextArea
-                                    label="Customize Tone of Voice"
-                                    autoRowHeight={true}
-                                    placeholder="Custom tone of voice"
-                                    maxLength={maxToneOfVoiceLength}
-                                    value={
-                                        customToneOfVoiceGuidance ??
-                                        INITIAL_FORM_VALUES.customToneOfVoiceGuidance
-                                    }
-                                    onChange={handleCustomToneOfVoiceChange}
-                                    style={{ minHeight: '104px' }}
-                                    autoFocus={shouldFocusTextArea.current}
-                                    error={
-                                        !isCustomToneOfVoiceValid
-                                            ? 'Tone of voice required.'
-                                            : undefined
-                                    }
-                                    onBlur={() => setIsBlurred(true)}
+                        {!newToneOfVoiceEnabled && (
+                            <>
+                                <ToneOfVoiceComponent
+                                    value={initialToneOfVoiceValue}
+                                    onChange={handleToneOfVoiceChange}
                                 />
-                                <div
-                                    className={classNames(
-                                        css.formInputFooterInfo,
-                                        {
-                                            [css.error]:
-                                                !isCustomToneOfVoiceValid,
-                                        },
-                                    )}
-                                >
-                                    {isCustomToneOfVoiceValid &&
-                                        'Give your AI Agent specific instructions to always follow to match your brand.'}
-                                </div>
-                            </div>
+                                {isCustomToneOfVoiceSelected && (
+                                    <div
+                                        className={
+                                            css.customToneOfVoiceGuidance
+                                        }
+                                    >
+                                        <TextArea
+                                            label="Customize Tone of Voice"
+                                            autoRowHeight={true}
+                                            placeholder="Custom tone of voice"
+                                            maxLength={maxToneOfVoiceLength}
+                                            value={
+                                                customToneOfVoiceGuidance ??
+                                                INITIAL_FORM_VALUES.customToneOfVoiceGuidance
+                                            }
+                                            onChange={
+                                                handleCustomToneOfVoiceChange
+                                            }
+                                            style={{ minHeight: '104px' }}
+                                            autoFocus={
+                                                shouldFocusTextArea.current
+                                            }
+                                            error={
+                                                !isCustomToneOfVoiceValid
+                                                    ? 'Tone of voice required.'
+                                                    : undefined
+                                            }
+                                            onBlur={() => setIsBlurred(true)}
+                                        />
+                                        <div
+                                            className={classNames(
+                                                css.formInputFooterInfo,
+                                                {
+                                                    [css.error]:
+                                                        !isCustomToneOfVoiceValid,
+                                                },
+                                            )}
+                                        >
+                                            {isCustomToneOfVoiceValid &&
+                                                'Give your AI Agent specific instructions to always follow to match your brand.'}
+                                        </div>
+                                    </div>
+                                )}
+                            </>
                         )}
                         {isCustomLanguageEnabled && (
                             <AiLanguageSettings

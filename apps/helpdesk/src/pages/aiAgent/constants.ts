@@ -32,6 +32,7 @@ export const OVERVIEW = 'Overview'
 export const AI_FEEDBACK = 'AI Feedback'
 export const CHAT = 'Chat'
 export const EMAIL = 'Email'
+export const TONE_OF_VOICE = 'Tone of Voice'
 
 export const SIGNATURE_MAX_LENGTH = 250
 export const SMS_DISCLAIMER_MAX_LENGTH = 250

@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import {
@@ -7,6 +8,12 @@ import {
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 
 import { ToneOfVoiceFormComponent } from '../FormComponents/ToneOfVoiceFormComponent'
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
 
 // Mock data
 const mockUpdateValue = jest.fn()
@@ -21,6 +28,11 @@ const defaultProps = {
 }
 
 describe('ToneOfVoiceFormComponent', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockUseFlag.mockReturnValue(false)
+    })
+
     it.each([
         { toneOfVoice: 'Friendly', label: /Friendly/i },
         { toneOfVoice: 'Professional', label: /Professional/i },
@@ -179,5 +191,81 @@ describe('ToneOfVoiceFormComponent', () => {
             'toneOfVoice',
             'Professional',
         )
+    })
+
+    describe('AiAgentToneOfVoice feature flag', () => {
+        it('should display "Tone of Voice and Language" title when flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+            render(<ToneOfVoiceFormComponent {...defaultProps} />)
+
+            expect(
+                screen.getByText('Tone of Voice and Language'),
+            ).toBeInTheDocument()
+        })
+
+        it('should display "Language" title when flag is enabled', () => {
+            mockUseFlag.mockImplementation((flag: string) => {
+                if (flag === FeatureFlagKey.AiAgentToneOfVoice) {
+                    return true
+                }
+                return false
+            })
+            render(<ToneOfVoiceFormComponent {...defaultProps} />)
+
+            expect(screen.getByText('Language')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Tone of Voice and Language'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display tone of voice description when flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+            render(<ToneOfVoiceFormComponent {...defaultProps} />)
+
+            expect(
+                screen.getByText(/Tone of Voice allows you to customize/i),
+            ).toBeInTheDocument()
+        })
+
+        it('should display language-focused description when flag is enabled', () => {
+            mockUseFlag.mockImplementation((flag: string) => {
+                if (flag === FeatureFlagKey.AiAgentToneOfVoice) {
+                    return true
+                }
+                return false
+            })
+            render(<ToneOfVoiceFormComponent {...defaultProps} />)
+
+            expect(
+                screen.getByText(
+                    /Choose which language AI Agent should use when replying/i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should render tone of voice options when flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+            render(<ToneOfVoiceFormComponent {...defaultProps} />)
+
+            expect(screen.getByText('Friendly')).toBeInTheDocument()
+            expect(screen.getByText('Professional')).toBeInTheDocument()
+            expect(screen.getByText('Sophisticated')).toBeInTheDocument()
+            expect(screen.getByText('Custom')).toBeInTheDocument()
+        })
+
+        it('should not render tone of voice options when flag is enabled', () => {
+            mockUseFlag.mockImplementation((flag: string) => {
+                if (flag === FeatureFlagKey.AiAgentToneOfVoice) {
+                    return true
+                }
+                return false
+            })
+            render(<ToneOfVoiceFormComponent {...defaultProps} />)
+
+            expect(screen.queryByText('Friendly')).not.toBeInTheDocument()
+            expect(screen.queryByText('Professional')).not.toBeInTheDocument()
+            expect(screen.queryByText('Sophisticated')).not.toBeInTheDocument()
+            expect(screen.queryByText('Custom')).not.toBeInTheDocument()
+        })
     })
 })

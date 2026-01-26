@@ -55,6 +55,7 @@ import { AiAgentSales } from 'pages/aiAgent/AiAgentSales'
 import { AiAgentSalesStrategy } from 'pages/aiAgent/AiAgentSalesStrategy'
 import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer'
 import AiAgentScrapedDomainQuestionsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainQuestionsContainer'
+import { AiAgentToneOfVoice } from 'pages/aiAgent/AiAgentToneOfVoice'
 import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
 import { AiAgentOnboardingRedirect } from 'pages/aiAgent/components/AiAgentOnboardingRedirect/AiAgentOnboardingRedirect'
 import { AiAgentRedirect } from 'pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect'
@@ -631,6 +632,16 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                 )}
                             />
                         )}
+                    </AiAgentErrorBoundary>
+                    <AiAgentErrorBoundary
+                        section="ai-agent-tone-of-voice"
+                        team={SentryTeam.AI_AGENT}
+                    >
+                        <Route
+                            path={`${path}/tone-of-voice`}
+                            component={AiAgentToneOfVoice}
+                            exact
+                        />
                     </AiAgentErrorBoundary>
                     <AiAgentErrorBoundary
                         section="ai-agent-intents"

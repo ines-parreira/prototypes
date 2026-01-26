@@ -1,5 +1,7 @@
 import type React from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 
 import MacroEditLanguage from '../../../../tickets/common/macros/components/MacroEditLanguage'
@@ -29,11 +31,13 @@ const AiLanguageSettings: React.FC<AiLanguageSettingsProps> = ({
         updateValue('aiAgentLanguage', language)
     }
 
+    const newToneOfVoiceEnabled = useFlag(FeatureFlagKey.AiAgentToneOfVoice)
+
     const showDropdown = languageMode === 'specific'
 
     return (
         <div>
-            <h3 className={css.title}>Language</h3>
+            {!newToneOfVoiceEnabled && <h3 className={css.title}>Language</h3>}
             <div className={css.radioContainer}>
                 <label
                     htmlFor="language-mode-customers"

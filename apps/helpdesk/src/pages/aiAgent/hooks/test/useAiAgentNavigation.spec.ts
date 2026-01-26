@@ -7,6 +7,8 @@ import {
     PRODUCT_RECOMMENDATIONS,
     SALES,
     STRATEGY,
+    TONE_OF_VOICE,
+    TRAIN,
 } from 'pages/aiAgent/constants'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 
@@ -152,6 +154,16 @@ describe('useAiAgentNavigation', () => {
 
         expect(result.current.routes.productRecommendationsExclude).toEqual(
             '/app/ai-agent/shopify/test/sales/product-recommendations/exclude',
+        )
+    })
+
+    it('should return /tone-of-voice path', () => {
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
+        )
+
+        expect(result.current.routes.toneOfVoice).toEqual(
+            '/app/ai-agent/shopify/test/tone-of-voice',
         )
     })
 
@@ -486,6 +498,48 @@ describe('useAiAgentNavigation', () => {
 
             expect(salesItem).toBeDefined()
             expect(salesItem?.title).toBe(SALES)
+        })
+
+        it('should include Tone of Voice in Train section when feature flag is enabled', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiAgentToneOfVoice) {
+                    return true
+                }
+                return false
+            })
+
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'test-shop' }),
+            )
+
+            const trainItem = result.current.navigationItems.find(
+                (item) => item.title === TRAIN,
+            )
+            const toneOfVoiceItem = trainItem?.items?.find(
+                (item) => item.title === TONE_OF_VOICE,
+            )
+
+            expect(toneOfVoiceItem).toBeDefined()
+            expect(toneOfVoiceItem?.route).toBe(
+                '/app/ai-agent/shopify/test-shop/tone-of-voice',
+            )
+        })
+
+        it('should not include Tone of Voice when feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'test-shop' }),
+            )
+
+            const trainItem = result.current.navigationItems.find(
+                (item) => item.title === TRAIN,
+            )
+            const toneOfVoiceItem = trainItem?.items?.find(
+                (item) => item.title === TONE_OF_VOICE,
+            )
+
+            expect(toneOfVoiceItem).toBeUndefined()
         })
     })
 })

@@ -23,6 +23,7 @@ import {
     STRATEGY,
     SUPPORT_ACTIONS,
     TEST,
+    TONE_OF_VOICE,
     TRAIN,
 } from 'pages/aiAgent/constants'
 
@@ -56,6 +57,7 @@ export const getAiAgentNavigationRoutes = (shopName: string) => {
         settings: `${basePath}/settings`,
         test: `${basePath}/test`,
         knowledge: `${basePath}/knowledge`,
+        toneOfVoice: `${basePath}/tone-of-voice`,
         knowledgeArticle: (type: string, id: number) =>
             `${basePath}/knowledge/${type}/${id}`,
         knowledgeSources: `${basePath}/knowledge/sources`,
@@ -171,6 +173,7 @@ const useNavigationItems = (
         !isShoppingAssistantDeactivationEnforced ||
         (isShoppingAssistantDeactivationEnforced && isAbTestingEnabled)
 
+    const shouldRenderToneOfVoice = useFlag(FeatureFlagKey.AiAgentToneOfVoice)
     // Actions platform is rendered outside the per-shop navigation in the
     // ActionDrivenNavigation component.
 
@@ -226,6 +229,10 @@ const useNavigationItems = (
                                 title: GUIDANCE,
                             },
                         ],
+                    },
+                    shouldRenderToneOfVoice && {
+                        route: routes.toneOfVoice,
+                        title: TONE_OF_VOICE,
                     },
                     {
                         route: routes.actions,
@@ -313,6 +320,7 @@ const useNavigationItems = (
         isAiShoppingAssistantEnabled,
         isSmsChannelEnabled,
         shouldRenderShoppingAssistantPages,
+        shouldRenderToneOfVoice,
         isOpportunitiesEnabled,
         routes,
     ])
