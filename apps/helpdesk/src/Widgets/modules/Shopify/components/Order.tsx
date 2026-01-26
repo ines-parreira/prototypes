@@ -1,6 +1,7 @@
 import type { FunctionComponent, ReactNode } from 'react'
 import { createContext, useContext, useMemo } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -33,6 +34,7 @@ import { StaticField } from 'Widgets/modules/Template/modules/Field'
 import { CustomizationContext } from '../../Template'
 import { ShopifyContext } from '../contexts/ShopifyContext'
 import { getShopifyResourceIds } from '../helpers/getShopifyResourceIds'
+import { getMetafieldsFromSource } from '../modules/Metafields/helpers/getMetafieldsFromSource'
 import { calculateReturnsStatus } from './Order.helpers'
 
 import css from './Order.less'
@@ -365,15 +367,23 @@ export const Wrapper: FunctionComponent<{
 
 type AfterContentProps = {
     isEditing: boolean
+    source: Map<any, any>
 }
 
-export function AfterContent({ isEditing }: AfterContentProps) {
+export function AfterContent({ isEditing, source }: AfterContentProps) {
     const orderContext = useContext(OrderContext)
     const integrationContext = useContext(IntegrationContext)
+    const useSourceMetafields = useFlag(
+        FeatureFlagKey.EnableShopifyMetafieldsIngestionUI,
+        false,
+    )
+
     return !isEditing ? (
         <OrderMetafields
             orderId={orderContext.orderId as number}
             integrationId={integrationContext.integrationId as number}
+            metafields={getMetafieldsFromSource(source)}
+            useSourceMetafields={useSourceMetafields}
         />
     ) : null
 }

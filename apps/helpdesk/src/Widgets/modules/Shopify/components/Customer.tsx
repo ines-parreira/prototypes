@@ -33,6 +33,7 @@ import { StaticField } from 'Widgets/modules/Template/modules/Field'
 import { CustomizationContext } from '../../Template'
 import { ShopifyContext } from '../contexts/ShopifyContext'
 import { getShopifyResourceIds } from '../helpers/getShopifyResourceIds'
+import { getMetafieldsFromSource } from '../modules/Metafields/helpers/getMetafieldsFromSource'
 import CustomerMetafieldsSection from './CustomerMetafieldsSection'
 
 function Wrapper({
@@ -130,7 +131,10 @@ const AfterTitleContainer = ({
             {integrations.length > 1 && (
                 <StaticField label="Store">{shopName}</StaticField>
             )}
-            <CustomerMetafieldsSection isEditing={isEditing} />
+            <CustomerMetafieldsSection
+                metafields={getMetafieldsFromSource(source)}
+                isEditing={isEditing}
+            />
         </>
     )
 }

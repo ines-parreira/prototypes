@@ -17,6 +17,7 @@ import { EditionContext } from 'providers/infobar/EditionContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { DraftOrderMetafields } from 'Widgets/modules/Shopify/modules/DraftOrder'
+import { getMetafieldsFromSource } from 'Widgets/modules/Shopify/modules/Metafields/helpers/getMetafieldsFromSource'
 import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
@@ -136,24 +137,26 @@ export const Wrapper: React.FunctionComponent<{
 
 type AfterContentProps = {
     isEditing: boolean
+    source: Map<any, any>
 }
 
-export function AfterContent({ isEditing }: AfterContentProps) {
-    const draftOrderContext = useContext(DraftOrderContext)
-
+export function AfterContent({ isEditing, source }: AfterContentProps) {
     const shopifyMetafieldsIngestionEnabled = useFlag(
         FeatureFlagKey.EnableShopifyMetafieldsIngestionUI,
         false,
     )
+
     if (!shopifyMetafieldsIngestionEnabled) {
+        // this feature of draft metafields
+        // will only be enabled after shopify ingestion is turned on
+        // there is no existing draft order metafields feature that are is
+        // calling the shopify API directly as is the case with Customer Metafields
+        // and Order Metafields.
         return null
     }
 
     return !isEditing ? (
-        <DraftOrderMetafields
-            draftOrderId={draftOrderContext.draftOrderId as number}
-            integrationId={draftOrderContext.integrationId as number}
-        />
+        <DraftOrderMetafields metafields={getMetafieldsFromSource(source)} />
     ) : null
 }
 

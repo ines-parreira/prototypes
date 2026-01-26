@@ -8,32 +8,51 @@ import {
     Metafield,
     MetafieldsContainer,
 } from 'Widgets/modules/Shopify/modules/Metafields'
+import { getMetafieldsFromResponse } from 'Widgets/modules/Shopify/modules/Metafields/helpers/getMetafieldsFromResponse'
 
 import css from './OrderMetafields.less'
 
 type Props = {
     integrationId: number
     orderId: number
+    metafields?: ShopifyMetafield[]
+    useSourceMetafields?: boolean
 }
 
-export default function WrappedOrderMetafields(props: Props) {
+export default function WrappedOrderMetafields({
+    integrationId,
+    orderId,
+    metafields,
+    useSourceMetafields,
+}: Props) {
     const onOpened = () => {
         logEvent(SegmentEvent.ShopifyMetafieldsOpenOrder)
     }
 
     return (
         <MetafieldsContainer onOpened={onOpened} title="Metafields">
-            <OrderMetafields {...props} />
+            <OrderMetafields
+                integrationId={integrationId}
+                orderId={orderId}
+                metafields={metafields}
+                useSourceMetafields={useSourceMetafields}
+            />
         </MetafieldsContainer>
     )
 }
 
-export function OrderMetafields({ integrationId, orderId }: Props) {
+export function OrderMetafields({
+    integrationId,
+    orderId,
+    metafields: sourceMetafields,
+    useSourceMetafields,
+}: Props) {
     const { data, isLoading, isError } = useListShopifyOrderMetafields(
         integrationId,
         orderId,
         {
             query: {
+                enabled: !useSourceMetafields,
                 refetchInterval: false,
                 refetchIntervalInBackground: false,
                 refetchOnWindowFocus: false,
@@ -43,7 +62,7 @@ export function OrderMetafields({ integrationId, orderId }: Props) {
         },
     )
 
-    if (isLoading) {
+    if (!useSourceMetafields && isLoading) {
         return (
             <div className={css.loader}>
                 <Skeleton />
@@ -51,7 +70,7 @@ export function OrderMetafields({ integrationId, orderId }: Props) {
         )
     }
 
-    if (isError) {
+    if (!useSourceMetafields && isError) {
         return (
             <span className={css.errorMessage}>
                 Temporarily unavailable, try again later.
@@ -59,7 +78,11 @@ export function OrderMetafields({ integrationId, orderId }: Props) {
         )
     }
 
-    if (!data || data.data?.data?.length <= 0) {
+    const metafields = useSourceMetafields
+        ? sourceMetafields
+        : getMetafieldsFromResponse(data)
+
+    if (!metafields?.length) {
         return (
             <span className={css.infoMessage}>
                 Order has no metafields populated.
@@ -67,7 +90,6 @@ export function OrderMetafields({ integrationId, orderId }: Props) {
         )
     }
 
-    const metafields = data.data.data as unknown as ShopifyMetafield[]
     return (
         <>
             {metafields.map((field, index) => (

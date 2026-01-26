@@ -21,6 +21,8 @@ const store = mockStore({
     currentAccount: fromJS({ domain: 'test-domain' }),
 })
 
+const mockSource = fromJS({ metafields: [] })
+
 const mockListShopifyOrderMetafields = mockListShopifyOrderMetafieldsHandler()
 
 const server = setupServer()
@@ -171,7 +173,7 @@ describe('AfterContent', () => {
                     <DraftOrderContext.Provider
                         value={{ draftOrderId: 123, integrationId: 456 }}
                     >
-                        <AfterContent isEditing={false} />
+                        <AfterContent isEditing={false} source={mockSource} />
                     </DraftOrderContext.Provider>
                 </QueryClientProvider>
             </Provider>,
@@ -189,7 +191,7 @@ describe('AfterContent', () => {
                     <DraftOrderContext.Provider
                         value={{ draftOrderId: 123, integrationId: 456 }}
                     >
-                        <AfterContent isEditing={true} />
+                        <AfterContent isEditing={true} source={mockSource} />
                     </DraftOrderContext.Provider>
                 </QueryClientProvider>
             </Provider>,
@@ -207,7 +209,7 @@ describe('AfterContent', () => {
                     <DraftOrderContext.Provider
                         value={{ draftOrderId: 12345, integrationId: 789 }}
                     >
-                        <AfterContent isEditing={false} />
+                        <AfterContent isEditing={false} source={mockSource} />
                     </DraftOrderContext.Provider>
                 </QueryClientProvider>
             </Provider>,
@@ -227,7 +229,7 @@ describe('AfterContent', () => {
                     <DraftOrderContext.Provider
                         value={{ draftOrderId: 123, integrationId: 456 }}
                     >
-                        <AfterContent isEditing={false} />
+                        <AfterContent isEditing={false} source={mockSource} />
                     </DraftOrderContext.Provider>
                 </QueryClientProvider>
             </Provider>,
@@ -241,12 +243,59 @@ describe('AfterContent', () => {
                     <DraftOrderContext.Provider
                         value={{ draftOrderId: 123, integrationId: 456 }}
                     >
-                        <AfterContent isEditing={true} />
+                        <AfterContent isEditing={true} source={mockSource} />
                     </DraftOrderContext.Provider>
                 </QueryClientProvider>
             </Provider>,
         )
 
         expect(container2.firstChild).toBeNull()
+    })
+
+    it('should render DraftOrderMetafields with undefined when source has no metafields', async () => {
+        mockUseFlag.mockReturnValue(true)
+        const sourceWithoutMetafields = fromJS({ id: 123 })
+
+        render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <DraftOrderContext.Provider
+                        value={{ draftOrderId: 12345, integrationId: 789 }}
+                    >
+                        <AfterContent
+                            isEditing={false}
+                            source={sourceWithoutMetafields}
+                        />
+                    </DraftOrderContext.Provider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(
+            await screen.findByText('Draft Order Metafields'),
+        ).toBeInTheDocument()
+    })
+
+    it('should render DraftOrderMetafields with undefined when source is undefined', async () => {
+        mockUseFlag.mockReturnValue(true)
+
+        render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <DraftOrderContext.Provider
+                        value={{ draftOrderId: 12345, integrationId: 789 }}
+                    >
+                        <AfterContent
+                            isEditing={false}
+                            source={undefined as any}
+                        />
+                    </DraftOrderContext.Provider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(
+            await screen.findByText('Draft Order Metafields'),
+        ).toBeInTheDocument()
     })
 })

@@ -115,4 +115,26 @@ describe('<AfterTitle/>', () => {
         )
         expect(container.textContent).toContain('Total spent: £100.00')
     })
+
+    it('should handle source without metafields property', () => {
+        const sourceWithoutMetafields = {
+            ...integration,
+            orders_count: 5,
+        }
+
+        const { container } = render(
+            <Provider store={store}>
+                <IntegrationContext.Provider
+                    value={{
+                        integration: fromJS(integration),
+                        integrationId: integrationId,
+                    }}
+                >
+                    <AfterTitle source={fromJS(sourceWithoutMetafields)} />
+                </IntegrationContext.Provider>
+            </Provider>,
+        )
+
+        expect(container.textContent).toContain('Orders: 5')
+    })
 })

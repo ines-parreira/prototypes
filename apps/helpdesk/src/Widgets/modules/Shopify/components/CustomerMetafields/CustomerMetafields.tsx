@@ -1,8 +1,8 @@
 import { Skeleton } from '@gorgias/axiom'
 import { useListShopifyCustomerMetafields } from '@gorgias/helpdesk-queries'
-import type { ShopifyMetafield } from '@gorgias/helpdesk-types'
 
 import { Metafield } from 'Widgets/modules/Shopify/modules/Metafields'
+import { getMetafieldsFromResponse } from 'Widgets/modules/Shopify/modules/Metafields/helpers/getMetafieldsFromResponse'
 
 import type { MetafieldProps } from './types'
 
@@ -11,12 +11,15 @@ import css from './CustomerMetafields.less'
 export function CustomerMetafields({
     integrationId,
     customerId,
+    metafields: sourceMetafields,
+    useSourceMetafields,
 }: MetafieldProps) {
     const { data, isLoading, isError } = useListShopifyCustomerMetafields(
         integrationId,
         customerId,
         {
             query: {
+                enabled: !useSourceMetafields,
                 refetchInterval: false,
                 refetchIntervalInBackground: false,
                 refetchOnWindowFocus: false,
@@ -26,14 +29,14 @@ export function CustomerMetafields({
         },
     )
 
-    if (isLoading) {
+    if (!useSourceMetafields && isLoading) {
         return (
             <div className={css.loader}>
                 <Skeleton />
             </div>
         )
     }
-    if (isError) {
+    if (!useSourceMetafields && isError) {
         return (
             <span className={css.errorMessage}>
                 Temporarily unavailable, try again later.
@@ -41,7 +44,11 @@ export function CustomerMetafields({
         )
     }
 
-    if (!data?.data?.data?.length) {
+    const metafields = useSourceMetafields
+        ? sourceMetafields
+        : getMetafieldsFromResponse(data)
+
+    if (!metafields?.length) {
         return (
             <div className={css.infoMessage}>
                 Customer has no metafields populated.
@@ -49,7 +56,6 @@ export function CustomerMetafields({
         )
     }
 
-    const metafields = data.data.data as unknown as ShopifyMetafield[]
     return (
         <div className={css.metafields}>
             {metafields.map((field, index) => (

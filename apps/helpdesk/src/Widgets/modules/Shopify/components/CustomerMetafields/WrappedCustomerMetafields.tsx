@@ -5,7 +5,12 @@ import { MetafieldsContainer } from '../../modules/Metafields'
 import { CustomerMetafields } from './CustomerMetafields'
 import type { MetafieldProps } from './types'
 
-export default function WrappedCustomerMetafields(props: MetafieldProps) {
+export default function WrappedCustomerMetafields({
+    integrationId,
+    customerId,
+    metafields,
+    useSourceMetafields,
+}: MetafieldProps) {
     const showCustomerMetafields = useFlag(
         FeatureFlagKey.ShowShopifyCustomerMetafields,
         false,
@@ -21,7 +26,12 @@ export default function WrappedCustomerMetafields(props: MetafieldProps) {
 
     return (
         <MetafieldsContainer onOpened={onOpened} title="Customer Metafields">
-            <CustomerMetafields {...props} />
+            <CustomerMetafields
+                integrationId={integrationId}
+                customerId={customerId}
+                metafields={metafields}
+                useSourceMetafields={useSourceMetafields}
+            />
         </MetafieldsContainer>
     )
 }

@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useListShopifyCustomerMetafields } from '@gorgias/helpdesk-queries'
+import type { ShopifyMetafield } from '@gorgias/helpdesk-types'
 
 import { CustomerMetafields } from '../CustomerMetafields'
 
@@ -89,5 +90,63 @@ describe('<CustomerMetafields/>', () => {
         expect(mockUseListShopifyCustomerMetafields).toHaveBeenCalled()
         expect(screen.getByText('Test Key:')).toBeInTheDocument()
         expect(screen.getByText('test_value')).toBeInTheDocument()
+    })
+
+    it('should render source metafields when useSourceMetafields is true', () => {
+        const sourceMetafields = [
+            {
+                type: 'single_line_text_field',
+                namespace: 'test_namespace',
+                key: 'source_key',
+                value: 'source_value',
+            },
+        ] as ShopifyMetafield[]
+
+        render(
+            <Provider store={mockStore}>
+                <CustomerMetafields
+                    integrationId={1}
+                    customerId={1}
+                    metafields={sourceMetafields}
+                    useSourceMetafields={true}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Source Key:')).toBeInTheDocument()
+        expect(screen.getByText('source_value')).toBeInTheDocument()
+    })
+
+    it('should return empty state when API returns undefined data', () => {
+        mockUseListShopifyCustomerMetafields.mockReturnValue({
+            data: {
+                data: {},
+            },
+        })
+
+        render(<CustomerMetafields integrationId={1} customerId={1} />)
+
+        expect(
+            screen.getByText('Customer has no metafields populated.'),
+        ).toBeInTheDocument()
+    })
+
+    it('should return empty state when useSourceMetafields is true but metafields is empty', () => {
+        mockUseListShopifyCustomerMetafields.mockReturnValue({
+            data: null,
+        })
+
+        render(
+            <CustomerMetafields
+                integrationId={1}
+                customerId={1}
+                metafields={[]}
+                useSourceMetafields={true}
+            />,
+        )
+
+        expect(
+            screen.getByText('Customer has no metafields populated.'),
+        ).toBeInTheDocument()
     })
 })

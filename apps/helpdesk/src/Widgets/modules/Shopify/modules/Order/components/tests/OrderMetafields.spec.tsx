@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useListShopifyOrderMetafields } from '@gorgias/helpdesk-queries'
+import type { ShopifyMetafield } from '@gorgias/helpdesk-types'
 
 import { OrderMetafields } from '../OrderMetafields'
 
@@ -89,5 +90,63 @@ describe('<OrderMetafields/>', () => {
         expect(mockUseListShopifyOrderMetafields).toHaveBeenCalled()
         expect(screen.getByText('Test Key:')).toBeInTheDocument()
         expect(screen.getByText('test_value')).toBeInTheDocument()
+    })
+
+    it('should render source metafields when useSourceMetafields is true', () => {
+        const sourceMetafields = [
+            {
+                type: 'single_line_text_field',
+                namespace: 'test_namespace',
+                key: 'source_key',
+                value: 'source_value',
+            },
+        ] as ShopifyMetafield[]
+
+        render(
+            <Provider store={mockStore}>
+                <OrderMetafields
+                    integrationId={1}
+                    orderId={1}
+                    metafields={sourceMetafields}
+                    useSourceMetafields={true}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByText('Source Key:')).toBeInTheDocument()
+        expect(screen.getByText('source_value')).toBeInTheDocument()
+    })
+
+    it('should return empty state when API returns undefined data', () => {
+        mockUseListShopifyOrderMetafields.mockReturnValue({
+            data: {
+                data: {},
+            },
+        })
+
+        render(<OrderMetafields integrationId={1} orderId={1} />)
+
+        expect(
+            screen.getByText('Order has no metafields populated.'),
+        ).toBeInTheDocument()
+    })
+
+    it('should return empty state when useSourceMetafields is true but metafields is empty', () => {
+        mockUseListShopifyOrderMetafields.mockReturnValue({
+            data: null,
+        })
+
+        render(
+            <OrderMetafields
+                integrationId={1}
+                orderId={1}
+                metafields={[]}
+                useSourceMetafields={true}
+            />,
+        )
+
+        expect(
+            screen.getByText('Order has no metafields populated.'),
+        ).toBeInTheDocument()
     })
 })
