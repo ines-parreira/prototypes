@@ -136,6 +136,20 @@ export function useKnowledgeHubUrlParams(
 
     const { error: notifyError } = useNotify()
     const hasShownFolderNotFoundError = useRef(false)
+    const prevFolderParamRef = useRef<string | null>(null)
+    const lastPushedUrlRef = useRef<string>('')
+
+    const guardedPush = useCallback(
+        (newUrl: string) => {
+            if (newUrl !== lastPushedUrlRef.current) {
+                lastPushedUrlRef.current = newUrl
+                history.push(newUrl)
+                return true
+            }
+            return false
+        },
+        [history],
+    )
 
     const buildUrlWithParams = useCallback(
         (basePath: string) => {
@@ -190,8 +204,8 @@ export function useKnowledgeHubUrlParams(
         const newUrl = newSearch
             ? `${history.location.pathname}?${newSearch}`
             : history.location.pathname
-        history.push(newUrl)
-    }, [history, location.search])
+        guardedPush(newUrl)
+    }, [guardedPush, history, location.search])
 
     // Memoize folder object creation from URL to avoid unnecessary recalculations
     const folderObjectFromUrl = useMemo(() => {
@@ -276,7 +290,6 @@ export function useKnowledgeHubUrlParams(
         }
     }, [location.search, folderObjectFromUrl])
 
-    // Sync filter state with URL when URL changes
     useEffect(() => {
         const params = new URLSearchParams(location.search)
         const filterParam = params.get('filter') as KnowledgeType | null
@@ -285,25 +298,55 @@ export function useKnowledgeHubUrlParams(
         }
     }, [location.search, selectedFilter])
 
+    // Track folder param changes for back button detection
+    useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const currentFolderParam = params.get('folder')
+
+        prevFolderParamRef.current = currentFolderParam
+
+        // Update last pushed URL ref when URL changes via browser navigation
+        const currentUrl = `${location.pathname}${location.search}`
+        lastPushedUrlRef.current = currentUrl
+    }, [location.search, location.pathname])
+
     // Sync folder state with URL when URL changes or tableData loads
     useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const currentFolderParam = params.get('folder')
+        const prevFolderParam = prevFolderParamRef.current
         const isViewingArticle = isViewingArticleUrl(location.pathname)
 
-        // Clear folder if URL has no folder param
-        // This includes when viewing an article with deleted folder (folder param was removed)
-        if (!folderObjectFromUrl && selectedFolder) {
+        // Clear filter state when entering folder view
+        if (currentFolderParam && !prevFolderParam) {
+            // Entering folder view - clear filters that don't apply
+            if (searchTerm) setSearchTerm('')
+            if (dateRange.startDate || dateRange.endDate) {
+                setDateRange({ startDate: null, endDate: null })
+            }
+            if (inUseByAIFilter !== null) setInUseByAIFilter(null)
+        }
+
+        // Case 1: Back button cleared the folder parameter
+        // Previous URL had folder param, current URL doesn't
+        if (prevFolderParam && !currentFolderParam && selectedFolder) {
             setSelectedFolder(null)
             return
         }
 
-        // Set or upgrade folder if URL has folder param and we have a valid folder object
-        if (folderObjectFromUrl) {
+        // Case 2: Clear folder if URL has no folder param (and no previous param either)
+        // This handles direct navigation to base URL
+        if (!folderObjectFromUrl && selectedFolder && !currentFolderParam) {
+            setSelectedFolder(null)
+            return
+        }
+
+        // Case 3: Set or upgrade folder if URL has folder param and we have a valid folder object
+        if (folderObjectFromUrl && currentFolderParam) {
             const decodedFolder = folderObjectFromUrl.source
 
             // When viewing an article, only upgrade if selectedFolder is missing required properties
-            // Don't change selectedFolder if it already has the correct folder
             if (isViewingArticle) {
-                // Only upgrade if selectedFolder is missing required properties
                 if (
                     selectedFolder &&
                     selectedFolder.source === decodedFolder &&
@@ -315,10 +358,7 @@ export function useKnowledgeHubUrlParams(
                 }
             }
 
-            // Upgrade to full folder object only if:
-            // 1. No folder is selected, OR
-            // 2. Different folder source, OR
-            // 3. Current folder lacks type but new folder has it (upgrade from minimal to full)
+            // Upgrade to full folder object only if necessary
             const shouldUpgrade =
                 !selectedFolder ||
                 selectedFolder.source !== decodedFolder ||
@@ -330,10 +370,14 @@ export function useKnowledgeHubUrlParams(
         }
     }, [
         location.search,
-        selectedFolder,
-        tableData,
         location.pathname,
+        tableData,
         folderObjectFromUrl,
+        selectedFolder,
+        dateRange.endDate,
+        dateRange.startDate,
+        inUseByAIFilter,
+        searchTerm,
     ])
 
     // Sync search term with URL
@@ -392,22 +436,22 @@ export function useKnowledgeHubUrlParams(
             const newUrl = newSearch
                 ? `${history.location.pathname}?${newSearch}`
                 : history.location.pathname
-            history.push(newUrl)
+            guardedPush(newUrl)
         },
-        [selectedFolder, setSelectedFilter, history, location.search],
+        [
+            guardedPush,
+            selectedFolder,
+            setSelectedFilter,
+            history,
+            location.search,
+        ],
     )
 
     const updateUrlWithFolderParam = useCallback(
         (data: GroupedKnowledgeItem) => {
-            // Clear filter state that doesn't apply to folders
-            setSearchTerm('')
-            setDateRange({ startDate: null, endDate: null })
-            setInUseByAIFilter(null)
-
-            // Update URL with folder parameter
             const params = new URLSearchParams(location.search)
 
-            // Remove filter params from URL that don't apply to folder views
+            // Remove filter params that don't apply to folder views (but keep 'filter')
             params.delete('startDate')
             params.delete('endDate')
             params.delete('search')
@@ -416,14 +460,14 @@ export function useKnowledgeHubUrlParams(
             if (data.source) {
                 params.set('folder', encodeURIComponent(data.source))
             }
+
             const newSearch = params.toString()
             const newUrl = newSearch
                 ? `${history.location.pathname}?${newSearch}`
                 : history.location.pathname
-            history.push(newUrl)
+            guardedPush(newUrl)
         },
-
-        [history, location.search],
+        [guardedPush, history, location.search],
     )
 
     const handleSearchChange = useCallback(
@@ -438,9 +482,9 @@ export function useKnowledgeHubUrlParams(
             const newUrl = params.toString()
                 ? `${history.location.pathname}?${params.toString()}`
                 : history.location.pathname
-            history.push(newUrl)
+            guardedPush(newUrl)
         },
-        [history, location.search],
+        [guardedPush, history, location.search],
     )
 
     const handleDateRangeChange = useCallback(
@@ -460,9 +504,9 @@ export function useKnowledgeHubUrlParams(
             const newUrl = params.toString()
                 ? `${history.location.pathname}?${params.toString()}`
                 : history.location.pathname
-            history.push(newUrl)
+            guardedPush(newUrl)
         },
-        [history, location.search],
+        [guardedPush, history, location.search],
     )
 
     const handleInUseByAIChange = useCallback(
@@ -477,16 +521,16 @@ export function useKnowledgeHubUrlParams(
             const newUrl = params.toString()
                 ? `${history.location.pathname}?${params.toString()}`
                 : history.location.pathname
-            history.push(newUrl)
+            guardedPush(newUrl)
         },
-        [history, location.search],
+        [guardedPush, history, location.search],
     )
 
     const handleCloseEditorPath = useCallback(() => {
         const basePath = routes.knowledgeSources
         const targetPath = buildUrlWithParams(basePath)
-        history.push(targetPath)
-    }, [routes.knowledgeSources, history, buildUrlWithParams])
+        guardedPush(targetPath)
+    }, [guardedPush, routes.knowledgeSources, buildUrlWithParams])
 
     const clearSearchParams = useCallback(() => {
         // Clear React state
@@ -508,8 +552,8 @@ export function useKnowledgeHubUrlParams(
         const newUrl = newSearch
             ? `${history.location.pathname}?${newSearch}`
             : history.location.pathname
-        history.push(newUrl)
-    }, [history, location.search])
+        guardedPush(newUrl)
+    }, [guardedPush, history, location.search])
 
     return {
         selectedFilter,

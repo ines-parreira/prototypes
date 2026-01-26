@@ -531,7 +531,7 @@ describe('useKnowledgeHubUrlParams', () => {
             expect(result.current.selectedFilter).toBe(KnowledgeType.URL)
         })
 
-        it('updates filter using setSelectedFilter but gets reverted without URL change', () => {
+        it('updates filter using setSelectedFilter without reverting (state-only change)', () => {
             const history = createMemoryHistory({
                 initialEntries: ['/knowledge'],
             })
@@ -547,8 +547,7 @@ describe('useKnowledgeHubUrlParams', () => {
                 result.current.setSelectedFilter(KnowledgeType.FAQ)
             })
 
-            // setSelectedFilter alone doesn't update URL, so useEffect reverts it
-            expect(result.current.selectedFilter).toBe(null)
+            expect(history.location.search).toBe('')
         })
     })
 
@@ -2353,6 +2352,596 @@ describe('useKnowledgeHubUrlParams', () => {
             })
 
             expect(history.length).toBe(initialLength + 3)
+        })
+    })
+
+    describe('guardedPush - duplicate URL prevention', () => {
+        it('prevents duplicate history pushes when URL does not change', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const initialLength = history.length
+
+            // First push - should succeed
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            expect(history.length).toBe(initialLength + 1)
+            expect(history.location.search).toContain('folder=')
+
+            // Second push with same folder - should be blocked
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            expect(history.length).toBe(initialLength + 1) // No new entry
+        })
+
+        it('allows history push when URL actually changes', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const initialLength = history.length
+
+            // Push first folder
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            expect(history.length).toBe(initialLength + 1)
+
+            // Push different folder - should succeed
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[1])
+            })
+
+            expect(history.length).toBe(initialLength + 2)
+        })
+
+        it('prevents duplicate pushes from handleDocumentFilterChange', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const initialLength = history.length
+
+            // Change to same filter - should be blocked
+            act(() => {
+                result.current.handleDocumentFilterChange(KnowledgeType.URL)
+            })
+
+            expect(history.length).toBe(initialLength) // No new entry
+        })
+
+        it('allows push from handleDocumentFilterChange when filter changes', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const initialLength = history.length
+
+            // Change to different filter - should succeed
+            act(() => {
+                result.current.handleDocumentFilterChange(KnowledgeType.FAQ)
+            })
+
+            expect(history.length).toBe(initialLength + 1)
+            expect(history.location.search).toBe('?filter=faq')
+        })
+    })
+
+    describe('filter sync effect - dependency fix', () => {
+        it('does not revert filter state when user clicks filter button', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=faq'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFilter).toBe(KnowledgeType.FAQ)
+
+            // User clicks "All content" button
+            act(() => {
+                result.current.handleDocumentFilterChange(null)
+            })
+
+            // State should be null (all content)
+            expect(result.current.selectedFilter).toBeNull()
+            expect(history.location.search).toBe('')
+        })
+
+        it('syncs filter state when URL changes via browser navigation', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFilter).toBeNull()
+
+            // Simulate browser navigation (back/forward button)
+            act(() => {
+                history.push('/knowledge?filter=url')
+            })
+
+            // State should sync from URL
+            expect(result.current.selectedFilter).toBe(KnowledgeType.URL)
+        })
+
+        it('shows all content when filter is null', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=faq'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Change to all content
+            act(() => {
+                result.current.handleDocumentFilterChange(null)
+            })
+
+            expect(result.current.selectedFilter).toBeNull()
+            expect(history.location.search).toBe('')
+        })
+    })
+
+    describe('filter clearing when entering folder', () => {
+        it('clears search, date, and AI filters when entering folder from list view', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge?filter=url&search=test&startDate=2024-01-01&endDate=2024-12-31&inUseByAI=true',
+                ],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.searchTerm).toBe('test')
+            expect(result.current.dateRange.startDate).toBe('2024-01-01')
+            expect(result.current.inUseByAIFilter).toBe(true)
+
+            // Enter folder
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            // Filters should be cleared
+            expect(result.current.searchTerm).toBe('')
+            expect(result.current.dateRange).toEqual({
+                startDate: null,
+                endDate: null,
+            })
+            expect(result.current.inUseByAIFilter).toBeNull()
+
+            // URL should not have search/date/AI params
+            expect(history.location.search).not.toContain('search=')
+            expect(history.location.search).not.toContain('startDate=')
+            expect(history.location.search).not.toContain('endDate=')
+            expect(history.location.search).not.toContain('inUseByAI=')
+        })
+
+        it('preserves type filter when entering folder', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url&search=test'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFilter).toBe(KnowledgeType.URL)
+
+            // Enter folder
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            // Type filter should be preserved
+            expect(result.current.selectedFilter).toBe(KnowledgeType.URL)
+            expect(history.location.search).toContain('filter=url')
+            expect(history.location.search).toContain('folder=')
+        })
+
+        it('does not clear filters when navigating within folder view', () => {
+            // Use folder from mockTableData that exists
+            const folderUrl = encodeURIComponent(mockTableData[0].source!)
+            const history = createMemoryHistory({
+                initialEntries: [`/knowledge?filter=url&folder=${folderUrl}`],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            // Verify we're in folder view
+            expect(result.current.selectedFolder).not.toBeNull()
+
+            // Navigate to different folder (also from mockTableData)
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[1])
+            })
+
+            // Should still be in folder view
+            expect(history.location.search).toContain('folder=')
+            expect(result.current.selectedFolder).not.toBeNull()
+        })
+
+        it('clears only search term when entering folder (line 326)', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url&search=test'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.searchTerm).toBe('test')
+            expect(result.current.dateRange.startDate).toBeNull()
+            expect(result.current.inUseByAIFilter).toBeNull()
+
+            // Enter folder
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            // Only search term should be cleared
+            expect(result.current.searchTerm).toBe('')
+            expect(history.location.search).not.toContain('search=')
+        })
+
+        it('clears only start date when entering folder (lines 327-328)', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url&startDate=2024-01-01'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.dateRange.startDate).toBe('2024-01-01')
+            expect(result.current.dateRange.endDate).toBeNull()
+            expect(result.current.searchTerm).toBe('')
+            expect(result.current.inUseByAIFilter).toBeNull()
+
+            // Enter folder
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            // Only date range should be cleared
+            expect(result.current.dateRange).toEqual({
+                startDate: null,
+                endDate: null,
+            })
+            expect(history.location.search).not.toContain('startDate=')
+        })
+
+        it('clears only end date when entering folder (lines 327-328)', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url&endDate=2024-12-31'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.dateRange.startDate).toBeNull()
+            expect(result.current.dateRange.endDate).toBe('2024-12-31')
+            expect(result.current.searchTerm).toBe('')
+            expect(result.current.inUseByAIFilter).toBeNull()
+
+            // Enter folder
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            // Only date range should be cleared
+            expect(result.current.dateRange).toEqual({
+                startDate: null,
+                endDate: null,
+            })
+            expect(history.location.search).not.toContain('endDate=')
+        })
+
+        it('clears only AI filter when entering folder (line 330)', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url&inUseByAI=true'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.inUseByAIFilter).toBe(true)
+            expect(result.current.searchTerm).toBe('')
+            expect(result.current.dateRange.startDate).toBeNull()
+
+            // Enter folder
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            // Only AI filter should be cleared
+            expect(result.current.inUseByAIFilter).toBeNull()
+            expect(history.location.search).not.toContain('inUseByAI=')
+        })
+
+        it('clears search term via URL navigation when entering folder (covers line 326)', () => {
+            const folderUrl = encodeURIComponent(mockTableData[0].source!)
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge?filter=url&search=test',
+                    `/knowledge?filter=url&folder=${folderUrl}`,
+                ],
+                initialIndex: 0,
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.searchTerm).toBe('test')
+
+            // Navigate forward to folder URL (simulates clicking a folder link)
+            act(() => {
+                history.goForward()
+            })
+
+            expect(result.current.searchTerm).toBe('')
+        })
+
+        it('clears date range via URL navigation when entering folder (covers lines 327-328)', () => {
+            const folderUrl = encodeURIComponent(mockTableData[0].source!)
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge?filter=url&startDate=2024-01-01&endDate=2024-12-31',
+                    `/knowledge?filter=url&folder=${folderUrl}`,
+                ],
+                initialIndex: 0,
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.dateRange.startDate).toBe('2024-01-01')
+            expect(result.current.dateRange.endDate).toBe('2024-12-31')
+
+            // Navigate forward to folder URL
+            act(() => {
+                history.goForward()
+            })
+
+            expect(result.current.dateRange).toEqual({
+                startDate: null,
+                endDate: null,
+            })
+        })
+
+        it('clears inUseByAI filter via URL navigation when entering folder (covers line 330)', () => {
+            const folderUrl = encodeURIComponent(mockTableData[0].source!)
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge?filter=url&inUseByAI=false',
+                    `/knowledge?filter=url&folder=${folderUrl}`,
+                ],
+                initialIndex: 0,
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.inUseByAIFilter).toBe(false)
+
+            // Navigate forward to folder URL
+            act(() => {
+                history.goForward()
+            })
+
+            expect(result.current.inUseByAIFilter).toBeNull()
+        })
+
+        it('clears all filters via URL navigation when entering folder (covers lines 326-330)', () => {
+            const folderUrl = encodeURIComponent(mockTableData[0].source!)
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge?filter=url&search=test&startDate=2024-01-01&endDate=2024-12-31&inUseByAI=true',
+                    `/knowledge?filter=url&folder=${folderUrl}`,
+                ],
+                initialIndex: 0,
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.searchTerm).toBe('test')
+            expect(result.current.dateRange.startDate).toBe('2024-01-01')
+            expect(result.current.dateRange.endDate).toBe('2024-12-31')
+            expect(result.current.inUseByAIFilter).toBe(true)
+
+            // Navigate forward to folder URL
+            act(() => {
+                history.goForward()
+            })
+
+            expect(result.current.searchTerm).toBe('')
+            expect(result.current.dateRange).toEqual({
+                startDate: null,
+                endDate: null,
+            })
+            expect(result.current.inUseByAIFilter).toBeNull()
+        })
+    })
+
+    describe('back button behavior with folders', () => {
+        it('clears folder state when back button removes folder param', () => {
+            const folderUrl = encodeURIComponent(mockTableData[0].source!)
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/knowledge?filter=url',
+                    `/knowledge?filter=url&folder=${folderUrl}`,
+                ],
+                initialIndex: 1,
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            expect(result.current.selectedFolder).not.toBeNull()
+
+            act(() => {
+                history.goBack()
+            })
+
+            expect(result.current.selectedFolder).toBeNull()
+            expect(history.location.search).toBe('?filter=url')
+        })
+
+        it('handles back button navigation without creating duplicate entries', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const initialLength = history.length
+
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            expect(history.length).toBe(initialLength + 1)
+
+            act(() => {
+                history.goBack()
+            })
+
+            expect(history.length).toBe(initialLength + 1)
+            expect(history.location.search).toBe('')
+        })
+    })
+
+    describe('circular dependency prevention', () => {
+        it('does not trigger infinite re-renders when entering folder', () => {
+            const history = createMemoryHistory({
+                initialEntries: ['/knowledge?filter=url&search=test'],
+            })
+
+            const { result } = renderHook(
+                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, mockTableData),
+                {
+                    wrapper: createRouterWrapper(history),
+                },
+            )
+
+            const renderCount = { count: 0 }
+
+            const originalUseEffect = React.useEffect
+            jest.spyOn(React, 'useEffect').mockImplementation(
+                (effect, deps) => {
+                    renderCount.count++
+                    return originalUseEffect(effect, deps)
+                },
+            )
+
+            act(() => {
+                result.current.updateUrlWithFolderParam(mockTableData[0])
+            })
+
+            expect(renderCount.count).toBeLessThan(50)
+
+            jest.restoreAllMocks()
         })
     })
 })

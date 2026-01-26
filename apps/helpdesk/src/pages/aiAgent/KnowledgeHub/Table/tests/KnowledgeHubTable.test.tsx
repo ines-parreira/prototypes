@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -272,5 +272,182 @@ describe('KnowledgeHubTable - Selection Reset', () => {
                 expect(cb).not.toBeChecked()
             }
         })
+    })
+})
+
+describe('KnowledgeHubTable - Filter Card Visibility', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        queryClient.clear()
+    })
+
+    const getToolbar = () => {
+        const toolbars = document.querySelectorAll(
+            '[data-name="table-toolbar"]',
+        )
+        return toolbars[0] as HTMLElement
+    }
+
+    it('should show date filter card when date range is set', () => {
+        renderComponent({
+            dateRange: {
+                startDate: '2025-01-01',
+                endDate: '2025-01-31',
+            },
+        })
+
+        const toolbar = getToolbar()
+        expect(
+            within(toolbar).getByText('Last updated date'),
+        ).toBeInTheDocument()
+    })
+
+    it('should show inUseByAI filter card when value is set to true', () => {
+        renderComponent({
+            inUseByAIFilter: true,
+        })
+
+        const toolbar = getToolbar()
+        expect(
+            within(toolbar).getByText('In use by AI Agent'),
+        ).toBeInTheDocument()
+    })
+
+    it('should show inUseByAI filter card when value is set to false', () => {
+        renderComponent({
+            inUseByAIFilter: false,
+        })
+
+        const toolbar = getToolbar()
+        expect(
+            within(toolbar).getByText('In use by AI Agent'),
+        ).toBeInTheDocument()
+    })
+
+    it('should remove date filter card when date range is cleared', async () => {
+        const { rerender } = renderComponent({
+            dateRange: {
+                startDate: '2025-01-01',
+                endDate: '2025-01-31',
+            },
+        })
+
+        const toolbar = getToolbar()
+        expect(
+            within(toolbar).getByText('Last updated date'),
+        ).toBeInTheDocument()
+
+        await rerenderComponent(rerender, {
+            dateRange: { startDate: null, endDate: null },
+        })
+
+        expect(
+            within(toolbar).queryByText('Last updated date'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should remove inUseByAI filter card when value is cleared', async () => {
+        const { rerender } = renderComponent({
+            inUseByAIFilter: true,
+        })
+
+        const toolbar = getToolbar()
+        expect(
+            within(toolbar).getByText('In use by AI Agent'),
+        ).toBeInTheDocument()
+
+        await rerenderComponent(rerender, {
+            inUseByAIFilter: null,
+        })
+
+        expect(
+            within(toolbar).queryByText('In use by AI Agent'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should remove both filter cards when both filters are cleared', async () => {
+        const { rerender } = renderComponent({
+            dateRange: {
+                startDate: '2025-01-01',
+                endDate: '2025-01-31',
+            },
+            inUseByAIFilter: true,
+        })
+
+        const toolbar = getToolbar()
+        expect(
+            within(toolbar).getByText('Last updated date'),
+        ).toBeInTheDocument()
+        expect(
+            within(toolbar).getByText('In use by AI Agent'),
+        ).toBeInTheDocument()
+
+        await rerenderComponent(rerender, {
+            dateRange: { startDate: null, endDate: null },
+            inUseByAIFilter: null,
+        })
+
+        expect(
+            within(toolbar).queryByText('Last updated date'),
+        ).not.toBeInTheDocument()
+        expect(
+            within(toolbar).queryByText('In use by AI Agent'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should hide date filter card when only startDate is cleared', async () => {
+        const { rerender } = renderComponent({
+            dateRange: {
+                startDate: '2025-01-01',
+                endDate: '2025-01-31',
+            },
+        })
+
+        const toolbar = getToolbar()
+        expect(
+            within(toolbar).getByText('Last updated date'),
+        ).toBeInTheDocument()
+
+        await rerenderComponent(rerender, {
+            dateRange: { startDate: null, endDate: '2025-01-31' },
+        })
+
+        expect(
+            within(toolbar).queryByText('Last updated date'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should hide date filter card when only endDate is cleared', async () => {
+        const { rerender } = renderComponent({
+            dateRange: {
+                startDate: '2025-01-01',
+                endDate: '2025-01-31',
+            },
+        })
+
+        const toolbar = getToolbar()
+        expect(
+            within(toolbar).getByText('Last updated date'),
+        ).toBeInTheDocument()
+
+        await rerenderComponent(rerender, {
+            dateRange: { startDate: '2025-01-01', endDate: null },
+        })
+
+        expect(
+            within(toolbar).queryByText('Last updated date'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not show filter cards initially when filters are null', () => {
+        renderComponent()
+
+        const toolbar = getToolbar()
+        expect(
+            within(toolbar).queryByText('Last updated date'),
+        ).not.toBeInTheDocument()
+        expect(
+            within(toolbar).queryByText('In use by AI Agent'),
+        ).not.toBeInTheDocument()
     })
 })

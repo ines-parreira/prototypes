@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory, useParams } from 'react-router-dom'
@@ -196,6 +196,11 @@ export const KnowledgeHubContainer = () => {
         buildUrlWithParams,
     })
 
+    // Track previous URL params to detect back button navigation
+    const prevTypeRef = useRef<string | undefined>(type)
+    const prevIdRef = useRef<string | undefined>(id)
+    const isUpdatingFolderRef = useRef(false)
+
     // Fetch all resources metrics
     const isPerformanceStatsEnabled = useFlag(
         FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
@@ -245,6 +250,10 @@ export const KnowledgeHubContainer = () => {
     }, [tableData, metricsMap, isPerformanceStatsEnabled])
 
     useEffect(() => {
+        const prevType = prevTypeRef.current
+        const prevId = prevIdRef.current
+
+        // Case 1: Opening an editor (type and id are present)
         if (type && id) {
             const articleId = Number(id)
             if (isNaN(articleId)) {
@@ -280,7 +289,35 @@ export const KnowledgeHubContainer = () => {
                     return
             }
         }
-    }, [type, id, openGuidanceEditorForEdit, faqEditor, snippetEditor])
+        // Case 2: Closing an editor (URL params cleared by back button)
+        else if (prevType && prevId && (!type || !id)) {
+            // Previous URL had params, current URL doesn't - close the editor
+            switch (prevType) {
+                case KnowledgeType.Guidance:
+                    knowledgeEditorProps.onClose()
+                    break
+                case KnowledgeType.FAQ:
+                    faqEditor.closeEditor()
+                    break
+                case KnowledgeType.Document:
+                case KnowledgeType.URL:
+                case KnowledgeType.Domain:
+                    snippetEditor?.closeEditor()
+                    break
+            }
+        }
+
+        // Update refs for next render
+        prevTypeRef.current = type
+        prevIdRef.current = id
+    }, [
+        type,
+        id,
+        openGuidanceEditorForEdit,
+        faqEditor,
+        snippetEditor,
+        knowledgeEditorProps,
+    ])
 
     const handleOpenGuidanceEditor = useCallback(
         (articleId: number) => {
@@ -403,9 +440,15 @@ export const KnowledgeHubContainer = () => {
     useListenToDocumentEvent(OPEN_PLAYGROUND_PANEL, handleOpenPlayground)
 
     const onClick = (data: GroupedKnowledgeItem) => {
-        setSelectedFolder(data)
+        if (isUpdatingFolderRef.current) {
+            return
+        }
 
+        isUpdatingFolderRef.current = true
+        // Only update URL - let sync effect handle state to prevent duplicate history entries
         updateUrlWithFolderParam(data)
+
+        isUpdatingFolderRef.current = false
     }
 
     const handleBack = () => {

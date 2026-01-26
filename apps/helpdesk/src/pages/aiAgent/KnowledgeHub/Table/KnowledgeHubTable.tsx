@@ -314,6 +314,32 @@ export const KnowledgeHubTable = ({
         })
     }, [onInUseByAIChange])
 
+    // Sync activeFilterTypes with filter values (e.g., when back button clears filters)
+    useEffect(() => {
+        setActiveFilterTypes((prev) => {
+            const next = new Set(prev)
+            let hasChanges = false
+
+            // Remove lastUpdatedAt filter if either date is null
+            // When either date is missing, the filter shows placeholder which we want to hide
+            if (
+                (!dateRange.startDate || !dateRange.endDate) &&
+                prev.has('lastUpdatedAt')
+            ) {
+                next.delete('lastUpdatedAt')
+                hasChanges = true
+            }
+
+            // Remove inUseByAI filter if value is null
+            if (inUseByAIFilter === null && prev.has('inUseByAI')) {
+                next.delete('inUseByAI')
+                hasChanges = true
+            }
+
+            return hasChanges ? next : prev
+        })
+    }, [dateRange.startDate, dateRange.endDate, inUseByAIFilter])
+
     useEffect(() => {
         const prev = prevSelectedFolderRef.current
         const current = selectedFolder

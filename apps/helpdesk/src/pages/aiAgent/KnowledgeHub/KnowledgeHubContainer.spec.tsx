@@ -2102,6 +2102,498 @@ describe('KnowledgeHubContainer', () => {
         })
     })
 
+    describe('back button navigation closing editors', () => {
+        it('closes guidance editor when URL params are cleared (back button)', () => {
+            // Setup mock close function
+            const mockOnClose = jest.fn()
+            const guidanceEditorMock = {
+                isEditorOpen: true,
+                currentGuidanceArticleId: 123,
+                guidanceMode: 'edit' as const,
+                openEditorForCreate: jest.fn(),
+                openEditorForEdit: jest.fn(),
+                closeEditor: jest.fn(),
+                knowledgeEditorProps: {
+                    shopName: 'test-shop',
+                    shopType: 'shopify',
+                    guidanceArticleId: 123,
+                    guidanceTemplate: undefined,
+                    guidanceMode: 'edit' as const,
+                    isOpen: true,
+                    onClose: mockOnClose,
+                    onCreate: jest.fn(),
+                    onUpdate: jest.fn(),
+                    onDelete: jest.fn(),
+                    onClickPrevious: undefined,
+                    onClickNext: undefined,
+                },
+            }
+
+            // First render with params present - opens editor
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.Guidance,
+                id: '123',
+            })
+
+            mockUseKnowledgeHubGuidanceEditor.mockReset()
+            mockUseKnowledgeHubGuidanceEditor.mockReturnValue(
+                guidanceEditorMock,
+            )
+
+            const { rerender } = render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify editor opened
+            expect(guidanceEditorMock.openEditorForEdit).toHaveBeenCalledWith(
+                123,
+            )
+
+            // Simulate back button - params become undefined
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: undefined,
+                id: undefined,
+            })
+
+            // Re-render to trigger useEffect with new params
+            rerender(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify editor close function was called
+            expect(mockOnClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('closes FAQ editor when URL params are cleared (back button)', () => {
+            // Setup mock close function
+            const mockCloseEditor = jest.fn()
+            const faqEditorMock = {
+                isEditorOpen: true,
+                currentArticleId: 456,
+                faqArticleMode: 'edit' as const,
+                initialArticleMode: 'READ' as const,
+                openEditorForCreate: jest.fn(),
+                openEditorForEdit: jest.fn(),
+                closeEditor: mockCloseEditor,
+                handleDelete: jest.fn(),
+                faqEditorProps: {
+                    isOpen: true,
+                    onClose: jest.fn(),
+                    articleId: 456,
+                    onCreate: jest.fn(),
+                    onUpdate: jest.fn(),
+                    onDelete: jest.fn(),
+                },
+            }
+
+            // First render with params present - opens editor
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.FAQ,
+                id: '456',
+            })
+
+            mockUseKnowledgeHubFaqEditor.mockReset()
+            mockUseKnowledgeHubFaqEditor.mockReturnValue(faqEditorMock)
+
+            const { rerender } = render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify editor opened
+            expect(faqEditorMock.openEditorForEdit).toHaveBeenCalledWith(456)
+
+            // Simulate back button - params become undefined
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: undefined,
+                id: undefined,
+            })
+
+            // Re-render to trigger useEffect with new params
+            rerender(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify editor close function was called
+            expect(mockCloseEditor).toHaveBeenCalledTimes(1)
+        })
+
+        it('closes snippet editor (Document) when URL params are cleared (back button)', () => {
+            // Setup mock close function
+            const mockCloseEditor = jest.fn()
+            const snippetEditorMock = {
+                isEditorOpen: true,
+                currentArticleId: 789,
+                currentArticleType: KnowledgeType.Document,
+                openEditorForCreate: jest.fn(),
+                openEditorForEdit: jest.fn(),
+                closeEditor: mockCloseEditor,
+                snippetEditorProps: {
+                    isOpen: true,
+                    onClose: jest.fn(),
+                    articleId: 789,
+                    type: KnowledgeType.Document,
+                    onCreate: jest.fn(),
+                    onUpdate: jest.fn(),
+                    onDelete: jest.fn(),
+                },
+            }
+
+            // First render with params present - opens editor
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.Document,
+                id: '789',
+            })
+
+            mockUseKnowledgeHubSnippetEditor.mockReset()
+            mockUseKnowledgeHubSnippetEditor.mockReturnValue(snippetEditorMock)
+
+            const { rerender } = render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify editor opened
+            expect(snippetEditorMock.openEditorForEdit).toHaveBeenCalledWith(
+                789,
+                KnowledgeType.Document,
+            )
+
+            // Simulate back button - params become undefined
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: undefined,
+                id: undefined,
+            })
+
+            // Re-render to trigger useEffect with new params
+            rerender(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify editor close function was called
+            expect(mockCloseEditor).toHaveBeenCalledTimes(1)
+        })
+
+        it('closes snippet editor (URL) when URL params are cleared (back button)', () => {
+            // Setup mock close function
+            const mockCloseEditor = jest.fn()
+            const snippetEditorMock = {
+                isEditorOpen: true,
+                currentArticleId: 101,
+                currentArticleType: KnowledgeType.URL,
+                openEditorForCreate: jest.fn(),
+                openEditorForEdit: jest.fn(),
+                closeEditor: mockCloseEditor,
+                snippetEditorProps: {
+                    isOpen: true,
+                    onClose: jest.fn(),
+                    articleId: 101,
+                    type: KnowledgeType.URL,
+                    onCreate: jest.fn(),
+                    onUpdate: jest.fn(),
+                    onDelete: jest.fn(),
+                },
+            }
+
+            // First render with params present - opens editor
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.URL,
+                id: '101',
+            })
+
+            mockUseKnowledgeHubSnippetEditor.mockReset()
+            mockUseKnowledgeHubSnippetEditor.mockReturnValue(snippetEditorMock)
+
+            const { rerender } = render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify editor opened
+            expect(snippetEditorMock.openEditorForEdit).toHaveBeenCalledWith(
+                101,
+                KnowledgeType.URL,
+            )
+
+            // Simulate back button - params become undefined
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: undefined,
+                id: undefined,
+            })
+
+            // Re-render to trigger useEffect with new params
+            rerender(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify editor close function was called
+            expect(mockCloseEditor).toHaveBeenCalledTimes(1)
+        })
+
+        it('closes snippet editor (Domain) when URL params are cleared (back button)', () => {
+            // Setup mock close function
+            const mockCloseEditor = jest.fn()
+            const snippetEditorMock = {
+                isEditorOpen: true,
+                currentArticleId: 202,
+                currentArticleType: KnowledgeType.Domain,
+                openEditorForCreate: jest.fn(),
+                openEditorForEdit: jest.fn(),
+                closeEditor: mockCloseEditor,
+                snippetEditorProps: {
+                    isOpen: true,
+                    onClose: jest.fn(),
+                    articleId: 202,
+                    type: KnowledgeType.Domain,
+                    onCreate: jest.fn(),
+                    onUpdate: jest.fn(),
+                    onDelete: jest.fn(),
+                },
+            }
+
+            // First render with params present - opens editor
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.Domain,
+                id: '202',
+            })
+
+            mockUseKnowledgeHubSnippetEditor.mockReset()
+            mockUseKnowledgeHubSnippetEditor.mockReturnValue(snippetEditorMock)
+
+            const { rerender } = render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify editor opened
+            expect(snippetEditorMock.openEditorForEdit).toHaveBeenCalledWith(
+                202,
+                KnowledgeType.Domain,
+            )
+
+            // Simulate back button - params become undefined
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: undefined,
+                id: undefined,
+            })
+
+            // Re-render to trigger useEffect with new params
+            rerender(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify editor close function was called
+            expect(mockCloseEditor).toHaveBeenCalledTimes(1)
+        })
+
+        it('does not close editor when params remain undefined (no previous state)', () => {
+            const mockOnClose = jest.fn()
+            const guidanceEditorMock = {
+                isEditorOpen: false,
+                currentGuidanceArticleId: undefined,
+                guidanceMode: 'edit' as const,
+                openEditorForCreate: jest.fn(),
+                openEditorForEdit: jest.fn(),
+                closeEditor: jest.fn(),
+                knowledgeEditorProps: {
+                    shopName: 'test-shop',
+                    shopType: 'shopify',
+                    guidanceArticleId: undefined,
+                    guidanceTemplate: undefined,
+                    guidanceMode: 'edit' as const,
+                    isOpen: false,
+                    onClose: mockOnClose,
+                    onCreate: jest.fn(),
+                    onUpdate: jest.fn(),
+                    onDelete: jest.fn(),
+                    onClickPrevious: undefined,
+                    onClickNext: undefined,
+                },
+            }
+
+            // Render with undefined params (initial state, no editor open)
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: undefined,
+                id: undefined,
+            })
+
+            mockUseKnowledgeHubGuidanceEditor.mockReset()
+            mockUseKnowledgeHubGuidanceEditor.mockReturnValue(
+                guidanceEditorMock,
+            )
+
+            const { rerender } = render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Re-render with same undefined params
+            rerender(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify close was NOT called (no transition from defined to undefined)
+            expect(mockOnClose).not.toHaveBeenCalled()
+        })
+
+        it('handles transition from one article to another without closing', () => {
+            const mockOnClose = jest.fn()
+            const guidanceEditorMock = {
+                isEditorOpen: true,
+                currentGuidanceArticleId: 123,
+                guidanceMode: 'edit' as const,
+                openEditorForCreate: jest.fn(),
+                openEditorForEdit: jest.fn(),
+                closeEditor: jest.fn(),
+                knowledgeEditorProps: {
+                    shopName: 'test-shop',
+                    shopType: 'shopify',
+                    guidanceArticleId: 123,
+                    guidanceTemplate: undefined,
+                    guidanceMode: 'edit' as const,
+                    isOpen: true,
+                    onClose: mockOnClose,
+                    onCreate: jest.fn(),
+                    onUpdate: jest.fn(),
+                    onDelete: jest.fn(),
+                    onClickPrevious: undefined,
+                    onClickNext: undefined,
+                },
+            }
+
+            // First render with article 123
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.Guidance,
+                id: '123',
+            })
+
+            mockUseKnowledgeHubGuidanceEditor.mockReset()
+            mockUseKnowledgeHubGuidanceEditor.mockReturnValue(
+                guidanceEditorMock,
+            )
+
+            const { rerender } = render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify first article opened
+            expect(guidanceEditorMock.openEditorForEdit).toHaveBeenCalledWith(
+                123,
+            )
+
+            // Navigate to article 456 (not a back button, just changing articles)
+            mockUseParams.mockReturnValue({
+                shopType: 'shopify',
+                type: KnowledgeType.Guidance,
+                id: '456',
+            })
+
+            // Re-render to navigate to new article
+            rerender(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <KnowledgeHubContainer />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            // Verify second article opened (opening logic, not closing)
+            expect(guidanceEditorMock.openEditorForEdit).toHaveBeenCalledWith(
+                456,
+            )
+
+            // Verify close was NOT called (direct navigation between articles)
+            expect(mockOnClose).not.toHaveBeenCalled()
+        })
+    })
+
     describe('deleting editors', () => {
         it('calls history.push and knowledgeEditorProps.onDelete when guidance editor is deleted', () => {
             const mockPush = jest.fn()
