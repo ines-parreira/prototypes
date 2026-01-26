@@ -69,6 +69,7 @@ export enum FeatureFlagKey {
     AiShoppingAssistantTrialMerchants = 'ai-shopping-assistant-trial-merchants',
     AITicketSummary = 'linear.project-ai-summaries.ai-ticket-summary-component-frontend',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
+    AssemblyAITranscriptions = 'assembly-ai-transcriptions',
     AutomateAIAgentInteractions = 'automate-ai-agent-interactions',
     AutomateSettingsRevamp = 'linear.project_automate-settings-revamp.access',
     AxiomMigration = 'linear.project_ui-kit-foundations-migration',
