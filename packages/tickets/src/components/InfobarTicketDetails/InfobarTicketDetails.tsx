@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 
 import { useParams } from 'react-router-dom'
 
+import { Box } from '@gorgias/axiom'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { InfobarTicketCustomerDetails } from '../InfobarTicketCustomerDetails/InfobarTicketCustomerDetails'
@@ -32,13 +33,19 @@ export function InfobarTicketDetails({
 
     return (
         <>
-            <div className={css.container}>
+            <Box
+                className={css.container}
+                flexDirection="column"
+                gap="xs"
+                padding="md"
+                paddingBottom="sm"
+            >
                 <InfobarTicketDetailsHeader
                     ticketSummaryIcon={ticketSummaryIcon}
                 />
                 <TicketInfobarTicketDetailsTags ticketId={ticketId} />
                 <TicketInfobarTicketFields ticketId={ticketId} />
-            </div>
+            </Box>
             <InfobarTicketCustomerDetails
                 onEditCustomer={onEditCustomer}
                 onSyncToShopify={onSyncToShopify}
