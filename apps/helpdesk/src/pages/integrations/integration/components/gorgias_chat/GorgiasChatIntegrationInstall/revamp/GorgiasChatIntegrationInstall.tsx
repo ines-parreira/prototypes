@@ -1,10 +1,11 @@
 import { useMemo } from 'react'
 
-import { type Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { IntegrationType } from 'models/integration/types'
 import ChatSettingsPageHeader from 'pages/integrations/integration/components/gorgias_chat/components/revamp/ChatSettingsPageHeader'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
+import AdvancedInstallationCard from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/revamp/AdvancedInstallationCard'
 import DeleteCard from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/revamp/DeleteCard'
 import { Tab } from 'pages/integrations/integration/types'
 import type { deleteIntegration } from 'state/integrations/actions'
@@ -57,6 +58,7 @@ const GorgiasChatIntegrationInstall = ({
                 tab={Tab.Installation}
             />
             <div className={css.cardsWrapper}>
+                <AdvancedInstallationCard integration={integration} />
                 <DeleteCard
                     integration={integration}
                     onDeleteIntegration={onDeleteIntegration}
