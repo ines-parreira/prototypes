@@ -5,6 +5,7 @@ import type { SupportedCategories } from '../types'
 
 export type Field = {
     id: string
+    key: string
     name: string
     type: MetafieldType
     category: SupportedCategories

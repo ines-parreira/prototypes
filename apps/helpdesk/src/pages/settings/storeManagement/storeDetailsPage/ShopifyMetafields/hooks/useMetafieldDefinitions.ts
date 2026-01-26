@@ -16,6 +16,7 @@ export function transformMetafieldDefinitionToField(
 ): Field {
     return {
         id: definition.id,
+        key: definition.key,
         name: definition.name,
         type: definition.type as Field['type'],
         category: definition.ownerType as SupportedCategories,

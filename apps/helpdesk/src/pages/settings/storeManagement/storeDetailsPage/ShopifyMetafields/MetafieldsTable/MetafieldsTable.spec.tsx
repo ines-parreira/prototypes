@@ -36,6 +36,7 @@ afterAll(() => {
 const mockFields: Field[] = [
     {
         id: '1',
+        key: 'customer_email',
         name: 'Customer Email',
         type: 'single_line_text_field',
         category: 'Customer',
@@ -43,6 +44,7 @@ const mockFields: Field[] = [
     },
     {
         id: '2',
+        key: 'order_notes',
         name: 'Order Notes',
         type: 'multi_line_text_field',
         category: 'Order',
@@ -50,6 +52,7 @@ const mockFields: Field[] = [
     },
     {
         id: '3',
+        key: 'draft_date',
         name: 'Draft Date',
         type: 'date',
         category: 'DraftOrder',

@@ -104,6 +104,7 @@ describe('useMetafieldDefinitions', () => {
             expect(result.current.data).toHaveLength(3)
             expect(result.current.data[0]).toEqual({
                 id: '1',
+                key: 'delivery_type',
                 name: 'Delivery type',
                 type: 'single_line_text_field',
                 category: 'Order',
@@ -179,6 +180,7 @@ describe('transformMetafieldDefinitionToField', () => {
 
         expect(result).toEqual({
             id: '1',
+            key: 'test',
             name: 'Test Field',
             type: 'single_line_text_field',
             category: 'Customer',

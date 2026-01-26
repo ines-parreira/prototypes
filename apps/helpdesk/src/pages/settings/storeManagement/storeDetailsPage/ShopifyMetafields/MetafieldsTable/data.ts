@@ -3,6 +3,7 @@ import type { Field } from './types'
 export const data: Field[] = [
     {
         id: '1',
+        key: 'delivery_type',
         name: 'Delivery type',
         type: 'single_line_text_field',
         category: 'Order',
@@ -10,6 +11,7 @@ export const data: Field[] = [
     },
     {
         id: '2',
+        key: 'integer_field',
         name: 'Integer field',
         type: 'number_integer',
         category: 'Order',
@@ -17,6 +19,7 @@ export const data: Field[] = [
     },
     {
         id: '3',
+        key: 'order_package_size',
         name: 'Order package size',
         type: 'volume',
         category: 'Order',
@@ -24,6 +27,7 @@ export const data: Field[] = [
     },
     {
         id: '4',
+        key: 'order_date_and_time',
         name: 'Order date and time',
         type: 'date_time',
         category: 'Order',
@@ -31,6 +35,7 @@ export const data: Field[] = [
     },
     {
         id: '5',
+        key: 'express_delivery',
         name: 'Express delivery',
         type: 'boolean',
         category: 'Order',
@@ -38,6 +43,7 @@ export const data: Field[] = [
     },
     {
         id: '6',
+        key: 'package_color',
         name: 'Package color',
         type: 'color',
         category: 'Order',
@@ -45,6 +51,7 @@ export const data: Field[] = [
     },
     {
         id: '12',
+        key: 'gift_wrap_option',
         name: 'Gift wrap option',
         type: 'boolean',
         category: 'Order',
@@ -52,6 +59,7 @@ export const data: Field[] = [
     },
     {
         id: '13',
+        key: 'shipping_method',
         name: 'Shipping method',
         type: 'single_line_text_field',
         category: 'Order',
@@ -59,6 +67,7 @@ export const data: Field[] = [
     },
     {
         id: '14',
+        key: 'order_priority',
         name: 'Order priority',
         type: 'number_integer',
         category: 'Order',
@@ -66,6 +75,7 @@ export const data: Field[] = [
     },
     {
         id: '15',
+        key: 'special_instructions',
         name: 'Special instructions',
         type: 'multi_line_text_field',
         category: 'Order',
@@ -73,6 +83,7 @@ export const data: Field[] = [
     },
     {
         id: '7',
+        key: 'vip',
         name: 'VIP',
         type: 'boolean',
         category: 'Customer',
@@ -80,6 +91,7 @@ export const data: Field[] = [
     },
     {
         id: '8',
+        key: 'status',
         name: 'Status',
         type: 'single_line_text_field',
         category: 'Customer',
@@ -87,6 +99,7 @@ export const data: Field[] = [
     },
     {
         id: '9',
+        key: 'dob',
         name: 'DOB',
         type: 'single_line_text_field',
         category: 'Customer',
@@ -94,6 +107,7 @@ export const data: Field[] = [
     },
     {
         id: '10',
+        key: 'allergies',
         name: 'allergies',
         type: 'single_line_text_field',
         category: 'Customer',
@@ -101,6 +115,7 @@ export const data: Field[] = [
     },
     {
         id: '11',
+        key: 'region',
         name: 'Region',
         type: 'single_line_text_field',
         category: 'Customer',
@@ -108,6 +123,7 @@ export const data: Field[] = [
     },
     {
         id: '111',
+        key: 'draft_order_region',
         name: 'Region',
         type: 'single_line_text_field',
         category: 'DraftOrder',
@@ -115,6 +131,7 @@ export const data: Field[] = [
     },
     {
         id: '112',
+        key: 'draft_order_region_2',
         name: 'Region',
         type: 'single_line_text_field',
         category: 'DraftOrder',
@@ -122,6 +139,7 @@ export const data: Field[] = [
     },
     {
         id: '113',
+        key: 'draft_order_region_3',
         name: 'Region',
         type: 'single_line_text_field',
         category: 'DraftOrder',

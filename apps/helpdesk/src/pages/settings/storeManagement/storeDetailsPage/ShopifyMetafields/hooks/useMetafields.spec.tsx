@@ -95,6 +95,7 @@ describe('useMetafields', () => {
         expect(result.current.data).toEqual([
             {
                 id: '1',
+                key: 'delivery_type',
                 name: 'Delivery type',
                 type: 'single_line_text_field',
                 category: 'Order',
@@ -102,6 +103,7 @@ describe('useMetafields', () => {
             },
             {
                 id: '2',
+                key: 'vip',
                 name: 'VIP Customer',
                 type: 'boolean',
                 category: 'Customer',

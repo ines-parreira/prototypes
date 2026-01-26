@@ -7,6 +7,7 @@ describe('useFilteredMetafields', () => {
     const mockCustomerField: Field = {
         id: 'customer-1',
         name: 'Customer Field',
+        key: 'customer_field',
         type: 'single_line_text_field',
         category: 'Customer',
         isVisible: true,
@@ -15,6 +16,7 @@ describe('useFilteredMetafields', () => {
     const mockOrderField: Field = {
         id: 'order-1',
         name: 'Order Field',
+        key: 'order_field',
         type: 'number_integer',
         category: 'Order',
         isVisible: true,
@@ -23,6 +25,7 @@ describe('useFilteredMetafields', () => {
     const mockDraftOrderField: Field = {
         id: 'draft-order-1',
         name: 'Draft Order Field',
+        key: 'draft_order_field',
         type: 'boolean',
         category: 'DraftOrder',
         isVisible: false,

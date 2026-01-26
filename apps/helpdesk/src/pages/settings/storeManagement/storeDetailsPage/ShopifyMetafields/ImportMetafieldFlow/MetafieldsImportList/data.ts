@@ -3,6 +3,7 @@ import type { Field } from '../../MetafieldsTable/types'
 export const mockImportableFields: Field[] = [
     {
         id: '_1',
+        key: 'new_delivery_type',
         name: 'New Delivery type',
         type: 'single_line_text_field',
         category: 'Order',
@@ -10,6 +11,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_2',
+        key: 'new_integer_field',
         name: 'New Integer field',
         type: 'single_line_text_field',
         category: 'Customer',
@@ -17,6 +19,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_3',
+        key: 'new_order_package_size',
         name: 'New Order package size',
         type: 'volume',
         category: 'DraftOrder',
@@ -24,6 +27,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_4',
+        key: 'new_order_package_size_2',
         name: 'New Order package size 2',
         type: 'volume',
         category: 'DraftOrder',
@@ -31,6 +35,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_5',
+        key: 'new_order_package_size_3',
         name: 'New Order package size 3',
         type: 'page_reference',
         category: 'DraftOrder',
@@ -38,6 +43,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_6',
+        key: 'draft_order_weight',
         name: 'Draft Order Weight',
         type: 'number_decimal',
         category: 'DraftOrder',
@@ -45,6 +51,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_7',
+        key: 'draft_order_shipping_method',
         name: 'Draft Order Shipping Method',
         type: 'single_line_text_field',
         category: 'DraftOrder',
@@ -52,6 +59,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_8',
+        key: 'draft_order_estimated_delivery',
         name: 'Draft Order Estimated Delivery',
         type: 'date',
         category: 'DraftOrder',
@@ -59,6 +67,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_9',
+        key: 'draft_order_gift_wrap',
         name: 'Draft Order Gift Wrap',
         type: 'boolean',
         category: 'DraftOrder',
@@ -66,6 +75,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_10',
+        key: 'draft_order_special_instructions',
         name: 'Draft Order Special Instructions',
         type: 'multi_line_text_field',
         category: 'DraftOrder',
@@ -73,6 +83,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_11',
+        key: 'draft_order_coupon_code',
         name: 'Draft Order Coupon Code',
         type: 'single_line_text_field',
         category: 'DraftOrder',
@@ -80,6 +91,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_12',
+        key: 'draft_order_tax_amount',
         name: 'Draft Order Tax Amount',
         type: 'number_decimal',
         category: 'DraftOrder',
@@ -87,6 +99,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_13',
+        key: 'draft_order_item_count',
         name: 'Draft Order Item Count',
         type: 'number_integer',
         category: 'DraftOrder',
@@ -94,6 +107,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_14',
+        key: 'draft_order_packaging_type',
         name: 'Draft Order Packaging Type',
         type: 'single_line_text_field',
         category: 'DraftOrder',
@@ -101,6 +115,7 @@ export const mockImportableFields: Field[] = [
     },
     {
         id: '_15',
+        key: 'draft_order_delivery_window',
         name: 'Draft Order Delivery Window',
         type: 'single_line_text_field',
         category: 'DraftOrder',
