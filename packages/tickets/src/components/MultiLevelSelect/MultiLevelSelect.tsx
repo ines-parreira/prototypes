@@ -2,15 +2,17 @@ import { useCallback, useRef, useState } from 'react'
 import type { RefObject } from 'react'
 
 import {
+    Button,
     Icon,
     IconName,
+    ListFooter,
     ListItem,
     Select,
     SelectTrigger,
     TextField,
 } from '@gorgias/axiom'
 
-import { getDisplayLabel, isBackButton, isClearButton } from './helpers/tree'
+import { getDisplayLabel, isBackButton } from './helpers/tree'
 import { useOptionsTree } from './hooks/useOptionsTree'
 import type { Option, TreeValue } from './types'
 
@@ -59,12 +61,6 @@ export function MultiLevelSelect(props: Props) {
                 return
             }
 
-            if (isClearButton(option)) {
-                onSelect(undefined)
-                isNavigatingRef.current = false
-                return
-            }
-
             if (option.hasChildren && !searchValue) {
                 isNavigatingRef.current = true
                 goToLevel(option)
@@ -76,6 +72,12 @@ export function MultiLevelSelect(props: Props) {
         },
         [onSelect, goToLevel, goBack, searchValue],
     )
+
+    const handleClear = useCallback(() => {
+        onSelect(undefined)
+        isNavigatingRef.current = false
+        setIsOpen(false)
+    }, [onSelect])
 
     const handleOpenChange = useCallback(
         (newIsOpen: boolean) => {
@@ -154,6 +156,19 @@ export function MultiLevelSelect(props: Props) {
             maxWidth={139}
             maxHeight={258}
             size="sm"
+            footer={
+                !!selectedOption && (
+                    <ListFooter>
+                        <Button
+                            size="sm"
+                            variant="tertiary"
+                            onClick={handleClear}
+                        >
+                            Clear selection
+                        </Button>
+                    </ListFooter>
+                )
+            }
         >
             {(option: Option) => {
                 if (isBackButton(option)) {
@@ -168,16 +183,6 @@ export function MultiLevelSelect(props: Props) {
                                     size="sm"
                                 />
                             }
-                        />
-                    )
-                }
-
-                if (isClearButton(option)) {
-                    return (
-                        <ListItem
-                            key={option.id}
-                            textValue={option.label}
-                            label={option.label}
                         />
                     )
                 }

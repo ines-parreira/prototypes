@@ -6,7 +6,6 @@ import {
     getOptionsAtPath,
     getPathFromValue,
     isBackButton,
-    isClearButton,
 } from '../tree'
 
 describe('buildTreeFromChoices', () => {
@@ -215,30 +214,5 @@ describe('isBackButton', () => {
         }
 
         expect(isBackButton(option)).toBe(false)
-    })
-})
-
-describe('isClearButton', () => {
-    it('should identify clear button options', () => {
-        const option = {
-            type: OptionEnum.Clear as const,
-            id: '__clear_button__' as const,
-            label: 'Clear',
-        }
-
-        expect(isClearButton(option)).toBe(true)
-    })
-
-    it('should return false for other options', () => {
-        const option = {
-            type: OptionEnum.Option as const,
-            id: 'test',
-            label: 'Test',
-            value: 'test',
-            path: [],
-            hasChildren: false,
-        }
-
-        expect(isClearButton(option)).toBe(false)
     })
 })

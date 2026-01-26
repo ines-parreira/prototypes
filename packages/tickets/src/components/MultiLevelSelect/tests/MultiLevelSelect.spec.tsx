@@ -137,6 +137,46 @@ describe('MultiLevelSelect', () => {
         await screen.findAllByText('Priority')
     })
 
+    it('should show clear button when value is selected', async () => {
+        const { rerender } = render(
+            <MultiLevelSelect
+                choices={choices}
+                placeholder="Select option"
+                ariaLabel="Select field"
+                onSelect={vi.fn()}
+            />,
+        )
+
+        const trigger = screen.getByLabelText('Select field')
+        await act(() => userEvent.click(trigger))
+
+        expect(
+            screen.queryByRole('button', { name: 'Clear selection' }),
+        ).not.toBeInTheDocument()
+
+        const listbox = await screen.findByRole('listbox')
+        await act(() => userEvent.click(within(listbox).getByText('Status')))
+
+        const openOption = await screen.findAllByText('Open')
+        await act(() => userEvent.click(openOption[1]))
+
+        rerender(
+            <MultiLevelSelect
+                choices={choices}
+                placeholder="Select option"
+                selectedValue="Status::Open"
+                ariaLabel="Select field"
+                onSelect={vi.fn()}
+            />,
+        )
+
+        await act(() => userEvent.click(trigger))
+
+        expect(
+            await screen.findByRole('button', { name: 'Clear selection' }),
+        ).toBeInTheDocument()
+    })
+
     it('should call onSelect with undefined when clicking clear button', async () => {
         const onSelect = vi.fn()
         render(
@@ -152,11 +192,10 @@ describe('MultiLevelSelect', () => {
         const trigger = screen.getByLabelText('Select field')
         await act(() => userEvent.click(trigger))
 
-        const clearButtons = await screen.findAllByText('Clear selection')
-        const clearButton = clearButtons.find((el) =>
-            el.closest('[role="listbox"]'),
-        )
-        await act(() => userEvent.click(clearButton!))
+        const clearButton = await screen.findByRole('button', {
+            name: 'Clear selection',
+        })
+        await act(() => userEvent.click(clearButton))
 
         expect(onSelect).toHaveBeenCalledWith(undefined)
     })

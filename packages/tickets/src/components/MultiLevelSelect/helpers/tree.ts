@@ -1,11 +1,5 @@
 import { NESTING_DELIMITER } from '../constants'
-import type {
-    BackButtonOption,
-    ClearButtonOption,
-    Option,
-    TreeOption,
-    TreeValue,
-} from '../types'
+import type { BackButtonOption, Option, TreeOption, TreeValue } from '../types'
 import { OptionEnum } from '../types'
 
 type TreeNode = {
@@ -190,8 +184,4 @@ export function getDisplayLabel(value: TreeValue | undefined): string | null {
 
 export function isBackButton(option: Option): option is BackButtonOption {
     return option.type === OptionEnum.Back
-}
-
-export function isClearButton(option: Option): option is ClearButtonOption {
-    return option.type === OptionEnum.Clear
 }

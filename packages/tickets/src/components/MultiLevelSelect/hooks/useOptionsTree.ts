@@ -1,19 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { BACK_BUTTON_ID, CLEAR_BUTTON_ID } from '../constants'
+import { BACK_BUTTON_ID } from '../constants'
 import {
     buildTreeFromChoices,
     flattenTreeWithCaptions,
     getOptionsAtPath,
     getPathFromValue,
 } from '../helpers/tree'
-import type {
-    BackButtonOption,
-    ClearButtonOption,
-    Option,
-    TreeOption,
-    TreeValue,
-} from '../types'
+import type { BackButtonOption, Option, TreeOption, TreeValue } from '../types'
 import { OptionEnum } from '../types'
 
 type UseOptionsTreeParams = {
@@ -77,19 +71,10 @@ export function useOptionsTree({
                 }
                 result.unshift(backButton)
             }
-
-            if (selectedValue !== undefined) {
-                const clearButton: ClearButtonOption = {
-                    type: OptionEnum.Clear,
-                    id: CLEAR_BUTTON_ID,
-                    label: 'Clear selection',
-                }
-                result.push(clearButton)
-            }
         }
 
         return result
-    }, [currentPath, isSearching, options, selectedValue])
+    }, [currentPath, isSearching, options])
 
     const selectedOption = useMemo(() => {
         return options.find((opt) => opt.value === selectedValue)

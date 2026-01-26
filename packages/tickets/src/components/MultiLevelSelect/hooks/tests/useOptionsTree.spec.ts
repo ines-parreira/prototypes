@@ -95,24 +95,12 @@ describe('useOptionsTree', () => {
             })
         })
 
-        it('should show clear button when value is selected', () => {
-            const { result } = renderHook(() =>
-                useOptionsTree({ choices, selectedValue: 'Status::Open' }),
-            )
-
-            const clearButton = result.current.selectOptions.find(
-                (opt) => opt.type === OptionEnum.Clear,
-            )
-
-            expect(clearButton).toBeDefined()
-        })
-
         it('should initialize at parent path of selected value', () => {
             const { result } = renderHook(() =>
                 useOptionsTree({ choices, selectedValue: 'Status::Open' }),
             )
 
-            expect(result.current.selectOptions).toHaveLength(4)
+            expect(result.current.selectOptions).toHaveLength(3)
             expect(result.current.selectOptions[0].type).toBe(OptionEnum.Back)
         })
 
@@ -125,13 +113,13 @@ describe('useOptionsTree', () => {
                 result.current.goBack()
             })
 
-            expect(result.current.selectOptions).toHaveLength(3)
+            expect(result.current.selectOptions).toHaveLength(2)
 
             act(() => {
                 result.current.resetPath()
             })
 
-            expect(result.current.selectOptions).toHaveLength(4)
+            expect(result.current.selectOptions).toHaveLength(3)
         })
     })
 
@@ -154,7 +142,7 @@ describe('useOptionsTree', () => {
             })
         })
 
-        it('should not show back and clearbutton when searching', () => {
+        it('should not show back button when searching', () => {
             const { result } = renderHook(() =>
                 useOptionsTree({
                     choices,
@@ -168,12 +156,6 @@ describe('useOptionsTree', () => {
             )
 
             expect(backButton).toBeUndefined()
-
-            const clearButton = result.current.selectOptions.find(
-                (opt) => opt.type === OptionEnum.Clear,
-            )
-
-            expect(clearButton).toBeUndefined()
         })
     })
 })
