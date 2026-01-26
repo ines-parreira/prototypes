@@ -156,18 +156,18 @@ export function useOpportunityPageState({
             return State.LOADING
         }
 
-        const shouldShowPaywall =
-            allowedOpportunityIds !== undefined &&
-            allowedOpportunityIds.length === 0
-        if (shouldShowPaywall) {
-            return State.RESTRICTED_NO_OPPORTUNITIES
-        }
-
         const shouldWaitForMoreOpportunities =
             allowedOpportunityIds !== undefined &&
             totalCount < MIN_TOTAL_OPPORTUNITIES_THRESHOLD
         if (shouldWaitForMoreOpportunities) {
             return State.ENABLED_NO_OPPORTUNITIES
+        }
+
+        const shouldShowPaywall =
+            allowedOpportunityIds !== undefined &&
+            allowedOpportunityIds.length === 0
+        if (shouldShowPaywall) {
+            return State.RESTRICTED_NO_OPPORTUNITIES
         }
 
         // If restricted user has no more opportunities, show upgrade message

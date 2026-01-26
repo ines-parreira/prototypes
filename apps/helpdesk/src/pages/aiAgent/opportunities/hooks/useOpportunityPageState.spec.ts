@@ -641,7 +641,7 @@ describe('useOpportunityPageState', () => {
             expect(result.current.state).toBe(State.HAS_OPPORTUNITIES)
         })
 
-        it('prioritizes RESTRICTED_NO_OPPORTUNITIES over waiting for opportunities', () => {
+        it('prioritizes waiting for opportunities over RESTRICTED_NO_OPPORTUNITIES', () => {
             mockUseAiAgentStoreConfigurationContext.mockReturnValue({
                 storeConfiguration: createMockStoreConfiguration(),
                 isLoading: false,
@@ -665,7 +665,7 @@ describe('useOpportunityPageState', () => {
                 }),
             )
 
-            expect(result.current.state).toBe(State.RESTRICTED_NO_OPPORTUNITIES)
+            expect(result.current.state).toBe(State.ENABLED_NO_OPPORTUNITIES)
         })
     })
 
