@@ -4,12 +4,12 @@ import classNames from 'classnames'
 
 import {
     Icon,
-    type IconName,
     Text,
     Tooltip,
     TooltipContent,
     TooltipTrigger,
 } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 
 import { OpportunityType } from '../../enums'
 
@@ -69,7 +69,7 @@ export const OpportunityCard = ({
             </Text>
         )
 
-        if (!isTextOverflowing) {
+        if (isRestricted || !isTextOverflowing) {
             return titleElement
         }
 
@@ -99,7 +99,7 @@ export const OpportunityCard = ({
         >
             <div className={css.header}>
                 {isRestricted ? (
-                    <Tooltip placement="top">
+                    <Tooltip placement="top" isOpen={isHovered}>
                         <TooltipTrigger>
                             <div className={css.infoSection}>
                                 <Icon
@@ -112,7 +112,11 @@ export const OpportunityCard = ({
                                 </Text>
                             </div>
                         </TooltipTrigger>
-                        <TooltipContent title="Upgrade to access all opportunities for AI Agent" />
+                        <TooltipContent>
+                            Upgrade to access all
+                            <br />
+                            opportunities for AI Agent
+                        </TooltipContent>
                     </Tooltip>
                 ) : (
                     <div className={css.infoSection}>
@@ -126,25 +130,42 @@ export const OpportunityCard = ({
                         </Text>
                     </div>
                 )}
-                {ticketCount !== undefined && (
-                    <Tooltip placement="top">
-                        <TooltipTrigger>
-                            <span className={css.ticketCount}>
-                                <Icon
-                                    name="comm-chat-conversation"
-                                    size="sm"
-                                    color="var(--content-neutral-secondary)"
-                                />
-                                <Text size="xs" variant="bold">
-                                    {ticketCount}
-                                </Text>
-                            </span>
-                        </TooltipTrigger>
-                        <TooltipContent
-                            title={`${ticketCount} related ${ticketCount > 1 ? 'tickets' : 'ticket'}`}
-                        />
-                    </Tooltip>
-                )}
+                {ticketCount !== undefined &&
+                    (isRestricted ? (
+                        <span
+                            className={classNames(
+                                css.ticketCount,
+                                css.ticketCountDisabled,
+                            )}
+                        >
+                            <Icon
+                                name="comm-chat-conversation"
+                                size="sm"
+                                color="var(--content-neutral-secondary)"
+                            />
+                            <Text size="xs" variant="bold">
+                                {ticketCount}
+                            </Text>
+                        </span>
+                    ) : (
+                        <Tooltip placement="top">
+                            <TooltipTrigger>
+                                <span className={css.ticketCount}>
+                                    <Icon
+                                        name="comm-chat-conversation"
+                                        size="sm"
+                                        color="var(--content-neutral-secondary)"
+                                    />
+                                    <Text size="xs" variant="bold">
+                                        {ticketCount}
+                                    </Text>
+                                </span>
+                            </TooltipTrigger>
+                            <TooltipContent
+                                title={`${ticketCount} related ${ticketCount > 1 ? 'tickets' : 'ticket'}`}
+                            />
+                        </Tooltip>
+                    ))}
             </div>
 
             <OpportunityTitle />
