@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useDeepEffect } from '@repo/hooks'
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
@@ -114,6 +114,24 @@ export const ConfigureMetricsModal = ({
     const [localMetrics, setLocalMetrics] =
         useState<MetricConfigItem[]>(metrics)
     const [hasChanges, setHasChanges] = useState(false)
+
+    useEffect(() => {
+        const chatContainer = document.getElementById('gorgias-chat-container')
+
+        if (chatContainer) {
+            if (isOpen) {
+                chatContainer.style.display = 'none'
+            } else {
+                chatContainer.style.display = ''
+            }
+        }
+
+        return () => {
+            if (chatContainer) {
+                chatContainer.style.display = ''
+            }
+        }
+    }, [isOpen])
 
     useDeepEffect(() => {
         setLocalMetrics(metrics)

@@ -1,4 +1,4 @@
-import type { ColumnDef } from '@gorgias/axiom'
+import type { ColumnDef, ToolbarRow } from '@gorgias/axiom'
 import {
     Box,
     Button,
@@ -53,6 +53,10 @@ export const JourneysTable = <TData, TValue>({
         },
     })
 
+    const shouldRenderPaginationComponent = table.getRowModel().rows.length > 10
+    const tableToolbarBottonRowElements: ToolbarRow =
+        shouldRenderPaginationComponent ? {} : { right: ['pagination'] }
+
     return (
         <>
             <div className={styles.tableWrapper}>
@@ -69,17 +73,17 @@ export const JourneysTable = <TData, TValue>({
                                         onClick={onEditColumns}
                                         intent="regular"
                                         leadingSlot="columns"
-                                        size="md"
-                                        variant="secondary"
+                                        size="sm"
+                                        variant="tertiary"
                                     >
-                                        Edit metrics
+                                        Edit table
                                     </Button>
                                 ),
                             },
                         ],
                     }}
                 />
-                <TableRoot withBorder>
+                <TableRoot withBorder className={styles.tableRoot}>
                     <TableHeader>
                         <HeaderRowGroup
                             headerGroups={table.getHeaderGroups()}
@@ -100,7 +104,7 @@ export const JourneysTable = <TData, TValue>({
                 </TableRoot>
                 <TableToolbar
                     table={table}
-                    bottomRow={{ right: ['pagination'] }}
+                    bottomRow={tableToolbarBottonRowElements}
                 />
             </div>
         </>

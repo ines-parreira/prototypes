@@ -219,4 +219,70 @@ describe('ConfigureMetricsModal', () => {
             expect(toggles[2]).not.toBeDisabled()
         })
     })
+
+    describe('chat container visibility', () => {
+        let chatContainer: HTMLElement
+
+        beforeEach(() => {
+            chatContainer = document.createElement('div')
+            chatContainer.id = 'gorgias-chat-container'
+            chatContainer.style.display = ''
+            document.body.appendChild(chatContainer)
+        })
+
+        afterEach(() => {
+            const existingContainer = document.getElementById(
+                'gorgias-chat-container',
+            )
+            if (existingContainer) {
+                document.body.removeChild(existingContainer)
+            }
+        })
+
+        it('should hide chat container when modal is open', () => {
+            renderComponent({ isOpen: true })
+
+            expect(chatContainer.style.display).toBe('none')
+        })
+
+        it('should show chat container when modal is closed', () => {
+            renderComponent({ isOpen: false })
+
+            expect(chatContainer.style.display).toBe('')
+        })
+
+        it('should toggle chat container visibility when isOpen changes', () => {
+            const { rerender } = renderComponent({ isOpen: true })
+            expect(chatContainer.style.display).toBe('none')
+
+            rerender(<ConfigureMetricsModal {...defaultProps} isOpen={false} />)
+            expect(chatContainer.style.display).toBe('')
+
+            rerender(<ConfigureMetricsModal {...defaultProps} isOpen={true} />)
+            expect(chatContainer.style.display).toBe('none')
+        })
+
+        it('should restore chat container display on unmount', () => {
+            chatContainer.style.display = 'none'
+
+            const { unmount } = renderComponent({ isOpen: true })
+            expect(chatContainer.style.display).toBe('none')
+
+            unmount()
+            expect(chatContainer.style.display).toBe('')
+        })
+
+        it('should handle missing chat container gracefully', () => {
+            document.body.removeChild(chatContainer)
+
+            expect(() => renderComponent({ isOpen: true })).not.toThrow()
+        })
+
+        it('should handle cleanup when chat container does not exist', () => {
+            const { unmount } = renderComponent({ isOpen: true })
+            document.body.removeChild(chatContainer)
+
+            expect(() => unmount()).not.toThrow()
+        })
+    })
 })

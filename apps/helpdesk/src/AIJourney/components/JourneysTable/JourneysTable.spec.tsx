@@ -2,7 +2,7 @@ import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 
 import { Box, createSortableColumn } from '@gorgias/axiom'
 import type { ColumnDef } from '@gorgias/axiom'
@@ -142,7 +142,7 @@ describe('JourneysTable', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', { name: /edit metrics/i }),
+                screen.getByRole('button', { name: /edit table/i }),
             ).toBeInTheDocument()
         })
 
@@ -153,7 +153,7 @@ describe('JourneysTable', () => {
             renderComponent({ onEditColumns })
 
             const editButton = screen.getByRole('button', {
-                name: /edit metrics/i,
+                name: /edit table/i,
             })
             await user.click(editButton)
 
@@ -164,7 +164,7 @@ describe('JourneysTable', () => {
             renderComponent({ onEditColumns: undefined })
 
             expect(
-                screen.queryByRole('button', { name: /edit metrics/i }),
+                screen.queryByRole('button', { name: /edit table/i }),
             ).toBeInTheDocument()
         })
     })
@@ -206,6 +206,75 @@ describe('JourneysTable', () => {
             ]
 
             renderComponent({ data: dataWithVariousTypes })
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+        })
+    })
+
+    describe('Pagination rendering', () => {
+        it('should render pagination in bottom toolbar when there are 10 or fewer rows', () => {
+            const smallDataSet = mockJourneyData.slice(0, 3)
+            renderComponent({ data: smallDataSet })
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+        })
+
+        it('should not render pagination in bottom toolbar when there are more than 10 rows', () => {
+            const largeDataSet: JourneyApiDTO[] = Array.from(
+                { length: 15 },
+                (_, index) => ({
+                    id: String(index + 1),
+                    type: JourneyTypeEnum.WinBack,
+                    state: JourneyStatusEnum.Active,
+                    store_name: `Test Store ${index + 1}`,
+                    store_integration_id: 123 + index,
+                    created_datetime: '2024-01-01T00:00:00Z',
+                    account_id: 1,
+                    store_type: 'shopify',
+                }),
+            )
+
+            renderComponent({ data: largeDataSet })
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+        })
+
+        it('should handle exactly 10 rows', () => {
+            const exactTenRows: JourneyApiDTO[] = Array.from(
+                { length: 10 },
+                (_, index) => ({
+                    id: String(index + 1),
+                    type: JourneyTypeEnum.WinBack,
+                    state: JourneyStatusEnum.Active,
+                    store_name: `Test Store ${index + 1}`,
+                    store_integration_id: 123 + index,
+                    created_datetime: '2024-01-01T00:00:00Z',
+                    account_id: 1,
+                    store_type: 'shopify',
+                }),
+            )
+
+            renderComponent({ data: exactTenRows })
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+        })
+
+        it('should handle exactly 11 rows', () => {
+            const elevenRows: JourneyApiDTO[] = Array.from(
+                { length: 11 },
+                (_, index) => ({
+                    id: String(index + 1),
+                    type: JourneyTypeEnum.WinBack,
+                    state: JourneyStatusEnum.Active,
+                    store_name: `Test Store ${index + 1}`,
+                    store_integration_id: 123 + index,
+                    created_datetime: '2024-01-01T00:00:00Z',
+                    account_id: 1,
+                    store_type: 'shopify',
+                }),
+            )
+
+            renderComponent({ data: elevenRows })
 
             expect(screen.getByRole('table')).toBeInTheDocument()
         })

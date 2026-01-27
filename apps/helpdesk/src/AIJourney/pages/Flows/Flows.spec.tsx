@@ -230,7 +230,7 @@ describe('<Flows />', () => {
             renderComponent()
 
             const editButton = screen.getByRole('button', {
-                name: /edit metrics/i,
+                name: /edit table/i,
             })
             await user.click(editButton)
 
