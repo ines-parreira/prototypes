@@ -7,7 +7,7 @@ import type { GuidanceArticle, GuidanceTemplate } from 'pages/aiAgent/types'
 
 export type GuidanceModeType = 'create' | 'edit' | 'read'
 
-export type ModalType = 'unsaved' | 'discard' | 'delete' | null
+export type ModalType = 'unsaved' | 'discard' | 'delete' | 'publish' | null
 
 export type GuidanceState = {
     // Mode & UI

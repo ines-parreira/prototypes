@@ -1,5 +1,13 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -141,6 +149,7 @@ const mockedUseRecentTicketsWithDrilldown = jest.mocked(
 )
 
 const mockUseStoresWithCompletedSetup = jest.mocked(useStoresWithCompletedSetup)
+const mockUseFlag = jest.mocked(useFlag)
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -234,6 +243,12 @@ describe('KnowledgeEditorGuidance', () => {
     })
 
     it('renders in edit mode and allows publishing when viewing draft', async () => {
+        // Enable the publish modal feature flag for this test
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
+        )
+
         // Set up a draft article (isCurrent: false) to enable publish button
         mockUseGuidanceArticle.mockReturnValue({
             guidanceArticle: {
@@ -266,13 +281,28 @@ describe('KnowledgeEditorGuidance', () => {
         expect(publishButton).toBeInTheDocument()
         expect(publishButton).not.toBeDisabled()
 
+        // Click Publish button to open the modal
         await act(async () => {
             fireEvent.click(publishButton)
         })
 
-        // Publish sets isCurrent: true
+        // Wait for the publish confirmation modal to appear
+        const modal = await screen.findByRole('dialog')
+        expect(
+            within(modal).getByRole('heading', { name: 'Publish changes' }),
+        ).toBeInTheDocument()
+
+        // Click Publish in the modal to confirm
+        const confirmPublishButton = within(modal).getByRole('button', {
+            name: 'Publish',
+        })
+        await act(async () => {
+            fireEvent.click(confirmPublishButton)
+        })
+
+        // Publish sets isCurrent: true with empty commitMessage
         expect(updateGuidanceArticle).toHaveBeenCalledWith(
-            { isCurrent: true },
+            { isCurrent: true, commitMessage: undefined },
             { articleId: guidanceArticle.id, locale: guidanceArticle.locale },
         )
     })
@@ -488,6 +518,12 @@ describe('KnowledgeEditorGuidance', () => {
     })
 
     it('calls onUpdate callback after successful article publish', async () => {
+        // Enable the publish modal feature flag for this test
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
+        )
+
         const onUpdate = jest.fn()
         const updatedArticle = {
             ...guidanceArticle,
@@ -522,8 +558,23 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
+        // Click Publish button to open the modal
         await act(async () => {
             fireEvent.click(screen.getByRole('button', { name: 'Publish' }))
+        })
+
+        // Wait for the publish confirmation modal to appear
+        const modal = await screen.findByRole('dialog')
+        expect(
+            within(modal).getByRole('heading', { name: 'Publish changes' }),
+        ).toBeInTheDocument()
+
+        // Click Publish in the modal to confirm
+        const confirmPublishButton = within(modal).getByRole('button', {
+            name: 'Publish',
+        })
+        await act(async () => {
+            fireEvent.click(confirmPublishButton)
         })
 
         await waitFor(() => {

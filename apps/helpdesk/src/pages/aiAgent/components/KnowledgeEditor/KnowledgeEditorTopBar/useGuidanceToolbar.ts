@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import { useNotify } from 'hooks/useNotify'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 
@@ -25,7 +27,7 @@ export type GuidanceToolbarActions = {
         shopNames?: string[]
     }>
     onClickEdit: () => void
-    onClickPublish: () => Promise<void>
+    onClickPublish: () => void | Promise<void>
     onOpenDiscardModal: () => void
     onOpenDeleteModal: () => void
     onDiscardCreate: () => void
@@ -43,6 +45,9 @@ export type GuidanceToolbarData = {
 }
 
 export const useGuidanceToolbar = (): GuidanceToolbarData => {
+    const isPublishModalEnabled = useFlag(
+        FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
+    )
     const { error: notifyError, success: notifySuccess } = useNotify()
 
     const {
@@ -100,7 +105,11 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         dispatch({ type: 'SET_MODE', payload: 'edit' })
     }, [dispatch])
 
-    const onClickPublish = useCallback(async () => {
+    const onOpenPublishModal = useCallback(() => {
+        dispatch({ type: 'SET_MODAL', payload: 'publish' })
+    }, [dispatch])
+
+    const onClickPublishLegacy = useCallback(async () => {
         if (!state.guidance?.id || !guidanceHelpCenter.default_locale) return
 
         dispatch({ type: 'SET_UPDATING', payload: true })
@@ -181,7 +190,9 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         actions: {
             duplicateGuidanceToShops,
             onClickEdit,
-            onClickPublish,
+            onClickPublish: isPublishModalEnabled
+                ? onOpenPublishModal
+                : onClickPublishLegacy,
             onOpenDiscardModal,
             onOpenDeleteModal,
             onDiscardCreate,

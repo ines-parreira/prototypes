@@ -24,12 +24,12 @@ export type ArticleMode =
           mode: ArticleModes.EDIT_DRAFT
           onCancel: () => void
           onSaveDraft?: () => void
-          onSaveAndPublish?: () => void
+          onSaveAndPublish?: (commitMessage?: string) => void
       }
     | {
           mode: ArticleModes.EDIT_PUBLISHED
           onCancel: () => void
-          onSaveAndPublish?: () => void
+          onSaveAndPublish?: (commitMessage?: string) => void
       }
 
 type Props = ArticleMode & { disabled?: boolean }
@@ -50,49 +50,59 @@ const ReadControls = (props: Extract<Props, { mode: ArticleModes.READ }>) => (
 
 const EditDraftControls = (
     props: Extract<Props, { mode: ArticleModes.EDIT_DRAFT }>,
-) => (
-    <>
-        <CancelButton
-            onCancel={props.onCancel}
-            disabled={props.disabled ?? false}
-        />
+) => {
+    const isPublishDisabled =
+        props.onSaveAndPublish === undefined || props.disabled
 
-        <Button
-            onClick={props.onSaveDraft}
-            isDisabled={props.onSaveDraft === undefined || props.disabled}
-            variant="secondary"
-        >
-            Save draft
-        </Button>
+    return (
+        <>
+            <CancelButton
+                onCancel={props.onCancel}
+                disabled={props.disabled ?? false}
+            />
 
-        <Button
-            onClick={props.onSaveAndPublish}
-            isDisabled={props.onSaveAndPublish === undefined || props.disabled}
-            variant="primary"
-        >
-            Publish
-        </Button>
-    </>
-)
+            <Button
+                onClick={props.onSaveDraft}
+                isDisabled={props.onSaveDraft === undefined || props.disabled}
+                variant="secondary"
+            >
+                Save draft
+            </Button>
+
+            <Button
+                onClick={() => props.onSaveAndPublish?.()}
+                isDisabled={isPublishDisabled}
+                variant="primary"
+            >
+                Publish
+            </Button>
+        </>
+    )
+}
 
 const EditPublishedControls = (
     props: Extract<Props, { mode: ArticleModes.EDIT_PUBLISHED }>,
-) => (
-    <>
-        <CancelButton
-            onCancel={props.onCancel}
-            disabled={props.disabled ?? false}
-        />
+) => {
+    const isPublishDisabled =
+        props.onSaveAndPublish === undefined || props.disabled
 
-        <Button
-            onClick={props.onSaveAndPublish}
-            isDisabled={props.onSaveAndPublish === undefined || props.disabled}
-            variant="primary"
-        >
-            Publish
-        </Button>
-    </>
-)
+    return (
+        <>
+            <CancelButton
+                onCancel={props.onCancel}
+                disabled={props.disabled ?? false}
+            />
+
+            <Button
+                onClick={() => props.onSaveAndPublish?.()}
+                isDisabled={isPublishDisabled}
+                variant="primary"
+            >
+                Publish
+            </Button>
+        </>
+    )
+}
 
 export const KnowledgeEditorTopBarHelpCenterArticlesControls = (
     props: Props,

@@ -11,6 +11,7 @@ import { KnowledgeEditorHelpCenterArticleReadView } from './KnowledgeEditorHelpC
 import {
     ArticleDeleteModal,
     ArticleDiscardDraftModal,
+    ArticlePublishModal,
     ArticleTranslationDeleteModal,
     ArticleUnsavedChangesModal,
 } from './modals'
@@ -116,6 +117,7 @@ export const ArticleEditorContent = ({ closeHandlerRef }: Props) => {
             <ArticleDiscardDraftModal />
             <ArticleDeleteModal />
             <ArticleTranslationDeleteModal />
+            <ArticlePublishModal />
         </div>
     )
 }

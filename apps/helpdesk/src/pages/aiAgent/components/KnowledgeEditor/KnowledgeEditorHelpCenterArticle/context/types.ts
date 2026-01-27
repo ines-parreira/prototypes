@@ -27,6 +27,7 @@ export type ModalType =
     | 'delete-article'
     | { type: 'delete-translation'; locale: LocaleOption }
     | 'discard-draft'
+    | 'publish'
 
 export type SettingsChanges = Pick<
     UpdateArticleTranslationDto,

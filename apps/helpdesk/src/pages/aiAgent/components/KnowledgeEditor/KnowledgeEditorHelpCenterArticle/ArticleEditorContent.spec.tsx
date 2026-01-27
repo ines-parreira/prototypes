@@ -20,7 +20,6 @@ jest.mock('./ArticleToolbarControls')
 jest.mock('./ArticleVersionBanner')
 jest.mock('./KnowledgeEditorHelpCenterArticleEditView')
 jest.mock('./KnowledgeEditorHelpCenterArticleReadView')
-jest.mock('./modals')
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: jest.fn(() => null),
 }))
@@ -285,6 +284,7 @@ jest.mock('./modals', () => ({
     ArticleTranslationDeleteModal: () => (
         <div data-mock="ArticleTranslationDeleteModal" />
     ),
+    ArticlePublishModal: () => <div data-mock="ArticlePublishModal" />,
 }))
 
 describe('ArticleEditorContent', () => {

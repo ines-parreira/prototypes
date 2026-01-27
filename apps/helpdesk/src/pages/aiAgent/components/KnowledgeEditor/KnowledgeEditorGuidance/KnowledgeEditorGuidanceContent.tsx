@@ -12,6 +12,7 @@ import { KnowledgeEditorGuidanceEditView } from './edit/KnowledgeEditorGuidanceE
 import { KnowledgeEditorGuidanceVersionBanner } from './KnowledgeEditorGuidanceVersionBanner'
 import { KnowledgeEditorGuidanceDeleteModal } from './modals/KnowledgeEditorGuidanceDeleteModal'
 import { KnowledgeEditorGuidanceDiscardDraftModal } from './modals/KnowledgeEditorGuidanceDiscardDraftModal'
+import { KnowledgeEditorGuidancePublishModal } from './modals/KnowledgeEditorGuidancePublishModal'
 import { KnowledgeEditorGuidanceUnsavedChangesModal } from './modals/KnowledgeEditorGuidanceUnsavedChangesModal'
 import { KnowledgeEditorGuidanceReadView } from './read'
 
@@ -123,6 +124,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
             <KnowledgeEditorGuidanceUnsavedChangesModal />
             <KnowledgeEditorGuidanceDiscardDraftModal />
             <KnowledgeEditorGuidanceDeleteModal />
+            <KnowledgeEditorGuidancePublishModal />
         </div>
     )
 }

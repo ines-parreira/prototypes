@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import { useNotify } from 'hooks/useNotify'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 
@@ -15,7 +17,7 @@ export type ArticleToolbarState =
 
 export type ArticleToolbarActions = {
     onClickEdit: () => void
-    onClickPublish: () => Promise<void>
+    onClickPublish: () => void | Promise<void>
     onOpenDeleteModal: () => void
     onDiscard: () => void
 }
@@ -32,6 +34,9 @@ export type ArticleToolbarData = {
 }
 
 export const useArticleToolbar = (): ArticleToolbarData => {
+    const isPublishModalEnabled = useFlag(
+        FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
+    )
     const { error: notifyError, success: notifySuccess } = useNotify()
 
     const {
@@ -52,7 +57,11 @@ export const useArticleToolbar = (): ArticleToolbarData => {
         dispatch({ type: 'SET_MODE', payload: 'edit' })
     }, [dispatch])
 
-    const onClickPublish = useCallback(async () => {
+    const onOpenPublishModal = useCallback(() => {
+        dispatch({ type: 'SET_MODAL', payload: 'publish' })
+    }, [dispatch])
+
+    const onClickPublishLegacy = useCallback(async () => {
         if (!state.article?.id) return
 
         dispatch({ type: 'SET_UPDATING', payload: true })
@@ -137,7 +146,9 @@ export const useArticleToolbar = (): ArticleToolbarData => {
         state: toolbarState,
         actions: {
             onClickEdit,
-            onClickPublish,
+            onClickPublish: isPublishModalEnabled
+                ? onOpenPublishModal
+                : onClickPublishLegacy,
             onOpenDeleteModal,
             onDiscard,
         },

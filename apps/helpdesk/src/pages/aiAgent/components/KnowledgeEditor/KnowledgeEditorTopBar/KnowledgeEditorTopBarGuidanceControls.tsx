@@ -144,8 +144,9 @@ export const GuidanceToolbarControls = () => {
                         disabled={isDisabled}
                     />
                     <Button
-                        onClick={isFormValid ? onClickPublish : undefined}
+                        onClick={onClickPublish}
                         isDisabled={!isFormValid || isDisabled}
+                        variant="primary"
                     >
                         Publish
                     </Button>
@@ -159,8 +160,9 @@ export const GuidanceToolbarControls = () => {
             return (
                 <>
                     <Button
-                        onClick={isFormValid ? onClickPublish : undefined}
-                        isDisabled={true}
+                        onClick={onClickPublish}
+                        isDisabled
+                        variant="primary"
                     >
                         Publish
                     </Button>
@@ -173,6 +175,7 @@ export const GuidanceToolbarControls = () => {
         case 'draft-edit':
         case 'create': {
             const isCreateMode = toolbarState.type === 'create'
+            const isPublishDisabled = isCreateMode || !isFormValid || isDisabled
             return (
                 <>
                     <DeleteDraftButton
@@ -182,12 +185,9 @@ export const GuidanceToolbarControls = () => {
                         disabled={isDisabled}
                     />
                     <Button
-                        onClick={
-                            !isCreateMode && isFormValid
-                                ? onClickPublish
-                                : undefined
-                        }
-                        isDisabled={isCreateMode || !isFormValid || isDisabled}
+                        onClick={onClickPublish}
+                        isDisabled={isPublishDisabled}
+                        variant="primary"
                     >
                         Publish
                     </Button>

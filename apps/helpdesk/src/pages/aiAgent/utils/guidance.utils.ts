@@ -48,6 +48,7 @@ export const mapUpdateGuidanceArticleToArticleApi = (
             ? slugify(updateGuidanceArticle.title)
             : undefined,
         is_current: updateGuidanceArticle.isCurrent,
+        commit_message: updateGuidanceArticle.commitMessage,
     }
 }
 

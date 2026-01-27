@@ -137,6 +137,40 @@ describe('KnowledgeEditorTopBarHelpCenterArticlesControls', () => {
                 screen.getByRole('button', { name: 'Publish' }),
             ).toBeDisabled()
         })
+
+        it('disables Save draft button when onSaveDraft is undefined', () => {
+            render(
+                <KnowledgeEditorTopBarHelpCenterArticlesControls
+                    mode={ArticleModes.EDIT_DRAFT}
+                    onCancel={jest.fn()}
+                    onSaveAndPublish={jest.fn()}
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: 'Save draft' }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: 'Publish' }),
+            ).toBeEnabled()
+        })
+
+        it('disables Publish button when onSaveAndPublish is undefined', () => {
+            render(
+                <KnowledgeEditorTopBarHelpCenterArticlesControls
+                    mode={ArticleModes.EDIT_DRAFT}
+                    onCancel={jest.fn()}
+                    onSaveDraft={jest.fn()}
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: 'Publish' }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: 'Save draft' }),
+            ).toBeEnabled()
+        })
     })
 
     describe('editPublished mode', () => {
@@ -193,6 +227,20 @@ describe('KnowledgeEditorTopBarHelpCenterArticlesControls', () => {
             expect(
                 screen.getByRole('button', { name: 'Publish' }),
             ).toBeEnabled()
+        })
+
+        it('disables Publish button when onSaveAndPublish is undefined', () => {
+            render(
+                <KnowledgeEditorTopBarHelpCenterArticlesControls
+                    mode={ArticleModes.EDIT_PUBLISHED}
+                    onCancel={jest.fn()}
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: 'Publish' }),
+            ).toBeDisabled()
+            expect(screen.getByRole('button', { name: 'Cancel' })).toBeEnabled()
         })
     })
 })

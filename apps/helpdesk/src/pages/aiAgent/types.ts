@@ -103,7 +103,9 @@ export type CreateGuidanceArticle = Omit<
 export type UpdateGuidanceArticle = Omit<
     Partial<GuidanceArticle>,
     'lastUpdated' | 'id'
->
+> & {
+    commitMessage?: string
+}
 
 export type GuidanceTemplate = {
     id: string

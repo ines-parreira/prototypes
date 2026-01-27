@@ -70,7 +70,7 @@ export const ArticleToolbarControls = () => {
                         disabled={isDisabled}
                     />
                     <Button
-                        onClick={isFormValid ? onClickPublish : undefined}
+                        onClick={onClickPublish}
                         isDisabled={!isFormValid || isDisabled}
                         variant="primary"
                     >
@@ -86,8 +86,8 @@ export const ArticleToolbarControls = () => {
             return (
                 <>
                     <Button
-                        onClick={isFormValid ? onClickPublish : undefined}
-                        isDisabled={true}
+                        onClick={onClickPublish}
+                        isDisabled
                         variant="primary"
                     >
                         Publish
@@ -101,6 +101,7 @@ export const ArticleToolbarControls = () => {
         case 'draft-edit':
         case 'create': {
             const isCreateMode = toolbarState.type === 'create'
+            const isPublishDisabled = isCreateMode || !isFormValid || isDisabled
             return (
                 <>
                     <DeleteDraftButton
@@ -108,12 +109,8 @@ export const ArticleToolbarControls = () => {
                         disabled={isDisabled}
                     />
                     <Button
-                        onClick={
-                            !isCreateMode && isFormValid
-                                ? onClickPublish
-                                : undefined
-                        }
-                        isDisabled={isCreateMode || !isFormValid || isDisabled}
+                        onClick={onClickPublish}
+                        isDisabled={isPublishDisabled}
                         variant="primary"
                     >
                         Publish
