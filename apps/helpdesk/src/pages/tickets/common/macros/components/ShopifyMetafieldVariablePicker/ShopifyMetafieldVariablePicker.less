@@ -1,0 +1,183 @@
+:local {
+    .triggerContainer {
+        position: relative;
+    }
+
+    .triggerItem {
+        color: var(--neutral-grey-6);
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        width: 100%;
+        text-align: left;
+        border-radius: 4px;
+        cursor: pointer;
+        height: 31px;
+        justify-content: space-between;
+        &:hover {
+            cursor: pointer;
+            background-color: var(--neutral-grey-2);
+        }
+    }
+
+    .submenu {
+        padding: 0;
+        display: flex;
+        width: 272px;
+        max-height: 420px;
+        flex-direction: column;
+        align-items: flex-start;
+        background: var(--neutral-grey-0);
+        box-shadow: 0 2px 4px 0 rgba(22, 22, 22, 0.16);
+        border-radius: var(--border-radius-l);
+        border: 1px solid var(--neutral-grey-3);
+        z-index: 1000;
+    }
+
+    .backHeader {
+        color: var(--neutral-grey-5);
+        font-family: Inter, sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 20px;
+        letter-spacing: -0.14px;
+        height: 44px;
+        width: 100%;
+        cursor: pointer;
+
+        background: var(--neutral-grey-2);
+        display: flex;
+        padding: 12px;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+        align-self: stretch;
+        border-bottom: 1px solid var(--neutral-grey-3);
+    }
+
+    .backButton {
+        display: flex;
+        align-items: center;
+    }
+    .backIcon {
+        font-size: 16px;
+        margin-right: 4px;
+    }
+
+    .backLabel {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .dropdownBody {
+        flex-grow: 1;
+        overflow-y: auto;
+        max-height: 320px;
+        padding: 8px 12px 8px 8px;
+        width: 100%;
+    }
+
+    .navItem {
+        &:hover {
+            background-color: var(--hover-default);
+        }
+        &:focus {
+            background-color: var(--hover-default);
+            outline: none;
+        }
+    }
+
+    .itemLabel {
+        flex: 1;
+        min-width: 0;
+        padding: 8px 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .chevronIcon {
+        font-size: 20px;
+        margin-left: auto;
+        color: var(--content-neutral-tertiary);
+    }
+
+    .storesList {
+        max-height: 108px;
+        overflow-y: auto;
+    }
+
+    .searchContainer {
+        box-sizing: border-box;
+        padding: 8px;
+    }
+
+    .metafieldsList {
+        flex-grow: 1;
+        overflow-y: auto;
+        max-height: 144px;
+        width: 100%;
+    }
+
+    .navItem,
+    .metafieldItem {
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        width: 100%;
+        min-height: 36px;
+        text-align: left;
+        color: var(--content-neutral-default);
+        background: none;
+        border: none;
+        border-radius: var(--layout-spacing-xxs);
+        outline: 0;
+        cursor: pointer;
+    }
+
+    .metafieldItem {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        &:hover {
+            background-color: var(--hover-default);
+        }
+    }
+
+    .emptyState {
+        box-sizing: border-box;
+        min-height: 64px;
+        padding: var(--layout-spacing-xs);
+        width: 100%;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        color: var(--content-neutral-secondary);
+    }
+}
+
+.axiom :local {
+    .triggerItem {
+        color: var(--content-neutral-default);
+        &:hover {
+            background-color: var(--surface-neutral-secondary);
+        }
+    }
+
+    .submenu {
+        background: var(--surface-neutral-primary);
+        border-color: var(--border-neutral-default);
+    }
+
+    .backHeader {
+        color: var(--content-neutral-secondary);
+        background: var(--surface-neutral-secondary);
+        border-bottom-color: var(--border-neutral-default);
+    }
+}

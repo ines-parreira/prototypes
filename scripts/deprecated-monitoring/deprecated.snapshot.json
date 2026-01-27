@@ -1,6 +1,6 @@
 {
-  "date": "2026-01-23T13:28:52.858Z",
-  "total": 4170,
+  "date": "2026-01-26T18:07:54.747Z",
+  "total": 4174,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -1464,7 +1464,7 @@
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "DEPRECATED_getIntegrationsByTypes",
       "comment": "*\n * @deprecated\n * @date 2022-09-14\n * @type feature-helper-fn\n ",
-      "count": 23,
+      "count": 24,
       "filePath": "apps/helpdesk/src/state/integrations/selectors.ts",
       "usages": [
         {
@@ -1487,7 +1487,45 @@
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterNewView.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/hooks/useShopifyStoreWithChatConnectionsOptions.tsx",
             "apps/helpdesk/src/pages/tickets/common/macros/components/actions/ResponseAction.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/ShopifyMetafieldVariablePicker/ShopifyMetafieldVariablePicker.tsx",
             "apps/helpdesk/src/state/integrations/actions/index.ts",
+            "apps/helpdesk/src/state/newMessage/actions.ts",
+            "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
+            "apps/helpdesk/src/state/widgets/actions.ts",
+            "apps/helpdesk/src/Widgets/modules/Shopify/components/Customer.tsx",
+            "apps/helpdesk/src/Widgets/modules/Template/modules/Wrapper/components/Wrapper.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "DEPRECATED_getIntegrations",
+      "comment": "*\n * @deprecated\n * @date 2023-01-17\n * @type feature-helper-fn\n ",
+      "count": 23,
+      "filePath": "apps/helpdesk/src/state/integrations/selectors.ts",
+      "usages": [
+        {
+          "name": "DEPRECATED_getIntegrations",
+          "files": [
+            "apps/helpdesk/src/pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection.ts",
+            "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/OngoingPhoneCall.tsx",
+            "apps/helpdesk/src/pages/common/components/sourceWidgets/SourceWrapper.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/aircall/AircallIntegrationCreate.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailDomainVerification/tests/EmailDomainVerificationContent.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/hooks/useLogWizardEvent.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/revamp/hooks/useLogWizardEvent.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/phone/actions.ts",
+            "apps/helpdesk/src/pages/settings/contactForm/hooks/useEmailIntegrations.ts",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ContactFormInfoSection/ContactFormInfoSection.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterNewView.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/actions/ResponseAction.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/ShopifyMetafieldVariablePicker/ShopifyMetafieldVariablePicker.tsx",
+            "apps/helpdesk/src/state/integrations/actions/index.ts",
+            "apps/helpdesk/src/state/integrations/tests/selectors.spec.ts",
             "apps/helpdesk/src/state/newMessage/actions.ts",
             "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
             "apps/helpdesk/src/state/widgets/actions.ts",
@@ -1534,42 +1572,6 @@
       ]
     },
     {
-      "nodeType": "ExportNamedDeclaration",
-      "nodeName": "DEPRECATED_getIntegrations",
-      "comment": "*\n * @deprecated\n * @date 2023-01-17\n * @type feature-helper-fn\n ",
-      "count": 22,
-      "filePath": "apps/helpdesk/src/state/integrations/selectors.ts",
-      "usages": [
-        {
-          "name": "DEPRECATED_getIntegrations",
-          "files": [
-            "apps/helpdesk/src/pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection.ts",
-            "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/OngoingPhoneCall.tsx",
-            "apps/helpdesk/src/pages/common/components/sourceWidgets/SourceWrapper.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/aircall/AircallIntegrationCreate.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailDomainVerification/tests/EmailDomainVerificationContent.spec.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/hooks/useLogWizardEvent.ts",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/revamp/hooks/useLogWizardEvent.ts",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset.ts",
-            "apps/helpdesk/src/pages/integrations/integration/components/phone/actions.ts",
-            "apps/helpdesk/src/pages/settings/contactForm/hooks/useEmailIntegrations.ts",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ContactFormInfoSection/ContactFormInfoSection.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterNewView.tsx",
-            "apps/helpdesk/src/pages/tickets/common/macros/components/actions/ResponseAction.tsx",
-            "apps/helpdesk/src/state/integrations/actions/index.ts",
-            "apps/helpdesk/src/state/integrations/tests/selectors.spec.ts",
-            "apps/helpdesk/src/state/newMessage/actions.ts",
-            "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
-            "apps/helpdesk/src/state/widgets/actions.ts",
-            "apps/helpdesk/src/Widgets/modules/Shopify/components/Customer.tsx",
-            "apps/helpdesk/src/Widgets/modules/Template/modules/Wrapper/components/Wrapper.tsx"
-          ]
-        }
-      ]
-    },
-    {
       "nodeType": "VariableDeclaration",
       "nodeName": "ToggleInput",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<ToggleField />` from @gorgias/axiom instead.\n * @date 2025-03-25\n * @type ui-kit-migration\n ",
@@ -1608,7 +1610,7 @@
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "DEPRECATED_getIntegrationsState",
       "comment": "*\n * @deprecated\n * @date 2021-02-01\n * @type feature-helper-fn\n ",
-      "count": 20,
+      "count": 21,
       "filePath": "apps/helpdesk/src/state/integrations/selectors.ts",
       "usages": [
         {
@@ -1626,6 +1628,7 @@
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ContactFormInfoSection/ContactFormInfoSection.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterNewView.tsx",
             "apps/helpdesk/src/pages/tickets/common/macros/components/actions/ResponseAction.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/ShopifyMetafieldVariablePicker/ShopifyMetafieldVariablePicker.tsx",
             "apps/helpdesk/src/state/integrations/actions/index.ts",
             "apps/helpdesk/src/state/integrations/tests/reducers.spec.ts",
             "apps/helpdesk/src/state/integrations/tests/selectors.spec.ts",
@@ -1642,7 +1645,7 @@
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "DEPRECATED_getPhoneIntegrations",
       "comment": "*\n * @deprecated\n * @date 2023-01-17\n * @type feature-helper-fn\n ",
-      "count": 19,
+      "count": 20,
       "filePath": "apps/helpdesk/src/state/integrations/selectors.ts",
       "usages": [
         {
@@ -1660,6 +1663,7 @@
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ContactFormInfoSection/ContactFormInfoSection.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterNewView.tsx",
             "apps/helpdesk/src/pages/tickets/common/macros/components/actions/ResponseAction.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/ShopifyMetafieldVariablePicker/ShopifyMetafieldVariablePicker.tsx",
             "apps/helpdesk/src/state/integrations/actions/index.ts",
             "apps/helpdesk/src/state/integrations/tests/selectors.spec.ts",
             "apps/helpdesk/src/state/newMessage/actions.ts",
@@ -5038,7 +5042,7 @@
         },
         {
           "name": "Breadcrumb",
-          "count": 71,
+          "count": 70,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/cancelOrder/CancelOrderFlowView.tsx",
@@ -5069,7 +5073,6 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/GorgiasChatCreationWizard.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/revamp/GorgiasChatCreationWizard.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/revamp/GorgiasChatIntegrationAppearance.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.tsx",
@@ -5115,7 +5118,7 @@
         },
         {
           "name": "BreadcrumbItem",
-          "count": 71,
+          "count": 70,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/cancelOrder/CancelOrderFlowView.tsx",
@@ -5146,7 +5149,6 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/GorgiasChatCreationWizard.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/revamp/GorgiasChatCreationWizard.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/revamp/GorgiasChatIntegrationAppearance.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.tsx",
