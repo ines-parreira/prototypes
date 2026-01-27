@@ -1,8 +1,9 @@
 import { useCallback, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -162,8 +163,24 @@ export const useShoppingAssistantTrialFlow = ({
 
     const dispatch = useAppDispatch()
     const history = useHistory()
+    const location = useLocation()
     const notifySlackChannel = useNotifyTrialExtensionSlackChannel()
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
+
+    useEffectOnce(() => {
+        const searchParams = new URLSearchParams(location.search)
+        const modalName = searchParams.get('modal_name')
+        const modalVersion = searchParams.get('modal_version')
+
+        if (modalName === 'opt-in' && modalVersion === 'ai-agent-trial') {
+            logEvent(SegmentEvent.PricingModalViewed, {
+                type: 'Trial',
+                trialType,
+                source: 'url_params',
+            })
+            trialModal.openModal(trialUpgradeModalName)
+        }
+    })
 
     // Always try to get store when possible
     const routeShopName = extractShopNameFromUrl(window.location.href)

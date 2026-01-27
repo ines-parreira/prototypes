@@ -1206,5 +1206,141 @@ describe('useShoppingAssistantTrialFlow', () => {
                 )
             })
         })
+
+        describe('URL parameter handling', () => {
+            it('should open trial modal when modal_name=opt-in and modal_version=ai-agent-trial are in URL', () => {
+                const history = createMemoryHistory({
+                    initialEntries: [
+                        '/?modal_name=opt-in&modal_version=ai-agent-trial',
+                    ],
+                })
+
+                const customWrapper = ({
+                    children,
+                }: {
+                    children: React.ReactNode
+                }) => (
+                    <Router history={history}>
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    </Router>
+                )
+
+                renderHook(
+                    () =>
+                        useShoppingAssistantTrialFlow({
+                            accountDomain: mockAccountDomain,
+                            storeActivations: mockStoreActivations,
+                            trialType: TrialType.AiAgent,
+                        }),
+                    { wrapper: customWrapper },
+                )
+
+                expect(mockModalManager.openModal).toHaveBeenCalledWith(
+                    'AiAgentTrialUpgradeModal',
+                )
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    SegmentEvent.PricingModalViewed,
+                    {
+                        type: 'Trial',
+                        trialType: TrialType.AiAgent,
+                        source: 'url_params',
+                    },
+                )
+            })
+
+            it('should not open trial modal when modal_name is incorrect', () => {
+                const history = createMemoryHistory({
+                    initialEntries: [
+                        '/?modal_name=wrong&modal_version=ai-agent-trial',
+                    ],
+                })
+
+                const customWrapper = ({
+                    children,
+                }: {
+                    children: React.ReactNode
+                }) => (
+                    <Router history={history}>
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    </Router>
+                )
+
+                renderHook(
+                    () =>
+                        useShoppingAssistantTrialFlow({
+                            accountDomain: mockAccountDomain,
+                            storeActivations: mockStoreActivations,
+                            trialType: TrialType.AiAgent,
+                        }),
+                    { wrapper: customWrapper },
+                )
+
+                expect(mockModalManager.openModal).not.toHaveBeenCalled()
+            })
+
+            it('should not open trial modal when modal_version is incorrect', () => {
+                const history = createMemoryHistory({
+                    initialEntries: ['/?modal_name=opt-in&modal_version=wrong'],
+                })
+
+                const customWrapper = ({
+                    children,
+                }: {
+                    children: React.ReactNode
+                }) => (
+                    <Router history={history}>
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    </Router>
+                )
+
+                renderHook(
+                    () =>
+                        useShoppingAssistantTrialFlow({
+                            accountDomain: mockAccountDomain,
+                            storeActivations: mockStoreActivations,
+                            trialType: TrialType.AiAgent,
+                        }),
+                    { wrapper: customWrapper },
+                )
+
+                expect(mockModalManager.openModal).not.toHaveBeenCalled()
+            })
+
+            it('should not open trial modal when URL params are missing', () => {
+                const history = createMemoryHistory({
+                    initialEntries: ['/'],
+                })
+
+                const customWrapper = ({
+                    children,
+                }: {
+                    children: React.ReactNode
+                }) => (
+                    <Router history={history}>
+                        <QueryClientProvider client={queryClient}>
+                            {children}
+                        </QueryClientProvider>
+                    </Router>
+                )
+
+                renderHook(
+                    () =>
+                        useShoppingAssistantTrialFlow({
+                            accountDomain: mockAccountDomain,
+                            storeActivations: mockStoreActivations,
+                            trialType: TrialType.AiAgent,
+                        }),
+                    { wrapper: customWrapper },
+                )
+
+                expect(mockModalManager.openModal).not.toHaveBeenCalled()
+            })
+        })
     })
 })
