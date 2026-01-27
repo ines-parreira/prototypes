@@ -30,6 +30,7 @@ describe('voiceCallsSummaryScope', () => {
                     'inboundVoiceCallsCount',
                     'outboundVoiceCallsCount',
                     'answeredVoiceCallsCount',
+                    'slaAchievementRate',
                     'cancelledVoiceCallsCount',
                     'abandonedVoiceCallsCount',
                     'missedVoiceCallsCount',
