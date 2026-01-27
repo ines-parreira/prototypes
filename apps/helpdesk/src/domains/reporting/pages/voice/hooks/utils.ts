@@ -68,7 +68,7 @@ export const addVoiceCallToLiveCallsQueryCache = (
     appQueryClient.setQueryData<ListLiveCallQueueVoiceCallsResult>(
         queryKey,
         (oldData) => {
-            if (!oldData) return
+            if (!oldData?.data?.data) return
 
             const index = oldData.data.data.findIndex(
                 (call) => call.id === voiceCall.id,
@@ -108,7 +108,7 @@ export const updateVoiceCallInLiveCallsQueryCache = (
     appQueryClient.setQueryData<ListLiveCallQueueVoiceCallsResult>(
         queryKey,
         (oldData) => {
-            if (!oldData) return
+            if (!oldData?.data?.data) return
             const index = oldData.data.data.findIndex(
                 (call) => call.id === voiceCall.id,
             )
@@ -157,7 +157,7 @@ export const updateAgentAvailabilityInLiveAgentsQueryCache = (
     appQueryClient.setQueryData<ListLiveCallQueueAgentsResult>(
         queryKey,
         (oldData) => {
-            if (!oldData) return
+            if (!oldData?.data?.data) return
             const index = oldData.data.data.findIndex(
                 (agent) => agent.id === agentId,
             )
@@ -186,7 +186,7 @@ export const updateAgentStatusInLiveAgentsQueryCache = (
     appQueryClient.setQueryData<ListLiveCallQueueAgentsResult>(
         queryKey,
         (oldData) => {
-            if (!oldData) return
+            if (!oldData?.data?.data) return
             const index = oldData.data.data.findIndex(
                 (agent) => agent.id === agentId,
             )
@@ -232,7 +232,7 @@ export const removeAgentStatusInLiveAgentsQueryCache = (
     appQueryClient.setQueryData<ListLiveCallQueueAgentsResult>(
         queryKey,
         (oldData) => {
-            if (!oldData) return
+            if (!oldData?.data?.data) return
             const index = oldData.data.data.findIndex(
                 (agent) => agent.id === agentId,
             )
@@ -268,7 +268,7 @@ export const removeVoiceCallInLiveAgentsQueryCache = (
     appQueryClient.setQueryData<ListLiveCallQueueAgentsResult>(
         queryKey,
         (oldData) => {
-            if (!oldData) return
+            if (!oldData?.data?.data) return
 
             const newData = cloneDeep(oldData)
             newData.data.data = newData.data.data.map((existingAgent) => ({

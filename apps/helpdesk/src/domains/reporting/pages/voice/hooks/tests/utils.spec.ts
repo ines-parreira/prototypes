@@ -13,6 +13,7 @@ import {
     getWrapUpStatusesThatShouldExpire,
     isFilteredOut,
     isVoiceCallIncludedInFilters,
+    removeAgentStatusInLiveAgentsQueryCache,
     removeVoiceCallInLiveAgentsQueryCache,
     setWrapUpExpirationTimer,
     transformDateToUTCString,
@@ -22,6 +23,10 @@ import {
 } from 'domains/reporting/pages/voice/hooks/utils'
 
 describe('utils.ts', () => {
+    afterEach(() => {
+        appQueryClient.clear()
+    })
+
     describe('transformDateToUTCString', () => {
         it('should transform a date to UTC string', () => {
             const date = new Date('2023-01-01T00:00:00Z')
@@ -152,6 +157,18 @@ describe('utils.ts', () => {
                 data: { data: [] },
             })
         })
+
+        it.each([
+            undefined,
+            { data: undefined },
+            { data: { data: undefined } },
+        ])('should not modify cache when oldData is undefined', (oldDatd) => {
+            appQueryClient.setQueryData(queryKey, oldDatd)
+
+            addVoiceCallToLiveCallsQueryCache(voiceCall, params)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual(oldDatd)
+        })
     })
 
     describe('updateVoiceCallInLiveCallsQueryCache', () => {
@@ -211,6 +228,18 @@ describe('utils.ts', () => {
             expect(appQueryClient.getQueryData(queryKey)).toEqual({
                 data: { data: [] },
             })
+        })
+
+        it.each([
+            undefined,
+            { data: undefined },
+            { data: { data: undefined } },
+        ])('should not modify cache when oldData is undefined', (oldData) => {
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            updateVoiceCallInLiveCallsQueryCache(voiceCall, params)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual(oldData)
         })
     })
 
@@ -297,6 +326,22 @@ describe('utils.ts', () => {
             expect(appQueryClient.getQueryData(queryKey)).toEqual({
                 data: { data: [{ id: 1, call_statuses: [statusUpdate] }] },
             })
+        })
+
+        it.each([
+            undefined,
+            { data: undefined },
+            { data: { data: undefined } },
+        ])('should not modify cache when oldData is undefined', (oldData) => {
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            updateAgentStatusInLiveAgentsQueryCache(
+                agentId,
+                statusUpdate,
+                params,
+            )
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual(oldData)
         })
     })
 
@@ -397,6 +442,18 @@ describe('utils.ts', () => {
                     ],
                 },
             })
+        })
+
+        it.each([
+            undefined,
+            { data: undefined },
+            { data: { data: undefined } },
+        ])('should not modify cache when oldData is undefined', (oldData) => {
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            removeVoiceCallInLiveAgentsQueryCache('12345', {})
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual(oldData)
         })
     })
 
@@ -666,6 +723,179 @@ describe('utils.ts', () => {
                         },
                     ],
                 },
+            })
+        })
+
+        it.each([
+            undefined,
+            { data: undefined },
+            { data: { data: undefined } },
+        ])('should not modify cache when oldData is undefined', (oldData) => {
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            updateAgentAvailabilityInLiveAgentsQueryCache(
+                agentId,
+                availabilityUpdate,
+                params,
+            )
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual(oldData)
+        })
+    })
+
+    describe('removeAgentStatusInLiveAgentsQueryCache', () => {
+        const agentId = 1
+        const callSid = '12345'
+        const params: ListLiveCallQueueVoiceCallsParams = {
+            integration_ids: [1],
+            voice_queue_ids: [2],
+            agent_ids: [agentId],
+        }
+        const queryKey =
+            queryKeys.voiceCallLiveQueue.listLiveCallQueueAgents(params)
+
+        it('should remove agent status from cache', () => {
+            const oldData = {
+                data: {
+                    data: [
+                        {
+                            id: agentId,
+                            call_statuses: [
+                                {
+                                    status: AgentStatus.Ringing,
+                                    call_sid: callSid,
+                                },
+                                {
+                                    status: AgentStatus.Dialling,
+                                    call_sid: '67890',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            removeAgentStatusInLiveAgentsQueryCache(agentId, callSid, params)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: agentId,
+                            call_statuses: [
+                                {
+                                    status: AgentStatus.Dialling,
+                                    call_sid: '67890',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should preserve wrap up status when ignoreWrapUp is true', () => {
+            const oldData = {
+                data: {
+                    data: [
+                        {
+                            id: agentId,
+                            call_statuses: [
+                                {
+                                    status: AgentStatus.WrappingUp,
+                                    call_sid: callSid,
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            removeAgentStatusInLiveAgentsQueryCache(
+                agentId,
+                callSid,
+                params,
+                true,
+            )
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: agentId,
+                            call_statuses: [
+                                {
+                                    status: AgentStatus.WrappingUp,
+                                    call_sid: callSid,
+                                },
+                            ],
+                        },
+                    ],
+                },
+            })
+        })
+
+        it('should remove wrap up status when ignoreWrapUp is false', () => {
+            const oldData = {
+                data: {
+                    data: [
+                        {
+                            id: agentId,
+                            call_statuses: [
+                                {
+                                    status: AgentStatus.WrappingUp,
+                                    call_sid: callSid,
+                                },
+                            ],
+                        },
+                    ],
+                },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            removeAgentStatusInLiveAgentsQueryCache(
+                agentId,
+                callSid,
+                params,
+                false,
+            )
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: {
+                    data: [
+                        {
+                            id: agentId,
+                            call_statuses: [],
+                        },
+                    ],
+                },
+            })
+        })
+
+        it.each([
+            undefined,
+            { data: undefined },
+            { data: { data: undefined } },
+        ])('should not modify cache when oldData is undefined', (oldData) => {
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            removeAgentStatusInLiveAgentsQueryCache(agentId, callSid, params)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual(oldData)
+        })
+
+        it('should not do anything if agent is not found', () => {
+            const oldData = {
+                data: { data: [] },
+            }
+            appQueryClient.setQueryData(queryKey, oldData)
+
+            removeAgentStatusInLiveAgentsQueryCache(agentId, callSid, params)
+
+            expect(appQueryClient.getQueryData(queryKey)).toEqual({
+                data: { data: [] },
             })
         })
     })
