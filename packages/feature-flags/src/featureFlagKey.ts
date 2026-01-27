@@ -214,6 +214,7 @@ export enum FeatureFlagKey {
     VoiceSLA = 'voice-sla',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     EnableShopifyMetafieldsIngestionUI = 'linear.project_shopify-metafields_enable_ingestion-ui',
+    EnableShopifyMetafieldsIngestionUIinMacros = 'linear.project_shopify-metafields_enable_ingestion-ui-macros',
     TriggerOnSearchKillSwitch = 'linear.task_AIORC-6090.kill-switch-for-trigger-on-search',
     KnowledgeHubEnabled = 'liner.project_allow-merchants-to-view-all-knowledge-from-a-single-place',
     PerformanceStatsOnIndividualKnowledge = 'linear.project_add-performance-stats-to-knowledge.show-stats',
