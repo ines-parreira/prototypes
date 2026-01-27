@@ -176,7 +176,24 @@ declare namespace Components {
             domain: string | null
             source: 'domain' | 'file' | 'url'
             status: 'DISABLED' | 'FAILED' | 'PENDING' | 'SUCCESSFUL'
-            meta: MLSnippetsIngestionMeta
+            meta?: {
+                /**
+                 * Gorgias account domain name
+                 */
+                'x-gorgias-domain': string | null
+                /**
+                 * UID for this call. e.g. snippet_transformation_{account_name}{help_center_id}_{timestamp}
+                 */
+                'x-execution-id': string | null
+                /**
+                 * File type (MIME type) - only for file ingestion
+                 */
+                file_type?: string
+                /**
+                 * File size in bytes - only for file ingestion
+                 */
+                file_size_bytes?: number
+            } | null
         }
         export interface ArticleListDataDto {
             id: number
@@ -391,6 +408,27 @@ declare namespace Components {
             title: string | null
             description: string | null
         }
+        export interface ArticleTranslationVersionResponseDto {
+            id: number
+            version: number
+            title: string
+            excerpt: string
+            content: string
+            slug: string
+            seo_meta: {
+                title: string | null
+                description: string | null
+            } | null
+            created_datetime: string // date-time
+            published_datetime: string | null // date-time
+            commit_message?: string
+            publisher_user_id?: number
+        }
+        export interface ArticleTranslationVersionsListPageDto {
+            meta: PageMetaDto
+            object: 'list'
+            data: ArticleTranslationVersionResponseDto[]
+        }
         export interface ArticleTranslationWithRating {
             created_datetime: string // date-time
             updated_datetime: string // date-time
@@ -468,6 +506,7 @@ declare namespace Components {
                 | 'helpCenterWizard'
                 | 'topQuestionsSection'
             ingested_resource_id: number | null
+            ingested_resource?: IngestedResourceDto
             id: number
             translation: LocalArticleTranslation
         }
@@ -2702,6 +2741,7 @@ declare namespace Components {
             execution_id: string
             status: 'disabled' | 'enabled'
             web_pages: string[]
+            article_ingestion_log?: ArticleIngestionLogDto
             id: number
             title: string
         }
@@ -2712,6 +2752,7 @@ declare namespace Components {
             execution_id: string
             status: 'disabled' | 'enabled'
             web_pages: string[]
+            article_ingestion_log?: ArticleIngestionLogDto
             article_id: number
             id: number
             title: string
@@ -4367,6 +4408,7 @@ declare namespace Paths {
                 | 'sv-SE'
             export type LocaleFallback = boolean
             export type VersionStatus = 'current' | 'latest_draft'
+            export type WithIngestion = boolean
         }
         export interface PathParameters {
             id: Parameters.Id
@@ -4374,6 +4416,7 @@ declare namespace Paths {
         }
         export interface QueryParameters {
             version_status?: Parameters.VersionStatus
+            with_ingestion?: Parameters.WithIngestion
             locale: Parameters.Locale
             locale_fallback?: Parameters.LocaleFallback
         }
@@ -4475,6 +4518,25 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = Components.Schemas.ArticleTemplateDto
+        }
+    }
+    namespace GetArticleTranslationVersion {
+        namespace Parameters {
+            export type ArticleId = number
+            export type HelpCenterId = number
+            export type Locale = string
+            export type VersionId = number
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+            article_id: Parameters.ArticleId
+            locale: Parameters.Locale
+            version_id: Parameters.VersionId
+        }
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.ArticleTranslationVersionResponseDto
+            export interface $404 {}
         }
     }
     namespace GetAttachmentUploadPolicy {
@@ -5045,6 +5107,30 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = Components.Schemas.ArticleTemplateDto[]
+        }
+    }
+    namespace ListArticleTranslationVersions {
+        namespace Parameters {
+            export type ArticleId = number
+            export type HelpCenterId = number
+            export type Locale = string
+            export type Page = any
+            export type PerPage = any
+            export type Published = boolean
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+            article_id: Parameters.ArticleId
+            locale: Parameters.Locale
+        }
+        export interface QueryParameters {
+            published?: Parameters.Published
+            per_page?: Parameters.PerPage
+            page?: Parameters.Page
+        }
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.ArticleTranslationVersionsListPageDto
         }
     }
     namespace ListArticleTranslations {
@@ -6034,6 +6120,29 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.DeleteArticleTranslation.Responses.$200>
+    /**
+     * listArticleTranslationVersions - List all versions for an article translation
+     *
+     * Returns all versions for an article translation, optionally filtered to only published versions.
+     */
+    'listArticleTranslationVersions'(
+        parameters: Parameters<
+            Paths.ListArticleTranslationVersions.QueryParameters &
+                Paths.ListArticleTranslationVersions.PathParameters
+        >,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ListArticleTranslationVersions.Responses.$200>
+    /**
+     * getArticleTranslationVersion - Get a specific version of an article translation
+     *
+     * Returns a specific version by ID for an article translation.
+     */
+    'getArticleTranslationVersion'(
+        parameters: Parameters<Paths.GetArticleTranslationVersion.PathParameters>,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetArticleTranslationVersion.Responses.$200>
     /**
      * deleteArticleTranslationDraft - Delete draft version of article translation
      *
@@ -7312,6 +7421,33 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.DeleteArticleTranslation.Responses.$200>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/versions']: {
+        /**
+         * listArticleTranslationVersions - List all versions for an article translation
+         *
+         * Returns all versions for an article translation, optionally filtered to only published versions.
+         */
+        'get'(
+            parameters: Parameters<
+                Paths.ListArticleTranslationVersions.QueryParameters &
+                    Paths.ListArticleTranslationVersions.PathParameters
+            >,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.ListArticleTranslationVersions.Responses.$200>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/versions/{version_id}']: {
+        /**
+         * getArticleTranslationVersion - Get a specific version of an article translation
+         *
+         * Returns a specific version by ID for an article translation.
+         */
+        'get'(
+            parameters: Parameters<Paths.GetArticleTranslationVersion.PathParameters>,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetArticleTranslationVersion.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/draft']: {
         /**

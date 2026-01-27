@@ -27,7 +27,7 @@ const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
 >
 
 const ingestionLogDtoFixture = (
-    overrides?: Partial<Components.Schemas.ArticleIngestionLogDto>,
+    overrides?: Partial<Components.Schemas.IngestionLogDto>,
 ): Components.Schemas.IngestionLogDto => {
     return {
         id: 1,
@@ -35,7 +35,7 @@ const ingestionLogDtoFixture = (
         created_datetime: '2021-01-01T00:00:00.000Z',
         source: 'domain',
         ...overrides,
-    } as Components.Schemas.ArticleIngestionLogDto
+    } as Components.Schemas.IngestionLogDto
 }
 const queryClient = mockQueryClient()
 const STORE_NAME_1 = 'My Store'

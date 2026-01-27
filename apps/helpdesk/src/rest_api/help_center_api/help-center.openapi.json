@@ -817,6 +817,13 @@
                         }
                     },
                     {
+                        "name": "with_ingestion",
+                        "required": false,
+                        "in": "query",
+                        "description": "When set to true, includes ingestedResource and articleIngestionLog data if the article has an associated ingested resource.",
+                        "schema": { "type": "boolean" }
+                    },
+                    {
                         "name": "locale",
                         "required": true,
                         "in": "query",
@@ -1133,6 +1140,114 @@
                     }
                 ],
                 "responses": { "200": { "description": "" } },
+                "tags": ["article-translations"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/versions": {
+            "get": {
+                "operationId": "listArticleTranslationVersions",
+                "summary": "List all versions for an article translation",
+                "description": "Returns all versions for an article translation, optionally filtered to only published versions.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "article_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "published",
+                        "required": false,
+                        "in": "query",
+                        "description": "Filter to only published versions (published_at IS NOT NULL)",
+                        "schema": { "type": "boolean" }
+                    },
+                    {
+                        "name": "per_page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The number of resources to retrieve per request. E.g: 20",
+                        "schema": {}
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of versions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleTranslationVersionsListPageDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-translations"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/versions/{version_id}": {
+            "get": {
+                "operationId": "getArticleTranslationVersion",
+                "summary": "Get a specific version of an article translation",
+                "description": "Returns a specific version by ID for an article translation.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "article_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "version_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Version details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleTranslationVersionResponseDto"
+                                }
+                            }
+                        }
+                    },
+                    "404": { "description": "Version not found" }
+                },
                 "tags": ["article-translations"]
             }
         },
@@ -5178,7 +5293,12 @@
                         "enum": ["DISABLED", "FAILED", "PENDING", "SUCCESSFUL"]
                     },
                     "meta": {
-                        "$ref": "#/components/schemas/MLSnippetsIngestionMeta"
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/MLSnippetsIngestionMeta"
+                            }
+                        ]
                     }
                 },
                 "required": [
@@ -5190,8 +5310,7 @@
                     "url",
                     "domain",
                     "source",
-                    "status",
-                    "meta"
+                    "status"
                 ]
             },
             "KnowledgeStatusDto": {
@@ -5542,6 +5661,38 @@
                 },
                 "required": ["article_ids"]
             },
+            "IngestedResourceDto": {
+                "type": "object",
+                "properties": {
+                    "article_ingestion_log_id": { "type": "number" },
+                    "scraping_id": { "type": "string" },
+                    "snippet_id": { "type": "string" },
+                    "execution_id": { "type": "string" },
+                    "status": {
+                        "enum": ["disabled", "enabled"],
+                        "type": "string"
+                    },
+                    "web_pages": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    },
+                    "article_ingestion_log": {
+                        "$ref": "#/components/schemas/ArticleIngestionLogDto"
+                    },
+                    "id": { "type": "number" },
+                    "title": { "type": "string" }
+                },
+                "required": [
+                    "article_ingestion_log_id",
+                    "scraping_id",
+                    "snippet_id",
+                    "execution_id",
+                    "status",
+                    "web_pages",
+                    "id",
+                    "title"
+                ]
+            },
             "LocalArticleTranslation": {
                 "type": "object",
                 "properties": {
@@ -5694,6 +5845,9 @@
                     "ingested_resource_id": {
                         "type": "number",
                         "nullable": true
+                    },
+                    "ingested_resource": {
+                        "$ref": "#/components/schemas/IngestedResourceDto"
                     },
                     "id": { "type": "number" },
                     "translation": {
@@ -6199,6 +6353,65 @@
                         "default": null
                     }
                 }
+            },
+            "ArticleTranslationVersionResponseDto": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "number" },
+                    "version": { "type": "number" },
+                    "title": { "type": "string" },
+                    "excerpt": { "type": "string" },
+                    "content": { "type": "string" },
+                    "slug": { "type": "string" },
+                    "seo_meta": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ArticleTranslationSeoMeta"
+                            }
+                        ]
+                    },
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "published_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "commit_message": { "type": "string" },
+                    "publisher_user_id": { "type": "number" }
+                },
+                "required": [
+                    "id",
+                    "version",
+                    "title",
+                    "excerpt",
+                    "content",
+                    "slug",
+                    "seo_meta",
+                    "created_datetime",
+                    "published_datetime"
+                ]
+            },
+            "ArticleTranslationVersionsListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": { "$ref": "#/components/schemas/PageMetaDto" },
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArticleTranslationVersionResponseDto"
+                        }
+                    }
+                },
+                "required": ["meta", "object", "data"]
             },
             "BatchUpdateArticleTranslationsVisibilityRequestDto": {
                 "type": "object",
@@ -9535,6 +9748,9 @@
                         "type": "array",
                         "items": { "type": "string" }
                     },
+                    "article_ingestion_log": {
+                        "$ref": "#/components/schemas/ArticleIngestionLogDto"
+                    },
                     "article_id": { "type": "number" },
                     "id": { "type": "number" },
                     "title": { "type": "string" }
@@ -9578,35 +9794,6 @@
                     }
                 },
                 "required": ["status"]
-            },
-            "IngestedResourceDto": {
-                "type": "object",
-                "properties": {
-                    "article_ingestion_log_id": { "type": "number" },
-                    "scraping_id": { "type": "string" },
-                    "snippet_id": { "type": "string" },
-                    "execution_id": { "type": "string" },
-                    "status": {
-                        "enum": ["disabled", "enabled"],
-                        "type": "string"
-                    },
-                    "web_pages": {
-                        "type": "array",
-                        "items": { "type": "string" }
-                    },
-                    "id": { "type": "number" },
-                    "title": { "type": "string" }
-                },
-                "required": [
-                    "article_ingestion_log_id",
-                    "scraping_id",
-                    "snippet_id",
-                    "execution_id",
-                    "status",
-                    "web_pages",
-                    "id",
-                    "title"
-                ]
             },
             "IngestionLogDto": {
                 "type": "object",

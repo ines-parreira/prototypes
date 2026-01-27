@@ -4,7 +4,6 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import type { useGetArticleIngestionLogs } from 'models/helpCenter/queries'
 import { useGetIngestionLogs } from 'models/helpCenter/queries'
 import { POLLING_INTERVAL } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { reportError } from 'utils/errors'
@@ -36,7 +35,7 @@ describe('useGetStoreDomainIngestionLog', () => {
             data: [],
             error: null,
             isLoading: false,
-        } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+        } as unknown as ReturnType<typeof useGetIngestionLogs>)
 
         const { result } = renderHook(
             () =>
@@ -68,7 +67,7 @@ describe('useGetStoreDomainIngestionLog', () => {
             data: mockedLogs,
             error: null,
             isLoading: false,
-        } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+        } as unknown as ReturnType<typeof useGetIngestionLogs>)
 
         const { result } = renderHook(
             () =>
@@ -87,7 +86,7 @@ describe('useGetStoreDomainIngestionLog', () => {
         const mockedError = new Error('Test error')
         mockUseGetIngestionLogs.mockReturnValue({
             error: mockedError,
-        } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+        } as unknown as ReturnType<typeof useGetIngestionLogs>)
 
         renderHook(
             () =>
@@ -125,7 +124,7 @@ describe('useGetStoreDomainIngestionLog', () => {
                     data: mockedLogs,
                     error: null,
                     isLoading: false,
-                } as unknown as ReturnType<typeof useGetArticleIngestionLogs>
+                } as unknown as ReturnType<typeof useGetIngestionLogs>
             },
         )
 
@@ -166,7 +165,7 @@ describe('useGetStoreDomainIngestionLog', () => {
                     data: mockedLogs,
                     error: null,
                     isLoading: false,
-                } as unknown as ReturnType<typeof useGetArticleIngestionLogs>
+                } as unknown as ReturnType<typeof useGetIngestionLogs>
             },
         )
 
@@ -198,7 +197,7 @@ describe('useGetStoreDomainIngestionLog', () => {
                 data: mockedLogs,
                 error: null,
                 isLoading: false,
-            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+            } as unknown as ReturnType<typeof useGetIngestionLogs>)
 
             const { result } = renderHook(
                 () =>
@@ -225,7 +224,7 @@ describe('useGetStoreDomainIngestionLog', () => {
                 data: mockedLogs,
                 error: null,
                 isLoading: false,
-            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+            } as unknown as ReturnType<typeof useGetIngestionLogs>)
 
             const { result } = renderHook(
                 () =>
@@ -252,7 +251,7 @@ describe('useGetStoreDomainIngestionLog', () => {
                 data: mockedLogs,
                 error: null,
                 isLoading: false,
-            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+            } as unknown as ReturnType<typeof useGetIngestionLogs>)
 
             const { result } = renderHook(
                 () =>
@@ -279,7 +278,7 @@ describe('useGetStoreDomainIngestionLog', () => {
                 data: mockedLogs,
                 error: null,
                 isLoading: false,
-            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+            } as unknown as ReturnType<typeof useGetIngestionLogs>)
 
             const { result } = renderHook(
                 () =>
@@ -306,7 +305,7 @@ describe('useGetStoreDomainIngestionLog', () => {
                 data: mockedLogs,
                 error: null,
                 isLoading: false,
-            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+            } as unknown as ReturnType<typeof useGetIngestionLogs>)
 
             const { result } = renderHook(
                 () =>
@@ -333,7 +332,7 @@ describe('useGetStoreDomainIngestionLog', () => {
                 data: mockedLogs,
                 error: null,
                 isLoading: false,
-            } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
+            } as unknown as ReturnType<typeof useGetIngestionLogs>)
 
             const { result } = renderHook(
                 () =>

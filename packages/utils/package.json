@@ -55,8 +55,8 @@
         "react-dom": "catalog:react",
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
+        "sanitize-html": "catalog:sanitize-html",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test",
-        "sanitize-html": "catalog:sanitize-html"
+        "vitest": "catalog:test"
     }
 }
