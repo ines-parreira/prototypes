@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import type { Call } from '@twilio/voice-sdk'
@@ -107,12 +106,6 @@ jest.mock(
 
 const mockUsePutCallParticipantOnHold = usePutCallParticipantOnHold as jest.Mock
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-}))
-const useFlagMock = assumeMock(useFlag)
-
 jest.mock('pages/common/hooks/useCustomSound')
 const useCustomSoundMock = assumeMock(useCustomSound)
 
@@ -166,13 +159,6 @@ describe('<OngoingPhoneCall/>', () => {
 
         mockUsePutCallParticipantOnHold.mockReturnValue({
             mutate: jest.fn(),
-        })
-
-        useFlagMock.mockImplementation((flagKey: FeatureFlagKey) => {
-            if (flagKey === FeatureFlagKey.CallWhispering) {
-                return true
-            }
-            return false
         })
 
         useCustomSoundMock.mockReturnValue({ playSound: playSoundMock })
@@ -248,25 +234,6 @@ describe('<OngoingPhoneCall/>', () => {
         const soundWaveBars = container.querySelectorAll('.soundWaveBar')
         const centralBar = soundWaveBars[2] as HTMLDivElement
         expect(centralBar.style.height).toBe('0px')
-    })
-
-    it('should not render dynamic sound wave around microphone button when whispering FF is off', () => {
-        useFlagMock.mockImplementation((flagKey: FeatureFlagKey) => {
-            if (flagKey === FeatureFlagKey.CallWhispering) {
-                return false
-            }
-            return false
-        })
-
-        const call = mockIncomingCall(integrationId) as Call
-
-        const { container } = renderComponent(store, call)
-
-        const micButton = screen.getByLabelText('Mute phone call')
-        expect(micButton).toBeInTheDocument()
-
-        const soundWaveIcon = container.querySelector('.soundWaveIcon')
-        expect(soundWaveIcon).not.toBeInTheDocument()
     })
 
     it('should end call', () => {

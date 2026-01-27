@@ -84,7 +84,6 @@ export enum FeatureFlagKey {
     BillingSummaryTotalWithCoupons = 'billing-summary-total-with-coupons',
     BotUserEdition = 'bot-user-edition',
     CallBarRestyling = 'call-bar-restyling',
-    CallWhispering = 'call-whispering',
     CatchPNErrors = 'linear.task_SUPXP-3152.catch-pn-errors',
     ChangeAutomateSettingButtomPosition = 'change-automate-settings-button-position',
     ChatArticleRecommendationsEnabled = 'chat-article-recommendations-enabled',

@@ -28,7 +28,6 @@ type Props = {
 }
 
 export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
-    const isCallWhisperingEnabled = useFlag(FeatureFlagKey.CallWhispering)
     const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)
 
     const {
@@ -110,44 +109,38 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
                     >
                         Stop Listening
                     </Button>
-                    {isCallWhisperingEnabled && (
-                        <Tooltip>
-                            <DynamicSoundWaveIcon
-                                audioLevel={isWhispering ? audioLevel : 0}
-                                hide={!isWhispering}
+                    <Tooltip>
+                        <DynamicSoundWaveIcon
+                            audioLevel={isWhispering ? audioLevel : 0}
+                            hide={!isWhispering}
+                        >
+                            <Button
+                                variant="secondary"
+                                icon={isWhispering ? 'user-mute' : 'user-voice'}
+                                onClick={() => {
+                                    handleCallWhispering({
+                                        data: {
+                                            monitoring_call_sid:
+                                                monitoringCallSid,
+                                            whisper: !isWhispering,
+                                        },
+                                    })
+                                }}
+                                isLoading={isLoading}
                             >
-                                <Button
-                                    variant="secondary"
-                                    icon={
-                                        isWhispering
-                                            ? 'user-mute'
-                                            : 'user-voice'
-                                    }
-                                    onClick={() => {
-                                        handleCallWhispering({
-                                            data: {
-                                                monitoring_call_sid:
-                                                    monitoringCallSid,
-                                                whisper: !isWhispering,
-                                            },
-                                        })
-                                    }}
-                                    isLoading={isLoading}
-                                >
-                                    {isWhispering
-                                        ? 'Stop whispering'
-                                        : 'Whisper to agent'}
-                                </Button>
-                            </DynamicSoundWaveIcon>
-                            <TooltipContent
-                                title={
-                                    isWhispering
-                                        ? 'Stop whispering'
-                                        : 'Whisper to agent'
-                                }
-                            />
-                        </Tooltip>
-                    )}
+                                {isWhispering
+                                    ? 'Stop whispering'
+                                    : 'Whisper to agent'}
+                            </Button>
+                        </DynamicSoundWaveIcon>
+                        <TooltipContent
+                            title={
+                                isWhispering
+                                    ? 'Stop whispering'
+                                    : 'Whisper to agent'
+                            }
+                        />
+                    </Tooltip>
                 </Box>
             </PhoneBarInnerContent>
             <PhoneInfobarWrapper>

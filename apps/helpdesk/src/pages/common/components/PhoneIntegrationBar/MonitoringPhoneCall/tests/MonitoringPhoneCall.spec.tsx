@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import user, { userEvent } from '@testing-library/user-event'
@@ -47,8 +46,6 @@ jest.mock(
     }),
 )
 
-jest.mock('@repo/feature-flags')
-const useFlagMock = assumeMock(useFlag)
 const useNotifyMock = assumeMock(useNotify)
 
 const server = setupServer()
@@ -92,10 +89,6 @@ describe('MonitoringPhoneCall', () => {
         useNotifyMock.mockReturnValue({
             error: mockNotifyError,
         } as any)
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.CallWhispering) return true
-            return false
-        })
         server.use(...localHandlers)
     })
 
@@ -411,32 +404,6 @@ describe('MonitoringPhoneCall', () => {
                 name: 'user-mute',
             })
             expect(stillStopWhisperingButton).toBeInTheDocument()
-        })
-
-        it('should hide whispering button when FF is off', async () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.CallWhispering) return false
-                return false
-            })
-
-            const call = mockMonitoringCall(
-                integrationId,
-                inCallAgentId,
-                customerId,
-                customerPhoneNumber,
-                'CA1234567890',
-            ) as Call
-
-            renderComponent(call)
-
-            const startWhisperingButton = await screen.queryByRole('img', {
-                name: 'user-voice',
-            })
-            expect(startWhisperingButton).not.toBeInTheDocument()
-            const stopWhisperingButton = await screen.queryByRole('img', {
-                name: 'user-mute',
-            })
-            expect(stopWhisperingButton).not.toBeInTheDocument()
         })
     })
 })

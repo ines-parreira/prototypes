@@ -78,7 +78,6 @@ export function OngoingPhoneCall({
     routingViaIntegration,
     notify,
 }: Props): JSX.Element {
-    const isCallWhisperingEnabled = useFlag(FeatureFlagKey.CallWhispering)
     const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)
 
     const [isTransferDropdownOpen, setIsTransferDropdownOpen] = useState(false)
@@ -220,17 +219,6 @@ export function OngoingPhoneCall({
 
     const audioLevel = useAudioLevel(call)
 
-    const microphoneButton = (
-        <IconButtonTooltip
-            aria-label={`${isMuted ? 'Unmute' : 'Mute'} phone call`}
-            onClick={onToggleMute}
-            icon={isMuted ? 'mic-mute' : 'mic'}
-            legacyIcon={isMuted ? 'mic_off' : 'mic'}
-        >
-            {isMuted ? 'Unmute' : 'Mute'}
-        </IconButtonTooltip>
-    )
-
     return (
         <PhoneBarContainer>
             <PhoneBarInnerContent>
@@ -282,16 +270,19 @@ export function OngoingPhoneCall({
                                 | undefined
                         }
                     />
-                    {isCallWhisperingEnabled ? (
-                        <DynamicSoundWaveIcon
-                            audioLevel={!isMuted ? audioLevel : 0}
-                            hide={isMuted}
+                    <DynamicSoundWaveIcon
+                        audioLevel={!isMuted ? audioLevel : 0}
+                        hide={isMuted}
+                    >
+                        <IconButtonTooltip
+                            aria-label={`${isMuted ? 'Unmute' : 'Mute'} phone call`}
+                            onClick={onToggleMute}
+                            icon={isMuted ? 'mic-mute' : 'mic'}
+                            legacyIcon={isMuted ? 'mic_off' : 'mic'}
                         >
-                            {microphoneButton}
-                        </DynamicSoundWaveIcon>
-                    ) : (
-                        microphoneButton
-                    )}
+                            {isMuted ? 'Unmute' : 'Mute'}
+                        </IconButtonTooltip>
+                    </DynamicSoundWaveIcon>
                     <IconButtonTooltip
                         aria-label={`${
                             isOnHold ? 'Take off hold on' : 'Hold'
