@@ -143,6 +143,21 @@ export type StoreConfiguration = {
     handoverEmail: string | null
     handoverEmailIntegrationId: number | null
     handoverHttpIntegrationId: number | null
+
+    toneOfVoiceByChannel?: {
+        email?: { customToneOfVoice: string }
+        chat?: { customToneOfVoice: string }
+        sms?: { customToneOfVoice: string }
+    }
+    toneOfVoiceOptions?: {
+        greetingGuidance: string
+        signOffGuidance: string
+        brandSpecificTerminology: string
+        forbiddenPhrases: string
+        emojisEnabled: boolean
+        allowedEmojis: string
+        forbiddenEmojis: string
+    }
 }
 
 export type CreateStoreConfigurationPayload = Pick<
