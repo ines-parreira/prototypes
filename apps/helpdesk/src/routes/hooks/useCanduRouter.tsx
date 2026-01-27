@@ -85,6 +85,15 @@ function router(url: URL) {
     }
 }
 
+function growthParsePlanUUID(searchParams: URLSearchParams): string {
+    const planUUID = searchParams.get('planUUID')
+    if (planUUID === null) {
+        throw new Error('plan not defined')
+    }
+
+    return planUUID
+}
+
 function growthRouter(pathname: string, searchParams: URLSearchParams) {
     switch (pathname) {
         case '/obi/activate':
@@ -94,17 +103,26 @@ function growthRouter(pathname: string, searchParams: URLSearchParams) {
             window.ObiSDK?.('update', { isActive: false })
             break
         case '/obi/startSession':
-            const planUUID = searchParams.get('planUUID')
-            if (planUUID === null) {
-                throw new Error('plan not defined')
-            }
+            {
+                const planUUID = growthParsePlanUUID(searchParams)
 
-            window.ObiSDK?.('startSession', {
-                planUuid: planUUID,
-            })
+                window.ObiSDK?.('startSession', {
+                    planUuid: planUUID,
+                })
+            }
             break
         case '/obi/stopSession':
             window.ObiSDK?.('stopSession')
+            break
+        case '/obi/activateAndStartSession':
+            {
+                const planUUID = growthParsePlanUUID(searchParams)
+
+                window.ObiSDK?.('update', { isActive: true })
+                window.ObiSDK?.('startSession', {
+                    planUuid: planUUID,
+                })
+            }
             break
         default:
             throw new Error('unknown path')

@@ -101,7 +101,9 @@ describe('useCanduRouter', () => {
     })
 
     it('should report failure for unknown hostnames', () => {
-        router.route('unknown')
+        expect(() => {
+            router.route('unknown')
+        }).not.toThrow()
 
         // N.B. unknown path means we routed the hostname succesfully
         expect(mockReportError).toHaveBeenCalledWith(
@@ -112,7 +114,9 @@ describe('useCanduRouter', () => {
 
     describe('growth', () => {
         it('should route to growth', () => {
-            router.route('growth')
+            expect(() => {
+                router.route('growth')
+            }).not.toThrow()
 
             // N.B. unknown path means we routed the hostname succesfully
             expect(mockReportError).toHaveBeenCalledWith(
@@ -128,75 +132,135 @@ describe('useCanduRouter', () => {
                     window.ObiSDK = initialised ? jest.fn() : undefined
                 })
 
-                it('should activate', () => {
-                    expect(() => {
-                        router.route('growth/obi/activate')
-                    }).not.toThrow()
+                describe('activate', () => {
+                    it('should activate', () => {
+                        expect(() => {
+                            router.route('growth/obi/activate')
+                        }).not.toThrow()
 
-                    expect(mockReportError).not.toHaveBeenCalled()
-                    if (initialised) {
-                        expect(window.ObiSDK).toHaveBeenCalledWith('update', {
-                            isActive: true,
-                        })
-                    }
+                        expect(mockReportError).not.toHaveBeenCalled()
+                        if (initialised) {
+                            expect(window.ObiSDK).toHaveBeenCalledWith(
+                                'update',
+                                {
+                                    isActive: true,
+                                },
+                            )
+                        }
+                    })
                 })
 
-                it('should deactivate', () => {
-                    expect(() => {
-                        router.route('growth/obi/deactivate')
-                    }).not.toThrow()
+                describe('deactivate', () => {
+                    it('should deactivate', () => {
+                        expect(() => {
+                            router.route('growth/obi/deactivate')
+                        }).not.toThrow()
 
-                    expect(mockReportError).not.toHaveBeenCalled()
-                    if (initialised) {
-                        expect(window.ObiSDK).toHaveBeenCalledWith('update', {
-                            isActive: false,
-                        })
-                    }
+                        expect(mockReportError).not.toHaveBeenCalled()
+                        if (initialised) {
+                            expect(window.ObiSDK).toHaveBeenCalledWith(
+                                'update',
+                                {
+                                    isActive: false,
+                                },
+                            )
+                        }
+                    })
                 })
 
-                it('should not start a session if no plan UUID is provided', () => {
-                    router.route('growth/obi/startSession')
+                describe('startSession', () => {
+                    it('should not start a session if no plan UUID is provided', () => {
+                        expect(() => {
+                            router.route('growth/obi/startSession')
+                        }).not.toThrow()
 
-                    expect(mockReportError).toHaveBeenCalledWith(
-                        new Error('plan not defined'),
-                        expect.any(Object),
-                    )
-                    if (initialised) {
-                        expect(window.ObiSDK).not.toHaveBeenCalled()
-                    }
-                })
-
-                it('should start a session', () => {
-                    const planUUID = '00000000-0000-0000-0000-000000000000'
-
-                    expect(() => {
-                        router.route(
-                            `growth/obi/startSession?planUUID=${planUUID}`,
+                        expect(mockReportError).toHaveBeenCalledWith(
+                            new Error('plan not defined'),
+                            expect.any(Object),
                         )
-                    }).not.toThrow()
+                        if (initialised) {
+                            expect(window.ObiSDK).not.toHaveBeenCalled()
+                        }
+                    })
 
-                    expect(mockReportError).not.toHaveBeenCalled()
-                    if (initialised) {
-                        expect(window.ObiSDK).toHaveBeenCalledWith(
-                            'startSession',
-                            {
-                                planUuid: planUUID,
-                            },
-                        )
-                    }
+                    it('should start a session', () => {
+                        const planUUID = '00000000-0000-0000-0000-000000000000'
+
+                        expect(() => {
+                            router.route(
+                                `growth/obi/startSession?planUUID=${planUUID}`,
+                            )
+                        }).not.toThrow()
+
+                        expect(mockReportError).not.toHaveBeenCalled()
+                        if (initialised) {
+                            expect(window.ObiSDK).toHaveBeenCalledWith(
+                                'startSession',
+                                {
+                                    planUuid: planUUID,
+                                },
+                            )
+                        }
+                    })
                 })
 
-                it('should stop a session', () => {
-                    expect(() => {
-                        router.route('growth/obi/stopSession')
-                    }).not.toThrow()
+                describe('stopSession', () => {
+                    it('should stop a session', () => {
+                        expect(() => {
+                            router.route('growth/obi/stopSession')
+                        }).not.toThrow()
 
-                    expect(mockReportError).not.toHaveBeenCalled()
-                    if (initialised) {
-                        expect(window.ObiSDK).toHaveBeenCalledWith(
-                            'stopSession',
+                        expect(mockReportError).not.toHaveBeenCalled()
+                        if (initialised) {
+                            expect(window.ObiSDK).toHaveBeenCalledWith(
+                                'stopSession',
+                            )
+                        }
+                    })
+                })
+
+                describe('activateAndStartSession', () => {
+                    it('should not activate nor start a session if no plan UUID is provided', () => {
+                        expect(() => {
+                            router.route('growth/obi/activateAndStartSession')
+                        }).not.toThrow()
+
+                        expect(mockReportError).toHaveBeenCalledWith(
+                            new Error('plan not defined'),
+                            expect.any(Object),
                         )
-                    }
+                        if (initialised) {
+                            expect(window.ObiSDK).not.toHaveBeenCalled()
+                        }
+                    })
+
+                    it('should actviate and start a session', () => {
+                        const planUUID = '00000000-0000-0000-0000-000000000000'
+
+                        expect(() => {
+                            router.route(
+                                `growth/obi/activateAndStartSession?planUUID=${planUUID}`,
+                            )
+                        }).not.toThrow()
+
+                        expect(mockReportError).not.toHaveBeenCalled()
+                        if (initialised) {
+                            expect(window.ObiSDK).toHaveBeenNthCalledWith(
+                                1,
+                                'update',
+                                {
+                                    isActive: true,
+                                },
+                            )
+                            expect(window.ObiSDK).toHaveBeenNthCalledWith(
+                                2,
+                                'startSession',
+                                {
+                                    planUuid: planUUID,
+                                },
+                            )
+                        }
+                    })
                 })
             },
         )
