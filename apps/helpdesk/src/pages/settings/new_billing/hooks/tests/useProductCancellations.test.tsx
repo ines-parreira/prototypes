@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { useSubscription } from 'models/billing/queries'
 
-import useProductCancellations from './useProductCancellations'
+import useProductCancellations from '../useProductCancellations'
 
 jest.mock('models/billing/queries', () => ({
     ...jest.requireActual('models/billing/queries'),

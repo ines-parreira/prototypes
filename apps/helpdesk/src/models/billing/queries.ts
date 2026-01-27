@@ -14,6 +14,7 @@ import {
     getProductsUsage,
     reactivateAccount,
     reactivateTrial,
+    setIsAccountVetted,
     updateBillingContact,
     upgradeAiAgentSubscriptionGeneration6Plan,
 } from './resources'
@@ -165,6 +166,15 @@ export const useReactivateAccount = (
 ) => {
     return useMutation({
         mutationFn: reactivateAccount,
+        ...overrides,
+    })
+}
+
+export const useSetIsVetted = (
+    overrides?: MutationOverrides<typeof setIsAccountVetted>,
+) => {
+    return useMutation({
+        mutationFn: (params) => setIsAccountVetted(...params),
         ...overrides,
     })
 }
