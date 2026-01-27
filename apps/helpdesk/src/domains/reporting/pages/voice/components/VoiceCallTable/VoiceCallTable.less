@@ -128,11 +128,18 @@
 
 .axiom :local {
     .table {
-        .tableRow {
-            background: transparent;
+        .tableRow:not(.tableHead) {
+            background: var(--elevation-neutral-default);
 
             &:hover {
                 background: var(--hover-default);
+
+                td,
+                th {
+                    &:first-child {
+                        background: var(--elevation-neutral-bg);
+                    }
+                }
             }
         }
 
