@@ -49,7 +49,7 @@ export function AgentStatusFormContent({
     return (
         <>
             <OverlayContent>
-                <Box flexDirection="column" gap="md">
+                <Box flexDirection="column" gap="md" flex={1}>
                     {description && <Text>{description}</Text>}
 
                     <Box flexDirection="column" gap="sm">
