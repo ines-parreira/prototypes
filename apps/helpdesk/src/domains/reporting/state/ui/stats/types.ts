@@ -90,6 +90,11 @@ export enum SlaMetric {
     BreachedTicketsRate = 'sla-breached-tickets-rate',
 }
 
+export enum VoiceSlaMetric {
+    VoiceCallsAchievementRate = 'voice-calls-sla-achievement-rate',
+    VoiceCallsBreachedRate = 'voice-calls-sla-breached-rate',
+}
+
 export enum KnowledgeMetric {
     Tickets = 'knowledge_tickets',
     HandoverTickets = 'knowledge_handover',

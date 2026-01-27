@@ -284,8 +284,8 @@ export const METRIC_NAMES = {
         'sla-satisfied-or-breached-tickets-per-ticket-drill-down',
     SLA_SATISFIED_OR_BREACHED_TICKETS_TIME_SERIES:
         'sla-satisfied-or-breached-tickets-time-series',
-    SLA_SATISFIED_OR_BREACHED_VOICE_CALLS:
-        'sla-satisfied-or-breached-voice-calls',
+    SLA_ACHIEVEMENT_RATE_VOICE_CALLS: 'sla-achievement-rate-voice-calls',
+    SLA_BREACHED_VOICE_CALLS: 'sla-breached-voice-calls',
     SLA_SATISFIED_OR_BREACHED_VOICE_CALLS_DRILL_DOWN:
         'sla-satisfied-or-breached-voice-calls-drill-down',
     SLA_SATISFIED_OR_BREACHED_VOICE_CALLS_TIME_SERIES:
@@ -628,7 +628,6 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.KNOWLEDGE_INTENTS,
     ],
     [MetricScope.VoiceServiceLevelAgreement]: [
-        METRIC_NAMES.SLA_SATISFIED_OR_BREACHED_VOICE_CALLS,
         METRIC_NAMES.SLA_SATISFIED_OR_BREACHED_VOICE_CALLS_TIME_SERIES,
     ],
 

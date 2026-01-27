@@ -82,8 +82,8 @@ describe('<VoiceServiceLevelAgreements />', () => {
         )
 
         expect(
-            await screen.findByText('Voice Dashboard Chart'),
-        ).toBeInTheDocument()
+            await screen.findAllByText('Voice Dashboard Chart'),
+        ).toHaveLength(3)
     })
 
     it('should render analytics footer', async () => {

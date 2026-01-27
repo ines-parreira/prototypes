@@ -2,15 +2,18 @@ import { Skeleton } from '@gorgias/axiom'
 
 import { useSatisfiedOrBreachedVoiceCallsTimeSeries } from 'domains/reporting/hooks/sla/useSatisfiedOrBreachedVoiceCallsTimeSeries'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { VoiceSLAStatus } from 'domains/reporting/models/scopes/voiceSLA'
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import { BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import { formatLabeledTimeSeriesData } from 'domains/reporting/pages/common/utils'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import { CHART_COLORS } from 'domains/reporting/pages/sla/constants'
+import {
+    CHART_COLORS,
+    VoiceSLAStatus,
+} from 'domains/reporting/pages/sla/constants'
 
-export const CHART_TITLE = 'Achieved and breached calls'
-export const HINT =
+export const ACHIEVED_AND_BREACHED_CALLS_CHART_TITLE =
+    'Achieved and breached calls'
+export const ACHIEVED_AND_BREACHED_CALLS_CHART_HINT =
     'Number of calls that satisfied and breached the SLA policy over time'
 
 export const CHART_FIELDS = [
@@ -40,8 +43,8 @@ export const AchievedAndBreachedVoiceCallsChart = ({
         <Skeleton />
     ) : (
         <ChartCard
-            title={CHART_TITLE}
-            hint={{ title: HINT }}
+            title={ACHIEVED_AND_BREACHED_CALLS_CHART_TITLE}
+            hint={{ title: ACHIEVED_AND_BREACHED_CALLS_CHART_HINT }}
             chartId={chartId}
             dashboard={dashboard}
         >

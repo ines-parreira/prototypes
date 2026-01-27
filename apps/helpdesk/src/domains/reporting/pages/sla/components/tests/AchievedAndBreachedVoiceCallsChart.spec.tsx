@@ -12,10 +12,10 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'
 import { formatLabeledTimeSeriesData } from 'domains/reporting/pages/common/utils'
 import {
+    ACHIEVED_AND_BREACHED_CALLS_CHART_HINT,
+    ACHIEVED_AND_BREACHED_CALLS_CHART_TITLE,
     AchievedAndBreachedVoiceCallsChart,
     CHART_FIELDS,
-    CHART_TITLE,
-    HINT,
 } from 'domains/reporting/pages/sla/components/AchievedAndBreachedVoiceCallsChart'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 
@@ -123,9 +123,13 @@ describe('<AchievedAndBreachedVoiceCallsChart />', () => {
 
         await act(() => user.hover(screen.getByText('info')))
 
-        expect(screen.getByText(CHART_TITLE)).toBeInTheDocument()
+        expect(
+            screen.getByText(ACHIEVED_AND_BREACHED_CALLS_CHART_TITLE),
+        ).toBeInTheDocument()
         await waitFor(() => {
-            expect(screen.getByText(HINT)).toBeInTheDocument()
+            expect(
+                screen.getByText(ACHIEVED_AND_BREACHED_CALLS_CHART_HINT),
+            ).toBeInTheDocument()
         })
     })
 

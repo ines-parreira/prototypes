@@ -38,6 +38,7 @@ export const CLOSED_TICKETS_PER_HOUR = 'Closed Tickets per hour'
 
 export const ACHIEVEMENT_RATE_LABEL = 'Achievement rate'
 export const TICKETS_WITH_BREACHED_SLAS_LABEL = 'Tickets with breached SLAs'
+export const CALLS_WITH_BREACHED_SLAS_LABEL = 'Calls with breached SLAs'
 export const BREACHED_SLA_LABEL = 'Breached'
 export const ACHIEVED_SLA_LABEL = 'Achieved'
 export const PENDING_SLA_LABEL = 'Pending'

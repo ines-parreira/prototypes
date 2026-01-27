@@ -43,6 +43,22 @@ export function VoiceServiceLevelAgreements() {
                 </DashboardGridCell>
             </DashboardSection>
             <DashboardSection title={OVERVIEW_SECTION_LABEL} className="pb-0">
+                <DashboardGridCell size={getGridCellSize(6)}>
+                    <DashboardComponent
+                        chart={
+                            VoiceServiceLevelAgreementsChart.AchievementRateTrend
+                        }
+                        config={VoiceServiceLevelAgreementsReportConfig}
+                    />
+                </DashboardGridCell>
+                <DashboardGridCell size={getGridCellSize(6)}>
+                    <DashboardComponent
+                        chart={
+                            VoiceServiceLevelAgreementsChart.BreachedVoiceCallsRateTrend
+                        }
+                        config={VoiceServiceLevelAgreementsReportConfig}
+                    />
+                </DashboardGridCell>
                 <DashboardGridCell size={12}>
                     <DashboardComponent
                         chart={

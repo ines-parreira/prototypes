@@ -6,7 +6,7 @@ import {
     fetchStatsTimeSeries,
     fetchStatsTimeSeriesPerDimension,
     selectPerDimension,
-    selectTimeSeriesByMeasures,
+    selectStatsTimeSeriesByMeasures,
     useStatsTimeSeries,
     useStatsTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useStatsTimeSeries'
@@ -468,7 +468,7 @@ describe('selectTimeSeriesByMeasures', () => {
     }
 
     it('should select and organize data by measures', () => {
-        const result = selectTimeSeriesByMeasures(
+        const result = selectStatsTimeSeriesByMeasures(
             mockResponse,
             multiMeasureQuery,
         )
@@ -489,7 +489,10 @@ describe('selectTimeSeriesByMeasures', () => {
             },
         } as any
 
-        const result = selectTimeSeriesByMeasures(emptyResponse, newAPIQuery)
+        const result = selectStatsTimeSeriesByMeasures(
+            emptyResponse,
+            newAPIQuery,
+        )
 
         expect(result).toHaveLength(1)
         expect(result[0]).toHaveLength(5)
@@ -497,7 +500,7 @@ describe('selectTimeSeriesByMeasures', () => {
     })
 
     it('should match measures in correct order', () => {
-        const result = selectTimeSeriesByMeasures(
+        const result = selectStatsTimeSeriesByMeasures(
             mockResponse,
             multiMeasureQuery,
         )
@@ -518,7 +521,7 @@ describe('selectTimeSeriesByMeasures', () => {
             measures: ['medianFirstResponseTime', 'nonExistentMeasure'] as any,
         }
 
-        const result = selectTimeSeriesByMeasures(
+        const result = selectStatsTimeSeriesByMeasures(
             mockResponse,
             queryWithExtraMeasure,
         )

@@ -74,7 +74,7 @@ export const selectPerDimension =
         )
     }
 
-export const selectTimeSeriesByMeasures = <TMeta extends ScopeMeta>(
+export const selectStatsTimeSeriesByMeasures = <TMeta extends ScopeMeta>(
     result: DataResponse,
     statsQuery: BuiltQuery<TMeta>,
 ): TimeSeriesDataItem[][] => {
@@ -103,7 +103,8 @@ export function useStatsTimeSeries<TMeta extends ScopeMeta>(
         TimeSeriesDataItem[][],
         TMeta
     >(statsQuery, {
-        select: (res) => selectTimeSeriesByMeasures<TMeta>(res, statsQuery),
+        select: (res) =>
+            selectStatsTimeSeriesByMeasures<TMeta>(res, statsQuery),
     })
 
     return {
@@ -120,7 +121,7 @@ export async function fetchStatsTimeSeries<TMeta extends ScopeMeta = ScopeMeta>(
         TimeSeriesDataItem[][],
         TMeta
     >(statsQuery, {}).then((res) =>
-        selectTimeSeriesByMeasures<TMeta>(res, statsQuery),
+        selectStatsTimeSeriesByMeasures<TMeta>(res, statsQuery),
     )
 }
 
