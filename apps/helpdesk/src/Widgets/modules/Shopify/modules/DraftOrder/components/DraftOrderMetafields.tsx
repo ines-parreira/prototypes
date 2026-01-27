@@ -19,7 +19,11 @@ export default function WrappedDraftOrderMetafields({ metafields }: Props) {
     }
 
     return (
-        <MetafieldsContainer onOpened={onOpened} title="Draft Order Metafields">
+        <MetafieldsContainer
+            onOpened={onOpened}
+            title="Draft Order Metafields"
+            defaultOpen
+        >
             <DraftOrderMetafields metafields={metafields} />
         </MetafieldsContainer>
     )

@@ -14,14 +14,16 @@ type Props = {
     children: ReactNode
     title: string
     onOpened?: () => void
+    defaultOpen?: boolean
 }
 
 export default function MetafieldsContainer({
     children,
     title,
     onOpened,
+    defaultOpen = false,
 }: Props) {
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(defaultOpen)
     const headerRef = useRef<HTMLDivElement>(null)
     const enableShopifyMetafieldIngestion = useFlag(
         FeatureFlagKey.EnableShopifyMetafieldsIngestionUI,

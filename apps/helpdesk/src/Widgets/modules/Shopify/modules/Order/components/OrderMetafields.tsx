@@ -30,7 +30,11 @@ export default function WrappedOrderMetafields({
     }
 
     return (
-        <MetafieldsContainer onOpened={onOpened} title="Metafields">
+        <MetafieldsContainer
+            onOpened={onOpened}
+            title="Metafields"
+            defaultOpen={useSourceMetafields}
+        >
             <OrderMetafields
                 integrationId={integrationId}
                 orderId={orderId}

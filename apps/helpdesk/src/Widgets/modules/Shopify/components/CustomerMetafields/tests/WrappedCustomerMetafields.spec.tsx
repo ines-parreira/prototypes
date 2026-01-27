@@ -102,5 +102,36 @@ describe('<WrappedCustomerMetafields />', () => {
             )
             expect(logEvent).toHaveBeenCalledTimes(1)
         })
+
+        it('should render expanded by default when useSourceMetafields is true', () => {
+            renderWithQueryClientProvider(
+                <WrappedCustomerMetafields
+                    {...defaultProps}
+                    useSourceMetafields={true}
+                    metafields={[]}
+                />,
+            )
+
+            expect(screen.getByTitle('Fold this card')).toBeInTheDocument()
+        })
+
+        it('should render collapsed by default when useSourceMetafields is false', () => {
+            renderWithQueryClientProvider(
+                <WrappedCustomerMetafields
+                    {...defaultProps}
+                    useSourceMetafields={false}
+                />,
+            )
+
+            expect(screen.getByTitle('Unfold this card')).toBeInTheDocument()
+        })
+
+        it('should render collapsed by default when useSourceMetafields is undefined', () => {
+            renderWithQueryClientProvider(
+                <WrappedCustomerMetafields {...defaultProps} />,
+            )
+
+            expect(screen.getByTitle('Unfold this card')).toBeInTheDocument()
+        })
     })
 })

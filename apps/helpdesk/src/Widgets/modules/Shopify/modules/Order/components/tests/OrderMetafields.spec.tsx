@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import { useListShopifyOrderMetafields } from '@gorgias/helpdesk-queries'
 import type { ShopifyMetafield } from '@gorgias/helpdesk-types'
 
-import { OrderMetafields } from '../OrderMetafields'
+import WrappedOrderMetafields, { OrderMetafields } from '../OrderMetafields'
 
 jest.mock('@gorgias/helpdesk-queries')
 
@@ -148,5 +148,68 @@ describe('<OrderMetafields/>', () => {
         expect(
             screen.getByText('Order has no metafields populated.'),
         ).toBeInTheDocument()
+    })
+})
+
+describe('<WrappedOrderMetafields/>', () => {
+    beforeEach(() => {
+        mockUseListShopifyOrderMetafields.mockReturnValue({
+            data: null,
+            isLoading: false,
+            isError: false,
+        })
+    })
+
+    it('should render expanded by default when useSourceMetafields is true', () => {
+        const sourceMetafields = [
+            {
+                type: 'single_line_text_field',
+                namespace: 'test_namespace',
+                key: 'source_key',
+                value: 'source_value',
+            },
+        ] as ShopifyMetafield[]
+
+        render(
+            <Provider store={mockStore}>
+                <WrappedOrderMetafields
+                    integrationId={1}
+                    orderId={1}
+                    metafields={sourceMetafields}
+                    useSourceMetafields={true}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByTitle('Fold this card')).toBeInTheDocument()
+        expect(screen.getByText('Source Key:')).toBeInTheDocument()
+        expect(screen.getByText('source_value')).toBeInTheDocument()
+    })
+
+    it('should render collapsed by default when useSourceMetafields is false', () => {
+        render(
+            <Provider store={mockStore}>
+                <WrappedOrderMetafields
+                    integrationId={1}
+                    orderId={1}
+                    useSourceMetafields={false}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByTitle('Unfold this card')).toBeInTheDocument()
+        expect(
+            screen.queryByText('Order has no metafields populated.'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render collapsed by default when useSourceMetafields is undefined', () => {
+        render(
+            <Provider store={mockStore}>
+                <WrappedOrderMetafields integrationId={1} orderId={1} />
+            </Provider>,
+        )
+
+        expect(screen.getByTitle('Unfold this card')).toBeInTheDocument()
     })
 })

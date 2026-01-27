@@ -100,7 +100,7 @@ describe('WrappedDraftOrderMetafields', () => {
         jest.clearAllMocks()
     })
 
-    it('should render with MetafieldsContainer wrapper', () => {
+    it('should render expanded by default with MetafieldsContainer wrapper', () => {
         const metafields = [
             {
                 type: 'single_line_text_field' as const,
@@ -115,27 +115,28 @@ describe('WrappedDraftOrderMetafields', () => {
         )
 
         expect(screen.getByText('Draft Order Metafields')).toBeInTheDocument()
-        expect(screen.getByTitle('Unfold this card')).toBeInTheDocument()
-
-        const toggleButton = screen.getByTitle('Unfold this card')
-        fireEvent.click(toggleButton)
-
+        expect(screen.getByTitle('Fold this card')).toBeInTheDocument()
         expect(screen.getByText('Custom Field 1:')).toBeInTheDocument()
         expect(screen.getByText('value_1')).toBeInTheDocument()
     })
 
-    it('should log segment event when onOpened is called', () => {
+    it('should log segment event when reopened after being collapsed', () => {
         renderWithProviders(<WrappedDraftOrderMetafields metafields={[]} />)
 
-        const toggleButton = screen.getByTitle('Unfold this card')
-        fireEvent.click(toggleButton)
+        const foldButton = screen.getByTitle('Fold this card')
+        fireEvent.click(foldButton)
+
+        expect(mockLogEvent).not.toHaveBeenCalled()
+
+        const unfoldButton = screen.getByTitle('Unfold this card')
+        fireEvent.click(unfoldButton)
 
         expect(mockLogEvent).toHaveBeenCalledWith(
             SegmentEvent.ShopifyMetafieldsOpenDraftOrder,
         )
     })
 
-    it('should render children content when container is expanded', () => {
+    it('should collapse when toggle button is clicked', () => {
         const metafields = [
             {
                 type: 'single_line_text_field' as const,
@@ -149,12 +150,13 @@ describe('WrappedDraftOrderMetafields', () => {
             <WrappedDraftOrderMetafields metafields={metafields} />,
         )
 
-        expect(screen.queryByText('Custom Field 1:')).not.toBeInTheDocument()
-
-        const toggleButton = screen.getByTitle('Unfold this card')
-        fireEvent.click(toggleButton)
-
         expect(screen.getByText('Custom Field 1:')).toBeInTheDocument()
         expect(screen.getByText('value_1')).toBeInTheDocument()
+
+        const toggleButton = screen.getByTitle('Fold this card')
+        fireEvent.click(toggleButton)
+
+        expect(screen.queryByText('Custom Field 1:')).not.toBeInTheDocument()
+        expect(screen.queryByText('value_1')).not.toBeInTheDocument()
     })
 })

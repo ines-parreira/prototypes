@@ -2,6 +2,7 @@ import React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -31,20 +32,35 @@ describe('<CustomerMetafieldsSection />', () => {
         },
     }
 
+    let queryClient: QueryClient
+
     beforeEach(() => {
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: {
+                    retry: false,
+                },
+            },
+        })
         jest.clearAllMocks()
         mockUseFlag.mockReturnValue(true)
     })
 
+    afterEach(() => {
+        queryClient.clear()
+    })
+
     const renderComponent = (isEditing: boolean) => {
         return render(
-            <ShopifyContext.Provider value={mockShopifyContextValue}>
-                <IntegrationContext.Provider
-                    value={mockIntegrationContextValue}
-                >
-                    <CustomerMetafieldsSection isEditing={isEditing} />
-                </IntegrationContext.Provider>
-            </ShopifyContext.Provider>,
+            <QueryClientProvider client={queryClient}>
+                <ShopifyContext.Provider value={mockShopifyContextValue}>
+                    <IntegrationContext.Provider
+                        value={mockIntegrationContextValue}
+                    >
+                        <CustomerMetafieldsSection isEditing={isEditing} />
+                    </IntegrationContext.Provider>
+                </ShopifyContext.Provider>
+            </QueryClientProvider>,
         )
     }
 

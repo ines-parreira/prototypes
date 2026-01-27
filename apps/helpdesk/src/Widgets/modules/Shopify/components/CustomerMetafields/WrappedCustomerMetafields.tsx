@@ -25,7 +25,11 @@ export default function WrappedCustomerMetafields({
     }
 
     return (
-        <MetafieldsContainer onOpened={onOpened} title="Customer Metafields">
+        <MetafieldsContainer
+            onOpened={onOpened}
+            title="Customer Metafields"
+            defaultOpen={useSourceMetafields}
+        >
             <CustomerMetafields
                 integrationId={integrationId}
                 customerId={customerId}

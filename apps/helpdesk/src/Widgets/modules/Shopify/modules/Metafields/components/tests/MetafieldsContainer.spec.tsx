@@ -33,6 +33,41 @@ describe('<MetafieldsContainer />', () => {
         expect(wrapper.getByText('expect when expanded')).toBeInTheDocument()
     })
 
+    it('should render expanded by default when defaultOpen is true', () => {
+        render(
+            <MetafieldsContainer title="Metafields" defaultOpen>
+                <div>expanded content</div>
+            </MetafieldsContainer>,
+        )
+
+        expect(screen.getByText('expanded content')).toBeInTheDocument()
+        expect(screen.getByTitle('Fold this card')).toBeInTheDocument()
+    })
+
+    it('should render collapsed by default when defaultOpen is false', () => {
+        render(
+            <MetafieldsContainer title="Metafields" defaultOpen={false}>
+                <div>collapsed content</div>
+            </MetafieldsContainer>,
+        )
+
+        expect(screen.queryByText('collapsed content')).not.toBeInTheDocument()
+        expect(screen.getByTitle('Unfold this card')).toBeInTheDocument()
+    })
+
+    it('should render collapsed by default when defaultOpen is not provided', () => {
+        render(
+            <MetafieldsContainer title="Metafields">
+                <div>default collapsed content</div>
+            </MetafieldsContainer>,
+        )
+
+        expect(
+            screen.queryByText('default collapsed content'),
+        ).not.toBeInTheDocument()
+        expect(screen.getByTitle('Unfold this card')).toBeInTheDocument()
+    })
+
     it('should display tooltip with disclaimer text on hover when feature flag is enabled', async () => {
         useFlagMock.mockReturnValue(true)
 
