@@ -583,4 +583,62 @@ describe('PlaygroundPanel', () => {
             )
         })
     })
+
+    describe('onGuidanceClick', () => {
+        it('should pass onGuidanceClick handler to AiAgentPlayground', () => {
+            const mockOnGuidanceClick = jest.fn()
+            render(<PlaygroundPanel onGuidanceClick={mockOnGuidanceClick} />)
+
+            expect(MockAiAgentPlayground).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    onGuidanceClick: expect.any(Function),
+                }),
+                {},
+            )
+        })
+
+        it('should close playground and call onGuidanceClick when guidance is clicked', () => {
+            const mockOnGuidanceClick = jest.fn()
+            render(<PlaygroundPanel onGuidanceClick={mockOnGuidanceClick} />)
+
+            const onGuidanceClickHandler =
+                MockAiAgentPlayground.mock.calls[0][0].onGuidanceClick
+
+            onGuidanceClickHandler(123)
+
+            expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
+            expect(mockOnGuidanceClick).toHaveBeenCalledWith(123)
+        })
+
+        it('should close playground even when onGuidanceClick is not provided', () => {
+            render(<PlaygroundPanel />)
+
+            const onGuidanceClickHandler =
+                MockAiAgentPlayground.mock.calls[0][0].onGuidanceClick
+
+            onGuidanceClickHandler(123)
+
+            expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
+        })
+
+        it('should call onClose if provided when closing via guidance click', () => {
+            const mockOnClose = jest.fn()
+            const mockOnGuidanceClick = jest.fn()
+            render(
+                <PlaygroundPanel
+                    onClose={mockOnClose}
+                    onGuidanceClick={mockOnGuidanceClick}
+                />,
+            )
+
+            const onGuidanceClickHandler =
+                MockAiAgentPlayground.mock.calls[0][0].onGuidanceClick
+
+            onGuidanceClickHandler(123)
+
+            expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
+            expect(mockOnClose).toHaveBeenCalled()
+            expect(mockOnGuidanceClick).toHaveBeenCalledWith(123)
+        })
+    })
 })

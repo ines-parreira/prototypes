@@ -11,9 +11,13 @@ const REMOVE_CHILDREN_DELAY = 300
 
 type Props = {
     draftKnowledge?: DraftKnowledge
+    onGuidanceClick?: (guidanceArticleId: number) => void
 }
 
-export const usePlaygroundPanel = ({ draftKnowledge }: Props = {}) => {
+export const usePlaygroundPanel = ({
+    draftKnowledge,
+    onGuidanceClick,
+}: Props = {}) => {
     const { shopName } = useParams<{
         shopName?: string
     }>()
@@ -29,9 +33,10 @@ export const usePlaygroundPanel = ({ draftKnowledge }: Props = {}) => {
             <PlaygroundPanel
                 shopName={shopName}
                 draftKnowledge={draftKnowledge}
+                onGuidanceClick={onGuidanceClick}
             />
         ),
-        [shopName, draftKnowledge],
+        [shopName, draftKnowledge, onGuidanceClick],
     )
 
     const openPlayground = useCallback(async () => {

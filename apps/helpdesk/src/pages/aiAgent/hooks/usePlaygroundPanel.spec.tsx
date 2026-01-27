@@ -363,6 +363,79 @@ describe('usePlaygroundPanel', () => {
         })
     })
 
+    describe('onGuidanceClick parameter', () => {
+        it('should pass onGuidanceClick to PlaygroundPanel when provided', async () => {
+            const mockOnGuidanceClick = jest.fn()
+            const { result } = renderHook(() =>
+                usePlaygroundPanel({ onGuidanceClick: mockOnGuidanceClick }),
+            )
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            expect(mockSetCollapsibleColumnChildren).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    props: expect.objectContaining({
+                        onGuidanceClick: mockOnGuidanceClick,
+                    }),
+                }),
+            )
+        })
+
+        it('should not pass onGuidanceClick to PlaygroundPanel when not provided', async () => {
+            const { result } = renderHook(() => usePlaygroundPanel())
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            expect(mockSetCollapsibleColumnChildren).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    props: expect.objectContaining({
+                        onGuidanceClick: undefined,
+                    }),
+                }),
+            )
+        })
+
+        it('should create new playground panel when onGuidanceClick changes', async () => {
+            const onGuidanceClick1 = jest.fn()
+            const onGuidanceClick2 = jest.fn()
+
+            const { result, rerender } = renderHook(
+                ({ onGuidanceClick }) =>
+                    usePlaygroundPanel({ onGuidanceClick }),
+                { initialProps: { onGuidanceClick: onGuidanceClick1 } },
+            )
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            const firstCallIndex =
+                mockSetCollapsibleColumnChildren.mock.calls.length - 1
+            const firstPanel =
+                mockSetCollapsibleColumnChildren.mock.calls[firstCallIndex]?.[0]
+
+            rerender({ onGuidanceClick: onGuidanceClick2 })
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            const secondCallIndex =
+                mockSetCollapsibleColumnChildren.mock.calls.length - 1
+            const secondPanel =
+                mockSetCollapsibleColumnChildren.mock.calls[
+                    secondCallIndex
+                ]?.[0]
+
+            expect(firstPanel).not.toBe(secondPanel)
+            expect(secondPanel.props.onGuidanceClick).toBe(onGuidanceClick2)
+        })
+    })
+
     describe('edge cases', () => {
         it('should handle multiple rapid open calls', async () => {
             const { result } = renderHook(() => usePlaygroundPanel())

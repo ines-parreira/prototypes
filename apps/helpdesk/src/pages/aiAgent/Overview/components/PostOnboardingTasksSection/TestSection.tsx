@@ -1,24 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
-import {
-    Button,
-    Heading,
-    LegacyIconButton as IconButton,
-    Text,
-    LegacyTooltip as Tooltip,
-} from '@gorgias/axiom'
+import { Button, Text } from '@gorgias/axiom'
 
 import type { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { PostStoreInstallationStepStatus } from 'models/aiAgentPostStoreInstallationSteps/types'
-import {
-    MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT,
-    REFRESH_AI_AGENT_PLAYGROUND_EVENT,
-} from 'pages/aiAgent/constants'
-import { AiAgentPlayground } from 'pages/aiAgent/PlaygroundV2/AiAgentPlayground'
-import { Drawer } from 'pages/common/components/Drawer/Drawer'
+import { MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT } from 'pages/aiAgent/constants'
+import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
 
 import type { PostOnboardingStepMetadata } from './types'
 
@@ -37,13 +27,22 @@ export const TestSection = ({
     updateStep,
     onEditGuidanceArticle,
 }: Props) => {
-    const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false)
     const [isStepCompleted, setIsStepCompleted] = useState(false)
     const { shopName, shopType } = useParams<{
         shopName: string
         shopType: string
     }>()
-    const [resetPlayground, setResetPlayground] = useState(false)
+
+    const handleGuidanceClick = useCallback(
+        (guidanceArticleId: number) => {
+            onEditGuidanceArticle(guidanceArticleId)
+        },
+        [onEditGuidanceArticle],
+    )
+
+    const { isPlaygroundOpen, openPlayground } = usePlaygroundPanel({
+        onGuidanceClick: handleGuidanceClick,
+    })
 
     const handleOpenPlayground = () => {
         if (!step?.stepStartedDatetime) {
@@ -53,49 +52,7 @@ export const TestSection = ({
             })
         }
 
-        setIsPlaygroundOpen(true)
-    }
-
-    const handleClosePlayground = () => {
-        setIsPlaygroundOpen(false)
-        handleRefresh()
-
-        if (isStepCompleted) {
-            logEvent(SegmentEvent.PostOnboardingTaskActionDone, {
-                step: stepMetadata.stepName,
-                action: 'executed_test',
-                shop_name: shopName,
-                shop_type: shopType,
-            })
-        }
-
-        if (!step.stepCompletedDatetime && isStepCompleted) {
-            void updateStep({
-                ...step,
-                stepCompletedDatetime: new Date().toISOString(),
-            })
-
-            logEvent(SegmentEvent.PostOnboardingTaskCompleted, {
-                step: stepMetadata.stepName,
-                status: PostStoreInstallationStepStatus.COMPLETED,
-                shop_name: shopName,
-                shop_type: shopType,
-            })
-        }
-
-        setIsStepCompleted(false)
-    }
-
-    const handleRefresh = () => {
-        document.dispatchEvent(
-            new CustomEvent(REFRESH_AI_AGENT_PLAYGROUND_EVENT),
-        )
-        setResetPlayground(true)
-    }
-
-    const onGuidanceClick = (guidanceArticleId: number) => {
-        handleClosePlayground()
-        onEditGuidanceArticle(guidanceArticleId)
+        openPlayground()
     }
 
     useEffect(() => {
@@ -114,15 +71,55 @@ export const TestSection = ({
         }
     }, [])
 
+    useEffect(() => {
+        if (
+            !isPlaygroundOpen &&
+            step?.stepStartedDatetime &&
+            !step.stepCompletedDatetime &&
+            isStepCompleted
+        ) {
+            logEvent(SegmentEvent.PostOnboardingTaskActionDone, {
+                step: stepMetadata.stepName,
+                action: 'executed_test',
+                shop_name: shopName,
+                shop_type: shopType,
+            })
+
+            void updateStep({
+                ...step,
+                stepCompletedDatetime: new Date().toISOString(),
+            })
+
+            logEvent(SegmentEvent.PostOnboardingTaskCompleted, {
+                step: stepMetadata.stepName,
+                status: PostStoreInstallationStepStatus.COMPLETED,
+                shop_name: shopName,
+                shop_type: shopType,
+            })
+
+            setIsStepCompleted(false)
+        }
+    }, [
+        isPlaygroundOpen,
+        step,
+        isStepCompleted,
+        stepMetadata.stepName,
+        shopName,
+        shopType,
+        updateStep,
+    ])
+
     return (
         <div className={css.container}>
             <div className={css.leftContent}>
                 <Text size="md" variant="regular">
                     {stepMetadata.stepDescription}
                 </Text>
-                <Button variant="primary" onClick={handleOpenPlayground}>
-                    Test
-                </Button>
+                {!isPlaygroundOpen && (
+                    <Button variant="primary" onClick={handleOpenPlayground}>
+                        Test
+                    </Button>
+                )}
             </div>
 
             <div className={css.rightContent}>
@@ -132,57 +129,6 @@ export const TestSection = ({
                     className={css.image}
                 />
             </div>
-
-            <Drawer
-                open={isPlaygroundOpen}
-                fullscreen={false}
-                isLoading={false}
-                aria-label="AI Agent Test Mode"
-                portalRootId="app-root"
-                onBackdropClick={handleClosePlayground}
-                className={`${css.playgroundDrawer} hide-reset-button`}
-                data-testid="playground-drawer"
-                withFooter={false}
-                showBackdrop={false}
-            >
-                <Drawer.Header className={css.playgroundDrawerHeader}>
-                    <Heading size="sm">Test</Heading>
-                    <Drawer.HeaderActions
-                        onClose={handleClosePlayground}
-                        closeButtonId="close-playground-button"
-                        customCloseButtonIcon="close"
-                        className={css.playgroundDrawerHeaderActions}
-                        customTooltipText="Close test"
-                    >
-                        <IconButton
-                            id="refresh-playground-button"
-                            icon="refresh"
-                            onClick={handleRefresh}
-                            fillStyle="ghost"
-                            intent="secondary"
-                            aria-label="refresh playground"
-                        />
-
-                        <Tooltip
-                            placement="bottom-end"
-                            target="refresh-playground-button"
-                        >
-                            Reset test
-                        </Tooltip>
-                    </Drawer.HeaderActions>
-                </Drawer.Header>
-                <Drawer.Content>
-                    <AiAgentPlayground
-                        arePlaygroundActionsAllowed={false}
-                        resetPlayground={resetPlayground}
-                        resetPlaygroundCallback={() =>
-                            setResetPlayground(false)
-                        }
-                        withResetButton={false}
-                        onGuidanceClick={onGuidanceClick}
-                    />
-                </Drawer.Content>
-            </Drawer>
         </div>
     )
 }

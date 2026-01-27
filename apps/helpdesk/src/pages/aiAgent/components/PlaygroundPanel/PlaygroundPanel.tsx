@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
@@ -21,6 +21,7 @@ type Props = {
     shopName?: string
     onClose?: () => void
     draftKnowledge?: DraftKnowledge
+    onGuidanceClick?: (guidanceArticleId: number) => void
 }
 
 type ActionsSectionProps = {
@@ -57,6 +58,7 @@ export const PlaygroundPanel = ({
     shopName,
     onClose,
     draftKnowledge,
+    onGuidanceClick,
 }: Props) => {
     const { setIsCollapsibleColumnOpen } = useAppContext()
     const [resetPlayground, setResetPlayground] = useState(false)
@@ -78,12 +80,12 @@ export const PlaygroundPanel = ({
         setIsModalOpen(false)
     }
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setIsCollapsibleColumnOpen(false)
         if (onClose) {
             onClose()
         }
-    }
+    }, [setIsCollapsibleColumnOpen, onClose])
 
     const handleResetPlayground = () => {
         setResetPlayground(true)
@@ -96,6 +98,16 @@ export const PlaygroundPanel = ({
     const handleClickSettings = () => {
         setIsSettingsOpen((prev) => !prev)
     }
+
+    const handleGuidanceClick = useCallback(
+        (guidanceArticleId: number) => {
+            handleClose()
+            if (onGuidanceClick) {
+                onGuidanceClick(guidanceArticleId)
+            }
+        },
+        [onGuidanceClick, handleClose],
+    )
 
     const usePlaygroundSettings = useFlag(FeatureFlagKey.AiJourneyPlayground)
 
@@ -165,6 +177,7 @@ export const PlaygroundPanel = ({
                     onInplaceSettingsOpenChange={setIsSettingsOpen}
                     supportedModes={['inbound']}
                     draftKnowledge={draftKnowledge}
+                    onGuidanceClick={handleGuidanceClick}
                 />
             </div>
         </div>
