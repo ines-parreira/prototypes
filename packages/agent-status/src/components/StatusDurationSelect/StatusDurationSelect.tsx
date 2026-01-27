@@ -33,10 +33,6 @@ export function StatusDurationSelect({
                 selectedItem={value}
                 onSelect={onChange}
                 aria-labelledby="status-duration-label"
-                // TODO: There are only 3 avaialble placements, but the design mandates top placement
-                // this works, I'm leaving an ignore until resolved in PR
-                // @ts-ignore
-                placement={'top'}
                 trigger={({ ref, isOpen, selectedText }) => {
                     return (
                         <SelectTrigger>

@@ -52,7 +52,6 @@ export function StatusDurationUnitSelect({
                 items={DURATION_UNIT_OPTIONS}
                 selectedItem={selectedItem}
                 onSelect={handleSelect}
-                placement="bottom right"
                 aria-labelledby="custom-duration-unit-label"
                 trigger={({ ref, selectedText, isOpen }) => {
                     return (
