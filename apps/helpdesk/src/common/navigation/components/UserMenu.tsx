@@ -1,6 +1,9 @@
 import { useState } from 'react'
 
-import { UserInfoHeaderContainer } from '@repo/agent-status'
+import {
+    UserInfoHeaderContainer,
+    useUserAvailabilityStatus,
+} from '@repo/agent-status'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
@@ -21,11 +24,12 @@ import {
     logActivityEvent,
     unregisterAppActivityTrackerHooks,
 } from 'services/activityTracker'
-import { getCurrentUser } from 'state/currentUser/selectors'
+import { getCurrentUser, getCurrentUserId } from 'state/currentUser/selectors'
 
 import AvailabilityToggle from './AvailabilityToggle'
 import { AxiomMigrationToggle } from './AxiomMigrationToggle'
 import NavbarLink from './NavbarLink'
+import StatusMenu from './StatusMenu'
 import ThemeMenu from './ThemeMenu'
 
 import css from './UserMenu.less'
@@ -33,6 +37,7 @@ import css from './UserMenu.less'
 enum ActiveScreen {
     Learn = 'learn',
     Main = 'main',
+    Status = 'status',
     Theme = 'theme',
     Updates = 'updates',
 }
@@ -48,9 +53,18 @@ export default function UserMenu({ onClose }: Props) {
     )
     const theme = useTheme()
     const currentUser = useAppSelector(getCurrentUser)
+    const currentUserId = useAppSelector(getCurrentUserId)
     const [activeScreen, setActiveScreen] = useState<ActiveScreen>(
         ActiveScreen.Main,
     )
+
+    const isAgentUnavailabilityEnabled = useFlag(
+        FeatureFlagKey.CustomAgentUnavailableStatuses,
+    )
+
+    const { status } = useUserAvailabilityStatus({
+        userId: currentUserId,
+    })
 
     const selectedTheme = THEME_CONFIGS.find(({ name }) => name === theme.name)!
 
@@ -64,6 +78,43 @@ export default function UserMenu({ onClose }: Props) {
                     </>
                 )}
                 <AvailabilityToggle />
+                {isAgentUnavailabilityEnabled && (
+                    <>
+                        <hr className={css.separator} />
+                        <button
+                            onClick={() => {
+                                setActiveScreen(ActiveScreen.Status)
+                            }}
+                            className={cn(
+                                css['dropdown-item-user-menu'],
+                                css.wrapper,
+                            )}
+                            aria-label={`Change status. Current status: ${status?.name || 'None'}`}
+                            aria-haspopup="true"
+                            aria-expanded={activeScreen === ActiveScreen.Status}
+                        >
+                            <DropdownItemLabel
+                                className={css.submenu}
+                                suffix={
+                                    <i
+                                        className={cn(
+                                            'material-icons',
+                                            css['sub-menu-chevron'],
+                                        )}
+                                        aria-hidden="true"
+                                    >
+                                        chevron_right
+                                    </i>
+                                }
+                            >
+                                <span className={css.label}>Status:</span>
+                                <span className={css.value}>
+                                    {status?.name || 'None'}
+                                </span>
+                            </DropdownItemLabel>
+                        </button>
+                    </>
+                )}
                 {hasAxiomMigration && (
                     <>
                         <hr className={css.separator} />
@@ -412,6 +463,23 @@ export default function UserMenu({ onClose }: Props) {
                         </i>
                         Service status
                     </a>
+                </DropdownBody>
+            </Screen>
+
+            <Screen name={ActiveScreen.Status}>
+                <DropdownHeader
+                    onClick={() => {
+                        setActiveScreen(ActiveScreen.Main)
+                    }}
+                    className={css['dropdown-item']}
+                >
+                    <i className={cn('material-icons mr-2', css.icon)}>
+                        arrow_back
+                    </i>
+                    Back
+                </DropdownHeader>
+                <DropdownBody>
+                    <StatusMenu />
                 </DropdownBody>
             </Screen>
 

@@ -70,45 +70,82 @@ export const DURATION_LIMITS: Record<DurationUnit, DurationMinMaxLimit> = {
 } as const
 
 /**
- * Built-in system statuses, always shown first in table.
+ * Available status - agent is available to receive tickets
+ */
+export const AVAILABLE_STATUS: AgentStatusWithSystem = {
+    id: 'available',
+    name: 'Available',
+    description: 'Available to receive tickets',
+    duration_unit: null,
+    duration_value: null,
+    durationDisplay: 'Until changed',
+    is_system: true,
+    created_datetime: '1970-01-01T00:00:00.000Z',
+    updated_datetime: '1970-01-01T00:00:00.000Z',
+}
+
+/**
+ * Unavailable status - default unavailable status set manually by each agent
+ */
+export const UNAVAILABLE_STATUS: AgentStatusWithSystem = {
+    id: 'unavailable',
+    name: 'Unavailable',
+    description: 'Default unavailable status set manually by each agent',
+    duration_unit: null,
+    duration_value: null,
+    durationDisplay: 'Until changed',
+    is_system: true,
+    created_datetime: '1970-01-01T00:00:00.000Z',
+    updated_datetime: '1970-01-01T00:00:00.000Z',
+}
+
+/**
+ * On a call status - set automatically when agents are on an active call
+ */
+export const ON_A_CALL_STATUS: AgentStatusWithSystem = {
+    id: 'on-a-call',
+    name: 'On a call',
+    description: 'Set automatically when agents are on an active call',
+    duration_unit: null,
+    duration_value: null,
+    durationDisplay: 'Call duration',
+    is_system: true,
+    created_datetime: '1970-01-01T00:00:00.000Z',
+    updated_datetime: '1970-01-01T00:00:00.000Z',
+}
+
+/**
+ * Call wrap-up status - set automatically while agents complete post-call wrap-up
+ */
+export const CALL_WRAP_UP_STATUS: AgentStatusWithSystem = {
+    id: 'call-wrap-up',
+    name: 'Call wrap-up',
+    description: 'Set automatically while agents complete post-call wrap-up',
+    duration_unit: null,
+    duration_value: null,
+    durationDisplay: 'Wrap-up duration',
+    is_system: true,
+    created_datetime: '1970-01-01T00:00:00.000Z',
+    updated_datetime: '1970-01-01T00:00:00.000Z',
+}
+
+/**
+ * Built-in system statuses (unavailability statuses), always shown first in table.
  * Cannot be edited or deleted. Use fixed timestamps as sentinel values.
  */
 export const SYSTEM_STATUSES: readonly AgentStatusWithSystem[] = [
-    {
-        id: 'unavailable',
-        name: 'Unavailable',
-        description: 'Default unavailable status set manually by each agent',
-        duration_unit: null,
-        duration_value: null,
-        durationDisplay: 'Until changed',
-        is_system: true,
-        created_datetime: '1970-01-01T00:00:00.000Z',
-        updated_datetime: '1970-01-01T00:00:00.000Z',
-    },
-    {
-        id: 'on-a-call',
-        name: 'On a call',
-        description: 'Set automatically when agents are on an active call',
-        duration_unit: null,
-        duration_value: null,
-        durationDisplay: 'Call duration',
-        is_system: true,
-        created_datetime: '1970-01-01T00:00:00.000Z',
-        updated_datetime: '1970-01-01T00:00:00.000Z',
-    },
-    {
-        id: 'call-wrap-up',
-        name: 'Call wrap-up',
-        description:
-            'Set automatically while agents complete post-call wrap-up',
-        duration_unit: null,
-        duration_value: null,
-        durationDisplay: 'Wrap-up duration',
-        is_system: true,
-        created_datetime: '1970-01-01T00:00:00.000Z',
-        updated_datetime: '1970-01-01T00:00:00.000Z',
-    },
+    UNAVAILABLE_STATUS,
+    ON_A_CALL_STATUS,
+    CALL_WRAP_UP_STATUS,
 ]
+
+/**
+ * Manually selectable statuses for user menu.
+ * These can be set by users directly via the status dropdown.
+ * Includes both available and unavailable, plus custom statuses.
+ */
+export const PREDEFINED_SELECTABLE_STATUSES: readonly AgentStatusWithSystem[] =
+    [AVAILABLE_STATUS, UNAVAILABLE_STATUS]
 
 /**
  * Form validation constraints (character limits)

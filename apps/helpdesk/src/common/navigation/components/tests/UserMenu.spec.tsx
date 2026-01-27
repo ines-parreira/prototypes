@@ -65,14 +65,23 @@ jest.mock('../AxiomMigrationToggle', () => ({
     AxiomMigrationToggle: () => <div>AxiomMigrationToggle</div>,
 }))
 jest.mock('../MainNavigation', () => () => <div>MainNavigation</div>)
+jest.mock('../StatusMenu', () => () => <div>StatusMenu</div>)
 jest.mock('../ThemeMenu', () => () => <div>ThemeMenu</div>)
 
 jest.mock('@repo/agent-status', () => ({
     UserInfoHeaderContainer: () => <div>UserInfoHeaderContainer</div>,
+    useUserAvailabilityStatus: jest.fn(() => ({
+        status: undefined,
+        isLoading: false,
+    })),
 }))
+
+const { useUserAvailabilityStatus } = jest.requireMock('@repo/agent-status')
+const useUserAvailabilityStatusMock = useUserAvailabilityStatus as jest.Mock
 
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(),
+    getCurrentUserId: jest.fn(() => 123),
 }))
 
 const wrapper = ({ children }: { children?: ReactNode }) => (
@@ -111,6 +120,9 @@ describe('UserMenu', () => {
         expect(screen.getByText('AvailabilityToggle')).toBeInTheDocument()
         expect(
             screen.queryByText('AxiomMigrationToggle'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(ignoreHTML('Status:None')),
         ).not.toBeInTheDocument()
         expect(
             screen.getByText(ignoreHTML('Theme:Classic')),
@@ -346,5 +358,107 @@ describe('UserMenu', () => {
 
         expect(getByText('Back')).toBeInTheDocument()
         expect(getByText('ThemeMenu')).toBeInTheDocument()
+    })
+
+    it('should render the status dropdown and screen when feature flag is enabled', () => {
+        const useFlag = require('@repo/feature-flags').useFlag
+        useFlag.mockReturnValue(true)
+        useUserAvailabilityStatusMock.mockReturnValue({
+            status: {
+                id: 'available',
+                name: 'Available',
+            },
+            isLoading: false,
+        })
+
+        const { getByRole, getByText } = render(
+            <UserMenu onClose={onClose} />,
+            {
+                wrapper,
+            },
+        )
+        userEvent.click(
+            getByRole('button', {
+                name: /change status.*current status: available/i,
+            }),
+        )
+
+        expect(getByText('Back')).toBeInTheDocument()
+        expect(getByText('StatusMenu')).toBeInTheDocument()
+    })
+
+    it('should render status button with correct label when status is not available', () => {
+        const useFlag = require('@repo/feature-flags').useFlag
+        useFlag.mockReturnValue(true)
+
+        useUserAvailabilityStatusMock.mockReturnValue({
+            status: undefined,
+            isLoading: false,
+        })
+
+        const { getByText, getByRole } = render(
+            <UserMenu onClose={onClose} />,
+            {
+                wrapper,
+            },
+        )
+
+        expect(getByText(ignoreHTML('Status:None'))).toBeInTheDocument()
+        expect(
+            getByRole('button', {
+                name: /change status.*current status: none/i,
+            }),
+        ).toBeInTheDocument()
+    })
+
+    it('should not render status button when feature flag is disabled', () => {
+        const useFlag = require('@repo/feature-flags').useFlag
+        useFlag.mockReturnValue(false)
+
+        render(<UserMenu onClose={onClose} />, {
+            wrapper,
+        })
+
+        expect(
+            screen.queryByText(ignoreHTML('Status:')),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', {
+                name: /change status/i,
+            }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should navigate back to main menu from status screen', () => {
+        const useFlag = require('@repo/feature-flags').useFlag
+        useFlag.mockReturnValue(true)
+        useUserAvailabilityStatusMock.mockReturnValue({
+            status: {
+                id: 'available',
+                name: 'Available',
+            },
+            isLoading: false,
+        })
+
+        const { getByRole, getByText } = render(
+            <UserMenu onClose={onClose} />,
+            {
+                wrapper,
+            },
+        )
+
+        userEvent.click(
+            getByRole('button', {
+                name: /change status.*current status: available/i,
+            }),
+        )
+
+        expect(getByText('StatusMenu')).toBeInTheDocument()
+
+        userEvent.click(getByText('Back'))
+
+        expect(screen.queryByText('StatusMenu')).not.toBeInTheDocument()
+        expect(screen.getByText('AvailabilityToggle')).toBeInTheDocument()
+        expect(screen.getByText('Your profile')).toBeInTheDocument()
     })
 })

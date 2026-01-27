@@ -20,14 +20,15 @@
         "@gorgias/design-tokens": "catalog:axiom",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@repo/forms": "workspace:*",
-        "react": "catalog:react",
-        "react-dom": "catalog:react",
         "classnames": "catalog:styles",
-        "moment": "catalog:moment"
+        "moment": "catalog:moment",
+        "react": "catalog:react",
+        "react-dom": "catalog:react"
     },
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
         "@gorgias/design-tokens": "catalog:axiom",
+        "@gorgias/helpdesk-mocks": "^0.8.35",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
         "@repo/forms": "workspace:*",

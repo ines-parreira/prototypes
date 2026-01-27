@@ -1525,6 +1525,9 @@ importers:
       '@gorgias/design-tokens':
         specifier: catalog:axiom
         version: 0.11.4
+      '@gorgias/helpdesk-mocks':
+        specifier: ^0.8.35
+        version: 0.8.35(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/helpdesk-queries':
         specifier: catalog:rest-api-sdk
         version: 0.9.109(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
