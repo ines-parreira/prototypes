@@ -67,6 +67,24 @@ describe('utils', () => {
         })
 
         it.each([
+            VoiceMetric.VoiceCallsBreachedRate,
+            VoiceMetric.VoiceCallsAchievementRate,
+            VoiceMetric.QueueCallsAchievementRate,
+        ])('should return the correct columns for %s', (metric) => {
+            const result = getVoiceDrillDownColumns(metric)
+
+            expect(result).toEqual([
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.SlaStatus,
+                VoiceCallTableColumn.Duration,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
+            ])
+        })
+
+        it.each([
             VoiceAgentsMetric.AgentTotalCalls,
             VoiceAgentsMetric.AgentInboundAnsweredCalls,
             VoiceAgentsMetric.AgentInboundMissedCalls,

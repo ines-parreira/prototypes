@@ -89,6 +89,7 @@ export default function useLiveVoiceMetricCards(
                   title: constants.SLA_ACHIEVEMENT_RATE_METRIC_TITLE,
                   hint: constants.SLA_ACHIEVEMENT_RATE_METRIC_HINT,
                   metric: summaryMetric,
+                  metricName: VoiceMetric.QueueCallsAchievementRate,
                   measure:
                       VoiceCallSummaryMeasure.VoiceCallSummarySlaAchievementRate,
                   size: 3,

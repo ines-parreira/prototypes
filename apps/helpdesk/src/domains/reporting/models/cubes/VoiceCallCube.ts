@@ -66,6 +66,7 @@ export enum VoiceCallSegment {
     inboundUnansweredCallsByAgent = 'VoiceCall.inboundUnansweredCallsByAgent',
     inboundAnsweredCallsByAgent = 'VoiceCall.inboundAnsweredCallsByAgent',
     callsInFinalStatus = 'VoiceCall.callsInFinalStatus',
+    callSlaBreached = 'VoiceCall.callSlaBreached',
 }
 
 export const VoiceCallFiltersMembers: StatsFiltersMembers = {

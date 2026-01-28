@@ -1,29 +1,21 @@
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { TrendCard } from 'domains/reporting/pages/common/components/TrendCard'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import VoiceCallVolumeMetric from 'domains/reporting/pages/voice/components/VoiceCallVolumeMetric/VoiceCallVolumeMetric'
-import {
-    SLA_ACHIEVEMENT_RATE_METRIC_HINT,
-    SLA_ACHIEVEMENT_RATE_METRIC_TITLE,
-} from 'domains/reporting/pages/voice/constants/liveVoice'
 import { useVoiceCallSlaAchievementRateTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallSlaAchievementRateTrend'
+import { VoiceMetricsConfig } from 'domains/reporting/pages/voice/VoiceConfigs/VoiceMetricsConfig'
+import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
 
 export const VoiceCallSlaAchievementRateChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
-    const slaAchievementRateTrend = useVoiceCallSlaAchievementRateTrend(
-        cleanStatsFilters,
-        userTimezone,
-    )
-
     return (
-        <VoiceCallVolumeMetric
-            title={SLA_ACHIEVEMENT_RATE_METRIC_TITLE}
-            hint={SLA_ACHIEVEMENT_RATE_METRIC_HINT}
-            statsFilters={cleanStatsFilters}
-            metricTrend={slaAchievementRateTrend}
-            metricValueFormat="percent"
+        <TrendCard
+            /* useTrend and interpretAs are already defined in VoiceMetricsConfig,
+         avoiding type issues before all metrics configs are updated
+         */
+            useTrend={useVoiceCallSlaAchievementRateTrend}
+            interpretAs="more-is-better"
+            {...VoiceMetricsConfig[VoiceMetric.VoiceCallsAchievementRate]}
             dashboard={dashboard}
             chartId={chartId}
         />

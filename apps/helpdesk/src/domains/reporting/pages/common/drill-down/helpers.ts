@@ -390,6 +390,9 @@ export const getDrillDownQuery = (
         case VoiceMetric.QueueInboundCancelledCalls:
         case VoiceMetric.QueueInboundCallbackRequestedCalls:
         case VoiceMetric.QueueOutboundCalls:
+        case VoiceMetric.QueueCallsAchievementRate:
+        case VoiceMetric.VoiceCallsAchievementRate:
+        case VoiceMetric.VoiceCallsBreachedRate:
             return VoiceMetricsConfig[metricData.metricName].drillDownQuery
         case VoiceAgentsMetric.AgentTotalCalls:
         case VoiceAgentsMetric.AgentInboundAnsweredCalls:
@@ -729,7 +732,10 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === VoiceMetric.QueueInboundCancelledCalls ||
         metricData.metricName ===
             VoiceMetric.QueueInboundCallbackRequestedCalls ||
-        metricData.metricName === VoiceMetric.QueueOutboundCalls
+        metricData.metricName === VoiceMetric.QueueOutboundCalls ||
+        metricData.metricName === VoiceMetric.QueueCallsAchievementRate ||
+        metricData.metricName === VoiceMetric.VoiceCallsAchievementRate ||
+        metricData.metricName === VoiceMetric.VoiceCallsBreachedRate
     ) {
         metricTitle = VoiceMetricsConfig[metricData.metricName].title
     } else if (

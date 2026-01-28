@@ -1,19 +1,35 @@
+import type { TooltipData } from '@repo/reporting'
+
+import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import {
     connectedCallsListQueryFactory,
     liveDashboardConnectedCallsListQueryFactory,
     liveDashBoardVoiceCallListQueryFactory,
     liveDashboardWaitingTimeCallsListQueryFactory,
+    voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
+import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
+import {
+    SLA_ACHIEVEMENT_RATE_METRIC_HINT,
+    SLA_ACHIEVEMENT_RATE_METRIC_TITLE,
+} from 'domains/reporting/pages/voice/constants/liveVoice'
+import { useVoiceCallSlaAchievementRateTrend } from 'domains/reporting/pages/voice/hooks/useVoiceCallSlaAchievementRateTrend'
 import { VoiceMetric } from 'domains/reporting/state/ui/stats/types'
 
 export const VoiceMetricsConfig: Record<
     VoiceMetric,
     {
+        hint?: TooltipData
+        useTrend?: MetricTrendHook
+        interpretAs?: 'more-is-better' | 'less-is-better' | 'neutral'
+        metricFormat?: MetricTrendFormat
+        drillDownMetric?: VoiceMetric
+        drillDownTitle?: string
         showMetric: boolean
         domain: Domain.Voice
         drillDownQuery: DrillDownQueryFactory
@@ -122,6 +138,48 @@ export const VoiceMetricsConfig: Record<
             liveDashBoardVoiceCallListQueryFactory(
                 statsFilters,
                 VoiceCallSegment.inboundCallbackRequestedCalls,
+            ),
+        title: '',
+    },
+    [VoiceMetric.VoiceCallsAchievementRate]: {
+        showMetric: false,
+        domain: Domain.Voice,
+        useTrend: useVoiceCallSlaAchievementRateTrend,
+        drillDownMetric: VoiceMetric.VoiceCallsAchievementRate,
+        drillDownQuery: (statsFilters: StatsFilters, timezone: string) =>
+            voiceCallListQueryFactory(
+                statsFilters,
+                timezone,
+                VoiceCallSegment.inboundCalls,
+            ),
+        title: SLA_ACHIEVEMENT_RATE_METRIC_TITLE,
+        hint: { title: SLA_ACHIEVEMENT_RATE_METRIC_HINT },
+        interpretAs: 'more-is-better',
+        metricFormat: 'percent',
+    },
+    [VoiceMetric.QueueCallsAchievementRate]: {
+        showMetric: false,
+        domain: Domain.Voice,
+        useTrend: useVoiceCallSlaAchievementRateTrend,
+        drillDownMetric: VoiceMetric.VoiceCallsAchievementRate,
+        drillDownQuery: (statsFilters: StatsFilters) =>
+            liveDashBoardVoiceCallListQueryFactory(
+                statsFilters,
+                VoiceCallSegment.inboundCalls,
+            ),
+        title: SLA_ACHIEVEMENT_RATE_METRIC_TITLE,
+        hint: { title: SLA_ACHIEVEMENT_RATE_METRIC_HINT },
+        interpretAs: 'more-is-better',
+        metricFormat: 'percent',
+    },
+    [VoiceMetric.VoiceCallsBreachedRate]: {
+        showMetric: false,
+        domain: Domain.Voice,
+        drillDownQuery: (statsFilters: StatsFilters, timezone: string) =>
+            voiceCallListQueryFactory(
+                statsFilters,
+                timezone,
+                VoiceCallSegment.callSlaBreached,
             ),
         title: '',
     },

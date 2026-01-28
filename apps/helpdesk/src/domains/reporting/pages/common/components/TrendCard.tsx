@@ -22,6 +22,7 @@ import type {
     AutoQAMetric,
     SatisfactionMetric,
     SlaMetric,
+    VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
 
 export const TrendCard = ({
@@ -41,6 +42,7 @@ export const TrendCard = ({
     drillDownMetric?:
         | OverviewMetric
         | SlaMetric
+        | VoiceMetric
         | AutoQAMetric
         | SatisfactionMetric
         | TrendMetric

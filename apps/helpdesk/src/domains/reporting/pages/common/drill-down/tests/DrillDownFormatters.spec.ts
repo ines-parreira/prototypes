@@ -34,6 +34,7 @@ describe('DrillDownFormatters', () => {
                 [VoiceCallDimension.CallRecordingAvailable]:
                     'callRecordingAvailable',
                 [VoiceCallDimension.CallRecordingUrl]: 'callRecordingUrl',
+                [VoiceCallDimension.CallSlaStatus]: 'callSlaStatus',
                 metricField: 'metricField',
             }
 
@@ -60,6 +61,7 @@ describe('DrillDownFormatters', () => {
                 callRecordingAvailable: 'callRecordingAvailable',
                 callRecordingUrl: 'callRecordingUrl',
                 callSid: 'undefined',
+                callSlaStatus: 'callSlaStatus',
                 metricValue: 'metricField',
                 rowData: row,
             })

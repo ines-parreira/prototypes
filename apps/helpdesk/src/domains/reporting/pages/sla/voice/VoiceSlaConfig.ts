@@ -3,13 +3,19 @@ import {
     useSlaAchievementRateVoiceCallsTrend,
 } from 'domains/reporting/hooks/sla/useSLAsVoiceCallsTrends'
 import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
+import type {
+    Domain,
+    DrillDownQueryFactory,
+} from 'domains/reporting/pages/common/drill-down/types'
 import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import type { TooltipData } from 'domains/reporting/pages/types'
-import { VoiceSlaMetric } from 'domains/reporting/state/ui/stats/types'
+import { VoiceMetricsConfig } from 'domains/reporting/pages/voice/VoiceConfigs/VoiceMetricsConfig'
+import {
+    VoiceMetric,
+    VoiceSlaMetric,
+} from 'domains/reporting/state/ui/stats/types'
 
 export const SLA_STATUS_COLUMN_LABEL = 'SLA status'
-
-export const SLA_FORMAT = 'sla'
 
 export const VoiceSlaMetricConfig: Record<
     VoiceSlaMetric,
@@ -19,6 +25,11 @@ export const VoiceSlaMetricConfig: Record<
         useTrend: MetricTrendHook
         interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
         metricFormat: MetricTrendFormat
+        drillDownMetric: VoiceMetric
+        showMetric: boolean
+        domain: Domain.Voice
+        drillDownQuery: DrillDownQueryFactory
+        drillDownTitle: string
     }
 > = {
     [VoiceSlaMetric.VoiceCallsAchievementRate]: {
@@ -30,6 +41,15 @@ export const VoiceSlaMetricConfig: Record<
         useTrend: useSlaAchievementRateVoiceCallsTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'percent',
+        drillDownMetric: VoiceMetric.VoiceCallsAchievementRate,
+        showMetric: false,
+        domain: VoiceMetricsConfig[VoiceMetric.VoiceCallsAchievementRate]
+            .domain,
+        drillDownQuery:
+            VoiceMetricsConfig[VoiceMetric.VoiceCallsAchievementRate]
+                .drillDownQuery,
+        drillDownTitle:
+            VoiceMetricsConfig[VoiceMetric.VoiceCallsAchievementRate].title,
     },
     [VoiceSlaMetric.VoiceCallsBreachedRate]: {
         hint: {
@@ -40,5 +60,13 @@ export const VoiceSlaMetricConfig: Record<
         useTrend: useBreachedSlaVoiceCallsTrend,
         interpretAs: 'less-is-better',
         metricFormat: 'decimal',
+        drillDownMetric: VoiceMetric.VoiceCallsBreachedRate,
+        showMetric: false,
+        domain: VoiceMetricsConfig[VoiceMetric.VoiceCallsBreachedRate].domain,
+        drillDownQuery:
+            VoiceMetricsConfig[VoiceMetric.VoiceCallsBreachedRate]
+                .drillDownQuery,
+        drillDownTitle:
+            VoiceMetricsConfig[VoiceMetric.VoiceCallsBreachedRate].title,
     },
 }

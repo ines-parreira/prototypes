@@ -117,6 +117,9 @@ export enum VoiceMetric {
     QueueInboundAbandonedCalls = 'queue_inbound_abandoned_calls',
     QueueInboundCancelledCalls = 'queue_inbound_cancelled_calls',
     QueueInboundCallbackRequestedCalls = 'queue_inbound_callback_requested_calls',
+    QueueCallsAchievementRate = 'queue-calls-sla-achievement-rate',
+    VoiceCallsAchievementRate = 'voice-calls-sla-achievement-rate',
+    VoiceCallsBreachedRate = 'voice-calls-sla-breached-rate',
 }
 
 export enum VoiceAgentsMetric {

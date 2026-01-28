@@ -23,6 +23,18 @@ export const getVoiceDrillDownColumns = (
                 VoiceCallTableColumn.State,
                 VoiceCallTableColumn.Recording,
             ]
+        case VoiceMetric.VoiceCallsBreachedRate:
+        case VoiceMetric.VoiceCallsAchievementRate:
+        case VoiceMetric.QueueCallsAchievementRate:
+            return [
+                VoiceCallTableColumn.Activity,
+                VoiceCallTableColumn.SlaStatus,
+                VoiceCallTableColumn.Duration,
+                VoiceCallTableColumn.Integration,
+                VoiceCallTableColumn.Date,
+                VoiceCallTableColumn.State,
+                VoiceCallTableColumn.Recording,
+            ]
         case VoiceMetric.AverageTalkTime:
         case VoiceMetric.QueueAverageTalkTime:
             return [

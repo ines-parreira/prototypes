@@ -484,7 +484,13 @@ describe('getDrillDownQuery', () => {
         { metricName: VoiceMetric.QueueInboundMissedCalls },
         { metricName: VoiceMetric.QueueInboundAbandonedCalls },
         {
-            metricName: VoiceMetric.QueueOutboundCalls,
+            metricName: VoiceMetric.QueueCallsAchievementRate,
+        },
+        {
+            metricName: VoiceMetric.VoiceCallsAchievementRate,
+        },
+        {
+            metricName: VoiceMetric.VoiceCallsBreachedRate,
         },
         {
             metricName: VoiceAgentsMetric.AgentTotalCalls,

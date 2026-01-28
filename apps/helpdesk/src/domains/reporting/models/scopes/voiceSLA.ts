@@ -15,6 +15,8 @@ const voiceSLAScope = defineScope({
         'agentId',
         'integrationId',
         'queueId',
+        'storeId',
+        'tags',
     ],
 })
 
