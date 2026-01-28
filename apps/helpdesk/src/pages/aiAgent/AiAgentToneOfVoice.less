@@ -1,0 +1,23 @@
+@import (reference) '~css/typography';
+
+:local {
+    .contentContainer {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0px;
+        overflow: auto;
+    }
+
+    .disclaimer {
+        .caption-regular();
+        color: var(--content-neutral-secondary);
+    }
+
+    .channelInstructions {
+        .body-regular();
+        // The letter spacing deviates from the default
+        letter-spacing: 0px;
+        color: var(--content-neutral-secondary);
+    }
+}
