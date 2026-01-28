@@ -421,7 +421,12 @@ export const ManageGuidanceForm = ({
                 <InputField
                     label="Guidance name"
                     isRequired
-                    caption="Provide a name for this Guidance. e.g. When a customer asks for a return or exchange"
+                    caption={
+                        <>
+                            Use a short, scenario-based name. Example:{' '}
+                            <em>Returns outside the policy window</em>
+                        </>
+                    }
                     onChange={onNameChange}
                     name="name"
                     value={formState.name}
