@@ -56,6 +56,7 @@ export function InfobarBaseCustomerFields({
                         onBlur={handleNoteBlur}
                         placeholder="+ Add"
                         ariaLabel="Note"
+                        type="textarea"
                     />
                 </FieldRow>
             </OverflowListItem>

@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { NumberField, TextField } from '@gorgias/axiom'
+import { NumberField, TextAreaField, TextField } from '@gorgias/axiom'
 
 type EditableFieldProps<T extends string | number> = {
     id?: string
@@ -14,11 +14,17 @@ type EditableFieldProps<T extends string | number> = {
     ariaLabel?: string
     isInvalid?: boolean
 } & (T extends string
-    ? {
-          type?: 'text'
-          minValue?: never
-          maxValue?: never
-      }
+    ?
+          | {
+                type?: 'text'
+                minValue?: never
+                maxValue?: never
+            }
+          | {
+                type?: 'textarea'
+                minValue?: never
+                maxValue?: never
+            }
     : {
           type: 'number'
           minValue?: number
@@ -56,38 +62,41 @@ export function EditableField<T extends string | number = string | number>(
         [error, onValueChange],
     )
 
-    const handleSubmit = useCallback(() => {
+    const handleValue = useCallback(() => {
         if (value === undefined) {
-            return true
+            return [true]
         }
 
         const finalValue =
-            type === 'text' && typeof value === 'string' ? value.trim() : value
+            (type === 'text' || type === 'textarea') &&
+            typeof value === 'string'
+                ? value.trim()
+                : value
 
         if (validator) {
             const validationError = validator(finalValue as string & number)
             if (validationError) {
                 setError(validationError)
-                return false
+                return [false]
             }
         }
 
         if (finalValue === value || (!finalValue && !value)) {
             setError(undefined)
-            return true
+            return [true, finalValue]
         }
 
         setError(undefined)
         onValueChange(finalValue as T)
-        return true
+        return [true, finalValue]
     }, [value, validator, onValueChange, type])
 
     const handleFieldBlur = useCallback(() => {
-        const success = handleSubmit()
-        if (success) {
+        const [isValid, value] = handleValue()
+        if (isValid) {
             onBlur?.(value as T)
         }
-    }, [handleSubmit, onBlur, value])
+    }, [handleValue, onBlur, value])
 
     if (type === 'number') {
         return (
@@ -105,6 +114,26 @@ export function EditableField<T extends string | number = string | number>(
                 minValue={minValue}
                 maxValue={maxValue}
                 isInvalid={isInvalid}
+            />
+        )
+    }
+
+    if (type === 'textarea') {
+        return (
+            <TextAreaField
+                id={id}
+                className={className}
+                aria-label={ariaLabel ?? placeholder}
+                value={value as string}
+                onChange={(value) => handleChange(value as T)}
+                placeholder={placeholder}
+                size="sm"
+                variant="secondary"
+                onBlur={handleFieldBlur}
+                autoFocus={autoFocus}
+                error={error}
+                isInvalid={isInvalid}
+                autoResize
             />
         )
     }
