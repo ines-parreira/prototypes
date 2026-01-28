@@ -5,6 +5,14 @@ import { act, waitFor } from '@testing-library/react'
 import { render } from '../../../../../tests/render.utils'
 import { EditableField } from '../EditableField'
 
+let mockIsMacOs = false
+
+vi.mock('@repo/utils', () => ({
+    get isMacOs() {
+        return mockIsMacOs
+    },
+}))
+
 const mockValidator = vi.fn((value: string) => {
     if (!value.includes('@')) {
         return 'Invalid email address'
@@ -81,7 +89,7 @@ describe('EditableField', () => {
     })
 
     it('should trim whitespace on blur', async () => {
-        function ControlledField() {
+        const ControlledField = () => {
             const [value, setValue] = React.useState('')
             return (
                 <EditableField
@@ -167,7 +175,7 @@ describe('EditableField', () => {
     })
 
     it('should call onValueChange during typing and pass validation on blur', async () => {
-        function ControlledField() {
+        const ControlledField = () => {
             const [value, setValue] = React.useState('')
             return (
                 <EditableField
@@ -214,5 +222,186 @@ describe('EditableField', () => {
         )
 
         expect(getByDisplayValue('Updated value')).toBeInTheDocument()
+    })
+
+    describe('Keyboard shortcuts', () => {
+        it('should blur text field on Enter', async () => {
+            const onBlur = vi.fn()
+            const ControlledField = () => {
+                const [value, setValue] = React.useState('')
+                return (
+                    <EditableField
+                        value={value}
+                        onValueChange={setValue}
+                        validator={mockValidator}
+                        onBlur={onBlur}
+                        placeholder="+ Add"
+                    />
+                )
+            }
+
+            const { user, getByPlaceholderText } = render(<ControlledField />)
+
+            const input = getByPlaceholderText('+ Add')
+
+            await act(async () => {
+                await user.type(input, 'test@example.com')
+            })
+
+            expect(input).toHaveFocus()
+
+            await user.keyboard('{Enter}')
+
+            expect(input).not.toHaveFocus()
+            expect(onBlur).toHaveBeenCalledWith('test@example.com')
+        })
+
+        it('should not blur text field on Enter when value is invalid', async () => {
+            const onBlur = vi.fn()
+
+            const ControlledField = () => {
+                const [value, setValue] = React.useState('')
+                return (
+                    <EditableField
+                        value={value}
+                        onValueChange={setValue}
+                        validator={mockValidator}
+                        onBlur={onBlur}
+                        placeholder="+ Add"
+                    />
+                )
+            }
+
+            const { user, getByPlaceholderText } = render(<ControlledField />)
+
+            const input = getByPlaceholderText('+ Add')
+
+            await act(async () => {
+                await user.type(input, 'invalid-email')
+            })
+
+            expect(input).toHaveFocus()
+
+            await user.keyboard('{Enter}')
+
+            expect(input).toHaveFocus()
+            await waitFor(() => {
+                expect(input).toHaveAttribute('aria-invalid', 'true')
+            })
+            expect(onBlur).not.toHaveBeenCalled()
+        })
+
+        describe('Textarea on non-macOS platforms', () => {
+            const ControlledField = () => {
+                const [value, setValue] = React.useState('')
+                return (
+                    <EditableField
+                        type="textarea"
+                        value={value}
+                        onValueChange={setValue}
+                        placeholder="+ Add note"
+                    />
+                )
+            }
+
+            beforeEach(() => {
+                mockIsMacOs = false
+            })
+
+            it('should blur textarea on Ctrl+Enter', async () => {
+                const { user, getByPlaceholderText } = render(
+                    <ControlledField />,
+                )
+
+                const textarea = getByPlaceholderText('+ Add note')
+
+                await act(async () => {
+                    await user.type(textarea, '  Note text  ')
+                })
+
+                expect(textarea).toHaveFocus()
+
+                await user.keyboard('{Control>}{Enter}{/Control}')
+
+                expect(textarea).not.toHaveFocus()
+            })
+
+            it('should not blur textarea on Meta+Enter', async () => {
+                const { user, getByPlaceholderText } = render(
+                    <ControlledField />,
+                )
+
+                const textarea = getByPlaceholderText('+ Add note')
+
+                await act(async () => {
+                    await user.type(textarea, 'Note text')
+                })
+
+                expect(textarea).toHaveFocus()
+
+                await user.keyboard('{Meta>}{Enter}{/Meta}')
+
+                expect(textarea).toHaveFocus()
+            })
+        })
+
+        describe('Textarea on macOS', () => {
+            beforeEach(() => {
+                mockIsMacOs = true
+            })
+
+            afterEach(() => {
+                mockIsMacOs = false
+            })
+
+            const ControlledField = () => {
+                const [value, setValue] = React.useState('')
+                return (
+                    <EditableField
+                        type="textarea"
+                        value={value}
+                        onValueChange={setValue}
+                        placeholder="+ Add note"
+                    />
+                )
+            }
+
+            it('should blur textarea on Cmd+Enter (Meta+Enter)', async () => {
+                const { user, getByPlaceholderText } = render(
+                    <ControlledField />,
+                )
+
+                const textarea = getByPlaceholderText('+ Add note')
+
+                await act(async () => {
+                    await user.type(textarea, '  Note text  ')
+                })
+
+                expect(textarea).toHaveFocus()
+
+                await user.keyboard('{Meta>}{Enter}{/Meta}')
+
+                expect(textarea).not.toHaveFocus()
+                expect(textarea).toHaveValue('Note text')
+            })
+
+            it('should not blur textarea on Ctrl+Enter', async () => {
+                const { user, getByPlaceholderText } = render(
+                    <ControlledField />,
+                )
+
+                const textarea = getByPlaceholderText('+ Add note')
+
+                await act(async () => {
+                    await user.type(textarea, 'Note text')
+                })
+
+                expect(textarea).toHaveFocus()
+
+                await user.keyboard('{Control>}{Enter}{/Control}')
+
+                expect(textarea).toHaveFocus()
+            })
+        })
     })
 })

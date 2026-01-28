@@ -1,6 +1,6 @@
 {
-  "date": "2026-01-26T18:07:54.747Z",
-  "total": 4174,
+  "date": "2026-01-28T11:00:08.174Z",
+  "total": 4192,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -1768,6 +1768,35 @@
       ]
     },
     {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "isMacOs",
+      "comment": "*\n * @deprecated use platform from @repo/utils\n * @date 2026-01-24\n * @type migration to @repo/utils\n ",
+      "count": 15,
+      "filePath": "apps/helpdesk/src/utils/platform.ts",
+      "usages": [
+        {
+          "name": "isMacOs",
+          "files": [
+            "apps/helpdesk/src/common/navigation/components/GlobalNavigationSpotlight.tsx",
+            "apps/helpdesk/src/common/navigation/components/tests/GlobalNavigationSpotlight.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/PlaceCallNavbarButton.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightButton.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightModal.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightRow.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightButton.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightModal.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightRow.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/useSearch.ts",
+            "apps/helpdesk/src/pages/common/components/tests/PlaceCallNavbarButton.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/ViewTable/Header.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/TicketDetailContainer.tsx",
+            "apps/helpdesk/src/pages/tickets/navbar/PlaceCallNavbarButton.tsx",
+            "apps/helpdesk/src/pages/tickets/navbar/tests/PlaceCallNavbarButton.spec.tsx"
+          ]
+        }
+      ]
+    },
+    {
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "MultiSelectOptionsField",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<MultiSelectField />` from @gorgias/axiom instead.\n * @date 2026-01-06\n * @type ui-kit-migration\n ",
@@ -2303,6 +2332,26 @@
             "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/hooks/tests/useStartSubscription.spec.tsx",
             "apps/helpdesk/src/state/currentAccount/tests/selectors.spec.ts",
             "apps/helpdesk/src/state/currentUser/actions.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "platform",
+      "comment": "*\n * @deprecated use platform from @repo/utils\n * @date 2026-01-24\n * @type migration to @repo/utils\n ",
+      "count": 6,
+      "filePath": "apps/helpdesk/src/utils/platform.ts",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/common/navigation/components/tests/GlobalNavigationSpotlight.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightButton.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightModal.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightRow.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/tests/PlaceCallNavbarButton.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/navbar/tests/PlaceCallNavbarButton.spec.tsx"
           ]
         }
       ]
@@ -3341,7 +3390,7 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1465,
+      "count": 1463,
       "usages": [
         {
           "name": "LegacyButton",
@@ -3934,7 +3983,7 @@
         },
         {
           "name": "LegacyTooltip",
-          "count": 300,
+          "count": 299,
           "files": [
             "apps/helpdesk/src/AIJourney/components/FieldPresentation/FieldPresentation.tsx",
             "apps/helpdesk/src/auto_qa/components/AutoQA.tsx",
@@ -3999,7 +4048,6 @@
             "apps/helpdesk/src/pages/aiAgent/insights/IntentTableWidget/IntentTableCells.tsx",
             "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/EmptyState/SyncStoreWebsiteModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/EmptyState/SyncUrlModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/TestSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundActionsToggle/PlaygroundActionsToggle.tsx",
             "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundInputSection/PlaygroundInputSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/trial/components/TrialEndingModal/TrialEndingModal.tsx",
@@ -4632,7 +4680,7 @@
         },
         {
           "name": "LegacyIconButton",
-          "count": 53,
+          "count": 52,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/CarouselNavigation.tsx",
             "apps/helpdesk/src/core/ui/flows/components/CustomFitViewControl.tsx",
@@ -4656,7 +4704,6 @@
             "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/StoreCustomFieldList.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/StoreTagList.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/AiAgentTasks/SuccessModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/TestSection.tsx",
             "apps/helpdesk/src/pages/common/components/Drawer/Drawer.tsx",
             "apps/helpdesk/src/pages/common/components/modal/ModalHeader.tsx",
             "apps/helpdesk/src/pages/common/components/PromoCard/PromoCard.tsx",
@@ -4956,7 +5003,7 @@
     },
     {
       "packageName": "reactstrap",
-      "count": 1011,
+      "count": 1010,
       "usages": [
         {
           "name": "Container",
@@ -6181,14 +6228,6 @@
           ]
         },
         {
-          "name": "Alert",
-          "count": 2,
-          "files": [
-            "apps/helpdesk/src/pages/common/components/CodeSnippet.tsx",
-            "apps/helpdesk/src/pages/integrations/common/components/CustomInstallationCard/CustomInstallationCard.tsx"
-          ]
-        },
-        {
           "name": "CardTitle",
           "count": 2,
           "files": [
@@ -6226,6 +6265,13 @@
           "files": [
             "apps/helpdesk/src/pages/common/components/ImageUpload/components/Title/Title.tsx",
             "apps/helpdesk/src/pages/common/utils/DatetimeLabel.tsx"
+          ]
+        },
+        {
+          "name": "Alert",
+          "count": 1,
+          "files": [
+            "apps/helpdesk/src/pages/integrations/common/components/CustomInstallationCard/CustomInstallationCard.tsx"
           ]
         },
         {

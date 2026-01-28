@@ -1,4 +1,7 @@
+import type { KeyboardEvent } from 'react'
 import { useCallback, useState } from 'react'
+
+import { isMacOs } from '@repo/utils'
 
 import { NumberField, TextAreaField, TextField } from '@gorgias/axiom'
 
@@ -98,6 +101,25 @@ export function EditableField<T extends string | number = string | number>(
         }
     }, [handleValue, onBlur, value])
 
+    const handleKeyDown = useCallback(
+        (event: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            const isEnterKey = event.key === 'Enter'
+            const hasModifier = isMacOs ? event.metaKey : event.ctrlKey
+
+            const shouldBlur =
+                type === 'textarea' ? isEnterKey && hasModifier : isEnterKey
+
+            if (shouldBlur) {
+                event.preventDefault()
+                const [isValid] = handleValue()
+                if (isValid) {
+                    event.currentTarget?.blur()
+                }
+            }
+        },
+        [type, handleValue],
+    )
+
     if (type === 'number') {
         return (
             <NumberField
@@ -130,6 +152,7 @@ export function EditableField<T extends string | number = string | number>(
                 size="sm"
                 variant="secondary"
                 onBlur={handleFieldBlur}
+                onKeyDown={handleKeyDown}
                 autoFocus={autoFocus}
                 error={error}
                 isInvalid={isInvalid}
@@ -150,6 +173,7 @@ export function EditableField<T extends string | number = string | number>(
             size="sm"
             variant="secondary"
             onBlur={handleFieldBlur}
+            onKeyDown={handleKeyDown}
             autoFocus={autoFocus}
             error={error}
             isInvalid={isInvalid}
