@@ -450,4 +450,23 @@ describe('AgentUnavailabilityStatuses', () => {
             expect(deleteButton).toBeDisabled()
         })
     })
+
+    describe('Learning Resources Link', () => {
+        it('should render learning resources link with correct href and target', async () => {
+            renderComponent()
+
+            await waitFor(() =>
+                expect(screen.getByText('Unavailable')).toBeInTheDocument(),
+            )
+
+            const link = screen.getByRole('link', {
+                name: /learning resources/i,
+            })
+
+            expect(link).toBeInTheDocument()
+            expect(link).toHaveAttribute('href', 'https://docs.gorgias.com')
+            expect(link).toHaveAttribute('target', '_blank')
+            expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+        })
+    })
 })

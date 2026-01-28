@@ -118,7 +118,10 @@ function AgentUnavailabilityStatuses() {
                 <PageHeader title="Agent unavailability">
                     <Box gap="xs">
                         <Button
-                            onClick={() => {}}
+                            as="a"
+                            href="https://docs.gorgias.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             variant="tertiary"
                             trailingSlot={<Icon name="external-link" />}
                         >
