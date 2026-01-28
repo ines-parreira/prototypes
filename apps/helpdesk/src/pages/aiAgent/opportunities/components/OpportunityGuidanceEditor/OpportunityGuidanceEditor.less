@@ -75,6 +75,10 @@
         color: var(--content-neutral-tertiary);
         margin-top: var(--spacing-xxxs);
     }
+
+    .titleField :global(input:hover:not(:focus)) {
+        background: var(--hover-input) !important;
+    }
 }
 
 @supports (selector(:has(*))) {

@@ -318,7 +318,7 @@ export const GuidanceForm = ({
                     <InputField
                         label="Guidance name"
                         isRequired
-                        caption="Use a short, scenario-based name. Example: Returns outside the policy window"
+                        caption="Use a short, scenario-based name. Example: When customers request a return"
                         onChange={onNameChange}
                         name="name"
                         value={formState.name}

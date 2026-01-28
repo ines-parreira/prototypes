@@ -58,7 +58,7 @@ export const OpportunityGuidanceEditor = ({
 
     const renderFormFields = () => (
         <Box flexDirection="column" gap="md">
-            <div>
+            <div className={css.titleField}>
                 <TextField
                     label="Guidance name"
                     value={formFields.title}
@@ -69,7 +69,7 @@ export const OpportunityGuidanceEditor = ({
                 <Text variant="regular" size="sm" className={css.caption}>
                     Use a short, scenario-based name. Example:{' '}
                     <Text variant="italic" size="sm">
-                        Returns outside the policy window
+                        When customers request a return
                     </Text>
                 </Text>
             </div>
