@@ -1,11 +1,10 @@
 import { SegmentEvent } from '@repo/logging'
 
-import type { ColumnDef } from '@gorgias/axiom'
+import type { ColumnDef, SortingState } from '@gorgias/axiom'
 import {
     Box,
     Color,
     createSelectableColumn,
-    createSortableColumn,
     Icon,
     Skeleton,
     Text,
@@ -24,6 +23,8 @@ import {
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { TitleCell } from './TitleCell'
+
+import styles from './KnowledgeHubTable.less'
 
 const getCheckboxContent = (
     originalCell: unknown,
@@ -75,6 +76,54 @@ const createSelectableColumnWithTooltip =
         }
     }
 
+// Helper component for custom sortable column headers
+const SortableHeader = ({
+    label,
+    columnId,
+    sortState,
+    onSort,
+}: {
+    label: string
+    columnId: string
+    sortState?: SortingState
+    onSort?: (columnId: string) => void
+}) => {
+    if (!onSort) {
+        return <span>{label}</span>
+    }
+
+    const currentSort = sortState?.[0]
+    const isSorted = currentSort?.id === columnId
+    const sortDirection = isSorted ? (currentSort.desc ? 'desc' : 'asc') : null
+    const getAriaLabel = () => {
+        if (isSorted) {
+            if (sortDirection === 'asc') {
+                return `Sorted by ${label} ascending`
+            }
+            return `Sorted by ${label} descending`
+        }
+
+        return `Sorted by ${label}`
+    }
+
+    return (
+        <button
+            onClick={() => onSort(columnId)}
+            className={styles.sortableColumnHeader}
+            type="button"
+            aria-label={getAriaLabel()}
+        >
+            <span>{label}</span>
+            <span className={styles.sortIndicator}>
+                <Icon
+                    size="xs"
+                    name={sortDirection === 'asc' ? 'arrow-up' : 'arrow-down'}
+                />
+            </span>
+        </button>
+    )
+}
+
 export const getColumns = (
     searchTerm: string = '',
     columnOnClick?: (data: GroupedKnowledgeItem) => void,
@@ -85,23 +134,32 @@ export const getColumns = (
     intentCustomFieldId?: number,
     isMetricsLoading: boolean = false,
     shopIntegrationId?: number,
+    // New parameters for custom sorting
+    sortState?: SortingState,
+    onColumnSort?: (columnId: string) => void,
 ): ColumnDef<GroupedKnowledgeItem>[] => {
     // Base columns - always present
     const baseColumns: ColumnDef<GroupedKnowledgeItem>[] = [
         createSelectableColumnWithTooltip(),
         {
-            ...createSortableColumn<GroupedKnowledgeItem>(
-                'title',
-                'Title',
-                (info) => (
-                    <TitleCell
-                        row={info.row}
-                        searchTerm={searchTerm}
-                        columnOnClick={columnOnClick}
-                        availableActions={availableActions}
-                        guidanceHelpCenterId={guidanceHelpCenterId}
-                    />
-                ),
+            id: 'title',
+            accessorKey: 'title',
+            header: () => (
+                <SortableHeader
+                    label="Title"
+                    columnId="title"
+                    sortState={sortState}
+                    onSort={onColumnSort}
+                />
+            ),
+            cell: (info) => (
+                <TitleCell
+                    row={info.row}
+                    searchTerm={searchTerm}
+                    columnOnClick={columnOnClick}
+                    availableActions={availableActions}
+                    guidanceHelpCenterId={guidanceHelpCenterId}
+                />
             ),
         },
     ]
@@ -110,193 +168,206 @@ export const getColumns = (
     const metricColumns: ColumnDef<GroupedKnowledgeItem>[] = metricsDateRange
         ? [
               {
-                  ...createSortableColumn<GroupedKnowledgeItem>(
-                      'metrics.tickets',
-                      'Tickets',
-                      (info) => {
-                          if (info.row.original.isGrouped) {
-                              return <Text>--</Text>
-                          }
-
-                          if (isMetricsLoading) {
-                              return <Skeleton width={40} />
-                          }
-
-                          const metrics = info.row.original.metrics
-                          const row = info.row.original
-
-                          if (
-                              !metrics ||
-                              metrics.tickets === null ||
-                              metrics.tickets === undefined
-                          ) {
-                              return <Text>--</Text>
-                          }
-
-                          // Create drilldown metric data for opening the drilldown modal
-                          const drillDownMetricData =
-                              metrics && metricsDateRange
-                                  ? {
-                                        metricName: KnowledgeMetric.Tickets,
-                                        title: 'Tickets',
-                                        resourceSourceId: Number(row.id),
-                                        resourceSourceSetId:
-                                            metrics.resourceSourceSetId,
-                                        shopIntegrationId:
-                                            shopIntegrationId ?? 0,
-                                        dateRange: metricsDateRange,
-                                        ...(outcomeCustomFieldId && {
-                                            outcomeCustomFieldId,
-                                        }),
-                                        ...(intentCustomFieldId && {
-                                            intentCustomFieldId,
-                                        }),
-                                    }
-                                  : null
-
-                          return (
-                              <DrillDownModalTrigger
-                                  enabled={
-                                      !!drillDownMetricData &&
-                                      metrics.tickets > 0
-                                  }
-                                  highlighted={true}
-                                  metricData={drillDownMetricData!}
-                                  segmentEventName={
-                                      SegmentEvent.AiAgentTicketDrilldownClicked
-                                  }
-                              >
-                                  <Text>{metrics.tickets}</Text>
-                              </DrillDownModalTrigger>
-                          )
-                      },
+                  id: 'metrics.tickets',
+                  accessorKey: 'metrics.tickets',
+                  header: () => (
+                      <SortableHeader
+                          label="Tickets"
+                          columnId="metrics.tickets"
+                          sortState={sortState}
+                          onSort={onColumnSort}
+                      />
                   ),
+                  cell: (info) => {
+                      if (info.row.original.isGrouped) {
+                          return <Text>--</Text>
+                      }
+
+                      if (isMetricsLoading) {
+                          return <Skeleton width={40} />
+                      }
+
+                      const metrics = info.row.original.metrics
+                      const row = info.row.original
+
+                      if (
+                          !metrics ||
+                          metrics.tickets === null ||
+                          metrics.tickets === undefined
+                      ) {
+                          return <Text>--</Text>
+                      }
+
+                      // Create drilldown metric data for opening the drilldown modal
+                      const drillDownMetricData =
+                          metrics && metricsDateRange
+                              ? {
+                                    metricName: KnowledgeMetric.Tickets,
+                                    title: 'Tickets',
+                                    resourceSourceId: Number(row.id),
+                                    resourceSourceSetId:
+                                        metrics.resourceSourceSetId,
+                                    shopIntegrationId: shopIntegrationId ?? 0,
+                                    dateRange: metricsDateRange,
+                                    ...(outcomeCustomFieldId && {
+                                        outcomeCustomFieldId,
+                                    }),
+                                    ...(intentCustomFieldId && {
+                                        intentCustomFieldId,
+                                    }),
+                                }
+                              : null
+
+                      return (
+                          <DrillDownModalTrigger
+                              enabled={
+                                  !!drillDownMetricData && metrics.tickets > 0
+                              }
+                              highlighted={true}
+                              metricData={drillDownMetricData!}
+                              segmentEventName={
+                                  SegmentEvent.AiAgentTicketDrilldownClicked
+                              }
+                          >
+                              <Text>{metrics.tickets}</Text>
+                          </DrillDownModalTrigger>
+                      )
+                  },
                   sortUndefined: -1,
               },
               {
-                  ...createSortableColumn<GroupedKnowledgeItem>(
-                      'metrics.handoverTickets',
-                      'Handover tickets',
-                      (info) => {
-                          if (info.row.original.isGrouped) {
-                              return <Text>--</Text>
-                          }
-
-                          if (isMetricsLoading) {
-                              return <Skeleton width={40} />
-                          }
-
-                          const metrics = info.row.original.metrics
-                          const row = info.row.original
-
-                          if (
-                              !metrics ||
-                              metrics.handoverTickets === null ||
-                              metrics.handoverTickets === undefined
-                          ) {
-                              return <Text>--</Text>
-                          }
-
-                          // Create drilldown metric data for opening the drilldown modal
-                          const drillDownMetricData =
-                              metrics && metricsDateRange
-                                  ? {
-                                        metricName:
-                                            KnowledgeMetric.HandoverTickets,
-                                        title: 'Handover tickets',
-                                        resourceSourceId: Number(row.id),
-                                        resourceSourceSetId:
-                                            metrics.resourceSourceSetId,
-                                        shopIntegrationId:
-                                            shopIntegrationId ?? 0,
-                                        dateRange: metricsDateRange,
-                                        ...(outcomeCustomFieldId && {
-                                            outcomeCustomFieldId,
-                                        }),
-                                        ...(intentCustomFieldId && {
-                                            intentCustomFieldId,
-                                        }),
-                                    }
-                                  : null
-
-                          return (
-                              <DrillDownModalTrigger
-                                  enabled={
-                                      !!drillDownMetricData &&
-                                      metrics.handoverTickets > 0
-                                  }
-                                  highlighted={true}
-                                  metricData={drillDownMetricData!}
-                                  segmentEventName={
-                                      SegmentEvent.AiAgentTicketDrilldownClicked
-                                  }
-                              >
-                                  <Text>{metrics.handoverTickets}</Text>
-                              </DrillDownModalTrigger>
-                          )
-                      },
+                  id: 'metrics.handoverTickets',
+                  accessorKey: 'metrics.handoverTickets',
+                  header: () => (
+                      <SortableHeader
+                          label="Handover tickets"
+                          columnId="metrics.handoverTickets"
+                          sortState={sortState}
+                          onSort={onColumnSort}
+                      />
                   ),
+                  cell: (info) => {
+                      if (info.row.original.isGrouped) {
+                          return <Text>--</Text>
+                      }
+
+                      if (isMetricsLoading) {
+                          return <Skeleton width={40} />
+                      }
+
+                      const metrics = info.row.original.metrics
+                      const row = info.row.original
+
+                      if (
+                          !metrics ||
+                          metrics.handoverTickets === null ||
+                          metrics.handoverTickets === undefined
+                      ) {
+                          return <Text>--</Text>
+                      }
+
+                      // Create drilldown metric data for opening the drilldown modal
+                      const drillDownMetricData =
+                          metrics && metricsDateRange
+                              ? {
+                                    metricName: KnowledgeMetric.HandoverTickets,
+                                    title: 'Handover tickets',
+                                    resourceSourceId: Number(row.id),
+                                    resourceSourceSetId:
+                                        metrics.resourceSourceSetId,
+                                    shopIntegrationId: shopIntegrationId ?? 0,
+                                    dateRange: metricsDateRange,
+                                    ...(outcomeCustomFieldId && {
+                                        outcomeCustomFieldId,
+                                    }),
+                                    ...(intentCustomFieldId && {
+                                        intentCustomFieldId,
+                                    }),
+                                }
+                              : null
+
+                      return (
+                          <DrillDownModalTrigger
+                              enabled={
+                                  !!drillDownMetricData &&
+                                  metrics.handoverTickets > 0
+                              }
+                              highlighted={true}
+                              metricData={drillDownMetricData!}
+                              segmentEventName={
+                                  SegmentEvent.AiAgentTicketDrilldownClicked
+                              }
+                          >
+                              <Text>{metrics.handoverTickets}</Text>
+                          </DrillDownModalTrigger>
+                      )
+                  },
                   sortUndefined: -1,
               },
               {
-                  ...createSortableColumn<GroupedKnowledgeItem>(
-                      'metrics.csat',
-                      'Avg CSAT',
-                      (info) => {
-                          if (info.row.original.isGrouped) {
-                              return <Text>--</Text>
-                          }
-
-                          if (isMetricsLoading) {
-                              return <Skeleton width={40} />
-                          }
-
-                          const metrics = info.row.original.metrics
-                          const row = info.row.original
-                          const csat = metrics?.csat
-
-                          if (csat === null || csat === undefined) {
-                              return <Text>--</Text>
-                          }
-
-                          // Create drilldown metric data for opening the drilldown modal
-                          const drillDownMetricData =
-                              metrics && metricsDateRange
-                                  ? {
-                                        metricName: KnowledgeMetric.CSAT,
-                                        title: 'Average CSAT',
-                                        resourceSourceId: Number(row.id),
-                                        resourceSourceSetId:
-                                            metrics.resourceSourceSetId,
-                                        shopIntegrationId:
-                                            shopIntegrationId ?? 0,
-                                        dateRange: metricsDateRange,
-                                        ...(outcomeCustomFieldId && {
-                                            outcomeCustomFieldId,
-                                        }),
-                                        ...(intentCustomFieldId && {
-                                            intentCustomFieldId,
-                                        }),
-                                    }
-                                  : null
-                          const formattedCsat = Number.isInteger(csat)
-                              ? csat.toString()
-                              : csat.toFixed(1)
-
-                          return (
-                              <DrillDownModalTrigger
-                                  enabled={!!drillDownMetricData}
-                                  highlighted={true}
-                                  metricData={drillDownMetricData!}
-                                  segmentEventName={
-                                      SegmentEvent.AiAgentTicketDrilldownClicked
-                                  }
-                              >
-                                  <Text>{formattedCsat}</Text>
-                              </DrillDownModalTrigger>
-                          )
-                      },
+                  id: 'metrics.csat',
+                  accessorKey: 'metrics.csat',
+                  header: () => (
+                      <SortableHeader
+                          label="Avg CSAT"
+                          columnId="metrics.csat"
+                          sortState={sortState}
+                          onSort={onColumnSort}
+                      />
                   ),
+                  cell: (info) => {
+                      if (info.row.original.isGrouped) {
+                          return <Text>--</Text>
+                      }
+
+                      if (isMetricsLoading) {
+                          return <Skeleton width={40} />
+                      }
+
+                      const metrics = info.row.original.metrics
+                      const row = info.row.original
+                      const csat = metrics?.csat
+
+                      if (csat === null || csat === undefined) {
+                          return <Text>--</Text>
+                      }
+
+                      // Create drilldown metric data for opening the drilldown modal
+                      const drillDownMetricData =
+                          metrics && metricsDateRange
+                              ? {
+                                    metricName: KnowledgeMetric.CSAT,
+                                    title: 'Average CSAT',
+                                    resourceSourceId: Number(row.id),
+                                    resourceSourceSetId:
+                                        metrics.resourceSourceSetId,
+                                    shopIntegrationId: shopIntegrationId ?? 0,
+                                    dateRange: metricsDateRange,
+                                    ...(outcomeCustomFieldId && {
+                                        outcomeCustomFieldId,
+                                    }),
+                                    ...(intentCustomFieldId && {
+                                        intentCustomFieldId,
+                                    }),
+                                }
+                              : null
+                      const formattedCsat = Number.isInteger(csat)
+                          ? csat.toString()
+                          : csat.toFixed(1)
+
+                      return (
+                          <DrillDownModalTrigger
+                              enabled={!!drillDownMetricData}
+                              highlighted={true}
+                              metricData={drillDownMetricData!}
+                              segmentEventName={
+                                  SegmentEvent.AiAgentTicketDrilldownClicked
+                              }
+                          >
+                              <Text>{formattedCsat}</Text>
+                          </DrillDownModalTrigger>
+                      )
+                  },
                   sortUndefined: -1,
               },
           ]
@@ -305,69 +376,70 @@ export const getColumns = (
     // End columns - always present
     const endColumns: ColumnDef<GroupedKnowledgeItem>[] = [
         {
-            ...createSortableColumn<GroupedKnowledgeItem>(
-                'lastUpdatedAt',
-                'Last updated',
-                (info) => {
-                    const date = info.getValue() as string
-                    return <Text>{new Date(date).toLocaleDateString()}</Text>
-                },
+            id: 'lastUpdatedAt',
+            accessorKey: 'lastUpdatedAt',
+            header: () => (
+                <SortableHeader
+                    label="Last updated"
+                    columnId="lastUpdatedAt"
+                    sortState={sortState}
+                    onSort={onColumnSort}
+                />
             ),
+            cell: (info) => {
+                const date = info.getValue() as string
+                return <Text>{new Date(date).toLocaleDateString()}</Text>
+            },
         },
         {
-            ...createSortableColumn<GroupedKnowledgeItem>(
-                'inUseByAI',
-                'In use by AI Agent',
-                (info) => {
-                    const isGrouped = info.row.original.isGrouped
-                    const row = info.row.original
+            id: 'inUseByAI',
+            accessorKey: 'inUseByAI',
+            header: () => (
+                <SortableHeader
+                    label="In use by AI Agent"
+                    columnId="inUseByAI"
+                    sortState={sortState}
+                    onSort={onColumnSort}
+                />
+            ),
+            cell: (info) => {
+                const isGrouped = info.row.original.isGrouped
+                const row = info.row.original
 
-                    if (isGrouped) {
-                        return (
-                            <Box
-                                alignItems="center"
-                                justifyContent="flex-start"
-                            >
-                                <Text>--</Text>
-                            </Box>
-                        )
-                    }
-
-                    // For FAQ (Help Center articles), check both conditions:
-                    // 1. Article must have a published version (not only draft)
-                    // 2. Article must have public visibility
-                    let isInUse: boolean
-                    if (row.type === KnowledgeType.FAQ) {
-                        isInUse =
-                            !!row.publishedVersionId &&
-                            row.inUseByAI === KnowledgeVisibility.PUBLIC
-                    } else {
-                        // For other types, use visibility status
-                        const visibility = info.getValue() as
-                            | KnowledgeVisibility
-                            | undefined
-                        isInUse = visibility === KnowledgeVisibility.PUBLIC
-                    }
-
+                if (isGrouped) {
                     return (
                         <Box alignItems="center" justifyContent="flex-start">
-                            {isInUse ? (
-                                <Icon
-                                    name="check"
-                                    size="md"
-                                    color={Color.Green}
-                                />
-                            ) : (
-                                <Icon
-                                    name="close"
-                                    size="md"
-                                    color={Color.Grey}
-                                />
-                            )}
+                            <Text>--</Text>
                         </Box>
                     )
-                },
-            ),
+                }
+
+                // For FAQ (Help Center articles), check both conditions:
+                // 1. Article must have a published version (not only draft)
+                // 2. Article must have public visibility
+                let isInUse: boolean
+                if (row.type === KnowledgeType.FAQ) {
+                    isInUse =
+                        !!row.publishedVersionId &&
+                        row.inUseByAI === KnowledgeVisibility.PUBLIC
+                } else {
+                    // For other types, use visibility status
+                    const visibility = info.getValue() as
+                        | KnowledgeVisibility
+                        | undefined
+                    isInUse = visibility === KnowledgeVisibility.PUBLIC
+                }
+
+                return (
+                    <Box alignItems="center" justifyContent="flex-start">
+                        {isInUse ? (
+                            <Icon name="check" size="md" color={Color.Green} />
+                        ) : (
+                            <Icon name="close" size="md" color={Color.Grey} />
+                        )}
+                    </Box>
+                )
+            },
         },
     ]
 

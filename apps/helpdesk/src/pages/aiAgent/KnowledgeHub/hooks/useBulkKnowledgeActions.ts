@@ -1,13 +1,10 @@
-import { useQueryClient } from '@tanstack/react-query'
-
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
 import {
-    helpCenterKeys,
-    useBulkDeleteArticles,
-    useBulkUpdateArticleTranslationVisibility,
-} from 'models/helpCenter/queries'
+    useKnowledgeHubBulkDelete,
+    useKnowledgeHubBulkUpdateVisibility,
+} from 'models/helpCenter/knowledgeHub/mutations'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -21,36 +18,26 @@ type HelpCenterIds = {
     snippetHelpCenterId?: number | null
 }
 
-export function useBulkKnowledgeActions(helpCenterIds: HelpCenterIds) {
-    const queryClient = useQueryClient()
+type UseBulkKnowledgeActionsParams = {
+    helpCenterIds: HelpCenterIds
+}
+
+export function useBulkKnowledgeActions({
+    helpCenterIds,
+}: UseBulkKnowledgeActionsParams) {
     const dispatch = useAppDispatch()
     const accountId = useAppSelector(getCurrentAccountId)
 
-    const deleteMutation = useBulkDeleteArticles({
-        onSettled: () => {
-            void queryClient.invalidateQueries({
-                queryKey: helpCenterKeys.knowledgeHubArticles({
-                    account_id: accountId,
-                    guidance_help_center_id: helpCenterIds.guidanceHelpCenterId,
-                    snippet_help_center_id: helpCenterIds.snippetHelpCenterId,
-                    faq_help_center_id: helpCenterIds.faqHelpCenterId,
-                }),
-            })
-        },
-    })
+    const queryParams = {
+        account_id: accountId,
+        guidance_help_center_id: helpCenterIds.guidanceHelpCenterId,
+        snippet_help_center_id: helpCenterIds.snippetHelpCenterId,
+        faq_help_center_id: helpCenterIds.faqHelpCenterId,
+    }
 
-    const visibilityMutation = useBulkUpdateArticleTranslationVisibility({
-        onSettled: () => {
-            void queryClient.invalidateQueries({
-                queryKey: helpCenterKeys.knowledgeHubArticles({
-                    account_id: accountId,
-                    guidance_help_center_id: helpCenterIds.guidanceHelpCenterId,
-                    snippet_help_center_id: helpCenterIds.snippetHelpCenterId,
-                    faq_help_center_id: helpCenterIds.faqHelpCenterId,
-                }),
-            })
-        },
-    })
+    const deleteMutation = useKnowledgeHubBulkDelete(queryParams)
+
+    const visibilityMutation = useKnowledgeHubBulkUpdateVisibility(queryParams)
 
     const groupItemsByHelpCenter = (items: GroupedKnowledgeItem[]) => {
         const groups = new Map<number, number[]>()

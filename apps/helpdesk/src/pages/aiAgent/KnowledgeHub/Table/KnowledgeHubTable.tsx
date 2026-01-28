@@ -5,6 +5,7 @@ import moment from 'moment-timezone'
 
 import {
     HeaderRowGroup,
+    type SortingState,
     TableBodyContent,
     TableHeader,
     TablePagination,
@@ -42,6 +43,7 @@ import type {
 } from 'pages/aiAgent/KnowledgeHub/types'
 
 import { KnowledgeType as KnowledgeTypeEnum } from '../types'
+import { applyStableRowOrder, sortData } from './KnowledgeHubTable.utils'
 
 import css from './KnowledgeHubTable.less'
 
@@ -120,6 +122,25 @@ export const KnowledgeHubTable = ({
         },
     )
 
+    // Track user's sort selection for manual sorting
+    const [sortState, setSortState] = useState<SortingState>([])
+
+    // Track sorted row ID order for stable sorting
+    const sortedRowIdsRef = useRef<string[] | null>(null)
+    const cachedSortStateRef = useRef<SortingState | null>(null)
+
+    // Handle column header clicks for custom sorting
+    const handleColumnClick = useCallback((columnId: string) => {
+        setSortState((prev) => {
+            // If clicking same column, toggle direction
+            if (prev.length > 0 && prev[0].id === columnId) {
+                return [{ id: columnId, desc: !prev[0].desc }]
+            }
+            // Otherwise, sort ascending by this column
+            return [{ id: columnId, desc: false }]
+        })
+    }, [])
+
     const { guidanceActions: availableActions } =
         useGetGuidancesAvailableActions(shopName, shopType)
 
@@ -182,7 +203,8 @@ export const KnowledgeHubTable = ({
         dateRange.endDate,
     ])
 
-    const displayData = useMemo(() => {
+    // First, apply filtering and grouping
+    const filteredAndGroupedData = useMemo(() => {
         const shouldGroupData =
             isSearchActive ||
             Boolean(selectedFolder) ||
@@ -210,6 +232,44 @@ export const KnowledgeHubTable = ({
         searchTerm,
         inUseByAIFilter,
     ])
+
+    // Apply manual sorting OR stable row order
+    const displayData = useMemo(() => {
+        // No sort active - return unsorted data
+        if (sortState.length === 0) {
+            sortedRowIdsRef.current = null
+            cachedSortStateRef.current = null
+            return filteredAndGroupedData
+        }
+
+        // Check if user clicked a column header (sortState changed)
+        const sortStateChanged =
+            !cachedSortStateRef.current ||
+            sortState[0]?.id !== cachedSortStateRef.current[0]?.id ||
+            sortState[0]?.desc !== cachedSortStateRef.current[0]?.desc
+        // User clicked header → Do fresh sort
+        if (sortStateChanged) {
+            const sortedData = sortData(filteredAndGroupedData, sortState)
+            // Cache the sort order as string IDs for stable reordering
+            // String normalization ensures consistent comparison with backend data
+            sortedRowIdsRef.current = sortedData.map((row) => String(row.id))
+            cachedSortStateRef.current = sortState
+
+            return sortedData
+        }
+
+        // No header click → Maintain existing sort order
+        // If no cached order exists, do fresh sort
+        if (!sortedRowIdsRef.current) {
+            const sortedData = sortData(filteredAndGroupedData, sortState)
+            sortedRowIdsRef.current = sortedData.map((row) => String(row.id))
+            return sortedData
+        }
+        return applyStableRowOrder(
+            filteredAndGroupedData,
+            sortedRowIdsRef.current,
+        )
+    }, [filteredAndGroupedData, sortState])
 
     const handleRowClick = useCallback(
         (row: GroupedKnowledgeItem) => {
@@ -257,6 +317,9 @@ export const KnowledgeHubTable = ({
             isMetricsEnabled ? outcomeCustomFieldId : undefined,
             isMetricsEnabled ? intentCustomFieldId : undefined,
             isMetricsLoading,
+            undefined, // shopIntegrationId (not currently used)
+            sortState, // Pass sort state
+            handleColumnClick, // Pass click handler
         )
     }, [
         searchTerm,
@@ -268,15 +331,14 @@ export const KnowledgeHubTable = ({
         intentCustomFieldId,
         isMetricsEnabled,
         isMetricsLoading,
+        sortState,
+        handleColumnClick,
     ])
 
+    // Custom sorting - no TanStack sorting, we handle column clicks manually
     const table = useTable<GroupedKnowledgeItem>({
         data: displayData,
         columns: columnsWithHighlight,
-        sortingConfig: {
-            enableSorting: true,
-            enableMultiSort: false,
-        },
         paginationConfig: {
             enablePagination: true,
             manualPagination: false,
@@ -290,7 +352,8 @@ export const KnowledgeHubTable = ({
             enableMultiRowSelection: true,
         },
         additionalOptions: {
-            getRowId: (row) => row.id,
+            // TanStack Table requires string row IDs for consistent internal tracking
+            getRowId: (row) => String(row.id),
         },
     })
 

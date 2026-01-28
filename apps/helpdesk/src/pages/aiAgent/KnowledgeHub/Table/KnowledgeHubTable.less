@@ -106,21 +106,21 @@
             // Tickets column
             table th:nth-child(3),
             table td:nth-child(3) {
-                width: 91px;
+                width: 106px;
                 min-width: 91px;
             }
 
             // Handover Tickets column
             table th:nth-child(4),
             table td:nth-child(4) {
-                width: 134px;
+                width: 147px;
                 min-width: 134px;
             }
 
             // Avg CSAT column
             table th:nth-child(5),
             table td:nth-child(5) {
-                width: 93px;
+                width: 106px;
                 min-width: 93px;
             }
 
@@ -134,7 +134,7 @@
             // In Use by AI Agent column (last column)
             table th:last-child,
             table td:last-child {
-                width: 148px;
+                width: 153px;
                 min-width: 148px;
             }
         }
@@ -201,5 +201,40 @@
         [data-name='table-root'] {
             flex-grow: 1;
         }
+    }
+
+    .sortableColumnHeader {
+        background: none;
+        border: none;
+        font: inherit;
+        color: inherit;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: var(--spacing-xxxs);
+        cursor: pointer;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+
+        &:focus-visible {
+            outline: 2px solid var(--color-accent-primary, #0066cc);
+            outline-offset: 2px;
+            border-radius: var(--border-radius-sm, 4px);
+        }
+
+        // Show sort indicator on hover
+        &:hover .sortIndicator {
+            opacity: 1;
+        }
+    }
+
+    .sortIndicator {
+        display: inline-flex;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.15s ease-in-out;
     }
 }

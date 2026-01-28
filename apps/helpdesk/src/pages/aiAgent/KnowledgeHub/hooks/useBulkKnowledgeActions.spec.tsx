@@ -109,7 +109,7 @@ describe('useBulkKnowledgeActions', () => {
             mockDeleteMutateAsync.mockResolvedValue({ deleted_count: 2 })
 
             const { result } = renderHook(
-                () => useBulkKnowledgeActions(helpCenterIds),
+                () => useBulkKnowledgeActions({ helpCenterIds }),
                 { wrapper },
             )
 
@@ -143,7 +143,7 @@ describe('useBulkKnowledgeActions', () => {
             mockDeleteMutateAsync.mockResolvedValue({ deleted_count: 1 })
 
             const { result } = renderHook(
-                () => useBulkKnowledgeActions(helpCenterIds),
+                () => useBulkKnowledgeActions({ helpCenterIds }),
                 { wrapper },
             )
 
@@ -171,7 +171,7 @@ describe('useBulkKnowledgeActions', () => {
             mockDeleteMutateAsync.mockResolvedValue({ deleted_count: 1 })
 
             const { result } = renderHook(
-                () => useBulkKnowledgeActions(helpCenterIds),
+                () => useBulkKnowledgeActions({ helpCenterIds }),
                 { wrapper },
             )
 
@@ -223,7 +223,7 @@ describe('useBulkKnowledgeActions', () => {
             mockDeleteMutateAsync.mockRejectedValue(mockError)
 
             const { result } = renderHook(
-                () => useBulkKnowledgeActions(helpCenterIds),
+                () => useBulkKnowledgeActions({ helpCenterIds }),
                 { wrapper },
             )
 
@@ -247,9 +247,11 @@ describe('useBulkKnowledgeActions', () => {
             const { result } = renderHook(
                 () =>
                     useBulkKnowledgeActions({
-                        guidanceHelpCenterId: null,
-                        faqHelpCenterId: 2,
-                        snippetHelpCenterId: null,
+                        helpCenterIds: {
+                            guidanceHelpCenterId: null,
+                            faqHelpCenterId: 2,
+                            snippetHelpCenterId: null,
+                        },
                     }),
                 { wrapper },
             )
@@ -315,7 +317,7 @@ describe('useBulkKnowledgeActions', () => {
             )
 
             const { result } = renderHook(
-                () => useBulkKnowledgeActions(helpCenterIds),
+                () => useBulkKnowledgeActions({ helpCenterIds }),
                 { wrapper },
             )
 
@@ -346,7 +348,7 @@ describe('useBulkKnowledgeActions', () => {
             })
 
             const { result } = renderHook(
-                () => useBulkKnowledgeActions(helpCenterIds),
+                () => useBulkKnowledgeActions({ helpCenterIds }),
                 { wrapper },
             )
 
@@ -380,7 +382,7 @@ describe('useBulkKnowledgeActions', () => {
             })
 
             const { result } = renderHook(
-                () => useBulkKnowledgeActions(helpCenterIds),
+                () => useBulkKnowledgeActions({ helpCenterIds }),
                 { wrapper },
             )
 
@@ -414,7 +416,7 @@ describe('useBulkKnowledgeActions', () => {
             })
 
             const { result } = renderHook(
-                () => useBulkKnowledgeActions(helpCenterIds),
+                () => useBulkKnowledgeActions({ helpCenterIds }),
                 { wrapper },
             )
 
@@ -447,7 +449,7 @@ describe('useBulkKnowledgeActions', () => {
             mockVisibilityMutateAsync.mockRejectedValue(mockError)
 
             const { result } = renderHook(
-                () => useBulkKnowledgeActions(helpCenterIds),
+                () => useBulkKnowledgeActions({ helpCenterIds }),
                 { wrapper },
             )
 
@@ -503,7 +505,7 @@ describe('useBulkKnowledgeActions', () => {
             )
 
             const { result } = renderHook(
-                () => useBulkKnowledgeActions(helpCenterIds),
+                () => useBulkKnowledgeActions({ helpCenterIds }),
                 { wrapper },
             )
 
@@ -549,7 +551,7 @@ describe('useBulkKnowledgeActions', () => {
             } as any)
 
             const { result } = renderHook(
-                () => useBulkKnowledgeActions(helpCenterIds),
+                () => useBulkKnowledgeActions({ helpCenterIds }),
                 { wrapper },
             )
 
@@ -577,7 +579,7 @@ describe('useBulkKnowledgeActions', () => {
             } as any)
 
             const { result } = renderHook(
-                () => useBulkKnowledgeActions(helpCenterIds),
+                () => useBulkKnowledgeActions({ helpCenterIds }),
                 { wrapper },
             )
 
@@ -586,7 +588,7 @@ describe('useBulkKnowledgeActions', () => {
 
         it('should return false when no mutations are loading', () => {
             const { result } = renderHook(
-                () => useBulkKnowledgeActions(helpCenterIds),
+                () => useBulkKnowledgeActions({ helpCenterIds }),
                 { wrapper },
             )
 

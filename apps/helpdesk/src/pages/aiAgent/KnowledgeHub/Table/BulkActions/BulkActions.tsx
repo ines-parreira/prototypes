@@ -53,7 +53,7 @@ export const BulkActions = ({
     const selectedItems = selectedRows.map((row) => row.original)
 
     const { handleBulkEnable, handleBulkDisable, handleBulkDelete, isLoading } =
-        useBulkKnowledgeActions(helpCenterIds)
+        useBulkKnowledgeActions({ helpCenterIds })
 
     const { duplicate, isGuidanceArticleUpdating } = useGuidanceArticleMutation(
         {
