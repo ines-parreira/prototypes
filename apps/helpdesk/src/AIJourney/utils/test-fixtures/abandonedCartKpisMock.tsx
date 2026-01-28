@@ -1,4 +1,4 @@
-import type { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
+import type { MetricProps } from 'AIJourney/types/AIJourneyTypes'
 
 export const abandonedCartKpisMock: MetricProps[] = [
     {

@@ -3,6 +3,7 @@ import {
     AIJourneyMetric,
     AIJourneyMetricsConfig,
 } from 'AIJourney/types/AIJourneyTypes'
+import type { MetricProps } from 'AIJourney/types/AIJourneyTypes'
 import {
     aiJourneyTotalNumberOfOrderQueryFactory,
     aiJourneyTotalNumberOfOrderTimeSeriesQuery,
@@ -11,8 +12,6 @@ import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-
-import type { MetricProps } from '../useAIJourneyKpis/useAIJourneyKpis'
 
 export const useAIJourneyTotalOrders = (
     integrationId: string,

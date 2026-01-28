@@ -6,7 +6,5 @@ export { useGeneratePlaygroundMessage } from './useGeneratePlaygroundMessage/use
 export { useHandleSendTestSMS } from './useHandleSendTestSMS/useHandleSendTestSMS'
 export { useFilters } from './useFilters/useFilters'
 export { useAIJourneyTotalConversations } from './useAIJourneyTotalConversations/useAIJourneyTotalConversations'
-export { useAIJourneyKpis } from './useAIJourneyKpis/useAIJourneyKpis'
-export { useKpisPerJourney } from './useKpisPerJourney/useKpisPerJourney'
 export { useAverageOrderValue } from './useAverageOrderValue/useAverageOrderValue'
 export { useRevenuePerRecipient } from './useRevenuePerRecipient/useRevenuePerRecipient'

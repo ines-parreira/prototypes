@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
-import type { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
+import type { MetricProps } from 'AIJourney/types/AIJourneyTypes'
 import { calculateRate } from 'AIJourney/utils'
 import {
     aiJourneyGmvInfluencedQueryFactory,

@@ -1,5 +1,7 @@
+import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
 import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 
 export enum AIJourneyMetric {
     TotalOrders = 'aiJourneyTotalOrders',
@@ -49,4 +51,16 @@ export const AIJourneyMetricsConfig: Record<
         showMetric: false,
         domain: Domain.AIJourney,
     },
+}
+
+export type MetricProps = {
+    label: string
+    value: number
+    prevValue?: number | null | undefined
+    series?: TimeSeriesDataItem[]
+    interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
+    metricFormat: MetricValueFormat
+    currency?: string
+    isLoading: boolean
+    drilldown?: DrillDownMetric
 }

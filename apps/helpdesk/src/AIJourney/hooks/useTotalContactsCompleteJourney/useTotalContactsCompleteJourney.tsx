@@ -1,5 +1,5 @@
-import type { MetricProps } from 'AIJourney/hooks/useAIJourneyKpis/useAIJourneyKpis'
 import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
+import type { MetricProps } from 'AIJourney/types/AIJourneyTypes'
 import {
     aiJourneyTotalContactsCompleteJourneyQueryFactory,
     aiJourneyTotalContactsCompleteJourneyTimeSeriesQuery,
