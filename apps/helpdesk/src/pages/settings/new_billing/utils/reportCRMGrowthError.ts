@@ -2,10 +2,20 @@ import { SentryTeam } from 'common/const/sentryTeamNames'
 import { reportError } from 'utils/errors'
 
 export const reportCRMGrowthError = (error: unknown, context: string) => {
-    reportError(error, {
+    const errorMessage =
+        error instanceof Error
+            ? error?.message
+            : typeof error === 'string'
+              ? error
+              : 'Unknown error'
+
+    const formattedError = new Error(`${context}: ${errorMessage}`)
+
+    reportError(formattedError, {
         tags: { team: SentryTeam.CRM_GROWTH },
         extra: {
             context,
+            originalError: error,
         },
     })
 }

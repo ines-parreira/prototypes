@@ -75,10 +75,19 @@ describe('useSubmitPaymentMethodWithBillingContact hook', () => {
             ).rejects.toThrow('Update billing contact failed')
         })
 
-        expect(reportError).toHaveBeenLastCalledWith(error, {
-            tags: { team: SentryTeam.CRM_GROWTH },
-            extra: { context: 'Failed to update billing contact' },
-        })
+        expect(reportError).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                message:
+                    'Failed to update billing contact: Update billing contact failed',
+            }),
+            {
+                tags: { team: SentryTeam.CRM_GROWTH },
+                extra: {
+                    context: 'Failed to update billing contact',
+                    originalError: error,
+                },
+            },
+        )
     })
 
     it('should return isLoading as true if updateBillingContact mutation is loading', async () => {
