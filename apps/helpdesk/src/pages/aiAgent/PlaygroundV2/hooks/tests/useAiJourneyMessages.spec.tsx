@@ -407,4 +407,40 @@ describe('useAiJourneyMessages', () => {
             }),
         ])
     })
+
+    it('should set maxDiscountPercent to null when discountCodeValue is undefined', async () => {
+        const { result } = renderHook(
+            () => ({
+                aiJourneyMessages: useAiJourneyMessages(),
+                aiJourneyContext: useAIJourneyContext(),
+            }),
+            {
+                wrapper: createWrapper(),
+            },
+        )
+
+        await act(async () => {
+            result.current.aiJourneyContext.setAIJourneySettings({
+                totalFollowUp: 5,
+                includeDiscountCode: true,
+                discountCodeValue: undefined,
+                discountCodeMessageIdx: 2,
+                outboundMessageInstructions: 'Test instructions',
+            })
+        })
+
+        await act(async () => {
+            await result.current.aiJourneyMessages.triggerMessage()
+        })
+
+        expect(mockMutateAsync).toHaveBeenCalledWith([
+            expect.objectContaining({
+                settings: expect.objectContaining({
+                    offerDiscount: true,
+                    maxDiscountPercent: null,
+                    discountCodeMessageThreshold: 2,
+                }),
+            }),
+        ])
+    })
 })

@@ -59,7 +59,7 @@ const createAIJourneyPayload: (
             smsSenderIntegrationId:
                 journeyConfiguration?.sms_sender_integration_id ?? null,
             offerDiscount: aiJourneySettings.includeDiscountCode,
-            maxDiscountPercent: aiJourneySettings.discountCodeValue,
+            maxDiscountPercent: aiJourneySettings.discountCodeValue ?? null,
             discountCodeMessageThreshold:
                 aiJourneySettings.discountCodeMessageIdx,
         },
