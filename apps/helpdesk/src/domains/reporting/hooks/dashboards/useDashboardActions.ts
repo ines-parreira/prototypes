@@ -5,7 +5,6 @@ import _sortBy from 'lodash/sortBy'
 
 import type {
     AnalyticsCustomReport,
-    CreateAnalyticsCustomReportBody,
     HttpResponse,
 } from '@gorgias/helpdesk-queries'
 import {
@@ -35,8 +34,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-export const DASHBOARD_DUPLICATE_SUCCESS_MESSAGE = 'successfully duplicated'
-export const DASHBOARD_DUPLICATE_ERROR_MESSAGE = 'could not be duplicated'
 export const DASHBOARD_DELETED_SUCCESS_MESSAGE = 'successfully deleted'
 export const DASHBOARD_DELETED_ERROR_MESSAGE = 'could not be deleted'
 export const SUCCESSFULLY_CREATED = 'Successfully created'
@@ -138,35 +135,6 @@ export const useDashboardActions = () => {
         ],
     )
 
-    const duplicateReportHandler = useCallback(
-        (data: CreateAnalyticsCustomReportBody) => {
-            return createMutation.mutate(
-                {
-                    data,
-                },
-                {
-                    onSuccess: () => {
-                        queryClient.invalidateQueries({
-                            queryKey:
-                                queryKeys.analyticsCustomReports.listAnalyticsCustomReports(),
-                        })
-
-                        handleMutationSuccess(
-                            dispatch,
-                            `${data.name} ${DASHBOARD_DUPLICATE_SUCCESS_MESSAGE}`,
-                        )
-                    },
-                    onError: () =>
-                        handleMutationError(
-                            dispatch,
-                            `${data.name} ${DASHBOARD_DUPLICATE_ERROR_MESSAGE}`,
-                        ),
-                },
-            )
-        },
-        [createMutation, dispatch, queryClient],
-    )
-
     const deleteReportHandler = useCallback(
         ({
             name,
@@ -222,9 +190,9 @@ export const useDashboardActions = () => {
             successMessage?: string
             errorMessage?: string
         }) => {
-            const children = getGroupChartsIntoRows(
-                chartIds || getChildrenIds(dashboard.children),
-            )
+            const children = chartIds
+                ? getGroupChartsIntoRows(chartIds)
+                : dashboard.children
 
             const apiDashboard = createDashboardPayload({
                 ...dashboard,
@@ -326,7 +294,6 @@ export const useDashboardActions = () => {
 
     return {
         createDashboardHandler,
-        duplicateReportHandler,
         deleteReportHandler,
         updateDashboardHandler,
         addChartToDashboardHandler,

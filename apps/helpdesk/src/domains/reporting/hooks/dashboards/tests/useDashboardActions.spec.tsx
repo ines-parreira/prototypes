@@ -15,7 +15,6 @@ import {
 import type {
     AnalyticsCustomReport,
     AnalyticsCustomReportType,
-    CreateAnalyticsCustomReportBody,
     ListAnalyticsCustomReports200,
 } from '@gorgias/helpdesk-queries'
 import { queryKeys } from '@gorgias/helpdesk-queries'
@@ -23,8 +22,6 @@ import { queryKeys } from '@gorgias/helpdesk-queries'
 import {
     DASHBOARD_DELETED_ERROR_MESSAGE,
     DASHBOARD_DELETED_SUCCESS_MESSAGE,
-    DASHBOARD_DUPLICATE_ERROR_MESSAGE,
-    DASHBOARD_DUPLICATE_SUCCESS_MESSAGE,
     SUCCESSFULLY_CREATED,
     useDashboardActions,
 } from 'domains/reporting/hooks/dashboards/useDashboardActions'
@@ -97,64 +94,6 @@ const renderDashboardHook = () => {
 
 describe('useDashboardActions', () => {
     const invalidateQueriesMock = jest.spyOn(queryClient, 'invalidateQueries')
-
-    describe('duplicateReportHandler', () => {
-        const duplicateHandlerData = {
-            name: dashboard.name,
-            type: dashboard.type,
-            emoji: dashboard.emoji,
-            children: dashboard.children,
-            analytics_filter_id: dashboard.analytics_filter_id,
-        } as CreateAnalyticsCustomReportBody
-
-        it('should duplicate report and show success notification', async () => {
-            const waitForRequest = createMock.waitForRequest(server)
-
-            const { result } = renderDashboardHook()
-            result.current.duplicateReportHandler(duplicateHandlerData)
-
-            await waitForRequest(async (request: Request) => {
-                const requestBody = await request.json()
-                expect(requestBody).toEqual(duplicateHandlerData)
-            })
-
-            await waitFor(() => {
-                expect(invalidateQueriesMock).toHaveBeenCalledWith({
-                    queryKey:
-                        queryKeys.analyticsCustomReports.listAnalyticsCustomReports(),
-                })
-
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: `${dashboard.name} ${DASHBOARD_DUPLICATE_SUCCESS_MESSAGE}`,
-                })
-            })
-        })
-
-        it('should show error notification when duplication fails', async () => {
-            const { handler } = mockCreateAnalyticsCustomReportHandler(
-                async () => {
-                    const error = {
-                        error: 'server error',
-                    } as unknown as AnalyticsCustomReport
-                    return HttpResponse.json(error, { status: 500 })
-                },
-            )
-            server.use(handler)
-
-            const { result } = renderDashboardHook()
-            result.current.duplicateReportHandler(duplicateHandlerData)
-
-            expect(invalidateQueriesMock).not.toHaveBeenCalled()
-
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Error,
-                    message: `${dashboard.name} ${DASHBOARD_DUPLICATE_ERROR_MESSAGE}`,
-                })
-            })
-        })
-    })
 
     describe('deleteReportHandler', () => {
         const deleteHandlerData = {
@@ -341,6 +280,100 @@ describe('useDashboardActions', () => {
                     status: NotificationStatus.Error,
                     message: customError,
                 })
+            })
+        })
+
+        it('should preserve layout metadata when chartIds is not provided', async () => {
+            const dashboardWithMetadata: DashboardSchema = {
+                id: 844,
+                name: 'Test Dashboard',
+                analytics_filter_id: null,
+                emoji: null,
+                children: [
+                    {
+                        type: DashboardChildType.Row,
+                        children: [
+                            {
+                                type: DashboardChildType.Chart,
+                                config_id: 'chart-1',
+                                metadata: {
+                                    layout: { x: 0, y: 0, w: 2, h: 9 },
+                                },
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const updateMock = mockUpdateAnalyticsCustomReportHandler(
+                async ({ data }) => {
+                    return HttpResponse.json({ ...data, id: 844 })
+                },
+            )
+            const waitForRequest = updateMock.waitForRequest(server)
+            server.use(updateMock.handler)
+
+            const { result } = renderDashboardHook()
+            result.current.updateDashboardHandler({
+                dashboard: dashboardWithMetadata,
+                // No chartIds provided - should preserve metadata
+            })
+
+            await waitForRequest(async (request: Request) => {
+                const requestBody = await request.json()
+                const chart = requestBody.children[0].children[0]
+                expect(chart.metadata.layout).toEqual({
+                    x: 0,
+                    y: 0,
+                    w: 2,
+                    h: 9,
+                })
+            })
+        })
+
+        it('should restructure children when chartIds is provided', async () => {
+            const dashboard: DashboardSchema = {
+                id: 844,
+                name: 'Test Dashboard',
+                analytics_filter_id: null,
+                emoji: null,
+                children: [],
+            }
+
+            const updateMock = mockUpdateAnalyticsCustomReportHandler(
+                async ({ data }) => {
+                    return HttpResponse.json({ ...data, id: 844 })
+                },
+            )
+            const waitForRequest = updateMock.waitForRequest(server)
+            server.use(updateMock.handler)
+
+            const { result } = renderDashboardHook()
+            result.current.updateDashboardHandler({
+                dashboard,
+                chartIds: ['chart-1', 'chart-2'],
+            })
+
+            await waitForRequest(async (request: Request) => {
+                const requestBody = await request.json()
+                expect(requestBody.children).toEqual([
+                    {
+                        type: 'row',
+                        metadata: {},
+                        children: [
+                            {
+                                type: 'chart',
+                                config_id: 'chart-1',
+                                metadata: {},
+                            },
+                            {
+                                type: 'chart',
+                                config_id: 'chart-2',
+                                metadata: {},
+                            },
+                        ],
+                    },
+                ])
             })
         })
     })

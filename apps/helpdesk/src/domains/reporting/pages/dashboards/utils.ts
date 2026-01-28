@@ -17,6 +17,7 @@ import { validateAnalyticsCustomReport } from '@gorgias/helpdesk-validators'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import type {
     ChartConfig,
+    ChartLayoutMetadata,
     DashboardChartSchema,
     DashboardChild,
     DashboardInput,
@@ -34,10 +35,23 @@ import { notNull } from 'utils/types'
 
 const fromApiChart = (
     chart: AnalyticsCustomReportChartSchema,
-): DashboardChartSchema => ({
-    config_id: chart.config_id,
-    type: DashboardChildType.Chart,
-})
+): DashboardChartSchema => {
+    if (chart.metadata?.layout) {
+        return {
+            config_id: chart.config_id,
+            type: DashboardChildType.Chart,
+            metadata: {
+                layout: chart.metadata.layout as ChartLayoutMetadata,
+            },
+        }
+    }
+
+    return {
+        config_id: chart.config_id,
+        type: DashboardChildType.Chart,
+        metadata: {},
+    }
+}
 
 const fromApiRow = (
     row: AnalyticsCustomReportRowSchema,
@@ -216,7 +230,7 @@ const createChildrenWithMetadata = (
                 return {
                     type: AnalyticsCustomReportChartSchemaType.Chart,
                     config_id: child.config_id,
-                    metadata: {},
+                    metadata: child.metadata || {},
                 } as AnalyticsCustomReportChartSchema
 
             case DashboardChildType.Row:

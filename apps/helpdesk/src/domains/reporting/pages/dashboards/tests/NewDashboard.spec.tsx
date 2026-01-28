@@ -28,6 +28,14 @@ const DragAndResizeChartMock = assumeMock(DragAndResizeChart)
 jest.mock('domains/reporting/pages/dashboards/useFiltersFromDashboard')
 const useFiltersFromDashboardMock = assumeMock(useFiltersFromDashboard)
 
+jest.mock('domains/reporting/hooks/dashboards/useDashboardActions', () => ({
+    useDashboardActions: jest.fn(() => ({
+        updateDashboardHandler: jest.fn(),
+        isUpdateMutationLoading: false,
+        isUpdateMutationError: false,
+    })),
+}))
+
 const PIN_FILTER_BUTTON = 'pin filter'
 
 describe('NewDashboard', () => {

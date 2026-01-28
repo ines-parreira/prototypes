@@ -74,9 +74,19 @@ export type DashboardSectionSchema = {
     children: (DashboardRowSchema | DashboardChartSchema)[]
 }
 
+export type ChartLayoutMetadata = {
+    x: number
+    y: number
+    w: number
+    h: number
+}
+
 export type DashboardChartSchema = {
     type: DashboardChildType.Chart
     config_id: string
+    metadata?: {
+        layout?: ChartLayoutMetadata
+    }
 }
 
 export type DashboardChild =

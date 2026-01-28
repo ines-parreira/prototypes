@@ -13,6 +13,10 @@ import type {
 } from 'domains/reporting/pages/dashboards/types'
 import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 
+let capturedOnLayoutChange: ((layout: any) => void) | null = null
+let capturedOnDragStop: ((layout: any) => void) | null = null
+let capturedOnResizeStop: ((layout: any) => void) | null = null
+
 jest.mock('react-grid-layout', () => {
     const MockResponsiveGridLayout = ({
         children,
@@ -24,24 +28,48 @@ jest.mock('react-grid-layout', () => {
         resizeConfig,
         containerPadding,
         compactor,
-        ...otherProps
-    }: any) => (
-        <section
-            role="grid"
-            aria-label="Dashboard Grid Layout"
-            data-width={width}
-            data-breakpoints={JSON.stringify(breakpoints)}
-            data-cols={JSON.stringify(cols)}
-            data-row-height={rowHeight}
-            data-is-draggable={dragConfig?.enabled}
-            data-is-resizable={resizeConfig?.enabled}
-            data-compact-type={String(compactor)}
-            data-container-padding={JSON.stringify(containerPadding)}
-            {...otherProps}
-        >
-            {children}
-        </section>
-    )
+        layouts,
+        onLayoutChange,
+        onDragStop,
+        onResizeStop,
+    }: any) => {
+        capturedOnLayoutChange = onLayoutChange
+        capturedOnDragStop = onDragStop
+        capturedOnResizeStop = onResizeStop
+
+        const layout = layouts?.lg || []
+
+        const processedChildren = React.Children.map(
+            children,
+            (child, index) => {
+                if (!React.isValidElement(child)) return child
+
+                const layoutItem = layout[index]
+                if (!layoutItem) return child
+
+                return React.cloneElement(child as React.ReactElement<any>, {
+                    'data-grid': JSON.stringify(layoutItem),
+                })
+            },
+        )
+
+        return (
+            <section
+                role="grid"
+                aria-label="Dashboard Grid Layout"
+                data-width={width}
+                data-breakpoints={JSON.stringify(breakpoints)}
+                data-cols={JSON.stringify(cols)}
+                data-row-height={rowHeight}
+                data-is-draggable={dragConfig?.enabled}
+                data-is-resizable={resizeConfig?.enabled}
+                data-compact-type={String(compactor)}
+                data-container-padding={JSON.stringify(containerPadding)}
+            >
+                {processedChildren}
+            </section>
+        )
+    }
     MockResponsiveGridLayout.displayName = 'ResponsiveGridLayout'
 
     return {
@@ -53,6 +81,7 @@ jest.mock('react-grid-layout', () => {
             measureWidth: jest.fn(),
         })),
         noCompactor: jest.fn(),
+        verticalCompactor: jest.fn(),
     }
 })
 
@@ -63,6 +92,14 @@ jest.mock(
     }),
 )
 const DragAndResizeChartMock = assumeMock(DragAndResizeChart)
+
+jest.mock('domains/reporting/hooks/dashboards/useDashboardActions', () => ({
+    useDashboardActions: jest.fn(() => ({
+        updateDashboardHandler: jest.fn(),
+        isUpdateMutationLoading: false,
+        isUpdateMutationError: false,
+    })),
+}))
 
 describe('DragAndResizeDashboardGrid', () => {
     beforeEach(() => {
@@ -356,5 +393,452 @@ describe('DragAndResizeDashboardGrid', () => {
             name: /dashboard grid layout/i,
         })
         expect(gridLayout).not.toBeInTheDocument()
+    })
+
+    describe('Layout Persistence', () => {
+        it('uses saved layout metadata when available', () => {
+            const chartWithLayout: DashboardChartSchema = {
+                type: DashboardChildType.Chart,
+                config_id: 'saved_chart',
+                metadata: {
+                    layout: {
+                        x: 2,
+                        y: 3,
+                        w: 2,
+                        h: 9,
+                    },
+                },
+            }
+
+            const dashboard = createMockDashboard([chartWithLayout])
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            const gridElement = screen.getByRole('grid')
+            const chartElement = gridElement.querySelector(
+                '[data-grid]',
+            ) as HTMLElement
+
+            expect(chartElement).toBeInTheDocument()
+            expect(chartElement.getAttribute('data-grid')).toContain('"x":2')
+            expect(chartElement.getAttribute('data-grid')).toContain('"y":3')
+            expect(chartElement.getAttribute('data-grid')).toContain('"w":2')
+            expect(chartElement.getAttribute('data-grid')).toContain('"h":9')
+        })
+
+        it('calculates layout for charts without metadata', () => {
+            const chartWithoutLayout = createMockChart('new_chart')
+
+            const dashboard = createMockDashboard([chartWithoutLayout])
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            const gridElement = screen.getByRole('grid')
+            const chartElement = gridElement.querySelector(
+                '[data-grid]',
+            ) as HTMLElement
+
+            expect(chartElement).toBeInTheDocument()
+            expect(chartElement.getAttribute('data-grid')).toContain('"x":0')
+            expect(chartElement.getAttribute('data-grid')).toContain('"y":0')
+        })
+
+        it('handles mixed charts with and without saved layouts', () => {
+            const chartWithLayout: DashboardChartSchema = {
+                type: DashboardChildType.Chart,
+                config_id: 'saved_chart',
+                metadata: {
+                    layout: {
+                        x: 1,
+                        y: 1,
+                        w: 2,
+                        h: 9,
+                    },
+                },
+            }
+            const chartWithoutLayout = createMockChart('new_chart')
+
+            const dashboard = createMockDashboard([
+                chartWithLayout,
+                chartWithoutLayout,
+            ])
+            const { container } = render(
+                <DragAndResizeDashboardGrid dashboard={dashboard} />,
+            )
+
+            const chartElements = container.querySelectorAll('[data-grid]')
+            expect(chartElements).toHaveLength(2)
+        })
+    })
+
+    describe('handleLayoutChange', () => {
+        beforeEach(() => {
+            capturedOnLayoutChange = null
+            capturedOnDragStop = null
+            capturedOnResizeStop = null
+        })
+
+        it('should skip update on initial mount', () => {
+            const mockUpdateDashboardHandler = jest.fn()
+            const { useDashboardActions } = jest.requireMock(
+                'domains/reporting/hooks/dashboards/useDashboardActions',
+            )
+            useDashboardActions.mockReturnValue({
+                updateDashboardHandler: mockUpdateDashboardHandler,
+                isUpdateMutationLoading: false,
+                isUpdateMutationError: false,
+            })
+
+            const chart = createMockChart('chart-1')
+            const dashboard = createMockDashboard([chart])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            if (capturedOnLayoutChange) {
+                capturedOnLayoutChange([
+                    { i: 'chart-1', x: 1, y: 1, w: 2, h: 9 },
+                ])
+            }
+
+            expect(mockUpdateDashboardHandler).not.toHaveBeenCalled()
+        })
+
+        it('should update dashboard with new layout metadata on drag stop', () => {
+            const mockUpdateDashboardHandler = jest.fn()
+            const { useDashboardActions } = jest.requireMock(
+                'domains/reporting/hooks/dashboards/useDashboardActions',
+            )
+            useDashboardActions.mockReturnValue({
+                updateDashboardHandler: mockUpdateDashboardHandler,
+                isUpdateMutationLoading: false,
+                isUpdateMutationError: false,
+            })
+
+            const chart1 = createMockChart('chart-1')
+            const chart2 = createMockChart('chart-2')
+            const dashboard = createMockDashboard([chart1, chart2])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            if (capturedOnLayoutChange) {
+                capturedOnLayoutChange([
+                    { i: 'chart-1', x: 0, y: 0, w: 1, h: 3 },
+                    { i: 'chart-2', x: 1, y: 0, w: 1, h: 3 },
+                ])
+            }
+
+            if (capturedOnDragStop) {
+                capturedOnDragStop([
+                    { i: 'chart-1', x: 2, y: 1, w: 2, h: 9 },
+                    { i: 'chart-2', x: 0, y: 1, w: 2, h: 9 },
+                ])
+            }
+
+            expect(mockUpdateDashboardHandler).toHaveBeenCalledWith({
+                dashboard: {
+                    id: 1,
+                    name: 'Test Dashboard',
+                    analytics_filter_id: null,
+                    emoji: null,
+                    children: [
+                        {
+                            type: DashboardChildType.Chart,
+                            config_id: 'chart-1',
+                            metadata: {
+                                layout: {
+                                    x: 2,
+                                    y: 1,
+                                    w: 2,
+                                    h: 9,
+                                },
+                            },
+                        },
+                        {
+                            type: DashboardChildType.Chart,
+                            config_id: 'chart-2',
+                            metadata: {
+                                layout: {
+                                    x: 0,
+                                    y: 1,
+                                    w: 2,
+                                    h: 9,
+                                },
+                            },
+                        },
+                    ],
+                },
+                successMessage: 'Dashboard layout saved',
+                errorMessage: 'Failed to save dashboard layout',
+            })
+        })
+
+        it('should update dashboard with new layout metadata on resize stop', () => {
+            const mockUpdateDashboardHandler = jest.fn()
+            const { useDashboardActions } = jest.requireMock(
+                'domains/reporting/hooks/dashboards/useDashboardActions',
+            )
+            useDashboardActions.mockReturnValue({
+                updateDashboardHandler: mockUpdateDashboardHandler,
+                isUpdateMutationLoading: false,
+                isUpdateMutationError: false,
+            })
+
+            const chart1 = createMockChart('chart-1')
+            const chart2 = createMockChart('chart-2')
+            const dashboard = createMockDashboard([chart1, chart2])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            if (capturedOnLayoutChange) {
+                capturedOnLayoutChange([
+                    { i: 'chart-1', x: 0, y: 0, w: 1, h: 3 },
+                    { i: 'chart-2', x: 1, y: 0, w: 1, h: 3 },
+                ])
+            }
+
+            if (capturedOnResizeStop) {
+                capturedOnResizeStop([
+                    { i: 'chart-1', x: 0, y: 0, w: 2, h: 6 },
+                    { i: 'chart-2', x: 2, y: 0, w: 2, h: 6 },
+                ])
+            }
+
+            expect(mockUpdateDashboardHandler).toHaveBeenCalledWith({
+                dashboard: {
+                    id: 1,
+                    name: 'Test Dashboard',
+                    analytics_filter_id: null,
+                    emoji: null,
+                    children: [
+                        {
+                            type: DashboardChildType.Chart,
+                            config_id: 'chart-1',
+                            metadata: {
+                                layout: {
+                                    x: 0,
+                                    y: 0,
+                                    w: 2,
+                                    h: 6,
+                                },
+                            },
+                        },
+                        {
+                            type: DashboardChildType.Chart,
+                            config_id: 'chart-2',
+                            metadata: {
+                                layout: {
+                                    x: 2,
+                                    y: 0,
+                                    w: 2,
+                                    h: 6,
+                                },
+                            },
+                        },
+                    ],
+                },
+                successMessage: 'Dashboard layout saved',
+                errorMessage: 'Failed to save dashboard layout',
+            })
+        })
+
+        it('should preserve chart without matching layout metadata', () => {
+            const mockUpdateDashboardHandler = jest.fn()
+            const { useDashboardActions } = jest.requireMock(
+                'domains/reporting/hooks/dashboards/useDashboardActions',
+            )
+            useDashboardActions.mockReturnValue({
+                updateDashboardHandler: mockUpdateDashboardHandler,
+                isUpdateMutationLoading: false,
+                isUpdateMutationError: false,
+            })
+
+            const chart1 = createMockChart('chart-1')
+            const dashboard = createMockDashboard([chart1])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            if (capturedOnLayoutChange) {
+                capturedOnLayoutChange([
+                    { i: 'chart-1', x: 0, y: 0, w: 1, h: 3 },
+                ])
+            }
+
+            if (capturedOnResizeStop) {
+                capturedOnResizeStop([
+                    { i: 'different-chart', x: 1, y: 1, w: 2, h: 9 },
+                ])
+            }
+
+            expect(mockUpdateDashboardHandler).toHaveBeenLastCalledWith({
+                dashboard: {
+                    id: 1,
+                    name: 'Test Dashboard',
+                    analytics_filter_id: null,
+                    emoji: null,
+                    children: [
+                        {
+                            type: DashboardChildType.Chart,
+                            config_id: 'chart-1',
+                        },
+                    ],
+                },
+                successMessage: 'Dashboard layout saved',
+                errorMessage: 'Failed to save dashboard layout',
+            })
+        })
+
+        it('should handle nested row children when updating layout', () => {
+            const mockUpdateDashboardHandler = jest.fn()
+            const { useDashboardActions } = jest.requireMock(
+                'domains/reporting/hooks/dashboards/useDashboardActions',
+            )
+            useDashboardActions.mockReturnValue({
+                updateDashboardHandler: mockUpdateDashboardHandler,
+                isUpdateMutationLoading: false,
+                isUpdateMutationError: false,
+            })
+
+            const chart1 = createMockChart('chart-1')
+            const chart2 = createMockChart('chart-2')
+            const row = createMockRow([chart1, chart2])
+            const dashboard = createMockDashboard([row])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            if (capturedOnLayoutChange) {
+                capturedOnLayoutChange([
+                    { i: 'chart-1', x: 0, y: 0, w: 1, h: 3 },
+                    { i: 'chart-2', x: 1, y: 0, w: 1, h: 3 },
+                ])
+            }
+
+            if (capturedOnResizeStop) {
+                capturedOnResizeStop([
+                    { i: 'chart-1', x: 2, y: 1, w: 2, h: 9 },
+                    { i: 'chart-2', x: 0, y: 1, w: 2, h: 9 },
+                ])
+            }
+
+            expect(mockUpdateDashboardHandler).toHaveBeenCalledWith({
+                dashboard: {
+                    id: 1,
+                    name: 'Test Dashboard',
+                    analytics_filter_id: null,
+                    emoji: null,
+                    children: [
+                        {
+                            type: DashboardChildType.Row,
+                            children: [
+                                {
+                                    type: DashboardChildType.Chart,
+                                    config_id: 'chart-1',
+                                    metadata: {
+                                        layout: {
+                                            x: 2,
+                                            y: 1,
+                                            w: 2,
+                                            h: 9,
+                                        },
+                                    },
+                                },
+                                {
+                                    type: DashboardChildType.Chart,
+                                    config_id: 'chart-2',
+                                    metadata: {
+                                        layout: {
+                                            x: 0,
+                                            y: 1,
+                                            w: 2,
+                                            h: 9,
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                },
+                successMessage: 'Dashboard layout saved',
+                errorMessage: 'Failed to save dashboard layout',
+            })
+        })
+
+        it('should handle nested section children when updating layout', () => {
+            const mockUpdateDashboardHandler = jest.fn()
+            const { useDashboardActions } = jest.requireMock(
+                'domains/reporting/hooks/dashboards/useDashboardActions',
+            )
+            useDashboardActions.mockReturnValue({
+                updateDashboardHandler: mockUpdateDashboardHandler,
+                isUpdateMutationLoading: false,
+                isUpdateMutationError: false,
+            })
+
+            const chart1 = createMockChart('chart-1')
+            const chart2 = createMockChart('chart-2')
+            const row = createMockRow([chart1])
+            const section = createMockSection([row, chart2])
+            const dashboard = createMockDashboard([section])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            if (capturedOnLayoutChange) {
+                capturedOnLayoutChange([
+                    { i: 'chart-1', x: 0, y: 0, w: 1, h: 3 },
+                    { i: 'chart-2', x: 1, y: 0, w: 1, h: 3 },
+                ])
+            }
+
+            if (capturedOnDragStop) {
+                capturedOnDragStop([
+                    { i: 'chart-1', x: 1, y: 2, w: 2, h: 9 },
+                    { i: 'chart-2', x: 0, y: 2, w: 1, h: 6 },
+                ])
+            }
+
+            expect(mockUpdateDashboardHandler).toHaveBeenCalledWith({
+                dashboard: {
+                    id: 1,
+                    name: 'Test Dashboard',
+                    analytics_filter_id: null,
+                    emoji: null,
+                    children: [
+                        {
+                            type: DashboardChildType.Section,
+                            children: [
+                                {
+                                    type: DashboardChildType.Row,
+                                    children: [
+                                        {
+                                            type: DashboardChildType.Chart,
+                                            config_id: 'chart-1',
+                                            metadata: {
+                                                layout: {
+                                                    x: 1,
+                                                    y: 2,
+                                                    w: 2,
+                                                    h: 9,
+                                                },
+                                            },
+                                        },
+                                    ],
+                                },
+                                {
+                                    type: DashboardChildType.Chart,
+                                    config_id: 'chart-2',
+                                    metadata: {
+                                        layout: {
+                                            x: 0,
+                                            y: 2,
+                                            w: 1,
+                                            h: 6,
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                },
+                successMessage: 'Dashboard layout saved',
+                errorMessage: 'Failed to save dashboard layout',
+            })
+        })
     })
 })

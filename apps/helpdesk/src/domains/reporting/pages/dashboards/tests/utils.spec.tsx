@@ -29,6 +29,7 @@ import {
 } from 'domains/reporting/pages/dashboards/types'
 import {
     createDashboardPayload,
+    dashboardChartChildFromApi,
     dashboardFromApi,
     getChildrenIds,
     getChildrenOfTypeChart,
@@ -141,12 +142,14 @@ describe('dashboardFromApi', () => {
                                 {
                                     config_id: apiChart.config_id,
                                     type: DashboardChildType.Chart,
+                                    metadata: {},
                                 },
                             ],
                         },
                         {
                             config_id: apiChart.config_id,
                             type: DashboardChildType.Chart,
+                            metadata: {},
                         },
                     ],
                 },
@@ -157,6 +160,7 @@ describe('dashboardFromApi', () => {
                 {
                     config_id: apiChart.config_id,
                     type: DashboardChildType.Chart,
+                    metadata: {},
                 },
             ],
         }
@@ -228,6 +232,95 @@ describe('dashboardFromApi', () => {
                 extra: { validationErrors: expect.any(Array) },
             }),
         )
+    })
+
+    it('should preserve layout metadata from API chart', () => {
+        const layout = {
+            x: 2,
+            y: 3,
+            w: 2,
+            h: 9,
+        }
+
+        const chartWithLayout: AnalyticsCustomReportChartSchema = {
+            config_id: 'chart_with_layout',
+            metadata: {
+                layout,
+            },
+            type: AnalyticsCustomReportRowSchemaChildrenItemType.Chart,
+        }
+
+        const apiReportWithLayout = {
+            ...apiReportWithoutChildren,
+            children: [chartWithLayout],
+        }
+
+        const result = dashboardFromApi(apiReportWithLayout)
+
+        expect(result?.children[0]).toEqual({
+            type: DashboardChildType.Chart,
+            config_id: 'chart_with_layout',
+            metadata: {
+                layout,
+            },
+        })
+    })
+
+    it('should handle charts without layout metadata', () => {
+        const chartWithoutLayout: AnalyticsCustomReportChartSchema = {
+            config_id: 'chart_without_layout',
+            metadata: {},
+            type: AnalyticsCustomReportRowSchemaChildrenItemType.Chart,
+        }
+
+        const apiReport = {
+            ...apiReportWithoutChildren,
+            children: [chartWithoutLayout],
+        }
+
+        const result = dashboardFromApi(apiReport)
+
+        expect(result?.children[0]).toEqual({
+            type: DashboardChildType.Chart,
+            config_id: 'chart_without_layout',
+            metadata: {},
+        })
+    })
+
+    it('should handle charts with null layout in metadata', () => {
+        const chartWithNullLayout: AnalyticsCustomReportChartSchema = {
+            config_id: 'chart_null_layout',
+            metadata: { layout: null } as any,
+            type: AnalyticsCustomReportRowSchemaChildrenItemType.Chart,
+        }
+
+        const apiReport = {
+            ...apiReportWithoutChildren,
+            children: [chartWithNullLayout],
+        }
+
+        const result = dashboardFromApi(apiReport)
+
+        expect(result?.children[0]).toEqual({
+            type: DashboardChildType.Chart,
+            config_id: 'chart_null_layout',
+            metadata: {},
+        })
+    })
+
+    it('should handle charts with completely undefined metadata property', () => {
+        const chartWithUndefinedMetadata: AnalyticsCustomReportChartSchema = {
+            config_id: 'chart_undefined_metadata',
+            type: AnalyticsCustomReportRowSchemaChildrenItemType.Chart,
+        } as any
+
+        const result = dashboardChartChildFromApi(chartWithUndefinedMetadata)
+
+        expect(result).toEqual({
+            type: DashboardChildType.Chart,
+            config_id: 'chart_undefined_metadata',
+            metadata: {},
+        })
     })
 })
 
@@ -828,6 +921,61 @@ describe('createDashboardPayload', () => {
         const actual = createDashboardPayload(dashboard)
 
         expect(actual).toEqual(expected)
+    })
+
+    it('should preserve layout metadata in children', () => {
+        const dashboard: DashboardInput = {
+            name: 'Dashboard with Layout',
+            children: [
+                {
+                    type: DashboardChildType.Chart,
+                    config_id: 'chart_with_layout',
+                    metadata: {
+                        layout: {
+                            x: 1,
+                            y: 2,
+                            w: 2,
+                            h: 9,
+                        },
+                    },
+                },
+            ],
+        }
+
+        const result = createDashboardPayload(dashboard)
+
+        expect(result.children[0]).toEqual({
+            type: 'chart',
+            config_id: 'chart_with_layout',
+            metadata: {
+                layout: {
+                    x: 1,
+                    y: 2,
+                    w: 2,
+                    h: 9,
+                },
+            },
+        })
+    })
+
+    it('should handle charts without metadata', () => {
+        const dashboard: DashboardInput = {
+            name: 'Dashboard without Layout',
+            children: [
+                {
+                    type: DashboardChildType.Chart,
+                    config_id: 'chart_without_layout',
+                },
+            ],
+        }
+
+        const result = createDashboardPayload(dashboard)
+
+        expect(result.children[0]).toEqual({
+            type: 'chart',
+            config_id: 'chart_without_layout',
+            metadata: {},
+        })
     })
 })
 

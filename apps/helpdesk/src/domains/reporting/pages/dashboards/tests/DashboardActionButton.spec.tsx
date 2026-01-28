@@ -30,12 +30,10 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
-const mockDuplicateReport = jest.fn()
 const mockSetOpenModal = jest.fn()
 
 jest.mock('domains/reporting/hooks/dashboards/useDashboardActions', () => ({
     useDashboardActions: () => ({
-        duplicateReportHandler: mockDuplicateReport,
         deleteReportHandler: ({ onSuccess }: { onSuccess: () => void }) => {
             onSuccess()
         },
