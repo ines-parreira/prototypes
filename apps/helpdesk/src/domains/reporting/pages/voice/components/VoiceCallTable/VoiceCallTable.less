@@ -129,7 +129,7 @@
 .axiom :local {
     .table {
         .tableRow:not(.tableHead) {
-            background: var(--elevation-neutral-default);
+            background: transparent;
 
             &:hover {
                 background: var(--hover-default);
@@ -137,24 +137,24 @@
                 td,
                 th {
                     &:first-child {
-                        background: var(--elevation-neutral-bg);
+                        background: transparent;
                     }
                 }
             }
         }
 
         .tableHead {
-            background: var(--elevation-neutral-default);
+            background: var(--elevation-neutral-mid);
 
             &:after {
                 border-bottom: 1px solid var(--border-neutral-default);
             }
 
             th {
-                background: var(--elevation-neutral-default);
+                background: var(--elevation-neutral-mid);
 
                 &:first-child {
-                    background: var(--elevation-neutral-default);
+                    background: var(--elevation-neutral-mid);
                 }
             }
         }

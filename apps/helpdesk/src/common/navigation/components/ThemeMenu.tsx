@@ -27,7 +27,11 @@ export default function ThemeMenu() {
             {THEME_CONFIGS.map(({ label, name }) => (
                 <button
                     key={name}
-                    className={cn(css['dropdown-item-user-menu'], css.justify)}
+                    className={cn(
+                        css['dropdown-item-user-menu'],
+                        css.justify,
+                        theme.name === name && css.selected,
+                    )}
                     onClick={() => updateTheme(name)}
                 >
                     {label}

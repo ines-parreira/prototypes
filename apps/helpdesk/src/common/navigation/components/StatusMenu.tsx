@@ -59,7 +59,11 @@ export default function StatusMenu() {
             {allStatuses.map((statusItem) => (
                 <button
                     key={statusItem.id}
-                    className={cn(css['dropdown-item-user-menu'], css.justify)}
+                    className={cn(
+                        css['dropdown-item-user-menu'],
+                        css.justify,
+                        activeStatusId === statusItem.id && css.selected,
+                    )}
                     onClick={() => handleStatusUpdate(statusItem.id)}
                 >
                     {statusItem.name}

@@ -184,6 +184,23 @@
         &:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+
+            // Unchecked disabled: grey secondary background
+            &:not(:checked):not(:indeterminate) {
+                background-color: var(--surface-neutral-secondary);
+                box-shadow: inset 0 0 0 1px var(--border-neutral-tertiary);
+            }
+
+            // Checked/indeterminate disabled: transparent with tertiary border
+            &:checked,
+            &:indeterminate {
+                background: transparent;
+                box-shadow: inset 0 0 0 1px var(--border-neutral-tertiary);
+
+                &::after {
+                    background-color: var(--content-neutral-tertiary);
+                }
+            }
         }
 
         &[readonly]:checked,
