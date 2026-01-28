@@ -5,11 +5,14 @@ import type { Location } from 'history'
 import { Provider } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 
-import type { JourneyApiDTO } from '@gorgias/convert-client'
-
 import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
+import {
+    DEFAULT_TABLE_METRICS,
+    LOADING_TABLE_METRICS,
+} from '../../hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
+import type { TableRow } from '../../pages/Campaigns/Campaigns'
 import CampaignsTable from './CampaignsTable'
 import { actionColumns, columns, metricColumns } from './Columns'
 
@@ -56,7 +59,7 @@ jest.mock('AIJourney/queries/useDeleteJourney/useDeleteJourney', () => ({
     }),
 }))
 
-const mockFields: JourneyApiDTO[] = [
+const mockFields: TableRow[] = [
     {
         id: '1',
         account_id: 1,
@@ -70,6 +73,7 @@ const mockFields: JourneyApiDTO[] = [
             title: 'Welcome campaign',
             state: 'draft',
         },
+        metrics: DEFAULT_TABLE_METRICS,
     },
     {
         id: '2',
@@ -84,6 +88,7 @@ const mockFields: JourneyApiDTO[] = [
             title: 'Win back campaign',
             state: 'sent',
         },
+        metrics: DEFAULT_TABLE_METRICS,
     },
 ]
 
@@ -228,8 +233,52 @@ describe('CampaignsTable', () => {
         })
     })
 
+    it('should render skeleton when metrics are loading', () => {
+        const dataWithLoadingMetrics: TableRow[] = [
+            {
+                ...mockFields[0],
+                metrics: LOADING_TABLE_METRICS,
+            },
+        ]
+
+        renderWithRouter(
+            wrapper(
+                <CampaignsTable
+                    columns={[...columns, ...metricColumns]}
+                    data={dataWithLoadingMetrics}
+                />,
+            ),
+        )
+
+        const skeletons = document.querySelectorAll('[class*="skeleton"]')
+        expect(skeletons.length).toBeGreaterThan(0)
+    })
+
+    it('should render metric values when metrics are defined', () => {
+        const dataWithMetrics: TableRow[] = [
+            {
+                ...mockFields[0],
+                metrics: {
+                    ...DEFAULT_TABLE_METRICS,
+                    recipients: 150,
+                },
+            },
+        ]
+
+        renderWithRouter(
+            wrapper(
+                <CampaignsTable
+                    columns={[...columns, ...metricColumns]}
+                    data={dataWithMetrics}
+                />,
+            ),
+        )
+
+        expect(screen.getByText('150')).toBeInTheDocument()
+    })
+
     it('should open cancel confirmation modal and cancel campaign when confirmed', async () => {
-        const mockCampaignWithActiveState: JourneyApiDTO[] = [
+        const mockCampaignWithActiveState: TableRow[] = [
             {
                 id: '1',
                 account_id: 1,
@@ -243,6 +292,7 @@ describe('CampaignsTable', () => {
                     title: 'Active campaign',
                     state: 'active',
                 },
+                metrics: DEFAULT_TABLE_METRICS,
             },
         ]
 

@@ -17,10 +17,11 @@ import {
     journeysColumns,
     metricColumns,
 } from 'AIJourney/components/JourneysTable/JourneysColumns/JourneysColumns'
-import type { Metrics } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import {
     DEFAULT_TABLE_METRICS,
     EMPTY_TABLE_METRICS,
+    LOADING_TABLE_METRICS,
+    type Metrics,
     useAIJourneyTableKpis,
 } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import { useJourneyContext } from 'AIJourney/providers'
@@ -30,13 +31,17 @@ import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersP
 
 import css from './Flows.less'
 
+type FlowMetrics = Metrics<number | string | undefined>
 type UnconfiguredFlow = {
     type: JourneyTypeEnum
     state: JourneyStatusEnum
-    metrics: Metrics<number | string>
+    store_name: string
+    id: undefined
+    campaign: undefined
 }
-
-type TableRow = JourneyApiDTO | UnconfiguredFlow
+type UnconfiguredFlowWithMetrics = UnconfiguredFlow & { metrics: FlowMetrics }
+type ConfiguredFlowWithMetrics = JourneyApiDTO & { metrics: FlowMetrics }
+export type TableRow = UnconfiguredFlowWithMetrics | ConfiguredFlowWithMetrics
 
 export const Flows = () => {
     const [isMetricsEditModalOpen, setIsMetricsEditModalOpen] = useState(false)
@@ -96,8 +101,7 @@ export const Flows = () => {
                 })
             })
             .filter(
-                (option): option is ColumnDef<JourneyApiDTO> =>
-                    option !== undefined,
+                (option): option is ColumnDef<TableRow> => option !== undefined,
             )
 
         return [
@@ -129,31 +133,37 @@ export const Flows = () => {
     )
 
     // Configured flows filtering the disabled ones above (we can enable a flow for a customer but don't want to show it in the UI)
-    const configuredFlows: JourneyApiDTO[] | undefined = useMemo(() => {
-        const filteredJourneys = journeys?.filter((journey) =>
-            enabledAvailableFlows.includes(journey.type),
-        )
+    const configuredFlows: ConfiguredFlowWithMetrics[] | undefined =
+        useMemo(() => {
+            const filteredJourneys = journeys?.filter((journey) =>
+                enabledAvailableFlows.includes(journey.type),
+            )
 
-        return filteredJourneys?.map((journey) => ({
-            ...journey,
-            metrics: tableMetrics[journey.id] || DEFAULT_TABLE_METRICS,
-        }))
-    }, [journeys, enabledAvailableFlows, tableMetrics])
+            return filteredJourneys?.map((journey) => ({
+                ...journey,
+                metrics: isMetricLoading
+                    ? LOADING_TABLE_METRICS
+                    : tableMetrics[journey.id] || DEFAULT_TABLE_METRICS,
+            }))
+        }, [journeys, enabledAvailableFlows, tableMetrics, isMetricLoading])
 
     // Flows that are available, enabled but hasn't been configured by an user (configured !== activated)
-    const unconfiguredFlows: UnconfiguredFlow[] | undefined = useMemo(() => {
-        const configuredFlowTypes =
-            configuredFlows?.map((flow) => flow.type) || []
+    const unconfiguredFlows: UnconfiguredFlowWithMetrics[] | undefined =
+        useMemo(() => {
+            const configuredFlowTypes =
+                configuredFlows?.map((flow) => flow.type) || []
 
-        return enabledAvailableFlows
-            ?.filter((flowType) => !configuredFlowTypes.includes(flowType))
-            .map((flowType) => ({
-                type: flowType,
-                state: JourneyStatusEnum.Draft,
-                store_name: shopName,
-                metrics: EMPTY_TABLE_METRICS,
-            }))
-    }, [configuredFlows, enabledAvailableFlows, shopName])
+            return enabledAvailableFlows
+                ?.filter((flowType) => !configuredFlowTypes.includes(flowType))
+                .map((flowType) => ({
+                    type: flowType,
+                    state: JourneyStatusEnum.Draft,
+                    store_name: shopName,
+                    metrics: EMPTY_TABLE_METRICS,
+                    id: undefined,
+                    campaign: undefined,
+                }))
+        }, [configuredFlows, enabledAvailableFlows, shopName])
 
     const tableRows: TableRow[] = useMemo(() => {
         return [...(configuredFlows || []), ...(unconfiguredFlows || [])]
@@ -187,7 +197,7 @@ export const Flows = () => {
                     columns={visibleColumns}
                     data={tableRows || []}
                     onEditColumns={() => setIsMetricsEditModalOpen(true)}
-                    isLoading={isMetricLoading || isLoadingJourneys}
+                    isLoading={isLoadingJourneys}
                 />
             </Box>
             <ConfigureMetricsModal

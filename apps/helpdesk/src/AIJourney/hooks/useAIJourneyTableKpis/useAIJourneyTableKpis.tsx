@@ -48,6 +48,19 @@ export type TableKpisReturn = {
     isLoading: boolean
 }
 
+export const LOADING_TABLE_METRICS: Metrics<undefined> = {
+    recipients: undefined,
+    ctr: undefined,
+    replyRate: undefined,
+    optOutRate: undefined,
+    messagesSent: undefined,
+    revenue: undefined,
+    totalOrders: undefined,
+    averageOrderValue: undefined,
+    revenuePerRecipient: undefined,
+    conversionRate: undefined,
+}
+
 export const DEFAULT_TABLE_METRICS: Metrics<number> = {
     recipients: 0,
     ctr: 0,

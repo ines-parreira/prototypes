@@ -16,6 +16,8 @@ import {
 } from 'AIJourney/components/CampaignsTable/Columns'
 import {
     DEFAULT_TABLE_METRICS,
+    LOADING_TABLE_METRICS,
+    type Metrics,
     useAIJourneyTableKpis,
 } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import { useJourneyContext } from 'AIJourney/providers'
@@ -27,6 +29,10 @@ import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersP
 import { getCampaignStateLabelAndColor } from '../../utils'
 
 import css from './Campaigns.less'
+
+type JourneyMetrics = Metrics<number | string | undefined>
+export type JourneyWithMetrics = JourneyApiDTO & { metrics: JourneyMetrics }
+export type TableRow = JourneyWithMetrics
 
 export const Campaigns = () => {
     const {
@@ -84,8 +90,9 @@ export const Campaigns = () => {
 
     const campaignRows = useMemo(() => {
         return campaigns?.map((campaign) => {
-            const campaignMetric =
-                tableMetrics[campaign.id] || DEFAULT_TABLE_METRICS
+            const campaignMetric = isMetricLoading
+                ? LOADING_TABLE_METRICS
+                : tableMetrics[campaign.id] || DEFAULT_TABLE_METRICS
 
             const { label: stateLabel } = getCampaignStateLabelAndColor(
                 campaign.campaign?.state,
@@ -96,9 +103,9 @@ export const Campaigns = () => {
                 metrics: campaignMetric,
             }
         })
-    }, [campaigns, tableMetrics])
+    }, [campaigns, tableMetrics, isMetricLoading])
 
-    const visibleColumns: ColumnDef<JourneyApiDTO>[] = useMemo(() => {
+    const visibleColumns: ColumnDef<TableRow>[] = useMemo(() => {
         const orderedMetricColumns = keyKpisConfig
             .filter((item) => item.visibility)
             .map((item) => {
@@ -109,8 +116,7 @@ export const Campaigns = () => {
                 })
             })
             .filter(
-                (option): option is ColumnDef<JourneyApiDTO> =>
-                    option !== undefined,
+                (option): option is ColumnDef<TableRow> => option !== undefined,
             )
 
         return [...columns, ...orderedMetricColumns, ...actionColumns]
@@ -145,11 +151,7 @@ export const Campaigns = () => {
                     columns={visibleColumns}
                     data={campaignRows || []}
                     onEditColumns={() => setIsEditModalOpen(true)}
-                    isLoading={
-                        isLoadingIntegrations ||
-                        isLoadingCampaigns ||
-                        (isMetricLoading && hasCampaigns)
-                    }
+                    isLoading={isLoadingIntegrations || isLoadingCampaigns}
                 />
                 <DrillDownModal />
                 <ConfigureMetricsModal

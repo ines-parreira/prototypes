@@ -13,7 +13,7 @@ type JourneyNameProps = {
     name: string
     storeName: string
     journeyType: JourneyTypeEnum
-    journeyId: string
+    journeyId?: string
 }
 
 export const JourneyName = ({

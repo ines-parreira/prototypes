@@ -4,7 +4,10 @@ import { NotificationStatus } from '@repo/agent-status'
 import { useHistory } from 'react-router-dom'
 
 import { ListItem, Select, SelectTrigger } from '@gorgias/axiom'
-import { type JourneyApiDTO, JourneyStatusEnum } from '@gorgias/convert-client'
+import {
+    JourneyStatusEnum,
+    type JourneyTypeEnum,
+} from '@gorgias/convert-client'
 
 import { STEPS_NAMES } from 'AIJourney/constants'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
@@ -46,7 +49,13 @@ type OptionEntry = { id: Options; name: string; icon: string }
 export const RowAdditionalOptions = ({
     journeyRowData,
 }: {
-    journeyRowData: JourneyApiDTO
+    journeyRowData: {
+        id?: string
+        state: JourneyStatusEnum
+        message_instructions?: string | undefined | null
+        store_name: string
+        type: JourneyTypeEnum
+    }
 }) => {
     const history = useHistory()
     const dispatch = useAppDispatch()

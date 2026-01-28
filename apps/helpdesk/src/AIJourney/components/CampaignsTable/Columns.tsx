@@ -2,19 +2,19 @@ import { formatMetricValue } from '@repo/reporting'
 
 import type { ColumnDef } from '@gorgias/axiom'
 import { Box, createSortableColumn } from '@gorgias/axiom'
-import type {
-    JourneyApiDTO,
-    JourneyCampaignStateEnum,
-} from '@gorgias/convert-client'
+import type { JourneyCampaignStateEnum } from '@gorgias/convert-client'
+
+import { MetricCell } from 'AIJourney/components'
 
 import type { UpdatableJourneyCampaignState } from '../../constants'
+import { type TableRow } from '../../pages/Campaigns/Campaigns'
 import CampaignName from './CampaignName/CampaignName'
 import CampaignStateBadge from './CampaignStateBadge/CampaignStateBadge'
 import { MoreOptions } from './MoreOptions/MoreOptions'
 import type { CampaignsTableMeta } from './types'
 
-export const columns: ColumnDef<JourneyApiDTO, unknown>[] = [
-    createSortableColumn<JourneyApiDTO>('campaign.title', 'Title', (info) => {
+export const columns: ColumnDef<TableRow>[] = [
+    createSortableColumn<TableRow>('campaign.title', 'Title', (info) => {
         const storeName = info.row.original.store_name
         const journeyType = info.row.original.type
         const journeyId = info.row.original.id
@@ -29,7 +29,7 @@ export const columns: ColumnDef<JourneyApiDTO, unknown>[] = [
             </Box>
         )
     }),
-    createSortableColumn<JourneyApiDTO>('stateLabel', 'Status', (info) => {
+    createSortableColumn<TableRow>('stateLabel', 'Status', (info) => {
         const state = info.row.original.campaign?.state
         return (
             <Box gap="xs">
@@ -39,129 +39,144 @@ export const columns: ColumnDef<JourneyApiDTO, unknown>[] = [
     }),
 ]
 
-export const metricColumns: ColumnDef<JourneyApiDTO, unknown>[] = [
-    createSortableColumn<JourneyApiDTO>(
+export const metricColumns: ColumnDef<TableRow, unknown>[] = [
+    createSortableColumn<TableRow>(
         'metrics.recipients',
         'Recipients',
-        (info) => (
-            <Box gap="xs">
-                {formatMetricValue(info.getValue() as number, 'integer')}
-            </Box>
-        ),
-    ),
-    createSortableColumn<JourneyApiDTO>(
-        'metrics.revenue',
-        'Revenue',
         (info) => {
-            const meta = info.table.options.meta as CampaignsTableMeta
+            const value = info.getValue()
             return (
-                <Box gap="xs">
-                    {formatMetricValue(
-                        info.getValue() as number,
-                        'currency',
-                        meta.currency,
-                    )}
-                </Box>
+                <MetricCell value={value}>
+                    {typeof value === 'number'
+                        ? formatMetricValue(value, 'integer')
+                        : (value as string)}
+                </MetricCell>
             )
         },
     ),
-    createSortableColumn<JourneyApiDTO>(
-        'metrics.totalOrders',
-        'Orders',
-        (info) => (
-            <Box gap="xs">
-                {formatMetricValue(info.getValue() as number, 'integer')}
-            </Box>
-        ),
-    ),
-    createSortableColumn<JourneyApiDTO>(
+    createSortableColumn<TableRow>('metrics.revenue', 'Revenue', (info) => {
+        const meta = info.table.options.meta as CampaignsTableMeta
+        const value = info.getValue()
+        return (
+            <MetricCell value={value}>
+                {typeof value === 'number'
+                    ? formatMetricValue(value, 'currency', meta.currency)
+                    : (value as string)}
+            </MetricCell>
+        )
+    }),
+    createSortableColumn<TableRow>('metrics.totalOrders', 'Orders', (info) => {
+        const value = info.getValue()
+        return (
+            <MetricCell value={value}>
+                {typeof value === 'number'
+                    ? formatMetricValue(value, 'integer')
+                    : (value as string)}
+            </MetricCell>
+        )
+    }),
+    createSortableColumn<TableRow>(
         'metrics.revenuePerRecipient',
         'Revenue per Recipient',
         (info) => {
             const meta = info.table.options.meta as CampaignsTableMeta
+            const value = info.getValue()
             return (
-                <Box gap="xs">
-                    {formatMetricValue(
-                        info.getValue() as number,
-                        'currency',
-                        meta.currency,
-                    )}
-                </Box>
+                <MetricCell value={value}>
+                    {typeof value === 'number'
+                        ? formatMetricValue(value, 'currency', meta.currency)
+                        : (value as string)}
+                </MetricCell>
             )
         },
     ),
-    createSortableColumn<JourneyApiDTO>(
+    createSortableColumn<TableRow>(
         'metrics.averageOrderValue',
         'AOV',
         (info) => {
             const meta = info.table.options.meta as CampaignsTableMeta
+            const value = info.getValue()
             return (
-                <Box gap="xs">
-                    {formatMetricValue(
-                        info.getValue() as number,
-                        'currency',
-                        meta.currency,
-                    )}
-                </Box>
+                <MetricCell value={value}>
+                    {typeof value === 'number'
+                        ? formatMetricValue(value, 'currency', meta.currency)
+                        : (value as string)}
+                </MetricCell>
             )
         },
     ),
-    createSortableColumn<JourneyApiDTO>(
+    createSortableColumn<TableRow>(
         'metrics.messagesSent',
         'Messages Sent',
-        (info) => (
-            <Box gap="xs">
-                {formatMetricValue(info.getValue() as number, 'integer')}
-            </Box>
-        ),
+        (info) => {
+            const value = info.getValue()
+            return (
+                <MetricCell value={value}>
+                    {typeof value === 'number'
+                        ? formatMetricValue(value, 'integer')
+                        : (value as string)}
+                </MetricCell>
+            )
+        },
     ),
-    createSortableColumn<JourneyApiDTO>('metrics.ctr', 'CTR', (info) => (
-        <Box gap="xs">
-            {formatMetricValue(
-                info.getValue() as number,
-                'percent-precision-1',
-            )}
-        </Box>
-    )),
-    createSortableColumn<JourneyApiDTO>(
+    createSortableColumn<TableRow>('metrics.ctr', 'CTR', (info) => {
+        const value = info.getValue()
+        return (
+            <MetricCell value={value}>
+                {typeof value === 'number'
+                    ? formatMetricValue(value, 'percent-precision-1')
+                    : (value as string)}
+            </MetricCell>
+        )
+    }),
+    createSortableColumn<TableRow>(
         'metrics.replyRate',
         'Reply rate',
-        (info) => (
-            <Box gap="xs">
-                {formatMetricValue(
-                    info.getValue() as number,
-                    'percent-precision-1',
-                )}
-            </Box>
-        ),
+        (info) => {
+            const value = info.getValue()
+            return (
+                <MetricCell value={value}>
+                    {typeof value === 'number'
+                        ? formatMetricValue(value, 'percent-precision-1')
+                        : (value as string)}
+                </MetricCell>
+            )
+        },
     ),
-    createSortableColumn<JourneyApiDTO>(
+    createSortableColumn<TableRow>(
         'metrics.optOutRate',
         'Out out rate',
-        (info) => (
-            <Box gap="xs">
-                {formatMetricValue(
-                    info.getValue() as number,
-                    'percent-precision-1',
-                )}
-            </Box>
-        ),
+        (info) => {
+            const value = info.getValue()
+            return (
+                <MetricCell value={value}>
+                    {typeof value === 'number'
+                        ? formatMetricValue(value, 'percent-precision-1')
+                        : (value as string)}
+                </MetricCell>
+            )
+        },
     ),
-    createSortableColumn<JourneyApiDTO>(
+    createSortableColumn<TableRow>(
         'metrics.conversionRate',
         'Conversion rate',
-        (info) => (
-            <Box gap="xs">
-                {formatMetricValue(
-                    info.getValue() as number,
-                    'decimal-to-percent-precision-1',
-                )}
-            </Box>
-        ),
+        (info) => {
+            const value = info.getValue()
+            return (
+                <MetricCell value={value}>
+                    {typeof value === 'number'
+                        ? formatMetricValue(
+                              value,
+                              'decimal-to-percent-precision-1',
+                          )
+                        : (value as string)}
+                </MetricCell>
+            )
+        },
     ),
 ]
 
-export const actionColumns: ColumnDef<JourneyApiDTO, unknown>[] = [
+export const actionColumns: ColumnDef<TableRow, unknown>[] = [
     {
         id: 'actions',
         cell: (info) => {

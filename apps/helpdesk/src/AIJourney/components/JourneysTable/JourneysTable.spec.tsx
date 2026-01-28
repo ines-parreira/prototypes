@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { formatMetricValue } from '@repo/reporting'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -9,6 +10,11 @@ import type { ColumnDef } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
+import { MetricCell } from 'AIJourney/components'
+import {
+    DEFAULT_TABLE_METRICS,
+    LOADING_TABLE_METRICS,
+} from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import { ThemeProvider } from 'core/theme'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
@@ -277,6 +283,72 @@ describe('JourneysTable', () => {
             renderComponent({ data: elevenRows })
 
             expect(screen.getByRole('table')).toBeInTheDocument()
+        })
+    })
+
+    describe('MetricCell loading states', () => {
+        it('should render skeleton when metrics are loading', () => {
+            const metricColumn: ColumnDef<JourneyApiDTO, unknown>[] = [
+                createSortableColumn<JourneyApiDTO>(
+                    'metrics.recipients',
+                    'Recipients',
+                    (info) => {
+                        const value = info.getValue()
+                        return (
+                            <MetricCell value={value}>
+                                {formatMetricValue(value as number, 'integer')}
+                            </MetricCell>
+                        )
+                    },
+                ),
+            ]
+
+            const dataWithLoadingMetrics = mockJourneyData.map((journey) => ({
+                ...journey,
+                metrics: LOADING_TABLE_METRICS,
+            }))
+
+            renderComponent({
+                columns: [...mockColumns, ...metricColumn],
+                data: dataWithLoadingMetrics,
+            })
+
+            const skeletons = document.querySelectorAll('[class*="skeleton"]')
+            expect(skeletons.length).toBeGreaterThan(0)
+        })
+
+        it('should render metric values when metrics are defined', () => {
+            const metricColumn: ColumnDef<JourneyApiDTO, unknown>[] = [
+                createSortableColumn<JourneyApiDTO>(
+                    'metrics.recipients',
+                    'Recipients',
+                    (info) => {
+                        const value = info.getValue()
+                        return (
+                            <MetricCell value={value}>
+                                {formatMetricValue(value as number, 'integer')}
+                            </MetricCell>
+                        )
+                    },
+                ),
+            ]
+
+            const dataWithMetrics = [
+                {
+                    ...mockJourneyData[0],
+                    metrics: {
+                        ...DEFAULT_TABLE_METRICS,
+                        recipients: 250,
+                    },
+                },
+            ]
+
+            renderComponent({
+                columns: [...mockColumns, ...metricColumn],
+                data: dataWithMetrics,
+            })
+
+            expect(screen.getByText('250')).toBeInTheDocument()
         })
     })
 })
