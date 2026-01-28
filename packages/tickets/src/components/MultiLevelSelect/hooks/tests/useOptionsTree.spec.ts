@@ -134,12 +134,49 @@ describe('useOptionsTree', () => {
             )
 
             expect(result.current.selectOptions).toHaveLength(1)
-            expect(result.current.selectOptions[0]).toMatchObject({
-                type: OptionEnum.Option,
-                label: 'Open',
-                caption: 'Status',
-                hasChildren: false,
-            })
+            expect(result.current.selectOptions).toEqual([
+                {
+                    caption: 'Status',
+                    hasChildren: false,
+                    id: 'Status::Open',
+                    label: 'Open',
+                    path: ['Status', 'Open'],
+                    type: OptionEnum.Option,
+                    value: 'Status::Open',
+                },
+            ])
+        })
+
+        it('should flatten option when searching, and allow filtering by parent value', () => {
+            const { result } = renderHook(() =>
+                useOptionsTree({
+                    choices,
+                    selectedValue: undefined,
+                    searchTerm: 'Status',
+                }),
+            )
+
+            expect(result.current.selectOptions).toHaveLength(2)
+            expect(result.current.selectOptions).toEqual([
+                {
+                    caption: 'Status',
+                    hasChildren: false,
+                    id: 'Status::Open',
+                    label: 'Open',
+                    path: ['Status', 'Open'],
+                    type: OptionEnum.Option,
+                    value: 'Status::Open',
+                },
+                {
+                    caption: 'Status',
+                    hasChildren: false,
+                    id: 'Status::Closed',
+                    label: 'Closed',
+                    path: ['Status', 'Closed'],
+                    type: OptionEnum.Option,
+                    value: 'Status::Closed',
+                },
+            ])
         })
 
         it('should not show back button when searching', () => {

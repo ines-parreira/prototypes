@@ -39,7 +39,9 @@ export function useOptionsTree({
         if (isSearching) {
             const flatOptions = flattenTreeWithCaptions(tree)
             return flatOptions.filter((option) =>
-                option.label.toLowerCase().includes(searchTerm.toLowerCase()),
+                option.path.some((pathItem) =>
+                    pathItem.toLowerCase().includes(searchTerm.toLowerCase()),
+                ),
             )
         }
         return getOptionsAtPath(tree, currentPath)
