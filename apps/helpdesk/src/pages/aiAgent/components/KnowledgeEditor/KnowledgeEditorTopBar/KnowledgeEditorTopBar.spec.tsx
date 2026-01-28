@@ -173,4 +173,136 @@ describe('KnowledgeEditorTopBar', () => {
             screen.queryByRole('img', { name: 'cloud-check' }),
         ).not.toBeInTheDocument()
     })
+
+    describe('shouldHideFullscreenButton prop', () => {
+        it('should render fullscreen button by default when shouldHideFullscreenButton is not provided', () => {
+            render(
+                <Provider store={store}>
+                    <KnowledgeEditorTopBar
+                        disabled={false}
+                        title="Guidance"
+                        isFullscreen={false}
+                        onToggleFullscreen={jest.fn()}
+                        onClose={jest.fn()}
+                        isDetailsView={false}
+                        onToggleDetailsView={jest.fn()}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByRole('button', { name: 'fullscreen' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should render fullscreen button when shouldHideFullscreenButton is false', () => {
+            render(
+                <Provider store={store}>
+                    <KnowledgeEditorTopBar
+                        disabled={false}
+                        title="Guidance"
+                        isFullscreen={false}
+                        onToggleFullscreen={jest.fn()}
+                        onClose={jest.fn()}
+                        isDetailsView={false}
+                        onToggleDetailsView={jest.fn()}
+                        shouldHideFullscreenButton={false}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByRole('button', { name: 'fullscreen' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should hide fullscreen button when shouldHideFullscreenButton is true', () => {
+            render(
+                <Provider store={store}>
+                    <KnowledgeEditorTopBar
+                        disabled={false}
+                        title="Guidance"
+                        isFullscreen={false}
+                        onToggleFullscreen={jest.fn()}
+                        onClose={jest.fn()}
+                        isDetailsView={false}
+                        onToggleDetailsView={jest.fn()}
+                        shouldHideFullscreenButton={true}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByRole('button', { name: 'fullscreen' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should hide fullscreen button when shouldHideFullscreenButton is true regardless of isFullscreen state', () => {
+            render(
+                <Provider store={store}>
+                    <KnowledgeEditorTopBar
+                        disabled={false}
+                        title="Guidance"
+                        isFullscreen={true}
+                        onToggleFullscreen={jest.fn()}
+                        onClose={jest.fn()}
+                        isDetailsView={false}
+                        onToggleDetailsView={jest.fn()}
+                        shouldHideFullscreenButton={true}
+                    />
+                </Provider>,
+            )
+
+            // Should not find button with either label
+            expect(
+                screen.queryByRole('button', { name: 'fullscreen' }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: 'leave fullscreen' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should still respond to isFullscreen prop when button is visible', () => {
+            const { rerender } = render(
+                <Provider store={store}>
+                    <KnowledgeEditorTopBar
+                        disabled={false}
+                        title="Guidance"
+                        isFullscreen={false}
+                        onToggleFullscreen={jest.fn()}
+                        onClose={jest.fn()}
+                        isDetailsView={false}
+                        onToggleDetailsView={jest.fn()}
+                        shouldHideFullscreenButton={false}
+                    />
+                </Provider>,
+            )
+
+            // Initially not fullscreen
+            expect(
+                screen.getByRole('button', { name: 'fullscreen' }),
+            ).toBeInTheDocument()
+
+            // Rerender with fullscreen
+            rerender(
+                <Provider store={store}>
+                    <KnowledgeEditorTopBar
+                        disabled={false}
+                        title="Guidance"
+                        isFullscreen={true}
+                        onToggleFullscreen={jest.fn()}
+                        onClose={jest.fn()}
+                        isDetailsView={false}
+                        onToggleDetailsView={jest.fn()}
+                        shouldHideFullscreenButton={false}
+                    />
+                </Provider>,
+            )
+
+            // Now fullscreen
+            expect(
+                screen.getByRole('button', { name: 'leave fullscreen' }),
+            ).toBeInTheDocument()
+        })
+    })
 })

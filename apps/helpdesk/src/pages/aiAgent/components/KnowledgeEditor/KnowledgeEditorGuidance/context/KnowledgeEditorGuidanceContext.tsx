@@ -49,8 +49,13 @@ export const KnowledgeEditorGuidanceProvider = ({
         }
     }, [guidanceArticle, state.guidance?.id, dispatch])
 
-    const { isPlaygroundOpen, onTest, onClosePlayground, sidePanelWidth } =
-        usePlaygroundPanelInKnowledgeEditor(state.isFullscreen)
+    const {
+        isPlaygroundOpen,
+        onTest,
+        onClosePlayground,
+        sidePanelWidth,
+        shouldHideFullscreenButton,
+    } = usePlaygroundPanelInKnowledgeEditor(state.isFullscreen)
 
     const hasPendingChanges = useMemo(() => {
         if (state.guidanceMode === 'read') return false
@@ -97,6 +102,7 @@ export const KnowledgeEditorGuidanceProvider = ({
                 onTest,
                 onClose: onClosePlayground,
                 sidePanelWidth,
+                shouldHideFullscreenButton,
             },
         }),
         [
@@ -111,6 +117,7 @@ export const KnowledgeEditorGuidanceProvider = ({
             onTest,
             onClosePlayground,
             sidePanelWidth,
+            shouldHideFullscreenButton,
         ],
     )
 

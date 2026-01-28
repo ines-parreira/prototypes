@@ -162,6 +162,7 @@ export type PlaygroundState = {
     onTest: () => void
     onClose: () => void
     sidePanelWidth: SizeValue
+    shouldHideFullscreenButton: boolean
 }
 
 export type ArticleContextValue = {

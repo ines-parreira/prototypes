@@ -42,8 +42,13 @@ export const KnowledgeEditorSnippet = ({
         setIsFullscreen(!isFullscreen)
     }, [isFullscreen])
 
-    const { isPlaygroundOpen, onTest, onClosePlayground, sidePanelWidth } =
-        usePlaygroundPanelInKnowledgeEditor(isFullscreen)
+    const {
+        isPlaygroundOpen,
+        onTest,
+        onClosePlayground,
+        sidePanelWidth,
+        shouldHideFullscreenButton,
+    } = usePlaygroundPanelInKnowledgeEditor(isFullscreen)
 
     const snippetHelpCenter = useAiAgentHelpCenter({
         shopName,
@@ -85,6 +90,7 @@ export const KnowledgeEditorSnippet = ({
                         onToggleFullscreen={onToggleFullscreen}
                         onTest={onTest}
                         handleVisibilityUpdate={handleVisibilityUpdate}
+                        shouldHideFullscreenButton={shouldHideFullscreenButton}
                     />
                 </div>
                 <div

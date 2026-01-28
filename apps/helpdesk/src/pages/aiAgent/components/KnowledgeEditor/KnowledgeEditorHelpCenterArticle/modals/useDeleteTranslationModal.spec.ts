@@ -118,6 +118,7 @@ describe('useDeleteTranslationModal', () => {
             onTest: jest.fn(),
             onClose: jest.fn(),
             sidePanelWidth: '60vw',
+            shouldHideFullscreenButton: false,
         },
     })
 

@@ -43,6 +43,8 @@ type Props = {
     lastUpdatedDatetime?: Date
 
     guidanceMode?: GuidanceMode['mode']
+
+    shouldHideFullscreenButton?: boolean
 }
 
 export const defaultProps: Props = {
@@ -53,6 +55,7 @@ export const defaultProps: Props = {
     isDetailsView: true,
     onToggleDetailsView: () => {},
     disabled: true,
+    shouldHideFullscreenButton: false,
 }
 
 export const KnowledgeEditorTopBar = (props: Props) => {
@@ -150,27 +153,28 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                         <Separator direction="vertical" />
                     </>
                 )}
-                {withTooltip(
-                    <Button
-                        onClick={props.onToggleFullscreen}
-                        aria-label={
-                            props.isFullscreen
-                                ? 'leave fullscreen'
-                                : 'fullscreen'
-                        }
-                        isDisabled={props.disabled}
-                        variant="tertiary"
-                        icon={
-                            props.isFullscreen
-                                ? 'arrow-collapse'
-                                : 'arrow-expand'
-                        }
-                    />,
-                    props.isFullscreen
-                        ? 'Exit full screen'
-                        : 'Enter full screen',
-                    !!props.disabled,
-                )}
+                {!props.shouldHideFullscreenButton &&
+                    withTooltip(
+                        <Button
+                            onClick={props.onToggleFullscreen}
+                            aria-label={
+                                props.isFullscreen
+                                    ? 'leave fullscreen'
+                                    : 'fullscreen'
+                            }
+                            isDisabled={props.disabled}
+                            variant="tertiary"
+                            icon={
+                                props.isFullscreen
+                                    ? 'arrow-collapse'
+                                    : 'arrow-expand'
+                            }
+                        />,
+                        props.isFullscreen
+                            ? 'Exit full screen'
+                            : 'Enter full screen',
+                        !!props.disabled,
+                    )}
 
                 {withTooltip(
                     <Button

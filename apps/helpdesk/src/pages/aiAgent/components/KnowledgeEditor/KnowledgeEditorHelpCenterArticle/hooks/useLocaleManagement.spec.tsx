@@ -138,6 +138,7 @@ const createMockContextValue = (
             onTest: jest.fn(),
             onClose: jest.fn(),
             sidePanelWidth: '60vw',
+            shouldHideFullscreenButton: false,
         },
         ...overrides,
     } as ArticleContextValue

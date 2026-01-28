@@ -1098,6 +1098,19 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         it('should display playground alongside fullscreen mode', async () => {
+            // Mock window width to >= 1400px so fullscreen button remains visible
+            // when playground opens (button auto-hides at < 1400px with playground)
+            Object.defineProperty(window, 'innerWidth', {
+                writable: true,
+                configurable: true,
+                value: 1500,
+            })
+            Object.defineProperty(window, 'innerHeight', {
+                writable: true,
+                configurable: true,
+                value: 900,
+            })
+
             render(
                 <Provider store={mockStore(defaultState)}>
                     <KnowledgeEditorGuidance

@@ -80,6 +80,7 @@ describe('useGuidanceToolbar', () => {
                 onTest: mockOnTest,
                 onClose: jest.fn(),
                 sidePanelWidth: '100%',
+                shouldHideFullscreenButton: false,
             },
         } as any)
     })
@@ -194,6 +195,7 @@ describe('useGuidanceToolbar', () => {
                     onTest: mockOnTest,
                     onClose: jest.fn(),
                     sidePanelWidth: '100%',
+                    shouldHideFullscreenButton: false,
                 },
             } as any)
 
@@ -259,6 +261,7 @@ describe('useGuidanceToolbar', () => {
                     onTest: mockOnTest,
                     onClose: jest.fn(),
                     sidePanelWidth: '100%',
+                    shouldHideFullscreenButton: false,
                 },
             } as any)
 
@@ -299,6 +302,7 @@ describe('useGuidanceToolbar', () => {
                     onTest: mockOnTest,
                     onClose: jest.fn(),
                     sidePanelWidth: '100%',
+                    shouldHideFullscreenButton: false,
                 },
             } as any)
 
@@ -330,6 +334,7 @@ describe('useGuidanceToolbar', () => {
                     onTest: mockOnTest,
                     onClose: jest.fn(),
                     sidePanelWidth: '100%',
+                    shouldHideFullscreenButton: false,
                 },
             } as any)
 
@@ -536,6 +541,7 @@ describe('useGuidanceToolbar', () => {
                         onTest: mockOnTest,
                         onClose: jest.fn(),
                         sidePanelWidth: '100%',
+                        shouldHideFullscreenButton: false,
                     },
                 } as any)
 

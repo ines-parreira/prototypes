@@ -23,7 +23,7 @@ type Props = {
 }
 
 export const ArticleEditorContent = ({ closeHandlerRef }: Props) => {
-    const { state, dispatch, config, hasPendingContentChanges } =
+    const { state, dispatch, config, hasPendingContentChanges, playground } =
         useArticleContext()
 
     const { onClickPrevious, onClickNext, onClose } = config
@@ -82,6 +82,9 @@ export const ArticleEditorContent = ({ closeHandlerRef }: Props) => {
                         : state.article?.translation.updated_datetime
                           ? new Date(state.article.translation.updated_datetime)
                           : undefined
+                }
+                shouldHideFullscreenButton={
+                    playground.shouldHideFullscreenButton
                 }
             >
                 <ArticleToolbarControls />

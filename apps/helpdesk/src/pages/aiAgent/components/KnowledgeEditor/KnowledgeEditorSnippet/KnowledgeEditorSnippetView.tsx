@@ -54,6 +54,7 @@ type Props = {
     isFullscreen: boolean
     isPlaygroundOpen?: boolean
     snippet: Snippet
+    shouldHideFullscreenButton: boolean
     impact?: Omit<ImpactProps, 'sectionId'>
     recentTickets?: Omit<RecentTicketsProps, 'sectionId'>
 }
@@ -68,6 +69,7 @@ export const KnowledgeEditorSnippetView = ({
     snippet,
     isFullscreen,
     isPlaygroundOpen,
+    shouldHideFullscreenButton,
     impact,
     recentTickets,
 }: Props) => {
@@ -154,6 +156,7 @@ export const KnowledgeEditorSnippetView = ({
                 onClose={onClose}
                 isDetailsView={isDetailsView}
                 onToggleDetailsView={onToggleDetailsView}
+                shouldHideFullscreenButton={shouldHideFullscreenButton}
             >
                 <KnowledgeEditorTopBarSnippetControls
                     onTest={onTest}

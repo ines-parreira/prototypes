@@ -5,6 +5,11 @@ import type { SizeValue } from '@gorgias/axiom'
 import useScreenSize from 'panels/hooks/useScreenSize'
 
 /**
+ * Threshold width below which the fullscreen button should be hidden when playground is open
+ */
+const FULLSCREEN_BUTTON_HIDE_THRESHOLD = 1400
+
+/**
  * Custom hook that manages the playground panel state for Knowledge Editor components.
  * This hook encapsulates the logic for opening/closing the playground panel and
  * calculating the side panel width based on the fullscreen and playground state.
@@ -15,6 +20,7 @@ import useScreenSize from 'panels/hooks/useScreenSize'
  * - onTest: callback to toggle the playground panel
  * - onClosePlayground: callback to close the playground panel
  * - sidePanelWidth: calculated width for the side panel based on current state
+ * - shouldHideFullscreenButton: boolean indicating if fullscreen button should be hidden
  */
 export const usePlaygroundPanelInKnowledgeEditor = (isFullscreen: boolean) => {
     const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false)
@@ -28,8 +34,28 @@ export const usePlaygroundPanelInKnowledgeEditor = (isFullscreen: boolean) => {
         setIsPlaygroundOpen(false)
     }, [])
 
+    /**
+     * Determines if the fullscreen button should be hidden.
+     * Button hides when screen width is below threshold AND playground is open.
+     */
+    const shouldHideFullscreenButton = useMemo(
+        () =>
+            windowWidth < FULLSCREEN_BUTTON_HIDE_THRESHOLD && isPlaygroundOpen,
+        [windowWidth, isPlaygroundOpen],
+    )
+
+    /**
+     * Computes the effective fullscreen state.
+     * When button should be hidden, force fullscreen mode.
+     * Otherwise, use the actual fullscreen state from the component.
+     */
+    const effectiveIsFullscreen = useMemo(
+        () => (shouldHideFullscreenButton ? true : isFullscreen),
+        [shouldHideFullscreenButton, isFullscreen],
+    )
+
     const sidePanelWidth = useMemo((): SizeValue => {
-        if (isFullscreen) {
+        if (effectiveIsFullscreen) {
             return '100vw'
         }
 
@@ -46,12 +72,13 @@ export const usePlaygroundPanelInKnowledgeEditor = (isFullscreen: boolean) => {
         }
 
         return baseWidth
-    }, [isFullscreen, isPlaygroundOpen, windowWidth])
+    }, [effectiveIsFullscreen, isPlaygroundOpen, windowWidth])
 
     return {
         isPlaygroundOpen,
         onTest,
         onClosePlayground,
         sidePanelWidth,
+        shouldHideFullscreenButton,
     }
 }

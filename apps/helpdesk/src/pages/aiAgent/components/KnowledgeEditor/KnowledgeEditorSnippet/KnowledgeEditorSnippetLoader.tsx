@@ -45,6 +45,7 @@ type Props = {
     onToggleFullscreen: () => void
     onTest: () => void
     handleVisibilityUpdate?: (visibility: string) => void
+    shouldHideFullscreenButton: boolean
 }
 export const KnowledgeEditorSnippetLoader = ({
     snippetId,
@@ -60,6 +61,7 @@ export const KnowledgeEditorSnippetLoader = ({
     onToggleFullscreen,
     onTest,
     handleVisibilityUpdate,
+    shouldHideFullscreenButton,
 }: Props) => {
     const { error: notifyError } = useNotify()
     const isPerformanceStatsEnabled = useFlag(
@@ -309,6 +311,7 @@ export const KnowledgeEditorSnippetLoader = ({
             isFullscreen={isFullscreen}
             isPlaygroundOpen={isPlaygroundOpen}
             snippet={snippet}
+            shouldHideFullscreenButton={shouldHideFullscreenButton}
             impact={
                 isPerformanceStatsEnabled
                     ? {

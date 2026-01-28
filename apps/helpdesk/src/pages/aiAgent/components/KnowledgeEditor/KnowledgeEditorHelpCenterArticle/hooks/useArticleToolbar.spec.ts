@@ -114,6 +114,7 @@ describe('useArticleToolbar', () => {
             onTest: mockOnTest,
             onClose: jest.fn(),
             sidePanelWidth: '60vw',
+            shouldHideFullscreenButton: false,
         },
     })
 

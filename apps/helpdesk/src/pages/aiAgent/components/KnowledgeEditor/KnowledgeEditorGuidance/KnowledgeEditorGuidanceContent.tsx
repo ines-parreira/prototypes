@@ -23,7 +23,8 @@ type Props = {
 }
 
 export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
-    const { state, dispatch, config, hasPendingChanges } = useGuidanceContext()
+    const { state, dispatch, config, hasPendingChanges, playground } =
+        useGuidanceContext()
 
     const { shopName, shopType, onClickPrevious, onClickNext, onClose } = config
 
@@ -80,6 +81,9 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                           : undefined
                 }
                 guidanceMode={state.guidanceMode}
+                shouldHideFullscreenButton={
+                    playground.shouldHideFullscreenButton
+                }
             >
                 <GuidanceToolbarControls />
             </KnowledgeEditorTopBar>

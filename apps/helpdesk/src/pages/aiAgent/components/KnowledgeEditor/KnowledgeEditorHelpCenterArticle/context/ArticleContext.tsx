@@ -53,8 +53,13 @@ export const ArticleContextProvider = ({ config, children }: ProviderProps) => {
         }
     }, [config.initialArticle, config.helpCenter.default_locale, state.article])
 
-    const { isPlaygroundOpen, onTest, onClosePlayground, sidePanelWidth } =
-        usePlaygroundPanelInKnowledgeEditor(state.isFullscreen)
+    const {
+        isPlaygroundOpen,
+        onTest,
+        onClosePlayground,
+        sidePanelWidth,
+        shouldHideFullscreenButton,
+    } = usePlaygroundPanelInKnowledgeEditor(state.isFullscreen)
 
     const hasPendingContentChanges = useMemo(() => {
         if (state.articleMode === 'read') return false
@@ -93,6 +98,7 @@ export const ArticleContextProvider = ({ config, children }: ProviderProps) => {
                 onTest,
                 onClose: onClosePlayground,
                 sidePanelWidth,
+                shouldHideFullscreenButton,
             },
         }),
         [
@@ -106,6 +112,7 @@ export const ArticleContextProvider = ({ config, children }: ProviderProps) => {
             onTest,
             onClosePlayground,
             sidePanelWidth,
+            shouldHideFullscreenButton,
         ],
     )
 

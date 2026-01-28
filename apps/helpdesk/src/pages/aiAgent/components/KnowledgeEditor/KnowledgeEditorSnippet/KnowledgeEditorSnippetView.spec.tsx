@@ -37,6 +37,7 @@ describe('KnowledgeEditorSnippetView', () => {
         onToggleAIAgentEnabled: jest.fn(),
         onTest: jest.fn(),
         isFullscreen: false,
+        shouldHideFullscreenButton: false,
     }
 
     const urlSnippet = {

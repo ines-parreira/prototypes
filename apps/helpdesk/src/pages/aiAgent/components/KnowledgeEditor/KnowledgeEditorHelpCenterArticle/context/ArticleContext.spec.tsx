@@ -15,6 +15,7 @@ jest.mock('pages/aiAgent/hooks/usePlaygroundPanelInKnowledgeEditor', () => ({
         onTest: jest.fn(),
         onClosePlayground: jest.fn(),
         sidePanelWidth: 400,
+        shouldHideFullscreenButton: false,
     })),
 }))
 
