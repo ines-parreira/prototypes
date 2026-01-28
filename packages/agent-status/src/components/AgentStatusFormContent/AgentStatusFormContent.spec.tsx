@@ -225,7 +225,7 @@ describe('AgentStatusFormContent', () => {
         it('should show correct character count for pre-filled name field', () => {
             renderFormContent({
                 defaultValues: {
-                    name: 'Lunch break',
+                    statusName: 'Lunch break',
                     description: '',
                     durationOption: DURATION_OPTIONS[0],
                 },
@@ -237,7 +237,7 @@ describe('AgentStatusFormContent', () => {
         it('should show correct character count for pre-filled description field', () => {
             renderFormContent({
                 defaultValues: {
-                    name: '',
+                    statusName: '',
                     description: 'Taking a lunch break',
                     durationOption: DURATION_OPTIONS[0],
                 },

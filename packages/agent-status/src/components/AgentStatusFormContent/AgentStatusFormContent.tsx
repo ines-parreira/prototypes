@@ -28,7 +28,7 @@ export function AgentStatusFormContent({
     description,
 }: AgentStatusFormContentProps) {
     const durationOption = useWatch({ name: 'durationOption' })
-    const nameValue = useWatch({ name: 'name' })
+    const nameValue = useWatch({ name: 'statusName' })
     const descriptionValue = useWatch({ name: 'description' })
 
     const isCustom = useMemo(
