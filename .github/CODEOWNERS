@@ -135,11 +135,11 @@ apps/helpdesk/src/state/widgets @gorgias/crm-devrel
 apps/helpdesk/src/services/channels.ts @gorgias/crm-devrel
 apps/helpdesk/src/services/applications.ts @gorgias/crm-devrel
 
-# CRM Growth @gorgias/crm-growth
-apps/helpdesk/src/models/billing @gorgias/crm-growth
-apps/helpdesk/src/pages/settings/billing @gorgias/crm-growth
-apps/helpdesk/src/pages/settings/new_billing @gorgias/crm-growth
-apps/helpdesk/src/state/billing @gorgias/crm-growth
+# CRM Growth @gorgias/growth-billing
+apps/helpdesk/src/models/billing @gorgias/growth-billing
+apps/helpdesk/src/pages/settings/billing @gorgias/growth-billing
+apps/helpdesk/src/pages/settings/new_billing @gorgias/growth-billing
+apps/helpdesk/src/state/billing @gorgias/growth-billing
 
 # Conv AI: Expansion
 apps/helpdesk/src/pages/aiAgent/utils/handoverCustomization* @gorgias/ai-agent-orchestration-shopping-assistant
