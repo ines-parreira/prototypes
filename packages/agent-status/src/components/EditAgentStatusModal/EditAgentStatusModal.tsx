@@ -39,7 +39,7 @@ export function EditAgentStatusModal({
                 : formValues.durationOption.value
 
             const data = {
-                name: formValues.name,
+                name: formValues.statusName,
                 description: formValues.description,
                 duration_unit: durationUnit,
                 duration_value: durationValue,

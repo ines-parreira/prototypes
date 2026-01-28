@@ -7,7 +7,7 @@ import type { AgentStatusWithSystem, DurationOption } from '../types'
 import { findDurationOption } from '../utils'
 
 export type AgentStatusFormValues = {
-    name: string
+    statusName: string
     description: string
     durationOption: DurationOption
     customDurationValue?: number
@@ -24,7 +24,7 @@ export function useAgentStatusFormDefaults(
     return useMemo<AgentStatusFormValues>(() => {
         if (!status) {
             return {
-                name: '',
+                statusName: '',
                 description: '',
                 durationOption: DURATION_OPTIONS[0],
                 customDurationValue: 1,
@@ -38,7 +38,7 @@ export function useAgentStatusFormDefaults(
         )
 
         return {
-            name: status.name,
+            statusName: status.name,
             description: status.description || '',
             durationOption,
             customDurationValue: status.duration_value ?? 1,

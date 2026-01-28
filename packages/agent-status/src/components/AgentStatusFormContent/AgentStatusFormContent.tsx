@@ -54,7 +54,7 @@ export function AgentStatusFormContent({
 
                     <Box flexDirection="column" gap="sm">
                         <FormField
-                            name="name"
+                            name="statusName"
                             field={TextField}
                             label="Status"
                             placeholder="Lunch break"

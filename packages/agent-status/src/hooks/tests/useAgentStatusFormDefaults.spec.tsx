@@ -11,7 +11,7 @@ describe('useAgentStatusFormDefaults', () => {
             const { result } = renderHook(() => useAgentStatusFormDefaults())
 
             expect(result.current).toEqual({
-                name: '',
+                statusName: '',
                 description: '',
                 durationOption: DURATION_OPTIONS[0],
                 customDurationValue: 1,
@@ -44,7 +44,7 @@ describe('useAgentStatusFormDefaults', () => {
                 useAgentStatusFormDefaults(status),
             )
 
-            expect(result.current.name).toBe('Lunch Break')
+            expect(result.current.statusName).toBe('Lunch Break')
             expect(result.current.description).toBe('Taking lunch')
             expect(result.current.customDurationValue).toBe(30)
             expect(result.current.customDurationUnit).toBe('minutes')

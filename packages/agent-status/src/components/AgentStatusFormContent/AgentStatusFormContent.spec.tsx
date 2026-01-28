@@ -24,7 +24,7 @@ function renderFormContent(props: {
         submitButtonText = 'Submit',
         description,
         defaultValues = {
-            name: '',
+            statusName: '',
             description: '',
             durationOption: DURATION_OPTIONS[0],
             customDurationValue: 1,
@@ -115,7 +115,7 @@ describe('AgentStatusFormContent', () => {
         it('should not show custom duration fields when unlimited is selected', () => {
             renderFormContent({
                 defaultValues: {
-                    name: '',
+                    statusName: '',
                     description: '',
                     durationOption: DURATION_OPTIONS[0], // Unlimited
                 },
@@ -129,7 +129,7 @@ describe('AgentStatusFormContent', () => {
         it('should not show custom duration fields when preset option is selected', () => {
             renderFormContent({
                 defaultValues: {
-                    name: '',
+                    statusName: '',
                     description: '',
                     durationOption: DURATION_OPTIONS[1], // 15 minutes
                 },
@@ -144,7 +144,7 @@ describe('AgentStatusFormContent', () => {
             const customOption = DURATION_OPTIONS[DURATION_OPTIONS.length - 1]
             renderFormContent({
                 defaultValues: {
-                    name: '',
+                    statusName: '',
                     description: '',
                     durationOption: customOption,
                     customDurationValue: 2,

@@ -13,17 +13,17 @@ describe('validateAgentStatusForm', () => {
         ])('should return error when name is %s', (_, name) => {
             expect(
                 validateAgentStatusForm({
-                    name,
+                    statusName: name,
                     description: '',
                     durationOption: DURATION_OPTIONS[0],
                 }),
-            ).toEqual({ name: 'Status name is required' })
+            ).toEqual({ statusName: 'Status name is required' })
         })
 
         it('should pass validation when name is provided', () => {
             expect(
                 validateAgentStatusForm({
-                    name: 'On Break',
+                    statusName: 'On Break',
                     description: '',
                     durationOption: DURATION_OPTIONS[0],
                 }),
@@ -35,7 +35,7 @@ describe('validateAgentStatusForm', () => {
         it('should pass validation for preset options', () => {
             expect(
                 validateAgentStatusForm({
-                    name: 'On Break',
+                    statusName: 'On Break',
                     description: '',
                     durationOption: DURATION_OPTIONS[1],
                 }),
@@ -47,7 +47,7 @@ describe('validateAgentStatusForm', () => {
         it('should return error when custom value is missing', () => {
             expect(
                 validateAgentStatusForm({
-                    name: 'On Break',
+                    statusName: 'On Break',
                     description: '',
                     durationOption: CUSTOM_OPTION,
                     customDurationUnit: 'hours',
@@ -58,7 +58,7 @@ describe('validateAgentStatusForm', () => {
         it('should return error when custom unit is missing', () => {
             expect(
                 validateAgentStatusForm({
-                    name: 'On Break',
+                    statusName: 'On Break',
                     description: '',
                     durationOption: CUSTOM_OPTION,
                     customDurationValue: 2,
@@ -69,7 +69,7 @@ describe('validateAgentStatusForm', () => {
         it('should return error when both custom value and unit are missing', () => {
             expect(
                 validateAgentStatusForm({
-                    name: 'On Break',
+                    statusName: 'On Break',
                     description: '',
                     durationOption: CUSTOM_OPTION,
                 }),
@@ -91,7 +91,7 @@ describe('validateAgentStatusForm', () => {
             (unit, value, _, expectedError) => {
                 expect(
                     validateAgentStatusForm({
-                        name: 'On Break',
+                        statusName: 'On Break',
                         description: '',
                         durationOption: CUSTOM_OPTION,
                         customDurationValue: value,
@@ -110,7 +110,7 @@ describe('validateAgentStatusForm', () => {
             (unit, value) => {
                 expect(
                     validateAgentStatusForm({
-                        name: 'On Break',
+                        statusName: 'On Break',
                         description: '',
                         durationOption: CUSTOM_OPTION,
                         customDurationValue: value,
@@ -125,14 +125,14 @@ describe('validateAgentStatusForm', () => {
         it('should return multiple errors when both name and custom duration are invalid', () => {
             expect(
                 validateAgentStatusForm({
-                    name: '',
+                    statusName: '',
                     description: '',
                     durationOption: CUSTOM_OPTION,
                     customDurationValue: 0,
                     customDurationUnit: 'hours',
                 }),
             ).toEqual({
-                name: 'Status name is required',
+                statusName: 'Status name is required',
                 customDurationValue: 'Must be between 1 and 8759 hours',
             })
         })

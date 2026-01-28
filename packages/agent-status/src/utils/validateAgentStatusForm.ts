@@ -8,8 +8,8 @@ export function validateAgentStatusForm(
 ): FormErrors<AgentStatusFormValues> | undefined {
     const errors: FormErrors<AgentStatusFormValues> = {}
 
-    if (!data.name || data.name.trim().length === 0) {
-        errors.name = 'Status name is required'
+    if (!data.statusName || data.statusName.trim().length === 0) {
+        errors.statusName = 'Status name is required'
     }
 
     if (data.durationOption.id === 'custom') {
