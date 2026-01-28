@@ -574,13 +574,17 @@ const BillingProcessView = ({
             </div>
             {!isCurrentSubscriptionScheduledToCancel && (
                 <PendingChangesModal
-                    onSave={() => {
-                        logEvent(
-                            SegmentEvent.BillingUsageAndPlansPendingChangesModalClick,
-                            { action: 'update' },
-                        )
-                        return updateSubscription()
-                    }}
+                    onSave={
+                        !isEnterpriseHelpdeskPlanSelected
+                            ? () => {
+                                  logEvent(
+                                      SegmentEvent.BillingUsageAndPlansPendingChangesModalClick,
+                                      { action: 'update' },
+                                  )
+                                  return updateSubscription()
+                              }
+                            : undefined
+                    }
                     onDiscard={() => {
                         logEvent(
                             SegmentEvent.BillingUsageAndPlansPendingChangesModalClick,

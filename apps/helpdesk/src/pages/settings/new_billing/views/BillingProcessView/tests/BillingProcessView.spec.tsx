@@ -995,7 +995,7 @@ describe('BillingProcessView', () => {
         logEventMock.mockClear()
 
         // Simulate Update Subscription button click
-        await pendingChangesModalProps?.onSave()
+        await act(async () => pendingChangesModalProps?.onSave?.())
 
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.BillingUsageAndPlansPendingChangesModalClick,
@@ -1078,5 +1078,75 @@ describe('BillingProcessView', () => {
             { action: 'back' },
         )
         expect(logEventMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should pass onSave to PendingChangesModal when enterprise plan is not selected', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState,
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
+
+        const pendingChangesModalCalls = mockPendingChangesModal.mock.calls
+        const pendingChangesModalProps =
+            pendingChangesModalCalls[pendingChangesModalCalls.length - 1]?.[0]
+
+        expect(pendingChangesModalProps?.onSave).toBeDefined()
+    })
+
+    it('should pass undefined for onSave to PendingChangesModal when enterprise plan is selected', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState,
+            { route: '/app/settings/billing/manage/helpdesk' },
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
+
+        const priceSelector = screen.getByLabelText('Price value')
+        await act(() => userEvent.click(priceSelector))
+
+        const menuitems = screen.getAllByRole('menuitem')
+        const enterpriseItem = menuitems[menuitems.length - 1]
+        await act(() => userEvent.click(enterpriseItem))
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: /Contact Us/i }),
+            ).toBeInTheDocument()
+        })
+
+        const pendingChangesModalCalls = mockPendingChangesModal.mock.calls
+        const pendingChangesModalProps =
+            pendingChangesModalCalls[pendingChangesModalCalls.length - 1]?.[0]
+
+        expect(pendingChangesModalProps?.onSave).toBeUndefined()
     })
 })

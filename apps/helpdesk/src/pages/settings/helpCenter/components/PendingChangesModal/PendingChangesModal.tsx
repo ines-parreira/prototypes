@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import type { UnregisterCallback } from 'history'
 import { useHistory } from 'react-router-dom'
@@ -12,7 +12,7 @@ type PendingChangesModalProps = {
     show?: boolean
     onDiscard?: () => void
     onContinueEditing?: () => void
-    onSave: () => Promise<void> | Promise<[void, void, void]>
+    onSave?: () => Promise<void> | Promise<[void, void, void]>
     onShow?: () => void
     title?: string
     saveText?: string
@@ -56,7 +56,7 @@ const PendingChangesModal = ({
         }
     }, [when, history, onShow])
 
-    function onConfirm() {
+    const onConfirm = useCallback(() => {
         if (unblockRef && unblockRef.current) {
             unblockRef.current()
         }
@@ -64,7 +64,12 @@ const PendingChangesModal = ({
         if (nextPath) {
             history.push(nextPath)
         }
-    }
+    }, [unblockRef, nextPath, history])
+
+    const handleSave = useCallback(async () => {
+        await onSave?.()
+        onConfirm()
+    }, [onSave, onConfirm])
 
     return (
         <CloseModal
@@ -82,10 +87,7 @@ const PendingChangesModal = ({
                 onContinueEditing?.()
                 onCancel()
             }}
-            onSave={async () => {
-                await onSave()
-                onConfirm()
-            }}
+            onSave={onSave ? handleSave : undefined}
         >
             {message}
         </CloseModal>
