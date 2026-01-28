@@ -1,13 +1,17 @@
 import _find from 'lodash/find'
 
-import { HIDDEN_VARIABLES, PREVIOUS_VARIABLES } from 'tickets/common/config'
+import {
+    HIDDEN_VARIABLES,
+    PREVIOUS_VARIABLES,
+    type Variable,
+} from 'tickets/common/config'
 
+import createMetafieldVariable from './createMetafieldVariable'
 import getVariablesList from './getVariablesList'
 
-/**
- * Return variable config with passed value
- */
-export default function getVariableWithValue(value: string) {
+export default function getVariableWithValue(
+    value: string,
+): Variable | undefined {
     const variables = getVariablesList()
     const hiddenVariables = getVariablesList(HIDDEN_VARIABLES)
     const previousVariables = getVariablesList(PREVIOUS_VARIABLES)
@@ -15,6 +19,7 @@ export default function getVariableWithValue(value: string) {
     return (
         _find(variables, { value }) ||
         _find(previousVariables, { value }) ||
-        _find(hiddenVariables, { value })
+        _find(hiddenVariables, { value }) ||
+        createMetafieldVariable(value)
     )
 }

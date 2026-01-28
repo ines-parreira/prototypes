@@ -20,12 +20,6 @@ export function MetafieldsList({
         pinned: true,
     })
 
-    const filteredMetafields = metafields
-        .filter((field): field is Field => field.category === category)
-        .filter((field) =>
-            field.name.toLowerCase().includes(searchQuery.toLowerCase()),
-        )
-
     if (isLoading) {
         return (
             <div aria-label="loading">
@@ -37,7 +31,11 @@ export function MetafieldsList({
     }
 
     const categoryMetafields = metafields.filter(
-        (field) => field.category === category,
+        (field): field is Field => field.category === category,
+    )
+
+    const filteredMetafields = categoryMetafields.filter((field) =>
+        field.name.toLowerCase().includes(searchQuery.toLowerCase()),
     )
 
     if (categoryMetafields.length === 0) {

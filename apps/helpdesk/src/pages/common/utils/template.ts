@@ -87,8 +87,50 @@ export const renderTemplate = (
                         const rex = new RegExp('^' + _.escapeRegExp(path))
                         tempVariable = tempVariable.replace(rex, '')
 
-                        // @ts-ignore
-                        obj = obj.get(_.trimStart(path, '.'))
+                        const trimmedPath = _.trimStart(path, '.')
+                        const currentObj = obj.value()
+                        const pathSegments = trimmedPath.split('.')
+
+                        // Find if any segment leads to an array with key-based objects
+                        let keyArrayIndex = -1
+                        let current = currentObj
+                        for (let i = 0; i < pathSegments.length - 1; i++) {
+                            current = _.get(current, pathSegments[i])
+                            if (
+                                Array.isArray(current) &&
+                                current.length > 0 &&
+                                typeof current[0] === 'object' &&
+                                current[0] !== null &&
+                                'key' in current[0]
+                            ) {
+                                keyArrayIndex = i
+                                break
+                            }
+                        }
+
+                        if (keyArrayIndex >= 0) {
+                            const pathToArray = pathSegments
+                                .slice(0, keyArrayIndex + 1)
+                                .join('.')
+                            const keyArray = _.get(currentObj, pathToArray)
+                            const keyName = pathSegments[keyArrayIndex + 1]
+                            const item = keyArray.find(
+                                (m: { key: string }) => m.key === keyName,
+                            )
+                            const remainingPath = pathSegments
+                                .slice(keyArrayIndex + 2)
+                                .join('.')
+                            // @ts-ignore
+                            obj = _.chain(
+                                remainingPath
+                                    ? _.get(item, remainingPath)
+                                    : item,
+                            )
+                        } else {
+                            // @ts-ignore
+                            obj = obj.get(trimmedPath)
+                        }
+
                         const index = tempVariable.match(
                             stringStartIndexArrayRegex,
                         )

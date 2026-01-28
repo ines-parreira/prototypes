@@ -18,7 +18,7 @@ import {
 
 import { UploadType } from 'common/types'
 import useAppSelector from 'hooks/useAppSelector'
-import type { IntegrationType } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { MacroActionName } from 'models/macroAction/types'
 import Tip from 'pages/common/components/tip/Tip'
 import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variables/utils'
@@ -33,6 +33,7 @@ import type { MacroMessageActionsHeaderProps } from '../MacroMessageActionsHeade
 import MacroMessageActionsHeader from '../MacroMessageActionsHeader'
 import type { onFieldChange } from '../MacroReplyActionControls'
 import MacroReplyActionControls from '../MacroReplyActionControls'
+import { ShopifyVariablesDropdown } from '../ShopifyVariablesDropdown'
 
 type Props = {
     type:
@@ -66,6 +67,11 @@ const ResponseActionToolbar: React.FC<ToolbarProps> = ({
         integrationsSelectors.makeHasIntegrationOfTypes,
     )
 
+    const useSourceMetafieldsInMacros = useFlag(
+        FeatureFlagKey.EnableShopifyMetafieldsIngestionUIinMacros,
+        false,
+    )
+
     const variables = getVariables(null)
 
     return (
@@ -82,6 +88,24 @@ const ResponseActionToolbar: React.FC<ToolbarProps> = ({
                         !hasIntegrationOfTypes(category.type as IntegrationType)
                     ) {
                         return null
+                    }
+
+                    const isShopify = category.type === IntegrationType.Shopify
+
+                    if (
+                        isShopify &&
+                        useSourceMetafieldsInMacros &&
+                        category.children
+                    ) {
+                        return (
+                            <ShopifyVariablesDropdown
+                                key={index}
+                                categoryName={category.name}
+                                variables={category.children}
+                                categoryIndex={index}
+                                onInsertText={insertEditorText}
+                            />
+                        )
                     }
 
                     return category.children ? (
